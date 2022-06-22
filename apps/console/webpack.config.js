@@ -18,18 +18,18 @@
 
 const fs = require("fs");
 const path = require("path");
+const zlib = require("zlib");
 const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
-const BrotliPlugin = require("brotli-webpack-plugin");
 const CompressionPlugin = require("compression-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const ESLintPlugin = require("eslint-webpack-plugin");
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const JsonMinimizerPlugin = require("json-minimizer-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 const webpack = require("webpack");
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 const deploymentConfig = require("./src/public/deployment.config.json");
-const { env } = require("process");
 
 // Flag to enable source maps in production.
 const isSourceMapsEnabledInProduction = false;
@@ -59,9 +59,10 @@ let themeHash;
 const files = fs.readdirSync(THEME_DIR);
 
 const file = files ? files.filter(file => file.endsWith(".min.css"))[ 0 ] : null;
+
 themeHash = file ? file.split(".")[ 1 ] : null;
 
-const I18N_DIR = path.resolve(__dirname, "node_modules", "@wso2is", "i18n", "dist", "bundle");
+const I18N_DIR = path.join(__dirname, "src", "extensions", "i18n", "tmp");
 const metaFiles = fs.readdirSync(I18N_DIR);
 
 const metaFile = metaFiles ? metaFiles.filter(file => file.startsWith("meta"))[ 0 ] : null;
@@ -175,16 +176,21 @@ module.exports = (env) => {
             rules: [
                 {
                     test: /\.css$/,
-                    use: ["style-loader", "css-loader"]
+                    use: [ "style-loader", "css-loader" ]
                 },
                 {
                     test: /\.md$/,
-                    use: ["raw-loader"]
+                    use: [ "raw-loader" ]
                 },
                 {
                     exclude: /node_modules/,
                     test: /\.css$/,
                     use: [ "postcss-loader" ]
+                },
+                {
+                    exclude: /node_modules/,
+                    test: /.*(i18n).*\.*(portals).*\.json$/i,
+                    type: "asset/resource"
                 },
                 {
                     generator: {
@@ -223,11 +229,11 @@ module.exports = (env) => {
                 {
                     test: /\.worker\.(ts|js)$/,
                     use: {
-                        loader: 'worker-loader',
+                        loader: "worker-loader",
                         options: {
                             inline: true
                         }
-                    },
+                    }
                 },
                 {
                     exclude: {
@@ -269,7 +275,7 @@ module.exports = (env) => {
                                 // This produces warnings and slowness in dev server.
                                 compact: isProduction,
                                 plugins: [
-                                  isDevelopment && require.resolve("react-refresh/babel")
+                                    isDevelopment && require.resolve("react-refresh/babel")
                                 ].filter(Boolean)
                             }
                         }
@@ -278,7 +284,7 @@ module.exports = (env) => {
                 {
                     enforce: "pre",
                     test: /\.js$/,
-                    use: ["source-map-loader"]
+                    use: [ "source-map-loader" ]
                 }
             ],
             // Makes missing exports an error instead of warning.
@@ -318,7 +324,8 @@ module.exports = (env) => {
                             ecma: 8
                         }
                     }
-                })
+                }),
+                new JsonMinimizerPlugin()
             ].filter(Boolean),
             // Keep the runtime chunk separated to enable long term caching
             // https://twitter.com/wSokra/status/969679223278505985
@@ -326,7 +333,9 @@ module.exports = (env) => {
                 name: "single"
             },
             splitChunks: {
-                chunks: "all"
+                chunks: "all",
+                maxSize: 1000000,
+                minSize: 500000
             },
             // Tells webpack to determine used exports for each module.
             usedExports: true
@@ -411,7 +420,7 @@ module.exports = (env) => {
                                 // service is enabled.
                                 // TODO: Remove this `identity-providers` folder once the usages are refactored.
                                 "**/assets/images/!(branding|identity-providers|flags.png)/**"
-                            ],
+                            ]
                         },
                         to: "libs"
                     },
@@ -423,6 +432,11 @@ module.exports = (env) => {
                     {
                         context: path.join(__dirname, "node_modules", "@wso2is", "i18n"),
                         from: path.join("dist", "bundle"),
+                        to: path.join("resources", "i18n")
+                    },
+                    {
+                        context: path.join(__dirname, "src", "extensions", "i18n"),
+                        from: path.join("tmp", metaFile),
                         to: path.join("resources", "i18n")
                     },
                     {
@@ -453,11 +467,13 @@ module.exports = (env) => {
                     authorizationCode: "<%=request.getParameter(\"code\")%>",
                     contentType: "<%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\" " +
                         "pageEncoding=\"UTF-8\" %>",
-                    filename: path.join(distFolder, "index.jsp"),
+                    filename: path.join(distFolder, "home.jsp"),
                     hash: true,
                     // eslint-disable-next-line max-len
-                    hotjarSystemVariable: "<% String hotjar_track_code = System.getenv().getOrDefault(\"hotjar_tracking_code\", null); %>",
+                    hotjarSystemVariable: "<% String hotjar_track_code_system_var = System.getenv().getOrDefault(\"hotjar_tracking_code\", null); %>",
+                    hotjarSystemVariableNullCheck: "<% String hotjar_track_code = StringUtils.isNotBlank(hotjar_track_code_system_var) ? hotjar_track_code_system_var : null; %>",
                     hotjarTrackingCode: "<%= hotjar_track_code %>",
+                    importStringUtils: "<%@ page import=\"org.apache.commons.lang.StringUtils\" %>",
                     importSuperTenantConstant: !isDeployedOnExternalServer
                         ? "<%@ page import=\"static org.wso2.carbon.utils.multitenancy." +
                         "MultitenantConstants.SUPER_TENANT_DOMAIN_NAME\"%>"
@@ -481,7 +497,7 @@ module.exports = (env) => {
                     superTenantConstant: !isDeployedOnExternalServer
                         ? "<%=SUPER_TENANT_DOMAIN_NAME%>"
                         : "",
-                    template: path.join(__dirname, "src", "index.jsp"),
+                    template: path.join(__dirname, "src", "home.jsp"),
                     tenantDelimiter: !isDeployedOnExternalServer
                         ? "\"/\"+'<%=TENANT_AWARE_URL_PREFIX%>'+\"/\""
                         : "",
@@ -491,7 +507,66 @@ module.exports = (env) => {
                     themeHash: themeHash,
                     vwoScriptVariable: "<%= vwo_ac_id %>",
                     // eslint-disable-next-line max-len
-                    vwoSystemVariable: "<% String vwo_ac_id = System.getenv().getOrDefault(\"vwo_account_id\", null); %>"
+                    vwoSystemVariable: "<% String vwo_ac_id_system_var = System.getenv().getOrDefault(\"vwo_account_id\", null); %>",
+                    vwoSystemVariableNullCheck: "<% String vwo_ac_id = StringUtils.isNotBlank(vwo_ac_id_system_var) ? vwo_ac_id_system_var : null; %>"
+                })
+                : new HtmlWebpackPlugin({
+                    filename: path.join(distFolder, "index.html"),
+                    hash: true,
+                    minify: false,
+                    publicPath: !isRootContext
+                        ? publicPath
+                        : "/",
+                    template: path.join(__dirname, "src", "index.html"),
+                    themeHash: themeHash
+                }),
+            isProduction && !isDeployedOnStaticServer
+                ? new HtmlWebpackPlugin({
+                    authenticatedIdPs: "<%=request.getParameter(\"AuthenticatedIdPs\")%>",
+                    contentType: "<%@ page language=\"java\" contentType=\"text/html; charset=ISO-8859-1\" " + 
+                    "pageEncoding=\"ISO-8859-1\"%>",
+                    filename: path.join(distFolder, "index.jsp"),
+                    hash: true,
+                    serverUrl: !isDeployedOnExternalServer
+                        ? "<%=getServerURL(\"\", true, true)%>"
+                        : "",
+                    authorizationCode: "<%=request.getParameter(\"code\")%>",
+                    importSuperTenantConstant: !isDeployedOnExternalServer
+                        ? "<%@ page import=\"static org.wso2.carbon.utils.multitenancy." +
+                        "MultitenantConstants.SUPER_TENANT_DOMAIN_NAME\"%>"
+                        : "",
+                    importTenantPrefix: !isDeployedOnExternalServer
+                        ? "<%@ page import=\"static org.wso2.carbon.utils.multitenancy." +
+                        "MultitenantConstants.TENANT_AWARE_URL_PREFIX\"%>"
+                        : "",
+                    importUtil: !isDeployedOnExternalServer
+                        ? "<%@ page import=\"" +
+                        "static org.wso2.carbon.identity.core.util.IdentityUtil.getServerURL\" %>"
+                        : "",
+                    clientID: deploymentConfig.clientID,
+                    minify: false,
+                    publicPath: !isRootContext
+                        ? publicPath
+                        : "/",
+                    basename: basename,
+                    inject: false,
+                    sessionState: "<%=request.getParameter(\"session_state\")%>",
+                    superTenantConstant: !isDeployedOnExternalServer
+                        ? "<%=SUPER_TENANT_DOMAIN_NAME%>"
+                        : "",
+                    template: path.join(__dirname, "src", "index.jsp"),
+                    tenantDelimiter: !isDeployedOnExternalServer
+                        ? "\"/\"+'<%=TENANT_AWARE_URL_PREFIX%>'+\"/\""
+                        : "",
+                    tenantPrefix: !isDeployedOnExternalServer
+                        ? "<%=TENANT_AWARE_URL_PREFIX%>"
+                        : "",
+                    themeHash: themeHash,
+                    requestForwardSnippet: "if(request.getParameter(\"code\") != null && " +
+                        "!request.getParameter(\"code\").trim().isEmpty()) " +
+                        "{request.getRequestDispatcher(\"/authenticate?code=\"+request.getParameter(\"code\")+" +
+                        "\"&AuthenticatedIdPs=\"+request.getParameter(\"AuthenticatedIdPs\")" +
+                        "+\"&session_state=\"+request.getParameter(\"session_state\")).forward(request, response);}"
                 })
                 : new HtmlWebpackPlugin({
                     filename: path.join(distFolder, "index.html"),
@@ -518,13 +593,19 @@ module.exports = (env) => {
                 algorithm: "gzip",
                 filename: "[path][base].gz",
                 minRatio: 0.8,
-                test: /\.(js|css|html|svg)$/,
+                test: /\.js$|\.css$|\.html$|\.png$|\.svg$|\.jpeg$|\.jpg$/,
                 threshold: 10240
             }),
-            isProduction && new BrotliPlugin({
-                asset: "[path].br[query]",
+            isProduction && new CompressionPlugin({
+                algorithm: "brotliCompress",
+                compressionOptions: {
+                    params: {
+                        [ zlib.constants.BROTLI_PARAM_QUALITY ]: 11
+                    }
+                },
+                filename: "[path][base].br",
                 minRatio: 0.8,
-                test: /\.(js|css|html|svg)$/,
+                test: /\.(js|css|html|png|svg|jpeg|jpg)$/,
                 threshold: 10240
             }),
             !isESLintPluginDisabled && new ESLintPlugin({
@@ -549,7 +630,7 @@ module.exports = (env) => {
                 // https://github.com/facebook/react/issues/13991#issuecomment-435587809
                 react: path.resolve("../../node_modules/react")
             },
-            extensions: [".tsx", ".ts", ".js", ".json"],
+            extensions: [ ".tsx", ".ts", ".js", ".json" ],
             // In webpack 5 automatic node.js polyfills are removed.
             // Node.js Polyfills should not be used in front end code.
             // https://github.com/webpack/webpack/issues/11282

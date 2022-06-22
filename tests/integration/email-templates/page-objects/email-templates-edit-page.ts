@@ -38,7 +38,7 @@ export class EmailTemplatesEditPage {
      */
     public getPageLayoutHeader(): Cypress.Chainable<Element> {
         return cy.dataTestId(EmailTemplatesEditPageConstants.PAGE_LAYOUT_HEADER_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the page layout header title element.
@@ -46,7 +46,7 @@ export class EmailTemplatesEditPage {
      */
     public getPageLayoutHeaderTitle(): Cypress.Chainable<Element> {
         return cy.dataTestId(EmailTemplatesEditPageConstants.PAGE_LAYOUT_HEADER_TITLE_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the page layout header back button.
@@ -56,15 +56,15 @@ export class EmailTemplatesEditPage {
         return cy.dataTestId(EmailTemplatesEditPageConstants.PAGE_LAYOUT_HEADER_DATA_ATTR)
             .within(() => {
                 cy.get(EmailTemplatesEditPageConstants.PAGE_LAYOUT_HEADER_BACK_BUTTON_DATA_ATTR);
-            })
-    };
+            });
+    }
 
     /**
      * Click on the page layout header back button.
      */
     public clickOnPageLayoutHeaderBackButton(): void {
         this.getPageLayoutHeaderBackButton().click();
-    };
+    }
 
     /**
      * Get Subject input element.
@@ -72,7 +72,7 @@ export class EmailTemplatesEditPage {
      */
     public getSubjectInput(): Cypress.Chainable<Element> {
         return cy.dataTestId(EmailTemplatesEditPageConstants.SUBJECT_INPUT_DATA_ATTR);
-    };
+    }
 
     /**
      * Get Add template form submit button element.
@@ -80,12 +80,12 @@ export class EmailTemplatesEditPage {
      */
     public getFormSubmitButton(): Cypress.Chainable<Element> {
         return cy.dataTestId(EmailTemplatesEditPageConstants.FORM_SUBMIT_BUTTON);
-    };
+    }
 
     /**
      * Click on add template form submit button.
      */
     public clickOnFormSubmitButton(): void {
         this.getFormSubmitButton().click();
-    };
+    }
 }

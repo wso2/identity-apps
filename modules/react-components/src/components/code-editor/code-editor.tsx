@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { CommonUtils } from "@wso2is/core/utils";
 import classNames from "classnames";
 import * as codemirror from "codemirror";
@@ -66,7 +66,8 @@ interface CustomWindow extends Window {
 /**
  * Code editor component Prop types.
  */
-export interface CodeEditorProps extends IUnControlledCodeMirror, TestableComponentInterface {
+export interface CodeEditorProps extends IUnControlledCodeMirror, IdentifiableComponentInterface,
+    TestableComponentInterface {
 
     /**
      * Allow going full screen.
@@ -189,6 +190,7 @@ export const CodeEditor: FunctionComponent<CodeEditorProps> = (
         translations,
         triggerFullScreen,
         withClipboardCopy,
+        [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId,
         ...rest
     } = props;
@@ -197,11 +199,15 @@ export const CodeEditor: FunctionComponent<CodeEditorProps> = (
     const [
         copyToClipboardIcon,
         setCopyToClipboardIcon
-    ] = useState<FunctionComponent<SVGProps<SVGSVGElement>>>(CopyIcon);
+    ] = useState<FunctionComponent<SVGProps<SVGSVGElement>> | (() => FunctionComponent<SVGProps<SVGSVGElement>>)>(
+        CopyIcon
+    );
     const [
         fullScreenToggleIcon,
         setFullScreenToggleIcon
-    ] = useState<FunctionComponent<SVGProps<SVGSVGElement>>>(MaximizeIcon);
+    ] = useState<FunctionComponent<SVGProps<SVGSVGElement>> | (() => FunctionComponent<SVGProps<SVGSVGElement>>)>(
+        MaximizeIcon
+    );
     const [ isEditorFullScreen, setIsEditorFullScreen ] = useState<boolean>(false);
     const [ darkMode, setDarkMode ] = useState<boolean>(false);
 
@@ -232,6 +238,7 @@ export const CodeEditor: FunctionComponent<CodeEditorProps> = (
         // If `getThemeFromEnvironment` is false or `matchMedia` is not supported, fallback to dark theme.
         if (!getThemeFromEnvironment || !window.matchMedia) {
             setDarkMode(true);
+
             return;
         }
 
@@ -242,6 +249,7 @@ export const CodeEditor: FunctionComponent<CodeEditorProps> = (
         const callback = (e: MediaQueryListEvent): void => {
             if (e.matches) {
                 setDarkMode(true);
+
                 return;
             }
 
@@ -285,7 +293,13 @@ export const CodeEditor: FunctionComponent<CodeEditorProps> = (
      * @param {string} language - Selected language.
      * @return {object} Resolved mode.
      */
-    const resolveMode = (language: string): object => {
+    const resolveMode = (language: string): {
+        json: boolean;
+        name: "javascript" | string;
+        statementIndent: number;
+        typescript: boolean;
+    } => {
+
         if (!language) {
             throw new Error("Please define a language.");
         }
@@ -481,6 +495,7 @@ export const CodeEditor: FunctionComponent<CodeEditorProps> = (
                             ...options
                         }
                     }
+                    data-componentid={ componentId }
                     data-testid={ testId }
                 />
             </div>
@@ -506,6 +521,7 @@ export const CodeEditor: FunctionComponent<CodeEditorProps> = (
 CodeEditor.defaultProps = {
     allowFullScreen: false,
     controlledFullScreenMode: true,
+    "data-componentid": "code-editor",
     "data-testid": "code-editor",
     language: "javascript",
     lineWrapping: true,

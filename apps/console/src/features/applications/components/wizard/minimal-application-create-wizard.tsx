@@ -23,6 +23,7 @@ import {
     ContentLoader,
     DocumentationLink,
     Heading,
+    Hint,
     LinkButton,
     PrimaryButton,
     SelectionCard,
@@ -53,6 +54,7 @@ import {
     history,
     store
 } from "../../../core";
+import { TierLimitReachErrorModal } from "../../../core/components/tier-limit-reach-error-modal";
 import { createApplication, getApplicationList, getApplicationTemplateData } from "../../api";
 import { getInboundProtocolLogos } from "../../configs";
 import { ApplicationManagementConstants } from "../../constants";
@@ -133,7 +135,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         state.config.ui.isClientSecretHashEnabled);
 
     const [ templateSettings, setTemplateSettings ] = useState<ApplicationTemplateInterface>(null);
-    const [ protocolFormValues, setProtocolFormValues ] = useState<object>(undefined);
+    const [ protocolFormValues, setProtocolFormValues ] = useState<Record<string, any>>(undefined);
     const [
         customApplicationProtocol,
         setCustomApplicationProtocol 
@@ -145,12 +147,13 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
     const [ issuerError, setIssuerError ] = useState<boolean>(false);
     const [ metaUrlError, setMetaUrlError ] = useState<boolean>(false);
     const [ protocolValuesChange, setProtocolValuesChange ] = useState<boolean>(false);
+    const [ openLimitReachedModal, setOpenLimitReachedModal ] = useState<boolean>(false);
     const nameRef = useRef<HTMLDivElement>();
     const issuerRef = useRef<HTMLDivElement>();
     const metaUrlRef = useRef<HTMLDivElement>();
 
     // Maintain SAML configuration mode
-    const [samlConfigureMode, setSAMLConfigureMode] = useState<string>(undefined);
+    const [ samlConfigureMode, setSAMLConfigureMode ] = useState<string>(undefined);
 
     const [ alert, setAlert, notification ] = useWizardAlert();
 
@@ -163,6 +166,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         }
 
         const allowedCORSOrigins = [];
+
         getCORSOrigins()
             .then((response: CORSOriginsListInterface[]) => {
                 response.map((origin) => {
@@ -184,11 +188,13 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         // Stop fetching template details if the selected template is `Expert Mode`.
         if (selectedTemplate.id === CustomApplicationTemplate.id) {
             setTemplateSettings(CustomApplicationTemplate);
+
             return;
         }
 
         if (isEmpty(subTemplates) || !Array.isArray(subTemplates) || subTemplates.length < 1) {
             loadTemplateDetails(template.id, template);
+
             return;
         }
 
@@ -259,6 +265,13 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
 
         application.name = generalFormValues.get("name").toString();
         application.templateId = selectedTemplate.id;
+        // If the application is a OIDC standard-based application
+        if (customApplicationProtocol === SupportedAuthProtocolTypes.OAUTH2_OIDC
+            && selectedTemplate?.templateId === "custom-application") {
+            application.isManagementApp = generalFormValues.get("isManagementApp").length >= 2
+                ? true
+                : false;
+        }
 
         // If the selected template is Custom, assign the proper `template ids`.
         if (selectedTemplate.id === CustomApplicationTemplate.id) {
@@ -286,11 +299,11 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                 eventPublisher.compute(() => {
                     if (selectedTemplate.id === CustomApplicationTemplate.id) {
                         eventPublisher.publish("application-register-new-application", {
-                            "type": application.templateId
+                            type: application.templateId
                         });
                     } else {
                         eventPublisher.publish("application-register-new-application", {
-                            "type": selectedTemplate.templateId
+                            type: selectedTemplate.templateId
                         });
                     }
                 });
@@ -324,7 +337,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                     }
 
                     if (selectedTemplate.id === CustomApplicationTemplate.id) {
-                        defaultTabIndex = 1;
+                        defaultTabIndex = applicationConfig.customApplication.defaultTabIndex;
                     }
 
                     history.push({
@@ -344,15 +357,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                 if (error.response.status === 403 &&
                     error?.response?.data?.code ===
                     ApplicationManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorCode()) {
-
-                    setAlert({
-                        code: ApplicationManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorCode(),
-                        description: t(ApplicationManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorDescription()),
-                        level: AlertLevels.ERROR,
-                        message: t(ApplicationManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorMessage()),
-                        traceId: ApplicationManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorTraceId()
-                    });
-                    scrollToNotification();
+                    setOpenLimitReachedModal(true);
 
                     return;
                 }
@@ -360,8 +365,20 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                 if (error.response && error.response.data && error.response.data.code &&
                     error.response.data.code === ApplicationManagementConstants.ERROR_CODE_ISSUER_EXISTS) {
                     if (protocolValuesChange) {
-                        handleError("issuer", true);
-                        scrollToInValidField("issuer");
+                        if (samlConfigureMode !== SAMLConfigModes.MANUAL) {
+                            setAlert({
+                                description: error.response.data.description,
+                                level: AlertLevels.ERROR,
+                                message: t(
+                                    "console:develop.features.applications.notifications." +
+                                    "addApplication.error.message"
+                                )
+                            });
+                            scrollToNotification();
+                        } else {
+                            handleError("issuer", true);
+                            scrollToInValidField("issuer");
+                        }
                     }
 
                     return;
@@ -416,6 +433,14 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
      */
     const handleWizardClose = (): void => {
         closeWizard();
+    };
+
+    /**
+     * Close the limit reached modal.
+     */
+    const handleLimitReachedModalClose = (): void => {
+        setOpenLimitReachedModal(false);
+        handleWizardClose();
     };
 
     /**
@@ -477,21 +502,26 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         switch (field) {
             case "name":
                 nameRef.current.scrollIntoView(options);
+
                 break;
             case "issuer":
             {
                 issuerRef.current.scrollIntoView(options);
                 const issuerElement = issuerRef.current.children[0].children[1].children[0] as HTMLInputElement;
+
                 issuerElement.focus();
                 issuerElement.blur();
+
                 break;
             }
             case "metaUrl":
             {
                 metaUrlRef.current.scrollIntoView(options);
                 const metaUrlElement = metaUrlRef.current.children[0].children[1].children[0] as HTMLInputElement;
+
                 metaUrlElement.focus();
                 metaUrlElement.blur();
+
                 break;
             }
         }
@@ -515,10 +545,12 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         switch (field) {
             case "issuer":
                 setIssuerError(state);
+
                 break;
             case "metaUrl":
             {
                 setMetaUrlError(state);
+
                 break;
             }
             default:
@@ -554,6 +586,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                     onSubmit={ (values): void => setProtocolFormValues(values) }
                     showCallbackURL={ true }
                     addOriginByDefault={ selectedTemplate.id === SinglePageApplicationTemplate.id }
+                    isAllowEnabled={ !(selectedTemplate.id === SinglePageApplicationTemplate.id) }
                     data-testid={ `${ testId }-oauth-protocol-settings-form` }
                 />
             );
@@ -672,7 +705,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
             : subTemplates;
 
         return (
-            <Grid.Row className="pt-0">
+            <Grid.Row className="pt-0 mt-0">
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
                     <div className="sub-template-selection">
                         <label className="sub-templates-label">{ subTemplatesSectionTitle }</label>
@@ -680,7 +713,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                             {
                                 templates
                                     .map((subTemplate: SupportedAuthProtocolTypes | ApplicationTemplateInterface,
-                                          index: number) => {
+                                        index: number) => {
 
                                         const id: string = isCustom
                                             ? subTemplate as SupportedAuthProtocolTypes
@@ -781,6 +814,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                     while (!result.done) {
                         if (!result.value[ 1 ] || !validFields.get(result.value[ 0 ]).isValid) {
                             scrollToInValidField(result.value[ 0 ]);
+
                             break;
                         } else {
                             result = iterator.next();
@@ -824,15 +858,16 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                                         validation.errorMessages.push(
                                             t("console:develop.features.applications.forms." +
                                                 "spaProtocolSettingsWizard.fields.name.validations.invalid",
-                                                { appName: value.toString(),
-                                                    characterLimit: ApplicationManagementConstants
-                                                        .FORM_FIELD_CONSTRAINTS.APP_NAME_MAX_LENGTH }
+                                            { appName: value.toString(),
+                                                characterLimit: ApplicationManagementConstants
+                                                    .FORM_FIELD_CONSTRAINTS.APP_NAME_MAX_LENGTH }
                                             )
                                         );
 
                                         return;
                                     }
                                     let response: ApplicationListInterface = null;
+
                                     try {
                                         response = await getApplicationList(null, null, "name eq " + value.toString());
                                     } catch (error) {
@@ -870,11 +905,38 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                         </Grid.Column>
                     </Grid.Row>
                     { renderSubTemplateSelection() }
-                    <Grid.Row className="pt-0">
+                    <Grid.Row className="pt-0 mt-0">
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
                             { resolveMinimalProtocolFormFields() }
                         </Grid.Column>
                     </Grid.Row>
+                    { 
+                        // The Management App checkbox is only present in OIDC Standard-Based apps
+                        (customApplicationProtocol === SupportedAuthProtocolTypes.OAUTH2_OIDC
+                            && selectedTemplate?.templateId === "custom-application") && (
+                            <div className="pt-0 mt-0">
+                                <Field
+                                    data-testid={ `${ testId }-management-app-checkbox` }
+                                    name={ "isManagementApp" }
+                                    required={ false }
+                                    requiredErrorMessage={ "is required" }
+                                    type="checkbox"
+                                    value={ [ "isManagementApp" ] }
+                                    children={ [
+                                        {
+                                            label: t("console:develop.features.applications.forms.generalDetails" +
+                                                ".fields.isManagementApp.label" ),
+                                            value: "manageApp"
+                                        }
+                                    ] }
+                                />
+                                <Hint compact>
+                                    { t("console:develop.features.applications.forms.generalDetails.fields" +
+                                            ".isManagementApp.hint" ) }
+                                </Hint>
+                            </div>
+                        )
+                    }
                 </Grid>
             </Forms>
         );
@@ -947,58 +1009,84 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
     };
 
     return (
-        <ModalWithSidePanel
-            open={ true }
-            className="wizard minimal-application-create-wizard"
-            dimmer="blurring"
-            onClose={ handleWizardClose }
-            closeOnDimmerClick={ false }
-            closeOnEscape
-            data-testid={ `${ testId }-modal` }
-        >
-            <ModalWithSidePanel.MainPanel>
-                <ModalWithSidePanel.Header className="wizard-header">
-                    { title }
-                    { subTitle &&
-                        <Heading as="h6">
-                            { subTitle }
-                            <DocumentationLink
-                                link={ resolveDocumentationLink() }
-                            >
-                                { t("common:learnMore") }
-                            </DocumentationLink>
-                        </Heading>
-                    }
-                </ModalWithSidePanel.Header>
-                <ModalWithSidePanel.Content>{ resolveContent() }</ModalWithSidePanel.Content>
-                <ModalWithSidePanel.Actions>
-                    <Grid>
-                        <Grid.Row column={ 1 }>
-                            <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                                <LinkButton floated="left" onClick={ handleWizardClose }>
-                                    { t("common:cancel") }
-                                </LinkButton>
-                            </Grid.Column>
-                            <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                                <PrimaryButton
-                                    floated="right"
-                                    onClick={ () => {
-                                        setIssuerError(false);
-                                        setSubmit();
-                                    } }
-                                    data-testid={ `${ testId }-next-button` }
-                                    loading={ isSubmitting }
-                                    disabled={ isSubmitting }
+        <>
+            { openLimitReachedModal && (
+                <TierLimitReachErrorModal
+                    actionLabel={ t(
+                        "console:develop.features.applications.notifications." +
+                        "tierLimitReachedError.emptyPlaceholder.action"
+                    ) }
+                    handleModalClose={ handleLimitReachedModalClose }
+                    header={ t(
+                        "console:develop.features.applications.notifications.tierLimitReachedError.heading"
+                    ) }
+                    description={ t(
+                        "console:develop.features.applications.notifications." +
+                        "tierLimitReachedError.emptyPlaceholder.subtitles"
+                    ) }
+                    message={ t(
+                        "console:develop.features.applications.notifications." + 
+                        "tierLimitReachedError.emptyPlaceholder.title"
+                    ) }
+                    openModal={ openLimitReachedModal }
+                />
+            ) }
+            <ModalWithSidePanel
+                open={ !openLimitReachedModal }
+                className="wizard minimal-application-create-wizard"
+                dimmer="blurring"
+                onClose={ handleWizardClose }
+                closeOnDimmerClick={ false }
+                closeOnEscape
+                data-testid={ `${ testId }-modal` }
+            >
+                <ModalWithSidePanel.MainPanel>
+                    <ModalWithSidePanel.Header className="wizard-header">
+                        { title }
+                        { subTitle && (
+                            <Heading as="h6">
+                                { subTitle }
+                                <DocumentationLink
+                                    link={ resolveDocumentationLink() }
                                 >
-                                    { t("common:register") }
-                                </PrimaryButton>
-                            </Grid.Column>
-                        </Grid.Row>
-                    </Grid>
-                </ModalWithSidePanel.Actions>
-            </ModalWithSidePanel.MainPanel>
-            { renderHelpPanel() }
-        </ModalWithSidePanel>
+                                    { t("common:learnMore") }
+                                </DocumentationLink>
+                            </Heading>
+                        ) }
+                    </ModalWithSidePanel.Header>
+                    <ModalWithSidePanel.Content>{ resolveContent() }</ModalWithSidePanel.Content>
+                    <ModalWithSidePanel.Actions>
+                        <Grid>
+                            <Grid.Row column={ 1 }>
+                                <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
+                                    <LinkButton
+                                        floated="left"
+                                        onClick={ handleWizardClose }
+                                    >
+                                        { t("common:cancel") }
+                                    </LinkButton>
+                                </Grid.Column>
+                                <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
+                                    <PrimaryButton
+                                        floated="right"
+                                        onClick={ () => {
+                                            setIssuerError(false);
+                                            setSubmit();
+                                        } }
+                                        data-testid={ `${ testId }-next-button` }
+                                        loading={ isSubmitting }
+                                        disabled={ isSubmitting }
+                                    >
+                                        { t("common:register") }
+                                    </PrimaryButton>
+                                </Grid.Column>
+                            </Grid.Row>
+                        </Grid>
+                    </ModalWithSidePanel.Actions>
+                </ModalWithSidePanel.MainPanel>
+                { renderHelpPanel() }
+            </ModalWithSidePanel>
+        </>
     );
 };
 

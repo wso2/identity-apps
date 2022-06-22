@@ -61,7 +61,7 @@ export const ProtocolWizardSummary: FunctionComponent<ProtocolWizardSummaryProps
 
     const { t } = useTranslation();
 
-    const [protocolImage, setProtocolImage] = useState<string>("");
+    const [ protocolImage, setProtocolImage ] = useState<string>("");
 
     /**
      * Submits the form programmatically if triggered from outside.
@@ -75,12 +75,14 @@ export const ProtocolWizardSummary: FunctionComponent<ProtocolWizardSummaryProps
             const newSummary = {
                 metadataFile: summary?.metadataFile
             };
+
             onSubmit(newSummary);
+
             return;
         }
 
         onSubmit(summary);
-    }, [triggerSubmit]);
+    }, [ triggerSubmit ]);
 
     /**
      *  Set protocol image.
@@ -93,7 +95,7 @@ export const ProtocolWizardSummary: FunctionComponent<ProtocolWizardSummaryProps
         } else {
             setProtocolImage(image);
         }
-    }, [image]);
+    }, [ image ]);
 
     return (
         <Grid className="wizard-summary" data-testid={ testId }>
@@ -325,15 +327,15 @@ export const ProtocolWizardSummary: FunctionComponent<ProtocolWizardSummaryProps
             }
             {
                 customProtocol && summary?.properties.map((prop: SubmitFormCustomPropertiesInterface) => (
-                        <Grid.Row className="summary-field" columns={ 2 } key={ prop.key }>
-                            <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
-                                <div className="label">{ prop.key }</div>
-                            </Grid.Column>
-                            <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
-                                <div className="value url">{ prop.value }</div>
-                            </Grid.Column>
-                        </Grid.Row>
-                    )
+                    <Grid.Row className="summary-field" columns={ 2 } key={ prop.key }>
+                        <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
+                            <div className="label">{ prop.key }</div>
+                        </Grid.Column>
+                        <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
+                            <div className="value url">{ prop.value }</div>
+                        </Grid.Column>
+                    </Grid.Row>
+                )
                 )
             }
         </Grid>

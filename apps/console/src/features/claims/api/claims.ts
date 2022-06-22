@@ -118,6 +118,7 @@ export const updateAClaim = (id: string, data: Claim): Promise<any> => {
         method: HttpMethods.PUT,
         url: `${store.getState().config.endpoints.localClaims}/${id}`
     };
+
     return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
@@ -148,11 +149,13 @@ export const deleteAClaim = (id: string): Promise<any> => {
         method: HttpMethods.DELETE,
         url: `${store.getState().config.endpoints.localClaims}/${id}`
     };
+
     return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 204) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
+
             return Promise.resolve(response.data);
         })
         .catch((error) => {
@@ -172,8 +175,10 @@ export const deleteAClaim = (id: string): Promise<any> => {
                         message: "Unable to remove local attribute.",
                         traceId: error?.response?.data?.traceId
                     };
+
                 return Promise.reject(hardCodedResponse);
             }
+
             return Promise.reject(error?.response?.data);
         });
 };
@@ -235,11 +240,13 @@ export const getADialect = (id: string): Promise<any> => {
         method: HttpMethods.GET,
         url: `${store.getState().config.endpoints.claims}/${id}`
     };
+
     return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
+
             return Promise.resolve(response.data);
         })
         .catch((error) => {
@@ -251,7 +258,7 @@ export const getADialect = (id: string): Promise<any> => {
  * Update the claim dialect with the given ID.
  *
  * @param {string} id Claim Dialect ID.
- * @param {string} data Updates with this data.
+ * @param {string} dialectURI Updates with this data.
  *
  * @return {Promise<any>} response.
  */
@@ -268,11 +275,13 @@ export const updateADialect = (id: string, dialectURI: string): Promise<any> => 
         method: HttpMethods.PUT,
         url: `${store.getState().config.endpoints.claims}/${id}`
     };
+
     return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
+
             return Promise.resolve(response.data);
         })
         .catch((error) => {
@@ -297,11 +306,13 @@ export const deleteADialect = (id: string): Promise<any> => {
         method: HttpMethods.DELETE,
         url: `${store.getState().config.endpoints.claims}/${id}`
     };
+
     return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 204) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
+
             return Promise.resolve(response.data);
         })
         .catch((error) => {
@@ -328,11 +339,13 @@ export const addExternalClaim = (dialectID: string, data: AddExternalClaim): Pro
         method: HttpMethods.POST,
         url: `${store.getState().config.endpoints.externalClaims.replace("{}", dialectID)}`
     };
+
     return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 201) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
+
             return Promise.resolve(response.data);
         })
         .catch((error) => {
@@ -358,11 +371,13 @@ export const getAnExternalClaim = (dialectID: string, claimID: string): Promise<
         method: HttpMethods.GET,
         url: `${store.getState().config.endpoints.externalClaims.replace("{}", dialectID)}/${claimID}`
     };
+
     return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
+
             return Promise.resolve(response.data);
         })
         .catch((error) => {
@@ -385,6 +400,7 @@ export const getExternalClaims = (dialectID: string): Promise<any> => {
         method: HttpMethods.GET,
         url: `${store.getState().config.endpoints.externalClaims.replace("{}", dialectID)}`
     };
+
     return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
@@ -418,11 +434,13 @@ export const updateAnExternalClaim = (dialectID: string, claimID: string, data: 
         method: HttpMethods.PUT,
         url: `${store.getState().config.endpoints.externalClaims.replace("{}", dialectID)}/${claimID}`
     };
+
     return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
+
             return Promise.resolve(response.data);
         })
         .catch((error) => {
@@ -448,11 +466,13 @@ export const deleteAnExternalClaim = (dialectID: string, claimID: string): Promi
         method: HttpMethods.DELETE,
         url: `${store.getState().config.endpoints.externalClaims.replace("{}", dialectID)}/${claimID}`
     };
+
     return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 204) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
+
             return Promise.resolve(response.data);
         })
         .catch((error) => {

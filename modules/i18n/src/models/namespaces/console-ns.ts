@@ -99,7 +99,7 @@ export interface ConsoleNS {
             sessionTimeoutModal: {
                 description: string;
                 heading: string;
-                content?: object;
+                content?: Record<string, unknown>;
                 primaryButton: string;
                 secondaryButton: string;
                 loginAgainButton: string;
@@ -492,6 +492,8 @@ export interface ConsoleNS {
                                             removeRequested: string;
                                             subjectDisabledSelection: string;
                                         };
+                                        faultyAttributeMapping: string;
+                                        faultyAttributeMappingHint: string;
                                         fields: {
                                             claim: FormAttributes;
                                         };
@@ -622,9 +624,12 @@ export interface ConsoleNS {
                                                     subjectIdentifierFrom: FormAttributes;
                                                 };
                                             };
-                                            secondFactorDisabledInFirstStep: string;
                                             secondFactorDisabled: string;
+                                            secondFactorDisabledDueToProxyMode: string;
+                                            secondFactorDisabledInFirstStep: string;
                                             authenticatorDisabled: string;
+                                            magicLinkDisabled: string;
+                                            firstFactorDisabled: string;
                                         };
                                     };
                                 };
@@ -647,6 +652,12 @@ export interface ConsoleNS {
                                         addMissingSocialAuthenticatorModal: ModalInterface;
                                         duplicateSocialAuthenticatorSelectionModal: ModalInterface;
                                         heading: string;
+                                        headings: {
+                                            default: string;
+                                            socialLogin: string;
+                                            multiFactorLogin: string;
+                                            passwordlessLogin: string;
+                                        }
                                         types: {
                                             defaultConfig: {
                                                 description: string;
@@ -667,6 +678,16 @@ export interface ConsoleNS {
                                             totp: {
                                                 description: string;
                                                 heading: string;
+                                            },
+                                            usernameless: {
+                                                description: string;
+                                                heading: string;
+                                                info: string;
+                                            },
+                                            magicLink: {
+                                                description: string;
+                                                heading: string;
+                                                warning: string;
                                             }
                                         }
                                     }
@@ -744,7 +765,10 @@ export interface ConsoleNS {
                             imageUrl: FormAttributes;
                             discoverable: FormAttributes;
                             accessUrl: FormAttributes;
+                            isManagementApp: FormAttributes;
                         };
+                        managementAppBanner: string;
+
                     };
                     inboundCustom: {
                         fields: {
@@ -965,6 +989,11 @@ export interface ConsoleNS {
                         custom: string;
                     };
                 };
+                myaccount: {
+                    title: string;
+                    description: string;
+                    popup: string;
+                };
                 notifications: {
                     addApplication: Notification;
                     apiLimitReachedError: Notification;
@@ -988,6 +1017,10 @@ export interface ConsoleNS {
                     getInboundProtocolConfig: Notification;
                     regenerateSecret: Notification;
                     revokeApplication: Notification;
+                    tierLimitReachedError: {
+                        emptyPlaceholder: Placeholder;
+                        heading: string;
+                    };
                     updateAdvancedConfig: Notification;
                     updateApplication: Notification;
                     updateAuthenticationFlow: Notification;
@@ -998,9 +1031,11 @@ export interface ConsoleNS {
                     updateProtocol: Notification;
                     fetchOIDCServiceEndpoints: Notification;
                     secondFactorAuthenticatorToFirstStep: Notification;
+                    firstFactorAuthenticatorToSecondStep: Notification;
                     conditionalScriptLoopingError: NotificationItem;
                     deleteCertificateSuccess: NotificationItem;
                     deleteCertificateGenericError: NotificationItem;
+                    updateOnlyIdentifierFirstError: NotificationItem;
                 };
                 popups: {
                     appStatus: {
@@ -1045,7 +1080,7 @@ export interface ConsoleNS {
                         }
                     }
                 };
-            };
+            }
             authenticationProvider?: {
                 advancedSearch?: {
                     form: {
@@ -1540,6 +1575,12 @@ export interface ConsoleNS {
                     updateJITProvisioning: Notification;
                     updateOutboundProvisioningConnectors: Notification;
                     updateOutboundProvisioningConnector: Notification;
+                    apiLimitReachedError: {
+                        error: {
+                            description: string;
+                            message: string;
+                        }
+                    }
                 };
                 popups?: {
                     appStatus: {
@@ -1874,6 +1915,10 @@ export interface ConsoleNS {
                     getAllLocalClaims: Notification;
                     getRolesList: Notification;
                     submitAttributeSettings: Notification;
+                    tierLimitReachedError: {
+                        emptyPlaceholder: Placeholder;
+                        heading: string;
+                    };
                     deleteDefaultAuthenticator: Notification;
                     deleteDefaultConnector: Notification;
                     updateClaimsConfigs: Notification;
@@ -2015,6 +2060,22 @@ export interface ConsoleNS {
                 emptyPlaceholder: Placeholder;
             };
             secrets?: {
+                advancedSearch: {
+                    form: {
+                        inputs: {
+                            filterAttribute: {
+                                placeholder: string;
+                            };
+                            filterCondition: {
+                                placeholder: string;
+                            };
+                            filterValue: {
+                                placeholder: string;
+                            };
+                        };
+                    };
+                    placeholder: string;
+                };
                 page?: {
                     title: string;
                     description: string;
@@ -2187,6 +2248,73 @@ export interface ConsoleNS {
                     groupName: FormAttributes;
                 };
             };
+            organizations: {
+                advancedSearch: {
+                    form: {
+                        inputs: {
+                            filterAttribute: {
+                                placeholder: string;
+                            };
+                            filterCondition: {
+                                placeholder: string;
+                            };
+                            filterValue: {
+                                placeholder: string;
+                            };
+                        };
+                    };
+                    placeholder: string;
+                };
+                list: {
+                    actions: {
+                        add: string;
+                    };
+                    columns: {
+                        name: string;
+                        actions: string;
+                    };
+                };
+                title: string;
+                subTitle: string;
+                notifications: {
+                    fetchOrganization: Notification;
+                    deleteOrganization: Notification;
+                    addOrganization: Notification;
+                    getOrganizationList: Notification;
+                };
+                confirmations: {
+                    deleteOrganization: {
+                        assertionHint: string;
+                        header: string;
+                        message: string;
+                        content: string;
+                    };
+                };
+                placeholders: {
+                    emptyList: Placeholder;
+                };
+                modals: {
+                    addOrganization: {
+                        header: string;
+                        subtitle1: string;
+                        subtitle2: string;
+                    };
+                };
+                forms: {
+                    addOrganization: {
+                        name: FormAttributes;
+                        description: FormAttributes;
+                        domainName: FormAttributes;
+                        type: string;
+                        structural: string;
+                        tenant: string;
+                    };
+                };
+                homeList: {
+                    name: string;
+                    description: string;
+                }
+            };
             users: {
                 consumerUsers: {
                     fields: {
@@ -2257,6 +2385,7 @@ export interface ConsoleNS {
                         getUserSessions: Notification;
                         terminateAllUserSessions: Notification;
                         terminateUserSession: Notification;
+                        getAdminUser: Notification;
                     };
                     placeholders: {
                         emptyListPlaceholder: Placeholder;
@@ -2298,6 +2427,7 @@ export interface ConsoleNS {
                         formatError: string;
                         dateFormatError: string;
                         mobileFormatError: string;
+                        futureDateError: string;
                     };
                 };
                 list: {
@@ -2367,6 +2497,13 @@ export interface ConsoleNS {
                     };
                 };
                 modals: {
+                    approvalProperties: {
+                        "Claims": string,
+                        "REQUEST ID": string,
+                        "Roles": string,
+                        "User Store Domain": string,
+                        "Username": string,
+                    },
                     taskDetails: {
                         header: string;
                         description: string;
@@ -2605,6 +2742,7 @@ export interface ConsoleNS {
                             attributeName: {
                                 validation: {
                                     invalid: string;
+                                    alreadyExists: string;
                                 };
                             };
                         };
@@ -2646,6 +2784,7 @@ export interface ConsoleNS {
                         localAttribute: FormField;
                         submit: string;
                         warningMessage: string;
+                        emptyMessage: string;
                     };
                     pageLayout: {
                         edit: {
@@ -2814,6 +2953,14 @@ export interface ConsoleNS {
                     };
                     warning: string;
                 };
+                scopeMappings: {
+                    deletionConfirmationModal: {
+                        assertionHint: string;
+                        content: string;
+                        header: string;
+                        message: string;
+                    }
+                };
             };
             emailLocale: {
                 buttons: {
@@ -2883,7 +3030,11 @@ export interface ConsoleNS {
                     addTemplateType: {
                         heading: string;
                         subHeading: string;
-                        steps: {};
+                        steps: {
+                            templateType: {
+                                heading: string;
+                            }
+                        };
                     };
                 };
             };
@@ -2969,6 +3120,7 @@ export interface ConsoleNS {
                         actions: string;
                         lastModified: string;
                         name: string;
+                        source: string;
                     };
                     storeOptions: string;
                 };
@@ -3410,6 +3562,7 @@ export interface ConsoleNS {
                     general: string;
                     users: string;
                     userstores: string;
+                    organizations: string;
                 };
                 certificates: string;
                 configurations: string;
@@ -3425,6 +3578,7 @@ export interface ConsoleNS {
                 generalConfigurations: string;
                 groups: string;
                 localDialect: string;
+                organizations: string;
                 overview: string;
                 roles: string;
                 users: string;
@@ -3476,6 +3630,12 @@ export interface ConsoleNS {
                         disableUserZone: DangerZone;
                         lockUserZone: DangerZone;
                         passwordResetZone: DangerZone;
+                    };
+                    dateOfBirth: {
+                        placeholder: {
+                            part1: string;
+                            part2: string;
+                        }
                     };
                 };
                 forms: {
@@ -3618,24 +3778,17 @@ export interface ConsoleNS {
                 };
                 profile: {
                     fields: {
+                        createdDate: string;
                         generic: {
                             default: string;
                         };
                         userId: string;
                         emails: string;
+                        modifiedDate: string;
                         profileUrl: string;
-                        addresses_work: string;
-                        addresses_home: string;
-                        emails_home: string;
-                        emails_other: string;
-                        emails_work: string;
                         name_familyName: string;
                         name_givenName: string;
                         phoneNumbers: string;
-                        phoneNumbers_home: string;
-                        phoneNumbers_mobile: string;
-                        phoneNumbers_work: string;
-                        phoneNumbers_other: string;
                         photos: string;
                         oneTimePassword: string;
                         userName: string;
@@ -3997,6 +4150,7 @@ export interface ConsoleNS {
             emailTemplates: EditPage;
             emailTemplatesWithDisplayName: EditPage;
             groups: Page;
+            organizations: Page;
             overview: Page;
             oidcScopes: Page;
             oidcScopesEdit: EditPage;

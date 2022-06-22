@@ -19,7 +19,6 @@
 import { FunctionComponent, SVGProps } from "react";
 import BasicAuthIcon from "../../../themes/default/assets/images/authenticators/basic-auth.png";
 import { ReactComponent as EmailOTPIcon } from "../../../themes/default/assets/images/authenticators/email-otp.svg";
-import FIDOLogo from "../../../themes/default/assets/images/authenticators/fido.png";
 import { ReactComponent as SMSOTPIcon } from "../../../themes/default/assets/images/authenticators/sms-otp.svg";
 import TOTPIcon from "../../../themes/default/assets/images/authenticators/totp.png";
 import { ReactComponent as AuthorizeIcon } from "../../../themes/default/assets/images/icons/authorize.svg";
@@ -32,6 +31,7 @@ import { ReactComponent as CogWheelIcon } from "../../../themes/default/assets/i
 import { ReactComponent as CubeStack } from "../../../themes/default/assets/images/icons/cube-stack-icon.svg";
 import { ReactComponent as DocumentIcon } from "../../../themes/default/assets/images/icons/document-icon.svg";
 import { ReactComponent as DoneButtonIcon } from "../../../themes/default/assets/images/icons/done-button.svg";
+import FIDOLogo from "../../../themes/default/assets/images/icons/fingerprint.svg";
 import { ReactComponent as GearsIcon } from "../../../themes/default/assets/images/icons/gears-icon.svg";
 import {
     ReactComponent as IDPCertificateIcon
@@ -40,6 +40,7 @@ import { ReactComponent as IntrospectIcon } from "../../../themes/default/assets
 import { ReactComponent as IssuerIcon } from "../../../themes/default/assets/images/icons/issuer.svg";
 import { ReactComponent as JWKSIcon } from "../../../themes/default/assets/images/icons/jwks.svg";
 import { ReactComponent as LockShieldIcon } from "../../../themes/default/assets/images/icons/lock-shield.svg";
+import { ReactComponent as MagicLinkLogo } from "../../../themes/default/assets/images/icons/magic-link-icon.svg";
 import {
     ReactComponent as MagnifierColoredIcon
 } from "../../../themes/default/assets/images/icons/magnifier-colored-icon.svg";
@@ -50,6 +51,9 @@ import  {
 } from "../../../themes/default/assets/images/icons/outline-icons/add-circle-outline.svg";
 import { ReactComponent as WellKnownIcon
 } from "../../../themes/default/assets/images/icons/outline-icons/discovery-endpoint.svg";
+import {
+    ReactComponent as RevokeTokenIcon
+} from "../../../themes/default/assets/images/icons/outline-icons/revoke-outline.svg";
 import PlusIcon from "../../../themes/default/assets/images/icons/plus-icon.svg";
 import { ReactComponent as ReportIcon } from "../../../themes/default/assets/images/icons/report-icon.svg";
 import { ReactComponent as ShuttleIcon } from "../../../themes/default/assets/images/icons/shuttle-icon.svg";
@@ -58,8 +62,8 @@ import { ReactComponent as SpinWheelIcon } from "../../../themes/default/assets/
 import { ReactComponent as SSOIcon } from "../../../themes/default/assets/images/icons/sso.svg";
 import { ReactComponent as StartButtonIcon } from "../../../themes/default/assets/images/icons/start-button.svg";
 import { ReactComponent as TokenIcon } from "../../../themes/default/assets/images/icons/token.svg";
-import { ReactComponent as RevokeTokenIcon } from "../../../themes/default/assets/images/icons/outline-icons/revoke-outline.svg";
 import { ReactComponent as UserInfoIcon } from "../../../themes/default/assets/images/icons/userInfo.svg";
+import { ReactComponent as WarningIcon } from "../../../themes/default/assets/images/icons/warning-icon.svg";
 import GithubIdPIcon from "../../../themes/default/assets/images/identity-providers/github-idp-illustration.svg";
 import {
     ReactComponent as ProtocolPredefined
@@ -115,8 +119,8 @@ import {
 import {
     ReactComponent as ZoomTemplateIllustration
 } from "../../../themes/default/assets/images/illustrations/zoom-template-illustration.svg";
-import OpenIDLogo from "../../../themes/default/assets/images/protocols/openid.png";
 import OAuth2OpenIDLogo from "../../../themes/default/assets/images/protocols/oauth2-oidc.png";
+import OpenIDLogo from "../../../themes/default/assets/images/protocols/openid.png";
 import SamlLogo from "../../../themes/default/assets/images/protocols/saml.png";
 import WSFedLogo from "../../../themes/default/assets/images/protocols/ws-fed.png";
 import WSTrustLogo from "../../../themes/default/assets/images/protocols/ws-trust.png";
@@ -127,10 +131,19 @@ import { ReactComponent as JWTLogo } from "../../../themes/default/assets/images
 import { ReactComponent as MicrosoftLogo } from "../../../themes/default/assets/images/third-party/microsoft-logo.svg";
 import { ReactComponent as Office365Logo } from "../../../themes/default/assets/images/third-party/office-365-logo.svg";
 import { ReactComponent as YahooLogo } from "../../../themes/default/assets/images/third-party/yahoo-logo.svg";
-import { ReactComponent as WarningIcon } from "../../../themes/default/assets/images/icons/warning-icon.svg";
 import { SupportedAuthProtocolTypes } from "../models";
 
-export const getInboundProtocolLogos = () => {
+export const getInboundProtocolLogos = (): {
+    general: FunctionComponent<SVGProps<SVGSVGElement>>;
+    oidc: string;
+    openid: string;
+    "passive-sts": string;
+    [ SupportedAuthProtocolTypes.OAUTH2_OIDC ]: string;
+    saml: string;
+    "ws-trust": string;
+    wsFed: string;
+    wsTrust: string;
+} => {
 
     return {
         general: ProtocolIllustration,
@@ -145,7 +158,20 @@ export const getInboundProtocolLogos = () => {
     };
 };
 
-export const getApplicationTemplateIllustrations = () => {
+export const getApplicationTemplateIllustrations = (): {
+    box: FunctionComponent<SVGProps<SVGSVGElement>>;
+    customApp: FunctionComponent<SVGProps<SVGSVGElement>>;
+    oidcMobile: FunctionComponent<SVGProps<SVGSVGElement>>;
+    oidcWebApp: FunctionComponent<SVGProps<SVGSVGElement>>;
+    passiveSTS: FunctionComponent<SVGProps<SVGSVGElement>>;
+    samlWebApp: FunctionComponent<SVGProps<SVGSVGElement>>;
+    slack: FunctionComponent<SVGProps<SVGSVGElement>>;
+    spa: FunctionComponent<SVGProps<SVGSVGElement>>;
+    windowsNative: FunctionComponent<SVGProps<SVGSVGElement>>;
+    workday: FunctionComponent<SVGProps<SVGSVGElement>>;
+    wsTrust: FunctionComponent<SVGProps<SVGSVGElement>>;
+    zoom: FunctionComponent<SVGProps<SVGSVGElement>>;
+} => {
 
     return {
         box: BoxTemplateIllustration,
@@ -163,7 +189,12 @@ export const getApplicationTemplateIllustrations = () => {
     };
 };
 
-export const getApplicationWizardStepIcons = () => {
+export const getApplicationWizardStepIcons = (): {
+    general: FunctionComponent<SVGProps<SVGSVGElement>>;
+    protocolConfig: FunctionComponent<SVGProps<SVGSVGElement>>;
+    protocolSelection: FunctionComponent<SVGProps<SVGSVGElement>>;
+    summary: FunctionComponent<SVGProps<SVGSVGElement>>;
+} => {
 
     return {
         general: DocumentIcon,
@@ -173,7 +204,26 @@ export const getApplicationWizardStepIcons = () => {
     };
 };
 
-export const getAuthenticatorIcons = () => {
+export const getAuthenticatorIcons = (): {
+    basic: string;
+    default: FunctionComponent<SVGProps<SVGSVGElement>>;
+    emailOTP: FunctionComponent<SVGProps<SVGSVGElement>>;
+    facebook: FunctionComponent<SVGProps<SVGSVGElement>>;
+    fido: string;
+    github: string;
+    google: FunctionComponent<SVGProps<SVGSVGElement>>;
+    identifierFirst: FunctionComponent<SVGProps<SVGSVGElement>>;
+    jwtBasic: FunctionComponent<SVGProps<SVGSVGElement>>;
+    magicLink: FunctionComponent<SVGProps<SVGSVGElement>>;
+    microsoft: FunctionComponent<SVGProps<SVGSVGElement>>;
+    office365: FunctionComponent<SVGProps<SVGSVGElement>>;
+    sessionExecutor: FunctionComponent<SVGProps<SVGSVGElement>>;
+    smsOTP: FunctionComponent<SVGProps<SVGSVGElement>>;
+    totp: string;
+    twitter: FunctionComponent<SVGProps<SVGSVGElement>>;
+    x509: FunctionComponent<SVGProps<SVGSVGElement>>;
+    yahoo: FunctionComponent<SVGProps<SVGSVGElement>>;
+} => {
 
     return {
         basic: BasicAuthIcon,
@@ -185,6 +235,7 @@ export const getAuthenticatorIcons = () => {
         google: GoogleLogo,
         identifierFirst: MagnifierColoredIcon,
         jwtBasic: JWTLogo,
+        magicLink: MagicLinkLogo,
         microsoft: MicrosoftLogo,
         office365: Office365Logo,
         sessionExecutor: ClockColoredIcon,
@@ -196,7 +247,29 @@ export const getAuthenticatorIcons = () => {
     };
 };
 
-export const getHelpPanelIcons = () => {
+export const getHelpPanelIcons = (): {
+    endpoints: {
+        authorize: FunctionComponent<SVGProps<SVGSVGElement>>;
+        certificate: FunctionComponent<SVGProps<SVGSVGElement>>;
+        introspect: FunctionComponent<SVGProps<SVGSVGElement>>;
+        issuer: FunctionComponent<SVGProps<SVGSVGElement>>;
+        jwks: FunctionComponent<SVGProps<SVGSVGElement>>;
+        metadata: FunctionComponent<SVGProps<SVGSVGElement>>;
+        samlSLO: FunctionComponent<SVGProps<SVGSVGElement>>;
+        samlSSO: FunctionComponent<SVGProps<SVGSVGElement>>;
+        token: FunctionComponent<SVGProps<SVGSVGElement>>;
+        revoke: FunctionComponent<SVGProps<SVGSVGElement>>;
+        userInfo: FunctionComponent<SVGProps<SVGSVGElement>>;
+        wellKnown: FunctionComponent<SVGProps<SVGSVGElement>>;
+    },
+    tabs: {
+        docs: FunctionComponent<SVGProps<SVGSVGElement>>;
+        guide: FunctionComponent<SVGProps<SVGSVGElement>>;
+        samples: FunctionComponent<SVGProps<SVGSVGElement>>;
+        sdks: FunctionComponent<SVGProps<SVGSVGElement>>;
+        whatsNext: FunctionComponent<SVGProps<SVGSVGElement>>;
+    }
+} => {
 
     return {
         endpoints: {
@@ -206,10 +279,10 @@ export const getHelpPanelIcons = () => {
             issuer: IssuerIcon,
             jwks: JWKSIcon,
             metadata: IDPMetadataIcon,
+            revoke: RevokeTokenIcon,
             samlSLO: SLOIcon,
             samlSSO: SSOIcon,
             token: TokenIcon,
-            revoke: RevokeTokenIcon,
             userInfo: UserInfoIcon,
             wellKnown: WellKnownIcon
         },
@@ -223,7 +296,12 @@ export const getHelpPanelIcons = () => {
     };
 };
 
-export const getGeneralIcons = () => {
+export const getGeneralIcons = (): {
+    addCircleOutline: FunctionComponent<SVGProps<SVGSVGElement>>;
+    plusIcon: string;
+    predefined: FunctionComponent<SVGProps<SVGSVGElement>>;
+    warning: FunctionComponent<SVGProps<SVGSVGElement>>;
+} => {
 
     return {
         addCircleOutline: AddCircleOutlineIcon,
@@ -233,8 +311,10 @@ export const getGeneralIcons = () => {
     };
 };
 
-export const getSignInMethodIllustrations = (): Record<string, unknown> => {
-    
+export const getSignInMethodIllustrations = (): {
+    basicAuth: FunctionComponent<SVGProps<SVGSVGElement>>;
+} => {
+
     return {
         basicAuth: BasicAuthIllustration
     };
@@ -245,7 +325,7 @@ export const getSignInFlowIcons = (): {
     startButton: FunctionComponent<SVGProps<SVGSVGElement>>;
     doneButton: FunctionComponent<SVGProps<SVGSVGElement>>;
 } => {
-    
+
     return {
         addButton: AddCircleOutlineIcon,
         doneButton: DoneButtonIcon,
@@ -253,11 +333,15 @@ export const getSignInFlowIcons = (): {
     };
 };
 
-export const getSAMLModeIcons = () => {
+export const getSAMLModeIcons = (): {
+    manual: FunctionComponent<SVGProps<SVGSVGElement>>;
+    fileBased: FunctionComponent<SVGProps<SVGSVGElement>>;
+    URLBased: FunctionComponent<SVGProps<SVGSVGElement>>;
+} => {
 
     return {
-        manual: settingsIllustration,
+        URLBased: globalIllustration,
         fileBased: codeFileIllustration,
-        URLBased: globalIllustration
+        manual: settingsIllustration
     };
 };

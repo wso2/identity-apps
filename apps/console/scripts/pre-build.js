@@ -48,7 +48,9 @@ execSync("npm run copy:themes:src");
 // Path of the build directory.
 const distDirectory = path.join(__dirname, "..", "src", "extensions", "i18n", "dist", "src");
 const i18nNodeModulesDir = path.join(__dirname,"..", "node_modules", "@wso2is", "i18n", "dist", "bundle");
+
 log("Compiling i18N extensions...");
+
 try {
     execSync("npm run compile:i18n");
 } catch (e) {
@@ -66,6 +68,7 @@ const meta = require(metaFilePath);
 const namespaces = [];
 
 log("Moving extensions.json files to the build directory");
+
 for (const value of Object.values(i18nExtensions)) {
     if (!value || !value.name || !value.extensions) {
         continue;
@@ -75,6 +78,7 @@ for (const value of Object.values(i18nExtensions)) {
     const hash = crypto.createHash("sha1").update(JSON.stringify(fileContent)).digest("hex");
     const fileName = `extensions.${ hash.substr(0, 8) }.json`;
     const filePath = path.join(i18nNodeModulesDir, value.name, "portals", fileName);
+
     createFile(filePath, fileContent, null, true);
 
     // Update the name of the extensions file in the meta.json file.
@@ -91,8 +95,18 @@ Object.keys(meta).forEach((key) => {
     }
 });
 
+// Regenerate the meta.json file hash.
+const hash = crypto.createHash("sha1").update(JSON.stringify(meta)).digest("hex");
+const newMetaFileName = "meta." + hash.substr(0, 8) + ".json";
+const tmpDir = path.join(__dirname, "..", "src", "extensions", "i18n", "tmp");
+
+if (!fs.existsSync(tmpDir)) {
+    fs.mkdirSync(tmpDir);
+}
+const newMetaFilePath = path.join(tmpDir, newMetaFileName);
+
 // Save meta.json file.
-createFile(metaFilePath, JSON.stringify(meta, undefined, 4));
+createFile(newMetaFilePath, JSON.stringify(meta, undefined, 4));
 
 log("Cleaning the tmp directory...");
 execSync("npm run clean:i18n:dist");

@@ -62,7 +62,7 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
         }
 
         onSubmit(summary);
-    }, [triggerSubmit]);
+    }, [ triggerSubmit ]);
 
     return (
         <Grid className="wizard-summary" data-testid={ testId }>

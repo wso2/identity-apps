@@ -37,9 +37,7 @@ import {
     ProfileSchema,
     ReadOnlyUserStatus
 } from "../../models";
-import {
-    getProfileCompletion
-} from "../../utils";
+import { getProfileCompletion, toBoolean } from "../../utils";
 import { store } from "../index";
 
 /**
@@ -95,8 +93,11 @@ export const setInitialized = (flag: boolean): AuthAction => ({
 /**
  * Get SCIM2 schemas
  */
-export const getScimSchemas = (profileInfo: BasicProfileInterface = null,
-                               isReadOnlyUser: boolean) => (dispatch): void => {
+export const getScimSchemas = (
+    profileInfo: BasicProfileInterface = null,
+    isReadOnlyUser: boolean
+) => (dispatch): void => {
+
     dispatch(setProfileSchemaLoader(true));
 
     getProfileSchemas()
@@ -118,6 +119,7 @@ export const getScimSchemas = (profileInfo: BasicProfileInterface = null,
  */
 export const getProfileInformation = (updateProfileCompletion = false) => (dispatch): void => {
     let isCompletionCalculated = false;
+
     dispatch(setProfileInfoLoader(true));
 
     getUserReadOnlyStatus()
@@ -129,8 +131,8 @@ export const getProfileInformation = (updateProfileCompletion = false) => (dispa
                         dispatch(
                             setProfileInfo({
                                 ...infoResponse,
-                                isReadOnly:
-                                    response[SCIMConfigs.scim.enterpriseSchema]
+                                isReadOnly: 
+                                    response[SCIMConfigs.scim.customEnterpriseSchema]
                                         ?.isReadOnlyUser
                             })
                         );
@@ -138,8 +140,14 @@ export const getProfileInformation = (updateProfileCompletion = false) => (dispa
                         // If the schemas in the redux store is empty, fetch the SCIM schemas from the API.
                         if (isEmpty(store.getState().authenticationInformation.profileSchemas)) {
                             isCompletionCalculated = true;
-                            dispatch(getScimSchemas(infoResponse,
-                                response[SCIMConfigs.scim.enterpriseSchema]?.isReadOnlyUser));
+                            dispatch(
+                                getScimSchemas(
+                                    infoResponse,
+                                    toBoolean(
+                                        response[SCIMConfigs.scim.customEnterpriseSchema]?.isReadOnlyUser
+                                    )
+                                )
+                            );
                         }
 
                         // If `updateProfileCompletion` flag is enabled, update the profile completion.
@@ -148,8 +156,9 @@ export const getProfileInformation = (updateProfileCompletion = false) => (dispa
                                 getProfileCompletion(
                                     infoResponse,
                                     store.getState().authenticationInformation.profileSchemas,
-                                    response[SCIMConfigs.scim.enterpriseSchema]
-                                        ?.isReadOnlyUser
+                                    toBoolean(
+                                        response[SCIMConfigs.scim.customEnterpriseSchema]?.isReadOnlyUser
+                                    )
                                 );
                             } catch (e) {
                                 dispatch(

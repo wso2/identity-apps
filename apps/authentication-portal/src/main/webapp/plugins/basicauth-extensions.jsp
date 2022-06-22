@@ -15,6 +15,25 @@
   ~ specific language governing permissions and limitations
   ~ under the License.
 --%>
-<%--
-  Include any extensions for basicauth.jsp file.
---%>
+<%@ page import="java.io.File" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClient" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClientException" %>
+
+<%
+    Boolean isTypingDNAEnabledInTenant;
+    try {
+        PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
+        isTypingDNAEnabledInTenant = preferenceRetrievalClient.checkTypingDNA(tenantDomain);
+    } catch (PreferenceRetrievalClientException e) {
+        request.setAttribute("error", true);
+        request.setAttribute("errorMsg", AuthenticationEndpointUtil
+                .i18n(resourceBundle, "something.went.wrong.contact.admin"));
+        IdentityManagementEndpointUtil.addErrorInformation(request, e);
+        request.getRequestDispatcher("error.jsp").forward(request, response);
+        return;
+    }
+    File typingPatternRecorder = new File(getServletContext().getRealPath("plugins/typing-dna.jsp"));
+    if (isTypingDNAEnabledInTenant && typingPatternRecorder.exists() && !isIdentifierFirstLogin(inputType)) {
+%>
+        <jsp:include page="plugins/typing-dna.jsp"/>
+<% }  %>

@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FC, PropsWithChildren, ReactElement, useEffect, useState } from "react";
 import { Button, ButtonGroupProps, ButtonProps, Popup } from "semantic-ui-react";
 
@@ -84,7 +85,7 @@ interface StrictSwitcherOption {
  * to enable more configuration options to the exposing
  * interface.
  */
-export type SwitcherProps = PropsWithChildren<StrictSwitcher & ButtonGroupProps>;
+export type SwitcherProps = PropsWithChildren<StrictSwitcher & ButtonGroupProps & IdentifiableComponentInterface>;
 
 /**
  * Example on extended ButtonProps
@@ -113,7 +114,7 @@ export type SwitcherProps = PropsWithChildren<StrictSwitcher & ButtonGroupProps>
  *
  * Example: { ... labelPosition?: 'right' | 'left' }
  */
-export type SwitcherOptionProps = StrictSwitcherOption & ButtonProps;
+export type SwitcherOptionProps = StrictSwitcherOption & ButtonProps & IdentifiableComponentInterface;
 
 type OptionMouseEventAlias = React.MouseEvent<HTMLButtonElement>;
 
@@ -181,6 +182,7 @@ export const Switcher: FC<SwitcherProps> = (props: SwitcherProps): ReactElement 
         selectedValue,
         options,
         onChange,
+        [ "data-componentid" ]: componentId,
         ...rest
     } = props;
 
@@ -207,6 +209,7 @@ export const Switcher: FC<SwitcherProps> = (props: SwitcherProps): ReactElement 
         // If user didn't provide a value for {@link selectedValue}
         // try to set the first option as the default value.
         let specifiedDefault = options.find(({ value }) => value === selectedValue);
+
         if (!specifiedDefault) {
             specifiedDefault = options[FIRST_ELEMENT_INDEX];
         }
@@ -238,6 +241,7 @@ export const Switcher: FC<SwitcherProps> = (props: SwitcherProps): ReactElement 
             // the same functionality. Hence, no need to invoke two
             // handlers at the same time.
             const fromActiveState = data.active;
+
             if (!fromActiveState && data?.onSelect) {
                 data.onSelect(data);
             }
@@ -251,10 +255,18 @@ export const Switcher: FC<SwitcherProps> = (props: SwitcherProps): ReactElement 
             basic
             icon={ canButtonGroupHaveIcons(options) }
             widths={ options.length }
+            data-componentid={ componentId }
             { ...(rest ?? EMPTY_OBJECT) }
         >
             { options.map((opt: SwitcherOptionProps, index: number): ReactElement => {
-                const { value, label, disabled, ...optRest } = opt;
+                const {
+                    value,
+                    label,
+                    disabled,
+                    "data-componentid": optionComponentId,
+                    ...optRest
+                } = opt;
+
                 if (disabled) {
                     return (
                         <Popup
@@ -264,7 +276,7 @@ export const Switcher: FC<SwitcherProps> = (props: SwitcherProps): ReactElement 
                             // Popup only triggers: {hover, click, focus} events.
                             // https://react.semantic-ui.com/modules/popup/
                             // https://github.com/Semantic-Org/Semantic-UI-React/issues/1413
-                            trigger={
+                            trigger={ (
                                 <div>
                                     <Button
                                         style={ STYLED_BUTTON }
@@ -273,12 +285,15 @@ export const Switcher: FC<SwitcherProps> = (props: SwitcherProps): ReactElement 
                                         value={ value }
                                         content={ label }
                                         onClick={ OPERATION_PASS }
+                                        data-componentid={ `${ optionComponentId }-disabled` }
                                     />
                                 </div>
-                            }
+                            ) }
+                            data-componentid={ `${ optionComponentId }-popup` }
                         />
                     );
                 }
+
                 return (
                     <Button
                         key={ index }
@@ -287,6 +302,7 @@ export const Switcher: FC<SwitcherProps> = (props: SwitcherProps): ReactElement 
                         active={ selectedOption?.value === value }
                         disabled={ Boolean(disabled) }
                         onClick={ onSwitchOptionButtonClick }
+                        data-componentid={ optionComponentId }
                         { ...(optRest ?? EMPTY_OBJECT) }
                     />
                 ) as ReactElement;
@@ -294,6 +310,13 @@ export const Switcher: FC<SwitcherProps> = (props: SwitcherProps): ReactElement 
         </Button.Group>
     );
 
+};
+
+/**
+ * Default props for the component.
+ */
+Switcher.defaultProps = {
+    "data-componentid": "switcher"
 };
 
 // Component constants

@@ -20,9 +20,14 @@ import { AsgardeoSPAClient } from "@asgardeo/auth-react";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosResponse } from "axios";
+import { LocalAuthenticatorInterface } from "../../../features/identity-providers";
 import { store } from "../../core";
 import { ServerConfigurationsConstants } from "../constants";
-import { GovernanceConnectorInterface } from "../models";
+import {
+    GovernanceConnectorInterface,
+    RealmConfigInterface,
+    UpdateGovernanceConnectorConfigInterface
+} from "../models";
 
 /**
  * Initialize an axios Http client.
@@ -51,6 +56,7 @@ export const getData = (url: string): Promise<any> => {
                     response,
                     response.config);
             }
+
             return Promise.resolve(response.data);
         })
         .catch((error) => {
@@ -64,7 +70,7 @@ export const getData = (url: string): Promise<any> => {
         });
 };
 
-export const updateConfigurations = (data: object, url: string): Promise<any> => {
+export const updateConfigurations = (data: UpdateGovernanceConnectorConfigInterface, url: string): Promise<any> => {
     const requestConfig = {
         data,
         headers: {
@@ -126,9 +132,11 @@ export const getConnectorCategory = (categoryId: string): Promise<any> => {
  * @param connectorId ID of the connector
  * @returns {Promise<any>} a promise containing the response.
  */
-export const updateGovernanceConnector = (data: object, categoryId: string, connectorId: string): Promise<any> => {
+export const updateGovernanceConnector = (data: UpdateGovernanceConnectorConfigInterface, categoryId: string,
+    connectorId: string): Promise<any> => {
     const url = store.getState().config.endpoints.governanceConnectorCategories +
         "/" + categoryId + "/connectors/" + connectorId;
+
     return updateConfigurations(data, url);
 };
 
@@ -141,6 +149,7 @@ export const updateGovernanceConnector = (data: object, categoryId: string, conn
 export const getGovernanceConnectors = (categoryId: string): Promise<GovernanceConnectorInterface[]> => {
     const url = store.getState().config.endpoints.governanceConnectorCategories +
         "/" + categoryId + "/connectors/";
+
     return getData(url);
 };
 
@@ -160,7 +169,7 @@ export const getServerConfigurations = (): Promise<any> => {
  *
  * @returns {Promise<any>} a promise containing the response.
  */
-export const updateServerConfigurations = (data: object): Promise<any> => {
+export const updateServerConfigurations = (data: UpdateGovernanceConnectorConfigInterface): Promise<any> => {
     return updateConfigurations(data, store.getState().config.endpoints.serverConfigurations);
 };
 
@@ -169,7 +178,29 @@ export const updateServerConfigurations = (data: object): Promise<any> => {
  *
  * @returns {Promise<any>} a promise containing the data.
  */
- export const getConnectorDetails = (categoryId: string, connectorId: string): Promise<any> => {
+export const getConnectorDetails = (categoryId: string, connectorId: string): Promise<any> => {
     return getData(store.getState().config.endpoints.governanceConnectorCategories + "/" + categoryId +
         "/connectors/" + connectorId);
 };
+
+interface ServerConfigurationCorsInterface {
+    allowAnyOrigin: boolean;
+    allowGenericHttpRequests: boolean;
+    allowSubdomains: boolean;
+    exposedHeaders: string[];
+    maxAge: number;
+    supportAnyHeader: boolean;
+    supportedHeaders: {[key: string]: string}[];
+    supportedMethods: string[];
+    supportsCredentials: boolean;
+}
+
+export interface ServerConfigurationsInterface {
+    authenticators: LocalAuthenticatorInterface;
+    cors: ServerConfigurationCorsInterface;
+    realmConfig: RealmConfigInterface;
+    homeRealmIdentifiers: string[];
+    idleSessionTimeoutPeriod: string[];
+    provisioning: any;
+    rememberMePeriod: string;
+}

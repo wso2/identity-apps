@@ -32,7 +32,9 @@ interface AddApplicationCertificateFormProps extends TestableComponentInterface 
     triggerSubmit: boolean;
     onSubmit: (values: any) => void;
     /**
-     * Sets the visibility of the finish button
+     * Sets the visibility of the finish button.
+     *
+     * @param buttonState - button active state
      */
     setShowFinishButton?: (buttonState: boolean) => void;
 }

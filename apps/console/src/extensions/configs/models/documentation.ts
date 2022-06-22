@@ -16,4 +16,21 @@
  * under the License.
  */
 
-export type DocumentationLinksExtensionInterface = Record<string, unknown>;
+export type DocumentationLinksExtensionInterface = Record<string, unknown> & {
+    develop: {
+        connections: {
+            edit: {
+                advancedSettings: {
+                    jit: string;
+                };
+            };
+        };
+        applications: {
+            editApplication: {
+                signInMethod: {
+                    fido: string;
+                };
+            };
+        };
+    };
+};

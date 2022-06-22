@@ -37,48 +37,54 @@ const WindowsDesktopApplicationCreateWizardHelp: FunctionComponent<
     WindowsDesktopApplicationCreateWizardHelpPropsInterface
     > = (
         props: WindowsDesktopApplicationCreateWizardHelpPropsInterface
-): ReactElement => {
+    ): ReactElement => {
 
-    const {
-        [ "data-testid" ]: testId
-    } = props;
+        const {
+            [ "data-testid" ]: testId
+        } = props;
 
-    const { t } = useTranslation();
+        const { t } = useTranslation();
 
-    return (
-        <div data-testid={ testId }>
-            <Heading as="h5">
-                { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.template.common" +
-                    ".heading.title") }
-            </Heading>
-            <p>
-                { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.template.common" +
-                    ".heading.subTitle") }
-            </p>
-            <p>
-                { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.template.common" +
-                ".heading.example") }
-            </p>
-
-            <Divider />
-
-            <React.Fragment>
+        return (
+            <div data-testid={ testId }>
                 <Heading as="h5">
                     { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.template.common" +
-                        ".authorizedRedirectURLs.title") }
+                    ".heading.title") }
                 </Heading>
                 <p>
                     { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.template.common" +
-                        ".authorizedRedirectURLs.subTitle") }
+                    ".heading.subTitle") }
                 </p>
                 <p>
                     { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.template.common" +
-                        ".authorizedRedirectURLs.example") }
+                ".heading.example") }
                 </p>
-            </React.Fragment>
-        </div>
-    );
-};
+
+                <Divider />
+
+                <React.Fragment>
+                    <Heading as="h5">
+                        {
+                            t("console:develop.features.applications.wizards.minimalAppCreationWizard" +
+                                ".help.template.common.authorizedRedirectURLs.title")
+                        }
+                    </Heading>
+                    <p>
+                        {
+                            t("console:develop.features.applications.wizards.minimalAppCreationWizard" +
+                                ".help.template.common.authorizedRedirectURLs.subTitle")
+                        }
+                    </p>
+                    <p>
+                        {
+                            t("console:develop.features.applications.wizards.minimalAppCreationWizard" +
+                                ".help.template.common.authorizedRedirectURLs.example")
+                        }
+                    </p>
+                </React.Fragment>
+            </div>
+        );
+    };
 
 /**
  * Default props for the component

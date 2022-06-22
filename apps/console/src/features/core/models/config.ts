@@ -88,6 +88,10 @@ export interface FeatureConfigInterface {
      */
     oidcScopes?: FeatureAccessConfigInterface;
     /**
+     * Organization management feature.
+     */
+    organizations?: FeatureAccessConfigInterface;
+    /**
      * Remote Fetch Config management feature.
      */
     remoteFetchConfig?: FeatureAccessConfigInterface;
@@ -125,6 +129,10 @@ export interface DeploymentConfigInterface extends CommonDeploymentConfigInterfa
      * Configs of the developer app.
      */
     developerApp: ExternalAppConfigInterface;
+    /**
+     * Configs for extensions.
+     */
+    extensions: Record<string, unknown>;
     /**
      * URL of the help center.
      */
@@ -283,8 +291,6 @@ export interface ServiceResourceEndpointsInterface extends ClaimResourceEndpoint
     SecretsManagementEndpoints {
 
     CORSOrigins: string;
-    documentationContent: string;
-    documentationStructure: string;
     // TODO: Remove this endpoint and use ID token to get the details
     me: string;
     saml2Meta: string;

@@ -148,13 +148,14 @@ const LocalClaimsEditPage: FunctionComponent<LocalClaimsEditPageInterface> = (
      */
     const generateClaimLetter = (name: string): string => {
         const stringArray = name?.replace("http://", "")?.split("/");
+
         return stringArray[ stringArray?.length - 1 ][ 0 ]?.toLocaleUpperCase();
     };
 
     return (
         <PageLayout
             isLoading={ isLocalClaimDetailsRequestLoading }
-            image={
+            image={ (
                 <Image
                     floated="left"
                     verticalAlign="middle"
@@ -167,7 +168,7 @@ const LocalClaimsEditPage: FunctionComponent<LocalClaimsEditPageInterface> = (
                         { claim && generateClaimLetter(claim?.claimURI) }
                     </span>
                 </Image>
-            }
+            ) }
             title={ claim?.displayName }
             description={ t("console:manage.features.claims.local.pageLayout.edit.description") }
             backButton={ {
@@ -184,9 +185,9 @@ const LocalClaimsEditPage: FunctionComponent<LocalClaimsEditPageInterface> = (
                 ? <ResourceTab panes={ panes } data-testid={ `${ testId }-tabs` } />
                 : (
                     <EditBasicDetailsLocalClaims
-                    claim={ claim }
-                    update={ getClaim }
-                    data-testid="local-claims-basic-details-edit"
+                        claim={ claim }
+                        update={ getClaim }
+                        data-testid="local-claims-basic-details-edit"
                     />
                 )
             }

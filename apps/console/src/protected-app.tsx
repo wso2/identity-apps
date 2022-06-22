@@ -19,14 +19,15 @@
 import {
     AuthenticatedUserInfo,
     BasicUserInfo,
+    DecodedIDTokenPayload,
     Hooks,
     OIDCEndpoints,
     SecureApp,
     useAuthContext
 } from "@asgardeo/auth-react";
-import { AppConstants as CommonAppConstants } from "@wso2is/core/constants";
+import { AppConstants as CommonAppConstants, CommonConstants as CommonConstantsCore } from "@wso2is/core/constants";
 import { IdentifiableComponentInterface, TenantListInterface } from "@wso2is/core/models";
-import { setSignIn, setSupportedI18nLanguages } from "@wso2is/core/store";
+import { setDeploymentConfigs, setSignIn, setSupportedI18nLanguages } from "@wso2is/core/store";
 import { AuthenticateUtils as CommonAuthenticateUtils, ContextUtils, StringUtils } from "@wso2is/core/utils";
 import {
     I18n,
@@ -35,12 +36,14 @@ import {
     LanguageChangeException,
     isLanguageSupported
 } from "@wso2is/i18n";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
+import has from "lodash-es/has";
 import React, { FunctionComponent, ReactElement, lazy, useEffect } from "react";
 import { I18nextProvider } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { commonConfig } from "./extensions";
 import { AuthenticateUtils, getProfileInformation } from "./features/authentication";
-import { Config, HttpUtils, PreLoader, store } from "./features/core";
+import { Config, DeploymentConfigInterface, HttpUtils, PreLoader, store } from "./features/core";
 import { AppConstants, CommonConstants } from "./features/core/constants";
 import { history } from "./features/core/helpers";
 
@@ -80,13 +83,19 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             let logoutUrl;
             let logoutRedirectUrl;
 
+            const event = new Event(CommonConstantsCore.AUTHENTICATION_SUCCESSFUL_EVENT);
+
+            dispatchEvent(event);
+
+            const tenantDomain: string = CommonAuthenticateUtils.deriveTenantDomainFromSubject(response.sub);
+
             // Update the app base name with the newly resolved tenant.
-            window[ "AppUtils" ].updateTenantQualifiedBaseName(response.tenantDomain);
+            window[ "AppUtils" ].updateTenantQualifiedBaseName(tenantDomain);
 
             // When the tenant domain changes, we have to reset the auth callback in session storage.
             // If not, it will hang and the app will be unresponsive with in the tab.
             // We can skip clearing the callback for super tenant since we do not put it in the path.
-            if (response.tenantDomain !== AppConstants.getSuperTenant()) {
+            if (tenantDomain !== AppConstants.getSuperTenant()) {
                 // If the auth callback already has the logged in tenant's path, we can skip the reset.
                 if (
                     !CommonAuthenticateUtils.isValidAuthenticationCallbackUrl(
@@ -98,7 +107,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                 }
             }
 
-            // Update the context with new config once the basename is changed.
+            // Update runtime configurations.
             ContextUtils.setRuntimeConfig(Config.getDeploymentConfig());
 
             // Update post_logout_redirect_uri of logout_url with tenant qualified url
@@ -139,6 +148,30 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
 
                 sessionStorage.setItem(LOGOUT_URL, logoutUrl);
             }
+
+            // Set configurations related to hostname branding.
+            axios
+                .get(Config.getServiceResourceEndpoints().wellKnown)
+                .then((response: AxiosResponse) => {
+                    // Use token endpoint to extract the host url.
+                    const splitted: string[] = response?.data?.token_endpoint?.split("/") ?? [];
+                    const serverHost: string = splitted.slice(0, -2).join("/");
+
+                    window[ "AppUtils" ].updateCustomServerHost(serverHost);
+                })
+                .catch((error) => {
+                    // In case of failure customServerHost is set to the serverHost
+                    window[ "AppUtils" ].updateCustomServerHost(Config.getDeploymentConfig().serverHost);
+                    
+                    throw error;
+                })
+                .finally(() => {
+                    // Update store with custom server host.
+                    dispatch(setDeploymentConfigs<DeploymentConfigInterface>(Config.getDeploymentConfig()));
+
+                    // Update runtime configurations.
+                    ContextUtils.setRuntimeConfig(Config.getDeploymentConfig());
+                });
 
             getDecodedIDToken()
                 .then((idToken) => {
@@ -226,16 +259,46 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             CommonAppConstants.CONSOLE_APP
         );
 
-        const location =
-            !AuthenticationCallbackUrl || AuthenticationCallbackUrl === AppConstants.getAppLoginPath()
-                ? AppConstants.getAppHomePath()
-                : AuthenticationCallbackUrl;
+        if(commonConfig?.enableOrganizationAssociations) {
+            /**
+             * Prevent redirect to landing page when there is no association.
+             */
+            getDecodedIDToken()
+                .then((idToken: DecodedIDTokenPayload) => {
 
-        history.push(location);
+                    if(has(idToken, "associated_tenants")) {
+                        // If there is an assocation, the user should be redirected to console landing page.
+                        const location =
+                            !AuthenticationCallbackUrl || AuthenticationCallbackUrl === AppConstants.getAppLoginPath()
+                                ? AppConstants.getAppHomePath()
+                                : AuthenticationCallbackUrl;
+
+                        history.push(location);
+                    } else {
+                        // If there is no assocation, the user should be redirected to creation flow.
+                        history.push({
+                            pathname: AppConstants.getPaths().get("CREATE_TENANT")
+                        });
+                    }
+                })
+                .catch(() => {
+                    // No need to show UI errors here.
+                    // Add debug logs here one a logger is added.
+                    // Tracked here https://github.com/wso2/product-is/issues/11650.
+                });
+        } else {
+            const location =
+                        !AuthenticationCallbackUrl || AuthenticationCallbackUrl === AppConstants.getAppLoginPath()
+                            ? AppConstants.getAppHomePath()
+                            : AuthenticationCallbackUrl;
+
+            history.push(location);
+        }
     };
 
     useEffect(() => {
         const error = new URLSearchParams(location.search).get("error_description");
+
         if (error === AppConstants.USER_DENIED_CONSENT_SERVER_ERROR) {
             history.push({
                 pathname: AppConstants.getPaths().get("UNAUTHORIZED"),

@@ -62,6 +62,6 @@ export interface PatchRoleDataInterface {
 
 export interface ScimOperationsInterface {
     op: string;
-    value: any;
+    value?: any;
     path?: string;
 }

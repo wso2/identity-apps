@@ -16,11 +16,11 @@
 * under the License.
 */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Grid, GridColumn, Icon, Input, InputOnChangeData, Popup } from "semantic-ui-react";
 
-export interface InlineEditInputPropsInterface extends TestableComponentInterface {
+export interface InlineEditInputPropsInterface extends IdentifiableComponentInterface, TestableComponentInterface {
     text: string;
     validation?: string;
     errorHandler?: (status: boolean) => void;
@@ -52,6 +52,7 @@ export const InlineEditInput: FunctionComponent<InlineEditInputPropsInterface> =
         onChangesSaved,
         onEdit,
         maxLength,
+        [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId
     } = props;
 
@@ -59,7 +60,7 @@ export const InlineEditInput: FunctionComponent<InlineEditInputPropsInterface> =
     const [ prevText, setPrevText ] = useState<string>(text);
     const [ textValue, setTextValue ] = useState<string>(text);
     const [ regExValidation, setRegExValidation ] = useState<RegExp>();
-    const [ fieldError, setFieldError] = useState<boolean>(false);
+    const [ fieldError, setFieldError ] = useState<boolean>(false);
 
     useEffect(() => {
         setTextValue(text);
@@ -69,107 +70,125 @@ export const InlineEditInput: FunctionComponent<InlineEditInputPropsInterface> =
     useEffect(() => {
         if ( validation ) {
             const regEx = new RegExp(validation);
+
             setRegExValidation(regEx);
         }
-    }, [validation]);
+    }, [ validation ]);
     
     return (
-        editMode ? 
-            <Grid verticalAlign="middle">
-                <Grid.Row columns={ 2 }>
-                    <GridColumn width={ 12 }>
-                        <Input 
-                            fluid
-                            size="mini"
-                            placeholder={ inputPlaceholderText }
-                            value={ textValue }
-                            error={ fieldError }
-                            maxLength={ maxLength }
-                            onChange={ (
-                                event: React.ChangeEvent<HTMLInputElement>, 
-                                data: InputOnChangeData ) => {
-                                setTextValue(data.value.trim());
-                            } }
-                            data-testid={ `${ testId }-input` }
-                        />
-                    </GridColumn>
-                    <Grid.Column width={ 4 }>
-                        <Popup
-                            trigger={ (
-                                <Icon
-                                    className="mr-3"
-                                    name="check"
-                                    link
-                                    onClick={ () => {
-                                        if (textValue === "" || ( validation && !textValue.match(regExValidation) )) {
-                                            setFieldError(true);
-                                            if (errorHandler) {
-                                                errorHandler(true);
+        editMode
+            ? (
+                <Grid verticalAlign="middle">
+                    <Grid.Row columns={ 2 }>
+                        <GridColumn width={ 12 }>
+                            <Input 
+                                fluid
+                                size="mini"
+                                placeholder={ inputPlaceholderText }
+                                value={ textValue }
+                                error={ fieldError }
+                                maxLength={ maxLength }
+                                onChange={ (
+                                    event: React.ChangeEvent<HTMLInputElement>, 
+                                    data: InputOnChangeData ) => {
+                                    setTextValue(data.value.trim());
+                                } }
+                                data-componentid={ `${ componentId }-input` }
+                                data-testid={ `${ testId }-input` }
+                            />
+                        </GridColumn>
+                        <Grid.Column width={ 4 }>
+                            <Popup
+                                trigger={ (
+                                    <Icon
+                                        className="mr-3"
+                                        name="check"
+                                        link
+                                        onClick={ () => {
+                                            if (textValue === ""
+                                                || ( validation && !textValue.match(regExValidation) )) {
+
+                                                setFieldError(true);
+
+                                                if (errorHandler) {
+                                                    errorHandler(true);
+                                                }
+
+                                                return;
                                             }
-                                            return;
-                                        }
                                         
-                                        onEdit(false);
-                                        setEditMode(false);
-                                        onChangesSaved(textValue);
-                                    } }
-                                />
-                            ) }
-                            content={ "Save Changes" }
-                            position="top center"
-                            inverted
-                        />
-                        <Popup
-                            trigger={ (
-                                <Icon
-                                    name="cancel"
-                                    link
-                                    onClick={ () => {
-                                        setEditMode(false);
-                                        onEdit(false);
-                                        errorHandler(false);
-                                        setTextValue(prevText);
-                                    } }
-                                />
-                            ) }
-                            content={ "Cancel Changes" }
-                            position="top center"
-                            inverted
-                        />
-                    </Grid.Column>
-                </Grid.Row>
-            </Grid>
-        :
-            <Grid columns="equal" verticalAlign="middle">
-                <Grid.Row>
-                    <GridColumn width="16">
-                        { text && text !== "" && 
-                            <>
-                                <span className="mr-3">
-                                    { textPrefix && textPrefix }
-                                    <b>{ text && text  }</b>
-                                    { textPostfix && textPostfix }
-                                </span>
-                                <Popup
-                                    trigger={ (
-                                        <Icon
-                                            className="mr-3"
-                                            name="pencil"
-                                            link
-                                            onClick={ () => {
-                                                setEditMode(true);
-                                                onEdit(true);
-                                            } }
+                                            onEdit(false);
+                                            setEditMode(false);
+                                            onChangesSaved(textValue);
+                                        } }
+                                    />
+                                ) }
+                                content={ "Save Changes" }
+                                position="top center"
+                                inverted
+                            />
+                            <Popup
+                                trigger={ (
+                                    <Icon
+                                        name="cancel"
+                                        link
+                                        onClick={ () => {
+                                            setEditMode(false);
+                                            onEdit(false);
+                                            errorHandler(false);
+                                            setTextValue(prevText);
+                                        } }
+                                    />
+                                ) }
+                                content={ "Cancel Changes" }
+                                position="top center"
+                                inverted
+                            />
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
+            )
+            : (
+                <Grid columns="equal" verticalAlign="middle">
+                    <Grid.Row>
+                        <GridColumn width="16">
+                            {
+                                text && text !== "" && (
+                                    <>
+                                        <span className="mr-3">
+                                            { textPrefix && textPrefix }
+                                            <b>{ text && text }</b>
+                                            { textPostfix && textPostfix }
+                                        </span>
+                                        <Popup
+                                            trigger={ (
+                                                <Icon
+                                                    className="mr-3"
+                                                    name="pencil"
+                                                    link
+                                                    onClick={ () => {
+                                                        setEditMode(true);
+                                                        onEdit(true);
+                                                    } }
+                                                />
+                                            ) }
+                                            content={ "Edit changes" }
+                                            position="top center"
+                                            inverted
                                         />
-                                    ) }
-                                    content={ "Edit changes" }
-                                    position="top center"
-                                    inverted
-                                />
-                            </>
-                        }
-                    </GridColumn>
-                </Grid.Row>
-            </Grid>
+                                    </>
+                                )
+                            }
+                        </GridColumn>
+                    </Grid.Row>
+                </Grid>
+            )
     );
+};
+
+/**
+ * Default props for the component.
+ */
+InlineEditInput.defaultProps = {
+    "data-componentid": "inline-edit-field"
 };

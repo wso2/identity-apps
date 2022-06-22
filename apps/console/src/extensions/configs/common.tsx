@@ -26,10 +26,13 @@ export const commonConfig: CommonConfig = {
     },
     blockLoopBackCalls: false,
     checkForUIResourceScopes: false,
+    enableOrganizationAssociations: false,
     header: {
         getHeaderExtensions: (): HeaderExtension[] => [],
         getHeaderSubPanelExtensions: (): HeaderSubPanelItemInterface[] => [],
-        getUserDropdownLinkExtensions: (): HeaderLinkCategoryInterface[] => [],
+        getUserDropdownLinkExtensions: (tenantDomain: string,
+            associatedTenants: any[]): HeaderLinkCategoryInterface[] => [],
+        headerQuickstartMenuItem: "",
         renderAppSwitcherAsDropdown: false
     },
     leftNavigation: {
@@ -41,5 +44,10 @@ export const commonConfig: CommonConfig = {
     userEditSection: {
         isGuestUser: false,
         showEmail: true
-    }
+    },
+    hotjarTracking : {
+        tagAttributes : () : void => {
+            return;
+        }
+     }
 };

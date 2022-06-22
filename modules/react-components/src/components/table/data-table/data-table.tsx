@@ -63,8 +63,8 @@ export interface DataTableSubComponentsInterface {
 /**
  * Interface for the data table component.
  */
-export interface DataTablePropsInterface<T = {}> extends Omit<TableProps, "columns" | "sortable">,
-    TestableComponentInterface {
+export interface DataTablePropsInterface<T = Record<string, any>> extends Omit<TableProps, "columns" | "sortable">,
+    IdentifiableComponentInterface, TestableComponentInterface {
 
     /**
      * Set of actions.
@@ -196,8 +196,9 @@ export interface DataRendererPropsInterface {
 /**
  * Table Data Interface.
  */
-export interface TableDataInterface<T = {}> extends StrictDataPropsInterface, DynamicTableDataInterface,
-    DataTableCellPropsInterface { }
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export interface TableDataInterface<T = Record<string, any>> extends StrictDataPropsInterface,
+    DynamicTableDataInterface, DataTableCellPropsInterface { }
 
 /**
  * Table Data Dynamic Interface.
@@ -273,7 +274,7 @@ export interface DynamicTableColumnInterface {
 /**
  * Table Actions Interface.
  */
-export interface TableActionsInterface<T = {}>
+export interface TableActionsInterface<T = Record<string, any>>
     extends TestableComponentInterface, Partial<IdentifiableComponentInterface> {
     /**
      * Component render node.
@@ -350,7 +351,7 @@ export interface TableExtensionInterface {
  * @return {React.ReactElement}
  */
 
-export const DataTable = <T extends object = {}>(
+export const DataTable = <T extends Record<string, any> = Record<string, any>>(
     props: DataTablePropsInterface<T>
 ): ReactElement => {
 
@@ -380,6 +381,7 @@ export const DataTable = <T extends object = {}>(
         testId,
         isRowSelectable,
         transparent,
+        [ "data-componentid" ]: componentId,
         ...rest
     } = props;
 
@@ -721,6 +723,7 @@ export const DataTable = <T extends object = {}>(
         <Table
             className={ classes }
             selectable={ !isLoading && selectable }
+            data-componentid={ componentId }
             data-testid={ testId }
             { ...dynamicTableProps }
             { ...rest }
@@ -785,7 +788,9 @@ export const DataTable = <T extends object = {}>(
                                                         <Responsive
                                                             as={ Grid.Column }
                                                             minWidth={ Responsive.onlyMobile.maxWidth }
-                                                            mobile={ 16 } tablet={ 8 } computer={ 8 }
+                                                            mobile={ 16 }
+                                                            tablet={ 8 }
+                                                            computer={ 8 }
                                                             textAlign="right"
                                                         >
                                                             {
@@ -809,7 +814,9 @@ export const DataTable = <T extends object = {}>(
                                                         <Responsive
                                                             as={ Grid.Column }
                                                             maxWidth={ Responsive.onlyMobile.maxWidth }
-                                                            mobile={ 16 } tablet={ 8 } computer={ 8 }
+                                                            mobile={ 16 }
+                                                            tablet={ 8 }
+                                                            computer={ 8 }
                                                             textAlign="left"
                                                         >
                                                             {
@@ -966,6 +973,7 @@ export const DataTable = <T extends object = {}>(
 };
 
 DataTable.defaultProps = {
+    "data-componentid": "data-table",
     "data-testid": "data-table",
     isRowSelectable: () => true,
     selectable: true,

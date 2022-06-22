@@ -54,7 +54,9 @@ export class AdaptiveScriptUtils {
         }
 
         const script = [ ...ApplicationManagementConstants.DEFAULT_ADAPTIVE_AUTH_SCRIPT ];
+
         script.splice(1, 0, ...steps);
+
         return script;
     }
 

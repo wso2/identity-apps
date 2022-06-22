@@ -50,6 +50,7 @@ export const RoleUserDetails: FunctionComponent<RoleUserDetailsProps> = (
 
     useEffect(() => {
         const roleName = roleObject.displayName;
+
         if (roleName.indexOf("/") !== -1) {
             setCurrentUserStore(roleName.split("/")[0]);
         } else {
@@ -76,12 +77,12 @@ export const RoleUserDetails: FunctionComponent<RoleUserDetailsProps> = (
         }
 
         const roleData: PatchRoleDataInterface = {
-            Operations: [{
+            Operations: [ {
                 "op": "replace",
                 "path": "users",
                 "value": newUsers
-            }],
-            schemas: ["urn:ietf:params:scim:api:messages:2.0:PatchOp"]
+            } ],
+            schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
         };
 
         setIsSubmitting(true);

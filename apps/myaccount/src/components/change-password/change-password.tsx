@@ -252,6 +252,7 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                 >
                     <Field
                         data-testid={ `${testId}-current-password-field` }
+                        className="addon-field-wrapper"
                         autoFocus={ true }
                         hidePassword={ t("common:hidePassword") }
                         label={ t(
@@ -274,6 +275,7 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                     />
                     <Field
                         data-testid={ `${testId}-new-password-field` }
+                        className="addon-field-wrapper"
                         hidePassword={ t("common:hidePassword") }
                         label={ t(
                             "myAccount:components.changePassword.forms.passwordResetForm.inputs" + ".newPassword.label"

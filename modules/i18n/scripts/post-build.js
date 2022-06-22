@@ -16,10 +16,10 @@
  * under the License.
  */
 
+const { execSync } = require("child_process");
 const crypto = require("crypto");
 const path = require("path");
 const fs = require("fs-extra");
-const { execSync } = require("child_process");
 
 
 // eslint-disable-next-line no-console
@@ -89,7 +89,7 @@ for (const value of Object.values(translations)) {
     log("\nCreating a directory for the language - " + value.meta.name + "\n");
 
     // Iterate through the resources object to extract the sub folders.
-    for (const [objKey, objValue] of Object.entries(value.resources)) {
+    for (const [ objKey, objValue ] of Object.entries(value.resources)) {
         const subFolderPath = path.join(langDirPath, objKey);
 
         createDirectory(subFolderPath, true);
@@ -108,14 +108,14 @@ for (const value of Object.values(translations)) {
 
             resourcePaths = {
                 ...resourcePaths,
-                [ nsObjKey ]: path.join(value.meta.code, objKey, fileName),
+                [ nsObjKey ]: path.join(value.meta.code, objKey, fileName).split(path.sep).join(path.posix.sep)
             };
         }
 
         // Add extensions.json file to the path
         resourcePaths = {
             ...resourcePaths,
-            extensions: path.join(value.meta.code, objKey, EXTENSIONS_FILENAME)
+            extensions: path.join(value.meta.code, objKey, EXTENSIONS_FILENAME).split(path.sep).join(path.posix.sep)
         };
     }
 

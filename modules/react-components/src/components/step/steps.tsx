@@ -16,9 +16,10 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, {
+    CSSProperties,
     Children,
     FunctionComponent,
     PropsWithChildren,
@@ -33,7 +34,7 @@ import { Step } from "./step";
 /**
  * Steps component prop types.
  */
-export interface StepsPropsInterface extends TestableComponentInterface {
+export interface StepsPropsInterface extends IdentifiableComponentInterface, TestableComponentInterface {
     /**
      * Currently active step.
      */
@@ -53,7 +54,7 @@ export interface StepsPropsInterface extends TestableComponentInterface {
     /**
      * Custom styles object
      */
-    style?: object;
+    style?:  CSSProperties | undefined;
 }
 
 /**
@@ -74,6 +75,7 @@ export const Steps: FunctionComponent<PropsWithChildren<StepsPropsInterface>> & 
         header,
         initial,
         style,
+        [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId
     } = props;
 
@@ -89,10 +91,20 @@ export const Steps: FunctionComponent<PropsWithChildren<StepsPropsInterface>> & 
     }, [ children ]);
 
     return (
-        <div className={ classes } style={ style } data-testid={ testId }>
+        <div
+            className={ classes }
+            style={ style } data-testid={ testId }
+            data-componentid={ componentId }
+        >
             { header && (
                 <>
-                    <div className="header" data-testid={ `${ testId }-header` }>{ header }</div>
+                    <div
+                        className="header"
+                        data-componentid={ `${ componentId }-header` }
+                        data-testid={ `${ testId }-header` }
+                    >
+                        { header }
+                    </div>
                     <Divider hidden/>
                 </>
             ) }
@@ -144,6 +156,7 @@ Steps.Step = Step;
  */
 Steps.defaultProps = {
     current: 0,
+    "data-componentid": "steps",
     "data-testid": "steps",
     initial: 0
 };

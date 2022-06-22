@@ -23,6 +23,7 @@
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
+<%@ page import="org.wso2.carbon.identity.captcha.util.CaptchaUtil" %>
 <%@ page import="org.wso2.carbon.identity.mgt.constants.SelfRegistrationStatusCodes" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementServiceUtil" %>
@@ -180,6 +181,8 @@
     boolean reCaptchaEnabled = false;
     if (request.getAttribute("reCaptcha") != null && "TRUE".equalsIgnoreCase((String) request.getAttribute("reCaptcha"))) {
         reCaptchaEnabled = true;
+    } else if (request.getParameter("reCaptcha") != null && Boolean.parseBoolean(request.getParameter("reCaptcha"))) {
+        reCaptchaEnabled = true;
     }
 %>
 <%!
@@ -221,8 +224,9 @@
 
     <%
         if (reCaptchaEnabled) {
+            String reCaptchaAPI = CaptchaUtil.reCaptchaAPIURL();
     %>
-    <script src='<%=(request.getAttribute("reCaptchaAPI"))%>'></script>
+    <script src='<%=(reCaptchaAPI)%>'></script>
     <%
         }
     %>
@@ -550,10 +554,11 @@
                             <div class="field">
                                 <%
                                     if (reCaptchaEnabled) {
+                                        String reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
                                 %>
                                 <div class="field">
                                     <div class="g-recaptcha"
-                                         data-sitekey="<%=Encode.forHtmlContent((String)request.getAttribute("reCaptchaKey"))%>">
+                                         data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>">
                                     </div>
                                 </div>
                                 <%
@@ -592,7 +597,7 @@
                                 </div>
                                 <div class="ui divider hidden"></div>
                                 <div class="align-right buttons">
-                                    <a href="javascript:goBack()" class="ui button link-button">
+                                    <a href="javascript:goBack()" class="ui button secondary">
                                         <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Cancel")%>
                                     </a>
                                     <button id="registrationSubmit"
@@ -740,6 +745,7 @@
 
             var agreementChk = $(".agreement-checkbox input");
             var registrationBtn = $("#registrationSubmit");
+            var countryDropdown = $("#country-dropdown");
 
             if (agreementChk.length > 0) {
                 registrationBtn.prop("disabled", true).addClass("disabled");
@@ -752,8 +758,9 @@
                 }
             });
 
-            $("#country-dropdown").dropdown('hide');
-
+            countryDropdown.dropdown('hide');
+            $("> input.search", countryDropdown).attr("role", "presentation");
+            
             $("#date_picker").calendar({
                 type: 'date',
                 formatter: {
@@ -809,7 +816,7 @@
 
                 var firstname = $("#firstname").val();
 
-                if (!firstname.trim()) {
+                if (firstname && !firstname.trim()) {
                     error_msg.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                         "Invalid.firstname")%>");
                     error_msg.show();
@@ -819,7 +826,7 @@
 
                 var lastname = $("#lastname").val();
 
-                if (!lastname.trim()) {
+                if (lastname && !lastname.trim()) {
                     error_msg.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                         "Invalid.lastname")%>");
                     error_msg.show();

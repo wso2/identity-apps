@@ -16,17 +16,17 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Link } from "react-router-dom";
-import { Container, Menu, Responsive } from "semantic-ui-react";
-import { LanguageSwitcher } from "../language-switcher";
+import { Container, Menu } from "semantic-ui-react";
+import { LanguageSwitcher, SupportedLanguagesInterface } from "../language-switcher";
 
 /**
  * Footer component prop types.
  */
-export interface FooterPropsInterface extends TestableComponentInterface {
+export interface FooterPropsInterface extends IdentifiableComponentInterface, TestableComponentInterface {
     /**
      * Additional CSS classes.
      */
@@ -67,7 +67,7 @@ export interface FooterPropsInterface extends TestableComponentInterface {
     /**
      * Set of supported languages.
      */
-    supportedLanguages?: object;
+    supportedLanguages?: SupportedLanguagesInterface;
 }
 
 /**
@@ -106,7 +106,8 @@ export const Footer: FunctionComponent<FooterPropsInterface> = (
         showLanguageSwitcher,
         showLanguageSwitcherDropdownCaret,
         supportedLanguages,
-        [ "data-testid" ]: testId
+        [ "data-testid" ]: testId,
+        [ "data-componentid" ]: componentId
     } = props;
 
     const classes = classNames(
@@ -125,11 +126,27 @@ export const Footer: FunctionComponent<FooterPropsInterface> = (
             fixed={ fixed } 
             fluid={ fluid } 
             borderless 
+            data-componentid={ componentId }
             data-testid={ testId }
         >
-            <Container fluid={ fluid } data-testid={ `${ testId }-container` } className="app-footer-container">
-                <Menu.Item className="copyright" data-testid={ `${ testId }-copyright` }>{ copyright }</Menu.Item>
-                <Menu.Menu position="right" data-testid={ `${ testId }-menu` }>
+            <Container
+                fluid={ fluid }
+                data-componentid={ `${ componentId }-container` }
+                data-testid={ `${ testId }-container` }
+                className="app-footer-container"
+            >
+                <Menu.Item
+                    className="copyright"
+                    data-componentid={ `${ componentId }-copyright` }
+                    data-testid={ `${ testId }-copyright` }
+                >
+                    { copyright }
+                </Menu.Item>
+                <Menu.Menu
+                    position="right"
+                    data-componentid={ `${ componentId }-menu` }
+                    data-testid={ `${ testId }-menu` }
+                >
                     {
                         // Only show language switcher if it is set to show and if the required props are passed in.
                         (showLanguageSwitcher && currentLanguage && onLanguageChange && supportedLanguages)
@@ -140,6 +157,7 @@ export const Footer: FunctionComponent<FooterPropsInterface> = (
                                     onLanguageChange={ onLanguageChange }
                                     showDropdownCaret={ showLanguageSwitcherDropdownCaret }
                                     supportedLanguages={ supportedLanguages }
+                                    data-componentid={ `${ componentId }-language-switcher` }
                                     data-testid={ `${ testId }-language-switcher` }
                                 />
                             )
@@ -153,6 +171,7 @@ export const Footer: FunctionComponent<FooterPropsInterface> = (
                                     as={ Link }
                                     key={ index }
                                     to={ link.to }
+                                    data-componentid={ `${ componentId }-link-${ link.name }` }
                                     data-testid={ `${ testId }-link-${ link.name }` }
                                 >
                                     { link.name }
@@ -170,6 +189,7 @@ export const Footer: FunctionComponent<FooterPropsInterface> = (
  * Default proptypes for the footer component.
  */
 Footer.defaultProps = {
+    "data-componentid": "app-footer",
     "data-testid": "app-footer",
     fixed: "bottom",
     fluid: false,

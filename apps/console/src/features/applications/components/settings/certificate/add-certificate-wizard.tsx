@@ -56,11 +56,11 @@ export const AddApplicationCertificateWizard: FunctionComponent<AddApplicationCe
     const [ finishSubmit, setFinishSubmit ] = useTrigger();
     const [ triggerUpload, setTriggerUpload ] = useTrigger();
 
-    const [ partiallyCompletedStep, setPartiallyCompletedStep ] = useState<number>(undefined);
+    const [ partiallyCompletedStep ] = useState<number>(undefined);
     const [ currentWizardStep, setCurrentWizardStep ] = useState<number>(currentStep);
     const [ showFinishButton, setShowFinishButton ] = useState<boolean>(false);
 
-    const [ alert, setAlert, alertComponent ] = useWizardAlert();
+    const [ alert, , alertComponent ] = useWizardAlert();
 
     /**
      * Sets the current wizard step to the previous on every `partiallyCompletedStep`

@@ -18,8 +18,8 @@
  */
 
 import React, { ReactElement } from "react";
-import { Heading } from "../../../src";
 import { meta } from "./heading.stories.meta";
+import { Heading } from "../../../src";
 
 export default {
     parameters: {

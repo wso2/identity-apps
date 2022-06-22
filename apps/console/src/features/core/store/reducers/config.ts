@@ -35,9 +35,183 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
     I18nModuleOptionsInterface,
     UIConfigInterface> = {
 
-    deployment: null,
-    endpoints: null,
-    features: null,
-    i18n: null,
-    ui: null
-};
+        deployment: {
+            accountApp: {
+                basePath: "",
+                displayName: "",
+                path: "",
+                tenantQualifiedPath: ""
+            },
+            adminApp: {
+                basePath: "",
+                displayName: "",
+                path: "",
+                tenantQualifiedPath: ""
+            },
+            allowMultipleAppProtocols: undefined,
+            appBaseName: "",
+            appBaseNameWithoutTenant: "",
+            appHomePath: "",
+            appLoginPath: "",
+            appLogoutPath: "",
+            clientHost: "",
+            clientID: "",
+            clientOrigin: "",
+            customServerHost: "",
+            developerApp: {
+                basePath: "",
+                displayName: "",
+                path: "",
+                tenantQualifiedPath: ""
+            },
+            docSiteURL: "",
+            documentation: null,
+            extensions: null,
+            helpCenterURL: "",
+            idpConfigs: null,
+            loginCallbackUrl: "",
+            serverHost: "",
+            serverOrigin: "",
+            superTenant: "",
+            tenant: "",
+            tenantPath: "",
+            tenantPrefix: ""
+        },
+        endpoints: {
+            CORSOrigins: "",
+            accountDisabling: "",
+            accountLocking: "",
+            accountRecovery: "",
+            applications: "",
+            authenticatorTags: "",
+            authenticators: "",
+            bulk: "",
+            captchaForSSOLogin: "",
+            certificates: "",
+            claims: "",
+            clientCertificates: "",
+            createSecret: "",
+            createSecretType: "",
+            deleteSecret: "",
+            deleteSecretType: "",
+            externalClaims: "",
+            getSecret: "",
+            getSecretList: "",
+            getSecretType: "",
+            governanceConnectorCategories: "",
+            groups: "",
+            identityProviders: "",
+            localAuthenticators: "",
+            localClaims: "",
+            loginPolicies: "",
+            me: "",
+            multiFactorAuthenticators: "",
+            oidcScopes: "",
+            passwordHistory: "",
+            passwordPolicies: "",
+            passwordPolicy: "",
+            permission: "",
+            publicCertificates: "",
+            requestPathAuthenticators: "",
+            roles: "",
+            saml2Meta: "",
+            selfSignUp: "",
+            serverConfigurations: "",
+            serverSupportedSchemas: "",
+            updateSecret: "",
+            updateSecretType: "",
+            userSessions: "",
+            userStores: "",
+            users: "",
+            wellKnown: ""
+        },
+        features: {
+            applications: null,
+            approvals: null,
+            attributeDialects: null,
+            certificates: null,
+            emailTemplates: null,
+            governanceConnectors: null,
+            groups: null,
+            guestUser: null,
+            identityProviders: null,
+            oidcScopes: null,
+            remoteFetchConfig: null,
+            roles: null,
+            secretsManagement: null,
+            userStores: null,
+            users: null
+        },
+        i18n: null,
+        ui: {
+            announcements: [],
+            appCopyright: "",
+            appName: "",
+            appTitle: "",
+            applicationTemplateLoadingStrategy: undefined,
+            features: {
+                applications: null,
+                approvals: null,
+                attributeDialects: null,
+                certificates: null,
+                emailTemplates: null,
+                governanceConnectors: null,
+                groups: null,
+                guestUser: null,
+                identityProviders: null,
+                oidcScopes: null,
+                remoteFetchConfig: null,
+                roles: null,
+                secretsManagement: null,
+                userStores: null,
+                users: null
+            },
+            gravatarConfig: {
+                defaultImage: "",
+                fallback: null,
+                size: null
+            },
+            hiddenAuthenticators: [],
+            hiddenUserStores: [],
+            i18nConfigs: null,
+            identityProviderTemplateLoadingStrategy: null,
+            identityProviderTemplates: {
+                enterpriseOIDC: {
+                    enabled: false
+                },
+                enterpriseSAML: {
+                    enabled: false
+                },
+                facebook: {
+                    enabled: false
+                },
+                github: {
+                    enabled: false
+                },
+                google: {
+                    enabled: false
+                }
+            },
+            isClientSecretHashEnabled: undefined,
+            isCookieConsentBannerEnabled: undefined,
+            isDefaultDialectEditingEnabled: undefined,
+            isDialectAddingEnabled: undefined,
+            isGroupAndRoleSeparationEnabled: undefined,
+            isHeaderAvatarLabelAllowed: undefined,
+            isLeftNavigationCategorized: undefined,
+            isRequestPathAuthenticationEnabled: undefined,
+            isSignatureValidationCertificateAliasEnabled: undefined,
+            listAllAttributeDialects: undefined,
+            privacyPolicyConfigs: null,
+            productName: "",
+            productVersionConfig: null,
+            selfAppIdentifier: "",
+            showAppSwitchButton: undefined,
+            systemAppsIdentifiers: [],
+            theme: {
+                name: "",
+                path: "",
+                styleSheets: null
+            }
+        }
+    };

@@ -102,14 +102,15 @@ export interface CommonDeploymentConfigInterface<T = {}, S = {}> {
      */
     loginCallbackUrl: string;
     /**
-     * Product version.
-     */
-    productVersion: string;
-    /**
      * Host of the Identity Sever.
      * ex: https://localhost:9443
      */
     serverHost: string;
+    /**
+     * Custom branded host of the Identity Sever.
+     * ex: https://localhost:9443/t/test -> https://api.test.com
+     */
+    customServerHost: string;
     /**
      * Server origin. Usually same as `serverHost`.
      */
@@ -125,9 +126,14 @@ export interface CommonDeploymentConfigInterface<T = {}, S = {}> {
     tenant: string;
     /**
      * Tenant path.
-     * ex: `/t/`
+     * ex: `/t/wso2.com`
      */
     tenantPath: string;
+    /**
+     * Tenant prefix.
+     * ex: `t`
+     */
+    tenantPrefix: string;
 }
 
 /**
@@ -226,7 +232,7 @@ export interface AppThemeConfigInterface {
      */
     name: string;
     /**
-     * App theme path. Used to override the default theme path defined in the source. 
+     * App theme path. Used to override the default theme path defined in the source.
      * ex: "https://cdn.wso2.com/is/assets/theme.min.css".
      */
     path?: string;

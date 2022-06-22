@@ -16,6 +16,20 @@
  * under the License.
  */
 
+/**
+ * Interface to store UI Element size.
+ */
+interface ElementSizesForUIPropsInterface {
+    /**
+     * Height of footer.
+     */
+    footerHeight: number,
+    /**
+     * Height of header.
+     */
+    headerHeight: number,
+}
+
 import { useEffect, useState } from "react";
 import { UIConstants } from "../constants";
 
@@ -24,7 +38,7 @@ import { UIConstants } from "../constants";
  *
  * @return {object} - headerHeight, footerHeight
  */
-export const useUIElementSizes = () => {
+export const useUIElementSizes = (): ElementSizesForUIPropsInterface => {
 
     const [ headerHeight, setHeaderHeight ] = useState<number>(UIConstants.DEFAULT_HEADER_HEIGHT);
     const [ footerHeight, setFooterHeight ] = useState<number>(UIConstants.DEFAULT_FOOTER_HEIGHT);
@@ -46,5 +60,8 @@ export const useUIElementSizes = () => {
         setFooterHeight(appFooter?.offsetHeight);
     });
 
+    // This method has to tracked in both identity apps and extensions to fix the eslint issues,
+    // hence it can be fixed later.
+    // Tracked here: https://github.com/wso2/product-is/issues/12726#issuecomment-954835957
     return { headerHeight, footerHeight };
 };

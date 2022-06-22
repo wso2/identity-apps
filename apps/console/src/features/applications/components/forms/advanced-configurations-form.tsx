@@ -21,9 +21,9 @@ import { Field, Form } from "@wso2is/form";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { applicationConfig } from "../../../../extensions";
-import { AdvancedConfigurationsInterface, ApplicationTemplateListItemInterface } from "../../models";
 import SAMLWebApplicationTemplate
     from "../../data/application-templates/templates/saml-web-application/saml-web-application.json";
+import { AdvancedConfigurationsInterface, ApplicationTemplateListItemInterface } from "../../models";
 
 /**
  *  Advanced Configurations for the Application.
@@ -83,6 +83,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                 skipLogoutConsent: !!values.skipConsentLogout
             }
         };
+
         !applicationConfig.advancedConfigurations.showSaaS && delete data.advancedConfigurations.saas;
         !applicationConfig.advancedConfigurations.showEnableAuthorization &&
             delete data.advancedConfigurations.enableAuthorization;
@@ -95,7 +96,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
     return (
         <Form
             uncontrolledForm={ false }
-            onSubmit={ (values, form) => {
+            onSubmit={ (values) => {
                 updateConfiguration(values);
             } }
         >
@@ -104,7 +105,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                 name="saas"
                 label={ t("console:develop.features.applications.forms.advancedConfig.fields.saas.label") }
                 required={ false }
-                value={ config?.saas ? ["saas"] : [] }
+                value={ config?.saas ? [ "saas" ] : [] }
                 readOnly={ readOnly }
                 data-testid={ `${testId}-sass-checkbox` }
                 hint={ t("console:develop.features.applications.forms.advancedConfig.fields.saas.hint") }
@@ -116,7 +117,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                 label={ t("console:develop.features.applications.forms.advancedConfig.fields.skipConsentLogin" +
                     ".label") }
                 required={ false }
-                value={ config?.skipLoginConsent ? ["skipLoginConsent"] : [] }
+                value={ config?.skipLoginConsent ? [ "skipLoginConsent" ] : [] }
                 readOnly={ readOnly }
                 data-testid={ `${testId}-skip-login-consent-checkbox` }
                 hint={ t("console:develop.features.applications.forms.advancedConfig.fields.skipConsentLogin.hint") }
@@ -127,11 +128,12 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                     <Field.CheckboxLegacy
                         ariaLabel="Skip consent logout"
                         name="skipConsentLogout"
-                        label={ t("console:develop.features.applications.forms.advancedConfig.fields.skipConsentLogout" +
-                            ".label"
-                        ) }
+                        label={
+                            t("console:develop.features.applications.forms.advancedConfig.fields" +
+                                ".skipConsentLogout.label")
+                        }
                         required={ false }
-                        value={ config?.skipLogoutConsent ? ["skipLogoutConsent"] : [] }
+                        value={ config?.skipLogoutConsent ? [ "skipLogoutConsent" ] : [] }
                         readOnly={ readOnly }
                         data-testid={ `${testId}-skip-logout-consent-checkbox` }
                         hint={ t("console:develop.features.applications.forms.advancedConfig.fields.skipConsentLogout" +
@@ -147,7 +149,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                     "returnAuthenticatedIdpList.label"
                 ) }
                 required={ false }
-                value={ config?.returnAuthenticatedIdpList ? ["returnAuthenticatedIdpList"] : [] }
+                value={ config?.returnAuthenticatedIdpList ? [ "returnAuthenticatedIdpList" ] : [] }
                 readOnly={ readOnly }
                 data-testid={ `${testId}-return-authenticated-idp-list-checkbox` }
                 hidden={ !applicationConfig.advancedConfigurations.showReturnAuthenticatedIdPs }
@@ -162,7 +164,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                     "enableAuthorization.label"
                 ) }
                 required={ false }
-                value={ config?.enableAuthorization ? ["enableAuthorization"] : [] }
+                value={ config?.enableAuthorization ? [ "enableAuthorization" ] : [] }
                 readOnly={ readOnly }
                 data-testid={ `${testId}-enable-authorization-checkbox` }
                 hidden={ !applicationConfig.advancedConfigurations.showEnableAuthorization }

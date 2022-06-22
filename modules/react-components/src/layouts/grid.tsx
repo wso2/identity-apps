@@ -16,16 +16,19 @@
  * under the License.
  */
 
-import { LoadableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
+import {
+    IdentifiableComponentInterface,
+    LoadableComponentInterface,
+    TestableComponentInterface
+} from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { Fragment, FunctionComponent, PropsWithChildren, ReactElement, ReactNode } from "react";
 import { Divider, Grid, Loader, Visibility } from "semantic-ui-react";
-import { ContentLoader } from "../components/loader";
 
 /**
  * Grid layout component Prop types.
  */
-export interface GridLayoutPropsInterface extends TestableComponentInterface,
+export interface GridLayoutPropsInterface extends IdentifiableComponentInterface, TestableComponentInterface,
     LoadableComponentInterface {
 
     /**
@@ -96,6 +99,7 @@ export const GridLayout: FunctionComponent<PropsWithChildren<GridLayoutPropsInte
         rightActionPanel,
         showTopActionPanel,
         translations,
+        [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId
     } = props;
 
@@ -106,7 +110,11 @@ export const GridLayout: FunctionComponent<PropsWithChildren<GridLayoutPropsInte
     );
 
     return (
-        <div className={ classes } data-testid={ testId }>
+        <div
+            className={ classes }
+            data-componentid={ componentId }
+            data-testid={ testId }
+        >
             {
                 !isLoading
                     ? (
@@ -116,6 +124,7 @@ export const GridLayout: FunctionComponent<PropsWithChildren<GridLayoutPropsInte
                                     <Fragment>
                                         <div
                                             className="top-action-panel"
+                                            data-componentid={ `${ componentId }-top-action-panel` }
                                             data-testid={ `${ testId }-top-action-panel` }
                                         >
                                             <Grid>
@@ -173,6 +182,7 @@ export const GridLayout: FunctionComponent<PropsWithChildren<GridLayoutPropsInte
  * Default props for the component.
  */
 GridLayout.defaultProps = {
+    "data-componentid": "grid-layout",
     "data-testid": "grid-layout",
     searchPosition: "left",
     showTopActionPanel: true

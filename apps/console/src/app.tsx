@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { useAuthContext } from "@asgardeo/auth-react";
+import { DecodedIDTokenPayload, useAuthContext } from "@asgardeo/auth-react";
 import { AccessControlProvider } from "@wso2is/access-control";
 import { CommonHelpers, isPortalAccessGranted } from "@wso2is/core/helpers";
 import { RouteInterface, emptyIdentityAppsSettings } from "@wso2is/core/models";
@@ -38,12 +38,14 @@ import {
     SessionManagementProvider,
     SessionTimeoutModalTypes
 } from "@wso2is/react-components";
+import has from "lodash-es/has";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
-import { Trans, useTranslation } from "react-i18next";
+import { Trans } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, Router, Switch } from "react-router-dom";
+import { commonConfig } from "./extensions";
 import { EventPublisher, PreLoader } from "./features/core";
 import { ProtectedRoute } from "./features/core/components";
 import { Config, DocumentationLinks, getBaseRoutes } from "./features/core/configs";
@@ -72,15 +74,14 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const appTitle: string = useSelector((state: AppState) => state?.config?.ui?.appTitle);
-    const UUID: string = useSelector((state: AppState) => state.profile.profileInfo.id);
+    const uuid: string = useSelector((state: AppState) => state.profile.profileInfo.id);
+    const theme: string = useSelector((state: AppState) => state?.config?.ui?.theme?.name);
 
     const [ baseRoutes, setBaseRoutes ] = useState<RouteInterface[]>(getBaseRoutes());
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
-    const { trySignInSilently } = useAuthContext();
-
-    const { t } = useTranslation();
+    const { trySignInSilently, getDecodedIDToken, signOut } = useAuthContext();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
 
@@ -130,6 +131,7 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
                     ...tenantAppSettings,
                     [ userName ]: emptyIdentityAppsSettings()
                 };
+
                 LocalStorageUtils.setValueInLocalStorage(tenant, JSON.stringify(newUserSettings));
             }
         }
@@ -147,22 +149,48 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
             return;
         }
 
-        history.push({
-            pathname: AppConstants.getPaths().get("UNAUTHORIZED"),
-            search: "?error=" + AppConstants.LOGIN_ERRORS.get("ACCESS_DENIED")
-        });
+        if (commonConfig?.enableOrganizationAssociations) {
+            /**
+             * Checks if the portal access is denied due to no association.
+             */
+            getDecodedIDToken()
+                .then((idToken: DecodedIDTokenPayload) => {
+
+                    if(has(idToken, "associated_tenants")) {
+                        // If there is an assocation, the user is likely unauthorized by other criteria.
+                        history.push({
+                            pathname: AppConstants.getPaths().get("UNAUTHORIZED"),
+                            search: "?error=" + AppConstants.LOGIN_ERRORS.get("ACCESS_DENIED")
+                        });
+                    } else {
+                        // If there is no assocation, the user should be redirected to creation flow.
+                        history.push({
+                            pathname: AppConstants.getPaths().get("CREATE_TENANT")
+                        });
+                    }
+                })
+                .catch(() => {
+                    // No need to show UI errors here.
+                    // Add debug logs here one a logger is added.
+                    // Tracked here https://github.com/wso2/product-is/issues/11650.
+                });
+        } else {
+            history.push({
+                pathname: AppConstants.getPaths().get("UNAUTHORIZED"),
+                search: "?error=" + AppConstants.LOGIN_ERRORS.get("ACCESS_DENIED")
+            });
+        }
     }, [ config, loginInit ]);
 
     /**
      * Publish page visit when the UUID is set.
      */
     useEffect(() => {
-        if (!UUID) {
+        if (!uuid) {
             return;
         }
-
         eventPublisher.publish("page-visit-console-landing-page");
-    }, [ UUID ]);
+    }, [ uuid ]);
 
     /**
      * Handles session timeout abort.
@@ -186,6 +214,7 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
     const sessionStorageDisabled = () => {
         try {
             const storage = sessionStorage;
+
             if (!storage && location.pathname !== AppConstants.getPaths().get("STORING_DATA_DISABLED")) {
                 history.push(AppConstants.getPaths().get("STORING_DATA_DISABLED"));
             }
@@ -292,20 +321,77 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
                                                 <>
                                                     <Helmet>
                                                         <title>{ appTitle }</title>
+                                                        {
+                                                            (window?.themeHash && window?.publicPath && theme)
+                                                                ? (
+                                                                    <link
+                                                                        href={
+                                                                            `${window?.origin}${window?.publicPath}/libs/themes/${theme}/theme.${window?.themeHash}.min.css`
+                                                                        }
+                                                                        rel="stylesheet"
+                                                                        type="text/css"
+                                                                    />
+                                                                ) 
+                                                                : null
+                                                        }
                                                     </Helmet>
                                                     <NetworkErrorModal
-                                                        heading={ t("common:networkErrorMessage.heading") }
-                                                        description={ t("common:networkErrorMessage" +
-                                                            ".description") }
-                                                        primaryActionText={ t("common:networkErrorMessage" +
-                                                            ".primaryActionText") }
+                                                        heading={
+                                                            (<Trans
+                                                                i18nKey={ "common:networkErrorMessage.heading" }
+                                                            >
+                                                                Your session has expired
+                                                            </Trans>)
+                                                        }
+                                                        description={
+                                                            (<Trans
+                                                                i18nKey={ "common:networkErrorMessage.description" }
+                                                            >
+                                                                Please try signing in again.
+                                                            </Trans>)
+                                                        }
+                                                        primaryActionText={
+                                                            (<Trans
+                                                                i18nKey={
+                                                                    "common:networkErrorMessage.primaryActionText"
+                                                                }
+                                                            >
+                                                                Sign In
+                                                            </Trans>)
+                                                        }
+                                                        primaryAction={
+                                                            signOut
+                                                        }
                                                     />
                                                     <ChunkErrorModal
-                                                        heading={ t("common:chunkLoadErrorMessage.heading") }
-                                                        description={ t("common:" +
-                                                            "chunkLoadErrorMessage.description") }
-                                                        primaryActionText={ t("common:chunkLoadErrorMessage" +
-                                                            ".primaryActionText") }
+                                                        heading={
+                                                            (<Trans
+                                                                i18nKey={
+                                                                    "common:chunkLoadErrorMessage.heading"
+                                                                }
+                                                            >
+                                                                Something went wrong
+                                                            </Trans>)
+                                                        }
+                                                        description={
+                                                            (<Trans
+                                                                i18nKey={
+                                                                    "common:chunkLoadErrorMessage.description"
+                                                                }
+                                                            >
+                                                                An error occurred when serving the requested
+                                                                application. Please try reloading the app.
+                                                            </Trans>)
+                                                        }
+                                                        primaryActionText={
+                                                            (<Trans
+                                                                i18nKey={
+                                                                    "common:chunkLoadErrorMessage.primaryActionText"
+                                                                }
+                                                            >
+                                                                Reload the App
+                                                            </Trans>)
+                                                        }
                                                     />
                                                     <Switch>
                                                         <Redirect
@@ -330,9 +416,9 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
                                                                             <Route
                                                                                 path={ route.path }
                                                                                 render={ (props) =>
-                                                                                (<route.component
-                                                                                    { ...props }
-                                                                                />)
+                                                                                    (<route.component
+                                                                                        { ...props }
+                                                                                    />)
                                                                                 }
                                                                                 key={ index }
                                                                                 exact={ route.exact }

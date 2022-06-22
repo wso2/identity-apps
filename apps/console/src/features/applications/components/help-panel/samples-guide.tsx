@@ -132,6 +132,7 @@ export const SamplesGuideComponent: FunctionComponent<SamplesGuideComponentProps
      */
     const mapProtocolTypeToName = ((type: string): string => {
         let protocolName = type;
+
         if (protocolName === "oauth2") {
             protocolName = SupportedAuthProtocolTypes.OIDC;
         } else if (protocolName === "passivests") {
@@ -147,11 +148,12 @@ export const SamplesGuideComponent: FunctionComponent<SamplesGuideComponentProps
 
     const downloadConfigFile = (): void => {
         const blob = new Blob(
-            [JSON.stringify(authConfig, null, 2)],
+            [ JSON.stringify(authConfig, null, 2) ],
             { type: "application/json" }
         );
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement("a");
+
         a.style.display = "none";
         a.href = url;
         a.download = "config.json";
@@ -164,57 +166,65 @@ export const SamplesGuideComponent: FunctionComponent<SamplesGuideComponentProps
         <>
             {
                 sampleType && sampleType == "react"
-                ? (
-                    <Grid>
-                        <Grid.Row>
-                            <Grid.Column>
-                                <Heading as="h5">
-                                    <strong>
+                    ? (
+                        <Grid>
+                            <Grid.Row>
+                                <Grid.Column>
+                                    <Heading as="h5">
+                                        <strong>
+                                            {
+                                                t("console:develop.features.applications.helpPanel.tabs" +
+                                                    ".samples.content.sample.downloadSample.title")
+                                            }
+                                        </strong>
+                                    </Heading>
+                                    <Header.Subheader>
                                         { t("console:develop.features.applications.helpPanel.tabs.samples.content." +
-                                            "sample.downloadSample.title") }
-                                    </strong>
-                                </Heading>
-                                <Header.Subheader>
-                                    { t("console:develop.features.applications.helpPanel.tabs.samples.content." +
                                         "sample.downloadSample.subTitle") }
-                                </Header.Subheader>
-                                <Divider hidden/>
-                                <PrimaryButton onClick={
-                                    () => window.open(DocumentationConstants.Samples_Catalog.get("JS_SPA_SAMPLE"),
-                                        "") }
-                                >
-                                    { t("console:develop.features.applications.helpPanel.tabs.samples.content." +
-                                        "sample.downloadSample.btn") }
-                                </PrimaryButton>
-                            </Grid.Column>
-                        </Grid.Row>
-                        <Grid.Row>
-                            <Grid.Column>
-                                <Heading as="h5">
-                                    <strong>
-                                        { t("console:develop.features.applications.helpPanel.tabs.samples.content." +
-                                            "sample.configurations.title") }
-                                    </strong>
-                                </Heading>
-                                <Header.Subheader>
-                                    { t("console:develop.features.applications.helpPanel.tabs.samples.content." +
-                                        "sample.configurations.subTitle") }
-                                </Header.Subheader>
-                                <Segment secondary padded>
-                        <pre>
-                            { authConfig ? JSON.stringify(authConfig, null, 2) : null }
-                        </pre>
+                                    </Header.Subheader>
                                     <Divider hidden/>
-                                    <PrimaryButton basic onClick={ downloadConfigFile }>
+                                    <PrimaryButton
+                                        onClick={ () => window.open(
+                                            DocumentationConstants.Samples_Catalog.get("JS_SPA_SAMPLE"),
+                                            ""
+                                        ) }
+                                    >
                                         { t("console:develop.features.applications.helpPanel.tabs.samples.content." +
-                                            "sample.configurations.btn") }
+                                        "sample.downloadSample.btn") }
                                     </PrimaryButton>
-                                </Segment>
-                            </Grid.Column>
-                        </Grid.Row>
-                    </Grid>
-                 )
-                : null
+                                </Grid.Column>
+                            </Grid.Row>
+                            <Grid.Row>
+                                <Grid.Column>
+                                    <Heading as="h5">
+                                        <strong>
+                                            {
+                                                t("console:develop.features.applications.helpPanel.tabs" +
+                                                    ".samples.content.sample.configurations.title")
+                                            }
+                                        </strong>
+                                    </Heading>
+                                    <Header.Subheader>
+                                        { t("console:develop.features.applications.helpPanel.tabs.samples.content." +
+                                        "sample.configurations.subTitle") }
+                                    </Header.Subheader>
+                                    <Segment secondary padded>
+                                        <pre>
+                                            { authConfig ? JSON.stringify(authConfig, null, 2) : null }
+                                        </pre>
+                                        <Divider hidden/>
+                                        <PrimaryButton basic onClick={ downloadConfigFile }>
+                                            {
+                                                t("console:develop.features.applications.helpPanel.tabs" +
+                                                    ".samples.content.sample.configurations.btn")
+                                            }
+                                        </PrimaryButton>
+                                    </Segment>
+                                </Grid.Column>
+                            </Grid.Row>
+                        </Grid>
+                    )
+                    : null
             }
             <Markdown
                 source={ markDownSource }

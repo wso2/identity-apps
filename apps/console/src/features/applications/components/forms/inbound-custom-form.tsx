@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { CertificateManagementConstants } from "@wso2is/core/constants";
 import { AlertInterface, AlertLevels, DisplayCertificate, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { CertificateManagementUtils } from "@wso2is/core/utils";
@@ -39,7 +40,6 @@ import {
     SubmitFormCustomPropertiesInterface
 } from "../../models";
 import { CertificateFormFieldModal } from "../modals";
-import { CertificateManagementConstants } from "@wso2is/core/constants";
 
 /**
  * Proptypes for the inbound custom protocol form component.
@@ -147,7 +147,7 @@ export const InboundCustomProtocolForm: FunctionComponent<InboundCustomFormProps
                                 placeholder={
                                     t("console:develop.features.applications.forms.inboundCustom.fields.password" +
                                         ".placeholder",
-                                        { name: config?.displayName })
+                                    { name: config?.displayName })
                                 }
                                 type="password"
                                 default={ config?.defaultValue }
@@ -167,9 +167,9 @@ export const InboundCustomProtocolForm: FunctionComponent<InboundCustomFormProps
                                 requiredErrorMessage={
                                     t("console:develop.features.applications.forms.inboundCustom.fields.checkbox" +
                                         ".validations.empty",
-                                        { user: config?.displayName })
+                                    { user: config?.displayName })
                                 }
-                                value={ initialValue?.value ? [config.name] : [] }
+                                value={ initialValue?.value ? [ config.name ] : [] }
                                 type="checkbox"
                                 children={ [
                                     {
@@ -194,12 +194,12 @@ export const InboundCustomProtocolForm: FunctionComponent<InboundCustomFormProps
                                 requiredErrorMessage={
                                     t("console:develop.features.applications.forms.inboundCustom.fields.generic" +
                                         ".validations.empty",
-                                        { name: config?.displayName })
+                                    { name: config?.displayName })
                                 }
                                 placeholder={
                                     t("console:develop.features.applications.forms.inboundCustom.fields.generic" +
                                         ".placeholder",
-                                        { name: config?.displayName })
+                                    { name: config?.displayName })
                                 }
                                 type={ (config?.type === CustomTypeEnum.INTEGER) ? "number" : "text" }
                                 data-testid={ `${ testId }-${ config?.name }-input` }
@@ -213,14 +213,17 @@ export const InboundCustomProtocolForm: FunctionComponent<InboundCustomFormProps
     const generateFormElements = (() => {
         if (metadata) {
             const configs: CustomInboundProtocolPropertyInterface[] = metadata?.properties;
+
             if (configs.length > 0) {
                 configs.sort(
                     (a, b) => (a.displayOrder > b.displayOrder) ? 1 : -1);
             }
+
             return configs.map((config) => {
                 const initialValue: PropertyModelInterface = initialValues.properties.find(
                     (prop) => prop.key === config.name
                 );
+
                 return createInputComponent(config, initialValue);
             });
         }
@@ -232,11 +235,13 @@ export const InboundCustomProtocolForm: FunctionComponent<InboundCustomFormProps
      */
     const createDropDownOption = (options: string[]) => {
         const allowedOptions = [];
+
         if (options) {
             options.map((ele) => {
                 allowedOptions.push({ key: options.indexOf(ele), text: ele, value: ele });
             });
         }
+
         return allowedOptions;
     };
 
@@ -248,9 +253,11 @@ export const InboundCustomProtocolForm: FunctionComponent<InboundCustomFormProps
      */
     const updateConfiguration = (values: Map<string, string | string[]>): any => {
         const valueProperties: SubmitFormCustomPropertiesInterface[] = [];
+
         //Iterate over map entries
-        for (const [key, value] of values) {
+        for (const [ key, value ] of values) {
             let property: SubmitFormCustomPropertiesInterface = undefined;
+
             if (value instanceof Array) {
                 property = {
                     key: key,
@@ -264,6 +271,7 @@ export const InboundCustomProtocolForm: FunctionComponent<InboundCustomFormProps
             }
             valueProperties.push(property);
         }
+
         return {
             general: {
                 advancedConfigurations: {
@@ -287,7 +295,7 @@ export const InboundCustomProtocolForm: FunctionComponent<InboundCustomFormProps
         if (metadata) {
             generateFormElements();
         }
-    }, [metadata]);
+    }, [ metadata ]);
 
     /**
      * Construct the details from the pem value.

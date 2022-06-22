@@ -32,10 +32,10 @@ export const common: CommonNS = {
     approvalStatus: "Status de aprovação",
     approve: "Approve",
     apps: "Formulários",
+    assignee: "Cessionário",
     assignees: "Cessionárias",
     authentication: "Autenticação",
     authenticator: "Autenticador",
-    // eslint-disable-next-line @typescript-eslint/camelcase
     authenticator_plural: "Autenticadores",
     back: "Voltar",
     browser: "Navegador",
@@ -109,10 +109,11 @@ export const common: CommonNS = {
     myAccount: "Minha conta",
     name: "Nome",
     networkErrorMessage: {
-        description: "Tente recarregar o aplicativo.",
-        heading: "Quelque chose s'est mal passé",
-        primaryActionText: "Recarregue o aplicativo"
+        description: "Por favor, tente entrar novamente.",
+        heading: "Sua sessão expirou",
+        primaryActionText: "Entrar"
     },
+    new: "novo",
     next: "Próximo",
     okay: "OK",
     operatingSystem: "Sistema operacional",
@@ -121,6 +122,7 @@ export const common: CommonNS = {
     personalInfo: "Informação pessoal",
     pin: "Bastão",
     pinned: "Bastão",
+    preview: "Visualizar",
     previous: "Anterior",
     priority: "Prioridade",
     privacy: "Privacidade",

@@ -73,6 +73,7 @@ export interface AttributeConfig {
             identifyAsCustomAttrib: boolean;
         }
         customDialectURI: string;
+        oidcDialectURI: string;
         createCustomDialect: boolean;
         mapClaimToCustomDialect: boolean;
         checkAttributeNameAvailability: (attributeName: string, protocol: string) => Promise<Map<string, boolean>>;

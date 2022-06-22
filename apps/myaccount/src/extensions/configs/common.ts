@@ -8,6 +8,7 @@
  */
 
 import { CommonConfig } from "./models";
+import { ProfileSchema } from "../../models";
 
 export const commonConfig: CommonConfig = {
     advancedSearchWithBasicFilters: {
@@ -31,6 +32,11 @@ export const commonConfig: CommonConfig = {
             emailRecovery: {
                 enableEditEmail: true
             }
+        },
+        mfa: {
+            fido2: {
+                allowLegacyKeyRegistration: true
+            }
         }
     },
     personalInfoPage: {
@@ -39,14 +45,17 @@ export const commonConfig: CommonConfig = {
         }
     },
     utils: {
-        isManageConsentAllowedForUser(userstore: string): boolean {
+        isManageConsentAllowedForUser(): boolean {
             return true;
         },
-        isShowAdditionalWidgetAllowed(userstore: string): boolean {
+        isShowAdditionalWidgetAllowed(): boolean {
             return false;
         },
-        isConsoleNavigationAllowed(userstore: string): boolean {
+        isConsoleNavigationAllowed(): boolean {
             return true;
+        },
+        isSchemaNameSkippableforProfileCompletion(schema: ProfileSchema): boolean {
+            return schema.displayName === "Role" || schema.displayName === "Local Credential Exists" ;
         }
     }
 };

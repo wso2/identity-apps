@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { useEffect, useRef } from "react";
+import { EffectCallback, useEffect, useRef } from "react";
 
 /**
  * This is a custom React hook that calls the the useEffect hook whenever the passed deps change
@@ -24,10 +24,13 @@ import { useEffect, useRef } from "react";
  * @param {React.EffectCallback} effect The callback function passed into the useEffect hook
  * @param deps states or props based on which the callback function should be conditionally called
  */
-export const useNonInitialEffect = (effect: React.EffectCallback, deps?: readonly any[]) => {
+export const useNonInitialEffect = (effect: EffectCallback, deps?: readonly any[]): void => {
+
     const initialRender = useRef(true);
+
     useEffect(() => {
         let returned;
+
         if (initialRender.current) {
             initialRender.current = false;
         } else {

@@ -16,15 +16,15 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { CSSProperties, FunctionComponent, ReactElement } from "react";
 import { GenericIcon, GenericIconSizes } from "../icon";
 
 /**
  * Logo component Prop types.
  */
-export interface LogoPropsInterface extends TestableComponentInterface {
+export interface LogoPropsInterface extends IdentifiableComponentInterface, TestableComponentInterface {
     /**
      * Additional CSS classes.
      */
@@ -40,7 +40,7 @@ export interface LogoPropsInterface extends TestableComponentInterface {
     /**
      * Custom styles object.
      */
-    style?: object;
+    style?: CSSProperties | undefined;
 }
 
 /**
@@ -59,6 +59,7 @@ export const Logo: FunctionComponent<LogoPropsInterface> = (
         image,
         size,
         style,
+        [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId
     } = props;
 
@@ -70,6 +71,7 @@ export const Logo: FunctionComponent<LogoPropsInterface> = (
             className={ classNames(classes, "product-logo") }
             size={ size }
             style={ style }
+            data-componentid={ componentId }
             data-testid={ testId }
             transparent
             inline
@@ -81,6 +83,7 @@ export const Logo: FunctionComponent<LogoPropsInterface> = (
  * Default props for the logo component.
  */
 Logo.defaultProps = {
+    "data-componentid": "logo",
     "data-testid": "logo",
     size: "auto"
 };

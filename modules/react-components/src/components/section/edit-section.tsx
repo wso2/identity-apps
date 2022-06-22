@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
 import { Segment } from "semantic-ui-react";
@@ -24,7 +24,7 @@ import { Segment } from "semantic-ui-react";
 /**
  * Proptypes for the edit section component.
  */
-export interface EditSectionPropsInterface extends TestableComponentInterface {
+export interface EditSectionPropsInterface extends IdentifiableComponentInterface, TestableComponentInterface {
     /**
      * Shw/ Hide top margin.
      */
@@ -44,6 +44,7 @@ export const EditSection: FunctionComponent<PropsWithChildren<EditSectionPropsIn
 
     const {
         marginTop,
+        [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId
     } = props;
 
@@ -52,8 +53,20 @@ export const EditSection: FunctionComponent<PropsWithChildren<EditSectionPropsIn
     });
 
     return (
-        <Segment padded className={ `edit-segment ${classes}` } data-testid={ testId }>
+        <Segment
+            padded
+            className={ `edit-segment ${classes}` }
+            data-componentid={ componentId }
+            data-testid={ testId }
+        >
             { props.children }
         </Segment>
     );
+};
+
+/**
+ * Default proptypes for the markdown component.
+ */
+EditSection.defaultProps = {
+    "data-componentid": "edit-section"
 };

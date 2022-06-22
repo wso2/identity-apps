@@ -134,215 +134,216 @@ export enum SessionTimeoutModalTypes {
 export const SessionManagementProvider: FunctionComponent<PropsWithChildren<
     SessionManagementProviderPropsInterface
     >> = (
-    props: PropsWithChildren<SessionManagementProviderPropsInterface>
-): ReactElement => {
+        props: PropsWithChildren<SessionManagementProviderPropsInterface>
+    ): ReactElement => {
 
-    const {
-        children,
-        onSessionLogout,
-        onLoginAgain,
-        onSessionTimeoutAbort,
-        modalOptions,
-        type
-    } = props;
+        const {
+            children,
+            onSessionLogout,
+            onLoginAgain,
+            onSessionTimeoutAbort,
+            modalOptions,
+            type
+        } = props;
 
-    const timerIntervalID = useRef(null);
+        const timerIntervalID = useRef(null);
 
-    const [
-        sessionTimeoutEventState,
-        setSessionTimeoutEventState
-    ] = useState<SessionTimeoutEventStateInterface>(undefined);
-    const [ showSessionTimeoutModal, setShowSessionTimeoutModal ] = useState<boolean>(false);
-    const [ timerDisplay, setTimerDisplay ] = useState<string>(undefined);
-    const [ sessionTimedOut, setSessionTimedOut ] = useState<boolean>(false);
+        const [
+            sessionTimeoutEventState,
+            setSessionTimeoutEventState
+        ] = useState<SessionTimeoutEventStateInterface>(undefined);
+        const [ showSessionTimeoutModal, setShowSessionTimeoutModal ] = useState<boolean>(false);
+        const [ timerDisplay, setTimerDisplay ] = useState<string>(undefined);
+        const [ sessionTimedOut, setSessionTimedOut ] = useState<boolean>(false);
 
-    useEffect(() => {
-        const sessionTimeoutListener = (e: MessageEventInit) => {
-            const state = e.data;
+        useEffect(() => {
+            const sessionTimeoutListener = (e: MessageEventInit) => {
+                const state = e.data;
 
-            if (!state) {
-                return;
-            }
+                if (!state) {
+                    return;
+                }
 
-            setSessionTimeoutEventState(state);
+                setSessionTimeoutEventState(state);
 
-            const { url, idleTimeout, idleWarningTimeout }: SessionTimeoutEventStateInterface = state;
+                const { url, idleTimeout, idleWarningTimeout }: SessionTimeoutEventStateInterface = state;
 
-            const parsedURL: URL = new URL(url);
+                const parsedURL: URL = new URL(url);
 
-            const timeout = parsedURL.searchParams.get(
-                CommonConstants.SESSION_TIMEOUT_WARNING_URL_SEARCH_PARAM_KEY
-            );
+                const timeout = parsedURL.searchParams.get(
+                    CommonConstants.SESSION_TIMEOUT_WARNING_URL_SEARCH_PARAM_KEY
+                );
 
-            if (timeout === undefined) {
-                return;
-            }
+                if (timeout === undefined) {
+                    return;
+                }
 
-            if (JSON.parse(timeout) && type === SessionTimeoutModalTypes.COUNTER) {
-                startTimer(idleTimeout - idleWarningTimeout);
-            }
+                if (JSON.parse(timeout) && type === SessionTimeoutModalTypes.COUNTER) {
+                    startTimer(idleTimeout - idleWarningTimeout);
+                }
 
-            setShowSessionTimeoutModal(JSON.parse(timeout));
-        };
+                setShowSessionTimeoutModal(JSON.parse(timeout));
+            };
 
-        window.addEventListener("session-timeout", sessionTimeoutListener);
+            window.addEventListener("session-timeout", sessionTimeoutListener);
 
-        return () => {
-            performCleanupTasks();
-            window.removeEventListener("session-timeout",sessionTimeoutListener);
-        };
-    }, []);
+            return () => {
+                performCleanupTasks();
+                window.removeEventListener("session-timeout",sessionTimeoutListener);
+            };
+        }, []);
 
-    /**
+        /**
      * Handles session timeout abort.
      */
-    const handleSessionTimeoutAbort = (): void => {
-        if (sessionTimedOut) {
-            handleLoginAgain();
-            return;
-        }
-        const parsedURL: URL = new URL(sessionTimeoutEventState.url);
+        const handleSessionTimeoutAbort = (): void => {
+            if (sessionTimedOut) {
+                handleLoginAgain();
 
-        if (parsedURL && parsedURL.searchParams) {
-            if (parsedURL.searchParams.get(CommonConstants.SESSION_TIMEOUT_WARNING_URL_SEARCH_PARAM_KEY)) {
-                parsedURL.searchParams.delete(CommonConstants.SESSION_TIMEOUT_WARNING_URL_SEARCH_PARAM_KEY);
-                onSessionTimeoutAbort(parsedURL);
+                return;
             }
-        }
+            const parsedURL: URL = new URL(sessionTimeoutEventState.url);
 
-        performCleanupTasks();
-        setShowSessionTimeoutModal(false);
-    };
+            if (parsedURL && parsedURL.searchParams) {
+                if (parsedURL.searchParams.get(CommonConstants.SESSION_TIMEOUT_WARNING_URL_SEARCH_PARAM_KEY)) {
+                    parsedURL.searchParams.delete(CommonConstants.SESSION_TIMEOUT_WARNING_URL_SEARCH_PARAM_KEY);
+                    onSessionTimeoutAbort(parsedURL);
+                }
+            }
 
-    /**
+            performCleanupTasks();
+            setShowSessionTimeoutModal(false);
+        };
+
+        /**
      * Handles session logout click.
      */
-    const handleSessionLogout = (): void => {
-        performCleanupTasks();
-        setShowSessionTimeoutModal(false);
-        onSessionLogout();
-    };
+        const handleSessionLogout = (): void => {
+            performCleanupTasks();
+            setShowSessionTimeoutModal(false);
+            onSessionLogout();
+        };
 
-    /**
+        /**
      * Handles login again click.
      */
-    const handleLoginAgain = (): void => {
-        performCleanupTasks();
-        setShowSessionTimeoutModal(false);
-        onLoginAgain();
-    };
+        const handleLoginAgain = (): void => {
+            performCleanupTasks();
+            setShowSessionTimeoutModal(false);
+            onLoginAgain();
+        };
 
-    /**
+        /**
      * Handles primary button click.
      */
-    const handlePrimaryActionClick = (): void => {
+        const handlePrimaryActionClick = (): void => {
 
-        // If the counter runs out or if the type of the modal is default, try the login again option.
-        if (sessionTimedOut || type === SessionTimeoutModalTypes.DEFAULT) {
-            handleLoginAgain();
+            // If the counter runs out or if the type of the modal is default, try the login again option.
+            if (sessionTimedOut || type === SessionTimeoutModalTypes.DEFAULT) {
+                handleLoginAgain();
 
-            return;
-        }
+                return;
+            }
 
-        // If the counter hasn't run out, and the type of modal is other than `default` abort the termination.
-        handleSessionTimeoutAbort();
-    };
+            // If the counter hasn't run out, and the type of modal is other than `default` abort the termination.
+            handleSessionTimeoutAbort();
+        };
 
-    /**
+        /**
      * Performs housekeeping tasks.
      */
-    const performCleanupTasks = () => {
-        setTimerDisplay(undefined);
-        window.clearInterval(timerIntervalID.current);
-        timerIntervalID.current = null;
-    };
+        const performCleanupTasks = () => {
+            setTimerDisplay(undefined);
+            window.clearInterval(timerIntervalID.current);
+            timerIntervalID.current = null;
+        };
 
-    /**
+        /**
      * Starts the timer.
      * @param {number} duration - Timer duration.
      */
-    const startTimer = (duration: number) => {
-        let timer: number = duration;
-        let minutes: number = 0;
-        let seconds: number = 0;
+        const startTimer = (duration: number) => {
+            let timer: number = duration;
+            let minutes: number = 0;
+            let seconds: number = 0;
 
-        if (!timerIntervalID.current) {
-            timerIntervalID.current = window.setInterval(() => {
-                minutes = Math.floor(timer / 60);
-                seconds = Math.floor(timer % 60);
+            if (!timerIntervalID.current) {
+                timerIntervalID.current = window.setInterval(() => {
+                    minutes = Math.floor(timer / 60);
+                    seconds = Math.floor(timer % 60);
 
-                setTimerDisplay(
-                    (minutes < 10 ? "0" + minutes : minutes)
+                    setTimerDisplay(
+                        (minutes < 10 ? "0" + minutes : minutes)
                     + ":"
                     + (seconds < 10 ? "0" + seconds : seconds)
-                );
+                    );
 
-                if (--timer < 0) {
-                    setSessionTimedOut(true);
-                    performCleanupTasks();
-                }
-            }, 1000);
-        }
-    };
+                    if (--timer < 0) {
+                        setSessionTimedOut(true);
+                        performCleanupTasks();
+                    }
+                }, 1000);
+            }
+        };
 
-    return (
-        <>
-            { children }
-            <SessionTimeoutModal
-                closeOnEscape={ false }
-                closeOnDimmerClick={ false }
-                open={ showSessionTimeoutModal }
-                onClose={ handleSessionTimeoutAbort }
-                onPrimaryActionClick={ handlePrimaryActionClick }
-                onSecondaryActionClick={ handleSessionLogout }
-                sessionTimeOut={ sessionTimedOut }
-                heading={
-                    (type === SessionTimeoutModalTypes.DEFAULT)
-                        ? (
-                            <Trans
-                                i18nKey={ modalOptions?.headingI18nKey }
-                            >
+        return (
+            <>
+                { children }
+                <SessionTimeoutModal
+                    closeOnEscape={ false }
+                    closeOnDimmerClick={ false }
+                    open={ showSessionTimeoutModal }
+                    onClose={ handleSessionTimeoutAbort }
+                    onPrimaryActionClick={ handlePrimaryActionClick }
+                    onSecondaryActionClick={ handleSessionLogout }
+                    sessionTimeOut={ sessionTimedOut }
+                    heading={
+                        (type === SessionTimeoutModalTypes.DEFAULT)
+                            ? (
+                                <Trans
+                                    i18nKey={ modalOptions?.headingI18nKey }
+                                >
                                 It looks like you have been inactive for a long time.
-                            </Trans>
-                        )
-                        : (
-                            <Trans
-                                i18nKey={
-                                    !sessionTimedOut
-                                        ? modalOptions?.headingI18nKey
-                                        : modalOptions?.sessionTimedOutHeadingI18nKey
-                                }
-                                tOptions={
-                                    { time: timerDisplay }
-                                }
-                            >
+                                </Trans>
+                            )
+                            : (
+                                <Trans
+                                    i18nKey={
+                                        !sessionTimedOut
+                                            ? modalOptions?.headingI18nKey
+                                            : modalOptions?.sessionTimedOutHeadingI18nKey
+                                    }
+                                    tOptions={
+                                        { time: timerDisplay }
+                                    }
+                                >
                                 You will be logged out in <strong>{ timerDisplay }</strong>.
-                            </Trans>
-                        )
-                }
-                description={
-                    (type === SessionTimeoutModalTypes.DEFAULT)
-                        ? modalOptions?.description
-                        : sessionTimedOut
-                            ? modalOptions?.sessionTimedOutDescription
-                            : modalOptions?.description
-                }
-                primaryButtonText={
-                    (type === SessionTimeoutModalTypes.DEFAULT)
-                        ? modalOptions?.primaryButtonText
-                        : sessionTimedOut
-                            ? modalOptions?.loginAgainButtonText
-                            : modalOptions?.primaryButtonText
-                }
-                secondaryButtonText={
-                    (type === SessionTimeoutModalTypes.COUNTER)
-                        ? modalOptions?.secondaryButtonText
-                        : null
-                }
-            />
-        </>
-    );
-};
+                                </Trans>
+                            )
+                    }
+                    description={
+                        (type === SessionTimeoutModalTypes.DEFAULT)
+                            ? modalOptions?.description
+                            : sessionTimedOut
+                                ? modalOptions?.sessionTimedOutDescription
+                                : modalOptions?.description
+                    }
+                    primaryButtonText={
+                        (type === SessionTimeoutModalTypes.DEFAULT)
+                            ? modalOptions?.primaryButtonText
+                            : sessionTimedOut
+                                ? modalOptions?.loginAgainButtonText
+                                : modalOptions?.primaryButtonText
+                    }
+                    secondaryButtonText={
+                        (type === SessionTimeoutModalTypes.COUNTER)
+                            ? modalOptions?.secondaryButtonText
+                            : null
+                    }
+                />
+            </>
+        );
+    };
 
 /**
  * Default props for the component.

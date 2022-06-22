@@ -16,46 +16,33 @@
  * under the License.
  */
 
-import { getRawDocumentation } from "@wso2is/core/api";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, StorageIdentityAppsSettingsInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import {
-    AnimatedAvatar,
-    AppAvatar,
-    ContentLoader,
-    HelpPanelLayout,
-    HelpPanelTabInterface,
-    LabelWithPopup,
-    PageLayout
-} from "@wso2is/react-components";
+import { AnimatedAvatar, AppAvatar, LabelWithPopup, PageLayout } from "@wso2is/react-components";
 import cloneDeep from "lodash-es/cloneDeep";
 import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
-import { Label } from "semantic-ui-react";
-import { applicationConfig } from "../../../extensions";
+import { Label, Popup } from "semantic-ui-react";
 import {
     AppConstants,
     AppState,
     AppUtils,
-    ConfigReducerStateInterface,
-    DocPanelUICardInterface,
     FeatureConfigInterface,
-    HelpPanelUtils,
     PortalDocumentationStructureInterface,
-    getHelpPanelActionIcons,
     history,
     setHelpPanelDocsContentURL,
     toggleHelpPanelVisibility
 } from "../../core";
-import { getApplicationDetails, updateApplicationConfigurations } from "../api";
-import { EditApplication, HelpPanelOverview } from "../components";
-import { getHelpPanelIcons } from "../configs";
+import { getApplicationDetails } from "../api";
+import { EditApplication, InboundProtocolDefaultFallbackTemplates } from "../components";
 import { ApplicationManagementConstants } from "../constants";
+import CustomApplicationTemplate
+    from "../data/application-templates/templates/custom-application/custom-application.json";
 import {
     ApplicationAccessTypes,
     ApplicationInterface,
@@ -64,9 +51,7 @@ import {
     SupportedAuthProtocolTypes,
     emptyApplication
 } from "../models";
-import { ApplicationManagementUtils, ApplicationTemplateManagementUtils } from "../utils";
-import CustomApplicationTemplate
-    from "../data/application-templates/templates/custom-application/custom-application.json";
+import { ApplicationTemplateManagementUtils } from "../utils";
 
 /**
  * Proptypes for the applications edit page component.
@@ -96,48 +81,69 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
 
     const dispatch = useDispatch();
 
-    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+    const appDescElement = useRef<HTMLDivElement>(null);
+
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
-    const helpPanelDocURL: string = useSelector((state: AppState) => state.helpPanel.docURL);
     const helpPanelDocStructure: PortalDocumentationStructureInterface = useSelector(
         (state: AppState) => state.helpPanel.docStructure);
     const applicationTemplates: ApplicationTemplateListItemInterface[] = useSelector(
         (state: AppState) => state.application.templates);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const helpPanelVisibilityGlobalState: boolean = useSelector((state: AppState) => state.helpPanel.visibility);
 
     const [ application, setApplication ] = useState<ApplicationInterface>(emptyApplication);
     const [ applicationTemplate, setApplicationTemplate ] = useState<ApplicationTemplateListItemInterface>(undefined);
     const [ isApplicationRequestLoading, setApplicationRequestLoading ] = useState<boolean>(false);
-    const [ isHelpPanelLoading, setHelpPanelLoading ] = useState<boolean>(true);
-    const [ helpPanelDocContent, setHelpPanelDocContent ] = useState<string>(undefined);
-    const [ helpPanelSampleContent, setHelpPanelSampleContent ] = useState<string>(undefined);
-    const [ helpPanelSDKContent, setHelpPanelSDKContent ] = useState<string>(undefined);
-    const [ helpPanelConfigContent, setHelpPanelConfigContent ] = useState<string>(undefined);
-    const [ helpPanelSelectedSample, setHelpPanelSelectedSample ] = useState<DocPanelUICardInterface>(undefined);
-    const [ helpPanelSelectedSDK, setHelpPanelSelectedSDK ] = useState<DocPanelUICardInterface>(undefined);
-    const [
-        helpPanelSelectedProtocol, setHelpPanelSelectedProtocol
-    ] = useState<DocPanelUICardInterface>(undefined);
-    const [ samplesTabBackButtonEnabled, setSamplesTabBackButtonEnabled ] = useState<boolean>(true);
-    const [ samples, setSamples ] = useState<DocPanelUICardInterface[]>(undefined);
-    const [ sdks, setSDKS ] = useState<DocPanelUICardInterface[]>(undefined);
-    const [ configs, setConfigs ] = useState<DocPanelUICardInterface[]>(undefined);
-    const [
-        isHelpPanelDocContentRequestLoading,
-        setHelpPanelDocContentRequestLoadingStatus
-    ] = useState<boolean>(false);
-    const [
-        isHelpPanelSamplesContentRequestLoading,
-        setHelpPanelSamplesContentRequestLoadingStatus
-    ] = useState<boolean>(false);
-    const [
-        isApplicationTemplateRequestLoading,
-        setApplicationTemplateRequestLoadingStatus
-    ] = useState<boolean>(false);
-    const [ tabsActiveIndex, setTabsActiveIndex ] = useState<number>(0);
     const [ inboundProtocolList, setInboundProtocolList ] = useState<string[]>(undefined);
-    const [ inboundProtocolConfigs, setInboundProtocolConfigs ] = useState<object>(undefined);
+    const [ inboundProtocolConfigs, setInboundProtocolConfigs ] = useState<Record<string, any>>(undefined);
+    const [ isDescTruncated, setIsDescTruncated ] = useState<boolean>(false);
+
+    useEffect(() => {
+        /**
+         * What's the goal of this effect?
+         * To figure out the application's description is truncated or not.
+         *
+         * Even though {@link useRef} calls twice, the PageLayout component doesn't render
+         * the passed children immediately (it will use a placeholder when it's loading),
+         * when that happens the relative element always returns 0 as the offset height
+         * and width. So, I'm relying on this boolean variable {@link isApplicationRequestLoading}
+         * to re-render it for the third time, so it returns correct values for figuring out
+         * whether the element's content is truncated or not.
+         *
+         * Please refer implementation details of {@link PageHeader}, if you check its
+         * heading content, you can see that it conditionally renders first. So, for us
+         * to correctly figure out the offset width and scroll width of the target
+         * element we need it to be persistently mounted inside the {@link Header}
+         * element.
+         *
+         * What exactly happens inside this effect?
+         *
+         * 1st Call -
+         *  React calls this with a {@code null} value for {@link appDescElement}
+         *  (This is expected in useRef())
+         *
+         * 2nd Call -
+         *  React updates the {@link appDescElement} with the target element.
+         *  But {@link PageHeader} will immediately unmount it (because there's a request is ongoing).
+         *  When that happens, for "some reason" we always get { offsetWidth, scrollWidth
+         *  and all the related attributes } as zero or null.
+         *
+         * 3rd Call -
+         *  So, whenever there's some changes to {@link isApplicationRequestLoading}
+         *  we want React to re-update to reference so that we can accurately read the
+         *  element's measurements (once after a successful load the {@link PageHeader}
+         *  will try to render the component we actually pass down the tree)
+         *
+         *  For more additional context please refer comment:
+         *  {@see https://github.com/wso2/identity-apps/pull/3028#issuecomment-1123847668}
+         */
+        if (appDescElement || isApplicationRequestLoading) {
+            const nativeElement = appDescElement.current;
+
+            if (nativeElement && (nativeElement.offsetWidth < nativeElement.scrollWidth)) {
+                setIsDescTruncated(true);
+            }
+        }
+    }, [ appDescElement, isApplicationRequestLoading ]);
 
     /**
      * Get whether to show the help panel
@@ -162,9 +168,11 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         }
 
         const newPref: StorageIdentityAppsSettingsInterface = cloneDeep(userPreferences);
+
         newPref.identityAppsSettings.devPortal[ applicationHelpShownStatusKey ] = true;
         AppUtils.setUserPreferences(newPref);
     };
+
     /**
      * Fetch the application details on initial component load.
      */
@@ -186,37 +194,70 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
 
         if (!application
             || !(applicationTemplates
-            && applicationTemplates instanceof Array
-            && applicationTemplates.length > 0)) {
+                && applicationTemplates instanceof Array
+                && applicationTemplates.length > 0)) {
+
+            /**
+             * What's this?
+             *
+             * When navigating to an application using the direct url i.e.,
+             * /t/foo/develop/applications/:id#tab=1 this component will be
+             * mounted. But you see this {@link applicationTemplates}?; it is
+             * loaded elsewhere. For some reason, requesting the state from
+             * {@link useSelector} always returns {@code undefined} when
+             * directly navigating or refreshing the page. Therefore; it hangs
+             * without doing anything. It will show a overlay loader but
+             * that's it. Nothing happens afterwards.
+             *
+             * So, as a workaround; if for some reason, the {@link useSelector}
+             * return no data, we will manually emit the event
+             * {@link ApplicationActionTypes.SET_APPLICATION_TEMPLATES}. So, doing
+             * that ensures we load the application templates again.
+             *
+             * Consider this as a **failsafe workaround**. We shouldn't rely
+             * on this. This may get removed in the future.
+             */
+            ApplicationTemplateManagementUtils
+                .getApplicationTemplates()
+                .finally();
 
             return;
         }
 
-        let template = applicationTemplates.find((template) => template.id === application.templateId);
-        if (application.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
-            || application.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_SAML
-            || application.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS) {
-                template = applicationTemplates.find((template) => template.id === CustomApplicationTemplate.id );
-        }
+        determineApplicationTemplate();
 
-        setApplicationTemplate(template);
     }, [ applicationTemplates, application ]);
 
-    /**
-     * Fetch the application templates if list is not available in redux.
-     */
     useEffect(() => {
-        if (applicationTemplates !== undefined) {
-            return;
+
+        /**
+         * If there's no application {@link ApplicationInterface.templateId}
+         * in the application instance, then we manually bind a templateId. You
+         * may ask why templateId is null at this point? Well, one reason
+         * is that, if you create an application via the API, the templateId
+         * is an optional property in the model instance.
+         *
+         *      So, if someone creates one without it, we don't have a template
+         * to bootstrap the model. When that happens the edit view will not
+         * work properly.
+         *
+         * We have added a mapping for application's inbound protocol
+         * {@link InboundProtocolDefaultFallbackTemplates} to pick a default
+         * template if none is present. One caveat is that, if we couldn't
+         * find any template from the fallback mapping, we always assign
+         * {@link ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC} to it.
+         * Additionally {@see InboundFormFactory}.
+         */
+        if (!application?.templateId) {
+            if (application.inboundProtocols?.length > 0) {
+                application.templateId = InboundProtocolDefaultFallbackTemplates.get(
+                    application.inboundProtocols[ 0 /*We pick the first*/ ].type
+                ) ?? ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC;
+                determineApplicationTemplate();
+            }
         }
 
-        setApplicationTemplateRequestLoadingStatus(true);
-
-        ApplicationTemplateManagementUtils.getApplicationTemplates()
-            .finally(() => {
-                setApplicationTemplateRequestLoadingStatus(false);
-            });
-    }, [ applicationTemplates ]);
+    }, [ isApplicationRequestLoading, application ]);
 
     /**
      * Push to 404 if application edit feature is disabled.
@@ -226,7 +267,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             return;
         }
 
-        if(!isFeatureEnabled(featureConfig.applications,
+        if (!isFeatureEnabled(featureConfig.applications,
             ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT"))) {
 
             history.push(AppConstants.getPaths().get("PAGE_NOT_FOUND"));
@@ -251,196 +292,23 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         dispatch(
             setHelpPanelDocsContentURL(editApplicationDocs[
                 ApplicationManagementConstants.APPLICATION_TEMPLATE_DOC_MAPPING
-                    .get(applicationTemplate.id) ]?.[ApplicationManagementConstants.APPLICATION_DOCS_OVERVIEW])
+                    .get(applicationTemplate.id) ]?.[ ApplicationManagementConstants.APPLICATION_DOCS_OVERVIEW ])
         );
     }, [ applicationTemplate, helpPanelDocStructure ]);
 
-    /**
-     * Filter application samples based on the template type.
-     */
-    useEffect(() => {
-        if (!applicationTemplate) {
-            return;
-        }
-        const mappedKey = ApplicationManagementConstants.APPLICATION_TEMPLATE_DOC_MAPPING
-            .get(applicationTemplate.id);
+    const determineApplicationTemplate = () => {
 
-        const samplesDocs = get(helpPanelDocStructure, ApplicationManagementUtils.getSampleDocsKey(mappedKey));
-        const SDKDocs = get(helpPanelDocStructure, ApplicationManagementUtils.getSDKDocsKey(mappedKey));
-        const configDocs = get(helpPanelDocStructure, ApplicationManagementUtils.getConfigDocsKey(mappedKey));
+        let template = applicationTemplates.find((template) => template.id === application.templateId);
 
-        if (!samplesDocs) {
-            return;
+        if (application.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
+            || application.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_SAML
+            || application.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS) {
+            template = applicationTemplates.find((template) => template.id === CustomApplicationTemplate.id);
         }
 
-        const samples: DocPanelUICardInterface[] = ApplicationManagementUtils.generateSamplesAndSDKDocs(samplesDocs);
-        const sdks: DocPanelUICardInterface[] = ApplicationManagementUtils.generateSamplesAndSDKDocs(SDKDocs);
-        const configs: DocPanelUICardInterface[] = ApplicationManagementUtils.generateSamplesAndSDKDocs(configDocs);
+        setApplicationTemplate(template);
 
-        if (samples instanceof Array && samples.length === 1) {
-            setHelpPanelSelectedSample(samples[ 0 ]);
-            setSamplesTabBackButtonEnabled(false);
-        }
-
-        if (sdks instanceof Array && sdks.length === 1) {
-            setHelpPanelSelectedSDK(sdks[ 0 ]);
-            setSamplesTabBackButtonEnabled(false);
-        }
-
-        if (configs instanceof Array && configs.length === 1) {
-            setHelpPanelSelectedProtocol(configs[ 0 ]);
-            setSamplesTabBackButtonEnabled(false);
-        }
-
-        setSDKS(sdks.filter((item) => item.name !== "overview"));
-        setSamples(samples.filter((item) => item.name !== "overview"));
-        setConfigs(configs.filter((item) => item.name !== "overview"));
-    }, [ applicationTemplate, helpPanelDocStructure ]);
-
-    /**
-     * Called when help panel doc URL status changes.
-     */
-    useEffect(() => {
-        if (!helpPanelDocURL) {
-            return;
-        }
-
-        setHelpPanelDocContentRequestLoadingStatus(true);
-
-        getRawDocumentation<string>(
-            config?.endpoints?.documentationContent,
-            helpPanelDocURL,
-            config?.deployment?.documentation?.provider,
-            config?.deployment?.documentation?.githubOptions?.branch)
-            .then((response) => {
-                setHelpPanelDocContent(response);
-            })
-            .finally(() => {
-                setHelpPanelDocContentRequestLoadingStatus(false);
-            });
-    }, [ helpPanelDocURL ]);
-
-    /**
-     * Called when the technology is changed in the samples section.
-     */
-    useEffect(() => {
-        if (!helpPanelSelectedSample?.docs) {
-            return;
-        }
-
-        setHelpPanelSamplesContentRequestLoadingStatus(true);
-
-        getRawDocumentation<string>(
-            config.endpoints.documentationContent,
-            helpPanelSelectedSample.docs,
-            config.deployment.documentation.provider,
-            config.deployment.documentation.githubOptions.branch)
-            .then((response) => {
-                setHelpPanelSampleContent(response);
-            })
-            .finally(() => {
-                setHelpPanelSamplesContentRequestLoadingStatus(false);
-            });
-    },[
-        helpPanelSelectedSample,
-        config.deployment.documentation.githubOptions.branch,
-        config.deployment.documentation.provider,
-        config.endpoints.documentationContent
-    ]);
-
-    /**
-     * Called when the technology is changed in the SDK section.
-     */
-    useEffect(() => {
-        if (!helpPanelSelectedSDK?.docs) {
-            return;
-        }
-
-        setHelpPanelSamplesContentRequestLoadingStatus(true);
-
-        getRawDocumentation<string>(
-            config.endpoints.documentationContent,
-            helpPanelSelectedSDK.docs,
-            config.deployment.documentation.provider,
-            config.deployment.documentation.githubOptions.branch)
-            .then((response) => {
-                setHelpPanelSDKContent(response);
-            })
-            .finally(() => {
-                setHelpPanelSamplesContentRequestLoadingStatus(false);
-            });
-    },[
-        helpPanelSelectedSDK,
-        config.deployment.documentation.githubOptions.branch,
-        config.deployment.documentation.provider,
-        config.endpoints.documentationContent
-    ]);
-
-    /**
-     * Called when the technology is changed in the Configurations section.
-     */
-    useEffect(() => {
-        if (!helpPanelSelectedProtocol?.docs) {
-            return;
-        }
-
-        setHelpPanelSamplesContentRequestLoadingStatus(true);
-
-        getRawDocumentation<string>(
-            config.endpoints.documentationContent,
-            helpPanelSelectedProtocol.docs,
-            config.deployment.documentation.provider,
-            config.deployment.documentation.githubOptions.branch)
-            .then((response) => {
-                setHelpPanelConfigContent(response);
-            })
-            .finally(() => {
-                setHelpPanelSamplesContentRequestLoadingStatus(false);
-            });
-    },[
-        helpPanelSelectedProtocol,
-        config.deployment.documentation.githubOptions.branch,
-        config.deployment.documentation.provider,
-        config.endpoints.documentationContent
-    ]);
-
-    // TODO: Validate this scenario, We don't need this logic as only custom template can have more inboundProtocols.
-    // /**
-    //  * Remove template name if multiple protocols configured.
-    //  */
-    // useEffect(() => {
-    //     if (applicationTemplate && (application?.inboundProtocols?.length > 1)) {
-    //         updateApplicationConfigurations(application.id, { templateId: "" })
-    //             .then(() => {
-    //                 handleApplicationUpdate(application.id);
-    //             })
-    //             .catch((error) => {
-    //                 if (error?.response?.status === 404) {
-    //                     return;
-    //                 }
-    //
-    //                 if (error?.response && error?.response?.data && error?.response?.data?.description) {
-    //                     dispatch(addAlert({
-    //                         description: error.response?.data?.description,
-    //                         level: AlertLevels.ERROR,
-    //                         message: t("console:develop.features.applications.notifications.updateApplication" +
-    //                             ".error.message")
-    //                     }));
-    //
-    //                     return;
-    //                 }
-    //
-    //                 dispatch(addAlert({
-    //                     description: t("console:develop.features.applications.notifications.updateApplication" +
-    //                         ".genericError.description"),
-    //                     level: AlertLevels.ERROR,
-    //                     message: t("console:develop.features.applications.notifications.updateApplication" +
-    //                         ".genericError.message")
-    //                 }));
-    //             });
-    //     }
-    //
-    // }, [ applicationTemplate, application ]);
+    };
 
     /**
      * Retrieves application details from the API.
@@ -502,293 +370,10 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     };
 
     /**
-     * Handles help panel sample change event.
-     *
-     * @param sample - Selected sample.
-     */
-    const handleHelpPanelSelectedSample = (sample: any) => {
-        setHelpPanelSelectedSample(sample);
-    };
-
-    /**
-     * Handles help panel SDK change event.
-     *
-     * @param sdk - Selected SDK.
-     */
-    const handleHelpPanelSelectedSDK = (sdk: any) => {
-        setHelpPanelSelectedSDK(sdk);
-    };
-
-    /**
-     * Handles help panel Protocol change event.
-     *
-     * @param protocol - Selected Protool.
-     */
-    const handleHelpPanelSelectedProtocol = (protocol: any) => {
-        setHelpPanelSelectedProtocol(protocol);
-    };
-
-    /**
-     * Handles the tab change from overview.
-     *
-     * @param tabId - number
-     */
-    const handleTabChange = (tabId: number): void => {
-        setTabsActiveIndex(tabId);
-    };
-
-    const resolveHelpPanelContent = (): ReactNode => {
-        return (
-            <>
-                <HelpPanelOverview
-                    applicationType={ applicationTemplate?.name }
-                    inboundProtocols={ application?.inboundProtocols }
-                    handleTabChange={ handleTabChange }
-                    handleMetadataLoading={ (isMetadataLoading) => setHelpPanelLoading(isMetadataLoading) }
-                />
-                {
-                    !isHelpPanelLoading
-                        ? (
-                            applicationConfig.editApplication.renderHelpPanelItems()
-                        )
-                        : <ContentLoader/>
-                 }
-            </>
-        );
-    };
-
-    const helpPanelTabs: HelpPanelTabInterface[] = [
-        {
-            content: ( resolveHelpPanelContent() ),
-            //heading: t("console:develop.features.applications.helpPanel.tabs.start.heading"),
-            heading: "Help",
-            hidden: application?.inboundProtocols?.length <= 0,
-            icon: {
-                icon: getHelpPanelIcons().tabs.guide
-            }
-        }
-        // TODO : Should be removed after getting started flow is implemented.
-        /*{
-            content: (
-                helpPanelSelectedProtocol
-                    ? (
-                        <>
-                            <PageHeader
-                                title={ `${ helpPanelSelectedProtocol.displayName } Configurations` }
-                                titleAs="h4"
-                                backButton={ samplesTabBackButtonEnabled && {
-                                    onClick: () => setHelpPanelSelectedProtocol(undefined),
-                                    text: t("console:develop.features.applications.helpPanel.tabs.samples." +
-                                        "content.sample.goBack")
-                                } }
-                                bottomMargin={ false }
-                                data-testid={ `${ testId }-help-panel-samples-tab-page-header` }
-                            />
-                            <Divider hidden/>
-                            {
-                                helpPanelSelectedProtocol?.docs && (
-                                    isHelpPanelSamplesContentRequestLoading
-                                        ? <ContentLoader dimmer/>
-                                        : (
-                                            <Markdown
-                                                source={ helpPanelConfigContent }
-                                                data-testid={ `${ testId }-help-panel-configs-tab-markdown-renderer` }
-                                            />
-                                        )
-                                )
-                            }
-                        </>
-                    )
-                    : (
-                        <>
-                            <Heading as="h4">
-                                { t("console:develop.features.applications.helpPanel.tabs.configs.content." +
-                                    "title") }
-                            </Heading>
-                            <Hint>
-                                { t("console:develop.features.applications.helpPanel.tabs.configs.content." +
-                                    "subTitle") }
-                            </Hint>
-                            <Divider hidden/>
-
-                            <Grid>
-                                <Grid.Row columns={ 4 }>
-                                    {
-                                        configs && configs.map((configs, index) => (
-                                            <Grid.Column key={ index }>
-                                                <SelectionCard
-                                                    size="auto"
-                                                    header={ configs.displayName }
-                                                    image={ getInboundProtocolLogos()[ configs.image ] }
-                                                    imageSize="mini"
-                                                    spaced="bottom"
-                                                    onClick={ () => handleHelpPanelSelectedProtocol(configs) }
-                                                    data-testid={ `${ testId }-help-panel-samples-tab-selection-card` }
-                                                />
-                                            </Grid.Column>
-                                        ))
-                                    }
-                                </Grid.Row>
-                            </Grid>
-                        </>
-                    )
-            ),
-            heading: t("console:develop.features.applications.helpPanel.tabs.configs.heading"),
-            hidden: !configs || (configs instanceof Array && configs.length < 1),
-            icon: {
-                icon: getHelpPanelIcons().tabs.guide
-            }
-        },
-        {
-            content: (
-                helpPanelSelectedSample
-                    ? (
-                        <>
-                            <PageHeader
-                                title={ `${ helpPanelSelectedSample.displayName } Sample Application` }
-                                titleAs="h1"
-                                backButton={ samplesTabBackButtonEnabled && {
-                                    onClick: () => setHelpPanelSelectedSample(undefined),
-                                    text: t("console:develop.features.applications.helpPanel.tabs.samples." +
-                                        "content.sample.goBack")
-                                } }
-                                bottomMargin={ false }
-                                data-testid={ `${ testId }-help-panel-samples-tab-page-header` }
-                            />
-                            <Divider hidden/>
-                            {
-                                helpPanelSelectedSample?.docs && (
-                                    isHelpPanelSamplesContentRequestLoading
-                                        ? <ContentLoader dimmer/>
-                                        : (
-                                            <SamplesGuideComponent
-                                                sampleType={ helpPanelSelectedSample.name }
-                                                application={ application }
-                                                markDownSource={ helpPanelSampleContent }
-                                                data-testid={ `${ testId }-help-panel-samples-tab-markdown-renderer` }
-                                            />
-                                        )
-                                )
-                            }
-                        </>
-                    )
-                    : (
-                        <>
-                            <Heading as="h4">
-                                { t("console:develop.features.applications.helpPanel.tabs.samples.content." +
-                                    "sample.title") }
-                            </Heading>
-                            <Hint>
-                                { t("console:develop.features.applications.helpPanel.tabs.samples.content." +
-                                    "sample.subTitle") }
-                            </Hint>
-                            <Divider hidden/>
-
-                            <Grid>
-                                <Grid.Row columns={ 4 }>
-                                    {
-                                        samples && samples.map((sample, index) => (
-                                            <Grid.Column key={ index }>
-                                                <SelectionCard
-                                                    size="auto"
-                                                    header={ sample.displayName }
-                                                    image={ getTechnologyLogos[ sample.image ] }
-                                                    imageSize="mini"
-                                                    spaced="bottom"
-                                                    onClick={ () => handleHelpPanelSelectedSample(sample) }
-                                                    data-testid={ `${ testId }-help-panel-samples-tab-selection-card` }
-                                                />
-                                            </Grid.Column>
-                                        ))
-                                    }
-                                </Grid.Row>
-                            </Grid>
-                        </>
-                    )
-            ),
-            heading: t("common:samples"),
-            hidden: !samples || (samples instanceof Array && samples.length < 1),
-            icon: {
-                icon: getHelpPanelIcons().tabs.samples
-            }
-        },
-        {
-            content: (
-                helpPanelSelectedSDK
-                    ? (
-                        <>
-                            <PageHeader
-                                title={ `${ helpPanelSelectedSDK.displayName } SDK` }
-                                titleAs="h4"
-                                backButton={ samplesTabBackButtonEnabled && {
-                                    onClick: () => setHelpPanelSelectedSDK(undefined),
-                                    text: t("console:develop.features.applications.helpPanel.tabs.sdks." +
-                                        "content.sdk.goBack")
-                                } }
-                                bottomMargin={ false }
-                                data-testid={ `${ testId }-help-panel-samples-tab-page-header` }
-                            />
-                            <Divider hidden/>
-                            {
-                                helpPanelSelectedSDK?.docs && (
-                                    isHelpPanelSamplesContentRequestLoading
-                                        ? <ContentLoader dimmer/>
-                                        : (
-                                            <Markdown
-                                                source={ helpPanelSDKContent }
-                                                data-testid={ `${ testId }-help-panel-samples-tab-markdown-renderer` }
-                                            />
-                                        )
-                                )
-                            }
-                        </>
-                    )
-                    : (
-                        <>
-                            <Heading as="h4">
-                                { t("console:develop.features.applications.helpPanel.tabs.sdks.content." +
-                                    "sdk.title") }
-                            </Heading>
-                            <Hint>
-                                { t("console:develop.features.applications.helpPanel.tabs.sdks.content." +
-                                    "sdk.subTitle") }
-                            </Hint>
-                            <Divider hidden/>
-
-                            <Grid>
-                                <Grid.Row columns={ 4 }>
-                                    {
-                                        sdks && sdks.map((sdk, index) => (
-                                            <Grid.Column key={ index }>
-                                                <SelectionCard
-                                                    size="auto"
-                                                    header={ sdk.displayName }
-                                                    image={ getTechnologyLogos[ sdk.image ] }
-                                                    imageSize="mini"
-                                                    spaced="bottom"
-                                                    onClick={ () => handleHelpPanelSelectedSDK(sdk) }
-                                                    data-testid={ `${ testId }-help-panel-samples-tab-selection-card` }
-                                                />
-                                            </Grid.Column>
-                                        ))
-                                    }
-                                </Grid.Row>
-                            </Grid>
-                        </>
-                    )
-            ),
-            heading: t("common:sdks"),
-            hidden: !sdks || (sdks instanceof Array && sdks.length < 1),
-            icon: {
-                icon: getHelpPanelIcons().tabs.sdks
-            }
-        }*/
-    ];
-
-    /**
      * Resolves the application status label.
      * @return {ReactElement}
      */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const resolveApplicationStatusLabel = (): ReactElement => {
 
         if (!inboundProtocolList || !inboundProtocolConfigs) {
@@ -807,9 +392,9 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         }
 
         if (inboundProtocolList.length === 1
-            && inboundProtocolList.includes(SupportedAuthProtocolTypes.OIDC)
-            && inboundProtocolConfigs
-            && inboundProtocolConfigs[ SupportedAuthProtocolTypes.OIDC ]) {
+                && inboundProtocolList.includes(SupportedAuthProtocolTypes.OIDC)
+                && inboundProtocolConfigs
+                && inboundProtocolConfigs[ SupportedAuthProtocolTypes.OIDC ]) {
 
             if (inboundProtocolConfigs[ SupportedAuthProtocolTypes.OIDC ].state === State.REVOKED) {
 
@@ -847,88 +432,78 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     };
 
     return (
-        <HelpPanelLayout
-            enabled={ false }
-            visible={ false }
-            sidebarDirection="right"
-            sidebarMiniEnabled={ true }
-            tabs={ helpPanelTabs }
-            onHelpPanelPinToggle={ () => HelpPanelUtils.togglePanelPin() }
-            isPinned={ HelpPanelUtils.isPanelPinned() }
-            icons={ {
-                close: getHelpPanelActionIcons().close,
-                pin: getHelpPanelActionIcons().pin,
-                unpin: getHelpPanelActionIcons().unpin
-            } }
-            sidebarToggleTooltip={ t("console:develop.features.helpPanel.actions.open") }
-            pinButtonTooltip={ t("console:develop.features.helpPanel.actions.pin") }
-            unpinButtonTooltip={ t("console:develop.features.helpPanel.actions.unPin") }
-            onHelpPanelVisibilityChange={ (isVisible: boolean) => dispatch(toggleHelpPanelVisibility(isVisible)) }
-        >
-            <PageLayout
-                title={ (
-                    <>
-                        <span>{ application.name }</span>
-                        { /*TODO - Application status is not shown until the backend support for disabling is given
+        <PageLayout
+            pageTitle="Edit Application"
+            title={ (
+                <>
+                    <span>{ application.name }</span>
+                    { /*TODO - Application status is not shown until the backend support for disabling is given
                         @link https://github.com/wso2/product-is/issues/11453
                         { resolveApplicationStatusLabel() }*/ }
-                    </>
-                ) }
-                contentTopMargin={ true }
-                description={ (
-                    <div className="with-label ellipsis">
-                        { applicationTemplate?.name && <Label size="small">{ applicationTemplate.name }</Label> }
-                        { application.description }
-                    </div>
-                ) }
-                image={
-                    application.imageUrl
-                        ? (
-                            <AppAvatar
-                                name={ application.name }
-                                image={ application.imageUrl }
-                                size="tiny"
-                            />
-                        )
-                        : (
-                            <AnimatedAvatar
-                                name={ application.name }
-                                size="tiny"
-                                floated="left"
-                            />
-                        )
-                }
-                backButton={ {
-                    "data-testid": `${ testId }-page-back-button`,
-                    onClick: handleBackButtonClick,
-                    text: t("console:develop.pages.applicationsEdit.backButton")
+                </>
+            ) }
+            contentTopMargin={ true }
+            description={ (
+                <div className="with-label ellipsis" ref={ appDescElement }>
+                    { applicationTemplate?.name && (
+                        <Label size="small">{ applicationTemplate.name }</Label>
+                    ) }
+                    <Popup
+                        disabled={ !isDescTruncated }
+                        content={ application?.description }
+                        trigger={ (
+                            <span>{ application?.description }</span>
+                        ) }
+                    />
+                </div>
+            ) }
+            image={
+                application.imageUrl
+                    ? (
+                        <AppAvatar
+                            name={ application.name }
+                            image={ application.imageUrl }
+                            size="tiny"
+                        />
+                    )
+                    : (
+                        <AnimatedAvatar
+                            name={ application.name }
+                            size="tiny"
+                            floated="left"
+                        />
+                    )
+            }
+            backButton={ {
+                "data-testid": `${ testId }-page-back-button`,
+                onClick: handleBackButtonClick,
+                text: t("console:develop.pages.applicationsEdit.backButton")
+            } }
+            titleTextAlign="left"
+            bottomMargin={ false }
+            pageHeaderMaxWidth={ true }
+            data-testid={ `${ testId }-page-layout` }
+            truncateContent={ true }
+        >
+            <EditApplication
+                application={ application }
+                featureConfig={ featureConfig }
+                isLoading={ isApplicationRequestLoading }
+                setIsLoading={ setApplicationRequestLoading }
+                onDelete={ handleApplicationDelete }
+                onUpdate={ handleApplicationUpdate }
+                template={ applicationTemplate }
+                data-testid={ testId }
+                urlSearchParams={ urlSearchParams }
+                getConfiguredInboundProtocolsList={ (list: string[]) => {
+                    setInboundProtocolList(list);
                 } }
-                titleTextAlign="left"
-                bottomMargin={ false }
-                pageHeaderMaxWidth={ true }
-                data-testid={ `${ testId }-page-layout` }
-                truncateContent={ true }
-            >
-                <EditApplication
-                    application={ application }
-                    featureConfig={ featureConfig }
-                    isLoading={ isApplicationRequestLoading }
-                    setIsLoading={ setApplicationRequestLoading }
-                    onDelete={ handleApplicationDelete }
-                    onUpdate={ handleApplicationUpdate }
-                    template={ applicationTemplate }
-                    data-testid={ testId }
-                    urlSearchParams={ urlSearchParams }
-                    getConfiguredInboundProtocolsList={ (list: string[]) => {
-                        setInboundProtocolList(list);
-                    } }
-                    getConfiguredInboundProtocolConfigs={ (configs: object) => {
-                        setInboundProtocolConfigs(configs);
-                    } }
-                    readOnly={ resolveReadOnlyState() }
-                />
-            </PageLayout>
-        </HelpPanelLayout>
+                getConfiguredInboundProtocolConfigs={ (configs: Record<string, unknown>) => {
+                    setInboundProtocolConfigs(configs);
+                } }
+                readOnly={ resolveReadOnlyState() }
+            />
+        </PageLayout>
     );
 };
 

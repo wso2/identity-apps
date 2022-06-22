@@ -49,7 +49,8 @@ interface PasswordPropsInterface {
 export const Password: React.FunctionComponent<PasswordPropsInterface> = (
     props: PasswordPropsInterface
 ): JSX.Element => {
-    const [isShow, setIsShow] = useState(false);
+
+    const [ isShow, setIsShow ] = useState(false);
 
     const filteredProps = filterPassedProps({ ...props });
 

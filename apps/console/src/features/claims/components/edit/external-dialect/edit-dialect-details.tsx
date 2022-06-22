@@ -76,6 +76,7 @@ export const EditDialectDetails: FunctionComponent<EditDialectDetailsPropsInterf
                     <Forms
                         onSubmit={ (values: Map<string, FormValue>) => {
                             const dialectURI = values.get("dialectURI").toString();
+
                             setIsSubmitting(true);
                             updateADialect(dialect.id, dialectURI)
                                 .then(() => {

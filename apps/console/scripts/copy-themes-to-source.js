@@ -35,6 +35,7 @@ const SOURCE_DIRECTORY = "src";                                              // 
 const THEMES_DIRECTORY = "themes";                                           // Themes directory in source.
 const ASSETS_FOLDER_NAME = "assets";                                         // Assets folder name in respective Theme.
 const IMAGES_FOLDER_NAME = "images";                                         // Assets folder name in respective Theme.
+const THEME_VARIABLES_FILE = "theme-variables.json";                         // Theme variables file name.
 
 // Paths.
 const src = path.join(__dirname, "..", SOURCE_DIRECTORY);
@@ -67,7 +68,15 @@ fs.readdirSync(themeModule).map((theme) => {
     if (fs.lstatSync(themePath).isDirectory()) {
 
         // Iterate through the theme folders and files.
-        for (const item of fs.readdirSync(themePath))
+        for (const item of fs.readdirSync(themePath)) {
+
+            if (item === THEME_VARIABLES_FILE) {
+                const themeVariablesFileOriginalPath = path.join(themePath, THEME_VARIABLES_FILE);
+                const themeVariablesFileTargetPath = path.join(target, theme, THEME_VARIABLES_FILE);
+
+                fs.copySync(themeVariablesFileOriginalPath, themeVariablesFileTargetPath);
+                log("Copied theme variables file to " + themeVariablesFileTargetPath);
+            }
 
             // If the folder name is `assets`, proceed.
             if (fs.lstatSync(path.join(themePath, item)).isDirectory() && item === ASSETS_FOLDER_NAME) {
@@ -81,6 +90,7 @@ fs.readdirSync(themeModule).map((theme) => {
                 fs.copySync(imagesFolderOriginalPath, imagesFolderTargetPath);
                 log("Copied images to " + imagesFolderTargetPath);
             }
+        }
     }
 });
 

@@ -19,6 +19,7 @@
 import { AsgardeoSPAClient } from "@asgardeo/auth-react";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
+import { ServerConfigurationsInterface } from "./governance-connectors";
 import { store } from "../../core";
 import { ServerConfigurationsConstants } from "../constants";
 
@@ -31,9 +32,9 @@ const httpClient = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAC
 /**
  * Retrieve server configurations.
  *
- * @returns {Promise<any>} a promise containing the server configurations.
+ * @returns {Promise<ServerConfigurationsInterface>} a promise containing the server configurations.
  */
-export const getServerConfigs = () => {
+export const getServerConfigs = () : Promise<ServerConfigurationsInterface> => {
 
     const requestConfig = {
         headers: {
@@ -55,6 +56,7 @@ export const getServerConfigs = () => {
                     response,
                     response.config);
             }
+
             return Promise.resolve(response.data);
         })
         .catch((error) => {

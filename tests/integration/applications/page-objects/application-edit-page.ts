@@ -38,7 +38,7 @@ export class ApplicationEditPage {
      */
     public getPageLayoutHeader(): Cypress.Chainable<Element> {
         return cy.dataTestId(ApplicationEditPageConstants.PAGE_LAYOUT_HEADER_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the application edit page layout header title element.
@@ -46,7 +46,7 @@ export class ApplicationEditPage {
      */
     public getPageLayoutHeaderTitle(): Cypress.Chainable<Element> {
         return cy.dataTestId(ApplicationEditPageConstants.PAGE_LAYOUT_HEADER_TITLE_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the application edit page layout header sub title element.
@@ -54,7 +54,7 @@ export class ApplicationEditPage {
      */
     public getPageLayoutHeaderSubTitle(): Cypress.Chainable<Element> {
         return cy.dataTestId(ApplicationEditPageConstants.PAGE_LAYOUT_HEADER_SUB_TITLE_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the application edit tabs.
@@ -62,7 +62,7 @@ export class ApplicationEditPage {
      */
     public getTabs(): Cypress.Chainable<Element> {
         return cy.dataTestId(ApplicationEditPageConstants.RESOURCE_TABS_DATA_ATTR);
-    };
+    }
 
     /**
      * Get a specif tab.
@@ -91,7 +91,7 @@ export class ApplicationEditPage {
                 
                 throw new Error("Invalid tab selection - " + tab);
             });
-    };
+    }
 
     /**
      * Select a tab from the resource tabs.
@@ -100,8 +100,8 @@ export class ApplicationEditPage {
      */
     public selectTab(tab: "GENERAL" | "ACCESS" | "ATTRIBUTES" | "SIGN_ON" | "PROVISIONING" | "ADVANCED"): void {
 
-        this.getTab(tab).click({ force: true, multiple: true});
-    };
+        this.getTab(tab).click({ force: true, multiple: true });
+    }
     
 
     /**
@@ -110,7 +110,7 @@ export class ApplicationEditPage {
      */
     public getPageBackButton(): Cypress.Chainable<Element> {
         return cy.dataTestId(ApplicationEditPageConstants.PAGE_LAYOUT_HEADER_BACK_BUTTON_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the application name input.
@@ -119,7 +119,7 @@ export class ApplicationEditPage {
     public getAppNameInput(): Cypress.Chainable<JQuery<Element>> {
         return cy.dataTestId(ApplicationEditPageConstants.APP_NAME_INPUT_DATA_ATTR)
             .find("input");
-    };
+    }
 
     /**
      * Get the application description input.
@@ -127,7 +127,7 @@ export class ApplicationEditPage {
      */
     public getAppDescriptionInput(): Cypress.Chainable<Element> {
         return cy.dataTestId(ApplicationEditPageConstants.APP_DESCRIPTION_INPUT_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the application image input.
@@ -136,7 +136,7 @@ export class ApplicationEditPage {
     public getAppImageInput(): Cypress.Chainable<JQuery<Element>> {
         return cy.dataTestId(ApplicationEditPageConstants.APP_IMAGE_INPUT_DATA_ATTR)
             .find("input");
-    };
+    }
 
     /**
      * Get the application discoverable checkbox.
@@ -144,7 +144,7 @@ export class ApplicationEditPage {
      */
     public getAppDiscoverableCheckbox(): Cypress.Chainable<Element> {
         return cy.dataTestId(ApplicationEditPageConstants.APP_DISCOVERABLE_CHECKBOX_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the application access URL input.
@@ -153,7 +153,7 @@ export class ApplicationEditPage {
     public getAppAccessURLInput(): Cypress.Chainable<JQuery<Element>> {
         return cy.dataTestId(ApplicationEditPageConstants.APP_ACCESS_URL_INPUT_DATA_ATTR)
             .find("input");
-    };
+    }
 
     /**
      * Get the application JWKS cert endpoint input.
@@ -162,7 +162,7 @@ export class ApplicationEditPage {
     public getAppCertJWKSURLInput(): Cypress.Chainable<JQuery<Element>> {
         return cy.dataTestId(ApplicationEditPageConstants.APP_CERT_JWKS_URL_INPUT_DATA_ATTR)
             .find("input");
-    };
+    }
 
     /**
      * Get the JWKS application certificate radio button.
@@ -173,7 +173,7 @@ export class ApplicationEditPage {
             .within(() => {
                 cy.get("input[value=\"JWKS\"]");
             });
-    };
+    }
 
     /**
      * Get the custom application certificate radio button.
@@ -184,7 +184,7 @@ export class ApplicationEditPage {
             .within(() => {
                 cy.get("input[value=\"PEM\"]");
             });
-    };
+    }
 
     /**
      * Get the application PEM certificate input.
@@ -192,7 +192,7 @@ export class ApplicationEditPage {
      */
     public getPEMCertInput(): Cypress.Chainable<Element> {
         return cy.dataTestId(ApplicationEditPageConstants.APP_PEM_CERT_INPUT_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the application PEM certificate preview button.
@@ -200,7 +200,7 @@ export class ApplicationEditPage {
      */
     public getPEMCertPreviewButton(): Cypress.Chainable<Element> {
         return cy.dataTestId(ApplicationEditPageConstants.APP_PEM_CERT_PREVIEW_BUTTON_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the application PEM certificate preview modal.
@@ -208,7 +208,7 @@ export class ApplicationEditPage {
      */
     public getPEMCertPreviewModal(): Cypress.Chainable<Element> {
         return cy.dataTestId(ApplicationEditPageConstants.APP_PEM_CERT_PREVIEW_MODAL_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the application PEM certificate preview modal dimmer.
@@ -216,7 +216,7 @@ export class ApplicationEditPage {
      */
     public getPEMCertPreviewModalDimmer(): Cypress.Chainable<JQuery<Element>> {
         return cy.get(ApplicationEditPageConstants.APP_PEM_CERT_PREVIEW_MODAL_DIMMER_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the application delete action in the danger zone.
@@ -224,7 +224,7 @@ export class ApplicationEditPage {
      */
     public getDangerZoneDeleteButton(): Cypress.Chainable<Element> {
         return cy.dataTestId(ApplicationEditPageConstants.DANGER_ZONE_DELETE_BUTTON_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the application delete assertion.
@@ -232,7 +232,7 @@ export class ApplicationEditPage {
      */
     public getDeleteAssertion(): Cypress.Chainable<Element | any> {
         return cy.dataTestId(ApplicationEditPageConstants.APP_DELETE_ASSERTION_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the application delete assertion input.
@@ -241,7 +241,7 @@ export class ApplicationEditPage {
     public getDeleteAssertionInput(): Cypress.Chainable<JQuery<Element>> {
         return cy.dataTestId(ApplicationEditPageConstants.APP_DELETE_ASSERTION_INPUT_DATA_ATTR)
             .find("input");
-    };
+    }
 
     /**
      * Get the application delete confirm button.
@@ -249,7 +249,7 @@ export class ApplicationEditPage {
      */
     public getDeleteConfirmButton(): Cypress.Chainable<Element | any> {
         return cy.dataTestId(ApplicationEditPageConstants.APP_DELETE_CONFIRM_BUTTON_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the application delete confirm modal close button.
@@ -257,7 +257,7 @@ export class ApplicationEditPage {
      */
     public getDeleteConfirmModalCloseButton(): Cypress.Chainable<Element | any> {
         return cy.dataTestId(ApplicationEditPageConstants.APP_DELETE_CONFIRM_MODAL_CLOSE_BUTTON_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the application general settings form submit button.
@@ -265,14 +265,14 @@ export class ApplicationEditPage {
      */
     public getGeneralSettingsFormSubmitButton(): Cypress.Chainable<Element> {
         return cy.dataTestId(ApplicationEditPageConstants.GENERAL_SETTINGS_SUBMIT_BUTTON_DATA_ATTR);
-    };
+    }
 
     /**
      * Click on get the application general settings form submit button.
      */
     public clickOnGeneralSettingsFormSubmitButton(): void {
         this.getGeneralSettingsFormSubmitButton().click();
-    };
+    }
 
     /**
      * Get the protocol accordion.
@@ -280,7 +280,7 @@ export class ApplicationEditPage {
      */
     public getProtocolAccordion(): Cypress.Chainable<Element> {
         return cy.dataTestId(ApplicationEditPageConstants.PROTOCOL_ACCORDION_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the add protocol button.
@@ -288,7 +288,7 @@ export class ApplicationEditPage {
      */
     public getProtocolAddButton(): Cypress.Chainable<Element> {
         return cy.dataTestId(ApplicationEditPageConstants.ADD_PROTOCOL_BUTTON_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the add protocol wizard.
@@ -296,7 +296,7 @@ export class ApplicationEditPage {
      */
     public getProtocolAddWizard(): Cypress.Chainable<Element> {
         return cy.dataTestId(ApplicationEditPageConstants.ADD_PROTOCOL_WIZARD_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the add protocol wizard cancel button.
@@ -304,7 +304,7 @@ export class ApplicationEditPage {
      */
     public getProtocolAddWizardCancelButton(): Cypress.Chainable<Element> {
         return cy.dataTestId(ApplicationEditPageConstants.ADD_PROTOCOL_WIZARD_CANCEL_BUTTON_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the OIDC section on protocol accordion.
@@ -312,7 +312,7 @@ export class ApplicationEditPage {
      */
     public getProtocolAccordionOIDCItem(): Cypress.Chainable<Element> {
         return cy.dataTestId(ApplicationEditPageConstants.OIDC_PROTOCOL_ACCORDION_ITEM_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the chevron icon of OIDC section on protocol accordion.
@@ -320,7 +320,7 @@ export class ApplicationEditPage {
      */
     public getProtocolAccordionOIDCItemChevron(): Cypress.Chainable<Element> {
         return cy.dataTestId(ApplicationEditPageConstants.OIDC_PROTOCOL_ACCORDION_ITEM_CHEVRON_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the attribute selection list.
@@ -328,7 +328,7 @@ export class ApplicationEditPage {
      */
     public getAttributeSelectionList(): Cypress.Chainable<Element> {
         return cy.dataTestId(ApplicationEditPageConstants.ATTRIBUTE_SELECTION_LIST_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the subject attribute dropdown.
@@ -336,7 +336,7 @@ export class ApplicationEditPage {
      */
     public getSubjectAttributeDropdown(): Cypress.Chainable<Element> {
         return cy.dataTestId(ApplicationEditPageConstants.SUBJECT_ATTRIBUTE_DROPDOWN_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the include userstore checkbox.
@@ -344,7 +344,7 @@ export class ApplicationEditPage {
      */
     public getIncludeUserstoreCheckbox(): Cypress.Chainable<Element> {
         return cy.dataTestId(ApplicationEditPageConstants.INCLUDE_USERSTORE_CHECKBOX_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the include tenant domain checkbox.
@@ -352,7 +352,7 @@ export class ApplicationEditPage {
      */
     public getIncludeTenantDomainCheckbox(): Cypress.Chainable<Element> {
         return cy.dataTestId(ApplicationEditPageConstants.INCLUDE_TENANT_DOMAIN_CHECKBOX_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the use mapped local subject checkbox.
@@ -360,7 +360,7 @@ export class ApplicationEditPage {
      */
     public getUseMappedLocalSubjectCheckbox(): Cypress.Chainable<Element> {
         return cy.dataTestId(ApplicationEditPageConstants.USED_MAPPED_LOCAL_SUBJECT_CHECKBOX_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the role attribute dropdown
@@ -368,5 +368,5 @@ export class ApplicationEditPage {
      */
     public getRoleAttributeDropdown(): Cypress.Chainable<Element> {
         return cy.dataTestId(ApplicationEditPageConstants.ROLE_ATTRIBUTE_DROPDOWN_DATA_ATTR);
-    };
+    }
 }

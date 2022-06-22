@@ -16,15 +16,15 @@
  * under the License.
  */
 
-import { SVGRLoadedInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { SVGRLoadedInterface, IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import React, { PropsWithChildren, ReactElement, useEffect, useState } from "react";
+import React, { CSSProperties, PropsWithChildren, ReactElement, useEffect, useState } from "react";
 import { SemanticVERTICALALIGNMENTS } from "semantic-ui-react";
 
 /**
  * Proptypes for the Generic Icon component.
  */
-export interface GenericIconProps extends TestableComponentInterface {
+export interface GenericIconProps extends TestableComponentInterface, IdentifiableComponentInterface {
     /**
      * Render as.
      */
@@ -119,7 +119,7 @@ export interface GenericIconProps extends TestableComponentInterface {
     /**
      * Custom style object.
      */
-    style?: object;
+    style?: CSSProperties | undefined;
     /**
      * Should the icon be squared.
      * @deprecated use `shape` instead.
@@ -208,6 +208,7 @@ export const GenericIcon: React.FunctionComponent<PropsWithChildren<GenericIconP
         twoTone,
         verticalAlign,
         width,
+        [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId,
         [ "data-tourid" ]: tourId
     } = props;
@@ -395,6 +396,7 @@ export const GenericIcon: React.FunctionComponent<PropsWithChildren<GenericIconP
             style={ style }
             onClick={ onIconClickHandler }
             data-testid={ testId }
+            data-componentid={ componentId }
             data-tourid={ tourId }
         >
             { renderedIcon }
@@ -410,6 +412,7 @@ GenericIcon.defaultProps = {
     background: false,
     bordered: false,
     className: "",
+    "data-componentid": "generic-icon",
     "data-testid": "generic-icon",
     "data-tourid": null,
     defaultIcon: false,

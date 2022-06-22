@@ -52,6 +52,7 @@ export const getPrimaryUserStore = (): Promise<UserStoreDetails> => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
+
             return Promise.resolve(response.data);
         })
         .catch((error) => {
@@ -82,6 +83,7 @@ export const getAUserStore = (id: string): Promise<any> => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
+
             return Promise.resolve(response.data);
         })
         .catch((error) => {

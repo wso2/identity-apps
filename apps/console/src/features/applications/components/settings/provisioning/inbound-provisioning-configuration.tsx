@@ -130,7 +130,7 @@ export const InboundProvisioningConfigurations: FunctionComponent<InboundProvisi
      * @param {AccordionTitleProps} SegmentedAuthenticatedAccordion - Clicked title.
      */
     const handleAccordionOnClick = (e: MouseEvent<HTMLDivElement>,
-                                    SegmentedAuthenticatedAccordion: AccordionTitleProps): void => {
+        SegmentedAuthenticatedAccordion: AccordionTitleProps): void => {
         if (!SegmentedAuthenticatedAccordion) {
             return;
         }
@@ -138,6 +138,7 @@ export const InboundProvisioningConfigurations: FunctionComponent<InboundProvisi
 
         if (newIndexes.includes(SegmentedAuthenticatedAccordion.accordionIndex)) {
             const removingIndex = newIndexes.indexOf(SegmentedAuthenticatedAccordion.accordionIndex);
+
             newIndexes.splice(removingIndex, 1);
         } else {
             newIndexes.push(SegmentedAuthenticatedAccordion.accordionIndex);
@@ -148,6 +149,7 @@ export const InboundProvisioningConfigurations: FunctionComponent<InboundProvisi
 
     useEffect(() => {
         const userstore: SimpleUserStoreListItemInterface[] = [];
+
         userstore.push({
             id: "PRIMARY",
             name: "PRIMARY"

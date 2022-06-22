@@ -20,10 +20,12 @@ import { getAllLocalClaims } from "@wso2is/core/api";
 import { AlertLevels, Claim, ClaimsGetParams, ExternalClaim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
+import { Code } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Grid, Header } from "semantic-ui-react";
+import { Grid } from "semantic-ui-react";
+import { applicationConfig } from "../../../../../extensions";
 import { sortList } from "../../../../core";
 import { getAnExternalClaim, updateAnExternalClaim } from "../../../api";
 import { ClaimManagementConstants } from "../../../constants";
@@ -113,12 +115,13 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
     useEffect(() => {
         setIsClaimsLoading(true);
         const params: ClaimsGetParams = {
-            "exclude-identity-claims": true,
+            "exclude-identity-claims": applicationConfig.excludeIdentityClaims,
             filter: null,
             limit: null,
             offset: null,
             sort: null
         };
+
         getAllLocalClaims(params).then(response => {
             setIsClaimsLoading(false);
             setLocalClaims(sortList(response, "displayName", true));
@@ -159,6 +162,7 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
     useEffect(() => {
         if (externalClaims && localClaims && (claim || addedClaim)) {
             let tempLocalClaims: Claim[] = [ ...localClaims ];
+
             externalClaims.forEach((externalClaim: ExternalClaim) => {
                 tempLocalClaims = [ ...removeMappedLocalClaim(externalClaim.mappedLocalClaimURI, tempLocalClaims) ];
             });
@@ -172,9 +176,11 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
      */
     const resolveClaimURIName = (): string => {
         const parts: string[] = addedClaim.claimURI.split(":");
+
         if (parts.length > 1) {
             return parts[parts.length - 1];
         }
+
         return addedClaim.claimURI;
     };
 
@@ -185,11 +191,14 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
      */
     const resolveClaimURI = (values: Map<string, FormValue>): Map<string, FormValue> => {
         const parts: string[] = addedClaim.claimURI.split(":");
+
         if (parts.length > 1) {
             const claimURI: string = parts.filter((part,idx) => idx < parts.length - 1).join(":") +
                 ":" + values.get("claimURI");
+
             values.set("claimURI", claimURI);
         }
+
         return values;
     };
 
@@ -234,7 +243,7 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
                             {
                                 description: t("console:manage.features.claims.external.notifications." +
                                     "updateExternalAttribute.success.description",
-                                    { type: resolveType(attributeType) }),
+                                { type: resolveType(attributeType) }),
                                 level: AlertLevels.SUCCESS,
                                 message: t("console:manage.features.claims.external.notifications." +
                                     "updateExternalAttribute.success.message", { type: resolveType(attributeType) })
@@ -247,7 +256,7 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
                                 description: error?.description
                                     || t("console:manage.features.claims.external.notifications." +
                                         "updateExternalAttribute.genericError.description",
-                                        { type: resolveType(attributeType) }),
+                                    { type: resolveType(attributeType) }),
                                 level: AlertLevels.ERROR,
                                 message: error?.message
                                     || t("console:manage.features.claims.external.notifications." +
@@ -288,7 +297,8 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
                                                 validation.isValid = false;
                                                 validation.errorMessages.push(t("console:manage.features.claims." +
                                                     "external.forms.attributeURI.validationErrorMessages.duplicateName",
-                                                    { type: resolveType(attributeType) }));
+                                                { type: resolveType(attributeType) }));
+
                                                 break;
                                             }
                                         }
@@ -297,7 +307,7 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
                             </Grid.Column>
                         )
                     }
-                    <Grid.Column width={ 8 } className="select-attribute">
+                    <Grid.Column width={ 8 }>
                         <Field
                             type="dropdown"
                             name="localClaim"
@@ -314,16 +324,16 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
                                     return {
                                         key: index,
                                         text: (
-                                            <Header as="h6">
-                                                <Header.Content>
-                                                    { claim?.displayName }
-                                                    <Header.Subheader>
-                                                        <code className="inline-code compact transparent">
-                                                            { claim.claimURI }
-                                                        </code>
-                                                    </Header.Subheader>
-                                                </Header.Content>
-                                            </Header>),
+                                            <div className="multiline">
+                                                { claim?.displayName }
+                                                <Code 
+                                                    className="description" 
+                                                    compact 
+                                                    withBackground={ false }>
+                                                    { claim?.claimURI }
+                                                </Code>
+                                            </div>
+                                        ),
                                         value: claim?.claimURI
                                     };
                                 })

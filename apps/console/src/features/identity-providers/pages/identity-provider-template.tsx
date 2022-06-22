@@ -247,9 +247,8 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
 
         if (selectedTemplate) {
             setSelectedTemplate(selectedTemplate);
-
             eventPublisher.publish("connections-select-template", {
-                "type": selectedTemplate.templateId
+                type: selectedTemplate.templateId
             });
         }
 
@@ -464,7 +463,9 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                                             ) => (
                                                 <ResourceGrid.Card
                                                     key={ templateIndex }
-                                                    resourceName={ template.name }
+                                                    resourceName={
+                                                        template.name === "Enterprise" ? "Standard-Based IdP" : template.name
+                                                    }
                                                     isResourceComingSoon={ template.comingSoon }
                                                     disabled={ template.disabled }
                                                     comingSoonRibbonLabel={ t("common:comingSoon") }

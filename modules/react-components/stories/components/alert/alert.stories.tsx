@@ -18,10 +18,10 @@
  */
 
 import { boolean, number, select, text, withKnobs } from "@storybook/addon-knobs";
-import React, { ReactElement, useState } from "react";
-import { Alert } from "../../../src";
 import { AlertLevels } from "@wso2is/core/models";
+import React, { ReactElement, useState } from "react";
 import { meta } from "./alert.stories.meta";
+import { Alert } from "../../../src";
 
 export default {
     decorators: [ withKnobs ],

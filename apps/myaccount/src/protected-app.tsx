@@ -24,7 +24,7 @@ import {
     SecureApp,
     useAuthContext
 } from "@asgardeo/auth-react";
-import { AppConstants as AppConstantsCore } from "@wso2is/core/constants";
+import { AppConstants as AppConstantsCore, CommonConstants as CommonConstantsCore } from "@wso2is/core/constants";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     setDeploymentConfigs,
@@ -91,8 +91,15 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
         on(Hooks.SignIn, (response: BasicUserInfo) => {
             let logoutUrl;
             let logoutRedirectUrl;
+
+            const event = new Event(CommonConstantsCore.AUTHENTICATION_SUCCESSFUL_EVENT);
+
+            dispatchEvent(event);
+
+            const tenantDomain: string = AuthenticateUtils.deriveTenantDomainFromSubject(response.sub);
+
             // Update the app base name with the newly resolved tenant.
-            window[ "AppUtils" ].updateTenantQualifiedBaseName(response.tenantDomain);
+            window[ "AppUtils" ].updateTenantQualifiedBaseName(tenantDomain);
 
             dispatch(setDeploymentConfigs<DeploymentConfigInterface>(Config.getDeploymentConfig()));
             dispatch(
@@ -104,7 +111,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             // When the tenant domain changes, we have to reset the auth callback in session storage.
             // If not, it will hang and the app will be unresponsive with in the tab.
             // We can skip clearing the callback for super tenant since we do not put it in the path.
-            if (response.tenantDomain !== AppConstants.getSuperTenant()) {
+            if (tenantDomain !== AppConstants.getSuperTenant()) {
                 // If the auth callback already has the logged in tenant's path, we can skip the reset.
                 if (
                     !AuthenticateUtils.isValidAuthenticationCallbackUrl(

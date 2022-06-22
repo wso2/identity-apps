@@ -38,7 +38,7 @@ export class EmailTemplatesListPage {
      */
     public getTable(): Cypress.Chainable<Element> {
         return cy.dataTestId(EmailTemplatesListPageConstants.TABLE_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the email templates table body element.
@@ -46,7 +46,7 @@ export class EmailTemplatesListPage {
      */
     public getTableBody(): Cypress.Chainable<Element> {
         return cy.dataTestId(EmailTemplatesListPageConstants.TABLE_BODY_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the email templates table first element.
@@ -58,7 +58,7 @@ export class EmailTemplatesListPage {
                 cy.dataTestId("data-table-row")
                     .eq(0);
             });
-    };
+    }
 
     /**
      * Click on the email templates table first element's edit button.
@@ -68,7 +68,7 @@ export class EmailTemplatesListPage {
             .within(() => {
                 this.getTableItemEditButton().trigger("mouseover").click();
             });
-    };
+    }
 
     /**
      * Click on the email templates table first element's view button.
@@ -78,7 +78,7 @@ export class EmailTemplatesListPage {
             .within(() => {
                 this.getTableItemViewButton().trigger("mouseover").click();
             });
-    };
+    }
 
     /**
      * Get the the email templates table item heading.
@@ -86,7 +86,7 @@ export class EmailTemplatesListPage {
      */
     public getTableItemHeading(): Cypress.Chainable<Element> {
         return cy.dataTestId(EmailTemplatesListPageConstants.TABLE_ROW_HEADING_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the the email templates table item edit button.
@@ -94,7 +94,7 @@ export class EmailTemplatesListPage {
      */
     public getTableItemEditButton(): Cypress.Chainable<Element> {
         return cy.dataTestId(EmailTemplatesListPageConstants.TABLE_ROW_EDIT_BUTTON_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the the email templates table item view button.
@@ -102,7 +102,7 @@ export class EmailTemplatesListPage {
      */
     public getTableItemViewButton(): Cypress.Chainable<Element> {
         return cy.dataTestId(EmailTemplatesListPageConstants.TABLE_ROW_VIEW_BUTTON_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the email templates page layout header element.
@@ -110,7 +110,7 @@ export class EmailTemplatesListPage {
      */
     public getPageLayoutHeader(): Cypress.Chainable<Element> {
         return cy.dataTestId(EmailTemplatesListPageConstants.PAGE_LAYOUT_HEADER_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the email templates page layout header title element.
@@ -118,7 +118,7 @@ export class EmailTemplatesListPage {
      */
     public getPageLayoutHeaderTitle(): Cypress.Chainable<Element> {
         return cy.dataTestId(EmailTemplatesListPageConstants.PAGE_LAYOUT_HEADER_TITLE_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the email templates page layout header action element.
@@ -126,7 +126,7 @@ export class EmailTemplatesListPage {
      */
     public getPageLayoutHeaderAction(): Cypress.Chainable<Element> {
         return cy.dataTestId(EmailTemplatesListPageConstants.PAGE_LAYOUT_HEADER_ACTION);
-    };
+    }
 
     /**
      * Get the email templates list new placeholder element.
@@ -134,7 +134,7 @@ export class EmailTemplatesListPage {
      */
     public getNewTablePlaceholder(): Cypress.Chainable<Element> {
         return cy.dataTestId(EmailTemplatesListPageConstants.NEW_LIST_PLACEHOLDER);
-    };
+    }
 
     /**
      * Get the email templates list new placeholder action element.
@@ -143,7 +143,7 @@ export class EmailTemplatesListPage {
     public getNewTablePlaceholderAction(): Cypress.Chainable<JQuery<HTMLButtonElement>> {
         return cy.dataTestId(EmailTemplatesListPageConstants.NEW_LIST_PLACEHOLDER_ACTION_CONTAINER)
             .find("button");
-    };
+    }
 
     /**
      * Get the email templates view modal.
@@ -151,7 +151,7 @@ export class EmailTemplatesListPage {
      */
     public getEmailTemplateViewModal(): Cypress.Chainable<Element> {
         return cy.dataTestId(EmailTemplatesListPageConstants.TEMPLATE_VIEW_MODAL_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the email templates view modal cancel button.
@@ -159,26 +159,26 @@ export class EmailTemplatesListPage {
      */
     public getEmailTemplateViewModalCancelButton(): Cypress.Chainable<Element> {
         return cy.dataTestId(EmailTemplatesListPageConstants.TEMPLATE_VIEW_MODAL_CANCEL_BUTTON_DATA_ATTR);
-    };
+    }
 
     /**
      * Click on the email templates view modal cancel button.
      */
     public clickOnEmailTemplateViewModalCancelButton(): void {
         this.getEmailTemplateViewModalCancelButton().click();
-    };
+    }
 
     /**
      * Click on the new template button on the empty placeholder.
      */
     public clickOnNewTablePlaceholderAction(): void {
         this.getNewTablePlaceholderAction().click();
-    };
+    }
 
     /**
      * Click on the new template button.
      */
     public clickOnNewTemplateButton(): void {
         this.getPageLayoutHeaderAction().click();
-    };
+    }
 }

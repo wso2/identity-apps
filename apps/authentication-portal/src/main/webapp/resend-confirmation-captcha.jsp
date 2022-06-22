@@ -25,11 +25,13 @@
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.Arrays" %>
+<%@ page import="org.wso2.carbon.identity.captcha.util.CaptchaUtil" %>
 
 <%@ include file="includes/localize.jsp" %>
 <jsp:directive.include file="includes/init-url.jsp"/>
 
 <%
+    String UTF_8 = "UTF-8";
     boolean reCaptchaResendEnabled = false;
     if (request.getParameter("reCaptchaResend") != null && Boolean.parseBoolean(request.getParameter("reCaptchaResend"))) {
         reCaptchaResendEnabled = true;
@@ -51,8 +53,9 @@
 
     <%
         if (reCaptchaResendEnabled) {
+            String reCaptchaAPI = CaptchaUtil.reCaptchaAPIURL();
     %>
-        <script src='<%=(Encode.forJavaScriptSource(request.getParameter("reCaptchaAPI")))%>'></script>
+        <script src='<%=(Encode.forJavaScriptSource(reCaptchaAPI))%>'></script>
     <%
         }
     %>
@@ -78,17 +81,20 @@
                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "resend.confirmation.page.title")%>
                 </h3>
 
-                <form action="login.do?resend_username=<%=Encode.forHtml(request.getParameter("failedUsername"))%>&<%=AuthenticationEndpointUtil.cleanErrorMessages(Encode.forJava(request.getQueryString()))%>" method="post" id="resendForm">
-                
+                <form action="login.do?resend_username=<%=Encode.forHtml(URLEncoder.encode(request.getParameter("failedUsername"), UTF_8))%>&<%=AuthenticationEndpointUtil.cleanErrorMessages(Encode.forJava(request.getQueryString()))%>" method="post" id="resendForm">
+
                     <div><%=AuthenticationEndpointUtil.i18n(resourceBundle, "resend.confirmation.page.message")%></div>
-                    
+
                     <div class="ui divider hidden"></div>
-        
+
                     <div class="resend-captcha-container ui hidden" id="resend-captcha-container">
+                        <%
+                             String reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
+                        %>
                         <div class="field">
                             <div class="text-center>">
                                 <div class="g-recaptcha inline"
-                                    data-sitekey="<%=Encode.forHtmlContent(request.getParameter("reCaptchaKey"))%>"
+                                    data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>"
                                     data-testid="login-page-g-recaptcha-resend"
                                 >
                                 </div>
@@ -97,7 +103,7 @@
                             <div class="ui divider hidden"></div>
 
                             <div class="align-right buttons text-right">
-                                <a href="javascript:goBack()" class="ui button link-button">
+                                <a href="javascript:goBack()" class="ui button secondary">
                                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "Cancel")%>
                                 </a>
                                 <button id="recoverySubmit"
@@ -141,7 +147,7 @@
         $(document).ready(function () {
             <% if (reCaptchaResendEnabled) { %>
                 $("#resend-captcha-container").show();
-            <% } else { %> 
+            <% } else { %>
                 $("#resendForm").submit();
             <% } %>
         });

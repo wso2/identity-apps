@@ -17,9 +17,9 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Code } from "@wso2is/react-components";
+import { Code, Hint } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Checkbox, Icon, Input, Popup, Table } from "semantic-ui-react";
 import { ExtendedClaimMappingInterface } from "./attribute-settings";
@@ -49,6 +49,14 @@ interface AttributeListItemPropInterface extends TestableComponentInterface {
      * Make the form read only.
      */
     readOnly?: boolean;
+    /**
+     * Add a label.
+     */
+    label?: ReactNode;
+    /**
+     * Specify whether there is an OIDC mapping.
+     */
+     isOIDCMapping?: boolean;
 }
 
 /**
@@ -79,17 +87,20 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
         readOnly,
         deleteAttribute,
         subject,
+        label,
+        isOIDCMapping,
         [ "data-testid" ]: testId
     } = props;
 
     const { t } = useTranslation();
 
-    const [mappingOn, setMappingOn] = useState(false);
-    const [errorInClaimMapping, setErrorInClaimMapping] = useState(false);
-    const [mandatory, setMandatory] = useState(false);
-    const [requested, setRequested] = useState(true);
-    const [mappedAttribute, setMappedAttribute] = useState(claimURI);
-    const [defaultMappedAttribute, setDefaultMappedAttribute] = useState(mappedAttribute);
+    const [ mappingOn, setMappingOn ] = useState(false);
+    const [ errorInClaimMapping, setErrorInClaimMapping ] = useState(false);
+    const [ mandatory, setMandatory ] = useState(false);
+    const [ requested, setRequested ] = useState(true);
+    const [ mappedAttribute, setMappedAttribute ] = useState(claimURI);
+    const [ defaultMappedAttribute ] = useState(mappedAttribute);
+    const localDialectURI = "http://wso2.org/claims";
 
     const handleMandatoryCheckChange = () => {
         if (mandatory) {
@@ -102,7 +113,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
     };
 
     const handleClaimMapping = (e) => {
-        const mappingValue = e.target.value;
+        const mappingValue = e.target.value.replace(/[^\w+$:/.]/g, '');
 
         setMappedAttribute(mappingValue);
         updateMapping(claimURI, mappingValue);
@@ -115,17 +126,17 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
 
     useEffect(() => {
         setMandatory(initialMandatory);
-    }, [initialMandatory]);
+    }, [ initialMandatory ]);
 
     useEffect(() => {
         setRequested(initialRequested);
-    }, [initialRequested]);
+    }, [ initialRequested ]);
 
     useEffect(() => {
         if (isEmpty(mapping?.applicationClaim) && isEmpty(mapping)) {
             setErrorInClaimMapping(claimMappingError);
         }
-    }, [claimMappingError]);
+    }, [ claimMappingError ]);
 
     useEffect(() => {
         setMappingOn(claimMappingOn);
@@ -142,42 +153,64 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                 updateMapping(claimURI,defaultMappedAttribute);
             }
         }
-    }, [claimMappingOn]);
+    }, [ claimMappingOn ]);
 
     return (
         <Table.Row data-testid={ testId }>
             <Table.Cell>
-                <div>{ !localDialect ? localClaimDisplayName : displayName }</div>
+                <div>
+                    { !localDialect ? localClaimDisplayName : displayName }
+                </div>
+                { 
+                    isOIDCMapping ?
+                        (<Hint warning={ true } popup>
+                            {
+                                t("console:develop.features.applications.edit.sections.attributes" +
+                                    ".selection.mappingTable.listItem.faultyAttributeMappingHint")
+                            }
+                        </Hint>)
+                        : ""
+                }
                 {
                     <Popup
-                        content={ claimURI }
+                        content={ isOIDCMapping && claimURI.startsWith(localDialectURI)
+                            ? t("console:develop.features.applications.edit.sections.attributes" +
+                            ".selection.mappingTable.listItem.faultyAttributeMapping")
+                            : claimURI }
                         inverted
                         trigger={ (
-                            <Code compact withBackground={ false }>{ claimURI }</Code>
+                            <Code compact withBackground={ false }>
+                                { isOIDCMapping && claimURI.startsWith(localDialectURI)
+                                    ? t("console:develop.features.applications.edit.sections.attributes" +
+                                        ".selection.mappingTable.listItem.faultyAttributeMapping")
+                                    : claimURI }
+                            </Code>
                         ) }
                         position="bottom left">
                     </Popup>
                 }
+                <Hint warning={ true } hidden= { label ? false : true }>{ label }</Hint>
             </Table.Cell>
             {
-                localDialect && mappingOn &&
-                <>
-                    <Table.Cell error={ errorInClaimMapping }>
-                        <Input
-                            placeholder={
-                                t("console:develop.features.applications.edit.sections.attributes.selection" +
-                                    ".mappingTable.listItem.fields.claim.placeholder",
+                localDialect && mappingOn && (
+                    <>
+                        <Table.Cell error={ errorInClaimMapping }>
+                            <Input
+                                placeholder={
+                                    t("console:develop.features.applications.edit.sections.attributes" +
+                                        ".selection.mappingTable.listItem.fields.claim.placeholder",
                                     { name: displayName })
-                            }
-                            value={ mappingOn ? mappedAttribute : defaultMappedAttribute }
-                            onChange={ !readOnly && handleClaimMapping }
-                            disabled={ !mappingOn }
-                            readOnly={ readOnly }
-                            required
-                            error={ errorInClaimMapping }
-                        />
-                    </Table.Cell>
-                </>
+                                }
+                                value={ mappingOn ? mappedAttribute : defaultMappedAttribute }
+                                onChange={ !readOnly && handleClaimMapping }
+                                disabled={ !mappingOn }
+                                readOnly={ readOnly }
+                                required
+                                error={ errorInClaimMapping }
+                            />
+                        </Table.Cell>
+                    </>
+                )
             }
             <Table.Cell
                 { ...(localDialect && !mappingOn && { textAlign: "center" }) }
@@ -191,7 +224,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                                 checked={ initialMandatory || mandatory || subject }
                                 onClick={ !readOnly && handleMandatoryCheckChange }
                                 disabled={ mappingOn ? !requested : false }
-                                readOnly={ subject || readOnly }
+                                readOnly={ subject || readOnly || isOIDCMapping }
                             />
                         )
                     }
@@ -216,7 +249,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                     flowing = { subject }
                 />
             </Table.Cell>
-            { !readOnly && deleteAttribute ? (
+            { (!readOnly || isOIDCMapping) && deleteAttribute ? (
                 <Table.Cell textAlign="right">
                     <Popup
                         trigger={ (

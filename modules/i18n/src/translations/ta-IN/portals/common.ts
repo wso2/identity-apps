@@ -32,10 +32,10 @@ export const common: CommonNS = {
     approvalStatus: "அனுமதி நிலை",
     approve: "அனுமதி",
     apps: "செயலிகள்",
+    assignee: "ஒதுக்கப்பட்டவர்",
     assignees: "அளிக்கப்பட்டவர்கள்",
     authentication: "அங்கீகார",
     authenticator: "அங்கீகார",
-    // eslint-disable-next-line @typescript-eslint/camelcase
     authenticator_plural: "அங்கீகாரிகள்",
     back: "மீண்டும்",
     browser: "உலாவி",
@@ -43,7 +43,8 @@ export const common: CommonNS = {
     challengeQuestionNumber: "சவால் வினா {{number}}",
     change: "மாற்று",
     chunkLoadErrorMessage: {
-        description: "கோரப்பட்ட பயன்பாட்டிற்கு சேவை செய்யும் போது பிழை ஏற்பட்டது. பயன்பாட்டை மீண்டும் ஏற்ற முயற்சிக்கவும்.",
+        description: "கோரப்பட்ட பயன்பாட்டிற்கு சேவை செய்யும் போது பிழை ஏற்பட்டது. பயன்பாட்டை மீண்டும் " +
+            "ஏற்ற முயற்சிக்கவும்.",
         heading: "ஏதோ தவறு நடந்துவிட்டது",
         primaryActionText: "பயன்பாட்டை மீண்டும் ஏற்றவும்"
     },
@@ -109,10 +110,11 @@ export const common: CommonNS = {
     myAccount: "என் கணக்கு",
     name: "பெயர்",
     networkErrorMessage: {
-        description: "பயன்பாட்டை மீண்டும் ஏற்ற முயற்சிக்கவும்.",
-        heading: "ஏதோ தவறு நடந்துவிட்டது",
-        primaryActionText: "பயன்பாட்டை மீண்டும் ஏற்றவும்"
+        description: "மீண்டும் உள்நுழைய முயற்சிக்கவும்.",
+        heading: "உங்கள் அமர்வு காலாவதியாகி விட்டது",
+        primaryActionText: "உள்நுழையவும்"
     },
+    new: "புதிய",
     next: "அடுத்தது",
     okay: "சரி",
     operatingSystem: "இயங்கு தளம்",
@@ -121,6 +123,7 @@ export const common: CommonNS = {
     personalInfo: "பயனர் விபரம்",
     pin: "பொருத்து",
     pinned: "பொருத்தப்பட்டுள்ளது",
+    preview: "முன்னோட்ட",
     previous: "பின் செல்",
     priority: "முன்னுரிமை",
     privacy: "தனியுரிமை",

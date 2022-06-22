@@ -62,7 +62,7 @@ export interface BasicProfileInterface {
     userName?: string;
     /* eslint-disable @typescript-eslint/no-explicit-any */
     [ key: string ]: any;
-    isReadOnly: boolean;
+    isReadOnly: string;
 }
 
 /**
@@ -172,7 +172,7 @@ export interface ReadOnlyUserStatus {
     id: string;
     schemas: string[];
      [key: string]: {
-        isReadOnlyUser: boolean;
+        isReadOnlyUser: string;
     } | any;
 }
 
@@ -200,7 +200,7 @@ export const emptyProfileCompletion = (): ProfileCompletion => ({
 export const createEmptyProfile = (): BasicProfileInterface => ({
     email: "",
     emails: [],
-    isReadOnly: true,
+    isReadOnly: "true",
     isSecurity: false,
     name: {
         familyName: "",

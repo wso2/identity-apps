@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Segment, SegmentProps } from "semantic-ui-react";
@@ -24,7 +24,9 @@ import { Segment, SegmentProps } from "semantic-ui-react";
 /**
  * Prop types for the emphasized segment component.
  */
-export interface EmphasizedSegmentPropsInterface extends SegmentProps, TestableComponentInterface {
+export interface EmphasizedSegmentPropsInterface extends SegmentProps, IdentifiableComponentInterface,
+    TestableComponentInterface {
+
     /**
      * Should the segment be bordered.
      */
@@ -51,6 +53,7 @@ export const EmphasizedSegment: FunctionComponent<EmphasizedSegmentPropsInterfac
         className,
         children,
         emphasized,
+        [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId,
         ...rest
     } = props;
@@ -64,7 +67,12 @@ export const EmphasizedSegment: FunctionComponent<EmphasizedSegmentPropsInterfac
     );
 
     return (
-        <Segment className={ classes } data-testid={ testId } { ...rest }>
+        <Segment
+            className={ classes }
+            data-componentid={ componentId }
+            data-testid={ testId }
+            { ...rest }
+        >
             { children }
         </Segment>
     );
@@ -76,6 +84,7 @@ export const EmphasizedSegment: FunctionComponent<EmphasizedSegmentPropsInterfac
 EmphasizedSegment.defaultProps =  {
     basic: true,
     bordered: true,
+    "data-componentid": "emphasized-segment",
     "data-testid": "emphasized-segment",
     emphasized: true
 };

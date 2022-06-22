@@ -74,6 +74,7 @@ export class ClaimManagementConstants {
     // API errors
     public static readonly ADD_DIALECT_REQUEST_INVALID_STATUS_CODE_ERROR: string = "Received an invalid " +
         "status code while adding a new dialect.";
+
     public static readonly ADD_LOCAL_CLAIM_REQUEST_INVALID_STATUS_CODE_ERROR: string = "Received an invalid " +
         "status code while adding a new dialect.";
 
@@ -112,16 +113,11 @@ export class ClaimManagementConstants {
         ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM_SCHEMAS_CORE")
     ]
 
+    public static readonly CUSTOM_MAPPING: string = SCIMConfigs.custom;
+
     public static readonly OIDC_MAPPING: string[] = [
         SCIMConfigs.oidc
     ];
-
-    public static readonly SCIM_MAPPING: string[] = [
-        "urn:ietf:params:scim:schemas:core:2.0:User",
-        "urn:scim:schemas:core:1.0",
-        "urn:ietf:params:scim:schemas:core:2.0",
-        "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User"
-    ]
 
     public static readonly OIDC: string = "oidc";
     public static readonly SCIM: string = "scim";
@@ -132,7 +128,7 @@ export class ClaimManagementConstants {
         { name: "User Schema", uri: "urn:ietf:params:scim:schemas:core:2.0:User" },
         { name: "Enterprise Schema", uri: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User" },
         { name: "Core 1.0 Schema", uri: "urn:scim:schemas:core:1.0" }
-    ]
+    ];
 
     /**
      * Display names of User Id & Username to 

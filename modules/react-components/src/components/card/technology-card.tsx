@@ -16,18 +16,20 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import React, { FunctionComponent, ReactElement, useState } from "react";
+import kebabCase from "lodash-es/kebabCase";
+import React, { CSSProperties, FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Card, CardProps, Dimmer } from "semantic-ui-react";
 import { GenericIcon } from "../icon";
-import kebabCase from "lodash-es/kebabCase";
 
 /**
  * Proptypes for the selection card component.
  */
-export interface TechnologyCardPropsInterface extends Omit<CardProps, "image">, TestableComponentInterface {
+export interface TechnologyCardPropsInterface extends Omit<CardProps, "image">, IdentifiableComponentInterface,
+    TestableComponentInterface {
+
     /**
      * Is card disabled.
      */
@@ -60,6 +62,10 @@ export interface TechnologyCardPropsInterface extends Omit<CardProps, "image">, 
      * Should the card be formatted to raise above the page.
      */
     raised?: boolean;
+    /**
+     * Resolve i18n tag for feature available content
+     */
+    featureAvailable?: string;
 }
 
 /**
@@ -75,7 +81,6 @@ export const TechnologyCard: FunctionComponent<TechnologyCardPropsInterface> = (
 
     const {
         className,
-        description,
         disabled,
         displayName,
         image,
@@ -83,14 +88,13 @@ export const TechnologyCard: FunctionComponent<TechnologyCardPropsInterface> = (
         onClick,
         overlayOpacity,
         raised,
-        [ "data-testid" ]: testId,
-        ...rest
+        featureAvailable,
+        [ "data-componentid" ]: componentId,
+        [ "data-testid" ]: testId
     } = props;
 
-    const { t } = useTranslation();
-
     const classes = classNames(
-        "tech-selection basic-card",
+        "tech-selection basic-card rounded mb-1",
         {
             "disabled no-hover": disabled
         },
@@ -102,49 +106,62 @@ export const TechnologyCard: FunctionComponent<TechnologyCardPropsInterface> = (
     /**
      * Inline styles for image container.
      */
-    const imageContainerStyles = (): object => {
+    const imageContainerStyles = (): CSSProperties | undefined => {
 
         return {
+            display: "flex",
+            height: "100%",
+            justifyContent: "center",
             opacity: disabled ? overlayOpacity : 1
         };
     };
 
     return (
-        <Card
-            as={ "div" }
-            link={ false }
-            key={ key }
-            raised={ raised }
-            data-testid={
-                testId ?? `technology-card-${ kebabCase(displayName) }`
-            }
-            className={ classes }
-            onClick={ !disabled && onClick }
-            onMouseEnter={ () => setDimmerState(true) }
-            onMouseLeave={ () => setDimmerState(false) }
-        >
-            {
-                disabled && (
-                    <Dimmer className="lighter" active={ dimmerState }>
-                        { t("common:featureAvailable" ) }
-                    </Dimmer>
-                )
-            }
-            <Card.Content
-                textAlign="center"
-                style={ imageContainerStyles() }
+        <div className="tech-selection-wrapper">
+            <Card
+                as={ "div" }
+                link={ false }
+                key={ key }
+                raised={ raised }
+                data-componentid={ componentId ?? `technology-card-${ kebabCase(displayName) }` }
+                data-testid={ testId ?? `technology-card-${ kebabCase(displayName) }` }
+                className={ classes }
+                onClick={ !disabled && onClick }
+                onMouseEnter={ () => setDimmerState(true) }
+                onMouseLeave={ () => setDimmerState(false) }
             >
-                <GenericIcon
-                    transparent
-                    size="x50"
-                    className="mb-2"
-                    icon={ image }
-                />
-                <Card.Description>
-                    { displayName }
-                </Card.Description>
-            </Card.Content>
-        </Card>
+                {
+                    disabled && (
+                        <Dimmer className="lighter" active={ dimmerState }>
+                            { featureAvailable
+                                ? featureAvailable
+                                : "This feature will be available soon!" }
+                        </Dimmer>
+                    )
+                }
+                <Card.Content
+                    textAlign="center"
+                    style={ imageContainerStyles() }
+                >
+                    <GenericIcon
+                        transparent
+                        size="x50"
+                        icon={ image }
+                    />
+                </Card.Content>
+            </Card>
+            <div
+                data-componentid={ `technology-card-alias-${ kebabCase(displayName) }` }
+                className={
+                    classNames("name", {
+                        "tech-name-visible": dimmerState,
+                        "tech-name-hidden": !dimmerState
+                    })
+                }>
+                { displayName }
+            </div>
+        </div>
+
     );
 };
 
@@ -152,5 +169,6 @@ export const TechnologyCard: FunctionComponent<TechnologyCardPropsInterface> = (
  * Default props for the technology card component.
  */
 TechnologyCard.defaultProps = {
-    "data-testid": "technology-card",
+    "data-componentid": "technology-card",
+    "data-testid": "technology-card"
 };

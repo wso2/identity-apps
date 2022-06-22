@@ -40,6 +40,7 @@
 <%@ page import="org.apache.http.client.utils.URIBuilder" %>
 <%@ page import="java.net.URI" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.User" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClient" %>
 
 <jsp:directive.include file="includes/localize.jsp"/>
 <jsp:directive.include file="tenant-resolve.jsp"/>
@@ -50,6 +51,7 @@
     String PASSWORD_RESET_PAGE = "password-reset.jsp";
     String AUTO_LOGIN_COOKIE_NAME = "ALOR";
     String AUTO_LOGIN_FLOW_TYPE = "RECOVERY";
+    String AUTO_LOGIN_COOKIE_DOMAIN = "AutoLoginCookieDomain";
     String passwordHistoryErrorCode = "22001";
     String passwordPatternErrorCode = "20035";
     String confirmationKey =
@@ -58,8 +60,9 @@
     String callback = request.getParameter("callback");
     String userStoreDomain = request.getParameter("userstoredomain");
     String username = null;
-    boolean isAutoLoginEnable = Boolean.parseBoolean(Utils.getConnectorConfig("Recovery.AutoLogin.Enable",
-            tenantDomain));
+    PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
+    Boolean isAutoLoginEnable = preferenceRetrievalClient.checkAutoLoginAfterPasswordRecoveryEnabled(tenantDomain);
+    String sessionDataKey = StringUtils.EMPTY;
 
     if (StringUtils.isBlank(callback)) {
         callback = IdentityManagementEndpointUtil.getUserPortalUrl(
@@ -97,10 +100,14 @@
                     username = userStoreDomain + "/" + username + "@" + tenantDomain;
                 }
                 
+                String cookieDomain = application.getInitParameter(AUTO_LOGIN_COOKIE_DOMAIN);
                 JSONObject contentValueInJson = new JSONObject();
                 contentValueInJson.put("username", username);
                 contentValueInJson.put("createdTime", System.currentTimeMillis());
                 contentValueInJson.put("flowType", AUTO_LOGIN_FLOW_TYPE);
+                if (StringUtils.isNotBlank(cookieDomain)) {
+                    contentValueInJson.put("domain", cookieDomain);
+                }
                 String content = contentValueInJson.toString();
         
                 JSONObject cookieValueInJson = new JSONObject();
@@ -114,7 +121,22 @@
                 cookie.setPath("/");
                 cookie.setSecure(true);
                 cookie.setMaxAge(300);
+                if (StringUtils.isNotBlank(cookieDomain)) {
+                    cookie.setDomain(cookieDomain);
+                }
                 response.addCookie(cookie);
+
+                if (callback.contains("?")) {
+                    String queryParams = callback.substring(callback.indexOf("?") + 1);
+                    String[] parameterList = queryParams.split("&");
+                    Map<String, String> queryMap = new HashMap<>();
+                    for (String param : parameterList) {
+                        String key = param.substring(0, param.indexOf("="));
+                        String value = param.substring(param.indexOf("=") + 1);
+                        queryMap.put(key, value);
+                    }
+                    sessionDataKey = queryMap.get("sessionDataKey");
+                }
             }
         } catch (ApiException e) {
 
@@ -169,6 +191,17 @@
 </head>
 <body>
 
+<div>
+    <form id="callbackForm" name="callbackForm" method="post" action="/commonauth">
+        <div>
+            <input type="hidden" name="username" value="<%=Encode.forHtmlAttribute(username)%>"/>
+        </div>
+        <div>
+            <input type="hidden" name="sessionDataKey" value="<%=Encode.forHtmlAttribute(sessionDataKey)%>"/>
+        </div>
+    </form>
+</div>
+
     <!-- footer -->
     <%
         File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
@@ -181,22 +214,27 @@
 
     <script type="application/javascript">
         $(document).ready(function () {
-
             <%
                 try {
+                    if (isAutoLoginEnable && StringUtils.isNotBlank(sessionDataKey) && (StringUtils.isNotBlank(username))) {
+                        %>
+                        document.callbackForm.submit();
+                        <%
+                    } else {
                         URIBuilder callbackUrlBuilder = new
                                 URIBuilder(IdentityManagementEndpointUtil.encodeURL(callback));
                         URI callbackUri = callbackUrlBuilder.addParameter("passwordReset", "true").build();
-                    %>
-                    location.href = "<%=callbackUri.toString()%>";
-                    <%
-                    } catch (URISyntaxException e) {
-                        request.setAttribute("error", true);
-                        request.setAttribute("errorMsg", "Invalid callback URL found in the request.");
-                        request.getRequestDispatcher("error.jsp").forward(request, response);
-                        return;
+                        %>
+                        location.href = "<%=callbackUri.toString()%>";
+                        <%
                     }
-            %>
+                } catch (URISyntaxException e) {
+                    request.setAttribute("error", true);
+                    request.setAttribute("errorMsg", "Invalid callback URL found in the request.");
+                    request.getRequestDispatcher("error.jsp").forward(request, response);
+                    return;
+            }
+    %>
 
         });
     </script>

@@ -65,6 +65,13 @@ export interface ProtocolCardPropsInterface extends Omit<CardProps, "image">, Te
 }
 
 /**
+ * Proptypes for Container Styles.
+ */
+export interface ImageContainerStylesPropsInterface {
+    opacity: number;
+}
+
+/**
  * Technology card component.
  *
  * @param {ProtocolCardPropsInterface} props - Props injected to the components.
@@ -77,7 +84,6 @@ export const ProtocolCard: FunctionComponent<ProtocolCardPropsInterface> = (
 
     const {
         className,
-        description,
         disabled,
         displayName,
         image,
@@ -87,8 +93,7 @@ export const ProtocolCard: FunctionComponent<ProtocolCardPropsInterface> = (
         raised,
         showOption,
         iconClass,
-        [ "data-testid" ]: testId,
-        ...rest
+        [ "data-testid" ]: testId
     } = props;
 
     const { t } = useTranslation();
@@ -107,7 +112,7 @@ export const ProtocolCard: FunctionComponent<ProtocolCardPropsInterface> = (
     /**
      * Inline styles for image container.
      */
-    const imageContainerStyles = (): object => {
+    const imageContainerStyles = (): ImageContainerStylesPropsInterface => {
 
         return {
             opacity: disabled ? overlayOpacity : 1

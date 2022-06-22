@@ -59,12 +59,12 @@ export const CertificateFormFieldModal: FunctionComponent<CertificateFormFieldMo
             <p className="certificate-field">
                 We were unable to read this certificate. Currently we only
                 support displaying public key information in certificate types of {
-                CertificateManagementConstants.SUPPORTED_KEY_ALGORITHMS.map((algo, index) => (
-                    <span key={ `${ algo }+${ index }` }>
-                        <Code>{ algo }</Code>&nbsp;
-                    </span>
-                ))
-            } key algorithms. Support for <strong>Elliptic Curve Cryptography</strong>&nbsp;
+                    CertificateManagementConstants.SUPPORTED_KEY_ALGORITHMS.map((algo, index) => (
+                        <span key={ `${ algo }+${ index }` }>
+                            <Code>{ algo }</Code>&nbsp;
+                        </span>
+                    ))
+                } key algorithms. Support for <strong>Elliptic Curve Cryptography</strong>&nbsp;
                 key algorithms will be enabled soon.
             </p>
         </Segment>
@@ -89,12 +89,12 @@ export const CertificateFormFieldModal: FunctionComponent<CertificateFormFieldMo
                     />
                     <div className="certificate-alias">
                         View Certificate - {
-                        certificate?.alias
-                            ? certificate?.alias
-                            : certificate?.issuerDN && (
-                            CertificateManagementUtils.searchIssuerDNAlias(certificate?.issuerDN)
-                        )
-                    }
+                            certificate?.alias
+                                ? certificate?.alias
+                                : certificate?.issuerDN && (
+                                    CertificateManagementUtils.searchIssuerDNAlias(certificate?.issuerDN)
+                                )
+                        }
                     </div><br/>
                     <div className="certificate-serial">Serial Number: { certificate?.serialNumber }</div>
                 </div>

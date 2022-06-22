@@ -21,7 +21,6 @@ import { UserstoreConstants } from "@wso2is/core/constants";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { PrimaryButton } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
-import { generate } from "generate-password";
 import React, { ReactElement, Suspense, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -37,6 +36,7 @@ import {
 } from "../../userstores";
 import { getUsersList } from "../api";
 import { BasicUserDetailsInterface } from "../models";
+import { generatePassword } from "../utils";
 
 /**
  * import pass strength bat dynamically.
@@ -78,7 +78,6 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
     ] = useState<string>(PRIMARY_USERSTORE_PROPERTY_VALUES.UsernameJavaScriptRegEx);
     const [ isUsernameRegExLoading, setUsernameRegExLoading ] = useState<boolean>(false);
     const [ password, setPassword ] = useState<string>("");
-    const [ passwordScore, setPasswordScore ] = useState<number>(-1);
     const confirmPasswordRef = useRef<HTMLDivElement>();
 
     const { t } = useTranslation();
@@ -136,6 +135,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
      */
     const handleUserStoreChange = (values: Map<string, FormValue>): void => {
         const domain: string = values.get("domain").toString();
+
         setUserStore(domain);
         setUserStoreRegEx(domain)
             .finally(() => {
@@ -169,6 +169,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
      */
     const handlePasswordChange = (values: Map<string, FormValue>): void => {
         const password: string = values.get("newPassword").toString();
+
         setPassword(password);
     };
 
@@ -176,9 +177,10 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
      * The following function generate a random password.
      */
     const generateRandomPassword = (): void => {
-        const genPasswrod = generate({ length: 11, numbers: true, symbols: true, uppercase: true });
-        setPassword(genPasswrod);
-        setRandomPassword(genPasswrod);
+        const generatedPassword: string = generatePassword(11, true, true, true, true, 1, 1, 1, 1);
+
+        setPassword(generatedPassword);
+        setRandomPassword(generatedPassword);
     };
 
     /**
@@ -186,18 +188,19 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
      */
     const getUserStores = (): void => {
         const storeOptions = [
-                {
-                    key: -1,
-                    text: t("console:manage.features.users.userstores.userstoreOptions.primary"),
-                    value: "primary"
-                }
-            ];
+            {
+                key: -1,
+                text: t("console:manage.features.users.userstores.userstoreOptions.primary"),
+                value: "primary"
+            }
+        ];
         let storeOption =
             {
                 key: null,
                 text: "",
                 value: ""
             };
+
         getUserStoreList()
             .then((response) => {
                 if (storeOptions === []) {
@@ -261,6 +264,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                             <Field
                                 data-testid="user-mgt-add-user-form-newPassword-input"
+                                className="addon-field-wrapper"
                                 hidePassword={ t("common:hidePassword") }
                                 label={ t(
                                     "console:manage.features.user.forms.addUserForm.inputs.newPassword.label"
@@ -283,6 +287,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                                     triggerConfirmPasswordInputValidation();
 
                                     let passwordRegex = "";
+
                                     if (userStore !== UserstoreConstants.PRIMARY_USER_STORE) {
                                         // Set the username regEx of the secondary user store.
                                         passwordRegex
@@ -306,9 +311,6 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                             <Suspense fallback={ null } >
                                 <PasswordMeter
                                     password={ password }
-                                    onChangeScore={ (score: number) => {
-                                        setPasswordScore(score);
-                                    } }
                                     scoreWords={ [
                                         t("common:tooShort"),
                                         t("common:weak"),
@@ -336,6 +338,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                             <Field
                                 ref={ confirmPasswordRef }
                                 data-testid="user-mgt-add-user-form-confirmPassword-input"
+                                className="addon-field-wrapper"
                                 hidePassword={ t("common:hidePassword") }
                                 label={ t(
                                     "console:manage.features.user.forms.addUserForm.inputs.confirmPassword.label"
@@ -453,6 +456,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                                     if (value) {
                                         const usersList
                                             = await getUsersList(null, null, "userName eq " + value, null, userStore);
+                                            
                                         if (usersList?.totalResults > 0) {
                                             validation.isValid = false;
                                             validation.errorMessages.push(USER_ALREADY_EXIST_ERROR_MESSAGE);
@@ -561,7 +565,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                         />
                     </Grid.Column>
                 </Grid.Row>
-                { emailVerificationEnabled &&
+                { emailVerificationEnabled && (
                     <Grid.Row columns={ 1 }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                             <Field
@@ -576,7 +580,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                             />
                         </Grid.Column>
                     </Grid.Row>
-                }
+                ) }
                 { handlePasswordOptions() }
             </Grid>
         </Forms>

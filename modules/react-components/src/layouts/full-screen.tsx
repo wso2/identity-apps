@@ -16,18 +16,24 @@
  * under the License.
  */
 
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
+
+/**
+ * Proptypes for the Full screen layout.
+ */
+export type FullScreenLayoutPropsInterface = IdentifiableComponentInterface;
 
 /**
  * Full screen layout.
  * Used to render features which has to be rendered in full screen mode.
  *
- * @param {React.PropsWithChildren<{}>} props - Props injected to the component.
+ * @param {React.PropsWithChildren<FullScreenLayoutPropsInterface>} props - Props injected to the component.
  *
  * @return {React.ReactElement}
  */
-export const FullScreenLayout: FunctionComponent<PropsWithChildren<{}>> = (
-    props: PropsWithChildren<{}>
+export const FullScreenLayout: FunctionComponent<PropsWithChildren<FullScreenLayoutPropsInterface>> = (
+    props: PropsWithChildren<FullScreenLayoutPropsInterface>
 ): ReactElement => {
 
     const {

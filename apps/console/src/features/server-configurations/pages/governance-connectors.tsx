@@ -70,7 +70,6 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
     const ScrollTopPosition = headerHeight + UIConstants.PAGE_SCROLL_TOP_PADDING;
 
     useEffect(() => {
-
         // If Governance Connector read permission is not available, prevent from trying to load the connectors.
         if (!hasRequiredScopes(featureConfig?.governanceConnectors,
             featureConfig?.governanceConnectors?.scopes?.read,
@@ -82,9 +81,10 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
         loadCategoryConnectors();
     }, []);
 
+    const path: string[] = history.location.pathname.split("/");
+    const categoryId: string = path[ path.length - 1 ];
+
     const loadCategoryConnectors = () => {
-        const path = history.location.pathname.split("/");
-        const categoryId = path[ path.length - 1 ];
 
         getConnectorCategory(categoryId)
             .then((response: GovernanceConnectorCategoryInterface) => {
@@ -141,8 +141,12 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
                     ? connectorCategory.description
                     : connectorCategory?.name
                     && t("console:manage.features.governanceConnectors.connectorSubHeading", {
-                        name: connectorCategory.name
-                    }))
+                        name: 
+                        categoryId === ServerConfigurationsConstants.OTHER_SETTINGS_CONNECTOR_CATEGORY_ID 
+                            ? connectorCategory.name.split(" ")[0] 
+                            : connectorCategory.name 
+                    })
+                )
             }
             data-testid={ `${testId}-page-layout` }
         >
@@ -169,9 +173,9 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
                                             return (
                                                 serverConfigurationConfig.renderConnectorWithinEmphasizedSegment
                                                     ?
-                                                    <EmphasizedSegment key={ index } padded="very">
+                                                    (<EmphasizedSegment key={ index } padded="very">
                                                         { connectorElement }
-                                                    </EmphasizedSegment>
+                                                    </EmphasizedSegment>)
                                                     : connectorElement
                                             );
                                         }
@@ -179,7 +183,7 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
                                     : null
                             }
                             { serverConfigurationConfig.showGovernanceConnectorCategories &&
-                            <Rail
+                            (<Rail
                                 className="non-emphasized"
                                 position="right"
                                 close="very"
@@ -233,7 +237,7 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
                                         )
                                     }
                                 </Sticky>
-                            </Rail>
+                            </Rail>)
                             }
                         </Grid.Column>
                     </Grid.Row>

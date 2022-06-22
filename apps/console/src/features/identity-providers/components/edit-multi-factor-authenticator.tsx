@@ -156,7 +156,7 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
                     dispatch(addAlert({
                         description: t("console:develop.features.authenticationProvider" +
                             ".notifications.updateEmailOTPAuthenticator.error.description",
-                            { description: error.response.data.description }),
+                        { description: error.response.data.description }),
                         level: AlertLevels.ERROR,
                         message: t("console:develop.features.authenticationProvider" +
                             ".notifications.updateEmailOTPAuthenticator.error.message")
@@ -220,7 +220,7 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
     const getPanes = (): ({
         pane?: SemanticShorthandItem<TabPaneProps>;
         menuItem?: any;
-        render?: () => React.ReactNode
+        render?: () => React.ReactNode;
     })[] => {
 
         const panes: {
@@ -233,8 +233,14 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
             panes.push(...tabPaneExtensions);
         }
 
-        // If the MFA is TOTP, skip the settings tab.
-        if (authenticator.id !== IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID) {
+        // If the MFA is TOTP/FIDO/Magic Link skip the settings tab.
+        if (
+            ![
+                IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID,
+                IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID,
+                IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID
+            ].includes(authenticator.id)
+        ) {
             panes.push({
                 menuItem: t("console:develop.features.authenticationProvider.edit.common.settings.tabName"),
                 render: AuthenticatorSettingsTabPane
@@ -270,7 +276,11 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
      */
     const resolveDefaultActiveIndex = (activeIndex: number): number => {
 
-        if (authenticator.id !== IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID) {
+        if (![
+            IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID,
+            IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID,
+            IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID
+        ].includes(authenticator.id)) {
             return activeIndex;
         }
 

@@ -294,6 +294,7 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                                             ? (
                                                 <Field
                                                     name={ property.name }
+                                                    className="addon-field-wrapper"
                                                     type="password"
                                                     key={ index }
                                                     required={ true }

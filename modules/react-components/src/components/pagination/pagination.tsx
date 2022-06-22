@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import {
@@ -30,7 +30,9 @@ import {
 /**
  * Prop types for the pagination component.
  */
-export interface PaginationPropsInterface extends PaginationProps, TestableComponentInterface {
+export interface PaginationPropsInterface extends PaginationProps, IdentifiableComponentInterface,
+    TestableComponentInterface {
+
     /**
      * Additional CSS classes.
      */
@@ -146,6 +148,7 @@ export const Pagination: FunctionComponent<PaginationPropsInterface> = (
         showItemsPerPageDropdown,
         showPagesOnMinimalMode,
         totalPages,
+        [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId,
         ...rest
     } = props;
@@ -167,7 +170,7 @@ export const Pagination: FunctionComponent<PaginationPropsInterface> = (
         const options = [];
 
         for (let i = itemsPerPageDropdownLowerLimit; i <= itemsPerPageDropdownUpperLimit;
-             i += itemsPerPageDropdownMultiple) {
+            i += itemsPerPageDropdownMultiple) {
             options.push({
                 key: i,
                 text: i,
@@ -208,6 +211,7 @@ export const Pagination: FunctionComponent<PaginationPropsInterface> = (
                 <label className="page-limit-label">
                     { itemsPerPageDropdownLabel }
                     <Dropdown
+                        data-componentid={ `${ componentId }-items-per-page-dropdown` }
                         data-testid={ `${ testId }-items-per-page-dropdown` }
                         className="labeled horizontal right page-limit-dropdown"
                         compact
@@ -231,6 +235,7 @@ export const Pagination: FunctionComponent<PaginationPropsInterface> = (
                         { ...rest }
                         totalPages={ totalPages }
                         className="list-pagination"
+                        data-componentid={ `${ componentId }-steps` }
                         data-testid={ `${ testId }-steps` }
                         activePage={ activePage }
                         onPageChange={ pageChangeHandler }
@@ -264,6 +269,7 @@ export const Pagination: FunctionComponent<PaginationPropsInterface> = (
                     { ...rest }
                     totalPages={ totalPages }
                     className="list-pagination"
+                    data-componentid={ `${ componentId }-steps` }
                     data-testid={ `${ testId }-steps` }
                     activePage={ activePage }
                     onPageChange={ pageChangeHandler }
@@ -273,7 +279,11 @@ export const Pagination: FunctionComponent<PaginationPropsInterface> = (
     };
 
     return (
-        <div className={ classes } data-testid={ testId }>
+        <div
+            className={ classes }
+            data-componentid={ componentId }
+            data-testid={ testId }
+        >
             { renderChildren() }
         </div>
     );
@@ -283,6 +293,7 @@ export const Pagination: FunctionComponent<PaginationPropsInterface> = (
  * Prop types for the Pagination component.
  */
 Pagination.defaultProps =  {
+    "data-componentid": "pagination",
     "data-testid": "pagination",
     float: "right",
     itemsPerPageDropdownLabel: "Items per page",

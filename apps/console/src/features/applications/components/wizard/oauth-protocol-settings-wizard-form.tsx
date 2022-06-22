@@ -19,13 +19,13 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { URLUtils } from "@wso2is/core/utils";
 import { Field, FormValue, Forms } from "@wso2is/forms";
-import { ContentLoader, Hint, LinkButton, URLInput } from "@wso2is/react-components";
+import { ContentLoader, Hint, LinkButton, Message, URLInput } from "@wso2is/react-components";
 import intersection from "lodash-es/intersection";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Grid, Icon, Message } from "semantic-ui-react";
+import { Grid } from "semantic-ui-react";
 import { AppState, ConfigReducerStateInterface } from "../../../../features/core";
 import { getAuthProtocolMetadata } from "../../api";
 import SinglePageApplicationTemplate
@@ -89,6 +89,7 @@ interface OAuthProtocolSettingsWizardFormPropsInterface extends TestableComponen
      */
     isProtocolConfig?: boolean;
     addOriginByDefault?: boolean;
+    isAllowEnabled?: boolean;
 }
 
 /**
@@ -115,6 +116,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
         showCallbackURL,
         tenantDomain,
         addOriginByDefault,
+        isAllowEnabled,
         [ "data-testid" ]: testId
     } = props;
 
@@ -228,9 +230,11 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
      */
     const buildCallBackUrlWithRegExp = (urls: string): string => {
         let callbackURL = urls?.replace(/['"]+/g, "");
+
         if (callbackURL?.split(",").length > 1) {
             callbackURL = "regexp=(" + callbackURL?.split(",").join("|") + ")";
         }
+
         return callbackURL;
     };
 
@@ -246,6 +250,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
             url = url.replace(")", "");
             url = url.split("|").join(",");
         }
+
         return url;
     };
 
@@ -302,7 +307,8 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
         const normalizedOrigins = calBackUrls?.map(
             (url) => URLUtils.urlComponents(url)?.origin
         );
-        return [...new Set(normalizedOrigins.filter(value => allowCORSUrls.includes(value)))];
+
+        return [ ...new Set(normalizedOrigins.filter(value => allowCORSUrls.includes(value))) ];
     };
 
     /**
@@ -312,7 +318,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
      * @param {string} urls - Callback URLs.
      * @return {object} Prepared values.
      */
-    const getFormValues = (values: any, urls?: string): object => {
+    const getFormValues = (values: any, urls?: string): Record<string, unknown> => {
         const config = {
             inboundProtocolConfiguration: {
                 oidc: { }
@@ -356,6 +362,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
      */
     const handleRemoveAllowOrigin = (url: string): void => {
         const allowedURLs = [ ...allowCORSUrls ];
+
         if (allowedURLs.includes(url)) {
             allowedURLs.splice(allowedURLs.indexOf(url), 1);
         }
@@ -369,6 +376,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
      */
     const handleAddAllowOrigin = (url: string): void => {
         const allowedURLs = [ ...allowCORSUrls ];
+
         allowedURLs.push(url);
         setAllowCORSUrls(allowedURLs);
     };
@@ -382,6 +390,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
      */
     const getAllowedGranTypeList = (metadataProp: GrantTypeMetaDataInterface): any[] => {
         const allowedList = [];
+
         if (metadataProp) {
             metadataProp.options.map((grant) => {
                 allowedList.push({ label: grant.displayName, value: grant.name });
@@ -399,6 +408,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
      */
     const handleGrantTypeChange = (values: Map<string, FormValue>) => {
         const grants: string[] = values.get("grant") as string[];
+
         setSelectedGrantTypes(grants);
         setGrantChanged(!isGrantChanged);
     };
@@ -519,43 +529,65 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                         required={ true }
                                         showPredictions={ false }
                                         customLabel={ callbackURLsErrorLabel }
-                                        isAllowEnabled={ false }
+                                        isAllowEnabled={ isAllowEnabled }
                                         addOriginByDefault={ addOriginByDefault }
+                                        popupHeaderPositive={ t("console:develop.features.URLInput.withLabel."
+                                            + "positive.header") }
+                                        popupHeaderNegative={ t("console:develop.features.URLInput.withLabel."
+                                            + "negative.header") }
+                                        popupContentPositive={ t("console:develop.features.URLInput.withLabel."
+                                            + "positive.content", { productName: config.ui.productName }) }
+                                        popupContentNegative={ t("console:develop.features.URLInput.withLabel."
+                                            + "negative.content", { productName: config.ui.productName }) }
+                                        popupDetailedContentPositive={ t("console:develop.features.URLInput."
+                                            + "withLabel.positive.detailedContent.0") }
+                                        popupDetailedContentNegative={ t("console:develop.features.URLInput."
+                                            + "withLabel.negative.detailedContent.0") }
+                                        insecureURLDescription={ t("console:common.validations.inSecureURL."
+                                            + "description") }
+                                        showLessContent={ t("common:showLess") }
+                                        showMoreContent={ t("common:showMore") }
                                     />
-                                    {
-                                        (callBackURLFromTemplate) && (
-                                            <Message className="with-inline-icon" icon visible info>
-                                                <Icon name="info" size="mini" />
-                                                <Message.Content> {
-                                                    <Trans
-                                                    i18nKey={ "console:develop.features.applications.forms." +
-                                                        "inboundOIDC.fields.callBackUrls.info" }
-                                                    tOptions={ { callBackURLFromTemplate: callBackURLFromTemplate  } }
-                                                    >
-                                                        Don’t have an app? Try out a sample app
-                                                        using <strong>{ callBackURLFromTemplate }</strong> as the Authorized URL.
-                                                    </Trans>
-                                                }
-                                                    {
-                                                        (callBackUrls === undefined || callBackUrls === "") && (
-                                                            <LinkButton
-                                                                className={ "m-1 p-1 with-no-border orange" }
-                                                                onClick={ (e) => {
-                                                                    e.preventDefault();
-                                                                    const host = new URL(callBackURLFromTemplate);
-                                                                    handleAddAllowOrigin(host.origin);
-                                                                    setCallBackUrls(callBackURLFromTemplate);
-                                                                } }
-                                                                data-testid={ `${ testId }-add-now-button` }
-                                                            >
-                                                                <span style={ { fontWeight: "bold" } }>Add Now</span>
-                                                            </LinkButton>
-                                                        )
-                                                    }
-                                                </Message.Content>
-                                            </Message>
-                                        )
-                                    }
+                                    { (callBackURLFromTemplate) && (
+                                        <Message
+                                             type="info"
+                                             content={
+                                                 <>
+                                                     {
+                                                         <Trans
+                                                             i18nKey={ "console:develop.features." +
+                                                             "applications.forms.inboundOIDC.fields." +
+                                                             "callBackUrls.info" }
+                                                             tOptions={ {
+                                                                 callBackURLFromTemplate: callBackURLFromTemplate
+                                                             } }
+                                                         >
+                                                             Don’t have an app? Try out a sample app
+                                                             using <strong>{ callBackURLFromTemplate }</strong>
+                                                             as the Authorized URL.
+                                                         </Trans>
+                                                     }
+                                                     {
+                                                         (callBackUrls === undefined || callBackUrls === "") && (
+                                                             <LinkButton
+                                                                 className={ "m-1 p-1 with-no-border orange" }
+                                                                 onClick={ (e) => {
+                                                                     e.preventDefault();
+                                                                     const host = new URL(callBackURLFromTemplate);
+
+                                                                     handleAddAllowOrigin(host.origin);
+                                                                     setCallBackUrls(callBackURLFromTemplate);
+                                                                 } }
+                                                                 data-testid={ `${ testId }-add-now-button` }
+                                                             >
+                                                                 <span style={ { fontWeight: "bold" } }>Add Now</span>
+                                                             </LinkButton>
+                                                         )
+                                                     }
+                                                 </>
+                                             }
+                                        />
+                                    ) }
                                 </Grid.Column>
                             </Grid.Row>
                         ) }
@@ -623,7 +655,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                     </Grid>
                 </Forms>
             )
-        : <ContentLoader />
+            : <ContentLoader />
     );
 };
 

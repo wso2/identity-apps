@@ -32,10 +32,10 @@ import { I18nModuleOptionsInterface, LocaleBundles, MetaI18N, SupportedLanguages
  * @return {InitOptions} Init options config.
  */
 export const generateI18nOptions = (options: InitOptions,
-                                    override: boolean,
-                                    useBackend: boolean,
-                                    debug: boolean,
-                                    defaultTranslations?: LocaleBundles): InitOptions => {
+    override: boolean,
+    useBackend: boolean,
+    debug: boolean,
+    defaultTranslations?: LocaleBundles): InitOptions => {
 
     const DEFAULT_INIT_OPTIONS: InitOptions = {
         contextSeparator: "_",
@@ -106,7 +106,7 @@ export const getResourcesSupportedByDefault = (defaultTranslations: LocaleBundle
                 ...resources,
                 [ locale.meta.code ]: {
                     ...resources[ locale.meta.code ],
-                    ...resource as object
+                    ...resource as Record<string, unknown>
                 }
             };
         }
@@ -143,9 +143,9 @@ export const getLanguagesSupportedByDefault = (defaultTranslations: LocaleBundle
  * @return {boolean} Returns true if supported, else returns false.
  */
 export const isLanguageSupported = (detectedLanguage: string,
-                                    supportedLanguages?: string[],
-                                    meta?: SupportedLanguagesMeta,
-                                    defaultTranslations?: LocaleBundles): boolean => {
+    supportedLanguages?: string[],
+    meta?: SupportedLanguagesMeta,
+    defaultTranslations?: LocaleBundles): boolean => {
 
     let languages: string[] = defaultTranslations
         ? getLanguagesSupportedByDefault(defaultTranslations)
@@ -180,10 +180,10 @@ export const isLanguageSupported = (detectedLanguage: string,
  * @return {string} Resolved path.
  */
 export const generateBackendPaths = (language: string[],
-                                     namespace: string[],
-                                     appBaseName: string,
-                                     i18nBundleOptions: I18nModuleOptionsInterface,
-                                     metaFile: MetaI18N): string => {
+    namespace: string[],
+    appBaseName: string,
+    i18nBundleOptions: I18nModuleOptionsInterface,
+    metaFile: MetaI18N): string => {
 
     // If `appBaseName` is "", avoids adding a forward slash.
     const resolvedAppBaseName: string = StringUtils.removeSlashesFromPath(appBaseName)

@@ -17,11 +17,11 @@
  *
  */
 
-import * as React from "react";
-import { CSharpLogo, GravatarLogo, JavaScriptLogo, ReactLogo } from "@wso2is/theme";
-import { InfoCard, LabeledCard, SelectionCard } from "../../../src";
 import { action } from "@storybook/addon-actions";
+import { CSharpLogo, GravatarLogo, JavaScriptLogo, ReactLogo } from "@wso2is/theme";
+import * as React from "react";
 import { meta } from "./card.stories.meta";
+import { InfoCard, LabeledCard, SelectionCard } from "../../../src";
 
 export default {
     parameters: {
@@ -85,11 +85,11 @@ export const InfoCardVariation = (): React.ReactElement => (
         subHeader="is-javascript-sdk"
         description="Official javascript wrapper form WSO2 Identity Server Auth APIs."
         image="https://avatars3.githubusercontent.com/u/533043?v=4"
-        tags={ [ "wso2", "wso2is", "samples", "identityserver", "iam"] }
+        tags={ [ "wso2", "wso2is", "samples", "identityserver", "iam" ] }
         githubRepoCard={ true }
         githubRepoMetaInfo={ {
-            languageLogo: CSharpLogo,
             forks: 6623,
+            languageLogo: CSharpLogo,
             stars: 34240,
             watchers: 9985
         } }
@@ -116,11 +116,11 @@ export const InfoCardFluidVariation = (): React.ReactElement => (
         subHeader="is-javascript-sdk"
         description="Official javascript wrapper form WSO2 Identity Server Auth APIs."
         image="https://avatars3.githubusercontent.com/u/533043?v=4"
-        tags={ [ "wso2", "wso2is", "samples", "identityserver", "iam"] }
+        tags={ [ "wso2", "wso2is", "samples", "identityserver", "iam" ] }
         githubRepoCard={ true }
         githubRepoMetaInfo={ {
-            languageLogo: JavaScriptLogo,
             forks: 6623,
+            languageLogo: JavaScriptLogo,
             stars: 34240,
             watchers: 9985
         } }

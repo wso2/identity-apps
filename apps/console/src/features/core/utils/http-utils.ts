@@ -19,6 +19,7 @@
 import { AppConstants as AppConstantsCore } from "@wso2is/core/constants";
 import { hideAJAXTopLoadingBar, showAJAXTopLoadingBar } from "@wso2is/core/store";
 import { AuthenticateUtils } from "@wso2is/core/utils";
+import { AxiosError } from "axios";
 import { EventPublisher } from "./event-publisher";
 import { AppConstants } from "../constants";
 import { history } from "../helpers";
@@ -64,7 +65,7 @@ export class HttpUtils {
      *
      * @param error - Http error.
      */
-    public static onHttpRequestError(error: any): void {
+    public static onHttpRequestError(error: AxiosError | any): void {
         /**
          * Publish an event on the http request error.
         */
@@ -74,9 +75,9 @@ export class HttpUtils {
             error.response.data.code
         ) {
             EventPublisher.getInstance().publish("console-error-http-request-error", {
-                "type": "error-response",
                 "code": error.response.data.code,
-                "status": error.response.status ? error.response.status : ""
+                "status": error.response.status ? error.response.status as number : "",
+                "type": "error-response"
             });
         }
 
@@ -91,6 +92,7 @@ export class HttpUtils {
         ) {
             if (error.response.status === 400) {
                 history.push(window["AppUtils"].getConfig().routes.logout);
+
                 return;
             }
         }
@@ -101,6 +103,7 @@ export class HttpUtils {
                 pathname: AppConstants.getPaths().get("UNAUTHORIZED"),
                 search: "?error=" + AppConstants.LOGIN_ERRORS.get("NO_LOGIN_PERMISSION")
             });
+
             return;
         }
 
@@ -109,7 +112,9 @@ export class HttpUtils {
         // NOTE: Axios is unable to handle 401 errors. `!error.response` will usually catch
         // the `401` error. Check the link in the doc comment.
         if (!error.response || error.response.status === 401) {
-            dispatchEvent(new Event(AppConstantsCore.NETWORK_ERROR_EVENT));
+            if (error?.code === "SPA-WORKER_CORE-HR-SE01") {
+                dispatchEvent(new Event(AppConstantsCore.NETWORK_ERROR_EVENT));
+            }
         }
     }
 

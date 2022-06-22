@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent } from "react";
 import { Dropdown, DropdownItemProps, DropdownProps, Item } from "semantic-ui-react";
@@ -27,7 +27,8 @@ import { Tooltip, TooltipPropsInterface } from "../../typography";
 /**
  * App Switcher component props interface.
  */
-export interface AppSwitcherPropsInterface extends TestableComponentInterface, DropdownProps {
+export interface AppSwitcherPropsInterface extends IdentifiableComponentInterface, TestableComponentInterface,
+    DropdownProps {
 
     /**
      * Set of apps in the switcher
@@ -51,7 +52,8 @@ export interface AppSwitcherPropsInterface extends TestableComponentInterface, D
     triggerIcon?: ReactNode;
 }
 
-export interface AppSwitcherItemPropsInterface extends TestableComponentInterface, DropdownItemProps {
+export interface AppSwitcherItemPropsInterface extends IdentifiableComponentInterface, TestableComponentInterface,
+    DropdownItemProps {
 
     /**
      * Short description about the app.
@@ -85,6 +87,7 @@ export const AppSwitcher: FunctionComponent<AppSwitcherPropsInterface> = (
         tooltip,
         tooltipOptions,
         triggerIcon,
+        [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId,
         ...rest
     } = props;
@@ -123,6 +126,7 @@ export const AppSwitcher: FunctionComponent<AppSwitcherPropsInterface> = (
                                     )
                                 }
                                 className={ classes }
+                                data-componentid={ componentId }
                                 data-testid={ testId }
                                 { ...rest }
                             >
@@ -157,6 +161,9 @@ export const AppSwitcher: FunctionComponent<AppSwitcherPropsInterface> = (
                                                             >
                                                                 <Item className="header-dropdown-item-inner flex">
                                                                     <GenericIcon
+                                                                        data-componentid={
+                                                                            `${ appRest[ "data-componentid" ] }-icon`
+                                                                        }
                                                                         data-testid={
                                                                             `${ appRest[ "data-testid" ] }-icon`
                                                                         }
@@ -168,6 +175,11 @@ export const AppSwitcher: FunctionComponent<AppSwitcherPropsInterface> = (
                                                                     />
                                                                     <Item.Content verticalAlign="middle">
                                                                         <Item.Header
+                                                                            data-componentid={
+                                                                                `${
+                                                                                    appRest[ "data-componentid" ]
+                                                                                }-name`
+                                                                            }
                                                                             data-testid={
                                                                                 `${ appRest[ "data-testid" ] }-name`
                                                                             }
@@ -175,7 +187,13 @@ export const AppSwitcher: FunctionComponent<AppSwitcherPropsInterface> = (
                                                                             { name }
                                                                         </Item.Header>
                                                                         <Item.Meta
-                                                                            data-testid={ `${
+                                                                            data-componentid={
+                                                                                `${
+                                                                                    appRest[ "data-componentid" ]
+                                                                                }-description`
+                                                                            }
+                                                                            data-testid={
+                                                                                `${ 
                                                                                     appRest[ "data-testid" ]
                                                                                 }-description`
                                                                             }
@@ -213,6 +231,7 @@ export const AppSwitcher: FunctionComponent<AppSwitcherPropsInterface> = (
  * Default props for the component.
  */
 AppSwitcher.defaultProps = {
+    "data-componentid": "app-switcher",
     "data-testid": "app-switcher",
     enabled: true,
     floating: true,

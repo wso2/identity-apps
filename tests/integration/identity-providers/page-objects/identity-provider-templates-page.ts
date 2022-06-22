@@ -38,7 +38,7 @@ export class IdentityProviderTemplatesPage {
      */
     public getPageLayoutHeader(): Cypress.Chainable<Element> {
         return cy.dataTestId(IdentityProviderTemplatesPageConstants.PAGE_LAYOUT_HEADER_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the IDP templates page layout header title element.
@@ -46,7 +46,7 @@ export class IdentityProviderTemplatesPage {
      */
     public getPageLayoutHeaderTitle(): Cypress.Chainable<Element> {
         return cy.dataTestId(IdentityProviderTemplatesPageConstants.PAGE_LAYOUT_HEADER_TITLE_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the IDP templates page layout header sub title element.
@@ -54,7 +54,7 @@ export class IdentityProviderTemplatesPage {
      */
     public getPageLayoutHeaderSubTitle(): Cypress.Chainable<Element> {
         return cy.dataTestId(IdentityProviderTemplatesPageConstants.PAGE_LAYOUT_HEADER_SUB_TITLE_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the IDP templates page back button.
@@ -62,7 +62,7 @@ export class IdentityProviderTemplatesPage {
      */
     public getPageBackButton(): Cypress.Chainable<Element> {
         return cy.dataTestId(IdentityProviderTemplatesPageConstants.PAGE_LAYOUT_HEADER_BACK_BUTTON_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the quick-start IDP templates grid.
@@ -70,7 +70,7 @@ export class IdentityProviderTemplatesPage {
      */
     public getQuickstartGrid(): Cypress.Chainable<Element> {
         return cy.dataTestId(IdentityProviderTemplatesPageConstants.QUICK_START_TEMPLATE_GRID);
-    };
+    }
 
     /**
      * Get the manual setup IDP templates grid.
@@ -78,7 +78,7 @@ export class IdentityProviderTemplatesPage {
      */
     public getManualSetupGrid(): Cypress.Chainable<Element> {
         return cy.dataTestId(IdentityProviderTemplatesPageConstants.MANUAL_SETUP_TEMPLATE_GRID);
-    };
+    }
 
     /**
      * Get quick-start IDP template.
@@ -94,7 +94,7 @@ export class IdentityProviderTemplatesPage {
         }
         
         throw Error("Invalid Quickstart IDP Template type - " + type);
-    };
+    }
 
     /**
      * Get manual setup IDP template.
@@ -106,7 +106,7 @@ export class IdentityProviderTemplatesPage {
         }
 
         throw Error("Invalid Manual Setup Template type - " + type);
-    };
+    }
 
     /**
      * Get the creation wizard.
@@ -114,7 +114,7 @@ export class IdentityProviderTemplatesPage {
      */
     public getCreationWizard(): Cypress.Chainable<Element> {
         return cy.dataTestId(IdentityProviderTemplatesPageConstants.CREATION_WIZARD_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the creation wizard IDP name input.
@@ -123,7 +123,7 @@ export class IdentityProviderTemplatesPage {
     public getCreationWizardIDPNameInput(): Cypress.Chainable<JQuery<Element>> {
         return cy.dataTestId(IdentityProviderTemplatesPageConstants.CREATION_WIZARD_IDP_NAME_INPUT_DATA_ATTR)
             .find("input");
-    };
+    }
 
     /**
      * Get the creation wizard IDP description input.
@@ -131,7 +131,7 @@ export class IdentityProviderTemplatesPage {
      */
     public getCreationWizardIDPDescriptionInput(): Cypress.Chainable<Element> {
         return cy.dataTestId(IdentityProviderTemplatesPageConstants.CREATION_WIZARD_IDP_DESCRIPTION_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the creation wizard IDP image input.
@@ -139,7 +139,7 @@ export class IdentityProviderTemplatesPage {
      */
     public getCreationWizardIDPImageInput(): Cypress.Chainable<Element> {
         return cy.dataTestId(IdentityProviderTemplatesPageConstants.CREATION_WIZARD_IDP_IMAGE_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the creation wizard form next button.
@@ -147,7 +147,7 @@ export class IdentityProviderTemplatesPage {
      */
     public getCreationWizardNextButton(): Cypress.Chainable<Element> {
         return cy.dataTestId(IdentityProviderTemplatesPageConstants.CREATION_WIZARD_NEXT_BUTTON_DATA_ATTR);
-    };
+    }
 
     /**
      * Click on the creation wizard form next button.
@@ -155,7 +155,7 @@ export class IdentityProviderTemplatesPage {
      */
     public clickOnCreationWizardNextButton(): void {
         this.getCreationWizardNextButton().click();
-    };
+    }
 
     /**
      * Get the creation wizard form finish button.
@@ -163,7 +163,7 @@ export class IdentityProviderTemplatesPage {
      */
     public getCreationWizardFinishButton(): Cypress.Chainable<Element> {
         return cy.dataTestId(IdentityProviderTemplatesPageConstants.CREATION_WIZARD_FINISH_BUTTON_DATA_ATTR);
-    };
+    }
 
     /**
      * Click on the creation wizard form finish button.
@@ -171,5 +171,5 @@ export class IdentityProviderTemplatesPage {
      */
     public clickOnCreationWizardFinishButton(): void {
         this.getCreationWizardFinishButton().click();
-    };
+    }
 }

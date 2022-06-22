@@ -27,8 +27,13 @@ import {
 export const applicationConfig: ApplicationConfig = {
     advancedConfigurations: {
         showEnableAuthorization: true,
-        showSaaS: true,
-        showReturnAuthenticatedIdPs: true
+        showReturnAuthenticatedIdPs: true,
+        showSaaS: true
+    },
+    generalSettings: {
+        getFieldReadOnlyStatus: (applicationName: string, fieldName: string): boolean => {
+            return false;
+        }
     },
     attributeSettings: {
         advancedAttributeSettings: {
@@ -37,8 +42,8 @@ export const applicationConfig: ApplicationConfig = {
             showIncludeUserstoreDomainSubject: true,
             showRoleAttribute: true,
             showRoleMapping: true,
-            showUseMappedLocalSubject: true,
-            showSubjectAttribute: false
+            showSubjectAttribute: false,
+            showUseMappedLocalSubject: true
         },
         attributeSelection: {
             getClaims: (claims: ExtendedClaimInterface[]): ExtendedClaimInterface[] => {
@@ -56,39 +61,58 @@ export const applicationConfig: ApplicationConfig = {
         makeSubjectMandatory: true,
         roleMapping: true
     },
+    customApplication: {
+        allowedProtocolTypes: [],
+        defaultTabIndex: 0
+    },
     editApplication: {
         extendTabs: false,
         renderHelpPanelItems: (): ReactNode => {
             return null;
         },
-        showProvisioningSettings: true
+        showProvisioningSettings: true,
+        showDangerZone: (applicationName: string): boolean => {
+            return true;
+        },
+        showDeleteButton: (applicationName: string): boolean => {
+            return true;
+        },
+        getTabPanelReadOnlyStatus: (tabPanelName: string, applicationName: string): boolean => {
+            return false;
+        }
     },
+    excludeIdentityClaims: false,
+    excludeSubjectClaim: false,
     inboundOIDCForm: {
+        disabledGrantTypes: [],
         shouldValidateCertificate: true,
-        showClientSecretMessage: true,
-        showFrontChannelLogout: true,
-        showNativeClientSecretMessage: true,
-        showScopeValidators: true,
-        showIdTokenEncryption: true,
         showBackChannelLogout: true,
-        showRequestObjectSignatureValidation: true,
         showCertificates: true,
+        showClientSecretMessage: true,
+        showFrontChannelLogout: false,
+        showIdTokenEncryption: true,
+        showNativeClientSecretMessage: true,
+        showRequestObjectSignatureValidation: true,
         showReturnAuthenticatedIdPList: true,
-        disabledGrantTypes: []
+        showScopeValidators: true
     },
     inboundSAMLForm: {
+        artifactBindingAllowed: true,
         showApplicationQualifier: true,
         showAttributeConsumingServiceIndex: true,
-        showQueryRequestProfile: true,
-        artifactBindingAllowed:true
+        showQueryRequestProfile: true
     },
     signInMethod: {
         authenticatorSelection: {
+            customAuthenticatorAdditionValidation: (): boolean => {
+                return true;
+            },
             messages: {
                 secondFactorDisabled: null,
                 secondFactorDisabledInFirstStep: null
             }
-        }
+        },
+        identifierFirstWarning: false
     },
     templates: {
         android: true,
@@ -97,8 +121,5 @@ export const applicationConfig: ApplicationConfig = {
         saml: true,
         spa: true,
         windows: true
-    },
-    customApplication: {
-        allowedProtocolTypes: []
     }
 };

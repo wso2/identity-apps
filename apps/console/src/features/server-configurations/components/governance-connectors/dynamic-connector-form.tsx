@@ -63,13 +63,22 @@ const getFieldType = (property: ConnectorPropertyInterface) => {
 const required =
     (value: string) => value ? undefined : I18n.instance.t("common:required");
 
+interface DynamicConnectorFormPropsInterface {
+    isSubmitting: boolean;
+    handleSubmit: (values: any) => void;
+    [ "data-testid" ]: string;
+    props?: any;
+    form: string;
+    change: any;
+}
+
 /**
  * Dynamically render governance connector forms.
  *
  * @param props
  * @constructor
  */
-const DynamicConnectorForm = (props) => {
+const DynamicConnectorForm = (props: DynamicConnectorFormPropsInterface) => {
     const { isSubmitting, handleSubmit, [ "data-testid" ]: testId } = props;
     const properties: ConnectorPropertyInterface[] = props.props.properties;
 
@@ -117,8 +126,8 @@ const DynamicConnectorForm = (props) => {
                                         readOnly={ isReadOnly }
                                     />
                                 ) : (
-                                        <label>{ property.displayName }</label>
-                                    ) }
+                                    <label>{ property.displayName }</label>
+                                ) }
                                 { property.description !== "" && <Hint>{ property.description }</Hint> }
                             </Grid.Column>
                             <Grid.Column
@@ -186,7 +195,7 @@ const DynamicConnectorForm = (props) => {
                         computer={ 14 }
                         className={ !serverConfigurationConfig.intendSettings && "pl-0" }
                     >
-                        { !isReadOnly &&
+                        { !isReadOnly && (
                             <PrimaryButton
                                 data-testid={ `${ testId }-update-button` }
                                 type="submit"
@@ -194,7 +203,7 @@ const DynamicConnectorForm = (props) => {
                                 disabled={ isSubmitting }
                             >
                                 { t("common:update") }
-                            </PrimaryButton>
+                            </PrimaryButton>)
                         }
                     </Grid.Column>
                 </Grid.Row>
@@ -234,6 +243,22 @@ const validate = (values) => {
         ] = I18n.instance.t("console:manage.features.governanceConnectors.form.errors.format");
 
     }
+
+     if (
+         !(ServerConfigurationsConstants.MULTI_ATTRIBUTE_CLAIM_LIST_REGEX_PATTERN.test(
+            values[
+                GovernanceConnectorUtils.encodeConnectorPropertyName(
+                    ServerConfigurationsConstants.MULTI_ATTRIBUTE_CLAIM_LIST
+                )
+            ]
+         ))
+     ) {
+        errors[
+            GovernanceConnectorUtils.encodeConnectorPropertyName(
+                ServerConfigurationsConstants.MULTI_ATTRIBUTE_CLAIM_LIST
+            )
+        ] = I18n.instance.t("console:manage.features.governanceConnectors.form.errors.format");
+     }
 
     return errors;
 };

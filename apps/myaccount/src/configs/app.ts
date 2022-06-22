@@ -52,14 +52,15 @@ export class Config {
             clientID: window["AppUtils"].getConfig().clientID,
             clientOrigin: window["AppUtils"].getConfig().clientOrigin,
             consoleApp: window["AppUtils"].getConfig().consoleApp,
+            customServerHost: window["AppUtils"].getConfig().customServerHost,
             idpConfigs: window["AppUtils"].getConfig().idpConfigs,
             loginCallbackUrl: window["AppUtils"].getConfig().loginCallbackURL,
-            productVersion: window["AppUtils"].getConfig().productVersion,
             serverHost: window["AppUtils"].getConfig().serverOriginWithTenant,
             serverOrigin: window["AppUtils"].getConfig().serverOrigin,
             superTenant: window["AppUtils"].getConfig().superTenant,
             tenant: window["AppUtils"].getConfig().tenant,
-            tenantPath: window["AppUtils"].getConfig().tenantPath
+            tenantPath: window["AppUtils"].getConfig().tenantPath,
+            tenantPrefix: window["AppUtils"].getConfig().tenantPrefix
         };
     }
 
@@ -73,6 +74,7 @@ export class Config {
             applications: `${this.getDeploymentConfig().serverHost}/api/users/v1/me/applications`,
             associations: `${this.getDeploymentConfig().serverHost}/api/users/v1/me/associations`,
             authorize: `${this.getDeploymentConfig().serverHost}/oauth2/authorize`,
+            backupCode: `${this.getDeploymentConfig().serverHost}/api/users/v1/me/backup-code`,
             challengeAnswers: `${this.getDeploymentConfig().serverHost}/api/users/v1/me/challenge-answers`,
             challenges: `${this.getDeploymentConfig().serverHost}/api/users/v1/me/challenges`,
             consentManagement: {
@@ -107,6 +109,7 @@ export class Config {
             jwks: `${this.getDeploymentConfig().serverHost}/oauth2/jwks`,
             logout: `${this.getDeploymentConfig().serverHost}/oidc/logout`,
             me: `${this.getDeploymentConfig().serverHost}/scim2/Me`,
+            mfaEnabledAuthenticators: `${this.getDeploymentConfig().serverHost}/api/users/v1/me/mfa/authenticators`,
             preference: `${this.getDeploymentConfig().serverHost}/api/server/v1/identity-governance/preferences`,
             profileSchemas: `${this.getDeploymentConfig().serverHost}/scim2/Schemas`,
             revoke: `${this.getDeploymentConfig().serverHost}/oauth2/revoke`,
@@ -141,6 +144,9 @@ export class Config {
                 .ui.appCopyright.replace("${copyright}", "\u00A9")
                 .replace("${year}", new Date().getFullYear()),
             disableMFAforSuperTenantUser: window["AppUtils"].getConfig().ui.disableMFAforSuperTenantUser,
+            enableMFAUserWise: window["AppUtils"].getConfig().ui.enableMFAUserWise,
+            disableMFAForFederatedUsers: window["AppUtils"].getConfig().ui.disableMFAForFederatedUsers,
+            forceBackupCode: window["AppUtils"].getConfig().ui.forceBackupCode,
             features: window["AppUtils"].getConfig().ui.features,
             i18nConfigs: window["AppUtils"].getConfig().ui.i18nConfigs,
             isCookieConsentBannerEnabled: window["AppUtils"].getConfig().ui.isCookieConsentBannerEnabled,
@@ -186,7 +192,7 @@ export class Config {
                     )
             },
             load: "currentOnly", // lookup only current lang key(en-US). Prevents 404 from `en`.
-            ns: [I18nConstants.COMMON_NAMESPACE, I18nConstants.PORTAL_NAMESPACE]
+            ns: [ I18nConstants.COMMON_NAMESPACE, I18nConstants.PORTAL_NAMESPACE ]
         };
     }
 
@@ -200,7 +206,8 @@ export class Config {
     public static getI18nConfig(metaFile?: MetaI18N): I18nModuleOptionsInterface {
         return {
             initOptions: this.generateModuleInitOptions(metaFile),
-            langAutoDetectEnabled: I18nConstants.LANG_AUTO_DETECT_ENABLED,
+            langAutoDetectEnabled: window["AppUtils"].getConfig().ui.i18nConfigs.langAutoDetectEnabled
+                ?? I18nConstants.LANG_AUTO_DETECT_ENABLED,
             namespaceDirectories: I18nConstants.BUNDLE_NAMESPACE_DIRECTORIES,
             overrideOptions: I18nConstants.INIT_OPTIONS_OVERRIDE,
             resourcePath: "/resources/i18n",

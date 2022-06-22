@@ -150,7 +150,7 @@
             <button
                 type="submit"
                 onclick="window.location.href='<%=getRegistrationUrl(accountRegistrationEndpointURL, urlEncodedURL, urlParameters)%>';"
-                class="ui large button link-button"
+                class="ui large button secondary"
                 id="registerLink"
                 role="button">
                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "create.account")%>
@@ -161,14 +161,14 @@
         <div class="column align-right buttons">
             <button
                 type="submit"
-                onclick="appendTenantDomain();"    
+                onclick="appendTenantDomain();"
                 class="ui primary large button"
                 role="button">
                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "continue")%>
             </button>
         </div>
     </div>
-    
+
 </form>
 
 <script>

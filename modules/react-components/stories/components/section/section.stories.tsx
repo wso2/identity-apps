@@ -17,12 +17,11 @@
  *
  */
 
-import React, { ReactElement } from "react";
 import { action } from "@storybook/addon-actions";
-import { meta } from "./section.stories.meta";
-import { Section } from "../../../src";
 import { SettigsSectionIconSet } from "@wso2is/theme";
-import { UserAvatar } from "../../../src";
+import React, { ReactElement } from "react";
+import { meta } from "./section.stories.meta";
+import { Section, UserAvatar } from "../../../src";
 
 export default {
     parameters: {

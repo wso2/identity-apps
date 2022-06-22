@@ -16,14 +16,14 @@
  * under the License.
  */
 
- import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import React, { useState } from "react";
 import { Form, Icon, Popup, SemanticWIDTHS } from "semantic-ui-react";
 
 /**
  * Password prop types
  */
-interface PasswordPropsInterface extends TestableComponentInterface {
+interface PasswordPropsInterface extends IdentifiableComponentInterface, TestableComponentInterface {
     label: string;
     value: string;
     error: false | { content: JSX.Element[] };
@@ -49,7 +49,7 @@ interface PasswordPropsInterface extends TestableComponentInterface {
 export const Password: React.FunctionComponent<PasswordPropsInterface> = (
     props: PasswordPropsInterface
 ): JSX.Element => {
-    const [isShow, setIsShow] = useState(false);
+    const [ isShow, setIsShow ] = useState(false);
 
     const {
         label,
@@ -67,6 +67,7 @@ export const Password: React.FunctionComponent<PasswordPropsInterface> = (
         readOnly,
         disabled,
         required,
+        [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId,
         ...rest
     } = props;
@@ -111,8 +112,16 @@ export const Password: React.FunctionComponent<PasswordPropsInterface> = (
             readOnly={ readOnly }
             disabled={ disabled }
             required={ required }
+            data-componentid= { componentId }
             data-testid= { testId }
             { ...rest }
         />
     );
+};
+
+/**
+ * Default props for the component.
+ */
+Password.defaultProps = {
+    "data-componentid": "password-input-field"
 };

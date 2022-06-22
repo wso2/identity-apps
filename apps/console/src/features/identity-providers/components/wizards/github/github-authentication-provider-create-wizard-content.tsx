@@ -249,6 +249,7 @@ export const GitHubAuthenticationProviderCreateWizardContent: FunctionComponent<
                         <Field.Input
                             ariaLabel="GitHub Client Secret"
                             inputType="password"
+                            className="addon-field-wrapper"
                             name="clientSecret"
                             label={
                                 t("console:develop.features.authenticationProvider.forms" +

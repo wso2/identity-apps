@@ -17,12 +17,11 @@
  *
  */
 
-import { ConfirmationModal, Heading } from "../../../src";
-import React, { ReactElement } from "react";
 import { action } from "@storybook/addon-actions";
+import React, { ReactElement, useState } from "react";
 import { Button } from "semantic-ui-react";
 import { meta } from "./confirmation-modal.stories.meta";
-import { useState } from "react";
+import { ConfirmationModal, Heading } from "../../../src";
 
 export default {
     parameters: {
@@ -88,7 +87,7 @@ export const AllConfirmationModalVariations = (): ReactElement => {
                 </ConfirmationModal.Content>
             </ConfirmationModal>
         </>
-    )
+    );
 };
 
 AllConfirmationModalVariations.story = {
@@ -158,7 +157,7 @@ export const TextInputAssertion = (): ReactElement => {
                 </ConfirmationModal.Content>
             </ConfirmationModal>
         </>
-    )
+    );
 };
 
 TextInputAssertion.story = {
@@ -228,7 +227,7 @@ export const CheckboxAssertion = (): ReactElement => {
                 </ConfirmationModal.Content>
             </ConfirmationModal>
         </>
-    )
+    );
 };
 
 CheckboxAssertion.story = {
@@ -290,7 +289,7 @@ export const Animated = (): ReactElement => {
                 </ConfirmationModal.Content>
             </ConfirmationModal>
         </>
-    )
+    );
 };
 
 Animated.story = {

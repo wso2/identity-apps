@@ -110,14 +110,14 @@
                     &:last-child {
                         margin-bottom: 0 !important;
                     }
-                    
+
                     .header-dropdown-item-inner {
                         padding: 0;
-                        
+
                         &.flex {
                             display: flex !important;
                         }
-                        
+
                         .header {
                             font-weight: 400;
                         }
@@ -438,7 +438,7 @@
         }
 
         .side-panel-item {
-            border-radius: @defaultBorderRadius;
+            border-radius: @defaultBorderRadius !important;
             padding: @sidePanelItemPadding;
 
             .route-name {
@@ -447,10 +447,22 @@
                 padding: 10px 5px;
 
                 .feature-status-label {
-                    padding: 3px 6px;
-                    margin-left: 6px;
-                    font-size: 0.6em;
-                    font-weight: 600;
+                    font-size: .8em;
+                    padding: 4px 7px;
+                    font-weight: 500;
+                    top: 7px;
+                    margin-left: 10px;
+                    position: absolute;
+                    border: 1px solid @defaultBorderColor;
+
+                    &.new {
+                        text-transform: uppercase;
+                        color: @white;
+                        background-color: @accentColor4;
+                    }
+                    &.coming-soon {
+                        filter: grayscale(100%);
+                    }
                 }
             }
 
@@ -642,7 +654,7 @@
             }
             &.custom-dropdown {
                 max-height: 200px;
-                max-width: 50px;
+                max-width: 156px;
 
                 .item {
                     height: 43px;

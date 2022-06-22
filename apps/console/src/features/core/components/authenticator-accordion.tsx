@@ -116,55 +116,57 @@ export const AuthenticatorAccordion: FunctionComponent<AuthenticatorAccordionPro
         [ "data-testid" ]: testId
     } = props;
 
-    return (authenticators
-            ?
-            <SegmentedAccordion
-                fluid
-                data-testid={ testId }
-            >
-                {
-                    sortBy(authenticators, orderBy).map((authenticator, index) => (
-                        !authenticator.hidden
-                            ? (
-                                <Fragment key={ accordionIndex }>
-                                    <SegmentedAccordion.Title
-                                        id={ authenticator.id }
-                                        data-testid={ `${ testId }-${ authenticator.id }-title` }
-                                        active={ accordionActiveIndexes.includes(accordionIndex) }
-                                        accordionIndex={ accordionIndex }
-                                        onClick={ handleAccordionOnClick }
-                                        content={ (
-                                            <>
-                                                <GenericIcon
-                                                    floated="left"
-                                                    size="micro"
-                                                    spaced="right"
-                                                    data-testid={ `${ testId }-${ authenticator.id }-title-icon` }
-                                                    transparent
-                                                    { ...authenticator.icon }
-                                                />
-                                                { authenticator.title }
-                                            </>
-                                        ) }
-                                        actions={
-                                            (authenticator?.actions && globalActions)
-                                                ? [ ...authenticator?.actions, ...globalActions ]
-                                                : authenticator.actions || globalActions
-                                        }
-                                        hideChevron={ hideChevron }
-                                    />
-                                    <SegmentedAccordion.Content
-                                        active={ accordionActiveIndexes.includes(accordionIndex) }
-                                        data-testid={ `${ testId }-${ authenticator.id }-content` }
-                                    >
-                                        { authenticator.content }
-                                    </SegmentedAccordion.Content>
-                                </Fragment>
-                            )
-                            : null
-                    ))
-                }
-            </SegmentedAccordion>
+    return (
+        authenticators
+            ? (
+                <SegmentedAccordion
+                    fluid
+                    data-testid={ testId }
+                >
+                    {
+                        sortBy(authenticators, orderBy).map((authenticator: AuthenticatorAccordionItemInterface) => (
+                            !authenticator.hidden
+                                ? (
+                                    <Fragment key={ accordionIndex }>
+                                        <SegmentedAccordion.Title
+                                            id={ authenticator.id }
+                                            data-testid={ `${ testId }-${ authenticator.id }-title` }
+                                            active={ accordionActiveIndexes?.includes(accordionIndex) || false }
+                                            accordionIndex={ accordionIndex }
+                                            onClick={ handleAccordionOnClick }
+                                            content={ (
+                                                <>
+                                                    <GenericIcon
+                                                        floated="left"
+                                                        size="micro"
+                                                        spaced="right"
+                                                        data-testid={ `${ testId }-${ authenticator.id }-title-icon` }
+                                                        transparent
+                                                        { ...authenticator.icon }
+                                                    />
+                                                    { authenticator.title }
+                                                </>
+                                            ) }
+                                            actions={
+                                                (authenticator?.actions && globalActions)
+                                                    ? [ ...authenticator?.actions, ...globalActions ]
+                                                    : authenticator.actions || globalActions
+                                            }
+                                            hideChevron={ hideChevron }
+                                        />
+                                        <SegmentedAccordion.Content
+                                            active={ accordionActiveIndexes?.includes(accordionIndex) || false }
+                                            data-testid={ `${ testId }-${ authenticator.id }-content` }
+                                        >
+                                            { authenticator.content }
+                                        </SegmentedAccordion.Content>
+                                    </Fragment>
+                                )
+                                : null
+                        ))
+                    }
+                </SegmentedAccordion>
+            )
             : <ContentLoader/>
     );
 };

@@ -16,12 +16,26 @@
  * under the License.
  */
 
-import { Button, CopyInputField, DangerButton, LinkButton, Password, PrimaryButton } from "@wso2is/react-components";
+import {
+    Button,
+    ColorPicker,
+    ColorPickerResponseInterface,
+    CopyInputField,
+    DangerButton,
+    LinkButton,
+    Password,
+    PrimaryButton
+} from "@wso2is/react-components";
 import omit from "lodash-es/omit";
-import React, { ClipboardEvent, KeyboardEvent, ReactElement } from "react";
-import { Checkbox, Form, Input, Select } from "semantic-ui-react";
+import React, { ClipboardEvent, FormEvent, KeyboardEvent, ReactElement } from "react";
+import { Checkbox, Form, Icon, Input, Popup, Select } from "semantic-ui-react";
 import { QueryParameters } from "../addons";
-import { FieldButtonTypes, CheckboxAdapterPropsInterface } from "../models";
+import {
+    CheckboxAdapterPropsInterface,
+    ColorPickerAdapterPropsInterface,
+    FieldButtonTypes,
+    RadioAdapterPropsInterface
+} from "../models";
 
 /**
  * The enter key.
@@ -82,7 +96,7 @@ export const TextFieldAdapter = (props): ReactElement => {
                                 || event.key === "x")
                             && (event.ctrlKey === true
                                 || event.metaKey === true)
-                            )
+                        )
                             || (
                                 event.key === "ArrowRight"
                                 || event.key == "ArrowLeft")
@@ -147,8 +161,8 @@ export const CopyFieldAdapter = (props): ReactElement => {
 
     const { childFieldProps, parentFormProps } = props;
     const {
-       label,
-       ...filteredChildFieldProps
+        label,
+        ...filteredChildFieldProps
     } = childFieldProps;
 
     return (
@@ -304,6 +318,58 @@ export const CheckboxAdapter = (props: CheckboxAdapterPropsInterface): ReactElem
     );
 };
 
+/**
+ * Semantic UI Radio Adapter.
+ *
+ * @param {RadioAdapterPropsInterface} props - Props injected to the component.
+ *
+ * @return {React.ReactElement}
+ */
+export const RadioAdapter = (props: RadioAdapterPropsInterface): ReactElement => {
+
+    const {
+        childFieldProps,
+        input: { value, ...input },
+        ...rest
+    } = props;
+
+    // unused, just don't pass it along with the ...rest
+    const {
+        /* eslint-disable @typescript-eslint/no-unused-vars */
+        type,
+        meta,
+        hint,
+        children,
+        parentFormProps,
+        render,
+        width,
+        /* eslint-enable @typescript-eslint/no-unused-vars */
+        ...filteredRest
+    } = rest;
+
+    return (
+        <Form.Radio
+            { ...input }
+            { ...filteredRest }
+            label={ childFieldProps?.label }
+            name={ childFieldProps?.name }
+            onChange={ (event: FormEvent<HTMLInputElement>, { checked }:  { checked: boolean }) => {
+                if (childFieldProps?.listen && typeof childFieldProps.listen === "function") {
+                    childFieldProps.listen(checked);
+                }
+
+                input.onChange({
+                    target: {
+                        checked,
+                        type: "radio",
+                        value
+                    }
+                });
+            } }
+        />
+    );
+};
+
 export const SelectAdapter = (props): ReactElement => {
 
     const { childFieldProps, input, meta } = props;
@@ -412,4 +478,125 @@ export const QueryParamsAdapter = ({ input, childFieldProps }): ReactElement => 
         />
     );
 
+};
+
+/**
+ * Color Picker Adapter implemented with `react-color`.
+ *
+ * @param {ColorPickerAdapterPropsInterface} props - Props injected to the component.
+ *
+ * @return {React.ReactElement}
+ */
+export const ColorPickerAdapter = (props: ColorPickerAdapterPropsInterface): ReactElement => {
+
+    const {
+        childFieldProps,
+        input: { value, ...input },
+        ...rest
+    } = props;
+
+    // unused, just don't pass it along with the ...rest
+    const {
+        /* eslint-disable @typescript-eslint/no-unused-vars */
+        editableInput,
+        type,
+        meta,
+        hint,
+        children,
+        parentFormProps,
+        render,
+        width,
+        readOnly,
+        /* eslint-enable @typescript-eslint/no-unused-vars */
+        ...filteredRest
+    } = rest;
+
+    return (
+        <Popup
+            on="click"
+            positionFixed
+            hoverable
+            className="color-picker-popup"
+            trigger={ (
+                <Form.Field>
+                    <label>{ childFieldProps.label !== "" ? childFieldProps.label : null }</label>
+                    <Input
+                        className={
+                            `color-picker-input ${ readOnly ? "readonly" : "" } ${ editableInput ? "editable" : "" }`
+                        }
+                        aria-label={ childFieldProps.ariaLabel }
+                        key={ childFieldProps.testId }
+                        required={ childFieldProps.required }
+                        data-componentid={ childFieldProps.componentId }
+                        onChange={ (event, data) => {
+                            if (!editableInput) {
+                                return;
+                            }
+
+                            if (childFieldProps.listen && typeof childFieldProps.listen === "function") {
+                                childFieldProps.listen(data?.value);
+                            }
+
+                            input.onChange(data?.value);
+                        } }
+                        onBlur={ (event) => input.onBlur(event) }
+                        control={ Input }
+                        autoFocus={ childFieldProps.autoFocus || false }
+                        value={
+                            meta.modified
+                                ? value
+                                : (childFieldProps?.value
+                                    ? childFieldProps?.value
+                                    : (parentFormProps?.values[ childFieldProps?.name ]
+                                        ? parentFormProps?.values[ childFieldProps?.name ]
+                                        : ""))
+                        }
+                        { ...omit(childFieldProps, [ "value", "listen", "label" ]) }
+                        type="text"
+                        error={
+                            (meta.error && meta.touched)
+                                ? meta.error
+                                : null
+                        }
+                    >
+                        <div className="color-swatch">
+                            <div className="color-swatch-inner" style={ { background: value } }>
+                                { !value && (
+                                    <Icon name="question" />
+                                ) }
+                            </div>
+                        </div>
+                        <input readOnly={ !editableInput } />
+                    </Input>
+                </Form.Field>
+            ) }
+            disabled={ readOnly }
+            content={ (
+                <ColorPicker
+                    show
+                    popup
+                    color={ value }
+                    onChangeComplete={ (color: ColorPickerResponseInterface) => {
+
+                        // Workaround for https://github.com/casesandberg/react-color/issues/655
+                        // TODO: Remove once the issue is resolved on the lib.
+                        const a = Math.round(color.rgb.a * 255);
+
+                        const moderatedHex: string = color.hex + (
+                            a === 255
+                                ? ""
+                                : Math.floor(a / 16).toString(16) + (a % 16).toString(16)
+                        );
+
+                        if (childFieldProps.listen && typeof childFieldProps.listen === "function") {
+                            childFieldProps.listen(moderatedHex);
+                        }
+
+                        input.onChange(moderatedHex);
+                    } }
+                    { ...filteredRest }
+                />
+            ) }
+        />
+    );
 };

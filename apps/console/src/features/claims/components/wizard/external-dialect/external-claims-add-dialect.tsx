@@ -114,7 +114,7 @@ export const ExternalClaims: FunctionComponent<ExternalClaimsPropsInterface> = (
 
     const [ claims, setClaims ] = useState<AddExternalClaim[]>([]);
     const [ initialList, setInitialList ] = useState<AddExternalClaim[]>([]);
-    const [ tempMappedLocalClaims, setTempMappedLocalClaims ] = useState<string[]>();
+    const [ tempMappedLocalClaims, setTempMappedLocalClaims ] = useState<string[]>([]);
 
     const ref = useRef(true);
     const firstTimeValueChanges = useRef(true);
@@ -123,7 +123,7 @@ export const ExternalClaims: FunctionComponent<ExternalClaimsPropsInterface> = (
 
     useEffect(() => {
         setTempMappedLocalClaims(mappedLocalClaims);
-    }, [ mappedLocalClaims ])
+    }, [ mappedLocalClaims ]);
 
     useEffect(() => {
         if (ref.current) {
@@ -174,9 +174,10 @@ export const ExternalClaims: FunctionComponent<ExternalClaimsPropsInterface> = (
             mappedLocalClaimURI: values.get("localClaim").toString()
         };
         const newState = [ ...claims, newClaim ];
+
         setTempMappedLocalClaims(prevLocalClaims => 
             [ ...prevLocalClaims, newClaim.mappedLocalClaimURI
-        ]);
+            ]);
         setClaims(newState);
         onExternalClaimsChanged && onExternalClaimsChanged(newState);
     };
@@ -194,8 +195,9 @@ export const ExternalClaims: FunctionComponent<ExternalClaimsPropsInterface> = (
      * @param {ClaimEventClickItem} editingClaim
      */
     const onExternalClaimDelete = (editingClaim: ClaimEventClickItem): void => {
-        const deletedClaim = editingClaim as AddExternalClaim
+        const deletedClaim = editingClaim as AddExternalClaim;
         const filteredClaims = claims.filter((claim: AddExternalClaim) => !isEqual(editingClaim, claim));
+
         setClaims(filteredClaims);
         setTempMappedLocalClaims(tempMappedLocalClaims.filter(claim => claim !== deletedClaim.mappedLocalClaimURI));
         onExternalClaimsChanged && onExternalClaimsChanged(filteredClaims);
@@ -211,6 +213,7 @@ export const ExternalClaims: FunctionComponent<ExternalClaimsPropsInterface> = (
      */
     const onExternalClaimEdit = (editingClaim: ClaimEventClickItem, values: Map<string, FormValue>): void => {
         const existingClaims = [ ...claims ];
+
         for (const claim of existingClaims) {
             // If its not the claim then continue
             if (!isEqual(editingClaim, claim)) continue;
@@ -288,6 +291,7 @@ export const ExternalClaims: FunctionComponent<ExternalClaimsPropsInterface> = (
 ExternalClaims.defaultProps = {
     attributeType: ClaimManagementConstants.OTHERS,
     "data-testid": "external-claims",
+    mappedLocalClaims: [],
     shouldShowInitialValues: true,
     wizard: true
 };

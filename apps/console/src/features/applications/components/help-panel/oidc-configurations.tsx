@@ -22,9 +22,8 @@ import { addAlert } from "@wso2is/core/store";
 import { CopyInputField, GenericIcon } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Form, Grid, Icon } from "semantic-ui-react";
-import { AppState } from "../../../core/store";
 import { getHelpPanelIcons } from "../../configs";
 import {
     OIDCApplicationConfigurationInterface,
@@ -63,8 +62,6 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
         [ "data-testid" ]: testId
     } = props;
 
-    const serverOrigin: string = useSelector((state: AppState) => state?.config?.deployment?.serverOrigin);
-
     const [ endpoints, setEndpoints ] = useState<OIDCEndpointsInterface>(undefined);
 
     useEffect(() => {
@@ -81,8 +78,7 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                     logout: response?.endSessionEndpoint,
                     oidcSessionIFrame: response?.checkSessionIframe,
                     revoke: response?.revocationEndpoint,
-                    token: response?.tokenEndpoint,
-                    wellKnown: response?.wellKnownEndpoint
+                    token: response?.tokenEndpoint
                 });
             })
             .catch(() => {

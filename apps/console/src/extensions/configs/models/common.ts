@@ -18,6 +18,7 @@
 
 import { HeaderExtension, HeaderLinkCategoryInterface } from "@wso2is/react-components";
 import { HeaderSubPanelItemInterface } from "../../../features/core/components";
+import { FeatureConfigInterface } from "../../../features/core/models";
 
 export interface CommonConfig {
     advancedSearchWithBasicFilters: {
@@ -25,6 +26,7 @@ export interface CommonConfig {
     };
     blockLoopBackCalls: boolean;
     checkForUIResourceScopes: boolean;
+    enableOrganizationAssociations: boolean;
     header: {
         /**
          * Get the extensions for the header.
@@ -39,13 +41,20 @@ export interface CommonConfig {
         getHeaderSubPanelExtensions: () => HeaderSubPanelItemInterface[];
         /**
          * Get the user dropdown link extensions.
+         * @param {string} tenantDomain - Current tenant
+         * @param {any[]} associatedTenants - Tenant list
          * @return {HeaderLinkCategoryInterface[]}
          */
-        getUserDropdownLinkExtensions: () => HeaderLinkCategoryInterface[];
+        getUserDropdownLinkExtensions: (tenantDomain: string,
+            associatedTenants: any[]) => HeaderLinkCategoryInterface[];
         /**
          * Should the app switcher be shown as nine dots dropdown.
          */
         renderAppSwitcherAsDropdown: boolean;
+        /**
+         * Header menu item config.
+         */
+        headerQuickstartMenuItem: string;
     };
     leftNavigation: {
         /**
@@ -60,12 +69,23 @@ export interface CommonConfig {
         isGuestUser: boolean;
         showEmail: boolean;
     };
+    hotjarTracking : {
+        /*
+         * Tag hotjar attributes. 
+        */
+        tagAttributes : () => void;
+    }
 }
 
 /**
  * Types of views that are extended.
- * @remarks Any views other thant `DEVELOP` and `MANAGE` can go here.
+ * @remarks Any views other than `DEVELOP` and `MANAGE` can go here.
  * @readonly
  * @enum {string}
  */
 export enum AppViewExtensionTypes { }
+
+/**
+ * Interface for the extended feature configs.
+ */
+export type ExtendedFeatureConfigInterface = FeatureConfigInterface;

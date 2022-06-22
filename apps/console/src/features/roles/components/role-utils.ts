@@ -18,7 +18,7 @@
 
 import { PermissionObject, TreeNode } from "../models";
 
- /**
+/**
   * A Util method to create an array of permission object with heirarchy.
   * 
   * @param permissioObject - Permission Object

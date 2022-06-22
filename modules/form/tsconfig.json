@@ -2,12 +2,30 @@
     "compilerOptions": {
         "esModuleInterop": true,
         "experimentalDecorators": true,
-        "rootDir": "src",
-        "outDir": "dist/src",
         "declaration": true,
-        "declarationDir": "dist/typings",
+        "declarationDir": "dist/types",
+        "outDir": "dist/src",
+        "rootDir": "src",
         "types": [ "node", "jest", "@testing-library/jest-dom" ]
     },
-    "extends": "../../configs/common.tsconfig.json",
-    "exclude": ["src/tests","test-configs"]
+    "exclude": [
+        "coverage",
+        "dist",
+        "node_modules",
+        "scripts",
+        "test-configs",
+        "jest.config.ts",
+        "**/tests/*",
+        "**/__tests__/*",
+        "**/__mocks__/*",
+        "**/*.test.js",
+        "**/*.test.jsx",
+        "**/*.test.ts",
+        "**/*.test.tsx",
+        "**/*.spec.js",
+        "**/*.spec.jsx",
+        "**/*.spec.ts",
+        "**/*.spec.tsx"
+    ],
+    "extends": "../../configs/common.tsconfig.json"
 }

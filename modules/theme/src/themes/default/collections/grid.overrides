@@ -334,10 +334,20 @@
                 padding-bottom: (@gutterWidth / 2);
             }
 
+            &.centered-text {
+                margin-top: auto;
+                margin-bottom: auto;
+
+                 &::after {
+                    margin: -0.2em 0 0 0.2em;
+                    content: '*';
+                    color: #db2828;
+                 }
+            }
+
               &.session-display {
                  padding-top: 0.5em;
               }
-
         }
     }
 }

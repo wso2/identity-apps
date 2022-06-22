@@ -18,13 +18,14 @@
 
 const fs = require("fs");
 const path = require("path");
+const zlib = require("zlib");
 const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
-const BrotliPlugin = require("brotli-webpack-plugin");
 const CompressionPlugin = require("compression-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const ESLintPlugin = require("eslint-webpack-plugin");
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const JsonMinimizerPlugin = require("json-minimizer-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 const webpack = require("webpack");
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
@@ -180,6 +181,11 @@ module.exports = (env) => {
                     use: [ "postcss-loader" ]
                 },
                 {
+                    exclude: /node_modules/,
+                    test: /.*(i18n).*\.*(portals).*\.json$/i,
+                    type: "asset/resource"
+                },
+                {
                     generator: {
                         filename: isProduction
                             ? `${ PATHS.assets }/[hash][ext][query]`
@@ -279,7 +285,7 @@ module.exports = (env) => {
             concatenateModules: isProduction,
             minimize: isProduction,
             minimizer: [
-                 new TerserPlugin({
+                new TerserPlugin({
                     extractComments: true,
                     terserOptions: {
                         compress: {
@@ -307,7 +313,8 @@ module.exports = (env) => {
                             ecma: 8
                         }
                     }
-                })
+                }),
+                new JsonMinimizerPlugin()
             ].filter(Boolean),
             // Keep the runtime chunk separated to enable long term caching
             // https://twitter.com/wSokra/status/969679223278505985
@@ -429,7 +436,7 @@ module.exports = (env) => {
                     authorizationCode: "<%=request.getParameter(\"code\")%>",
                     contentType: "<%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\" " +
                         "pageEncoding=\"UTF-8\" %>",
-                    filename: path.join(distFolder, "index.jsp"),
+                    filename: path.join(distFolder, "home.jsp"),
                     hash: true,
                     importSuperTenantConstant: !isDeployedOnExternalServer
                         ? "<%@ page import=\"static org.wso2.carbon.utils.multitenancy." +
@@ -454,7 +461,7 @@ module.exports = (env) => {
                     superTenantConstant: !isDeployedOnExternalServer
                         ? "<%=SUPER_TENANT_DOMAIN_NAME%>"
                         : "",
-                    template: path.join(__dirname, "src", "index.jsp"),
+                    template: path.join(__dirname, "src", "home.jsp"),
                     tenantDelimiter: !isDeployedOnExternalServer
                         ? "\"/\"+'<%=TENANT_AWARE_URL_PREFIX%>'+\"/\""
                         : "",
@@ -464,7 +471,67 @@ module.exports = (env) => {
                     themeHash: themeHash,
                     vwoScriptVariable: "<%= vwo_ac_id %>",
                     // eslint-disable-next-line max-len
-                    vwoSystemVariable: "<% String vwo_ac_id = System.getenv().getOrDefault(\"vwo_account_id\", null); %>"
+                    vwoSystemVariable: "<% String vwo_ac_id_system_var = System.getenv().getOrDefault(\"vwo_account_id\", null); %>",
+                    vwoSystemVariableNullCheck: "<% String vwo_ac_id = StringUtils.isNotBlank(vwo_ac_id_system_var) ? vwo_ac_id_system_var : null; %>",
+                    importStringUtils: "<%@ page import=\"org.apache.commons.lang.StringUtils\" %>"
+                })
+                : new HtmlWebpackPlugin({
+                    filename: path.join(distFolder, "index.html"),
+                    hash: true,
+                    minify: false,
+                    publicPath: !isRootContext
+                        ? publicPath
+                        : "/",
+                    template: path.join(__dirname, "src", "index.html"),
+                    themeHash: themeHash
+                }),
+            isProduction && !isDeployedOnStaticServer
+                ? new HtmlWebpackPlugin({
+                    authenticatedIdPs: "<%=request.getParameter(\"AuthenticatedIdPs\")%>",
+                    contentType: "<%@ page language=\"java\" contentType=\"text/html; charset=ISO-8859-1\" " + 
+                    "pageEncoding=\"ISO-8859-1\"%>",
+                    filename: path.join(distFolder, "index.jsp"),
+                    hash: true,
+                    serverUrl: !isDeployedOnExternalServer
+                        ? "<%=getServerURL(\"\", true, true)%>"
+                        : "",
+                    authorizationCode: "<%=request.getParameter(\"code\")%>",
+                    importSuperTenantConstant: !isDeployedOnExternalServer
+                        ? "<%@ page import=\"static org.wso2.carbon.utils.multitenancy." +
+                        "MultitenantConstants.SUPER_TENANT_DOMAIN_NAME\"%>"
+                        : "",
+                    importTenantPrefix: !isDeployedOnExternalServer
+                        ? "<%@ page import=\"static org.wso2.carbon.utils.multitenancy." +
+                        "MultitenantConstants.TENANT_AWARE_URL_PREFIX\"%>"
+                        : "",
+                    importUtil: !isDeployedOnExternalServer
+                        ? "<%@ page import=\"" +
+                        "static org.wso2.carbon.identity.core.util.IdentityUtil.getServerURL\" %>"
+                        : "",
+                    clientID: deploymentConfig.clientID,
+                    minify: false,
+                    publicPath: !isRootContext
+                        ? publicPath
+                        : "/",
+                    basename: basename,
+                    inject: false,
+                    sessionState: "<%=request.getParameter(\"session_state\")%>",
+                    superTenantConstant: !isDeployedOnExternalServer
+                        ? "<%=SUPER_TENANT_DOMAIN_NAME%>"
+                        : "",
+                    template: path.join(__dirname, "src", "index.jsp"),
+                    tenantDelimiter: !isDeployedOnExternalServer
+                        ? "\"/\"+'<%=TENANT_AWARE_URL_PREFIX%>'+\"/\""
+                        : "",
+                    tenantPrefix: !isDeployedOnExternalServer
+                        ? "<%=TENANT_AWARE_URL_PREFIX%>"
+                        : "",
+                    themeHash: themeHash,
+                    requestForwardSnippet : "if(request.getParameter(\"code\") != null && "+
+                        "!request.getParameter(\"code\").trim().isEmpty()) "+
+                        "{request.getRequestDispatcher(\"/authenticate?code=\"+request.getParameter(\"code\")+"+
+                        "\"&AuthenticatedIdPs=\"+request.getParameter(\"AuthenticatedIdPs\")"+
+                        "+\"&session_state=\"+request.getParameter(\"session_state\")).forward(request, response);}"
                 })
                 : new HtmlWebpackPlugin({
                     filename: path.join(distFolder, "index.html"),
@@ -491,13 +558,19 @@ module.exports = (env) => {
                 algorithm: "gzip",
                 filename: "[path][base].gz",
                 minRatio: 0.8,
-                test: /\.(js|css|html|svg)$/,
+                test: /\.js$|\.css$|\.html$|\.png$|\.svg$|\.jpeg$|\.jpg$/,
                 threshold: 10240
             }),
-            isProduction && new BrotliPlugin({
-                asset: "[path].br[query]",
+            isProduction && new CompressionPlugin({
+                algorithm: "brotliCompress",
+                compressionOptions: {
+                    params: {
+                        [ zlib.constants.BROTLI_PARAM_QUALITY ]: 11
+                    }
+                },
+                filename: "[path][base].br",
                 minRatio: 0.8,
-                test: /\.(js|css|html|svg)$/,
+                test: /\.(js|css|html|png|svg|jpeg|jpg)$/,
                 threshold: 10240
             }),
             !isESLintPluginDisabled && new ESLintPlugin({

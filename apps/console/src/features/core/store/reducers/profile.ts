@@ -32,8 +32,8 @@ export const commonProfileReducerInitialState: CommonProfileReducerStateInterfac
     ProfileSchemaInterface[],
     LinkedAccountInterface[]> = {
 
-    isSCIMEnabled: true,
-    linkedAccounts: [],
-    profileInfo: emptyProfileInfo(),
-    profileSchemas: []
-};
+        isSCIMEnabled: true,
+        linkedAccounts: [],
+        profileInfo: emptyProfileInfo(),
+        profileSchemas: []
+    };

@@ -49,13 +49,16 @@ export class SharedUserStoreUtils {
      */
     public static async getUserStoreRegEx(userstore: string, regExName: string): Promise<string> {
         let usernameRegEx: UserStoreProperty = null;
+
         return getUserStoreList()
             .then((response) => {
                 const store = response.data.find(item => item.name === userstore);
+
                 if (!isEmpty(store)) {
                     return getAUserStore(store.id)
                         .then((resp) => {
                             usernameRegEx = resp.properties.find(property => property.name === regExName);
+
                             return usernameRegEx?.value;
                         });
                 }
@@ -70,6 +73,7 @@ export class SharedUserStoreUtils {
      */
     public static validateInputAgainstRegEx(inputValue: string, regExValue: string): boolean {
         const regEx = new RegExp(regExValue);
+
         return regEx.test(inputValue);
     }
 
@@ -121,7 +125,7 @@ export class SharedUserStoreUtils {
         }
 
         for (const id of ids) {
-             await getAUserStore(id)
+            await getAUserStore(id)
                 .then((res) => {
                     res.properties.map((property: UserStoreProperty) => {
                         if (property.name === SharedUserStoreConstants.READONLY_USER_STORE

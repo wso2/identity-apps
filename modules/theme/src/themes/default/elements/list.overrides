@@ -27,6 +27,12 @@
             }
         }
     }
+
+    .associations-list-avatar-wrapper {
+        display: flex;
+        align-items: center;
+        column-gap: 5px;
+    }
 }
 
 /*******************************
@@ -343,6 +349,7 @@
 
             .field {
                 width: 100%;
+                height: 100%;
 
                 .error.field {
                     position: relative;
@@ -353,6 +360,10 @@
                         left: 0;
                         z-index: 99;
                     }
+                }
+                
+                & * {
+                    height: 100%;
                 }
             }
 

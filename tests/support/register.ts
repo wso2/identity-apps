@@ -16,7 +16,8 @@
  *under the License.
  */
 
-const addContext = require("mochawesome/addContext");
+import addContext from "mochawesome/addContext";
+
 const MAX_TEST_NAME_LENGTH = 1000;
 
 Cypress.on("test:after:run", (test, runnable) => {
@@ -28,7 +29,7 @@ Cypress.on("test:after:run", (test, runnable) => {
 
     const imagePath = `screenshots/${ Cypress.spec.name }/${ fullTestName } (failed).png`;
 
-    addContext({test}, imagePath);
+    addContext({ test }, imagePath);
 });
 
 const getFullTestName = (runnable) => {

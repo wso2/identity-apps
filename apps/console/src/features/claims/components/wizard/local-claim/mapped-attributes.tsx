@@ -70,6 +70,7 @@ export const MappedAttributes: FunctionComponent<MappedAttributesPropsInterface>
 
     useEffect(() => {
         const userstore: UserStoreListItem[] = [];
+
         if (attributeConfig.localAttributes.createWizard.showPrimaryUserStore) {
             userstore.push({
                 description: "",
@@ -117,6 +118,7 @@ export const MappedAttributes: FunctionComponent<MappedAttributesPropsInterface>
                                     };
                                 })
                             };
+
                             onSubmit(submitData, values);
                         } }
                     >
@@ -124,7 +126,7 @@ export const MappedAttributes: FunctionComponent<MappedAttributesPropsInterface>
                             { userStore.map((store: UserStoreListItem, index: number) => {
                                 return (
                                     <Grid.Row columns={ 2 } key={ index }>
-                                        <Grid.Column width={ 4 }>
+                                        <Grid.Column className="centered-text" width={ 4 }>
                                             { store.name }
                                         </Grid.Column>
                                         <Grid.Column width={ 12 }>

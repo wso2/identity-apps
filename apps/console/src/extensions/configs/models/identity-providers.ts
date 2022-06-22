@@ -41,6 +41,18 @@ export interface IdentityProviderConfig {
          */
         attributesSettings: boolean;
     };
+    jitProvisioningSettings: {
+        menuItemName: string;
+        enableJitProvisioningField: {
+            show: boolean;
+        },
+        userstoreDomainField: {
+            show: boolean;
+        },
+        provisioningSchemeField: {
+            show: boolean;
+        }
+    },
     generalDetailsForm: {
         showCertificate: boolean;
     };
@@ -85,6 +97,8 @@ export interface IdentityProviderConfig {
         saml: boolean;
         oidc: boolean;
     }
+    fidoTags: string[];
+    filterFidoTags: (tags: string[]) => string[];
 }
 
 /**

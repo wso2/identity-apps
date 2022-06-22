@@ -56,72 +56,72 @@ interface AttributeSelectionWizardOtherDialectPropsInterface extends TestableCom
  */
 export const AttributeSelectionWizardOtherDialect:
     FunctionComponent<AttributeSelectionWizardOtherDialectPropsInterface> = (
-    props: AttributeSelectionWizardOtherDialectPropsInterface
-): ReactElement => {
-    const {
-        selectedExternalClaims,
-        setAvailableExternalClaims,
-        setInitialSelectedExternalClaims,
-        showAddModal,
-        setShowAddModal,
-        availableExternalClaims,
-        isScopeSection,
-        scopeName,
-        [ "data-testid" ]: testId
-    } = props;
+        props: AttributeSelectionWizardOtherDialectPropsInterface
+    ): ReactElement => {
+        const {
+            selectedExternalClaims,
+            setAvailableExternalClaims,
+            setInitialSelectedExternalClaims,
+            showAddModal,
+            setShowAddModal,
+            availableExternalClaims,
+            isScopeSection,
+            scopeName,
+            [ "data-testid" ]: testId
+        } = props;
 
-    const [submit, triggerSubmit] = useTrigger();
+        const [ submit, triggerSubmit ] = useTrigger();
 
-    const { t } = useTranslation();
+        const { t } = useTranslation();
 
-    const handleAttributeModal = () => {
-        setShowAddModal(false);
-    };
+        const handleAttributeModal = () => {
+            setShowAddModal(false);
+        };
 
-    return (
-        <Modal open={ showAddModal } size="large" className="user-roles attribute-modal" data-testid={ testId }>
-            <Modal.Header>
-                { t("console:develop.features.applications.edit.sections.attributes.selection.addWizard.header") }
-                <Heading subHeading ellipsis as="h6">
-                    { !isScopeSection
-                        ? t(
-                        "console:develop.features.applications.edit.sections.attributes.selection.addWizard." +
+        return (
+            <Modal open={ showAddModal } size="large" className="user-roles attribute-modal" data-testid={ testId }>
+                <Modal.Header>
+                    { t("console:develop.features.applications.edit.sections.attributes.selection.addWizard.header") }
+                    <Heading subHeading ellipsis as="h6">
+                        { !isScopeSection
+                            ? t(
+                                "console:develop.features.applications.edit.sections.attributes.selection.addWizard." +
                             "subHeading"
-                        )
-                        : t(
-                            "console:manage.features.oidcScopes.addAttributes.description", { name: scopeName }
-                        )
-                    }
-                </Heading>
-            </Modal.Header>
-            <Modal.Content image>
-                { showAddModal && (
-                    <AttributeSelectList
-                        triggerSubmit={ submit }
-                        setAvailableExternalClaims={ setAvailableExternalClaims }
-                        setInitialSelectedExternalClaims={ setInitialSelectedExternalClaims }
-                        selectedExternalClaims={ selectedExternalClaims }
-                        availableExternalClaims={ availableExternalClaims }
-                        onUpdate={ handleAttributeModal }
-                    />
-                ) }
-            </Modal.Content>
-            <Modal.Actions>
-                <LinkButton onClick={ handleAttributeModal } data-testid={ `${testId}-cancel-button` }>
-                    { t("common:cancel") }
-                </LinkButton>
-                <PrimaryButton
-                    onClick={ () => {
-                        triggerSubmit();
-                    } }
-                    data-testid={ `${testId}-save-button` }
-                >
-                    { t("common:save") }
-                </PrimaryButton>
-            </Modal.Actions>
-        </Modal>
-    );
-};
+                            )
+                            : t(
+                                "console:manage.features.oidcScopes.addAttributes.description", { name: scopeName }
+                            )
+                        }
+                    </Heading>
+                </Modal.Header>
+                <Modal.Content image>
+                    { showAddModal && (
+                        <AttributeSelectList
+                            triggerSubmit={ submit }
+                            setAvailableExternalClaims={ setAvailableExternalClaims }
+                            setInitialSelectedExternalClaims={ setInitialSelectedExternalClaims }
+                            selectedExternalClaims={ selectedExternalClaims }
+                            availableExternalClaims={ availableExternalClaims }
+                            onUpdate={ handleAttributeModal }
+                        />
+                    ) }
+                </Modal.Content>
+                <Modal.Actions>
+                    <LinkButton onClick={ handleAttributeModal } data-testid={ `${testId}-cancel-button` }>
+                        { t("common:cancel") }
+                    </LinkButton>
+                    <PrimaryButton
+                        onClick={ () => {
+                            triggerSubmit();
+                        } }
+                        data-testid={ `${testId}-save-button` }
+                    >
+                        { t("common:save") }
+                    </PrimaryButton>
+                </Modal.Actions>
+            </Modal>
+        );
+    };
 
 /**
  * Default props for the application attribute selection wizard other dialects component.

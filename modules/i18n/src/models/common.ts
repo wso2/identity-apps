@@ -25,6 +25,7 @@ export interface DangerZone {
     subheader: string;
     subheader2?: string;
     buttonHint?: string;
+    buttonDisableHint?: string;
 }
 
 /**
@@ -177,7 +178,7 @@ interface TransferListSearchPlaceholders {
 export interface ModalInterface {
     description: string;
     heading: string;
-    content?: object;
+    content?: Record<string, unknown>;
     primaryButton: string;
     secondaryButton: string;
 }

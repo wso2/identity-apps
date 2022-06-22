@@ -48,6 +48,8 @@ import {
 } from "../../core";
 import { getInboundProtocolConfig } from "../api";
 import { ApplicationManagementConstants } from "../constants";
+import CustomApplicationTemplate
+    from "../data/application-templates/templates/custom-application/custom-application.json";
 import {
     ApplicationInterface,
     ApplicationTemplateInterface,
@@ -59,8 +61,6 @@ import {
     URLFragmentTypes
 } from "../models";
 import { ApplicationManagementUtils } from "../utils";
-import CustomApplicationTemplate
-    from "../data/application-templates/templates/custom-application/custom-application.json";
 
 /**
  * Proptypes for the applications edit component.
@@ -77,7 +77,7 @@ interface EditApplicationPropsInterface extends SBACInterface<FeatureConfigInter
     /**
      * Used to the configured inbound protocol configs from the parent component.
      */
-    getConfiguredInboundProtocolConfigs?: (configs: object) => void;
+    getConfiguredInboundProtocolConfigs?: (configs: Record<string, unknown>) => void;
     /**
      * Is the data still loading.
      */
@@ -208,7 +208,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 handleActiveTabIndexChange(4);
             }
         }
-    },[template]);
+    },[ template ]);
 
     /**
      * Called when the URL fragment updates.
@@ -247,6 +247,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
      */
     useEffect(() => {
         const allowedCORSOrigins = [];
+
         getCORSOrigins()
             .then((response: CORSOriginsListInterface[]) => {
                 response.map((origin) => {
@@ -389,6 +390,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
         if (template.id === CustomApplicationTemplate.id && defaultActiveIndex > 0) {
             handleActiveTabIndexChange(defaultActiveIndex - 1);
+
             return;
         }
 
@@ -413,12 +415,12 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
      * Handles the tab change.
      *
      * @param {React.SyntheticEvent} e - Click event.
-     * @param {TabProps} data - 
+     * @param {TabProps} data - Tab properties.
      */
     const handleTabChange = (e: SyntheticEvent, data: TabProps): void => {
         eventPublisher.compute(() => {
             eventPublisher.publish("application-switch-edit-application-tabs", {
-                "type": data.panes[data.activeIndex].componentId
+                type: data.panes[data.activeIndex].componentId
             });
         });
 
@@ -430,6 +432,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
      */
     const mapProtocolTypeToName = ((type: string): string => {
         let protocolName = type;
+
         if (protocolName === "oauth2") {
             protocolName = SupportedAuthProtocolTypes.OIDC;
         } else if (protocolName === "passivests") {
@@ -451,10 +454,13 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
      */
     const normalizeSAMLNameIDFormat = (protocolConfigs: any): void => {
         const key = "saml";
+
         if (protocolConfigs[ key ]) {
             const assertion = protocolConfigs[ key ].singleSignOnProfile?.assertion;
+
             if (assertion) {
                 const ref = assertion.nameIdFormat as string;
+
                 assertion.nameIdFormat = ref.replace(/\//g, ":");
             }
         }
@@ -585,8 +591,10 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 onUpdate={ handleApplicationUpdate }
                 featureConfig={ featureConfig }
                 template={ template }
-                readOnly={ readOnly }
+                readOnly={ readOnly || applicationConfig.editApplication.getTabPanelReadOnlyStatus(
+                                "APPLICATION_EDIT_GENERAL_SETTINGS", application.name) }
                 data-testid={ `${ testId }-general-settings` }
+                isManagementApp={ application.isManagementApp }
             />
         </ResourceTab.Pane>
     );
@@ -613,7 +621,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 inboundProtocols={ inboundProtocolList }
                 featureConfig={ featureConfig }
                 template={ template }
-                readOnly={ readOnly }
+                readOnly={ readOnly || applicationConfig.editApplication.getTabPanelReadOnlyStatus(
+                                "APPLICATION_EDIT_ACCESS_CONFIG", application.name) }
                 data-testid={ `${ testId }-access-settings` }
             />
         </ResourceTab.Pane>
@@ -674,16 +683,18 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
     const ProvisioningSettingsTabPane = (): ReactElement => (
         applicationConfig.editApplication.showProvisioningSettings
-            ? < ResourceTab.Pane controlledSegmentation>
-                <ProvisioningSettings
-                    application={ application }
-                    provisioningConfigurations={ application.provisioningConfigurations }
-                    onUpdate={ handleApplicationUpdate }
-                    featureConfig={ featureConfig }
-                    readOnly={ readOnly }
-                    data-testid={ `${ testId }-provisioning-settings` }
-                />
-            </ResourceTab.Pane>
+            ? (
+                < ResourceTab.Pane controlledSegmentation>
+                    <ProvisioningSettings
+                        application={ application }
+                        provisioningConfigurations={ application.provisioningConfigurations }
+                        onUpdate={ handleApplicationUpdate }
+                        featureConfig={ featureConfig }
+                        readOnly={ readOnly }
+                        data-testid={ `${ testId }-provisioning-settings` }
+                    />
+                </ResourceTab.Pane>
+            )
             : null
     );
 
@@ -780,7 +791,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 });
             }
             if (isFeatureEnabled(featureConfig?.applications,
-                ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_INFO"))) {
+                ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_INFO")) 
+                && application?.templateId != ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS) {
 
                 panes.push({
                     componentId: "info",

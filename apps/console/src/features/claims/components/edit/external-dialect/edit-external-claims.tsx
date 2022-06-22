@@ -20,9 +20,9 @@ import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, ExternalClaim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
-import { LinkButton, ListLayout, PrimaryButton, SecondaryButton } from "@wso2is/react-components";
+import { LinkButton, ListLayout, PrimaryButton } from "@wso2is/react-components";
 import kebabCase from "lodash-es/kebabCase";
-import React, { Dispatch, FunctionComponent, ReactElement, SetStateAction, useEffect, useMemo, useState } from "react";
+import React, { Dispatch, FunctionComponent, ReactElement, SetStateAction, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Divider, DropdownProps, Grid, Icon, Modal, PaginationProps } from "semantic-ui-react";
@@ -139,17 +139,6 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
-    /**
-     * Reads the static configuration and disables the Add New Attribute mapping
-     * button for targeted attribute dialectIds. Please
-     * {@see markAddExternalAttributeButtonAsAComingSoonFeature}
-     */
-    const canAddNewAttributes = useMemo<boolean>(() => {
-        return !attributeConfig
-            ?.editAttributeMappings
-            ?.markAddExternalAttributeButtonAsAComingSoonFeature(dialectID);
-    }, [ dialectID ]);
-
     useEffect(() => {
         if (claims) {
             setFilteredClaims(claims);
@@ -223,6 +212,7 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
             const filteredList: ExternalClaim[] = filterList(
                 claims, query, sortBy.value, sortOrder
             );
+
             setFilteredClaims(filteredList);
             setSearchQuery(query);
             setOffset(0);
@@ -354,21 +344,21 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
                      * If it's different, this condition will wait until the correct
                      * dialects are loaded onto the view.
                      */
-                     <PrimaryButton
-                     loading={ claims && attributeUri !== claims[0]?.claimDialectURI  }
-                     onClick={ (): void => {
-                         if (attributeUri !== claims[0]?.claimDialectURI ) {
-                             return;
-                         }
-                         setShowAddExternalClaim(true) 
-                     } }
-                     disabled={ showAddExternalClaim || (claims && attributeUri !== claims[0]?.claimDialectURI) }
-                     data-testid={ `${ testId }-list-layout-add-button` }
-                 >
-                     <Icon name="add"/>
-                     { t("console:manage.features.claims.external.pageLayout.edit.primaryAction",
-                         { type: resolveType(attributeType, true) }) }
-                 </PrimaryButton>
+                    <PrimaryButton
+                        loading={ claims && attributeUri !== claims[0]?.claimDialectURI  }
+                        onClick={ (): void => {
+                            if (attributeUri !== claims[0]?.claimDialectURI ) {
+                                return;
+                            }
+                            setShowAddExternalClaim(true); 
+                        } }
+                        disabled={ showAddExternalClaim || (claims && attributeUri !== claims[0]?.claimDialectURI) }
+                        data-testid={ `${ testId }-list-layout-add-button` }
+                    >
+                        <Icon name="add"/>
+                        { t("console:manage.features.claims.external.pageLayout.edit.primaryAction",
+                            { type: resolveType(attributeType, true) }) }
+                    </PrimaryButton>
                 ) }
             data-testid={ `${ testId }-list-layout` }
         >
@@ -415,9 +405,8 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
                                 loading={ isSubmitting }
                                 onClick={ () => {
                                     eventPublisher.publish("manage-attribute-mappings-add-new-attribute", {
-                                        "type": kebabCase(attributeType)
+                                        type: kebabCase(attributeType)
                                     });
-
                                     setTriggerAddExternalClaim();
                                 } }
                                 data-testid={ `${ testId }-add-external-claim-modal-save-button` }
@@ -451,7 +440,7 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
                                 filterAttributePlaceholder={
                                     t("console:manage.features.claims.external.advancedSearch.form.inputs" +
                                         ".filterAttribute.placeholder", {
-                                            type: resolveType(attributeType, true, true)
+                                        type: resolveType(attributeType, true, true)
                                     })
                                 }
                                 filterConditionsPlaceholder={

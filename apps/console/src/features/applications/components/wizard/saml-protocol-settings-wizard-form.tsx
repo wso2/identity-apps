@@ -19,11 +19,13 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { URLUtils } from "@wso2is/core/utils";
 import { Field, FormValue, Forms } from "@wso2is/forms";
-import { ContentLoader, Hint, LinkButton, URLInput } from "@wso2is/react-components";
+import { ContentLoader, Hint, LinkButton, Message, URLInput } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { Grid, Icon, Label, Message } from "semantic-ui-react";
+import { useSelector } from "react-redux";
+import { AppState, ConfigReducerStateInterface } from "../../../core";
+import { Grid } from "semantic-ui-react";
 
 /**
  * Proptypes for the oauth protocol settings wizard form component.
@@ -85,12 +87,14 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
     const [ issuerFromTemplate, setIssuerLFromTemplate ] = useState("");
     const [ showAssertionConsumerUrlError, setAssertionConsumerUrlError ] = useState<boolean>(false);
     const [ assertionConsumerURLsErrorLabel, setAssertionConsumerURLsErrorLabel ] = useState<ReactElement>(null);
+    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
     useEffect(() => {
         if (isEmpty(initialValues?.inboundProtocolConfiguration?.saml)) {
             const tempAssertionConsumerUrls = templateValues?.inboundProtocolConfiguration?.saml?.manualConfiguration
                 .assertionConsumerUrls;
             const tempIssuer = templateValues?.inboundProtocolConfiguration?.saml?.manualConfiguration.issuer;
+
             if (!isEmpty(tempAssertionConsumerUrls)) {
                 setAssertionConsumerUrls(tempAssertionConsumerUrls.toString());
             } else {
@@ -109,7 +113,7 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
             setIssuer(initialValues?.inboundProtocolConfiguration?.saml?.manualConfiguration
                 .issuer?.toString());
         }
-    }, [initialValues]);
+    }, [ initialValues ]);
 
     /**
      * Sets the mandatory status of the ACS URL component by reading
@@ -308,43 +312,65 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
                                         } }
                                         showPredictions={ false }
                                         customLabel={ assertionConsumerURLsErrorLabel }
+                                        popupHeaderPositive={ t("console:develop.features.URLInput.withLabel."
+                                            + "positive.header") }
+                                        popupHeaderNegative={ t("console:develop.features.URLInput.withLabel."
+                                            + "negative.header") }
+                                        popupContentPositive={ t("console:develop.features.URLInput.withLabel."
+                                            + "positive.content", { productName: config.ui.productName }) }
+                                        popupContentNegative={ t("console:develop.features.URLInput.withLabel."
+                                            + "negative.content", { productName: config.ui.productName }) }
+                                        popupDetailedContentPositive={ t("console:develop.features.URLInput."
+                                            + "withLabel.positive.detailedContent.0") }
+                                        popupDetailedContentNegative={ t("console:develop.features.URLInput."
+                                            + "withLabel.negative.detailedContent.0") }
+                                        insecureURLDescription={ t("console:common.validations.inSecureURL."
+                                            + "description") }
+                                        showLessContent={ t("common:showLess") }
+                                        showMoreContent={ t("common:showMore") }
                                     />
                                     {
                                         (assertionConsumerURLFromTemplate) && (
-                                            <Message className="with-inline-icon" icon visible info>
-                                                <Icon name="info" size="mini" />
-                                                <Message.Content> {
-                                                    <Trans
-                                                        i18nKey={ "console:develop.features.applications.forms." +
-                                                        "inboundSAML.fields.assertionURLs.info" }
-                                                        tOptions={ { assertionURLFromTemplate:
-                                                            assertionConsumerURLFromTemplate } }
-                                                    >
-                                                        Don’t have an app? Try out a sample app
-                                                        using <strong>{ assertionConsumerURLFromTemplate }</strong> as
-                                                        the assertion Response URL. (You can download and run a sample
-                                                        at a later step.)
-                                                    </Trans>
-                                                }
-                                                    {
-                                                        (assertionConsumerUrls === undefined ||
-                                                            assertionConsumerUrls === "") && (
-                                                            <LinkButton
-                                                                className={ "m-1 p-1 with-no-border orange" }
-                                                                onClick={ (e) => {
-                                                                    e.preventDefault();
-                                                                    setAssertionConsumerUrls(
-                                                                        assertionConsumerURLFromTemplate);
-                                                                    setIssuer(issuerFromTemplate);
-                                                                } }
-                                                                data-testid={ `${ testId }-add-now-button` }
+                                            <Message
+                                                type="info"
+                                                content={
+                                                    <>
+                                                        {
+                                                            <Trans
+                                                                i18nKey={ "console:develop.features.applications." +
+                                                                "forms.inboundSAML.fields.assertionURLs.info" }
+                                                                tOptions={ { assertionURLFromTemplate:
+                                                                    assertionConsumerURLFromTemplate } }
                                                             >
-                                                                <span style={ { fontWeight: "bold" } }>Add Now</span>
-                                                            </LinkButton>
-                                                        )
-                                                    }
-                                                </Message.Content>
-                                            </Message>
+                                                                Don’t have an app? Try out a sample app
+                                                                using
+                                                                <strong>{ assertionConsumerURLFromTemplate }</strong>
+                                                                as the assertion Response URL. (You can download and
+                                                                run a sample at a later step.)
+                                                            </Trans>
+                                                        }
+                                                        {
+                                                            (assertionConsumerUrls === undefined ||
+                                                                assertionConsumerUrls === "") && (
+                                                                <LinkButton
+                                                                    className={ "m-1 p-1 with-no-border orange" }
+                                                                    onClick={ (e) => {
+                                                                        e.preventDefault();
+                                                                        setAssertionConsumerUrls(
+                                                                            assertionConsumerURLFromTemplate);
+                                                                        setIssuer(issuerFromTemplate);
+                                                                    } }
+                                                                    data-testid={ `${ testId }-add-now-button` }
+                                                                >
+                                                                    <span style={ { fontWeight: "bold" } }>
+                                                                        Add Now
+                                                                    </span>
+                                                                </LinkButton>
+                                                            )
+                                                        }
+                                                    </>
+                                                }
+                                            />
                                         )
                                     }
                                 </Grid.Column>

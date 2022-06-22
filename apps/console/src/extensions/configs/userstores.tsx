@@ -19,6 +19,7 @@
 import { UserstoresConfig } from "./models";
 
 export const userstoresConfig: UserstoresConfig = {
+    onUserstoreEdit: () => true,
     shouldShowUserstore: () => {
         return false;
     },
@@ -33,12 +34,16 @@ export const userstoresConfig: UserstoresConfig = {
             showAdditionalProperties: true,
             showToggles: true
         },
+        remoteUserStoreEditPath: "",
         userDetails: {
             showAdditionalProperties: true,
             showDisplayName: true
         }
     },
     userstoreList: {
-        allowAddingUserstores: true
+        allowAddingUserstores: true,
+        renderEmptyPlaceholder: () => {
+            return null;
+        }
     }
 };

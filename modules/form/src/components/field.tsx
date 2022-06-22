@@ -16,19 +16,23 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FC, ReactElement, cloneElement } from "react";
 import { FieldProps } from "react-final-form";
 import { FieldButton } from "./field-button";
 import { FieldCheckbox } from "./field-checkbox";
 import { FieldCheckboxLegacy } from "./field-checkbox-legacy";
+import { FieldColorPicker } from "./field-color-picker";
 import { FieldDropdown } from "./field-dropdown";
 import { FieldInput } from "./field-input";
 import { FieldQueryParams } from "./field-query-params";
+import { FieldRadio } from "./field-radio";
 import { FieldTextarea } from "./field-textarea";
 
-export interface FormFieldPropsInterface extends FieldProps<any, any, any>, TestableComponentInterface {
+export interface FormFieldPropsInterface extends FieldProps<any, any, any>, TestableComponentInterface,
+    IdentifiableComponentInterface {
+
     /**
      * Aria label for the field.
      */
@@ -51,6 +55,8 @@ type FieldType = FC<FormFieldPropsInterface> & {
     Checkbox: typeof FieldCheckbox;
     Dropdown: typeof FieldDropdown;
     QueryParams: typeof FieldQueryParams;
+    ColorPicker: typeof FieldColorPicker;
+    Radio: typeof FieldRadio;
 }
 
 /**
@@ -97,3 +103,5 @@ Field.CheckboxLegacy = FieldCheckboxLegacy;
 Field.Checkbox = FieldCheckbox;
 Field.Dropdown = FieldDropdown;
 Field.QueryParams = FieldQueryParams;
+Field.ColorPicker = FieldColorPicker;
+Field.Radio = FieldRadio;

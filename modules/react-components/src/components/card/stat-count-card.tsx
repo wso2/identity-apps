@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, MouseEvent, ReactElement } from "react";
 import { Card, CardProps, Statistic, StatisticProps } from "semantic-ui-react";
@@ -25,7 +25,7 @@ import { GenericIcon, GenericIconProps, GenericIconSizes } from "../icon";
 /**
  * Proptypes for the stat count card component.
  */
-export interface StatCountCardPropsInterface extends TestableComponentInterface {
+export interface StatCountCardPropsInterface extends IdentifiableComponentInterface, TestableComponentInterface {
     /**
      * Additional classes.
      */
@@ -116,6 +116,7 @@ export const StatCountCard: FunctionComponent<StatCountCardPropsInterface> = (
         statOptions,
         textAlign,
         value,
+        [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId
     } = props;
 
@@ -152,6 +153,7 @@ export const StatCountCard: FunctionComponent<StatCountCardPropsInterface> = (
             link={ false }
             fluid={ fluid }
             as="div"
+            data-componentid={ componentId }
             data-testid={ testId }
         >
             <Card.Content className="stat-count-card-text-container" style={ { textAlign } }>
@@ -162,6 +164,7 @@ export const StatCountCard: FunctionComponent<StatCountCardPropsInterface> = (
                                 className="stat-count-card-icon"
                                 size={ iconSize }
                                 icon={ icon }
+                                data-componentid={ `${ componentId }-icon` }
                                 data-testid={ `${ testId }-icon` }
                                 floated="left"
                                 shape="rounded"
@@ -184,6 +187,7 @@ export const StatCountCard: FunctionComponent<StatCountCardPropsInterface> = (
  * Default props for the stat count card.
  */
 StatCountCard.defaultProps = {
+    "data-componentid": "stat-count-card",
     "data-testid": "stat-count-card",
     fluid: false,
     iconSize: "mini",

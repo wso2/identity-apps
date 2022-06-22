@@ -101,6 +101,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
         const modifiedCustomProperties = resolvedCustomProperties?.toString()?.split(",")
             ?.map((customProperty: string) => {
                 const keyValuePair = customProperty.split("=");
+
                 return {
                     key: keyValuePair[ 0 ],
                     value: keyValuePair[ 1 ]
@@ -112,12 +113,12 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
         if (initialValues?.properties) {
             return {
                 ...initialValues,
-                properties: [...properties]
+                properties: [ ...properties ]
             };
         } else {
             return {
                 ...metadata,
-                properties: [...properties]
+                properties: [ ...properties ]
             };
         }
     };
@@ -142,10 +143,10 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
     };
 
     const getField = (property: CommonPluggableComponentPropertyInterface,
-                      eachPropertyMeta: CommonPluggableComponentMetaPropertyInterface,
-                      isSub?: boolean,
-                      testId?: string,
-                      listen?: (key: string, values: Map<string, FormValue>) => void):
+        eachPropertyMeta: CommonPluggableComponentMetaPropertyInterface,
+        isSub?: boolean,
+        testId?: string,
+        listen?: (key: string, values: Map<string, FormValue>) => void):
         ReactElement => {
 
         if (isSub) {
@@ -184,20 +185,21 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
                 const property: CommonPluggableComponentPropertyInterface = dynamicValues?.properties?.find(
                     property => property.key === metaProperty.key);
                 let field: ReactElement;
+
                 if (!isCheckboxWithSubProperties(metaProperty)) {
-                    field = getField(property, metaProperty, isSub, `${testId}-form`, handleParentPropertyChange);
+                    field = getField(property, metaProperty, isSub, `${ testId }-form`, handleParentPropertyChange);
                 } else if (isRadioButtonWithSubProperties(metaProperty)) {
                     field =
-                        <React.Fragment key={ metaProperty?.key }>
+                        (<React.Fragment key={ metaProperty?.key }>
                             {
                                 // Render parent property.
                                 getField(property, metaProperty, isSub, `${ testId }-form`,
                                     handleParentPropertyChange)
                             }
-                        </React.Fragment>;
+                        </React.Fragment>);
                 } else {
                     field =
-                        <React.Fragment key={ metaProperty?.key }>
+                        (<React.Fragment key={ metaProperty?.key }>
                             {
                                 // Render parent property.
                                 getField(property, metaProperty, isSub, `${ testId }-form`,
@@ -206,7 +208,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
                             {
                                 getSortedPropertyFields(metaProperty?.subProperties, true)
                             }
-                        </React.Fragment>;
+                        </React.Fragment>);
                 }
 
                 bucket.push(field);
@@ -222,15 +224,17 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
 
             const enableField = (formKey: string): void => {
                 const props = metadata
-                    .properties
+                    ?.properties
                     .find(({ key }) => key === formKey);
+
                 if (props) props.isDisabled = false;
             };
 
             const disableField = (formKey: string): void => {
                 const props = metadata
-                    .properties
-                    .find(({ key }) => key === formKey);
+                    ?.properties
+                    ?.find(({ key }) => key === formKey);
+
                 if (props) props.isDisabled = true;
             };
 
@@ -262,8 +266,9 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
 
             const changeLabel = (to: string): void => {
                 const props = metadata
-                    .properties
+                    ?.properties
                     .find(({ key }) => key === TARGET_FORM_KEY);
+
                 if (props) props.displayName = to;
             };
 
@@ -292,14 +297,14 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
             properties: dynamicValues?.properties ? dynamicValues?.properties?.map(
                 (prop: CommonPluggableComponentPropertyInterface):
                     CommonPluggableComponentPropertyInterface => {
-                        return prop.key === key ? {
-                            key: key,
-                            value: values?.get(key)?.includes(key)?.toString()
-                        } : prop;
+                    return prop.key === key ? {
+                        key: key,
+                        value: values?.get(key)?.includes(key)?.toString()
+                    } : prop;
                 }) : [ {
-                    key: key,
-                    value: values?.get(key)?.includes(key)?.toString()
-                } ]
+                key: key,
+                value: values?.get(key)?.includes(key)?.toString()
+            } ]
         });
     };
 
@@ -329,9 +334,9 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
 
         setDynamicValues(initialValues);
 
-        const initialFormValues = initialValues.properties.reduce((values, { key, value }) => {
+        const initialFormValues = initialValues?.properties?.reduce((values, { key, value }) => {
             return values.set(key, value);
-        }, new Map<string, FormValue>());
+        }, new Map<string, FormValue>()) || new Map<string, FormValue>();
 
         triggerAlgorithmSelectionDropdowns("IsLogoutReqSigned", initialFormValues);
         triggerAlgorithmSelectionDropdowns("ISAuthnReqSigned", initialFormValues);
@@ -347,6 +352,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
             return;
         }
         const values: string[] = [];
+
         dynamicValues?.properties?.forEach(
             (property: CommonPluggableComponentPropertyInterface) => {
                 if (!metadata?.properties?.find(meta => meta.key === property.key)) {
@@ -366,7 +372,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
             data-testid={ `${ testId }-form` }
         >
             <Grid>
-                { dynamicValues && getSortedPropertyFields(metadata?.properties, false) }
+                { getSortedPropertyFields(metadata?.properties, false) }
                 { showCustomProperties && customProperties && (
                     <Grid.Row columns={ 1 }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>

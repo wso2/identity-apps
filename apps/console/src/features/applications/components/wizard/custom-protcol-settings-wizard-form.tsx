@@ -100,12 +100,12 @@ export const InboundCustomProtocolWizardForm: FunctionComponent<InboundCustomPro
                                 requiredErrorMessage={
                                     t("console:develop.features.applications.forms.inboundCustom.fields.password" +
                                         ".validations.empty",
-                                        { name: config?.displayName })
+                                    { name: config?.displayName })
                                 }
                                 placeholder={
                                     t("console:develop.features.applications.forms.inboundCustom.fields.password" +
                                         ".placeholder",
-                                        { name: config?.displayName })
+                                    { name: config?.displayName })
                                 }
                                 type="password"
                                 default={ config?.defaultValue }
@@ -125,9 +125,9 @@ export const InboundCustomProtocolWizardForm: FunctionComponent<InboundCustomPro
                                 requiredErrorMessage={
                                     t("console:develop.features.applications.forms.inboundCustom.fields.checkbox" +
                                         ".validations.empty",
-                                        { user: config?.displayName })
+                                    { user: config?.displayName })
                                 }
-                                value={ initialValue?.value ? [config.name] : [] }
+                                value={ initialValue?.value ? [ config.name ] : [] }
                                 type="checkbox"
                                 children={ [
                                     {
@@ -152,12 +152,12 @@ export const InboundCustomProtocolWizardForm: FunctionComponent<InboundCustomPro
                                 requiredErrorMessage={
                                     t("console:develop.features.applications.forms.inboundCustom.fields.generic" +
                                         ".validations.empty",
-                                        { name: config?.displayName })
+                                    { name: config?.displayName })
                                 }
                                 placeholder={
                                     t("console:develop.features.applications.forms.inboundCustom.fields.generic" +
                                         ".placeholder",
-                                        { name: config?.displayName })
+                                    { name: config?.displayName })
                                 }
                                 type={ (config?.type === CustomTypeEnum.INTEGER) ? "number" : "text" }
                                 data-testid={ `${ testId }-${ config?.name }-input` }
@@ -171,14 +171,17 @@ export const InboundCustomProtocolWizardForm: FunctionComponent<InboundCustomPro
     const generateFormElements = (() => {
         if (metadata) {
             const configs: CustomInboundProtocolPropertyInterface[] = metadata?.properties;
+
             if (configs.length > 0) {
                 configs.sort(
                     (a, b) => (a.displayOrder > b.displayOrder) ? 1 : -1);
             }
+
             return configs.map((config) => {
                 const initialValue: PropertyModelInterface = initialValues?.properties.find(
                     (prop) => prop.key === config.name
                 );
+
                 if (initialValue) {
                     return createInputComponent(config, initialValue);
                 } else {
@@ -194,11 +197,13 @@ export const InboundCustomProtocolWizardForm: FunctionComponent<InboundCustomPro
      */
     const createDropDownOption = (options: string[]) => {
         const allowedOptions = [];
+
         if (options) {
             options.map((ele) => {
                 allowedOptions.push({ key: options.indexOf(ele), text: ele, value: ele });
             });
         }
+
         return allowedOptions;
     };
 
@@ -210,9 +215,11 @@ export const InboundCustomProtocolWizardForm: FunctionComponent<InboundCustomPro
      */
     const updateConfiguration = (values: Map<string, string | string[]>): any => {
         const valueProperties: SubmitFormCustomPropertiesInterface[] = [];
+
         //Iterate over map entries
-        for (const [key, value] of values) {
+        for (const [ key, value ] of values) {
             let property: SubmitFormCustomPropertiesInterface = undefined;
+
             if (value instanceof Array) {
                 property = {
                     key: key,
@@ -226,6 +233,7 @@ export const InboundCustomProtocolWizardForm: FunctionComponent<InboundCustomPro
             }
             valueProperties.push(property);
         }
+
         return {
             inboundProtocolConfiguration: {
                 [protocolName]: {
@@ -243,20 +251,22 @@ export const InboundCustomProtocolWizardForm: FunctionComponent<InboundCustomPro
         if (metadata) {
             generateFormElements();
         }
-    }, [metadata]);
+    }, [ metadata ]);
 
-    return (metadata
-            ?
-            <Forms
-                onSubmit={ (values) => {
-                    onSubmit(updateConfiguration(values));
-                } }
-                submitState={ triggerSubmit }
-            >
-                <Grid>
-                    { generateFormElements() }
-                </Grid>
-            </Forms>
+    return (
+        metadata
+            ? (
+                <Forms
+                    onSubmit={ (values) => {
+                        onSubmit(updateConfiguration(values));
+                    } }
+                    submitState={ triggerSubmit }
+                >
+                    <Grid>
+                        { generateFormElements() }
+                    </Grid>
+                </Forms>
+            )
             : <ContentLoader/>
     );
 };

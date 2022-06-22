@@ -27,9 +27,9 @@ export class UninitializedI18nInstanceException extends I18nModuleException {
 
     /**
      * Constructor.
-     * @param {any} stack - Stack trace.
+     * @param {string | Record<string, unknown>} stack - Stack trace.
      */
-    constructor(stack?: any) {
+    constructor(stack?: string | Record<string, unknown>) {
         super("The i18n module is not initialized.", stack);
     }
 }

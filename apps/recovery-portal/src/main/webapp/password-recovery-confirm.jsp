@@ -47,6 +47,8 @@
     if (StringUtils.isBlank(callback)) {
         callback = request.getParameter("redirect_uri");
     }
+    String username = request.getParameter("username");
+
     NotificationApi notificationApi = new NotificationApi();
     try {
         List<Property> properties = new ArrayList<>();
@@ -62,6 +64,9 @@
         
     } catch (ApiException e) {
         IdentityManagementEndpointUtil.addErrorInformation(request, e);
+        if (!StringUtils.isBlank(username)) {
+            request.setAttribute("username", username);
+        }
         request.getRequestDispatcher("error.jsp").forward(request, response);
         return;
     }
@@ -84,6 +89,9 @@
         request.setAttribute("errorMsg",
                 IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Cannot.process.email.confirmation.code.is.missing"));
         request.setAttribute("errorCode", "18001");
+        if (!StringUtils.isBlank(username)) {
+            request.setAttribute("username", username);
+        }
         request.getRequestDispatcher("error.jsp").forward(request, response);
         return;
     }

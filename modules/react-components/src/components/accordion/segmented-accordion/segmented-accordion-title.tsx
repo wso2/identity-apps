@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FormEvent, FunctionComponent, MouseEvent, ReactElement } from "react";
 import {
@@ -36,7 +36,9 @@ import { EmphasizedSegment } from "../../section";
 /**
  * Proptypes for the segmented accordion title component.
  */
-export interface SegmentedAccordionTitlePropsInterface extends AccordionTitleProps, TestableComponentInterface {
+export interface SegmentedAccordionTitlePropsInterface extends AccordionTitleProps, IdentifiableComponentInterface,
+    TestableComponentInterface {
+
     /**
      * Unique identifier for the element to be used in action callbacks.
      */
@@ -134,6 +136,7 @@ export const SegmentedAccordionTitle: FunctionComponent<SegmentedAccordionTitleP
         hideChevron,
         id,
         useEmphasizedSegments,
+        [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId,
         ...rest
     } = props;
@@ -195,10 +198,11 @@ export const SegmentedAccordionTitle: FunctionComponent<SegmentedAccordionTitleP
                                 onChange, e, data, id
                             )
                         }
+                        data-componentid={ `${ componentId }-${ action.type }-action-${ index }` }
                         data-testid={ `${ testId }-${ action.type }-action-${ index }` }
                         { ...actionsRest }
                     />
-                )
+                );
             }
             case "checkbox": {
                 return (
@@ -209,10 +213,11 @@ export const SegmentedAccordionTitle: FunctionComponent<SegmentedAccordionTitleP
                             (e: FormEvent<HTMLInputElement>, data: CheckboxProps) => handleActionOnClick(
                                 onChange, e, data, id)
                         }
+                        data-componentid={ `${ componentId }-${ action.type }-action-${ index }` }
                         data-testid={ `${ testId }-${ action.type }-action-${ index }` }
                         { ...actionsRest }
                     />
-                )
+                );
             }
             case "icon": {
                 if (typeof icon === "string") {
@@ -229,16 +234,17 @@ export const SegmentedAccordionTitle: FunctionComponent<SegmentedAccordionTitleP
                                         disabled={ disabled }
                                         transparent
                                         verticalAlign="middle"
-                                        icon={
+                                        icon={ (
                                             <Icon
                                                 name={ icon as SemanticICONS }
                                                 color="grey"
-                                                className={ classNames({"disabled": disabled}, "") }
+                                                className={ classNames({ "disabled": disabled }, "") }
                                             />
-                                        }
+                                        ) }
                                         onClick={
                                             (e: MouseEvent<HTMLDivElement>) => handleActionOnClick(onClick, e, id)
                                         }
+                                        data-componentid={ `${ componentId }-${ action.type }-action-${ index }` }
                                         data-testid={ `${ testId }-${ action.type }-action-${ index }` }
                                     />
                                 </div>
@@ -247,7 +253,7 @@ export const SegmentedAccordionTitle: FunctionComponent<SegmentedAccordionTitleP
                             content={ popoverText }
                             inverted
                         />
-                    )
+                    );
                 }
 
                 return (
@@ -264,6 +270,7 @@ export const SegmentedAccordionTitle: FunctionComponent<SegmentedAccordionTitleP
                                     transparent
                                     verticalAlign="middle"
                                     onClick={ (e: MouseEvent<HTMLDivElement>) => handleActionOnClick(onClick, e, id) }
+                                    data-componentid={ `${ componentId }-${ action.type }-action-${ index }` }
                                     data-testid={ `${ testId }-${ action.type }-action-${ index }` }
                                     { ...icon }
                                 />
@@ -273,7 +280,7 @@ export const SegmentedAccordionTitle: FunctionComponent<SegmentedAccordionTitleP
                         content={ popoverText }
                         inverted
                     />
-                )
+                );
             }
             default: {
                 return null;
@@ -287,6 +294,7 @@ export const SegmentedAccordionTitle: FunctionComponent<SegmentedAccordionTitleP
             attached={ attached && (active ? "top" : false) }
             active={ active }
             className={ classes }
+            data-componentid={ componentId }
             data-testid={ testId }
             { ...rest }
         >
@@ -304,6 +312,9 @@ export const SegmentedAccordionTitle: FunctionComponent<SegmentedAccordionTitleP
                                             key={ index }
                                             className="mr-3 m-auto"
                                             onClick={ (e: MouseEvent<HTMLDivElement>) => e.stopPropagation() }
+                                            data-componentid={
+                                                `${ componentId }-${ action.type }-action-container-${ index }`
+                                            }
                                             data-testid={ `${ testId }-${ action.type }-action-container-${ index }` }
                                         >
                                             { resolveAction(action, index) }
@@ -321,6 +332,7 @@ export const SegmentedAccordionTitle: FunctionComponent<SegmentedAccordionTitleP
                                         transparent
                                         verticalAlign="middle"
                                         floated="right"
+                                        data-componentid={ `${ componentId }-chevron` }
                                         data-testid={ `${ testId }-chevron` }
                                         icon={ <Icon name="angle right" className="chevron"/> }
                                     />
@@ -340,6 +352,7 @@ export const SegmentedAccordionTitle: FunctionComponent<SegmentedAccordionTitleP
 SegmentedAccordionTitle.defaultProps = {
     attached: true,
     clearing: false,
+    "data-componentid": "segmented-accordion-title",
     "data-testid": "segmented-accordion-title",
     disabled: false,
     hideChevron: false,

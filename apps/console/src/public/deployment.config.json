@@ -39,7 +39,6 @@
     "isSaas": true,
     "loginCallbackPath": "",
     "logoutCallbackPath": "",
-    "productVersion": "",
     "serverOrigin": "https://localhost:9443",
     "routePaths": {
         "home": "/develop/applications",
@@ -225,6 +224,27 @@
                     ]
                 }
             },
+            "organizations": {
+                "enabled": true,
+                "disabledFeatures": [],
+                "scopes": {
+                    "feature": [
+                        "console:organizations"
+                    ],
+                    "create": [
+                        "internal_organization_create"
+                    ],
+                    "read": [
+                        "internal_organization_view"
+                    ],
+                    "update": [
+                        "internal_organization_update"
+                    ],
+                    "delete": [
+                        "internal_organization_delete"
+                    ]
+                }
+            },
             "oidcScopes": {
                 "enabled": true,
                 "disabledFeatures": [],
@@ -388,9 +408,12 @@
         "gravatarConfig": {
             "fallback": "404"
         },
-        "hiddenAuthenticators": [],
+        "hiddenAuthenticators": [
+            "MagicLinkAuthenticator"
+        ],
         "i18nConfigs": {
-            "showLanguageSwitcher": false
+            "showLanguageSwitcher": false,
+            "langAutoDetectEnabled":false
         },
         "isCookieConsentBannerEnabled": false,
         "isGroupAndRoleSeparationEnabled": true,

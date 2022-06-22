@@ -15,7 +15,6 @@
     "isSaas": true,
     "loginCallbackPath": "",
     "logoutCallbackPath": "",
-    "productVersion": "",
     "serverOrigin": "https://localhost:9443",
     "routePaths": {
         "home": "/overview",
@@ -36,6 +35,9 @@
         "appLogoPath": "/assets/images/branding/logo.svg",
         "authenticatorApp": [],
         "disableMFAforSuperTenantUser": false,
+        "enableMFAUserWise": false,
+        "disableMFAForFederatedUsers": false,
+        "forceBackupCode": false,
         "features": {
             "applications": {
                 "disabledFeatures": [],
@@ -79,7 +81,8 @@
             }
         },
         "i18nConfigs": {
-            "showLanguageSwitcher": true
+            "showLanguageSwitcher": true,
+            "langAutoDetectEnabled": false
         },
         "isCookieConsentBannerEnabled": true,
         "isHeaderAvatarLabelAllowed": true,

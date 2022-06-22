@@ -30,7 +30,7 @@ import {
 import isEmpty from "lodash-es/isEmpty";
 import React, { ReactElement, Suspense, useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
-import { Trans, useTranslation } from "react-i18next";
+import { Trans } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Redirect, Route, Router, Switch } from "react-router-dom";
 import { PreLoader, ProtectedRoute } from "./components";
@@ -56,15 +56,14 @@ export const App = (): ReactElement => {
     const loginInit: boolean = useSelector((state: AppState) => state.authenticationInformation.loginInit);
     const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
     const appTitle: string = useSelector((state: AppState) => state?.config?.ui?.appTitle);
-    const UUID: string = useSelector((state: AppState) => state.authenticationInformation.profileInfo.id);
+    const uuid: string = useSelector((state: AppState) => state.authenticationInformation.profileInfo.id);
+    const theme: string = useSelector((state: AppState) => state?.config?.ui?.theme?.name);
 
     const [ appRoutes, setAppRoutes ] = useState<RouteInterface[]>(getAppRoutes());
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
-    const { trySignInSilently } = useAuthContext();
-
-    const { t } = useTranslation();
+    const { signOut, trySignInSilently } = useAuthContext();
 
     /**
      * Set the deployment configs in redux state.
@@ -117,6 +116,7 @@ export const App = (): ReactElement => {
                     ...tenantAppSettings,
                     [ userName ]: emptyIdentityAppsSettings()
                 };
+
                 LocalStorageUtils.setValueInLocalStorage(tenant, JSON.stringify(newUserSettings));
             }
         }
@@ -127,12 +127,11 @@ export const App = (): ReactElement => {
     * Publish page visit when the UUID is set.
     */
     useEffect(() => {
-        if (!UUID) {
+        if (!uuid) {
             return;
         }
-
         eventPublisher.publish("page-visit-myaccount-landing-page");
-    }, [ UUID ]);
+    }, [ uuid ]);
 
     /**
      * Handles session timeout abort.
@@ -156,6 +155,7 @@ export const App = (): ReactElement => {
     const sessionStorageDisabled = () => {
         try {
             const storage = sessionStorage;
+
             if (!storage && location.pathname !== AppConstants.getPaths().get("STORING_DATA_DISABLED")) {
                 history.push(AppConstants.getPaths().get("STORING_DATA_DISABLED"));
             }
@@ -211,14 +211,43 @@ export const App = (): ReactElement => {
                                                 </Trans>
                                             ),
                                             headingI18nKey: "myAccount:common.modals.sessionTimeoutModal.heading",
-                                            loginAgainButtonText: t("myAccount:common.modals" +
-                                                ".sessionTimeoutModal.loginAgainButton"),
-                                            primaryButtonText: t("myAccount:common.modals." +
-                                                "sessionTimeoutModal.primaryButton"),
-                                            secondaryButtonText: t("myAccount:common.modals" +
-                                                ".sessionTimeoutModal.secondaryButton"),
-                                            sessionTimedOutDescription: t("myAccount:common." +
-                                                "modals.sessionTimeoutModal.sessionTimedOutDescription"),
+                                            loginAgainButtonText: (
+                                                <Trans
+                                                    i18nKey={
+                                                        "myAccount:common.modals.sessionTimeoutModal.loginAgainButton"
+                                                    }
+                                                >
+                                                    Login again
+                                                </Trans>
+                                            ),
+                                            primaryButtonText: (
+                                                <Trans
+                                                    i18nKey={
+                                                        "myAccount:common.modals.sessionTimeoutModal.primaryButton"
+                                                    }
+                                                >
+                                                    Go back
+                                                </Trans>
+                                            ),
+                                            secondaryButtonText: (
+                                                <Trans
+                                                    i18nKey={
+                                                        "myAccount:common.modals.sessionTimeoutModal.secondaryButton"
+                                                    }
+                                                >
+                                                    Logout
+                                                </Trans>
+                                            ),
+                                            sessionTimedOutDescription: (
+                                                <Trans
+                                                    i18nKey={
+                                                        "myAccount:common.modals.sessionTimeoutModal" +
+                                                        ".sessionTimedOutDescription"
+                                                    }
+                                                >
+                                                    Please log in again to continue from where you left off.
+                                                </Trans>
+                                            ),
                                             sessionTimedOutHeadingI18nKey: "myAccount:common.modals" +
                                                 ".sessionTimeoutModal.sessionTimedOutHeading"
                                         } }
@@ -227,20 +256,77 @@ export const App = (): ReactElement => {
                                         <>
                                             <Helmet>
                                                 <title>{ appTitle }</title>
+                                                {
+                                                    (window?.themeHash && window?.publicPath && theme)
+                                                        ? (
+                                                            <link
+                                                                href={
+                                                                    `${window?.origin}${window?.publicPath}/libs/themes/${theme}/theme.${window?.themeHash}.min.css`
+                                                                }
+                                                                rel="stylesheet"
+                                                                type="text/css"
+                                                            />
+                                                        ) 
+                                                        : null
+                                                }
                                             </Helmet>
                                             <NetworkErrorModal
-                                                heading={ t("common:networkErrorMessage.heading") }
-                                                description={ t("common:networkErrorMessage" +
-                                                    ".description") }
-                                                primaryActionText={ t("common:networkErrorMessage" +
-                                                    ".primaryActionText") }
+                                                heading={
+                                                    (<Trans
+                                                        i18nKey={ "common:networkErrorMessage.heading" }
+                                                    >
+                                                        Your session has expired
+                                                    </Trans>)
+                                                }
+                                                description={
+                                                    (<Trans
+                                                        i18nKey={ "common:networkErrorMessage.description" }
+                                                    >
+                                                        Please try signing in again.
+                                                    </Trans>)
+                                                }
+                                                primaryActionText={
+                                                    (<Trans
+                                                        i18nKey={
+                                                            "common:networkErrorMessage.primaryActionText"
+                                                        }
+                                                    >
+                                                        Sign In
+                                                    </Trans>)
+                                                }
+                                                primaryAction={
+                                                    signOut
+                                                }
                                             />
                                             <ChunkErrorModal
-                                                heading={ t("common:chunkLoadErrorMessage.heading") }
-                                                description={ t("common:chunkLoadErrorMessage" +
-                                                    ".description") }
-                                                primaryActionText={ t("common:chunkLoadErrorMessage" +
-                                                    ".primaryActionText") }
+                                                heading={
+                                                    (<Trans
+                                                        i18nKey={
+                                                            "common:chunkLoadErrorMessage.heading"
+                                                        }
+                                                    >
+                                                        Something went wrong
+                                                    </Trans>)
+                                                }
+                                                description={
+                                                    (<Trans
+                                                        i18nKey={
+                                                            "common:chunkLoadErrorMessage.description"
+                                                        }
+                                                    >
+                                                        An error occurred when serving the requested
+                                                        application. Please try reloading the app.
+                                                    </Trans>)
+                                                }
+                                                primaryActionText={
+                                                    (<Trans
+                                                        i18nKey={
+                                                            "common:chunkLoadErrorMessage.primaryActionText"
+                                                        }
+                                                    >
+                                                        Reload the App
+                                                    </Trans>)
+                                                }
                                             />
                                             <Switch>
                                                 <Redirect exact from="/" to={ AppConstants.getAppHomePath() } />
@@ -250,10 +336,10 @@ export const App = (): ReactElement => {
                                                             .map((route, index) => {
                                                                 return (
                                                                     route.redirectTo
-                                                                        ? <Redirect
+                                                                        ? (<Redirect
                                                                             to={ route.redirectTo }
                                                                             path={ route.path }
-                                                                        />
+                                                                        />)
                                                                         : route.protected ?
                                                                             (
                                                                                 <ProtectedRoute

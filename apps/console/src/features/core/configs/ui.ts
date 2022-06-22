@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { FunctionComponent, SVGProps } from "react";
+import { FunctionComponent } from "react";
 import { ReactComponent as AlertIcon } from "../../../themes/default/assets/images/icons/alert-icon.svg";
 import { ReactComponent as ArrowRight } from "../../../themes/default/assets/images/icons/arrow-right-icon.svg";
 import {
@@ -40,7 +40,6 @@ import { ReactComponent as DatabaseIcon } from "../../../themes/default/assets/i
 import { ReactComponent as DragSquaresIcon } from "../../../themes/default/assets/images/icons/drag-squares-icon.svg";
 import { ReactComponent as ForbiddenIcon } from "../../../themes/default/assets/images/icons/forbidden-icon.svg";
 import { ReactComponent as GearsIcon } from "../../../themes/default/assets/images/icons/gears-icon.svg";
-import { ReactComponent as LockIcon } from "../../../themes/default/assets/images/icons/lock-icon.svg";
 import { ReactComponent as MaximizeIcon } from "../../../themes/default/assets/images/icons/maximize-icon.svg";
 import { ReactComponent as IDPMetadataIcon } from "../../../themes/default/assets/images/icons/metadata.svg";
 import { ReactComponent as MinimizeIcon } from "../../../themes/default/assets/images/icons/minimize-icon.svg";
@@ -51,6 +50,7 @@ import {
 import {
     ReactComponent as ApplicationsOutlineIcon
 } from "../../../themes/default/assets/images/icons/outline-icons/application-outline.svg";
+import { ReactComponent as HomeIcon } from "../../../themes/default/assets/images/icons/outline-icons/home-outline.svg";
 import {
     ReactComponent as IDPOutlineIcon
 } from "../../../themes/default/assets/images/icons/outline-icons/idp-provider-outline.svg";
@@ -87,6 +87,9 @@ import {
     ReactComponent as LightModeIcon
 } from "../../../themes/default/assets/images/icons/solid-icons/light-icon.svg";
 import {
+    ReactComponent as MyAccountSolidIcon
+} from "../../../themes/default/assets/images/icons/solid-icons/my-account-icon.svg";
+import {
     ReactComponent as OpenBookIcon
 } from "../../../themes/default/assets/images/icons/solid-icons/oidc.svg";
 import { ReactComponent as UnPinIcon } from "../../../themes/default/assets/images/icons/unpin-icon.svg";
@@ -101,6 +104,9 @@ import { ReactComponent as CertificateRibbon } from "../../../themes/default/ass
 import {
     ReactComponent as BrokenPageIllustration
 } from "../../../themes/default/assets/images/placeholder-illustrations/broken-page-illustration.svg";
+import {
+    ReactComponent as CreateErrorIllustration
+} from "../../../themes/default/assets/images/placeholder-illustrations/create-error-illustration.svg";
 import {
     ReactComponent as EmptyListIllustration
 } from "../../../themes/default/assets/images/placeholder-illustrations/empty-list-illustration.svg";
@@ -131,7 +137,38 @@ import { ReactComponent as VueLogo } from "../../../themes/default/assets/images
 import { ReactComponent as WindowsLogo } from "../../../themes/default/assets/images/technologies/windows-logo.svg";
 import { ServerConfigurationsConstants } from "../../server-configurations/constants";
 
-export const getTechnologyLogos = () => {
+/**
+ * Typed interface of {@link getTechnologyLogos}
+ */
+interface GetTechnologyLogosInterface {
+    android: FunctionComponent,
+    angular: FunctionComponent,
+    apple: FunctionComponent,
+    cSharp: FunctionComponent,
+    cordova: FunctionComponent,
+    dotNet: FunctionComponent,
+    html: FunctionComponent,
+    ios: FunctionComponent,
+    java: FunctionComponent,
+    javascript: FunctionComponent,
+    macos: string,
+    nodejs: FunctionComponent,
+    oidc: string,
+    openidconnect: string,
+    python: FunctionComponent,
+    react: FunctionComponent,
+    saml: string,
+    scim: string,
+    vue: FunctionComponent,
+    windows: FunctionComponent
+}
+
+/**
+ * Get Technology Logos. Please add the types to
+ * {@link GetTechnologyLogosInterface} if introducing
+ * new icons/images.
+ */
+export const getTechnologyLogos = (): GetTechnologyLogosInterface => {
 
     return {
         android: AndroidLogo,
@@ -157,7 +194,38 @@ export const getTechnologyLogos = () => {
     };
 };
 
-export const getSidePanelIcons = () => {
+/**
+ * Typed interface of {@link getSidePanelIcons}
+ */
+export type GetSidePanelIconsInterface = {
+    appLogs: FunctionComponent,
+    applications: FunctionComponent,
+    approvals: FunctionComponent,
+    certificate: FunctionComponent,
+    childIcon: FunctionComponent,
+    claims: FunctionComponent,
+    connections: FunctionComponent,
+    connectors: Record<string, FunctionComponent>,
+    emailTemplates: FunctionComponent,
+    groups: FunctionComponent,
+    identityProviders: FunctionComponent,
+    organization: FunctionComponent,
+    overview: FunctionComponent,
+    remoteFetch: FunctionComponent,
+    roles: FunctionComponent,
+    scopes: FunctionComponent,
+    secrets: FunctionComponent,
+    serverConfigurations: FunctionComponent,
+    userStore: FunctionComponent,
+    users: FunctionComponent
+};
+
+/**
+ * Get Side Panel Icons. Please add the types to
+ * {@link GetSidePanelIconsInterface} if introducing
+ * new icons/images.
+ */
+export const getSidePanelIcons = (): GetSidePanelIconsInterface => {
 
     return {
         appLogs: IDPMetadataIcon,
@@ -170,8 +238,9 @@ export const getSidePanelIcons = () => {
         connectors: {
             [ ServerConfigurationsConstants.ACCOUNT_MANAGEMENT_CONNECTOR_CATEGORY_ID ]: AccountManagementOutlineIcon,
             [ ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID ]: UserOnboardingOutlineIcon,
-            [ ServerConfigurationsConstants.LOGIN_ATTEMPT_SECURITY_CONNECTOR_CATEGORY_ID
-                ]: LoginAttemptSecurityOutlineIcon,
+            [
+            ServerConfigurationsConstants.LOGIN_ATTEMPT_SECURITY_CONNECTOR_CATEGORY_ID
+            ]: LoginAttemptSecurityOutlineIcon,
             [ ServerConfigurationsConstants.IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID ]: KeyOutlineIcon,
             [ ServerConfigurationsConstants.OTHER_SETTINGS_CONNECTOR_CATEGORY_ID ]: OtherSettingsOutlineIcon,
             default: PlugIcon
@@ -179,6 +248,7 @@ export const getSidePanelIcons = () => {
         emailTemplates: PaperRocketIcon,
         groups: UserGroupIcon,
         identityProviders: IDPOutlineIcon,
+        organization: LDAPOutlineIcon,
         overview: DashboardIcon,
         remoteFetch: CodeForkIcon,
         roles: BriefcaseIcon,
@@ -190,25 +260,72 @@ export const getSidePanelIcons = () => {
     };
 };
 
-export const getSidePanelMiscIcons = () => {
+/**
+ * Typed interface of {@link getSidePanelMiscIcons}
+ */
+export type GetSidePanelMiscIconsInterface = {
+    caretRight: FunctionComponent,
+};
+
+/**
+ * Get Side Panel Miscellaneous Icons. Please add the types to
+ * {@link GetSidePanelMiscIconsInterface} if introducing
+ * new icons/images.
+ */
+export const getSidePanelMiscIcons = (): GetSidePanelMiscIconsInterface => {
 
     return {
         caretRight: CaretRightIcon
     };
 };
 
-export const getAdvancedSearchIcons = () => {
+/**
+ * Typed interface of {@link getAdvancedSearchIcons}
+ */
+export type GetAdvancedSearchIconsInterface = {
+    clear: FunctionComponent,
+};
+
+/**
+ * Get Advanced Search Icons. Please add the types to
+ * {@link GetAdvancedSearchIconsInterface} if introducing
+ * new icons/images.
+ */
+export const getAdvancedSearchIcons = (): GetAdvancedSearchIconsInterface  => {
 
     return {
         clear: CrossIcon
     };
 };
 
-export const getEmptyPlaceholderIllustrations = () => {
+/**
+ * Typed interface of {@link getEmptyPlaceholderIllustrations}
+ */
+export type GetEmptyPlaceholderIllustrationsInterface = {
+    alert: FunctionComponent,
+    brokenPage: FunctionComponent,
+    createError: FunctionComponent,
+    emptyList: FunctionComponent,
+    emptySearch: FunctionComponent,
+    fileUpload: FunctionComponent,
+    genericError: FunctionComponent,
+    loginError: FunctionComponent,
+    newList: FunctionComponent,
+    pageNotFound: FunctionComponent,
+    search: FunctionComponent
+};
+
+/**
+ * Get Empty Placeholder Illustrations. Please add the types to
+ * {@link GetEmptyPlaceholderIllustrationsInterface} if introducing
+ * new icons/images.
+ */
+export const getEmptyPlaceholderIllustrations = (): GetEmptyPlaceholderIllustrationsInterface => {
 
     return {
         alert: AlertIcon,
         brokenPage: BrokenPageIllustration,
+        createError: CreateErrorIllustration,
         emptyList: EmptyListIllustration,
         emptySearch: EmptySearchResultsIllustration,
         fileUpload: FileUploadIllustration,
@@ -220,20 +337,54 @@ export const getEmptyPlaceholderIllustrations = () => {
     };
 };
 
-export const getOperationIcons = () => {
+/**
+ * Typed interface of {@link getOperationIcons}
+ */
+export type GetOperationIconsInterface = {
+    darkMode: FunctionComponent,
+    drag: FunctionComponent,
+    keyIcon: FunctionComponent,
+    lightMode: FunctionComponent,
+    maximize: FunctionComponent,
+    minimize: FunctionComponent,
+    openBookIcon: FunctionComponent
+};
+
+/**
+ * Get Operation Icons. Please add the types to
+ * {@link GetOperationIconsInterface} if introducing
+ * new icons/images.
+ */
+export const getOperationIcons = (): GetOperationIconsInterface => {
 
     return {
         darkMode: DarkModeIcon,
         drag: DragSquaresIcon,
+        keyIcon: KeyIcon,
         lightMode: LightModeIcon,
         maximize: MaximizeIcon,
         minimize: MinimizeIcon,
-        keyIcon: KeyIcon,
         openBookIcon: OpenBookIcon
     };
 };
 
-export const getHelpPanelActionIcons = () => {
+/**
+ * Typed interface of {@link getHelpPanelActionIcons}
+ */
+export type GetHelpPanelActionIconsInterface = {
+    caretLeft: FunctionComponent,
+    caretRight: FunctionComponent,
+    close: FunctionComponent,
+    pin: FunctionComponent,
+    unpin: FunctionComponent
+};
+
+/**
+ * Get Certificate illustrations. Please add the types to
+ * {@link GetHelpPanelActionIconsInterface} if introducing
+ * new icons/images.
+ */
+export const getHelpPanelActionIcons = (): GetHelpPanelActionIconsInterface => {
 
     return {
         caretLeft: CaretLeftIcon,
@@ -244,7 +395,23 @@ export const getHelpPanelActionIcons = () => {
     };
 };
 
-export const getCertificateIllustrations = () => {
+/**
+ * Typed interface of {@link getCertificateIllustrations}
+ */
+export type GetCertificateIllustrationsInterface = {
+    avatar: FunctionComponent,
+    badge: FunctionComponent,
+    file: FunctionComponent,
+    ribbon: FunctionComponent,
+    uploadPlaceholder: FunctionComponent
+};
+
+/**
+ * Get Certificate illustrations. Please add the types to
+ * {@link GetCertificateIllustrationsInterface} if introducing
+ * new icons/images.
+ */
+export const getCertificateIllustrations = (): GetCertificateIllustrationsInterface => {
 
     return {
         avatar: CertificateAvatar,
@@ -258,29 +425,54 @@ export const getCertificateIllustrations = () => {
 /**
  * Typed interface of {@link getSecretManagementIllustrations}
  */
-export type GetSecretManagementIllustrations = {
+export type GetSecretManagementIllustrationsInterface = {
     editingSecretIcon: FunctionComponent
 };
 
 /**
  * Secret Management illustrations. Please add the types to
- * {@link GetSecretManagementIllustrations} if introducing
+ * {@link GetSecretManagementIllustrationsInterface} if introducing
  * new icons/images.
  */
-export const getSecretManagementIllustrations = (): GetSecretManagementIllustrations => {
+export const getSecretManagementIllustrations = (): GetSecretManagementIllustrationsInterface => {
     return {
         editingSecretIcon: LockIconFilled
     };
 };
 
-export const getMiscellaneousIcons = () => {
+/**
+ * Typed interface of {@link getMiscellaneousIcons}
+ */
+export type GetMiscellaneousIconsInterface = {
+    tenantIcon: FunctionComponent
+};
+
+/**
+ * Miscellaneous Icons. Please add the types to
+ * {@link GetMiscellaneousIconsInterface} if introducing
+ * new icons/images.
+ */
+export const getMiscellaneousIcons = (): GetMiscellaneousIconsInterface => {
 
     return {
         tenantIcon: LDAPOutlineIcon
     };
 };
 
-export const AppSwitcherIcons = (): Record<string, any> => {
+/**
+ * Typed interface of {@link AppSwitcherIcons}
+ */
+export type GetAppSwitcherIconsInterface = {
+    console: string,
+    myAccount: string
+};
+
+/**
+ * App Switcher Icons. Please add the types to
+ * {@link GetAppSwitcherIconsInterface} if introducing
+ * new icons/images.
+ */
+export const AppSwitcherIcons = (): GetAppSwitcherIconsInterface => {
 
     return {
         console: ConsoleIcon,
@@ -288,9 +480,42 @@ export const AppSwitcherIcons = (): Record<string, any> => {
     };
 };
 
-export const getGeneralIcons = (): { [ key: string ]: FunctionComponent<SVGProps<SVGSVGElement>> } => {
+/**
+ * Typed interface of {@link getGeneralIcons}
+ */
+export type GetGeneralIconsInterface = {
+    crossIcon: FunctionComponent,
+    myAccountSolidIcon: FunctionComponent
+};
+
+/**
+ * Get General Icons. Please add the types to
+ * {@link GetGeneralIconsInterface} if introducing
+ * new icons/images.
+ */
+export const getGeneralIcons = (): GetGeneralIconsInterface => {
 
     return {
-        crossIcon: CrossIcon
+        crossIcon: CrossIcon,
+        myAccountSolidIcon: MyAccountSolidIcon
+    };
+};
+
+/**
+ * Typed interface of {@link getAppHeaderIcons}
+ */
+export type GetAppHeaderIconsInterface = {
+    homeIcon: FunctionComponent,
+};
+
+/**
+ * App Header Icons. Please add the types to
+ * {@link GetAppHeaderIconsInterface} if introducing
+ * new icons/images.
+ */
+export const getAppHeaderIcons = (): GetAppHeaderIconsInterface => {
+
+    return {
+        homeIcon: HomeIcon
     };
 };

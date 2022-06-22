@@ -57,15 +57,15 @@ export const GeneralSettingsWizardForm: FunctionComponent<GeneralSettingsWizardF
     const { t } = useTranslation();
 
     // Check whether discoverableByEndUsers option is selected or not
-    const [isDiscoverable, setIsDiscoverable] = useState(false);
+    const [ isDiscoverable, setIsDiscoverable ] = useState(false);
 
     /**
      * Sanitizes and prepares the form values for submission.
      *
      * @param values - Form values.
-     * @return {object} Prepared values.
+     * @return {Record<string, unknown>} Prepared values.
      */
-    const getFormValues = (values: any): object => {
+    const getFormValues = (values: any): Record<string, unknown> => {
         return {
             accessUrl: values.get("accessUrl").toString(),
             advancedConfigurations: {
@@ -175,9 +175,9 @@ export const GeneralSettingsWizardForm: FunctionComponent<GeneralSettingsWizardF
                                 value={
                                     initialValues ?
                                         initialValues?.advancedConfigurations?.discoverableByEndUsers
-                                            ? ["discoverableByEndUsers"] : []
+                                            ? [ "discoverableByEndUsers" ] : []
                                         : templateValues?.advancedConfigurations?.discoverableByEndUsers
-                                        ? ["discoverableByEndUsers"] : []
+                                            ? [ "discoverableByEndUsers" ] : []
                                 }
                                 data-testid={ `${ testId }-application-discoverable-checkbox` }
                             />

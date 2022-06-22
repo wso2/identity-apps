@@ -18,17 +18,26 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { URLUtils } from "@wso2is/core/utils";
-import { Field, Forms, FormValue, Validation } from "@wso2is/forms";
-import { ContentLoader, FilePicker, Hint, LinkButton, URLInput, XMLFileStrategy } from "@wso2is/react-components";
+import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
+import {
+    ContentLoader,
+    FilePicker,
+    Hint,
+    LinkButton,
+    Message,
+    URLInput,
+    XMLFileStrategy
+} from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { Button, Grid, Icon, Message } from "semantic-ui-react";
-import { getCertificateIllustrations } from "../../../core";
-import { SAMLConfigModes, SupportedAuthProtocolTypes } from "../../models";
-import { ApplicationManagementUtils } from "../../utils";
+import { useSelector } from "react-redux";
+import { Button, Grid, Icon } from "semantic-ui-react";
 import { commonConfig } from "../../../../extensions";
+import { AppState, ConfigReducerStateInterface, getCertificateIllustrations } from "../../../core";
+import { SAMLConfigModes } from "../../models";
+import { ApplicationManagementUtils } from "../../utils";
 
 /**
  * Proptypes for the saml protocol all settings wizard form component.
@@ -111,12 +120,14 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
     const [ showAssertionConsumerUrlError, setAssertionConsumerUrlError ] = useState<boolean>(false);
     const [ assertionConsumerURLsErrorLabel, setAssertionConsumerURLsErrorLabel ] = useState<ReactElement>(null);
     const [ configureMode, setConfigureMode ] = useState<string>(undefined);
+    const [ hasAssertionConsumerUrls, setHasAssertionConsumerUrls ] = useState<boolean>(false);
 
     // State related to file picker
     const [ xmlBase64String, setXmlBase64String ] = useState<string>();
     const [ selectedMetadataFile, setSelectedMetadataFile ] = useState<File>(null);
     const [ pastedMetadataContent, setPastedMetadataContent ] = useState<string>(null);
     const [ emptyFileError, setEmptyFileError ] = useState(false);
+    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
     useEffect(() => {
         setConfigureMode(SAMLConfigModes.MANUAL);
@@ -124,6 +135,7 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
             const tempAssertionConsumerUrls = templateValues?.inboundProtocolConfiguration?.saml?.manualConfiguration
                 .assertionConsumerUrls;
             const tempIssuer = templateValues?.inboundProtocolConfiguration?.saml?.manualConfiguration.issuer;
+
             if (!isEmpty(tempAssertionConsumerUrls)) {
                 setAssertionConsumerUrls(tempAssertionConsumerUrls.toString());
             } else {
@@ -142,7 +154,7 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
             setIssuer(initialValues?.inboundProtocolConfiguration?.saml?.manualConfiguration
                 .issuer?.toString());
         }
-    }, [initialValues]);
+    }, [ initialValues ]);
 
     /**
      * Reset empty file error.
@@ -151,7 +163,7 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
         if (xmlBase64String && emptyFileError) {
             setEmptyFileError(false);
         }
-    }, [xmlBase64String]);
+    }, [ xmlBase64String ]);
 
     /**
      * Update SAML config mode to the parent element.
@@ -160,7 +172,7 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
         if (configureMode) {
             setSAMLConfigureMode(configureMode);
         }
-    }, [configureMode]);
+    }, [ configureMode ]);
 
     /**
      * Sets the mandatory status of the ACS URL component by reading
@@ -184,7 +196,32 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
         if (templatedIssuer) {
             setIssuerLFromTemplate(templatedIssuer);
         }
-    }, [templateValues]);
+    }, [ templateValues ]);
+
+     /**
+      * Update AssertionConsumerUrls based on the new value and previous
+      * values available in assertionConsumerUrls variable.
+      *
+      * @param {string} value - UrlState value of Assertion consumer url URLInput field.
+      */
+      const updateAssertionConsumerUrls = (value : string): void => {
+        if (!hasAssertionConsumerUrls) {
+            if (assertionConsumerUrls) {
+               setAssertionConsumerUrls(assertionConsumerUrls)
+               setHasAssertionConsumerUrls(true)
+            } else {
+               if (value){
+                   setHasAssertionConsumerUrls(true)
+               }
+               setAssertionConsumerUrls(value)
+            }
+        } else {
+           setAssertionConsumerUrls(value)
+           if (!value) {
+              setHasAssertionConsumerUrls(false)
+           }
+        }
+    }
 
     /**
      * Sanitizes and prepares the form values for submission.
@@ -195,6 +232,7 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
      */
     const getFormValues = (values: Map<string, FormValue>, urls?: string): any => {
         let config;
+
         if (configureMode === SAMLConfigModes.MANUAL) {
             config = {
                 inboundProtocolConfiguration: {
@@ -266,6 +304,7 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                                         onClick={ (event) => {
                                             event.preventDefault();
                                             setConfigureMode(mode);
+                                            setHasAssertionConsumerUrls(false)
                                         } }
                                     />
                                 );
@@ -313,6 +352,8 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                                             validation.errorMessages.push(
                                                 t("console:develop.features.applications.forms.inboundSAML" +
                                                     ".fields.issuer.errorMessage"));
+                                        } else {
+                                            setIssuer(value);
                                         }
                                     } }
                                     data-testid={ `${testId}-issuer-input` }
@@ -365,7 +406,7 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 } className="field">
                                 <URLInput
                                     urlState={ assertionConsumerUrls }
-                                    setURLState={ setAssertionConsumerUrls }
+                                    setURLState={ updateAssertionConsumerUrls }
                                     labelName={
                                         t("console:develop.features.applications.forms.inboundSAML" +
                                             ".fields.assertionURLs.label")
@@ -413,45 +454,65 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                                     } }
                                     showPredictions={ false }
                                     customLabel={ assertionConsumerURLsErrorLabel }
+                                    popupHeaderPositive={ t("console:develop.features.URLInput.withLabel."
+                                        + "positive.header") }
+                                    popupHeaderNegative={ t("console:develop.features.URLInput.withLabel."
+                                        + "negative.header") }
+                                    popupContentPositive={ t("console:develop.features.URLInput.withLabel."
+                                        + "positive.content", { productName: config.ui.productName }) }
+                                    popupContentNegative={ t("console:develop.features.URLInput.withLabel."
+                                        + "negative.content", { productName: config.ui.productName }) }
+                                    popupDetailedContentPositive={ t("console:develop.features.URLInput."
+                                        + "withLabel.positive.detailedContent.0") }
+                                    popupDetailedContentNegative={ t("console:develop.features.URLInput."
+                                        + "withLabel.negative.detailedContent.0") }
+                                    insecureURLDescription={ t("console:common.validations.inSecureURL.description") }
+                                    showLessContent={ t("common:showLess") }
+                                    showMoreContent={ t("common:showMore") }
                                 />
                                 {
                                     (assertionConsumerURLFromTemplate) && (
-                                        <Message className="with-inline-icon" icon visible info>
-                                            <Icon name="info" size="mini"/>
-                                            <Message.Content> {
-                                                <Trans
-                                                    i18nKey={ "console:develop.features.applications.forms." +
-                                                    "inboundSAML.fields.assertionURLs.info" }
-                                                    tOptions={ {
-                                                        assertionURLFromTemplate:
-                                                        assertionConsumerURLFromTemplate
-                                                    } }
-                                                >
-                                                    Don’t have an app? Try out a sample app
-                                                    using <strong>{ assertionConsumerURLFromTemplate }</strong> as
-                                                    the assertion Response URL. (You can download and run a sample
-                                                    at a later step.)
-                                                </Trans>
-                                            }
-                                                {
-                                                    (assertionConsumerUrls === undefined ||
-                                                        assertionConsumerUrls === "") && (
-                                                        <LinkButton
-                                                            className={ "m-1 p-1 with-no-border orange" }
-                                                            onClick={ (e) => {
-                                                                e.preventDefault();
-                                                                setAssertionConsumerUrls(
-                                                                    assertionConsumerURLFromTemplate);
-                                                                setIssuer(issuerFromTemplate);
+                                        <Message
+                                            visible
+                                            type="info"
+                                            content={
+                                                <>
+                                                    {
+                                                        <Trans
+                                                            i18nKey={ "console:develop.features.applications.forms." +
+                                                            "inboundSAML.fields.assertionURLs.info" }
+                                                            tOptions={ {
+                                                                assertionURLFromTemplate:
+                                                                assertionConsumerURLFromTemplate
                                                             } }
-                                                            data-testid={ `${testId}-add-now-button` }
                                                         >
-                                                            <span style={ { fontWeight: "bold" } }>Add Now</span>
-                                                        </LinkButton>
-                                                    )
-                                                }
-                                            </Message.Content>
-                                        </Message>
+                                                            Don’t have an app? Try out a sample app
+                                                            using <strong>{ assertionConsumerURLFromTemplate }</strong> as
+                                                            the assertion Response URL. (You can download and run a sample
+                                                            at a later step.)
+                                                        </Trans>
+                                                    }
+                                                    {
+                                                        (assertionConsumerUrls === undefined ||
+                                                            assertionConsumerUrls === "") && (
+                                                            <LinkButton
+                                                                className={ "m-1 p-1 with-no-border orange" }
+                                                                onClick={ (e) => {
+                                                                    e.preventDefault();
+                                                                    setAssertionConsumerUrls(
+                                                                        assertionConsumerURLFromTemplate);
+                                                                    setIssuer(issuerFromTemplate);
+                                                                    setHasAssertionConsumerUrls(true);
+                                                                } }
+                                                                data-testid={ `${testId}-add-now-button` }
+                                                            >
+                                                                <span style={ { fontWeight: "bold" } }>Add Now</span>
+                                                            </LinkButton>
+                                                        )
+                                                    }
+                                                </>
+                                            }
+                                        />
                                     )
                                 }
                             </Grid.Column>
@@ -556,7 +617,7 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
     let submitUrl: (callback: (url?: string) => void) => void;
 
     return (
-         configureMode
+        configureMode
             ? (
                 <Forms
                     onSubmit={ (values: Map<string, FormValue>): void => {

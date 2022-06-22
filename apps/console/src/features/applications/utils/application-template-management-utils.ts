@@ -23,7 +23,8 @@ import { I18n } from "@wso2is/i18n";
 import { TemplateCardTagInterface } from "@wso2is/react-components";
 import groupBy from "lodash-es/groupBy";
 import startCase  from "lodash-es/startCase";
-import { getTechnologyLogos, store } from "../../core";
+import { getTechnologyLogos } from "../../core/configs";
+import { store } from "../../core/store";
 import {
     getApplicationTemplateList
 } from "../api";
@@ -60,8 +61,8 @@ export class ApplicationTemplateManagementUtils {
      * @return {Promise<void>}
      */
     public static getApplicationTemplates = (skipGrouping: boolean = false,
-                                             useAPI: boolean = false,
-                                             sort: boolean = true): Promise<void> => {
+        useAPI: boolean = false,
+        sort: boolean = true): Promise<void> => {
 
         if (!useAPI) {
             return ApplicationTemplateManagementUtils.loadLocalFileBasedTemplates()
@@ -194,6 +195,7 @@ export class ApplicationTemplateManagementUtils {
             for (const [ key, value ] of Object.entries(getTechnologyLogos())) {
                 if (key === technology) {
                     logo = value;
+
                     break;
                 }
             }
@@ -232,7 +234,7 @@ export class ApplicationTemplateManagementUtils {
      * @return {ApplicationTemplateInterface[]}
      */
     private static addCustomTemplates(existingTemplates: ApplicationTemplateInterface[],
-                                      customTemplates: ApplicationTemplateInterface[]) {
+        customTemplates: ApplicationTemplateInterface[]) {
 
         return existingTemplates.concat(customTemplates);
     }
@@ -253,6 +255,7 @@ export class ApplicationTemplateManagementUtils {
                 templates.forEach((template: ApplicationTemplateInterface) => {
                     if (!template.templateGroup) {
                         groupedTemplates.push(template);
+
                         return;
                     }
 
@@ -263,6 +266,7 @@ export class ApplicationTemplateManagementUtils {
 
                     if (!group) {
                         groupedTemplates.push(template);
+
                         return;
                     }
 

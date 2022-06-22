@@ -110,6 +110,7 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
             operation: "UPDATE",
             properties: []
         };
+
         for (const key in values) {
             data.properties.push({
                 name: GovernanceConnectorUtils.decodeConnectorPropertyName(key),
@@ -157,6 +158,7 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
 
     const getConnectorInitialValues = (connector: GovernanceConnectorInterface) => {
         const values = {};
+
         connector?.properties.map((property) => {
             if (property.value === "true") {
                 values[ GovernanceConnectorUtils.encodeConnectorPropertyName(property.name) ] = true;
@@ -166,6 +168,7 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
                 values[ GovernanceConnectorUtils.encodeConnectorPropertyName(property.name) ] = property.value;
             }
         });
+
         return values;
     };
 

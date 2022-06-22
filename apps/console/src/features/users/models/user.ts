@@ -130,10 +130,10 @@ export interface UserDetailsInterface {
  * The following function creates an empty user details object
  */
 export const createEmptyUserDetails = (): UserDetailsInterface => ({
-    emails: [{
+    emails: [ {
         primary: false,
         value: ""
-    }],
+    } ],
     name: {
         familyName: "",
         givenName: ""

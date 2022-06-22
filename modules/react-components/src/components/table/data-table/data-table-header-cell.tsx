@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
 import { Table, TableHeaderCellProps } from "semantic-ui-react";
@@ -24,7 +24,8 @@ import { Table, TableHeaderCellProps } from "semantic-ui-react";
 /**
  * Proptypes for the Data Table Header Cell component.
  */
-export interface DataTableHeaderCellPropsInterface extends TableHeaderCellProps, TestableComponentInterface { }
+export interface DataTableHeaderCellPropsInterface extends TableHeaderCellProps, IdentifiableComponentInterface,
+    TestableComponentInterface { }
 
 /**
  * Data Table Header Cell component.
@@ -40,13 +41,18 @@ export const DataTableHeaderCell: FunctionComponent<PropsWithChildren<DataTableH
     const {
         children,
         className,
+        [ "data-componentid" ]: componentId,
         ...rest
     } = props;
 
     const classes = classNames("data-table-header-cell", className);
 
     return (
-        <Table.HeaderCell className={ classes } { ...rest }>
+        <Table.HeaderCell
+            className={ classes }
+            data-componentid={ componentId }
+            { ...rest }
+        >
             { children }
         </Table.HeaderCell>
     );
@@ -56,5 +62,6 @@ export const DataTableHeaderCell: FunctionComponent<PropsWithChildren<DataTableH
  * Default props for the component.
  */
 DataTableHeaderCell.defaultProps = {
+    "data-componentid": "data-table-header-cell",
     "data-testid": "data-table-header-cell"
 };

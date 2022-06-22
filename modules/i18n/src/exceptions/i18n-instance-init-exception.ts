@@ -25,9 +25,9 @@ export class I18nInstanceInitException extends I18nModuleException {
 
     /**
      * Constructor.
-     * @param {any} stack - Stack trace.
+     * @param {string | Record<string, unknown>} stack - Stack trace.
      */
-    constructor(stack?: any) {
+    constructor(stack?: string | Record<string, unknown>) {
         super("Failed to initialize the i18n instance", stack);
     }
 }

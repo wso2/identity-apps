@@ -17,11 +17,11 @@
  *
  */
 
-import { DangerZone, DangerZoneGroup } from "../../../src";
-import React, { ReactElement } from "react";
 import { action } from "@storybook/addon-actions";
-import { meta } from "./danger-zone.stories.meta";
 import { text } from "@storybook/addon-knobs";
+import React, { ReactElement } from "react";
+import { meta } from "./danger-zone.stories.meta";
+import { DangerZone, DangerZoneGroup } from "../../../src";
 
 export default {
     parameters: {

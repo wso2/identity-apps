@@ -178,13 +178,13 @@ export const AppUtils = (function() {
                     : _config.clientID + "_" + this.getTenantName(),
                 clientOrigin: _config.clientOrigin,
                 clientOriginWithTenant: _config.clientOrigin + this.getTenantPath(true),
+                customServerHost: _config.customServerHost,
                 debug: _config.debug,
                 extensions: _config.extensions,
                 idpConfigs: this.resolveIdpConfigs(),
                 isSaas: this.isSaas(),
                 loginCallbackURL: this.constructRedirectURLs(_config.loginCallbackPath),
                 logoutCallbackURL: this.constructRedirectURLs(_config.logoutCallbackPath),
-                productVersion: _config.productVersion,
                 productVersionConfig: _config.ui.productVersionConfig,
                 routes: {
                     home: this.constructAppPaths(_config.routePaths.home),
@@ -232,7 +232,7 @@ export const AppUtils = (function() {
 
         /**
          * Get the proxy name for super tenant if overriden. This will be used to build the URLs
-         * 
+         *
          * @return {string}
          */
         getSuperTenantProxy: function() {

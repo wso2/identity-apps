@@ -18,11 +18,14 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
+import { DocumentationLink, Message, useDocumentation } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
+import { Divider } from "semantic-ui-react";
 import { AppState, UIConfigInterface } from "../../../core";
 import { ApplicationManagementConstants } from "../../constants";
+import { applicationConfig } from "../../../../extensions";
 
 /**
  * Proptypes for the applications general details form component.
@@ -68,6 +71,14 @@ interface GeneralDetailsFormPopsInterface extends TestableComponentInterface {
      * Specifies if the form is submitting.
      */
     isSubmitting?: boolean;
+    /**
+     * Specifies a Management Application
+     */
+    isManagementApp?: boolean;
+    /**
+     * Specifies whether having edit-permissions
+     */
+    hasRequiredScope?: boolean;
 }
 
 /**
@@ -101,11 +112,15 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
         accessUrl,
         onSubmit,
         readOnly,
+        hasRequiredScope,
         isSubmitting,
+        isManagementApp,
         [ "data-testid" ]: testId
     } = props;
 
     const { t } = useTranslation();
+
+    const { getLink } = useDocumentation();
 
     const UIConfig: UIConfigInterface = useSelector((state: AppState) => state?.config?.ui);
 
@@ -123,7 +138,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
             advancedConfigurations: {
                 discoverableByEndUsers: values.discoverableByEndUsers
             },
-            description: values.description?.toString(),
+            description: values.description?.toString().trim(),
             id: appId,
             name: values.name?.toString(),
             ...!hiddenFields?.includes("imageUrl") && { imageUrl: values.imageUrl.toString() }
@@ -153,10 +168,34 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
     };
 
     /**
-     * Application name validation.
+     * Application Name validation.
+     *
+     * @param {string} name - Application Name.
+     * @return {string | void}
      */
-    const appNameValidation= (name) => {
-        const isValid = name && !!name.match(ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.APP_NAME_PATTERN);
+    const validateName = (name: string): string | void => {
+
+        const isValid: boolean = name && !!name.match(
+            ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.APP_NAME_PATTERN
+        );
+
+        if (!isValid) {
+            return "Please enter a valid input.";
+        }
+    };
+
+    /**
+     * Application Description validation.
+     *
+     * @param {string} description - Application Description.
+     * @return {string | void}
+     */
+    const validateDescription = (description: string): string | void => {
+
+        const isValid: boolean = description && !!description.match(
+            ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.APP_DESCRIPTION_PATTERN
+        );
+
         if (!isValid) {
             return "Please enter a valid input.";
         }
@@ -165,7 +204,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
     return (
         <Form
             uncontrolledForm={ false }
-            onSubmit={ (values, form) => {
+            onSubmit={ (values) => {
                 updateConfigurations(values);
             } }
             initialValues={ {
@@ -175,6 +214,26 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
             } }
             validate={ validateForm }
         >
+            { getLink("develop.connections.newConnection.enterprise.samlLearnMore") === undefined
+                ? null
+                : <Divider hidden/>
+            }
+            { isManagementApp && (
+                <Message
+                    type="info"
+                    content={
+                        <>
+                            { t("console:develop.features.applications.forms.generalDetails.managementAppBanner") }
+                            <DocumentationLink
+                                link={ getLink("develop.applications.managementApplication.learnMore") }>
+                                {
+                                    t("common:learnMore")
+                                }
+                            </DocumentationLink>
+                        </>
+                    }
+                />
+            ) }
             { !UIConfig.systemAppsIdentifiers.includes(name) && (
                 <Field.Input
                     ariaLabel="Application name"
@@ -191,7 +250,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     }
                     value={ name }
                     readOnly={ readOnly }
-                    validation ={ (value) => appNameValidation(value.toString().trim()) }
+                    validation ={ (value) => validateName(value.toString().trim()) }
                     maxLength={ ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.APP_NAME_MAX_LENGTH }
                     minLength={ 3 }
                     data-testid={ `${ testId }-application-name-input` }
@@ -212,11 +271,10 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                 }
                 value={ description }
                 readOnly={ readOnly }
+                validation ={ (value) => validateDescription(value.toString().trim()) }
                 maxLength={ 300 }
                 minLength={ 3 }
                 data-testid={ `${ testId }-application-description-textarea` }
-                hint={ t("console:develop.features.applications.forms.generalDetails.fields.description." +
-                    "description") }
                 width={ 16 }
             />
             {
@@ -256,7 +314,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                 readOnly={ readOnly }
                 data-testid={ `${ testId }-application-discoverable-checkbox` }
                 listen={ (value) => setDiscoverability(value) }
-                hint={
+                hint={ (
                     <Trans
                         i18nKey={
                             "console:develop.features.applications.forms.generalDetails.fields." +
@@ -264,12 +322,27 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                         }
                         tOptions={ { myAccount: "My Account" } }
                     >
-                        Please type
-                        <strong data-testid="application-name-assertion">
-                            My Account
-                        </strong>
+                        { " " }
+                        { getLink("develop.applications.managementApplication.selfServicePortal") === undefined
+                            ? (
+                                <strong data-testid="application-name-assertion">
+                                    My Account
+                                </strong>
+                            )
+                            : (
+                                <strong 
+                                    className="link pointing"
+                                    data-testid="application-name-assertion" 
+                                    onClick={ 
+                                        () => window.open(getLink("develop.applications.managementApplication"+
+                                                        ".selfServicePortal"), "_blank") 
+                                    }>
+                                    My Account
+                                </strong>
+                            )
+                        }
                     </Trans>
-                }
+                ) }
                 width={ 16 }
             />
             <Field.Input
@@ -285,7 +358,8 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                         ".placeholder")
                 }
                 value={ accessUrl }
-                readOnly={ readOnly }
+                readOnly={ !hasRequiredScope || ( readOnly && applicationConfig.generalSettings.getFieldReadOnlyStatus(
+                     name, "ACCESS_URL"))}
                 maxLength={ 200 }
                 minLength={ 3 }
                 data-testid={ `${ testId }-application-access-url-input` }
@@ -301,7 +375,8 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                 disabled={ isSubmitting }
                 loading={ isSubmitting }
                 label={ t("common:update") }
-                hidden={ readOnly }
+                hidden={ !hasRequiredScope || ( readOnly && applicationConfig.generalSettings.getFieldReadOnlyStatus(
+                    name, "ACCESS_URL"))}
             />
         </Form>
     );

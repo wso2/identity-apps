@@ -21,6 +21,7 @@
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.Map" %>
 <%@ page import="org.wso2.carbon.identity.application.authenticator.totp.util.TOTPUtil" %>
+<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ include file="includes/localize.jsp" %>
@@ -158,15 +159,15 @@
 
                                 <div class="ten wide column mobile center aligned tablet left aligned computer left aligned buttons tablet no-padding-left-first-child computer no-padding-left-first-child">
                                     <% if(isSendVerificationCodeByEmailEnabled) { %>
-                                        <a class="ui button link-button" id="genToken" href="#"
+                                        <a class="ui button secondary" id="genToken" href="#"
                                         onclick="return requestTOTPToken();">
                                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "get.verification.code")%>
                                         </a>
                                     <% } else {
                                         String multiOptionURI = request.getParameter("multiOptionURI");
-                                        if (multiOptionURI != null) {
+                                        if (multiOptionURI != null && AuthenticationEndpointUtil.isValidURL(multiOptionURI)) {
                                     %>
-                                        <a class="ui button link-button" id="goBackLink"
+                                        <a class="ui button secondary" id="goBackLink"
                                             href='<%=Encode.forHtmlAttribute(multiOptionURI)%>'>
                                                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "choose.other.option")%>
                                         </a>
@@ -181,9 +182,9 @@
                         <div class="ui divider hidden"></div>
                             <%
                                 String multiOptionURI = request.getParameter("multiOptionURI");
-                                if (multiOptionURI != null && isSendVerificationCodeByEmailEnabled) {
+                                if (multiOptionURI != null && isSendVerificationCodeByEmailEnabled && AuthenticationEndpointUtil.isValidURL(multiOptionURI)) {
                             %>
-                                <a class="ui button link-button" id="goBackLink"
+                                <a class="ui button secondary" id="goBackLink"
                                 href='<%=Encode.forHtmlAttribute(multiOptionURI)%>'>
                                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "choose.other.option")%>
                                 </a>

@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/theme",
-    "version": "1.2.659",
+    "version": "1.2.1000",
     "description": "Theme for web components of WSO2 Identity Server Webapps.",
     "keywords": [
         "WSO2",
@@ -16,6 +16,16 @@
         "build:dev": "npm run build -- --skipHashing",
         "clean": "rimraf ./dist && rimraf ./src/themes/sample",
         "compile": "node scripts/build.js",
+        "lint": "npm run lint:all -- --max-warnings=0",
+        "lint:all": "npm run lint:targeted -- .",
+        "lint:autofix": "npm run lint:all -- --fix",
+        "lint:ci": "npm run lint -- --format=compact",
+        "lint:targeted": "eslint --ext .js,.jsx,.ts,.tsx --resolve-plugins-relative-to .",
+        "jest": "npx run-script-os",
+        "jest:win32": ".\\node_modules\\.bin\\jest",
+        "jest:default": "./node_modules/.bin/jest",
+        "test": "npm run jest -- -- --passWithNoTests",
+        "test:watch": "npm run test -- --watch",
         "watch": "watch \"npm run build\" src"
     },
     "author": "WSO2",
@@ -23,9 +33,17 @@
     "devDependencies": {
         "@babel/core": "^7.11.4",
         "@babel/register": "^7.8.6",
+        "@types/jest": "^26.0.14",
+        "@typescript-eslint/eslint-plugin": "^4.17.0",
+        "@typescript-eslint/parser": "^4.17.0",
         "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
         "clean-css": "^4.2.1",
+        "eslint": "^7.20.0",
+        "eslint-plugin-import": "^2.20.2",
+        "eslint-plugin-react": "^7.18.3",
+        "eslint-plugin-react-hooks": "^4.0.0",
         "fs-extra": "^9.0.1",
+        "jest": "^26.4.2",
         "less": "^3.10.3",
         "less-plugin-rewrite-variable": "0.1.0",
         "less-to-json": "^1.2.0",
@@ -34,6 +52,8 @@
         "replace": "^1.1.5",
         "rimraf": "^3.0.2",
         "semantic-ui-css": "^2.4.1",
-        "semantic-ui-less": "^2.4.1"
+        "semantic-ui-less": "^2.4.1",
+        "ts-jest": "^26.4.0",
+        "ts-node": "^10.5.0"
     }
 }

@@ -34,7 +34,6 @@ import { ReactComponent as BoxIcon } from "../themes/default/assets/images/icons
 import { ReactComponent as CloseIcon } from "../themes/default/assets/images/icons/close-icon.svg";
 import { ReactComponent as CodeIcon } from "../themes/default/assets/images/icons/code-icon.svg";
 import { default as ConsentIcon } from "../themes/default/assets/images/icons/consent-icon.svg";
-import { default as MyAccountProfileIcon } from "../themes/default/assets/images/icons/user-profile.svg";
 import ConsoleIcon from "../themes/default/assets/images/icons/console-icon.svg";
 import { ReactComponent as ControlsIcon } from "../themes/default/assets/images/icons/controls-icon.svg";
 import { ReactComponent as CrossIcon } from "../themes/default/assets/images/icons/cross-icon.svg";
@@ -57,6 +56,7 @@ import { ReactComponent as SMSIcon } from "../themes/default/assets/images/icons
 import { ReactComponent as SuccessIcon } from "../themes/default/assets/images/icons/success-icon.svg";
 import { ReactComponent as TickCircleIcon } from "../themes/default/assets/images/icons/tick-circle-icon.svg";
 import { ReactComponent as UserIcon } from "../themes/default/assets/images/icons/user-icon.svg";
+import { default as MyAccountProfileIcon } from "../themes/default/assets/images/icons/user-profile.svg";
 import { ReactComponent as WarningIcon } from "../themes/default/assets/images/icons/warning-icon.svg";
 import AssociatedAccountsMini from "../themes/default/assets/images/illustrations/associated-accounts-mini.svg";
 import AssociatedAccounts from "../themes/default/assets/images/illustrations/associated-accounts.svg";
@@ -67,9 +67,6 @@ import {
 } from "../themes/default/assets/images/illustrations/enter-verification-code.svg";
 import FederatedAssociationsMini from "../themes/default/assets/images/illustrations/federated-associations-mini.svg";
 import FederatedAssociations from "../themes/default/assets/images/illustrations/federated-associations.svg";
-import {
-    ReactComponent as EmptySearchResultsIllustration
-} from "../themes/default/assets/images/illustrations/no-search-results.svg";
 import ProfileExportMini from "../themes/default/assets/images/illustrations/profile-export-mini.svg";
 import ProfileExport from "../themes/default/assets/images/illustrations/profile-export.svg";
 import {
@@ -81,14 +78,29 @@ import {
 import {
     ReactComponent as SecurityQuestions
 } from "../themes/default/assets/images/illustrations/security-questions.svg";
-import DummyUser from "../themes/default/assets/images/user.png";
+import {
+    ReactComponent as EmptyListResultsIllustration
+} from "../themes/default/assets/images/placeholder-illustrations/empty-list-illustration.svg";
 
+import {
+    ReactComponent as EmptySearchResultsIllustration
+} from "../themes/default/assets/images/placeholder-illustrations/empty-search-illustration.svg";
+import DummyUser from "../themes/default/assets/images/user.png";
+ 
 export const UserImage: string = DummyUser;
 export const ConsentedAppIcon = PackageIcon;
 export const DefaultAppIcon = CodeIcon;
 
-export const getSidePanelIcons = () => {
-
+export const getSidePanelIcons = (): {
+    account: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+    apps: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+    consent: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+    overview: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+    personal: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+    security: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+    session: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+ } => {
+ 
     return {
         account: ControlsIcon,
         apps: AppIcon,
@@ -99,9 +111,20 @@ export const getSidePanelIcons = () => {
         session: MonitorIcon
     };
 };
-
-export const getSettingsSectionIcons = () => {
-
+ 
+export const getSettingsSectionIcons = (): {
+    associatedAccounts: string;
+    associatedAccountsMini: string;
+    changePassword: string;
+    changePasswordMini: string;
+    federatedAssociations: string;
+    federatedAssociationsMini: string;
+    profileExport: string;
+    profileExportMini: string;
+    securityQuestions: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+    securityQuestionsMini: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+ } => {
+ 
     return {
         associatedAccounts: AssociatedAccounts,
         associatedAccountsMini: AssociatedAccountsMini,
@@ -115,9 +138,14 @@ export const getSettingsSectionIcons = () => {
         securityQuestionsMini: SecurityQuestionsMini
     };
 };
-
-export const getMFAIcons = () => {
-
+ 
+export const getMFAIcons = (): {
+    authenticatorApp: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+    fingerprint: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+    sms: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+    keyboard: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+ } => {
+ 
     return {
         authenticatorApp: AuthenticatorAppIcon,
         fingerprint: FingerprintIcon,
@@ -125,68 +153,99 @@ export const getMFAIcons = () => {
         keyboard: KeyboardIcon
     };
 };
-
-export const getAccountRecoveryIcons = () => {
-
+ 
+export const getAccountRecoveryIcons = (): {
+    email: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+    securityQuestions: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+ } => {
+ 
     return {
         email: EmailIcon,
         securityQuestions: SecurityQuestionsIcon
     };
 };
-
-export const getAccountStatusShields = () => {
-
+ 
+export const getAccountStatusShields = (): {
+    danger: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+    good: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+    warning: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+ } => {
+ 
     return {
         danger: StatusShieldDanger,
         good: StatusShieldGood,
         warning: StatusShieldWarning
     };
 };
-
-export const getWidgetIcons = () => {
-
+ 
+export const getWidgetIcons = (): {
+    accountSecurity: string;
+    consents: string;
+    profile: string;
+ } => {
+ 
     return {
         accountSecurity: PadlockIcon,
         consents: ConsentIcon,
         profile: MyAccountProfileIcon
     };
 };
-
-export const getAdvancedSearchIcons = () => {
-
+ 
+export const getAdvancedSearchIcons = (): {
+    clear: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+ } => {
+ 
     return {
         clear: CrossIcon
     };
 };
-
-export const getEmptyPlaceholderIllustrations = () => {
-
+ 
+export const getEmptyPlaceholderIllustrations = (): {
+    accessDeniedError: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+    emptyList: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+    genericError: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+    loginError: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+    pageNotFound: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+    search: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+    newList: React.FunctionComponent<React.SVGProps<SVGElement>>;
+ } => {
+ 
     return {
         accessDeniedError: ForbiddenIcon,
         emptyList: BoxIcon,
         genericError: CloseIcon,
         loginError: ForbiddenIcon,
         pageNotFound: BlockedMagnifierIcon,
+        newList: EmptyListResultsIllustration,
         search: EmptySearchResultsIllustration
     };
 };
-
-export const getAppIconBackgrounds = () => {
-
+ 
+export const getAppIconBackgrounds = (): {
+    orange: string;
+ } => {
+ 
     return {
         orange: OrangeAppIconBackground
     };
 };
-
-export const getThirdPartyLogos = () => {
-
+ 
+export const getThirdPartyLogos = (): {
+    gravatar: string;
+ } => {
+ 
     return {
         gravatar: GravatarLogo
     };
 };
-
-export const AlertIcons = () => {
-
+ 
+export const AlertIcons = (): {
+    error: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+    info: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+    success: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+    warning: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+ } => {
+ 
     return {
         error: ErrorIcon,
         info: InfoIcon,
@@ -194,21 +253,18 @@ export const AlertIcons = () => {
         warning: WarningIcon
     };
 };
-
-export const AppSwitcherIcons = (): Record<string, any> => {
-
+ 
+export const AppSwitcherIcons = (): Record<string, any> => { 
     return {
         console: ConsoleIcon,
         myAccount: MyAccountIcon
     };
 };
-
-export const getQRCodeScanIcon = () => {
-
+ 
+export const getQRCodeScanIcon = (): React.FunctionComponent<React.SVGProps<SVGSVGElement>> => { 
     return QRCodeScanIcon;
 };
-
-export const getEnterCodeIcon = () => {
-
+ 
+export const getEnterCodeIcon = (): React.FunctionComponent<React.SVGProps<SVGSVGElement>> => { 
     return EnterVerificationCodeIcon;
 };

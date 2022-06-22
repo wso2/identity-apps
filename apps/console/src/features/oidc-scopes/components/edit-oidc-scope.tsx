@@ -21,6 +21,7 @@ import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, ExternalClaim, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
+    ConfirmationModal,
     DataTable,
     EmptyPlaceholder,
     LinkButton,
@@ -118,6 +119,8 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
     const dispatch = useDispatch();
 
     const [ showSelectionModal, setShowSelectionModal ] = useState<boolean>(false);
+    const [ deletingClaim, setDeletingClaim ] = useState<ExternalClaim>(undefined);
+    const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
 
     const init = useRef(true);
 
@@ -146,6 +149,7 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
 
         updateOIDCScopeDetails(scope.name, data)
             .then(() => {
+                setShowDeleteConfirmationModal(false);
                 dispatch(
                     addAlert({
                         description: t(
@@ -160,6 +164,7 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
                 onUpdate(scope.name);
             })
             .catch((error) => {
+                setShowDeleteConfirmationModal(false);
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(
                         addAlert({
@@ -268,7 +273,8 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
                 },
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (e: SyntheticEvent, claim: ExternalClaim): void => {
-                    handleRemoveAttribute(claim.claimURI);
+                    setShowDeleteConfirmationModal(true);
+                    setDeletingClaim(claim);
                 },
                 popupText: (): string => t("common:delete"),
                 renderer: "semantic-icon"
@@ -340,6 +346,38 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
                 showHeader={ false }
                 data-testid={ testId }
             />
+            {
+                deletingClaim && (
+                    <ConfirmationModal
+                        data-testid={ `${ testId }-confirmation-modal` }
+                        onClose={ (): void => setShowDeleteConfirmationModal(false) }
+                        type="negative"
+                        open={ showDeleteConfirmationModal }
+                        assertionHint={ t("console:manage.features.claims.scopeMappings." +
+                            "deletionConfirmationModal.assertionHint") }
+                        assertionType="checkbox"
+                        primaryAction={ t("common:confirm") }
+                        secondaryAction={ t("common:cancel") }
+                        onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
+                        onPrimaryActionClick={ (): void => handleRemoveAttribute(deletingClaim.claimURI) }
+                        closeOnDimmerClick={ false }
+                    >
+                        <ConfirmationModal.Header data-testid={ `${ testId }-confirmation-modal-header` }>
+                            { t("console:manage.features.claims.scopeMappings.deletionConfirmationModal.header") }
+                        </ConfirmationModal.Header>
+                        <ConfirmationModal.Message
+                            data-testid={ `${ testId }-confirmation-modal-message` }
+                            attached
+                            negative
+                        >
+                            { t("console:manage.features.claims.scopeMappings.deletionConfirmationModal.message") }
+                        </ConfirmationModal.Message>
+                        <ConfirmationModal.Content>
+                            { t("console:manage.features.claims.scopeMappings.deletionConfirmationModal.content") }
+                        </ConfirmationModal.Content>
+                    </ConfirmationModal>
+                )
+            }
             { showAttributeSelectionModal() }
         </>
     );

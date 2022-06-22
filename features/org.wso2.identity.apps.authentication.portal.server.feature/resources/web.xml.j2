@@ -78,12 +78,12 @@
     </context-param>
     {% endif %}
 
-    <!-- *************** Configuration to switch between self registration & early access ********************** -->
-    {% if authenticationendpoint.switch_to_self_registration is defined %}
-    <context-param>
-        <param-name>SwitchToSelfRegistrationEndpoint</param-name>
-        <param-value>{{ authenticationendpoint.switch_to_self_registration }}</param-value>
-    </context-param>
+    <!-- *************** My Account URL ********************** -->
+    {% if authenticationendpoint.my_account_url is defined %}
+        <context-param>
+            <param-name>MyAccountURL</param-name>
+            <param-value>{{ authenticationendpoint.my_account_url }}</param-value>
+        </context-param>
     {% endif %}
 
     <!-- *************** End of Account Recovery Endpoint Context URL Configuration ********************** -->
@@ -137,8 +137,8 @@
     {% if authenticationendpoint.context_params is defined %}
     {% for key, value in authenticationendpoint.context_params.items() %}
     <context-param>
-        <param-name>{{key}}</param-name>
-        <param-value>"{{value}}"</param-value>
+        <param-name>{{ key }}</param-name>
+        <param-value>{{ value }}</param-value>
     </context-param>
     {% endfor %}
     {% endif %}
@@ -179,7 +179,7 @@
         </filter-class>
         <init-param>
            <param-name>patterns</param-name>
-           <param-value>"text/html" ,"application/json" ,"plain/text"</param-value>
+           <param-value>"text/html.*" ,"application/json" ,"plain/text"</param-value>
         </init-param>
         <init-param>
            <param-name>filterAction</param-name>
@@ -195,7 +195,9 @@
 
     <filter-mapping>
         <filter-name>ContentTypeBasedCachePreventionFilter</filter-name>
-        <url-pattern>*</url-pattern>
+        <url-pattern>/*</url-pattern>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>REQUEST</dispatcher>
     </filter-mapping>
 
     <listener>
@@ -363,6 +365,16 @@
     </servlet>
 
     <servlet>
+        <servlet-name>backup_code.do</servlet-name>
+        <jsp-file>/backup-code.jsp</jsp-file>
+    </servlet>
+
+    <servlet>
+        <servlet-name>backup_code_error.do</servlet-name>
+        <jsp-file>/backup-code-error.jsp</jsp-file>
+    </servlet>
+
+    <servlet>
         <servlet-name>email_capture.do</servlet-name>
         <jsp-file>/emailAddressCapture.jsp</jsp-file>
     </servlet>
@@ -377,6 +389,27 @@
         <jsp-file>/emailOtpError.jsp</jsp-file>
     </servlet>
 
+    {% for custom_servlet in servlet %}
+    <servlet>
+        <servlet-name>{{custom_servlet.name}}</servlet-name>
+        <jsp-file>{{custom_servlet.jsp}}</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>{{custom_servlet.name}}</servlet-name>
+        <url-pattern>{{custom_servlet.url}}</url-pattern>
+    </servlet-mapping>
+    {% endfor %}
+
+    <servlet>
+        <servlet-name>magic_link_notification.do</servlet-name>
+        <jsp-file>/magic_link_notification.jsp</jsp-file>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>magic_link_notification.do</servlet-name>
+        <url-pattern>/magic_link_notification.do</url-pattern>
+    </servlet-mapping>
+    
     <servlet-mapping>
         <servlet-name>totp_enroll.do</servlet-name>
         <url-pattern>/totp_enroll.do</url-pattern>
@@ -390,6 +423,16 @@
     <servlet-mapping>
         <servlet-name>totp_error.do</servlet-name>
         <url-pattern>/totp_error.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>backup_code.do</servlet-name>
+        <url-pattern>/backup_code.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>backup_code_error.do</servlet-name>
+        <url-pattern>/backup_code_error.do</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>

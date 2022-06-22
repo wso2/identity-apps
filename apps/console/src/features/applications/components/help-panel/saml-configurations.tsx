@@ -19,6 +19,7 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { CertificateManagementUtils } from "@wso2is/core/utils";
 import { CopyInputField, GenericIcon } from "@wso2is/react-components";
+import { saveAs } from "file-saver";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Form, Grid, Icon } from "semantic-ui-react";

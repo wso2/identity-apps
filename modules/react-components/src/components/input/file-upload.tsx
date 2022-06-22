@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useRef, useState } from "react";
 import { Button, Divider, Form, Icon, Message, Segment, Tab, TextArea } from "semantic-ui-react";
@@ -24,7 +24,7 @@ import { Button, Divider, Form, Icon, Message, Segment, Tab, TextArea } from "se
 /**
  * Component to upload file and read the content.
  */
-export interface FileUploadPropsInterface extends TestableComponentInterface {
+export interface FileUploadPropsInterface extends IdentifiableComponentInterface, TestableComponentInterface {
     /**
      * Dropzone placeholder icon.
      */
@@ -99,22 +99,23 @@ export const FileUpload: FunctionComponent<FileUploadPropsInterface> = (
         encode,
         triggerEmptyFileError,
         fileTypeToUpload,
+        [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId
     } = props;
 
-    const [name, setName] = useState("");
-    const [file, setFile] = useState<File>(null);
-    const [content, setContent] = useState("");
-    const [pasteContent, setPasteContent] = useState("");
-    const [encodedContent, setEncodedContent] = useState("");
+    const [ name, setName ] = useState("");
+    const [ file, setFile ] = useState<File>(null);
+    const [ content, setContent ] = useState("");
+    const [ pasteContent, setPasteContent ] = useState("");
+    const [ encodedContent, setEncodedContent ] = useState("");
 
-    const [nameError, setNameError] = useState(false);
-    const [fileError, setFileError] = useState(false);
-    const [encodeError, setEncodeError] = useState(false);
+    const [ , setNameError ] = useState(false);
+    const [ fileError, setFileError ] = useState(false);
+    const [ , setEncodeError ] = useState(false);
 
-    const [dragOver, setDragOver] = useState(false);
-    const [activeIndex, setActiveIndex] = useState(0);
-    const [dark, setDark] = useState(false);
+    const [ dragOver, setDragOver ] = useState(false);
+    const [ activeIndex, setActiveIndex ] = useState(0);
+    const [ dark, setDark ] = useState(false);
 
     const fileUpload = useRef(null);
     const loadedInitValue = useRef(false);
@@ -126,7 +127,7 @@ export const FileUpload: FunctionComponent<FileUploadPropsInterface> = (
         if (initialName) {
             setName(initialName);
         }
-    }, [initialName]);
+    }, [ initialName ]);
 
     /**
      * Set initialValues.
@@ -135,20 +136,20 @@ export const FileUpload: FunctionComponent<FileUploadPropsInterface> = (
         if (initialFile) {
             setFile(initialFile);
         }
-    }, [initialFile]);
+    }, [ initialFile ]);
 
     /**
      * Set initialValues.
      */
     useEffect(() => {
         if (initialName) {
-            setName(initialName)
+            setName(initialName);
         }
         if (initialFile) {
-            setFile(initialFile)
+            setFile(initialFile);
         }
         if (initialPasteValue) {
-            setPasteContent(initialPasteValue)
+            setPasteContent(initialPasteValue);
         }
         if (!loadedInitValue.current) {
             loadedInitValue.current = true;
@@ -156,11 +157,12 @@ export const FileUpload: FunctionComponent<FileUploadPropsInterface> = (
         if (initialContent) {
             // Check if initial content is not equal to initial  paste content or not
             if (!(initialPasteValue && (
-                    (encode && ((initialContent) === btoa(initialPasteValue)))
+                (encode && ((initialContent) === btoa(initialPasteValue)))
                     || (!encode && (initialContent === initialPasteValue)))
             )) {
                 if (encode) {
                     setEncodedContent(initialContent);
+
                     return;
                 }
                 setContent(initialContent);
@@ -175,7 +177,7 @@ export const FileUpload: FunctionComponent<FileUploadPropsInterface> = (
         if (triggerEmptyFileError) {
             setFileError(true);
         }
-    }, [triggerEmptyFileError]);
+    }, [ triggerEmptyFileError ]);
 
     /**
      * Update file name.
@@ -187,7 +189,7 @@ export const FileUpload: FunctionComponent<FileUploadPropsInterface> = (
             }
             updateFileName(name);
         }
-    }, [name]);
+    }, [ name ]);
 
     /***
      * Update file.
@@ -199,7 +201,7 @@ export const FileUpload: FunctionComponent<FileUploadPropsInterface> = (
             }
             updateFile(file);
         }
-    }, [file]);
+    }, [ file ]);
 
     /**
      * Update content if encoded content is updated.
@@ -208,7 +210,7 @@ export const FileUpload: FunctionComponent<FileUploadPropsInterface> = (
         if (encode && (encodedContent || (loadedInitValue.current))) {
             updateContent(encodedContent);
         }
-    }, [encodedContent]);
+    }, [ encodedContent ]);
 
     /**
      * Update content if content is updated.
@@ -217,7 +219,7 @@ export const FileUpload: FunctionComponent<FileUploadPropsInterface> = (
         if (!encode && (content || (loadedInitValue.current))) {
             updateContent(content);
         }
-    }, [content]);
+    }, [ content ]);
 
     /**
      * Update content if paste content is updated.
@@ -227,7 +229,8 @@ export const FileUpload: FunctionComponent<FileUploadPropsInterface> = (
             updatePasteContent(pasteContent);
             if (encode) {
                 updateContent(btoa(pasteContent));
-                return
+
+                return;
             }
             updateContent(pasteContent);
         } else {
@@ -235,7 +238,7 @@ export const FileUpload: FunctionComponent<FileUploadPropsInterface> = (
                 updatePasteContent(pasteContent);
             }
         }
-    }, [pasteContent]);
+    }, [ pasteContent ]);
 
     /**
      * Update contents if paste value or file content removed.
@@ -251,7 +254,7 @@ export const FileUpload: FunctionComponent<FileUploadPropsInterface> = (
         } else if (isEmpty(fileContent) && isEmpty(newPasteContent)) {
             updateContent("");
         }
-    }, [content, encodedContent, pasteContent]);
+    }, [ content, encodedContent, pasteContent ]);
 
     useEffect(() => {
         if (window.matchMedia("(prefers-color-scheme:dark)").matches) {
@@ -264,11 +267,12 @@ export const FileUpload: FunctionComponent<FileUploadPropsInterface> = (
                 setDark(false);
             }
         };
+
         window.matchMedia("(prefers-color-scheme:dark)").addEventListener("change", callback);
 
         return () => {
             window.matchMedia("(prefers-color-scheme:dark)").removeEventListener("change", callback);
-        }
+        };
     }, []);
 
     const panes = [
@@ -284,6 +288,7 @@ export const FileUpload: FunctionComponent<FileUploadPropsInterface> = (
                                 setDragOver(false);
                                 if (event.dataTransfer.files[0]) {
                                     const file = event.dataTransfer.files[0];
+
                                     addFile(file);
                                 }
                             } }
@@ -295,6 +300,7 @@ export const FileUpload: FunctionComponent<FileUploadPropsInterface> = (
                             onDragLeave={ () => {
                                 setDragOver(false);
                             } }
+                            data-componentid={ `${ componentId }-drop-zone` }
                             data-testid={ `${ testId }-drop-zone` }
                         >
                             <Segment placeholder className={ `drop-zone ${ dragOver ? "drag-over" : "" }` }>
@@ -303,10 +309,14 @@ export const FileUpload: FunctionComponent<FileUploadPropsInterface> = (
                                     <p className="description">Drag and drop file here</p>
                                     <p className="description">– or –</p>
                                 </div>
-                                <Button basic primary onClick={ (event) => {
-                                    event.preventDefault();
-                                    fileUpload.current.click();
-                                } }>
+                                <Button
+                                    basic
+                                    primary
+                                    onClick={ (event) => {
+                                        event.preventDefault();
+                                        fileUpload.current.click();
+                                    } }
+                                >
                                     Upload
                                 </Button>
                             </Segment>
@@ -315,14 +325,18 @@ export const FileUpload: FunctionComponent<FileUploadPropsInterface> = (
                     : (
                         <Segment placeholder>
                             <Segment textAlign="center" basic>
-                                <Icon name='file code outline' size='huge'/>
+                                <Icon name="file code outline" size="huge"/>
                                 <p className="file-name">{ file.name }</p>
-                                <Icon name="trash alternate" link onClick={ () => {
-                                    setFile(null);
-                                    setContent("");
-                                    setEncodedContent("");
-                                    setFileError(false);
-                                } }/>
+                                <Icon
+                                    name="trash alternate"
+                                    link
+                                    onClick={ () => {
+                                        setFile(null);
+                                        setContent("");
+                                        setEncodedContent("");
+                                        setFileError(false);
+                                    } }
+                                />
                             </Segment>
                         </Segment>
                     )
@@ -343,6 +357,7 @@ export const FileUpload: FunctionComponent<FileUploadPropsInterface> = (
                         } }
                         spellCheck={ false }
                         className={ `certificate-editor ${ dark ? "dark" : "light" }` }
+                        data-componentid={ `${ componentId }-paste-content-textarea` }
                         data-testid={ `${ testId }-paste-content-textarea` }
                     />
                 </Form>
@@ -359,6 +374,7 @@ export const FileUpload: FunctionComponent<FileUploadPropsInterface> = (
         setEncodeError(false);
         setFileError(false);
         const fileName = file.name.split(".");
+
         // removes the file extension
         fileName.pop();
         !name && setName(fileName.join("."));
@@ -368,6 +384,7 @@ export const FileUpload: FunctionComponent<FileUploadPropsInterface> = (
     const readFile = ((newFile: File) => {
 
         const reader = new FileReader();
+
         reader.readAsText(newFile);
         reader.onload = () => {
             setContent(reader.result as string);
@@ -384,17 +401,20 @@ export const FileUpload: FunctionComponent<FileUploadPropsInterface> = (
                 hidden
                 onChange={ (event) => {
                     const file: File = event.target.files[0];
+
                     event.target.value = null;
                     addFile(file);
                 } }
+                data-componentid={ componentId }
                 data-testid={ testId }
             />
             {
                 fileError
-                    ?
-                    <Message negative attached="bottom">
-                        <Message.Header> Either add a file or paste the content of the file</Message.Header>
-                    </Message>
+                    ? (
+                        <Message negative attached="bottom">
+                            <Message.Header> Either add a file or paste the content of the file</Message.Header>
+                        </Message>
+                    )
                     : <Divider hidden/>
             }
             <Tab
@@ -412,13 +432,14 @@ export const FileUpload: FunctionComponent<FileUploadPropsInterface> = (
 
         </>
 
-    )
+    );
 };
 
 /**
  * Default props for the file upload component.
  */
 FileUpload.defaultProps = {
+    "data-componentid": "file-upload",
     "data-testid": "file-upload",
     encode: false,
     fileTypeToUpload: "text/xml"

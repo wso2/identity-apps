@@ -7,6 +7,8 @@
  * You may not alter or remove any copyright or other notice from copies of this content."
  */
 
+import { ProfileSchema } from "../../../models";
+
 export interface CommonConfig {
     advancedSearchWithBasicFilters: {
         enableQuerySearch: boolean;
@@ -32,6 +34,11 @@ export interface CommonConfig {
             emailRecovery: {
                 enableEditEmail: boolean;
             };
+        };
+        mfa: {
+            fido2: {
+                allowLegacyKeyRegistration: boolean;
+            }
         }
     };
     personalInfoPage: {
@@ -43,5 +50,6 @@ export interface CommonConfig {
         isManageConsentAllowedForUser: (userstore: string) => boolean;
         isShowAdditionalWidgetAllowed: (userstore: string) => boolean;
         isConsoleNavigationAllowed: (userstore: string) => boolean;
+        isSchemaNameSkippableforProfileCompletion: (schema: ProfileSchema) => boolean;
     }
 }

@@ -91,6 +91,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     const [ showAppSwitchButton, setShowAppSwitchButton ] = useState<boolean> (true);
 
     const [ announcement, setAnnouncement ] = useState<AnnouncementBannerInterface>(undefined);
+    const isReadOnlyUser = useSelector((state: AppState) => state.authenticationInformation.profileInfo.isReadOnly);
 
     useEffect(() => {
         if (isEmpty(profileInfo)) {
@@ -303,7 +304,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                             }
                         />
                     ) }
-                    version={ config.ui.productVersionConfig?.versionOverride ?? config.deployment.productVersion }
+                    version={ config.ui.productVersionConfig?.productVersion }
                     versionUISettings={ {
                         allowSnapshot: config.ui.productVersionConfig?.allowSnapshot,
                         labelColor: config.ui.productVersionConfig?.labelColor,
@@ -328,8 +329,12 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             linkedAccounts={ linkedAccounts }
             onLinkedAccountSwitch={ handleLinkedAccountSwitch }
             userDropdownLinks={
+                // Hide the APPs for readonly users
                 compact([
-                    showAppSwitchButton && !commonConfig?.header?.renderAppSwitcherAsDropdown && {
+                    showAppSwitchButton
+                    && !commonConfig?.header?.renderAppSwitcherAsDropdown
+                    && !(CommonUtils?.isProfileReadOnly(isReadOnlyUser))
+                    && {
                         category: "APPS",
                         categoryLabel: t("common:apps"),
                         links: getLinks()

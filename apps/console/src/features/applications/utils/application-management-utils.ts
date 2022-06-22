@@ -23,9 +23,7 @@ import { I18n } from "@wso2is/i18n";
 import camelCase from "lodash-es/camelCase";
 import intersectionBy from "lodash-es/intersectionBy";
 import unionBy from "lodash-es/unionBy";
-import { useSelector } from "react-redux";
-import { applicationConfig } from "../../../extensions";
-import { AppState, DocPanelUICardInterface, store } from "../../core";
+import { DocPanelUICardInterface, store } from "../../core";
 import {
     getAvailableInboundProtocols,
     getOIDCApplicationConfigurations,
@@ -37,10 +35,7 @@ import {
     SupportedAuthProtocolTypeDisplayNames
 } from "../components/meta";
 import { ApplicationManagementConstants } from "../constants";
-import CustomApplicationTemplate
-    from "../data/application-templates/templates/custom-application/custom-application.json";
 import {
-    ApplicationTemplateListItemInterface,
     AuthProtocolMetaListItemInterface,
     SAMLApplicationConfigurationInterface,
     SAMLConfigModes,
@@ -54,6 +49,7 @@ import {
     setOIDCApplicationConfigs,
     setSAMLApplicationConfigs
 } from "../store";
+import { FunctionComponent, SVGProps } from "react";
 
 /**
  * Utility class for application(service provider) operations.
@@ -155,11 +151,16 @@ export class ApplicationManagementUtils {
     /**
      * Finds the icon from the given object.
      *
-     * @param imageName Name on the image to be found.
-     * @param illustrationObject Collection of images.
+     * @param {string} imageName Name on the image to be found.
+     * @param {FunctionComponent<SVGProps<SVGSVGElement>> | string} illustrationObject Collection of images.
+     * @return {FunctionComponent<SVGProps<SVGSVGElement>> | string}
      */
-    public static findIcon(imageName: string, illustrationObject) {
+    public static findIcon(imageName: string,
+        illustrationObject: Record<string, FunctionComponent<SVGProps<SVGSVGElement>> | string>
+    ): FunctionComponent<SVGProps<SVGSVGElement>> | string {
+
         const key: string = Object.keys(illustrationObject).find((key) => key === imageName);
+
         if (key) {
             return illustrationObject[key];
         } else {
@@ -233,6 +234,7 @@ export class ApplicationManagementUtils {
     public static getIDPDetailsFromMetaXML = (strXML: string): SAMLApplicationConfigurationInterface => {
         const samlConfigs: SAMLApplicationConfigurationInterface = emptySAMLAppConfiguration();
         let doc;
+
         if(window.ActiveXObject) {
             // For IE6, IE5
             doc = new ActiveXObject("Microsoft.XMLDOM");
@@ -242,6 +244,7 @@ export class ApplicationManagementUtils {
         else {
             // For Firefox, Chrome etc
             const parser = new DOMParser();
+
             doc = parser.parseFromString(strXML, "text/xml");
         }
 
@@ -259,11 +262,12 @@ export class ApplicationManagementUtils {
     /**
      * Generate the application samples for the help panel.
      *
-     * @param {object} raw  - Object containing of samples/docs and their doc URLs.
+     * @param {Record<string, unknown>} raw  - Object containing of samples/docs and their doc URLs.
      *
      * @return {DocPanelUICardInterface[]} Generated application samples.
      */
-    public static generateSamplesAndSDKDocs = (raw: object): DocPanelUICardInterface[] => {
+    public static generateSamplesAndSDKDocs = (raw: Record<string, unknown>): DocPanelUICardInterface[] => {
+
         if (typeof raw !== "object") {
             return [];
         }
@@ -285,25 +289,28 @@ export class ApplicationManagementUtils {
     /**
      * Get the docs key for the SDKs.
      *
-     * @param template - string
+     * @param {string} template - Template id.
+     * @return {string}
      */
-    public static getSDKDocsKey = (template: string) => `${
+    public static getSDKDocsKey = (template: string): string => `${
         ApplicationManagementConstants.APPLICATION_DOCS_KEY }["${ template }"].SDKs`;
 
     /**
      * Get the docs key for the Samples.
      *
-     * @param template - string
+     * @param {string} template - Template id.
+     * @return {string}
      */
-    public static getSampleDocsKey = (template: string) => `${
+    public static getSampleDocsKey = (template: string): string => `${
         ApplicationManagementConstants.APPLICATION_DOCS_KEY }["${ template }"].Samples`;
 
     /**
      * Get the docs key for the Configurations.
      *
-     * @param template - string
+     * @param {string} template - Template id.
+     * @return {string}
      */
-    public static getConfigDocsKey = (template: string) => `${
+    public static getConfigDocsKey = (template: string): string => `${
         ApplicationManagementConstants.APPLICATION_DOCS_KEY }["${ template }"].Configurations`;
 
     /**

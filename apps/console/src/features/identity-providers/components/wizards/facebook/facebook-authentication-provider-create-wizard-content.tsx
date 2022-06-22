@@ -245,6 +245,7 @@ export const FacebookAuthenticationProviderCreateWizardContent: FunctionComponen
                         <Field.Input
                             ariaLabel="Facebook Client Secret"
                             inputType="password"
+                            className="addon-field-wrapper"
                             name="clientSecret"
                             label={
                                 t("console:develop.features.authenticationProvider.forms" +

@@ -16,11 +16,11 @@
  * under the License.
  */
 
-import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import { TestableComponentInterface } from "@wso2is/core/dist/src/models";
+import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
 
-interface FormInputLabelProps extends TestableComponentInterface {
+interface FormInputLabelProps extends IdentifiableComponentInterface, TestableComponentInterface {
     htmlFor: string;
     disabled?: boolean;
 
@@ -35,12 +35,14 @@ export const FormInputLabel: FunctionComponent<FormInputLabelProps> = (
         children,
         htmlFor,
         disabled,
+        [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId,
         ...rest
     } = props;
 
     return (
         <label
+            data-componentid={ componentId }
             data-testid={ testId }
             htmlFor={ htmlFor }
             className={ classNames({ disabled }) }
@@ -53,5 +55,6 @@ export const FormInputLabel: FunctionComponent<FormInputLabelProps> = (
 };
 
 FormInputLabel.defaultProps = {
+    "data-componentid": "form-input-label",
     "data-testid": "form-input-label"
 };

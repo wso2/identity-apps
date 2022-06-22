@@ -17,17 +17,19 @@
  */
 
 import { AppConstants } from "@wso2is/core/constants";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { Heading } from "../../typography";
 import { ConfirmationModal } from "../confirmation-modal";
 
 /**
  * Prop type of the `NetworkErrorModal` component.
  */
-interface NetworkErrorModalPropTypes {
-    heading: string;
-    description: string;
-    primaryActionText: string;
+interface NetworkErrorModalPropTypes extends IdentifiableComponentInterface {
+    heading: ReactNode;
+    description: ReactNode;
+    primaryActionText: ReactNode;
+    primaryAction: () => void;
 }
 
 /**
@@ -44,7 +46,14 @@ interface NetworkErrorModalPropTypes {
 export const NetworkErrorModal: FunctionComponent<NetworkErrorModalPropTypes> = (
     props: NetworkErrorModalPropTypes
 ): ReactElement => {
-    const { heading, description, primaryActionText } = props;
+
+    const {
+        heading,
+        description,
+        primaryActionText,
+        primaryAction,
+        [ "data-componentid" ]: componentId
+    } = props;
 
     const [ showModal, setShowModal ] = useState(false);
 
@@ -73,8 +82,9 @@ export const NetworkErrorModal: FunctionComponent<NetworkErrorModalPropTypes> = 
             textAlign="center"
             primaryAction={ primaryActionText }
             onPrimaryActionClick={ () => {
-                location.reload();
+                primaryAction();
             } }
+            data-componentid={ componentId }
             data-testid={ "network-error-modal" }
             open={ showModal }
         >
@@ -84,4 +94,11 @@ export const NetworkErrorModal: FunctionComponent<NetworkErrorModalPropTypes> = 
             </ConfirmationModal.Content>
         </ConfirmationModal>
     );
+};
+
+/**
+ * Default props for the component.
+ */
+NetworkErrorModal.defaultProps = {
+    "data-componentid": "network-error-modal"
 };

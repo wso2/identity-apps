@@ -38,7 +38,7 @@ export class ApplicationTemplatesPage {
      */
     public getPageLayoutHeader(): Cypress.Chainable<Element> {
         return cy.dataTestId(ApplicationTemplatesPageConstants.PAGE_LAYOUT_HEADER_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the application templates page layout header title element.
@@ -46,7 +46,7 @@ export class ApplicationTemplatesPage {
      */
     public getPageLayoutHeaderTitle(): Cypress.Chainable<Element> {
         return cy.dataTestId(ApplicationTemplatesPageConstants.PAGE_LAYOUT_HEADER_TITLE_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the application templates page layout header sub title element.
@@ -54,7 +54,7 @@ export class ApplicationTemplatesPage {
      */
     public getPageLayoutHeaderSubTitle(): Cypress.Chainable<Element> {
         return cy.dataTestId(ApplicationTemplatesPageConstants.PAGE_LAYOUT_HEADER_SUB_TITLE_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the application templates page back button.
@@ -62,7 +62,7 @@ export class ApplicationTemplatesPage {
      */
     public getPageBackButton(): Cypress.Chainable<Element> {
         return cy.dataTestId(ApplicationTemplatesPageConstants.PAGE_LAYOUT_HEADER_BACK_BUTTON_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the application templates search input.
@@ -70,7 +70,7 @@ export class ApplicationTemplatesPage {
      */
     public getSearchInput(): Cypress.Chainable<Element> {
         return cy.dataTestId(ApplicationTemplatesPageConstants.SEARCH_INPUT_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the application templates sort dropdown.
@@ -78,7 +78,7 @@ export class ApplicationTemplatesPage {
      */
     public getSortDropdown(): Cypress.Chainable<Element> {
         return cy.dataTestId(ApplicationTemplatesPageConstants.SORT_DROPDOWN_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the quick-start application templates grid.
@@ -86,7 +86,7 @@ export class ApplicationTemplatesPage {
      */
     public getQuickstartGrid(): Cypress.Chainable<Element> {
         return cy.dataTestId(ApplicationTemplatesPageConstants.QUICK_START_TEMPLATE_GRID);
-    };
+    }
 
     /**
      * Get the vendor application templates grid.
@@ -94,7 +94,7 @@ export class ApplicationTemplatesPage {
      */
     public getVendorGrid(): Cypress.Chainable<Element> {
         return cy.dataTestId(ApplicationTemplatesPageConstants.VENDOR_TEMPLATE_GRID);
-    };
+    }
 
     /**
      * Get quick-start application template.
@@ -112,7 +112,7 @@ export class ApplicationTemplatesPage {
         }
         
         throw Error("Invalid Quickstart Template type - " + type);
-    };
+    }
 
     /**
      * Get vendor application template.
@@ -130,7 +130,7 @@ export class ApplicationTemplatesPage {
         }
 
         throw Error("Invalid Vendor Template type - " + type);
-    };
+    }
 
     /**
      * Get the minimal creation wizard.
@@ -138,7 +138,7 @@ export class ApplicationTemplatesPage {
      */
     public getMinimalCreationWizard(): Cypress.Chainable<Element> {
         return cy.dataTestId(ApplicationTemplatesPageConstants.MINIMAL_CREATION_WIZARD_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the minimal creation wizard application name input.
@@ -147,7 +147,7 @@ export class ApplicationTemplatesPage {
     public getMinimalCreationWizardAppNameInput(): Cypress.Chainable<JQuery<Element>> {
         return cy.dataTestId(ApplicationTemplatesPageConstants.MINIMAL_CREATION_WIZARD_APP_NAME_INPUT_DATA_ATTR)
             .find("input");
-    };
+    }
 
     /**
      * Get the minimal creation wizard OIDC card.
@@ -155,7 +155,7 @@ export class ApplicationTemplatesPage {
      */
     public getMinimalCreationWizardOIDCCard(): Cypress.Chainable<Element> {
         return cy.dataTestId(ApplicationTemplatesPageConstants.MINIMAL_CREATION_WIZARD_OIDC_CARD_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the minimal creation wizard SAML card.
@@ -163,7 +163,7 @@ export class ApplicationTemplatesPage {
      */
     public getMinimalCreationWizardSAMLCard(): Cypress.Chainable<Element> {
         return cy.dataTestId(ApplicationTemplatesPageConstants.MINIMAL_CREATION_WIZARD_SAML_CARD_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the minimal creation wizard Redirect URL Input.
@@ -172,7 +172,7 @@ export class ApplicationTemplatesPage {
     public getMinimalCreationWizardRedirectURLInput(): Cypress.Chainable<JQuery<Element>> {
         return cy.dataTestId(ApplicationTemplatesPageConstants.MINIMAL_CREATION_WIZARD_REDIRECT_URL_INPUT_DATA_ATTR)
             .find("input");
-    };
+    }
 
     /**
      * Get the minimal creation wizard redirect URL add button.
@@ -181,7 +181,7 @@ export class ApplicationTemplatesPage {
     public getMinimalCreationWizardRedirectURLAddButton(): Cypress.Chainable<Element> {
         return cy.dataTestId(
             ApplicationTemplatesPageConstants.MINIMAL_CREATION_WIZARD_REDIRECT_URL_ADD_BUTTON_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the minimal creation wizard form submit button.
@@ -189,7 +189,7 @@ export class ApplicationTemplatesPage {
      */
     public getMinimalCreationWizardSubmitButton(): Cypress.Chainable<Element> {
         return cy.dataTestId(ApplicationTemplatesPageConstants.MINIMAL_CREATION_WIZARD_SUBMIT_BUTTON_DATA_ATTR);
-    };
+    }
 
     /**
      * Click on the minimal creation wizard form submit button.
@@ -197,5 +197,5 @@ export class ApplicationTemplatesPage {
      */
     public clickOnMinimalCreationWizardSubmitButton(): void {
         this.getMinimalCreationWizardSubmitButton().click();
-    };
+    }
 }

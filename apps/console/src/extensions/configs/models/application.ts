@@ -17,6 +17,7 @@
  */
 
 import { ReactNode } from "react";
+import { Dispatch } from "redux";
 import {
     ExtendedClaimInterface,
     ExtendedExternalClaimInterface,
@@ -28,6 +29,9 @@ export interface ApplicationConfig {
         showEnableAuthorization: boolean;
         showSaaS: boolean;
         showReturnAuthenticatedIdPs: boolean;
+    };
+    generalSettings: {
+        getFieldReadOnlyStatus: (applicationName: string, fieldName: string) => boolean ;
     };
     attributeSettings: {
         advancedAttributeSettings: {
@@ -52,6 +56,9 @@ export interface ApplicationConfig {
         extendTabs: boolean; //should be true for cloud
         showProvisioningSettings: boolean;
         renderHelpPanelItems: () => ReactNode;
+        showDangerZone: (applicationName: string) => boolean;
+        showDeleteButton: (applicationName: string) => boolean;
+        getTabPanelReadOnlyStatus: (tabPanelName: string, applicationName: string) => boolean;
     };
     inboundOIDCForm: {
         shouldValidateCertificate: boolean;
@@ -78,7 +85,13 @@ export interface ApplicationConfig {
                 secondFactorDisabled: ReactNode;
                 secondFactorDisabledInFirstStep: ReactNode;
             };
+            customAuthenticatorAdditionValidation(
+                authenticatorID: string,
+                stepIndex: number,
+                dispatch: Dispatch
+            ): boolean;
         };
+        identifierFirstWarning: boolean;
     };
     templates: {
         android: boolean;
@@ -90,6 +103,8 @@ export interface ApplicationConfig {
     };
     customApplication: {
         allowedProtocolTypes: string[];
-    }
-
+        defaultTabIndex: number;
+    };
+    excludeIdentityClaims: boolean;
+    excludeSubjectClaim: boolean;
 }

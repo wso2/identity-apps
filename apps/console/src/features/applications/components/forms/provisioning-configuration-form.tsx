@@ -58,7 +58,7 @@ export const ProvisioningConfigurationsForm: FunctionComponent<ProvisioningConfi
 
     const { t } = useTranslation();
 
-    const [isProxyModeOn, setIsProxyModeOn] = useState<boolean>(false);
+    const [ isProxyModeOn, setIsProxyModeOn ] = useState<boolean>(false);
 
     /**
      * Prepare form values for submitting.
@@ -85,6 +85,7 @@ export const ProvisioningConfigurationsForm: FunctionComponent<ProvisioningConfi
      */
     const getUserStoreOption = () => {
         const allowedOptions = [];
+
         if (useStoreList) {
             useStoreList?.map((userStore) => {
                 allowedOptions.push({
@@ -102,12 +103,12 @@ export const ProvisioningConfigurationsForm: FunctionComponent<ProvisioningConfi
         if (config?.inboundProvisioning?.proxyMode) {
             setIsProxyModeOn(config?.inboundProvisioning?.proxyMode);
         }
-    }, [config]);
+    }, [ config ]);
 
     return (
         <Form
             uncontrolledForm={ false }
-            onSubmit={ (values, form) => {
+            onSubmit={ (values) => {
                 updateConfiguration(values);
             } }
         >
@@ -116,7 +117,7 @@ export const ProvisioningConfigurationsForm: FunctionComponent<ProvisioningConfi
                 name="proxyMode"
                 label={ t("console:develop.features.applications.forms.provisioningConfig.fields.proxyMode.label") }
                 required={ false }
-                value={ config?.inboundProvisioning?.proxyMode ? ["modeOn"] : [] }
+                value={ config?.inboundProvisioning?.proxyMode ? [ "modeOn" ] : [] }
                 listen={ (value) => setIsProxyModeOn(value) }
                 readOnly={ readOnly }
                 data-testid={ `${ testId }-proxy-mode-checkbox` }

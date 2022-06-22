@@ -16,9 +16,9 @@
  * under the License.
  */
 
+const { exec } = require("child_process");
 const fs = require("fs");
 const path = require("path");
-const { exec } = require("child_process");
 
 const log = {
     info: console.log,
@@ -85,7 +85,7 @@ const constructTestCommand = () => {
  */
 const resolveCypressCommand = () => {
     if (cliArgs.includes(INTERACTIVE_MODE_ARG) && cliArgs.includes(HEADLESS_MODE_ARG)) {
-        throw Error("Interactive mode and Headless mode can not be selected at once.")
+        throw Error("Interactive mode and Headless mode can not be selected at once.");
     }
 
     if (cliArgs.includes(INTERACTIVE_MODE_ARG)) {
@@ -109,5 +109,5 @@ const execution = exec(constructTestCommand());
 
 execution.stdout.pipe(process.stdout);
 execution.on("exit", () => {
-    process.exit()
+    process.exit();
 });

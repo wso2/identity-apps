@@ -60,7 +60,7 @@ export interface DynamicFieldPropsInterface extends TestableComponentInterface {
     /**
      * Triggers submit
      */
-    submit: boolean;
+    submit?: boolean;
     /**
      * The name of the key
      */
@@ -92,7 +92,7 @@ export interface DynamicFieldPropsInterface extends TestableComponentInterface {
     /**
      * Called to initiate an update
      */
-    update: (data: KeyValue[]) => void;
+    update?: (data: KeyValue[]) => void;
     /**
      * Make the form read only.
      */
@@ -127,19 +127,19 @@ export const DynamicField: FunctionComponent<DynamicFieldPropsInterface> = (
         [ "data-testid" ]: testId
     } = props;
 
-    const [fields, setFields] = useState<Map<number, KeyValue>>();
-    const [editIndex, setEditIndex] = useState<number>(null);
-    const [editValue, setEditValue] = useState("");
-    const [editKey, setEditKey] = useState("");
-    const [updateMapIndex, setUpdateMapIndex] = useState<number>(null);
-    const [showAddErrorMsg, setAddShowErrorMsg] = useState(false);
-    const [showEditErrorMsg, setShowEditErrorMsg] = useState(false);
+    const [ fields, setFields ] = useState<Map<number, KeyValue>>();
+    const [ editIndex, setEditIndex ] = useState<number>(null);
+    const [ editValue, setEditValue ] = useState("");
+    const [ editKey, setEditKey ] = useState("");
+    const [ updateMapIndex, setUpdateMapIndex ] = useState<number>(null);
+    const [ showAddErrorMsg, setAddShowErrorMsg ] = useState(false);
+    const [ showEditErrorMsg, setShowEditErrorMsg ] = useState(false);
 
     const initRender = useRef(true);
 
-    const [add, setAdd] = useTrigger();
-    const [reset, setReset] = useTrigger();
-    const [updateTrigger, setUpdateTrigger] = useTrigger();
+    const [ add, setAdd ] = useTrigger();
+    const [ reset, setReset ] = useTrigger();
+    const [ updateTrigger, setUpdateTrigger ] = useTrigger();
 
     /**
      * Resets edit states when when editIndex becomes null
@@ -149,13 +149,14 @@ export const DynamicField: FunctionComponent<DynamicFieldPropsInterface> = (
             setEditKey("");
             setEditValue("");
         }
-    }, [editIndex]);
+    }, [ editIndex ]);
 
     /**
      * Pushes the existing pairs to the state
      */
     useEffect(() => {
         const tempFields = new Map<number, KeyValue>();
+
         data?.forEach((field, index) => {
             tempFields.set(index, field);
         });
@@ -166,12 +167,15 @@ export const DynamicField: FunctionComponent<DynamicFieldPropsInterface> = (
      * Prevent submit from being triggered during initial render
      */
     useEffect(() => {
+        if(!update) {
+            return;
+        }
         if (initRender.current) {
             initRender.current = false;
         } else if (fields) {
             update(Array.from(fields.values()));
         }
-    }, [submit]);
+    }, [ submit ]);
 
     /**
      * Triggers an update when the index of the pair to be updated is set
@@ -180,7 +184,7 @@ export const DynamicField: FunctionComponent<DynamicFieldPropsInterface> = (
         if (updateMapIndex !== null) {
             setUpdateTrigger();
         }
-    }, [updateMapIndex]);
+    }, [ updateMapIndex ]);
 
     return (
         <>
@@ -189,20 +193,21 @@ export const DynamicField: FunctionComponent<DynamicFieldPropsInterface> = (
                     ? (
                         <>
                             {
-                                showAddErrorMsg &&
-                                <Message error>
-                                    { duplicateKeyErrorMsg }
-                                </Message>
-
+                                showAddErrorMsg && (
+                                    <Message error>
+                                        { duplicateKeyErrorMsg }
+                                    </Message>
+                                )
                             }
                             <Forms
                                 onSubmit={
                                     (values: Map<string, FormValue>) => {
                                         if (!showAddErrorMsg) {
-                                            const tempFields = new Map<number, KeyValue>(fields);
+                                            const tempFields: Map<number, KeyValue> = new Map<number, KeyValue>(fields);
                                             const newIndex: number = tempFields.size > 0
                                                 ? Array.from(tempFields.keys())[tempFields.size - 1] + 1
                                                 : 0;
+
                                             tempFields.set(newIndex, {
                                                 key: values.get("key").toString(),
                                                 value: values.get("value").toString()
@@ -236,7 +241,7 @@ export const DynamicField: FunctionComponent<DynamicFieldPropsInterface> = (
                                                                         key: key.id,
                                                                         text: key.value,
                                                                         value: key.value
-                                                                    }
+                                                                    };
                                                                 })
                                                             )
                                                             : []
@@ -247,9 +252,11 @@ export const DynamicField: FunctionComponent<DynamicFieldPropsInterface> = (
                                                             value: string
                                                         ) => {
                                                             let isSameUserStore = false;
+
                                                             for (const mapping of fields) {
                                                                 if (mapping[1].key === value) {
                                                                     isSameUserStore = true;
+
                                                                     break;
                                                                 }
                                                             }
@@ -320,22 +327,26 @@ export const DynamicField: FunctionComponent<DynamicFieldPropsInterface> = (
                     ? (
                         <>
                             {
-                                showEditErrorMsg &&
-                                <Message error>
-                                    { duplicateKeyErrorMsg }
-                                </Message>
-
+                                showEditErrorMsg && (
+                                    <Message error>
+                                        { duplicateKeyErrorMsg }
+                                    </Message>
+                                )
                             }
                             <Forms
                                 onSubmit={ (values: Map<string, FormValue>) => {
                                     if (!showEditErrorMsg) {
-                                        const tempFields = new Map(fields);
+                                        const tempFields: Map<number, KeyValue> = new Map(fields);
+
                                         tempFields.set(updateMapIndex, {
                                             key: values.get("editKey").toString(),
                                             value: values.get("editValue").toString()
                                         });
 
                                         setFields(tempFields);
+                                        if (listen) {
+                                            listen(Array.from(tempFields.values()));
+                                        }
                                         setEditIndex(null);
                                         setUpdateMapIndex(null);
                                     }
@@ -344,7 +355,7 @@ export const DynamicField: FunctionComponent<DynamicFieldPropsInterface> = (
                             >
 
                                 {
-                                    Array.from(fields).map(([mapIndex, field], index: number) => {
+                                    Array.from(fields).map(([ mapIndex, field ], index: number) => {
                                         return (
                                             <List className="dynamic-field" key={ index }>
                                                 <List.Item>
@@ -369,7 +380,7 @@ export const DynamicField: FunctionComponent<DynamicFieldPropsInterface> = (
                                                                                                 key: key.id,
                                                                                                 text: key.value,
                                                                                                 value: key.value
-                                                                                            }
+                                                                                            };
                                                                                         })
                                                                                 )
                                                                                 : []
@@ -381,12 +392,14 @@ export const DynamicField: FunctionComponent<DynamicFieldPropsInterface> = (
                                                                                 value: string
                                                                             ) => {
                                                                                 let isSameUserStore = false;
+
                                                                                 for (const mapping of fields) {
                                                                                     if (
                                                                                         mapping[1].key === value
                                                                                         && mapping[1] !== field
                                                                                     ) {
                                                                                         isSameUserStore = true;
+
                                                                                         break;
                                                                                     }
                                                                                 }
@@ -515,9 +528,14 @@ export const DynamicField: FunctionComponent<DynamicFieldPropsInterface> = (
                                                                 icon="trash"
                                                                 onClick={ () => {
                                                                     setEditIndex(null);
-                                                                    const tempFields = new Map(fields);
+                                                                    const tempFields: Map<number, KeyValue> 
+                                                                        = new Map(fields);
+
                                                                     tempFields.delete(mapIndex);
                                                                     setFields(tempFields);
+                                                                    if (listen) {
+                                                                        listen(Array.from(tempFields.values()));
+                                                                    }
                                                                 } }
                                                             />
                                                         ) }
@@ -528,7 +546,7 @@ export const DynamicField: FunctionComponent<DynamicFieldPropsInterface> = (
                                                 </List.Item>
                                             </List>
 
-                                        )
+                                        );
                                     })
 
                                 }
@@ -538,7 +556,7 @@ export const DynamicField: FunctionComponent<DynamicFieldPropsInterface> = (
                     : null
             }
         </>
-    )
+    );
 };
 
 // Set default props

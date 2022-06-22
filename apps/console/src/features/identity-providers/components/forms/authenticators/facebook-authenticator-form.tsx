@@ -301,6 +301,7 @@ export const FacebookAuthenticatorForm: FunctionComponent<FacebookAuthenticatorF
             />
             <Field.Input
                 ariaLabel="Facebook authenticator client secret"
+                className="addon-field-wrapper"
                 inputType="password"
                 type="password"
                 name="ClientSecret"

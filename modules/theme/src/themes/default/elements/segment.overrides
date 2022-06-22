@@ -311,6 +311,7 @@
         &.attributes {
             max-height: 311px;
             padding: 0 0 20px 0;
+            overflow-y: scroll;
 
             .transfer-list-sub-content {
                 color: @TransferComponentSegmentApplicationAttributeSecondaryColor;
@@ -695,5 +696,36 @@
             right: auto !important;
             margin: 10px;
         }
+    }
+}
+
+/*-------------------------------
+      Basic Segment Group
+--------------------------------*/
+
+.ui.segments {
+    &.basic {
+        border: none;
+        box-shadow: none;
+        
+        > .ui.segment {
+            padding: 0;
+            border: none;
+        }
+    }
+}
+
+/*-------------------------------
+         Image Preview
+--------------------------------*/
+
+.ui.segment {
+    &.image-preview {
+        outline: @imagePreviewOutline;
+        height: @imagePreviewHeight;
+        display: flex;
+        align-items: center;
+        border-radius: @imagePreviewBorderRadius;
+        justify-content: center;
     }
 }

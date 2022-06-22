@@ -17,9 +17,9 @@
  *
  */
 
-import { meta, SampleJSCodeSnippet, SampleJSONSnippet, SampleTSCodeSnippet } from "./code-editor.stories.meta";
-import React, { ReactElement } from "react";
 import { select, withKnobs } from "@storybook/addon-knobs";
+import React, { ReactElement } from "react";
+import { SampleJSCodeSnippet, SampleJSONSnippet, SampleTSCodeSnippet, meta } from "./code-editor.stories.meta";
 import { CodeEditor } from "../../../src";
 
 export default {

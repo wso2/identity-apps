@@ -317,8 +317,15 @@ export interface MyAccountNS {
                 modals: {
                     deviceRegistrationErrorModal: {
                         description: string;
+                        tryWithOlderDevice: string;
                         heading: string;
                     };
+                    deleteConfirmation: {
+                        description: string;
+                        heading: string;
+                        content: string;
+                        assertionHint: string;
+                    }
                 };
                 notifications: {
                     removeDevice: Notification;
@@ -347,6 +354,7 @@ export interface MyAccountNS {
                 configuredDescription:string;
                 heading: string;
                 hint: string;
+                enableHint: string;
                 addHint: string;
                 deleteHint: string;
                 modals: {
@@ -390,6 +398,62 @@ export interface MyAccountNS {
                     };
                 };
             };
+            backupCode: {
+                download: {
+                    heading: string,
+                    info1: string,
+                    info2: string,
+                    subHeading: string
+                },
+                heading: string,
+                modals: {
+                    description: string,
+                    download: {
+                        heading: string
+                    },
+                    generate: {
+                        description: string
+                        heading: string, 
+                    },
+                    heading: string,
+                    info: string,
+                    refresh: {
+                        heading: string
+                    },
+                    subHeading: string,
+                },
+                notifications: {
+                    deleteError: {
+                        error: NotificationItem;
+                        genericError: NotificationItem;
+                    };
+                    downloadError: {
+                        error: NotificationItem;
+                        genericError: NotificationItem;
+                    };
+                    downloadSuccess: {
+                        message: NotificationItem;
+                        genericMessage: NotificationItem;
+                    };
+                    refreshError: {
+                        error: NotificationItem;
+                        genericError: NotificationItem;
+                    };
+                    retrieveAuthenticatorError: {
+                        error: NotificationItem;
+                        genericError: NotificationItem;
+                    };
+                    retrieveError: {
+                        error: NotificationItem;
+                        genericError: NotificationItem;
+                    };
+                    updateAuthenticatorError: {
+                        error: NotificationItem;
+                        genericError: NotificationItem;
+                    };
+
+                }
+            }
         };
         loginVerifyData: {
             heading: string;
@@ -614,19 +678,10 @@ export interface MyAccountNS {
                 };
                 emails: string;
                 profileUrl: string;
-                addressesWork: string;
-                addressesHome: string;
-                emailsHome: string;
-                emailsOther: string;
-                emailsWork: string;
                 nameFamilyName: string;
                 nameGivenName: string;
                 profileImage: string;
                 phoneNumbers: string;
-                phoneNumbersHome: string;
-                phoneNumbersMobile: string;
-                phoneNumbersWork: string;
-                phoneNumbersOther: string;
                 userName: string;
             };
             forms: {
@@ -709,6 +764,7 @@ export interface MyAccountNS {
                     inputs: {
                         date: {
                             validations: {
+                                futureDateError : string;
                                 invalidFormat: string;
                             };
                         };
@@ -796,7 +852,7 @@ export interface MyAccountNS {
         sessionTimeoutModal: {
             description: string;
             heading: string;
-            content?: object;
+            content?: Record<string, unknown>;
             primaryButton: string;
             secondaryButton: string;
             loginAgainButton: string;

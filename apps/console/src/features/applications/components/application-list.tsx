@@ -32,7 +32,6 @@ import {
     ConfirmationModal,
     DataTable,
     EmptyPlaceholder,
-    GridLayout,
     LinkButton,
     PrimaryButton,
     TableActionsInterface,
@@ -42,7 +41,7 @@ import {
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
+import { Header, Icon, Label, Popup, SemanticICONS } from "semantic-ui-react";
 import {
     AppConstants,
     AppState,
@@ -62,6 +61,7 @@ import {
     ApplicationTemplateListItemInterface
 } from "../models";
 import { ApplicationTemplateManagementUtils } from "../utils";
+import { applicationConfig } from "../../../extensions";
 
 /**
  *
@@ -158,6 +158,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
         (state: AppState) => state.application.templates);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const UIConfig: UIConfigInterface = useSelector((state: AppState) => state?.config?.ui);
+    const tenantDomain: string = useSelector((state: AppState) => state?.auth?.tenantDomain);
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingApplication, setDeletingApplication ] = useState<ApplicationListItemInterface>(undefined);
@@ -317,7 +318,20 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                                             </Label>
                                         )
                                     }
-                                    { app.description }
+                                    {
+                                        app.description?.length > 80
+                                            ? (
+                                                <Popup
+                                                    content={ app.description }
+                                                    trigger={ (
+                                                        <span>{
+                                                            app.description
+                                                        }</span>
+                                                    ) }
+                                                />
+                                            )
+                                            : app.description
+                                    }
                                 </Header.Subheader>
                             </Header.Content>
                         </Header>
@@ -355,8 +369,8 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                     return app?.access === ApplicationAccessTypes.READ
                         || !hasRequiredScopes(featureConfig?.applications,
                             featureConfig?.applications?.scopes?.update, allowedScopes)
-                            ? "eye"
-                            : "pencil alternate";
+                        ? "eye"
+                        : "pencil alternate";
                 },
                 onClick: (e: SyntheticEvent, app: ApplicationListItemInterface): void =>
                     handleApplicationEdit(app.id, app.access),
@@ -364,8 +378,8 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                     return app?.access === ApplicationAccessTypes.READ
                         || !hasRequiredScopes(featureConfig?.applications,
                             featureConfig?.applications?.scopes?.update, allowedScopes)
-                                ? t("common:view")
-                                : t("common:edit");
+                        ? t("common:view")
+                        : t("common:edit");
                 },
                 renderer: "semantic-icon"
             },
@@ -375,9 +389,13 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                     const hasScopes: boolean = !hasRequiredScopes(featureConfig?.applications,
                         featureConfig?.applications?.scopes?.delete, allowedScopes);
 
+                    const isSuperTenant: boolean = (tenantDomain === AppConstants.getSuperTenant());
+                    const isSystemApp: boolean = isSuperTenant && (UIConfig.systemAppsIdentifiers.includes(app?.name));
+
                     return hasScopes ||
-                            UIConfig.systemAppsIdentifiers.includes(app?.name) ||
-                            (app?.access === ApplicationAccessTypes.READ);
+                            isSystemApp ||
+                            (app?.access === ApplicationAccessTypes.READ) ||
+                            !applicationConfig.editApplication.showDeleteButton(app.name);
                 },
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (e: SyntheticEvent, app: ApplicationListItemInterface): void => {
@@ -423,10 +441,11 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                     className={ !isRenderedOnPortal ? "list-placeholder" : "" }
                     action={ onEmptyListPlaceholderActionClick && (
                         <Show when={ AccessControlConstants.APPLICATION_WRITE }>
-                            <PrimaryButton onClick={ () => {
-                                eventPublisher.publish(componentId + "-click-new-application-button");
-                                onEmptyListPlaceholderActionClick();
-                            } }>
+                            <PrimaryButton
+                                onClick={ () => {
+                                    eventPublisher.publish(componentId + "-click-new-application-button");
+                                    onEmptyListPlaceholderActionClick();
+                                } }>
                                 <Icon name="add"/>
                                 { t("console:develop.features.applications.placeholders.emptyList.action") }
                             </PrimaryButton>

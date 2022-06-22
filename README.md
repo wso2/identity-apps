@@ -9,6 +9,8 @@ End-user apps in WSO2 Identity Server
 ## Setup build environment
 
 1. Install NodeJS from [https://nodejs.org/en/download/](https://nodejs.org/en/download/).
+
+    > 💡`npm` 7 has some breaking changes to peer dependencies. Hence, go with a `npm` version lower than `7`.
 2. Install Maven from [https://maven.apache.org/download.cgi](https://maven.apache.org/download.cgi). * For Maven 3.8 and up, please check the Troubleshoot section.
 3. Install JDK 1.8 [https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html](https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html).
 
@@ -70,16 +72,16 @@ If you are building [product-is](https://github.com/wso2/product-is), the built 
 > **Hint!** Can find out the default password details here: [https://docs.wso2.com/display/ADMIN44x/Configuring+the+System+Administrator](https://docs.wso2.com/display/ADMIN44x/Configuring+the+System+Administrator)
 7. In the system, navigate to `Service Providers -> List` from left side panel. And then go to `Edit` option in the application that you want to configure in dev mode (ex: `MY_ACCOUNT`). Then click on `Inbound Authentication Configuration -> OAuth/OpenID Connect Configuration -> Edit`. And then update the `Callback Url` field with below corresponding values.
 
-    **My Account**
-
-    ```
-    regexp=(https://localhost:9443/myaccount/login|https://localhost:9443/myaccount/logout|https://localhost:9000/myaccount/login|https://localhost:9000/myaccount/logout)
-    ```
-
     **Console**
 
     ```
-    regexp=(https://localhost:9443/console/login|https://localhost:9443/console/logout|https://localhost:9001/console/login|https://localhost:9001/console/logout)
+    regexp=(https://localhost:9443/console|https://localhost:9443/t/(.*)/console|https://localhost:9443/console/login|https://localhost:9443/t/(.*)/console/login|https://localhost:9001/console|https://localhost:9001/t/(.*)/console|https://localhost:9001/console/login|https://localhost:9001/t/(.*)/console/login)
+    ```
+
+    **My Account**
+
+    ```
+    regexp=(https://localhost:9443/myaccount|https://localhost:9443/t/(.*)/myaccount|https://localhost:9443/myaccount/login|https://localhost:9443/t/(.*)/myaccount/login|https://localhost:9000/myaccount|https://localhost:9000/t/(.*)/myaccount|https://localhost:9000/myaccount/login|https://localhost:9000/t/(.*)/myaccount/login)
     ```
 
 8. Open cloned or downloaded Identity Apps repo and run the following commands from the command line in the project root directory (where the `package.json` is located) to build all the packages with dependencies. _(Note:- Not necessary if you have already done above identity apps build steps)_

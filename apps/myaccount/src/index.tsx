@@ -17,8 +17,8 @@
  */
 
 import { AuthParams, AuthProvider, SPAUtils } from "@asgardeo/auth-react";
-import { ContextUtils } from "@wso2is/core/utils";
-import { ContentLoader } from "@wso2is/react-components";
+import { AppConstants as AppConstantsCore } from "@wso2is/core/constants";
+import { AuthenticateUtils, ContextUtils } from "@wso2is/core/utils";
 import axios from "axios";
 import * as React from "react";
 // tslint:disable:no-submodule-imports
@@ -31,6 +31,7 @@ import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import { PreLoader } from "./components";
 import { Config } from "./configs";
+import { AppConstants } from "./constants";
 import { ProtectedApp } from "./protected-app";
 import { store } from "./store";
 import "core-js/stable";
@@ -39,6 +40,14 @@ import { getAuthInitializeConfig } from "./utils";
 
 // Set the runtime config in the context.
 ContextUtils.setRuntimeConfig(Config.getDeploymentConfig());
+
+if ((window.location.pathname !== AppConstants.getAppLoginPath())
+    && (window.location.pathname !== AppConstants.getPaths().get("UNAUTHORIZED"))
+    && (window.location.pathname !== AppConstants.getPaths().get("PAGE_NOT_FOUND")
+    && (window.location.pathname !== AppConstants.getPaths().get("STORING_DATA_DISABLED")))) {
+    AuthenticateUtils.updateAuthenticationCallbackUrl(AppConstantsCore.MY_ACCOUNT_APP,
+        window.location.pathname + window.location.hash);
+}
 
 const getAuthParams = (): Promise<AuthParams> => {
     if (!SPAUtils.hasAuthSearchParamsInURL() && process.env.NODE_ENV === "production") {
@@ -50,7 +59,8 @@ const getAuthParams = (): Promise<AuthParams> => {
         return axios.get(contextPath + "/auth").then((response) => {
             return Promise.resolve({
                 authorizationCode: response?.data?.authCode,
-                sessionState: response?.data?.sessionState
+                sessionState: response?.data?.sessionState,
+                state: response?.data?.state
             });
         });
     }

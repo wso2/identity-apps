@@ -64,7 +64,6 @@ export const HelpPanelOverview: FunctionComponent<HelpPanelOverviewPropsInterfac
     const [ isOIDC, setIsOIDC ] = useState<boolean>(false);
     const [ isSAML, setIsSAML ] = useState<boolean>(false);
     const [ isOIDCConfigsLoading, setOIDCConfigsLoading ] = useState<boolean>(false);
-    const [ isSAMLConfigsLoading, setSAMLConfigsLoading ] = useState<boolean>(false);
 
     useEffect(() => {
         if (inboundProtocols == undefined) {
@@ -86,6 +85,7 @@ export const HelpPanelOverview: FunctionComponent<HelpPanelOverviewPropsInterfac
     useEffect(() => {
         if (oidcConfigurations !== undefined) {
             handleMetadataLoading(false);
+
             return;
         }
         handleMetadataLoading(true);

@@ -19,20 +19,26 @@
 
 <%@ page import="org.apache.commons.collections.map.HashedMap" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
+<%@ page import="org.wso2.carbon.core.util.SignatureUtil" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementServiceUtil" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApiException" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClient" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.api.SelfRegisterApi" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.api.UsernameRecoveryApi" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.core.util.IdentityTenantUtil" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.*" %>
+<%@ page import="org.wso2.carbon.identity.recovery.util.Utils" %>
+<%@ page import="org.json.simple.JSONObject" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.net.URLEncoder" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
+<%@ page import="java.util.Base64" %>
 <%@ page import="org.wso2.carbon.identity.core.util.IdentityUtil" %>
+<%@ page import="javax.servlet.http.Cookie" %>
 <jsp:directive.include file="includes/localize.jsp"/>
 <jsp:directive.include file="tenant-resolve.jsp"/>
 
@@ -81,6 +87,13 @@
             String SELF_REGISTRATION_WITH_VERIFICATION_PAGE = "self-registration-with-verification.jsp";
             String SELF_REGISTRATION_WITHOUT_VERIFICATION_PAGE = "* self-registration-without-verification.jsp";
             String passwordPatternErrorCode = "20035";
+            String AUTO_LOGIN_COOKIE_NAME = "ALOR";
+            String AUTO_LOGIN_COOKIE_DOMAIN = "AutoLoginCookieDomain";
+            String AUTO_LOGIN_FLOW_TYPE = "SIGNUP";
+            PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
+            Boolean isAutoLoginEnable = preferenceRetrievalClient.checkAutoLoginAfterSelfRegistrationEnabled(tenantDomain);
+            Boolean isSelfRegistrationWithVerificationEnabled = preferenceRetrievalClient.checkSelfRegistrationLockOnCreation(tenantDomain);
+    
             boolean isSelfRegistrationWithVerification =
                     Boolean.parseBoolean(request.getParameter("isSelfRegistrationWithVerification"));
 
@@ -199,6 +212,38 @@
 
                 SelfRegisterApi selfRegisterApi = new SelfRegisterApi();
                 selfRegisterApi.mePostCall(selfUserRegistrationRequest, requestHeaders);
+                // Add auto login cookie.
+                if (isAutoLoginEnable && !isSelfRegistrationWithVerificationEnabled) {
+                    if (StringUtils.isNotEmpty(user.getRealm())) {
+                        username = user.getRealm() + "/" + user.getUsername() + "@" + user.getTenantDomain();
+                    } else {
+                        username = user.getUsername() + "@" + user.getTenantDomain();
+                    }
+                    String cookieDomain = application.getInitParameter(AUTO_LOGIN_COOKIE_DOMAIN);
+                    JSONObject contentValueInJson = new JSONObject();
+                    contentValueInJson.put("username", username);
+                    contentValueInJson.put("createdTime", System.currentTimeMillis());
+                    contentValueInJson.put("flowType", AUTO_LOGIN_FLOW_TYPE);
+                    if (StringUtils.isNotBlank(cookieDomain)) {
+                        contentValueInJson.put("domain", cookieDomain);
+                    }
+                    String content = contentValueInJson.toString();
+        
+                    JSONObject cookieValueInJson = new JSONObject();
+                    cookieValueInJson.put("content", content);
+                    String signature = Base64.getEncoder().encodeToString(SignatureUtil.doSignature(content));
+                    cookieValueInJson.put("signature", signature);
+                    Cookie cookie = new Cookie(AUTO_LOGIN_COOKIE_NAME,
+                            Base64.getEncoder().encodeToString(cookieValueInJson.toString().getBytes()));
+                    cookie.setPath("/");
+                    cookie.setSecure(true);
+                    cookie.setMaxAge(300);
+                    if (StringUtils.isNotBlank(cookieDomain)) {
+                        cookie.setDomain(cookieDomain);
+                    }
+                    response.addCookie(cookie);
+                    request.setAttribute("isAutoLoginEnabled", true);
+                }
                 request.setAttribute("callback", callback);
                 request.getRequestDispatcher("self-registration-complete.jsp").forward(request, response);
 

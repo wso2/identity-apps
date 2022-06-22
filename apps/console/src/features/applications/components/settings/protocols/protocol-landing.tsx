@@ -17,18 +17,17 @@
  */
 
 import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
-import { AnimatedAvatar, EmphasizedSegment, Heading, TechnologyCard, Text } from "@wso2is/react-components";
+import { AnimatedAvatar, EmphasizedSegment, Heading, Text } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import kebabCase from "lodash-es/kebabCase";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Card, Divider, Grid } from "semantic-ui-react";
 import { FeatureConfigInterface } from "../../../../core";
+import { ProtocolCard } from "../../../../core/components";
 import { getInboundProtocolLogos } from "../../../configs";
 import { SAMLConfigModes, SupportedAuthProtocolTypes } from "../../../models";
 import { ApplicationManagementUtils } from "../../../utils";
-import { ProtocolCard } from "../../../../core/components/protocol-card";
-
 
 /**
  * Proptypes for the sign in methods landing component.
@@ -85,6 +84,7 @@ export const ProtocolLanding: FunctionComponent<ProtocolLandingPropsInterface> =
 
     const resolveProtocols = (): ProtocolContentInterface[] => {
         const protocolContentList: ProtocolContentInterface[] = [];
+
         if (availableProtocols.includes(SupportedAuthProtocolTypes.OIDC)) {
             const protocolContent: ProtocolContentInterface = {
                 description: ApplicationManagementUtils.resolveProtocolDescription(SupportedAuthProtocolTypes.OIDC),
@@ -92,6 +92,7 @@ export const ProtocolLanding: FunctionComponent<ProtocolLandingPropsInterface> =
                 name: ApplicationManagementUtils.resolveProtocolDisplayName(SupportedAuthProtocolTypes.OIDC),
                 protocol: SupportedAuthProtocolTypes.OIDC
             };
+
             protocolContentList.push(protocolContent);
         }
         if (availableProtocols.includes(SupportedAuthProtocolTypes.SAML)) {
@@ -101,6 +102,7 @@ export const ProtocolLanding: FunctionComponent<ProtocolLandingPropsInterface> =
                 name: ApplicationManagementUtils.resolveProtocolDisplayName(SupportedAuthProtocolTypes.SAML),
                 protocol: SupportedAuthProtocolTypes.SAML
             };
+
             protocolContentList.push(protocolContent);
         }
         if (availableProtocols.includes(SupportedAuthProtocolTypes.WS_FEDERATION)) {
@@ -111,27 +113,30 @@ export const ProtocolLanding: FunctionComponent<ProtocolLandingPropsInterface> =
                 name: ApplicationManagementUtils.resolveProtocolDisplayName(SupportedAuthProtocolTypes.WS_FEDERATION),
                 protocol: SupportedAuthProtocolTypes.WS_FEDERATION
             };
+
             protocolContentList.push(protocolContent);
         }
 
-       availableProtocols.map(
+        availableProtocols.map(
             (protocol: string)=> {
-              if (protocol !== SupportedAuthProtocolTypes.OIDC && protocol !== SupportedAuthProtocolTypes.SAML
+                if (protocol !== SupportedAuthProtocolTypes.OIDC && protocol !== SupportedAuthProtocolTypes.SAML
                  && protocol !== SupportedAuthProtocolTypes.WS_FEDERATION) {
-                  const protocolContent: ProtocolContentInterface = {
-                      description: protocol,
-                      image: <AnimatedAvatar
-                                  name={ protocol }
-                                  size="tiny"
-                                  data-testid={ `${ testId }-item-image-inner` }
-                              />,
-                      name: protocol,
-                      protocol: protocol
-                  };
-                  protocolContentList.push(protocolContent);
-              }
+                    const protocolContent: ProtocolContentInterface = {
+                        description: protocol,
+                        image: <AnimatedAvatar
+                            name={ protocol }
+                            size="tiny"
+                            data-testid={ `${ testId }-item-image-inner` }
+                        />,
+                        name: protocol,
+                        protocol: protocol
+                    };
+
+                    protocolContentList.push(protocolContent);
+                }
 
             });
+
         return protocolContentList;
     };
 
@@ -147,7 +152,10 @@ export const ProtocolLanding: FunctionComponent<ProtocolLandingPropsInterface> =
                             { t("console:develop.features.applications.edit.sections.access.protocolLanding.heading") }
                         </Heading>
                         <Text muted>
-                            { t("console:develop.features.applications.edit.sections.access.protocolLanding.subHeading") }
+                            {
+                                t("console:develop.features.applications.edit.sections.access" +
+                                    ".protocolLanding.subHeading")
+                            }
                         </Text>
                         <Divider hidden/>
                         {

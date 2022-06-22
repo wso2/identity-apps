@@ -20,9 +20,7 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import { Heading } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
 import { Divider } from "semantic-ui-react";
-import { AppState, ConfigReducerStateInterface } from "../../../../../core";
 
 /**
  * Prop types of the component.
@@ -44,8 +42,6 @@ const SinglePageApplicationCreateWizardHelp: FunctionComponent<SinglePageApplica
     } = props;
 
     const { t } = useTranslation();
-
-    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
     return (
         <div data-testid={ testId }>

@@ -39,26 +39,8 @@
         {% endfor %}
         {% endif %}
     },
-    "documentation": {
-        "baseURL": "{{ console.documentation.base_url }}",
-        "contentBaseURL": "{{ console.documentation.content_base_url }}",
-        "githubOptions": {
-            {% if console.documentation.github_options is defined %}
-            {% for option, value in console.documentation.github_options.items() %}
-                "{{ option }}": "{{ value }}"{{ "," if not loop.last }}
-            {% endfor %}
-            {% endif %}
-        },
-        "imagePrefixURL": "{{ console.documentation.image_prefix_url }}",
-        "provider": "{{ console.documentation.provider }}",
-        "structureFileType": "{{ console.documentation.structure_file_type }}",
-        "structureFileURL": "{{ console.documentation.structure_file_url }}"
-    },
     {% if console.super_tenant_proxy_name is defined %}
         "superTenantProxy" : "{{ console.super_tenant_proxy_name }}",
-    {% endif %}
-    {% if console.help_center_path is defined %}
-    "helpCenterUrl": "{{ console.help_center_path }}",
     {% endif %}
     {% if console.doc_site_path is defined %}
     "docSiteUrl": "{{ console.doc_site_path }}",
@@ -88,7 +70,6 @@
     {% endif %}
     "loginCallbackPath": "{{ console.login_callback_path }}",
     "logoutCallbackPath": "{{ console.logout_callback_path }}",
-    "productVersion": "{{ product.version }}",
     {% if console.server_origin is defined %}
     "serverOrigin": "{{ console.server_origin }}",
     {% endif %}
@@ -147,6 +128,36 @@
         "showAppSwitchButton": "{{ console.ui.show_app_switch_button }}",
         {% endif %}
         "features": {
+            {% if console.extensions.features is defined %}
+            {% for name, feature in console.extensions.features.items() %}
+            "{{ name }}": {
+                "disabledFeatures": [
+                    {% if feature.disabled_features is defined %}
+                    {% for disabled_feature in feature.disabled_features %}
+                    "{{ disabled_feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {{ feature.enabled }},
+                "scopes": {
+                    {% if feature.scopes is defined %}
+                    {% for operation, scopes in feature.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                }
+            },
+            {% endfor %}
+            {% endif %}
             "applications": {
                 "disabledFeatures": [
                     {% if console.applications.disabled_features is defined %}

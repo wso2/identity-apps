@@ -27,9 +27,9 @@ export class I18nModuleException extends IdentityAppsModuleException {
     /**
      * Constructor.
      * @param {string} message - Message for the exception.
-     * @param {any} stack - Stack trace for the error.
+     * @param {string | Record<string, unknown>} stack - Stack trace.
      */
-    constructor(message?: string, stack?: any) {
+    constructor(message?: string, stack?: string | Record<string, unknown>) {
         super(message, stack, I18nModuleConstants.MODULE_NAME);
     }
 }

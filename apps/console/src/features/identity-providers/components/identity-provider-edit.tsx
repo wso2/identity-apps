@@ -24,7 +24,7 @@ import React, {
     useEffect,
     useState
 } from "react";
-import { Loader } from "semantic-ui-react";
+import { Loader, TabProps } from "semantic-ui-react";
 import {
     AdvanceSettings,
     AttributeSettings,
@@ -310,7 +310,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
 
         identityProviderConfig.editIdentityProvider.showJitProvisioning &&
             panes.push({
-                menuItem: "Just-in-Time Provisioning",
+                menuItem: identityProviderConfig.jitProvisioningSettings?.menuItemName,
                 render: JITProvisioningSettingsTabPane
             });
 
@@ -356,6 +356,9 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
                     data-testid={ `${ testId }-resource-tabs` }
                     panes={ getPanes() }
                     defaultActiveIndex={ defaultActiveIndex }
+                    onTabChange={ (e, data: TabProps ) => {
+                        setDefaultActiveIndex(data.activeIndex);
+                    } }
                 />
             )
             : <Loader />

@@ -17,7 +17,7 @@
  */
 
 
- /**
+/**
   * Interface to campture Email Template type
   */
 export interface EmailTemplateType {

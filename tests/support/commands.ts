@@ -56,7 +56,7 @@ Cypress.Commands.add("recursiveEachChild", ($element) => {
  * This method is used to validate the URL is valid.
  */
 Cypress.Commands.add("isUrlValid", (userInput: string): Promise<boolean> => {
-    const pattern = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+    const pattern = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-/]))?/;
     return Promise.resolve(pattern.test(userInput));
 });
 
@@ -221,7 +221,7 @@ Cypress.Commands.add("filterUser", (url, authrzUserName, authrzPassword, paramte
 
         const value = paramters[ x ];
 
-        for (let y in value) {
+        for (const y in value) {
             url = url + x + "=" + value[ y ] + "&";
         }
     }
@@ -397,10 +397,10 @@ Cypress.Commands.add("searchUser", (url, authrzUserName, authrzPassword, searchP
 
     let requestBody = "\"schemas\": [\"urn:ietf:params:scim:api:messages:2.0:SearchRequest\"],";
 
-    for (let x in searchParam) {
+    for (const x in searchParam) {
         const value = searchParam[ x ];
 
-        for (let y in value) {
+        for (const y in value) {
             requestBody = requestBody + x + ":" + value[ y ] + ",";
         }
     }

@@ -271,6 +271,8 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                         data-testid={ `${ testId }-unselected-transfer-list` }
                         emptyPlaceholderContent={ t("console:manage.features.transferList.list.emptyPlaceholders." +
                             "groups.selected", { type: "users" }) }
+                        emptyPlaceholderDefaultContent={ t("console:manage.features.transferList.list."
+                            + "emptyPlaceholders.default") }
                     >
                         {
                             addModalUserList?.map((user: UserBasicInterface, index: number) => {

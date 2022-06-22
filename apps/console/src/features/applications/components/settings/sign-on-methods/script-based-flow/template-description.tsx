@@ -16,14 +16,20 @@
  * under the License.
  */
 
-import { CodeEditor, DocumentationLink, LinkButton, useDocumentation } from "@wso2is/react-components";
+import {
+    CodeEditor,
+    DocumentationLink,
+    LinkButton,
+    Message,
+    useDocumentation
+} from "@wso2is/react-components";
 import isObject from "lodash-es/isObject";
 import React, {
     FunctionComponent,
     ReactElement
 } from "react";
 import { useTranslation } from "react-i18next";
-import { Icon, List, Message, Modal, Table } from "semantic-ui-react";
+import { List, Modal, Table } from "semantic-ui-react";
 import { AdaptiveAuthTemplateInterface, AdaptiveAuthTemplateTypes } from "../../../../models";
 
 /**
@@ -184,12 +190,14 @@ export const TemplateDescription: FunctionComponent<TemplateDescriptionPropsInte
                                 Object.entries(template.defaultStepsDescription)
                                     .map(([ step, description ], index: number, steps) => {
                                         return (
-                                            <div className="stepper" key={ index }>
+                                            <div className="stepper" key={ `${ index }-${ step }` }>
                                                 <div className="step-number">{ index + 1 }</div>
                                                 <div className="step-text">{ description }</div>
-                                                { steps.length !== (index + 1) && (<div className="step-connector">
-                                                    <div className="step-line"></div>
-                                                </div>) }
+                                                { steps.length !== (index + 1) && (
+                                                    <div className="step-connector">
+                                                        <div className="step-line"></div>
+                                                    </div>
+                                                ) }
                                             </div>
                                         );
                                     })
@@ -206,13 +214,14 @@ export const TemplateDescription: FunctionComponent<TemplateDescriptionPropsInte
                                         "templateDescription.description.helpReference")
                                 }
                             </h4>
-                            <Message icon info>
-                                <Icon name="help circle"/>
-                                <Message.Content>
-                                    <a target="_blank" href={ template.helpLink }
-                                       rel="noreferrer">{ template.helpLink }</a>
-                                </Message.Content>
-                            </Message>
+                            <Message
+                                type="info"
+                                content={
+                                    <a target="_blank" href={ template.helpLink } rel="noreferrer">
+                                        { template.helpLink }
+                                    </a>
+                                }
+                            />
                         </>
                     )
                 }

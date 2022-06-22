@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Avatar, AvatarPropsInterface } from "./avatar";
@@ -26,7 +26,9 @@ import CodeIcon from "../../assets/images/code-icon.svg";
 /**
  * Prop types for the App Avatar component.
  */
-export interface AppAvatarPropsInterface extends AvatarPropsInterface, TestableComponentInterface {
+export interface AppAvatarPropsInterface extends AvatarPropsInterface, IdentifiableComponentInterface,
+    TestableComponentInterface {
+
     /**
      * If the avatar is placed on a card.
      */
@@ -50,6 +52,7 @@ export const AppAvatar: FunctionComponent<AppAvatarPropsInterface> = (
         className,
         name,
         onCard,
+        [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId,
         ...rest
     } = props;
@@ -64,6 +67,7 @@ export const AppAvatar: FunctionComponent<AppAvatarPropsInterface> = (
                 bordered={ false }
                 initialsColor={ onCard ? "primary" : "white" }
                 withBackgroundImage={ !onCard }
+                data-componentid={ componentId }
                 data-testid={ testId }
                 { ...rest }
             >
@@ -81,6 +85,7 @@ export const AppAvatar: FunctionComponent<AppAvatarPropsInterface> = (
             name={ name }
             initialsColor={ onCard ? "primary" : "white" }
             withBackgroundImage={ !onCard }
+            data-componentid={ componentId }
             data-testid={ testId }
             { ...rest }
         >
@@ -93,6 +98,7 @@ export const AppAvatar: FunctionComponent<AppAvatarPropsInterface> = (
  * Default proptypes for the App avatar component.
  */
 AppAvatar.defaultProps = {
+    "data-componentid": "app-avatar",
     "data-testid": "app-avatar",
     defaultIcon: CodeIcon,
     image: null,

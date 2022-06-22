@@ -119,23 +119,6 @@
 }
 
 /*-------------------------------
-      Attributes Select
---------------------------------*/
-.select-attribute {
-    .ui.search.selection.dropdown {
-        >.text {
-            height: 13.5px;
-            overflow: hidden;
-
-            .header {
-                font-size: 0.93rem;
-            }
-        }
-    }
-}
-
-
-/*-------------------------------
       Secret Value Editor
 --------------------------------*/
 .ui.form {
@@ -144,6 +127,34 @@
             position: absolute;
             top: 0;
             right: -40px;
+        }
+    }
+}
+
+/*-------------------------------
+  Addon wrapper for input fields to avoid
+  overlapping with browser added icons
+  ex: Password Managers
+--------------------------------*/
+.ui.form {
+    .ui.input.addon-wrapper {
+        > input {
+            border: none;
+        }
+    }
+}
+
+/*-------------------------------
+  Addon field wrapper for input fields in My Account
+  & Console to avoid overlapping with browser added icons
+  ex: Password Managers
+--------------------------------*/
+.ui.form {
+    .addon-field-wrapper{
+        .ui.input {
+            > input {
+                border: none;
+            }
         }
     }
 }

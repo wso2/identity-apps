@@ -16,11 +16,16 @@
  * under the License.
  */
 
-import { ChildRouteInterface, RouteInterface, TestableComponentInterface } from "@wso2is/core/models";
+import {
+    ChildRouteInterface,
+    IdentifiableComponentInterface,
+    RouteInterface,
+    TestableComponentInterface
+} from "@wso2is/core/models";
 import classNames from "classnames";
 import kebabCase from "lodash-es/kebabCase";
 import React, { ReactElement } from "react";
-import { Label, Menu, SemanticCOLORS } from "semantic-ui-react";
+import { Label, Menu } from "semantic-ui-react";
 import { CommonSidePanelPropsInterface } from "./side-panel";
 import { SidePanelItemGroup } from "./side-panel-item-group";
 import { GenericIcon, GenericIconSizes } from "../icon";
@@ -28,7 +33,9 @@ import { GenericIcon, GenericIconSizes } from "../icon";
 /**
  * Side panel item component Prop types.
  */
-export interface SidePanelItemPropsInterface extends CommonSidePanelPropsInterface, TestableComponentInterface {
+export interface SidePanelItemPropsInterface extends CommonSidePanelPropsInterface, IdentifiableComponentInterface,
+    TestableComponentInterface {
+
     /**
      * Size of the icon.
      */
@@ -68,6 +75,7 @@ export const SidePanelItem: React.FunctionComponent<SidePanelItemPropsInterface>
         translationHook,
         sidePanelItemHeight,
         hoverType,
+        [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId
     } = props;
 
@@ -78,6 +86,13 @@ export const SidePanelItem: React.FunctionComponent<SidePanelItemPropsInterface>
             "active" : selected && (selected.path === route.path),
             categorized,
             "ellipsis": showEllipsis
+        }
+    );
+    
+    const featureStatusLabelClasses = classNames(
+        "feature-status-label",
+        {
+            [ kebabCase(route.featureStatus?.toLocaleLowerCase()) ]: route.featureStatus
         }
     );
 
@@ -108,7 +123,7 @@ export const SidePanelItem: React.FunctionComponent<SidePanelItemPropsInterface>
      * @return {boolean} Should the child item section be opened or not.
      */
     const validateOpenState = (isOpen: boolean, selectedRoute: RouteInterface | ChildRouteInterface,
-                               children: ChildRouteInterface[]): boolean => {
+        children: ChildRouteInterface[]): boolean => {
         if (isOpen) {
             return true;
         }
@@ -130,32 +145,17 @@ export const SidePanelItem: React.FunctionComponent<SidePanelItemPropsInterface>
         return recurse(children);
     };
 
-    /**
-     * Resolves the label color to display the status of the feature .
-     *
-     * @return {SemanticCOLORS} Resolved color.
-     */
-    const resolveFeatureStatusLabelColor = (): SemanticCOLORS => {
-        if (route.featureStatus === "new") {
-            return "red";
-        } else if (route.featureStatus === "beta") {
-            return "teal";
-        } else if (route.featureStatus === "alpha") {
-            return "orange";
-        }
-
-        return "blue";
-    };
-
     return (
         <>
             {
-                route &&
+                route && (
                     <Menu.Item
                         name={ route.name }
                         className={ classes }
+                        disabled={ route.isFeatureEnabled === false }
                         active={ selected && (selected.path === route.path) }
                         onClick={ (): void => onSidePanelItemClick(route) }
+                        data-componentid={ `${ componentId }-${ kebabCase(route.id) }` }
                         data-testid={ `${ testId }-${ kebabCase(route.id) }` }
                     >
                         <GenericIcon
@@ -165,18 +165,23 @@ export const SidePanelItem: React.FunctionComponent<SidePanelItemPropsInterface>
                             floated="left"
                             spaced="right"
                             { ...route.icon }
+                            data-componentid={ `${ componentId }-icon` }
                             data-testid={ `${ testId }-icon` }
                         />
-                        <span className="route-name" data-testid={ `${ testId }-label` }>
+                        <span
+                            className="route-name"
+                            data-componentid={ `${ componentId }-label` }
+                            data-testid={ `${ testId }-label` }
+                        >
                             { translationHook ? translationHook(route.name) : route.name }
                             { route.featureStatus && (
                                 <Label
-                                    color={ resolveFeatureStatusLabelColor() }
-                                    className="feature-status-label"
+                                    className={ featureStatusLabelClasses }
                                     size="mini"
+                                    data-componentid={ `${ componentId }-version` }
                                     data-testid={ `${ testId }-version` }
                                 >
-                                    { route.featureStatus.toUpperCase() }
+                                    { translationHook(route.featureStatusLabel) }
                                 </Label>
                             ) }
                         </span>
@@ -190,6 +195,7 @@ export const SidePanelItem: React.FunctionComponent<SidePanelItemPropsInterface>
                                         icon={ caretIcon }
                                         size="auto"
                                         floated="right"
+                                        data-componentid={ `${ componentId }-caret` }
                                         data-testid={ `${ testId }-caret` }
                                         transparent
                                     />
@@ -197,6 +203,7 @@ export const SidePanelItem: React.FunctionComponent<SidePanelItemPropsInterface>
                                 : null
                         }
                     </Menu.Item>
+                )
             }
             {
                 (route.children && route.children.length && route.children.length > 0)
@@ -226,6 +233,7 @@ export const SidePanelItem: React.FunctionComponent<SidePanelItemPropsInterface>
  * Default props for the side panel item component.
  */
 SidePanelItem.defaultProps = {
+    "data-componentid": "side-panel-item",
     "data-testid": "side-panel-item",
     iconSize: "micro"
 };

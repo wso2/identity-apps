@@ -16,18 +16,19 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import React, { FunctionComponent, ReactElement, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { Card, CardProps, Dimmer } from "semantic-ui-react";
+import React, { CSSProperties, FunctionComponent, ReactElement, useState } from "react";
+import { Card, CardProps } from "semantic-ui-react";
 import { GenericIcon, GenericIconProps, GenericIconSizes } from "../icon";
 import { Tooltip } from "../typography";
 
 /**
  * Proptypes for the selection card component.
  */
-export interface SelectionCardPropsInterface extends Omit<CardProps, "image">, TestableComponentInterface {
+export interface SelectionCardPropsInterface extends Omit<CardProps, "image">, IdentifiableComponentInterface,
+    TestableComponentInterface {
+
     /**
      * Content top border.
      */
@@ -141,11 +142,10 @@ export const SelectionCard: FunctionComponent<SelectionCardPropsInterface> = (
         size,
         spaced,
         textAlign,
+        [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId,
         ...rest
     } = props;
-
-    const { t } = useTranslation();
 
     const classes = classNames(
         "selection-card",
@@ -170,7 +170,7 @@ export const SelectionCard: FunctionComponent<SelectionCardPropsInterface> = (
     /**
      * Inline styles for image container.
      */
-    const imageContainerStyles = (): object => {
+    const imageContainerStyles = (): CSSProperties | undefined => {
 
         return {
             opacity: disabled ? overlayOpacity : 1
@@ -185,6 +185,7 @@ export const SelectionCard: FunctionComponent<SelectionCardPropsInterface> = (
             disabled={ disabled }
             link={ false }
             as="div"
+            data-componentid={ componentId }
             data-testid={ testId }
             onMouseEnter={ () => setDimmerState(true) }
             onMouseLeave={ () => setDimmerState(false) }
@@ -203,6 +204,7 @@ export const SelectionCard: FunctionComponent<SelectionCardPropsInterface> = (
                             className="card-image"
                             size={ imageSize }
                             icon={ image }
+                            data-componentid={ `${ componentId }-image` }
                             data-testid={ `${ testId }-image` }
                             square
                             transparent
@@ -225,6 +227,7 @@ export const SelectionCard: FunctionComponent<SelectionCardPropsInterface> = (
                                         icon={ image }
                                         spaced="right"
                                         floated="left"
+                                        data-componentid={ `${ componentId }-image` }
                                         data-testid={ `${ testId }-image` }
                                         { ...imageOptions }
                                     />
@@ -237,7 +240,10 @@ export const SelectionCard: FunctionComponent<SelectionCardPropsInterface> = (
                                     disabled={ !showTooltips }
                                     content={ header }
                                     trigger={ (
-                                        <Card.Header data-testid={ `${ testId }-header` }>
+                                        <Card.Header
+                                            data-componentid={ `${ componentId }-header` }
+                                            data-testid={ `${ testId }-header` }
+                                        >
                                             { header }
                                         </Card.Header>
                                     ) }
@@ -250,6 +256,7 @@ export const SelectionCard: FunctionComponent<SelectionCardPropsInterface> = (
                                     trigger={ (
                                         <Card.Description
                                             className={ multilineDescription ? "multiline" : "" }
+                                            data-componentid={ `${ componentId }-description` }
                                             data-testid={ `${ testId }-description` }
                                         >
                                             { description }
@@ -270,14 +277,15 @@ export const SelectionCard: FunctionComponent<SelectionCardPropsInterface> = (
  */
 SelectionCard.defaultProps = {
     contentTopBorder: true,
+    "data-componentid": "selection-card",
     "data-testid": "selection-card",
     imageSize: "tiny",
     inline: false,
     onClick: () => null,
+    renderDisabledItemsAsGrayscale: true,
     selectionType: "underlined",
     showText: true,
     showTooltips: false,
     size: "default",
-    textAlign: "center",
-    renderDisabledItemsAsGrayscale: true
+    textAlign: "center"
 };

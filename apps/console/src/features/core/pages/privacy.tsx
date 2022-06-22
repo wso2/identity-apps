@@ -16,16 +16,19 @@
  * under the License.
  */
 
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Grid, Header, List } from "semantic-ui-react";
+
+type PrivacyPageInterface = IdentifiableComponentInterface;
 
 /**
  * Privacy page.
  *
  * @return {React.ReactElement}
  */
-const PrivacyPage: FunctionComponent<{}> = (): ReactElement => {
+const PrivacyPage: FunctionComponent<PrivacyPageInterface> = (): ReactElement => {
 
     const { t } = useTranslation();
 

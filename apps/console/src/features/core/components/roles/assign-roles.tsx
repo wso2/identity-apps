@@ -133,6 +133,7 @@ export const AssignRoles: FunctionComponent<AssignRoleProps> = (props: AssignRol
 
     const addRoles = () => {
         const addedRoles = [ ...initialValues.tempRoleList ];
+
         if (checkedUnassignedListItems?.length > 0) {
             checkedUnassignedListItems.map((role) => {
                 if (!(initialValues?.tempRoleList?.includes(role))) {
@@ -149,6 +150,7 @@ export const AssignRoles: FunctionComponent<AssignRoleProps> = (props: AssignRol
 
     const removeRoles = () => {
         const removedRoles = [ ...initialValues?.roleList ];
+
         if (checkedAssignedListItems?.length > 0) {
             checkedAssignedListItems.map((role) => {
                 if (!(initialValues?.roleList?.includes(role))) {
@@ -195,6 +197,7 @@ export const AssignRoles: FunctionComponent<AssignRoleProps> = (props: AssignRol
      */
     const createItemLabel = (roleName: string) => {
         const role = roleName.split("/");
+
         if (role.length > 0) {
             if (role[0] == "Application") {
                 return { labelColor: null, labelText: "Application", name: "application-label" };
@@ -233,10 +236,13 @@ export const AssignRoles: FunctionComponent<AssignRoleProps> = (props: AssignRol
                         emptyPlaceholderContent={ t("console:manage.features.transferList.list.emptyPlaceholders." +
                             "groups.unselected", { type: "roles" }) }
                         data-testid="user-mgt-add-user-wizard-modal-unselected-roles-select-all-checkbox"
+                        emptyPlaceholderDefaultContent={ t("console:manage.features.transferList.list."
+                            + "emptyPlaceholders.default") }
                     >
                         {
                             initialValues?.roleList?.map((role, index)=> {
                                 const roleName = role?.displayName?.split("/");
+
                                 return (
                                     <TransferListItem
                                         handleItemChange={ () => handleUnassignedItemCheckboxChange(role) }
@@ -266,10 +272,13 @@ export const AssignRoles: FunctionComponent<AssignRoleProps> = (props: AssignRol
                         emptyPlaceholderContent={ t("console:manage.features.transferList.list.emptyPlaceholders." +
                             "groups.selected", { type: "roles" }) }
                         data-testid="user-mgt-add-user-wizard-modal-selected-roles-select-all-checkbox"
+                        emptyPlaceholderDefaultContent={ t("console:manage.features.transferList.list."
+                            + "emptyPlaceholders.default") }
                     >
                         {
                             initialValues?.tempRoleList?.map((role, index)=> {
                                 const roleName = role.displayName.split("/");
+
                                 return (
                                     <TransferListItem
                                         handleItemChange={ () => handleAssignedItemCheckboxChange(role) }

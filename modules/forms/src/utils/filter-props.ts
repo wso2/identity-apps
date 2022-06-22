@@ -20,7 +20,7 @@
  * This removes the used props frm passedProps
  * @param props
  */
-export const filterPassedProps = (props: any): any => {
+export const filterPassedProps = (props: Record<string, any>): any => {
     delete props.type;
     delete props.name;
     delete props.label;

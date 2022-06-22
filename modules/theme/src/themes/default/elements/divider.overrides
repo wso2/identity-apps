@@ -11,4 +11,8 @@
         margin-top: @dividerCompactMargin;
         margin-bottom: @dividerCompactMargin;
     }
+
+    &.list-divider {
+        margin: 0 2rem 0 5rem;
+    }
 }

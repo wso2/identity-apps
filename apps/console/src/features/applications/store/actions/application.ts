@@ -114,11 +114,11 @@ export const setApplicationTemplates = (
  * @param oidcConfigurations
  */
 export const setOIDCApplicationConfigs = (
-        oidcConfigurations: OIDCApplicationConfigurationInterface
-    ): SetOIDCApplicationConfigurationsActionInterface => ({
-        payload: oidcConfigurations,
-        type: ApplicationActionTypes.SET_OIDC_APPLICATION_CONFIGURATIONS
-    });
+    oidcConfigurations: OIDCApplicationConfigurationInterface
+): SetOIDCApplicationConfigurationsActionInterface => ({
+    payload: oidcConfigurations,
+    type: ApplicationActionTypes.SET_OIDC_APPLICATION_CONFIGURATIONS
+});
 
 /**
  * Redux action to set the oidc application configurations.

@@ -16,15 +16,20 @@
 * under the License.
 */
 
-import { DisplayCertificate, DistinguishedName, TestableComponentInterface } from "@wso2is/core/models";
+import {
+    DisplayCertificate,
+    DistinguishedName,
+    IdentifiableComponentInterface,
+    TestableComponentInterface
+} from "@wso2is/core/models";
 import moment from "moment";
-import React, { FunctionComponent, ReactElement, Fragment } from "react";
+import React, { Fragment, FunctionComponent, ReactElement } from "react";
 import { Divider, Grid, Icon, Popup, Segment, SemanticCOLORS, SemanticICONS } from "semantic-ui-react";
 
 /**
  * Prop types of the `Certificate` component.
  */
-export interface CertificatePropsInterface extends TestableComponentInterface {
+export interface CertificatePropsInterface extends IdentifiableComponentInterface, TestableComponentInterface {
     /**
      * The decoded certificate details
      */
@@ -58,13 +63,13 @@ export const Certificate: FunctionComponent<CertificatePropsInterface> = (
 
     const {
         labels,
+        [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId
     } = props;
 
     const {
         version,
         issuerDN,
-        subjectDN,
         validFrom,
         validTill
     } = props.certificate;
@@ -85,16 +90,16 @@ export const Certificate: FunctionComponent<CertificatePropsInterface> = (
             if (Math.abs(moment.duration(currentDate.diff(expiryDate)).months()) > 1) {
                 icon = "check circle";
                 iconColor = "green";
-                popupText = "Certificate is valid."
+                popupText = "Certificate is valid.";
             } else {
                 icon = "exclamation circle";
                 iconColor = "yellow";
-                popupText = "Certificate is soon to be expired."
+                popupText = "Certificate is soon to be expired.";
             }
         } else {
             icon = "times circle";
             iconColor = "red";
-            popupText = "Certificate is expired."
+            popupText = "Certificate is expired.";
         }
 
         return (
@@ -125,12 +130,12 @@ export const Certificate: FunctionComponent<CertificatePropsInterface> = (
         if (isValid) {
             icon = "check circle";
             iconColor = "green";
-            popupText = "Certificate is valid."
+            popupText = "Certificate is valid.";
         } else {
             if (Math.abs(moment.duration(currentDate.diff(expiryDate)).months()) > 1) {
                 icon = "times circle";
                 iconColor = "red";
-                popupText = "Certificate is still not valid."
+                popupText = "Certificate is still not valid.";
             } else {
                 icon = "exclamation circle";
                 iconColor = "yellow";
@@ -152,7 +157,12 @@ export const Certificate: FunctionComponent<CertificatePropsInterface> = (
     };
 
     return (
-        <Segment className="certificate" compact data-testid={ testId }>
+        <Segment
+            className="certificate"
+            compact
+            data-testid={ testId }
+            data-componentid={ componentId }
+        >
             <Grid>
                 <Grid.Row>
                     <Grid.Column computer={ 16 } mobile={ 16 } tablet={ 16 }>
@@ -264,12 +274,13 @@ export const Certificate: FunctionComponent<CertificatePropsInterface> = (
                 <span>{ labels.version }</span> { version + " " }
             </p>
         </Segment>
-    )
+    );
 };
 
 /**
  * Default props for the component.
  */
 Certificate.defaultProps = {
+    "data-componentid": "certificate",
     "data-testid": "certificate"
 };

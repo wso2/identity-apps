@@ -38,6 +38,7 @@
 @genericIconCircularHoverPadding: 10px;
 @genericIconCircularHoverWidth: fit-content;
 @genericIconCircularHoverMargin: 0 auto;
+@genericIconInvertedBackgroundColor: @black;
 
 /*-------------------
    Advanced search

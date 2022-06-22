@@ -17,10 +17,10 @@
 */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { AnimatedAvatar } from "@wso2is/react-components";
+import { AnimatedAvatar, Message } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
-import { Grid, Image, Message, Table } from "semantic-ui-react";
+import { Grid, Image, Table } from "semantic-ui-react";
 import { ClaimManagementConstants } from "../../../constants";
 import { AddExternalClaim } from "../../../models";
 import { resolveType } from "../../../utils";
@@ -50,6 +50,7 @@ interface SummaryAddDialectPropsInterface extends TestableComponentInterface {
  */
 const generateClaimLetter = (name: string): string => {
     const stringArray = name.replace("http://", "").split("/");
+
     return stringArray[ stringArray.length - 1 ][ 0 ].toLocaleUpperCase();
 };
 
@@ -129,9 +130,13 @@ export const SummaryAddDialect: FunctionComponent<SummaryAddDialectPropsInterfac
                                 claims.length === 0 && (
                                     <Table.Row>
                                         <Table.Cell colSpan={ 3 } textAlign="center">
-                                            <Message warning>
-                                                { t("console:manage.features.claims.dialects.wizard.summary.notFound") }
-                                            </Message>
+                                            <Message
+                                                type="warning"
+                                                content={
+                                                    t("console:manage.features.claims.dialects.wizard." +
+                                                        "summary.notFound")
+                                                }
+                                            />
                                         </Table.Cell>
                                     </Table.Row>
                                 )

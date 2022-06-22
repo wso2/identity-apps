@@ -53,7 +53,7 @@ export const BasicUsage = (): ReactElement => (
             {
                 icon: (): SemanticICONS => "pencil alternate",
                 onClick: (e: SyntheticEvent, item: DataTableDemoDataInterface): void => {
-                    action(`Clicked on ${ item.name }`)
+                    action(`Clicked on ${ item.name }`);
                 },
                 popupText: (): string => "edit",
                 renderer: "semantic-icon"
@@ -61,7 +61,7 @@ export const BasicUsage = (): ReactElement => (
             {
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (e: SyntheticEvent, item: DataTableDemoDataInterface): void => {
-                    action(`Clicked on delete of ${ item.name }`)
+                    action(`Clicked on delete of ${ item.name }`);
                 },
                 popupText: (): string => "delete",
                 renderer: "semantic-icon"
@@ -109,7 +109,7 @@ export const BasicUsage = (): ReactElement => (
         ] }
         onRowClick={
             (e: SyntheticEvent, item: DataTableDemoDataInterface): void => {
-                action(`Clicked on the row of ${ item.name }`)
+                action(`Clicked on the row of ${ item.name }`);
             }
         }
     />
@@ -139,7 +139,7 @@ export const WithOperationsBar = (): ReactElement => (
             {
                 icon: (): SemanticICONS => "pencil alternate",
                 onClick: (e: SyntheticEvent, item: DataTableDemoDataInterface): void => {
-                    action(`Clicked on ${ item.name }`)
+                    action(`Clicked on ${ item.name }`);
                 },
                 popupText: (): string => "edit",
                 renderer: "semantic-icon"
@@ -147,14 +147,14 @@ export const WithOperationsBar = (): ReactElement => (
             {
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (e: SyntheticEvent, item: DataTableDemoDataInterface): void => {
-                    action(`Clicked on delete of ${ item.name }`)
+                    action(`Clicked on delete of ${ item.name }`);
                 },
                 popupText: (): string => "delete",
                 renderer: "semantic-icon"
             }
         ] }
         data={ DEMO_DATA_LIST }
-        externalSearch={
+        externalSearch={ (
             <AdvancedSearch
                 aligned="left"
                 dropdownPosition="bottom left"
@@ -234,7 +234,7 @@ export const WithOperationsBar = (): ReactElement => (
                     </Grid.Row>
                 </Grid>
             </AdvancedSearch>
-        }
+        ) }
         columns={ [
             {
                 allowToggleVisibility: false,
@@ -276,7 +276,7 @@ export const WithOperationsBar = (): ReactElement => (
         ] }
         onRowClick={
             (e: SyntheticEvent, item: DataTableDemoDataInterface): void => {
-                action(`Clicked on the row of ${ item.name }`)
+                action(`Clicked on the row of ${ item.name }`);
             }
         }
     />
@@ -313,7 +313,7 @@ export const Sortable = (): ReactElement => {
                 {
                     icon: (): SemanticICONS => "pencil alternate",
                     onClick: (e: SyntheticEvent, item: DataTableDemoDataInterface): void => {
-                        action(`Clicked on ${ item.name }`)
+                        action(`Clicked on ${ item.name }`);
                     },
                     popupText: (): string => "edit",
                     renderer: "semantic-icon"
@@ -321,7 +321,7 @@ export const Sortable = (): ReactElement => {
                 {
                     icon: (): SemanticICONS => "trash alternate",
                     onClick: (e: SyntheticEvent, item: DataTableDemoDataInterface): void => {
-                        action(`Clicked on delete of ${ item.name }`)
+                        action(`Clicked on delete of ${ item.name }`);
                     },
                     popupText: (): string => "delete",
                     renderer: "semantic-icon"
@@ -374,11 +374,11 @@ export const Sortable = (): ReactElement => {
             ] }
             onRowClick={
                 (e: SyntheticEvent, item: DataTableDemoDataInterface): void => {
-                    action(`Clicked on the row of ${ item.name }`)
+                    action(`Clicked on the row of ${ item.name }`);
                 }
             }
         />
-    )
+    );
 };
 
 Sortable.story = {

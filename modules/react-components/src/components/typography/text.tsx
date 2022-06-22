@@ -16,14 +16,14 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import React, { ReactElement } from "react";
+import React, { CSSProperties, ReactElement } from "react";
 
 /**
  * Text component prop types.
  */
-export interface TextPropsInterface extends TestableComponentInterface {
+export interface TextPropsInterface extends IdentifiableComponentInterface, TestableComponentInterface {
     /**
      * Additional CSS classes.
      */
@@ -55,7 +55,7 @@ export interface TextPropsInterface extends TestableComponentInterface {
     /**
      * Custom styles object.
      */
-    styles?: object;
+    styles?: CSSProperties | undefined;
     /**
      * De-emphasises the heading.
      */
@@ -107,6 +107,7 @@ export const Text: React.FunctionComponent<TextPropsInterface> = (
         size,
         spaced,
         styles,
+        [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId,
         truncate,
         weight,
@@ -126,7 +127,7 @@ export const Text: React.FunctionComponent<TextPropsInterface> = (
         , className
     );
 
-    const resolveInlineStyles = (overrides?: object): object => {
+    const resolveInlineStyles = (overrides?: CSSProperties | undefined): CSSProperties | undefined => {
         let modified = {};
 
         if (weight) {
@@ -167,6 +168,7 @@ export const Text: React.FunctionComponent<TextPropsInterface> = (
         <div
             style={ resolveInlineStyles(styles) }
             className={ classes }
+            data-componentid={ componentId }
             data-testid={ testId }
             { ...rest }
         />
@@ -178,5 +180,6 @@ export const Text: React.FunctionComponent<TextPropsInterface> = (
  */
 Text.defaultProps = {
     compact: false,
+    "data-componentid": "text",
     "data-testid": "text"
 };

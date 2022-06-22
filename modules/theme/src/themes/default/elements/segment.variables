@@ -134,3 +134,11 @@
 @cookieConsentBannerInvertedBackground: @invertedBackground;
 @cookieConsentBannerInvertedIconColor: @white;
 @cookieConsentBannerInvertedBorder: none;
+
+/*-------------------------------
+        Image Preview
+--------------------------------*/
+
+@imagePreviewOutline: @defaultBorderColor dashed 2px;
+@imagePreviewHeight: 120px;
+@imagePreviewBorderRadius: @defaultBorderRadius;

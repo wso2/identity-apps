@@ -660,7 +660,7 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                                             <List.Content>
                                                 <List.Header>
                                                     { userAgentParser.browser.name }
-                                                    { " on " }
+                                                    { "on" }
                                                     { userAgentParser.os.name }
                                                 </List.Header>
                                                 <List.Description>

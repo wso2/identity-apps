@@ -18,10 +18,11 @@
 
 import { resolveAppLogoFilePath } from "@wso2is/core/helpers";
 import { AnnouncementBannerInterface, ProfileInfoInterface } from "@wso2is/core/models";
-import { CommonUtils as ReusableCommonUtils } from "@wso2is/core/utils";
+import { LocalStorageUtils, CommonUtils as ReusableCommonUtils } from "@wso2is/core/utils";
 import {
     Announcement,
     AppSwitcher,
+    GenericIcon,
     Logo,
     ProductBrand,
     Header as ReusableHeader,
@@ -34,8 +35,11 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Container, Menu } from "semantic-ui-react";
-import { commonConfig } from "../../../extensions/configs";
-import { AppSwitcherIcons } from "../configs";
+import { commonConfig } from "../../../extensions";
+import { getApplicationList } from "../../applications/api";
+import { ApplicationListInterface } from "../../applications/models";
+import { AppSwitcherIcons, getAppHeaderIcons } from "../configs";
+import { AppConstants } from "../constants";
 import { history } from "../helpers";
 import { AppViewTypes, ConfigReducerStateInterface, StrictAppViewTypes } from "../models";
 import { AppState, setActiveView } from "../store";
@@ -100,15 +104,39 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     const accountAppURL: string = useSelector((state: AppState) => state.config.deployment.accountApp.path);
     const consoleAppURL: string = useSelector((state: AppState) => state.config.deployment.appHomePath);
     const activeView: AppViewTypes = useSelector((state: AppState) => state.global.activeView);
+    const tenantDomain: string = useSelector((state: AppState) => state?.auth?.tenantDomain);
+    const associatedTenants: any[] = useSelector((state: AppState) => state?.auth?.tenants);
 
-    const isDevelopAllowed: boolean = 
+    const isDevelopAllowed: boolean =
         useSelector((state: AppState) => state.accessControl.isDevelopAllowed);
-    const isManageAllowed: boolean = 
+    const isManageAllowed: boolean =
         useSelector((state: AppState) => state.accessControl.isManageAllowed);
 
     const [ announcement, setAnnouncement ] = useState<AnnouncementBannerInterface>(undefined);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
+
+    /**
+     * Check if there are applications registered and set the value to local storage.
+     */
+    useEffect(() => {
+        if (!isEmpty(LocalStorageUtils.getValueFromLocalStorage("IsAppsAvailable"))
+            && LocalStorageUtils.getValueFromLocalStorage("IsAppsAvailable") === "true") {
+            return;
+        }
+
+        getApplicationList(null, null, null)
+            .then(
+                (response: ApplicationListInterface) => {
+                    LocalStorageUtils.setValueInLocalStorage("IsAppsAvailable", response.totalResults > 0
+                        ? "true" : "false"
+                    );
+                })
+            .catch(() => {
+                // Add debug logs here one a logger is added.
+                // Tracked here https://github.com/wso2/product-is/issues/11650.
+            });
+    }, []);
 
     /**
      * Listens to  the changes in the `externallyProvidedActiveView` and sets the `activeView`.
@@ -152,6 +180,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
 
         if (!validAnnouncement) {
             setAnnouncement(null);
+
             return;
         }
 
@@ -183,7 +212,6 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                             name: t("console:common.header.appSwitch.console.name"),
                             onClick: () => {
                                 eventPublisher.publish("console-click-visit-console");
-
                                 window.open(consoleAppURL, "_self");
                             }
                         },
@@ -195,7 +223,6 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                             name: t("console:common.header.appSwitch.myAccount.name"),
                             onClick: () => {
                                 eventPublisher.publish("console-click-visit-my-account");
-
                                 window.open(accountAppURL, "_blank", "noopener");
                             }
                         }
@@ -226,7 +253,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         const moderatedItemsToRender: ReactElement[] = [];
         const itemExtensions: HeaderSubPanelItemInterface[] = commonConfig?.header?.getHeaderSubPanelExtensions();
         const defaultItems: HeaderSubPanelItemInterface[] = [
-            {
+            isDevelopAllowed && {
                 component: () => (
                     <Menu.Item
                         name={ config.deployment.developerApp.displayName }
@@ -243,7 +270,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                 floated: "left",
                 order: 1
             },
-            {
+            isManageAllowed && {
                 component: () => (
                     <Menu.Item
                         name={ config.deployment.adminApp.displayName }
@@ -262,7 +289,33 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             }
         ];
 
-        sortBy([ ...itemExtensions, ...defaultItems ], [ "order"]).filter((item: HeaderSubPanelItemInterface) => {
+        // If the user is a user is not logging in for the first time the quick start icon will switch to home icon.
+        if (itemExtensions[0]?.order === 0 &&
+            LocalStorageUtils.getValueFromLocalStorage("IsAppsAvailable") === "true") {
+            itemExtensions[0].component = (
+                currentActiveView?: AppViewTypes, onClickCb?: (newActiveView: AppViewTypes) => void) => (
+                <Menu.Item
+                    active={ currentActiveView === commonConfig.header.headerQuickstartMenuItem }
+                    className="secondary-panel-item quickstart-page-switch"
+                    onClick={ () => {
+                        history.push(`${ AppConstants.getMainViewBasePath() }/getting-started`);
+                        onClickCb &&
+                        onClickCb(commonConfig.header.headerQuickstartMenuItem as AppViewTypes);
+                    } }
+                    data-testid="app-header-quick-start-switch"
+                >
+                    <GenericIcon
+                        defaultIcon
+                        transparent
+                        size="x22"
+                        hoverable={ false }
+                        icon={ getAppHeaderIcons().homeIcon }
+                    />
+                </Menu.Item>
+            );
+        }
+
+        sortBy([ ...itemExtensions, ...defaultItems ], [ "order" ]).filter((item: HeaderSubPanelItemInterface) => {
             if (item.floated === floated) {
                 const {
                     component: Component
@@ -311,7 +364,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                             }
                         />
                     ) }
-                    version={ config.ui.productVersionConfig?.versionOverride ?? config.deployment.productVersion }
+                    version={ config.ui.productVersionConfig?.productVersion }
                     versionUISettings={ {
                         allowSnapshot: config.ui.productVersionConfig?.allowSnapshot,
                         labelColor: config.ui.productVersionConfig?.labelColor,
@@ -351,7 +404,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                             }
                         ]
                     },
-                    ...commonConfig?.header?.getUserDropdownLinkExtensions(),
+                    ...commonConfig?.header?.getUserDropdownLinkExtensions(tenantDomain, associatedTenants),
                     {
                         category: "GENERAL",
                         categoryLabel: null,
@@ -361,7 +414,6 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                                 name: t("common:logout"),
                                 onClick: () => {
                                     eventPublisher.publish("console-click-logout");
-
                                     history.push(window[ "AppUtils" ].getConfig().routes.logout);
                                 }
                             }
@@ -382,7 +434,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             { ...rest }
         >
             {
-                isDevelopAllowed && isManageAllowed && (
+                (isDevelopAllowed || isManageAllowed) && (
                     <div className="secondary-panel" data-testid={ `${ testId }-secondary-panel` }>
                         <Container fluid={ fluid }>
                             { renderSubHeaderPanelItems("left") }

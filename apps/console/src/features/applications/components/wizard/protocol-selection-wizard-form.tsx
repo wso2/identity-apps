@@ -79,7 +79,7 @@ export const ProtocolSelectionWizardForm: FunctionComponent<ProtocolSelectionWiz
         setApplicationTemplateRequestLoadingStatus
     ] = useState<boolean>(false);
 
-    const [isInboundProtocolsRequestLoading, setInboundProtocolsRequestLoading] = useState<boolean>(false);
+    const [ isInboundProtocolsRequestLoading, setInboundProtocolsRequestLoading ] = useState<boolean>(false);
 
     const init = useRef(true);
 
@@ -97,7 +97,7 @@ export const ProtocolSelectionWizardForm: FunctionComponent<ProtocolSelectionWiz
             .finally(() => {
                 setInboundProtocolsRequestLoading(false);
             });
-    }, [checkedCustomInboundProtocols]);
+    }, [ checkedCustomInboundProtocols ]);
 
     /**
      * Called when submit is triggered.
@@ -108,7 +108,7 @@ export const ProtocolSelectionWizardForm: FunctionComponent<ProtocolSelectionWiz
         } else {
             onSubmit(selectedTemplate);
         }
-    }, [triggerSubmit]);
+    }, [ triggerSubmit ]);
 
     /**
      *  Get Application templates.
@@ -124,13 +124,13 @@ export const ProtocolSelectionWizardForm: FunctionComponent<ProtocolSelectionWiz
             .finally(() => {
                 setApplicationTemplateRequestLoadingStatus(false);
             });
-    }, [applicationTemplates]);
+    }, [ applicationTemplates ]);
 
     useEffect(() => {
         if (initialSelectedTemplate) {
             setSelectedTemplate(initialSelectedTemplate);
         }
-    }, [initialSelectedTemplate]);
+    }, [ initialSelectedTemplate ]);
 
     /**
      * Handles template selection.
@@ -190,6 +190,7 @@ export const ProtocolSelectionWizardForm: FunctionComponent<ProtocolSelectionWiz
      */
     const filterCustomProtocol = (): ApplicationTemplateListItemInterface[] => {
         const customTemplates: ApplicationTemplateListItemInterface[] = [];
+
         if (availableCustomInboundProtocols.length > 0) {
             availableCustomInboundProtocols.map((protocol) => {
                 const customTemplate: ApplicationTemplateListItemInterface = {
@@ -198,8 +199,10 @@ export const ProtocolSelectionWizardForm: FunctionComponent<ProtocolSelectionWiz
                     image: protocol.displayName,
                     name: protocol.displayName
                 };
+
                 customTemplates.push(customTemplate);
             });
+
             return customTemplates.filter(
                 (temp) => !selectedProtocols.includes(temp.authenticationProtocol));
         }
@@ -230,14 +233,14 @@ export const ProtocolSelectionWizardForm: FunctionComponent<ProtocolSelectionWiz
                         && applicationTemplates instanceof Array
                         && applicationTemplates.length > 0
                             ? availableTemplates.filter((template) =>
-                            template.category === ApplicationTemplateCategories.DEFAULT)
+                                template.category === ApplicationTemplateCategories.DEFAULT)
                             : []
                     }
                     templateIcons={ {
                         ...getApplicationTemplateIllustrations(),
                         ...getTechnologyLogos(),
                         ...getInboundProtocolLogos()
-                    } }
+                    } as any }
                     templateIconOptions={ {
                         fill: "primary"
                     } }
@@ -281,7 +284,7 @@ export const ProtocolSelectionWizardForm: FunctionComponent<ProtocolSelectionWiz
                     type="application"
                     templates={ availableDefaultTemplates }
                     secondaryTemplates={ availableCustomInboundTemplates }
-                    templateIcons={ getInboundProtocolLogos() }
+                    templateIcons={ getInboundProtocolLogos() as any }
                     templateIconOptions={ {
                         fill: "primary"
                     } }

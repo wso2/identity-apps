@@ -46,6 +46,7 @@ import { InnerPageLayout } from "../layouts";
 import { AlertInterface, AuthStateInterface, FeatureConfigInterface } from "../models";
 import { AppState } from "../store";
 import { addAlert } from "../store/actions";
+import { CommonUtils } from "../utils";
 
 /**
 * Prop types for the Account Security page.
@@ -72,6 +73,7 @@ const AccountSecurityPage: FunctionComponent<AccountSecurityPagePropsInterface>=
     const profileDetails: AuthStateInterface = useSelector((state: AppState) => state.authenticationInformation);
     const accessConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
     const disableMFAforSuperTenantUser: boolean = useSelector((state: AppState) => state?.config?.ui?.disableMFAforSuperTenantUser);
+    const disableMFAForFederatedUsers: boolean = useSelector((state: AppState) => state?.config?.ui?.disableMFAForFederatedUsers);
     const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
     const isReadOnlyUser = useSelector((state: AppState) => state.authenticationInformation.profileInfo.isReadOnly);
     const [ isNonLocalCredentialUser, setIsNonLocalCredentialUser ] = useState<boolean>(false);
@@ -84,25 +86,25 @@ const AccountSecurityPage: FunctionComponent<AccountSecurityPagePropsInterface>=
     useEffect(() => {
         setTimeout(() => {
             switch (props.location.hash) {
-            case `#${ CommonConstants.CONSENTS_CONTROL }`:
-                consentControl.current.scrollIntoView({
-                    behavior: "smooth",
-                    block: "center"
-                });
-                break;
-            case `#${ CommonConstants.ACCOUNT_ACTIVITY }`:
-                accountActivity.current.scrollIntoView({
-                    behavior: "smooth",
-                    block: "center"
-                });
-                break;
-            case `#${ CommonConstants.ACCOUNT_SECURITY }`:
-                accountSecurity.current.scrollIntoView({
-                    behavior: "smooth",
-                    block: "center"
-                });
-                break;
-        }
+                case `#${ CommonConstants.CONSENTS_CONTROL }`:
+                    consentControl.current.scrollIntoView({
+                        behavior: "smooth",
+                        block: "center"
+                    });
+                    break;
+                case `#${ CommonConstants.ACCOUNT_ACTIVITY }`:
+                    accountActivity.current.scrollIntoView({
+                        behavior: "smooth",
+                        block: "center"
+                    });
+                    break;
+                case `#${ CommonConstants.ACCOUNT_SECURITY }`:
+                    accountSecurity.current.scrollIntoView({
+                        behavior: "smooth",
+                        block: "center"
+                    });
+                    break;
+            }
         }, 100);
 
     }, [ props.location ]);
@@ -135,7 +137,6 @@ const AccountSecurityPage: FunctionComponent<AccountSecurityPagePropsInterface>=
         }
     }, [profileDetails?.profileInfo]);
 
-
     /**
      * Dispatches the alert object to the redux store.
      * @param {AlertInterface} alert - Alert object.
@@ -144,6 +145,15 @@ const AccountSecurityPage: FunctionComponent<AccountSecurityPagePropsInterface>=
         dispatch(addAlert(alert));
     };
 
+    /**
+     * Check if the login tenant is super tenant or not?
+     * 
+     * @returns True if login tenant is super tenant.
+     */
+    const isSuperTenantLogin = (): boolean => {
+        return AppConstants.getTenant() === AppConstants.getSuperTenant();
+    };
+    
     return (
         <InnerPageLayout
             pageTitle={ t("myAccount:pages.security.title") }
@@ -157,9 +167,9 @@ const AccountSecurityPage: FunctionComponent<AccountSecurityPagePropsInterface>=
             }
         >
             <Grid>
-                { !isReadOnlyUser && !isNonLocalCredentialUser &&
-                    hasRequiredScopes(accessConfig?.security, accessConfig?.security?.scopes?.read, allowedScopes) &&
-                    isFeatureEnabled(
+                { !CommonUtils.isProfileReadOnly(isReadOnlyUser) && !isNonLocalCredentialUser 
+                    && hasRequiredScopes(accessConfig?.security, accessConfig?.security?.scopes?.read, allowedScopes) 
+                    && isFeatureEnabled(
                         accessConfig?.security,
                         AppConstants.FEATURE_DICTIONARY.get("SECURITY_CHANGE_PASSWORD")
                     ) ? (
@@ -183,8 +193,8 @@ const AccountSecurityPage: FunctionComponent<AccountSecurityPagePropsInterface>=
                 { /*            </Grid.Column>*/ }
                 { /*        </Grid.Row>*/ }
                 { /*    ) : null }*/ }
-                { !isReadOnlyUser && !isNonLocalCredentialUser &&
-                    hasRequiredScopes(accessConfig?.security, accessConfig?.security?.scopes?.read, allowedScopes) &&
+                { !CommonUtils.isProfileReadOnly(isReadOnlyUser) && !isNonLocalCredentialUser
+                    && hasRequiredScopes(accessConfig?.security, accessConfig?.security?.scopes?.read, allowedScopes) &&
                     isFeatureEnabled(
                         accessConfig?.security,
                         AppConstants.FEATURE_DICTIONARY.get("SECURITY_ACCOUNT_RECOVERY")
@@ -201,12 +211,14 @@ const AccountSecurityPage: FunctionComponent<AccountSecurityPagePropsInterface>=
                         </Grid.Row>
                     ) : null }
 
-                { hasRequiredScopes(accessConfig?.security, accessConfig?.security?.scopes?.read, allowedScopes) &&
-                    isFeatureEnabled(
-                        accessConfig?.security,
-                        AppConstants.FEATURE_DICTIONARY.get("SECURITY_MFA")
-                    ) && !(disableMFAforSuperTenantUser && (AppConstants.getTenant() === AppConstants.getSuperTenant())
-                    ) ? (
+                { hasRequiredScopes(accessConfig?.security, accessConfig?.security?.scopes?.read, allowedScopes) && 
+                  ((isNonLocalCredentialUser && (!disableMFAForFederatedUsers || !isSuperTenantLogin())) || 
+                    !isNonLocalCredentialUser) &&
+                  isFeatureEnabled(
+                      accessConfig?.security,
+                      AppConstants.FEATURE_DICTIONARY.get("SECURITY_MFA")
+                  ) && !(disableMFAforSuperTenantUser && (isSuperTenantLogin())
+                ) ? (
                         <Grid.Row>
                             <Grid.Column width={ 16 }>
                                 <MultiFactorAuthentication

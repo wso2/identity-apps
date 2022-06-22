@@ -18,4 +18,3 @@
 
 export * from "./application-certificate-wrapper";
 export * from "./application-certificate-list";
-

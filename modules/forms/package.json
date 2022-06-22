@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/forms",
-    "version": "1.2.659",
+    "version": "1.2.1000",
     "description": "Forms module for WSO2 Identity Server web-apps.",
     "keywords": [
         "WSO2",
@@ -10,7 +10,7 @@
         "form"
     ],
     "main": "dist/src/index.js",
-    "types": "dist/typings/index.d.ts",
+    "types": "dist/types/index.d.ts",
     "scripts": {
         "prebuild": "npm run clean",
         "build": "npm run compile",
@@ -18,12 +18,17 @@
         "compile": "npx run-script-os",
         "compile:win32": "..\\..\\node_modules\\.bin\\tsc -p tsconfig.json",
         "compile:default": "../../node_modules/.bin/tsc -p tsconfig.json",
-        "lint": "tslint -t stylish --project .",
+        "lint": "npm run lint:all -- --max-warnings=0",
+        "lint:all": "npm run lint:targeted -- .",
+        "lint:autofix": "npm run lint:all -- --fix",
+        "lint:ci": "npm run lint -- --format=compact",
+        "lint:targeted": "eslint --ext .js,.jsx,.ts,.tsx --resolve-plugins-relative-to .",
         "test": "npm run jest -- -- --passWithNoTests",
         "test:watch": "npm run test -- --watch",
         "jest": "npx run-script-os",
         "jest:win32": ".\\node_modules\\.bin\\jest",
-        "jest:default": "./node_modules/.bin/jest"
+        "jest:default": "./node_modules/.bin/jest",
+        "typecheck": "npm run compile"
     },
     "dependencies": {
         "classnames": "^2.2.6",
@@ -35,11 +40,19 @@
         "@testing-library/react": "^11.0.4",
         "@types/jest": "^26.0.14",
         "@types/lodash-es": "^4.17.4",
+        "@typescript-eslint/eslint-plugin": "^4.17.0",
+        "@typescript-eslint/parser": "^4.17.0",
         "babel-polyfill": "^6.26.0",
+        "eslint": "^7.20.0",
+        "eslint-plugin-import": "^2.20.2",
+        "eslint-plugin-react": "^7.18.3",
+        "eslint-plugin-react-hooks": "^4.0.0",
         "jest": "^26.4.2",
         "rimraf": "^3.0.2",
         "run-script-os": "^1.0.7",
-        "ts-jest": "^26.4.0"
+        "ts-jest": "^26.4.0",
+        "ts-node": "^10.5.0",
+        "typescript": "^4.2.2"
     },
     "peerDependencies": {
         "@types/react": "*",

@@ -23,7 +23,6 @@
     "clientID": "{{ myaccount.client_id }}",
     "loginCallbackPath": "{{ myaccount.login_callback_path }}",
     "logoutCallbackPath": "{{ myaccount.logout_callback_path }}",
-    "productVersion": "{{ product.version }}",
     {% if myaccount.server_origin is defined %}
     "serverOrigin": "{{ myaccount.server_origin }}",
     {% endif %}
@@ -100,6 +99,15 @@
         {% if myaccount.disable_mfa_for_super_tenant_user is defined %}
         "disableMFAforSuperTenantUser": "{{ myaccount.disable_mfa_for_super_tenant_user }}",
         {% endif %}
+        {% if myaccount.enable_mfa_user_wise is defined %}
+        "enableMFAUserWise": {{ myaccount.enable_mfa_user_wise }},
+        {% endif %}
+        {% if myaccount.disable_mfa_for_federated_users is defined %}
+        "disableMFAForFederatedUsers": {{ myaccount.disable_mfa_for_federated_users }},
+        {% endif %}
+        {% if myaccount.force_backup_code is defined %}
+        "forceBackupCode": {{ myaccount.force_backup_code }},
+        {% endif %}
         {% if myaccount.ui.show_app_switch_button is defined %}
         "showAppSwitchButton": "{{ myaccount.ui.show_app_switch_button }}",
         {% endif %}
@@ -111,6 +119,36 @@
                 {% endif %}
         },
         "features": {
+            {% if myaccount.extensions.features is defined %}
+            {% for name, feature in myaccount.extensions.features.items() %}
+            "{{ name }}": {
+                "disabledFeatures": [
+                    {% if feature.disabled_features is defined %}
+                    {% for disabled_feature in feature.disabled_features %}
+                    "{{ disabled_feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {{ feature.enabled }},
+                "scopes": {
+                    {% if feature.scopes is defined %}
+                    {% for operation, scopes in feature.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                }
+            },
+            {% endfor %}
+            {% endif %}
             "applications": {
                 "disabledFeatures": [
                     {% if myaccount.applications.disabled_features is defined %}
@@ -266,8 +304,8 @@
             {% endif %}
         },
         "privacyPolicyConfigs": {
-            {% if console.privacy_policy_configs.items() is defined %}
-            {% for key, value in console.privacy_policy_configs.items() %}
+            {% if myaccount.privacy_policy_configs.items() is defined %}
+            {% for key, value in myaccount.privacy_policy_configs.items() %}
             {% if value is string %}
                 "{{ key }}": "{{ value }}"{{ "," if not loop.last }}
             {% else %}

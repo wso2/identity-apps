@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 #
 # Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 #
@@ -16,9 +18,7 @@
 # under the License.
 #
 
-#!/usr/bin/env bash
-
 npm i
 
 # Update package version to parent pom version
-npm run update-version -- jenkins=true build=${BUILD_DISPLAY_NAME} pom=${POM_VERSION/-SNAPSHOT/}
+npm run update-version -- jenkins=true build="${BUILD_DISPLAY_NAME}" pom="${POM_VERSION/-SNAPSHOT/}"

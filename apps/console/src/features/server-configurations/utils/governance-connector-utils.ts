@@ -45,6 +45,7 @@ export class GovernanceConnectorUtils {
         const connectorCategories: GovernanceConnectorsInterface = {
             categories: []
         };
+
         getConnectorCategories()
             .then((response) => {
                 response.map(category => {
@@ -60,7 +61,7 @@ export class GovernanceConnectorUtils {
                     store.dispatch(addAlert({
                         description: I18n.instance.t("console:manage.features.governanceConnectors.notifications." +
                             "getConnectorCategories.error.description", 
-                            { description: error.response.data.description }),
+                        { description: error.response.data.description }),
                         level: AlertLevels.ERROR,
                         message: I18n.instance.t("console:manage.features.governanceConnectors.notifications." +
                             "getConfigurations.error.message")

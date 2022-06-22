@@ -19,13 +19,14 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
 import { EmphasizedSegment, Heading } from "@wso2is/react-components";
+import { FormValidation } from "@wso2is/validation";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Grid } from "semantic-ui-react";
 import { identityProviderConfig } from "../../../../extensions";
+import { IdentityProviderManagementConstants } from "../../constants";
 import { IdentityProviderInterface, IdentityProviderListResponseInterface } from "../../models";
 import { IdpCertificates } from "../settings";
-import { FormValidation } from "@wso2is/validation";
 
 /**
  * Proptypes for the identity provider general details form component.
@@ -100,7 +101,6 @@ interface GeneralDetailsFormPopsInterface extends TestableComponentInterface {
 
 const IDP_NAME_MAX_LENGTH: number = 50;
 const IDP_DESCRIPTION_MAX_LENGTH: number = 300;
-const IDP_IMAGE_URL_MAX_LENGTH: number = 2000;
 
 /**
  * Form to edit general details of the identity provider.
@@ -142,6 +142,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                 "templates.enterprise.validation.name");
         }
         let nameExist: boolean = false;
+
         if (idpList?.count > 0) {
             idpList?.identityProviders.map((idp) => {
                 if (idp?.name === value && name !== value) {
@@ -254,8 +255,14 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                 "placeholder") }
                             value={ imageUrl }
                             data-testid={ `${ testId }-idp-image` }
-                            maxLength={ IDP_IMAGE_URL_MAX_LENGTH }
-                            minLength={ 3 }
+                            maxLength={ 
+                                IdentityProviderManagementConstants
+                                    .GENERAL_FORM_CONSTRAINTS.IMAGE_URL_MAX_LENGTH as number
+                            }
+                            minLength={ 
+                                IdentityProviderManagementConstants
+                                    .GENERAL_FORM_CONSTRAINTS.IMAGE_URL_MIN_LENGTH as number
+                            }
                             hint={ t("console:develop.features.authenticationProvider.forms." +
                                 "generalDetails.image.hint") }
                             readOnly={ isReadOnly }
@@ -299,6 +306,6 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
 GeneralDetailsForm.defaultProps = {
     "data-testid": "idp-edit-general-settings-form",
     enableWizardMode: false,
-    triggerSubmit: false,
-    hideIdPLogoEditField: false
+    hideIdPLogoEditField: false,
+    triggerSubmit: false
 };

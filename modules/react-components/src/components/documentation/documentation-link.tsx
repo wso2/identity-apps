@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
 import { Icon } from "semantic-ui-react";
@@ -23,7 +24,7 @@ import { Icon } from "semantic-ui-react";
 /**
  * DocumentationLink component Prop types.
  */
-interface DocumentationLinkPropsInterface { 
+interface DocumentationLinkPropsInterface extends IdentifiableComponentInterface {
     /**
      * Documentation URL.
      */
@@ -36,6 +37,10 @@ interface DocumentationLinkPropsInterface {
      * Additional CSS classes.
      */
     className?: string;
+    /**
+     * Specifies if a link text with an empty link or a `#` should be shown.
+     */
+    showEmptyLink?: boolean;
 }
 
 /**
@@ -49,11 +54,13 @@ export const DocumentationLink: FunctionComponent<PropsWithChildren<Documentatio
     props: PropsWithChildren<DocumentationLinkPropsInterface>
 ): ReactElement => {
 
-    const { 
+    const {
         children,
         className,
         link,
-        target
+        target,
+        showEmptyLink,
+        [ "data-componentid" ]: componentId
     } = props;
 
     if (link === undefined) {
@@ -63,15 +70,17 @@ export const DocumentationLink: FunctionComponent<PropsWithChildren<Documentatio
     const classes = classNames("documentation-link ml-1 link external no-wrap", className);
 
     return (
-        <a
+        !(!showEmptyLink && (!link || link === "#")) &&
+        (<a
             href={ link }
             target={ target }
             rel="noopener noreferrer"
             className={ classes }
+            data-componentid={ componentId }
         >
             { children }
             <Icon className="ml-1" name="external alternate"/>
-        </a>
+        </a>)
     );
 };
 
@@ -79,5 +88,7 @@ export const DocumentationLink: FunctionComponent<PropsWithChildren<Documentatio
  * Prop types for the DocumentationLink component.
  */
 DocumentationLink.defaultProps = {
+    "data-componentid": "documentation-link",
+    showEmptyLink: true,
     target: "_blank"
 };

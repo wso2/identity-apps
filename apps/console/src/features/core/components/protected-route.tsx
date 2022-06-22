@@ -22,7 +22,6 @@ import React, { FunctionComponent, ReactElement } from "react";
 import { useSelector } from "react-redux";
 import { Redirect, Route, RouteComponentProps, RouteProps } from "react-router-dom";
 import { AppConstants } from "../constants";
-import { history } from "../helpers";
 import { AppState } from "../store";
 
 /**
@@ -44,13 +43,12 @@ export const ProtectedRoute: FunctionComponent<RouteProps> = (props: RouteProps)
      * Update existing location path in the state to recall upon page refresh or authentication callback.
      * The login path and the login error path have been skipped.
      */
-    if ((history.location.pathname !== AppConstants.getAppLoginPath())
-        && (history.location.pathname !== AppConstants.getPaths().get("UNAUTHORIZED"))
-        && (history.location.pathname !== AppConstants.getPaths().get("PAGE_NOT_FOUND")
-        && (history.location.pathname !== AppConstants.getPaths().get("STORING_DATA_DISABLED")))) {
-
+    if ((window.location.pathname !== AppConstants.getAppLoginPath())
+        && (window.location.pathname !== AppConstants.getPaths().get("UNAUTHORIZED"))
+        && (window.location.pathname !== AppConstants.getPaths().get("PAGE_NOT_FOUND")
+        && (window.location.pathname !== AppConstants.getPaths().get("STORING_DATA_DISABLED")))) {
         AuthenticateUtils.updateAuthenticationCallbackUrl(AppConstantsCore.CONSOLE_APP,
-            history.location.pathname + history.location.hash);
+            window.location.pathname + window.location.hash);
     } else {
         AuthenticateUtils.updateAuthenticationCallbackUrl(AppConstantsCore.CONSOLE_APP, AppConstants.getAppHomePath());
     }

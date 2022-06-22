@@ -29,6 +29,7 @@ import { PermissionList, getRoleById } from "../../../roles";
 interface RolePermissionsInterface extends TestableComponentInterface {
     roleId: string;
     handleNavigateBack: () => void;
+    handleViewNextButton?: (show: boolean) => void;
 }
 
 /**
@@ -44,6 +45,7 @@ export const RolePermissions: FunctionComponent<RolePermissionsInterface> = (
     const {
         roleId,
         handleNavigateBack,
+        handleViewNextButton,
         [ "data-testid" ]: testId
     } = props;
 
@@ -68,6 +70,7 @@ export const RolePermissions: FunctionComponent<RolePermissionsInterface> = (
                     setRole(response.data);
                 });
         }
+        handleViewNextButton(false);
     }, [ roleId ]);
 
     /**

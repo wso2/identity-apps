@@ -59,8 +59,8 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
     const { t } = useTranslation();
 
     const [ isRoleNamePatternValid, setIsRoleNamePatternValid ] = useState<boolean>(true);
-    const [ userStoreOptions, setUserStoresList ] = useState([]);
-    const [ userStore, setUserStore ] = useState<string>(SharedUserStoreConstants.PRIMARY_USER_STORE);
+    const [ , setUserStoresList ] = useState([]);
+    const [ userStore ] = useState<string>(SharedUserStoreConstants.PRIMARY_USER_STORE);
     const [ isRegExLoading, setRegExLoading ] = useState<boolean>(false);
 
     useEffect(() => {
@@ -74,6 +74,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
      */
     const validateRoleNamePattern = async (roleName: string): Promise<void> => {
         let userStoreRegEx = "";
+
         if (userStore !== PRIMARY_DOMAIN) {
             await SharedUserStoreUtils.getUserStoreRegEx(userStore,
                 SharedUserStoreConstants.USERSTORE_REGEX_PROPERTIES.RolenameRegEx)
@@ -92,30 +93,31 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
      */
     const getUserStores = () => {
         const storeOptions = [
-                {
-                    key: -1,
-                    text: "Primary",
-                    value: "primary"
-                }
-            ];
+            {
+                key: -1,
+                text: "Primary",
+                value: "primary"
+            }
+        ];
         let storeOption = {
             key: null,
             text: "",
             value: ""
         };
+
         getUserStoreList()
             .then((response) => {
                 if (storeOptions === []) {
                     storeOptions.push(storeOption);
                 }
                 response.data.map((store, index) => {
-                        storeOption = {
-                            key: index,
-                            text: store.name,
-                            value: store.name
-                        };
-                        storeOptions.push(storeOption);
-                    }
+                    storeOption = {
+                        key: index,
+                        text: store.name,
+                        value: store.name
+                    };
+                    storeOptions.push(storeOption);
+                }
                 );
                 setUserStoresList(storeOptions);
             });
@@ -142,7 +144,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
             } }
             submitState={ triggerSubmit }
         >
-             <Grid>
+            <Grid>
                 <GridRow>
                     <GridColumn mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field

@@ -252,7 +252,7 @@ export class AttributeDialectsListPage {
         return this.getAddDialectWizardLocalAttributesDropdown()
             .within(() => {
                 cy.get(AttributeDialectsListPageConstants.ADD_DIALECT_WIZARD_LOCAL_ATTR_DROPDOWN_OPTIONS_DATA_ATTR);
-            })
+            });
     }
 
     /**

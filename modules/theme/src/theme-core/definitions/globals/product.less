@@ -1214,6 +1214,9 @@ body {
             }
         }
     }
+    &.inverted {
+        background: @genericIconInvertedBackgroundColor;
+    }
     &.hoverable {
         display: flex;
 
@@ -2115,6 +2118,7 @@ code {
 /*-------------------------------
           Pre-Loader
 --------------------------------*/
+
 .pre-loader-wrapper {
     background-color: @preLoaderWrapperBackgroundColor;
     min-height: 100vh;
@@ -2124,6 +2128,64 @@ code {
     flex-direction: column;
     flex: 1;
     background-image: @preLoaderWrapperBackgroundImage;
+}
+
+/*-------------------------------
+        Color Picker
+--------------------------------*/
+
+.color-picker-popup {
+    padding: 0 !important;
+}
+
+.color-picker {
+    &.popup {
+        border-radius: @defaultBorderRadius !important;
+        box-shadow: none !important;
+        border: none;
+    }
+}
+
+.ui.input.color-picker-input {
+    display: flex;
+
+    .color-swatch {
+        width: 38px;
+        border: @defaultBorderWidth solid @defaultBorderColor;
+        border-radius: @defaultBorderRadius;
+        cursor: pointer;
+        padding: 0.5em;
+        margin-right: 6px;
+        transition: all 300ms ease-in-out 0s;
+
+        .color-swatch-inner {
+            width: 100%;
+            height: 100%;
+            border-radius: @defaultBorderRadius;
+            border: @defaultBorderWidth solid @defaultBorderColor;
+
+            .question.icon {
+                margin: 0;
+                font-size: 0.8em;
+                width: 100%;
+                height: 100%;
+                color: #8d8d8d;
+            }
+        }
+    }
+
+    &:not(.editable) {
+        input[readonly] {
+            background: initial !important;
+        }
+    }
+
+    &.readonly {
+        .color-swatch {
+            background: @readOnlyFormFieldBgColor;
+            cursor: default;
+        }
+    }
 }
 
 .loadUIOverrides();

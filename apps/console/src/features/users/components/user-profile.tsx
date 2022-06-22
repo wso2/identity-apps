@@ -39,17 +39,18 @@ import {
 } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import isEmpty from "lodash-es/isEmpty";
+import moment from "moment";
 import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
-import { Trans, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, CheckboxProps, Divider, DropdownItemProps, Form, Grid, Icon, Input } from "semantic-ui-react";
 import { ChangePasswordComponent } from "./user-change-password";
 import { commonConfig,userConfig } from "../../../extensions";
-import { SCIMConfigs } from "../../../extensions/configs/scim";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "../../core";
 import { ConnectorPropertyInterface, ServerConfigurationsConstants  } from "../../server-configurations";
 import { getUserDetails, updateUserInfo } from "../api";
 import { UserManagementConstants } from "../constants";
+
 /**
  * Prop types for the basic details component.
  */
@@ -90,6 +91,10 @@ interface UserProfilePropsInterface extends TestableComponentInterface, SBACInte
      * User Disclaimer Message
      */
     editUserDisclaimerMessage?: ReactNode;
+    /**
+     * Admin user type
+     */
+    adminUserType?: string;
 }
 
 /**
@@ -113,6 +118,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         isReadOnlyUserStoresLoading,
         tenantAdmin,
         editUserDisclaimerMessage,
+        adminUserType,
         [ "data-testid" ]: testId
     } = props;
 
@@ -129,8 +135,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingUser, setDeletingUser ] = useState<ProfileInfoInterface>(undefined);
     const [ editingAttribute, setEditingAttribute ] = useState(undefined);
-    const [ showDisableConfirmationModal, setShowDisableConfirmationModal ] = useState<boolean>(false);
-    const [ showLockConfirmationModal, setShowLockConfirmationModal ] = useState<boolean>(false);
+    const [ showLockDisableConfirmationModal, setShowLockDisableConfirmationModal ] = useState<boolean>(false);
     const [ openChangePasswordModal, setOpenChangePasswordModal ] = useState<boolean>(false);
     const [ configSettings, setConfigSettings ] = useState({
         accountDisable: "false",
@@ -138,12 +143,15 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         forcePasswordReset: "false"
     });
     const [ forcePasswordTriggered, setForcePasswordTriggered ] = useState<boolean>(false);
-    const [ accountLock, setAccountLock ] = useState<string>(undefined);
-    const [ accountDisable, setAccountDisable ] = useState<string>(undefined);
+    const [ accountLocked, setAccountLock ] = useState<boolean>(false);
+    const [ accountDisabled, setAccountDisable ] = useState<boolean>(false);
     const [ oneTimePassword, setOneTimePassword ] = useState<string>(undefined);
     const [ alert, setAlert, alertComponent ] = useConfirmationModalAlert();
     const [ countryList, setCountryList ] = useState<DropdownItemProps[]>([]);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+
+    const createdDate = user?.meta?.created;
+    const modifiedDate = user?.meta?.lastModified;
 
     useEffect(() => {
 
@@ -151,7 +159,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
             let configurationStatuses = { ...configSettings } ;
 
-             for (const property of connectorProperties) {
+            for (const property of connectorProperties) {
                 if (property.name === ServerConfigurationsConstants.ACCOUNT_DISABLING_ENABLE) {
                     configurationStatuses = {
                         ...configurationStatuses,
@@ -203,8 +211,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
         getUserDetails(user?.id, attributes)
             .then((response) => {
-                setAccountLock(response[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.accountLocked);
-                setAccountDisable(response[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.accountDisabled);
+                setAccountLock(response[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.accountLocked ?? false);
+                setAccountDisable(response[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.accountDisabled ?? false);
                 setOneTimePassword(response[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.oneTimePassword);
             });
     }, [ user ]);
@@ -226,61 +234,148 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         if (!isEmpty(profileSchema) && !isEmpty(userInfo)) {
             const tempProfileInfo: Map<string, string> = new Map<string, string>();
 
-            proSchema.forEach((schema: ProfileSchemaInterface) => {
-                const schemaNames = schema.name.split(".");
+            if (adminUserType === "internal") {
+                proSchema.forEach((schema: ProfileSchemaInterface) => {
+                    const schemaNames = schema.name.split(".");
+    
+                    if (schemaNames.length === 1) {
+                        if (schemaNames[0] === "emails") {
+                            const emailSchema:string = schemaNames[0];
 
-                if (schemaNames.length === 1) {
-                    if (schemaNames[0] === "emails") {
-                        if(ProfileUtils.isStringArray(userInfo[schemaNames[0]])) {
-                            const emails: any[] = userInfo[schemaNames[0]];
-                            const primaryEmail = emails.find((subAttribute) => typeof subAttribute === "string");
-
-                            // Set the primary email value.
-                            tempProfileInfo.set(schema.name, primaryEmail);
-                        }
-                    } else {
-                        if (schema.extended && userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA]) {
-                            tempProfileInfo.set(
-                                schema.name, userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]]
-                            );
-                            return;
-                        }
-                        tempProfileInfo.set(schema.name, userInfo[schemaNames[0]]);
-                    }
-                } else {
-                    if (schemaNames[0] === "name") {
-                        const name = schemaNames[1] && userInfo[schemaNames[0]] &&
-                            userInfo[schemaNames[0]][schemaNames[1]] && (
-                                tempProfileInfo.set(schema.name, userInfo[schemaNames[0]][schemaNames[1]])
-                            );
-                    } else {
-                        if (schema.extended && userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA]) {
-                            const complexEnterprise = schemaNames[0] && schemaNames[1] &&
-                                userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]] &&
-                                userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]][schemaNames[1]] && (
-                                tempProfileInfo.set(schema.name,
-                                    userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]][schemaNames[1]])
-                                );
+                            if(ProfileUtils.isStringArray(userInfo[emailSchema])) {
+                                const emails: any[] = userInfo[emailSchema];
+                                const primaryEmail = emails.find((subAttribute) => typeof subAttribute === "string");
+    
+                                // Set the primary email value.
+                                tempProfileInfo.set(schema.name, primaryEmail);
+                            }
                         } else {
-                            const subValue = userInfo[schemaNames[0]] &&
-                                Array.isArray(userInfo[schemaNames[0]]) &&
-                                userInfo[schemaNames[0]]
-                                    .find((subAttribute) => subAttribute.type === schemaNames[1]);
-                            if (schemaNames[0] === "addresses") {
+                            const schemaName:string = schemaNames[0];
+
+                            if (schema.extended && userInfo[ProfileConstants.SCIM2_WSO2_USER_SCHEMA]) {
                                 tempProfileInfo.set(
-                                    schema.name,
-                                    subValue ? subValue.formatted : ""
+                                    schema.name, userInfo[ProfileConstants.SCIM2_WSO2_USER_SCHEMA][schemaName]
+                                );
+    
+                                return;
+                            }
+                            tempProfileInfo.set(schema.name, userInfo[schemaName]);
+                        }
+                    } else {
+                        if (schemaNames[0] === "name") {
+                            const nameSchema = schemaNames[0];
+                            const givenNameSchema = schemaNames[1];
+
+                            givenNameSchema && userInfo[nameSchema] && 
+                                userInfo[nameSchema][givenNameSchema] && (
+                                tempProfileInfo.set(schema.name, userInfo[nameSchema][givenNameSchema])
+                            );
+                        } else {
+                            const schemaName = schemaNames[0];
+                            const schemaSecondaryProperty = schemaNames[1];
+
+                            if (schema.extended && userInfo[ProfileConstants.SCIM2_WSO2_USER_SCHEMA]) {
+                                schemaName && schemaSecondaryProperty &&
+                                    userInfo[ProfileConstants
+                                        .SCIM2_WSO2_USER_SCHEMA][schemaName] &&
+                                    userInfo[ProfileConstants
+                                        .SCIM2_WSO2_USER_SCHEMA][schemaName][schemaSecondaryProperty] && (
+                                    tempProfileInfo.set(schema.name,
+                                        userInfo[ProfileConstants
+                                            .SCIM2_WSO2_USER_SCHEMA][schemaName][schemaSecondaryProperty])
                                 );
                             } else {
-                                tempProfileInfo.set(
-                                    schema.name,
-                                    subValue ? subValue.value : ""
-                                );
+                                const subValue = userInfo[schemaName] &&
+                                    Array.isArray(userInfo[schemaName]) &&
+                                    userInfo[schemaName]
+                                        .find((subAttribute) => subAttribute.type === schemaSecondaryProperty);
+                                
+                                if (schemaName === "addresses") {
+                                    tempProfileInfo.set(
+                                        schema.name,
+                                        subValue ? subValue.formatted : ""
+                                    );
+                                } else {
+                                    tempProfileInfo.set(
+                                        schema.name,
+                                        subValue ? subValue.value : ""
+                                    );
+                                }
                             }
                         }
                     }
-                }
-            });
+                });
+            } else {
+                proSchema.forEach((schema: ProfileSchemaInterface) => {
+                    const schemaNames = schema.name.split(".");
+    
+                    if (schemaNames.length === 1) {
+                        if (schemaNames[0] === "emails") {
+                            const emailSchema:string = schemaNames[0];
+
+                            if(ProfileUtils.isStringArray(userInfo[emailSchema])) {
+                                const emails: any[] = userInfo[emailSchema];
+                                const primaryEmail = emails.find((subAttribute) => typeof subAttribute === "string");
+    
+                                // Set the primary email value.
+                                tempProfileInfo.set(schema.name, primaryEmail);
+                            }
+                        } else {
+                            const schemaName:string = schemaNames[0];
+
+                            if (schema.extended && userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA]) {
+                                tempProfileInfo.set(
+                                    schema.name, userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaName]
+                                );
+    
+                                return;
+                            }
+                            tempProfileInfo.set(schema.name, userInfo[schemaName]);
+                        }
+                    } else {
+                        if (schemaNames[0] === "name") {
+                            const nameSchema = schemaNames[0];
+                            const givenNameSchema = schemaNames[1];
+
+                            givenNameSchema && userInfo[nameSchema] &&
+                                userInfo[nameSchema][givenNameSchema] && (
+                                tempProfileInfo.set(schema.name, userInfo[nameSchema][givenNameSchema])
+                            );
+                        } else {
+                            const schemaName = schemaNames[0];
+                            const schemaSecondaryProperty = schemaNames[1];
+
+                            if (schema.extended && userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA]) {
+                                schemaName && schemaSecondaryProperty &&
+                                    userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaName] &&
+                                    userInfo[ProfileConstants
+                                        .SCIM2_ENT_USER_SCHEMA][schemaName][schemaSecondaryProperty] && (
+                                    tempProfileInfo.set(schema.name,
+                                        userInfo[ProfileConstants
+                                            .SCIM2_ENT_USER_SCHEMA][schemaName][schemaSecondaryProperty])
+                                );
+                            } else {
+                                const subValue = userInfo[schemaName] &&
+                                    Array.isArray(userInfo[schemaName]) &&
+                                    userInfo[schemaName]
+                                        .find((subAttribute) => subAttribute.type === schemaSecondaryProperty);
+                                
+                                if (schemaName === "addresses") {
+                                    tempProfileInfo.set(
+                                        schema.name,
+                                        subValue ? subValue.formatted : ""
+                                    );
+                                } else {
+                                    tempProfileInfo.set(
+                                        schema.name,
+                                        subValue ? subValue.value : ""
+                                    );
+                                }
+                            }
+                        }
+                    }
+                });
+            }
 
             setProfileInfo(tempProfileInfo);
         }
@@ -290,7 +385,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      * Sort the elements of the profileSchema state according by the displayOrder attribute in the ascending order.
      */
     useEffect(() => {
-        const sortedSchemas = ProfileUtils.flattenSchemas([...profileSchemas])
+        const sortedSchemas = ProfileUtils.flattenSchemas([ ...profileSchemas ])
+            .filter(item => item.name !== "meta.version")
             .sort((a: ProfileSchemaInterface, b: ProfileSchemaInterface) => {
                 if (!a.displayOrder) {
                     return -1;
@@ -302,15 +398,11 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             });
 
         setProfileSchema(sortedSchemas);
-
-        const url = sortedSchemas.filter((schema: ProfileSchemaInterface) => {
-            return schema.name === "profileUrl";
-        });
-    }, [profileSchemas]);
+    }, [ profileSchemas ]);
 
     useEffect(() => {
         mapUserToSchema(profileSchema, user);
-    }, [profileSchema, user]);
+    }, [ profileSchema, user ]);
 
     /**
      * This function handles deletion of the user.
@@ -360,7 +452,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
         const data = {
             Operations: [],
-            schemas: ["urn:ietf:params:scim:api:messages:2.0:PatchOp"]
+            schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
         };
 
         let operation = {
@@ -368,141 +460,268 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             value: {}
         };
 
-        profileSchema.forEach((schema: ProfileSchemaInterface) => {
-
-            if (schema.mutability === ProfileConstants.READONLY_SCHEMA) {
-                return;
-            }
-
-            let opValue = {};
-
-            const schemaNames = schema.name.split(".");
-
-            if (schema.name !== "roles.default") {
-                if (values.get(schema.name) !== undefined && values.get(schema.name).toString() !== undefined) {
-
-                    if (ProfileUtils.isMultiValuedSchemaAttribute(profileSchema, schemaNames[0]) ||
-                        schemaNames[0] === "phoneNumbers") {
-
-                        const attributeValues = [];
-                        const attValues: Map<string, string | string []> = new Map();
-
-                        if (schemaNames.length === 1 || schema.name === "phoneNumbers.mobile") {
-
-                            // Extract the sub attributes from the form values.
-                            for (const value of values.keys()) {
-                                const subAttribute = value.split(".");
-
-                                if (subAttribute[0] === schemaNames[0]) {
-                                    attValues.set(value, values.get(value));
+        if (adminUserType === "internal") {
+            profileSchema.forEach((schema: ProfileSchemaInterface) => {
+    
+                if (schema.mutability === ProfileConstants.READONLY_SCHEMA) {
+                    return;
+                }
+    
+                let opValue = {};
+    
+                const schemaNames = schema.name.split(".");
+    
+                if (schema.name !== "roles.default") {
+                    if (values.get(schema.name) !== undefined && values.get(schema.name).toString() !== undefined) {
+    
+                        if (ProfileUtils.isMultiValuedSchemaAttribute(profileSchema, schemaNames[0]) ||
+                            schemaNames[0] === "phoneNumbers") {
+    
+                            const attributeValues = [];
+                            const attValues: Map<string, string | string []> = new Map();
+    
+                            if (schemaNames.length === 1 || schema.name === "phoneNumbers.mobile") {
+    
+                                // Extract the sub attributes from the form values.
+                                for (const value of values.keys()) {
+                                    const subAttribute = value.split(".");
+    
+                                    if (subAttribute[0] === schemaNames[0]) {
+                                        attValues.set(value, values.get(value));
+                                    }
                                 }
-                            }
-
-                            for (const [key, value] of attValues) {
-                                const attribute = key.split(".");
-
-                                if (value && value !== "") {
-                                    if (attribute.length === 1) {
-                                        attributeValues.push(value);
-                                    } else {
-                                        attributeValues.push({
+    
+                                for (const [ key, value ] of attValues) {
+                                    const attribute = key.split(".");
+    
+                                    if (value && value !== "") {
+                                        if (attribute.length === 1) {
+                                            attributeValues.push(value);
+                                        } else {
+                                            attributeValues.push({
                                                 type: attribute[1],
                                                 value: value
-                                        });
-                                    }
-                                }
-                            }
-
-                            opValue = {
-                                [schemaNames[0]]: attributeValues
-                            };
-                        }
-                    } else {
-                        if (schemaNames.length === 1) {
-                            if (schema.extended) {
-                                opValue = {
-                                    [ProfileConstants.SCIM2_ENT_USER_SCHEMA]: {
-                                        [schemaNames[0]]: schema.type.toUpperCase() === "BOOLEAN" ?
-                                            !!values.get(schema.name)?.includes(schema.name) :
-                                            values.get(schemaNames[0])
-                                    }
-                                };
-                            } else {
-                                opValue = schemaNames[0] === UserManagementConstants.SCIM2_SCHEMA_DICTIONARY
-                                        .get("EMAILS")
-                                    ? { emails: [values.get(schema.name)] }
-                                    : { [schemaNames[0]]: values.get(schemaNames[0]) };
-                            }
-                        } else {
-                            if(schema.extended) {
-                                opValue = {
-                                    [ProfileConstants.SCIM2_ENT_USER_SCHEMA]: {
-                                        [schemaNames[0]]: {
-                                            [schemaNames[1]]: schema.type.toUpperCase() === "BOOLEAN" ?
-                                                !!values.get(schema.name)?.includes(schema.name) :
-                                                values.get(schema.name)
+                                            });
                                         }
                                     }
+                                }
+    
+                                opValue = {
+                                    [schemaNames[0]]: attributeValues
                                 };
-                            } else if (schemaNames[0] === UserManagementConstants.SCIM2_SCHEMA_DICTIONARY.get("NAME")) {
-                                const name = values.get(schema.name) && (
+                            }
+                        } else {
+                            if (schemaNames.length === 1) {
+                                if (schema.extended) {
                                     opValue = {
-                                        name: { [schemaNames[1]]: values.get(schema.name) }
-                                    }
-                                );
-                            } else {
-                                if (schemaNames[0] === "addresses") {
-                                    opValue = {
-                                        [schemaNames[0]]: [
-                                            {
-                                                formatted: values.get(schema.name),
-                                                type: schemaNames[1]
-                                            }
-                                        ]
+                                        [ProfileConstants.SCIM2_WSO2_USER_SCHEMA]: {
+                                            [schemaNames[0]]: schema.type.toUpperCase() === "BOOLEAN" ?
+                                                !!values.get(schema.name)?.includes(schema.name) :
+                                                values.get(schemaNames[0])
+                                        }
                                     };
-                                } else if (schemaNames[0] !== "emails" && schemaNames[0] !== "phoneNumbers") {
+                                } else {
+                                    opValue = schemaNames[0] === UserManagementConstants.SCIM2_SCHEMA_DICTIONARY
+                                        .get("EMAILS")
+                                        ? { emails: [ values.get(schema.name) ] }
+                                        : { [schemaNames[0]]: values.get(schemaNames[0]) };
+                                }
+                            } else {
+                                if(schema.extended) {
                                     opValue = {
-                                        [schemaNames[0]]: [
-                                            {
-                                                type: schemaNames[1],
-                                                value: schema.type.toUpperCase() === "BOOLEAN" ?
+                                        [ProfileConstants.SCIM2_WSO2_USER_SCHEMA]: {
+                                            [schemaNames[0]]: {
+                                                [schemaNames[1]]: schema.type.toUpperCase() === "BOOLEAN" ?
                                                     !!values.get(schema.name)?.includes(schema.name) :
                                                     values.get(schema.name)
                                             }
-                                        ]
+                                        }
                                     };
+                                } else if (schemaNames[0] === UserManagementConstants.SCIM2_SCHEMA_DICTIONARY
+                                    .get("NAME")) {
+                                    values.get(schema.name) && (
+                                        opValue = {
+                                            name: { [schemaNames[1]]: values.get(schema.name) }
+                                        }
+                                    );
+                                } else {
+                                    if (schemaNames[0] === "addresses") {
+                                        opValue = {
+                                            [schemaNames[0]]: [
+                                                {
+                                                    formatted: values.get(schema.name),
+                                                    type: schemaNames[1]
+                                                }
+                                            ]
+                                        };
+                                    } else if (schemaNames[0] !== "emails" && schemaNames[0] !== "phoneNumbers") {
+                                        opValue = {
+                                            [schemaNames[0]]: [
+                                                {
+                                                    type: schemaNames[1],
+                                                    value: schema.type.toUpperCase() === "BOOLEAN" ?
+                                                        !!values.get(schema.name)?.includes(schema.name) :
+                                                        values.get(schema.name)
+                                                }
+                                            ]
+                                        };
+                                    }
                                 }
                             }
                         }
                     }
                 }
-            }
+    
+                operation = {
+                    op: "replace",
+                    value: opValue
+                };
+                // This is required as the api doesn't support patching the address attributes at the
+                // sub attribute level using 'replace' operation.
+                if (schemaNames[0] === "addresses") {
+                    operation.op = "add";
+                }
+                data.Operations.push(operation);
+            });
 
-            operation = {
-                op: "replace",
-                value: opValue
-            };
-            // This is required as the api doesn't support patching the address attributes at the
-            // sub attribute level using 'replace' operation.
-            if (schemaNames[0] === "addresses") {
-                operation.op = "add";
-            }
-            data.Operations.push(operation);
-        });
+        } else {
+            profileSchema.forEach((schema: ProfileSchemaInterface) => {
+    
+                if (schema.mutability === ProfileConstants.READONLY_SCHEMA) {
+                    return;
+                }
+    
+                let opValue = {};
+    
+                const schemaNames = schema.name.split(".");
+    
+                if (schema.name !== "roles.default") {
+                    if (values.get(schema.name) !== undefined && values.get(schema.name).toString() !== undefined) {
+    
+                        if (ProfileUtils.isMultiValuedSchemaAttribute(profileSchema, schemaNames[0]) ||
+                            schemaNames[0] === "phoneNumbers") {
+    
+                            const attributeValues = [];
+                            const attValues: Map<string, string | string []> = new Map();
+    
+                            if (schemaNames.length === 1 || schema.name === "phoneNumbers.mobile") {
+    
+                                // Extract the sub attributes from the form values.
+                                for (const value of values.keys()) {
+                                    const subAttribute = value.split(".");
+    
+                                    if (subAttribute[0] === schemaNames[0]) {
+                                        attValues.set(value, values.get(value));
+                                    }
+                                }
+    
+                                for (const [ key, value ] of attValues) {
+                                    const attribute = key.split(".");
+    
+                                    if (value && value !== "") {
+                                        if (attribute.length === 1) {
+                                            attributeValues.push(value);
+                                        } else {
+                                            attributeValues.push({
+                                                type: attribute[1],
+                                                value: value
+                                            });
+                                        }
+                                    }
+                                }
+    
+                                opValue = {
+                                    [schemaNames[0]]: attributeValues
+                                };
+                            }
+                        } else {
+                            if (schemaNames.length === 1) {
+                                if (schema.extended) {
+                                    opValue = {
+                                        [ProfileConstants.SCIM2_ENT_USER_SCHEMA]: {
+                                            [schemaNames[0]]: schema.type.toUpperCase() === "BOOLEAN" ?
+                                                !!values.get(schema.name)?.includes(schema.name) :
+                                                values.get(schemaNames[0])
+                                        }
+                                    };
+                                } else {
+                                    opValue = schemaNames[0] === UserManagementConstants.SCIM2_SCHEMA_DICTIONARY
+                                        .get("EMAILS")
+                                        ? { emails: [ values.get(schema.name) ] }
+                                        : { [schemaNames[0]]: values.get(schemaNames[0]) };
+                                }
+                            } else {
+                                if(schema.extended) {
+                                    opValue = {
+                                        [ProfileConstants.SCIM2_ENT_USER_SCHEMA]: {
+                                            [schemaNames[0]]: {
+                                                [schemaNames[1]]: schema.type.toUpperCase() === "BOOLEAN" ?
+                                                    !!values.get(schema.name)?.includes(schema.name) :
+                                                    values.get(schema.name)
+                                            }
+                                        }
+                                    };
+                                } else if (schemaNames[0] === UserManagementConstants.SCIM2_SCHEMA_DICTIONARY
+                                    .get("NAME")) {
+                                    values.get(schema.name) && (
+                                        opValue = {
+                                            name: { [schemaNames[1]]: values.get(schema.name) }
+                                        }
+                                    );
+                                } else {
+                                    if (schemaNames[0] === "addresses") {
+                                        opValue = {
+                                            [schemaNames[0]]: [
+                                                {
+                                                    formatted: values.get(schema.name),
+                                                    type: schemaNames[1]
+                                                }
+                                            ]
+                                        };
+                                    } else if (schemaNames[0] !== "emails" && schemaNames[0] !== "phoneNumbers") {
+                                        opValue = {
+                                            [schemaNames[0]]: [
+                                                {
+                                                    type: schemaNames[1],
+                                                    value: schema.type.toUpperCase() === "BOOLEAN" ?
+                                                        !!values.get(schema.name)?.includes(schema.name) :
+                                                        values.get(schema.name)
+                                                }
+                                            ]
+                                        };
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+    
+                operation = {
+                    op: "replace",
+                    value: opValue
+                };
+                // This is required as the api doesn't support patching the address attributes at the
+                // sub attribute level using 'replace' operation.
+                if (schemaNames[0] === "addresses") {
+                    operation.op = "add";
+                }
+                data.Operations.push(operation);
+            });
+        }
 
         setIsSubmitting(true);
 
         updateUserInfo(user.id, data)
             .then(() => {
                 onAlertFired({
-                        description: t(
-                            "console:manage.features.user.profile.notifications.updateProfileInfo.success.description"
-                        ),
-                        level: AlertLevels.SUCCESS,
-                        message: t(
-                            "console:manage.features.user.profile.notifications.updateProfileInfo.success.message"
-                        )
-                    });
+                    description: t(
+                        "console:manage.features.user.profile.notifications.updateProfileInfo.success.description"
+                    ),
+                    level: AlertLevels.SUCCESS,
+                    message: t(
+                        "console:manage.features.user.profile.notifications.updateProfileInfo.success.message"
+                    )
+                });
 
                 handleUserUpdate(user.id);
             })
@@ -529,8 +748,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             })
             .finally(() => {
                 setIsSubmitting(false);
-            })
-;
+            });
     };
 
     /**
@@ -545,7 +763,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         });
 
         if(toggleData?.target?.checked) {
-            setShowDisableConfirmationModal(true);
+            setShowLockDisableConfirmationModal(true);
         } else {
             handleDangerActions(toggleData?.target?.id, toggleData?.target?.checked);
         }
@@ -555,7 +773,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      * The method handles the locking and disabling of user account.
      */
     const handleDangerActions = (attributeName: string, attributeValue: boolean): void => {
-        const data = {
+        let data = {
             "Operations": [
                 {
                     "op": "replace",
@@ -566,80 +784,98 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     }
                 }
             ],
-            "schemas": ["urn:ietf:params:scim:api:messages:2.0:PatchOp"]
+            "schemas": [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
         };
+
+        if (adminUserType === "internal") {
+            data = {
+                "Operations": [
+                    {
+                        "op": "replace",
+                        "value": {
+                            [ProfileConstants.SCIM2_WSO2_USER_SCHEMA]: {
+                                [attributeName]: attributeValue
+                            }
+                        }
+                    }
+                ],
+                "schemas": [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
+            };
+        }
 
         updateUserInfo(user.id, data)
             .then(() => {
                 onAlertFired({
                     description:
-                        attributeName === "accountLocked"
+                        attributeName === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("ACCOUNT_LOCKED")
                             ? (
                                 attributeValue
                                     ? t("console:manage.features.user.profile.notifications.lockUserAccount." +
-                                    "success.description")
+                                        "success.description")
                                     : t("console:manage.features.user.profile.notifications.unlockUserAccount." +
-                                    "success.description")
+                                        "success.description")
                             ) : (
                                 attributeValue
                                     ? t("console:manage.features.user.profile.notifications.disableUserAccount." +
-                                    "success.description")
+                                        "success.description")
                                     : t("console:manage.features.user.profile.notifications.enableUserAccount." +
-                                    "success.description")
+                                        "success.description")
                             ),
                     level: AlertLevels.SUCCESS,
                     message:
-                        attributeName === "accountLocked"
+                        attributeName === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("ACCOUNT_LOCKED")
                             ? (
                                 attributeValue
                                     ? t("console:manage.features.user.profile.notifications.lockUserAccount." +
-                                    "success.message", { name: user.userName })
+                                        "success.message", { name: user.userName })
                                     : t("console:manage.features.user.profile.notifications.unlockUserAccount." +
-                                    "success.message", { name: user.userName })
+                                        "success.message", { name: user.userName })
                             ) : (
                                 attributeValue
                                     ? t("console:manage.features.user.profile.notifications.disableUserAccount." +
-                                    "success.message", { name: user.userName })
+                                        "success.message", { name: user.userName })
                                     : t("console:manage.features.user.profile.notifications.enableUserAccount." +
-                                    "success.message", { name: user.userName })
+                                        "success.message", { name: user.userName })
                             )
-            });
-            setShowDisableConfirmationModal(false);
-            handleUserUpdate(user.id);
-            setEditingAttribute(undefined);
-        })
-        .catch((error) => {
-            if (error.response && error.response.data && error.response.data.description) {
+                });
+                setShowLockDisableConfirmationModal(false);
+                handleUserUpdate(user.id);
+                setEditingAttribute(undefined);
+            })
+            .catch((error) => {
+                if (error.response && error.response.data && error.response.data.description) {
+                    onAlertFired({
+                        description: error.response.data.description,
+                        level: AlertLevels.ERROR,
+                        message:
+                            attributeName === UserManagementConstants.SCIM2_ATTRIBUTES_DICTIONARY.get("ACCOUNT_LOCKED")
+                                ? t("console:manage.features.user.profile.notifications.lockUserAccount.error." +
+                                    "message")
+                                : t("console:manage.features.user.profile.notifications.disableUserAccount.error." +
+                                    "message")
+                    });
+
+                    return;
+                }
+
                 onAlertFired({
-                    description: error.response.data.description,
+                    description:
+                        editingAttribute?.name === UserManagementConstants.SCIM2_ATTRIBUTES_DICTIONARY
+                            .get("ACCOUNT_LOCKED")
+                            ? t("console:manage.features.user.profile.notifications.lockUserAccount.genericError." +
+                                "description")
+                            : t("console:manage.features.user.profile.notifications.disableUserAccount.genericError." +
+                                "description"),
                     level: AlertLevels.ERROR,
                     message:
-                        attributeName === "accountLocked"
-                            ? t("console:manage.features.user.profile.notifications.lockUserAccount.error." +
-                            "message")
-                            : t("console:manage.features.user.profile.notifications.disableUserAccount.error." +
-                            "message")
+                        editingAttribute?.name === UserManagementConstants.SCIM2_ATTRIBUTES_DICTIONARY
+                            .get("ACCOUNT_LOCKED")
+                            ? t("console:manage.features.user.profile.notifications.lockUserAccount.genericError." +
+                                "message")
+                            : t("console:manage.features.user.profile.notifications.disableUserAccount.genericError." +
+                                "message")
                 });
-
-                return;
-            }
-
-            onAlertFired({
-                description:
-                    editingAttribute?.name === "accountLocked"
-                        ? t("console:manage.features.user.profile.notifications.lockUserAccount.genericError." +
-                        "description")
-                        : t("console:manage.features.user.profile.notifications.disableUserAccount.genericError." +
-                        "description"),
-                level: AlertLevels.ERROR,
-                message:
-                    editingAttribute?.name === "accountLocked"
-                        ? t("console:manage.features.user.profile.notifications.lockUserAccount.genericError." +
-                        "message")
-                        : t("console:manage.features.user.profile.notifications.disableUserAccount.genericError." +
-                        "message")
             });
-        });
     };
 
     const resolveDangerActions = (): ReactElement => {
@@ -670,9 +906,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                             "disableUserZone.subheader") }
                                         onActionClick={ undefined }
                                         toggle={ {
-                                            checked: accountDisable
-                                                ? accountDisable
-                                                : user[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.accountDisabled,
+                                            checked: accountDisabled,
                                             id: "accountDisabled",
                                             onChange: handleDangerZoneToggles
                                         } }
@@ -695,9 +929,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                         }
                                         onActionClick={ undefined }
                                         toggle={ {
-                                            checked: accountLock
-                                                ? accountLock
-                                                : user[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.accountLocked,
+                                            checked: accountLocked,
                                             id: "accountLocked",
                                             onChange: handleDangerZoneToggles
                                         } }
@@ -736,7 +968,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     required={ schema.required }
                     requiredErrorMessage={ fieldName + " " + "is required" }
                     type="checkbox"
-                    value={ profileInfo.get(schema.name) ? [schema.name] : [] }
+                    value={ profileInfo.get(schema.name) ? [ schema.name ] : [] }
                     children={ [
                         {
                             label: fieldName,
@@ -761,10 +993,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     children={ countryList ? countryList.map(list => {
                         return {
                             "data-testid": `${ testId }-profile-form-country-dropdown-` +  list.value as string,
+                            flag: list.flag,
                             key: list.key as string,
                             text: list.text as string,
-                            value: list.value as string,
-                            flag: list.flag
+                            value: list.value as string
                         };
                     }) : [] }
                     key={ key }
@@ -783,8 +1015,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     name={ schema.name }
                     label={ schema.name === "profileUrl" ? "Profile Image URL" :
                         (  (!commonConfig.userEditSection.showEmail && schema.name === "userName")
-                                ? fieldName +" (Email)"
-                                : fieldName
+                            ? fieldName +" (Email)"
+                            : fieldName
                         )
                     }
                     required={ schema.required }
@@ -833,7 +1065,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         const fieldName = t("console:manage.features.user.profile.fields." +
             schema.name.replace(".", "_"), { defaultValue: schema.displayName }
         );
-
+        
         const domainName = profileInfo?.get(schema.name)?.toString().split("/");
 
         return (
@@ -841,27 +1073,55 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                 <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 6 }>
                     {
                         schema.name === "userName" && domainName.length > 1 ? (
-                            <Form.Field>
-                                <label>
-                                    { !commonConfig.userEditSection.showEmail
-                                        ? fieldName + " (Email)"
-                                        : fieldName
-                                    }
-                                </label>
-                                <Input
-                                    data-testid={ `${ testId }-profile-form-${ schema.name }-input` }
-                                    name={ schema.name }
-                                    label={ domainName[0] + " / " }
-                                    required={ schema.required }
-                                    requiredErrorMessage={ fieldName + " " + "is required" }
-                                    placeholder={ "Enter your" + " " + fieldName }
-                                    type="text"
-                                    value={ domainName[1] }
-                                    key={ key }
-                                    readOnly={ isReadOnly || schema.mutability === ProfileConstants.READONLY_SCHEMA }
-                                    maxLength={ 30 }
-                                />
-                            </Form.Field>
+                            <>
+                                {
+                                    adminUserType === "internal" ? (
+                                        <Form.Field>
+                                            <label>
+                                                { !commonConfig.userEditSection.showEmail
+                                                    ? fieldName + " (Email)"
+                                                    : fieldName
+                                                }
+                                            </label>
+                                            <Input
+                                                data-testid={ `${ testId }-profile-form-${ schema.name }-input` }
+                                                name={ schema.name }
+                                                required={ schema.required }
+                                                requiredErrorMessage={ fieldName + " " + "is required" }
+                                                placeholder={ "Enter your" + " " + fieldName }
+                                                type="text"
+                                                value={ domainName[1] }
+                                                key={ key }
+                                                readOnly
+                                                maxLength={ 30 }
+                                            />
+                                        </Form.Field>
+                                    ) : (
+                                        <Form.Field>
+                                            <label>
+                                                { !commonConfig.userEditSection.showEmail
+                                                    ? fieldName + " (Email)"
+                                                    : fieldName
+                                                }
+                                            </label>
+                                            <Input
+                                                data-testid={ `${ testId }-profile-form-${ schema.name }-input` }
+                                                name={ schema.name }
+                                                label={ domainName[0] + " / " }
+                                                required={ schema.required }
+                                                requiredErrorMessage={ fieldName + " " + "is required" }
+                                                placeholder={ "Enter your" + " " + fieldName }
+                                                type="text"
+                                                value={ domainName[1] }
+                                                key={ key }
+                                                readOnly={ isReadOnly || 
+                                                    schema.mutability === ProfileConstants.READONLY_SCHEMA }
+                                                maxLength={ 30 }
+                                            />
+                                        </Form.Field>
+                                    )
+                                }
+                            </>
                         ) : (
                             resolveFormField(schema, fieldName, key)
                         )
@@ -872,16 +1132,17 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     };
 
     return (
-        !isReadOnlyUserStoresLoading ? (
-        <>
-            {
-                <Grid>
-                    <Grid.Row>
-                        <Grid.Column>
-                            {
-                                (hasRequiredScopes(featureConfig?.users,
-                                    featureConfig?.users?.scopes?.update, allowedScopes) &&
-                                    !isReadOnly && user.userName !== "admin") && (
+        !isReadOnlyUserStoresLoading 
+            ? (<>
+                {
+                    <Grid>
+                        <Grid.Row>
+                            <Grid.Column>
+                                {
+                                    (hasRequiredScopes(featureConfig?.users,
+                                        featureConfig?.users?.scopes?.update, allowedScopes) &&
+                                        !isReadOnly && user.userName !== "admin" &&
+                                        adminUserType === "None") && (
                                         <Button
                                             basic
                                             color="orange"
@@ -892,272 +1153,263 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                             { t("console:manage.features.user.modals.changePasswordModal.button") }
                                         </Button>
                                     )
+                                }
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
+                }
+                {
+                    !isEmpty(profileInfo) && (
+                        <EmphasizedSegment padded="very">
+                            {
+                                (isReadOnly && !isEmpty(tenantAdmin)) && editUserDisclaimerMessage
                             }
-                        </Grid.Column>
-                    </Grid.Row>
-                </Grid>
-            }
-            {
-                !isEmpty(profileInfo) && (
-                    <EmphasizedSegment padded="very">
-                        {
-                            (isReadOnly && !isEmpty(tenantAdmin)) && editUserDisclaimerMessage
-                        }
-                        <Forms
-                            data-testid={ `${ testId }-form` }
-                            onSubmit={ (values) => handleSubmit(values) }
-                        >
-                            <Grid>
-                                {
-                                    user.id && (
-                                        <Grid.Row columns={ 1 }>
-                                            <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 6 }>
-                                                <Form.Field>
-                                                    <label>
-                                                        { t("console:manage.features.user.profile.fields.userId") }
-                                                    </label>
-                                                    <Input
-                                                        name="userID"
+                            <Forms
+                                data-testid={ `${ testId }-form` }
+                                onSubmit={ (values) => handleSubmit(values) }
+                            >
+                                <Grid>
+                                    {
+                                        user.id && (
+                                            <Grid.Row columns={ 1 }>
+                                                <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 6 }>
+                                                    <Form.Field>
+                                                        <label>
+                                                            { t("console:manage.features.user.profile.fields.userId") }
+                                                        </label>
+                                                        <Input
+                                                            name="userID"
+                                                            type="text"
+                                                            value={ user.id }
+                                                            readOnly={ true }
+                                                        />
+                                                    </Form.Field>
+                                                </Grid.Column>
+                                            </Grid.Row>
+                                        )
+                                    }
+                                    {
+                                        profileSchema
+                                        && profileSchema.map((schema: ProfileSchemaInterface, index: number) => {
+                                            if (!(schema.name === ProfileConstants?.
+                                                SCIM2_SCHEMA_DICTIONARY.get("ROLES_DEFAULT")
+                                                || schema.name === ProfileConstants?.
+                                                    SCIM2_SCHEMA_DICTIONARY.get("GROUPS")
+                                                || schema.name === ProfileConstants?.
+                                                    SCIM2_SCHEMA_DICTIONARY.get("PROFILE_URL")
+                                                || schema.name === ProfileConstants?.
+                                                    SCIM2_SCHEMA_DICTIONARY.get("ACCOUNT_LOCKED")
+                                                || schema.name === ProfileConstants?.
+                                                    SCIM2_SCHEMA_DICTIONARY.get("ACCOUNT_DISABLED")
+                                                || schema.name === ProfileConstants?.
+                                                    SCIM2_SCHEMA_DICTIONARY.get("ONETIME_PASSWORD")
+                                                || (!commonConfig.userEditSection.showEmail &&
+                                                    schema.name === ProfileConstants?.
+                                                        SCIM2_SCHEMA_DICTIONARY.get("EMAILS")))
+                                                && isFieldDisplayable(schema)) {
+                                                return (
+                                                    generateProfileEditForm(schema, index)
+                                                );
+                                            }
+                                        })
+                                    }
+                                    {
+                                        oneTimePassword && (
+                                            <Grid.Row columns={ 1 }>
+                                                <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 6 }>
+                                                    <Field
+                                                        data-testid={ `${ testId }-profile-form-one-time-pw }
+                                                        -input` }
+                                                        name="oneTimePassword"
+                                                        label={ t("console:manage.features.user.profile.fields." +
+                                                            "oneTimePassword") }
+                                                        required={ false }
+                                                        requiredErrorMessage=""
                                                         type="text"
-                                                        value={ user.id }
+                                                        hidden={ oneTimePassword === undefined }
+                                                        value={ oneTimePassword && oneTimePassword }
                                                         readOnly={ true }
                                                     />
-                                                </Form.Field>
-                                            </Grid.Column>
-                                        </Grid.Row>
-                                    )
-                                }
-                                {
-                                    profileSchema
-                                    && profileSchema.map((schema: ProfileSchemaInterface, index: number) => {
-                                        if (!(schema.name === ProfileConstants?.
-                                                SCIM2_SCHEMA_DICTIONARY.get("ROLES_DEFAULT")
-                                            || schema.name === ProfileConstants?.
-                                                SCIM2_SCHEMA_DICTIONARY.get("GROUPS")
-                                            || schema.name === ProfileConstants?.
-                                                SCIM2_SCHEMA_DICTIONARY.get("PROFILE_URL")
-                                            || schema.name === ProfileConstants?.
-                                                SCIM2_SCHEMA_DICTIONARY.get("ACCOUNT_LOCKED")
-                                            || schema.name === ProfileConstants?.
-                                                SCIM2_SCHEMA_DICTIONARY.get("ACCOUNT_DISABLED")
-                                            || schema.name === ProfileConstants?.
-                                                SCIM2_SCHEMA_DICTIONARY.get("ONETIME_PASSWORD")
-                                            || (!commonConfig.userEditSection.showEmail &&
-                                                schema.name === ProfileConstants?.
-                                                SCIM2_SCHEMA_DICTIONARY.get("EMAILS")))
-                                            && isFieldDisplayable(schema)) {
-                                            return (
-                                                generateProfileEditForm(schema, index)
-                                            );
-                                        }
-                                    })
-                                }
-                                {
-                                    oneTimePassword && (
-                                        <Grid.Row columns={ 1 }>
-                                            <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 6 }>
-                                                <Field
-                                                    data-testid={ `${ testId }-profile-form-one-time-pw }
-                                                    -input` }
-                                                    name="oneTimePassword"
-                                                    label={ t("console:manage.features.user.profile.fields." +
-                                                        "oneTimePassword") }
-                                                    required={ false }
-                                                    requiredErrorMessage=""
-                                                    type="text"
-                                                    hidden={ oneTimePassword === undefined }
-                                                    value={ oneTimePassword && oneTimePassword }
-                                                    readOnly={ true }
-                                                />
-                                            </Grid.Column>
-                                        </Grid.Row>
-                                    )
-                                }
-                                <Grid.Row columns={ 1 }>
-                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                        {
-                                            !isReadOnly && (
-                                                <Button
-                                                    data-testid={ `${ testId }-form-update-button` }
-                                                    primary
-                                                    type="submit"
-                                                    size="small"
-                                                    className="form-button"
-                                                    loading={ isSubmitting }
-                                                    disabled={ isSubmitting }
-                                                >
-                                                    Update
-                                                </Button>
-                                            )
-                                        }
-                                    </Grid.Column>
-                                </Grid.Row>
-                            </Grid>
-                        </Forms>
-                    </EmphasizedSegment>
-                )
-            }
-            <Divider hidden />
-            { resolveDangerActions() }
-            {
-                deletingUser && (
-                    <ConfirmationModal
-                        data-testid={ `${ testId }-confirmation-modal` }
-                        onClose={ (): void => setShowDeleteConfirmationModal(false) }
-                        type="negative"
-                        open={ showDeleteConfirmationModal }
-                        assertionHint={ t("console:manage.features.user.deleteUser.confirmationModal." +
-                            "assertionHint") }
-                        assertionType="checkbox"
-                        primaryAction={ t("common:confirm") }
-                        secondaryAction={ t("common:cancel") }
-                        onSecondaryActionClick={ (): void => {
-                            setShowDeleteConfirmationModal(false);
-                            setAlert(null);
-                        } }
-                        onPrimaryActionClick={ (): void => handleUserDelete(deletingUser) }
-                        closeOnDimmerClick={ false }
-                    >
-                        <ConfirmationModal.Header data-testid={ `${ testId }-confirmation-modal-header` }>
-                            { t("console:manage.features.user.deleteUser.confirmationModal.header") }
-                        </ConfirmationModal.Header>
-                        <ConfirmationModal.Message
-                            data-testid={ `${ testId }-confirmation-modal-message` }
-                            attached
-                            negative
-                         >
-                            { commonConfig.userEditSection.isGuestUser
-                                ? t("extensions:manage.guest.deleteUser.confirmationModal.message")
-                                : t("console:manage.features.user.deleteUser.confirmationModal.message")
-                            }
-                        </ConfirmationModal.Message>
-                        <ConfirmationModal.Content>
-                            <div className="modal-alert-wrapper"> { alert && alertComponent }</div>
-                            { commonConfig.userEditSection.isGuestUser
-                                ? t("extensions:manage.guest.deleteUser.confirmationModal.content")
-                                : t("console:manage.features.user.deleteUser.confirmationModal.content")
-                            }
-                        </ConfirmationModal.Content>
-                    </ConfirmationModal>
-                )
-            }
-            {
-                editingAttribute && (
-                    <ConfirmationModal
-                        data-testid={ `${ testId }-confirmation-modal` }
-                        onClose={ (): void => {
-                            setShowDisableConfirmationModal(false);
-                            setEditingAttribute(undefined);
-                        } }
-                        type="warning"
-                        open={ showDisableConfirmationModal }
-                        assertion={ user.userName }
-                        assertionHint={ (
-                            <p>
-                                <Trans
-                                    i18nKey={ "console:manage.features.user.disableUser.confirmationModal." +
-                                    "assertionHint" }
-                                    tOptions={ { userName: user.userName } }
-                                >
-                                    Please type <strong>{ user.userName }</strong> to confirm.
-                                </Trans>
-                            </p>
-                        ) }
-                        assertionType="input"
-                        primaryAction={ t("common:confirm") }
-                        secondaryAction={ t("common:cancel") }
-                        onSecondaryActionClick={ (): void => {
-                            setEditingAttribute(undefined);
-                            handleUserUpdate(user.id);
-                            setShowDisableConfirmationModal(false);
-                        } }
-                        onPrimaryActionClick={ () =>
-                            handleDangerActions(editingAttribute.name, editingAttribute.value)
-                        }
-                        closeOnDimmerClick={ false }
-                    >
-                        <ConfirmationModal.Header data-testid={ `${ testId }-confirmation-modal-header` }>
-                            { t("console:manage.features.user.disableUser.confirmationModal.header") }
-                        </ConfirmationModal.Header>
-                        <ConfirmationModal.Message
-                            data-testid={ `${ testId }-disable-confirmation-modal-message` }
-                            attached
-                            warning
+                                                </Grid.Column>
+                                            </Grid.Row>
+                                        )
+                                    }
+                                    {
+                                        createdDate && (
+                                            <Grid.Row columns={ 1 }>
+                                                <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 6 }>
+                                                    <Form.Field>
+                                                        <label>
+                                                            { t("console:manage.features.user.profile.fields." +
+                                                                "createdDate") }
+                                                        </label>
+                                                        <Input
+                                                            name="createdDate"
+                                                            type="text"
+                                                            value={ createdDate ? 
+                                                                moment(createdDate).format("YYYY-MM-DD") : "" }
+                                                            readOnly={ true }
+                                                        />
+                                                    </Form.Field>
+                                                </Grid.Column>
+                                            </Grid.Row>
+                                        )
+                                    }
+                                    {
+                                        modifiedDate && (
+                                            <Grid.Row columns={ 1 }>
+                                                <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 6 }>
+                                                    <Form.Field>
+                                                        <label>
+                                                            { t("console:manage.features.user.profile.fields." +
+                                                                    "modifiedDate") }
+                                                        </label>
+                                                        <Input
+                                                            name="modifiedDate"
+                                                            type="text"
+                                                            value={ modifiedDate ? 
+                                                                moment(modifiedDate).format("YYYY-MM-DD") : "" }
+                                                            readOnly={ true }
+                                                        />
+                                                    </Form.Field>
+                                                </Grid.Column>
+                                            </Grid.Row>
+                                        )
+                                    }
+                                    <Grid.Row columns={ 1 }>
+                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                                            {
+                                                !isReadOnly && (
+                                                    <Button
+                                                        data-testid={ `${ testId }-form-update-button` }
+                                                        primary
+                                                        type="submit"
+                                                        size="small"
+                                                        className="form-button"
+                                                        loading={ isSubmitting }
+                                                        disabled={ isSubmitting }
+                                                    >
+                                                        Update
+                                                    </Button>
+                                                )
+                                            }
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                </Grid>
+                            </Forms>
+                        </EmphasizedSegment>
+                    )
+                }
+                <Divider hidden />
+                { resolveDangerActions() }
+                {
+                    deletingUser && (
+                        <ConfirmationModal
+                            data-testid={ `${testId}-confirmation-modal` }
+                            onClose={ (): void => setShowDeleteConfirmationModal(false) }
+                            type="negative"
+                            open={ showDeleteConfirmationModal }
+                            assertionHint={ t("console:manage.features.user.deleteUser.confirmationModal." +
+                                "assertionHint") }
+                            assertionType="checkbox"
+                            primaryAction={ t("common:confirm") }
+                            secondaryAction={ t("common:cancel") }
+                            onSecondaryActionClick={ (): void => {
+                                setShowDeleteConfirmationModal(false);
+                                setAlert(null);
+                            } }
+                            onPrimaryActionClick={ (): void => handleUserDelete(deletingUser) }
+                            closeOnDimmerClick={ false }
                         >
-                            { t("console:manage.features.user.disableUser.confirmationModal.message") }
-                        </ConfirmationModal.Message>
-                        <ConfirmationModal.Content>
-                            {
-                                deletingUser[SCIMConfigs.scim.enterpriseSchema]?.userSourceId
-                                    ? t("console:manage.features.user.deleteJITUser.confirmationModal.content")
+                            <ConfirmationModal.Header data-testid={ `${testId}-confirmation-modal-header` }>
+                                { t("console:manage.features.user.deleteUser.confirmationModal.header") }
+                            </ConfirmationModal.Header>
+                            <ConfirmationModal.Message
+                                data-testid={ `${testId}-confirmation-modal-message` }
+                                attached
+                                negative
+                            >
+                                { commonConfig.userEditSection.isGuestUser
+                                    ? t("extensions:manage.guest.deleteUser.confirmationModal.message")
+                                    : t("console:manage.features.user.deleteUser.confirmationModal.message")
+                                }
+                            </ConfirmationModal.Message>
+                            <ConfirmationModal.Content>
+                                <div className="modal-alert-wrapper"> { alert && alertComponent }</div>
+                                { commonConfig.userEditSection.isGuestUser
+                                    ? t("extensions:manage.guest.deleteUser.confirmationModal.content")
                                     : t("console:manage.features.user.deleteUser.confirmationModal.content")
+                                }
+                            </ConfirmationModal.Content>
+                        </ConfirmationModal>
+                    )
+                }
+                {
+                    editingAttribute && (
+                        <ConfirmationModal
+                            data-testid={ `${testId}-confirmation-modal` }
+                            onClose={ (): void => {
+                                setShowLockDisableConfirmationModal(false);
+                                setEditingAttribute(undefined);
+                            } }
+                            type="warning"
+                            open={ showLockDisableConfirmationModal }
+                            assertion={ user.userName }
+                            assertionHint={ editingAttribute.name === ProfileConstants
+                                .SCIM2_SCHEMA_DICTIONARY.get("ACCOUNT_LOCKED")
+                                ? t("console:manage.features.user.lockUser.confirmationModal.assertionHint")
+                                : t("console:manage.features.user.disableUser.confirmationModal.assertionHint") }
+                            assertionType="checkbox"
+                            primaryAction={ t("common:confirm") }
+                            secondaryAction={ t("common:cancel") }
+                            onSecondaryActionClick={ (): void => {
+                                setEditingAttribute(undefined);
+                                setShowLockDisableConfirmationModal(false);
+                            } }
+                            onPrimaryActionClick={ () =>
+                                handleDangerActions(editingAttribute.name, editingAttribute.value)
                             }
-                        </ConfirmationModal.Content>
-                    </ConfirmationModal>
-                )
-            }
-            {
-                editingAttribute && (
-                    <ConfirmationModal
-                        data-testid={ `${ testId }-lock-confirmation-modal` }
-                        onClose={ (): void => {
-                            setShowLockConfirmationModal(false);
-                            setEditingAttribute(undefined);
-                        } }
-                        type="warning"
-                        open={ showLockConfirmationModal }
-                        assertion={ user.userName }
-                        assertionHint={ (
-                            <p>
-                                <Trans
-                                    i18nKey={ "console:manage.features.user.lockUser.confirmationModal." +
-                                    "assertionHint" }
-                                    tOptions={ { userName: user.userName } }
-                                >
-                                    Please type <strong>{ user.userName }</strong> to confirm.
-                                </Trans>
-                            </p>
-                        ) }
-                        assertionType="input"
-                        primaryAction={ t("common:confirm") }
-                        secondaryAction={ t("common:cancel") }
-                        onSecondaryActionClick={ (): void => {
-                            setEditingAttribute(undefined);
-                            handleUserUpdate(user.id);
-                            setShowLockConfirmationModal(false);
-                        } }
-                        onPrimaryActionClick={ () =>
-                            handleDangerActions(editingAttribute.name, editingAttribute.value)
-                        }
-                        closeOnDimmerClick={ false }
-                    >
-                        <ConfirmationModal.Header data-testid={ `${ testId }-lock-confirmation-modal-header` }>
-                            { t("console:manage.features.user.lockUser.confirmationModal.header") }
-                        </ConfirmationModal.Header>
-                        <ConfirmationModal.Message
-                            data-testid={ `${ testId }-confirmation-modal-message` }
-                            attached
-                            warning
+                            closeOnDimmerClick={ false }
                         >
-                            { t("console:manage.features.user.lockUser.confirmationModal.message") }
-                        </ConfirmationModal.Message>
-                        <ConfirmationModal.Content>
-                            { t("console:manage.features.user.lockUser.confirmationModal.content") }
-                        </ConfirmationModal.Content>
-                    </ConfirmationModal>
-                )
-            }
-            <ChangePasswordComponent
-                handleForcePasswordResetTrigger={ () => setForcePasswordTriggered(true) }
-                connectorProperties={ connectorProperties }
-                handleCloseChangePasswordModal={ () => setOpenChangePasswordModal(false) }
-                openChangePasswordModal={ openChangePasswordModal }
-                onAlertFired={ onAlertFired }
-                user={ user }
-                handleUserUpdate={ handleUserUpdate }
-            />
-        </>
-        ) : <ContentLoader dimmer/>
+                            <ConfirmationModal.Header data-testid={ `${testId}-confirmation-modal-header` }>
+                                { editingAttribute.name === ProfileConstants
+                                    .SCIM2_SCHEMA_DICTIONARY.get("ACCOUNT_LOCKED")
+                                    ? t("console:manage.features.user.lockUser.confirmationModal.header")
+                                    : t("console:manage.features.user.disableUser.confirmationModal.header") 
+                                }
+                            </ConfirmationModal.Header>
+                            <ConfirmationModal.Message
+                                data-testid={ `${testId}-disable-confirmation-modal-message` }
+                                attached
+                                warning
+                            >
+                                { editingAttribute.name === ProfileConstants
+                                    .SCIM2_SCHEMA_DICTIONARY.get("ACCOUNT_LOCKED")
+                                    ? t("console:manage.features.user.lockUser.confirmationModal.message")
+                                    : t("console:manage.features.user.disableUser.confirmationModal.message")
+                                }
+                            </ConfirmationModal.Message>
+                            <ConfirmationModal.Content>
+                                { editingAttribute.name === ProfileConstants
+                                    .SCIM2_SCHEMA_DICTIONARY.get("ACCOUNT_LOCKED")
+                                    ? t("console:manage.features.user.lockUser.confirmationModal.content")
+                                    : t("console:manage.features.user.disableUser.confirmationModal.content")
+                                }
+                            </ConfirmationModal.Content>
+                        </ConfirmationModal>
+                    )
+                }
+                <ChangePasswordComponent
+                    handleForcePasswordResetTrigger={ () => setForcePasswordTriggered(true) }
+                    connectorProperties={ connectorProperties }
+                    handleCloseChangePasswordModal={ () => setOpenChangePasswordModal(false) }
+                    openChangePasswordModal={ openChangePasswordModal }
+                    onAlertFired={ onAlertFired }
+                    user={ user }
+                    handleUserUpdate={ handleUserUpdate }
+                />
+            </>) 
+            : <ContentLoader dimmer/>
     );
 };
 
@@ -1165,5 +1417,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
  * User profile component default props.
  */
 UserProfile.defaultProps = {
+    adminUserType: "None",
     "data-testid": "user-mgt-user-profile"
 };

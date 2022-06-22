@@ -19,13 +19,13 @@
 import { AccessControlReducerStateInterface } from "../../models";
 import { AccessControlActionType, AccessControlActions } from "../actions/types/access-control";
  
- /**
+/**
   * Common access control reducer initial state.
   */
- const initialState: AccessControlReducerStateInterface = {
+const initialState: AccessControlReducerStateInterface = {
     isDevelopAllowed: true,
     isManageAllowed: true
- };
+};
  
 /**
  * Reducer to handle the state of access control related actions.
@@ -35,7 +35,7 @@ import { AccessControlActionType, AccessControlActions } from "../actions/types/
  * @returns The new state
  */
 export const accessControlReducer = (state: AccessControlReducerStateInterface = initialState,
-                                action: AccessControlActions): AccessControlReducerStateInterface => {
+    action: AccessControlActions): AccessControlReducerStateInterface => {
 
     switch (action.type) {
         case AccessControlActionType.SET_DEVELOPER_VISIBILITY:

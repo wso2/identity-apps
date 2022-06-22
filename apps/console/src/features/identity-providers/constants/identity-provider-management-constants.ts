@@ -25,6 +25,8 @@ import { IdentityProviderTemplateLoadingStrategies } from "../models";
  */
 export class IdentityProviderManagementConstants {
 
+    public static readonly MAXIMUM_NUMBER_OF_LIST_ITEMS_TO_SHOW_INSIDE_CALLOUTS = 3;
+
     /**
      * Identifier for the local IDP.
      * @constant
@@ -103,6 +105,15 @@ export class IdentityProviderManagementConstants {
         CLIENT_SECRET_MIN_LENGTH: 3,
         IDP_NAME_MAX_LENGTH: 50,
         IDP_NAME_MIN_LENGTH: 3
+    };
+
+    /**
+     * General Form element constraints.
+     * @type {Record<string, string | number>}
+     */
+    public static readonly GENERAL_FORM_CONSTRAINTS: Record<string, string | number> = {
+        IMAGE_URL_MAX_LENGTH: 2048,
+        IMAGE_URL_MIN_LENGTH: 3
     };
 
     /**
@@ -224,44 +235,64 @@ export class IdentityProviderManagementConstants {
 
     public static readonly IDENTITY_PROVIDER_TEMPLATE_FETCH_INVALID_STATUS_CODE_ERROR: string = "Received an " +
         "invalid status code while fetching identity provider template.";
+
     public static readonly IDENTITY_PROVIDER_TEMPLATE_FETCH_ERROR: string = "An error occurred while fetching " +
         "the required identity provider template.";
+
     public static readonly IDENTITY_PROVIDER_TEMPLATES_LIST_FETCH_INVALID_STATUS_CODE_ERROR: string = "Received an " +
         "invalid status code while fetching identity provider templates list.";
+
     public static readonly IDENTITY_PROVIDER_TEMPLATES_LIST_FETCH_ERROR: string = "An error occurred while fetching " +
         "the required identity provider templates list.";
+
     public static readonly IDENTITY_PROVIDER_JIT_PROVISIONING_UPDATE_ERROR: string = "An error occurred while" +
         " updating the JIT provisioning configurations of the identity provider.";
+
     public static readonly LOCAL_AUTHENTICATORS_FETCH_INVALID_STATUS_CODE_ERROR: string = "Received an invalid " +
         "status code while fetching local authenticators.";
+
     public static readonly LOCAL_AUTHENTICATORS_FETCH_ERROR: string = "An error occurred while fetching the local" +
         "authenticators.";
+
     public static readonly LOCAL_AUTHENTICATOR_FETCH_INVALID_STATUS_CODE_ERROR: string = "Received an invalid " +
         "status code while fetching the local authenticator.";
+
     public static readonly LOCAL_AUTHENTICATOR_FETCH_ERROR: string = "An error occurred while fetching the " +
         "local authenticator.";
+
     public static readonly AUTHENTICATORS_FETCH_INVALID_STATUS_CODE_ERROR: string = "Received an invalid " +
         "status code while fetching the authenticators.";
+
     public static readonly AUTHENTICATORS_FETCH_ERROR: string = "An error occurred while fetching the " +
         "authenticators.";
+
     public static readonly AUTHENTICATOR_TAGS_FETCH_INVALID_STATUS_CODE_ERROR: string = "Received an invalid " +
         "status code while fetching the authenticator tags.";
+
     public static readonly AUTHENTICATOR_TAGS_FETCH_ERROR: string = "An error occurred while fetching the " +
         "authenticator tags.";
+
     public static readonly MULTI_FACTOR_AUTHENTICATOR_FETCH_INVALID_STATUS_CODE_ERROR: string = "Received an invalid " +
         "status code while fetching the multi-factor authenticator.";
+
     public static readonly MULTI_FACTOR_AUTHENTICATOR_FETCH_ERROR: string = "An error occurred while fetching the " +
         "multi-factor authenticator.";
+
     public static readonly MULTI_FACTOR_AUTHENTICATOR_UPDATE_INVALID_STATUS_CODE_ERROR: string = "Received an " +
         "invalid status code while updating the multi-factor authenticator.";
+
     public static readonly MULTI_FACTOR_AUTHENTICATOR_UPDATE_ERROR: string = "An error occurred while updating the " +
         "multi-factor authenticator.";
+
     public static readonly COMBINED_AUTHENTICATOR_FETCH_ERROR: string = "An error occurred while fetching the local" +
         "and federated authenticators.";
+
     public static readonly IDENTITY_PROVIDER_CLAIMS_UPDATE_ERROR: string = "An error occurred while updating claims " +
         "configurations of the identity provider.";
+
     public static readonly IDENTITY_PROVIDER_CERTIFICATE_UPDATE_ERROR: string = "An error occurred while updating " +
         "the certificate of the identity provider.";
+
     public static readonly BASIC_AUTH_REQUEST_PATH_AUTHENTICATOR: string = "BasicAuthRequestPathAuthenticator";
     public static readonly OAUTH_REQUEST_PATH_AUTHENTICATOR: string = "OAuthRequestPathAuthenticator";
     public static readonly PROVISIONING_CONNECTOR_DISPLAY_NAME: string = "displayName";
@@ -271,8 +302,11 @@ export class IdentityProviderManagementConstants {
     public static readonly TOTP_AUTHENTICATOR: string = "totp";
     public static readonly EMAIL_OTP_AUTHENTICATOR: string = "email-otp-authenticator";
     public static readonly FIDO_AUTHENTICATOR: string = "FIDOAuthenticator";
-    public static readonly BASIC_AUTHENTICATOR = "BasicAuthenticator";
-    public static readonly IDENTIFIER_FIRST_AUTHENTICATOR = "IdentifierExecutor";
+    public static readonly BASIC_AUTHENTICATOR: string = "BasicAuthenticator";
+    public static readonly IDENTIFIER_FIRST_AUTHENTICATOR: string = "IdentifierExecutor";
+    public static readonly SMS_OTP_AUTHENTICATOR: string = "sms-otp";
+    public static readonly BACKUP_CODE_AUTHENTICATOR: string = "backup-code-authenticator";
+    public static readonly MAGIC_LINK_AUTHENTICATOR: string = "MagicLinkAuthenticator";
 
     // Known Enterprise authenticator IDs
     public static readonly OIDC_AUTHENTICATOR_ID: string = "T3BlbklEQ29ubmVjdEF1dGhlbnRpY2F0b3I";
@@ -290,13 +324,15 @@ export class IdentityProviderManagementConstants {
     public static readonly BASIC_AUTH_AUTHENTICATOR_ID: string = "QmFzaWNBdXRoUmVxdWVzdFBhdGhBdXRoZW50aWNhdG9y";
     public static readonly OAUTH_BEARER_AUTHENTICATOR_ID: string = "T0F1dGhSZXF1ZXN0UGF0aEF1dGhlbnRpY2F0b3I";
     public static readonly EMAIL_OTP_AUTHENTICATOR_ID: string = "ZW1haWwtb3RwLWF1dGhlbnRpY2F0b3I";
+    public static readonly BACKUP_CODE_AUTHENTICATOR_ID: string = "YmFja3VwLWNvZGUtYXV0aGVudGljYXRvcgo=";
+    public static readonly MAGIC_LINK_AUTHENTICATOR_ID: string = "TWFnaWNMaW5rQXV0aGVudGljYXRvcg";
 
     // Known Social authenticator IDs.
     public static readonly GOOGLE_OIDC_AUTHENTICATOR_ID: string = "R29vZ2xlT0lEQ0F1dGhlbnRpY2F0b3I";
     public static readonly FACEBOOK_AUTHENTICATOR_ID: string = "RmFjZWJvb2tBdXRoZW50aWNhdG9y";
     public static readonly TWITTER_AUTHENTICATOR_ID: string = "VHdpdHRlckF1dGhlbnRpY2F0b3I";
     public static readonly GITHUB_AUTHENTICATOR_ID: string = "R2l0aHViQXV0aGVudGljYXRvcg";
-    
+
     // Known Social authenticator names;
     public static readonly GOOGLE_OIDC_AUTHENTICATOR_NAME: string = "GoogleOIDCAuthenticator";
     public static readonly FACEBOOK_AUTHENTICATOR_NAME: string = "FacebookAuthenticator";
@@ -320,4 +356,17 @@ export class IdentityProviderManagementConstants {
         "console:develop.features.idp.notifications.apiLimitReachedError.error.message",
         "cec1f247-32fd-4624-9915-f469195a53ac"
     )
+
+    /**
+     * AuthenticationProvider Connections create limit reached error.
+     * @constant
+     * @type IdentityAppsError
+     * @default
+     */
+     public static readonly ERROR_CREATE_LIMIT_REACHED_IDP = new IdentityAppsError(
+         "IDP-60035",
+         "console:develop.features.authenticationProvider.notifications.apiLimitReachedError.error.description",
+         "console:develop.features.authenticationProvider.notifications.apiLimitReachedError.error.message",
+         "cec1f247-32fd-4624-9915-f469195a53ac"
+     )
 }

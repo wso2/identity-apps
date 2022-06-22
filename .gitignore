@@ -97,6 +97,7 @@ modules/theme/src/themes/sample
 modules/react-components/storybook-static
 modules/react-components/.cache
 apps/*/build/
+apps/*/dist/
 apps/*/src/main/webapp/libs/themes
 apps/myaccount/src/main/
 apps/console/src/main/
@@ -119,3 +120,4 @@ tests/dist/
 /.metadata/
 .project
 .repository/
+apps/console/src/extensions/i18n/tmp/**

@@ -37,7 +37,7 @@
             "oidc": {
                 "accessToken": {
                     "applicationAccessTokenExpiryInSeconds": 3600,
-                    "bindingType": "sso-binding",
+                    "bindingType": "sso-session",
                     "revokeTokensWhenIDPSessionTerminated": true,
                     "type": "Default",
                     "userAccessTokenExpiryInSeconds": 3600,

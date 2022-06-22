@@ -30,6 +30,7 @@ import {
     ApplicationTemplateInterface,
     ApplicationTemplateListInterface,
     AuthProtocolMetaListItemInterface,
+    MainApplicationInterface,
     OIDCApplicationConfigurationInterface,
     OIDCDataInterface,
     SAMLApplicationConfigurationInterface,
@@ -48,6 +49,11 @@ import { ApplicationManagementUtils } from "../utils";
 const httpClient = AsgardeoSPAClient.getInstance()
     .httpRequest.bind(AsgardeoSPAClient.getInstance())
     .bind(AsgardeoSPAClient.getInstance());
+
+const httpClientAll = AsgardeoSPAClient.getInstance()
+    .httpRequestAll.bind(AsgardeoSPAClient.getInstance())
+    .bind(AsgardeoSPAClient.getInstance());
+
 /**
  * Gets the basic information about the application.
  *
@@ -71,6 +77,7 @@ export const getApplicationDetails = (id: string): Promise<any> => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to get app from: "));
             }
+
             return Promise.resolve(response.data as ApplicationBasicInterface);
         }).catch((error) => {
             return Promise.reject(error);
@@ -99,6 +106,7 @@ export const deleteApplication = (id: string): Promise<any> => {
             if (response.status !== 204) {
                 return Promise.reject(new Error("Failed to delete the application."));
             }
+
             return Promise.resolve(response);
         }).catch((error) => {
             return Promise.reject(error);
@@ -132,6 +140,7 @@ export const updateApplicationDetails = (app: ApplicationInterface): Promise<any
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to update application from: "));
             }
+
             return Promise.resolve(response.data as ApplicationBasicInterface);
         }).catch((error) => {
             return Promise.reject(error);
@@ -148,7 +157,7 @@ export const updateApplicationDetails = (app: ApplicationInterface): Promise<any
  * @return {Promise<ApplicationListInterface>} A promise containing the response.
  */
 export const getApplicationList = (limit: number, offset: number,
-                                   filter: string): Promise<ApplicationListInterface> => {
+    filter: string): Promise<ApplicationListInterface> => {
     const requestConfig = {
         headers: {
             "Accept": "application/json",
@@ -169,10 +178,48 @@ export const getApplicationList = (limit: number, offset: number,
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to get application list from: "));
             }
+
             return Promise.resolve(response.data as ApplicationListInterface);
         }).catch((error) => {
             return Promise.reject(error);
         });
+};
+
+export const getApplicationsByIds = async (
+    ids: Set<string>
+): Promise<AxiosResponse<ApplicationInterface>[]> => {
+
+    const requests = [];
+
+    for (const id of ids) {
+        requests.push({
+            headers: {
+                "Accept": "application/json",
+                "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+                "Content-Type": "application/json"
+            },
+            method: HttpMethods.GET,
+            url: store.getState().config.endpoints.applications + "/" + id
+        });
+    }
+
+    try {
+        const responses = await httpClientAll(requests);
+
+        return Promise.resolve<AxiosResponse<ApplicationInterface>[]>(responses);
+    } catch (error: AxiosError | any) {
+        return Promise.reject(
+            new IdentityAppsApiException(
+                ApplicationManagementConstants.UNABLE_FETCH_APPLICATIONS,
+                error?.stack,
+                error?.code,
+                error?.request,
+                error?.response,
+                error?.config
+            )
+        );
+    }
+
 };
 
 /**
@@ -196,6 +243,7 @@ export const getAvailableInboundProtocols = (customOnly: boolean): Promise<AuthP
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to get Inbound protocols from: "));
             }
+
             return Promise.resolve(response.data as AuthProtocolMetaListItemInterface[]);
         }).catch((error) => {
             return Promise.reject(error);
@@ -265,6 +313,7 @@ export const getOIDCData = (id: string): Promise<any> => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to retrieve OIDC data from: "));
             }
+
             return Promise.resolve(response.data as OIDCDataInterface);
         }).catch((error) => {
             return Promise.reject(error);
@@ -298,6 +347,7 @@ export const getInboundProtocolConfig = (applicationId: string, inboundProtocolI
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to retrieve the inbound protocol config."));
             }
+
             return Promise.resolve(response.data);
         }).catch((error) => {
             return Promise.reject(error);
@@ -308,10 +358,11 @@ export const getInboundProtocolConfig = (applicationId: string, inboundProtocolI
  * Updates the OIDC configuration.
  * TODO: Migrate to `updateAuthProtocolConfig` generic function.
  *
- * @param id Application ID
- * @param OIDC OIDC configuration data.
+ * @param {string} id - Application ID
+ * @param {Record<string, unknown>} OIDC - OIDC configuration data.
+ * @return {Promise<any>}
  */
-export const updateOIDCData = (id: string, OIDC: object): Promise<any> => {
+export const updateOIDCData = (id: string, OIDC: Record<string, unknown>): Promise<any> => {
     const requestConfig = {
         data: OIDC,
         headers: {
@@ -328,6 +379,7 @@ export const updateOIDCData = (id: string, OIDC: object): Promise<any> => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to update inbound configuration"));
             }
+
             return Promise.resolve(response);
         }).catch((error) => {
             return Promise.reject(error);
@@ -338,13 +390,13 @@ export const updateOIDCData = (id: string, OIDC: object): Promise<any> => {
  * Generic function to update the authentication protocol config of an application.
  *
  * @param {string} id - Application ID.
- * @param config - Protocol config.
+ * @param {T} config - Protocol config.
  * @param {string} protocol - The protocol to be updated.
  * @return {Promise<T>} Promise of type T.
  * @throws {IdentityAppsApiException}
  */
-export const updateAuthProtocolConfig = <T>(id: string, config: any,
-                                            protocol: string): Promise<T> => {
+export const updateAuthProtocolConfig = <T>(id: string, config: T,
+    protocol: string): Promise<T> => {
 
     /**
      * On template level we use {@link SupportedAuthProtocolTypes.OAUTH2_OIDC}
@@ -438,10 +490,11 @@ export const deleteProtocol = <T>(id: string, protocol: string): Promise<T> => {
 /**
  * Updates the application configuration.
  *
- * @param id Application ID
- * @param configs Application configurations.
+ * @param {string} id - Application ID
+ * @param {Record<string, unknown>} configs - Application configurations.
+ * @return {Promise<any>}
  */
-export const updateApplicationConfigurations = (id: string, configs: object): Promise<any> => {
+export const updateApplicationConfigurations = (id: string, configs: Record<string, unknown>): Promise<any> => {
     const requestConfig = {
         data: configs,
         headers: {
@@ -458,6 +511,7 @@ export const updateApplicationConfigurations = (id: string, configs: object): Pr
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to update advance configuration"));
             }
+
             return Promise.resolve(response);
         }).catch((error) => {
             return Promise.reject(error);
@@ -467,9 +521,10 @@ export const updateApplicationConfigurations = (id: string, configs: object): Pr
 /**
  * Creates a new application.
  *
- * @param application Application settings data.
+ * @param {MainApplicationInterface} application - Application settings data.
+ * @return {Promise<any>}
  */
-export const createApplication = (application: object): Promise<any> => {
+export const createApplication = (application: MainApplicationInterface): Promise<any> => {
     const requestConfig = {
         data: application,
         headers: {
@@ -486,6 +541,7 @@ export const createApplication = (application: object): Promise<any> => {
             if ((response.status !== 201)) {
                 return Promise.reject(new Error("Failed to create the application."));
             }
+
             return Promise.resolve(response);
         }).catch((error) => {
             return Promise.reject(error);
@@ -494,10 +550,11 @@ export const createApplication = (application: object): Promise<any> => {
 
 /**
  * Updates Authentication sequence of the application.
- * @param id ID of the application
- * @param data Authentication configurations of the application.
+ * @param {string} id - ID of the application
+ * @param {Record<string, unknown>} data - Authentication configurations of the application.
+ * @return {Promise<any>}
  */
-export const updateAuthenticationSequence = (id: string, data: object): Promise<any> => {
+export const updateAuthenticationSequence = (id: string, data: Record<string, unknown>): Promise<any> => {
     const requestConfig = {
         data,
         headers: {
@@ -514,6 +571,7 @@ export const updateAuthenticationSequence = (id: string, data: object): Promise<
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to update authentication sequence"));
             }
+
             return Promise.resolve(response);
         }).catch((error) => {
             return Promise.reject(error);
@@ -522,10 +580,12 @@ export const updateAuthenticationSequence = (id: string, data: object): Promise<
 
 /**
  * Updates Authentication sequence of the application.
- * @param id ID of the application
- * @param data Claim configurations of the application.
+ *
+ * @param {string} id - ID of the application.
+ * @param {Record<string, unknown>} data - Claim configurations of the application.
+ * @return {Promise<any>}
  */
-export const updateClaimConfiguration = (id: string, data: object): Promise<any> => {
+export const updateClaimConfiguration = (id: string, data: Record<string, unknown>): Promise<any> => {
     const requestConfig = {
         data,
         headers: {
@@ -542,6 +602,7 @@ export const updateClaimConfiguration = (id: string, data: object): Promise<any>
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to update claim configuration"));
             }
+
             return Promise.resolve(response);
         }).catch((error) => {
             return Promise.reject(error);
@@ -552,7 +613,8 @@ export const updateClaimConfiguration = (id: string, data: object): Promise<any>
  * Regenerates the client secret.
  * Used only in OIDC flow.
  *
- * @param appId application Id
+ * @param {string} appId - application Id.
+ * @return {Promise<any>}
  */
 export const regenerateClientSecret = (appId: string): Promise<any> => {
     const requestConfig = {
@@ -571,6 +633,7 @@ export const regenerateClientSecret = (appId: string): Promise<any> => {
             if ((response.status !== 200)) {
                 return Promise.reject(new Error("Failed to regenerate the application secret."));
             }
+
             return Promise.resolve(response);
         }).catch((error) => {
             return Promise.reject(error);
@@ -581,7 +644,8 @@ export const regenerateClientSecret = (appId: string): Promise<any> => {
  * Revoke the client secret of application
  * Used only in OIDC flow.
  *
- * @param appId application ID
+ * @param {string} appId - application ID.
+ * @return {Promise<any>}
  */
 export const revokeClientSecret = (appId: string): Promise<any> => {
     const requestConfig = {
@@ -599,6 +663,7 @@ export const revokeClientSecret = (appId: string): Promise<any> => {
             if ((response.status !== 200)) {
                 return Promise.reject(new Error("Failed to revoke the application secret."));
             }
+
             return Promise.resolve(response);
         }).catch((error) => {
             return Promise.reject(error);
@@ -609,6 +674,7 @@ export const revokeClientSecret = (appId: string): Promise<any> => {
  * Get all the sample adaptive authentication templates.
  *
  * @return {Promise<AdaptiveAuthTemplatesListInterface>} Response as a promise.
+ * @throws {IdentityAppsApiException}
  */
 export const getAdaptiveAuthTemplates = (): Promise<AdaptiveAuthTemplatesListInterface> => {
     const requestConfig = {
@@ -653,6 +719,7 @@ export const getAdaptiveAuthTemplates = (): Promise<AdaptiveAuthTemplatesListInt
  * @param templateId Template Id of the application.
  *
  * @return {Promise<ApplicationTemplateInterface>} A promise containing the response.
+ * @throws {IdentityAppsApiException}
  */
 export const getApplicationTemplateData = (templateId: string): Promise<ApplicationTemplateInterface> => {
     const requestConfig = {
@@ -697,9 +764,10 @@ export const getApplicationTemplateData = (templateId: string): Promise<Applicat
  * @param {string} filter - Search filter.
  *
  * @return {Promise<ApplicationTemplateListInterface>} A promise containing the response.
+ * @throws {IdentityAppsApiException}
  */
 export const getApplicationTemplateList = (limit?: number, offset?: number,
-                                           filter?: string): Promise<ApplicationTemplateListInterface> => {
+    filter?: string): Promise<ApplicationTemplateListInterface> => {
     const requestConfig = {
         headers: {
             "Accept": "application/json",
@@ -743,6 +811,7 @@ export const getApplicationTemplateList = (limit?: number, offset?: number,
  * Gets the OIDC application configurations.
  *
  * @return {Promise<OIDCApplicationConfigurationInterface>} A promise containing the oidc configurations.
+ * @throws {IdentityAppsApiException}
  */
 export const getOIDCApplicationConfigurations = (): Promise<OIDCApplicationConfigurationInterface> => {
     const requestConfig = {
@@ -775,8 +844,9 @@ export const getOIDCApplicationConfigurations = (): Promise<OIDCApplicationConfi
                 tokenEndpoint: response.data.token_endpoint,
                 tokenRevocationEndpoint: response.data.revocation_endpoint,
                 userEndpoint: response.data.userinfo_endpoint,
-                wellKnownEndpoint: store.getState().config.endpoints.wellKnown
+                wellKnownEndpoint: `${response.data.token_endpoint}/.well-known/openid-configuration`
             };
+
             return Promise.resolve(oidcConfigs);
         }).catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
@@ -793,6 +863,7 @@ export const getOIDCApplicationConfigurations = (): Promise<OIDCApplicationConfi
  * Gets the SAML application configurations.
  *
  * @return {Promise<SAMLApplicationConfigurationInterface>} A promise containing the meta data.
+ * @throws {IdentityAppsApiException}
  */
 export const getSAMLApplicationConfigurations = (): Promise<SAMLApplicationConfigurationInterface> => {
     const requestConfig = {
@@ -833,6 +904,7 @@ export const getSAMLApplicationConfigurations = (): Promise<SAMLApplicationConfi
  * Retrieve available request path authenticators.
  *
  * @returns {Promise<any>} a promise containing the response.
+ * @throws {IdentityAppsApiException}
  */
 export const getRequestPathAuthenticators = (): Promise<any> => {
 
@@ -857,6 +929,7 @@ export const getRequestPathAuthenticators = (): Promise<any> => {
                     response,
                     response.config);
             }
+
             return Promise.resolve(response.data);
         })
         .catch((error: AxiosError) => {

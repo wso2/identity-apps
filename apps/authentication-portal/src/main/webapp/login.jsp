@@ -22,6 +22,8 @@
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
 <%@ page import="org.wso2.carbon.identity.core.util.IdentityCoreConstants" %>
 <%@ page import="org.wso2.carbon.identity.core.util.IdentityUtil" %>
+<%@ page import="org.wso2.carbon.base.ServerConfiguration" %>
+<%@ page import="org.wso2.carbon.identity.captcha.util.CaptchaUtil" %>
 <%@ page import="static org.wso2.carbon.identity.application.authentication.endpoint.util.Constants.STATUS" %>
 <%@ page import="static org.wso2.carbon.identity.application.authentication.endpoint.util.Constants.STATUS_MSG" %>
 <%@ page import="static org.wso2.carbon.identity.application.authentication.endpoint.util.Constants.CONFIGURATION_ERROR" %>
@@ -39,6 +41,7 @@
 
 <%!
     private static final String FIDO_AUTHENTICATOR = "FIDOAuthenticator";
+    private static final String MAGIC_LINK_AUTHENTICATOR = "MagicLinkAuthenticator";
     private static final String IWA_AUTHENTICATOR = "IwaNTLMAuthenticator";
     private static final String IS_SAAS_APP = "isSaaSApp";
     private static final String BASIC_AUTHENTICATOR = "BasicAuthenticator";
@@ -46,6 +49,8 @@
     private static final String OPEN_ID_AUTHENTICATOR = "OpenIDAuthenticator";
     private static final String JWT_BASIC_AUTHENTICATOR = "JWTBasicAuthenticator";
     private static final String X509_CERTIFICATE_AUTHENTICATOR = "x509CertificateAuthenticator";
+    private String reCaptchaAPI = null;
+    private String reCaptchaKey = null;
 %>
 
 <%
@@ -66,8 +71,10 @@
     if (Boolean.parseBoolean(request.getParameter(Constants.AUTH_FAILURE))) {
         loginFailed = "true";
         String error = request.getParameter(Constants.AUTH_FAILURE_MSG);
-        if (error != null && !error.isEmpty()) {
-            errorMessage = error;
+        // Check the error is not null and whether there is a corresponding value in the resource bundle.
+        if (!(StringUtils.isBlank(error)) &&
+            !error.equalsIgnoreCase(AuthenticationEndpointUtil.i18n(resourceBundle, error))) {
+                errorMessage = error;
         }
     }
 %>
@@ -82,7 +89,7 @@
             localAuthenticatorNames = Arrays.asList(authList.split(","));
         }
     }
-    
+
     String multiOptionURIParam = "";
     if (localAuthenticatorNames.size() > 1 || idpAuthenticatorMapping != null && idpAuthenticatorMapping.size() > 1) {
         String baseURL;
@@ -94,7 +101,7 @@
             request.getRequestDispatcher("error.do").forward(request, response);
             return;
         }
-        
+
         String queryParamString = request.getQueryString() != null ? ("?" + request.getQueryString()) : "";
         multiOptionURIParam = "&multiOptionURI=" + Encode.forUriComponent(baseURL + queryParamString);
     }
@@ -108,6 +115,11 @@
     boolean reCaptchaResendEnabled = false;
     if (request.getParameter("reCaptchaResend") != null && Boolean.parseBoolean(request.getParameter("reCaptchaResend"))) {
         reCaptchaResendEnabled = true;
+    }
+
+    if (reCaptchaEnabled || reCaptchaResendEnabled) {
+        reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
+        reCaptchaAPI = CaptchaUtil.reCaptchaAPIURL();
     }
 %>
 <%
@@ -133,6 +145,7 @@
         } else {
             String redirectURL = "error.do";
             response.sendRedirect(redirectURL);
+            return;
         }
     }
 
@@ -145,7 +158,7 @@
         // We need to send the tenant domain as a query param only in non tenant qualified URL mode.
         loginContextRequestUrl += "&tenantDomain=" + Encode.forUriComponent(tenantDomain);
     }
-    
+
     String t = request.getParameter("t");
     String ut = request.getParameter("ut");
     if (StringUtils.isNotBlank(t)) {
@@ -185,7 +198,7 @@
     <%
         if (reCaptchaEnabled || reCaptchaResendEnabled) {
     %>
-        <script src='<%=(Encode.forJavaScriptSource(request.getParameter("reCaptchaAPI")))%>'></script>
+        <script src='<%=(Encode.forJavaScriptSource(reCaptchaAPI))%>'></script>
     <%
         }
     %>
@@ -246,6 +259,7 @@
                                     String redirectURL = "error.do?" + STATUS + "=" + CONFIGURATION_ERROR + "&" +
                                             STATUS_MSG + "=" + AUTHENTICATION_MECHANISM_NOT_CONFIGURED;
                                     response.sendRedirect(redirectURL);
+                                    return;
                                 }
                             } else if (localAuthenticatorNames.contains(BASIC_AUTHENTICATOR)) {
                                 isBackChannelBasicAuth = false;
@@ -361,18 +375,43 @@
                                 if (localAuthenticatorNames.contains(FIDO_AUTHENTICATOR)) {
                             %>
                             <div class="field">
-                                <button class="ui grey basic labeled icon button fluid"
+                                <button class="ui grey labeled icon button fluid"
                                     onclick="handleNoDomain(this,
                                         '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpEntry.getKey()))%>',
                                         'FIDOAuthenticator')"
                                     id="icon-<%=iconId%>"
-                                    title="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> FIDO">
+                                    title="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%>
+                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with" )%>">
                                     <i class="usb icon"></i>
-                                    <img src="libs/themes/default/assets/images/icons/fido-logo.png" height="13px" /> Key
+                                    <img src="libs/themes/default/assets/images/icons/fingerprint.svg" alt="Fido Logo" />
+                                    <span>
+                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with" )%>
+                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.authenticator" )%>
+                                    </span>
                                 </button>
                             </div>
                             <%
-                                        }
+                                }
+                                if (localAuthenticatorNames.contains(MAGIC_LINK_AUTHENTICATOR)) {
+                            %>
+                            <div class="field">
+                                <button class="ui grey labeled icon button fluid"
+                                    onclick="handleNoDomain(this,
+                                        '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpEntry.getKey()))%>',
+                                        '<%=MAGIC_LINK_AUTHENTICATOR%>')"
+                                    id="icon-<%=iconId%>"
+                                    title="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%>
+                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with" )%>">
+                                    <i class="email icon"></i>
+                                    <img src="libs/themes/default/assets/images/icons/magic-link-icon.svg" alt="Magic Link Logo" />
+                                    <span>
+                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with" )%>
+                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "magic.link" )%>
+                                    </span>
+                                </button>
+                            </div>
+                            <%
+                                }
                                 if (localAuthenticatorNames.contains("totp")) {
                             %>
                             <div class="field">
@@ -386,10 +425,9 @@
                                 </button>
                             </div>
                             <%
-                                        }
-                                    }
-
-                                }
+                            }
+                            }
+                            }
                             } %>
                             </div>
                         </div>
@@ -419,11 +457,27 @@
         <jsp:include page="includes/footer.jsp"/>
     <% } %>
 
+    <%
+        String contextPath =
+                ServerConfiguration.getInstance().getFirstProperty(IdentityCoreConstants.PROXY_CONTEXT_PATH);
+        if (contextPath != null && contextPath != "") {
+            if (contextPath.trim().charAt(0) != '/') {
+                contextPath = "/" + contextPath;
+            }
+            if (contextPath.trim().charAt(contextPath.length() - 1) == '/') {
+                contextPath = contextPath.substring(0, contextPath.length() - 1);
+            }
+            contextPath = contextPath.trim();
+        } else {
+            contextPath = "";
+        }
+    %>
     <script>
         function checkSessionKey() {
+            var proxyPath = "<%=contextPath%>"
             $.ajax({
                 type: "GET",
-                url: "<%=loginContextRequestUrl%>",
+                url: proxyPath + "<%=loginContextRequestUrl%>",
                 xhrFields: { withCredentials: true },
                 success: function (data) {
                     if (data && data.status == 'redirect' && data.redirectUrl && data.redirectUrl.length > 0) {

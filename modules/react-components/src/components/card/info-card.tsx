@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, MouseEvent, PropsWithChildren, ReactElement, ReactNode } from "react";
 import { Card, CardProps, Icon, Label, Popup } from "semantic-ui-react";
@@ -27,7 +27,7 @@ import { Tooltip } from "../typography";
 /**
  * Proptypes for the info card component.
  */
-export interface InfoCardPropsInterface extends CardProps, TestableComponentInterface {
+export interface InfoCardPropsInterface extends CardProps, IdentifiableComponentInterface, TestableComponentInterface {
 
     /**
      * Action for the card
@@ -65,6 +65,10 @@ export interface InfoCardPropsInterface extends CardProps, TestableComponentInte
      * Github repo metadata.
      */
     githubRepoMetaInfo?: GithubHubRepoMetaInfoInterface;
+    /**
+     * Disable hovering effect.
+     */
+    noHover?: boolean;
     /**
      * If the card is selected.
      */
@@ -132,12 +136,14 @@ export const InfoCard: FunctionComponent<PropsWithChildren<InfoCardPropsInterfac
         image,
         imageOptions,
         imageSize,
+        noHover,
         onClick,
         selected,
         subHeader,
         ribbon,
         tags,
         showTooltips,
+        [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId,
         ...rest
     } = props;
@@ -148,7 +154,7 @@ export const InfoCard: FunctionComponent<PropsWithChildren<InfoCardPropsInterfac
             disabled,
             fluid,
             inline,
-            [ "no-hover" ]: action || disabled,
+            [ "no-hover" ]: noHover || action || disabled,
             selected,
             ["with-image"]: image
         },
@@ -161,6 +167,7 @@ export const InfoCard: FunctionComponent<PropsWithChildren<InfoCardPropsInterfac
             className={ classes }
             link={ false }
             as="div"
+            data-componentid={ componentId }
             data-testid={ testId }
             onClick={ !action && !disabled && onClick }
             { ...rest }
@@ -178,6 +185,7 @@ export const InfoCard: FunctionComponent<PropsWithChildren<InfoCardPropsInterfac
                         <GenericIcon
                             square
                             transparent
+                            data-componentid={ `${ componentId }-image` }
                             data-testid={ `${ testId }-image` }
                             className="card-image"
                             size={
@@ -197,7 +205,11 @@ export const InfoCard: FunctionComponent<PropsWithChildren<InfoCardPropsInterfac
                             compact
                             size="mini"
                             trigger={ (
-                                <Card.Header className="card-header ellipsis" data-testid={ `${ testId }-header` }>
+                                <Card.Header
+                                    className="card-header ellipsis"
+                                    data-componentid={ `${ componentId }-header` }
+                                    data-testid={ `${ testId }-header` }
+                                >
                                     { header }
                                 </Card.Header>
                             ) }
@@ -207,7 +219,11 @@ export const InfoCard: FunctionComponent<PropsWithChildren<InfoCardPropsInterfac
                         />
                     ) }
                     { subHeader && (
-                        <Card.Header className="card-subheader ellipsis" data-testid={ `${ testId }-sub-header` }>
+                        <Card.Header
+                            className="card-subheader ellipsis"
+                            data-componentid={ `${ componentId }-sub-header` }
+                            data-testid={ `${ testId }-sub-header` }
+                        >
                             { subHeader }
                         </Card.Header>
                     ) }
@@ -219,6 +235,7 @@ export const InfoCard: FunctionComponent<PropsWithChildren<InfoCardPropsInterfac
                                 trigger={ (
                                     <Card.Description
                                         className="card-description"
+                                        data-componentid={ `${ componentId }-description` }
                                         data-testid={ `${ testId }-description` }
                                     >
                                         { description }
@@ -232,14 +249,21 @@ export const InfoCard: FunctionComponent<PropsWithChildren<InfoCardPropsInterfac
                     }
                     {
                         githubRepoCard && githubRepoMetaInfo && fluid && (
-                            <Card.Content className="github-meta" data-testid={ `${ testId }-github-repo-meta` }>
+                            <Card.Content
+                                className="github-meta"
+                                data-componentid={ `${ componentId }-github-repo-meta` }
+                                data-testid={ `${ testId }-github-repo-meta` }
+                            >
                                 {
                                     githubRepoMetaInfo.languageLogo && (
                                         <Popup
-                                            trigger={
+                                            trigger={ (
                                                 <div className="language">
                                                     <GenericIcon
                                                         icon={ githubRepoMetaInfo.languageLogo }
+                                                        data-componentid={
+                                                            `${ componentId }-github-repo-language-logo`
+                                                        }
                                                         data-testid={ `${ testId }-github-repo-language-logo` }
                                                         size="micro"
                                                         transparent
@@ -249,20 +273,33 @@ export const InfoCard: FunctionComponent<PropsWithChildren<InfoCardPropsInterfac
                                                         floated="left"
                                                     />
                                                 </div>
-                                            }
+                                            ) }
                                             content={ githubRepoMetaInfo.language }
                                             inverted
                                         />
                                     )
                                 }
-                                <Label.Group size="mini" data-testid={ `${ testId }-github-repo-stats` }>
-                                    <Label data-testid={ `${ testId }-github-repo-stars` }>
+                                <Label.Group
+                                    size="mini"
+                                    data-componentid={ `${ componentId }-github-repo-stats` }
+                                    data-testid={ `${ testId }-github-repo-stats` }
+                                >
+                                    <Label
+                                        data-componentid={ `${ componentId }-github-repo-stars` }
+                                        data-testid={ `${ testId }-github-repo-stars` }
+                                    >
                                         <Icon name="star" /> { githubRepoMetaInfo.stars }
                                     </Label>
-                                    <Label data-testid={ `${ testId }-github-repo-forks` }>
+                                    <Label
+                                        data-componentid={ `${ componentId }-github-repo-forks` }
+                                        data-testid={ `${ testId }-github-repo-forks` }
+                                    >
                                         <Icon name="fork" /> { githubRepoMetaInfo.forks }
                                     </Label>
-                                    <Label data-testid={ `${ testId }-github-repo-watchers` }>
+                                    <Label
+                                        data-componentid={ `${ componentId }-github-repo-watchers` }
+                                        data-testid={ `${ testId }-github-repo-watchers` }
+                                    >
                                         <Icon name="eye" /> { githubRepoMetaInfo.watchers }
                                     </Label>
                                 </Label.Group>
@@ -277,7 +314,11 @@ export const InfoCard: FunctionComponent<PropsWithChildren<InfoCardPropsInterfac
                         compact
                         size="mini"
                         trigger={ (
-                            <Card.Description className="card-description" data-testid={ `${ testId }-description` }>
+                            <Card.Description
+                                className="card-description"
+                                data-componentid={ `${ componentId }-description` }
+                                data-testid={ `${ testId }-description` }
+                            >
                                 { description }
                             </Card.Description>
                         ) }
@@ -290,7 +331,11 @@ export const InfoCard: FunctionComponent<PropsWithChildren<InfoCardPropsInterfac
             {
                 (tags && tags instanceof Array)
                     ? (
-                        <Card.Content className="card-tags" data-testid={ `${ testId }-tags` }>
+                        <Card.Content
+                            className="card-tags"
+                            data-componentid={ `${ componentId }-tags` }
+                            data-testid={ `${ testId }-tags` }
+                        >
                             <Label.Group size="mini">
                                 {
                                     tags.map((tag, index) => (
@@ -304,14 +349,19 @@ export const InfoCard: FunctionComponent<PropsWithChildren<InfoCardPropsInterfac
             }
             {
                 githubRepoCard && githubRepoMetaInfo && !fluid && (
-                    <Card.Content className="github-meta" data-testid={ `${ testId }-github-repo-meta` }>
+                    <Card.Content
+                        className="github-meta"
+                        data-componentid={ `${ componentId }-github-repo-meta` }
+                        data-testid={ `${ testId }-github-repo-meta` }
+                    >
                         {
                             githubRepoMetaInfo.languageLogo && (
                                 <Popup
-                                    trigger={
+                                    trigger={ (
                                         <div className="language">
                                             <GenericIcon
                                                 icon={ githubRepoMetaInfo.languageLogo }
+                                                data-componentid={ `${ componentId }-github-repo-language-logo` }
                                                 data-testid={ `${ testId }-github-repo-language-logo` }
                                                 size="micro"
                                                 transparent
@@ -321,20 +371,33 @@ export const InfoCard: FunctionComponent<PropsWithChildren<InfoCardPropsInterfac
                                                 floated="left"
                                             />
                                         </div>
-                                    }
+                                    ) }
                                     content={ githubRepoMetaInfo.language }
                                     inverted
                                 />
                             )
                         }
-                        <Label.Group size="mini" data-testid={ `${ testId }-github-repo-stats` }>
-                            <Label data-testid={ `${ testId }-github-repo-stars` }>
+                        <Label.Group
+                            size="mini"
+                            data-componentid={ `${ componentId }-github-repo-stats` }
+                            data-testid={ `${ testId }-github-repo-stats` }
+                        >
+                            <Label
+                                data-componentid={ `${ componentId }-github-repo-stars` }
+                                data-testid={ `${ testId }-github-repo-stars` }
+                            >
                                 <Icon name="star" /> { githubRepoMetaInfo.stars }
                             </Label>
-                            <Label data-testid={ `${ testId }-github-repo-forks` }>
+                            <Label
+                                data-componentid={ `${ componentId }-github-repo-forks` }
+                                data-testid={ `${ testId }-github-repo-forks` }
+                            >
                                 <Icon name="fork" /> { githubRepoMetaInfo.forks }
                             </Label>
-                            <Label data-testid={ `${ testId }-github-repo-watchers` }>
+                            <Label
+                                data-componentid={ `${ componentId }-github-repo-watchers` }
+                                data-testid={ `${ testId }-github-repo-watchers` }
+                            >
                                 <Icon name="eye" /> { githubRepoMetaInfo.watchers }
                             </Label>
                         </Label.Group>
@@ -343,7 +406,11 @@ export const InfoCard: FunctionComponent<PropsWithChildren<InfoCardPropsInterfac
             }
             {
                 (action !== undefined) && (
-                    <Card.Content className="action-container" data-testid={ `${ testId }-action-container` }>
+                    <Card.Content
+                        className="action-container"
+                        data-componentid={ `${ componentId }-action-container` }
+                        data-testid={ `${ testId }-action-container` }
+                    >
                         {
                             typeof action === "string"
                                 ? (
@@ -373,6 +440,7 @@ export const InfoCard: FunctionComponent<PropsWithChildren<InfoCardPropsInterfac
  * Prop types for the info card component.
  */
 InfoCard.defaultProps = {
+    "data-componentid": "info-card",
     "data-testid": "info-card",
     imageSize: "mini",
     inline: false,

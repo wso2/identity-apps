@@ -21,9 +21,9 @@
 /// <reference types="../../types" />
 
 import { CommonUtils, CookieUtils, HousekeepingUtils } from "@wso2/identity-cypress-test-base/ui";
-import { IdentityProviderEditPageConstants, IdentityProvidersListPageConstants } from "./constants";
-import { IdentityProviderEditPage, IdentityProvidersListPage, IdentityProviderTemplatesPage } from "./page-objects";
 import { v4 as uuidv4 } from "uuid";
+import { IdentityProviderEditPageConstants, IdentityProvidersListPageConstants } from "./constants";
+import { IdentityProviderEditPage, IdentityProviderTemplatesPage, IdentityProvidersListPage } from "./page-objects";
 
 const USERNAME: string = Cypress.env("TENANT_USERNAME");
 const PASSWORD: string = Cypress.env("TENANT_PASSWORD");
@@ -37,9 +37,9 @@ describe("ITC-2.0.0 - [identity-providers] - Identity Providers Listing Integrat
     const identityProviderTemplatesPage: IdentityProviderTemplatesPage = new IdentityProviderTemplatesPage();
     const identityProviderEditPage: IdentityProviderEditPage = new IdentityProviderEditPage();
 
-    let idpName: string = "Expert IDP - " + uuidv4();
-    let idpDescription: string = "Automation IDP created with Cypress.";
-    let idpImage: string = "https://seeklogo.com/images/G/google-2015-logo-65BBD07B01-seeklogo.com.png";
+    const idpName: string = "Expert IDP - " + uuidv4();
+    const idpDescription: string = "Automation IDP created with Cypress.";
+    const idpImage: string = "https://seeklogo.com/images/G/google-2015-logo-65BBD07B01-seeklogo.com.png";
 
     const JWKS_ENDPOINT: string = "https://localhost:9443/oauth2/jwks";
 

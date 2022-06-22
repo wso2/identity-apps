@@ -32,7 +32,6 @@ const httpClient = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAC
  *
  * @return {Promise<any>} A promise containing the response.
  */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 export const fetchApplications = (
     limit: number,
     offset: number,

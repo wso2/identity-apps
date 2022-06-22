@@ -50,19 +50,19 @@ export interface FormPropsInterface extends FormProps {
 export const Form: ForwardRefExoticComponent<FormPropsInterface> =
     forwardRef((props: FormProps, ref): ReactElement => {
 
-    let { noValidate, triggerSubmit, ...other } = props;
+    const { noValidate, triggerSubmit, ...other } = props;
     const { children, onSubmit, uncontrolledForm, ...rest } = other;
 
     const formRef = useRef(null);
     const childNodes = React.Children.toArray(children);
 
     const skipFinalTypes = (type: String): boolean => {
-        let skip: boolean;
+
         const typeToBeSkipped = [ "FieldDropdown" ]
-        skip = typeToBeSkipped.some((skipType) => {
+        
+        return typeToBeSkipped.some((skipType) => {
             return type === skipType;
         });
-        return skip;
     };
 
     useImperativeHandle(ref, () => ({
@@ -143,7 +143,7 @@ export const Form: ForwardRefExoticComponent<FormPropsInterface> =
 
     const renderComponents = (childNodes, formRenderProps: FormRenderProps) => {
 
-        let modifiedChildNodes = addPropsToChild(childNodes, formRenderProps);
+        const modifiedChildNodes = addPropsToChild(childNodes, formRenderProps);
 
         return modifiedChildNodes.map((child: any, index: number) => {
             if (!child) {

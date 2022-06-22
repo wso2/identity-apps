@@ -18,13 +18,13 @@
 
 export class ServerConfigurationsConstants {
 
-	/**
+    /**
 	 * Private constructor to avoid object instantiation from outside the class.
 	 *
 	 * @hideconstructor
 	 */
-	/* eslint-disable @typescript-eslint/no-empty-function */
-	private constructor() { }
+    /* eslint-disable @typescript-eslint/no-empty-function */
+    private constructor() { }
 
 	/**
 	 * UUID of the identity governance account management policies category.
@@ -164,6 +164,14 @@ export class ServerConfigurationsConstants {
 	 */
 	public static readonly PASSWORD_POLICY_CONNECTOR_ID: string = "cGFzc3dvcmRQb2xpY3k";
 
+    /**
+    * Multi Attribute Login Claim List pattern regex.
+    * @constant
+    * @type {RegExp}
+    * @default
+    */
+    public static readonly MULTI_ATTRIBUTE_CLAIM_LIST_REGEX_PATTERN: RegExp = new RegExp("^(?:[a-zA-Z0-9:./]+,)+[a-zA-Z0-9:./]+$");
+
 	/**
 	 * UUID of the user on boarding connector.
 	 */
@@ -206,6 +214,7 @@ export class ServerConfigurationsConstants {
 	public static readonly ACCOUNT_LOCK_ON_CREATION: string = "SelfRegistration.LockOnCreation";
 	public static readonly SELF_SIGN_UP_NOTIFICATIONS_INTERNALLY_MANAGED: string =
 		"SelfRegistration.Notification.InternallyManage";
+
 	public static readonly RE_CAPTCHA: string = "SelfRegistration.ReCaptcha";
 	public static readonly VERIFICATION_CODE_EXPIRY_TIME: string = "SelfRegistration.VerificationCode.ExpiryTime";
 	public static readonly SMS_OTP_EXPIRY_TIME: string = "SelfRegistration.VerificationCode.SMSOTP.ExpiryTime";
@@ -218,17 +227,23 @@ export class ServerConfigurationsConstants {
 	public static readonly USERNAME_RECOVERY_RE_CAPTCHA: string = "Recovery.ReCaptcha.Username.Enable";
 	public static readonly PASSWORD_RECOVERY_NOTIFICATION_BASED_ENABLE: string =
 		"Recovery.Notification.Password.Enable";
+
 	public static readonly PASSWORD_RECOVERY_NOTIFICATION_BASED_RE_CAPTCHA: string =
 		"Recovery.ReCaptcha.Password.Enable";
+
 	public static readonly PASSWORD_RECOVERY_QUESTION_BASED_ENABLE: string = "Recovery.Question.Password.Enable";
 	public static readonly PASSWORD_RECOVERY_QUESTION_BASED_MIN_ANSWERS: string =
 		"Recovery.Question.Password.MinAnswers";
+
 	public static readonly PASSWORD_RECOVERY_QUESTION_BASED_RE_CAPTCHA_ENABLE: string =
 		"Recovery.Question.Password.ReCaptcha.Enable";
+
 	public static readonly RE_CAPTCHA_MAX_FAILED_ATTEMPTS: string =
 		"Recovery.Question.Password.ReCaptcha.MaxFailedAttempts";
+
 	public static readonly ACCOUNT_RECOVERY_NOTIFICATIONS_INTERNALLY_MANAGED: string =
 		"Recovery.Notification.InternallyManage";
+
 	public static readonly NOTIFY_RECOVERY_START: string = "Recovery.Question.Password.NotifyStart";
 	public static readonly NOTIFY_SUCCESS: string = "Recovery.NotifySuccess";
 	public static readonly RECOVERY_LINK_EXPIRY_TIME: string = "Recovery.ExpiryTime";
@@ -243,10 +258,12 @@ export class ServerConfigurationsConstants {
 	public static readonly ACCOUNT_LOCK_ENABLE: string = "account.lock.handler.lock.on.max.failed.attempts.enable";
 	public static readonly MAX_FAILED_LOGIN_ATTEMPTS_TO_ACCOUNT_LOCK: string =
 		"account.lock.handler.On.Failure.Max.Attempts";
+
 	public static readonly ACCOUNT_LOCK_TIME: string = "account.lock.handler.Time";
 	public static readonly ACCOUNT_LOCK_TIME_INCREMENT_FACTOR: string = "account.lock.handler.login.fail.timeout.ratio";
 	public static readonly ACCOUNT_LOCK_INTERNAL_NOTIFICATION_MANAGEMENT: string =
 		"account.lock.handler.notification.manageInternally";
+
 	public static readonly NOTIFY_USER_ON_ACCOUNT_LOCK_INCREMENT: string =
 		"account.lock.handler.notification.notifyOnLockIncrement";
 
@@ -263,6 +280,7 @@ export class ServerConfigurationsConstants {
 	public static readonly RE_CAPTCHA_ALWAYS_ENABLE: string = "sso.login.recaptcha.enable.always";
 	public static readonly RE_CAPTCHA_AFTER_MAX_FAILED_ATTEMPTS_ENABLE: string =
 		"sso.login.recaptcha.enable";
+
 	public static readonly MAX_FAILED_LOGIN_ATTEMPTS_TO_RE_CAPTCHA: string =
 		"sso.login.recaptcha.on.max.failed.attempts";
 
@@ -287,10 +305,13 @@ export class ServerConfigurationsConstants {
 	// API Errors
 	public static readonly CONFIGS_FETCH_REQUEST_INVALID_STATUS_CODE_ERROR: string = "Received an invalid status " +
 		"code while retrieving the configurations.";
+
 	public static readonly CONFIGS_FETCH_REQUEST_ERROR: string = "An error occurred while retrieving the " +
 		"configurations.";
+
 	public static readonly CONFIGS_UPDATE_REQUEST_INVALID_STATUS_CODE_ERROR: string = "Received an invalid status " +
 		"code while updating the configurations.";
+
 	public static readonly CONFIGS_UPDATE_REQUEST_ERROR: string = "An error occurred while updating the " +
 		"configurations.";
 
@@ -307,6 +328,8 @@ export class ServerConfigurationsConstants {
 	public static readonly OTP_PASSWORD_RESET: string = "Recovery.AdminPasswordReset.OTP";
 	public static readonly OFFLINE_PASSWORD_RESET: string = "Recovery.AdminPasswordReset.Offline";
 	public static readonly ADMIN_FORCED_PASSWORD_RESET_EXPIRY_TIME: string = "Recovery.AdminPasswordReset.ExpiryTime";
+
+    public static readonly MULTI_ATTRIBUTE_CLAIM_LIST: string = "account-multiattributelogin-handler-allowedattributes";
 
 	/**
 	 * Extensions Constants.

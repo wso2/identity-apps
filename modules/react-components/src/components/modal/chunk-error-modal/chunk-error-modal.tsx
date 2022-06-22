@@ -17,17 +17,18 @@
  */
 
 import { AppConstants } from "@wso2is/core/constants";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { Heading } from "../../typography";
 import { ConfirmationModal } from "../confirmation-modal";
 
 /**
  * Prop type of the `ChunkErrorModal` component.
  */
-interface ChunkModalPropsInterface {
-    heading: string;
-    description: string;
-    primaryActionText: string;
+interface ChunkModalPropsInterface extends IdentifiableComponentInterface {
+    heading: ReactNode;
+    description: ReactNode;
+    primaryActionText: ReactNode;
 }
 
 /**
@@ -38,7 +39,12 @@ export const ChunkErrorModal: FunctionComponent<ChunkModalPropsInterface> = (
     props: ChunkModalPropsInterface
 ): ReactElement => {
 
-    const { heading, description, primaryActionText } = props;
+    const {
+        heading,
+        description,
+        primaryActionText,
+        [ "data-componentid" ]: componentId,
+    } = props;
 
     const [ showModal, setShowModal ] = useState(false);
 
@@ -62,7 +68,8 @@ export const ChunkErrorModal: FunctionComponent<ChunkModalPropsInterface> = (
             onPrimaryActionClick={ () => {
                 location.reload();
             } }
-            data-testid={ "chunk-error-modal" }
+            data-componentid={ "chunk-error-modal" }
+            data-testid={ componentId }
             open={ showModal }
         >
             <ConfirmationModal.Content>
@@ -71,4 +78,11 @@ export const ChunkErrorModal: FunctionComponent<ChunkModalPropsInterface> = (
             </ConfirmationModal.Content>
         </ConfirmationModal>
     );
+};
+
+/**
+ * Default proptypes for the component.
+ */
+ChunkErrorModal.defaultProps = {
+    "data-componentid": "chunk-error-modal"
 };

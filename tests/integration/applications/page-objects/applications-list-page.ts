@@ -19,8 +19,8 @@
 
 /// <reference types="cypress" />
 
-import { ApplicationsListPageConstants } from "../constants";
 import { SidePanelDomConstants } from "@wso2/identity-cypress-test-base/ui";
+import { ApplicationsListPageConstants } from "../constants";
 
 /**
  * Class containing Applications List Page objects.
@@ -38,7 +38,7 @@ export class ApplicationsListPage {
      */
     public clickOnSidePanelItem(): void {
         cy.dataTestId(SidePanelDomConstants.APPLICATIONS_PARENT_ITEM_DATA_ATTR).click();
-    };
+    }
 
     /**
      * Get the applications table element.
@@ -46,7 +46,7 @@ export class ApplicationsListPage {
      */
     public getTable(): Cypress.Chainable<Element> {
         return cy.dataTestId(ApplicationsListPageConstants.TABLE_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the applications table body element.
@@ -54,7 +54,7 @@ export class ApplicationsListPage {
      */
     public getTableBody(): Cypress.Chainable<Element> {
         return cy.dataTestId(ApplicationsListPageConstants.TABLE_BODY_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the applications table first element.
@@ -66,7 +66,7 @@ export class ApplicationsListPage {
                 cy.dataTestId("data-table-row")
                     .eq(0);
             });
-    };
+    }
 
     /**
      * Click on the applications table first element's edit button.
@@ -76,7 +76,7 @@ export class ApplicationsListPage {
             .within(() => {
                 this.getTableItemEditButton().trigger("mouseover").click();
             });
-    };
+    }
 
     /**
      * Click on the applications table first element's view button.
@@ -86,7 +86,7 @@ export class ApplicationsListPage {
             .within(() => {
                 this.getTableItemViewButton().trigger("mouseover").click();
             });
-    };
+    }
 
     /**
      * Get the the applications table item heading.
@@ -94,7 +94,7 @@ export class ApplicationsListPage {
      */
     public getTableItemHeading(): Cypress.Chainable<Element> {
         return cy.dataTestId(ApplicationsListPageConstants.TABLE_ROW_HEADING_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the the applications table item edit button.
@@ -102,7 +102,7 @@ export class ApplicationsListPage {
      */
     public getTableItemEditButton(): Cypress.Chainable<Element> {
         return cy.dataTestId(ApplicationsListPageConstants.TABLE_ROW_EDIT_BUTTON_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the the applications table item delete button.
@@ -110,7 +110,7 @@ export class ApplicationsListPage {
      */
     public getTableItemViewButton(): Cypress.Chainable<Element> {
         return cy.dataTestId(ApplicationsListPageConstants.TABLE_ROW_DELETE_BUTTON_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the applications page layout header element.
@@ -118,7 +118,7 @@ export class ApplicationsListPage {
      */
     public getPageLayoutHeader(): Cypress.Chainable<Element> {
         return cy.dataTestId(ApplicationsListPageConstants.PAGE_LAYOUT_HEADER_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the applications page layout header title element.
@@ -126,7 +126,7 @@ export class ApplicationsListPage {
      */
     public getPageLayoutHeaderTitle(): Cypress.Chainable<Element> {
         return cy.dataTestId(ApplicationsListPageConstants.PAGE_LAYOUT_HEADER_TITLE_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the applications page layout header sub title element.
@@ -134,7 +134,7 @@ export class ApplicationsListPage {
      */
     public getPageLayoutHeaderSubTitle(): Cypress.Chainable<Element> {
         return cy.dataTestId(ApplicationsListPageConstants.PAGE_LAYOUT_HEADER_SUB_TITLE_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the applications page layout header action element.
@@ -142,7 +142,7 @@ export class ApplicationsListPage {
      */
     public getPageLayoutHeaderAction(): Cypress.Chainable<Element> {
         return cy.dataTestId(ApplicationsListPageConstants.PAGE_LAYOUT_HEADER_ACTION);
-    };
+    }
 
     /**
      * Get the applications list new placeholder element.
@@ -150,7 +150,7 @@ export class ApplicationsListPage {
      */
     public getNewTablePlaceholder(): Cypress.Chainable<Element> {
         return cy.dataTestId(ApplicationsListPageConstants.NEW_LIST_PLACEHOLDER);
-    };
+    }
 
     /**
      * Get the applications list new placeholder action element.
@@ -159,12 +159,12 @@ export class ApplicationsListPage {
     public getNewTablePlaceholderAction(): Cypress.Chainable<JQuery<HTMLButtonElement>> {
         return cy.dataTestId(ApplicationsListPageConstants.NEW_LIST_PLACEHOLDER_ACTION_CONTAINER)
             .find("button");
-    };
+    }
 
     /**
      * Click on the new application button.
      */
     public clickOnNewApplicationButton(): void {
         this.getPageLayoutHeaderAction().click();
-    };
+    }
 }

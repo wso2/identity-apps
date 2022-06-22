@@ -66,7 +66,7 @@ export const AddEmailTemplateTypeForm: FunctionComponent<AddEmailTemplateTypeFor
             } }
             submitState={ triggerSubmit }
         >
-             <Grid>
+            <Grid>
                 <GridRow columns={ 2 }>
                     <GridColumn mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Hint, LinkButton } from "@wso2is/react-components/src";
 import { AxiosResponse } from "axios";
@@ -38,7 +38,7 @@ import {
 /**
  * Remote fetch status props interface.
  */
-type RemoteFetchStatusProps = TestableComponentInterface;
+type RemoteFetchStatusProps = IdentifiableComponentInterface;
 
 /**
  * Remote fetch details component.
@@ -51,7 +51,7 @@ export const RemoteFetchStatus: FunctionComponent<RemoteFetchStatusProps> = (
 ): ReactElement => {
 
     const {
-        [ "data-testid" ]: testId
+        [ "data-componentid" ]: componentId
     } = props;
 
     const [ remoteConfigDetails, setRemoteConfigDetails ] = useState<InterfaceRemoteConfigDetails>(undefined);
@@ -131,7 +131,7 @@ export const RemoteFetchStatus: FunctionComponent<RemoteFetchStatusProps> = (
             }
             {
                 remoteConfig &&
-                <Menu data-testid={ `${ testId }-status` } size="small" borderless className="mb-6">
+                <Menu data-componentid={ `${ componentId }-status` } size="small" borderless className="mb-6">
                     <Menu.Item  active header>
                         { t("console:manage.features.remoteFetch.components.status.header") }
                     </Menu.Item>
@@ -146,7 +146,7 @@ export const RemoteFetchStatus: FunctionComponent<RemoteFetchStatusProps> = (
                     {
                         remoteConfigDetails?.status?.failedDeployments &&
                         <>
-                            <Menu.Item data-testid={ `${ testId }-success` } className="pr-3">
+                            <Menu.Item data-componentid={ `${ componentId }-success` } className="pr-3">
                                 <Icon.Group className="mr-2" size="large">
                                     <Icon name="fork" />
                                     <Icon 
@@ -165,7 +165,7 @@ export const RemoteFetchStatus: FunctionComponent<RemoteFetchStatusProps> = (
                                         : remoteConfigDetails?.status?.successfulDeployments
                                 } Successful
                             </Menu.Item>
-                            <Menu.Item data-testid={ `${ testId }-failed` } className="pl-1 pr-3">
+                            <Menu.Item data-componentid={ `${ componentId }-failed` } className="pl-1 pr-3">
                                 <Icon.Group className="mr-2" size="large">
                                     <Icon name="fork" />
                                     <Icon 
@@ -196,7 +196,7 @@ export const RemoteFetchStatus: FunctionComponent<RemoteFetchStatusProps> = (
                                     </LinkButton>
                                 }
                             </Menu.Item>
-                            <Menu.Item data-testid={ `${ testId }-last-deplyed` } className="pl-1">
+                            <Menu.Item data-componentid={ `${ componentId }-last-deplyed` } className="pl-1">
                                 <Icon.Group className="mr-2" size="large">
                                     <Icon name="calendar alternate outline" />
                                 </Icon.Group>
@@ -204,7 +204,7 @@ export const RemoteFetchStatus: FunctionComponent<RemoteFetchStatusProps> = (
                             </Menu.Item>
                         </>
                     }
-                    <Menu.Item compact position="right">
+                    <Menu.Item position="right">
                         <Popup
                             content={ remoteConfigDetails?.repositoryManagerAttributes?.uri }
                             header={ t("console:manage.features.remoteFetch.components.status.linkPopup.header") }
@@ -222,7 +222,7 @@ export const RemoteFetchStatus: FunctionComponent<RemoteFetchStatusProps> = (
                             basic 
                             icon 
                             labelPosition="left"
-                            data-testid={ `${ testId }-trigger-config` }
+                            data-componentid={ `${ componentId }-trigger-config` }
                             onClick={ () => {
                                 triggerConfigDeployment(remoteConfigDetails.id)
                                     .then(() => {

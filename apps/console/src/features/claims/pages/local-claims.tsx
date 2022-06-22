@@ -119,6 +119,7 @@ const LocalClaimsPage: FunctionComponent<LocalClaimsPageInterface> = (
             offset: offset || null,
             sort: sort || null
         };
+
         getAllLocalClaims(params).then(response => {
             setClaims(response);
             setFilteredClaims(sortList(response, sortBy.value as string, sortOrder));
@@ -222,6 +223,7 @@ const LocalClaimsPage: FunctionComponent<LocalClaimsPageInterface> = (
      */
     const handleLocalClaimsFilter = (query: string): void => {
         const filteredClaims = filterList(claims, query, sortBy.value as string, sortOrder);
+
         setFilteredClaims(filteredClaims);
         setSearchQuery(buildSearchQuery(query));
         setOffset(0);
@@ -243,15 +245,19 @@ const LocalClaimsPage: FunctionComponent<LocalClaimsPageInterface> = (
             switch (queryElements[ 1 ]) {
                 case "eq":
                     UserFriendlyQuery = `${ queryElements[ 0 ] } equals to ${ queryElements[ 2 ] }`;
+
                     break;
                 case "co":
                     UserFriendlyQuery = `${ queryElements[ 0 ] } containing ${ queryElements[ 2 ] }`;
+
                     break;
                 case "sw":
                     UserFriendlyQuery = `${ queryElements[ 0 ] } starting with ${ queryElements[ 2 ] }`;
+
                     break;
                 case "ew":
                     UserFriendlyQuery = `${ queryElements[ 0 ] } ending with ${ queryElements[ 2 ] }`;
+
                     break;
 
                 default:
@@ -275,14 +281,15 @@ const LocalClaimsPage: FunctionComponent<LocalClaimsPageInterface> = (
         <>
             {
                 openModal
-                    ? <AddLocalClaims
-                        open={ openModal }
-                        onClose={ () => { setOpenModal(false); } }
-                        update={ getLocalClaims }
-                        claimURIBase={ claimURIBase }
-                        data-testid={ `${ testId }-add-local-claims-wizard` }
-                    />
-                    : null
+                    ? (
+                        <AddLocalClaims
+                            open={ openModal }
+                            onClose={ () => { setOpenModal(false); } }
+                            update={ getLocalClaims }
+                            claimURIBase={ claimURIBase }
+                            data-testid={ `${ testId }-add-local-claims-wizard` }
+                        />
+                    ) : null
             }
             <PageLayout
                 action={
@@ -303,7 +310,7 @@ const LocalClaimsPage: FunctionComponent<LocalClaimsPageInterface> = (
                 }
                 isLoading={ isLoading }
                 title={ t("console:manage.features.claims.local.pageLayout.local.title") }
-                description={ 
+                description={ (
                     <>
                         { t(attributeConfig.attributes.description) }
                         <DocumentationLink
@@ -312,7 +319,7 @@ const LocalClaimsPage: FunctionComponent<LocalClaimsPageInterface> = (
                             { t("common:learnMore") }
                         </DocumentationLink>
                     </>
-                }
+                ) }
                 backButton={ {
                     onClick: () => { history.push(AppConstants.getPaths().get("CLAIM_DIALECTS")); },
                     text: t("console:manage.features.claims.local.pageLayout.local.back")
@@ -321,7 +328,7 @@ const LocalClaimsPage: FunctionComponent<LocalClaimsPageInterface> = (
             >
                 <ListLayout
                     resetPagination={ resetPagination }
-                    advancedSearch={
+                    advancedSearch={ (
                         <AdvancedSearchWithBasicFilters
                             onFilter={ handleLocalClaimsFilter }
                             filterAttributeOptions={ [
@@ -354,7 +361,7 @@ const LocalClaimsPage: FunctionComponent<LocalClaimsPageInterface> = (
                             triggerClearQuery={ triggerClearQuery }
                             data-testid={ `${ testId }-list-advanced-search` }
                         />
-                    }
+                    ) }
                     currentListSize={ listItemLimit }
                     listItemLimit={ listItemLimit }
                     onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
@@ -371,7 +378,7 @@ const LocalClaimsPage: FunctionComponent<LocalClaimsPageInterface> = (
                     data-testid={ `${ testId }-list-layout` }
                 >
                     <ClaimsList
-                        advancedSearch={
+                        advancedSearch={ (
                             <AdvancedSearchWithBasicFilters
                                 onFilter={ handleLocalClaimsFilter }
                                 filterAttributeOptions={ [
@@ -404,7 +411,8 @@ const LocalClaimsPage: FunctionComponent<LocalClaimsPageInterface> = (
                                 triggerClearQuery={ triggerClearQuery }
                                 data-testid={ `${ testId }-list-advanced-search` }
                             />
-                        }
+                        ) }
+                        showTableHeaders={ true }
                         isLoading={ isLoading }
                         list={ paginate(filteredClaims, listItemLimit, offset) }
                         localClaim={ ListType.LOCAL }

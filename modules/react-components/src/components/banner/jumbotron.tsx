@@ -16,9 +16,9 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import React, { FunctionComponent, PropsWithChildren, ReactElement, ReactNode } from "react";
+import React, { CSSProperties, FunctionComponent, PropsWithChildren, ReactElement, ReactNode } from "react";
 import { HeaderProps, Responsive, Segment, SegmentProps } from "semantic-ui-react";
 import { SemanticCOLORS } from "semantic-ui-react/dist/commonjs/generic";
 import { GenericIcon, GenericIconProps, GenericIconSizes } from "../icon";
@@ -27,7 +27,9 @@ import { Heading } from "../typography";
 /**
  * Proptypes for the jumbotron component.
  */
-export interface JumbotronPropsInterface extends Omit<SegmentProps, "color">, TestableComponentInterface {
+export interface JumbotronPropsInterface extends Omit<SegmentProps, "color">, IdentifiableComponentInterface,
+    TestableComponentInterface {
+
     /**
      * Background color.
      */
@@ -55,7 +57,7 @@ export interface JumbotronPropsInterface extends Omit<SegmentProps, "color">, Te
     /**
      * Custom style object.
      */
-    style?: object;
+    style?: CSSProperties | undefined;
     /**
      * Jumbotron sub heading.
      */
@@ -114,6 +116,7 @@ export const Jumbotron: FunctionComponent<PropsWithChildren<JumbotronPropsInterf
         subHeading,
         subHeadingAs,
         topContent,
+        [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId,
         ...rest
     } = props;
@@ -141,14 +144,15 @@ export const Jumbotron: FunctionComponent<PropsWithChildren<JumbotronPropsInterf
      *
      * @return {object} Styles object.
      */
-    const getStyle = () => {
-        let modifiedStyle: object = style;
+    const getStyle = (): CSSProperties => {
+
+        let modifiedStyle: CSSProperties = style;
 
         if (typeof borderRadius === "number") {
             modifiedStyle = {
                 ...modifiedStyle,
                 borderRadius: `${ borderRadius }px`
-            }
+            };
         }
 
         return modifiedStyle;
@@ -157,16 +161,17 @@ export const Jumbotron: FunctionComponent<PropsWithChildren<JumbotronPropsInterf
     /**
      * Resolves additional properties.
      *
-     * @return {object} Additional props.
+     * @return {Record<string, unknown>} Additional props.
      */
-    const resolveAdditionalProps = (): object => {
-        let additionalProps: object = {};
+    const resolveAdditionalProps = (): Record<string, unknown> => {
+
+        let additionalProps: Record<string, unknown> = {};
 
         if (background && !(background === "white" || background === "default")) {
             additionalProps = {
                 ...additionalProps,
                 inverted: true
-            }
+            };
         }
 
         return additionalProps;
@@ -183,6 +188,7 @@ export const Jumbotron: FunctionComponent<PropsWithChildren<JumbotronPropsInterf
                                 <Heading
                                     className="jumbotron-heading inline ellipsis"
                                     as={ headingAs }
+                                    data-componentid={ `${ componentId }-heading` }
                                     data-testid={ `${ testId }-heading` }
                                     compact
                                 >
@@ -196,6 +202,7 @@ export const Jumbotron: FunctionComponent<PropsWithChildren<JumbotronPropsInterf
                             ? (
                                 <Heading
                                     className="jumbotron-sub-heading"
+                                    data-componentid={ `${ componentId }-sub-heading` }
                                     data-testid={ `${ testId }-sub-heading` }
                                     as={ subHeadingAs }
                                     subHeading
@@ -234,6 +241,7 @@ Jumbotron.defaultProps = {
     bordered: "bottom",
     clearing: true,
     contentInline: false,
+    "data-componentid": "jumbotron",
     "data-testid": "jumbotron",
     headingAs: "h1",
     iconSize: "auto",

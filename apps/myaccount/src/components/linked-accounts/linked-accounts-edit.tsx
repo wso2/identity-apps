@@ -124,6 +124,8 @@ export const LinkedAccountsEdit: FunctionComponent<LinkedAccountsEditProps> = (
                             </Form.Field>
                             <Field
                                 data-testid={ `${testId}-editing-section-form-field-password` }
+                                className="addon-field-wrapper"
+                                autoComplete="new-password"
                                 hidePassword={ t("common:hidePassword") }
                                 label={ t(
                                     "myAccount:components.linkedAccounts.forms.addAccountForm." +

@@ -183,6 +183,31 @@ export class AccessControlConstants {
     public static readonly ATTRIBUTE_DELETE: string = "attribute:delete";
 
     /**
+     * Branding feature permission
+     */
+    public static readonly BRANDING: string = "branding";
+
+    /**
+     * Branding read permission
+     */
+    public static readonly BRANDING_READ: string = "branding:read";
+
+    /**
+     * Branding write permission
+     */
+    public static readonly BRANDING_WRITE: string = "branding:write";
+
+    /**
+     * Branding edit permission
+     */
+    public static readonly BRANDING_EDIT: string = "branding:edit";
+
+    /**
+     * Branding delete permission
+     */
+    public static readonly BRANDING_DELETE: string = "branding:delete";
+
+    /**
      * Scope feature permission
      */
     public static readonly SCOPE: string = "scope";
@@ -231,5 +256,55 @@ export class AccessControlConstants {
      * Secret Management Delete/Remove Scope.
      */
     public static readonly SECRET_DELETE: string = "internal_secret_mgt_delete";
+
+    /**
+     * User stores feature permission
+     */
+    public static readonly USER_STORE: string = "userStores";
+
+    /**
+     * User stores read permission
+     */
+    public static readonly USER_STORE_READ: string = "userStores:read";
+
+    /**
+     * User stores write permission
+     */
+    public static readonly USER_STORE_WRITE: string = "userStores:write";
+
+    /**
+     * User stores edit permission
+     */
+    public static readonly USER_STORE_EDIT: string = "userStores:edit";
+
+    /**
+     * User stores delete permission
+     */
+    public static readonly USER_STORE_DELETE: string = "userStores:delete";
+
+    /**
+     * Organization feature permission.
+     */
+    public static readonly ORGANIZATION: string = "organization";
+
+    /**
+     * Organization write permission.
+     */
+    public static readonly ORGANIZATION_WRITE: string = "organization:write";
+
+    /**
+     * Organization edit permission.
+     */
+    public static readonly ORGANIZATION_EDIT: string = "organization:edit";
+
+    /**
+     * Organization delete permission.
+     */
+    public static readonly ORGANIZATION_DELETE: string = "organization:delete";
+
+    /**
+     * Organization read permission.
+     */
+    public static readonly ORGANIZATION_READ: string = "organization:read";
 
 }

@@ -74,7 +74,8 @@ export const Link: FunctionComponent<PropsWithChildren<LinkPropsInterface>> = (
         iconPosition,
         link,
         onClick,
-        target
+        target,
+        [ "data-componentid" ]: componentId
     } = props;
 
     const classes = classNames(
@@ -96,9 +97,15 @@ export const Link: FunctionComponent<PropsWithChildren<LinkPropsInterface>> = (
             rel="noopener noreferrer"
             className={ classes }
             onClick={ (e: SyntheticEvent) => {
+                // If `onClick` is not defined, going further will break the behaviour of anchor.
+                if (!onClick) {
+                    return;
+                }
+
                 e.preventDefault();
                 onClick(e);
             } }
+            data-componentid={ componentId }
         >
             { external && icon && iconPosition === "left" && <Icon className="mr-1" name={ icon } /> }
             { children }

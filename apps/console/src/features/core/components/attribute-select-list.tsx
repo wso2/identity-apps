@@ -32,6 +32,7 @@ interface AttributeSelectListPropsInterface extends TestableComponentInterface {
     onUpdate: () => void;
     triggerSubmit: boolean;
 }
+
 export const AttributeSelectList: FunctionComponent<AttributeSelectListPropsInterface> = (
     props: AttributeSelectListPropsInterface
 ): ReactElement => {
@@ -45,10 +46,10 @@ export const AttributeSelectList: FunctionComponent<AttributeSelectListPropsInte
         triggerSubmit
     } = props;
 
-    const [isSelectAssignedAllClaimsChecked, setIsSelectAssignedAllClaimsChecked] = useState<boolean>(false);
-    const [tempAvailableClaims, setTempAvailableClaims] = useState<ExtendedExternalClaimInterface[]>([]);
-    const [tempSelectedClaims, setTempSelectedClaims] = useState<ExtendedExternalClaimInterface[]>([]);
-    const [filterTempAvailableClaims, setFilterTempAvailableClaims] = useState<ExtendedExternalClaimInterface[]>([]);
+    const [ isSelectAssignedAllClaimsChecked, setIsSelectAssignedAllClaimsChecked ] = useState<boolean>(false);
+    const [ tempAvailableClaims, setTempAvailableClaims ] = useState<ExtendedExternalClaimInterface[]>([]);
+    const [ tempSelectedClaims, setTempSelectedClaims ] = useState<ExtendedExternalClaimInterface[]>([]);
+    const [ filterTempAvailableClaims, setFilterTempAvailableClaims ] = useState<ExtendedExternalClaimInterface[]>([]);
 
     const { t } = useTranslation();
 
@@ -56,7 +57,8 @@ export const AttributeSelectList: FunctionComponent<AttributeSelectListPropsInte
     const initCheck = useRef(true);
 
     const requestedComparator = (selectedList: ExtendedExternalClaimInterface[]) => {
-        const filteredSelectedList = selectedList.filter(item => !!item)
+        const filteredSelectedList = selectedList.filter(item => !!item);
+
         return (claim: ExtendedExternalClaimInterface): number => {
             return (filteredSelectedList?.findIndex(item => item.id === claim.id) >= 0) ? -1 : 1;
         };
@@ -65,15 +67,17 @@ export const AttributeSelectList: FunctionComponent<AttributeSelectListPropsInte
     useEffect(() => {
         if (selectedExternalClaims.length > 0) {
             const sortedClaims = sortBy(
-                union([...selectedExternalClaims], [...availableExternalClaims]),
+                union([ ...selectedExternalClaims ], [ ...availableExternalClaims ]),
                 requestedComparator(selectedExternalClaims), "localClaimDisplayName"
             );
+
             setTempAvailableClaims(sortedClaims);
             setFilterTempAvailableClaims(sortedClaims);
             setTempSelectedClaims(selectedExternalClaims);
         } else {
             const sortedClaims = sortBy(availableExternalClaims, requestedComparator([]),
                 "localClaimDisplayName");
+
             setTempAvailableClaims(sortedClaims);
             setFilterTempAvailableClaims(sortedClaims);
         }
@@ -85,14 +89,14 @@ export const AttributeSelectList: FunctionComponent<AttributeSelectListPropsInte
         } else {
             updateSelectedClaims();
         }
-    }, [triggerSubmit]);
+    }, [ triggerSubmit ]);
 
     /**
      *  Save the selected claims
      */
     const updateSelectedClaims = () => {
-        setInitialSelectedExternalClaims([...tempSelectedClaims]);
-        setAvailableExternalClaims([...tempAvailableClaims]);
+        setInitialSelectedExternalClaims([ ...tempSelectedClaims ]);
+        setAvailableExternalClaims([ ...tempAvailableClaims ]);
         onUpdate();
     };
 
@@ -102,6 +106,7 @@ export const AttributeSelectList: FunctionComponent<AttributeSelectListPropsInte
     useEffect(() => {
         if (initCheck.current) {
             initCheck.current = false;
+
             return;
         }
 
@@ -110,7 +115,7 @@ export const AttributeSelectList: FunctionComponent<AttributeSelectListPropsInte
         } else {
             setTempSelectedClaims([]);
         }
-    }, [isSelectAssignedAllClaimsChecked]);
+    }, [ isSelectAssignedAllClaimsChecked ]);
 
     /**
      * The following function enables the user to select all the roles at once.
@@ -139,11 +144,13 @@ export const AttributeSelectList: FunctionComponent<AttributeSelectListPropsInte
     // search operation for available claims
     const searchTempAvailable = (event) => {
         const changeValue = event.target.value;
+
         if (changeValue.length > 0) {
             const displayNameFilterClaims = tempAvailableClaims.filter((item) =>
-            (item.localClaimDisplayName ?? "").toLowerCase().indexOf(changeValue.toLowerCase()) !== -1);
+                (item.localClaimDisplayName ?? "").toLowerCase().indexOf(changeValue.toLowerCase()) !== -1);
             const uriFilterClaims = tempAvailableClaims.filter((item) =>
                 (item.claimURI ?? "").toLowerCase().indexOf(changeValue.toLowerCase()) !== -1);
+
             setFilterTempAvailableClaims(sortBy(union(displayNameFilterClaims, uriFilterClaims),
                 requestedComparator(tempSelectedClaims), "localClaimDisplayName"));
         } else {
@@ -180,6 +187,8 @@ export const AttributeSelectList: FunctionComponent<AttributeSelectListPropsInte
                 isListEmpty={ !(filterTempAvailableClaims.length > 0) }
                 listType="unselected"
                 data-testid={ `${testId}-unselected-transfer-list` }
+                emptyPlaceholderDefaultContent={ t("console:manage.features.transferList.list."
+                            + "emptyPlaceholders.default") }
             >
                 { filterTempAvailableClaims?.map((claim, index) => {
                     return (

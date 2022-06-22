@@ -24,6 +24,7 @@
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.client.SelfUserRegistrationResource" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.bean.ResendCodeRequestDTO" %>
+<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.bean.PropertyDTO" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.bean.UserDTO" %>
 <%@ page import="java.net.URLEncoder" %>
 <%@ page import="java.net.URLDecoder" %>
@@ -49,6 +50,14 @@
 
 <jsp:directive.include file="includes/init-loginform-action-url.jsp"/>
 <jsp:directive.include file="plugins/basicauth-extensions.jsp"/>
+
+<%
+    String proxyContextPath = ServerConfiguration.getInstance().getFirstProperty(IdentityCoreConstants
+            .PROXY_CONTEXT_PATH);
+    if (proxyContextPath == null) {
+        proxyContextPath = "";
+    }
+%>
 <script>
     function goBack() {
         document.getElementById("restartFlowForm").submit();
@@ -70,9 +79,15 @@
                     userName.value = userName.value.trim();
 
                     if (userName.value) {
+                        let contextPath = "<%=proxyContextPath%>"
+                        if (contextPath !== "") {
+                            contextPath = contextPath.startsWith('/') ? contextPath : "/" + contextPath
+                            contextPath = contextPath.endsWith('/') ?
+                                contextPath.substring(0, contextPath.length - 1) : contextPath
+                        }
                         $.ajax({
                             type: "GET",
-                            url: "<%=loginContextRequestUrl%>",
+                            url: contextPath + "<%=loginContextRequestUrl%>",
                             xhrFields: { withCredentials: true },
                             success: function (data) {
                                 if (data && data.status == 'redirect' && data.redirectUrl && data.redirectUrl.length > 0) {
@@ -96,10 +111,12 @@
     });
 
     function showResendReCaptcha() {
-        <% if (reCaptchaResendEnabled) { %>
-            window.location.href="resend-confirmation-captcha.jsp?<%=AuthenticationEndpointUtil.cleanErrorMessages(Encode.forJava(request.getQueryString()))%>";
-        <% } else { %>
-            window.location.href="login.do?resend_username=<%=Encode.forHtml(request.getParameter("failedUsername"))%>&<%=AuthenticationEndpointUtil.cleanErrorMessages(Encode.forJava(request.getQueryString()))%>";
+        <% if (StringUtils.isNotBlank(request.getParameter("failedUsername"))){ %>
+            <% if (reCaptchaResendEnabled) { %>
+                window.location.href="resend-confirmation-captcha.jsp?<%=AuthenticationEndpointUtil.cleanErrorMessages(Encode.forJava(request.getQueryString()))%>";
+            <% } else { %>
+                window.location.href="login.do?resend_username=<%=Encode.forHtml(URLEncoder.encode(request.getParameter("failedUsername"), UTF_8))%>&<%=AuthenticationEndpointUtil.cleanErrorMessages(Encode.forJava(request.getQueryString()))%>";
+            <% } %>
         <% } %>
     }
 </script>
@@ -158,15 +175,21 @@
         UserDTO userDTO = AuthenticationEndpointUtil.getUser(resendUsername);
         selfRegistrationRequest.setUser(userDTO);
 
+        PropertyDTO propertyDTO = new PropertyDTO();
+        propertyDTO.setKey("RecoveryScenario");
+        propertyDTO.setValue("SELF_SIGN_UP");
+        selfRegistrationRequest.getProperties().add(propertyDTO);
+
+        // We have to send an empty property for the client to work properly.
+        PropertyDTO dummyPropertyDTO = new PropertyDTO();
+        dummyPropertyDTO.setKey("");
+        dummyPropertyDTO.setValue("");
+        selfRegistrationRequest.getProperties().add(dummyPropertyDTO);
+
         String path = config.getServletContext().getInitParameter(Constants.ACCOUNT_RECOVERY_REST_ENDPOINT_URL);
-        String proxyContextPath = ServerConfiguration.getInstance().getFirstProperty(IdentityCoreConstants
-                .PROXY_CONTEXT_PATH);
-        if (proxyContextPath == null) {
-            proxyContextPath = "";
-        }
         String url;
         if (StringUtils.isNotBlank(EndpointConfigManager.getServerOrigin())) {
-            url = EndpointConfigManager.getServerOrigin() + proxyContextPath + path;
+            url = IdentityManagementEndpointUtil.getBasePath(tenantDomain, path, false);
         } else {
             url = IdentityUtil.getServerURL(path, true, false);
         }
@@ -284,7 +307,7 @@
         <input id="username" name="username" type="hidden" data-testid="login-page-username-input" value="<%=username%>">
     <% } %>
         <div class="field">
-            <div class="ui fluid left icon input">
+            <div class="ui fluid left icon input addon-wrapper">
                 <input
                     type="password"
                     id="password"
@@ -307,7 +330,7 @@
     %>
         <div class="field">
             <div class="g-recaptcha"
-                data-sitekey="<%=Encode.forHtmlContent(request.getParameter("reCaptchaKey"))%>"
+                data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>"
                 data-testid="login-page-g-recaptcha"
             >
             </div>
@@ -462,7 +485,7 @@
             <button
                 type="button"
                 onclick="window.location.href='<%=StringEscapeUtils.escapeHtml4(getRegistrationUrl(accountRegistrationEndpointURL, urlEncodedURL, urlParameters))%>';"
-                class="ui large button link-button"
+                class="ui large button secondary"
                 id="registerLink"
                 tabindex="8"
                 role="button"
@@ -542,4 +565,5 @@
 <form action="<%=loginFormActionURL%>" method="post" id="restartFlowForm">
     <input type="hidden" name="sessionDataKey" value='<%=Encode.forHtmlAttribute(request.getParameter("sessionDataKey"))%>'/>
     <input type="hidden" name="restart_flow" value='true'/>
+    <input id="tocommonauth" name="tocommonauth" type="hidden" value="true">
 </form>

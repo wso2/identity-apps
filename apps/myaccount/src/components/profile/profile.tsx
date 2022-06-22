@@ -26,11 +26,12 @@ import {
     resolveUserEmails
 } from "@wso2is/core/helpers";
 import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
-import { CommonUtils, ProfileUtils } from "@wso2is/core/utils";
+import { ProfileUtils, CommonUtils as ReusableCommonUtils } from "@wso2is/core/utils";
 import { Field, Forms, Validation } from "@wso2is/forms";
 import { EditAvatarModal, LinkButton, PrimaryButton, UserAvatar } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import isEmpty from "lodash-es/isEmpty";
+import moment from "moment";
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -38,12 +39,13 @@ import { DropdownItemProps, Form, Grid, Icon, List, Placeholder, Popup, Responsi
 import { updateProfileInfo } from "../../api";
 import { AppConstants, CommonConstants } from "../../constants";
 import * as UIConstants from "../../constants/ui-constants";
+import { commonConfig, profileConfig } from "../../extensions";
 import { AlertInterface, AlertLevels, AuthStateInterface, FeatureConfigInterface, ProfileSchema } from "../../models";
 import { AppState } from "../../store";
 import { getProfileInformation, setActiveForm } from "../../store/actions";
+import { CommonUtils } from "../../utils";
 import { EditSection, SettingsSection } from "../shared";
 import { MobileUpdateWizard } from "../shared/mobile-update-wizard";
-import { commonConfig } from "../../extensions";
 
 /**
  * Prop types for the basic details component.
@@ -74,7 +76,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
     const isProfileInfoLoading: boolean = useSelector((state: AppState) => state.loaders.isProfileInfoLoading);
     const isSCIMEnabled: boolean = useSelector((state: AppState) => state.profile.isSCIMEnabled);
     const profileSchemaLoader: boolean = useSelector((state: AppState) => state.loaders.isProfileSchemaLoading);
-    const isReadOnlyUser = useSelector((state: AppState) => state.authenticationInformation.profileInfo.isReadOnly);
+    const isReadOnlyUser = useSelector((state: AppState) => 
+        state.authenticationInformation.profileInfo.isReadOnly);
     const config = useSelector((state: AppState) => state.config);
 
     const activeForm: string = useSelector((state: AppState) => state.global.activeForm);
@@ -129,7 +132,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
      * Sort the elements of the profileSchema state according by the displayOrder attribute in the ascending order.
      */
     useEffect(() => {
-        const sortedSchemas = ProfileUtils.flattenSchemas([...profileDetails.profileSchemas])
+        const sortedSchemas = ProfileUtils.flattenSchemas([ ...profileDetails.profileSchemas ])
+            .filter(item => item.name !== "meta.version") 
             .sort((a: ProfileSchema, b: ProfileSchema) => {
                 if (!a.displayOrder) {
                     return -1;
@@ -142,7 +146,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
         setProfileSchema(sortedSchemas);
 
-    }, [profileDetails.profileSchemas]);
+    }, [ profileDetails.profileSchemas ]);
 
     /**
      * This also maps profile info to the schema.
@@ -160,6 +164,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
                 // this splits for the canonical types
                 const schemaNamesCanonicalType: string[] = schemaNames[0].split("#");
+
                 if(schemaNamesCanonicalType.length !== 1){
                     isCanonical = true;
                 }
@@ -172,7 +177,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                         } else {
                             const primaryEmail = profileDetails.profileInfo[schemaNames[0]] &&
                                 profileDetails.profileInfo[schemaNames[0]]
-                                .find((subAttribute) => typeof subAttribute === "string");
+                                    .find((subAttribute) => typeof subAttribute === "string");
 
                             // Set the primary email value.
                             tempProfileInfo.set(schema.name, primaryEmail);
@@ -184,9 +189,10 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                             tempProfileInfo.set(
                                 schema.name,
                                 profileDetails?.profileInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA]
-                                ? profileDetails?.profileInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]]
-                                : ""
+                                    ? profileDetails?.profileInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]]
+                                    : ""
                             );
+
                             return;
                         }
 
@@ -196,9 +202,10 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                             tempProfileInfo.set(
                                 schema.name,
                                 profileDetails?.profileInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA]
-                                ? profileDetails?.profileInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA][schemaNames[0]]
-                                : ""
+                                    ? profileDetails?.profileInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA][schemaNames[0]]
+                                    : ""
                             );
+
                             return;
                         }
 
@@ -210,6 +217,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
                     } else if (isCanonical) {
                         let indexOfType = -1;
+
                         profileDetails?.profileInfo[schemaNamesCanonicalType[0]]?.forEach((canonical: CanonicalAttribute) => {
                             if(schemaNamesCanonicalType[1] === canonical?.type) {
                                 indexOfType = profileDetails?.profileInfo[schemaNamesCanonicalType[0]].indexOf(canonical);
@@ -218,6 +226,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
                         if (indexOfType > -1) {
                             const subValue = profileDetails?.profileInfo[schemaNamesCanonicalType[0]][indexOfType][schemaNames[1]];
+
                             if(schemaNamesCanonicalType [0] === "addresses") {
                                 tempProfileInfo.set(schema.name, subValue);
                             }
@@ -227,12 +236,13 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                             tempProfileInfo.set(schema.name,
                                 profileDetails?.profileInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.[schemaNames[0]]
                                     ? profileDetails
-                                    ?.profileInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]][schemaNames[1]]
+                                        ?.profileInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]][schemaNames[1]]
                                     : "");
                         } else {
                             const subValue = profileDetails.profileInfo[schemaNames[0]]
                                 && profileDetails.profileInfo[schemaNames[0]]
                                     .find((subAttribute) => subAttribute.type === schemaNames[1]);
+
                             if (schemaNames[0] === "addresses") {
                                 tempProfileInfo.set(
                                     schema.name,
@@ -251,13 +261,13 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
             setProfileInfo(tempProfileInfo);
         }
-    }, [profileSchema, profileDetails.profileInfo]);
+    }, [ profileSchema, profileDetails.profileInfo ]);
 
     /**
      * This will load the countries to the dropdown.
      */
     useEffect(() => {
-        setCountryList(CommonUtils.getCountryList());
+        setCountryList(ReusableCommonUtils.getCountryList());
     }, []);
 
     /**
@@ -281,7 +291,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                     value: {}
                 }
             ],
-            schemas: ["urn:ietf:params:scim:api:messages:2.0:PatchOp"]
+            schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
         };
 
         let value: any = {};
@@ -293,6 +303,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
         // this splits for the canonical types
         const schemaNamesCanonicalType: string[] = schemaNames[0].split("#");
+
         if(schemaNamesCanonicalType.length !== 1){
             isCanonical = true;
         }
@@ -361,7 +372,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                             type: schemaNames[1],
                             value: values.get(formName)
                         }
-                ]
+                    ]
                 };
 
                 if (primaryValue) {
@@ -443,10 +454,13 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
          * value to the expected format.
          */
         const attrKey = "userName";
+
         if (attrKey in value) {
             const oldValue = profileInfo?.get(schema?.name);
+
             if (oldValue?.indexOf("/") > -1) {
                 const fragments = oldValue.split("/");
+
                 if (fragments?.length > 1) {
                     value[attrKey] = `${ fragments[0] }/${ value[attrKey] }`;
                 }
@@ -547,8 +561,10 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
          */
         const isProfileUsernameReadonly: boolean = config.ui.isProfileUsernameReadonly;
         const { displayName, name } = schema;
+
         if (isProfileUsernameReadonly) {
             const usernameClaim = "username";
+
             if (name?.toLowerCase() === usernameClaim || displayName?.toLowerCase() === usernameClaim) {
                 schema.mutability = ProfileConstants.READONLY_SCHEMA;
             }
@@ -574,34 +590,36 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 {
                     fieldName: fieldName.toLowerCase()
                 } );
+
             // Concatenate the date format for the birth date field.
             if (schema.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("DOB")) {
                 innerPlaceholder += " in the format YYYY-MM-DD";
             }
+
             return (
                 isFeatureEnabled(
                     featureConfig?.personalInfo,
                     AppConstants.FEATURE_DICTIONARY.get("PROFILEINFO_MOBILE_VERIFICATION")
                 ) && checkSchemaType(schema.name, "mobile")
-                ? (
-                    <EditSection data-testid={ `${testId}-schema-mobile-editing-section` }>
-                        <p>
-                            { t("myAccount:components.profile.messages.mobileVerification.content") }
-                        </p>
-                        <Grid padded={ true }>
-                            <Grid.Row columns={ 2 }>
-                                < Grid.Column mobile={ 6 } tablet={ 6 } computer={ 4 } className="first-column">
-                                    <List.Content>{ fieldName }</List.Content>
-                                </Grid.Column>
-                                <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 10 }>
-                                    <List.Content>
-                                        <List.Description>
-                                            {
-                                                isProfileInfoLoading || profileSchemaLoader
-                                                    ? (
-                                                        <Placeholder><Placeholder.Line /></Placeholder>
-                                                    )
-                                                    : profileInfo.get(schema.name)
+                    ? (
+                        <EditSection data-testid={ `${testId}-schema-mobile-editing-section` }>
+                            <p>
+                                { t("myAccount:components.profile.messages.mobileVerification.content") }
+                            </p>
+                            <Grid padded={ true }>
+                                <Grid.Row columns={ 2 }>
+                                    < Grid.Column mobile={ 6 } tablet={ 6 } computer={ 4 } className="first-column">
+                                        <List.Content>{ fieldName }</List.Content>
+                                    </Grid.Column>
+                                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 10 }>
+                                        <List.Content>
+                                            <List.Description>
+                                                {
+                                                    isProfileInfoLoading || profileSchemaLoader
+                                                        ? (
+                                                            <Placeholder><Placeholder.Line /></Placeholder>
+                                                        )
+                                                        : profileInfo.get(schema.name)
                                                     || (
                                                         <a
                                                             className="placeholder-text"
@@ -612,7 +630,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                                             onKeyPress={ (e) => {
                                                                 if (e.key === "Enter") {
                                                                     setShowMobileUpdateWizard(true);
-                                                                    }
+                                                                }
                                                             } }
                                                             data-testid={ `${testId}-schema-mobile-editing-section-${schema.name.replace(".", "-")}-placeholder` }
                                                         >
@@ -620,162 +638,193 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                                                 "placeholder", { fieldName: fieldName.toLowerCase() }) }
                                                         </a>
                                                     )
-                                            }
-                                        </List.Description>
-                                    </List.Content>
-                                </Grid.Column>
-                            </Grid.Row>
-                            <Grid.Row columns={ 2 }>
-                                <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 2 }>
-                                    <PrimaryButton
-                                        floated="left"
-                                        onClick={ () => {
-                                            setShowMobileUpdateWizard(true);
-                                        } }
-                                    >
-                                        { t("common:update").toString() }
-                                    </PrimaryButton>
-                                </Grid.Column>
-                                <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 2 }>
-                                    <LinkButton
-                                        floated="left"
-                                        onClick={ () => {
-                                            dispatch(setActiveForm(null));
-                                        } }
-                                    >
-                                        { t("common:cancel").toString() }
-                                    </LinkButton>
-                                </Grid.Column>
-                            </Grid.Row>
-                        </Grid >
-                    </EditSection>
-                )
-                : (
-                    <EditSection data-testid={ `${testId}-schema-editing-section` }>
-                        <Grid>
-                            <Grid.Row columns={ 2 }>
-                                <Grid.Column width={ 4 }>{ fieldName }</Grid.Column>
-                                <Grid.Column width={ 12 }>
-                                    <Forms
-                                        onSubmit={ (values) => {
-                                            handleSubmit(values, schema.name, schema.extended, schema);
-                                        } }
-                                    >
-                                        { checkSchemaType(schema.name, "country") ? (
-                                            <Field
-                                                autoFocus={ true }
-                                                label=""
-                                                name={ schema.name }
-                                                placeholder={ t("myAccount:components.profile.forms." +
+                                                }
+                                            </List.Description>
+                                        </List.Content>
+                                    </Grid.Column>
+                                </Grid.Row>
+                                <Grid.Row columns={ 2 }>
+                                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 2 }>
+                                        <PrimaryButton
+                                            floated="left"
+                                            onClick={ () => {
+                                                setShowMobileUpdateWizard(true);
+                                            } }
+                                        >
+                                            { t("common:update").toString() }
+                                        </PrimaryButton>
+                                    </Grid.Column>
+                                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 2 }>
+                                        <LinkButton
+                                            floated="left"
+                                            onClick={ () => {
+                                                dispatch(setActiveForm(null));
+                                            } }
+                                        >
+                                            { t("common:cancel").toString() }
+                                        </LinkButton>
+                                    </Grid.Column>
+                                </Grid.Row>
+                            </Grid >
+                        </EditSection>
+                    )
+                    : (
+                        <EditSection data-testid={ `${testId}-schema-editing-section` }>
+                            <Grid>
+                                <Grid.Row columns={ 2 }>
+                                    <Grid.Column width={ 4 }>{ fieldName }</Grid.Column>
+                                    <Grid.Column width={ 12 }>
+                                        <Forms
+                                            onSubmit={ (values) => {
+                                                handleSubmit(values, schema.name, schema.extended, schema);
+                                            } }
+                                        >
+                                            { checkSchemaType(schema.name, "country") ? (
+                                                <Field
+                                                    autoFocus={ true }
+                                                    label=""
+                                                    name={ schema.name }
+                                                    placeholder={ t("myAccount:components.profile.forms." +
                                                     "countryChangeForm.inputs.country.placeholder") }
-                                                required={ schema.required }
-                                                requiredErrorMessage={ t(
-                                                    "myAccount:components.profile.forms.generic.inputs.validations.empty",
-                                                    {
-                                                        fieldName
-                                                    }
-                                                ) }
-                                                type="dropdown"
-                                                children={ countryList ? countryList.map(list => {
-                                                    return {
-                                                        "data-testid": `${testId}-` + list.value as string,
-                                                        key: list.key as string,
-                                                        text: list.text as string,
-                                                        value: list.value as string,
-                                                        flag: list.flag
-                                                    };
-                                                }) : [] }
-                                                value={ resolveProfileInfoSchemaValue(schema) }
-                                                disabled={ false }
-                                                clearable={ !schema.required }
-                                                search
-                                                selection
-                                                fluid
-                                            />
-                                        ) : (
-                                            <Field
-                                                autoFocus={ true }
-                                                label=""
-                                                name={ schema.name }
-                                                placeholder={ innerPlaceholder }
-                                                required={ schema.required }
-                                                requiredErrorMessage={ t(
-                                                    "myAccount:components.profile.forms.generic.inputs.validations.empty",
-                                                    {
-                                                        fieldName
-                                                    }
-                                                ) }
-                                                type="text"
-                                                validation={ (value: string, validation: Validation) => {
-                                                    if (!RegExp(schema.regEx).test(value)) {
-                                                        validation.isValid = false;
-                                                        if (checkSchemaType(schema.name, "emails")) {
-                                                            validation.errorMessages.push(t(
-                                                                "myAccount:components.profile.forms.emailChangeForm." +
+                                                    required={ schema.required }
+                                                    requiredErrorMessage={ t(
+                                                        "myAccount:components.profile.forms.generic.inputs.validations.empty",
+                                                        {
+                                                            fieldName
+                                                        }
+                                                    ) }
+                                                    type="dropdown"
+                                                    children={ countryList ? countryList.map(list => {
+                                                        return {
+                                                            "data-testid": `${testId}-` + list.value as string,
+                                                            key: list.key as string,
+                                                            text: list.text as string,
+                                                            value: list.value as string,
+                                                            flag: list.flag
+                                                        };
+                                                    }) : [] }
+                                                    value={ resolveProfileInfoSchemaValue(schema) }
+                                                    disabled={ false }
+                                                    clearable={ !schema.required }
+                                                    search
+                                                    selection
+                                                    fluid
+                                                />
+                                            ) : (
+                                                <Field
+                                                    autoFocus={ true }
+                                                    label=""
+                                                    name={ schema.name }
+                                                    placeholder={ innerPlaceholder }
+                                                    required={ schema.required }
+                                                    requiredErrorMessage={ t(
+                                                        "myAccount:components.profile.forms.generic.inputs.validations.empty",
+                                                        {
+                                                            fieldName
+                                                        }
+                                                    ) }
+                                                    type="text"
+                                                    validation={ (value: string, validation: Validation) => {
+                                                        if (!RegExp(schema.regEx).test(value)) {
+                                                            validation.isValid = false;
+                                                            if (checkSchemaType(schema.name, "emails")) {
+                                                                validation.errorMessages.push(t(
+                                                                    "myAccount:components.profile.forms.emailChangeForm." +
                                                                 "inputs.email.validations.invalidFormat"
-                                                            ));
-                                                        } else if (checkSchemaType(schema.name, "phoneNumbers")) {
-                                                            validation.errorMessages.push(t(
-                                                                "myAccount:components.profile.forms.mobileChangeForm." +
-                                                                "inputs.mobile.validations.invalidFormat"
-                                                            ));
-                                                        } else if (checkSchemaType(schema.name,
-                                                            ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("DOB"))) {
-                                                            validation.errorMessages.push(t(
-                                                                "myAccount:components.profile.forms.dateChangeForm." +
-                                                                "inputs.date.validations.invalidFormat", { fieldName }
-                                                            ));
-                                                        } else {
-                                                            validation.errorMessages.push(
-                                                                t(
-                                                                    "myAccount:components.profile.forms." +
-                                                                    "generic.inputs.validations.invalidFormat",
+                                                                ));
+                                                            } else if (checkSchemaType(schema.name, ProfileConstants.
+                                                                SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS"))) {
+                                                                validation.errorMessages.push(t(
+                                                                    profileConfig?.attributes?.
+                                                                        getRegExpValidationError(
+                                                                            ProfileConstants.SCIM2_SCHEMA_DICTIONARY
+                                                                                .get("PHONE_NUMBERS")
+                                                                        ), 
                                                                     {
                                                                         fieldName
                                                                     }
                                                                 )
-                                                            );
+                                                                );
+                                                            } else if (checkSchemaType(schema.name,
+                                                                ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("DOB"))) {
+                                                                validation.errorMessages.push(t(
+                                                                    "myAccount:components.profile.forms.dateChangeForm." +
+                                                                "inputs.date.validations.invalidFormat", { fieldName }
+                                                                ));
+                                                            } else {
+                                                                validation.errorMessages.push(
+                                                                    t(
+                                                                        "myAccount:components.profile.forms." +
+                                                                    "generic.inputs.validations.invalidFormat",
+                                                                        {
+                                                                            fieldName
+                                                                        }
+                                                                    )
+                                                                );
+                                                            }
+                                                        // Validate date format and the date is before the current date
+                                                        } else if(checkSchemaType(schema.name,
+                                                            ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("DOB"))){
+                                                            if (!moment(value, "YYYY-MM-DD",true).isValid()) {
+                                                                validation.isValid = false;
+                                                                validation.errorMessages
+                                                                    .push(t("myAccount:components.profile.forms."
+                                                                    + "dateChangeForm.inputs.date.validations."
+                                                                    + "invalidFormat", {
+                                                                        field: fieldName
+                                                                    }));
+                                                            } else {
+                                                                if (moment().isBefore(value)) {
+                                                                    validation.isValid = false;
+                                                                    validation.errorMessages
+                                                                        .push(t("myAccount:components.profile.forms."
+                                                                        + "dateChangeForm.inputs.date.validations."
+                                                                        + "futureDateError", {
+                                                                            field: fieldName
+                                                                        }))
+                                                                }
+                                                            }
                                                         }
-                                                    }
-                                                } }
-                                                value={ resolveProfileInfoSchemaValue(schema) }
-                                                maxLength={ schema.name === "emails" ? 50 : 30 }
-                                            />
+                                                    } }
+                                                    value={ resolveProfileInfoSchemaValue(schema) }
+                                                    maxLength={ schema.name === "emails" ? 50 : 30 }
+                                                />
                                             )
-                                        }
-                                        <Field
-                                            hidden={ true }
-                                            type="divider"
-                                        />
-                                        <Form.Group>
+                                            }
                                             <Field
-                                                size="small"
-                                                type="submit"
-                                                value={ t("common:save").toString() }
-                                                data-testid={ `${testId}-schema-mobile-editing-section-${schema.name.replace(".", "-")}-save-button` }
+                                                hidden={ true }
+                                                type="divider"
                                             />
-                                            <Field
-                                                className="link-button"
-                                                onClick={ () => {
-                                                    dispatch(setActiveForm(null));
-                                                } }
-                                                size="small"
-                                                type="button"
-                                                value={ t("common:cancel").toString() }
-                                                data-testid={ `${testId}-schema-mobile-editing-section-${schema.name.replace(".", "-")}-cancel-button` }
-                                            />
-                                        </Form.Group>
-                                    </ Forms>
-                                </Grid.Column>
-                            </Grid.Row>
-                        </Grid>
-                    </EditSection >
-                )
+                                            <Form.Group>
+                                                <Field
+                                                    size="small"
+                                                    type="submit"
+                                                    value={ t("common:save").toString() }
+                                                    data-testid={ `${testId}-schema-mobile-editing-section-${schema.name.replace(".", "-")}-save-button` }
+                                                />
+                                                <Field
+                                                    className="link-button"
+                                                    onClick={ () => {
+                                                        dispatch(setActiveForm(null));
+                                                    } }
+                                                    size="small"
+                                                    type="button"
+                                                    value={ t("common:cancel").toString() }
+                                                    data-testid={ `${testId}-schema-mobile-editing-section-${schema.name.replace(".", "-")}-cancel-button` }
+                                                />
+                                            </Form.Group>
+                                        </ Forms>
+                                    </Grid.Column>
+                                </Grid.Row>
+                            </Grid>
+                        </EditSection >
+                    )
             );
         } else {
             const fieldName = t("myAccount:components.profile.fields." + schema.name.replace(".", "_"),
                 { defaultValue: schema.displayName }
             );
+
             return (
                 <Grid padded={ true }>
                     <Grid.Row columns={ 3 }>
@@ -797,72 +846,73 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                                 <Placeholder><Placeholder.Line /></Placeholder>
                                             )
                                             : profileInfo.get(schema.name)
-                                            ? (
-                                                schema.name === "emails" && isEmailPending
-                                                    ? (
-                                                        <>
-                                                            <p>
-                                                                {
-                                                                    profileInfo.get(schema.name)
-                                                                }
-                                                                <Popup
-                                                                    size="tiny"
-                                                                    trigger={
-                                                                        <Icon
-                                                                            name="info circle"
-                                                                            color="yellow"
-                                                                        />
+                                                ? (
+                                                    schema.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY
+                                                        .get("EMAILS") && isEmailPending
+                                                        ? (
+                                                            <>
+                                                                <p>
+                                                                    {
+                                                                        profileInfo.get(schema.name)
                                                                     }
-                                                                    content={
-                                                                        t("myAccount:components.profile.messages." +
+                                                                    <Popup
+                                                                        size="tiny"
+                                                                        trigger={
+                                                                            (<Icon
+                                                                                name="info circle"
+                                                                                color="yellow"
+                                                                            />)
+                                                                        }
+                                                                        content={
+                                                                            t("myAccount:components.profile.messages." +
                                                                             "emailConfirmation.content")
-                                                                    }
-                                                                    header={
-                                                                        t("myAccount:components.profile.messages." +
+                                                                        }
+                                                                        header={
+                                                                            t("myAccount:components.profile.messages." +
                                                                             "emailConfirmation.header")
-                                                                    }
-                                                                    inverted
-                                                                />
-                                                            </p>
-                                                        </>
-                                                    )
-                                                    : resolveProfileInfoSchemaValue(schema)
-                                            )
-                                            : (
-                                                !isReadOnlyUser &&
+                                                                        }
+                                                                        inverted
+                                                                    />
+                                                                </p>
+                                                            </>
+                                                        )
+                                                        : resolveProfileInfoSchemaValue(schema)
+                                                )
+                                                : (
+                                                    !(CommonUtils.isProfileReadOnly(isReadOnlyUser)) &&
                                                 schema.mutability !== ProfileConstants.READONLY_SCHEMA ?
-                                                    (
-                                                        <a
-                                                            className="placeholder-text"
-                                                            tabIndex={ 0 }
-                                                            onKeyPress={ (e) => {
-                                                                if (e.key === "Enter") {
+                                                        (
+                                                            <a
+                                                                className="placeholder-text"
+                                                                tabIndex={ 0 }
+                                                                onKeyPress={ (e) => {
+                                                                    if (e.key === "Enter") {
+                                                                        dispatch(
+                                                                            setActiveForm(
+                                                                                CommonConstants.PERSONAL_INFO + schema.name
+                                                                            )
+                                                                        );
+                                                                    }
+                                                                } }
+                                                                onClick={ () => {
                                                                     dispatch(
                                                                         setActiveForm(
                                                                             CommonConstants.PERSONAL_INFO + schema.name
                                                                         )
                                                                     );
-                                                                }
-                                                            } }
-                                                            onClick={ () => {
-                                                                dispatch(
-                                                                    setActiveForm(
-                                                                        CommonConstants.PERSONAL_INFO + schema.name
-                                                                    )
-                                                                );
-                                                            } }
-                                                            data-testid={ `${testId}-schema-mobile-editing-section-${schema.name.replace(".", "-")}-placeholder` }
-                                                        >
-                                                            { t("myAccount:components.profile.forms.generic." +
+                                                                } }
+                                                                data-testid={ `${testId}-schema-mobile-editing-section-${schema.name.replace(".", "-")}-placeholder` }
+                                                            >
+                                                                { t("myAccount:components.profile.forms.generic." +
                                                                 "inputs.placeholder",
                                                                 {
                                                                     fieldName: fieldName.toLowerCase()
                                                                 } )
-                                                            }
-                                                        </a>
-                                                    ) : null
+                                                                }
+                                                            </a>
+                                                        ) : null
                                                 )
-                                        }
+                                    }
                                 </List.Description>
                             </List.Content>
                         </Grid.Column>
@@ -875,8 +925,9 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                             }
                         >
                             <List.Content floated="right">
-                                { !isReadOnlyUser
+                                { !CommonUtils.isProfileReadOnly(isReadOnlyUser)
                                 && schema.mutability !== ProfileConstants.READONLY_SCHEMA
+                                && schema.name !== ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("USERNAME")
                                 && !isEmpty(profileInfo.get(schema.name))
                                 && hasRequiredScopes(featureConfig?.personalInfo,
                                     featureConfig?.personalInfo?.scopes?.update, allowedScopes)
@@ -909,7 +960,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                                         name={ !isEmpty(profileInfo.get(schema.name))
                                                             ? "pencil alternate"
                                                             : null }
-                                                            data-testid={ `${testId}-schema-mobile-editing-section-${schema.name.replace(".", "-")}-edit-button` }
+                                                        data-testid={ `${testId}-schema-mobile-editing-section-${schema.name.replace(".", "-")}-edit-button` }
                                                     />
                                                 )
                                             }
@@ -1080,8 +1131,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
      * @return {boolean}
      */
     const isProfileUrlReadOnly = (): boolean => {
-        return !(!isReadOnlyUser && hasRequiredScopes(featureConfig?.personalInfo,
-            featureConfig?.personalInfo?.scopes?.update, allowedScopes)
+        return !(!CommonUtils.isProfileReadOnly(isReadOnlyUser)
+            && hasRequiredScopes(featureConfig?.personalInfo,featureConfig?.personalInfo?.scopes?.update, allowedScopes)
             && profileSchema?.some((schema: ProfileSchema) => {
                 return schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("PROFILE_URL")
                     && schema.mutability !== ProfileConstants.READONLY_SCHEMA;
@@ -1184,7 +1235,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                     }
                                     {
                                         !isEmpty(profileInfo.get(schema.name)) ||
-                                        (!isReadOnlyUser && (schema.mutability !== ProfileConstants.READONLY_SCHEMA)
+                                        (!CommonUtils.isProfileReadOnly(isReadOnlyUser) 
+                                            && (schema.mutability !== ProfileConstants.READONLY_SCHEMA)
                                             && hasRequiredScopes(featureConfig?.personalInfo,
                                                 featureConfig?.personalInfo?.scopes?.update, allowedScopes))
                                             ? (

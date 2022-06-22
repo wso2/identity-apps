@@ -573,6 +573,14 @@ export const console: ConsoleNS = {
                         header: "Do you want to continue?",
                         subHeader: "You will lose any unsaved changes."
                     },
+                    certificateDelete: {
+                        assertionHint: "Please confirm your action.",
+                        content: "N/A",
+                        header: "Are you sure?",
+                        message: "This action is irreversible and will permanently delete the certificate.",
+                        primaryAction: "Delete",
+                        secondaryAction: "Cancel"
+                    },
                     changeProtocol: {
                         assertionHint: "Please type <1>{{ name }}</1> to confirm.",
                         content: "This action is irreversible and will permanently remove " +
@@ -647,14 +655,12 @@ export const console: ConsoleNS = {
                         header: "Are you sure?",
                         message: "You have entered a value less than 60 seconds for token expiry."
                     },
-                    regenerateSecret: {
-                        assertionHint: "Please type <1>{{ id }}</1> to regenerate the client secret.",
-                        content: "If you regenerate the client secret, authentication flows using old client secret " +
-                            "for this application will stop working. Please update the application client secret on " +
-                            "your client application.",
+                    reactivateOIDC: {
+                        assertionHint: "Please type <1>{{ id }}</1> to reactivate the application.",
+                        content: "If you reactivate the application, a new client secret will be generated. " +
+                            "Please update the application client secret on your client application.",
                         header: "Are you sure?",
-                        message: "This action is irreversible and permanently changes the client secret. " +
-                            "Please proceed with caution."
+                        message: ""
                     },
                     reactivateSPA: {
                         assertionHint: "Please type <1>{{ id }}</1> to reactivate the application.",
@@ -663,12 +669,14 @@ export const console: ConsoleNS = {
                         header: "Are you sure?",
                         message: "This action can be reversed by revoking the client id later."
                     },
-                    reactivateOIDC: {
-                        assertionHint: "Please type <1>{{ id }}</1> to reactivate the application.",
-                        content: "If you reactivate the application, a new client secret will be generated. " +
-                            "Please update the application client secret on your client application.",
+                    regenerateSecret: {
+                        assertionHint: "Please type <1>{{ id }}</1> to regenerate the client secret.",
+                        content: "If you regenerate the client secret, authentication flows using old client secret " +
+                            "for this application will stop working. Please update the application client secret on " +
+                            "your client application.",
                         header: "Are you sure?",
-                        message: ""
+                        message: "This action is irreversible and permanently changes the client secret. " +
+                            "Please proceed with caution."
                     },
                     removeApplicationUserAttribute: {
                         content : "If you confirm this action, the subject attribute will be set to the default " +
@@ -689,14 +697,6 @@ export const console: ConsoleNS = {
                         header: "Are you sure?",
                         message: "If you revoke this application, authentication flows for this application will " +
                             "stop working. Please proceed with caution."
-                    },
-                    certificateDelete: {
-                        assertionHint: "Please confirm your action.",
-                        content: "N/A",
-                        header: "Are you sure?",
-                        message: "This action is irreversible and will permanently delete the certificate.",
-                        primaryAction: "Delete",
-                        secondaryAction: "Cancel"
                     }
                 },
                 dangerZoneGroup: {
@@ -735,11 +735,11 @@ export const console: ConsoleNS = {
                                 },
                                 subHeading: "Add new protocol to {{appName}} application"
                             },
-                            tabName: "Protocol",
                             protocolLanding: {
                                 heading: "Which protocol are you using?",
                                 subHeading: "Select the protocol for your application to connect."
-                            }
+                            },
+                            tabName: "Protocol"
                         },
                         advanced: {
                             tabName: "Advanced"
@@ -791,14 +791,15 @@ export const console: ConsoleNS = {
                                     },
                                     subHeading: "Select which user attributes you want to share with the application."
                                 },
-                                heading: "User Attribute Selection",
                                 attributeComponentHint: "Manage the user attributes you want to share with this " +
-                                    "application via <1>OpenID Connect Scopes.</1> You can map additional attributes " +
-                                    "by navigating to <3>Attribute Mappings.</3>",
+                                    "application via <1>OpenID Connect Scopes.</1> You can add new attributes " +
+                                    "and mappings by navigating to <3>Attributes.</3>",
                                 attributeComponentHintAlt: "Manage the user attributes you want to share with this" +
-                                    " application.",
+                                    " application. You can add new attributes and mappings by navigating to " +
+                                    "<1>Attributes.</1>",
                                 description: "Add the user attributes that are allowed to be shared with this " +
                                     "application.",
+                                heading: "User Attribute Selection",
                                 mandatoryAttributeHint: "Mark which user attributes are mandatory to be shared " +
                                     "with the application. At login, {{productName}} prompts the user to enter these " +
                                     "attribute values, if not already provided in the user's profile.",
@@ -821,6 +822,9 @@ export const console: ConsoleNS = {
                                             subjectDisabledSelection: "This attribute is mandatory because it " +
                                                 "is the subject attribute."
                                         },
+                                        faultyAttributeMapping: "Missing OpenID Connect Attribute Mapping",
+                                        faultyAttributeMappingHint: "Attribute value will not be shared to the" +
+                                            " application at the user login.",
                                         fields: {
                                             claim: {
                                                 label: "Please enter a value",
@@ -838,13 +842,17 @@ export const console: ConsoleNS = {
                                             "Please proceed with caution since you will not be able to " +
                                             "retrieve the mapped custom attribute values.",
                                         confirmationHeading: "Are you sure?",
-                                        confirmationMessage: "This action will revert mapped custom attribute values to default values."
+                                        confirmationMessage: "This action will revert mapped custom attribute " +
+                                            "values to default values."
                                     },
                                     searchPlaceholder: "Search user attributes"
                                 },
                                 selectAll: "Select all attributes"
                             },
                             tabName: "User Attributes"
+                        },
+                        general: {
+                            tabName: "General"
                         },
                         info: {
                             oidcHeading: "Server Endpoints",
@@ -855,13 +863,10 @@ export const console: ConsoleNS = {
                                 "configure authentication for your application using SAML 2.0.",
                             tabName: "Info"
                         },
-                        general: {
-                            tabName: "General"
-                        },
                         provisioning: {
                             inbound: {
                                 heading: "Inbound Provisioning",
-                                subHeading: "Provision users or groups to a WSO2 Identity Server’s userstore via " +
+                                subHeading: "Provision users or groups to a WSO2 Identity Server’s user store via " +
                                     "this application."
                             },
                             outbound: {
@@ -948,6 +953,9 @@ export const console: ConsoleNS = {
                                                     heading: "Templates"
                                                 }
                                             },
+                                            heading: "Script-based configuration",
+                                            hint: "Define the authentication flow via an adaptive script. You can " +
+                                                "select one of the templates fom the panel to get started.",
                                             secretsList: {
                                                 create: "Create new secret",
                                                 emptyPlaceholder: "No secrets available",
@@ -958,10 +966,7 @@ export const console: ConsoleNS = {
                                                         "conditional authentication scripts.",
                                                     plusIcon: "Add to the script"
                                                 }
-                                            },
-                                            heading: "Script-based configuration",
-                                            hint: "Define the authentication flow via an adaptive script. You can " +
-                                                "select one of the templates fom the panel to get started."
+                                            }
                                         },
                                         stepBased: {
                                             actions: {
@@ -1012,6 +1017,8 @@ export const console: ConsoleNS = {
                                             },
                                             authenticatorDisabled: "You need to configure this authenticator by " +
                                                 "providing client id & secret, to use with your applications.",
+                                            firstFactorDisabled: "Identifier First authenticator and Username & " +
+                                                "Password authenticator cannot be added to the same step.",
                                             forms: {
                                                 fields: {
                                                     attributesFrom: {
@@ -1019,7 +1026,7 @@ export const console: ConsoleNS = {
                                                         placeholder: "Select step"
                                                     },
                                                     subjectIdentifierFrom: {
-                                                        label: "Pick subject identifier from this step",
+                                                        label: "Pick user identifier from this step",
                                                         placeholder: "Select step"
                                                     }
                                                 }
@@ -1027,11 +1034,17 @@ export const console: ConsoleNS = {
                                             heading: "Step-based configuration",
                                             hint: "Create a user login flow by dragging authenticators on to the " +
                                                 "relevant steps.",
-                                            secondFactorDisabled: "Les authentificateurs de deuxième facteur ne " +
-                                                "peuvent être utilisés que si <1>Nom d'utilisateur et mot de " +
-                                                "passe</1>, <3>Connexion sociale</3> ou tout autre gestionnaire " +
-                                                "tel que <5>Identifier First</5> qui peut gérer ces facteurs sont " +
-                                                "présents dans une étape précédente.",
+                                            magicLinkDisabled: "You can only add the Magic Link authenticator " +
+                                                "as a second step and only when Identifier First authenticator " +
+                                                "is present in the first step.",
+                                            secondFactorDisabled: "Second factor authenticators " +
+                                                "can be used only if <1>User name and password " +
+                                                "password</1>, <3>Social Login</3> or any other handler" +
+                                                "which can handle these factors are" +
+                                                "present in a previous step.",
+                                            secondFactorDisabledDueToProxyMode: "To configure <1>{{auth}}</1>," +
+                                                " you should enable the Just-in-Time provisioning" +
+                                                " setting from the following Identity Providers.",
                                             secondFactorDisabledInFirstStep: "Second factor authenticators can " +
                                                 "not be used in the first step."
                                         }
@@ -1056,36 +1069,45 @@ export const console: ConsoleNS = {
                                     flowBuilder: {
                                         addMissingSocialAuthenticatorModal: {
                                             content: {
-                                                body: "You do not have an active Identity Provider configured with " +
+                                                body: "You do not have an active Social " +
+                                                    "Connection configured with " +
                                                     "<1>{{authenticator}} Authenticator</1>. Click on the " +
-                                                    "<3>Configure</3> button to register a new <5>{{authenticator}} " +
-                                                    "Identity Provider</5> or navigate to the <7>Identity " +
-                                                    "Providers</7> section manually.",
-                                                message: "No active {{authenticator}} Identity Provider configured"
+                                                    "<3>Configure</3> button to register" +
+                                                    " a new <5>{{authenticator}} " +
+                                                    "Social Connection</5> or navigate to the <7>Connections</7>" +
+                                                    " section manually.",
+                                                message: "No active {{authenticator}} Social " +
+                                                    "Connection configured"
                                             },
                                             description: "",
-                                            heading: "Configure {{authenticator}} Identity Provider",
+                                            heading: "Configure {{authenticator}} Social Connection",
                                             primaryButton: "Configure",
                                             secondaryButton: "Cancel"
                                         },
                                         duplicateSocialAuthenticatorSelectionModal: {
                                             content: {
-                                                body: "You have multiple Identity Providers configured with <1>" +
+                                                body: "You have multiple Social Connections configured with <1>" +
                                                     "{{authenticator}} Authenticator</1>. Select the desired one " +
                                                     "from the selection below to proceed.",
-                                                message: "Multiple Identity Providers found with {{authenticator}} " +
+                                                message: "Multiple Social Connections found with {{authenticator}} " +
                                                     "Authenticator."
                                             },
                                             description: "",
-                                            heading: "Select {{authenticator}} Identity Provider",
+                                            heading: "Select {{authenticator}} Social Connection",
                                             primaryButton: "Continue",
                                             secondaryButton: "Cancel"
                                         },
                                         heading: "Build your own login flow",
+                                        headings: {
+                                            default: "Default Login",
+                                            multiFactorLogin: "Multi-factor Login",
+                                            passwordlessLogin: "Passwordless Login",
+                                            socialLogin: "Social Login"
+                                        },
                                         types: {
                                             defaultConfig: {
-                                                description: "Build your login flow starting with Username & " +
-                                                    "Password login.",
+                                                description: "Build your login flow starting with Username & "
+                                                    + "Password login.",
                                                 heading: "Start with default configuration"
                                             },
                                             facebook: {
@@ -1100,10 +1122,26 @@ export const console: ConsoleNS = {
                                                 description: "Enable users to login with Google.",
                                                 heading: "Add Google login"
                                             },
+                                            magicLink: {
+                                                description: "Enable users to log in using a magic "
+                                                    + "link sent to their email.",
+                                                heading: "Add Magic Link login",
+                                                warning: "You can only use Identifier First authenticator with the " +
+                                                    "Magic Link authenticator. Using it with any other authenticator " +
+                                                    "can lead to unexpected behavior."
+                                            },
                                             totp: {
-                                                description: "Enable additional authentication layer with Time " +
-                                                    "based OTP.",
+                                                description: "Enable additional authentication layer with Time "
+                                                    + "based OTP.",
                                                 heading: "Add TOTP as a second factor"
+                                            },
+                                            usernameless: {
+                                                description: "Enable users to log in using a FIDO2 security key "
+                                                    + "or biometrics.",
+                                                heading: "Add Security Key/Biometrics login",
+                                                info: "To sign in with passwordless login, your users "
+                                                    + "should have their FIDO2 security keys or biometrics "
+                                                    + "registered via My Account."
                                             }
                                         }
                                     }
@@ -1261,9 +1299,9 @@ export const console: ConsoleNS = {
                             certificate: {
                                 fields: {
                                     jwksValue: {
+                                        description: "The URL used to obtain a JWKS public key.",
                                         label: "URL",
                                         placeholder: "https://myapp.io/jwks",
-                                        description: "The URL used to obtain a JWKS public key.",
                                         validations: {
                                             empty: "This is a required field.",
                                             invalid: "Enter a valid URL"
@@ -1273,13 +1311,14 @@ export const console: ConsoleNS = {
                                         actions: {
                                             view: "View certificate info"
                                         },
+                                        description: "The text value of the certificate in PEM format.",
                                         hint: "The certificate (in PEM format) of the application.",
                                         label: "Certificate",
-                                        description: "The text value of the certificate in PEM format.",
                                         placeholder: "Certificate in PEM format.",
                                         validations: {
                                             empty: "This is a required field.",
-                                            invalid: "Enter a valid certificate in PEM format"                                        }
+                                            invalid: "Enter a valid certificate in PEM format"
+                                        }
                                     },
                                     type: {
                                         children: {
@@ -1319,12 +1358,11 @@ export const console: ConsoleNS = {
                             },
                             description: {
                                 label: "Description",
-                                description: "A text description of the application.",
                                 placeholder: "Enter a description for the application"
                             },
                             discoverable: {
-                                hint: "Enable to make the application visible to end-users on their " +
-                                    "<1>{{ myAccount }}</1> application catalog.",
+                                hint: "If enabled, customers can access this application from the " +
+                                    "<1>{{ myAccount }}</1> portal.",
                                 label: "Discoverable application"
                             },
                             imageUrl: {
@@ -1336,6 +1374,10 @@ export const console: ConsoleNS = {
                                     invalid: "This is not a valid image URL"
                                 }
                             },
+                            isManagementApp: {
+                                hint: "Enable to allow the application to access management API of this organization.",
+                                label: "Management Application"
+                            },
                             name: {
                                 label: "Name",
                                 placeholder: "My App",
@@ -1345,7 +1387,9 @@ export const console: ConsoleNS = {
                                     empty: "Application name is required."
                                 }
                             }
-                        }
+                        },
+                        managementAppBanner: "The application is allowed to access the management APIs of this " +
+                            "organization."
                     },
                     inboundCustom: {
                         fields: {
@@ -1395,8 +1439,11 @@ export const console: ConsoleNS = {
                                 hint: "The authorized redirect URL determines where the authorization code is sent " +
                                     "to upon user authentication, and where the user is redirected to upon user " +
                                     "logout. The client app should specify the authorized redirect URL in the " +
-                                    "authorization or logout request and {{productName}} will validate it against the " +
-                                    "authorized redirect URLs entered here.",
+                                    "authorization or logout request and {{productName}} will validate it against " +
+                                    "the authorized redirect URLs entered here.",
+                                info: "Don’t have an app? Try out a sample app using {{callBackURLFromTemplate}} " +
+                                    "as the authorized redirect URL. (You can download and run a sample at a " +
+                                    "later step.)",
                                 label: "Authorized redirect URLs",
                                 placeholder: "https://myapp.io/login",
                                 validations: {
@@ -1405,9 +1452,7 @@ export const console: ConsoleNS = {
                                     required: "This field is required for a functional app. " +
                                         "However, if you are planning to try the sample app, " +
                                         "this field can be ignored."
-                                },
-                                info: "Don’t have an app? Try out a sample app using {{callBackURLFromTemplate}} " +
-                                "as the authorized redirect URL. (You can download and run a sample at a later step.)"
+                                }
                             },
                             clientID: {
                                 label: "Client ID"
@@ -1429,27 +1474,31 @@ export const console: ConsoleNS = {
                             },
                             grant: {
                                 children: {
-                                    implicit: {
-                                        hint: "Using the implicit grant with public applications is not recommended.",
-                                        label: "{{grantType}} (Not recommended)"
-                                    },
                                     client_credential: {
                                         hint: "Using 'openid' scope is not allowed with this grant type.",
                                         label: "(openid scope not allowed)"
                                     },
+                                    implicit: {
+                                        hint: "Using the implicit grant with public applications is not recommended. " +
+                                            "{{productName}} adhere to security best practices, " +
+                                            "and do not implement the implicit grant.",
+                                        label: "{{grantType}} (Not recommended)"
+                                    },
                                     password: {
-                                        hint: "Using the password grant with public applications is not recommended.",
+                                        hint: "Using the password grant with public applications is not recommended. " +
+                                            "{{productName}} adhere to security best practices, " +
+                                            "and do not implement the password grant.",
                                         label: "{{grantType}} (Not recommended)"
                                     }
                                 },
                                 hint: "This will determine how the application communicates with the token service.",
                                 label: "Allowed grant types",
-                                validations: {
-                                    empty: "Select at least one grant type"
-                                },
                                 validation: {
                                     refreshToken:"Refresh token grant type should only be selected along with " +
-                                    "grant types that provide a refresh token."
+                                        "grant types that provide a refresh token."
+                                },
+                                validations: {
+                                    empty: "Select at least one grant type"
                                 }
                             },
                             public: {
@@ -1463,17 +1512,28 @@ export const console: ConsoleNS = {
                             }
                         },
                         messages: {
+                            customInvalidMessage: "Please enter a valid URI. Valid formats include HTTP, HTTPS, " +
+                                "or private-use URI scheme.",
                             revokeDisclaimer: {
                                 content: "The application has been revoked. Reactivate the application to allow " +
                                     "users to log in.",
                                 heading: "Application is inactive"
-                            },
-                            customInvalidMessage: "Please enter a valid URI. Valid formats include HTTP, HTTPS, " +
-                                "or private-use URI scheme."
+                            }
                         },
                         sections: {
                             accessToken: {
                                 fields: {
+                                    applicationTokenExpiry: {
+                                        hint: "Specify the validity period of the " +
+                                            "<1>application_access_token</1> in seconds.",
+                                        label: "Application access token expiry time",
+                                        placeholder: "Enter the application access token expiry time",
+                                        validations: {
+                                            empty: "Please fill the application access token expiry time",
+                                            invalid: "Application access token expiry time should be in seconds. " +
+                                                "Decimal points and negative numbers are not allowed."
+                                        }
+                                    },
                                     bindingType: {
                                         children: {
                                             ssoBinding: {
@@ -1490,7 +1550,6 @@ export const console: ConsoleNS = {
                                                 "and httpOnly parameters.",
                                             none: "No binding. {{productName}} will issue a new access token only " +
                                                 "when the token expires or is revoked.",
-                                            // eslint-disable-next-line @typescript-eslint/camelcase
                                             sso_session: "Binds the access token to the login session. " +
                                                 "{{productName}} will issue a new access token for each new login " +
                                                 "and revoke the token upon logout."
@@ -1504,17 +1563,6 @@ export const console: ConsoleNS = {
                                         validations: {
                                             empty: "Please fill the user access token expiry time",
                                             invalid: "Access token expiry time should be in seconds. " +
-                                                "Decimal points and negative numbers are not allowed."
-                                        }
-                                    },
-                                    applicationTokenExpiry: {
-                                        hint: "Specify the validity period of the " +
-                                            "<1>application_access_token</1> in seconds.",
-                                        label: "Application access token expiry time",
-                                        placeholder: "Enter the application access token expiry time",
-                                        validations: {
-                                            empty: "Please fill the application access token expiry time",
-                                            invalid: "Application access token expiry time should be in seconds. " +
                                                 "Decimal points and negative numbers are not allowed."
                                         }
                                     },
@@ -1540,6 +1588,10 @@ export const console: ConsoleNS = {
                                 heading: "Access Token",
                                 hint: " Configure the access token issuer, user access token expiry time, " +
                                     "application access token expiry time etc."
+                            },
+                            certificates: {
+                                disabledPopup: "This certificate is used to encrypt the <1>id_token</1>." +
+                                    " First, you need to disable <3>id_token</3> encryption to proceed."
                             },
                             idToken: {
                                 fields: {
@@ -1657,7 +1709,7 @@ export const console: ConsoleNS = {
                                         hint: "Select to issue a new <1>refresh_token</1> each time a "+
                                             "<3>refresh_token</3> is " +
                                             "exchanged. The existing token will be invalidated.",
-                                        label: "Rotate refresh token",
+                                        label: "Renew refresh token",
                                         validations: {
                                             empty: "This is a required field."
                                         }
@@ -1687,10 +1739,6 @@ export const console: ConsoleNS = {
                                     }
                                 },
                                 heading: "Scope validators"
-                            },
-                            certificates: {
-                                disabledPopup: "This certificate is used to encrypt the <1>id_token</1>." +
-                                    " First, you need to disable <3>id_token</3> encryption to proceed."
                             }
                         }
                     },
@@ -1702,6 +1750,9 @@ export const console: ConsoleNS = {
                             assertionURLs: {
                                 hint: "The Assertion Consumer Service (ACS) URL determines where to " +
                                     "send the SAML response.",
+                                info: "Don’t have an app? Try out a sample app using {{assertionURLFromTemplate}} " +
+                                    "as the assertion consumer URL. (You can download and run a sample at a later" +
+                                    " step.)",
                                 label: "Assertion consumer service URLs",
                                 placeholder: "Enter ACS URL",
                                 validations: {
@@ -1710,10 +1761,7 @@ export const console: ConsoleNS = {
                                     required: "This field is required for a functional app. " +
                                         "However, if you are planning to try the sample app, " +
                                         "this field can be ignored."
-                                },
-                                info: "Don’t have an app? Try out a sample app using {{assertionURLFromTemplate}} " +
-                                    "as the assertion consumer URL. (You can download and run a sample at a later" +
-                                    " step.)"
+                                }
                             },
                             defaultAssertionURL: {
                                 hint: "If you have configured multiple ACS URLs, you must configure one as " +
@@ -1737,6 +1785,7 @@ export const console: ConsoleNS = {
                                 }
                             },
                             issuer: {
+                                errorMessage: "The issuer already exists.",
                                 hint: "This specifies the unique identifier of the application. This is also the " +
                                     "<1>saml2:Issuer</1> value specified in the SAML authentication request issued " +
                                     "by the application.",
@@ -1744,18 +1793,17 @@ export const console: ConsoleNS = {
                                 placeholder: "Enter issuer",
                                 validations: {
                                     empty: "Please provide the issuer"
-                                },
-                                errorMessage: "The issuer already exists."
+                                }
                             },
                             metaURL: {
+                                errorMessage: "The metadata URL is invalid",
                                 hint: "URL for the meta file",
                                 label: "Meta URL",
                                 placeholder: "Enter the meta file url",
                                 validations: {
                                     empty: "Please provide the meta file url",
                                     invalid: "Enter a valid URL"
-                                },
-                                errorMessage: "The metadata URL is invalid"
+                                }
                             },
                             mode: {
                                 children: {
@@ -1841,16 +1889,20 @@ export const console: ConsoleNS = {
                                 },
                                 heading: "Attribute Profile"
                             },
+                            certificates: {
+                                disabledPopup: "Make sure request signature validation and" +
+                                    " assertion encryption are disabled to proceed."
+                            },
                             encryption: {
                                 fields: {
                                     assertionEncryption: {
+                                        hint: "Select to encrypt the SAML2 Assertions returned after authentication. " +
+                                            "To use encryption configure the certificate of your application" +
+                                            " in the Certificate section below.",
                                         label: "Enable encryption",
                                         validations: {
                                             empty: "This is a required field."
-                                        },
-                                        hint: "Select to encrypt the SAML2 Assertions returned after authentication. " +
-                                            "To use encryption configure the certificate of your application" +
-                                            " in the Certificate section below."
+                                        }
                                     },
                                     assertionEncryptionAlgorithm: {
                                         label: "Assertion encryption algorithm",
@@ -2010,10 +2062,6 @@ export const console: ConsoleNS = {
                                     }
                                 },
                                 heading: "Single Sign-On Profile"
-                            },
-                            certificates: {
-                                disabledPopup: "Make sure request signature validation and" +
-                                    " assertion encryption are disabled to proceed."
                             }
                         }
                     },
@@ -2097,8 +2145,8 @@ export const console: ConsoleNS = {
                                 label: "Proxy mode"
                             },
                             userstoreDomain: {
-                                hint: "Select userstore domain name to provision users and groups.",
-                                label: "Provisioning userstore domain"
+                                hint: "Select user store domain name to provision users and groups.",
+                                label: "Provisioning user store domain"
                             }
                         }
                     },
@@ -2236,13 +2284,19 @@ export const console: ConsoleNS = {
                 list: {
                     actions: {
                         add: "New Application",
-                        predefined: "Use Predefined",
-                        custom: "Custom"
+                        custom: "Custom",
+                        predefined: "Use Predefined"
                     },
                     columns: {
                         actions: "Actions",
                         name: "Name"
                     }
+                },
+                myaccount: {
+                    description: "Self-service portal for your users.",
+                    popup: "Share this link with your users to allow access to My Account" +
+                    " and to manage their accounts.",
+                    title: "My Account"
                 },
                 notifications: {
                     addApplication: {
@@ -2261,14 +2315,14 @@ export const console: ConsoleNS = {
                     },
                     apiLimitReachedError: {
                         error: {
-                            description: "This organisation reached the maximum limit of 200 applications allowed.",
+                            description: "You have reached the maximum number of applications allowed.",
                             message: "Failed to create the application"
                         }
                     },
                     authenticationStepDeleteErrorDueToSecondFactors: {
                         genericError: {
-                            description: "Second factor authenticators require having a basic or identifier-first " +
-                                "authenticator in a prior step.",
+                            description: "Second factor authenticators require having a Username & "
+                                + "Password authenticator in a prior step.",
                             message: "Step cannot be deleted"
                         }
                     },
@@ -2277,6 +2331,11 @@ export const console: ConsoleNS = {
                             description: "At least one authentication step is required.",
                             message: "Step cannot be deleted"
                         }
+                    },
+                    conditionalScriptLoopingError: {
+                        description: "Looping constructs such as <1>for</1>, <3>while</3>, and"
+                            + " <5>forEach</5> are not allowed in the conditional authentication" + " script.",
+                        message: "Failed to update the script"
                     },
                     deleteApplication: {
                         error: {
@@ -2292,14 +2351,22 @@ export const console: ConsoleNS = {
                             message: "Application deleted"
                         }
                     },
+                    deleteCertificateGenericError: {
+                        description: "Something went wrong. We were unable to delete the application certificate.",
+                        message: "Failed to update the application"
+                    },
+                    deleteCertificateSuccess: {
+                        description: "Successfully deleted the application certificate.",
+                        message: "Deleted certificate"
+                    },
                     deleteOptionErrorDueToSecondFactorsOnRight: {
                         error: {
                             description: "{{description}}",
                             message: "Cannot delete this authenticator"
                         },
                         genericError: {
-                            description: "There are second-factor authenticators in other steps that depend on " +
-                                "this authenticator.",
+                            description: "There are authenticators in other steps that depend on "
+                                + "this authenticator.",
                             message: "Cannot delete this authenticator"
                         },
                         success: {
@@ -2329,8 +2396,8 @@ export const console: ConsoleNS = {
                     },
                     emptyAuthenticationStep: {
                         genericError: {
-                            description: "There are empty authentication steps. Please remove them or add " +
-                                "authenticators to proceed.",
+                            description: "There are empty authentication steps. Please remove them or add "
+                                + "authenticators to proceed.",
                             message: "Update error"
                         }
                     },
@@ -2410,8 +2477,8 @@ export const console: ConsoleNS = {
                             message: "Retrieval error"
                         },
                         genericError: {
-                            description: "An error occurred while retrieving the IDP configurations for the OIDC " +
-                                "application.",
+                            description: "An error occurred while retrieving the IDP configurations for the OIDC "
+                                + "application.",
                             message: "Retrieval error"
                         },
                         success: {
@@ -2421,7 +2488,8 @@ export const console: ConsoleNS = {
                     },
                     fetchOIDCServiceEndpoints: {
                         genericError: {
-                            description: "An error occurred while retrieving the server endpoints for OIDC applications.",
+                            description: "An error occurred while retrieving the server endpoints for "
+                                + "OIDC applications.",
                             message: "Something went wrong"
                         }
                     },
@@ -2445,8 +2513,8 @@ export const console: ConsoleNS = {
                             message: "Retrieval error"
                         },
                         genericError: {
-                            description: "An error occurred while retrieving the IDP configurations for the SAML" +
-                                " application.",
+                            description: "An error occurred while retrieving the IDP configurations for the SAML"
+                                + " application.",
                             message: "Retrieval error"
                         },
                         success: {
@@ -2480,6 +2548,12 @@ export const console: ConsoleNS = {
                         success: {
                             description: "Successfully retrieved the application templates.",
                             message: "Retrieval successful"
+                        }
+                    },
+                    firstFactorAuthenticatorToSecondStep: {
+                        genericError: {
+                            description: "This authenticator can only be added to the first step.",
+                            message: "Cannot add to this step"
                         }
                     },
                     getInboundProtocolConfig: {
@@ -2526,10 +2600,20 @@ export const console: ConsoleNS = {
                     },
                     secondFactorAuthenticatorToFirstStep: {
                         genericError: {
-                            description: "Second factor authenticators require having a basic or identifier-first" +
-                                "authenticator in a prior step.",
+                            description: "Second factor authenticators require having a basic "
+                                + "authenticator in a prior step.",
                             message: "Cannot add to this step"
                         }
+                    },
+                    tierLimitReachedError: {
+                        emptyPlaceholder: {
+                            action: "View Plans",
+                            subtitles: "You can contact the organization administrator or (if you are the " +
+                                "administrator) upgrade your subscription to increase the allowed limit.",
+                            title: "You have reached the maximum number of apps allowed " +
+                                "for this organization."
+                        },
+                        heading: "You’ve reached the maximum limit for apps"
                     },
                     updateAdvancedConfig: {
                         error: {
@@ -2615,6 +2699,11 @@ export const console: ConsoleNS = {
                             message: "Update successful"
                         }
                     },
+                    updateOnlyIdentifierFirstError: {
+                        description: "Identifier First authenticator cannot be the only authenticator. "
+                            + "It needs an additional step.",
+                        message: "Update error"
+                    },
                     updateOutboundProvisioning: {
                         genericError: {
                             description: "The outbound provisioning IDP already exists.",
@@ -2634,20 +2723,6 @@ export const console: ConsoleNS = {
                             description: "Successfully added new protocol configurations.",
                             message: "Update successful"
                         }
-                    },
-                    conditionalScriptLoopingError: {
-                        description: "Looping constructs such as <1>for</1>, <3>while</3>, and" +
-                            " <5>forEach</5> are not allowed in the conditional authentication" +
-                            " script.",
-                        message: "Failed to update the script"
-                    },
-                    deleteCertificateSuccess: {
-                        description: "Successfully deleted the application certificate.",
-                        message: "Deleted certificate"
-                    },
-                    deleteCertificateGenericError: {
-                        description: "Something went wrong. We were unable to delete the application certificate.",
-                        message: "Failed to update the application"
                     }
                 },
                 placeholders: {
@@ -2722,6 +2797,15 @@ export const console: ConsoleNS = {
                     }
                 },
                 wizards: {
+                    applicationCertificateWizard: {
+                        emptyPlaceHolder: {
+                            description1: "This Application has no certificate added.",
+                            description2: "Add a certificate to view it here.",
+                            title: "No certificate"
+                        },
+                        heading: "Add New Certificate",
+                        subHeading: "Add new certificate to the application"
+                    },
                     minimalAppCreationWizard: {
                         help: {
                             heading: "Help",
@@ -2773,40 +2857,6 @@ export const console: ConsoleNS = {
                                 }
                             }
                         }
-                    },
-                    applicationCertificateWizard: {
-                        heading: "Add New Certificate",
-                        subHeading: "Add new certificate to the application",
-                        emptyPlaceHolder: {
-                            title: "No certificate",
-                            description1: "This Application has no certificate added.",
-                            description2: "Add a certificate to view it here."
-                        }
-                    }
-                }
-            },
-            footer: {
-                copyright: "WSO2 Identity Server © {{year}}"
-            },
-            header: {
-                links: {
-                    adminPortalNav: "Admin Portal",
-                    userPortalNav: "My Account"
-                }
-            },
-            helpPanel: {
-                actions: {
-                    close: "Close",
-                    open: "Open help panel",
-                    pin: "Pin",
-                    unPin: "Unpin"
-                },
-                notifications: {
-                    pin: {
-                        success: {
-                            description: "Help panel will always appear {{state}} unless you change explicitly.",
-                            message: "Help panel {{state}}"
-                        }
                     }
                 }
             },
@@ -2832,7 +2882,7 @@ export const console: ConsoleNS = {
                     addAuthenticator: "New Authenticator",
                     addCertificate: "New Certificate",
                     addConnector: "New Connector",
-                    addIDP: "New Connection"
+                    addIDP: "Create Connection"
                 },
                 confirmations: {
                     deleteAuthenticator: {
@@ -2999,7 +3049,8 @@ export const console: ConsoleNS = {
                                 }
                             },
                             useNumericChars: {
-                                hint: "Only numeric characters (<1>0-9</1>) are used for the OTP token. Please clear this checkbox to enable alphanumeric characters.",
+                                hint: "Only numeric characters (<1>0-9</1>) are used for the OTP token. " +
+                                    "Please clear this checkbox to enable alphanumeric characters.",
                                 label: "Use only numeric characters for OTP token",
                                 validations: {
                                     required: "Use only numeric characters for OTP token is a required field."
@@ -3170,104 +3221,104 @@ export const console: ConsoleNS = {
                                 label: "Assertion Consumer Service (ACS) URL",
                                 placeholder: "Assertion Consumer Service (ACS) URL"
                             },
-                            SPEntityId: {
-                                placeholder: "Enter service provider entity ID",
-                                ariaLabel: "Service provider entity ID",
-                                label: "Service provider entity ID",
-                                hint: "This value will be used as the <1><saml2:Issuer></1> in the" +
-                                    " SAML requests initiated from {{productName}} to" +
-                                    " external Identity Provider (IdP). You need to provide" +
-                                    " a unique value as the Service Provider (SP) entity ID."
-                            },
-                            SSOUrl: {
-                                placeholder: "https://ENTERPRISE_IDP/samlsso",
-                                ariaLabel: "Single Sign-On URL",
-                                label: "Identity provider Single Sign-On URL",
-                                hint: "Single sign-on URL of the external IdP. This is " +
-                                    "where {{productName}} will send its authentication requests."
-                            },
-                            IdPEntityId: {
-                                placeholder: "Enter identity provider entity ID",
-                                ariaLabel: "Identity provider entity ID",
-                                label: "Identity provider entity ID",
-                                hint: "This is the <1>&lt;saml2:Issuer&gt;</1> value specified in" +
-                                    " the SAML responses issued by the external IdP. Also, this needs to" +
-                                    " be a unique value to identify the external IdP within your organization."
-                            },
-                            NameIDType: {
-                                placeholder: "Select identity provider NameIDFormat",
-                                ariaLabel: "Choose NameIDFormat for SAML 2.0 assertion",
-                                label: "Identity provider NameID format",
-                                hint: "This specifies the name identifier format that is used to " +
-                                    "exchange information regarding the user in the SAML " +
-                                    "assertion sent from the external IdP."
-                            },
-                            RequestMethod: {
-                                placeholder: "Select HTTP protocol binding",
-                                ariaLabel: "HTTP protocol for SAML 2.0 bindings",
-                                label: "HTTP protocol binding",
-                                hint: "This specifies the mechanisms to transport SAML" +
-                                " messages in communication protocols."
-                            },
-                            IsSLORequestAccepted: {
-                                ariaLabel: "Specify whether logout is enabled for IdP",
-                                label: "Accept identity provider logout request",
-                                hint: "Specify whether single logout request from the" +
-                                    " IdP must be accepted by {{productName}}."
-                            },
-                            IsLogoutEnabled: {
-                                ariaLabel: "Specify whether logout is enabled for IdP",
-                                label: "Identity provider logout enabled",
-                                hint: "Specify whether logout is supported by the external "
-                                    + "IdP."
-                            },
-                            LogoutReqUrl: {
-                                placeholder: "Enter logout URL",
-                                ariaLabel: "Specify SAML 2.0 IdP Logout URL",
-                                label: "IdP logout URL",
-                                hint: "Enter the IdP's logout URL value if it's different from the Single Sign-On URL" +
-                                    " mentioned above."
-                            },
-                            IsAuthnRespSigned: {
-                                ariaLabel: "Authentication response must be signed always?",
-                                label: "Strictly verify authentication response signature info",
-                                hint: "Specifies if SAML2 authentication response from the external" +
-                                    " IdP must be signed or not."
-                            },
-                            IsLogoutReqSigned: {
-                                placeholder: "",
-                                ariaLabel: "Specify whether logout is enabled for IdP",
-                                label: "Logout request signing",
-                                hint: "When enabled {{productName}} will sign the SAML2 logout" +
-                                    " request sent to the external IdP."
+                            DigestAlgorithm: {
+                                ariaLabel: "Select the digest algorithm for description.",
+                                label: "Select digest algorithm",
+                                placeholder: "Select digest algorithm"
                             },
                             ISAuthnReqSigned: {
                                 ariaLabel: "Is authentication request signed?",
-                                label: "Authentication request signing",
                                 hint: "When enabled {{productName}} will sign the SAML2 authentication" +
-                                    " request to the external IdP."
+                                    " request to the external IdP.",
+                                label: "Authentication request signing"
                             },
-                            SignatureAlgorithm: {
-                                placeholder: "Select signature algorithm.",
-                                ariaLabel: "Select the signature algorithm for request signing.",
-                                label: "Signature algorithm"
-                            },
-                            DigestAlgorithm: {
-                                placeholder: "Select digest algorithm",
-                                ariaLabel: "Select the digest algorithm for description.",
-                                label: "Select digest algorithm"
+                            IdPEntityId: {
+                                ariaLabel: "Identity provider entity ID",
+                                hint: "This is the <1>&lt;saml2:Issuer&gt;</1> value specified in" +
+                                    " the SAML responses issued by the external IdP. Also, this needs to" +
+                                    " be a unique value to identify the external IdP within your organization.",
+                                label: "Identity provider entity ID",
+                                placeholder: "Enter identity provider entity ID"
                             },
                             IncludeProtocolBinding: {
                                 ariaLabel: "Include protocol binding in the request",
-                                label: "Include protocol binding in the request",
                                 hint: "Specifies whether the transport mechanism should be included in the" +
-                                    " small authentication request."
+                                    " small authentication request.",
+                                label: "Include protocol binding in the request"
+                            },
+                            IsAuthnRespSigned: {
+                                ariaLabel: "Authentication response must be signed always?",
+                                hint: "Specifies if SAML2 authentication response from the external" +
+                                    " IdP must be signed or not.",
+                                label: "Strictly verify authentication response signature info"
+                            },
+                            IsLogoutEnabled: {
+                                ariaLabel: "Specify whether logout is enabled for IdP",
+                                hint: "Specify whether logout is supported by the external "
+                                    + "IdP.",
+                                label: "Identity provider logout enabled"
+                            },
+                            IsLogoutReqSigned: {
+                                ariaLabel: "Specify whether logout is enabled for IdP",
+                                hint: "When enabled {{productName}} will sign the SAML2 logout" +
+                                    " request sent to the external IdP.",
+                                label: "Logout request signing",
+                                placeholder: ""
+                            },
+                            IsSLORequestAccepted: {
+                                ariaLabel: "Specify whether logout is enabled for IdP",
+                                hint: "Specify whether single logout request from the" +
+                                    " IdP must be accepted by {{productName}}.",
+                                label: "Accept identity provider logout request"
                             },
                             IsUserIdInClaims: {
                                 ariaLabel: "Use Name ID as the user identifier.",
-                                label: "Find user ID from attributes",
                                 hint: "To specify an attribute from the SAML 2.0 assertion as the user" +
-                                    " identifier, configure the subject attribute from the attributes section."
+                                    " identifier, configure the subject attribute from the attributes section.",
+                                label: "Find user ID from attributes"
+                            },
+                            LogoutReqUrl: {
+                                ariaLabel: "Specify SAML 2.0 IdP Logout URL",
+                                hint: "Enter the IdP's logout URL value if it's different from the Single Sign-On URL" +
+                                    " mentioned above.",
+                                label: "IdP logout URL",
+                                placeholder: "Enter logout URL"
+                            },
+                            NameIDType: {
+                                ariaLabel: "Choose NameIDFormat for SAML 2.0 assertion",
+                                hint: "This specifies the name identifier format that is used to " +
+                                    "exchange information regarding the user in the SAML " +
+                                    "assertion sent from the external IdP.",
+                                label: "Identity provider NameID format",
+                                placeholder: "Select identity provider NameIDFormat"
+                            },
+                            RequestMethod: {
+                                ariaLabel: "HTTP protocol for SAML 2.0 bindings",
+                                hint: "This specifies the mechanisms to transport SAML" +
+                                    " messages in communication protocols.",
+                                label: "HTTP protocol binding",
+                                placeholder: "Select HTTP protocol binding"
+                            },
+                            SPEntityId: {
+                                ariaLabel: "Service provider entity ID",
+                                hint: "This value will be used as the <1><saml2:Issuer></1> in the" +
+                                    " SAML requests initiated from {{productName}} to" +
+                                    " external Identity Provider (IdP). You need to provide" +
+                                    " a unique value as the Service Provider (SP) entity ID.",
+                                label: "Service provider entity ID",
+                                placeholder: "Enter service provider entity ID"
+                            },
+                            SSOUrl: {
+                                ariaLabel: "Single Sign-On URL",
+                                hint: "Single sign-on URL of the external IdP. This is " +
+                                    "where {{productName}} will send its authentication requests.",
+                                label: "Identity provider Single Sign-On URL",
+                                placeholder: "https://ENTERPRISE_IDP/samlsso"
+                            },
+                            SignatureAlgorithm: {
+                                ariaLabel: "Select the signature algorithm for request signing.",
+                                label: "Signature algorithm",
+                                placeholder: "Select signature algorithm."
                             },
                             commonAuthQueryParams: {
                                 ariaLabel: "SAML request additional query parameters",
@@ -3307,9 +3358,12 @@ export const console: ConsoleNS = {
                     },
                     jitProvisioning: {
                         enableJITProvisioning: {
-                            hint: "Specifies if users federated from this identity provider " +
-                                "needs to be provisioned locally.",
-                            label: "Enable Just-in-time Provisioning"
+                            disabledMessageContent: "You cannot disable the Just-in-Time User" +
+                                " Provisioning setting because the following applications" +
+                                " require it to be enabled.",
+                            disabledMessageHeader: "Operation Not Allowed",
+                            hint: "Specify if users federated from this identity provider need to be proxied.",
+                            label: "Just-in-Time (JIT) User Provisioning"
                         },
                         provisioningScheme: {
                             children: {
@@ -3450,6 +3504,12 @@ export const console: ConsoleNS = {
                             message: "Create successful"
                         }
                     },
+                    apiLimitReachedError: {
+                        error: {
+                            description: "You have reached the maximum number of connections allowed.",
+                            message: "Failed to create the connection"
+                        }
+                    },
                     changeCertType: {
                         jwks: {
                             description: "Please note that the certificates will be overridden " +
@@ -3474,6 +3534,20 @@ export const console: ConsoleNS = {
                         success: {
                             description: "Successfully deleted the certificate.",
                             message: "Delete successful"
+                        }
+                    },
+                    deleteConnection: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Connection Delete Error"
+                        },
+                        genericError: {
+                            description: "An error occurred while deleting the connection.",
+                            message: "Connection Delete Error"
+                        },
+                        success: {
+                            description: "Successfully deleted the connection.",
+                            message: "Delete Successful"
                         }
                     },
                     deleteDefaultAuthenticator: {
@@ -3504,20 +3578,6 @@ export const console: ConsoleNS = {
                         success: {
                             description: "Successfully deleted the identity provider.",
                             message: "Delete successful"
-                        }
-                    },
-                    deleteConnection: {
-                        error: {
-                            description: "{{ description }}",
-                            message: "Connection Delete Error"
-                        },
-                        genericError: {
-                            description: "An error occurred while deleting the connection.",
-                            message: "Connection Delete Error"
-                        },
-                        success: {
-                            description: "Successfully deleted the connection.",
-                            message: "Delete Successful"
                         }
                     },
                     disableAuthenticator: {
@@ -3913,21 +3973,6 @@ export const console: ConsoleNS = {
                         }
                     }
                 },
-                popups: {
-                    appStatus: {
-                        enabled: {
-                            content: "The identity provider is enabled.",
-                            header: "Enabled",
-                            subHeader: ""
-                        },
-                        disabled: {
-                            content: "The identity provider is disabled. Please enable the authentication " +
-                                "provider to use it's services.",
-                            header: "Disabled",
-                            subHeader: ""
-                        }
-                    }
-                },
                 placeHolders: {
                     emptyAuthenticatorList: {
                         subtitles: {
@@ -3980,11 +4025,26 @@ export const console: ConsoleNS = {
                         title: "No attributes added"
                     }
                 },
+                popups: {
+                    appStatus: {
+                        disabled: {
+                            content: "The identity provider is disabled. Please enable the authentication " +
+                                "provider to use it's services.",
+                            header: "Disabled",
+                            subHeader: ""
+                        },
+                        enabled: {
+                            content: "The identity provider is enabled.",
+                            header: "Enabled",
+                            subHeader: ""
+                        }
+                    }
+                },
                 templates: {
                     enterprise: {
                         addWizard: {
-                            title: "Enterprise",
-                            subtitle: "Configure a new Identity Provider with standard authentication protocols."
+                            subtitle: "Configure an IDP to connect with standard authentication protocols.",
+                            title: "Standard based Identity Providers"
                         },
                         saml: {
                             preRequisites: {
@@ -4046,9 +4106,9 @@ export const console: ConsoleNS = {
                             },
                             heading: "Help",
                             name: {
-                                idpDescription: "Provide a unique name for the identity provider.",
                                 connectionDescription: "Provide a unique name for the connection.",
-                                heading: "Name"
+                                heading: "Name",
+                                idpDescription: "Provide a unique name for the identity provider."
                             },
                             preRequisites: {
                                 configureHomePageURL: "Use the following as the <1>HomePage URL</1>.",
@@ -4075,9 +4135,9 @@ export const console: ConsoleNS = {
                             },
                             heading: "Help",
                             name: {
-                                idpDescription: "Provide a unique name for the identity provider.",
                                 connectionDescription: "Provide a unique name for the connection.",
-                                heading: "Name"
+                                heading: "Name",
+                                idpDescription: "Provide a unique name for the identity provider."
                             },
                             preRequisites: {
                                 configureOAuthApps: "See Google's guide on configuring OAuth Apps.",
@@ -4160,6 +4220,31 @@ export const console: ConsoleNS = {
                         finish: "Finish",
                         next: "Next",
                         previous: "Previous"
+                    }
+                }
+            },
+            footer: {
+                copyright: "WSO2 Identity Server © {{year}}"
+            },
+            header: {
+                links: {
+                    adminPortalNav: "Admin Portal",
+                    userPortalNav: "My Account"
+                }
+            },
+            helpPanel: {
+                actions: {
+                    close: "Close",
+                    open: "Open help panel",
+                    pin: "Pin",
+                    unPin: "Unpin"
+                },
+                notifications: {
+                    pin: {
+                        success: {
+                            description: "Help panel will always appear {{state}} unless you change explicitly.",
+                            message: "Help panel {{state}}"
+                        }
                     }
                 }
             },
@@ -4308,10 +4393,10 @@ export const console: ConsoleNS = {
                     },
                     common: {
                         customProperties: "Custom Properties",
+                        internetResolvableErrorMessage: "URL must be internet resolvable.",
                         invalidQueryParamErrorMessage: "These are not valid query parameters",
                         invalidURLErrorMessage: "Enter a valid URL",
-                        requiredErrorMessage: "This is required",
-                        internetResolvableErrorMessage: "URL must be internet resolvable."
+                        requiredErrorMessage: "This is required"
                     },
                     generalDetails: {
                         description: {
@@ -4337,9 +4422,17 @@ export const console: ConsoleNS = {
                     },
                     jitProvisioning: {
                         enableJITProvisioning: {
-                            hint: "Specifies if users federated from this identity provider " +
-                                "needs to be provisioned locally.",
-                            label: "Enable Just-in-time Provisioning"
+                            disabledMessageContent: {
+                                1: "You cannot modify Proxy Mode settings since multiple applications" +
+                                    " depend on this connection. To resolve this conflict, you need" +
+                                    " to remove this connection from the listed resources.",
+                                2: "You are not allowed to modify Proxy Mode settings as an application" +
+                                    " depends on this connection. To resolve this conflict, you need to remove" +
+                                    " this connection from the listed resource."
+                            },
+                            disabledMessageHeader: "Operation Not Allowed",
+                            hint: "Specify if users federated from this identity provider need to be proxied.",
+                            label: "Just-in-Time (JIT) User Provisioning"
                         },
                         provisioningScheme: {
                             children: {
@@ -4478,8 +4571,7 @@ export const console: ConsoleNS = {
                     },
                     apiLimitReachedError: {
                         error: {
-                            description: "This organisation reached the maximum limit of 200 identity providers " +
-                                "allowed.",
+                            description: "You have reached the maximum number of identity providers allowed.",
                             message: "Failed to create the identity provider"
                         }
                     },
@@ -4763,6 +4855,16 @@ export const console: ConsoleNS = {
                             message: ""
                         }
                     },
+                    tierLimitReachedError: {
+                        emptyPlaceholder: {
+                            action: "View Plans",
+                            subtitles: "You can contact the organization administrator or (if you are the " +
+                                "administrator) upgrade your subscription to increase the allowed limit.",
+                            title: "You have reached the maximum number of IdPs allowed " +
+                                "for this organization."
+                        },
+                        heading: "You’ve reached the maximum limit for IdPs"
+                    },
                     updateClaimsConfigs: {
                         error: {
                             description: "{{ description }}",
@@ -5039,18 +5141,69 @@ export const console: ConsoleNS = {
                 }
             },
             secrets: {
+                advancedSearch: {
+                    form: {
+                        inputs: {
+                            filterAttribute: {
+                                placeholder: "E.g. Name, Description etc."
+                            },
+                            filterCondition: {
+                                placeholder: "E.g. Starts with etc."
+                            },
+                            filterValue: {
+                                placeholder: "Enter value to search"
+                            }
+                        }
+                    },
+                    placeholder: "Search by secret name"
+                },
                 alerts: {
                     createdSecret: {
                         description: "Successfully created the secret.",
                         message: "Creation successful."
                     },
-                    updatedSecret: {
-                        description: "Successfully updated the secret.",
-                        message: "Update successful."
-                    },
                     deleteSecret: {
                         description: "Successfully deleted the secret.",
                         message: "Delete successful."
+                    },
+                    updatedSecret: {
+                        description: "Successfully updated the secret.",
+                        message: "Update successful."
+                    }
+                },
+                banners: {
+                    adaptiveAuthSecretType: {
+                        content: "These secrets can be used in the Conditional Authentication script of a " +
+                            "registered application when accessing external APIs.",
+                        title: "Conditional Authentication Secrets"
+                    },
+                    secretIsHidden: {
+                        content: "Once created, you won't be able to see the secret value again. " +
+                            "You will only be able to delete the secret. ",
+                        title: "Why can't I see the secret?"
+                    }
+                },
+                emptyPlaceholders: {
+                    buttons: {
+                        addSecret: {
+                            ariaLabel: "Add a new Secret.",
+                            label: "New Secret"
+                        },
+                        backToSecrets: {
+                            ariaLabel: "Navigate to Secrets list.",
+                            label: "Take me back to Secrets"
+                        }
+                    },
+                    emptyListOfSecrets: {
+                        messages: [
+                            "There are no secrets available at the moment."
+                        ]
+                    },
+                    resourceNotFound: {
+                        messages: [
+                            "Oops! we couldn't find the requested secret!",
+                            "Perhaps you have landed on an invalid URL..."
+                        ]
                     }
                 },
                 errors: {
@@ -5059,11 +5212,50 @@ export const console: ConsoleNS = {
                         message: "Something is not right."
                     }
                 },
+                forms: {
+                    actions: {
+                        submitButton: {
+                            ariaLabel: "Update to save the form",
+                            label: "Update"
+                        }
+                    },
+                    editSecret: {
+                        page: {
+                            description: "Edit secret"
+                        },
+                        secretDescriptionField: {
+                            ariaLabel: "Secret Description",
+                            hint: "Provide a description for this secret (i.e., When to use this secret).",
+                            label: "Secret description",
+                            placeholder: "Enter a secret description"
+                        },
+                        secretValueField: {
+                            ariaLabel: "Enter a Secret Value",
+                            cancelButton: "Cancel",
+                            editButton: "Change secret value",
+                            hint: "You can enter a value between length {{minLength}} to {{maxLength}}.",
+                            label: "Secret value",
+                            placeholder: "Enter a secret value",
+                            updateButton: "Update secret value"
+                        }
+                    }
+                },
+                modals: {
+                    deleteSecret: {
+                        assertionHint: "Yes, I understand. I want to delete it.",
+                        content: "This action is irreversible and will permanently delete the secret.",
+                        primaryActionButtonText: "Confirm",
+                        secondaryActionButtonText: "Cancel",
+                        title: "Are you sure?",
+                        warningMessage: "If you delete this secret, conditional authentication scripts " +
+                            "depending on this value will stop working. Please proceed with caution."
+                    }
+                },
                 page: {
                     description: "Create and manage secrets for conditional authentication",
                     primaryActionButtonText: "New Secret",
-                    title: "Secrets",
-                    subFeatureBackButton: "Go back to Secrets"
+                    subFeatureBackButton: "Go back to Secrets",
+                    title: "Secrets"
                 },
                 routes: {
                     category: "secrets",
@@ -5072,121 +5264,48 @@ export const console: ConsoleNS = {
                         "Secret Edit"
                     ]
                 },
-                modals: {
-                    deleteSecret: {
-                        assertionHint: "Yes, I understand. I want to delete it.",
-                        primaryActionButtonText: "Confirm",
-                        secondaryActionButtonText: "Cancel",
-                        title: "Are you sure?",
-                        content: "This action is irreversible and will permanently delete the secret.",
-                        warningMessage: "If you delete this secret, conditional authentication scripts " +
-                            "depending on this value will stop working. Please proceed with caution."
-                    }
-                },
                 wizards: {
+                    actions: {
+                        cancelButton: {
+                            ariaLabel: "Cancel and Close Modal",
+                            label: "Cancel"
+                        },
+                        createButton: {
+                            ariaLabel: "Create and Submit",
+                            label: "Create"
+                        }
+                    },
                     addSecret: {
-                        heading: "Create Secret",
-                        subheading: "Create a new secret for conditional authentication scripts",
                         form: {
+                            secretDescriptionField: {
+                                ariaLabel: "Secret Description",
+                                hint: "Provide a description for this secret (i.e., When to use this secret).",
+                                label: "Secret description",
+                                placeholder: "Enter a secret description"
+                            },
+                            secretNameField: {
+                                alreadyPresentError: "This Secret name is already added!",
+                                ariaLabel: "Secret Name for the Secret Type",
+                                hint: "Provide a meaningful name for this secret. Note that once " +
+                                    "you create this secret with the name above, you cannot change it afterwards.",
+                                label: "Secret name",
+                                placeholder: "Enter a secret name"
+                            },
                             secretTypeField: {
                                 ariaLabel: "Select Secret Type",
                                 hint: "Select a Secret Type which this Secret falls into.",
                                 label: "Select secret type"
                             },
-                            secretNameField: {
-                                ariaLabel: "Secret Name for the Secret Type",
-                                hint: "Provide a meaningful name for this secret. Note that once " +
-                                    "you create this secret with the name above, you cannot change it afterwards.",
-                                placeholder: "Enter a secret name",
-                                label: "Secret name"
-                            },
                             secretValueField: {
                                 ariaLabel: "Enter a secret value",
                                 hint: "This is the value of the secret. You can enter a value between length" +
                                     " {{minLength}} to {{maxLength}}.",
-                                placeholder: "Enter a secret value",
-                                label: "Secret value"
-                            },
-                            secretDescriptionField: {
-                                ariaLabel: "Secret Description",
-                                hint: "Provide a description for this secret (i.e., When to use this secret).",
-                                placeholder: "Enter a secret description",
-                                label: "Secret description"
+                                label: "Secret value",
+                                placeholder: "Enter a secret value"
                             }
-                        }
-                    },
-                    actions: {
-                        createButton: {
-                            label: "Create",
-                            ariaLabel: "Create and Submit"
                         },
-                        cancelButton: {
-                            label: "Cancel",
-                            ariaLabel: "Cancel and Close Modal"
-                        }
-                    }
-                },
-                banners: {
-                    secretIsHidden: {
-                        title: "Why can't I see the secret?",
-                        content: "Once created, you won't be able to see the secret value again. " +
-                            "You will only be able to delete the secret. "
-                    },
-                    adaptiveAuthSecretType: {
-                        title: "Conditional Authentication Secrets",
-                        content: "These secrets can be used in the Conditional Authentication script of a " +
-                            "registered application when accessing external APIs."
-                    }
-                },
-                forms: {
-                    editSecret: {
-                        page: {
-                            description: "Edit secret"
-                        },
-                        secretValueField: {
-                            ariaLabel: "Enter a Secret Value",
-                            label: "Secret value",
-                            hint: "You can enter a value between length {{minLength}} to {{maxLength}}.",
-                            placeholder: "Enter a secret value",
-                            editButton: "Change secret value",
-                            cancelButton: "Cancel",
-                            updateButton: "Update secret value"
-                        },
-                        secretDescriptionField: {
-                            ariaLabel: "Secret Description",
-                            hint: "Provide a description for this secret (i.e., When to use this secret).",
-                            placeholder: "Enter a secret description",
-                            label: "Secret description"
-                        }
-                    },
-                    actions: {
-                        submitButton: {
-                            label: "Update",
-                            ariaLabel: "Update to save the form"
-                        }
-                    }
-                },
-                emptyPlaceholders: {
-                    resourceNotFound: {
-                        messages: [
-                            "Oops! we couldn't find the requested secret!",
-                            "Perhaps you have landed on an invalid URL..."
-                        ]
-                    },
-                    emptyListOfSecrets: {
-                        messages: [
-                            "There are no secrets available at the moment."
-                        ]
-                    },
-                    buttons: {
-                        backToSecrets: {
-                            label: "Take me back to Secrets",
-                            ariaLabel: "Navigate to Secrets list."
-                        },
-                        addSecret: {
-                            label: "New Secret",
-                            ariaLabel: "Add a new Secret."
-                        }
+                        heading: "Create Secret",
+                        subheading: "Create a new secret for conditional authentication scripts"
                     }
                 }
             },
@@ -5194,6 +5313,9 @@ export const console: ConsoleNS = {
                 applicationEdit: "Application Edit",
                 applicationTemplates: "Application Templates",
                 applications: "Applications",
+                authenticationProviderEdit: "Identity Providers Edit",
+                authenticationProviderTemplates: "Identity Provider Templates",
+                authenticationProviders: "Connections",
                 categories: {
                     application: "Applications",
                     authenticationProviders: "Identity Providers",
@@ -5202,9 +5324,6 @@ export const console: ConsoleNS = {
                     identityProviders: "Identity Providers"
                 },
                 customize: "Customize",
-                authenticationProviderEdit: "Identity Providers Edit",
-                authenticationProviderTemplates: "Identity Provider Templates",
-                authenticationProviders: "Connections",
                 identityProviderEdit: "Identity Providers Edit",
                 identityProviderTemplates: "Identity Provider Templates",
                 identityProviders: "Identity Providers",
@@ -5270,7 +5389,7 @@ export const console: ConsoleNS = {
             applicationTemplate: {
                 backButton: "Go back to Applications",
                 subTitle: "Register an application using one of the templates given below. If nothing matches your " +
-                    "application type, start with the Standard-based Application template.",
+                    "application type, start with the Standard-Based Application template.",
                 title: "Register New Application"
             },
             applications: {
@@ -5296,7 +5415,7 @@ export const console: ConsoleNS = {
                     authenticationDisplayName: "Authentication",
                     provisioningDisplayName: "Provisioning"
                 },
-                title: "Create Connection"
+                title: "Create a New Connection"
             },
             idp: {
                 subTitle: "Manage identity providers to allow users to log in to your application through them.",
@@ -5347,20 +5466,6 @@ export const console: ConsoleNS = {
     },
     manage: {
         features: {
-            businessGroups: {
-                fields: {
-                    groupName: {
-                        label: "{{type}} Name",
-                        placeholder: "Enter {{type}} Name",
-                        validations: {
-                            duplicate: "A {{type}} already exists with the given {{type}} name.",
-                            empty: "{{type}} Name is required to proceed.",
-                            invalid: "A {{type}} name can only contain alphanumeric characters, -, and _. "
-                                + "And must be of length between 3 to 30 characters."
-                        }
-                    }
-                }
-            },
             approvals: {
                 list: {
                     columns: {
@@ -5369,6 +5474,13 @@ export const console: ConsoleNS = {
                     }
                 },
                 modals: {
+                    approvalProperties: {
+                        "Claims": "Claims",
+                        "REQUEST ID": "Request ID",
+                        "Roles": "Roles",
+                        "User Store Domain": "User Store Domain",
+                        "Username": "Username"
+                    },
                     taskDetails: {
                         description: "You have a request to approve an operational action of a user.",
                         header: "Approval Task"
@@ -5445,6 +5557,20 @@ export const console: ConsoleNS = {
                             2: "the system."
                         },
                         title: "No Approvals"
+                    }
+                }
+            },
+            businessGroups: {
+                fields: {
+                    groupName: {
+                        label: "{{type}} Name",
+                        placeholder: "Enter {{type}} Name",
+                        validations: {
+                            duplicate: "A {{type}} already exists with the given {{type}} name.",
+                            empty: "{{type}} Name is required to proceed.",
+                            invalid: "A {{type}} name can only contain alphanumeric characters, -, and _. "
+                                + "And must be of length between 3 to 30 characters."
+                        }
                     }
                 }
             },
@@ -5552,7 +5678,7 @@ export const console: ConsoleNS = {
                         }
                     },
                     pageLayout: {
-                        description: "Create and manage certificates in the keystore.",
+                        description: "Manage certificates in the keystore.",
                         primaryAction: "Import Certificate",
                         title: "Certificates"
                     },
@@ -5678,6 +5804,7 @@ export const console: ConsoleNS = {
                         fields: {
                             attributeName: {
                                 validation: {
+                                    alreadyExists: "An Attribute already exists with the given Attribute name.",
                                     invalid: "Attribute name can only contain alphanumeric characters "
                                         +"and _. And must be of length between 3 to 30 characters."
                                 }
@@ -5838,16 +5965,19 @@ export const console: ConsoleNS = {
                                 invalidName: "The name you entered contains illegal characters. " +
                                     "Only letters, numbers, `#`, and `_` are allowed.",
                                 scimInvalidName: "The starting character of the name should be a letter. " +
-                                    "The remaining characters may include letters, numbers, dash (-), and underscore (_)."
+                                    "The remaining characters may include letters, numbers, dash (-), " +
+                                    "and underscore (_)."
                             }
                         },
+                        emptyMessage: "All the SCIM attributes are mapped to local claims.",
                         localAttribute: {
                             label: "User Attribute to map to",
                             placeholder: "Select a user attribute",
                             requiredErrorMessage: "Select a user attribute to map to"
                         },
                         submit: "Add Attribute Mapping",
-                        warningMessage: "There are no local attributes available for mapping. "
+                        warningMessage: "There are no local attributes available for mapping. " +
+                            "Add new local attributes from"
                     },
                     notifications: {
                         addExternalAttribute: {
@@ -5967,7 +6097,7 @@ export const console: ConsoleNS = {
                         }
                     },
                     warning: "This attribute has not been mapped to an attribute" +
-                        " in the following userstores:"
+                        " in the following user stores:"
                 },
                 local: {
                     additionalProperties: {
@@ -6036,6 +6166,12 @@ export const console: ConsoleNS = {
                         },
                         displayOrderHint: "This determines the position at which this attribute is "
                             + "displayed in the user profile and the user registration page",
+                        infoMessages: {
+                            configApplicabilityInfo: "Please note that the following attribute configurations will " +
+                                "only affect the customer users' profiles.",
+                            disabledConfigInfo: "Please note that below section is disabled as there is no " +
+                                "external claim mapping found for this claim attribute."
+                        },
                         name: {
                             label: "Attribute Display Name",
                             placeholder: "Enter a name for the attribute",
@@ -6064,16 +6200,10 @@ export const console: ConsoleNS = {
                         "attribute on the profile.",
                         supportedByDefault: {
                             label: "Display this attribute on the user's profile"
-                        },
-                        infoMessages: {
-                            disabledConfigInfo: "Please note that below section is disabled as there is no " +
-                                "external claim mapping found for this claim attribute.",
-                            configApplicabilityInfo: "Please note that the following attribute configurations will " +
-                                "only affect the customer users' profiles."
                         }
                     },
                     mappedAttributes: {
-                        hint: "Enter the attribute from each userstore that you want to map to this attribute."
+                        hint: "Enter the attribute from each user store that you want to map to this attribute."
                     },
                     notifications: {
                         addLocalClaim: {
@@ -6172,8 +6302,17 @@ export const console: ConsoleNS = {
                             regEx: "Regular Expression",
                             required: "This attribute is required during user registration",
                             supportedByDefault: "This attribute is shown on user profile and user registration page",
-                            userstore: "Userstore"
+                            userstore: "User Store"
                         }
+                    }
+                },
+                scopeMappings: {
+                    deletionConfirmationModal: {
+                        assertionHint: "Please confirm your action.",
+                        content: "If you delete this claim, it will not be available in the token." +
+                            " Please proceed with caution.",
+                        header: "Are you sure?",
+                        message: "This action is irreversible and will permanently delete the scope claim mapping"
                     }
                 }
             },
@@ -6578,7 +6717,8 @@ export const console: ConsoleNS = {
                     columns: {
                         actions: "Actions",
                         lastModified: "Modified Time",
-                        name: "Group"
+                        name: "Group",
+                        source: "User Store"
                     },
                     storeOptions: "Select User Store"
                 },
@@ -6649,10 +6789,10 @@ export const console: ConsoleNS = {
                 placeholders: {
                     groupsError: {
                         subtitles: [
-                            "An error occurred while trying to fetch groups from the userstore.",
-                            "Please make sure that teh connection details of the userstore are accurate."
+                            "An error occurred while trying to fetch groups from the user store.",
+                            "Please make sure that the connection details of the user store are accurate."
                         ],
-                        title:"Couldn't fetch groups from the userstore"
+                        title:"Couldn't fetch groups from the user store"
                     }
                 }
             },
@@ -6670,6 +6810,139 @@ export const console: ConsoleNS = {
                             message: "Help panel {{state}}"
                         }
                     }
+                }
+            },
+            invite: {
+                advancedSearch: {
+                    form: {
+                        dropdown: {
+                            filterAttributeOptions: {
+                                email: "Email",
+                                username: "Username"
+                            }
+                        },
+                        inputs: {
+                            filterAttribute: {
+                                placeholder: "E.g. Email etc."
+                            },
+                            filterCondition: {
+                                placeholder: "E.g. Starts with etc."
+                            },
+                            filterValue: {
+                                placeholder: "Enter value to search"
+                            }
+                        }
+                    },
+                    placeholder: "Search by Email"
+                },
+                confirmationModal: {
+                    deleteInvite: {
+                        assertionHint: "Please confirm your action.",
+                        content: "If you revoke this invite, the user will not be able to onboard your organization. " +
+                            "Please proceed with caution.",
+                        header: "Are you sure?",
+                        message: "This action is irreversible and will permanently revoke the invite."
+                    },
+                    resendInvite: {
+                        assertionHint: "Please confirm your action.",
+                        content: "If you resend the invitation, the previous invitation link will be revoked. " +
+                            "Please proceed with caution.",
+                        header: "Are you sure?",
+                        message: "This action will permanently revoke the previous invitation."
+                    }
+                },
+                form: {
+                    sendmail: {
+                        subTitle: "Send an email invite to add a new admin or developer to your organization",
+                        title: "Invite Admin/Developer"
+                    }
+                },
+                inviteButton: "New Invitation",
+                notifications: {
+                    deleteInvite: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error while deleting the invitation"
+                        },
+                        genericError: {
+                            description: "Couldn't delete the invitation",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Successfully deleted the user's invitation.",
+                            message: "Invitation deletion successful"
+                        }
+                    },
+                    resendInvite: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error while resending the invitation"
+                        },
+                        genericError: {
+                            description: "Couldn't resend the invitation",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Successfully resent the invitation via email.",
+                            message: "Invitation resent"
+                        }
+                    },
+                    sendInvite: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error while sending the invitation"
+                        },
+                        genericError: {
+                            description: "Couldn't send the invitation",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Successfully sent the invitation via email.",
+                            message: "Invitation sent"
+                        }
+                    },
+                    updateInvite: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error while updating the invite"
+                        },
+                        genericError: {
+                            description: "Couldn't update the invite",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Successfully updated the invite.",
+                            message: "Invitation update successful"
+                        }
+                    }
+                },
+                placeholder: {
+                    emptyResultPlaceholder: {
+                        addButton: "New Invitation",
+                        subTitle: {
+                            0: "There are currently no invitations available.",
+                            1: "You can create an organization and invite users",
+                            2: "to get onboarded to you organization."
+                        },
+                        title: "Send a New Invite"
+                    },
+                    emptySearchResultPlaceholder: {
+                        clearButton: "Clear search query",
+                        subTitle: {
+                            0: "We couldn't find any results for {{query}}",
+                            1: "Please try a different search term."
+                        },
+                        title: "No results found"
+                    }
+                },
+                rolesUpdateModal: {
+                    header: "Update Invitee Roles",
+                    searchPlaceholder: "Search by role name",
+                    subHeader: "Add or remove roles from the user that you have invited."
+                },
+                subSelection: {
+                    invitees: "Invitees",
+                    onBoard: "Onboarded Users"
                 }
             },
             oidcScopes: {
@@ -6926,6 +7199,174 @@ export const console: ConsoleNS = {
                     }
                 }
             },
+            onboarded: {
+                confirmationModal: {
+                    removeUser: {
+                        assertionHint: "Please confirm your action.",
+                        content: "If you remove this user, the user will not be able to access the console " +
+                            "within your organization. Please proceed with caution.",
+                        header: "Are you sure?",
+                        message: "This action is irreversible and will remove the user from your organization."
+                    }
+                },
+                notifications: {
+                    removeUser: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error while removing the user"
+                        },
+                        genericError: {
+                            description: "Couldn't remove the user from the {{tenant}} organization",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Successfully removed the user from the {{tenant}} organization",
+                            message: "User removed successfully"
+                        }
+                    }
+                }
+            },
+            organizations: {
+                advancedSearch: {
+                    form: {
+                        inputs: {
+                            filterAttribute: {
+                                placeholder: "E.g. Name etc."
+                            },
+                            filterCondition: {
+                                placeholder: "E.g. Starts With etc."
+                            },
+                            filterValue: {
+                                placeholder: "Enter value to search"
+                            }
+                        }
+                    },
+                    placeholder: "Search by Name"
+                },
+                confirmations: {
+                    deleteOrganization: {
+                        assertionHint: "Please confirm your action.",
+                        content: "If you remove this organization, all the data associated with this" +
+                            " organization will be removed. Please proceed with caution.",
+                        header: "Are you sure?",
+                        message: "This action is irreversible and will remove the organization entirely."
+                    }
+                },
+                forms: {
+                    addOrganization:{
+                        description: {
+                            label: "Description",
+                            placeholder: "Enter description"
+                        },
+                        domainName: {
+                            label: "Domain Name",
+                            placeholder: "Enter domain name",
+                            validation: {
+                                duplicate: "Domain name already exists",
+                                empty: "Domain name is required"
+                            }
+                        },
+                        name: {
+                            label: "Organization Name",
+                            placeholder: "Enter organization name",
+                            validation: {
+                                duplicate: "Organization name already exists",
+                                empty: "Organization name is required"
+                            }
+                        },
+                        structural: "Structural",
+                        tenant: "Tenant",
+                        type: "Type"
+                    }
+                },
+                homeList: {
+                    description: "View the list of all the available organizations.",
+                    name: "All Organizations"
+                },
+                list: {
+                    actions: {
+                        add: "Add Organization"
+                    },
+                    columns: {
+                        actions: "Actions",
+                        name: "Name"
+                    }
+                },
+                modals: {
+                    addOrganization: {
+                        header: "Add Organization",
+                        subtitle1: "Create a new organization in {{parent}}.",
+                        subtitle2: "Create a new organization."
+                    }
+                },
+                notifications: {
+                    addOrganization: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error while adding the organization"
+                        },
+                        genericError: {
+                            description: "An error occurred while adding the organization",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Successfully added the organization",
+                            message: "Organization added successfully"
+                        }
+                    },
+                    deleteOrganization: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error while deleting the organization"
+                        },
+                        genericError: {
+                            description: "An error occurred while deleting the organization",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Successfully deleted the organization",
+                            message: "Organization deleted successfully"
+                        }
+                    },
+                    fetchOrganization: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error while fetching the organization"
+                        },
+                        genericError: {
+                            description: "An error occurred while fetching the organization",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Successfully fetched the organization",
+                            message: "Organization fetched successfully"
+                        }
+                    },
+                    getOrganizationList: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error while getting the organization list"
+                        },
+                        genericError: {
+                            description: "An error occurred while getting the organization list",
+                            message: "Something went wrong"
+                        }
+                    }
+                },
+                placeholders: {
+                    emptyList: {
+                        action: "Add Organization",
+                        subtitles: {
+                            0: "There are no organizations at the moment.",
+                            1: "You can add a new organization easily by",
+                            2: "clicking on the button below."
+                        },
+                        title: "Add a new Organization"
+                    }
+                },
+                subTitle: "Create and manage organizations.",
+                title: "Organizations"
+            },
             overview: {
                 widgets: {
                     insights: {
@@ -6947,7 +7388,7 @@ export const console: ConsoleNS = {
                                 heading: "Users"
                             },
                             userstores: {
-                                heading: "Userstores"
+                                heading: "User Stores"
                             }
                         },
                         heading: "Overview",
@@ -7184,7 +7625,7 @@ export const console: ConsoleNS = {
                         roleBasicDetails: {
                             domain: {
                                 label: {
-                                    group: "Userstore",
+                                    group: "User Store",
                                     role: "Role Type"
                                 },
                                 placeholder: "Domain",
@@ -7220,7 +7661,7 @@ export const console: ConsoleNS = {
                     summary: {
                         labels: {
                             domain: {
-                                group: "Userstore",
+                                group: "User Store",
                                 role: "Role Type"
                             },
                             groups: "Assigned Group(s)",
@@ -7280,6 +7721,8 @@ export const console: ConsoleNS = {
                         },
                         dangerZone: {
                             actionTitle: "Delete {{type}}",
+                            buttonDisableHint: "Delete option is disabled because this {{type}} is managed in a" +
+                                " remote user store.",
                             header: "Delete {{type}}",
                             subheader: "Once you delete the {{type}}, it cannot be recovered."
                         },
@@ -7514,8 +7957,9 @@ export const console: ConsoleNS = {
                     certificates: "Certificates",
                     configurations: "Configurations",
                     general: "General",
+                    organizations: "Organizations",
                     users: "Users",
-                    userstores: "Userstores"
+                    userstores: "User Stores"
                 },
                 certificates: "Certificates",
                 configurations: "Configurations",
@@ -7525,17 +7969,18 @@ export const console: ConsoleNS = {
                 editLocalClaims: "Edit Attributes",
                 editRoles: "Edit Role",
                 editUsers: "Edit User",
-                editUserstore: "Edit Userstore",
+                editUserstore: "Edit User Store",
                 emailTemplateTypes: "",
                 emailTemplates: "Email Templates",
                 generalConfigurations: "General",
                 groups: "Groups",
                 localDialect: "Attributes",
+                organizations: "Organizations",
                 overview: "Overview",
                 roles: "Roles",
                 users: "Users",
-                userstoreTemplates: "Userstore Templates",
-                userstores: "Userstores"
+                userstoreTemplates: "User Store Templates",
+                userstores: "User Stores"
             },
             transferList: {
                 list: {
@@ -7593,6 +8038,8 @@ export const console: ConsoleNS = {
                     dangerZoneGroup: {
                         deleteUserZone: {
                             actionTitle: "Delete User",
+                            buttonDisableHint: "Delete option is disabled because this user is managed in a remote " +
+                                "user store.",
                             header: "Delete user",
                             subheader: "This action will permanently delete the user from the organization. Please " +
                                 "be certain before you proceed."
@@ -7610,10 +8057,16 @@ export const console: ConsoleNS = {
                         },
                         passwordResetZone: {
                             actionTitle: "Reset Password",
+                            buttonHint: "This user account should be unlocked to reset the password.",
                             header: "Reset password",
                             subheader: "Once you change the password, the user will no longer be able to log in to " +
-                                "any application using the current password.",
-                            buttonHint: "This user account should be unlocked to reset the password."
+                                "any application using the current password."
+                        }
+                    },
+                    dateOfBirth: {
+                        placeholder: {
+                            part1:"Enter the",
+                            part2: "in the format YYYY-MM-DD"
                         }
                     }
                 },
@@ -7639,7 +8092,7 @@ export const console: ConsoleNS = {
                                 }
                             },
                             domain: {
-                                label: "Userstore",
+                                label: "User Store",
                                 placeholder: "Select user store",
                                 validations: {
                                     empty: "User store name cannot be empty."
@@ -7682,9 +8135,7 @@ export const console: ConsoleNS = {
                                     empty: "Username is a required field",
                                     invalid: "A user already exists with this username.",
                                     invalidCharacters: "Username seems to contain invalid characters.",
-                                    regExViolation: "Your email must contain 3 to 50 characters. You can use " +
-                                        "alphanumeric characters, unicode characters, underscores (_), dashes (-), " +
-                                        "plus signs (+), periods (.), and an at sign (@)."
+                                    regExViolation: "Please enter a valid email address."
                                 }
                             }
                         },
@@ -7712,7 +8163,7 @@ export const console: ConsoleNS = {
                     confirmationModal: {
                         assertionHint: "Please confirm your action.",
                         content: "If you lock this account, the user will not be able to sign in to " +
-                            "My Account or any of the business applications. Please proceed with caution.",
+                            "any of the business applications. Please proceed with caution.",
                         header: "Are you sure?",
                         message: "This action locks the user account."
                     }
@@ -7737,7 +8188,7 @@ export const console: ConsoleNS = {
                         subTitle: "Follow the steps to create the new user",
                         title: "Create User",
                         wizardSummary: {
-                            domain: "Userstore",
+                            domain: "User Store",
                             groups: "Group(s)",
                             name: "Name",
                             passwordOption: {
@@ -7754,15 +8205,15 @@ export const console: ConsoleNS = {
                     changePasswordModal: {
                         button: "Reset Password",
                         header: "Reset User Password",
-                        message: "WARNING: Please note that after changing the password the user will no longer be " +
-                            "able to log into any application using the current password.",
                         hint: {
                             forceReset: "WARNING: Please note that after inviting the user to change the password " +
                                 "the user will no longer be able to log into any application using the current " +
                                 "password. The password reset link will be valid for {{codeValidityPeriod}} minutes.",
-                            setPassword: "WARNING: Please note that after changing the password the user will no longer be " +
-                                "able to log into any application using the current password."
+                            setPassword: "WARNING: Please note that after changing the password the user will " +
+                                "no longer be able to log into any application using the current password."
                         },
+                        message: "WARNING: Please note that after changing the password the user will no longer be " +
+                            "able to log into any application using the current password.",
                         passwordOptions: {
                             forceReset: "Invite user to reset the password",
                             setPassword: "Set a new password for the user"
@@ -7771,29 +8222,20 @@ export const console: ConsoleNS = {
                 },
                 profile: {
                     fields: {
-                        /* eslint-disable @typescript-eslint/camelcase */
-                        userId: "User ID",
-                        addresses_home: "Home Address",
-                        addresses_work: "Work Address",
+                        createdDate: "Created Date",
                         emails: "Email",
-                        emails_home: "Home Email",
-                        emails_other: "Other Email",
-                        emails_work: "Work Email",
                         generic: {
                             default: "Add {{fieldName}}"
                         },
+                        modifiedDate: "Modified Date",
                         name_familyName: "Last Name",
                         name_givenName: "First Name",
                         oneTimePassword: "One Time Password",
                         phoneNumbers: "Phone Number",
-                        phoneNumbers_home: "Home Phone Number",
-                        phoneNumbers_mobile: "Mobile Number",
-                        phoneNumbers_other: "Other Phone Number",
-                        phoneNumbers_work: "Work Phone Number",
                         photos: "Photos",
                         profileUrl: "URL",
+                        userId: "User ID",
                         userName: "Username"
-                        /* eslint-enable @typescript-eslint/camelcase */
                     },
                     forms: {
                         emailChangeForm: {
@@ -7914,8 +8356,8 @@ export const console: ConsoleNS = {
                                 message: "Something went wrong"
                             },
                             success: {
-                                description: "The user account password reset triggered successfully.",
-                                message: "Successfully triggered password reset"
+                                description: "Password reset is successfully initiated for the user account.",
+                                message: "Initiated password reset"
                             }
                         },
                         getProfileInfo: {
@@ -8183,38 +8625,6 @@ export const console: ConsoleNS = {
                 }
             },
             users: {
-                consumerUsers: {
-                    fields: {
-                        username: {
-                            label: "Username",
-                            placeholder: "Enter the username",
-                            validations: {
-                                empty: "Username is a required field",
-                                invalid: "A user already exists with this username.",
-                                invalidCharacters: "Username seems to contain invalid characters.",
-                                regExViolation: "Your email must contain 3 to 50 characters. You can use " +
-                                    "alphanumeric characters, unicode characters, underscores (_), dashes (-), " +
-                                    "plus signs (+), periods (.), and an at sign (@)."
-                            }
-                        }
-                    }
-                },
-                guestUsers: {
-                    fields: {
-                        username: {
-                            label: "Username",
-                            placeholder: "Enter the username",
-                            validations: {
-                                empty: "Username is a required field",
-                                invalid: "A user already exists with this username.",
-                                invalidCharacters: "Username seems to contain invalid characters.",
-                                regExViolation: "Your email must contain 3 to 50 characters. You can use " +
-                                "alphanumeric characters, unicode characters, underscores (_), dashes (-), " +
-                                    "periods (.), and an at sign (@)."
-                            }
-                        }
-                    }
-                },
                 advancedSearch: {
                     form: {
                         dropdown: {
@@ -8262,6 +8672,20 @@ export const console: ConsoleNS = {
                         message: "This action is irreversible and will permanently terminate the session."
                     }
                 },
+                consumerUsers: {
+                    fields: {
+                        username: {
+                            label: "Username",
+                            placeholder: "Enter the username",
+                            validations: {
+                                empty: "Username is a required field",
+                                invalid: "A user already exists with this username.",
+                                invalidCharacters: "Username seems to contain invalid characters.",
+                                regExViolation: "Please enter a valid email address."
+                            }
+                        }
+                    }
+                },
                 editUser: {
                     tab: {
                         menuItems: {
@@ -8274,11 +8698,26 @@ export const console: ConsoleNS = {
                 },
                 forms: {
                     validation: {
-                        formatError: "The format of the {{field}} entered is incorrect.",
                         dateFormatError: "The format of the {{field}} entered is incorrect. Valid format is " +
                             "YYYY-MM-DD.",
+                        formatError: "The format of the {{field}} entered is incorrect.",
+                        futureDateError: "The date you entered for the {{field}} field is invalid.",
                         mobileFormatError: "The format of the {{field}} entered is incorrect.  Valid format is " +
                             "[+][country code][area code][local phone number]."
+                    }
+                },
+                guestUsers: {
+                    fields: {
+                        username: {
+                            label: "Username",
+                            placeholder: "Enter the username",
+                            validations: {
+                                empty: "Username is a required field",
+                                invalid: "A user already exists with this username.",
+                                invalidCharacters: "Username seems to contain invalid characters.",
+                                regExViolation: "Please enter a valid email address."
+                            }
+                        }
                     }
                 },
                 list: {
@@ -8342,7 +8781,7 @@ export const console: ConsoleNS = {
                     },
                     userstoreError: {
                         subtitles: {
-                            0: "Couldn't fetch users from the userstore",
+                            0: "Couldn't fetch users from the user store",
                             1: "Please try again"
                         },
                         title: "Something went wrong"
@@ -8356,6 +8795,7 @@ export const console: ConsoleNS = {
                                 terminateSession: "Terminate Session"
                             },
                             labels: {
+                                activeApplication: "Active Applications",
                                 browser: "Browser",
                                 deviceModel: "Device Model",
                                 ip: "IP Address",
@@ -8363,8 +8803,7 @@ export const console: ConsoleNS = {
                                 loggedInAs: "Logged in on <1>{{ app }}</1> as <3>{{ user }}</3>",
                                 loginTime: "Login Time",
                                 os: "Operating System",
-                                recentActivity: "Recent Activity",
-                                activeApplication: "Active Applications"
+                                recentActivity: "Recent Activity"
                             }
                         }
                     },
@@ -8376,6 +8815,16 @@ export const console: ConsoleNS = {
                         }
                     },
                     notifications: {
+                        getAdminUser: {
+                            error: {
+                                description: "{{ description }}",
+                                message: "Retrieval Error"
+                            },
+                            genericError: {
+                                description: "An error occurred while retrieving the current user type.",
+                                message: "Retrieval Error"
+                            }
+                        },
                         getUserSessions: {
                             error: {
                                 description: "{{ description }}",
@@ -8465,7 +8914,7 @@ export const console: ConsoleNS = {
                 },
                 userstores: {
                     userstoreOptions: {
-                        all: "All userstores",
+                        all: "All user stores",
                         primary: "Primary"
                     }
                 }
@@ -8486,28 +8935,28 @@ export const console: ConsoleNS = {
                             }
                         }
                     },
-                    placeholder: "Search by userstore name"
+                    placeholder: "Search by user store name"
                 },
                 confirmation: {
                     confirm: "Confirm",
-                    content: "If you delete this userstore, the user data in this userstore will also be deleted. "
+                    content: "If you delete this user store, the user data in this user store will also be deleted. "
                         + "Please proceed with caution.",
                     header: "Are you sure?",
                     hint: "Please type <1>{{name}}</1> to confirm.",
                     message: "This action is irreversible and will permanently delete the"
-                        + " selected userstore and the data in it."
+                        + " selected user store and the data in it."
                 },
                 dangerZone: {
                     delete: {
-                        actionTitle: "Delete Userstore",
-                        header: "Delete Userstore",
-                        subheader: "Once you delete a userstore, there is no going back. "
+                        actionTitle: "Delete User Store",
+                        header: "Delete User Store",
+                        subheader: "Once you delete a user store, there is no going back. "
                             + "Please be certain."
                     },
                     disable: {
-                        actionTitle: "Enable Userstore",
-                        header: "Enable Userstore",
-                        subheader: "Disabling a userstore can make you lose access to the users in the userstore. " +
+                        actionTitle: "Enable User Store",
+                        header: "Enable User Store",
+                        subheader: "Disabling a user store can make you lose access to the users in the user store. " +
                             "Proceed with caution."
                     }
                 },
@@ -8531,7 +8980,7 @@ export const console: ConsoleNS = {
                             placeholder: "Enter a name",
                             requiredErrorMessage: "Name is a required field",
                             validationErrorMessages: {
-                                alreadyExistsErrorMessage: "A userstore with this name already exists."
+                                alreadyExistsErrorMessage: "A user store with this name already exists."
                             }
                         },
                         type: {
@@ -8543,33 +8992,33 @@ export const console: ConsoleNS = {
                 notifications: {
                     addUserstore: {
                         genericError: {
-                            description: "There was an error while creating the userstore.",
+                            description: "There was an error while creating the user store.",
                             message: "Something went wrong!"
                         },
                         success: {
-                            description: "The userstore has been added successfully!",
-                            message: "Userstore added successfully!"
+                            description: "The user store has been added successfully!",
+                            message: "User store added successfully!"
                         }
                     },
                     apiLimitReachedError: {
                         error: {
-                            description: "This organisation reached the maximum limit of 15 user stores allowed.",
+                            description: "You have reached the maximum number of user stores allowed.",
                             message: "Failed to create the user store"
                         }
                     },
                     delay: {
-                        description: "It may take a while for the userstore list to be updated. "
-                            + "Refresh in a few seconds to get the updated userstore list.",
-                        message: "Updating Userstore list takes time"
+                        description: "It may take a while for the user store list to be updated. "
+                            + "Refresh in a few seconds to get the updated user store list.",
+                        message: "Updating user store list takes time"
                     },
                     deleteUserstore: {
                         genericError: {
-                            description: "There was an error while deleting the userstore.",
+                            description: "There was an error while deleting the user store.",
                             message: "Something went wrong!"
                         },
                         success: {
-                            description: "The userstore has been deleted successfully!",
-                            message: "Userstore deleted successfully!"
+                            description: "The user store has been deleted successfully!",
+                            message: "User store deleted successfully!"
                         }
                     },
                     fetchUserstoreMetadata: {
@@ -8580,25 +9029,25 @@ export const console: ConsoleNS = {
                     },
                     fetchUserstoreTemplates: {
                         genericError: {
-                            description: "An error occurred while fetching the userstore type details.",
+                            description: "An error occurred while fetching the user store type details.",
                             message: "Something went wrong"
                         }
                     },
                     fetchUserstoreTypes: {
                         genericError: {
-                            description: "An error occurred while fetching the userstore types.",
+                            description: "An error occurred while fetching the user store types.",
                             message: "Something went wrong"
                         }
                     },
                     fetchUserstores: {
                         genericError: {
-                            description: "An error occurred while fetching userstores.",
+                            description: "An error occurred while fetching user stores.",
                             message: "Something went wrong"
                         }
                     },
                     testConnection: {
                         genericError: {
-                            description: "An error occurred while testing the " + "connection to the userstore",
+                            description: "An error occurred while testing the " + "connection to the user store",
                             message: "Something went wrong"
                         },
                         success: {
@@ -8612,19 +9061,19 @@ export const console: ConsoleNS = {
                     },
                     updateUserstore: {
                         genericError: {
-                            description: "An error occurred while updating the userstore.",
+                            description: "An error occurred while updating the user store.",
                             message: "Something went wrong"
                         },
                         success: {
-                            description: "This userstore has been updated successfully!",
-                            message: "Userstore updated successfully!"
+                            description: "This user store has been updated successfully!",
+                            message: "User store updated successfully!"
                         }
                     }
                 },
                 pageLayout: {
                     edit: {
-                        back: "Go back to userstores",
-                        description: "Edit userstore",
+                        back: "Go back to user stores",
+                        description: "Edit user store",
                         tabs: {
                             connection: "Connection",
                             general: "General",
@@ -8633,25 +9082,25 @@ export const console: ConsoleNS = {
                         }
                     },
                     list: {
-                        description: "Create and manage userstores.",
-                        primaryAction: "New Userstore",
-                        title: "Userstores"
+                        description: "Create and manage user stores.",
+                        primaryAction: "New User Store",
+                        title: "User Stores"
                     },
                     templates: {
-                        back: "Go back to userstores",
-                        description: "Please choose one of the following userstore types.",
+                        back: "Go back to user stores",
+                        description: "Please choose one of the following user store types.",
                         templateHeading: "Quick Setup",
-                        templateSubHeading: "Predefined set of templates to speed up your userstore creation.",
-                        title: "Select Userstore Type"
+                        templateSubHeading: "Predefined set of templates to speed up your user store creation.",
+                        title: "Select User Store Type"
                     }
                 },
                 placeholders: {
                     emptyList: {
-                        action: "New Userstore",
-                        subtitles: "There are currently no userstores available."
-                            + "You can add a new userstore easily by following the "
-                            + "steps in the userstore creation wizard.",
-                        title: "Add a new Userstore"
+                        action: "New User Store",
+                        subtitles: "There are currently no user stores available."
+                            + "You can add a new user store easily by following the "
+                            + "steps in the user store creation wizard.",
+                        title: "Add a new user store"
                     },
                     emptySearch: {
                         action: "Clear search query",
@@ -8665,177 +9114,17 @@ export const console: ConsoleNS = {
                     darkMode: "Dark Mode",
                     delete: "Delete",
                     read: "Read",
-                    reset: "Reset",
+                    reset: "Reset Changes",
                     title: "SQL Query Types",
                     update: "Update"
                 },
                 wizard: {
-                    header: "Add {{type}} Userstore",
+                    header: "Add {{type}} User Store",
                     steps: {
                         general: "General",
                         group: "Group",
                         summary: "Summary",
                         user: "User"
-                    }
-                }
-            },
-            invite: {
-                inviteButton: "New Invitation",
-                subSelection: {
-                    onBoard: "Onboarded Users",
-                    invitees: "Invitees"
-                },
-                notifications: {
-                    sendInvite: {
-                        error: {
-                            description: "{{description}}",
-                            message: "Error while sending the invitation"
-                        },
-                        genericError: {
-                            description: "Couldn't send the invitation",
-                            message: "Something went wrong"
-                        },
-                        success: {
-                            description: "Successfully sent the invitation via email.",
-                            message: "Invitation sent"
-                        }
-                    },
-                    resendInvite: {
-                        error: {
-                            description: "{{description}}",
-                            message: "Error while resending the invitation"
-                        },
-                        genericError: {
-                            description: "Couldn't resend the invitation",
-                            message: "Something went wrong"
-                        },
-                        success: {
-                            description: "Successfully resent the invitation via email.",
-                            message: "Invitation resent"
-                        }
-                    },
-                    deleteInvite: {
-                        error: {
-                            description: "{{description}}",
-                            message: "Error while deleting the invitation"
-                        },
-                        genericError: {
-                            description: "Couldn't delete the invitation",
-                            message: "Something went wrong"
-                        },
-                        success: {
-                            description: "Successfully deleted the user's invitation.",
-                            message: "Invitation deletion successful"
-                        }
-                    },
-                    updateInvite: {
-                        error: {
-                            description: "{{description}}",
-                            message: "Error while updating the invite"
-                        },
-                        genericError: {
-                            description: "Couldn't update the invite",
-                            message: "Something went wrong"
-                        },
-                        success: {
-                            description: "Successfully updated the invite.",
-                            message: "Invitation update successful"
-                        }
-                    }
-                },
-                confirmationModal: {
-                    deleteInvite: {
-                        assertionHint: "Please confirm your action.",
-                        content: "If you revoke this invite, the user will not be able to onboard your organization. " +
-                            "Please proceed with caution.",
-                        header: "Are you sure?",
-                        message: "This action is irreversible and will permanently revoke the invite."
-                    },
-                    resendInvite: {
-                        assertionHint: "Please confirm your action.",
-                        content: "If you resend the invitation, the previous invitation link will be revoked. " +
-                            "Please proceed with caution.",
-                        header: "Are you sure?",
-                        message: "This action will permanently revoke the previous invitation."
-                    }
-                },
-                placeholder: {
-                    emptySearchResultPlaceholder: {
-                        clearButton: "Clear search query",
-                        subTitle: {
-                            0: "We couldn't find any results for {{query}}",
-                            1: "Please try a different search term."
-                        },
-                        title: "No results found"
-                    },
-                    emptyResultPlaceholder: {
-                        addButton: "New Invitation",
-                        subTitle: {
-                            0: "There are currently no invitations available.",
-                            1: "You can create an organization and invite users",
-                            2: "to get onboarded to you organization."
-                        },
-                        title: "Send a New Invite"
-                    }
-                },
-                advancedSearch: {
-                    form: {
-                        dropdown: {
-                            filterAttributeOptions: {
-                                email: "Email",
-                                username: "Username"
-                            }
-                        },
-                        inputs: {
-                            filterAttribute: {
-                                placeholder: "E.g. Email etc."
-                            },
-                            filterCondition: {
-                                placeholder: "E.g. Starts with etc."
-                            },
-                            filterValue: {
-                                placeholder: "Enter value to search"
-                            }
-                        }
-                    },
-                    placeholder: "Search by Email"
-                },
-                form: {
-                    sendmail: {
-                        title: "Invite Admin/Developer",
-                        subTitle: "Send an email invite to add a new admin or developer to your organization"
-                    }
-                },
-                rolesUpdateModal: {
-                    header: "Update Invitee Roles",
-                    searchPlaceholder: "Search by role name",
-                    subHeader: "Add or remove roles from the user that you have invited."
-                }
-            },
-            onboarded: {
-                confirmationModal: {
-                    removeUser: {
-                        assertionHint: "Please confirm your action.",
-                        content: "If you remove this user, the user will not be able to access the console " +
-                            "within your organization. Please proceed with caution.",
-                        header: "Are you sure?",
-                        message: "This action is irreversible and will remove the user from your organization."
-                    }
-                },
-                notifications: {
-                    removeUser: {
-                        error: {
-                            description: "{{description}}",
-                            message: "Error while removing the user"
-                        },
-                        genericError: {
-                            description: "Couldn't remove the user from the {{tenant}} organization",
-                            message: "Something went wrong"
-                        },
-                        success: {
-                            description: "Successfully removed the user from the {{tenant}} organization",
-                            message: "User removed successfully"
-                        }
                     }
                 }
             }
@@ -8927,6 +9216,10 @@ export const console: ConsoleNS = {
                 subTitle: "Create and manage user groups, assign permissions for groups.",
                 title: "Groups"
             },
+            invite: {
+                subTitle: "Invite and manage admins and developers.",
+                title: "Admins & Developers"
+            },
             oidcScopes: {
                 subTitle: "Create and manage OpenID Connect (OIDC) scopes and the attributes bound to the scopes.",
                 title: "OpenID Connect Scopes"
@@ -8935,6 +9228,10 @@ export const console: ConsoleNS = {
                 backButton: "Go back to Scopes",
                 subTitle: "Add or remove OIDC attributes of the scope",
                 title: "Edit scope: {{ name }}"
+            },
+            organizations: {
+                subTitle: "Create and manage organizations.",
+                title: "Organizations"
             },
             overview: {
                 subTitle: "Configure and  manage users, roles, attribute dialects, server configurations etc." +
@@ -8962,10 +9259,6 @@ export const console: ConsoleNS = {
                 backButton: "Go back to Users",
                 subTitle: "{{name}}",
                 title: "{{email}}"
-            },
-            invite: {
-                subTitle: "Invite and manage admins and developers.",
-                title: "Admins & Developers"
             }
         },
         placeholders: {

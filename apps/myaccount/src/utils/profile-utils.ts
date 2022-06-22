@@ -30,6 +30,7 @@ import {
 import { store } from "../store";
 import { setProfileCompletion } from "../store/actions";
 import { SCIMConfigs } from "../extensions/configs/scim";
+import { commonConfig } from "../extensions";
 
 /**
  * This function extracts the sub attributes from the schemas and appends them to the main schema iterable.
@@ -192,7 +193,7 @@ export const getProfileCompletion = (
 
     for (const schema of flattenSchemas([...profileSchemas])) {
         // Skip `Roles` & 'Local Credential Exists'
-        if (schema.displayName === "Role" || schema.displayName === "Local Credential Exists" ) {
+        if (commonConfig.utils.isSchemaNameSkippableforProfileCompletion(schema)) {
             continue;
         }
 

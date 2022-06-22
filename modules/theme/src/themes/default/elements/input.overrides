@@ -29,29 +29,6 @@
 }
 
 /*******************************
-      Input Color Picker
-*******************************/
-
-.ui.input.labeled.react-color {
-    > .ui.label {
-        border: @border;
-    }
-
-    > .ui.react-color-popover {
-        position: absolute;
-        z-index: 2;
-
-        > .ui.react-color-cover {
-            bottom: 0;
-            left: 0;
-            position: fixed;
-            right: 0;
-            top: 0;
-        }
-    }
-}
-
-/*******************************
     Claim Search Variation
 *******************************/
 .ui.icon.input {
@@ -99,3 +76,52 @@ input[type=password]::-ms-reveal, input[type=password]::-ms-clear {
     display: none;
 }
 
+/*-------------------------------
+  Addon wrapper for input fields to avoid
+  overlapping with browser added icons
+  ex: Password Managers
+--------------------------------*/
+.ui.input {
+    &.addon-wrapper {
+        margin: 0;
+        outline: 0;
+        border: @border;
+        border-radius: @borderRadius;
+        box-shadow: @boxShadow;
+        transition: @transition;
+
+        &:focus-within {
+            border-color: @focusBorderColor;
+        }
+
+        > input {
+            border: none;
+            max-width: calc(100% - @inputAddonWrapperOffset);
+        }
+    }
+}
+
+/*-------------------------------
+  Addon field wrapper for input fields in My Account
+  & Console to avoid overlapping with browser added icons
+  ex: Password Managers
+--------------------------------*/
+.addon-field-wrapper {
+    .ui.input {
+        margin: 0;
+        outline: 0;
+        border: @border;
+        border-radius: @borderRadius;
+        box-shadow: @boxShadow;
+        transition: @transition;
+
+        &:focus-within {
+            border-color: @focusBorderColor;
+        }
+
+        > input {
+            border: none;
+            max-width: calc(100% - @inputAddonWrapperOffset);
+        }
+    }  
+}

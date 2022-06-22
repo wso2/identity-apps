@@ -35,6 +35,7 @@ export interface ApplicationBasicInterface {
     description?: string;
     accessUrl?: string;
     templateId?: string;
+    isManagementApp?: boolean;
 }
 
 export enum ApplicationAccessTypes {
@@ -133,16 +134,17 @@ export interface ClaimMappingInterface {
     localClaim: AppClaimInterface;
 }
 
-interface SubjectInterface {
-    claim: AppClaimInterface[];
+export interface SubjectInterface {
+    claim: AppClaimInterface[] | string;
     includeUserDomain: boolean;
     includeTenantDomain: boolean;
     useMappedLocalSubject: boolean;
 }
 
-interface RoleInterface {
-    claim: AppClaimInterface[];
+export interface RoleInterface {
+    claim: AppClaimInterface[] | string;
     includeUserDomain: boolean;
+    mappings: AppClaimInterface[] | string[];
 }
 
 export interface RoleMappingInterface {
@@ -242,6 +244,10 @@ export interface ApplicationTemplateListItemInterface {
     description?: string;
     image?: string;
     authenticationProtocol?: string;
+    /**
+     * Specifies a Management Application
+     */
+    isManagementApp?: boolean;
     /**
      * Template group.
      * ex: "web-application"
@@ -677,6 +683,8 @@ export enum LoginFlowTypes {
     GOOGLE_LOGIN = "GOOGLE_LOGIN",
     GITHUB_LOGIN = "GITHUB_LOGIN",
     SECOND_FACTOR_TOTP = "SECOND_FACTOR_TOTP",
+    FIDO_LOGIN = "FIDO_LOGIN",
+    MAGIC_LINK = "MAGIC_LINK",
     DEFAULT = "DEFAULT"
 }
 
