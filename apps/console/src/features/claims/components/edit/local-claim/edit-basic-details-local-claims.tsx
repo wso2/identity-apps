@@ -24,7 +24,6 @@ import {
     AlertInterface,
     AlertLevels,
     Claim,
-    Message,
     ProfileSchemaInterface,
     TestableComponentInterface
 } from "@wso2is/core/models";
@@ -36,9 +35,9 @@ import {
     DangerZone,
     DangerZoneGroup,
     EmphasizedSegment,
-    Message,
     Hint,
-    Link
+    Link,
+    Message
 } from "@wso2is/react-components";
 import Axios from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useRef, useState } from "react";
