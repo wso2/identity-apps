@@ -24,7 +24,6 @@ import {
     AlertInterface,
     AlertLevels,
     Claim,
-    Message,
     ProfileSchemaInterface,
     TestableComponentInterface
 } from "@wso2is/core/models";
@@ -36,6 +35,7 @@ import {
     DangerZone,
     DangerZoneGroup,
     EmphasizedSegment,
+    Message,
     Hint,
     Link
 } from "@wso2is/react-components";
