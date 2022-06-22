@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import {ConsoleNS, FormAttributes} from "../../../models";
+import { ConsoleNS } from "../../../models";
 
 export const console: ConsoleNS = {
     common: {
@@ -7252,6 +7252,57 @@ export const console: ConsoleNS = {
                         message: "This action is irreversible and will remove the organization entirely."
                     }
                 },
+                edit: {
+                    attributes: {
+                        hint: "Configure organization attributes",
+                        key: "Name",
+                        keyRequiredErrorMessage: "Name is required",
+                        value: "Value",
+                        valueRequiredErrorMessage: "Value is required"
+                    },
+                    back: "Back",
+                    dangerZone: {
+                        subHeader: "Are you sure you want to delete this organization?",
+                        title: "Delete Organization"
+                    },
+                    description: "Edit Organization",
+                    fields: {
+                        created: {
+                            ariaLabel: "Created",
+                            label: "Created"
+                        },
+                        description: {
+                            ariaLabel: "Organization Description",
+                            label: "Organization Description",
+                            placeholder: "Enter organization description"
+                        },
+                        domain: {
+                            ariaLabel: "Organization Domain",
+                            label: "Organization Domain"
+                        },
+                        id: {
+                            ariaLabel: "Organization ID",
+                            label: "Organization ID"
+                        },
+                        lastModified: {
+                            ariaLabel: "Last Modified",
+                            label: "Last Modified"
+                        },
+                        name: {
+                            ariaLabel: "Organization Name",
+                            label: "Organization Name",
+                            placeholder: "Enter organization name"
+                        },
+                        type: {
+                            ariaLabel: "Organization Type",
+                            label: "Organization Type"
+                        }
+                    },
+                    tabTitles: {
+                        attributes: "Attributes",
+                        profile: "Profile"
+                    }
+                },
                 list: {
                     actions: {
                         add: "Add Organization"
@@ -7331,58 +7382,7 @@ export const console: ConsoleNS = {
                     }
                 },
                 subTitle: "Create and manage organizations.",
-                title: "Organizations",
-                edit: {
-                    description: "Edit Organization",
-                    back: "Back",
-                    tabTitles: {
-                        profile: "Profile",
-                        attributes: "Attributes"
-                    },
-                    fields: {
-                        id: {
-                            label: "Organization ID",
-                            ariaLabel: "Organization ID"
-                        },
-                        name: {
-                            label: "Organization Name",
-                            placeholder: "Enter organization name",
-                            ariaLabel: "Organization Name"
-                        },
-                        description: {
-                            label: "Organization Description",
-                            placeholder: "Enter organization description",
-                            ariaLabel: "Organization Description"
-                        },
-                        domain: {
-                            label: "Organization Domain",
-                            ariaLabel: "Organization Domain"
-                        },
-                        type: {
-                            label: "Organization Type",
-                            ariaLabel: "Organization Type"
-                        },
-                        created: {
-                            label: "Created",
-                            ariaLabel: "Created"
-                        },
-                        lastModified: {
-                            label: "Last Modified",
-                            ariaLabel: "Last Modified"
-                        },
-                    },
-                    dangerZone: {
-                        title: "Delete Organization",
-                        subHeader: "Are you sure you want to delete this organization?"
-                    },
-                    attributes: {
-                        hint: "Configure organization attributes",
-                        key: "Name",
-                        value: "Value",
-                        keyRequiredErrorMessage: "Name is required",
-                        valueRequiredErrorMessage: "Value is required"
-                    }
-                }
+                title: "Organizations"
             },
             overview: {
                 widgets: {

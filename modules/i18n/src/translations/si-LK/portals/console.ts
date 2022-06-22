@@ -5694,6 +5694,57 @@ export const console: ConsoleNS = {
                         message: "මෙම ක්‍රියාව ආපසු හැරවිය නොහැකි අතර සංවිධානය සම්පූර්ණයෙන්ම ඉවත් කරනු ඇත."
                     }
                 },
+                edit: {
+                    attributes: {
+                        hint: "සංවිධාන ගුණාංග වින්‍යාස කරන්න",
+                        key: "නාමය",
+                        keyRequiredErrorMessage: "නම අවශ්‍යයි",
+                        value: "අගය",
+                        valueRequiredErrorMessage: "අගය අවශ්ය වේ"
+                    },
+                    back: "ආපසු",
+                    dangerZone: {
+                        subHeader: "ඔබට මෙම සංවිධානය මැකීමට අවශ්‍ය බව විශ්වාසද?",
+                        title: "සංවිධානය මකන්න"
+                    },
+                    description: "සංවිධානය සංස්කරණය කරන්න",
+                    fields: {
+                        created: {
+                            ariaLabel: "නිර්මාණය කළ කාලය",
+                            label: "නනිර්මාණය කළ කාලය"
+                        },
+                        description: {
+                            ariaLabel: "සංවිධානයේ විස්තරය",
+                            label: "සංවිධානයේ විස්තරය",
+                            placeholder: "සංවිධානයේ විස්තරය ඇතුළත් කරන්න"
+                        },
+                        domain: {
+                            ariaLabel: "සංවිධාන වසම",
+                            label: "සංවිධාන වසම"
+                        },
+                        id: {
+                            ariaLabel: "සංවිධාන හැඳුනුම්පත",
+                            label: "සංවිධාන හැඳුනුම්පත"
+                        },
+                        lastModified: {
+                            ariaLabel: "අවසන් වරට වෙනස් කළ කාලය",
+                            label: "අවසන් වරට වෙනස් කළ කාලය"
+                        },
+                        name: {
+                            ariaLabel: "සංවිධානයේ නම",
+                            label: "සංවිධානයේ නම",
+                            placeholder: "සංවිධානයේ නම ඇතුළත් කරන්න"
+                        },
+                        type: {
+                            ariaLabel: "සංවිධානයේ වර්ගය",
+                            label: "සංවිධානයේ වර්ගය"
+                        }
+                    },
+                    tabTitles: {
+                        attributes: "ගුණාංග",
+                        profile: "පැතිකඩ"
+                    }
+                },
                 list: {
                     actions: {
                         add: "සංවිධානය එකතු කරන්න"
@@ -5773,58 +5824,7 @@ export const console: ConsoleNS = {
                     }
                 },
                 subTitle: "ආයතන සාදන්න සහ කළමනාකරණය කරන්න.",
-                title: "ආයතන",
-                edit: {
-                    description: "සංවිධානය සංස්කරණය කරන්න",
-                    back: "ආපසු",
-                    tabTitles: {
-                        profile: "පැතිකඩ",
-                        attributes: "ගුණාංග"
-                    },
-                    fields: {
-                        id: {
-                            label: "සංවිධාන හැඳුනුම්පත",
-                            ariaLabel: "සංවිධාන හැඳුනුම්පත"
-                        },
-                        name: {
-                            label: "සංවිධානයේ නම",
-                            placeholder: "සංවිධානයේ නම ඇතුළත් කරන්න",
-                            ariaLabel: "සංවිධානයේ නම"
-                        },
-                        description: {
-                            label: "සංවිධානයේ විස්තරය",
-                            placeholder: "සංවිධානයේ විස්තරය ඇතුළත් කරන්න",
-                            ariaLabel: "සංවිධානයේ විස්තරය"
-                        },
-                        domain: {
-                            label: "සංවිධාන වසම",
-                            ariaLabel: "සංවිධාන වසම"
-                        },
-                        type: {
-                            label: "සංවිධානයේ වර්ගය",
-                            ariaLabel: "සංවිධානයේ වර්ගය"
-                        },
-                        created: {
-                            label: "නනිර්මාණය කළ කාලය",
-                            ariaLabel: "නිර්මාණය කළ කාලය"
-                        },
-                        lastModified: {
-                            label: "අවසන් වරට වෙනස් කළ කාලය",
-                            ariaLabel: "අවසන් වරට වෙනස් කළ කාලය"
-                        }
-                    },
-                    dangerZone: {
-                        title: "සංවිධානය මකන්න",
-                        subHeader: "ඔබට මෙම සංවිධානය මැකීමට අවශ්‍ය බව විශ්වාසද?"
-                    },
-                    attributes: {
-                        hint: "සංවිධාන ගුණාංග වින්‍යාස කරන්න",
-                        key: "නාමය",
-                        value: "අගය",
-                        keyRequiredErrorMessage: "නම අවශ්‍යයි",
-                        valueRequiredErrorMessage: "අගය අවශ්ය වේ"
-                    }
-                }
+                title: "ආයතන"
             },
             overview: {
                 widgets: {

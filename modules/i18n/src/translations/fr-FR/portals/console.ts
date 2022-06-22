@@ -5824,6 +5824,57 @@ export const console: ConsoleNS = {
                         message: "Cette action est irréversible et supprimera entièrement l'organisation."
                     }
                 },
+                edit: {
+                    attributes: {
+                        hint: "Configurer les attributs de l'organisation",
+                        key: "Nom",
+                        keyRequiredErrorMessage: "Le nom est requis",
+                        value: "Évaluer",
+                        valueRequiredErrorMessage: "Valeur est requise"
+                    },
+                    back: "Retour",
+                    dangerZone: {
+                        subHeader: "Voulez-vous vraiment supprimer cette organisation?",
+                        title: "Supprimer l'organisation"
+                    },
+                    description: "Modifier l'organisation",
+                    fields: {
+                        created: {
+                            ariaLabel: "Établi",
+                            label: "Établi"
+                        },
+                        description: {
+                            ariaLabel: "Description de l'organisation",
+                            label: "Description de l'organisation",
+                            placeholder: "Entrez la description de l'organisation"
+                        },
+                        domain: {
+                            ariaLabel: "Domaine de l'organisation",
+                            label: "Domaine de l'organisation"
+                        },
+                        id: {
+                            ariaLabel: "ID de l'organisation",
+                            label: "ID de l'organisation"
+                        },
+                        lastModified: {
+                            ariaLabel: "Dernière modification",
+                            label: "Dernière modification"
+                        },
+                        name: {
+                            ariaLabel: "Nom de l'organisation",
+                            label: "Nom de l'organisation",
+                            placeholder: "Entrez le nom de l'organisation"
+                        },
+                        type: {
+                            ariaLabel: "Type d'Organisation",
+                            label: "Type d'Organisation"
+                        }
+                    },
+                    tabTitles: {
+                        attributes: "Les attributs",
+                        profile: "Profil"
+                    }
+                },
                 list: {
                     actions: {
                         add: "Ajouter une organisation"
@@ -5882,7 +5933,8 @@ export const console: ConsoleNS = {
                             message: "Erreur lors de la mise à jour des attributs de l'organisation"
                         },
                         genericError: {
-                            description: "Une erreur s'est produite lors de la mise à jour des attributs de l'organisation",
+                            description: "Une erreur s'est produite lors de la mise à jour des attributs " +
+                                "de l'organisation",
                             message: "Quelque chose s'est mal passé"
                         },
                         success: {
@@ -5903,58 +5955,7 @@ export const console: ConsoleNS = {
                     }
                 },
                 subTitle: "Créer et gérer des organisations.",
-                title: "Organisations",
-                edit: {
-                    back: "Retour",
-                    description: "Modifier l'organisation",
-                    tabTitles: {
-                        attributes: "Les attributs",
-                        profile: "Profil"
-                    },
-                    fields: {
-                        id: {
-                            ariaLabel: "ID de l'organisation",
-                            label: "ID de l'organisation"
-                        },
-                        name: {
-                            label: "Nom de l'organisation",
-                            placeholder: "Entrez le nom de l'organisation",
-                            ariaLabel: "Nom de l'organisation"
-                        },
-                        description: {
-                            label: "Description de l'organisation",
-                            placeholder: "Entrez la description de l'organisation",
-                            ariaLabel: "Description de l'organisation"
-                        },
-                        domain: {
-                            label: "Domaine de l'organisation",
-                            ariaLabel: "Domaine de l'organisation"
-                        },
-                        type: {
-                            label: "Type d'Organisation",
-                            ariaLabel: "Type d'Organisation"
-                        },
-                        created: {
-                            label: "Établi",
-                            ariaLabel: "Établi"
-                        },
-                        lastModified: {
-                            label: "Dernière modification",
-                            ariaLabel: "Dernière modification"
-                        }
-                    },
-                    dangerZone: {
-                        title: "Supprimer l'organisation",
-                        subHeader: "Voulez-vous vraiment supprimer cette organisation ?"
-                    },
-                    attributes: {
-                        hint: "Configurer les attributs de l'organisation",
-                        key: "Nom",
-                        value: "Évaluer",
-                        keyRequiredErrorMessage: "Le nom est requis",
-                        valueRequiredErrorMessage: "Valeur est requise"
-                    }
-                }
+                title: "Organisations"
             },
             overview: {
                 widgets: {
