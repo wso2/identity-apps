@@ -298,7 +298,7 @@ export const GitHubAuthenticationProviderCreateWizard: FunctionComponent<
                 },
                 {
                     "key": "callbackUrl",
-                    "value": config.deployment.serverHost + "/commonauth"
+                    "value": config?.deployment?.customServerHost + "/commonauth"
                 },
                 {
                     "key": "scope",

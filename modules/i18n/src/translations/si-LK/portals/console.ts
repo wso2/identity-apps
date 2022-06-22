@@ -5694,6 +5694,37 @@ export const console: ConsoleNS = {
                         message: "මෙම ක්‍රියාව ආපසු හැරවිය නොහැකි අතර සංවිධානය සම්පූර්ණයෙන්ම ඉවත් කරනු ඇත."
                     }
                 },
+                forms: {
+                    addOrganization: {
+                        description: {
+                            label: "විස්තර",
+                            placeholder: "විස්තරය ඇතුලත් කරන්න"
+                        },
+                        domainName: {
+                            label: "වසම් නාමය",
+                            placeholder: "වසම් නාමය ඇතුලත් කරන්න",
+                            validation: {
+                                duplicate: "වසම් නාමය දැනටමත් පවතී",
+                                empty: "වසම් නාමය අවශ්ය වේ"
+                            }
+                        },
+                        name: {
+                            label: "සංවිධානයේ නම",
+                            placeholder: "සංවිධානයේ නම ඇතුළත් කරන්න",
+                            validation: {
+                                duplicate: "සංවිධානයේ නම දැනටමත් පවතී",
+                                empty: "සංවිධානයේ නම අවශ්‍යයි"
+                            }
+                        },
+                        structural: "ව්යුහාත්මක",
+                        tenant: "කුලී නිවැසියා",
+                        type: "ටයිප් කරන්න"
+                    }
+                },
+                homeList: {
+                    description: "පවතින සියලුම සංවිධාන ලැයිස්තුව බලන්න.",
+                    name: "සියලුම සංවිධාන"
+                },
                 list: {
                     actions: {
                         add: "සංවිධානය එකතු කරන්න"
@@ -5703,7 +5734,28 @@ export const console: ConsoleNS = {
                         name: "නම"
                     }
                 },
+                modals: {
+                    addOrganization: {
+                        header: "සංවිධානය එකතු කරන්න",
+                        subtitle1: "{{parent}} තුළ නව සංවිධානයක් සාදන්න.",
+                        subtitle2: "නව සංවිධානයක් සාදන්න."
+                    }
+                },
                 notifications: {
+                    addOrganization: {
+                        error: {
+                            description: "{{description}}",
+                            message: "සංවිධානය එක් කිරීමේදී දෝෂයකි"
+                        },
+                        genericError: {
+                            description: "සංවිධානය එක් කිරීමේදී දෝෂයක් ඇති විය",
+                            message: "මොකක්හරි වැරැද්දක් වෙලා"
+                        },
+                        success: {
+                            description: "සංවිධානය සාර්ථකව එකතු කරන ලදී",
+                            message: "සංවිධානය සාර්ථකව එකතු කරන ලදී"
+                        }
+                    },
                     deleteOrganization: {
                         error: {
                             description: "{{description}}",
@@ -5758,6 +5810,16 @@ export const console: ConsoleNS = {
                         success: {
                             description: "සංවිධානයේ උපලක්ෂණ සාර්ථකව යාවත්කාලීන කරන ලදී",
                             message: "සංවිධානයේ උපලක්ෂණ යාවත්කාලීන කරන ලදී"
+                        }
+                    },
+                    getOrganizationList: {
+                        error: {
+                            description: "{{description}}",
+                            message: "සංවිධාන ලැයිස්තුව ලබා ගැනීමේදී දෝෂයකි"
+                        },
+                        genericError: {
+                            description: "සංවිධාන ලැයිස්තුව ලබා ගැනීමේදී දෝෂයක් ඇති විය",
+                            message: "මොකක්හරි වැරැද්දක් වෙලා"
                         }
                     }
                 },
@@ -6182,6 +6244,8 @@ export const console: ConsoleNS = {
                         },
                         dangerZone: {
                             actionTitle: "{{type}} මකන්න",
+                            buttonDisableHint: "මෙම {{type}} දුරස්ථ පරිශීලක වෙළඳසැලක කළමනාකරණය කර ඇති " +
+                                "නිසා මකන්න විකල්පය අබල කර ඇත.",
                             header: "{{type}} මකන්න",
                             subheader: "ඔබ {{type}} මකා දැමූ පසු, ආපසු යාමක් නොමැත. කරුණාකර ස්ථිර වන්න."
                         },
@@ -7168,6 +7232,7 @@ export const console: ConsoleNS = {
                     validation: {
                         dateFormatError: "ඇතුළත් කළ {{field}} ආකෘතිය වැරදිය. වලංගු ආකෘතිය YYYY-MM-DD වේ.",
                         formatError: "ඇතුළත් කළ {{field}} ආකෘතිය වැරදිය.",
+                        futureDateError: "ඔබ {{field}} ක්ෂේත්‍රය සඳහා ඇතුළත් කළ දිනය වලංගු නැත.",
                         mobileFormatError: "ඇතුළත් කළ {{field}} ආකෘතිය වැරදිය. වලංගු ආකෘතිය " +
                             "[+][රට කේතය][ප්‍රදේශ කේතය][දේශීය දුරකථන අංකය] වේ."
                     }
@@ -7581,7 +7646,7 @@ export const console: ConsoleNS = {
                     darkMode: "අඳුරු ප්‍රකාරය",
                     delete: "මකන්න",
                     read: "කියවන්න",
-                    reset: "නැවත සකසන්න",
+                    reset: "වෙනස්කම් යළි පිහිටුවන්න",
                     title: "SQL විමසුම් වර්ග",
                     update: "යාවත්කාලීන කරන්න"
                 },

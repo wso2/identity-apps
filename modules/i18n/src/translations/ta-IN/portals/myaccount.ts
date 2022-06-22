@@ -1209,6 +1209,7 @@ export const myAccount: MyAccountNS = {
                     inputs: {
                         date: {
                             validations: {
+                                futureDateError: "{{field}} புலத்திற்கு நீங்கள் உள்ளிட்ட தேதி தவறானது.",
                                 invalidFormat: "YYYY-MM-DD வடிவத்தில் செல்லுபடியாகும் {{fieldName}} ஐ உள்ளிடவும்."
                             }
                         }

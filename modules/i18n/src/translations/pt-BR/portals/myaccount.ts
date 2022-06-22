@@ -1159,6 +1159,7 @@ export const myAccount: MyAccountNS = {
                     inputs: {
                         date: {
                             validations: {
+                                futureDateError: "A data inserida no campo {{field}} é inválida.",
                                 invalidFormat: "Insira um {{fieldName}} válido no formato AAAA-MM-DD."
                             }
                         }

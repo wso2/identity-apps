@@ -866,7 +866,7 @@ export const console: ConsoleNS = {
                         provisioning: {
                             inbound: {
                                 heading: "Inbound Provisioning",
-                                subHeading: "Provision users or groups to a WSO2 Identity Server’s userstore via " +
+                                subHeading: "Provision users or groups to a WSO2 Identity Server’s user store via " +
                                     "this application."
                             },
                             outbound: {
@@ -2145,8 +2145,8 @@ export const console: ConsoleNS = {
                                 label: "Proxy mode"
                             },
                             userstoreDomain: {
-                                hint: "Select userstore domain name to provision users and groups.",
-                                label: "Provisioning userstore domain"
+                                hint: "Select user store domain name to provision users and groups.",
+                                label: "Provisioning user store domain"
                             }
                         }
                     },
@@ -6097,7 +6097,7 @@ export const console: ConsoleNS = {
                         }
                     },
                     warning: "This attribute has not been mapped to an attribute" +
-                        " in the following userstores:"
+                        " in the following user stores:"
                 },
                 local: {
                     additionalProperties: {
@@ -6203,7 +6203,7 @@ export const console: ConsoleNS = {
                         }
                     },
                     mappedAttributes: {
-                        hint: "Enter the attribute from each userstore that you want to map to this attribute."
+                        hint: "Enter the attribute from each user store that you want to map to this attribute."
                     },
                     notifications: {
                         addLocalClaim: {
@@ -6302,7 +6302,7 @@ export const console: ConsoleNS = {
                             regEx: "Regular Expression",
                             required: "This attribute is required during user registration",
                             supportedByDefault: "This attribute is shown on user profile and user registration page",
-                            userstore: "Userstore"
+                            userstore: "User Store"
                         }
                     }
                 },
@@ -6789,10 +6789,10 @@ export const console: ConsoleNS = {
                 placeholders: {
                     groupsError: {
                         subtitles: [
-                            "An error occurred while trying to fetch groups from the userstore.",
-                            "Please make sure that teh connection details of the userstore are accurate."
+                            "An error occurred while trying to fetch groups from the user store.",
+                            "Please make sure that the connection details of the user store are accurate."
                         ],
-                        title:"Couldn't fetch groups from the userstore"
+                        title:"Couldn't fetch groups from the user store"
                     }
                 }
             },
@@ -7252,6 +7252,37 @@ export const console: ConsoleNS = {
                         message: "This action is irreversible and will remove the organization entirely."
                     }
                 },
+                forms: {
+                    addOrganization:{
+                        description: {
+                            label: "Description",
+                            placeholder: "Enter description"
+                        },
+                        domainName: {
+                            label: "Domain Name",
+                            placeholder: "Enter domain name",
+                            validation: {
+                                duplicate: "Domain name already exists",
+                                empty: "Domain name is required"
+                            }
+                        },
+                        name: {
+                            label: "Organization Name",
+                            placeholder: "Enter organization name",
+                            validation: {
+                                duplicate: "Organization name already exists",
+                                empty: "Organization name is required"
+                            }
+                        },
+                        structural: "Structural",
+                        tenant: "Tenant",
+                        type: "Type"
+                    }
+                },
+                homeList: {
+                    description: "View the list of all the available organizations.",
+                    name: "All Organizations"
+                },
                 list: {
                     actions: {
                         add: "Add Organization"
@@ -7261,7 +7292,28 @@ export const console: ConsoleNS = {
                         name: "Name"
                     }
                 },
+                modals: {
+                    addOrganization: {
+                        header: "Add Organization",
+                        subtitle1: "Create a new organization in {{parent}}.",
+                        subtitle2: "Create a new organization."
+                    }
+                },
                 notifications: {
+                    addOrganization: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error while adding the organization"
+                        },
+                        genericError: {
+                            description: "An error occurred while adding the organization",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Successfully added the organization",
+                            message: "Organization added successfully"
+                        }
+                    },
                     deleteOrganization: {
                         error: {
                             description: "{{description}}",
@@ -7316,6 +7368,16 @@ export const console: ConsoleNS = {
                         success: {
                             description: "Successfully updated the organization attributes",
                             message: "Organization attributes updated successfully"
+                        }
+                    },
+                    getOrganizationList: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error while getting the organization list"
+                        },
+                        genericError: {
+                            description: "An error occurred while getting the organization list",
+                            message: "Something went wrong"
                         }
                     }
                 },
@@ -7405,7 +7467,7 @@ export const console: ConsoleNS = {
                                 heading: "Users"
                             },
                             userstores: {
-                                heading: "Userstores"
+                                heading: "User Stores"
                             }
                         },
                         heading: "Overview",
@@ -7642,7 +7704,7 @@ export const console: ConsoleNS = {
                         roleBasicDetails: {
                             domain: {
                                 label: {
-                                    group: "Userstore",
+                                    group: "User Store",
                                     role: "Role Type"
                                 },
                                 placeholder: "Domain",
@@ -7678,7 +7740,7 @@ export const console: ConsoleNS = {
                     summary: {
                         labels: {
                             domain: {
-                                group: "Userstore",
+                                group: "User Store",
                                 role: "Role Type"
                             },
                             groups: "Assigned Group(s)",
@@ -7738,6 +7800,8 @@ export const console: ConsoleNS = {
                         },
                         dangerZone: {
                             actionTitle: "Delete {{type}}",
+                            buttonDisableHint: "Delete option is disabled because this {{type}} is managed in a" +
+                                " remote user store.",
                             header: "Delete {{type}}",
                             subheader: "Once you delete the {{type}}, it cannot be recovered."
                         },
@@ -7974,7 +8038,7 @@ export const console: ConsoleNS = {
                     general: "General",
                     organizations: "Organizations",
                     users: "Users",
-                    userstores: "Userstores"
+                    userstores: "User Stores"
                 },
                 certificates: "Certificates",
                 configurations: "Configurations",
@@ -7984,7 +8048,7 @@ export const console: ConsoleNS = {
                 editLocalClaims: "Edit Attributes",
                 editRoles: "Edit Role",
                 editUsers: "Edit User",
-                editUserstore: "Edit Userstore",
+                editUserstore: "Edit User Store",
                 emailTemplateTypes: "",
                 emailTemplates: "Email Templates",
                 generalConfigurations: "General",
@@ -7994,8 +8058,8 @@ export const console: ConsoleNS = {
                 overview: "Overview",
                 roles: "Roles",
                 users: "Users",
-                userstoreTemplates: "Userstore Templates",
-                userstores: "Userstores"
+                userstoreTemplates: "User Store Templates",
+                userstores: "User Stores"
             },
             transferList: {
                 list: {
@@ -8107,7 +8171,7 @@ export const console: ConsoleNS = {
                                 }
                             },
                             domain: {
-                                label: "Userstore",
+                                label: "User Store",
                                 placeholder: "Select user store",
                                 validations: {
                                     empty: "User store name cannot be empty."
@@ -8203,7 +8267,7 @@ export const console: ConsoleNS = {
                         subTitle: "Follow the steps to create the new user",
                         title: "Create User",
                         wizardSummary: {
-                            domain: "Userstore",
+                            domain: "User Store",
                             groups: "Group(s)",
                             name: "Name",
                             passwordOption: {
@@ -8716,6 +8780,7 @@ export const console: ConsoleNS = {
                         dateFormatError: "The format of the {{field}} entered is incorrect. Valid format is " +
                             "YYYY-MM-DD.",
                         formatError: "The format of the {{field}} entered is incorrect.",
+                        futureDateError: "The date you entered for the {{field}} field is invalid.",
                         mobileFormatError: "The format of the {{field}} entered is incorrect.  Valid format is " +
                             "[+][country code][area code][local phone number]."
                     }
@@ -8795,7 +8860,7 @@ export const console: ConsoleNS = {
                     },
                     userstoreError: {
                         subtitles: {
-                            0: "Couldn't fetch users from the userstore",
+                            0: "Couldn't fetch users from the user store",
                             1: "Please try again"
                         },
                         title: "Something went wrong"
@@ -8928,7 +8993,7 @@ export const console: ConsoleNS = {
                 },
                 userstores: {
                     userstoreOptions: {
-                        all: "All userstores",
+                        all: "All user stores",
                         primary: "Primary"
                     }
                 }
@@ -8949,28 +9014,28 @@ export const console: ConsoleNS = {
                             }
                         }
                     },
-                    placeholder: "Search by userstore name"
+                    placeholder: "Search by user store name"
                 },
                 confirmation: {
                     confirm: "Confirm",
-                    content: "If you delete this userstore, the user data in this userstore will also be deleted. "
+                    content: "If you delete this user store, the user data in this user store will also be deleted. "
                         + "Please proceed with caution.",
                     header: "Are you sure?",
                     hint: "Please type <1>{{name}}</1> to confirm.",
                     message: "This action is irreversible and will permanently delete the"
-                        + " selected userstore and the data in it."
+                        + " selected user store and the data in it."
                 },
                 dangerZone: {
                     delete: {
-                        actionTitle: "Delete Userstore",
-                        header: "Delete Userstore",
-                        subheader: "Once you delete a userstore, there is no going back. "
+                        actionTitle: "Delete User Store",
+                        header: "Delete User Store",
+                        subheader: "Once you delete a user store, there is no going back. "
                             + "Please be certain."
                     },
                     disable: {
-                        actionTitle: "Enable Userstore",
-                        header: "Enable Userstore",
-                        subheader: "Disabling a userstore can make you lose access to the users in the userstore. " +
+                        actionTitle: "Enable User Store",
+                        header: "Enable User Store",
+                        subheader: "Disabling a user store can make you lose access to the users in the user store. " +
                             "Proceed with caution."
                     }
                 },
@@ -8994,7 +9059,7 @@ export const console: ConsoleNS = {
                             placeholder: "Enter a name",
                             requiredErrorMessage: "Name is a required field",
                             validationErrorMessages: {
-                                alreadyExistsErrorMessage: "A userstore with this name already exists."
+                                alreadyExistsErrorMessage: "A user store with this name already exists."
                             }
                         },
                         type: {
@@ -9006,12 +9071,12 @@ export const console: ConsoleNS = {
                 notifications: {
                     addUserstore: {
                         genericError: {
-                            description: "There was an error while creating the userstore.",
+                            description: "There was an error while creating the user store.",
                             message: "Something went wrong!"
                         },
                         success: {
-                            description: "The userstore has been added successfully!",
-                            message: "Userstore added successfully!"
+                            description: "The user store has been added successfully!",
+                            message: "User store added successfully!"
                         }
                     },
                     apiLimitReachedError: {
@@ -9021,18 +9086,18 @@ export const console: ConsoleNS = {
                         }
                     },
                     delay: {
-                        description: "It may take a while for the userstore list to be updated. "
-                            + "Refresh in a few seconds to get the updated userstore list.",
-                        message: "Updating Userstore list takes time"
+                        description: "It may take a while for the user store list to be updated. "
+                            + "Refresh in a few seconds to get the updated user store list.",
+                        message: "Updating user store list takes time"
                     },
                     deleteUserstore: {
                         genericError: {
-                            description: "There was an error while deleting the userstore.",
+                            description: "There was an error while deleting the user store.",
                             message: "Something went wrong!"
                         },
                         success: {
-                            description: "The userstore has been deleted successfully!",
-                            message: "Userstore deleted successfully!"
+                            description: "The user store has been deleted successfully!",
+                            message: "User store deleted successfully!"
                         }
                     },
                     fetchUserstoreMetadata: {
@@ -9043,25 +9108,25 @@ export const console: ConsoleNS = {
                     },
                     fetchUserstoreTemplates: {
                         genericError: {
-                            description: "An error occurred while fetching the userstore type details.",
+                            description: "An error occurred while fetching the user store type details.",
                             message: "Something went wrong"
                         }
                     },
                     fetchUserstoreTypes: {
                         genericError: {
-                            description: "An error occurred while fetching the userstore types.",
+                            description: "An error occurred while fetching the user store types.",
                             message: "Something went wrong"
                         }
                     },
                     fetchUserstores: {
                         genericError: {
-                            description: "An error occurred while fetching userstores.",
+                            description: "An error occurred while fetching user stores.",
                             message: "Something went wrong"
                         }
                     },
                     testConnection: {
                         genericError: {
-                            description: "An error occurred while testing the " + "connection to the userstore",
+                            description: "An error occurred while testing the " + "connection to the user store",
                             message: "Something went wrong"
                         },
                         success: {
@@ -9075,19 +9140,19 @@ export const console: ConsoleNS = {
                     },
                     updateUserstore: {
                         genericError: {
-                            description: "An error occurred while updating the userstore.",
+                            description: "An error occurred while updating the user store.",
                             message: "Something went wrong"
                         },
                         success: {
-                            description: "This userstore has been updated successfully!",
-                            message: "Userstore updated successfully!"
+                            description: "This user store has been updated successfully!",
+                            message: "User store updated successfully!"
                         }
                     }
                 },
                 pageLayout: {
                     edit: {
-                        back: "Go back to userstores",
-                        description: "Edit userstore",
+                        back: "Go back to user stores",
+                        description: "Edit user store",
                         tabs: {
                             connection: "Connection",
                             general: "General",
@@ -9096,25 +9161,25 @@ export const console: ConsoleNS = {
                         }
                     },
                     list: {
-                        description: "Create and manage userstores.",
-                        primaryAction: "New Userstore",
-                        title: "Userstores"
+                        description: "Create and manage user stores.",
+                        primaryAction: "New User Store",
+                        title: "User Stores"
                     },
                     templates: {
-                        back: "Go back to userstores",
-                        description: "Please choose one of the following userstore types.",
+                        back: "Go back to user stores",
+                        description: "Please choose one of the following user store types.",
                         templateHeading: "Quick Setup",
-                        templateSubHeading: "Predefined set of templates to speed up your userstore creation.",
-                        title: "Select Userstore Type"
+                        templateSubHeading: "Predefined set of templates to speed up your user store creation.",
+                        title: "Select User Store Type"
                     }
                 },
                 placeholders: {
                     emptyList: {
-                        action: "New Userstore",
-                        subtitles: "There are currently no userstores available."
-                            + "You can add a new userstore easily by following the "
-                            + "steps in the userstore creation wizard.",
-                        title: "Add a new Userstore"
+                        action: "New User Store",
+                        subtitles: "There are currently no user stores available."
+                            + "You can add a new user store easily by following the "
+                            + "steps in the user store creation wizard.",
+                        title: "Add a new user store"
                     },
                     emptySearch: {
                         action: "Clear search query",
@@ -9128,12 +9193,12 @@ export const console: ConsoleNS = {
                     darkMode: "Dark Mode",
                     delete: "Delete",
                     read: "Read",
-                    reset: "Reset",
+                    reset: "Reset Changes",
                     title: "SQL Query Types",
                     update: "Update"
                 },
                 wizard: {
-                    header: "Add {{type}} Userstore",
+                    header: "Add {{type}} User Store",
                     steps: {
                         general: "General",
                         group: "Group",

@@ -70,6 +70,7 @@ export class Config {
             clientHost: window["AppUtils"].getConfig().clientOriginWithTenant,
             clientID: window["AppUtils"].getConfig().clientID,
             clientOrigin: window["AppUtils"].getConfig().clientOrigin,
+            customServerHost: window["AppUtils"].getConfig().customServerHost,
             developerApp: window[ "AppUtils" ].getConfig().developerApp,
             docSiteURL: window["AppUtils"].getConfig().docSiteUrl,
             documentation: {

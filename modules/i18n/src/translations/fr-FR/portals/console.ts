@@ -5824,6 +5824,37 @@ export const console: ConsoleNS = {
                         message: "Cette action est irréversible et supprimera entièrement l'organisation."
                     }
                 },
+                forms: {
+                    addOrganization: {
+                        description: {
+                            label: "La description",
+                            placeholder: "Entrez la description"
+                        },
+                        domainName: {
+                            label: "Nom de domaine",
+                            placeholder: "Entrez le nom de domaine",
+                            validation: {
+                                duplicate: "Le nom de domaine existe déjà",
+                                empty: "Le nom de domaine est requis"
+                            }
+                        },
+                        name: {
+                            label: "nom de l'organisation",
+                            placeholder: "Entrez le nom de l'organisation",
+                            validation: {
+                                duplicate: "Le nom de l'organisation existe déjà",
+                                empty: "Le nom de l'organisation est requis"
+                            }
+                        },
+                        structural: "De construction",
+                        tenant: "Locataire",
+                        type: "Taper"
+                    }
+                },
+                homeList: {
+                    description: "Consultez la liste de toutes les organisations disponibles.",
+                    name: "Toutes les organisations"
+                },
                 list: {
                     actions: {
                         add: "Ajouter une organisation"
@@ -5833,7 +5864,28 @@ export const console: ConsoleNS = {
                         name: "Nom"
                     }
                 },
+                modals: {
+                    addOrganization: {
+                        header: "Ajouter une organisation",
+                        subtitle1: "Créez une nouvelle organisation dans {{parent}}.",
+                        subtitle2: "Créer une nouvelle organisation."
+                    }
+                },
                 notifications: {
+                    addOrganization: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Erreur lors de l'ajout de l'organisation"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de l'ajout de l'organisation",
+                            message: "Quelque chose s'est mal passé"
+                        },
+                        success: {
+                            description: "L'organisation a bien été ajoutée",
+                            message: "Organisation ajoutée avec succès"
+                        }
+                    },
                     deleteOrganization: {
                         error: {
                             description: "{{description}}",
@@ -5888,6 +5940,16 @@ export const console: ConsoleNS = {
                         success: {
                             description: "Mise à jour réussie des attributs de l'organisation",
                             message: "Les attributs de l'organisation ont bien été mis à jour"
+                        }
+                    },
+                    getOrganizationList: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Erreur lors de l'obtention de la liste des organisations"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de l'obtention de la liste des organisations",
+                            message: "Quelque chose s'est mal passé"
                         }
                     }
                 },
@@ -6321,6 +6383,8 @@ export const console: ConsoleNS = {
                         },
                         dangerZone: {
                             actionTitle: "Supprimer {{type}}",
+                            buttonDisableHint: "L'option de suppression est désactivée car ce {{type}} est géré " +
+                                "dans un magasin d'utilisateurs distant.",
                             header: "Supprimer {{type}}",
                             subheader: "Une fois que vous avez supprimé le {{type}}, il n'y a plus de retour " +
                                 "en arrière. Veuillez en être certain."
@@ -7346,6 +7410,7 @@ export const console: ConsoleNS = {
                     validation: {
                         dateFormatError: "Le format du {{field}} saisi est incorrect. Le format valide est YYYY-MM-DD.",
                         formatError: "Le format du {{field}} saisi est incorrect.",
+                        futureDateError: "La date que vous avez saisie pour le champ {{field}} n'est pas valide.",
                         mobileFormatError: "Le format du {{field}} saisi est incorrect. Le format valide est [+]"+
                             "[indicatif du pays][indicatif régional][numéro de téléphone local]."
                     }
@@ -7760,7 +7825,7 @@ export const console: ConsoleNS = {
                     darkMode: "Mode sombre",
                     delete: "Suppression",
                     read: "Lecture",
-                    reset: "Réinitialiser",
+                    reset: "Réinitialiser les modifications",
                     title: "Types de requêtes SQL",
                     update: "Mise à jour"
                 },

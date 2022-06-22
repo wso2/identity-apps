@@ -17,14 +17,23 @@
  */
 
 import { AccessControlConstants, Show } from "@wso2is/access-control";
-import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import { I18n } from "@wso2is/i18n";
 import { GridLayout, ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
 import find from "lodash-es/find";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, MouseEvent, ReactElement, SyntheticEvent, useCallback, useEffect, useMemo, useState } from "react";
+import React, {
+    FunctionComponent,
+    MouseEvent,
+    ReactElement,
+    SyntheticEvent,
+    useCallback,
+    useEffect,
+    useMemo,
+    useState
+} from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -45,25 +54,25 @@ import {
 } from "../../core";
 import { getOrganization, getOrganizations } from "../api";
 import { AddOrganizationModal, OrganizationList } from "../components";
-import { OrganizationInterface, OrganizationLinkInterface, OrganizationListInterface, OrganizationResponseInterface } from "../models";
+import {
+    OrganizationInterface,
+    OrganizationLinkInterface,
+    OrganizationListInterface,
+    OrganizationResponseInterface
+} from "../models";
 
 const ORGANIZATIONS_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
     {
-        key: 1,
+        key: 0,
         text: I18n.instance.t("common:name"),
         value: "name"
-    },
-    {
-        key: 2,
-        text: "Parent",
-        value: "parentId"
     }
 ];
 
 /**
  * Props for the Organizations page.
  */
-type OrganizationsPageInterface = TestableComponentInterface;
+type OrganizationsPageInterface = IdentifiableComponentInterface;
 
 /**
  * Organizations page.
@@ -75,7 +84,7 @@ type OrganizationsPageInterface = TestableComponentInterface;
 const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
     props: OrganizationsPageInterface
 ): ReactElement => {
-    const { [ "data-testid" ]: testId } = props;
+    const { [ "data-componentid" ]: testId } = props;
 
     const { t } = useTranslation();
 
@@ -149,9 +158,35 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                 setOrganization(organization);
             })
             .catch((error) => {
-                // TODO: Handle error
+                if (error?.description) {
+                    dispatch(
+                        addAlert({
+                            description: error.description,
+                            level: AlertLevels.ERROR,
+                            message: t(
+                                "console:manage.features.organizations.notifications." + "getOrganization.error.message"
+                            )
+                        })
+                    );
+
+                    return;
+                }
+
+                dispatch(
+                    addAlert({
+                        description: t(
+                            "console:manage.features.organizations.notifications.fetchOrganizations" +
+                            ".genericError.description"
+                        ),
+                        level: AlertLevels.ERROR,
+                        message: t(
+                            "console:manage.features.organizations.notifications." +
+                            "getOrganization.genericError.message"
+                        )
+                    })
+                );
             });
-    }, [ parent ]);
+    }, [ parent, dispatch, t ]);
 
     const filterQuery = useMemo(() => {
         let filterQuery: string = "";
@@ -172,49 +207,52 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
      * @param {number} offset - List offset.
      * @param {string} filter - Search query.
      */
-    const getOrganizationLists = useCallback((limit?: number, filter?: string, after?: string, before?: string): void => {
-        setOrganizationListRequestLoading(true);
+    const getOrganizationLists = useCallback(
+        (limit?: number, filter?: string, after?: string, before?: string): void => {
+            setOrganizationListRequestLoading(true);
 
-        getOrganizations(filter, limit, after, before)
-            .then((response: OrganizationListInterface) => {
-                handleNextButtonVisibility(response);
-                setOrganizationList(response);
-            })
-            .catch((error) => {
-                if (error?.description) {
+            getOrganizations(filter, limit, after, before)
+                .then((response: OrganizationListInterface) => {
+                    handleNextButtonVisibility(response);
+                    setOrganizationList(response);
+                })
+                .catch((error) => {
+                    if (error?.description) {
+                        dispatch(
+                            addAlert({
+                                description: error.description,
+                                level: AlertLevels.ERROR,
+                                message: t(
+                                    "console:manage.features.organizations.notifications." +
+                                    "fetchOrganizations.error.message"
+                                )
+                            })
+                        );
+
+                        return;
+                    }
+
                     dispatch(
                         addAlert({
-                            description: error.description,
+                            description: t(
+                                "console:manage.features.organizations.notifications.fetchOrganizations" +
+                                ".genericError.description"
+                            ),
                             level: AlertLevels.ERROR,
                             message: t(
                                 "console:manage.features.organizations.notifications." +
-                                "fetchOrganizations.error.message"
+                                "fetchOrganizations.genericError.message"
                             )
                         })
                     );
-
-                    return;
-                }
-
-                dispatch(
-                    addAlert({
-                        description: t(
-                            "console:manage.features.organizations.notifications.fetchOrganizations" +
-                            ".genericError.description"
-                        ),
-                        level: AlertLevels.ERROR,
-                        message: t(
-                            "console:manage.features.organizations.notifications." +
-                            "fetchOrganizations.genericError.message"
-                        )
-                    })
-                );
-            })
-            .finally(() => {
-                setOrganizationListRequestLoading(false);
-                setLoading(false);
-            });
-    }, [ dispatch, t ]);
+                })
+                .finally(() => {
+                    setOrganizationListRequestLoading(false);
+                    setLoading(false);
+                });
+        },
+        [ dispatch, t ]
+    );
 
     useEffect(() => {
         getOrganizationLists(listItemLimit, filterQuery, null, null);
@@ -241,7 +279,13 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
      * @param {OrganizationListInterface} list - List of organizations.
      */
     const handleNextButtonVisibility = (list: OrganizationListInterface): void => {
-        list.links?.forEach(link => {
+        if (!list.links) {
+            setIsOrganizationsNextPageAvailable(false);
+
+            return;
+        }
+
+        list.links?.forEach((link) => {
             link.rel === "next"
                 ? setIsOrganizationsNextPageAvailable(true)
                 : setIsOrganizationsNextPageAvailable(false);
@@ -250,11 +294,12 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
 
     /**
      * Handles the `onFilter` callback action from the
-     * application search component.
+     * organization search component.
      *
      * @param {string} query - Search query.
      */
     const handleOrganizationFilter = (query: string): void => {
+        resetPagination();
         setSearchQuery(query);
     };
 
@@ -269,7 +314,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
 
         if (newPage > activePage) {
             getOrganizationLists(listItemLimit, filterQuery, after, null);
-        } else if(newPage < activePage) {
+        } else if (newPage < activePage) {
             getOrganizationLists(listItemLimit, filterQuery, null, before);
         }
         setActivePage(newPage);
@@ -283,6 +328,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
      */
     const handleItemsPerPageDropdownChange = (event: MouseEvent<HTMLAnchorElement>, data: DropdownProps): void => {
         setListItemLimit(data.value as number);
+        resetPagination();
     };
 
     /**
@@ -304,6 +350,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
      */
     const handleSearchQueryClear = (): void => {
         setSearchQuery("");
+        resetPagination();
         setTriggerClearQuery(!triggerClearQuery);
     };
 
@@ -322,9 +369,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
     };
 
     const handleListItemClick = (_e, organization: OrganizationInterface): void => {
-        if (
-            organizations.find((org: OrganizationInterface) => org.id === organization.id)
-        ) {
+        if (organizations.find((org: OrganizationInterface) => org.id === organization.id)) {
             return;
         }
 
@@ -349,7 +394,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                                 disabled={ isOrganizationListRequestLoading }
                                 loading={ isOrganizationListRequestLoading }
                                 onClick={ (): void => {
-                                    eventPublisher.publish("application-click-new-application-button");
+                                    eventPublisher.publish("organization-click-new-organization-button");
                                     setShowWizard(true);
                                 } }
                                 data-testid={ `${ testId }-list-layout-add-button` }
@@ -360,12 +405,18 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                         </Show>
                     )
                 }
-                title={ organization ? organization.name : t("console:manage.pages.organizations.title") }
+                title={ isOrganizationListRequestLoading
+                    ? null
+                    : organization ? organization.name : t("console:manage.features.organizations.homeList.name") }
                 description={
-                    (<p>{ organization
-                        ? organization.description
-                        : t("console:manage.pages.organizations.subTitle")
-                    }</p>)
+                    (<p>
+                        { isOrganizationListRequestLoading
+                            ? null
+                            : organization
+                                ? organization.description
+                                : t("console:manage.features.organizations.homeList.description")
+                        }
+                    </p>)
                 }
                 data-testid={ `${ testId }-page-layout` }
                 titleAs="h3"
@@ -388,7 +439,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                                         handleBreadCrumbClick(null, -1);
                                     } }
                                 >
-                                    Home
+                                    <Icon name="home" />
                                 </Breadcrumb.Section>
                                 { organizations?.map((organization: OrganizationInterface, index: number) => {
                                     return (
@@ -424,11 +475,6 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                                             key: 0,
                                             text: t("common:name"),
                                             value: "name"
-                                        },
-                                        {
-                                            key: 1,
-                                            text: "Parent",
-                                            value: "parent"
                                         }
                                     ] }
                                     filterAttributePlaceholder={ t(
@@ -514,7 +560,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                                 onSearchQueryClear={ handleSearchQueryClear }
                                 searchQuery={ searchQuery }
                                 data-testid={ `${ testId }-list` }
-                                data-componentid="application"
+                                data-componentid="organization"
                                 onListItemClick={ handleListItemClick }
                             />
                         </ListLayout>
@@ -538,7 +584,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
  * Default props for the component.
  */
 OrganizationsPage.defaultProps = {
-    "data-testid": "organizations"
+    "data-componentid": "organizations"
 };
 
 /**

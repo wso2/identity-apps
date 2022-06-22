@@ -2281,6 +2281,8 @@ export interface ConsoleNS {
                     deleteOrganization: Notification;
                     updateOrganization: Notification;
                     updateOrganizationAttributes: Notification;
+                    addOrganization: Notification;
+                    getOrganizationList: Notification;
                 };
                 confirmations: {
                     deleteOrganization: {
@@ -2320,6 +2322,26 @@ export interface ConsoleNS {
                         keyRequiredErrorMessage: string;
                         valueRequiredErrorMessage: string;
                     }
+                modals: {
+                    addOrganization: {
+                        header: string;
+                        subtitle1: string;
+                        subtitle2: string;
+                    };
+                };
+                forms: {
+                    addOrganization: {
+                        name: FormAttributes;
+                        description: FormAttributes;
+                        domainName: FormAttributes;
+                        type: string;
+                        structural: string;
+                        tenant: string;
+                    };
+                };
+                homeList: {
+                    name: string;
+                    description: string;
                 }
             };
             users: {
@@ -2434,6 +2456,7 @@ export interface ConsoleNS {
                         formatError: string;
                         dateFormatError: string;
                         mobileFormatError: string;
+                        futureDateError: string;
                     };
                 };
                 list: {

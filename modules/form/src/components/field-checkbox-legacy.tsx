@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { Hint, MessageWithIcon } from "@wso2is/react-components";
+import { Hint, Message } from "@wso2is/react-components";
 import React, { ReactElement, useState } from "react";
 import { Field as FinalFormField } from "react-final-form";
 import { ToggleAdapter } from "./adapters";
@@ -56,7 +56,7 @@ export const FieldCheckboxLegacy = (props: FieldCheckboxLegacyPropsInterface): R
         switch (props.message.type) {
             case "info":
                 return (
-                    <MessageWithIcon
+                    <Message
                         type={ props.message.type }
                         content={ props.message.content }
                         header={ props.message.header }

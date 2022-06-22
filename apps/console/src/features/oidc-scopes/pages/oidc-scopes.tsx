@@ -182,6 +182,7 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
 
     return (
         <PageLayout
+            pageTitle="Scopes"
             action={
                 (hasRequiredScopes(
                     featureConfig?.applications, featureConfig?.applications?.scopes?.create, allowedScopes))

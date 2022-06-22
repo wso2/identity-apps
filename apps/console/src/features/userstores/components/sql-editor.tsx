@@ -54,6 +54,7 @@ export const SqlEditor: FunctionComponent<SqlEditorPropsInterface> = (
     const [ propertyDefaultValue, setPropertyDefaultValue ] = useState("");
     const [ propertyValue, setPropertyValue ] = useState("");
     const [ isEditorDarkMode, setIsEditorDarkMode ] = useState(true);
+    const [ isResetButtonEnabled, setIsResetButtonEnabled ] = useState(false);
 
     const sidebar = useRef(null);
     const editor = useRef(null);
@@ -341,6 +342,11 @@ export const SqlEditor: FunctionComponent<SqlEditorPropsInterface> = (
                                 showLineNumbers={ false }
                                 onChange={ (editor, data, value) => {
                                     setPropertyValue(value);
+                                    if (value !== propertyDefaultValue) {
+                                        setIsResetButtonEnabled(true);
+                                    } else {
+                                        setIsResetButtonEnabled(false);
+                                    }
                                 } }
                                 theme={ isEditorDarkMode ? "dark" : "light" }
                                 data-testid={ `${ testId }-code-editor` }
@@ -350,12 +356,14 @@ export const SqlEditor: FunctionComponent<SqlEditorPropsInterface> = (
                             <Menu.Item position="right">
                                 <LinkButton
                                     type="button"
+                                    disabled={ !isResetButtonEnabled }
                                     onClick={ () => {
                                         setPropertyValue(propertyDefaultValue);
                                         const defaultValue = propertyDefaultValue;
                                         setPropertyDefaultValue("");
                                         setTimeout(() => {
                                             setPropertyDefaultValue(defaultValue);
+                                            setIsResetButtonEnabled(false);
                                         }, 1);
                                     } }
                                     data-testid={ `${ testId }-reset-button` }

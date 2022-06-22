@@ -295,6 +295,9 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                                     allowedScopes
                                 )
                             }
+                            hasRequiredScope={ hasRequiredScopes(
+                                featureConfig?.applications, featureConfig?.applications?.scopes?.update,
+                                allowedScopes) }
                             data-testid={ `${ testId }-form` }
                             isSubmitting={ isSubmitting }
                             isManagementApp={ isManagementApp }

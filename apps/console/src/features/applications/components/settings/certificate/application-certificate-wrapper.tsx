@@ -20,13 +20,13 @@ import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { URLUtils } from "@wso2is/core/utils";
 import { Field, Forms, Validation } from "@wso2is/forms";
-import { Code, Heading, Hint } from "@wso2is/react-components";
+import { Code, Heading, Hint, Message } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Divider, Grid, Message } from "semantic-ui-react";
+import { Divider, Grid } from "semantic-ui-react";
 import { ApplicationCertificatesListComponent } from "./application-certificate-list";
 import { commonConfig } from "../../../../../extensions";
 import {
@@ -386,7 +386,7 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
                                 && (CertificateTypeInterface.PEM === selectedCertType)
                                 && (
                                     <Message
-                                        negative
+                                        type="error"
                                         data-testid={ `${ testId }-error-message` }
                                         content={ t("console:manage.features.certificates.keystore.errorEmpty") }
                                     />

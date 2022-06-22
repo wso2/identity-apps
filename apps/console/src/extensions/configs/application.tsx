@@ -30,6 +30,11 @@ export const applicationConfig: ApplicationConfig = {
         showReturnAuthenticatedIdPs: true,
         showSaaS: true
     },
+    generalSettings: {
+        getFieldReadOnlyStatus: (applicationName: string, fieldName: string): boolean => {
+            return false;
+        }
+    },
     attributeSettings: {
         advancedAttributeSettings: {
             showIncludeTenantDomain: true,
