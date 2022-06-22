@@ -36,6 +36,7 @@ import {
     DangerZone,
     DangerZoneGroup,
     EmphasizedSegment,
+    Message,
     Hint,
     Link
 } from "@wso2is/react-components";
