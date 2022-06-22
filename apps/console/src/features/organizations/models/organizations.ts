@@ -38,10 +38,10 @@ export interface AddOrganizationInterface {
     type: string;
     domain: string;
     parentId: string;
-    attributes?: OrganizationAttributes[];
+    attributes?: OrganizationAttributesInterface[];
 }
 
-export interface OrganizationAttributes {
+export interface OrganizationAttributesInterface {
     key: string;
     value: string;
 }
@@ -59,12 +59,18 @@ export interface OrganizationResponseInterface {
         id: string;
         ref: string;
     };
-    attributes: OrganizationAttributes[];
+    attributes: OrganizationAttributesInterface[];
 }
 
 export interface UpdateOrganizationInterface {
     name: string;
     description: string;
     status: string;
-    attributes: OrganizationAttributes[];
+    attributes: OrganizationAttributesInterface[];
+}
+
+export interface OrganizationPatchData {
+    operation: string;
+    path: string;
+    value: string;
 }

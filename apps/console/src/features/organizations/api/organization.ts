@@ -17,10 +17,12 @@
  */
 
 import { AsgardeoSPAClient, HttpError, HttpRequestConfig, HttpResponse } from "@asgardeo/auth-react";
+import { HttpMethods } from "@wso2is/core/src/models";
 import { store } from "../../core";
 import {
     AddOrganizationInterface,
     OrganizationListInterface,
+    OrganizationPatchData,
     OrganizationResponseInterface,
     UpdateOrganizationInterface
 } from "../models";
@@ -160,6 +162,41 @@ export const updateOrganization = (
         },
         method: "PUT",
         url: `${ store.getState().config.endpoints.organizations }/organizations/`
+    };
+
+    return httpClient(config)
+        .then((response: HttpResponse<OrganizationResponseInterface>) => {
+            if (response?.status !== 200) {
+                return Promise.reject(new Error("Failed to update the organization."));
+            }
+
+            return Promise.resolve(response?.data);
+        })
+        .catch((error: HttpError) => {
+            return Promise.reject(error?.response?.data);
+        });
+};
+
+/**
+ * Patch update an organization
+ *
+ * @param { string } organizationId - Organization ID which needs to be updated
+ * @param { OrganizationPatchData[] } patchData - Data to be updated in the PatchData format
+ *
+ * @returns { OrganizationResponseInterface }
+ */
+export const patchOrganization = (
+    organizationId: string,
+    patchData: OrganizationPatchData[]
+): Promise<OrganizationResponseInterface> => {
+    const config: HttpRequestConfig = {
+        data: patchData,
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.PATCH,
+        url: `${ store.getState().config.endpoints.organizations }/organizations/${organizationId}`
     };
 
     return httpClient(config)
