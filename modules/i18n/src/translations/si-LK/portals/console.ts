@@ -5694,37 +5694,6 @@ export const console: ConsoleNS = {
                         message: "මෙම ක්‍රියාව ආපසු හැරවිය නොහැකි අතර සංවිධානය සම්පූර්ණයෙන්ම ඉවත් කරනු ඇත."
                     }
                 },
-                forms: {
-                    addOrganization: {
-                        description: {
-                            label: "විස්තර",
-                            placeholder: "විස්තරය ඇතුලත් කරන්න"
-                        },
-                        domainName: {
-                            label: "වසම් නාමය",
-                            placeholder: "වසම් නාමය ඇතුලත් කරන්න",
-                            validation: {
-                                duplicate: "වසම් නාමය දැනටමත් පවතී",
-                                empty: "වසම් නාමය අවශ්ය වේ"
-                            }
-                        },
-                        name: {
-                            label: "සංවිධානයේ නම",
-                            placeholder: "සංවිධානයේ නම ඇතුළත් කරන්න",
-                            validation: {
-                                duplicate: "සංවිධානයේ නම දැනටමත් පවතී",
-                                empty: "සංවිධානයේ නම අවශ්‍යයි"
-                            }
-                        },
-                        structural: "ව්යුහාත්මක",
-                        tenant: "කුලී නිවැසියා",
-                        type: "ටයිප් කරන්න"
-                    }
-                },
-                homeList: {
-                    description: "පවතින සියලුම සංවිධාන ලැයිස්තුව බලන්න.",
-                    name: "සියලුම සංවිධාන"
-                },
                 edit: {
                     attributes: {
                         hint: "සංවිධාන ගුණාංග වින්‍යාස කරන්න",
@@ -5775,6 +5744,37 @@ export const console: ConsoleNS = {
                         attributes: "ගුණාංග",
                         profile: "පැතිකඩ"
                     }
+                },
+                forms: {
+                    addOrganization: {
+                        description: {
+                            label: "විස්තර",
+                            placeholder: "විස්තරය ඇතුලත් කරන්න"
+                        },
+                        domainName: {
+                            label: "වසම් නාමය",
+                            placeholder: "වසම් නාමය ඇතුලත් කරන්න",
+                            validation: {
+                                duplicate: "වසම් නාමය දැනටමත් පවතී",
+                                empty: "වසම් නාමය අවශ්ය වේ"
+                            }
+                        },
+                        name: {
+                            label: "සංවිධානයේ නම",
+                            placeholder: "සංවිධානයේ නම ඇතුළත් කරන්න",
+                            validation: {
+                                duplicate: "සංවිධානයේ නම දැනටමත් පවතී",
+                                empty: "සංවිධානයේ නම අවශ්‍යයි"
+                            }
+                        },
+                        structural: "ව්යුහාත්මක",
+                        tenant: "කුලී නිවැසියා",
+                        type: "ටයිප් කරන්න"
+                    }
+                },
+                homeList: {
+                    description: "පවතින සියලුම සංවිධාන ලැයිස්තුව බලන්න.",
+                    name: "සියලුම සංවිධාන"
                 },
                 list: {
                     actions: {
@@ -5835,6 +5835,16 @@ export const console: ConsoleNS = {
                             message: "සංවිධානය සාර්ථකව ලබා ගන්නා ලදී"
                         }
                     },
+                    getOrganizationList: {
+                        error: {
+                            description: "{{description}}",
+                            message: "සංවිධාන ලැයිස්තුව ලබා ගැනීමේදී දෝෂයකි"
+                        },
+                        genericError: {
+                            description: "සංවිධාන ලැයිස්තුව ලබා ගැනීමේදී දෝෂයක් ඇති විය",
+                            message: "මොකක්හරි වැරැද්දක් වෙලා"
+                        }
+                    },
                     updateOrganization: {
                         error: {
                             description: "{{description}}",
@@ -5861,16 +5871,6 @@ export const console: ConsoleNS = {
                         success: {
                             description: "සංවිධානයේ උපලක්ෂණ සාර්ථකව යාවත්කාලීන කරන ලදී",
                             message: "සංවිධානයේ උපලක්ෂණ යාවත්කාලීන කරන ලදී"
-                        }
-                    },
-                    getOrganizationList: {
-                        error: {
-                            description: "{{description}}",
-                            message: "සංවිධාන ලැයිස්තුව ලබා ගැනීමේදී දෝෂයකි"
-                        },
-                        genericError: {
-                            description: "සංවිධාන ලැයිස්තුව ලබා ගැනීමේදී දෝෂයක් ඇති විය",
-                            message: "මොකක්හරි වැරැද්දක් වෙලා"
                         }
                     }
                 },

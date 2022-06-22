@@ -2322,6 +2322,7 @@ export interface ConsoleNS {
                         keyRequiredErrorMessage: string;
                         valueRequiredErrorMessage: string;
                     }
+                };
                 modals: {
                     addOrganization: {
                         header: string;
@@ -2342,7 +2343,7 @@ export interface ConsoleNS {
                 homeList: {
                     name: string;
                     description: string;
-                }
+                };
             };
             users: {
                 consumerUsers: {

@@ -5824,37 +5824,6 @@ export const console: ConsoleNS = {
                         message: "Cette action est irréversible et supprimera entièrement l'organisation."
                     }
                 },
-                forms: {
-                    addOrganization: {
-                        description: {
-                            label: "La description",
-                            placeholder: "Entrez la description"
-                        },
-                        domainName: {
-                            label: "Nom de domaine",
-                            placeholder: "Entrez le nom de domaine",
-                            validation: {
-                                duplicate: "Le nom de domaine existe déjà",
-                                empty: "Le nom de domaine est requis"
-                            }
-                        },
-                        name: {
-                            label: "nom de l'organisation",
-                            placeholder: "Entrez le nom de l'organisation",
-                            validation: {
-                                duplicate: "Le nom de l'organisation existe déjà",
-                                empty: "Le nom de l'organisation est requis"
-                            }
-                        },
-                        structural: "De construction",
-                        tenant: "Locataire",
-                        type: "Taper"
-                    }
-                },
-                homeList: {
-                    description: "Consultez la liste de toutes les organisations disponibles.",
-                    name: "Toutes les organisations"
-                },
                 edit: {
                     attributes: {
                         hint: "Configurer les attributs de l'organisation",
@@ -5905,6 +5874,37 @@ export const console: ConsoleNS = {
                         attributes: "Les attributs",
                         profile: "Profil"
                     }
+                },
+                forms: {
+                    addOrganization: {
+                        description: {
+                            label: "La description",
+                            placeholder: "Entrez la description"
+                        },
+                        domainName: {
+                            label: "Nom de domaine",
+                            placeholder: "Entrez le nom de domaine",
+                            validation: {
+                                duplicate: "Le nom de domaine existe déjà",
+                                empty: "Le nom de domaine est requis"
+                            }
+                        },
+                        name: {
+                            label: "nom de l'organisation",
+                            placeholder: "Entrez le nom de l'organisation",
+                            validation: {
+                                duplicate: "Le nom de l'organisation existe déjà",
+                                empty: "Le nom de l'organisation est requis"
+                            }
+                        },
+                        structural: "De construction",
+                        tenant: "Locataire",
+                        type: "Taper"
+                    }
+                },
+                homeList: {
+                    description: "Consultez la liste de toutes les organisations disponibles.",
+                    name: "Toutes les organisations"
                 },
                 list: {
                     actions: {
@@ -5965,6 +5965,16 @@ export const console: ConsoleNS = {
                             message: "Organisation récupérée avec succès"
                         }
                     },
+                    getOrganizationList: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Erreur lors de l'obtention de la liste des organisations"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de l'obtention de la liste des organisations",
+                            message: "Quelque chose s'est mal passé"
+                        }
+                    },
                     updateOrganization: {
                         error: {
                             description: "{{description}}",
@@ -5992,16 +6002,6 @@ export const console: ConsoleNS = {
                         success: {
                             description: "Mise à jour réussie des attributs de l'organisation",
                             message: "Les attributs de l'organisation ont bien été mis à jour"
-                        }
-                    },
-                    getOrganizationList: {
-                        error: {
-                            description: "{{description}}",
-                            message: "Erreur lors de l'obtention de la liste des organisations"
-                        },
-                        genericError: {
-                            description: "Une erreur s'est produite lors de l'obtention de la liste des organisations",
-                            message: "Quelque chose s'est mal passé"
                         }
                     }
                 },
