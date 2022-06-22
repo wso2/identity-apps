@@ -144,6 +144,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         (state: AppState) => state.application.samlConfigurations);
     const isClientSecretHashEnabled: boolean = useSelector((state: AppState) =>
         state.config.ui.isClientSecretHashEnabled);
+    const tenantDomain: string = useSelector((state: AppState) => state.auth.tenantDomain);
 
     const [ isInboundProtocolConfigRequestLoading, setIsInboundProtocolConfigRequestLoading ] = useState<boolean>(true);
     const [ inboundProtocolList, setInboundProtocolList ] = useState<string[]>(undefined);
@@ -735,7 +736,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             if (isFeatureEnabled(featureConfig?.applications,
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_GENERAL_SETTINGS"))) {
                 if (applicationConfig.editApplication.
-                    isTabEnabledForApp(inboundProtocolConfig?.oidc?.clientId, ApplicationTabTypes.GENERAL)) {
+                    isTabEnabledForApp(inboundProtocolConfig?.oidc?.clientId, ApplicationTabTypes.GENERAL, tenantDomain)) {
                     panes.push({
                         componentId: "general",
                         menuItem: 
@@ -749,7 +750,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                                     ApplicationTabTypes.GENERAL,
                                     GeneralApplicationSettingsTabPane(),
                                     application.name,
-                                    application.id
+                                    application.id,
+                                    tenantDomain
                                 ) 
                     });
                 }
@@ -758,7 +760,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ACCESS_CONFIG"))) {
  
                 applicationConfig.editApplication.
-                    isTabEnabledForApp(inboundProtocolConfig?.oidc?.clientId, ApplicationTabTypes.PROTOCOL) &&
+                    isTabEnabledForApp(inboundProtocolConfig?.oidc?.clientId, ApplicationTabTypes.PROTOCOL, tenantDomain) &&
                   panes.push({
                       componentId: "protocol",
                       menuItem: t("console:develop.features.applications.edit.sections.access.tabName"),
@@ -769,7 +771,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ATTRIBUTE_MAPPING"))) {
 
                 applicationConfig.editApplication.
-                    isTabEnabledForApp(inboundProtocolConfig?.oidc?.clientId, ApplicationTabTypes.USER_ATTRIBUTES) &&
+                    isTabEnabledForApp(inboundProtocolConfig?.oidc?.clientId, ApplicationTabTypes.USER_ATTRIBUTES, tenantDomain) &&
                   panes.push({
                       componentId: "user-attributes",
                       menuItem: 
@@ -783,7 +785,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                                   ApplicationTabTypes.USER_ATTRIBUTES,
                                   AttributeSettingTabPane(),
                                   application.name,
-                                  application.id
+                                  application.id,
+                                  tenantDomain
                               ) 
                   });
             }
@@ -791,7 +794,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_SIGN_ON_METHOD_CONFIG"))) {
 
                 applicationConfig.editApplication.
-                    isTabEnabledForApp(inboundProtocolConfig?.oidc?.clientId, ApplicationTabTypes.SIGN_IN_METHOD) &&
+                    isTabEnabledForApp(inboundProtocolConfig?.oidc?.clientId, ApplicationTabTypes.SIGN_IN_METHOD, tenantDomain) &&
                   panes.push({
                       componentId: "sign-in-method",
                       menuItem:  
@@ -806,7 +809,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                      ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_PROVISIONING_SETTINGS"))) {
 
                 applicationConfig.editApplication.
-                    isTabEnabledForApp(inboundProtocolConfig?.oidc?.clientId, ApplicationTabTypes.PROVISIONING) &&
+                    isTabEnabledForApp(inboundProtocolConfig?.oidc?.clientId, ApplicationTabTypes.PROVISIONING, tenantDomain) &&
                       panes.push({
                           componentId: "provisioning",
                           menuItem: t("console:develop.features.applications.edit.sections.provisioning.tabName"),
@@ -817,7 +820,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ADVANCED_SETTINGS"))) {
 
                 applicationConfig.editApplication.
-                    isTabEnabledForApp(inboundProtocolConfig?.oidc?.clientId , ApplicationTabTypes.ADVANCED) &&
+                    isTabEnabledForApp(inboundProtocolConfig?.oidc?.clientId , ApplicationTabTypes.ADVANCED, tenantDomain) &&
                   panes.push({
                       componentId: "advanced",
                       menuItem: (
@@ -832,7 +835,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                  && application?.templateId != ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS) {
 
                 applicationConfig.editApplication.
-                    isTabEnabledForApp(inboundProtocolConfig?.oidc?.clientId, ApplicationTabTypes.INFO) && 
+                    isTabEnabledForApp(inboundProtocolConfig?.oidc?.clientId, ApplicationTabTypes.INFO, tenantDomain) && 
                  panes.push({
                      componentId: "info",
                      menuItem: {
