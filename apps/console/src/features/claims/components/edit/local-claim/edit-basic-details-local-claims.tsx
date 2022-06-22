@@ -24,6 +24,7 @@ import {
     AlertInterface,
     AlertLevels,
     Claim,
+    Message,
     ProfileSchemaInterface,
     TestableComponentInterface
 } from "@wso2is/core/models";
