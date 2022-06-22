@@ -188,11 +188,12 @@ export const OrganizationProfile: FunctionComponent<OrganizationProfilePropsInte
                                         <Field.Input
                                             data-testid={ `${testId}-profile-form-id-input` }
                                             name="id"
-                                            label={ t("Organization ID") }
+                                            label={ t("console:manage.features.organizations.edit.fields.id.label") }
                                             value={ organization.id }
                                             required={ true }
                                             readOnly={ true }
-                                            ariaLabel="Organization ID"
+                                            ariaLabel={ t("console:manage.features.organizations.edit." +
+                                                "fields.ariaLabel") }
                                             inputType="identifier"
                                             maxLength={ 32 }
                                             minLength={ 3 }
@@ -204,12 +205,14 @@ export const OrganizationProfile: FunctionComponent<OrganizationProfilePropsInte
                                         <Field.Input
                                             data-testid={ `${testId}-profile-form-name-input` }
                                             name="name"
-                                            label={ t("Organization Name") }
+                                            label={ t("console:manage.features.organizations.edit.fields.name.label") }
                                             required={ true }
                                             requiredErrorMessage="Please enter the organization name"
                                             value={ organization.name }
-                                            ariaLabel="Organization Name"
-                                            placeholder="Enter the name of the organization"
+                                            ariaLabel={ t("console:manage.features.organizations.edit.fields." +
+                                                "name.ariaLabel") }
+                                            placeholder={ t("console:manage.features.organizations.edit.fields." +
+                                                "name.placeholder") }
                                             inputType="name"
                                             maxLength={ 32 }
                                             minLength={ 3 }
@@ -221,12 +224,15 @@ export const OrganizationProfile: FunctionComponent<OrganizationProfilePropsInte
                                         <Field.Textarea
                                             data-testid={ `${testId}-profile-form-description-input` }
                                             name="description"
-                                            label={ t("Organization Description") }
+                                            label={ t("console:manage.features.organizations.edit.fields." +
+                                                "description.label") }
                                             required={ false }
                                             requiredErrorMessage=""
                                             value={ organization?.description ?? "" }
-                                            placeholder="Enter a description for the organization"
-                                            ariaLabel="Organization Description"
+                                            placeholder={ t("console:manage.features.organizations.edit.fields." +
+                                                "description.placeholder") }
+                                            ariaLabel={ t("console:manage.features.organizations.edit.fields." +
+                                                "description.ariaLabel") }
                                             inputType="description"
                                             maxLength={ 50 }
                                             minLength={ 3 }
@@ -238,12 +244,14 @@ export const OrganizationProfile: FunctionComponent<OrganizationProfilePropsInte
                                         <Field.Input
                                             data-testid={ `${testId}-profile-form-domain-input` }
                                             name="domain"
-                                            label={ t("Organization Domain") }
+                                            label={ t("console:manage.features.organizations.edit.fields." +
+                                                "domain.label") }
                                             required={ false }
                                             requiredErrorMessage=""
                                             value={ organization?.domain || "" }
                                             readOnly={ true }
-                                            ariaLabel="Organization Domain"
+                                            ariaLabel={ t("console:manage.features.organizations.edit.fields." +
+                                                "domain.ariaLabel") }
                                             inputType="url"
                                             maxLength={ 32 }
                                             minLength={ 3 }
@@ -255,7 +263,8 @@ export const OrganizationProfile: FunctionComponent<OrganizationProfilePropsInte
                                         <Field.Input
                                             data-testid={ `${testId}-profile-form-type-input` }
                                             name="type"
-                                            label={ t("Organization Type") }
+                                            label={ t("console:manage.features.organizations.edit.fields." +
+                                                "type.label") }
                                             required={ false }
                                             requiredErrorMessage=""
                                             type="text"
@@ -264,7 +273,8 @@ export const OrganizationProfile: FunctionComponent<OrganizationProfilePropsInte
                                                 ? "Structural"
                                                 : "Tenant"
                                             }
-                                            ariaLabel="Organization Type"
+                                            ariaLabel={ t("console:manage.features.organizations.edit.fields." +
+                                                "type.ariaLabel") }
                                             inputType="name"
                                             maxLength={ 32 }
                                             minLength={ 3 }
@@ -276,13 +286,15 @@ export const OrganizationProfile: FunctionComponent<OrganizationProfilePropsInte
                                         <Field.Input
                                             data-testid={ `${testId}-profile-form-created-input` }
                                             name="created"
-                                            label={ t("Created") }
+                                            label={ t("console:manage.features.organizations.edit.fields." +
+                                                "created.label") }
                                             required={ false }
                                             requiredErrorMessage=""
                                             type="text"
                                             readOnly={ true }
                                             value={ moment(organization.created).format("YYYY-MM-DD hh:mm:ss") }
-                                            ariaLabel="Created"
+                                            ariaLabel={ t("console:manage.features.organizations.edit.fields." +
+                                                "created.ariaLabel") }
                                             inputType="default"
                                             maxLength={ 32 }
                                             minLength={ 3 }
@@ -294,13 +306,15 @@ export const OrganizationProfile: FunctionComponent<OrganizationProfilePropsInte
                                         <Field.Input
                                             data-testid={ `${testId}-profile-form-last-modified-input` }
                                             name="lastModified"
-                                            label={ t("Last Modified") }
+                                            label={ t("console:manage.features.organizations.edit.fields." +
+                                                "lastModified.label") }
                                             required={ false }
                                             requiredErrorMessage=""
                                             type="text"
                                             readOnly={ true }
                                             value={ moment(organization.lastModified).format("YYYY-MM-DD hh:mm:ss") }
-                                            ariaLabel="Last Modified"
+                                            ariaLabel={ t("console:manage.features.organizations.edit.fields." +
+                                                "lastModified.ariaLabel") }
                                             inputType="default"
                                             maxLength={ 32 }
                                             minLength={ 3 }
