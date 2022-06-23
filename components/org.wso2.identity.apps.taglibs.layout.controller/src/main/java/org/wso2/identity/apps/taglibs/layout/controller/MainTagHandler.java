@@ -85,23 +85,16 @@ public class MainTagHandler extends TagSupport {
 
         engine = new LocalTemplateEngineWithCache();
         try {
-            engine.execute(
-                    layoutName,
-                    pageContext.getServletContext().getResource(layoutFileRelativePath),
-                    data,
-                    new PrintWriter(pageContext.getOut()),
-                    cache
-                          );
+            engine.execute(layoutName, pageContext.getServletContext().getResource(layoutFileRelativePath), data,
+                    new PrintWriter(pageContext.getOut()), cache);
         } catch (MalformedURLException e) {
             throw new JspException("Can't create a URL to the given relative path", e);
         }
-
-        if (engine.executor.componentExecutionEnabled()) {
-            pageContext.setAttribute(Constant.COMPONENT_NAME_STORING_VAR, engine.executor.getComponentName());
-            engine.executor.deactivateComponent();
+        if (engine.getExecutor().componentExecutionEnabled()) {
+            pageContext.setAttribute(Constant.COMPONENT_NAME_STORING_VAR, engine.getExecutor().getComponentName());
+            engine.getExecutor().deactivateComponent();
             return EVAL_BODY_INCLUDE;
         }
-
         return SKIP_BODY;
     }
 
@@ -114,23 +107,16 @@ public class MainTagHandler extends TagSupport {
     public int doAfterBody() throws JspException {
 
         try {
-            engine.execute(
-                    layoutName,
-                    pageContext.getServletContext().getResource(layoutFileRelativePath),
-                    data,
-                    new PrintWriter(pageContext.getOut()),
-                    cache
-                          );
+            engine.execute(layoutName, pageContext.getServletContext().getResource(layoutFileRelativePath), data,
+                    new PrintWriter(pageContext.getOut()), cache);
         } catch (MalformedURLException e) {
             throw new JspException("Can't create a URL to the given relative path", e);
         }
-
-        if (engine.executor.componentExecutionEnabled()) {
-            pageContext.setAttribute(Constant.COMPONENT_NAME_STORING_VAR, engine.executor.getComponentName());
-            engine.executor.deactivateComponent();
+        if (engine.getExecutor().componentExecutionEnabled()) {
+            pageContext.setAttribute(Constant.COMPONENT_NAME_STORING_VAR, engine.getExecutor().getComponentName());
+            engine.getExecutor().deactivateComponent();
             return EVAL_BODY_AGAIN;
         }
-
         pageContext.removeAttribute(Constant.COMPONENT_NAME_STORING_VAR);
         return SKIP_BODY;
     }

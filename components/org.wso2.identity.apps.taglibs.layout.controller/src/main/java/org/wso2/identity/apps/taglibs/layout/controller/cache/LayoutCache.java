@@ -57,43 +57,20 @@ public class LayoutCache {
      */
     private LayoutCache() {
 
-        cachingProvider =
-                Caching.getCachingProvider("org.ehcache.jsr107.EhcacheCachingProvider");
-
+        cachingProvider = Caching.getCachingProvider("org.ehcache.jsr107.EhcacheCachingProvider");
         ehcacheProvider = (EhcacheCachingProvider) cachingProvider;
-
-        DefaultConfiguration configuration = new DefaultConfiguration(
-            ehcacheProvider.getDefaultClassLoader(),
-            new DefaultPersistenceConfiguration(
-                new File(
-                    System.getProperty("java.io.tmpdir"),
-                    Constant.LAYOUT_CACHE_STORE_DIRECTORY_NAME + "-" + UUID.randomUUID()
-                )
-            )
-        );
-
+        DefaultConfiguration configuration = new DefaultConfiguration(ehcacheProvider.getDefaultClassLoader(),
+                new DefaultPersistenceConfiguration(new File(System.getProperty("java.io.tmpdir"),
+                        Constant.LAYOUT_CACHE_STORE_DIRECTORY_NAME + "-" + UUID.randomUUID())));
         cacheManager = ehcacheProvider.getCacheManager(ehcacheProvider.getDefaultURI(), configuration);
-
-        cache = cacheManager.getCache(
-            Constant.LAYOUT_CACHE_NAME,
-            String.class,
-            ExecutableIdentifier.class
-        );
-
+        cache = cacheManager.getCache(Constant.LAYOUT_CACHE_NAME, String.class, ExecutableIdentifier.class);
         if (cache == null) {
-            cache = cacheManager.createCache("layouts",
-                Eh107Configuration.fromEhcacheCacheConfiguration(
-                    CacheConfigurationBuilder.newCacheConfigurationBuilder(
-                        String.class,
-                        ExecutableIdentifier.class,
-                        ResourcePoolsBuilder.newResourcePoolsBuilder()
-                            .heap(Constant.LAYOUT_CACHE_HEAP_ENTRIES, EntryUnit.ENTRIES)
-                            .offheap(Constant.LAYOUT_CACHE_OFF_HEAP_SIZE, MemoryUnit.MB)
-                            .disk(Constant.LAYOUT_CACHE_DISK_SIZE, MemoryUnit.GB, true)
-                            .build()
-                    )
-                )
-            );
+            cache = cacheManager.createCache("layouts", Eh107Configuration.fromEhcacheCacheConfiguration(
+                    CacheConfigurationBuilder.newCacheConfigurationBuilder(String.class, ExecutableIdentifier.class,
+                            ResourcePoolsBuilder.newResourcePoolsBuilder()
+                                    .heap(Constant.LAYOUT_CACHE_HEAP_ENTRIES, EntryUnit.ENTRIES)
+                                    .offheap(Constant.LAYOUT_CACHE_OFF_HEAP_SIZE, MemoryUnit.MB)
+                                    .disk(Constant.LAYOUT_CACHE_DISK_SIZE, MemoryUnit.GB, true).build())));
         }
     }
 
@@ -109,7 +86,6 @@ public class LayoutCache {
                 }
             }
         }
-
         return instance;
     }
 
@@ -122,7 +98,6 @@ public class LayoutCache {
     public ExecutableIdentifier getLayout(String layoutName, URL layoutFile) {
 
         ExecutableIdentifier compiledLayout;
-
         if (!cache.containsKey(layoutName)) {
             Parser parser = new DefaultParser();
             compiledLayout = parser.compile(layoutFile);
@@ -130,7 +105,6 @@ public class LayoutCache {
         } else {
             compiledLayout = cache.get(layoutName);
         }
-
         return compiledLayout;
     }
 
@@ -144,5 +118,4 @@ public class LayoutCache {
         ehcacheProvider.close();
         cachingProvider.close();
     }
-
 }

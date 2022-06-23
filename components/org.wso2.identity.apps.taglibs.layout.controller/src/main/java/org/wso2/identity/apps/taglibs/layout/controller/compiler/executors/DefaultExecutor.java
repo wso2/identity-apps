@@ -172,7 +172,6 @@ public class DefaultExecutor implements Executor {
     public void execute(ComponentIdentifier identifier, Writer out) {
 
         write(identifier.getText(), out);
-
         setComponent(identifier.getIdentifierName());
         next();
     }
@@ -188,7 +187,6 @@ public class DefaultExecutor implements Executor {
 
         write(identifier.getText(), out);
         Object value = data.get(identifier.getIdentifierName());
-
         if (value != null) {
             write(value.toString(), true, out);
         }
@@ -208,21 +206,18 @@ public class DefaultExecutor implements Executor {
             write(identifier.getText(), out);
         }
         Object value = data.get(identifier.getIdentifierName());
-
         boolean executeContent = false;
         if (value instanceof Boolean) {
             if ((Boolean) value) {
                 executeContent = true;
             }
         }
-
         if (executeContent) {
             identifier.acceptChild(this, out);
             if (!activeComponentExecution) {
                 removeIteration();
             }
         }
-
         if (!activeComponentExecution) {
             next();
         }
@@ -241,7 +236,6 @@ public class DefaultExecutor implements Executor {
             write(identifier.getText(), out);
         }
         Object value = data.get(identifier.getIdentifierName());
-
         boolean executeContent = false;
         if (value instanceof Boolean) {
             if (!((Boolean) value)) {
@@ -250,14 +244,12 @@ public class DefaultExecutor implements Executor {
         } else if (value == null) {
             executeContent = true;
         }
-
         if (executeContent) {
             identifier.acceptChild(this, out);
             if (!activeComponentExecution) {
                 removeIteration();
             }
         }
-
         if (!activeComponentExecution) {
             next();
         }
@@ -303,5 +295,4 @@ public class DefaultExecutor implements Executor {
 
         write(content, false, out);
     }
-
 }

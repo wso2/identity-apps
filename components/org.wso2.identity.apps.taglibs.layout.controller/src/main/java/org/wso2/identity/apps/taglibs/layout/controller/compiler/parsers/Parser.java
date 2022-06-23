@@ -34,5 +34,4 @@ public interface Parser {
      * @return Compiled layout file.
      */
     ExecutableIdentifier compile(URL file);
-
 }

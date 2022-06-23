@@ -49,7 +49,6 @@ public class FileResolver implements Resolver {
         if (file == null) {
             throw new CompilerException("Can't find the given file");
         }
-
         try {
             inputStream = file.openStream();
             streamReader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
@@ -59,7 +58,6 @@ public class FileResolver implements Resolver {
         } catch (Exception e) {
             throw new CompilerException("Can't initialize a reader for the given file", e);
         }
-
         return reader;
     }
 
@@ -83,5 +81,4 @@ public class FileResolver implements Resolver {
             throw new CompilerException("Can't close the reader", e);
         }
     }
-
 }

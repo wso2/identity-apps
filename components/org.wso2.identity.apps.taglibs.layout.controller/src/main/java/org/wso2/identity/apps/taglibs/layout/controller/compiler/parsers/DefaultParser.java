@@ -42,12 +42,8 @@ import java.util.regex.Pattern;
 public class DefaultParser implements Parser {
 
     private final Pattern pattern = Pattern.compile(
-            "\\{\\{([-_a-zA-Z0-9]+)\\}\\}|"
-            + "\\{\\{\\{([-_a-zA-Z0-9]+)\\}\\}\\}|"
-            + "\\{\\{#([-_a-zA-Z0-9]+)\\}\\}|"
-            + "\\{\\{/([-_a-zA-Z0-9]+)\\}\\}|"
-            + "\\{\\{\\^([-_a-zA-Z0-9]+)\\}\\}"
-    );
+            "\\{\\{([-_a-zA-Z0-9]+)\\}\\}|" + "\\{\\{\\{([-_a-zA-Z0-9]+)\\}\\}\\}|" + "\\{\\{#([-_a-zA-Z0-9]+)\\}\\}|" +
+                    "\\{\\{/([-_a-zA-Z0-9]+)\\}\\}|" + "\\{\\{\\^([-_a-zA-Z0-9]+)\\}\\}");
     private final Resolver resolver;
 
     /**
@@ -78,7 +74,6 @@ public class DefaultParser implements Parser {
     public ExecutableIdentifier compile(URL file) {
 
         BufferedReader reader = (BufferedReader) resolver.getReader(file);
-
         CompileContext context = new CompileContext();
         ExecutableIdentifier temp = compile(reader, context, null);
         resolver.closeResources();
@@ -98,65 +93,40 @@ public class DefaultParser implements Parser {
 
         ArrayList<ExecutableIdentifier> allIdentifiers = new ArrayList<ExecutableIdentifier>();
         String currentIdentifierName;
-
         while (readLine(reader, context)) {
             if (context.matcher == null) {
                 context.matcher = pattern.matcher(context.line);
             }
-
             if (context.matcher.find(context.start)) {
                 if ((currentIdentifierName = context.matcher.group(1)) != null) {
                     if (context.textKeeper != null) {
-                        allIdentifiers.add(
-                                new DataIdentifier(
-                                        currentIdentifierName,
-                                        context.textKeeper
-                                                + context.line.substring(context.start, context.matcher.start())
-                                )
-                                          );
+                        allIdentifiers.add(new DataIdentifier(currentIdentifierName,
+                                context.textKeeper + context.line.substring(context.start, context.matcher.start())));
                         context.textKeeper = null;
                     } else {
-                        allIdentifiers.add(
-                                new DataIdentifier(
-                                        currentIdentifierName,
-                                        context.line.substring(context.start, context.matcher.start())
-                                )
-                                          );
+                        allIdentifiers.add(new DataIdentifier(currentIdentifierName,
+                                context.line.substring(context.start, context.matcher.start())));
                     }
                     context.start = context.matcher.end();
                 } else if ((currentIdentifierName = context.matcher.group(2)) != null) {
                     if (context.textKeeper != null) {
-                        allIdentifiers.add(
-                                new ComponentIdentifier(
-                                        currentIdentifierName,
-                                        context.textKeeper
-                                                + context.line.substring(context.start, context.matcher.start())
-                                )
-                                          );
+                        allIdentifiers.add(new ComponentIdentifier(currentIdentifierName,
+                                context.textKeeper + context.line.substring(context.start, context.matcher.start())));
                         context.textKeeper = null;
                     } else {
-                        allIdentifiers.add(
-                                new ComponentIdentifier(
-                                        currentIdentifierName,
-                                        context.line.substring(context.start, context.matcher.start())
-                                )
-                                          );
+                        allIdentifiers.add(new ComponentIdentifier(currentIdentifierName,
+                                context.line.substring(context.start, context.matcher.start())));
                     }
                     context.start = context.matcher.end();
                 } else if ((currentIdentifierName = context.matcher.group(3)) != null) {
                     ConditionIdentifier condition;
                     if (context.textKeeper != null) {
-                        condition = new ConditionIdentifier(
-                                currentIdentifierName,
-                                context.textKeeper
-                                        + context.line.substring(context.start, context.matcher.start())
-                        );
+                        condition = new ConditionIdentifier(currentIdentifierName,
+                                context.textKeeper + context.line.substring(context.start, context.matcher.start()));
                         context.textKeeper = null;
                     } else {
-                        condition = new ConditionIdentifier(
-                                currentIdentifierName,
-                                context.line.substring(context.start, context.matcher.start())
-                        );
+                        condition = new ConditionIdentifier(currentIdentifierName,
+                                context.line.substring(context.start, context.matcher.start()));
                     }
                     context.start = context.matcher.end();
                     ExecutableIdentifier child = compile(reader, context, currentIdentifierName);
@@ -165,44 +135,28 @@ public class DefaultParser implements Parser {
                 } else if ((currentIdentifierName = context.matcher.group(4)) != null) {
                     if (!identifierName.trim().equals(currentIdentifierName.trim())) {
                         throw new IllegalStateException(
-                                "Layout file is not correctly written,"
-                                        + " make sure to place closing tags in correct place: "
-                                        + currentIdentifierName
-                        );
+                                "Layout file is not correctly written, make sure to place closing tags in correct place: " +
+                                        currentIdentifierName);
                     }
                     if (context.textKeeper != null) {
-                        allIdentifiers.add(
-                                new NoIdentifier(
-                                        context.textKeeper
-                                                + context.line.substring(context.start, context.matcher.start())
-                                )
-                                          );
+                        allIdentifiers.add(new NoIdentifier(
+                                context.textKeeper + context.line.substring(context.start, context.matcher.start())));
                         context.textKeeper = null;
                     } else {
                         allIdentifiers.add(
-                                new NoIdentifier(
-                                        context.line.substring(context.start, context.matcher.start())
-                                )
-                                          );
+                                new NoIdentifier(context.line.substring(context.start, context.matcher.start())));
                     }
                     context.start = context.matcher.end();
-
                     return createCompiledObject(allIdentifiers);
                 } else if ((currentIdentifierName = context.matcher.group(5)) != null) {
                     NotConditionIdentifier notCondition;
                     if (context.textKeeper != null) {
-                        notCondition = new NotConditionIdentifier(
-                                currentIdentifierName,
-                                context.textKeeper
-                                        + context.line.substring(context.start, context.matcher.start()
-                                                                )
-                        );
+                        notCondition = new NotConditionIdentifier(currentIdentifierName,
+                                context.textKeeper + context.line.substring(context.start, context.matcher.start()));
                         context.textKeeper = null;
                     } else {
-                        notCondition = new NotConditionIdentifier(
-                                currentIdentifierName,
-                                context.line.substring(context.start, context.matcher.start())
-                        );
+                        notCondition = new NotConditionIdentifier(currentIdentifierName,
+                                context.line.substring(context.start, context.matcher.start()));
                     }
                     context.start = context.matcher.end();
                     ExecutableIdentifier child = compile(reader, context, currentIdentifierName);
@@ -220,17 +174,13 @@ public class DefaultParser implements Parser {
                 context.start = 0;
             }
         }
-
         if (identifierName != null) {
             throw new IllegalStateException(
-                    "Layout file is not correctly written, make sure to place closing tags in correct place"
-            );
+                    "Layout file is not correctly written, make sure to place closing tags in correct place");
         }
-
         if (context.textKeeper != null) {
             allIdentifiers.add(new NoIdentifier(context.textKeeper.toString()));
         }
-
         return createCompiledObject(allIdentifiers);
     }
 
@@ -261,7 +211,6 @@ public class DefaultParser implements Parser {
                 throw new CompilerException("Can't read the file", e);
             }
         }
-
         return context.line != null;
     }
 
@@ -275,5 +224,4 @@ public class DefaultParser implements Parser {
         int start = 0;
         StringBuilder textKeeper = null;
     }
-
 }
