@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/sms-otp-authentication-portal",
-    "version": "1.2.1003",
+    "version": "1.2.1004",
     "description": "WSO2 Identity Server SMS OTP Authentication Portal",
     "author": "WSO2",
     "license": "Apache-2.0",
@@ -8,6 +8,6 @@
         "build": "node scripts/build.js"
     },
     "dependencies": {
-        "@wso2is/theme": "^1.2.1003"
+        "@wso2is/theme": "^1.2.1004"
     }
 }
