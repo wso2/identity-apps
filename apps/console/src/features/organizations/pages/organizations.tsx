@@ -164,7 +164,8 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                             description: error.description,
                             level: AlertLevels.ERROR,
                             message: t(
-                                "console:manage.features.organizations.notifications." + "getOrganization.error.message"
+                                "console:manage.features.organizations.notifications."
+                                + "fetchOrganization.error.message"
                             )
                         })
                     );
@@ -175,13 +176,13 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                 dispatch(
                     addAlert({
                         description: t(
-                            "console:manage.features.organizations.notifications.fetchOrganizations" +
+                            "console:manage.features.organizations.notifications.fetchOrganization" +
                             ".genericError.description"
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
                             "console:manage.features.organizations.notifications." +
-                            "getOrganization.genericError.message"
+                            "fetchOrganization.genericError.message"
                         )
                     })
                 );
@@ -208,10 +209,10 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
      * @param {string} filter - Search query.
      */
     const getOrganizationLists = useCallback(
-        (limit?: number, filter?: string, after?: string, before?: string): void => {
+        (limit?: number, filter?: string, after?: string, before?: string, recursive?: boolean): void => {
             setOrganizationListRequestLoading(true);
 
-            getOrganizations(filter, limit, after, before)
+            getOrganizations(filter, limit, after, before, true)
                 .then((response: OrganizationListInterface) => {
                     handleNextButtonVisibility(response);
                     setOrganizationList(response);
@@ -224,7 +225,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                                 level: AlertLevels.ERROR,
                                 message: t(
                                     "console:manage.features.organizations.notifications." +
-                                    "fetchOrganizations.error.message"
+                                    "getOrganizationList.error.message"
                                 )
                             })
                         );
@@ -235,13 +236,13 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                     dispatch(
                         addAlert({
                             description: t(
-                                "console:manage.features.organizations.notifications.fetchOrganizations" +
+                                "console:manage.features.organizations.notifications.getOrganizationList" +
                                 ".genericError.description"
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
                                 "console:manage.features.organizations.notifications." +
-                                "fetchOrganizations.genericError.message"
+                                "getOrganizationList.genericError.message"
                             )
                         })
                     );

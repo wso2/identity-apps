@@ -251,7 +251,16 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                                 hoverable={ false }
                                 icon={ OrganizationIcon }
                             />
-
+                            { organization.name === "ROOT"
+                               && (< Header.Content >
+                                   <Icon
+                                       className="mr-2 ml-0 vertical-aligned-baseline"
+                                       size="small"
+                                       name="circle"
+                                       color="green"
+                                   />
+                               </Header.Content>)
+                            }
                             <Header.Content>
                                 { organization.name }
                                 <Header.Subheader

@@ -72,7 +72,7 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
     const submitOrganization = async (values: OrganizationAddFormProps): Promise<void> => {
         if (values?.name) {
             const response: OrganizationListInterface
-                = await getOrganizations(`name eq ${ values.name }`, 1, null, null);
+                = await getOrganizations(`name eq ${ values.name }`, 1, null, null, true);
 
             if (response?.organizations?.length > 0) {
                 setDuplicateName(true);
@@ -85,10 +85,9 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
 
         const organization: AddOrganizationInterface = {
             description: values?.description,
-            domain: null,
             name: values?.name,
-            parentId: parent?.id,
-            type: type
+            parentId: parent?.id ?? "ROOT",
+            type: ORGANIZATION_TYPE.TENANT
         };
 
         setIsSubmitting(true);
@@ -235,7 +234,8 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
                                         width={ 16 }
                                     />
                                 </Form>
-                                <Divider hidden />
+                                { /*Temporarily hidden */ }
+                                { /*  <Divider hidden />
                                 <SemanticForm>
                                     <SemanticForm.Group grouped>
                                         <label>
@@ -256,7 +256,7 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
                                             onChange={ () => setType(ORGANIZATION_TYPE.TENANT) }
                                         />
                                     </SemanticForm.Group>
-                                </SemanticForm>
+                                </SemanticForm> */ }
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>
