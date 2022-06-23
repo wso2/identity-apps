@@ -72,7 +72,7 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
     const submitOrganization = async (values: OrganizationAddFormProps): Promise<void> => {
         if (values?.name) {
             const response: OrganizationListInterface
-                = await getOrganizations(`name eq ${ values.name }`, 1, null, null);
+                = await getOrganizations(`name eq ${ values.name }`, 1, null, null, true);
 
             if (response?.organizations?.length > 0) {
                 setDuplicateName(true);
@@ -85,9 +85,8 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
 
         const organization: AddOrganizationInterface = {
             description: values?.description,
-            domain: null,
             name: values?.name,
-            parentId: parent?.id,
+            parentId: parent?.id ?? "ROOT",
             type: ORGANIZATION_TYPE.TENANT
         };
 
