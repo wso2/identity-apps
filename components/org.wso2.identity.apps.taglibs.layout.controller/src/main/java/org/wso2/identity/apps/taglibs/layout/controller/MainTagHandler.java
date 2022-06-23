@@ -18,7 +18,7 @@
 
 package org.wso2.identity.apps.taglibs.layout.controller;
 
-import org.wso2.identity.apps.taglibs.layout.controller.core.LocalTemplateEngineCacheWithTier;
+import org.wso2.identity.apps.taglibs.layout.controller.core.LocalTemplateEngineWithCache;
 
 import java.io.PrintWriter;
 import java.net.MalformedURLException;
@@ -37,9 +37,8 @@ public class MainTagHandler extends TagSupport {
     private String layoutName;
     private String layoutFileRelativePath;
     private Map<String, Object> data = new HashMap<String, Object>();
-    private Boolean devMode = false;
-    private String testLayoutFileRelativePath = "";
-    private LocalTemplateEngineCacheWithTier engine;
+    private Boolean cache = true;
+    private LocalTemplateEngineWithCache engine;
 
     /**
      * Set the name of the layout.
@@ -71,14 +70,9 @@ public class MainTagHandler extends TagSupport {
         this.data = data;
     }
 
-    public void setDevMode(Boolean devMode) {
+    public void setCache(Boolean cache) {
 
-        this.devMode = devMode;
-    }
-
-    public void setTestLayoutFileRelativePath(String testLayoutFileRelativePath) {
-
-        this.testLayoutFileRelativePath = testLayoutFileRelativePath;
+        this.cache = cache;
     }
 
     /**
@@ -89,15 +83,14 @@ public class MainTagHandler extends TagSupport {
      */
     public int doStartTag() throws JspException {
 
-        engine = new LocalTemplateEngineCacheWithTier();
+        engine = new LocalTemplateEngineWithCache();
         try {
             engine.execute(
                     layoutName,
                     pageContext.getServletContext().getResource(layoutFileRelativePath),
                     data,
                     new PrintWriter(pageContext.getOut()),
-                    devMode,
-                    pageContext.getServletContext().getResource(testLayoutFileRelativePath)
+                    cache
                           );
         } catch (MalformedURLException e) {
             throw new JspException("Can't create a URL to the given relative path", e);
@@ -126,8 +119,7 @@ public class MainTagHandler extends TagSupport {
                     pageContext.getServletContext().getResource(layoutFileRelativePath),
                     data,
                     new PrintWriter(pageContext.getOut()),
-                    devMode,
-                    pageContext.getServletContext().getResource(testLayoutFileRelativePath)
+                    cache
                           );
         } catch (MalformedURLException e) {
             throw new JspException("Can't create a URL to the given relative path", e);
@@ -151,8 +143,7 @@ public class MainTagHandler extends TagSupport {
         layoutName = null;
         layoutFileRelativePath = null;
         data = null;
-        devMode = null;
-        testLayoutFileRelativePath = null;
+        cache = null;
         engine = null;
         super.release();
     }

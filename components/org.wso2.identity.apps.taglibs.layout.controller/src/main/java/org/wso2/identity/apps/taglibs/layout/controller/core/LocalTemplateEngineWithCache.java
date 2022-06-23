@@ -18,6 +18,7 @@
 
 package org.wso2.identity.apps.taglibs.layout.controller.core;
 
+import org.wso2.identity.apps.taglibs.layout.controller.cache.LayoutCache;
 import org.wso2.identity.apps.taglibs.layout.controller.compiler.executors.DefaultExecutor;
 import org.wso2.identity.apps.taglibs.layout.controller.compiler.identifiers.ExecutableIdentifier;
 import org.wso2.identity.apps.taglibs.layout.controller.compiler.parsers.DefaultParser;
@@ -28,11 +29,11 @@ import java.net.URL;
 import java.util.Map;
 
 /**
- * Basic implementation of the TemplateEngine interface using local compiler.
+ * Caching implementation of the TemplateEngine interface with more controls using local compiler.
  */
-public class LocalTemplateEngine implements TemplateEngine {
+public class LocalTemplateEngineWithCache implements TemplateEngine {
 
-    private static final long serialVersionUID = 2902030459560866712L;
+    private static final long serialVersionUID = 8574215169965654726L;
     public ExecutableIdentifier compiledObject = null;
     public DefaultExecutor executor = null;
 
@@ -43,24 +44,25 @@ public class LocalTemplateEngine implements TemplateEngine {
      * @param layoutFile     Layout file path as a URL object.
      * @param data           Data required to execute the layout file.
      * @param out            Output object as a writer.
-     * @param devMode        Whether we are running code in dev or prod (Default - false).
-     * @param testLayoutFile This layout file path used when devMode is true.
+     * @param cache          Whether we want to cache the layout file.
      */
     @Override
     public void execute(
             String layoutName,
             URL layoutFile,
             Map<String, Object> data,
-            Writer out, boolean devMode,
-            URL testLayoutFile) {
+            Writer out,
+            boolean cache) {
 
         if (executor == null && compiledObject == null) {
-            Parser parser = new DefaultParser();
-            if (devMode) {
-                compiledObject = parser.compile(testLayoutFile);
-            } else {
+            if (!cache) {
+                Parser parser = new DefaultParser();
                 compiledObject = parser.compile(layoutFile);
+            } else {
+                LayoutCache layoutCache = LayoutCache.getInstance();
+                compiledObject = layoutCache.getLayout(layoutName, layoutFile);
             }
+
             executor = new DefaultExecutor(data);
         }
 
