@@ -35,16 +35,14 @@ public interface TemplateEngine extends Serializable {
      * @param layoutFile     Layout file path as a URL object.
      * @param data           Data required to execute the layout file.
      * @param out            Output object as a writer.
-     * @param devMode        Whether we are running code in dev or prod (Default - false).
-     * @param testLayoutFile This layout file path used when devMode is true.
+     * @param cache          Whether we want to cache the layout file.
      */
     void execute(
             String layoutName,
             URL layoutFile,
             Map<String, Object> data,
             Writer out,
-            boolean devMode,
-            URL testLayoutFile
+            boolean cache
     );
 
 }
