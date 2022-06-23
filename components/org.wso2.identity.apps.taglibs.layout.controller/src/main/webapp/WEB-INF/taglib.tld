@@ -32,7 +32,7 @@
 
     <tag>
         <description>
-            Processes the the layout file and write correct layout and component execution result into
+            Processes the layout file and write correct layout and component execution result into
             JSP page
         </description>
         <name>main</name>
@@ -93,7 +93,7 @@
             <description>
                 Name of the component
             </description>
-            <name>name</name>
+            <name>componentName</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
@@ -111,7 +111,7 @@
             <description>
                 Variable name for storing the dynamic component file path
             </description>
-            <name>var</name>
+            <name>filePathStoringVariableName</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>

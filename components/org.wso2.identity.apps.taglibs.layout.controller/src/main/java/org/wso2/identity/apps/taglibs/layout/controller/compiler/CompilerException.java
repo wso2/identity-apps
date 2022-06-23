@@ -19,7 +19,7 @@
 package org.wso2.identity.apps.taglibs.layout.controller.compiler;
 
 /**
- * Compiler runtime exception wrapper
+ * Compiler runtime exception wrapper.
  */
 public class CompilerException extends RuntimeException {
 

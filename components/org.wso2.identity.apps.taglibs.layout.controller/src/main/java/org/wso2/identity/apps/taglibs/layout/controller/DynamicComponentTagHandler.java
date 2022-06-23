@@ -24,22 +24,27 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
 
 /**
- * Tag handler class for the "dynamicComponent" tag
+ * Tag handler class for the "dynamicComponent" tag.
  */
 public class DynamicComponentTagHandler extends TagSupport {
 
     private static final long serialVersionUID = -5836943916029103550L;
-    private String var;
+    private String filePathStoringVariableName;
 
-    public void setVar(String var) {
+    /**
+     * Set the "filePath" saving variable name.
+     *
+     * @param filePathStoringVariableName Variable name to store the filePath.
+     */
+    public void setFilePathStoringVariableName(String filePathStoringVariableName) {
 
-        this.var = var;
+        this.filePathStoringVariableName = filePathStoringVariableName;
     }
 
     /**
-     * This method will execute when the starting point of the "dynamicComponent" tag is reached
+     * This method will execute when the starting point of the "dynamicComponent" tag is reached.
      *
-     * @return int -> SKIP_BODY, EVAL_BODY_INCLUDE, EVAL_BODY_BUFFERED
+     * @return int -> SKIP_BODY, EVAL_BODY_INCLUDE, EVAL_BODY_BUFFERED.
      * @throws JspException
      */
     public int doStartTag() throws JspException {
@@ -54,7 +59,7 @@ public class DynamicComponentTagHandler extends TagSupport {
 
         if (new File(pageContext.getServletContext().getRealPath(filePath)).exists()) {
             pageContext.removeAttribute(Constant.COMPONENT_NAME_STORING_VAR);
-            pageContext.setAttribute(var, filePath);
+            pageContext.setAttribute(filePathStoringVariableName, filePath);
             return EVAL_BODY_INCLUDE;
         }
 
@@ -62,23 +67,23 @@ public class DynamicComponentTagHandler extends TagSupport {
     }
 
     /**
-     * This method will execute when the ending point of the "dynamicComponent" tag is reached
+     * This method will execute when the ending point of the "dynamicComponent" tag is reached.
      *
-     * @return int -> SKIP_PAGE, EVAL_PAGE
+     * @return int -> SKIP_PAGE, EVAL_PAGE.
      * @throws JspException
      */
     public int doEndTag() throws JspException {
 
-        pageContext.removeAttribute(var);
+        pageContext.removeAttribute(filePathStoringVariableName);
         return EVAL_PAGE;
     }
 
     /**
-     * Release the resource for speedup the garbage collection
+     * Release the resource for speedup the garbage collection.
      */
     public void release() {
 
-        var = null;
+        filePathStoringVariableName = null;
         super.release();
     }
 

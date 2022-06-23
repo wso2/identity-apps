@@ -29,7 +29,7 @@ import java.net.URL;
 import java.util.Map;
 
 /**
- * Caching implementation of the TemplateEngine interface with more controls using local compiler
+ * Caching implementation of the TemplateEngine interface with more controls using local compiler.
  */
 public class LocalTemplateEngineCacheWithTier implements TemplateEngine {
 
@@ -38,14 +38,14 @@ public class LocalTemplateEngineCacheWithTier implements TemplateEngine {
     public DefaultExecutor executor = null;
 
     /**
-     * Execute the layout with given data and generate the complete page
+     * Execute the layout with given data and generate the complete page.
      *
-     * @param layoutName     Name of the layout
-     * @param layoutFile     Layout file path as a URL object
-     * @param data           Data required to execute the layout file
-     * @param out            Output object as a writer
-     * @param devMode        Whether we are running code in dev or prod (Default - false)
-     * @param testLayoutFile This layout file path used when devMode is true
+     * @param layoutName     Name of the layout.
+     * @param layoutFile     Layout file path as a URL object.
+     * @param data           Data required to execute the layout file.
+     * @param out            Output object as a writer.
+     * @param devMode        Whether we are running code in dev or prod (Default - false).
+     * @param testLayoutFile This layout file path used when devMode is true.
      */
     @Override
     public void execute(

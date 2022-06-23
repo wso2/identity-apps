@@ -24,8 +24,8 @@ import java.io.Writer;
 import java.util.ArrayList;
 
 /**
- * Default identifier class
- * Represent a group of identifiers (After compiling layout, which is stored as a Defaul identifier)
+ * Default identifier class.
+ * Represent a group of identifiers (After compiling layout, which is stored as a Default identifier).
  */
 public class DefaultIdentifier implements ExecutableIdentifier {
 
@@ -33,9 +33,9 @@ public class DefaultIdentifier implements ExecutableIdentifier {
     private final ExecutableIdentifier[] allIdentifiers;
 
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param allIdentifiers Set of identifiers as a array list
+     * @param allIdentifiers Set of identifiers as an array list.
      */
     public DefaultIdentifier(ArrayList<ExecutableIdentifier> allIdentifiers) {
 
@@ -43,11 +43,11 @@ public class DefaultIdentifier implements ExecutableIdentifier {
     }
 
     /**
-     * Entry point to execute the current identifier
+     * Entry point to execute the current identifier.
      *
      * @param executor This the object which is responsible for
-     *                 executing each identifier and generate the page content in-order
-     * @param out      The output will be written to this writer
+     *                 executing each identifier and generate the page content in-order.
+     * @param out      The output will be written to this writer.
      */
     public void accept(Executor executor, Writer out) {
 
