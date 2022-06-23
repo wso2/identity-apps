@@ -94,5 +94,4 @@ public interface Executor extends Serializable {
      * @param out        The output will be written to this writer.
      */
     void execute(NoIdentifier identifier, Writer out);
-
 }

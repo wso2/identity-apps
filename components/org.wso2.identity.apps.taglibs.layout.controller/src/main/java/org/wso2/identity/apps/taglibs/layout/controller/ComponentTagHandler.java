@@ -48,11 +48,9 @@ public class ComponentTagHandler extends TagSupport {
     public int doStartTag() throws JspException {
 
         String currentComponentName = (String) pageContext.getAttribute(Constant.COMPONENT_NAME_STORING_VAR);
-
         if (currentComponentName == null) {
             return SKIP_BODY;
         }
-
         if (currentComponentName.equals(componentName)) {
             pageContext.removeAttribute(Constant.COMPONENT_NAME_STORING_VAR);
             return EVAL_BODY_INCLUDE;
@@ -69,5 +67,4 @@ public class ComponentTagHandler extends TagSupport {
         componentName = null;
         super.release();
     }
-
 }

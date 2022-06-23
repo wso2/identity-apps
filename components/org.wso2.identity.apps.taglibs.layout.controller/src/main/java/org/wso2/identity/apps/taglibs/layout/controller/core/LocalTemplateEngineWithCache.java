@@ -34,25 +34,20 @@ import java.util.Map;
 public class LocalTemplateEngineWithCache implements TemplateEngine {
 
     private static final long serialVersionUID = 8574215169965654726L;
-    public ExecutableIdentifier compiledObject = null;
-    public DefaultExecutor executor = null;
+    private ExecutableIdentifier compiledObject = null;
+    private DefaultExecutor executor = null;
 
     /**
      * Execute the layout with given data and generate the complete page.
      *
-     * @param layoutName     Name of the layout.
-     * @param layoutFile     Layout file path as a URL object.
-     * @param data           Data required to execute the layout file.
-     * @param out            Output object as a writer.
-     * @param cache          Whether we want to cache the layout file.
+     * @param layoutName Name of the layout.
+     * @param layoutFile Layout file path as a URL object.
+     * @param data       Data required to execute the layout file.
+     * @param out        Output object as a writer.
+     * @param cache      Whether we want to cache the layout file.
      */
     @Override
-    public void execute(
-            String layoutName,
-            URL layoutFile,
-            Map<String, Object> data,
-            Writer out,
-            boolean cache) {
+    public void execute(String layoutName, URL layoutFile, Map<String, Object> data, Writer out, boolean cache) {
 
         if (executor == null && compiledObject == null) {
             if (!cache) {
@@ -62,11 +57,28 @@ public class LocalTemplateEngineWithCache implements TemplateEngine {
                 LayoutCache layoutCache = LayoutCache.getInstance();
                 compiledObject = layoutCache.getLayout(layoutName, layoutFile);
             }
-
             executor = new DefaultExecutor(data);
         }
-
         compiledObject.accept(executor, out);
     }
 
+    /**
+     * Get the compiled layout file as an object
+     *
+     * @return Compiled layout will be return
+     */
+    public ExecutableIdentifier getCompiledObject() {
+
+        return compiledObject;
+    }
+
+    /**
+     * Get the executor which is used to execute the compiled layout
+     *
+     * @return Layout executor will return
+     */
+    public DefaultExecutor getExecutor() {
+
+        return executor;
+    }
 }

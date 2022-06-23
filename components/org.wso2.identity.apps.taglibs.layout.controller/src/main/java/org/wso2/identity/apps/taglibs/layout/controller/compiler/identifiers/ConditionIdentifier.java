@@ -108,5 +108,4 @@ public class ConditionIdentifier implements ExecutableIdentifier {
 
         child.accept(executor, out);
     }
-
 }

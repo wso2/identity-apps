@@ -52,12 +52,10 @@ public class DefaultIdentifier implements ExecutableIdentifier {
     public void accept(Executor executor, Writer out) {
 
         executor.execute(this, out);
-
         while (true) {
             if (!executor.continueExecution()) {
                 break;
             }
-
             try {
                 allIdentifiers[executor.getCurrentExecutionIndex()].accept(executor, out);
             } catch (IndexOutOfBoundsException e) {
@@ -65,5 +63,4 @@ public class DefaultIdentifier implements ExecutableIdentifier {
             }
         }
     }
-
 }

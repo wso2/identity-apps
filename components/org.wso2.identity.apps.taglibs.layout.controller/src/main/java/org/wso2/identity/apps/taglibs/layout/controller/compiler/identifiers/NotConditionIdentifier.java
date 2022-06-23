@@ -108,5 +108,4 @@ public class NotConditionIdentifier implements ExecutableIdentifier {
 
         child.accept(executor, out);
     }
-
 }

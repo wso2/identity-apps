@@ -50,19 +50,15 @@ public class DynamicComponentTagHandler extends TagSupport {
     public int doStartTag() throws JspException {
 
         String currentComponentName = (String) pageContext.getAttribute(Constant.COMPONENT_NAME_STORING_VAR);
-
         if (currentComponentName == null) {
             return SKIP_BODY;
         }
-
         String filePath = Constant.DYNAMIC_COMPONENT_FILES_DIRECTORY_PATH + currentComponentName + ".jsp";
-
         if (new File(pageContext.getServletContext().getRealPath(filePath)).exists()) {
             pageContext.removeAttribute(Constant.COMPONENT_NAME_STORING_VAR);
             pageContext.setAttribute(filePathStoringVariableName, filePath);
             return EVAL_BODY_INCLUDE;
         }
-
         return SKIP_BODY;
     }
 
@@ -86,5 +82,4 @@ public class DynamicComponentTagHandler extends TagSupport {
         filePathStoringVariableName = null;
         super.release();
     }
-
 }

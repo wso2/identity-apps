@@ -31,18 +31,11 @@ public interface TemplateEngine extends Serializable {
     /**
      * Execute the layout with given data and generate the complete page.
      *
-     * @param layoutName     Name of the layout.
-     * @param layoutFile     Layout file path as a URL object.
-     * @param data           Data required to execute the layout file.
-     * @param out            Output object as a writer.
-     * @param cache          Whether we want to cache the layout file.
+     * @param layoutName Name of the layout.
+     * @param layoutFile Layout file path as a URL object.
+     * @param data       Data required to execute the layout file.
+     * @param out        Output object as a writer.
+     * @param cache      Whether we want to cache the layout file.
      */
-    void execute(
-            String layoutName,
-            URL layoutFile,
-            Map<String, Object> data,
-            Writer out,
-            boolean cache
-    );
-
+    void execute(String layoutName, URL layoutFile, Map<String, Object> data, Writer out, boolean cache);
 }

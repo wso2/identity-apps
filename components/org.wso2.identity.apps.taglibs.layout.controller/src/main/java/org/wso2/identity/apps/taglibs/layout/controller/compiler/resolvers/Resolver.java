@@ -38,5 +38,4 @@ public interface Resolver {
      * Close resources related to the reader.
      */
     void closeResources();
-
 }

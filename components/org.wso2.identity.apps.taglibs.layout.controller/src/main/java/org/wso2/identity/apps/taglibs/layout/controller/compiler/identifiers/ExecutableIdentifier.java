@@ -36,5 +36,4 @@ public interface ExecutableIdentifier extends Serializable {
      * @param out      The output will be written to this writer.
      */
     void accept(Executor executor, Writer out);
-
 }
