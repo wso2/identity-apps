@@ -277,12 +277,14 @@ export const BackupCodeAuthenticator : React.FunctionComponent<BackupCodeProps> 
                             <Button 
                                 attached="left" 
                                 floated="right" 
-                                className="ui basic primary left floated button link-button" 
+                                className="ui basic primary left floated button link-button"
+                                data-componentid={ `${componentid}-download-button` }
                                 onClick={ downloadBackupCodes }>{ t(translateKey + "modals.download.heading") }
                             </Button>
                             <Button 
                                 attached="right" 
-                                floated="right" 
+                                floated="right"
+                                data-componentid={ `${componentid}-refresh-button` }
                                 className="ui basic primary right floated button link-button" 
                                 onClick={ refreshBackCodes }>{ t(translateKey + "modals.refresh.heading") }
                             </Button>
@@ -312,7 +314,8 @@ export const BackupCodeAuthenticator : React.FunctionComponent<BackupCodeProps> 
                                 image={ getEmptyPlaceholderIllustrations().newList }
                                 subtitle={ [ t(translateKey + "modals.generate.description") ] }
                                 action={ (<Button  
-                                    className="ui basic primary floated button link-button" 
+                                    className="ui basic primary floated button link-button"
+                                    data-componentid={ `${componentid}-generate-button` }
                                     onClick={ refreshBackCodes }>{ t(translateKey + "modals.generate.heading") }
                                 </Button>) }
                                 
@@ -326,6 +329,7 @@ export const BackupCodeAuthenticator : React.FunctionComponent<BackupCodeProps> 
                 <Button
                     attached="top"
                     floated="left"
+                    data-componentid={ `${componentid}-cancel-button` }
                     className="ui basic primary left floated button link-button"
                     onClick= { () => {
                         onOpenWizardToggle(false);
@@ -338,6 +342,7 @@ export const BackupCodeAuthenticator : React.FunctionComponent<BackupCodeProps> 
                     compact
                     floated="right"
                     primary
+                    data-componentid={ `${componentid}-done-button` }
                     onClick= { () => {
                         onOpenWizardToggle(false);
                         onShowBackupCodeWizardToggle(false);

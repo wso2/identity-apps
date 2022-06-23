@@ -507,7 +507,8 @@ module.exports = (env) => {
                     themeHash: themeHash,
                     vwoScriptVariable: "<%= vwo_ac_id %>",
                     // eslint-disable-next-line max-len
-                    vwoSystemVariable: "<% String vwo_ac_id = System.getenv().getOrDefault(\"vwo_account_id\", null); %>"
+                    vwoSystemVariable: "<% String vwo_ac_id_system_var = System.getenv().getOrDefault(\"vwo_account_id\", null); %>",
+                    vwoSystemVariableNullCheck: "<% String vwo_ac_id = StringUtils.isNotBlank(vwo_ac_id_system_var) ? vwo_ac_id_system_var : null; %>"
                 })
                 : new HtmlWebpackPlugin({
                     filename: path.join(distFolder, "index.html"),
@@ -561,10 +562,10 @@ module.exports = (env) => {
                         ? "<%=TENANT_AWARE_URL_PREFIX%>"
                         : "",
                     themeHash: themeHash,
-                    requestForwardSnippet : "if(request.getParameter(\"code\") != null && "+
-                        "!request.getParameter(\"code\").trim().isEmpty()) "+
-                        "{request.getRequestDispatcher(\"/authenticate?code=\"+request.getParameter(\"code\")+"+
-                        "\"&AuthenticatedIdPs=\"+request.getParameter(\"AuthenticatedIdPs\")"+
+                    requestForwardSnippet: "if(request.getParameter(\"code\") != null && " +
+                        "!request.getParameter(\"code\").trim().isEmpty()) " +
+                        "{request.getRequestDispatcher(\"/authenticate?code=\"+request.getParameter(\"code\")+" +
+                        "\"&AuthenticatedIdPs=\"+request.getParameter(\"AuthenticatedIdPs\")" +
                         "+\"&session_state=\"+request.getParameter(\"session_state\")).forward(request, response);}"
                 })
                 : new HtmlWebpackPlugin({

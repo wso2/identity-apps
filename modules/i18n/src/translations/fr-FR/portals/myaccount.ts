@@ -1208,6 +1208,8 @@ export const myAccount: MyAccountNS = {
                     inputs: {
                         date: {
                             validations: {
+                                futureDateError: "La date que vous avez saisie pour le champ {{field}} " + 
+                                "n'est pas valide.",
                                 invalidFormat: "Veuillez saisir un test valide au format YYYY-MM-DD."
                             }
                         }
@@ -1238,7 +1240,7 @@ export const myAccount: MyAccountNS = {
                         },
                         validations: {
                             empty: "L'attribut {{fieldName}} est obligatoire",
-                            invalidFormat: "Le format de l'attribut {{fieldName}} saisi est invalide"
+                            invalidFormat: "Le format du {{fieldName}} saisi est incorrect"
                         }
                     }
                 },

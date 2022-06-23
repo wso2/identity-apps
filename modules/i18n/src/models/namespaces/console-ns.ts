@@ -1080,7 +1080,7 @@ export interface ConsoleNS {
                         }
                     }
                 };
-            };
+            }
             authenticationProvider?: {
                 advancedSearch?: {
                     form: {
@@ -2248,6 +2248,103 @@ export interface ConsoleNS {
                     groupName: FormAttributes;
                 };
             };
+            organizations: {
+                advancedSearch: {
+                    form: {
+                        inputs: {
+                            filterAttribute: {
+                                placeholder: string;
+                            };
+                            filterCondition: {
+                                placeholder: string;
+                            };
+                            filterValue: {
+                                placeholder: string;
+                            };
+                        };
+                    };
+                    placeholder: string;
+                };
+                list: {
+                    actions: {
+                        add: string;
+                    };
+                    columns: {
+                        name: string;
+                        actions: string;
+                    };
+                };
+                title: string;
+                subTitle: string;
+                notifications: {
+                    fetchOrganization: Notification;
+                    deleteOrganization: Notification;
+                    updateOrganization: Notification;
+                    updateOrganizationAttributes: Notification;
+                    addOrganization: Notification;
+                    getOrganizationList: Notification;
+                };
+                confirmations: {
+                    deleteOrganization: {
+                        assertionHint: string;
+                        header: string;
+                        message: string;
+                        content: string;
+                    };
+                };
+                placeholders: {
+                    emptyList: Placeholder;
+                };
+                edit: {
+                    description: string;
+                    back: string;
+                    tabTitles: {
+                        profile: string;
+                        attributes: string;
+                    },
+                    fields: {
+                        id: FormAttributes;
+                        name: FormAttributes;
+                        description: FormAttributes;
+                        domain: FormAttributes;
+                        type: FormAttributes;
+                        created: FormAttributes;
+                        lastModified: FormAttributes;
+                    },
+                    dangerZone: {
+                        title: string;
+                        subHeader: string;
+                    },
+                    attributes: {
+                        hint: string;
+                        key: string;
+                        value: string;
+                        keyRequiredErrorMessage: string;
+                        valueRequiredErrorMessage: string;
+                    }
+                };
+                modals: {
+                    addOrganization: {
+                        header: string;
+                        subtitle1: string;
+                        subtitle2: string;
+                    };
+                };
+                forms: {
+                    addOrganization: {
+                        name: FormAttributes;
+                        description: FormAttributes;
+                        domainName: FormAttributes;
+                        type: string;
+                        structural: string;
+                        tenant: string;
+                    };
+                };
+                homeList: {
+                    name: string;
+                    description: string;
+                };
+            };
             users: {
                 consumerUsers: {
                     fields: {
@@ -2360,6 +2457,7 @@ export interface ConsoleNS {
                         formatError: string;
                         dateFormatError: string;
                         mobileFormatError: string;
+                        futureDateError: string;
                     };
                 };
                 list: {
@@ -3494,6 +3592,7 @@ export interface ConsoleNS {
                     general: string;
                     users: string;
                     userstores: string;
+                    organizations: string;
                 };
                 certificates: string;
                 configurations: string;
@@ -3509,6 +3608,7 @@ export interface ConsoleNS {
                 generalConfigurations: string;
                 groups: string;
                 localDialect: string;
+                organizations: string;
                 overview: string;
                 roles: string;
                 users: string;
@@ -4080,6 +4180,7 @@ export interface ConsoleNS {
             emailTemplates: EditPage;
             emailTemplatesWithDisplayName: EditPage;
             groups: Page;
+            organizations: Page;
             overview: Page;
             oidcScopes: Page;
             oidcScopesEdit: EditPage;

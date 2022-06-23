@@ -1174,6 +1174,7 @@ export const myAccount: MyAccountNS = {
                     inputs: {
                         date: {
                             validations: {
+                                futureDateError: "The date you entered for the {{field}} field is invalid.",
                                 invalidFormat: "Please enter a valid {{fieldName}} in the format YYYY-MM-DD."
                             }
                         }
@@ -1204,7 +1205,7 @@ export const myAccount: MyAccountNS = {
                         },
                         validations: {
                             empty: "{{fieldName}} is a required field",
-                            invalidFormat: "The {{fieldName}} is not of the correct format"
+                            invalidFormat: "The format of the {{fieldName}} entered is incorrect"   
                         }
                     }
                 },

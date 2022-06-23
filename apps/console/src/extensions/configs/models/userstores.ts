@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import { ReactElement } from "react";
 
 export interface UserstoresConfig {
     userstoreEdit: {
@@ -33,6 +34,7 @@ export interface UserstoresConfig {
     };
     userstoreList: {
         allowAddingUserstores: boolean;
+        renderEmptyPlaceholder: (emptyListPlaceholderActionClick) => ReactElement;
     };
     userstoreDomain: {
         appendToUsername: boolean;

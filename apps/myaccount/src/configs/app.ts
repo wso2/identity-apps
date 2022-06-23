@@ -52,6 +52,7 @@ export class Config {
             clientID: window["AppUtils"].getConfig().clientID,
             clientOrigin: window["AppUtils"].getConfig().clientOrigin,
             consoleApp: window["AppUtils"].getConfig().consoleApp,
+            customServerHost: window["AppUtils"].getConfig().customServerHost,
             idpConfigs: window["AppUtils"].getConfig().idpConfigs,
             loginCallbackUrl: window["AppUtils"].getConfig().loginCallbackURL,
             serverHost: window["AppUtils"].getConfig().serverOriginWithTenant,
@@ -73,6 +74,7 @@ export class Config {
             applications: `${this.getDeploymentConfig().serverHost}/api/users/v1/me/applications`,
             associations: `${this.getDeploymentConfig().serverHost}/api/users/v1/me/associations`,
             authorize: `${this.getDeploymentConfig().serverHost}/oauth2/authorize`,
+            backupCode: `${this.getDeploymentConfig().serverHost}/api/users/v1/me/backup-code`,
             challengeAnswers: `${this.getDeploymentConfig().serverHost}/api/users/v1/me/challenge-answers`,
             challenges: `${this.getDeploymentConfig().serverHost}/api/users/v1/me/challenges`,
             consentManagement: {
@@ -107,6 +109,7 @@ export class Config {
             jwks: `${this.getDeploymentConfig().serverHost}/oauth2/jwks`,
             logout: `${this.getDeploymentConfig().serverHost}/oidc/logout`,
             me: `${this.getDeploymentConfig().serverHost}/scim2/Me`,
+            mfaEnabledAuthenticators: `${this.getDeploymentConfig().serverHost}/api/users/v1/me/mfa/authenticators`,
             preference: `${this.getDeploymentConfig().serverHost}/api/server/v1/identity-governance/preferences`,
             profileSchemas: `${this.getDeploymentConfig().serverHost}/scim2/Schemas`,
             revoke: `${this.getDeploymentConfig().serverHost}/oauth2/revoke`,
@@ -116,7 +119,6 @@ export class Config {
             token: `${this.getDeploymentConfig().serverHost}/oauth2/token`,
             totp: `${this.getDeploymentConfig().serverHost}/api/users/v1/me/totp`,
             totpSecret: `${this.getDeploymentConfig().serverHost}/api/users/v1/me/totp/secret`,
-            backupCode: `${this.getDeploymentConfig().serverHost}/api/users/v1/me/backup-code`,
             typingDNAMe: `${this.getDeploymentConfig().serverHost}/api/identity/typingdna/v1.0/me/typingpatterns`,
             typingDNAServer: `${
                 this.getDeploymentConfig().serverHost

@@ -764,6 +764,7 @@ export interface MyAccountNS {
                     inputs: {
                         date: {
                             validations: {
+                                futureDateError : string;
                                 invalidFormat: string;
                             };
                         };

@@ -25,7 +25,7 @@ import { List } from "semantic-ui-react";
 import { BackupCodeAuthenticator, FIDOAuthenticator, SMSOTPAuthenticator, TOTPAuthenticator } from "./authenticators";
 import { getBackupCodes, getEnabledAuthenticators, updateEnabledAuthenticators } from "../../api";
 import { AppConstants } from "../../constants";
-import { AlertInterface, AlertLevels, FeatureConfigInterface } from "../../models";
+import { AlertInterface, AlertLevels, EnabledAuthenticatorsInterface, FeatureConfigInterface } from "../../models";
 import { AppState } from "../../store";
 import { CommonUtils } from "../../utils";
 import { SettingsSection } from "../shared";
@@ -64,7 +64,7 @@ export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (pro
      */
     useEffect(()=> {
         
-        if (enableMFAUserWise === true && isSuperTenantLogin()) {
+        if (enableMFAUserWise && isSuperTenantLogin()) {
             getBackupCodes()
                 .then((response) => {
                     setBackupCodes(response.backupCodes);
@@ -91,12 +91,12 @@ export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (pro
     * Get enabled authenticators and check if backup authenticator is enabled.
     */
     useEffect(() => {
-        if (enableMFAUserWise === true && isSuperTenantLogin()) {
-            getEnabledAuthenticators().then((authenticators: string) => {
+        if (enableMFAUserWise && isSuperTenantLogin()) {
+            getEnabledAuthenticators().then((authenticators: EnabledAuthenticatorsInterface) => {
                 let authenticatorList: Array<string>;
 
-                if (authenticators !== undefined) {
-                    authenticatorList = authenticators.split(",");
+                if (authenticators.enabledAuthenticators !== undefined ) {
+                    authenticatorList = authenticators.enabledAuthenticators.split(",");
                 } else {
                     authenticatorList = [];
                 }

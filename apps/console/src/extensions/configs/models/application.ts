@@ -30,6 +30,9 @@ export interface ApplicationConfig {
         showSaaS: boolean;
         showReturnAuthenticatedIdPs: boolean;
     };
+    generalSettings: {
+        getFieldReadOnlyStatus: (applicationName: string, fieldName: string) => boolean ;
+    };
     attributeSettings: {
         advancedAttributeSettings: {
             showIncludeTenantDomain: boolean;
@@ -100,6 +103,7 @@ export interface ApplicationConfig {
     };
     customApplication: {
         allowedProtocolTypes: string[];
+        defaultTabIndex: number;
     };
     excludeIdentityClaims: boolean;
     excludeSubjectClaim: boolean;

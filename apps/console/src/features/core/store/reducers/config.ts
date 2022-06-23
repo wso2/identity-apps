@@ -57,6 +57,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             clientHost: "",
             clientID: "",
             clientOrigin: "",
+            customServerHost: "",
             developerApp: {
                 basePath: "",
                 displayName: "",
@@ -166,9 +167,9 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
                 users: null
             },
             gravatarConfig: {
-                size: null,
                 defaultImage: "",
-                fallback: null
+                fallback: null,
+                size: null
             },
             hiddenAuthenticators: [],
             hiddenUserStores: [],
@@ -184,10 +185,10 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
                 facebook: {
                     enabled: false
                 },
-                google: {
+                github: {
                     enabled: false
                 },
-                github: {
+                google: {
                     enabled: false
                 }
             },

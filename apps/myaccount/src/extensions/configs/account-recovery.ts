@@ -21,8 +21,7 @@ import { AccountRecoveryConfig } from "./models";
 export const accountRecoveryConfig: AccountRecoveryConfig = {
     sections: {
         accountRecovery: {
-            description:
-                undefined
+            description: undefined
         }
     }
 };
