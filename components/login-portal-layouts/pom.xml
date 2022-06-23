@@ -50,7 +50,7 @@
                         <phase>initialize</phase>
                         <configuration>
                             <target>
-                                <ant antfile="move-layouts.xml">
+                                <ant antfile="layout-distribution.xml">
                                     <target name="move-layouts"/>
                                 </ant>
                             </target>
