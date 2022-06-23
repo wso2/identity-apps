@@ -32,6 +32,7 @@ public class DynamicComponentTagHandler extends TagSupport {
     private String var;
 
     public void setVar(String var) {
+
         this.var = var;
     }
 
@@ -42,6 +43,7 @@ public class DynamicComponentTagHandler extends TagSupport {
      * @throws JspException
      */
     public int doStartTag() throws JspException {
+
         String currentComponentName = (String) pageContext.getAttribute(Constant.COMPONENT_NAME_STORING_VAR);
 
         if (currentComponentName == null) {
@@ -66,6 +68,7 @@ public class DynamicComponentTagHandler extends TagSupport {
      * @throws JspException
      */
     public int doEndTag() throws JspException {
+
         pageContext.removeAttribute(var);
         return EVAL_PAGE;
     }
@@ -74,6 +77,7 @@ public class DynamicComponentTagHandler extends TagSupport {
      * Release the resource for speedup the garbage collection
      */
     public void release() {
+
         var = null;
         super.release();
     }

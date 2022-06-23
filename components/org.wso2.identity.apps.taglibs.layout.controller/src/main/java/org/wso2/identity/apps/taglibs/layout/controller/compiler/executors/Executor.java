@@ -38,61 +38,61 @@ public interface Executor extends Serializable {
      *
      * @return Whether the compiled layout execution can continue or not
      */
-    public boolean continueExecution();
+    boolean continueExecution();
 
     /**
      * Get the current executing index of the compiled layout
      *
      * @return current executing index
      */
-    public int getCurrentExecutionIndex();
+    int getCurrentExecutionIndex();
 
     /**
      * Execute the provided default identifier
      *
      * @param identifier Default identifier (Set of identifiers)
-     * @param out The output will be written to this writer
+     * @param out        The output will be written to this writer
      */
-    public void execute(DefaultIdentifier identifier, Writer out);
+    void execute(DefaultIdentifier identifier, Writer out);
 
     /**
      * Execute the provided component identifier
      *
      * @param identifier Component identifier
-     * @param out The output will be written to this writer
+     * @param out        The output will be written to this writer
      */
-    public void execute(ComponentIdentifier identifier, Writer out);
+    void execute(ComponentIdentifier identifier, Writer out);
 
     /**
      * Execute the provided data identifier
      *
      * @param identifier Data identifier
-     * @param out The output will be written to this writer
+     * @param out        The output will be written to this writer
      */
-    public void execute(DataIdentifier identifier, Writer out);
+    void execute(DataIdentifier identifier, Writer out);
 
     /**
      * Execute the provided condition identifier
      *
      * @param identifier Condition identifier
-     * @param out The output will be written to this writer
+     * @param out        The output will be written to this writer
      */
-    public void execute(ConditionIdentifier identifier, Writer out);
+    void execute(ConditionIdentifier identifier, Writer out);
 
     /**
      * Execute the provided not condition identifier
      *
      * @param identifier Not condition identifier
-     * @param out The output will be written to this writer
+     * @param out        The output will be written to this writer
      */
-    public void execute(NotConditionIdentifier identifier, Writer out);
+    void execute(NotConditionIdentifier identifier, Writer out);
 
     /**
      * Execute the provided no identifier
      *
      * @param identifier No identifier
-     * @param out The output will be written to this writer
+     * @param out        The output will be written to this writer
      */
-    public void execute(NoIdentifier identifier, Writer out);
+    void execute(NoIdentifier identifier, Writer out);
 
 }

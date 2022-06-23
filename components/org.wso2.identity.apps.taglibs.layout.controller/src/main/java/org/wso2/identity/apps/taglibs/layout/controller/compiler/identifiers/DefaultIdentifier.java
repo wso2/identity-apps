@@ -38,6 +38,7 @@ public class DefaultIdentifier implements ExecutableIdentifier {
      * @param allIdentifiers Set of identifiers as a array list
      */
     public DefaultIdentifier(ArrayList<ExecutableIdentifier> allIdentifiers) {
+
         this.allIdentifiers = allIdentifiers.toArray(new ExecutableIdentifier[0]);
     }
 
@@ -49,6 +50,7 @@ public class DefaultIdentifier implements ExecutableIdentifier {
      * @param out      The output will be written to this writer
      */
     public void accept(Executor executor, Writer out) {
+
         executor.execute(this, out);
 
         while (true) {

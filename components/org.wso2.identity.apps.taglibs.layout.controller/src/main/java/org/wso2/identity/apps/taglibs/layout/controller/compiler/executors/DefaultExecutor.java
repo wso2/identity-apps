@@ -51,6 +51,7 @@ public class DefaultExecutor implements Executor {
      * @param data All data required to execute the layout file
      */
     public DefaultExecutor(Map<String, Object> data) {
+
         this.data = data;
         deepIterationPath = new ArrayList<Integer>();
         iterationLevel = -1;
@@ -62,6 +63,7 @@ public class DefaultExecutor implements Executor {
      * Start the next iteration level (Block level)
      */
     private void nextIterationLevel() {
+
         if (deepIterationPath.size() == iterationLevel + 1) {
             deepIterationPath.add(0);
         }
@@ -72,6 +74,7 @@ public class DefaultExecutor implements Executor {
      * Remove the completed iteration level (Block level)
      */
     private void removeIteration() {
+
         deepIterationPath.remove(iterationLevel);
         iterationLevel--;
     }
@@ -80,6 +83,7 @@ public class DefaultExecutor implements Executor {
      * Move into next identifier
      */
     private void next() {
+
         deepIterationPath.set(iterationLevel, deepIterationPath.get(iterationLevel) + 1);
     }
 
@@ -89,6 +93,7 @@ public class DefaultExecutor implements Executor {
      * @param name Name of the component
      */
     private void setComponent(String name) {
+
         componentName = name;
         activeComponentExecution = true;
     }
@@ -97,6 +102,7 @@ public class DefaultExecutor implements Executor {
      * Remove the component which was executed
      */
     public void deactivateComponent() {
+
         activeComponentExecution = false;
         componentName = null;
         iterationLevel = -1;
@@ -108,6 +114,7 @@ public class DefaultExecutor implements Executor {
      * @return Component name
      */
     public String getComponentName() {
+
         return componentName;
     }
 
@@ -117,6 +124,7 @@ public class DefaultExecutor implements Executor {
      * @return Component execution enabled or not
      */
     public boolean componentExecutionEnabled() {
+
         return activeComponentExecution;
     }
 
@@ -127,6 +135,7 @@ public class DefaultExecutor implements Executor {
      */
     @Override
     public boolean continueExecution() {
+
         return !activeComponentExecution;
     }
 
@@ -137,6 +146,7 @@ public class DefaultExecutor implements Executor {
      */
     @Override
     public int getCurrentExecutionIndex() {
+
         return deepIterationPath.get(iterationLevel);
     }
 
@@ -148,6 +158,7 @@ public class DefaultExecutor implements Executor {
      */
     @Override
     public void execute(DefaultIdentifier identifier, Writer out) {
+
         nextIterationLevel();
     }
 
@@ -159,6 +170,7 @@ public class DefaultExecutor implements Executor {
      */
     @Override
     public void execute(ComponentIdentifier identifier, Writer out) {
+
         write(identifier.getText(), out);
 
         setComponent(identifier.getIdentifierName());
@@ -173,6 +185,7 @@ public class DefaultExecutor implements Executor {
      */
     @Override
     public void execute(DataIdentifier identifier, Writer out) {
+
         write(identifier.getText(), out);
         Object value = data.get(identifier.getIdentifierName());
 
@@ -190,6 +203,7 @@ public class DefaultExecutor implements Executor {
      */
     @Override
     public void execute(ConditionIdentifier identifier, Writer out) {
+
         if (iterationLevel == deepIterationPath.size() - 1) {
             write(identifier.getText(), out);
         }
@@ -222,6 +236,7 @@ public class DefaultExecutor implements Executor {
      */
     @Override
     public void execute(NotConditionIdentifier identifier, Writer out) {
+
         if (iterationLevel == deepIterationPath.size() - 1) {
             write(identifier.getText(), out);
         }
@@ -256,6 +271,7 @@ public class DefaultExecutor implements Executor {
      */
     @Override
     public void execute(NoIdentifier identifier, Writer out) {
+
         write(identifier.getText(), out);
         next();
     }
@@ -268,6 +284,7 @@ public class DefaultExecutor implements Executor {
      * @param out     The output will be written to this writer
      */
     private void write(String content, boolean encode, Writer out) {
+
         try {
             if (encode) {
                 out.write(Encode.forHtml(content));
@@ -283,6 +300,7 @@ public class DefaultExecutor implements Executor {
      * Method overloading -> Refer to the above method
      */
     private void write(String content, Writer out) {
+
         write(content, false, out);
     }
 

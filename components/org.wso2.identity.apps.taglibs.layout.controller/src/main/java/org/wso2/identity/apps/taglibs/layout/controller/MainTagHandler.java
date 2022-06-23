@@ -42,22 +42,27 @@ public class MainTagHandler extends TagSupport {
     private LocalTemplateEngineCacheWithTier engine;
 
     public void setLayoutName(String layoutName) {
+
         this.layoutName = layoutName;
     }
 
     public void setLayoutFileRelativePath(String layoutFileRelativePath) {
+
         this.layoutFileRelativePath = layoutFileRelativePath;
     }
 
     public void setData(Map<String, Object> data) {
+
         this.data = data;
     }
 
     public void setDevMode(Boolean devMode) {
+
         this.devMode = devMode;
     }
 
     public void setTestLayoutFileRelativePath(String testLayoutFileRelativePath) {
+
         this.testLayoutFileRelativePath = testLayoutFileRelativePath;
     }
 
@@ -68,6 +73,7 @@ public class MainTagHandler extends TagSupport {
      * @throws JspException
      */
     public int doStartTag() throws JspException {
+
         engine = new LocalTemplateEngineCacheWithTier();
         try {
             engine.execute(
@@ -77,7 +83,7 @@ public class MainTagHandler extends TagSupport {
                     new PrintWriter(pageContext.getOut()),
                     devMode,
                     pageContext.getServletContext().getResource(testLayoutFileRelativePath)
-            );
+                          );
         } catch (MalformedURLException e) {
             throw new JspException("Can't create a URL to the given relative paath", e);
         }
@@ -98,6 +104,7 @@ public class MainTagHandler extends TagSupport {
      * @throws JspException
      */
     public int doAfterBody() throws JspException {
+
         try {
             engine.execute(
                     layoutName,
@@ -106,7 +113,7 @@ public class MainTagHandler extends TagSupport {
                     new PrintWriter(pageContext.getOut()),
                     devMode,
                     pageContext.getServletContext().getResource(testLayoutFileRelativePath)
-            );
+                          );
         } catch (MalformedURLException e) {
             throw new JspException("Can't create a URL to the given relative paath", e);
         }
@@ -125,6 +132,7 @@ public class MainTagHandler extends TagSupport {
      * Release the resource for speedup the garbage collection
      */
     public void release() {
+
         layoutName = null;
         layoutFileRelativePath = null;
         data = null;

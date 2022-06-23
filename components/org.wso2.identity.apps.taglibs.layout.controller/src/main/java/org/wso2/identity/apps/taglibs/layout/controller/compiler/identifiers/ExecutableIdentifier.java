@@ -33,8 +33,8 @@ public interface ExecutableIdentifier extends Serializable {
      *
      * @param executor This the object which is responsible for
      *                 executing each identifier and generate the page content in-order
-     * @param out The output will be written to this writer               
+     * @param out      The output will be written to this writer
      */
-    public void accept(Executor executor, Writer out);
+    void accept(Executor executor, Writer out);
 
 }

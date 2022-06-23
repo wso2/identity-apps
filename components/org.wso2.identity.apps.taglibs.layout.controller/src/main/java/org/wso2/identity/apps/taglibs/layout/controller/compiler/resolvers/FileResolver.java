@@ -26,6 +26,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 
 /**
  * File resolver implementation for both local and remote files
@@ -44,13 +45,14 @@ public class FileResolver implements Resolver {
      */
     @Override
     public Reader getReader(URL file) {
+
         if (file == null) {
             throw new CompilerException("Can't find the given file");
         }
 
         try {
             inputStream = file.openStream();
-            streamReader = new InputStreamReader(inputStream, "UTF-8");
+            streamReader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
             reader = new BufferedReader(streamReader);
         } catch (RuntimeException e) {
             throw e;
@@ -66,6 +68,7 @@ public class FileResolver implements Resolver {
      */
     @Override
     public void closeResources() {
+
         try {
             if (reader != null) {
                 reader.close();

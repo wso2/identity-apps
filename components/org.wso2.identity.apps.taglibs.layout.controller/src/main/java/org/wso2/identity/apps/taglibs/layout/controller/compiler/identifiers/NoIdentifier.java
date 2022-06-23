@@ -29,7 +29,7 @@ import java.io.Writer;
 public class NoIdentifier implements ExecutableIdentifier {
 
     private static final long serialVersionUID = 8120936181785068749L;
-    private String prependText;
+    private final String prependText;
 
     /**
      * Constructor
@@ -37,6 +37,7 @@ public class NoIdentifier implements ExecutableIdentifier {
      * @param text Text identified without an identifier
      */
     public NoIdentifier(String text) {
+
         this.prependText = text;
     }
 
@@ -45,9 +46,10 @@ public class NoIdentifier implements ExecutableIdentifier {
      *
      * @param executor This the object which is responsible for
      *                 executing each identifier and generate the page content in-order
-     * @param out The output will be written to this writer
+     * @param out      The output will be written to this writer
      */
     public void accept(Executor executor, Writer out) {
+
         executor.execute(this, out);
     }
 
@@ -57,6 +59,7 @@ public class NoIdentifier implements ExecutableIdentifier {
      * @return Text identified without identifier
      */
     public String getText() {
+
         return prependText;
     }
 

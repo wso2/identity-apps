@@ -17,29 +17,29 @@
   -->
 
 {{^isPolicyPage}}
-    <main class="center-segment">
-        <div class="ui container {{^isLargeContainer}}medium{{/isLargeContainer}} {{#isLargeContainer}}large{{/isLargeContainer}} center aligned middle aligned">
-            {{{ProductHeader}}}
-            {{{MainSection}}}
-        </div>
-    </main>
-    {{{ProductFooter}}}
+<main class="center-segment">
+    <div class="ui container {{^isLargeContainer}}medium{{/isLargeContainer}} {{#isLargeContainer}}large{{/isLargeContainer}} center aligned middle aligned">
+        {{{ProductHeader}}}
+        {{{MainSection}}}
+    </div>
+</main>
+{{{ProductFooter}}}
 {{/isPolicyPage}}
 
 {{#isPolicyPage}}
-    <main class="policy-page">
-        <div id="app-header" class="ui borderless top fixed app-header menu">
-            <div class="ui container">
-                <div class="header item product-logo">
-                    {{{ProductHeader}}}
-                </div>
+<main class="policy-page">
+    <div class="ui borderless top fixed app-header menu" id="app-header">
+        <div class="ui container">
+            <div class="header item product-logo">
+                {{{ProductHeader}}}
             </div>
         </div>
-        <div class="app-content policy-page-content" style="padding-top: 62px;">
-            <div class="ui container">
-                {{{MainSection}}}
-            </div>
+    </div>
+    <div class="app-content policy-page-content" style="padding-top: 62px;">
+        <div class="ui container">
+            {{{MainSection}}}
         </div>
-    </main>
-    {{{ProductFooter}}}
+    </div>
+</main>
+{{{ProductFooter}}}
 {{/isPolicyPage}}

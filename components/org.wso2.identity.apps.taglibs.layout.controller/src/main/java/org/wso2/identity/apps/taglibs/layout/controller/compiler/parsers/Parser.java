@@ -33,6 +33,6 @@ public interface Parser {
      * @param file File path for the layout as an URL object
      * @return Compiled layout file
      */
-    public ExecutableIdentifier compile(URL file);
+    ExecutableIdentifier compile(URL file);
 
 }

@@ -47,23 +47,14 @@ public class DefaultParser implements Parser {
                     + "\\{\\{#([-_a-zA-Z0-9]+)\\}\\}|"
                     + "\\{\\{/([-_a-zA-Z0-9]+)\\}\\}|"
                     + "\\{\\{\\^([-_a-zA-Z0-9]+)\\}\\}"
-    );
-    private Resolver resolver;
-
-    /**
-     * The inner class, use to keep the data required to compiling process
-     */
-    private static class CompileContext {
-        String line = "";
-        Matcher matcher = null;
-        int start = 0;
-        StringBuilder textKeeper = null;
-    }
+                                                   );
+    private final Resolver resolver;
 
     /**
      * Constructor
      */
     public DefaultParser() {
+
         resolver = new FileResolver();
     }
 
@@ -73,6 +64,7 @@ public class DefaultParser implements Parser {
      * @param resolver File resolver to read the layout file
      */
     public DefaultParser(Resolver resolver) {
+
         this.resolver = resolver;
     }
 
@@ -84,6 +76,7 @@ public class DefaultParser implements Parser {
      */
     @Override
     public ExecutableIdentifier compile(URL file) {
+
         BufferedReader reader = (BufferedReader) resolver.getReader(file);
 
         CompileContext context = new CompileContext();
@@ -102,6 +95,7 @@ public class DefaultParser implements Parser {
      * @return Compiled layout file or block of identifiers
      */
     private ExecutableIdentifier compile(BufferedReader reader, CompileContext context, String identifierName) {
+
         ArrayList<ExecutableIdentifier> allIdentifiers = new ArrayList<ExecutableIdentifier>();
         String currentIdentifierName;
 
@@ -116,10 +110,10 @@ public class DefaultParser implements Parser {
                         allIdentifiers.add(
                                 new DataIdentifier(
                                         currentIdentifierName,
-                                        context.textKeeper.toString()
+                                        context.textKeeper
                                                 + context.line.substring(context.start, context.matcher.start())
                                 )
-                        );
+                                          );
                         context.textKeeper = null;
                     } else {
                         allIdentifiers.add(
@@ -127,7 +121,7 @@ public class DefaultParser implements Parser {
                                         currentIdentifierName,
                                         context.line.substring(context.start, context.matcher.start())
                                 )
-                        );
+                                          );
                     }
                     context.start = context.matcher.end();
                 } else if ((currentIdentifierName = context.matcher.group(2)) != null) {
@@ -135,10 +129,10 @@ public class DefaultParser implements Parser {
                         allIdentifiers.add(
                                 new ComponentIdentifier(
                                         currentIdentifierName,
-                                        context.textKeeper.toString()
+                                        context.textKeeper
                                                 + context.line.substring(context.start, context.matcher.start())
                                 )
-                        );
+                                          );
                         context.textKeeper = null;
                     } else {
                         allIdentifiers.add(
@@ -146,7 +140,7 @@ public class DefaultParser implements Parser {
                                         currentIdentifierName,
                                         context.line.substring(context.start, context.matcher.start())
                                 )
-                        );
+                                          );
                     }
                     context.start = context.matcher.end();
                 } else if ((currentIdentifierName = context.matcher.group(3)) != null) {
@@ -154,7 +148,7 @@ public class DefaultParser implements Parser {
                     if (context.textKeeper != null) {
                         condition = new ConditionIdentifier(
                                 currentIdentifierName,
-                                context.textKeeper.toString()
+                                context.textKeeper
                                         + context.line.substring(context.start, context.matcher.start())
                         );
                         context.textKeeper = null;
@@ -179,17 +173,17 @@ public class DefaultParser implements Parser {
                     if (context.textKeeper != null) {
                         allIdentifiers.add(
                                 new NoIdentifier(
-                                        context.textKeeper.toString()
+                                        context.textKeeper
                                                 + context.line.substring(context.start, context.matcher.start())
                                 )
-                        );
+                                          );
                         context.textKeeper = null;
                     } else {
                         allIdentifiers.add(
                                 new NoIdentifier(
                                         context.line.substring(context.start, context.matcher.start())
                                 )
-                        );
+                                          );
                     }
                     context.start = context.matcher.end();
 
@@ -199,9 +193,9 @@ public class DefaultParser implements Parser {
                     if (context.textKeeper != null) {
                         notCondition = new NotConditionIdentifier(
                                 currentIdentifierName,
-                                context.textKeeper.toString()
+                                context.textKeeper
                                         + context.line.substring(context.start, context.matcher.start()
-                                )
+                                                                )
                         );
                         context.textKeeper = null;
                     } else {
@@ -247,6 +241,7 @@ public class DefaultParser implements Parser {
      * @return All identifiers as a single object
      */
     private ExecutableIdentifier createCompiledObject(ArrayList<ExecutableIdentifier> allIdentifiers) {
+
         return new DefaultIdentifier(allIdentifiers);
     }
 
@@ -258,6 +253,7 @@ public class DefaultParser implements Parser {
      * @return Whether is there new line to read
      */
     private boolean readLine(BufferedReader reader, CompileContext context) {
+
         if (context.line.equals("")) {
             try {
                 context.line = reader.readLine();
@@ -266,11 +262,18 @@ public class DefaultParser implements Parser {
             }
         }
 
-        if (context.line == null) {
-            return false;
-        }
+        return context.line != null;
+    }
 
-        return true;
+    /**
+     * The inner class, use to keep the data required to compiling process
+     */
+    private static class CompileContext {
+
+        String line = "";
+        Matcher matcher = null;
+        int start = 0;
+        StringBuilder textKeeper = null;
     }
 
 }

@@ -61,6 +61,7 @@ public class LocalTemplateEngineTemporaryFile implements TemplateEngine {
             Writer out,
             boolean devMode,
             URL testLayoutFile) {
+
         if (executor == null && compiledObject == null) {
             if (devMode) {
                 Parser parser = new DefaultParser();
