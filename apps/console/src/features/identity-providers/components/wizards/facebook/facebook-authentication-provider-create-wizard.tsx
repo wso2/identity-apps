@@ -300,7 +300,7 @@ export const FacebookAuthenticationProviderCreateWizard: FunctionComponent<
                 },
                 {
                     "key": "callBackUrl",
-                    "value": config.deployment.serverHost + "/commonauth"
+                    "value": config?.deployment?.customServerHost + "/commonauth"
                 },
                 {
                     "key": "Scope",

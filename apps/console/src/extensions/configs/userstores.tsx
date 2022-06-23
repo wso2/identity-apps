@@ -41,6 +41,9 @@ export const userstoresConfig: UserstoresConfig = {
         }
     },
     userstoreList: {
-        allowAddingUserstores: true
+        allowAddingUserstores: true,
+        renderEmptyPlaceholder: () => {
+            return null;
+        }
     }
 };

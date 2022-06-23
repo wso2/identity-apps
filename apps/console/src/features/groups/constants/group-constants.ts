@@ -54,5 +54,5 @@ export class GroupConstants {
      * @constant
      * @type {string}
      */
-    public static ALL_GROUPS: string = "all";
+    public static ALL_GROUPS: string = "All user stores";
 }

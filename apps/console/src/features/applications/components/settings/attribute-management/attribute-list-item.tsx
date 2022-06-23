@@ -161,24 +161,26 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                 <div>
                     { !localDialect ? localClaimDisplayName : displayName }
                 </div>
-                { isOIDCMapping ?
-                    (<Hint warning= { true } popup>
-                        {
-                            t("console:develop.features.applications.edit.sections.attributes" +
-                                ".selection.mappingTable.listItem.faultyAttributeMappingHint")
-                        }
-                    </Hint>)
-                : "" }
+                { 
+                    isOIDCMapping ?
+                        (<Hint warning={ true } popup>
+                            {
+                                t("console:develop.features.applications.edit.sections.attributes" +
+                                    ".selection.mappingTable.listItem.faultyAttributeMappingHint")
+                            }
+                        </Hint>)
+                        : ""
+                }
                 {
                     <Popup
-                    content={ claimURI.startsWith(localDialectURI)
-                        ? t("console:develop.features.applications.edit.sections.attributes" +
+                        content={ isOIDCMapping && claimURI.startsWith(localDialectURI)
+                            ? t("console:develop.features.applications.edit.sections.attributes" +
                             ".selection.mappingTable.listItem.faultyAttributeMapping")
-                        : claimURI }
+                            : claimURI }
                         inverted
                         trigger={ (
                             <Code compact withBackground={ false }>
-                                { claimURI.startsWith(localDialectURI)
+                                { isOIDCMapping && claimURI.startsWith(localDialectURI)
                                     ? t("console:develop.features.applications.edit.sections.attributes" +
                                         ".selection.mappingTable.listItem.faultyAttributeMapping")
                                     : claimURI }

@@ -22,9 +22,10 @@ import { DocumentationLink, Message, useDocumentation } from "@wso2is/react-comp
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Divider, Icon } from "semantic-ui-react";
+import { Divider } from "semantic-ui-react";
 import { AppState, UIConfigInterface } from "../../../core";
 import { ApplicationManagementConstants } from "../../constants";
+import { applicationConfig } from "../../../../extensions";
 
 /**
  * Proptypes for the applications general details form component.
@@ -74,6 +75,10 @@ interface GeneralDetailsFormPopsInterface extends TestableComponentInterface {
      * Specifies a Management Application
      */
     isManagementApp?: boolean;
+    /**
+     * Specifies whether having edit-permissions
+     */
+    hasRequiredScope?: boolean;
 }
 
 /**
@@ -107,6 +112,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
         accessUrl,
         onSubmit,
         readOnly,
+        hasRequiredScope,
         isSubmitting,
         isManagementApp,
         [ "data-testid" ]: testId
@@ -213,22 +219,20 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                 : <Divider hidden/>
             }
             { isManagementApp && (
-                <Message className="with-inline-icon" icon visible info small >
-                    <div className="ui grid">
-                        <div className="one wide column pt-0 pb-0 mt-1">
-                            <Icon name="info" size="large"/>
-                        </div>
-                        <div className="fifteen wide column pt-0 pb-0">
-                            { t("console:develop.features.applications.forms.generalDetails.managementAppBanner") } 
-                            <DocumentationLink 
-                                link={ getLink("develop.applications.managementApplication.learnMore") } >
+                <Message
+                    type="info"
+                    content={
+                        <>
+                            { t("console:develop.features.applications.forms.generalDetails.managementAppBanner") }
+                            <DocumentationLink
+                                link={ getLink("develop.applications.managementApplication.learnMore") }>
                                 {
                                     t("common:learnMore")
                                 }
                             </DocumentationLink>
-                        </div>
-                    </div>
-                </Message>
+                        </>
+                    }
+                />
             ) }
             { !UIConfig.systemAppsIdentifiers.includes(name) && (
                 <Field.Input
@@ -354,7 +358,8 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                         ".placeholder")
                 }
                 value={ accessUrl }
-                readOnly={ readOnly }
+                readOnly={ !hasRequiredScope || ( readOnly && applicationConfig.generalSettings.getFieldReadOnlyStatus(
+                     name, "ACCESS_URL"))}
                 maxLength={ 200 }
                 minLength={ 3 }
                 data-testid={ `${ testId }-application-access-url-input` }
@@ -370,7 +375,8 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                 disabled={ isSubmitting }
                 loading={ isSubmitting }
                 label={ t("common:update") }
-                hidden={ readOnly }
+                hidden={ !hasRequiredScope || ( readOnly && applicationConfig.generalSettings.getFieldReadOnlyStatus(
+                    name, "ACCESS_URL"))}
             />
         </Form>
     );

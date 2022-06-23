@@ -347,6 +347,11 @@
         <url-pattern>/magic_link_notification.do</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>org_name.do</servlet-name>
+        <jsp-file>/org_name.jsp</jsp-file>
+    </servlet>
+
     <servlet-mapping>
         <servlet-name>totp_enroll.do</servlet-name>
         <url-pattern>/totp_enroll.do</url-pattern>
@@ -385,6 +390,11 @@
     <servlet-mapping>
         <servlet-name>email_otp_error.do</servlet-name>
         <url-pattern>/email_otp_error.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>org_name.do</servlet-name>
+        <url-pattern>/org_name.do</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>

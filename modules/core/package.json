@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/core",
-    "version": "1.2.954",
+    "version": "1.2.1002",
     "description": "Commonly used configs, schemas, utilities and low level services for WSO2 Identity Server frontend apps",
     "keywords": [
         "WSO2",
@@ -44,7 +44,7 @@
         "jest": "^26.4.2",
         "js-yaml": "3.13.1",
         "lodash-es": "^4.17.21",
-        "moment": "2.24.0",
+        "moment": "2.29.2",
         "node-forge": "^0.10.0",
         "react-notification-system": "^0.3.0",
         "ts-jest": "^26.4.0",

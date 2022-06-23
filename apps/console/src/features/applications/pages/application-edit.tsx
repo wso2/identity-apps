@@ -39,7 +39,7 @@ import {
     toggleHelpPanelVisibility
 } from "../../core";
 import { getApplicationDetails } from "../api";
-import { EditApplication } from "../components";
+import { EditApplication, InboundProtocolDefaultFallbackTemplates } from "../components";
 import { ApplicationManagementConstants } from "../constants";
 import CustomApplicationTemplate
     from "../data/application-templates/templates/custom-application/custom-application.json";
@@ -194,8 +194,8 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
 
         if (!application
             || !(applicationTemplates
-            && applicationTemplates instanceof Array
-            && applicationTemplates.length > 0)) {
+                && applicationTemplates instanceof Array
+                && applicationTemplates.length > 0)) {
 
             /**
              * What's this?
@@ -224,16 +224,40 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             return;
         }
 
-        let template = applicationTemplates.find((template) => template.id === application.templateId);
+        determineApplicationTemplate();
 
-        if (application.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
-            || application.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_SAML
-            || application.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS) {
-            template = applicationTemplates.find((template) => template.id === CustomApplicationTemplate.id );
+    }, [ applicationTemplates, application ]);
+
+    useEffect(() => {
+
+        /**
+         * If there's no application {@link ApplicationInterface.templateId}
+         * in the application instance, then we manually bind a templateId. You
+         * may ask why templateId is null at this point? Well, one reason
+         * is that, if you create an application via the API, the templateId
+         * is an optional property in the model instance.
+         *
+         *      So, if someone creates one without it, we don't have a template
+         * to bootstrap the model. When that happens the edit view will not
+         * work properly.
+         *
+         * We have added a mapping for application's inbound protocol
+         * {@link InboundProtocolDefaultFallbackTemplates} to pick a default
+         * template if none is present. One caveat is that, if we couldn't
+         * find any template from the fallback mapping, we always assign
+         * {@link ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC} to it.
+         * Additionally {@see InboundFormFactory}.
+         */
+        if (!application?.templateId) {
+            if (application.inboundProtocols?.length > 0) {
+                application.templateId = InboundProtocolDefaultFallbackTemplates.get(
+                    application.inboundProtocols[ 0 /*We pick the first*/ ].type
+                ) ?? ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC;
+                determineApplicationTemplate();
+            }
         }
 
-        setApplicationTemplate(template);
-    }, [ applicationTemplates, application ]);
+    }, [ isApplicationRequestLoading, application ]);
 
     /**
      * Push to 404 if application edit feature is disabled.
@@ -243,7 +267,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             return;
         }
 
-        if(!isFeatureEnabled(featureConfig.applications,
+        if (!isFeatureEnabled(featureConfig.applications,
             ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT"))) {
 
             history.push(AppConstants.getPaths().get("PAGE_NOT_FOUND"));
@@ -268,9 +292,23 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         dispatch(
             setHelpPanelDocsContentURL(editApplicationDocs[
                 ApplicationManagementConstants.APPLICATION_TEMPLATE_DOC_MAPPING
-                    .get(applicationTemplate.id) ]?.[ApplicationManagementConstants.APPLICATION_DOCS_OVERVIEW])
+                    .get(applicationTemplate.id) ]?.[ ApplicationManagementConstants.APPLICATION_DOCS_OVERVIEW ])
         );
     }, [ applicationTemplate, helpPanelDocStructure ]);
+
+    const determineApplicationTemplate = () => {
+
+        let template = applicationTemplates.find((template) => template.id === application.templateId);
+
+        if (application.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
+            || application.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_SAML
+            || application.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS) {
+            template = applicationTemplates.find((template) => template.id === CustomApplicationTemplate.id);
+        }
+
+        setApplicationTemplate(template);
+
+    };
 
     /**
      * Retrieves application details from the API.
@@ -354,9 +392,9 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         }
 
         if (inboundProtocolList.length === 1
-            && inboundProtocolList.includes(SupportedAuthProtocolTypes.OIDC)
-            && inboundProtocolConfigs
-            && inboundProtocolConfigs[ SupportedAuthProtocolTypes.OIDC ]) {
+                && inboundProtocolList.includes(SupportedAuthProtocolTypes.OIDC)
+                && inboundProtocolConfigs
+                && inboundProtocolConfigs[ SupportedAuthProtocolTypes.OIDC ]) {
 
             if (inboundProtocolConfigs[ SupportedAuthProtocolTypes.OIDC ].state === State.REVOKED) {
 
@@ -395,6 +433,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
 
     return (
         <PageLayout
+            pageTitle="Edit Application"
             title={ (
                 <>
                     <span>{ application.name }</span>

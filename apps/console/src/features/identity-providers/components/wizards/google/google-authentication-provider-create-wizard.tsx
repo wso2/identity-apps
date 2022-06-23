@@ -42,9 +42,9 @@ import { identityProviderConfig } from "../../../../../extensions/configs";
 import {
     AppConstants,
     AppState,
+    ConfigReducerStateInterface,
     EventPublisher,
-    ModalWithSidePanel,
-    store
+    ModalWithSidePanel
 } from "../../../../../features/core";
 import { TierLimitReachErrorModal } from "../../../../core/components/tier-limit-reach-error-modal";
 import {
@@ -104,6 +104,7 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<
         const { t } = useTranslation();
         const { getLink } = useDocumentation();
 
+        const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
         const availableAuthenticators = useSelector((state: AppState) =>
             state.identityProvider.meta.authenticators);
 
@@ -294,7 +295,7 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<
                 },
                 {
                     "key": "callbackUrl",
-                    "value": store.getState().config.deployment.serverHost + "/commonauth"
+                    "value": config?.deployment?.customServerHost + "/commonauth"
                 },
                 {
                     "key": "AdditionalQueryParameters",

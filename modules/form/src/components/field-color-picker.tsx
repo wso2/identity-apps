@@ -17,7 +17,7 @@
  */
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { Hint, MessageWithIcon } from "@wso2is/react-components";
+import { Hint, Message } from "@wso2is/react-components";
 import React, { Fragment, FunctionComponent, ReactElement } from "react";
 import { Field as FinalFormField } from "react-final-form";
 import { ColorPickerAdapter } from "./adapters";
@@ -69,7 +69,7 @@ export const FieldColorPicker: FunctionComponent<FieldColorPickerPropsInterface>
         switch (message.type) {
             case "info":
                 return (
-                    <MessageWithIcon
+                    <Message
                         type={ message.type }
                         content={ message.content }
                         header={ message.header }
@@ -77,7 +77,7 @@ export const FieldColorPicker: FunctionComponent<FieldColorPickerPropsInterface>
                 );
             case "warning":
                 return (
-                    <MessageWithIcon
+                    <Message
                         type={ message.type }
                         content={ message.content }
                         header={ message.header }
@@ -85,7 +85,7 @@ export const FieldColorPicker: FunctionComponent<FieldColorPickerPropsInterface>
                 );
             case "error":
                 return (
-                    <MessageWithIcon
+                    <Message
                         type={ message.type }
                         content={ message.content }
                         header={ message.header }

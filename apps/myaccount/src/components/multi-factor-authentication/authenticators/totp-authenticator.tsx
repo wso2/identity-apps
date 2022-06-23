@@ -47,7 +47,12 @@ import {
     validateTOTPCode
 } from "../../../api";
 import { getMFAIcons } from "../../../configs";
-import { AlertInterface, AlertLevels, EnabledAuthenticatorUpdateAction } from "../../../models";
+import {
+    AlertInterface,
+    AlertLevels,
+    EnabledAuthenticatorUpdateAction,
+    EnabledAuthenticatorsInterface
+} from "../../../models";
 import { AppState } from "../../../store";
 import { getProfileInformation } from "../../../store/actions";
 
@@ -122,7 +127,9 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     }, [ openWizard ]);
 
     useEffect(()=>{
-        setToggleTOTPState();
+        if (enableMFAUserWise && isSuperTenantLogin) {
+            setToggleTOTPState();
+        }
     },[]);
 
     /**
@@ -169,11 +176,11 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     const enabledAuthenticatorsUpdateHandler = (action: EnabledAuthenticatorUpdateAction): void => {
 
         getEnabledAuthenticators()
-            .then((authenticators: string) => {
+            .then((authenticators: EnabledAuthenticatorsInterface) => {
                 let authenticatorList: Array<string>;
 
-                if (authenticators !== undefined) {
-                    authenticatorList = authenticators.split(",");
+                if (authenticators.enabledAuthenticators !== undefined) {
+                    authenticatorList = authenticators.enabledAuthenticators.split(",");
                 } else {
                     authenticatorList = [];
                 }
@@ -293,7 +300,8 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
 
             setQrCode(qrCodeUrl);
             setOpenWizard(true);
-            if (totpToggle === true || isInitializeFlow === true) {
+            if ((totpToggle || isInitializeFlow)
+                  && enableMFAUserWise && isSuperTenantLogin) {
                 enabledAuthenticatorsUpdateHandler(EnabledAuthenticatorUpdateAction.INIT_TOTP);
             }  
         }).catch((errorMessage) => {
@@ -313,12 +321,11 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     const setToggleTOTPState = (): void => {
         dispatch(getProfileInformation(true));
         getEnabledAuthenticators()
-            .then((authenticators: string) => {
-            
+            .then((authenticators: EnabledAuthenticatorsInterface) => {
                 let authenticatorList: Array<string>;
 
-                if (authenticators !== undefined) {
-                    authenticatorList = authenticators.split(",");
+                if (authenticators.enabledAuthenticators !== undefined) {
+                    authenticatorList = authenticators.enabledAuthenticators.split(",");
                 } else {
                     authenticatorList = [];
                 }
@@ -351,7 +358,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     const toggleTOTP = (): void => {
         
         dispatch(getProfileInformation(true));
-        if (totpToggle === true) {
+        if (totpToggle) {
             enabledAuthenticatorsUpdateHandler(EnabledAuthenticatorUpdateAction.TOTP_TOGGLE_DISABLE);
         } else {
             enabledAuthenticatorsUpdateHandler(EnabledAuthenticatorUpdateAction.TOTP_TOGGLE_ENABLE);
@@ -372,7 +379,9 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     const initDeleteTOTP = (): void => {
         deleteTOTP().then(() => {
             setIsTOTPConfigured(false);
-            enabledAuthenticatorsUpdateHandler(EnabledAuthenticatorUpdateAction.DELETE_TOTP);
+            if (enableMFAUserWise && isSuperTenantLogin) {
+                enabledAuthenticatorsUpdateHandler(EnabledAuthenticatorUpdateAction.DELETE_TOTP);
+            }
 
             return;
         }).catch((errorMessage) => {
@@ -999,7 +1008,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                                             (
                                                 <Checkbox
                                                     toggle
-                                                    data-tourid="conditional-auth"
+                                                    data-testid={ `${testId}-conditional-auth` }
                                                     onChange={ toggleTOTP }
                                                     checked={ totpToggle }
                                                     className="conditional-auth-accordion-toggle"
@@ -1029,7 +1038,8 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                                                 className="list-icon padded-icon"
                                                 size="small"
                                                 color="grey"
-                                                name="trash alternate"          
+                                                name="trash alternate"
+                                                data-testid={ `${testId}-trash` }
                                             />
                                         )
                                     }
