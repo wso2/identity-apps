@@ -38,13 +38,13 @@ public interface TemplateEngine extends Serializable {
      * @param devMode        Whether we are running code in dev or prod (Default - false)
      * @param testLayoutFile This layout file path used when devMode is true
      */
-    public void execute(
+    void execute(
             String layoutName,
-            URL layoutFile, Map<String,
-            Object> data,
+            URL layoutFile,
+            Map<String, Object> data,
             Writer out,
             boolean devMode,
             URL testLayoutFile
-    );
+                );
 
 }

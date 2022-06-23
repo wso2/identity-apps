@@ -32,11 +32,11 @@ public interface Resolver {
      * @param file Layout file path as an URL object
      * @return Reader to read the layout file
      */
-    public Reader getReader(URL file);
+    Reader getReader(URL file);
 
     /**
      * Close resources related to the reader
      */
-    public void closeResources();
+    void closeResources();
 
 }

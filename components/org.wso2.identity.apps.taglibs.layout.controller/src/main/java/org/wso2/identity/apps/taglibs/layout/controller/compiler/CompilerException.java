@@ -26,22 +26,27 @@ public class CompilerException extends RuntimeException {
     private static final long serialVersionUID = 1088421038552580614L;
 
     public CompilerException() {
+
         super();
     }
 
     public CompilerException(String message) {
+
         super(message);
     }
 
     public CompilerException(String message, Throwable throwable) {
+
         super(message, throwable);
     }
 
     public CompilerException(Throwable throwable) {
+
         super(throwable);
     }
 
     public CompilerException(Exception e) {
+
         super(e);
     }
 

@@ -28,8 +28,8 @@ import java.io.Writer;
 public class DataIdentifier implements ExecutableIdentifier {
 
     private static final long serialVersionUID = 5313134568165896936L;
-    private String identifierName;
-    private String prependText;
+    private final String identifierName;
+    private final String prependText;
 
     /**
      * Constructor
@@ -38,6 +38,7 @@ public class DataIdentifier implements ExecutableIdentifier {
      * @param text           Text identified before this data identifier
      */
     public DataIdentifier(String identifierName, String text) {
+
         this.prependText = text;
         this.identifierName = identifierName.trim();
     }
@@ -47,9 +48,10 @@ public class DataIdentifier implements ExecutableIdentifier {
      *
      * @param executor This the object which is responsible for
      *                 executing each identifier and generate the page content in-order
-     * @param out The output will be written to this writer
+     * @param out      The output will be written to this writer
      */
     public void accept(Executor executor, Writer out) {
+
         executor.execute(this, out);
     }
 
@@ -59,6 +61,7 @@ public class DataIdentifier implements ExecutableIdentifier {
      * @return Text identified before this data identifier
      */
     public String getText() {
+
         return prependText;
     }
 
@@ -68,6 +71,7 @@ public class DataIdentifier implements ExecutableIdentifier {
      * @return Data variable name
      */
     public String getIdentifierName() {
+
         return identifierName;
     }
 

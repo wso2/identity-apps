@@ -30,6 +30,7 @@ public class ComponentTagHandler extends TagSupport {
     private String name;
 
     public void setName(String name) {
+
         this.name = name;
     }
 
@@ -40,6 +41,7 @@ public class ComponentTagHandler extends TagSupport {
      * @throws JspException
      */
     public int doStartTag() throws JspException {
+
         String currentComponentName = (String) pageContext.getAttribute(Constant.COMPONENT_NAME_STORING_VAR);
 
         if (currentComponentName == null) {
@@ -58,6 +60,7 @@ public class ComponentTagHandler extends TagSupport {
      * Release the resource for speedup the garbage collection
      */
     public void release() {
+
         name = null;
         super.release();
     }

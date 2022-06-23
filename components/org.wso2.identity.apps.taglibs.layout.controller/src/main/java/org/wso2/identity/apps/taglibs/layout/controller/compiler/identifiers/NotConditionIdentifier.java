@@ -28,8 +28,8 @@ import java.io.Writer;
 public class NotConditionIdentifier implements ExecutableIdentifier {
 
     private static final long serialVersionUID = 6283176238696651659L;
-    private String identifierName;
-    private String prependText;
+    private final String identifierName;
+    private final String prependText;
     private ExecutableIdentifier child;
 
     /**
@@ -39,18 +39,10 @@ public class NotConditionIdentifier implements ExecutableIdentifier {
      * @param text           Text identified before this not condition identifier
      */
     public NotConditionIdentifier(String identifierName, String text) {
+
         this.prependText = text;
         this.identifierName = identifierName.trim();
         this.child = null;
-    }
-
-    /**
-     * Setter to set the child identifier to the not condition identifier
-     *
-     * @param child Child identifiers of the not condition block
-     */
-    public void setChild(ExecutableIdentifier child) {
-        this.child = child;
     }
 
     /**
@@ -58,9 +50,10 @@ public class NotConditionIdentifier implements ExecutableIdentifier {
      *
      * @param executor This the object which is responsible for
      *                 executing each identifier and generate the page content in-order
-     * @param out The output will be written to this writer
+     * @param out      The output will be written to this writer
      */
     public void accept(Executor executor, Writer out) {
+
         executor.execute(this, out);
     }
 
@@ -70,6 +63,7 @@ public class NotConditionIdentifier implements ExecutableIdentifier {
      * @return Text identified before this not condition identifier
      */
     public String getText() {
+
         return prependText;
     }
 
@@ -79,6 +73,7 @@ public class NotConditionIdentifier implements ExecutableIdentifier {
      * @return Not condition variable name
      */
     public String getIdentifierName() {
+
         return identifierName;
     }
 
@@ -88,7 +83,18 @@ public class NotConditionIdentifier implements ExecutableIdentifier {
      * @return Child identifiers
      */
     public ExecutableIdentifier getChild() {
+
         return child;
+    }
+
+    /**
+     * Setter to set the child identifier to the not condition identifier
+     *
+     * @param child Child identifiers of the not condition block
+     */
+    public void setChild(ExecutableIdentifier child) {
+
+        this.child = child;
     }
 
     /**
@@ -96,9 +102,10 @@ public class NotConditionIdentifier implements ExecutableIdentifier {
      *
      * @param executor This the object which is responsible for
      *                 executing each identifier and generate the page content in-order
-     * @param out The output will be written to this writer
+     * @param out      The output will be written to this writer
      */
     public void acceptChild(Executor executor, Writer out) {
+
         child.accept(executor, out);
     }
 

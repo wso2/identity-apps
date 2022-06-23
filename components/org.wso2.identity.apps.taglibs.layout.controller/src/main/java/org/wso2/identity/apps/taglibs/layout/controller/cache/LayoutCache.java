@@ -56,6 +56,7 @@ public class LayoutCache {
      * Initialize the layout cache, Other classes can't initialize this class
      */
     private LayoutCache() {
+
         cachingProvider =
                 Caching.getCachingProvider("org.ehcache.jsr107.EhcacheCachingProvider");
 
@@ -66,7 +67,7 @@ public class LayoutCache {
                 new DefaultPersistenceConfiguration(
                         new File(
                                 System.getProperty("java.io.tmpdir"),
-                                Constant.LAYOUT_CACHE_STORE_DIRECTORY_NAME + "-" + UUID.randomUUID().toString()
+                                Constant.LAYOUT_CACHE_STORE_DIRECTORY_NAME + "-" + UUID.randomUUID()
                         )
                 )
         );
@@ -77,7 +78,7 @@ public class LayoutCache {
                 Constant.LAYOUT_CACHE_NAME,
                 String.class,
                 ExecutableIdentifier.class
-        );
+                                     );
 
         if (cache == null) {
             cache = cacheManager.createCache("layouts",
@@ -90,9 +91,9 @@ public class LayoutCache {
                                             .offheap(Constant.LAYOUT_CACHE_OFF_HEAP_SIZE, MemoryUnit.MB)
                                             .disk(Constant.LAYOUT_CACHE_DISK_SIZE, MemoryUnit.GB, true)
                                             .build()
-                            )
-                    )
-            );
+                                                                                  )
+                                                                    )
+                                            );
         }
     }
 
@@ -100,6 +101,7 @@ public class LayoutCache {
      * Get the instance of the LayoutCache using singleton method
      */
     public static LayoutCache getInstance() {
+
         if (instance == null) {
             synchronized (LayoutCache.class) {
                 if (instance == null) {
@@ -118,6 +120,7 @@ public class LayoutCache {
      * @param layoutFile Layout file path as a URL object
      */
     public ExecutableIdentifier getLayout(String layoutName, URL layoutFile) {
+
         ExecutableIdentifier compiledLayout;
 
         if (!cache.containsKey(layoutName)) {
@@ -135,6 +138,7 @@ public class LayoutCache {
      * Close all resources
      */
     public void close() {
+
         cache.close();
         cacheManager.close();
         ehcacheProvider.close();
