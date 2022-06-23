@@ -209,10 +209,10 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
      * @param {string} filter - Search query.
      */
     const getOrganizationLists = useCallback(
-        (limit?: number, filter?: string, after?: string, before?: string): void => {
+        (limit?: number, filter?: string, after?: string, before?: string, recursive?: boolean): void => {
             setOrganizationListRequestLoading(true);
 
-            getOrganizations(filter, limit, after, before)
+            getOrganizations(filter, limit, after, before, true)
                 .then((response: OrganizationListInterface) => {
                     handleNextButtonVisibility(response);
                     setOrganizationList(response);
