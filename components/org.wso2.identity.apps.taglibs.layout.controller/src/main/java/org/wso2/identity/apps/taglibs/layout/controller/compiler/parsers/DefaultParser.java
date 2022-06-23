@@ -135,7 +135,8 @@ public class DefaultParser implements Parser {
                 } else if ((currentIdentifierName = context.matcher.group(4)) != null) {
                     if (!identifierName.trim().equals(currentIdentifierName.trim())) {
                         throw new IllegalStateException(
-                                "Layout file is not correctly written, make sure to place closing tags in correct place: " +
+                                "Layout file is not correctly written, " +
+                                        "make sure to place closing tags in correct place: " +
                                         currentIdentifierName);
                     }
                     if (context.textKeeper != null) {
