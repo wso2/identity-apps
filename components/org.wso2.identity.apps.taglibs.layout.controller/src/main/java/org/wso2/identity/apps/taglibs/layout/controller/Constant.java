@@ -19,7 +19,7 @@
 package org.wso2.identity.apps.taglibs.layout.controller;
 
 /**
- * All constants related to the layout controlling function
+ * All constants related to the layout controlling function.
  */
 public class Constant {
 
@@ -29,6 +29,6 @@ public class Constant {
     public static final String LAYOUT_CACHE_NAME = "layouts";
     public static final String LAYOUT_CACHE_STORE_DIRECTORY_NAME = "layouts";
     public static final int LAYOUT_CACHE_HEAP_ENTRIES = 20;
-    public static final int LAYOUT_CACHE_OFF_HEAP_SIZE = 10; // Unit is MB
-    public static final int LAYOUT_CACHE_DISK_SIZE = 1; // Unit is GB
+    public static final int LAYOUT_CACHE_OFF_HEAP_SIZE = 10; // Unit is MB.
+    public static final int LAYOUT_CACHE_DISK_SIZE = 1; // Unit is GB.
 }

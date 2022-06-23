@@ -29,69 +29,69 @@ import java.io.Serializable;
 import java.io.Writer;
 
 /**
- * Executor class interface
+ * Executor class interface.
  */
 public interface Executor extends Serializable {
 
     /**
-     * Check whether the compiled layout execution can continue or not
+     * Check whether the compiled layout execution can continue or not.
      *
-     * @return Whether the compiled layout execution can continue or not
+     * @return Whether the compiled layout execution can continue or not.
      */
     boolean continueExecution();
 
     /**
-     * Get the current executing index of the compiled layout
+     * Get the current executing index of the compiled layout.
      *
-     * @return current executing index
+     * @return current executing index.
      */
     int getCurrentExecutionIndex();
 
     /**
-     * Execute the provided default identifier
+     * Execute the provided default identifier.
      *
-     * @param identifier Default identifier (Set of identifiers)
-     * @param out        The output will be written to this writer
+     * @param identifier Default identifier (Set of identifiers).
+     * @param out        The output will be written to this writer.
      */
     void execute(DefaultIdentifier identifier, Writer out);
 
     /**
-     * Execute the provided component identifier
+     * Execute the provided component identifier.
      *
-     * @param identifier Component identifier
-     * @param out        The output will be written to this writer
+     * @param identifier Component identifier.
+     * @param out        The output will be written to this writer.
      */
     void execute(ComponentIdentifier identifier, Writer out);
 
     /**
-     * Execute the provided data identifier
+     * Execute the provided data identifier.
      *
-     * @param identifier Data identifier
-     * @param out        The output will be written to this writer
+     * @param identifier Data identifier.
+     * @param out        The output will be written to this writer.
      */
     void execute(DataIdentifier identifier, Writer out);
 
     /**
-     * Execute the provided condition identifier
+     * Execute the provided condition identifier.
      *
-     * @param identifier Condition identifier
-     * @param out        The output will be written to this writer
+     * @param identifier Condition identifier.
+     * @param out        The output will be written to this writer.
      */
     void execute(ConditionIdentifier identifier, Writer out);
 
     /**
-     * Execute the provided not condition identifier
+     * Execute the provided not condition identifier.
      *
-     * @param identifier Not condition identifier
-     * @param out        The output will be written to this writer
+     * @param identifier Not condition identifier.
+     * @param out        The output will be written to this writer.
      */
     void execute(NotConditionIdentifier identifier, Writer out);
 
     /**
-     * Execute the provided no identifier
+     * Execute the provided no identifier.
      *
-     * @param identifier No identifier
-     * @param out        The output will be written to this writer
+     * @param identifier No identifier.
+     * @param out        The output will be written to this writer.
      */
     void execute(NoIdentifier identifier, Writer out);
 

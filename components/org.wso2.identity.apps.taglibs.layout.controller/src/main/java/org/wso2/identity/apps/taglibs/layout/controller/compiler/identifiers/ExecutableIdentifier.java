@@ -24,16 +24,16 @@ import java.io.Serializable;
 import java.io.Writer;
 
 /**
- * Interface of the identifiers
+ * Interface of the identifiers.
  */
 public interface ExecutableIdentifier extends Serializable {
 
     /**
-     * Entry point to execute the current identifier
+     * Entry point to execute the current identifier.
      *
      * @param executor This the object which is responsible for
-     *                 executing each identifier and generate the page content in-order
-     * @param out      The output will be written to this writer
+     *                 executing each identifier and generate the page content in-order.
+     * @param out      The output will be written to this writer.
      */
     void accept(Executor executor, Writer out);
 

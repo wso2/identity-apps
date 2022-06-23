@@ -33,8 +33,8 @@ import java.util.ArrayList;
 import java.util.Map;
 
 /**
- * Implementation of the executor interface
- * Execute the compiled layout file
+ * Implementation of the executor interface.
+ * Execute the compiled layout file.
  */
 public class DefaultExecutor implements Executor {
 
@@ -46,9 +46,9 @@ public class DefaultExecutor implements Executor {
     private boolean activeComponentExecution;
 
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param data All data required to execute the layout file
+     * @param data All data required to execute the layout file.
      */
     public DefaultExecutor(Map<String, Object> data) {
 
@@ -60,7 +60,7 @@ public class DefaultExecutor implements Executor {
     }
 
     /**
-     * Start the next iteration level (Block level)
+     * Start the next iteration level (Block level).
      */
     private void nextIterationLevel() {
 
@@ -71,7 +71,7 @@ public class DefaultExecutor implements Executor {
     }
 
     /**
-     * Remove the completed iteration level (Block level)
+     * Remove the completed iteration level (Block level).
      */
     private void removeIteration() {
 
@@ -80,7 +80,7 @@ public class DefaultExecutor implements Executor {
     }
 
     /**
-     * Move into next identifier
+     * Move into next identifier.
      */
     private void next() {
 
@@ -88,9 +88,9 @@ public class DefaultExecutor implements Executor {
     }
 
     /**
-     * Set the current running component
+     * Set the current running component.
      *
-     * @param name Name of the component
+     * @param name Name of the component.
      */
     private void setComponent(String name) {
 
@@ -99,7 +99,7 @@ public class DefaultExecutor implements Executor {
     }
 
     /**
-     * Remove the component which was executed
+     * Remove the component which was executed.
      */
     public void deactivateComponent() {
 
@@ -109,9 +109,9 @@ public class DefaultExecutor implements Executor {
     }
 
     /**
-     * Getter to get the component name
+     * Getter to get the component name.
      *
-     * @return Component name
+     * @return Component name.
      */
     public String getComponentName() {
 
@@ -119,9 +119,9 @@ public class DefaultExecutor implements Executor {
     }
 
     /**
-     * Check whether the component execution enabled or not
+     * Check whether the component execution enabled or not.
      *
-     * @return Component execution enabled or not
+     * @return Component execution enabled or not.
      */
     public boolean componentExecutionEnabled() {
 
@@ -129,9 +129,9 @@ public class DefaultExecutor implements Executor {
     }
 
     /**
-     * Check whether the compiled layout execution can continue or not
+     * Check whether the compiled layout execution can continue or not.
      *
-     * @return Whether the compiled layout execution can continue or not
+     * @return Whether the compiled layout execution can continue or not.
      */
     @Override
     public boolean continueExecution() {
@@ -140,9 +140,9 @@ public class DefaultExecutor implements Executor {
     }
 
     /**
-     * Get the current executing index of the compiled layout
+     * Get the current executing index of the compiled layout.
      *
-     * @return current executing index
+     * @return current executing index.
      */
     @Override
     public int getCurrentExecutionIndex() {
@@ -151,10 +151,10 @@ public class DefaultExecutor implements Executor {
     }
 
     /**
-     * Execute the provided default identifier
+     * Execute the provided default identifier.
      *
-     * @param identifier Default identifier (Set of identifiers)
-     * @param out        The output will be written to this writer
+     * @param identifier Default identifier (Set of identifiers).
+     * @param out        The output will be written to this writer.
      */
     @Override
     public void execute(DefaultIdentifier identifier, Writer out) {
@@ -163,10 +163,10 @@ public class DefaultExecutor implements Executor {
     }
 
     /**
-     * Execute the provided component identifier
+     * Execute the provided component identifier.
      *
-     * @param identifier Component identifier
-     * @param out        The output will be written to this writer
+     * @param identifier Component identifier.
+     * @param out        The output will be written to this writer.
      */
     @Override
     public void execute(ComponentIdentifier identifier, Writer out) {
@@ -178,10 +178,10 @@ public class DefaultExecutor implements Executor {
     }
 
     /**
-     * Execute the provided data identifier
+     * Execute the provided data identifier.
      *
-     * @param identifier Data identifier
-     * @param out        The output will be written to this writer
+     * @param identifier Data identifier.
+     * @param out        The output will be written to this writer.
      */
     @Override
     public void execute(DataIdentifier identifier, Writer out) {
@@ -196,10 +196,10 @@ public class DefaultExecutor implements Executor {
     }
 
     /**
-     * Execute the provided condition identifier
+     * Execute the provided condition identifier.
      *
-     * @param identifier Condition identifier
-     * @param out        The output will be written to this writer
+     * @param identifier Condition identifier.
+     * @param out        The output will be written to this writer.
      */
     @Override
     public void execute(ConditionIdentifier identifier, Writer out) {
@@ -229,10 +229,10 @@ public class DefaultExecutor implements Executor {
     }
 
     /**
-     * Execute the provided not condition identifier
+     * Execute the provided not condition identifier.
      *
-     * @param identifier Not condition identifier
-     * @param out        The output will be written to this writer
+     * @param identifier Not condition identifier.
+     * @param out        The output will be written to this writer.
      */
     @Override
     public void execute(NotConditionIdentifier identifier, Writer out) {
@@ -264,10 +264,10 @@ public class DefaultExecutor implements Executor {
     }
 
     /**
-     * Execute the provided no identifier
+     * Execute the provided no identifier.
      *
-     * @param identifier No identifier
-     * @param out        The output will be written to this writer
+     * @param identifier No identifier.
+     * @param out        The output will be written to this writer.
      */
     @Override
     public void execute(NoIdentifier identifier, Writer out) {
@@ -277,11 +277,11 @@ public class DefaultExecutor implements Executor {
     }
 
     /**
-     * Write text content to the output writer
+     * Write text content to the output writer.
      *
-     * @param content Output text
-     * @param encode  Text encode enable or not
-     * @param out     The output will be written to this writer
+     * @param content Output text.
+     * @param encode  Text encode enable or not.
+     * @param out     The output will be written to this writer.
      */
     private void write(String content, boolean encode, Writer out) {
 
@@ -297,7 +297,7 @@ public class DefaultExecutor implements Executor {
     }
 
     /**
-     * Method overloading -> Refer to the above method
+     * Method overloading -> Refer to the above method.
      */
     private void write(String content, Writer out) {
 

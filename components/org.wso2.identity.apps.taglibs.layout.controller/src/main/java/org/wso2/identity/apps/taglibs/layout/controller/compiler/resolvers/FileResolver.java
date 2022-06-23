@@ -29,7 +29,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
 /**
- * File resolver implementation for both local and remote files
+ * File resolver implementation for both local and remote files.
  */
 public class FileResolver implements Resolver {
 
@@ -38,10 +38,10 @@ public class FileResolver implements Resolver {
     private BufferedReader reader = null;
 
     /**
-     * Get the reader to read the layout file
+     * Get the reader to read the layout file.
      *
-     * @param file Layout file path as an URL object
-     * @return Reader to read the layout file
+     * @param file Layout file path as a URL object.
+     * @return Reader to read the layout file.
      */
     @Override
     public Reader getReader(URL file) {
@@ -64,7 +64,7 @@ public class FileResolver implements Resolver {
     }
 
     /**
-     * Close resources related to the reader
+     * Close resources related to the reader.
      */
     @Override
     public void closeResources() {

@@ -23,8 +23,8 @@ import org.wso2.identity.apps.taglibs.layout.controller.compiler.executors.Execu
 import java.io.Writer;
 
 /**
- * No identifier class
- * Use to store text when there is no any identifiers
+ * No identifier class.
+ * Use to store text when there is no any identifiers.
  */
 public class NoIdentifier implements ExecutableIdentifier {
 
@@ -32,9 +32,9 @@ public class NoIdentifier implements ExecutableIdentifier {
     private final String prependText;
 
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param text Text identified without an identifier
+     * @param text Text identified without an identifier.
      */
     public NoIdentifier(String text) {
 
@@ -42,11 +42,11 @@ public class NoIdentifier implements ExecutableIdentifier {
     }
 
     /**
-     * Entry point to execute the current identifier
+     * Entry point to execute the current identifier.
      *
      * @param executor This the object which is responsible for
-     *                 executing each identifier and generate the page content in-order
-     * @param out      The output will be written to this writer
+     *                 executing each identifier and generate the page content in-order.
+     * @param out      The output will be written to this writer.
      */
     public void accept(Executor executor, Writer out) {
 
@@ -54,9 +54,9 @@ public class NoIdentifier implements ExecutableIdentifier {
     }
 
     /**
-     * Getter to get the text identified without identifier
+     * Getter to get the text identified without identifier.
      *
-     * @return Text identified without identifier
+     * @return Text identified without identifier.
      */
     public String getText() {
 

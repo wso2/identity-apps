@@ -29,7 +29,7 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
 
 /**
- * Tag handler class for the "main" tag
+ * Tag handler class for the "main" tag.
  */
 public class MainTagHandler extends TagSupport {
 
@@ -41,16 +41,31 @@ public class MainTagHandler extends TagSupport {
     private String testLayoutFileRelativePath = "";
     private LocalTemplateEngineCacheWithTier engine;
 
+    /**
+     * Set the name of the layout.
+     *
+     * @param layoutName Name of the layout.
+     */
     public void setLayoutName(String layoutName) {
 
         this.layoutName = layoutName;
     }
 
+    /**
+     * Set the layout file relative path.
+     *
+     * @param layoutFileRelativePath Layout file relative path.
+     */
     public void setLayoutFileRelativePath(String layoutFileRelativePath) {
 
         this.layoutFileRelativePath = layoutFileRelativePath;
     }
 
+    /**
+     * Set the map object, consists of data required for the layout.
+     *
+     * @param data Required data for the layout.
+     */
     public void setData(Map<String, Object> data) {
 
         this.data = data;
@@ -67,9 +82,9 @@ public class MainTagHandler extends TagSupport {
     }
 
     /**
-     * This method will execute when the starting point of the "main" tag is reached
+     * This method will execute when the starting point of the "main" tag is reached.
      *
-     * @return int -> SKIP_BODY, EVAL_BODY_INCLUDE, EVAL_BODY_BUFFERED
+     * @return int -> SKIP_BODY, EVAL_BODY_INCLUDE, EVAL_BODY_BUFFERED.
      * @throws JspException
      */
     public int doStartTag() throws JspException {
@@ -85,7 +100,7 @@ public class MainTagHandler extends TagSupport {
                     pageContext.getServletContext().getResource(testLayoutFileRelativePath)
                           );
         } catch (MalformedURLException e) {
-            throw new JspException("Can't create a URL to the given relative paath", e);
+            throw new JspException("Can't create a URL to the given relative path", e);
         }
 
         if (engine.executor.componentExecutionEnabled()) {
@@ -98,9 +113,9 @@ public class MainTagHandler extends TagSupport {
     }
 
     /**
-     * This method will execute after each body execution of the "main" tag
+     * This method will execute after each body execution of the "main" tag.
      *
-     * @return int -> EVAL_BODY_AGAIN, SKIP_BODY
+     * @return int -> EVAL_BODY_AGAIN, SKIP_BODY.
      * @throws JspException
      */
     public int doAfterBody() throws JspException {
@@ -115,7 +130,7 @@ public class MainTagHandler extends TagSupport {
                     pageContext.getServletContext().getResource(testLayoutFileRelativePath)
                           );
         } catch (MalformedURLException e) {
-            throw new JspException("Can't create a URL to the given relative paath", e);
+            throw new JspException("Can't create a URL to the given relative path", e);
         }
 
         if (engine.executor.componentExecutionEnabled()) {
@@ -129,7 +144,7 @@ public class MainTagHandler extends TagSupport {
     }
 
     /**
-     * Release the resource for speedup the garbage collection
+     * Release the resource for speedup the garbage collection.
      */
     public void release() {
 

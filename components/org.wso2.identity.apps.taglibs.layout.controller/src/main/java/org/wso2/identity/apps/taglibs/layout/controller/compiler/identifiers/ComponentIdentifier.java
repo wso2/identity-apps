@@ -23,7 +23,7 @@ import org.wso2.identity.apps.taglibs.layout.controller.compiler.executors.Execu
 import java.io.Writer;
 
 /**
- * Component identifier class -> {{{nameOfTheComponent}}}
+ * Component identifier class -> {{{nameOfTheComponent}}}.
  */
 public class ComponentIdentifier implements ExecutableIdentifier {
 
@@ -32,10 +32,10 @@ public class ComponentIdentifier implements ExecutableIdentifier {
     private final String prependText;
 
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param identifierName Name of the component
-     * @param text           Text identified before this component identifier
+     * @param identifierName Name of the component.
+     * @param text           Text identified before this component identifier.
      */
     public ComponentIdentifier(String identifierName, String text) {
 
@@ -44,11 +44,11 @@ public class ComponentIdentifier implements ExecutableIdentifier {
     }
 
     /**
-     * Entry point to execute the current identifier
+     * Entry point to execute the current identifier.
      *
      * @param executor This the object which is responsible for
-     *                 executing each identifier and generate the page content in-order
-     * @param out      The output will be written to this writer
+     *                 executing each identifier and generate the page content in-order.
+     * @param out      The output will be written to this writer.
      */
     public void accept(Executor executor, Writer out) {
 
@@ -56,9 +56,9 @@ public class ComponentIdentifier implements ExecutableIdentifier {
     }
 
     /**
-     * Getter to get the text identified before this component identifier
+     * Getter to get the text identified before this component identifier.
      *
-     * @return Text identified before this component identifier
+     * @return Text identified before this component identifier.
      */
     public String getText() {
 
@@ -66,9 +66,9 @@ public class ComponentIdentifier implements ExecutableIdentifier {
     }
 
     /**
-     * Getter to get the component name
+     * Getter to get the component name.
      *
-     * @return Component name
+     * @return Component name.
      */
     public String getIdentifierName() {
 

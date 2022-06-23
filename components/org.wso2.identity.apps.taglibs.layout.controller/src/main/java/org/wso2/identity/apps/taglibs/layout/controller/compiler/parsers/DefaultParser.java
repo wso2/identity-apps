@@ -37,21 +37,21 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * The default parser, use to compile the layout file
+ * The default parser, use to compile the layout file.
  */
 public class DefaultParser implements Parser {
 
     private final Pattern pattern = Pattern.compile(
             "\\{\\{([-_a-zA-Z0-9]+)\\}\\}|"
-                    + "\\{\\{\\{([-_a-zA-Z0-9]+)\\}\\}\\}|"
-                    + "\\{\\{#([-_a-zA-Z0-9]+)\\}\\}|"
-                    + "\\{\\{/([-_a-zA-Z0-9]+)\\}\\}|"
-                    + "\\{\\{\\^([-_a-zA-Z0-9]+)\\}\\}"
-                                                   );
+            + "\\{\\{\\{([-_a-zA-Z0-9]+)\\}\\}\\}|"
+            + "\\{\\{#([-_a-zA-Z0-9]+)\\}\\}|"
+            + "\\{\\{/([-_a-zA-Z0-9]+)\\}\\}|"
+            + "\\{\\{\\^([-_a-zA-Z0-9]+)\\}\\}"
+    );
     private final Resolver resolver;
 
     /**
-     * Constructor
+     * Constructor.
      */
     public DefaultParser() {
 
@@ -59,9 +59,9 @@ public class DefaultParser implements Parser {
     }
 
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param resolver File resolver to read the layout file
+     * @param resolver File resolver to read the layout file.
      */
     public DefaultParser(Resolver resolver) {
 
@@ -69,10 +69,10 @@ public class DefaultParser implements Parser {
     }
 
     /**
-     * Execute the layout file and create a compiled layout file as a object
+     * Execute the layout file and create a compiled layout file as an object.
      *
-     * @param file File path for the layout as an URL object
-     * @return Compiled layout file
+     * @param file File path for the layout as a URL object.
+     * @return Compiled layout file.
      */
     @Override
     public ExecutableIdentifier compile(URL file) {
@@ -86,13 +86,13 @@ public class DefaultParser implements Parser {
     }
 
     /**
-     * Recursive compiling fucntion to compile the layout file
+     * Recursive compiling function to compile the layout file.
      *
-     * @param reader         BufferedReader to read the layout file
-     * @param context        Compiling context
+     * @param reader         BufferedReader to read the layout file.
+     * @param context        Compiling context.
      * @param identifierName Name of the recently identified block identifier
-     *                       (Ex:- ConditionIdentifier, NotConditionIdentifier)
-     * @return Compiled layout file or block of identifiers
+     *                       (Ex:- ConditionIdentifier, NotConditionIdentifier).
+     * @return Compiled layout file or block of identifiers.
      */
     private ExecutableIdentifier compile(BufferedReader reader, CompileContext context, String identifierName) {
 
@@ -235,10 +235,10 @@ public class DefaultParser implements Parser {
     }
 
     /**
-     * Create the final compiled version of the layout file
+     * Create the final compiled version of the layout file.
      *
-     * @param allIdentifiers Array of identifiers
-     * @return All identifiers as a single object
+     * @param allIdentifiers Array of identifiers.
+     * @return All identifiers as a single object.
      */
     private ExecutableIdentifier createCompiledObject(ArrayList<ExecutableIdentifier> allIdentifiers) {
 
@@ -246,11 +246,11 @@ public class DefaultParser implements Parser {
     }
 
     /**
-     * Read a new line from the layout file
+     * Read a new line from the layout file.
      *
-     * @param reader  BufferedReader to read the layout file
-     * @param context Compiling context
-     * @return Whether is there new line to read
+     * @param reader  BufferedReader to read the layout file.
+     * @param context Compiling context.
+     * @return Whether is there new line to read.
      */
     private boolean readLine(BufferedReader reader, CompileContext context) {
 
@@ -266,7 +266,7 @@ public class DefaultParser implements Parser {
     }
 
     /**
-     * The inner class, use to keep the data required to compiling process
+     * The inner class, use to keep the data required to compiling process.
      */
     private static class CompileContext {
 

@@ -23,15 +23,15 @@ import org.wso2.identity.apps.taglibs.layout.controller.compiler.identifiers.Exe
 import java.net.URL;
 
 /**
- * Interface of the parser class
+ * Interface of the parser class.
  */
 public interface Parser {
 
     /**
-     * Execute the layout file and create a compiled layout file as a object
+     * Execute the layout file and create a compiled layout file as an object.
      *
-     * @param file File path for the layout as an URL object
-     * @return Compiled layout file
+     * @param file File path for the layout as a URL object.
+     * @return Compiled layout file.
      */
     ExecutableIdentifier compile(URL file);
 

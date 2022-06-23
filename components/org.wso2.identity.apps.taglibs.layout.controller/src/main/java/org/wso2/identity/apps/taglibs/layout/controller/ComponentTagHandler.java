@@ -22,22 +22,27 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
 
 /**
- * Tag handler class for the "component" tag
+ * Tag handler class for the "component" tag.
  */
 public class ComponentTagHandler extends TagSupport {
 
     private static final long serialVersionUID = 3133927426104147501L;
-    private String name;
+    private String componentName;
 
-    public void setName(String name) {
+    /**
+     * Set the given component name.
+     *
+     * @param componentName Name of the component.
+     */
+    public void setComponentName(String componentName) {
 
-        this.name = name;
+        this.componentName = componentName;
     }
 
     /**
-     * This method will execute when the starting point of the "component" tag is reached
+     * This method will execute when the starting point of the "component" tag is reached.
      *
-     * @return int -> SKIP_BODY, EVAL_BODY_INCLUDE, EVAL_BODY_BUFFERED
+     * @return int -> SKIP_BODY, EVAL_BODY_INCLUDE, EVAL_BODY_BUFFERED.
      * @throws JspException
      */
     public int doStartTag() throws JspException {
@@ -48,7 +53,7 @@ public class ComponentTagHandler extends TagSupport {
             return SKIP_BODY;
         }
 
-        if (currentComponentName.equals(name)) {
+        if (currentComponentName.equals(componentName)) {
             pageContext.removeAttribute(Constant.COMPONENT_NAME_STORING_VAR);
             return EVAL_BODY_INCLUDE;
         } else {
@@ -57,11 +62,11 @@ public class ComponentTagHandler extends TagSupport {
     }
 
     /**
-     * Release the resource for speedup the garbage collection
+     * Release the resource for speedup the garbage collection.
      */
     public void release() {
 
-        name = null;
+        componentName = null;
         super.release();
     }
 

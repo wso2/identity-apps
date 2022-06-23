@@ -22,20 +22,20 @@ import java.io.Reader;
 import java.net.URL;
 
 /**
- * Resolver interface to read the layout file
+ * Resolver interface to read the layout file.
  */
 public interface Resolver {
 
     /**
-     * Get the reader to read the layout file
+     * Get the reader to read the layout file.
      *
-     * @param file Layout file path as an URL object
-     * @return Reader to read the layout file
+     * @param file Layout file path as a URL object.
+     * @return Reader to read the layout file.
      */
     Reader getReader(URL file);
 
     /**
-     * Close resources related to the reader
+     * Close resources related to the reader.
      */
     void closeResources();
 

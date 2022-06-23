@@ -23,7 +23,7 @@ import org.wso2.identity.apps.taglibs.layout.controller.compiler.executors.Execu
 import java.io.Writer;
 
 /**
- * Condition identifier class -> {{{#nameOfTheConditionVariable}}}
+ * Condition identifier class -> {{{#nameOfTheConditionVariable}}}.
  */
 public class ConditionIdentifier implements ExecutableIdentifier {
 
@@ -33,10 +33,10 @@ public class ConditionIdentifier implements ExecutableIdentifier {
     private ExecutableIdentifier child;
 
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param identifierName Name of the condition variable
-     * @param text           Text identified before this condition identifier
+     * @param identifierName Name of the condition variable.
+     * @param text           Text identified before this condition identifier.
      */
     public ConditionIdentifier(String identifierName, String text) {
 
@@ -46,11 +46,11 @@ public class ConditionIdentifier implements ExecutableIdentifier {
     }
 
     /**
-     * Entry point to execute the current identifier
+     * Entry point to execute the current identifier.
      *
      * @param executor This the object which is responsible for
-     *                 executing each identifier and generate the page content in-order
-     * @param out      The output will be written to this writer
+     *                 executing each identifier and generate the page content in-order.
+     * @param out      The output will be written to this writer.
      */
     public void accept(Executor executor, Writer out) {
 
@@ -58,9 +58,9 @@ public class ConditionIdentifier implements ExecutableIdentifier {
     }
 
     /**
-     * Getter to get the text identified before this condition identifier
+     * Getter to get the text identified before this condition identifier.
      *
-     * @return Text identified before this condition identifier
+     * @return Text identified before this condition identifier.
      */
     public String getText() {
 
@@ -68,9 +68,9 @@ public class ConditionIdentifier implements ExecutableIdentifier {
     }
 
     /**
-     * Getter to get the condition variable name
+     * Getter to get the condition variable name.
      *
-     * @return Condition variable name
+     * @return Condition variable name.
      */
     public String getIdentifierName() {
 
@@ -78,9 +78,9 @@ public class ConditionIdentifier implements ExecutableIdentifier {
     }
 
     /**
-     * Getter to get the child identifiers
+     * Getter to get the child identifiers.
      *
-     * @return Child identifiers
+     * @return Child identifiers.
      */
     public ExecutableIdentifier getChild() {
 
@@ -88,9 +88,9 @@ public class ConditionIdentifier implements ExecutableIdentifier {
     }
 
     /**
-     * Setter to set the child identifier to the condition identifier
+     * Setter to set the child identifier to the condition identifier.
      *
-     * @param child Child identifiers of the condition block
+     * @param child Child identifiers of the condition block.
      */
     public void setChild(ExecutableIdentifier child) {
 
@@ -98,11 +98,11 @@ public class ConditionIdentifier implements ExecutableIdentifier {
     }
 
     /**
-     * Entry point to execute the child identifier
+     * Entry point to execute the child identifier.
      *
      * @param executor This the object which is responsible for
-     *                 executing each identifier and generate the page content in-order
-     * @param out      The output will be written to this writer
+     *                 executing each identifier and generate the page content in-order.
+     * @param out      The output will be written to this writer.
      */
     public void acceptChild(Executor executor, Writer out) {
 
