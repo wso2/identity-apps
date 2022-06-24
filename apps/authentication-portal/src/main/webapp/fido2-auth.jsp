@@ -24,6 +24,7 @@
 
 <%@include file="includes/localize.jsp" %>
 <%@include file="includes/init-url.jsp" %>
+<jsp:directive.include file="extensions/branding-preferences.jsp"/>
 <jsp:directive.include file="includes/layout-resolver.jsp"/>
 
 <%
