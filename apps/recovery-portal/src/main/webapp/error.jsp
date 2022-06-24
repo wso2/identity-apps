@@ -28,9 +28,7 @@
 <%@ page import="java.net.URISyntaxException" %>
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 <jsp:directive.include file="includes/localize.jsp"/>
-
-<!-- Branding Preferences -->
-<jsp:directive.include file="extensions/branding-preferences.jsp"/>
+<jsp:directive.include file="includes/layout-resolver.jsp"/>
 
 <%
     String errorMsg = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("errorMsg"));
@@ -68,7 +66,7 @@
 
 <%-- Data for the layout from the page --%>
 <%
-    layoutData.put("isLargeContainer", true);
+    layoutData.put("containerSize", "large");
 %>
 
 <!doctype html>
@@ -86,7 +84,7 @@
 </head>
 <body class="login-portal layout recovery-layout">
     <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
-        <layout:component name="ProductHeader" >
+        <layout:component componentName="ProductHeader" >
             <!-- product-title -->
             <%
                 File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
@@ -97,7 +95,7 @@
             <jsp:include page="includes/product-title.jsp"/>
             <% } %>
         </layout:component>
-        <layout:component name="MainSection" >
+        <layout:component componentName="MainSection" >
             <div class="ui segment">
                 <div class="segment-form">
                     <div class="ui visible negative message" id="server-error-code">
@@ -124,7 +122,7 @@
                 </div>
             </div>
         </layout:component>
-        <layout:component name="ProductFooter" >
+        <layout:component componentName="ProductFooter" >
             <!-- product-footer -->
             <%
                 File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
