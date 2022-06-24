@@ -27,11 +27,9 @@
 <%@ page import="org.wso2.carbon.identity.core.util.IdentityTenantUtil" %>
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 
-<!-- Branding Preferences -->
-<jsp:directive.include file="extensions/branding-preferences.jsp"/>
-
 <jsp:directive.include file="includes/localize.jsp"/>
 <jsp:directive.include file="tenant-resolve.jsp"/>
+<jsp:directive.include file="includes/layout-resolver.jsp"/>
 
 <%
     boolean error = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("error"));
@@ -63,6 +61,11 @@
     }
 %>
 
+<%-- Data for the layout from the page --%>
+<%
+    layoutData.put("containerSize", "medium");
+%>
+
 <html>
     <head>
         <!-- header -->
@@ -82,7 +85,7 @@
 
     <body class="login-portal layout recovery-layout">
         <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
-            <layout:component name="ProductHeader" >
+            <layout:component componentName="ProductHeader" >
                 <!-- product-title -->
                 <%
                     File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
@@ -93,7 +96,7 @@
                 <jsp:include page="includes/product-title.jsp"/>
                 <% } %>
             </layout:component>
-            <layout:component name="MainSection" >
+            <layout:component componentName="MainSection" >
                 <div class="ui segment">
                     <!-- page content -->
                     <div class="segment-form">
@@ -157,7 +160,7 @@
                     </div>
                 </div>
             </layout:component>
-            <layout:component name="ProductFooter" >
+            <layout:component componentName="ProductFooter" >
                 <!-- product-footer -->
                 <%
                     File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));

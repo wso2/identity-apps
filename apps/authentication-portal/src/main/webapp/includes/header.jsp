@@ -20,7 +20,7 @@
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
 <%@ page import="java.io.File" %>
 
-<jsp:directive.include file="../includes/layout-resolver.jsp"/>
+<jsp:directive.include file="layout-resolver.jsp"/>
 
 <!-- Extract the name of the stylesheet-->
 <%
