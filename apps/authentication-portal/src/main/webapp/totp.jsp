@@ -26,11 +26,9 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 
-<!-- Branding Preferences -->
-<jsp:directive.include file="extensions/branding-preferences.jsp"/>
-
 <%@ include file="includes/localize.jsp" %>
 <%@ include file="includes/init-url.jsp" %>
+<jsp:directive.include file="includes/layout-resolver.jsp"/>
 
 <%
     request.getSession().invalidate();
@@ -58,6 +56,12 @@
         }
     }
 %>
+
+<%-- Data for the layout from the page --%>
+<%
+    layoutData.put("containerSize", "medium");
+%>
+
 <html>
     <head>
         <!-- header -->
@@ -125,7 +129,7 @@
         <% } %>
 
         <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
-            <layout:component name="ProductHeader" >
+            <layout:component componentName="ProductHeader" >
                 <!-- product-title -->
                 <%
                     File productTitleFile = new File(getServletContext()
@@ -137,7 +141,7 @@
                 <jsp:include page="includes/product-title.jsp"/>
                 <% } %>
             </layout:component>
-            <layout:component name="MainSection" >
+            <layout:component componentName="MainSection" >
                 <div class="ui segment">
                     <!-- page content -->
                     <h2><%=AuthenticationEndpointUtil.i18n(resourceBundle, "auth.totp")%></h2>
@@ -199,7 +203,7 @@
                         %>
                 </div>
             </layout:component>
-            <layout:component name="ProductFooter" >
+            <layout:component componentName="ProductFooter" >
                 <!-- product-footer -->
                 <%
                     File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));

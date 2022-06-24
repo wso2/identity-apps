@@ -27,12 +27,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 
-<!-- Branding Preferences -->
-<jsp:directive.include file="extensions/branding-preferences.jsp"/>
-
 <%@include file="includes/localize.jsp" %>
 <jsp:directive.include file="includes/init-url.jsp"/>
 <jsp:directive.include file="includes/template-mapper.jsp"/>
+<jsp:directive.include file="includes/layout-resolver.jsp"/>
 
 <%@ taglib prefix="e" uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -57,6 +55,11 @@
     String templatePath = templateMap.get(templateId);
 %>
 
+<%-- Data for the layout from the page --%>
+<%
+    layoutData.put("containerSize", "medium");
+%>
+
 <!doctype html>
 <html>
 <head>
@@ -77,7 +80,7 @@
 </head>
 <body class="login-portal layout authentication-portal-layout">
     <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
-        <layout:component name="ProductHeader" >
+        <layout:component componentName="ProductHeader" >
             <!-- product-title -->
             <%
                 File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
@@ -88,7 +91,7 @@
                 <jsp:include page="includes/product-title.jsp"/>
             <% } %>
         </layout:component>
-        <layout:component name="MainSection" >
+        <layout:component componentName="MainSection" >
             <div class="ui segment">
                 <%
                     if (templatePath != null) {
@@ -111,7 +114,7 @@
                 <% } %>
             </div>
         </layout:component>
-        <layout:component name="ProductFooter" >
+        <layout:component componentName="ProductFooter" >
             <!-- product-footer -->
             <%
                 File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));

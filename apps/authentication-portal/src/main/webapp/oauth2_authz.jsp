@@ -33,16 +33,19 @@
 <%@ page import="java.util.Set" %>
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 
-<!-- Branding Preferences -->
-<jsp:directive.include file="extensions/branding-preferences.jsp"/>
-
 <%@include file="includes/localize.jsp" %>
 <%@include file="includes/init-url.jsp" %>
+<jsp:directive.include file="includes/layout-resolver.jsp"/>
 
 <%
     String app = request.getParameter("application");
     String scopeString = request.getParameter("scope");
     boolean displayScopes = Boolean.parseBoolean(getServletContext().getInitParameter("displayScopes"));
+%>
+
+<%-- Data for the layout from the page --%>
+<%
+    layoutData.put("containerSize", "medium");
 %>
 
 <!doctype html>
@@ -67,7 +70,7 @@
     <% } %>
 
     <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
-        <layout:component name="ProductHeader" >
+        <layout:component componentName="ProductHeader" >
             <!-- product-title -->
             <%
                 File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
@@ -78,7 +81,7 @@
                 <jsp:include page="includes/product-title.jsp"/>
             <% } %>
         </layout:component>
-        <layout:component name="MainSection" >
+        <layout:component componentName="MainSection" >
             <div class="ui segment">
                 <form class="ui large form" action="<%=oauth2AuthorizeURL%>" method="post" id="profile"
                       name="oauth2_authz">
@@ -188,7 +191,7 @@
                 </form>
             </div>
         </layout:component>
-        <layout:component name="ProductFooter" >
+        <layout:component componentName="ProductFooter" >
             <!-- product-footer -->
             <%
                 File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));

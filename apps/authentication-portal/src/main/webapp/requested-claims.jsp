@@ -22,11 +22,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 
-<!-- Branding Preferences -->
-<jsp:directive.include file="extensions/branding-preferences.jsp"/>
-
 <%@ include file="includes/localize.jsp" %>
 <%@ include file="includes/init-url.jsp" %>
+<jsp:directive.include file="includes/layout-resolver.jsp"/>
 
 <%
     String[] missingClaimList = null;
@@ -38,6 +36,11 @@
     if (request.getParameter(Constants.REQUEST_PARAM_SP) != null) {
         appName = request.getParameter(Constants.REQUEST_PARAM_SP);
     }
+%>
+
+<%-- Data for the layout from the page --%>
+<%
+    layoutData.put("containerSize", "medium");
 %>
 
 <!doctype html>
@@ -66,7 +69,7 @@
     <% } %>
 
     <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
-        <layout:component name="ProductHeader" >
+        <layout:component componentName="ProductHeader" >
             <!-- product-title -->
             <%
                 File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
@@ -77,7 +80,7 @@
                 <jsp:include page="includes/product-title.jsp"/>
             <% } %>
         </layout:component>
-        <layout:component name="MainSection" >
+        <layout:component componentName="MainSection" >
             <div class="ui segment">
                 <h3 class="ui header" data-testid="request-claims-page-mandatory-header-text">
                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "provide.mandatory.details")%>
@@ -170,7 +173,7 @@
                 </form>
             </div>
         </layout:component>
-        <layout:component name="ProductFooter" >
+        <layout:component componentName="ProductFooter" >
             <!-- product-footer -->
             <%
                 File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));

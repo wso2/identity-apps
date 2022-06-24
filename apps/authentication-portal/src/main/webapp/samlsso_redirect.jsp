@@ -24,10 +24,8 @@
 <%@ page import="java.io.File" %>
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 
-<!-- Branding Preferences -->
-<jsp:directive.include file="extensions/branding-preferences.jsp"/>
-
 <%@include file="includes/localize.jsp" %>
+<jsp:directive.include file="includes/layout-resolver.jsp"/>
 
 <%
     String assertionConsumerURL = (String) request.getAttribute(Constants.SAML2SSO.ASSERTION_CONSUMER_URL);
@@ -39,6 +37,11 @@
         relayState = relayState.replaceAll("&", "&amp;").replaceAll("\"", "&quot;").replaceAll("'", "&apos;").
                 replaceAll("<", "&lt;").replaceAll(">", "&gt;").replace("\n", "");
     }
+%>
+
+<%-- Data for the layout from the page --%>
+<%
+    layoutData.put("containerSize", "large");
 %>
 
 <!doctype html>
@@ -56,7 +59,7 @@
 </head>
 <body class="login-portal layout authentication-portal-layout">
     <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
-        <layout:component name="ProductHeader" >
+        <layout:component componentName="ProductHeader" >
             <!-- product-title -->
             <%
                 File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
@@ -67,7 +70,7 @@
                 <jsp:include page="includes/product-title.jsp"/>
             <% } %>
         </layout:component>
-        <layout:component name="MainSection" >
+        <layout:component componentName="MainSection" >
             <div class="ui segment">
                 <p><%=AuthenticationEndpointUtil.i18n(resourceBundle, "you.are.redirected.back.to")%>
                     <%=Encode.forHtmlContent(assertionConsumerURL)%>.
@@ -82,7 +85,7 @@
                 </form>
             </div>
         </layout:component>
-        <layout:component name="ProductFooter" >
+        <layout:component componentName="ProductFooter" >
             <!-- product-footer -->
             <%
                 File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
