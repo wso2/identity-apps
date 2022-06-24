@@ -67,7 +67,7 @@ h6.ui.header .sub.header {
             margin-top: 2px;
             color: @dustyGray;
             text-overflow: ellipsis;
-            white-space: nowrap;
+            white-space: normal;
             overflow: hidden;
         }
 

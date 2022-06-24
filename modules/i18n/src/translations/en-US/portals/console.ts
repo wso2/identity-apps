@@ -7252,6 +7252,57 @@ export const console: ConsoleNS = {
                         message: "This action is irreversible and will remove the organization entirely."
                     }
                 },
+                edit: {
+                    attributes: {
+                        hint: "Configure organization attributes",
+                        key: "Name",
+                        keyRequiredErrorMessage: "Name is required",
+                        value: "Value",
+                        valueRequiredErrorMessage: "Value is required"
+                    },
+                    back: "Back",
+                    dangerZone: {
+                        subHeader: "Are you sure you want to delete this organization?",
+                        title: "Delete Organization"
+                    },
+                    description: "Edit Organization",
+                    fields: {
+                        created: {
+                            ariaLabel: "Created",
+                            label: "Created"
+                        },
+                        description: {
+                            ariaLabel: "Organization Description",
+                            label: "Organization Description",
+                            placeholder: "Enter organization description"
+                        },
+                        domain: {
+                            ariaLabel: "Organization Domain",
+                            label: "Organization Domain"
+                        },
+                        id: {
+                            ariaLabel: "Organization ID",
+                            label: "Organization ID"
+                        },
+                        lastModified: {
+                            ariaLabel: "Last Modified",
+                            label: "Last Modified"
+                        },
+                        name: {
+                            ariaLabel: "Organization Name",
+                            label: "Organization Name",
+                            placeholder: "Enter organization name"
+                        },
+                        type: {
+                            ariaLabel: "Organization Type",
+                            label: "Organization Type"
+                        }
+                    },
+                    tabTitles: {
+                        attributes: "Attributes",
+                        profile: "Profile"
+                    }
+                },
                 forms: {
                     addOrganization:{
                         description: {
@@ -7350,6 +7401,34 @@ export const console: ConsoleNS = {
                         genericError: {
                             description: "An error occurred while getting the organization list",
                             message: "Something went wrong"
+                        }
+                    },
+                    updateOrganization: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error while updating the organization"
+                        },
+                        genericError: {
+                            description: "An error occurred while updating the organization",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Successfully updated the organization",
+                            message: "Organization updated successfully"
+                        }
+                    },
+                    updateOrganizationAttributes: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error while updating the organization attributes"
+                        },
+                        genericError: {
+                            description: "An error occurred while updating the organization attributes",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Successfully updated the organization attributes",
+                            message: "Organization attributes updated successfully"
                         }
                     }
                 },

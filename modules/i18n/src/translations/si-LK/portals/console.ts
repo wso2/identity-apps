@@ -5694,6 +5694,57 @@ export const console: ConsoleNS = {
                         message: "මෙම ක්‍රියාව ආපසු හැරවිය නොහැකි අතර සංවිධානය සම්පූර්ණයෙන්ම ඉවත් කරනු ඇත."
                     }
                 },
+                edit: {
+                    attributes: {
+                        hint: "සංවිධාන ගුණාංග වින්‍යාස කරන්න",
+                        key: "නාමය",
+                        keyRequiredErrorMessage: "නම අවශ්‍යයි",
+                        value: "අගය",
+                        valueRequiredErrorMessage: "අගය අවශ්ය වේ"
+                    },
+                    back: "ආපසු",
+                    dangerZone: {
+                        subHeader: "ඔබට මෙම සංවිධානය මැකීමට අවශ්‍ය බව විශ්වාසද?",
+                        title: "සංවිධානය මකන්න"
+                    },
+                    description: "සංවිධානය සංස්කරණය කරන්න",
+                    fields: {
+                        created: {
+                            ariaLabel: "නිර්මාණය කළ කාලය",
+                            label: "නනිර්මාණය කළ කාලය"
+                        },
+                        description: {
+                            ariaLabel: "සංවිධානයේ විස්තරය",
+                            label: "සංවිධානයේ විස්තරය",
+                            placeholder: "සංවිධානයේ විස්තරය ඇතුළත් කරන්න"
+                        },
+                        domain: {
+                            ariaLabel: "සංවිධාන වසම",
+                            label: "සංවිධාන වසම"
+                        },
+                        id: {
+                            ariaLabel: "සංවිධාන හැඳුනුම්පත",
+                            label: "සංවිධාන හැඳුනුම්පත"
+                        },
+                        lastModified: {
+                            ariaLabel: "අවසන් වරට වෙනස් කළ කාලය",
+                            label: "අවසන් වරට වෙනස් කළ කාලය"
+                        },
+                        name: {
+                            ariaLabel: "සංවිධානයේ නම",
+                            label: "සංවිධානයේ නම",
+                            placeholder: "සංවිධානයේ නම ඇතුළත් කරන්න"
+                        },
+                        type: {
+                            ariaLabel: "සංවිධානයේ වර්ගය",
+                            label: "සංවිධානයේ වර්ගය"
+                        }
+                    },
+                    tabTitles: {
+                        attributes: "ගුණාංග",
+                        profile: "පැතිකඩ"
+                    }
+                },
                 forms: {
                     addOrganization: {
                         description: {
@@ -5792,6 +5843,34 @@ export const console: ConsoleNS = {
                         genericError: {
                             description: "සංවිධාන ලැයිස්තුව ලබා ගැනීමේදී දෝෂයක් ඇති විය",
                             message: "මොකක්හරි වැරැද්දක් වෙලා"
+                        }
+                    },
+                    updateOrganization: {
+                        error: {
+                            description: "{{description}}",
+                            message: "සංවිධානය යාවත්කාලීන කිරීමේදී දෝෂයකි"
+                        },
+                        genericError: {
+                            description: "සංවිධානය යාවත්කාලීන කිරීමේදී දෝෂයක් ඇති විය",
+                            message: "මොකක්හරි වැරැද්දක් වෙලා"
+                        },
+                        success: {
+                            description: "සංවිධානය සාර්ථකව යාවත්කාලීන කරන ලදී",
+                            message: "යාවත්කාලීන සංවිධානය"
+                        }
+                    },
+                    updateOrganizationAttributes: {
+                        error: {
+                            description: "{{description}}",
+                            message: "සංවිධානයේ ගුණාංග යාවත්කාලීන කිරීමේදී දෝෂයකි"
+                        },
+                        genericError: {
+                            description: "සංවිධාන ගුණාංග යාවත්කාලීන කිරීමේදී දෝෂයක් ඇති විය",
+                            message: "මොකක්හරි වැරැද්දක් වෙලා"
+                        },
+                        success: {
+                            description: "සංවිධානයේ උපලක්ෂණ සාර්ථකව යාවත්කාලීන කරන ලදී",
+                            message: "සංවිධානයේ උපලක්ෂණ යාවත්කාලීන කරන ලදී"
                         }
                     }
                 },

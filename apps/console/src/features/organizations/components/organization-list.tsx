@@ -163,19 +163,11 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
      * @param {string} organizationId - Organization id.
      */
     const handleOrganizationEdit = (organizationId: string): void => {
-        if (isSetStrongerAuth) {
-            history.push({
-                pathname: AppConstants.getPaths()
-                    .get("ORGANIZATION_UPDATE")
-                    .replace(":id", organizationId)
-            });
-        } else {
-            history.push({
-                pathname: AppConstants.getPaths()
-                    .get("ORGANIZATION_UPDATE")
-                    .replace(":id", organizationId)
-            });
-        }
+        history.push({
+            pathname: AppConstants.getPaths()
+                .get("ORGANIZATION_UPDATE")
+                .replace(":id", organizationId)
+        });
     };
 
     /**
@@ -259,7 +251,16 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                                 hoverable={ false }
                                 icon={ OrganizationIcon }
                             />
-
+                            { organization.name === "ROOT"
+                               && (< Header.Content >
+                                   <Icon
+                                       className="mr-2 ml-0 vertical-aligned-baseline"
+                                       size="small"
+                                       name="circle"
+                                       color="green"
+                                   />
+                               </Header.Content>)
+                            }
                             <Header.Content>
                                 { organization.name }
                                 <Header.Subheader

@@ -510,9 +510,24 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
                         protected: true,
                         showOnSidePanel: false
                     },
-                    {
+                    /* {
                         category: "console:manage.features.sidePanel.categories.organizations",
+                        children: [
+                            {
+                                component: lazy(() => import("../../organizations/pages/organization-edit")),
+                                exact: true,
+                                icon: {
+                                    icon: getSidePanelIcons().organization
+                                },
+                                id: "organization-edit",
+                                name: "organizationEdit",
+                                path: AppConstants.getPaths().get("ORGANIZATION_UPDATE"),
+                                protected: true,
+                                showOnSidePanel: false
+                            }
+                        ],
                         component: lazy(() => import("../../organizations/pages/organizations")),
+                        exact: true,
                         icon: {
                             icon: getSidePanelIcons().organization
                         },
@@ -522,7 +537,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
                         path: AppConstants.getPaths().get("ORGANIZATIONS"),
                         protected: true,
                         showOnSidePanel: true
-                    }
+                    } */
                 ],
                 "id"
             ),
