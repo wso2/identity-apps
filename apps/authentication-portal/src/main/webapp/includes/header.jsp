@@ -20,8 +20,7 @@
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
 <%@ page import="java.io.File" %>
 
-<!-- Branding Preferences -->
-<jsp:directive.include file="../extensions/branding-preferences.jsp"/>
+<jsp:directive.include file="../includes/layout-resolver.jsp"/>
 
 <!-- Extract the name of the stylesheet-->
 <%

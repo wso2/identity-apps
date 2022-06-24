@@ -16,6 +16,21 @@
   ~ under the License.
 --%>
 
+<%@ page import="java.util.Map" %>
+<%@ page import="java.util.HashMap" %>
+
+<%-- Change the layout name to activate another layout --%>
 <%
-    String supportEmail = "";
+    String layout = "default";
+%>
+
+<%-- Layout Resolving Part --%>
+<%
+    String layoutFileRelativePath = "extensions/layouts/" + layout + "/body.html";
+    Map<String, Object> layoutData = new HashMap<String, Object>();
+
+    if (config.getServletContext().getResource(layoutFileRelativePath) == null) {
+        layout = "default";
+        layoutFileRelativePath = "extensions/layouts/default/body.html";
+    }
 %>
