@@ -20,8 +20,7 @@
 <%@ include file="localize.jsp" %>
 <%@ page import="java.io.File" %>
 
-<!-- Branding Preferences -->
-<jsp:directive.include file="../extensions/branding-preferences.jsp"/>
+<jsp:directive.include file="layout-resolver.jsp"/>
 
 <!-- Extract the name of the stylesheet-->
 <%
