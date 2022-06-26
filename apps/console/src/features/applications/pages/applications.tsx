@@ -53,6 +53,7 @@ import {
     PaginationProps,
     Popup
 } from "semantic-ui-react";
+import { applicationConfig } from "../../../extensions";
 import {
     AdvancedSearchWithBasicFilters,
     AppConstants,
@@ -292,7 +293,8 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
      * @return {React.ReactElement}
      */
     const renderTenantedMyAccountLink = (): ReactElement => {
-        if (AppConstants.getTenant() === AppConstants.getSuperTenant()) {
+        if (AppConstants.getTenant() === AppConstants.getSuperTenant() ||
+            !applicationConfig.advancedConfigurations.showMyAccount) {
             return null;
         }
 
