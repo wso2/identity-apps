@@ -19,7 +19,13 @@
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, StorageIdentityAppsSettingsInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { AnimatedAvatar, AppAvatar, LabelWithPopup, PageLayout } from "@wso2is/react-components";
+import {
+    AnimatedAvatar,
+    AppAvatar,
+    GenericIcon,
+    LabelWithPopup,
+    PageLayout
+} from "@wso2is/react-components";
 import cloneDeep from "lodash-es/cloneDeep";
 import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
@@ -28,6 +34,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Label, Popup } from "semantic-ui-react";
+import { applicationConfig } from "../../../extensions/configs/application";
 import {
     AppConstants,
     AppState,
@@ -89,6 +96,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     const applicationTemplates: ApplicationTemplateListItemInterface[] = useSelector(
         (state: AppState) => state.application.templates);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const tenantDomain: string = useSelector((state: AppState) => state.auth.tenantDomain);
 
     const [ application, setApplication ] = useState<ApplicationInterface>(emptyApplication);
     const [ applicationTemplate, setApplicationTemplate ] = useState<ApplicationTemplateListItemInterface>(undefined);
@@ -444,21 +452,27 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             ) }
             contentTopMargin={ true }
             description={ (
-                <div className="with-label ellipsis" ref={ appDescElement }>
-                    { applicationTemplate?.name && (
-                        <Label size="small">{ applicationTemplate.name }</Label>
-                    ) }
-                    <Popup
-                        disabled={ !isDescTruncated }
-                        content={ application?.description }
-                        trigger={ (
-                            <span>{ application?.description }</span>
-                        ) }
-                    />
-                </div>
+                applicationConfig.editApplication.getOverriddenDescription(inboundProtocolConfigs?.oidc?.clientId,
+                    applicationTemplate?.name, tenantDomain)
+                    ?? (
+                        <div className="with-label ellipsis" ref={ appDescElement }>
+                            { applicationTemplate?.name && (
+                                <Label size="small">{ applicationTemplate.name }</Label>
+                            ) }
+                            <Popup
+                                disabled={ !isDescTruncated }
+                                content={ application?.description }
+                                trigger={ (
+                                    <span>{ application?.description }</span>
+                                ) }
+                            />
+                        </div>
+                    ) 
             ) }
             image={
-                application.imageUrl
+                applicationConfig.editApplication.getOverriddenImage(inboundProtocolConfigs?.oidc?.clientId,
+                    tenantDomain)
+                ?? application.imageUrl
                     ? (
                         <AppAvatar
                             name={ application.name }
@@ -473,6 +487,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                             floated="left"
                         />
                     )
+                   
             }
             backButton={ {
                 "data-testid": `${ testId }-page-back-button`,
@@ -484,6 +499,10 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             pageHeaderMaxWidth={ true }
             data-testid={ `${ testId }-page-layout` }
             truncateContent={ true }
+            action={ 
+                applicationConfig.editApplication.getActions(inboundProtocolConfigs?.oidc?.clientId,
+                    tenantDomain, testId)
+            }
         >
             <EditApplication
                 application={ application }
