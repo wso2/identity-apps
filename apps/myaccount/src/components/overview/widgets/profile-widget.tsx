@@ -130,24 +130,29 @@ export const ProfileWidget: FunctionComponent<ProfileWidgetPropsInterface> = (
                 description={
                     (<>
                         {
-                            userSource &&
-                            (<div
-                                className="overview-page-header"
-                            >
-                                {  t("myAccount:components.overview.widgets.profileStatus.userSourceText" ,
-                                    { source: userSource }) }
-                            </div>)
+                            userSource && (
+                                <div
+                                    className="overview-page-header"
+                                >
+                                    {  
+                                        t("myAccount:components.overview.widgets.profileStatus.userSourceText" ,
+                                            { source: userSource }) 
+                                    }
+                                </div>
+                            )
                         }
-                        { !CommonUtils.isProfileReadOnly(isReadOnlyUser) 
+                        { 
+                            !CommonUtils.isProfileReadOnly(isReadOnlyUser) 
                             ? generateCompletionProgress() 
                             : t("myAccount:components.overview.widgets.profileStatus.profileText")
                         }
                     </>)
                 }
                 primaryAction={ 
-                    !CommonUtils.isProfileReadOnly(isReadOnlyUser) 
+                        !CommonUtils.isProfileReadOnly(isReadOnlyUser) 
                         ? t("myAccount:components.overview.widgets.profileStatus.description")
-                        : t("myAccount:components.overview.widgets.profileStatus.readOnlyDescription") }
+                        : t("myAccount:components.overview.widgets.profileStatus.readOnlyDescription")
+                    }
                 onPrimaryActionClick={ navigate }
                 icon={ getWidgetIcons().profile }
                 iconMini={ getWidgetIcons().profile }

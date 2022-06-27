@@ -101,11 +101,12 @@ const PersonalInfoPage:  FunctionComponent<PersonalInfoPagePropsInterface> = (
             }
         >
             {
-                CommonUtils.isProfileReadOnly(isReadOnlyUser) 
-                && (<Message 
-                    type="info" 
-                    content={ t("myAccount:pages.readOnlyProfileBanner") }
-                />)
+                CommonUtils.isProfileReadOnly(isReadOnlyUser) && (
+                    <Message 
+                        type="info" 
+                        content={ t("myAccount:pages.readOnlyProfileBanner") }
+                    />
+                )
             }
             <Grid>
                 {
