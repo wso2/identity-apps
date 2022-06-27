@@ -27,6 +27,7 @@ import {
 export interface ApplicationConfig {
     advancedConfigurations: {
         showEnableAuthorization: boolean;
+        showMyAccount: boolean;
         showSaaS: boolean;
         showReturnAuthenticatedIdPs: boolean;
     };

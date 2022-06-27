@@ -27,6 +27,7 @@ import {
 export const applicationConfig: ApplicationConfig = {
     advancedConfigurations: {
         showEnableAuthorization: true,
+        showMyAccount: false,
         showReturnAuthenticatedIdPs: true,
         showSaaS: true
     },
