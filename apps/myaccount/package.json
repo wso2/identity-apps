@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/myaccount",
-    "version": "1.2.1007",
+    "version": "1.2.1008",
     "description": "WSO2 Identity Server My Account",
     "author": "WSO2",
     "license": "Apache-2.0",
@@ -39,13 +39,13 @@
         "typecheck": "npm run compile"
     },
     "dependencies": {
-        "@wso2is/access-control": "^1.2.1007",
-        "@wso2is/core": "^1.2.1007",
-        "@wso2is/forms": "^1.2.1007",
-        "@wso2is/i18n": "^1.2.1007",
-        "@wso2is/react-components": "^1.2.1007",
-        "@wso2is/theme": "^1.2.1007",
-        "@wso2is/validation": "^1.2.1007",
+        "@wso2is/access-control": "^1.2.1008",
+        "@wso2is/core": "^1.2.1008",
+        "@wso2is/forms": "^1.2.1008",
+        "@wso2is/i18n": "^1.2.1008",
+        "@wso2is/react-components": "^1.2.1008",
+        "@wso2is/theme": "^1.2.1008",
+        "@wso2is/validation": "^1.2.1008",
         "axios": "^0.19.2",
         "history": "^4.9.0",
         "i18next": "^17.0.11",
