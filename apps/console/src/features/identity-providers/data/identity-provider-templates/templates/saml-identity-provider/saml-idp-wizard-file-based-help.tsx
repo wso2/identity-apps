@@ -54,6 +54,7 @@ const SAMLIdPWizardFileBasedHelp: FunctionComponent<Props> = (props: Props): Rea
     return (
         <div data-testid={ testId }>
             <Message
+                size="tiny"
                 type="info"
                 content={
                     <>
