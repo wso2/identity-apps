@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { HttpRequestConfig, HttpResponse } from "@asgardeo/auth-react";
 import { AppConstants as AppConstantsCore } from "@wso2is/core/constants";
 import { hideAJAXTopLoadingBar, showAJAXTopLoadingBar } from "@wso2is/core/store";
 import { AuthenticateUtils } from "@wso2is/core/utils";
@@ -24,7 +25,6 @@ import { EventPublisher } from "./event-publisher";
 import { AppConstants } from "../constants";
 import { history } from "../helpers";
 import { store } from "../store";
-import { HttpResponse } from "@asgardeo/auth-react";
 
 /**
  * Utility class for http operations.
@@ -52,14 +52,16 @@ export class HttpUtils {
      */
     public static onHttpRequestSuccess(response: HttpResponse): void {
         // TODO: Handle any conditions required on request success.
-        const duration: number = new Date().getTime() - response?.config?.startTimeInMs
+        const responseConfig: HttpRequestConfig  = response.config as HttpRequestConfig;
+        const duration: number = new Date().getTime() - responseConfig?.startTimeInMs;
+
         EventPublisher.getInstance().record(
             new URL(response.config.url).pathname,
-            response?.config?.startTimeInMs,
+            responseConfig.startTimeInMs,
             duration,
             response?.status,
             true
-        )
+        );
     }
 
     /**
@@ -78,15 +80,16 @@ export class HttpUtils {
         /**
          * Publish an event on the http request error.
         */
-        const duration: number = new Date().getTime() - error?.config?.startTimeInMs
+        const errorConfig: HttpRequestConfig  = error.config as HttpRequestConfig;
+        const duration: number = new Date().getTime() - errorConfig?.startTimeInMs;
 
         EventPublisher.getInstance().record(
             new URL(error?.config?.url).pathname,
-            error?.config?.startTimeInMs,
+            errorConfig?.startTimeInMs,
             duration,
             error?.response?.status,
             false
-        )
+        );
 
         // Terminate the session if the token endpoint returns a bad request(400)
         // The token binding feature will return a 400 status code when the session
