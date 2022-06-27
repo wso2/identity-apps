@@ -33,7 +33,11 @@ jest.mock("react-i18next", () => ({
     // this mock makes sure any components using the translate hook can use it without a warning being shown
     Trans: ({ children }) => children,
     useTranslation: () => ({
-        t: key => key
+        t: (key: string, object: any) => {
+            const placeholders = object ? Object.values(object).map(val => val).join(".") : "";
+
+            return key + placeholders;
+        }
     })
 }));
 
@@ -43,7 +47,7 @@ Object.defineProperty(global.self, "crypto", {
             if (!arr) {
                 return arr;
             }
-  
+
             return crypto.randomBytes(arr.buffer.byteLength);
         }
     }
