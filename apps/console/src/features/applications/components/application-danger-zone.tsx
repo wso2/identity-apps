@@ -27,7 +27,7 @@ import { AppConstants, AppState, FeatureConfigInterface, UIConfigInterface, hist
 import { deleteApplication } from "../api";
    
 /**
- * Prop types of the `LoginPlaygroundWizard` component.
+ * Prop types of the  ApplicationDangerZone component.
  */ 
 interface ApplicationDangerZonePropsInterface extends 
     SBACInterface<FeatureConfigInterface>, IdentifiableComponentInterface {
