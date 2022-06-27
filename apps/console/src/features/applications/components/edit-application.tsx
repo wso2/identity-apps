@@ -756,7 +756,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                                     application.name,
                                     application.id,
                                     tenantDomain
-                                ) 
+                                )
                     });
                 }
             }

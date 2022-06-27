@@ -33,8 +33,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } f
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
-import { getTryItClientId } from "../../../extensions/components/application/utils/try-it-utils";
-import { getGettingStartedCardIllustrations } from "../../../extensions/components/getting-started/configs";
+import { Label, Popup } from "semantic-ui-react";
 import { applicationConfig } from "../../../extensions/configs/application";
 import {
     AppConstants,
@@ -453,34 +452,42 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             ) }
             contentTopMargin={ true }
             description={ (
-                applicationConfig.editApplication.getDescription(inboundProtocolConfigs?.oidc?.clientId,
-                    applicationTemplate?.name, application.description, tenantDomain)
+                applicationConfig.editApplication.getOverriddenDescription(inboundProtocolConfigs?.oidc?.clientId,
+                    applicationTemplate?.name, tenantDomain)
+                    ?? (
+                        <div className="with-label ellipsis" ref={ appDescElement }>
+                            { applicationTemplate?.name && (
+                                <Label size="small">{ applicationTemplate.name }</Label>
+                            ) }
+                            <Popup
+                                disabled={ !isDescTruncated }
+                                content={ application?.description }
+                                trigger={ (
+                                    <span>{ application?.description }</span>
+                                ) }
+                            />
+                        </div>
+                    ) 
             ) }
             image={
-                inboundProtocolConfigs?.oidc?.clientId === getTryItClientId(tenantDomain)
+                applicationConfig.editApplication.getOverriddenImage(inboundProtocolConfigs?.oidc?.clientId,
+                    tenantDomain)
+                ?? application.imageUrl
                     ? (
-                        <GenericIcon
-                            floated="left"
+                        <AppAvatar
+                            name={ application.name }
+                            image={ application.imageUrl }
                             size="tiny"
-                            transparent
-                            icon={ getGettingStartedCardIllustrations().tryItApplication }
                         />
-                    ):
-                    application.imageUrl
-                        ? (
-                            <AppAvatar
-                                name={ application.name }
-                                image={ application.imageUrl }
-                                size="tiny"
-                            />
-                        )
-                        : (
-                            <AnimatedAvatar
-                                name={ application.name }
-                                size="tiny"
-                                floated="left"
-                            />
-                        )
+                    )
+                    : (
+                        <AnimatedAvatar
+                            name={ application.name }
+                            size="tiny"
+                            floated="left"
+                        />
+                    )
+                   
             }
             backButton={ {
                 "data-testid": `${ testId }-page-back-button`,

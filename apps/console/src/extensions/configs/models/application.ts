@@ -16,13 +16,14 @@
  * under the License.
  */
 
-import { ReactNode } from "react";
+import { ReactElement, ReactNode } from "react";
 import { Dispatch } from "redux";
 import {
     ExtendedClaimInterface,
     ExtendedExternalClaimInterface,
     SelectedDialectInterface
 } from "../../../features/applications/components/settings";
+import { ApplicationTabTypes } from "../../../features/applications/models";
 
 export interface ApplicationConfig {
     advancedConfigurations: {
@@ -59,6 +60,26 @@ export interface ApplicationConfig {
         showDangerZone: (applicationName: string) => boolean;
         showDeleteButton: (applicationName: string) => boolean;
         getTabPanelReadOnlyStatus: (tabPanelName: string, applicationName: string) => boolean;
+        isTabEnabledForApp: (clientId: string, tabType: ApplicationTabTypes, tenantDomain: string) => boolean;
+        getActions: (
+            clientId: string,
+            tenant: string,
+            testId: string
+        ) => ReactElement;
+        getOverriddenDescription: (
+            clientId: string,
+            tenantDomain: string,
+            templateName: string
+        ) => ReactElement,
+        getOveriddenTab: (
+            clientId: string,
+            tabName: any,
+            defaultComponent: ReactElement,
+            appName: string,
+            appId: string,
+            tenantDomain: string
+        ) => ReactNode,
+        getOverriddenImage: (clientId: string, tenantDomain: string) => ReactElement;
     };
     inboundOIDCForm: {
         shouldValidateCertificate: boolean;
