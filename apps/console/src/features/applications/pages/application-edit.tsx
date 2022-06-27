@@ -453,7 +453,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             contentTopMargin={ true }
             description={ (
                 applicationConfig.editApplication.getOverriddenDescription(inboundProtocolConfigs?.oidc?.clientId,
-                    applicationTemplate?.name, tenantDomain)
+                    tenantDomain, applicationTemplate?.name)
                     ?? (
                         <div className="with-label ellipsis" ref={ appDescElement }>
                             { applicationTemplate?.name && (
@@ -472,22 +472,23 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             image={
                 applicationConfig.editApplication.getOverriddenImage(inboundProtocolConfigs?.oidc?.clientId,
                     tenantDomain)
-                ?? application.imageUrl
-                    ? (
-                        <AppAvatar
-                            name={ application.name }
-                            image={ application.imageUrl }
-                            size="tiny"
-                        />
-                    )
-                    : (
-                        <AnimatedAvatar
-                            name={ application.name }
-                            size="tiny"
-                            floated="left"
-                        />
-                    )
-                   
+                ?? (
+                    application.imageUrl
+                        ? (
+                            <AppAvatar
+                                name={ application.name }
+                                image={ application.imageUrl }
+                                size="tiny"
+                            />
+                        )
+                        : (
+                            <AnimatedAvatar
+                                name={ application.name }
+                                size="tiny"
+                                floated="left"
+                            />
+                        )
+                )
             }
             backButton={ {
                 "data-testid": `${ testId }-page-back-button`,
