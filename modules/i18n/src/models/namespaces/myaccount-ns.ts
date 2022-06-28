@@ -501,6 +501,9 @@ export interface MyAccountNS {
                     completionPercentage: string;
                     userSourceText: string;
                     header: string;
+                    description: string;
+                    readOnlyDescription: string;
+                    profileText:string
                 };
                 accountStatus: {
                     complete: string;
@@ -867,6 +870,7 @@ export interface MyAccountNS {
         personalInfoWithoutLinkedAccounts: Page;
         personalInfoWithoutExportProfile: Page;
         privacy: Page;
+        readOnlyProfileBanner: string;
         security: Page;
     };
     placeholders: {

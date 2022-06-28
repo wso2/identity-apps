@@ -23,6 +23,8 @@ export const analyticsConfig: AnalyticsConfig = {
         compute: (_computation: () => void) => null,
         init: () => null,
         publish: (_eventId: string, _customProperties?: { [key: string]: string | Record<string, unknown> | 
-                number }) => null
+                number }) => null,
+        record: (_pathname: string, _startTimeInMs: number, _duration: number, _responseCode: number, _isSuccess: boolean, 
+            _customProperties?: { [key: string]: any }) => null
     }
 };

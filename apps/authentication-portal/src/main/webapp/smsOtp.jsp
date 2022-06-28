@@ -19,14 +19,11 @@
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
+<%@ page import="org.wso2.carbon.identity.authenticator.smsotp.SMSOTPConstants" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.Map" %>
-<%@ page import="org.apache.commons.lang.StringUtils"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="includes/localize.jsp" %>
-<%@ page import="static java.util.Base64.getDecoder" %>
-<%@ page import="org.wso2.carbon.identity.authenticator.smsotp.SMSOTPConstants" %>
-<%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 
 <jsp:directive.include file="includes/layout-resolver.jsp"/>
@@ -35,36 +32,25 @@
     request.getSession().invalidate();
     String queryString = request.getQueryString();
     Map<String, String> idpAuthenticatorMapping = null;
-    String mobileRegex = null;
-    boolean validateMobileNumberFormat = false;
-    String mobileRegexPolicyValidationErrorMessage = null;
     if (request.getAttribute(Constants.IDP_AUTHENTICATOR_MAP) != null) {
         idpAuthenticatorMapping = (Map<String, String>) request.getAttribute(Constants.IDP_AUTHENTICATOR_MAP);
     }
-    if (StringUtils.isNotBlank(request.getParameter(SMSOTPConstants.MOBILE_NUMBER_REGEX_PATTERN))) {
-        mobileRegex = new String(getDecoder().decode(request.getParameter(SMSOTPConstants.MOBILE_NUMBER_REGEX_PATTERN)));
-        validateMobileNumberFormat = true;
-    }
-    if (StringUtils.isNotBlank(request.getParameter(SMSOTPConstants.MOBILE_NUMBER_PATTERN_POLICY_FAILURE_ERROR_MESSAGE))) {
-        mobileRegexPolicyValidationErrorMessage = new String(getDecoder().decode(request.getParameter(SMSOTPConstants.MOBILE_NUMBER_PATTERN_POLICY_FAILURE_ERROR_MESSAGE)));
-    }
 
-    String errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"error.retry");
-    boolean authenticationFailed = false;
+    String errorMessage = IdentityManagementEndpointUtil.i18n(resourceBundle,"error.retry");
+    String authenticationFailed = "false";
 
     if (Boolean.parseBoolean(request.getParameter(Constants.AUTH_FAILURE))) {
-        authenticationFailed = true;
+        authenticationFailed = "true";
 
         if (request.getParameter(Constants.AUTH_FAILURE_MSG) != null) {
             errorMessage = request.getParameter(Constants.AUTH_FAILURE_MSG);
 
-                if (errorMessage.equalsIgnoreCase("authentication.fail.message")) {
-                    errorMessage = "Authentication Failed! Please Retry";
-                }
-
-                if (StringUtils.isNotBlank(request.getParameter("authFailureInfo"))) {
-                    errorMessage = request.getParameter("authFailureInfo");
-                }
+            if (errorMessage.equalsIgnoreCase("authentication.fail.message")) {
+                errorMessage = IdentityManagementEndpointUtil.i18n(resourceBundle,"error.retry");
+            }
+            if (errorMessage.equalsIgnoreCase(SMSOTPConstants.TOKEN_EXPIRED_VALUE)) {
+                errorMessage = IdentityManagementEndpointUtil.i18n(resourceBundle,"error.code.expired.resend");
+            }
         }
     }
 %>
@@ -91,7 +77,7 @@
         <![endif]-->
     </head>
 
-    <body class="login-portal layout sms-otp-portal-layout" onload="getLoginDiv()">
+    <body class="login-portal layout sms-otp-portal-layout">
         <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
             <layout:component componentName="ProductHeader" >
                 <!-- product-title -->
@@ -107,39 +93,62 @@
             <layout:component componentName="MainSection" >
                 <div class="ui segment">
                     <!-- page content -->
-                    <h2><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "enter.phone.number")%></h2>
+                    <h2><%=IdentityManagementEndpointUtil.i18n(resourceBundle, "auth.with.smsotp")%></h2>
                     <div class="ui divider hidden"></div>
                     <%
-                        if (authenticationFailed) {
+                        if ("true".equals(authenticationFailed)) {
                     %>
-                            <div class="ui negative message" id="failed-msg"><%=Encode.forHtmlContent(errorMessage)%></div>
+                            <div class="ui negative message" id="failed-msg">
+                                <%=Encode.forHtmlContent(errorMessage)%>
+                            </div>
                             <div class="ui divider hidden"></div>
                     <% } %>
-                    <div id="error-msg"></div>
-                    <div id="alertDiv"></div>
+                    <div class="error-msg"></div>
                     <div class="segment-form">
-                        <form class="ui large form" id="pin_form" name="pin_form" action="../../commonauth"  method="POST">
+                        <form class="ui large form" id="pin_form" name="pin_form" action="../commonauth"  method="POST">
                             <%
                                 String loginFailed = request.getParameter("authFailure");
                                 if (loginFailed != null && "true".equals(loginFailed)) {
                                     String authFailureMsg = request.getParameter("authFailureMsg");
                                     if (authFailureMsg != null && "login.fail.message".equals(authFailureMsg)) {
                             %>
-                                        <div class="ui negative message"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "error.retry")%></div>
-                                        <div class="ui divider hidden"></div>
+                                <div class="ui visible negative message">
+                                    <%=IdentityManagementEndpointUtil.i18n(resourceBundle, "error.retry")%>
+                                </div>
+                                <div class="ui divider hidden"></div>
                             <% } }  %>
+                            <!-- Token Pin -->
+                            <% if (request.getParameter("screenvalue") != null) { %>
                             <div class="field">
-                                <label class="control-label" for="password"></label>
-                                <input type="text" id='MOBILE_NUMBER' name="MOBILE_NUMBER"
-                                        class="input-xlarge" size='30'/>
+                                <label for="password">
+                                    <%=IdentityManagementEndpointUtil.i18n(resourceBundle, "enter.code.sent.smsotp")%><%=Encode.forHtmlContent(request.getParameter("screenvalue"))%>
+                                </label>
+                                <input type="password" id='OTPcode' name="OTPcode"
+                                        size='30'/>
+                            <% } else { %>
+                            <div class="field">
+                                <label for="password"><%=IdentityManagementEndpointUtil.i18n(resourceBundle, "enter.code.sent.smsotp")%></label>
+                                <input type="password" id='OTPcode' name="OTPcode"
+                                size='30'/>
+                            <% } %>
                             </div>
                             <input type="hidden" name="sessionDataKey"
-                                    value='<%=Encode.forHtmlAttribute(request.getParameter("sessionDataKey"))%>'/>
-
+                            value='<%=Encode.forHtmlAttribute(request.getParameter("sessionDataKey"))%>'/><br/>
                             <div class="align-right buttons">
-                                <input type="button" name="update" id="update" value="<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "update")%>"
-                                        class="ui primary button"/>
+                                <%
+                                    if ("true".equals(authenticationFailed)) {
+                                        String reSendCode = request.getParameter("resendCode");
+                                        if ("true".equals(reSendCode)) {
+                                %>
+                                    <div id="resendCodeLinkDiv" class="ui button secondary">
+                                        <a id="resend"><%=IdentityManagementEndpointUtil.i18n(resourceBundle, "resend.code")%></a>
+                                    </div>
+                                <% } } %>
+                                <input
+                                    type="button" name="authenticate" id="authenticate"
+                                    value="<%=IdentityManagementEndpointUtil.i18n(resourceBundle, "authenticate.button")%>" class="ui primary button"/>
                             </div>
+                            <input type='hidden' name='resendCode' id='resendCode' value='false'/>
                         </form>
                     </div>
                 </div>
@@ -168,22 +177,28 @@
         <% } %>
 
         <script type="text/javascript">
-            $(document).ready(function() {
-                $('#update').click(function() {
-                    var mobileNumber = document.getElementById("MOBILE_NUMBER").value;
-                    if (mobileNumber == "") {
+        $(document).ready(function() {
+            $('#authenticate').click(function() {
+                if ($('#pin_form').data("submitted") === true) {
+                    console.warn("Prevented a possible double submit event");
+                } else {
+                    var OTPcode = document.getElementById("OTPcode").value;
+                    if (OTPcode == "") {
                         document.getElementById('alertDiv').innerHTML
-                            = '<div id="error-msg" class="ui negative message">Please enter the mobile number!</div>'
-                              +'<div class="ui divider hidden"></div>';
-                    } else if (<%=validateMobileNumberFormat%> && !(mobileNumber.match("<%=mobileRegex%>"))) {
-                       document.getElementById('alertDiv').innerHTML
-                          = '<div id="error-msg" class="ui negative message"><%=mobileRegexPolicyValidationErrorMessage%></div>'
-                            +'<div class="ui divider hidden"></div>';
+                            = '<div id="error-msg" class="ui negative message"><%=IdentityManagementEndpointUtil.i18n(resourceBundle, "please.enter.code")%></div><div class="ui divider hidden"></div>';
                     } else {
+                        $('#pin_form').data("submitted", true);
                         $('#pin_form').submit();
                     }
-                });
+                }
             });
+        });
+        $(document).ready(function() {
+            $('#resendCodeLinkDiv').click(function() {
+                document.getElementById("resendCode").value = "true";
+                $('#pin_form').submit();
+            });
+        });
         </script>
     </body>
 </html>
