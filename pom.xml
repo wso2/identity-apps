@@ -48,7 +48,6 @@
         <module>apps/console</module>
         <module>apps/authentication-portal</module>
         <module>apps/recovery-portal</module>
-        <module>apps/sms-otp-authentication-portal</module>
         <module>apps/x509-certificate-authentication-portal</module>
         <module>components/theme</module>
         <module>components/org.wso2.identity.apps.common</module>
