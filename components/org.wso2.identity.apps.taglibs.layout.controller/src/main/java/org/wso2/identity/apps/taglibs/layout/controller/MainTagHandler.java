@@ -38,7 +38,7 @@ public class MainTagHandler extends TagSupport {
     private String layoutFileRelativePath;
     private Map<String, Object> data = new HashMap<>();
     private boolean cache = true;
-    private LocalTemplateEngineWithCache engine;
+    private LocalTemplateEngineWithCache engine = null;
 
     /**
      * Set the name of the layout.
@@ -70,7 +70,7 @@ public class MainTagHandler extends TagSupport {
         this.data = data;
     }
 
-    public void setCache(Boolean cache) {
+    public void setCache(boolean cache) {
 
         this.cache = cache;
     }
