@@ -219,8 +219,10 @@ public class DefaultParser implements Parser {
                     throw new CompilerException("Can't read the file", e);
                 }
             }
+            return context.line != null;
+        } else {
+            return false;
         }
-        return context.line != null;
     }
 
     /**
