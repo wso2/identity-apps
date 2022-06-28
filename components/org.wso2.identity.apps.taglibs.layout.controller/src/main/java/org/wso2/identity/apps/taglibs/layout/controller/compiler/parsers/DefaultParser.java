@@ -18,7 +18,6 @@
 
 package org.wso2.identity.apps.taglibs.layout.controller.compiler.parsers;
 
-import org.apache.commons.lang.StringUtils;
 import org.wso2.identity.apps.taglibs.layout.controller.compiler.CompilerException;
 import org.wso2.identity.apps.taglibs.layout.controller.compiler.identifiers.ComponentIdentifier;
 import org.wso2.identity.apps.taglibs.layout.controller.compiler.identifiers.ConditionIdentifier;
@@ -178,7 +177,7 @@ public class DefaultParser implements Parser {
                 } else {
                     context.textKeeper.append(context.line.substring(context.start) + "\n");
                 }
-                context.line = StringUtils.EMPTY;
+                context.line = "";
                 context.matcher = null;
                 context.start = 0;
             }
@@ -213,7 +212,7 @@ public class DefaultParser implements Parser {
      */
     private boolean readLine(BufferedReader reader, CompileContext context) {
         if (context != null) {
-            if (StringUtils.EMPTY.equals(context.line)) {
+            if (context.line.equals("")) {
                 try {
                     context.line = reader.readLine();
                 } catch (IOException e) {
@@ -229,7 +228,7 @@ public class DefaultParser implements Parser {
      */
     private static class CompileContext {
 
-        String line = StringUtils.EMPTY;
+        String line = "";
         Matcher matcher = null;
         int start = 0;
         StringBuilder textKeeper = null;
