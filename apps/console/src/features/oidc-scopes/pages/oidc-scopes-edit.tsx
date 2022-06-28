@@ -404,7 +404,7 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
 
         return (
             <PageLayout
-                pageTitle={ "Edit " + scope.displayName }
+                pageTitle={ "Update Scope" }
                 isLoading={ isScopeRequestLoading || isAttributeRequestLoading }
                 title={ scope.displayName }
                 contentTopMargin={ true }
