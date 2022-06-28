@@ -93,10 +93,12 @@
                 <h2><%=AuthenticationEndpointUtil.i18n(resourceBundle, "saml.sso")%></h2>
                 <h4><%=AuthenticationEndpointUtil.i18n(resourceBundle, errorStat)%></h4>
                 <p><%=AuthenticationEndpointUtil.i18n(resourceBundle, errorMsg)%></p>
-                <div class="ui divider hidden"></div>
-                <%-- <jsp:include page="includes/error-tracking-reference.jsp">
-                    <jsp:param name="align" value="centered"/>
-                </jsp:include> --%>
+                <% if (new File(getServletContext().getRealPath("includes/error-tracking-reference.jsp")).exists()) { %>
+                    <div class="ui divider hidden"></div>
+                    <jsp:include page="includes/error-tracking-reference.jsp">
+                        <jsp:param name="align" value="centered"/>
+                    </jsp:include>
+                <% } %>
             </div>
         </layout:component>
         <layout:component componentName="ProductFooter" >

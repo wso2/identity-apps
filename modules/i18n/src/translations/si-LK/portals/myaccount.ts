@@ -905,7 +905,10 @@ export const myAccount: MyAccountNS = {
                 },
                 profileStatus: {
                     completionPercentage: "ඔබගේ ගිණුම සම්පුර්ණ කිරීමේ ප්‍රතිශතය {{percentage}}%",
+                    description: "ඔබගේ පැතිකඩ කළමනාකරණය කරන්න",
                     header: "ඔබගේ  {{productName}} ගිණුම",
+                    profileText: "ඔබගේ පුද්ගලික පැතිකඩ පිළිබඳ විස්තර",
+                    readOnlyDescription: "ඔබගේ පැතිකඩ බලන්න",
                     userSourceText: "({{source} හරහා පුරනය වී ඇත)"
                 }
             }
@@ -1492,6 +1495,8 @@ export const myAccount: MyAccountNS = {
             subTitle: "",
             title: "WSO2 හැඳුනුම් සේවාදායක රහස්‍යතා ප්‍රතිපත්තිය"
         },
+        readOnlyProfileBanner: "ඔබගේ පැතිකඩ මෙම ද්වාරයෙන් වෙනස් කළ නොහැක. වැඩි විස්තර සඳහා " +
+            "කරුණාකර ඔබේ පරිපාලක අමතන්න.",
         security: {
             subTitle: "සියලුම ආරක්ෂක සැකසුම් සහ නිර්දේශ සමඟ යාවත්කාලීනව සිටීමෙන් ඔබගේ ගිණුම සුරක්ෂිත කිරීම",
             title: "ආරක්ෂාව"

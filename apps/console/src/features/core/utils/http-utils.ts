@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { HttpRequestConfig, HttpResponse } from "@asgardeo/auth-react";
 import { AppConstants as AppConstantsCore } from "@wso2is/core/constants";
 import { hideAJAXTopLoadingBar, showAJAXTopLoadingBar } from "@wso2is/core/store";
 import { AuthenticateUtils } from "@wso2is/core/utils";
@@ -49,8 +50,18 @@ export class HttpUtils {
     /**
      * Callback to be fired on every Http request success.
      */
-    public static onHttpRequestSuccess(): void {
+    public static onHttpRequestSuccess(response: HttpResponse): void {
         // TODO: Handle any conditions required on request success.
+        const responseConfig: HttpRequestConfig  = response.config as HttpRequestConfig;
+        const duration: number = new Date().getTime() - responseConfig?.startTimeInMs;
+
+        EventPublisher.getInstance().record(
+            new URL(response.config.url).pathname,
+            responseConfig.startTimeInMs,
+            duration,
+            response?.status,
+            true
+        );
     }
 
     /**
@@ -69,17 +80,16 @@ export class HttpUtils {
         /**
          * Publish an event on the http request error.
         */
-        if (
-            error.response &&
-            error.response.data &&
-            error.response.data.code
-        ) {
-            EventPublisher.getInstance().publish("console-error-http-request-error", {
-                "code": error.response.data.code,
-                "status": error.response.status ? error.response.status as number : "",
-                "type": "error-response"
-            });
-        }
+        const errorConfig: HttpRequestConfig  = error.config as HttpRequestConfig;
+        const duration: number = new Date().getTime() - errorConfig?.startTimeInMs;
+
+        EventPublisher.getInstance().record(
+            new URL(error?.config?.url).pathname,
+            errorConfig?.startTimeInMs,
+            duration,
+            error?.response?.status,
+            false
+        );
 
         // Terminate the session if the token endpoint returns a bad request(400)
         // The token binding feature will return a 400 status code when the session

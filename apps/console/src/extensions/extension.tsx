@@ -74,14 +74,6 @@ export const ComponentPlaceholder = (props: ExtensionInterface): ReactElement =>
                     title={ t("console:common.placeholders.genericError.title") }
                 />
             ) }
-            handleError={ (error: Error, errorInfo: ErrorInfo) => {
-                eventPublisher.publish("error-captured-error-boundary", {
-                    error: error?.name,
-                    errorInfo: errorInfo?.componentStack,
-                    stack: error?.stack,
-                    type: "extension"
-                });
-            } }
         >
             <Suspense
                 fallback={ (

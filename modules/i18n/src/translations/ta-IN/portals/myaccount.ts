@@ -920,7 +920,10 @@ export const myAccount: MyAccountNS = {
                 },
                 profileStatus: {
                     completionPercentage: "உங்கள் சுயவிவர நிறைவு {{percentage}}%",
+                    description: "உங்கள் சுயவிவரத்தை நிர்வகிக்கவும்",
                     header: "உங்கள் {{productName}} சுயவிவரம்",
+                    profileText: "உங்கள் தனிப்பட்ட சுயவிவரத்தின் விவரங்கள்",
+                    readOnlyDescription: "உங்கள் சுயவிவரத்தைப் பார்க்கவும்",
                     userSourceText: "(உடன் கையொப்பமிடப்பட்டுள்ளது {{source}})"
                 }
             }
@@ -1539,6 +1542,8 @@ export const myAccount: MyAccountNS = {
             subTitle: "",
             title: "WSO2 Identity Server தனியுரிமைக் கொள்கை"
         },
+        readOnlyProfileBanner: "இந்த போர்ட்டலில் இருந்து உங்கள் சுயவிவரத்தை மாற்ற முடியாது. " +
+            "மேலும் விவரங்களுக்கு உங்கள் நிர்வாகியைத் தொடர்பு கொள்ளவும்.",
         security: {
             subTitle: "உங்களின் கணக்கின் பாதுகாப்பை உறுதிப்படுத்த அமைப்புக்களை புதுப்பிக",
             title: "பாதுகாப்பு"

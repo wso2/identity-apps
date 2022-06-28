@@ -22,5 +22,7 @@ export interface AnalyticsConfig {
         init: () => void;
         publish: (eventId: string, customProperties?: { [key: string]: string | Record<string, unknown> |
                 number}) => void;
+        record: (pathname: string, startTimeInMs: number, duration: number, responseCode: number, isSuccess: boolean, 
+            customProperties?: { [key: string]: any }) => void;
     }
 }
