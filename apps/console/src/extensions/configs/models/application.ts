@@ -23,6 +23,7 @@ import {
     ExtendedExternalClaimInterface,
     SelectedDialectInterface
 } from "../../../features/applications/components/settings";
+import { ApplicationInterface } from "../../../features/applications";
 
 export interface ApplicationConfig {
     advancedConfigurations: {
@@ -31,7 +32,7 @@ export interface ApplicationConfig {
         showReturnAuthenticatedIdPs: boolean;
     };
     generalSettings: {
-        getFieldReadOnlyStatus: (applicationName: string, fieldName: string) => boolean ;
+        getFieldReadOnlyStatus: (application: ApplicationInterface, fieldName: string) => boolean ;
     };
     attributeSettings: {
         advancedAttributeSettings: {
@@ -56,9 +57,9 @@ export interface ApplicationConfig {
         extendTabs: boolean; //should be true for cloud
         showProvisioningSettings: boolean;
         renderHelpPanelItems: () => ReactNode;
-        showDangerZone: (applicationName: string) => boolean;
-        showDeleteButton: (applicationName: string) => boolean;
-        getTabPanelReadOnlyStatus: (tabPanelName: string, applicationName: string) => boolean;
+        showDangerZone: (application: ApplicationInterface) => boolean;
+        showDeleteButton: (application: ApplicationInterface) => boolean;
+        getTabPanelReadOnlyStatus: (tabPanelName: string, application: ApplicationInterface) => boolean;
     };
     inboundOIDCForm: {
         shouldValidateCertificate: boolean;
