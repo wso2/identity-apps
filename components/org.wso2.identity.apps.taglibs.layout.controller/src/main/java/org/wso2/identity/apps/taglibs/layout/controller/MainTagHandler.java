@@ -36,8 +36,8 @@ public class MainTagHandler extends TagSupport {
     private static final long serialVersionUID = -7314788638114472678L;
     private String layoutName;
     private String layoutFileRelativePath;
-    private Map<String, Object> data = new HashMap<String, Object>();
-    private Boolean cache = true;
+    private Map<String, Object> data = new HashMap<>();
+    private boolean cache = true;
     private LocalTemplateEngineWithCache engine;
 
     /**
@@ -129,7 +129,6 @@ public class MainTagHandler extends TagSupport {
         layoutName = null;
         layoutFileRelativePath = null;
         data = null;
-        cache = null;
         engine = null;
         super.release();
     }

@@ -18,6 +18,7 @@
 
 package org.wso2.identity.apps.taglibs.layout.controller.compiler.parsers;
 
+import org.apache.commons.lang.StringUtils;
 import org.wso2.identity.apps.taglibs.layout.controller.compiler.CompilerException;
 import org.wso2.identity.apps.taglibs.layout.controller.compiler.identifiers.ComponentIdentifier;
 import org.wso2.identity.apps.taglibs.layout.controller.compiler.identifiers.ConditionIdentifier;
@@ -72,12 +73,19 @@ public class DefaultParser implements Parser {
      */
     @Override
     public ExecutableIdentifier compile(URL file) {
-
-        BufferedReader reader = (BufferedReader) resolver.getReader(file);
-        CompileContext context = new CompileContext();
-        ExecutableIdentifier temp = compile(reader, context, null);
-        resolver.closeResources();
-        return temp;
+        ExecutableIdentifier compiledLayout;
+        try {
+            BufferedReader reader = (BufferedReader) resolver.getReader(file);
+            CompileContext context = new CompileContext();
+            compiledLayout = compile(reader, context, null);
+        } catch (RuntimeException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new CompilerException("Can't compile the layout file.", e);
+        } finally {
+            resolver.closeResources();
+        }
+        return compiledLayout;
     }
 
     /**
@@ -91,7 +99,7 @@ public class DefaultParser implements Parser {
      */
     private ExecutableIdentifier compile(BufferedReader reader, CompileContext context, String identifierName) {
 
-        ArrayList<ExecutableIdentifier> allIdentifiers = new ArrayList<ExecutableIdentifier>();
+        ArrayList<ExecutableIdentifier> allIdentifiers = new ArrayList<>();
         String currentIdentifierName;
         while (readLine(reader, context)) {
             if (context.matcher == null) {
@@ -170,7 +178,7 @@ public class DefaultParser implements Parser {
                 } else {
                     context.textKeeper.append(context.line.substring(context.start) + "\n");
                 }
-                context.line = "";
+                context.line = StringUtils.EMPTY;
                 context.matcher = null;
                 context.start = 0;
             }
@@ -204,12 +212,13 @@ public class DefaultParser implements Parser {
      * @return Whether is there new line to read.
      */
     private boolean readLine(BufferedReader reader, CompileContext context) {
-
-        if (context.line.equals("")) {
-            try {
-                context.line = reader.readLine();
-            } catch (IOException e) {
-                throw new CompilerException("Can't read the file", e);
+        if (context != null) {
+            if (StringUtils.EMPTY.equals(context.line)) {
+                try {
+                    context.line = reader.readLine();
+                } catch (IOException e) {
+                    throw new CompilerException("Can't read the file", e);
+                }
             }
         }
         return context.line != null;
@@ -220,7 +229,7 @@ public class DefaultParser implements Parser {
      */
     private static class CompileContext {
 
-        String line = "";
+        String line = StringUtils.EMPTY;
         Matcher matcher = null;
         int start = 0;
         StringBuilder textKeeper = null;
