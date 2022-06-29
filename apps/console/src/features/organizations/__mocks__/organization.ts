@@ -32,7 +32,7 @@ export const addOrganizationMockResponse = {
     type: "TENANT"
 };
 
-export const getOrganizationsMockResponse = {
+export const getOrganizationsFilterMockResponse = {
     links: [ {
         href: "org",
         rel: "after"
@@ -49,4 +49,48 @@ export const getOrganizationsMockResponse = {
 export const getOrganizationsEmptyMockResponse = {
     links: [],
     organizations: []
+};
+
+export const getOrganizationsPageOneMockResponse = {
+    links: [ {
+        href: "org",
+        rel: "after"
+    } ],
+    organizations: [
+        {
+            id: "organization-one",
+            name: "Organization One",
+            ref: "organizations-one"
+        },
+        {
+            id: "organization-two",
+            name: "Organization Two",
+            ref: "organizations-two"
+        },
+        {
+            id: "organization-three",
+            name: "Organization Three",
+            ref: "organizations-three"
+        },
+        {
+            id: "organization-four",
+            name: "Organization Four",
+            ref: "organizations-four"
+        },
+        {
+            id: "organization-five",
+            name: "Organization Five",
+            ref: "organizations-five"
+        },
+        {
+            id: "organization-six",
+            name: "Organization Six",
+            ref: "organizations-six"
+        },
+        {
+            id: "organization-seven",
+            name: "Organization Seven",
+            ref: "organizations-seven"
+        }
+    ]
 };
