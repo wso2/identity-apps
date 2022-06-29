@@ -209,7 +209,7 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
                         <Grid.Row columns={ 1 }>
                             <Grid.Column width={ 16 }>
                                 { duplicateName && (
-                                    <Message negative data-componentid={ `${ testId }-duplicate-name-error` }>
+                                    <Message negative data-componentid={ `${testId}-duplicate-name-error` }>
                                         <Message.Content>
                                             { t(
                                                 "console:manage.features.organizations.forms." +
