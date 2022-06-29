@@ -520,38 +520,6 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                             resetPagination={ paginationReset }
                         >
                             <OrganizationList
-                                advancedSearch={
-                                    (<AdvancedSearchWithBasicFilters
-                                        onFilter={ handleOrganizationFilter }
-                                        filterAttributeOptions={ [
-                                            {
-                                                key: 0,
-                                                text: t("common:name"),
-                                                value: "name"
-                                            }
-                                        ] }
-                                        filterAttributePlaceholder={ t(
-                                            "console:manage.features.organizations.advancedSearch." +
-                                            "form.inputs.filterAttribute.placeholder"
-                                        ) }
-                                        filterConditionsPlaceholder={ t(
-                                            "console:manage.features.organizations.advancedSearch." +
-                                            "form.inputs.filterCondition.placeholder"
-                                        ) }
-                                        filterValuePlaceholder={ t(
-                                            "console:manage.features.organizations.advancedSearch." +
-                                            "form.inputs.filterValue.placeholder"
-                                        ) }
-                                        placeholder={ t(
-                                            "console:manage.features.organizations.advancedSearch.placeholder"
-                                        ) }
-                                        defaultSearchAttribute="name"
-                                        defaultSearchOperator="co"
-                                        triggerClearQuery={ triggerClearQuery }
-                                        data-testid={ `${ testId }-list-advanced-search` }
-                                    />)
-                                }
-                                featureConfig={ featureConfig }
                                 isLoading={ isOrganizationListRequestLoading }
                                 list={ organizationList }
                                 onOrganizationDelete={ handleOrganizationDelete }
@@ -560,8 +528,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                                 } }
                                 onSearchQueryClear={ handleSearchQueryClear }
                                 searchQuery={ searchQuery }
-                                data-testid={ `${ testId }-list` }
-                                data-componentid="organization"
+                                data-componentid="organization-list"
                                 onListItemClick={ handleListItemClick }
                             />
                         </ListLayout>
