@@ -23,14 +23,15 @@ import configureStore from "redux-mock-store";
 import {
     addOrganizationMockResponse,
     getOrganizationsEmptyMockResponse,
-    getOrganizationsMockResponse
+    getOrganizationsFilterMockResponse
 } from "../__mocks__/organization";
 import * as api from "../api/organization";
 import { AddOrganizationModal, AddOrganizationModalPropsInterface } from "../components";
 
+const onUpdateMock = jest.fn();
 const addComponentModalProps: AddOrganizationModalPropsInterface = {
     closeWizard: jest.fn(),
-    onUpdate: jest.fn(),
+    onUpdate: onUpdateMock,
     parent: {
         id: "1",
         name: "Parent Organization",
@@ -48,7 +49,7 @@ describe("UTC-1.0 - [Organization Management Feature] - Add Organization Modal",
 
     getOrganizationsMock.mockImplementation((filter: string) => {
         if (filter === "name eq Organization One") {
-            return Promise.resolve(getOrganizationsMockResponse);
+            return Promise.resolve(getOrganizationsFilterMockResponse);
         }
 
         return Promise.resolve(getOrganizationsEmptyMockResponse);
@@ -71,9 +72,9 @@ describe("UTC-1.0 - [Organization Management Feature] - Add Organization Modal",
             </Provider>
         );
 
-        expect(screen.getByTestId("organization-create-wizard-organization-name-input")).toBeVisible();
-        expect(screen.getByTestId("organization-create-wizard-description-input")).toBeVisible();
-        expect(screen.getByTestId("organization-create-wizard-next-button")).toBeVisible();
+        expect(screen.getByTestId("organization-create-wizard-organization-name-input")).toBeInTheDocument();
+        expect(screen.getByTestId("organization-create-wizard-description-input")).toBeInTheDocument();
+        expect(screen.getByTestId("organization-create-wizard-next-button")).toBeInTheDocument();
     });
 
     test("UTC-1.3 - Test if name requirement validation is working", async () => {
@@ -89,11 +90,10 @@ describe("UTC-1.0 - [Organization Management Feature] - Add Organization Modal",
         );
 
         fireEvent.click(screen.getByTestId("organization-create-wizard-next-button"));
-        await waitFor(() =>
-            expect(
-                screen.getByText("console:manage.features.organizations.forms.addOrganization.name.validation.empty")
-            )
-        );
+
+        expect(
+            await screen.findByText("console:manage.features.organizations.forms.addOrganization.name.validation.empty")
+        ).toBeInTheDocument();
     });
 
     test("UTC-1.4 - Test if duplicate name validation is working", async () => {
@@ -109,7 +109,7 @@ describe("UTC-1.0 - [Organization Management Feature] - Add Organization Modal",
         );
 
         fireEvent.click(screen.getByTestId("organization-create-wizard-next-button"));
-        await waitFor(() => expect(screen.getByTestId("organization-create-wizard-duplicate-name-error")));
+        expect(await screen.findByTestId("organization-create-wizard-duplicate-name-error")).toBeInTheDocument();
     });
 
     test("UTC-1.5 - Test if the form can be submitted", async () => {
@@ -129,5 +129,7 @@ describe("UTC-1.0 - [Organization Management Feature] - Add Organization Modal",
         await waitFor(() => {
             expect(addOrganizationMock).toHaveBeenCalledTimes(1);
         });
+
+        expect(onUpdateMock.mock.calls.length).toBe(1);
     });
 });
