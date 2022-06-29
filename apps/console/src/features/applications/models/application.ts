@@ -36,6 +36,7 @@ export interface ApplicationBasicInterface {
     accessUrl?: string;
     templateId?: string;
     isManagementApp?: boolean;
+    advancedConfigurations?: AdvancedConfigurationsInterface;
 }
 
 export enum ApplicationAccessTypes {
