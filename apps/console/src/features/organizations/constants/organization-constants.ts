@@ -45,6 +45,21 @@ export class OrganizationManagementConstants {
     };
 }
 
+export class OrganizationRoleManagementConstants {
+    /**
+     * Set of keys used to enable/disable features.
+     * @constant
+     * @type {Map<string, string>}
+     * @default
+     */
+    public static readonly FEATURE_DICTIONARY: Map<string, string> = new Map<string, string>()
+        .set("ORGANIZATION_ROLE_CREATE", "organization-roles.create")
+        .set("ORGANIZATION_ROLE_UPDATE", "organization-roles.update")
+        .set("ORGANIZATION_ROLE_DELETE", "organization-roles.delete")
+        .set("ORGANIZATION_ROLE_READ", "organization-roles.read");
+
+}
+
 export enum ORGANIZATION_TYPE {
     STRUCTURAL = "STRUCTURAL",
     TENANT = "TENANT"
