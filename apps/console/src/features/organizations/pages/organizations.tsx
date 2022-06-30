@@ -35,7 +35,7 @@ import React, {
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
     Breadcrumb,
     Divider,
@@ -45,13 +45,7 @@ import {
     Icon,
     PaginationProps
 } from "semantic-ui-react";
-import {
-    AdvancedSearchWithBasicFilters,
-    AppState,
-    EventPublisher,
-    FeatureConfigInterface,
-    UIConstants
-} from "../../core";
+import { AdvancedSearchWithBasicFilters, EventPublisher, UIConstants } from "../../core";
 import { getOrganization, getOrganizations } from "../api";
 import { AddOrganizationModal, OrganizationList } from "../components";
 import {
@@ -90,16 +84,13 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
 
     const dispatch = useDispatch();
 
-    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-
     const [ organizationList, setOrganizationList ] = useState<OrganizationListInterface>(null);
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ listSortingStrategy, setListSortingStrategy ] = useState<DropdownItemProps>(
         ORGANIZATIONS_LIST_SORTING_OPTIONS[ 0 ]
     );
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
-    const [ isOrganizationListRequestLoading, setOrganizationListRequestLoading ] = useState<boolean>(false);
-    const [ isLoading, setLoading ] = useState<boolean>(true);
+    const [ isOrganizationListRequestLoading, setOrganizationListRequestLoading ] = useState<boolean>(true);
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ isOrganizationsNextPageAvailable, setIsOrganizationsNextPageAvailable ] = useState<boolean>(undefined);
@@ -164,8 +155,8 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                             description: error.description,
                             level: AlertLevels.ERROR,
                             message: t(
-                                "console:manage.features.organizations.notifications."
-                                + "fetchOrganization.error.message"
+                                "console:manage.features.organizations.notifications." +
+                                "fetchOrganization.error.message"
                             )
                         })
                     );
@@ -211,7 +202,6 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
     const getOrganizationLists = useCallback(
         (limit?: number, filter?: string, after?: string, before?: string, recursive?: boolean): void => {
             setOrganizationListRequestLoading(true);
-
             getOrganizations(filter, limit, after, before, true)
                 .then((response: OrganizationListInterface) => {
                     handleNextButtonVisibility(response);
@@ -249,7 +239,6 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                 })
                 .finally(() => {
                     setOrganizationListRequestLoading(false);
-                    setLoading(false);
                 });
         },
         [ dispatch, t ]
@@ -388,7 +377,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
         <>
             <PageLayout
                 action={
-                    !isLoading &&
+                    !isOrganizationListRequestLoading &&
                     !(!searchQuery && (isEmpty(organizationList) || organizationList?.organizations?.length <= 0)) && (
                         <Show when={ AccessControlConstants.ORGANIZATION_WRITE }>
                             <PrimaryButton
@@ -406,24 +395,27 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                         </Show>
                     )
                 }
-                title={ isOrganizationListRequestLoading
-                    ? null
-                    : organization ? organization.name : t("console:manage.features.organizations.homeList.name") }
+                title={
+                    isOrganizationListRequestLoading
+                        ? null
+                        : organization
+                            ? organization.name
+                            : t("console:manage.features.organizations.homeList.name")
+                }
                 description={
                     (<p>
                         { isOrganizationListRequestLoading
                             ? null
                             : organization
                                 ? organization.description
-                                : t("console:manage.features.organizations.homeList.description")
-                        }
+                                : t("console:manage.features.organizations.homeList.description") }
                     </p>)
                 }
                 data-testid={ `${ testId }-page-layout` }
                 titleAs="h3"
                 componentAbovePageHeader={
                     (<>
-                        <Header as="h1">
+                        <Header as="h1" data-componentid={ `${ testId }-organization-header` }>
                             { t("console:manage.pages.organizations.title") }
                             <Header.Subheader
                                 data-componentid={ "organization-sub-title" }
@@ -434,13 +426,13 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                         </Header>
                         <Divider hidden />
                         { parent && organizations.length > 0 && (
-                            <Breadcrumb className="margined">
+                            <Breadcrumb className="margined" data-componentid={ `${ testId }-breadcrumb` }>
                                 <Breadcrumb.Section
                                     onClick={ () => {
                                         handleBreadCrumbClick(null, -1);
                                     } }
                                 >
-                                    <Icon name="home" />
+                                    <Icon name="home" data-componentid={ `${ testId }-breadcrumb-home` } />
                                 </Breadcrumb.Section>
                                 { organizations?.map((organization: OrganizationInterface, index: number) => {
                                     return (
@@ -465,7 +457,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                     </>)
                 }
             >
-                { !isLoading ? (
+                { !isOrganizationListRequestLoading ? (
                     <>
                         <ListLayout
                             advancedSearch={
@@ -541,7 +533,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                         ) }
                     </>
                 ) : (
-                    <GridLayout isLoading={ isLoading } />
+                    <GridLayout isLoading={ isOrganizationListRequestLoading } />
                 ) }
             </PageLayout>
         </>
