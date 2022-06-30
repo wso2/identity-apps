@@ -307,7 +307,7 @@ export const ConfirmationModal: FunctionComponent<ConfirmationModalPropsInterfac
      *
      * @return {React.ReactElement}
      */
-        const resolveAssertionInput = (type: "input" | "checkbox"): ReactElement => {
+        const resolveAssertionInput = (type: "input" | "checkbox" | string): ReactElement => {
             if (type === "input") {
                 return (
                     <>
