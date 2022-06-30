@@ -204,6 +204,32 @@ export const AccessControlContext: FunctionComponent<PropsWithChildren<AccessCon
                     featureConfig?.organizations,
                     featureConfig?.organizations?.scopes?.create,
                     allowedScopes
+                ),
+
+                [ AccessControlConstants.ORGANIZATION_ROLES ]: hasRequiredScopes(
+                    featureConfig?.organization_roles,
+                    featureConfig?.organization_roles?.scopes?.feature,
+                    allowedScopes
+                ),
+                [ AccessControlConstants.ORGANIZATION_ROLES_READ ]: hasRequiredScopes(
+                    featureConfig?.organization_roles,
+                    featureConfig?.organization_roles?.scopes?.read,
+                    allowedScopes
+                ),
+                [ AccessControlConstants.ORGANIZATION_ROLES_EDIT ]: hasRequiredScopes(
+                    featureConfig?.organization_roles,
+                    featureConfig?.organization_roles?.scopes?.update,
+                    allowedScopes
+                ),
+                [ AccessControlConstants.ORGANIZATION_ROLES_DELETE ]: hasRequiredScopes(
+                    featureConfig?.organization_roles,
+                    featureConfig?.organization_roles?.scopes?.delete,
+                    allowedScopes
+                ),
+                [ AccessControlConstants.ORGANIZATION_ROLES_WRITE ]: hasRequiredScopes(
+                    featureConfig?.organization_roles,
+                    featureConfig?.organization_roles?.scopes?.create,
+                    allowedScopes
                 )
             }
         });

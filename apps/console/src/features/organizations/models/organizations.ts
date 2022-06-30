@@ -73,3 +73,23 @@ export interface OrganizationPatchData {
     path: string;
     value: string;
 }
+
+export interface OrganizationRoleInterface {
+    displayName: string,
+    id: string,
+    users: Array<{
+        value: string,
+        $ref: string
+    }>,
+    permissions: Array<string>,
+    meta: {
+        location: string
+    }
+}
+
+export type OrganizationRoleListItemInterface = Omit<OrganizationRoleInterface, "users" | "permissions">;
+
+export type OrganizationRoleListResponseInterface = {
+    links: OrganizationLinkInterface[];
+    roles: Array<OrganizationRoleListItemInterface>
+}
