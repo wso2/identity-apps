@@ -8149,7 +8149,7 @@ export const console: ConsoleNS = {
                     addUserForm: {
                         buttons: {
                             radioButton: {
-                                label: "Select the method to reset the user password",
+                                label: "Select the method to set the user password",
                                 options: {
                                     askPassword: "Invite the user to set their own password",
                                     createPassword: "Set a temporary password for the user"
