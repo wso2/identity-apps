@@ -56,11 +56,11 @@ export interface ConfirmationModalPropsInterface extends ModalProps, TestableCom
     /**
      * Type of the assertion.
      */
-    assertionType?: "input" | "checkbox" | string;
+    assertionType?: "input" | "checkbox";
     /**
      * Confirmation modal emphasis.
      */
-    type: "positive" | "negative" | "warning" | "info" | string;
+    type: "positive" | "negative" | "warning" | "info";
     /**
      * Primary action button label.
      */
@@ -307,7 +307,7 @@ export const ConfirmationModal: FunctionComponent<ConfirmationModalPropsInterfac
      *
      * @return {React.ReactElement}
      */
-        const resolveAssertionInput = (type: "input" | "checkbox" | string): ReactElement => {
+        const resolveAssertionInput = (type: "input" | "checkbox"): ReactElement => {
             if (type === "input") {
                 return (
                     <>
