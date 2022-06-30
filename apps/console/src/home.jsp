@@ -44,8 +44,8 @@
             var serverOriginGlobal = "<%= htmlWebpackPlugin.options.serverUrl %>";
             var superTenantGlobal = "<%= htmlWebpackPlugin.options.superTenantConstant %>";
             var tenantPrefixGlobal = "<%= htmlWebpackPlugin.options.tenantPrefix %>";
-            var isAdaptiveAuthenticationAvailable = "<%= htmlWebpackPlugin.options.isAdaptiveAuthenticationAvailable %>";
-
+            var isAdaptiveAuthenticationAvailable = JSON.parse("<%= htmlWebpackPlugin.options.isAdaptiveAuthenticationAvailable %>");
+            
         </script>
 
         <script>
