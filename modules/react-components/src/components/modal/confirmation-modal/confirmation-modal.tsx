@@ -56,11 +56,11 @@ export interface ConfirmationModalPropsInterface extends ModalProps, TestableCom
     /**
      * Type of the assertion.
      */
-    assertionType?: "input" | "checkbox";
+    assertionType?: "input" | "checkbox" | string;
     /**
      * Confirmation modal emphasis.
      */
-    type: "positive" | "negative" | "warning" | "info";
+    type: "positive" | "negative" | "warning" | "info" | string;
     /**
      * Primary action button label.
      */

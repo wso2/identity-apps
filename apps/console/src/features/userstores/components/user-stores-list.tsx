@@ -96,6 +96,18 @@ interface UserStoresListPropsInterface extends SBACInterface<FeatureConfigInterf
      * Show list item actions.
      */
     showListItemActions?: boolean;
+    /**
+     * Assertion type 
+     */
+    assertionType?: string;
+    /**
+     * Assertion hint 
+     */
+    assertionHint?: string;
+    /**
+     * Input type
+     */
+    type?: string;
 }
 
 /**
@@ -121,6 +133,9 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
         selection,
         showListItemActions,
         update,
+        assertionType,
+        assertionHint,
+        type,
         [ "data-testid" ]: testId
     } = props;
 
@@ -162,20 +177,24 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
     const showDeleteConfirm = (): ReactElement => (
         <ConfirmationModal
             onClose={ closeDeleteConfirm }
-            type="warning"
+            type={ type ? type : "warning" }
             open={ deleteConfirm }
             assertion={ deleteName }
             assertionHint={
-                <p>
-                    <Trans i18nKey="console:manage.features.userstores.confirmation.hint">
-                        Please type
-                        <strong data-testid={ `${ testId }-delete-confirmation-modal-assertion` }>
-                            { { name: deleteName } }
-                        </strong > to confirm.
-                    </Trans>
-                </p>
+                assertionHint
+                    ? assertionHint 
+                    : (
+                        <p>
+                            <Trans i18nKey="console:manage.features.userstores.confirmation.hint">
+                                Please type
+                                <strong data-testid={ `${ testId }-delete-confirmation-modal-assertion` }>
+                                    { { name: deleteName } }
+                                </strong > to confirm.
+                            </Trans>
+                        </p>
+                    )
             }
-            assertionType="input"
+            assertionType={ assertionType ? assertionType : "input" }
             primaryAction={ t("common:confirm") }
             secondaryAction={ t("common:cancel") }
             onSecondaryActionClick={ closeDeleteConfirm }
