@@ -105,7 +105,7 @@ export interface PaginationPropsInterface extends PaginationProps, IdentifiableC
     totalListSize?: number;
     /**
      * Called when the page change event occurs.
-     * 
+     *
      * @param {React.MouseEvent<HTMLAnchorElement, MouseEvent>} event MouseEvent.
      * @param {PaginationProps} data Pagination props data.
      */
@@ -114,6 +114,10 @@ export interface PaginationPropsInterface extends PaginationProps, IdentifiableC
      * Toggles pagination reset.
      */
     resetPagination?: boolean;
+    /**
+     * Active page number.
+     */
+    activePage?: number;
     /**
      * Hide the pagination bar wthout losing state.
      */
@@ -134,7 +138,7 @@ export const Pagination: FunctionComponent<PaginationPropsInterface> = (
     const [ activePage, setActivePage ] = useState<number>(1);
 
     const init = useRef(true);
-    
+
     const {
         className,
         disableNextButton,
@@ -153,6 +157,7 @@ export const Pagination: FunctionComponent<PaginationPropsInterface> = (
         showItemsPerPageDropdown,
         showPagesOnMinimalMode,
         totalPages,
+        activePage: activePageProp,
         [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId,
         ...rest
@@ -167,13 +172,21 @@ export const Pagination: FunctionComponent<PaginationPropsInterface> = (
     );
 
     useEffect(() => {
+        if (activePageProp === undefined || activePageProp === null) {
+            return;
+        }
+
+        setActivePage(activePageProp);
+    }, [ activePageProp ]);
+
+    useEffect(() => {
         if (init.current) {
             init.current = false;
         } else {
             setActivePage(1);
         }
     }, [ resetPagination ]);
-    
+
     const generatePageCountDropdownOptions = (): DropdownItemProps[] => {
         const options = [];
 
@@ -199,7 +212,7 @@ export const Pagination: FunctionComponent<PaginationPropsInterface> = (
 
     /**
      * This is called when page change occurs.
-     * 
+     *
      * @param {React.MouseEvent<HTMLAnchorElement, MouseEvent>} event Mouse event.
      * @param {PaginationProps} data Semantic pagination props.
      */
