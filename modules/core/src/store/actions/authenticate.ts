@@ -79,7 +79,7 @@ export const setDefaultTenant = (tenantName: string): SetDefaultTenantActionInte
  *
  * @return {SetTenantsActionInterface} An action of type `SET_TENANTS`.
  */
-export const setTenants = (tenants: any[]): SetTenantsActionInterface => ({
+export const setTenants = <T>(tenants: T[]): SetTenantsActionInterface => ({
     payload: tenants,
     type: CommonAuthenticateActionTypes.SET_TENANTS
 });
