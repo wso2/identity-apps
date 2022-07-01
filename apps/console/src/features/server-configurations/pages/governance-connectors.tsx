@@ -82,8 +82,8 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
     }, []);
 
     const path: string[] = history.location.pathname.split("/");
-    const categoryId: string = path[ path.length - 1 ];
-
+    const categoryId: string = (path.length > 0) ? path[ path.length - 1 ] : "";
+    
     const loadCategoryConnectors = () => {
 
         getConnectorCategory(categoryId)
