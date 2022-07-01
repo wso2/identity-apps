@@ -66,31 +66,6 @@
         </copy>
     </target>
 
-    <!-- Copy layouts to the sms-otp-authentication-portal -->
-    <target name="check-sms-otp-authentication-portal-layout-dir">
-        <available
-                property="sms-otp-authentication-portal.layouts.dir.exists"
-                file="../../apps/sms-otp-authentication-portal/src/main/webapp/extensions/layouts"
-                type="dir"
-        />
-    </target>
-
-    <target
-            name="create-sms-otp-authentication-portal-layouts-dir"
-            depends="check-sms-otp-authentication-portal-layout-dir"
-            unless="check-sms-otp-authentication-portal-layout-dir"
-    >
-        <mkdir dir="../../apps/sms-otp-authentication-portal/src/main/webapp/extensions/layouts"/>
-    </target>
-
-    <target name="copy-layouts-into-sms-otp-authentication-portal"
-            depends="create-sms-otp-authentication-portal-layouts-dir">
-        <echo message="--- copying layouts to SMS OTP Authentication Portal ---"/>
-        <copy todir="../../apps/sms-otp-authentication-portal/src/main/webapp/extensions/layouts/" overwrite="true">
-            <fileset dir="layouts/" includes="**"/>
-        </copy>
-    </target>
-
     <!-- Copy layouts to the x509-certificate-authentication-portal -->
     <target name="check-x509-certificate-authentication-portal-layout-dir">
         <available
