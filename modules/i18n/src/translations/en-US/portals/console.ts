@@ -1475,15 +1475,15 @@ export const console: ConsoleNS = {
                             grant: {
                                 children: {
                                     client_credential: {
-                                        hint: "This grant type does not support openid scope.",
+                                        hint: "This grant type does not support the 'openid' scope.",
                                         label: "(openid scope not allowed)"
                                     },
                                     implicit: {
-                                        hint: "This grant type is not recommended for public applications.",
+                                        hint: "This grant type is not recommended.",
                                         label: "{{grantType}} (Not recommended)"
                                     },
                                     password: {
-                                        hint: "This grant type is not recommended for public applications.",
+                                        hint: "This grant type is not recommended.",
                                         label: "{{grantType}} (Not recommended)"
                                     }
                                 },

@@ -1511,20 +1511,15 @@ export const console: ConsoleNS = {
                             grant: {
                                 children: {
                                     client_credential: {
-                                        hint: "La portée openid n'est pas autorisée avec ce type de subvention.",
+                                        hint: "Ce type d'octroi ne prend pas en charge la portée 'openid'.",
                                         label: "(portée openid non autorisée)"
                                     },
                                     implicit: {
-                                        hint: "L'utilisation de l'octroi implicite avec des applications publiques " +
-                                            "n'est pas recommandée. {{productName}} adhérer aux meilleures " +
-                                            "pratiques desécurité et ne pas mettre en œuvre l'octroi implicite",
+                                        hint: "Ce type de subvention n'est pas recommandé.",
                                         label: "{{grantType}} (non recommandé)"
                                     },
                                     password: {
-                                        hint: "L'utilisation de l'octroi de mot de passe avec des applications " +
-                                            "publiques n'est pas recommandée. {{productName}} respectez les " +
-                                            "meilleures pratiques de sécurité et n'implémentez pas l'octroi " +
-                                            "de mot de passe",
+                                        hint: "Ce type de subvention n'est pas recommandé.",
                                         label: "{{grantType}} (non recommandé)"
                                     }
                                 },
