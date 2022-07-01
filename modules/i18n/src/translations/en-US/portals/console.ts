@@ -9017,7 +9017,7 @@ export const console: ConsoleNS = {
                     content: "If you delete this user store, the user data in this user store will also be deleted. "
                         + "Please proceed with caution.",
                     header: "Are you sure?",
-                    hint: "Please type <1>{{name}}</1> to confirm.",
+                    hint: "Please type confirm your action.",
                     message: "This action is irreversible and will permanently delete the"
                         + " selected user store and the data in it."
                 },

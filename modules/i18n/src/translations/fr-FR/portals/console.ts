@@ -7654,7 +7654,7 @@ export const console: ConsoleNS = {
                     content: "En supprimant cet annuaire, vous supprimerez également toute sa " +
                         + " configuration. Veuillez procéder avec prudence.",
                     header: "Êtes-vous sûr ?",
-                    hint: "Veuillez saisir <1>{{name}}</1> pour confirmer.",
+                    hint: "Veuillez confirmer votre action.",
                     message: "Cette action est irréversible et supprimera définitivement "
                         + " l'annuaire sélectionné ainsi que ses configurations."
                 },
