@@ -654,17 +654,22 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                 : null
             }
             <Divider className="x2"/>
-            <ScriptBasedFlow
-                authenticationSequence={ sequence }
-                isLoading={ isLoading }
-                onTemplateSelect={ handleLoadingDataFromTemplate }
-                onScriptChange={ handleAdaptiveScriptChange }
-                readOnly={ readOnly }
-                data-testid={ `${ testId }-script-based-flow` }
-                authenticationSteps={ steps }
-                isDefaultScript={ isDefaultScript }
-                onAdaptiveScriptReset={ () => setIsDefaultScript(true) }
-            />
+            { 
+                (/true/gi.test(isAdaptiveAuthenticationAvailable)) 
+                && (
+                    <ScriptBasedFlow 
+                        authenticationSequence={ sequence }
+                        isLoading={ isLoading }
+                        onTemplateSelect={ handleLoadingDataFromTemplate }
+                        onScriptChange={ handleAdaptiveScriptChange }
+                        readOnly={ readOnly }
+                        data-testid={ `${ testId }-script-based-flow` }
+                        authenticationSteps={ steps }
+                        isDefaultScript={ isDefaultScript }
+                        onAdaptiveScriptReset={ () => setIsDefaultScript(true) }
+                    />
+                )
+            }
             {
                 (config?.ui?.isRequestPathAuthenticationEnabled === false)
                     ? null
