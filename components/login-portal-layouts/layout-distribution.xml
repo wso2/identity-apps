@@ -97,7 +97,6 @@
             depends="
             copy-layouts-into-authentication-portal,
             copy-layouts-into-recovery-portal,
-            copy-layouts-into-sms-otp-authentication-portal,
             copy-layouts-into-x509-certificate-authentication-portal"
     />
 
