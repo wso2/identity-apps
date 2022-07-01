@@ -34,14 +34,39 @@ export const addOrganizationMockResponse = {
 
 export const getOrganizationsFilterMockResponse = {
     links: [ {
-        href: "org",
-        rel: "after"
+        href: "org.url?after=organization-two",
+        rel: "next"
     } ],
     organizations: [
         {
             id: "organization-one",
             name: "Organization One",
             ref: "organizations-one"
+        }
+    ]
+};
+
+export const getOrganizationsOneMockResponse = {
+    links: [ {
+        href: "org.url?before=organization-two",
+        rel: "previous"
+    } ],
+    organizations: [
+        {
+            id: "organization-two",
+            name: "Organization Two",
+            ref: "organizations-two"
+        }
+    ]
+};
+
+export const getOrganizationsTwoMockResponse = {
+    links: [ ],
+    organizations: [
+        {
+            id: "organization-three",
+            name: "Organization Three",
+            ref: "organizations-three"
         }
     ]
 };
@@ -53,15 +78,15 @@ export const getOrganizationsEmptyMockResponse = {
 
 export const getOrganizationsPageOneMockResponse = {
     links: [ {
-        href: "org",
-        rel: "after"
+        href: "org.url?after=organization-two",
+        rel: "next"
     } ],
     organizations: [
         {
             id: "organization-one",
             name: "Organization One",
             ref: "organizations-one"
-        },
+        } ,
         {
             id: "organization-two",
             name: "Organization Two",
@@ -93,4 +118,36 @@ export const getOrganizationsPageOneMockResponse = {
             ref: "organizations-seven"
         }
     ]
+};
+
+export const organizationTwoMockResponse = {
+    attributes: [],
+    created: "2022-01-01T00:00:00.000Z",
+    description: "This is a test organization.",
+    domain: "organization.two",
+    id: "organization-two",
+    lastModified: "2022-01-01T00:00:00.000Z",
+    name: "Organization Two",
+    parent: {
+        id: "organization-one",
+        ref: "root/ref"
+    },
+    status: "ACTIVE",
+    type: "TENANT"
+};
+
+export const organizationThreeMockResponse = {
+    attributes: [],
+    created: "2022-01-01T00:00:00.000Z",
+    description: "This is a test organization.",
+    domain: "organization.three",
+    id: "organization-three",
+    lastModified: "2022-01-01T00:00:00.000Z",
+    name: "Organization Three",
+    parent: {
+        id: "organization-two",
+        ref: "root/ref"
+    },
+    status: "ACTIVE",
+    type: "TENANT"
 };
