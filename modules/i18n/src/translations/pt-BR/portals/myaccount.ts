@@ -908,7 +908,10 @@ export const myAccount: MyAccountNS = {
                 },
                 profileStatus: {
                     completionPercentage: "A conclusão do seu perfil está em {{percentage}}%",
+                    description: "Gerencie seu perfil",
                     header: "Seu perfil do {{productName}}",
+                    profileText: "Detalhes do seu perfil pessoal",
+                    readOnlyDescription:"Ver seu perfil",
                     userSourceText: "(Conectado via {{source}})"
                 }
             }
@@ -1484,6 +1487,8 @@ export const myAccount: MyAccountNS = {
             subTitle: "",
             title: "Política de Privacidade do Servidor de Identidade WSO2"
         },
+        readOnlyProfileBanner: "Seu perfil não pode ser modificado neste portal. " +
+            "Entre em contato com seu administrador para obter mais detalhes.",
         security: {
             subTitle: "Atualize as configurações para tornar sua conta segura",
             title: "Segurança"

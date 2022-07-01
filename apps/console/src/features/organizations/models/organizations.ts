@@ -36,7 +36,6 @@ export interface AddOrganizationInterface {
     name: string;
     description: string;
     type: string;
-    domain: string;
     parentId: string;
     attributes?: OrganizationAttributesInterface[];
 }

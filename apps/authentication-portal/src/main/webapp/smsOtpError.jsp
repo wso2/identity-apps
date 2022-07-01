@@ -37,7 +37,7 @@
         idpAuthenticatorMapping = (Map<String, String>) request.getAttribute(Constants.IDP_AUTHENTICATOR_MAP);
     }
 
-    String errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"error.retry");
+    String errorMessage = IdentityManagementEndpointUtil.i18n(resourceBundle,"error.retry");
     String authenticationFailed = "false";
     String errorInfo = null;
 
@@ -48,22 +48,22 @@
             errorMessage = request.getParameter(Constants.AUTH_FAILURE_MSG);
 
             if (errorMessage.equalsIgnoreCase("authentication.fail.message")) {
-                errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"error.retry");
+                errorMessage = IdentityManagementEndpointUtil.i18n(resourceBundle,"error.retry");
             } else if (errorMessage.equalsIgnoreCase(SMSOTPConstants.UNABLE_SEND_CODE_VALUE)) {
-                errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"error.send");
+                errorMessage = IdentityManagementEndpointUtil.i18n(resourceBundle,"error.send");
             } else if (errorMessage.equalsIgnoreCase(SMSOTPConstants.ERROR_CODE_MISMATCH)) {
-                errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"error.code");
+                errorMessage = IdentityManagementEndpointUtil.i18n(resourceBundle,"error.code");
             } else if (errorMessage.equalsIgnoreCase(SMSOTPConstants.ERROR_SMSOTP_DISABLE_MSG)) {
-                errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"error.smsotp.disabled");
+                errorMessage = IdentityManagementEndpointUtil.i18n(resourceBundle,"error.smsotp.disabled");
             } else if (errorMessage.equalsIgnoreCase(SMSOTPConstants.TOKEN_EXPIRED_VALUE)) {
-                errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"error.token.expired");
+                errorMessage = IdentityManagementEndpointUtil.i18n(resourceBundle,"error.token.expired");
             } else if (errorMessage.equalsIgnoreCase(SMSOTPConstants.SEND_OTP_DIRECTLY_DISABLE_MSG)) {
-                errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"error.user.not.found");
+                errorMessage = IdentityManagementEndpointUtil.i18n(resourceBundle,"error.user.not.found.smsotp");
             } else if (errorMessage.equalsIgnoreCase("user.account.locked")) {
-                errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"error.user.locked");
+                errorMessage = IdentityManagementEndpointUtil.i18n(resourceBundle,"error.user.account.locked");
                 String unlockTime = request.getParameter("unlockTime");
                 if (unlockTime != null) {
-                  errorMessage = String.format(IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"error.user.locked.temporarly"), unlockTime);
+                  errorMessage = String.format(IdentityManagementEndpointUtil.i18n(resourceBundle,"error.user.locked.temporarly"), unlockTime);
                 }
             } else if (SMSOTPUtils.useInternalErrorCodes()) {
                 String httpCode = URLDecoder.decode(errorMessage, SMSOTPConstants.CHAR_SET_UTF_8);
@@ -109,7 +109,7 @@
 
                 <div class="ui segment">
                     <!-- page content -->
-                    <h2><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "error.failed.with.smsotp")%></h2>
+                    <h2><%=IdentityManagementEndpointUtil.i18n(resourceBundle, "error.failed.with.smsotp")%></h2>
                     <%
                         if ("true".equals(authenticationFailed)) {
                     %>

@@ -111,6 +111,10 @@ export interface FeatureConfigInterface {
      * Secret Management Feature UI Access Scopes.
      */
     secretsManagement?: FeatureAccessConfigInterface;
+    /**
+     * Try It feature 
+     */
+    tryIt?: FeatureAccessConfigInterface;
 }
 
 /**

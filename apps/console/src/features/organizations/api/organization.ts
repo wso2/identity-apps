@@ -49,7 +49,8 @@ export const getOrganizations = (
     filter: string,
     limit: number,
     after: string,
-    before: string
+    before: string,
+    recursive: boolean
 ): Promise<OrganizationListInterface> => {
     const config: HttpRequestConfig = {
         headers: {
@@ -61,7 +62,8 @@ export const getOrganizations = (
             after,
             before,
             filter,
-            limit
+            limit,
+            recursive
         },
         url: `${ store.getState().config.endpoints.organizations }/organizations`
     };

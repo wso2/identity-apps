@@ -185,14 +185,6 @@ export const FullScreenView: FunctionComponent<FullScreenViewPropsInterface> = (
                         title={ t("console:common.placeholders.brokenPage.title") }
                     />
                 ) }
-                handleError={ (error: Error, errorInfo: ErrorInfo) => {
-                    eventPublisher.publish("error-captured-error-boundary", {
-                        error: error?.name,
-                        errorInfo: errorInfo?.componentStack,
-                        stack: error?.stack,
-                        type: "full-screen-view"
-                    });
-                } }
             >
                 <Suspense fallback={ <ContentLoader dimmer={ false } /> }>
                     <Switch>
