@@ -94,6 +94,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ isOrganizationsNextPageAvailable, setIsOrganizationsNextPageAvailable ] = useState<boolean>(undefined);
+    const [ isOrganizationsPrevPageAvailable, setIsOrganizationsPrevPageAvailable ] = useState<boolean>(undefined);
     const [ parent, setParent ] = useState<OrganizationInterface>(null);
     const [ organizations, setOrganizations ] = useState<OrganizationInterface[]>([]);
     const [ organization, setOrganization ] = useState<OrganizationResponseInterface>(null);
@@ -114,23 +115,27 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                 const afterID = link.href.split("after=")[ 1 ];
 
                 setAfter(afterID);
+                setIsOrganizationsNextPageAvailable(true);
                 nextFound = true;
             }
 
-            if (link.rel === "prev") {
+            if (link.rel === "previous") {
                 const beforeID = link.href.split("before=")[ 1 ];
 
                 setBefore(beforeID);
+                setIsOrganizationsPrevPageAvailable(true);
                 prevFound = true;
             }
         });
 
         if (!nextFound) {
             setAfter("");
+            setIsOrganizationsNextPageAvailable(false);
         }
 
         if (!prevFound) {
             setBefore("");
+            setIsOrganizationsPrevPageAvailable(false);
         }
     }, [ organizationList ]);
 
@@ -186,7 +191,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
         if (!parent || isEmpty(parent)) {
             filterQuery = searchQuery;
         } else {
-            filterQuery = `${ searchQuery ? searchQuery + " and" : "" } parentId eq ${ parent.id }`;
+            filterQuery = `${ searchQuery ? searchQuery + " and " : "" }parentId eq ${ parent.id }`;
         }
 
         return filterQuery;
@@ -204,7 +209,6 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
             setOrganizationListRequestLoading(true);
             getOrganizations(filter, limit, after, before, true)
                 .then((response: OrganizationListInterface) => {
-                    handleNextButtonVisibility(response);
                     setOrganizationList(response);
                 })
                 .catch((error) => {
@@ -263,26 +267,6 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
     };
 
     /**
-     *
-     * Sets the Next button visibility.
-     *
-     * @param {OrganizationListInterface} list - List of organizations.
-     */
-    const handleNextButtonVisibility = (list: OrganizationListInterface): void => {
-        if (!list.links) {
-            setIsOrganizationsNextPageAvailable(false);
-
-            return;
-        }
-
-        list.links?.forEach((link) => {
-            link.rel === "next"
-                ? setIsOrganizationsNextPageAvailable(true)
-                : setIsOrganizationsNextPageAvailable(false);
-        });
-    };
-
-    /**
      * Handles the `onFilter` callback action from the
      * organization search component.
      *
@@ -307,6 +291,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
         } else if (newPage < activePage) {
             getOrganizationLists(listItemLimit, filterQuery, null, before);
         }
+
         setActivePage(newPage);
     };
 
@@ -387,7 +372,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                                     eventPublisher.publish("organization-click-new-organization-button");
                                     setShowWizard(true);
                                 } }
-                                data-testid={ `${ testId }-list-layout-add-button` }
+                                data-componentid={ `${ testId }-list-layout-add-button` }
                             >
                                 <Icon name="add" />
                                 { t("console:manage.features.organizations.list.actions.add") }
@@ -411,15 +396,14 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                                 : t("console:manage.features.organizations.homeList.description") }
                     </p>)
                 }
-                data-testid={ `${ testId }-page-layout` }
+                data-componentid={ `${ testId }-page-layout` }
                 titleAs="h3"
                 componentAbovePageHeader={
                     (<>
                         <Header as="h1" data-componentid={ `${ testId }-organization-header` }>
                             { t("console:manage.pages.organizations.title") }
                             <Header.Subheader
-                                data-componentid={ "organization-sub-title" }
-                                data-testid={ `${ testId }-sub-title` }
+                                data-componentid={ `${ testId }-sub-title` }
                             >
                                 { t("console:manage.pages.organizations.subTitle") }
                             </Header.Subheader>
@@ -488,7 +472,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                                     defaultSearchAttribute="name"
                                     defaultSearchOperator="co"
                                     triggerClearQuery={ triggerClearQuery }
-                                    data-testid={ `${ testId }-list-advanced-search` }
+                                    data-componentid={ `${ testId }-list-advanced-search` }
                                 />)
                             }
                             currentListSize={ organizationList?.organizations?.length }
@@ -503,13 +487,15 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                             }
                             sortOptions={ ORGANIZATIONS_LIST_SORTING_OPTIONS }
                             sortStrategy={ listSortingStrategy }
-                            totalPages={ after ? activePage + 1 : 1 }
+                            totalPages={ 10 }
                             totalListSize={ organizationList?.organizations?.length }
                             paginationOptions={ {
-                                disableNextButton: !isOrganizationsNextPageAvailable
+                                disableNextButton: !isOrganizationsNextPageAvailable,
+                                disablePreviousButton: !isOrganizationsPrevPageAvailable
                             } }
-                            data-testid={ `${ testId }-list-layout` }
+                            data-componentid={ `${ testId }-list-layout` }
                             resetPagination={ paginationReset }
+                            activePage={ activePage }
                         >
                             <OrganizationList
                                 isLoading={ isOrganizationListRequestLoading }
