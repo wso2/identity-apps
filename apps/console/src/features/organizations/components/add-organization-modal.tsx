@@ -172,7 +172,7 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
                 onClose={ handleWizardClose }
                 closeOnDimmerClick={ false }
                 closeOnEscape
-                data-testid={ `${ testId }-modal` }
+                data-componentid={ `${ testId }-modal` }
             >
                 <Modal.Header className="wizard-header">
                     { t("console:manage.features.organizations.modals.addOrganization.header") }
