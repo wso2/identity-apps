@@ -36,8 +36,16 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
-import { AdvancedSearchWithBasicFilters, AppState, FeatureConfigInterface, UIConstants } from "../../core";
-import { getOrganizationRoles } from "../api/organization-role";
+import {
+    AdvancedSearchWithBasicFilters,
+    AppConstants,
+    AppState,
+    FeatureConfigInterface,
+    UIConstants,
+    history
+} from "../../core";
+import { CreateRoleInterface, CreateRoleWizard } from "../../roles";
+import { createOrganizationRole, getOrganizationRoles } from "../api/organization-role";
 import { OrganizationRoleList } from "../components";
 import { OrganizationRoleListItemInterface, OrganizationRoleListResponseInterface } from "../models";
 
@@ -228,16 +236,78 @@ const OrganizationRoles: FunctionComponent<OrganizationRolesPageInterface> = (
     /**
      * Handles organization role delete action.
      */
-    const handleOrganizationDelete = (): void => {
+    const handleOrganizationRoleDelete = (): void => {
         getOrganizationRoleLists(listItemLimit, searchQuery, after, before);
     };
 
     /**
      * Handles organization list update action.
      */
-    const handleOrganizationListUpdate = (): void => {
+    const handleOrganizationRoleListUpdate = (): void => {
         getOrganizationRoleLists(listItemLimit, searchQuery, after, before);
     };
+
+    const handleOrganizationRoleCreate = useCallback((roleData: CreateRoleInterface) => {
+        // Setting up the data model for organization role creation (temp)
+        roleData.groups.forEach((group) => {
+            delete(group.display);
+        });
+
+        roleData.users.forEach((user) => {
+            delete(user.display);
+        });
+
+        delete(roleData.schemas);
+
+        createOrganizationRole(currentOrganizationId, roleData).then(response => {
+            if (response.status === 201) {
+                dispatch(
+                    addAlert({
+                        description: t("console:manage.features.roles.notifications.createRole." +
+                            "success.description"),
+                        level: AlertLevels.SUCCESS,
+                        message: t("console:manage.features.roles.notifications.createRole.success.message")
+                    })
+                );
+
+                setShowWizard(false);
+                history.push(AppConstants.getPaths().get("ROLE_EDIT").replace(":id", response.data.id));
+            }
+
+        }).catch(error => {
+            if (!error.response || error.response.status === 401) {
+                setShowWizard(false);
+                dispatch(
+                    addAlert({
+                        description: t("console:manage.features.roles.notifications.createRole.error.description"),
+                        level: AlertLevels.ERROR,
+                        message: t("console:manage.features.roles.notifications.createRole.error.message")
+                    })
+                );
+            } else if (error.response && error.response.data.detail) {
+                setShowWizard(false);
+                dispatch(
+                    addAlert({
+                        description: t("console:manage.features.roles.notifications.createRole.error.description",
+                            { description: error.response.data.detail }),
+                        level: AlertLevels.ERROR,
+                        message: t("console:manage.features.roles.notifications.createRole.error.message")
+                    })
+                );
+            } else {
+                setShowWizard(false);
+                dispatch(addAlert({
+                    description: t("console:manage.features.roles.notifications.createRole." +
+                        "genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("console:manage.features.roles.notifications.createRole.genericError.message")
+                }));
+            }
+        }).finally(() => {
+            setLoading(false);
+        });
+    }, [ createOrganizationRole, setShowWizard, setLoading, dispatch, history, currentOrganizationId, t ]);
+
 
     /**
      * Handles the `onSearchQueryClear` callback action.
@@ -374,7 +444,7 @@ const OrganizationRoles: FunctionComponent<OrganizationRolesPageInterface> = (
                                 featureConfig={ featureConfig }
                                 isLoading={ isOrganizationRoleListRequestLoading }
                                 list={ organizationRoles }
-                                onOrganizationRoleDelete={ handleOrganizationDelete }
+                                onOrganizationRoleDelete={ handleOrganizationRoleDelete }
                                 onEmptyListPlaceholderActionClick={ () => {
                                     setShowWizard(true);
                                 } }
@@ -387,12 +457,14 @@ const OrganizationRoles: FunctionComponent<OrganizationRolesPageInterface> = (
                             />
                         </ListLayout>
                         { showWizard && (
-                            <div>123</div>
-                            // <AddOrganizationModal
-                            //     onUpdate={ handleOrganizationListUpdate }
-                            //     closeWizard={ () => setShowWizard(false) }
-                            //     parent={ parent }
-                            // />
+                            // <div>123</div>
+                            <CreateRoleWizard
+                                data-testid="org-role-mgt-create-role-wizard"
+                                isAddGroup={ false }
+                                closeWizard={ () => setShowWizard(false) }
+                                updateList={ () => handleOrganizationRoleListUpdate() }
+                                onCreateRoleRequested={ handleOrganizationRoleCreate }
+                            />
                         ) }
                     </>
                 ) : (
