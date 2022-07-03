@@ -216,7 +216,7 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
             </ConfirmationModal.Header>
             <ConfirmationModal.Message
                 attached
-                warning
+                negative
                 data-testid={ `${ testId }-delete-confirmation-modal-message` }
             >
                 { t("console:manage.features.userstores.confirmation.message") }
