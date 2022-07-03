@@ -17,8 +17,10 @@
  */
 
 import { AsgardeoSPAClient, HttpError, HttpRequestConfig, HttpResponse } from "@asgardeo/auth-react";
+import { HttpMethods } from "@wso2is/core/models";
 import { store } from "../../core";
-import { OrganizationListInterface, OrganizationRoleListResponseInterface } from "../models";
+import { CreateRoleInterface } from "../../roles";
+import { OrganizationRoleListResponseInterface } from "../models";
 
 /**
  * Get an axios instance.
@@ -51,7 +53,7 @@ export const getOrganizationRoles = (
             Accept: "application/json",
             "Content-Type": "application/json"
         },
-        method: "GET",
+        method: HttpMethods.GET,
         params: {
             after,
             before,
@@ -87,7 +89,7 @@ export const deleteOrganizationRole = (organizationId: string, roleId: string): 
             Accept: "application/json",
             "Content-Type": "application/json"
         },
-        method: "DELETE",
+        method: HttpMethods.DELETE,
         url: `${ store.getState().config.endpoints.organizations }/organizations/${ organizationId }/roles/${ roleId }`
     };
 
@@ -100,6 +102,30 @@ export const deleteOrganizationRole = (organizationId: string, roleId: string): 
             return Promise.resolve(response?.data);
         })
         .catch((error: HttpError) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * Create a role in the organization.
+ *
+ * @param organizationId - The organization identifier.
+ * @param data - data object used to create the role
+ */
+export const createOrganizationRole = (organizationId: string, data: CreateRoleInterface): Promise<any> => {
+    const requestConfig = {
+        data,
+        headers: {
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.POST,
+        url: `${ store.getState().config.endpoints.organizations }/organizations/${ organizationId }/roles`
+    };
+
+    return httpClient(requestConfig)
+        .then((response) => {
+            return Promise.resolve(response);
+        }).catch((error) => {
             return Promise.reject(error);
         });
 };
