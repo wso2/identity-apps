@@ -474,6 +474,10 @@ module.exports = (env) => {
                     contentType: "<%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\" " +
                         "pageEncoding=\"UTF-8\" %>",
                     filename: path.join(distFolder, "home.jsp"),
+                    getAdaptiveAuthenticationAvailability: !isDeployedOnExternalServer
+                        ? "<%@ page import=\"static org.wso2.carbon.identity.application." +
+                        "authentication.framework.util.FrameworkUtils.isAdaptiveAuthenticationAvailable\"%>"
+                        : "",
                     hash: true,
                     // eslint-disable-next-line max-len
                     hotjarSystemVariable: "<% String hotjar_track_code_system_var = System.getenv().getOrDefault(\"hotjar_tracking_code\", null); %>",
@@ -488,6 +492,9 @@ module.exports = (env) => {
                         ? "<%@ page import=\"static org.wso2.carbon.utils.multitenancy." +
                         "MultitenantConstants.TENANT_AWARE_URL_PREFIX\"%>"
                         : "",
+                    isAdaptiveAuthenticationAvailable: !isDeployedOnExternalServer
+                        ? "<%= isAdaptiveAuthenticationAvailable() %>"
+                        : "false",
                     importUtil: !isDeployedOnExternalServer
                         ? "<%@ page import=\"" +
                         "static org.wso2.carbon.identity.core.util.IdentityUtil.getServerURL\" %>"
@@ -537,6 +544,10 @@ module.exports = (env) => {
                         ? "<%=getServerURL(\"\", true, true)%>"
                         : "",
                     authorizationCode: "<%=request.getParameter(\"code\")%>",
+                    getAdaptiveAuthenticationAvailability: !isDeployedOnExternalServer
+                        ? "<%@ page import=\"static org.wso2.carbon.identity.application." +
+                        "authentication.framework.util.FrameworkUtils.isAdaptiveAuthenticationAvailable\"%>"
+                        : "",
                     importSuperTenantConstant: !isDeployedOnExternalServer
                         ? "<%@ page import=\"static org.wso2.carbon.utils.multitenancy." +
                         "MultitenantConstants.SUPER_TENANT_DOMAIN_NAME\"%>"
@@ -545,6 +556,9 @@ module.exports = (env) => {
                         ? "<%@ page import=\"static org.wso2.carbon.utils.multitenancy." +
                         "MultitenantConstants.TENANT_AWARE_URL_PREFIX\"%>"
                         : "",
+                    isAdaptiveAuthenticationAvailable: !isDeployedOnExternalServer
+                        ? "<%= isAdaptiveAuthenticationAvailable() %>"
+                        : "false",
                     importUtil: !isDeployedOnExternalServer
                         ? "<%@ page import=\"" +
                         "static org.wso2.carbon.identity.core.util.IdentityUtil.getServerURL\" %>"
