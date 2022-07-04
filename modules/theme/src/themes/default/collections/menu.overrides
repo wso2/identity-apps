@@ -139,6 +139,229 @@
                 }
             }
         }
+
+        .tenant-dropdown-wrapper {
+                            padding-left: 0;
+                            .tenant-dropdown {
+                                border: 1px solid @defaultBorderColor;
+                                border-radius: @tenantDropdownTriggerBorderRadius !important;
+                                color: @tenantDropdownTriggerTextColor;
+                                padding: 10px 15px;
+
+                                &:hover, &:active, &:focus {
+                                    color: darken(@tenantDropdownTriggerTextColor, 10);
+
+                                    .tenant-dropdown-trigger {
+                                        .theme-icon {
+                                            svg {
+                                                > path {
+                                                    fill: darken(@tenantDropdownTriggerTextColor, 10);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                &:hover {
+                                    background: @tenantDropdownTriggerHoverBackground;
+                                }
+                                &.active {
+                                    background: @tenantDropdownTriggerActiveBackground;
+                                }
+
+                                .tenant-dropdown-trigger {
+                                    display: contents;
+
+                                    .tenant-dropdown-trigger-display-name {
+                                        max-width: @tenantDropdownTriggerDisplayNameMaxWidth;
+                                        line-height: initial;
+                                        margin-top: -3px;
+                                    }
+
+                                    .theme-icon {
+                                        svg {
+                                            > path {
+                                                fill: @tenantDropdownTriggerTextColor;
+                                            }
+                                        }
+                                    }
+                                }
+                                .ui.items {
+                                    margin: 0;
+                                }
+                            }
+                        }
+                        .tenant-dropdown {
+                            .divider {
+                                margin: 0;
+                            }
+                            .tenant-item-wrapper {
+                                .item {
+                                    display: flex!important;
+                                    padding: 12px 8px;
+                                    border: 1px solid @defaultBorderColor;
+                                    margin-bottom: 8px;
+                                }
+                                .associated-tenant-icon {
+                                    .icon {
+                                        width: 24px;
+                                    }
+                                }
+                                .tenant-description {
+                                    display: flex;
+                                    justify-content: space-between;
+                                    cursor: pointer;
+
+                                    .manage-tenant-icon {
+                                        padding: 4px;
+                                        border: 1px solid @defaultBorderColor;
+                                        display: flex;
+                                        border-radius: 4px;
+                                    }
+
+                                    .manage-tenant-icon:hover {
+                                        background-color: darken(@defaultBorderColor, 0.08);
+                                    }
+                                }
+                                .spaced-right {
+                                    padding-right: 5px;
+                                }
+                            }
+                            .menu {
+                                min-width: @tenantDropdownMinWidth;
+                                padding: @tenantDropdownPadding;
+
+                                .header {
+
+                                    .content{
+                                        padding-left: 15px;
+
+                                        .description {
+                                            margin-top: 0;
+
+                                            .name {
+                                                min-width: 100px;
+                                            }
+                                            .default-button {
+                                                min-width: 60px;
+                                                padding: 0.4em 1em;
+                                                font-size: 0.8em;
+
+                                                &.active {
+                                                    box-shadow: 0 0 0 1px @tenantDropdownDefaultButtonBorderColor inset!important;
+                                                    background-color: @tenantDropdownDefaultButtonBackground!important;
+                                                    &:hover {
+                                                        box-shadow: 0 0 0 1px @tenantDropdownDefaultButtonHoverBorderColor inset!important;
+                                                    }
+                                                }
+                                                &.disabled {
+                                                    box-shadow: 0 0 0 1px @tenantDropdownDefaultLabelBorderColor inset!important;
+                                                    background-color: @tenantDropdownDefaultLabelBackground!important;
+                                                    color: @black!important;
+                                                    &.loading {
+                                                        color: transparent!important;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+                                .header-with-margin {
+                                    margin-bottom: 8px;
+                                }
+
+                                .search-bar {
+                                    padding: 12px 0;
+                                }
+
+                                .tenant-pagination {
+                                    display: flex;
+                                    justify-content: flex-end;
+
+                                    button {
+                                        &:first-child {
+                                            margin-left: 8px;
+                                        }
+                                    }
+                                }
+
+                                .tenants-list {
+                                    max-height: 210px;
+                                    overflow: auto;
+
+                                    .tenant-account {
+                                        border-radius: @defaultBorderRadius !important;
+                                        padding: @tenantDropdownTenantPadding !important;
+                                        border: none;
+                                        transition: none !important;
+                                        margin: 0;
+
+                                        .theme-icon {
+                                            margin-top: 0 !important;
+                                        }
+                                        .description {
+                                            margin-top: 0;
+                                        }
+                                        &:hover {
+                                            cursor: pointer;
+                                            background: darken(@whiteSmoke, 2);
+                                        }
+                                        .name {
+                                            font-weight: 400;
+                                        }
+                                        .email {
+                                            color: @nobel;
+                                        }
+                                    }
+                                    .empty-list {
+                                        margin: 8px 0;
+                                        padding: 5px 10px !important;
+
+                                        .message {
+                                            color: @nobel;
+                                            height: 30px;
+                                            padding-top: 5px;
+                                            text-align: center;
+                                        }
+                                    }
+                                }
+                                .action-panel {
+                                    border: none;
+                                    margin: @tenantDropdownLinkMargin;
+                                    padding: 14px 20px !important;
+                                    border-radius: 0;
+                                    min-height: @tenantDropdownLinkMinHeight;
+
+                                    &:last-child {
+                                        margin-bottom: 0 !important;
+                                    }
+                                    &.no-hover {
+                                        &:hover {
+                                            background: transparent !important;
+                                        }
+                                    }
+                                    .link-icon {
+                                        color: @textColor;
+                                    }
+                                    .link-text {
+                                        color: @textColor;
+                                        text-decoration: none;
+                                    }
+                                    .action-button {
+                                        background: #f8f8f8;
+                                        border: 1px solid #c6c6c6;
+                                        line-height: 28px;
+                                        padding: 6px 20px;
+                                        color: #666;
+
+                                        &, &:hover {
+                                            text-decoration: none;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
         .user-dropdown {
             &:hover, &:active, &:focus {
                 background: transparent;
