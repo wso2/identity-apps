@@ -7,20 +7,15 @@
  * You may not alter or remove any copyright or other notice from copies of this content."
  */
 
-import { TenantAssociationsInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { GenericIcon } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Button, Divider, Dropdown, Input, Item, Menu, Placeholder } from "semantic-ui-react";
 import { AppState, getMiscellaneousIcons, getSidePanelIcons } from "../../../core";
 import { getOrganizations } from "../../api";
-import { OrganizationInterface, OrganizationListInterface } from "../../models";
-// import { getUsersOrganization } from "../../api/organizations";
-// import { getMiscellaneousIcons, getSidePanelIcons } from "../configs";
-// import { OrganizationListInterface } from "../models/organizations";
-// import { TenantInfo } from "../models/tenants";
-// import { AppState, setActiveView } from "../store";
+import { OrganizationInterface, OrganizationLinkInterface, OrganizationListInterface } from "../../models";
 
 /**
  * Interface for tenant dropdown.
@@ -32,25 +27,20 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
 ): ReactElement => {
 
     const { t } = useTranslation();
-    const dispatch = useDispatch();
 
-    const username: string = useSelector((state: AppState) => state.auth.username);
-    const email: string = useSelector((state: AppState) => state.auth.email);
+    const endpoints = useSelector((state: AppState) => state.config.endpoints);
     const tenantDomain: string = useSelector((state: AppState) => state.auth.tenantDomain);
 
-    const [ tenantAssociations, setTenantAssociations ] = useState<TenantAssociationsInterface>(undefined);
-    const [ tempTenantAssociationsList, setTempTenantAssociationsList ] = useState<string[]>(undefined);
-    const [ showTenantAddModal, setShowTenantAddModal ] = useState<boolean>(false);
-    const [ isSwitchTenantsSelected, setIsSwitchTenantsSelected ] = useState<boolean>(false);
-    const [ isSetDefaultTenantInProgress, setIsSetDefaultTenantInProgress ] = useState<boolean>(false);
-
-    const [ currentOrganization, setCurrentOrganization ] = useState<OrganizationInterface>();
+    const [ currentOrganization, setCurrentOrganization ] = useState<OrganizationInterface>({
+        id: tenantDomain,
+        name: tenantDomain,
+        ref: ""
+    });
     const [ associatedOrganizations, setAssociatedOrganizations ] = useState<OrganizationInterface[]>([]);
     // ToDo - Need to set the current Organization ID
-    const [ currentOrganizationId, setCurrentOrganizationId ] = useState<string>("carbon.super");
     const [ listFilter, setListFilter ] = useState("");
-    const [ afterCursor, setAfterCursor ] = useState();
-    const [ beforeCursor, setBeforeCursor ] = useState();
+    const [ afterCursor, setAfterCursor ] = useState<string>();
+    const [ beforeCursor, setBeforeCursor ] = useState<string>();
 
     const getOrganizationList = useCallback(() => {
         getOrganizations(
@@ -60,32 +50,38 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
             beforeCursor,
             true
         ).then((response: OrganizationListInterface) => {
-            console.log(response);
-
             const associatedOrganizations: Array<OrganizationInterface> = response.organizations
-                .map((organization) => organization)
-                .filter((organization) => {
-                    if (currentOrganizationId === organization.name) {
-                        setCurrentOrganization(organization);
-
-                        return false;
-                    }
-
-                    return true;
-                });
+                .map((organization) => organization);
 
             setAssociatedOrganizations(associatedOrganizations);
+
+            setPaginationData(response.links);
         });
     }, [ listFilter, afterCursor, beforeCursor ]);
 
-    // ToDo
-    // 1. How to get the carbon.super org/tenant? How it's done for now
-    // 2. Default organization?
-    // 3. Store to set default org/tenant
-    // 4. Refresh page when switching an organization
+    const setPaginationData = (links: OrganizationLinkInterface[]) => {
+        setAfterCursor(undefined);
+        setBeforeCursor(undefined);
+        if (!links || links.length === 0) {
+            return;
+        }
+
+        links.forEach((link) => {
+            if (link.rel === "next") {
+                const afterCursorLink = link.href.toString().split("after=")[1];
+
+                setAfterCursor(afterCursorLink);
+            } else {
+                const beforeCursorLink = link.href.toString().split("before=")[1];
+
+                setBeforeCursor(beforeCursorLink);
+            }
+        });
+    };
+
     useEffect(() => {
         getOrganizationList();
-    }, [ listFilter ]);
+    }, [ listFilter, endpoints ]);
 
     const triggerTenant = (
         <span className="tenant-dropdown-trigger" data-testid="tenant-dropdown-trigger">
@@ -179,7 +175,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                         associatedOrganizations.length > 0 ?
                             (
                                 associatedOrganizations.map((organization, _) => (
-                                    (organization.id !== currentOrganization.id) ?
+                                    (organization.id !== currentOrganization?.id) ?
                                         getOrganizationItemGroup(organization.name)
                                         : null
                                 ))
@@ -253,12 +249,6 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
         </div>
     );
 
-    // ToDo -
-    //  1 - Need to add pagination
-    //  2 - Click to actions
-    //  3 - Manage Organization Icon (What's the route should be?)
-    //  4 - Filter
-    //  5 - Cursor based pagination
     const tenantDropdownMenu = (
         <Menu.Item className="tenant-dropdown-wrapper" key="tenant-dropdown">
             <Dropdown
@@ -295,7 +285,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                     </Item.Group>
 
                     {
-                        tenantAssociations
+                        associatedOrganizations
                             ? resolveAssociatedOrganizations()
                             : null
                     }

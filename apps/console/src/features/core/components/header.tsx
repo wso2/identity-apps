@@ -384,6 +384,10 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                     showAppSwitchButton && commonConfig?.header?.renderAppSwitcherAsDropdown && {
                         component: renderAppSwitcher(),
                         floated: "right"
+                    },
+                    {
+                        component: <OrganizationSwitchDropdown />,
+                        floated: "left"
                     }
                 ])
             }

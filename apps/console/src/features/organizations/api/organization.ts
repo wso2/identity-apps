@@ -68,8 +68,6 @@ export const getOrganizations = (
         url: `${ store.getState().config.endpoints.organizations }/organizations`
     };
 
-    console.log(config.url);
-
     return httpClient(config)
         .then((response: HttpResponse<OrganizationListInterface>) => {
             if (response.status !== 200) {
