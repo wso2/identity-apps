@@ -47,6 +47,7 @@ import {
 import { CreateRoleInterface, CreateRoleWizard } from "../../roles";
 import { createOrganizationRole, getOrganizationRoles } from "../api/organization-role";
 import { OrganizationRoleList } from "../components";
+import { currentOrganizationId } from "../constants";
 import { OrganizationRoleListItemInterface, OrganizationRoleListResponseInterface } from "../models";
 
 const ORGANIZATION_ROLES_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
@@ -72,7 +73,6 @@ const OrganizationRoles: FunctionComponent<OrganizationRolesPageInterface> = (
 
     const dispatch = useDispatch();
 
-    const currentOrganizationId = "4ed70bfe-7710-44be-8a41-8fc2c9ad1666";
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ listSortingStrategy, setListSortingStrategy ] = useState<DropdownItemProps>(

@@ -314,7 +314,8 @@ export class AppConstants {
             .set("CREATE_TENANT", `${AppConstants.getMainViewBasePath()}/create-tenant`)
             .set("ORGANIZATIONS", `${AppConstants.getAdminViewBasePath()}/organizations`)
             .set("ORGANIZATION_UPDATE", `${AppConstants.getAdminViewBasePath()}/organizations/:id`)
-            .set("ORGANIZATION_ROLES", `${AppConstants.getAdminViewBasePath()}/organization-roles`);
+            .set("ORGANIZATION_ROLES", `${AppConstants.getAdminViewBasePath()}/organization-roles`)
+            .set("ORGANIZATION_ROLE_UPDATE", `${AppConstants.getAdminViewBasePath()}/organization-roles/:id`);
     }
 
     /**

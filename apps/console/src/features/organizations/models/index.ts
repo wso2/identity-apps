@@ -18,3 +18,5 @@
 
 export * from "./endpoints";
 export * from "./organizations";
+export * from "./permission";
+

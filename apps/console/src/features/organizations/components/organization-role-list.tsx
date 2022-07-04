@@ -163,7 +163,7 @@ export const OrganizationRoleList: FunctionComponent<OrganizationRolesListPropsI
     const handleOrganizationEdit = (organizationId: string): void => {
         history.push({
             pathname: AppConstants.getPaths()
-                .get("ORGANIZATION_UPDATE")
+                .get("ORGANIZATION_ROLE_UPDATE")
                 .replace(":id", organizationId)
         });
     };
