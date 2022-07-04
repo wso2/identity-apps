@@ -1,3 +1,5 @@
+import { PatchRoleDataInterface } from "../../roles";
+
 /**
  * Copyright (c) 2022, WSO2 Inc. (http://www.wso2.com) All Rights Reserved.
  *
@@ -92,4 +94,14 @@ export type OrganizationRoleListItemInterface = Omit<OrganizationRoleInterface, 
 export type OrganizationRoleListResponseInterface = {
     links: OrganizationLinkInterface[];
     roles: Array<OrganizationRoleListItemInterface>
+};
+
+export type PatchOrganizationRoleDataInterface = Omit<PatchRoleDataInterface, "schemas">;
+
+/**
+ * Interface to store User information related to create role api
+ */
+export interface CreateOrganizationRoleMemberInterface {
+    value: string;
+    display?: string;
 }

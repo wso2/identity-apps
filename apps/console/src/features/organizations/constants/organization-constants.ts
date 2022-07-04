@@ -31,6 +31,14 @@ export class OrganizationManagementConstants {
 
 }
 
+export enum ORGANIZATION_TYPE {
+    STRUCTURAL = "STRUCTURAL",
+    TENANT = "TENANT"
+}
+
+
+// Role constants
+export const currentOrganizationId = "4ed70bfe-7710-44be-8a41-8fc2c9ad1666";
 export class OrganizationRoleManagementConstants {
     /**
      * Set of keys used to enable/disable features.
@@ -46,7 +54,7 @@ export class OrganizationRoleManagementConstants {
 
 }
 
-export enum ORGANIZATION_TYPE {
-    STRUCTURAL = "STRUCTURAL",
-    TENANT = "TENANT"
-}
+export const APPLICATION_DOMAIN = "Application/";
+export const INTERNAL_DOMAIN = "Internal";
+export const PRIMARY_DOMAIN = "Primary";
+export const ROLE_VIEW_PATH = "/roles/";

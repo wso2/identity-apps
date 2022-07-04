@@ -19,8 +19,8 @@
 import { AsgardeoSPAClient, HttpError, HttpRequestConfig, HttpResponse } from "@asgardeo/auth-react";
 import { HttpMethods } from "@wso2is/core/models";
 import { store } from "../../core";
-import { CreateRoleInterface } from "../../roles";
-import { OrganizationRoleListResponseInterface } from "../models";
+import { CreateRoleInterface, PatchRoleDataInterface } from "../../roles";
+import { OrganizationRoleListResponseInterface, PatchOrganizationRoleDataInterface } from "../models";
 
 /**
  * Get an axios instance.
@@ -120,6 +120,64 @@ export const createOrganizationRole = (organizationId: string, data: CreateRoleI
         },
         method: HttpMethods.POST,
         url: `${ store.getState().config.endpoints.organizations }/organizations/${ organizationId }/roles`
+    };
+
+    return httpClient(requestConfig)
+        .then((response) => {
+            return Promise.resolve(response);
+        }).catch((error) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * Update Data of the matched ID or the role
+ *
+ * @param organizationId Organization id
+ * @param roleId role id to update role details
+ * @param roleData Data that needs to be updated.
+ */
+export const updateRole = (
+    organizationId: string,
+    roleId: string,
+    roleData: PatchOrganizationRoleDataInterface
+): Promise<any> => {
+    const requestConfig = {
+        data: roleData,
+        headers: {
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.PUT,
+        url: `${ store.getState().config.endpoints.organizations }/organizations/${ organizationId }/roles/${roleId}`
+    };
+
+    return httpClient(requestConfig)
+        .then((response) => {
+            return Promise.resolve(response);
+        }).catch((error) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * Update Data of the matched ID or the role
+ *
+ * @param organizationId Organization id
+ * @param roleId role id to update role details
+ * @param roleData Data that needs to be updated.
+ */
+export const patchOrganizationRoleDetails = (
+    organizationId: string,
+    roleId: string,
+    roleData: PatchOrganizationRoleDataInterface
+): Promise<any> => {
+    const requestConfig = {
+        data: roleData,
+        headers: {
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.PATCH,
+        url: `${ store.getState().config.endpoints.organizations }/organizations/${ organizationId }/roles/${roleId}`
     };
 
     return httpClient(requestConfig)
