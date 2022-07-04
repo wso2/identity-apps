@@ -17,12 +17,12 @@
  */
 
 import { SessionStorageUtils } from "@wso2is/core/utils";
-import { TenantAssociationsInterface, TestableComponentInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { TestableComponentInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { setServiceResourceEndpoints } from "@wso2is/core/src/store";
 import { GenericIcon } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Button, Divider, Dropdown, Input, Item, Menu, Placeholder, Popup } from "semantic-ui-react";
 import { ReactComponent as CrossIcon } from "../../../../themes/default/assets/images/icons/cross-icon.svg";
 import {
