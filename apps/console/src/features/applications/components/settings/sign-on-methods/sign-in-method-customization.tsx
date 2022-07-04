@@ -655,7 +655,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
             }
             <Divider className="x2"/>
             { 
-                (/true/gi.test(isAdaptiveAuthenticationAvailable)) 
+                isAdaptiveAuthenticationAvailable
                 && (
                     <ScriptBasedFlow 
                         authenticationSequence={ sequence }
