@@ -17,7 +17,7 @@
  */
 
 import { SessionStorageUtils } from "@wso2is/core/utils";
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { TenantAssociationsInterface, TestableComponentInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { setServiceResourceEndpoints } from "@wso2is/core/src/store";
 import { GenericIcon } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useCallback, useEffect, useState } from "react";
@@ -314,6 +314,14 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                     { getOrganizationItemGroup(currentOrganization) }
 
                     <Divider />
+                data-testid={ "tenant-dropdown" }
+            >
+                <Dropdown.Menu onClick={ handleDropdownClick }>
+                    {
+                        getOrganizationItemGroup(currentOrganization?.name)
+                    }
+
+                    <Divider/>
 
                     <Item.Group className="search-bar">
                         <div className="advanced-search-wrapper aligned-left fill-default">
