@@ -635,6 +635,10 @@ export const myAccount: MyAccountNS = {
                             message: "ஏதோ தவறேற்பட்டுவிட்டது"
                         }
                     },
+                    deleteSuccess: {
+                        genericMessage: "வெற்றிகரமாக அகற்றப்பட்டது",
+                        message: "TOTP உள்ளமைவு வெற்றிகரமாக அகற்றப்பட்டது."
+                    },
                     initError: {
                         error: {
                             description: "{{error}}",

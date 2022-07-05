@@ -630,6 +630,10 @@ export const myAccount: MyAccountNS = {
                             message: "මොකක්හරි වැරැද්දක් වෙලා"
                         }
                     },
+                    deleteSuccess: {
+                        genericMessage: "සාර්ථකව ඉවත් කරන ලදී",
+                        message: "TOTP වින්‍යාසය සාර්ථකව ඉවත් කරන ලදී."
+                    },
                     initError: {
                         error: {
                             description: "{{error}}",

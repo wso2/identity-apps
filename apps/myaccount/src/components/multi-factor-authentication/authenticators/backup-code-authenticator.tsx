@@ -18,7 +18,7 @@
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { CommonUtils } from "@wso2is/core/utils";
-import { ContentLoader, Heading } from "@wso2is/react-components";
+import { ContentLoader, Heading, LinkButton } from "@wso2is/react-components";
 import React, { MouseEvent, PropsWithChildren, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -84,6 +84,9 @@ export const BackupCodeAuthenticator : React.FunctionComponent<BackupCodeProps> 
     const [ isCodesCopied, setIsCodesCopied ] = useState<boolean>(false);
     const [ isCodesDownloaded, setIsCodesDownloaded ] = useState<boolean>(false);
     const [ isConfirmRegenerationModalOpen, setIsConfirmRegenerationModalOpen ] = useState<boolean>(false);
+    const [ isWarnRemaingBackupCodes, setIsWarnRemaingBackupCodes ] = useState<boolean>(false);
+
+    const minBackupCodesLimit: number = 11;
     
     /**
      * Starts backup code configuration flow
@@ -109,7 +112,10 @@ export const BackupCodeAuthenticator : React.FunctionComponent<BackupCodeProps> 
     const getRemainingCount = (): void => {
         getRemainingBackupCodesCount()
             .then((response: BackupCodesCountInterface) => {
-                setRemainingBackupCodes(response.remainingBackupCodesCount);
+                const remainingCount = response.remainingBackupCodesCount;
+
+                setRemainingBackupCodes(remainingCount);
+                setIsWarnRemaingBackupCodes(remainingCount <= minBackupCodesLimit);
             })
             .catch((errorMessage)=> {
                 onAlertFired({
@@ -259,7 +265,7 @@ export const BackupCodeAuthenticator : React.FunctionComponent<BackupCodeProps> 
      * Render backup codes modal
      * @returns Backup codes modal
      */
-    const renderBackupCodeWizard = (): JSX.Element => {
+    const renderBackupCodeWizard = (): React.ReactElement => {
         return (
             <Modal
                 data-componentid={ `${componentid}-modal` }
@@ -381,7 +387,7 @@ export const BackupCodeAuthenticator : React.FunctionComponent<BackupCodeProps> 
     /**
      * Render the Backup codes regenerate confirmation modal
      */
-    const renderConfirmRegenerateModal = (): JSX.Element => {
+    const renderConfirmRegenerateModal = (): React.ReactElement => {
         return (
             <Modal
                 data-testid={ `${componentid}-termination-modal` }
@@ -427,13 +433,23 @@ export const BackupCodeAuthenticator : React.FunctionComponent<BackupCodeProps> 
             <Grid padded={ true } data-testid={ componentid }>
                 <Grid.Column width={ 1 } className="first-column"/>
                 <Grid.Column width={ 14 } className="first-column">
-                    <Message className="display-flex" size="small" info>
-                        <Icon name="info circle" color="teal" size="large"/>
+                    <Message 
+                        className="display-flex" 
+                        size="small" 
+                        info={ !isWarnRemaingBackupCodes }
+                        warning={ isWarnRemaingBackupCodes }
+                    >
+                        { isWarnRemaingBackupCodes 
+                            ? <Icon name="warning sign" color="orange" size="large"/>
+                            : <Icon name="info circle" color="teal" size="large"/> 
+                        }
                         <Message.Content className="tiny">
                             <List.Content>
                                 <List.Header>
                                     { "Backup Codes" }
-                                    <Label className="backup-code-label">
+                                    <Label 
+                                        className={ `backup-code-label ${ isWarnRemaingBackupCodes 
+                                            ? "warning" : "info" }` }>
                                         { `${remainingBackupCodes} Remaining` }
                                     </Label>
                                 </List.Header>
@@ -442,16 +458,15 @@ export const BackupCodeAuthenticator : React.FunctionComponent<BackupCodeProps> 
                                         { "You can use backup codes to log in if you can't receive a " 
                                             + "verification code via authenticator app." }
                                     </div>
-                                    <Button 
-                                        className="link-button no-padding-left" 
-                                        primary 
-                                        basic
+                                    <LinkButton 
+                                        compact 
                                         onClick={ () => {
                                             setIsConfirmRegenerationModalOpen(true);
-                                        } }>
-                                        <Icon name="refresh" /> 
+                                        } }
+                                    >
+                                        <Icon name="refresh" />
                                         { "Re-generate" }
-                                    </Button>
+                                    </LinkButton>
                                 </List.Description>
                             </List.Content>
                         </Message.Content>

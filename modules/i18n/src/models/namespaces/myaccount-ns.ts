@@ -402,6 +402,10 @@ export interface MyAccountNS {
                         error: NotificationItem;
                         genericError: NotificationItem;
                     };
+                    deleteSuccess: {
+                        genericMessage: string;
+                        message: string;
+                    };
                 };
             };
             backupCode: {

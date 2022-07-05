@@ -44,7 +44,7 @@ interface MfaProps extends SBACInterface<FeatureConfigInterface>, TestableCompon
     onAlertFired: (alert: AlertInterface) => void;
 }
 
-export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (props: MfaProps): JSX.Element => {
+export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (props: MfaProps): React.ReactElement => {
     const {
         onAlertFired,
         featureConfig,

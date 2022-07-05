@@ -182,17 +182,6 @@
                     }
                     .first-column {
                         padding-left: @settingsCardPadding;
-
-                        .backup-code-label {
-                            margin-left: 10px;
-                            background-color: rgba(0, 149, 255, 0.28);
-                        }
-
-                        .button {
-                            &.no-padding-left {
-                                padding-left: 0;
-                            }
-                        }
                     }
                     .last-column {
                         padding-right: @settingsCardPadding;

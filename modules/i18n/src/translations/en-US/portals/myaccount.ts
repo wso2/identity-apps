@@ -630,6 +630,10 @@ export const myAccount: MyAccountNS = {
                             message: "Something went wrong"
                         }
                     },
+                    deleteSuccess: {
+                        genericMessage: "Successfully removed",
+                        message: "Successfully removed TOTP configuration."
+                    },
                     initError: {
                         error: {
                             description: "{{error}}",

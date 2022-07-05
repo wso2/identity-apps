@@ -94,7 +94,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     const enableMFAUserWise: boolean = useSelector((state: AppState) => state?.config?.ui?.enableMFAUserWise);
     const shouldContinueToBackupCodes: boolean = isSuperTenantLogin && isBackupCodeForced;
 
-    const [ isLoading, setIsLoading ] = useState<boolean>(true);
+    const [ isLoading, setIsLoading ] = useState<boolean>(false);
     const [ isTOTPConfigured, setIsTOTPConfigured ] = useState<boolean>(false);
     const [ isTOTPEnabled, setIsTOTPEnabled ] = useState<boolean>(false);
     const [ isConfigTOTPModalOpen, setIsConfigTOTPModalOpen ] = useState<boolean>(false);
@@ -351,9 +351,9 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     /**
      * Render TOTP form to shown in TOTP modal
      * @param {boolean} isRegenerated Whether the TOTP is regenerated or not
-     * @returns {JSX.Element} Rendered form component
+     * @returns {React.ReactElement} Rendered form component
      */
-    const renderTOTPVerifyForm = (isRegenerated: boolean = false): JSX.Element => {
+    const renderTOTPVerifyForm = (isRegenerated: boolean = false): React.ReactElement => {
         return (
             <>
                 <h5 className=" text-center"> { t(translateKey + "modals.verify.heading") }</h5>
@@ -535,7 +535,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
      * Render TOTP configuration modal content
      * @returns Modal content based on {TOTPModalCurrentStep}
      */
-    const renderTOTPWizardContent = (): JSX.Element => {
+    const renderTOTPWizardContent = (): React.ReactElement => {
         if (TOTPModalCurrentStep === 0) {
             return (
                 <Segment basic >
@@ -584,7 +584,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
      * Render TOTP configuration modal actions
      * @returns Modal action based on {TOTPModalCurrentStep}
      */
-    const renderTOTPWizardActions = (): JSX.Element => {
+    const renderTOTPWizardActions = (): React.ReactElement => {
         if (TOTPModalCurrentStep === 0) {
             return (
                 <Message className="totp-tooltip display-flex">      
@@ -625,7 +625,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                     }
                 } }
             >
-                { shouldContinueToBackupCodes ? t("common:continue") : t("common:cancel") }
+                { shouldContinueToBackupCodes ? t("common:continue") : t("common:done") }
             </Button>
         );
     };
@@ -634,7 +634,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
      * Renders the TOTP configuration Modal
      * @returns Rendered modal component
      */
-    const renderTOTPWizard = (): JSX.Element => {
+    const renderTOTPWizard = (): React.ReactElement => {
         return (
             <Modal
                 data-testid={ `${ testId }-modal` }
@@ -661,6 +661,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
      * Handle view TOTP event
      */
     const handleViewTOTP = (): void => {
+        setIsLoading(true);
         initTOTPCode()
             .then((response) => {
                 const qrCodeUrl: string = window.atob(response?.data?.qrCodeUrl);
@@ -686,6 +687,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
      * Handle regenerate QR code event
      */
     const handleRegenerateQRCode = (): void => {
+        setIsLoading(true);
         refreshTOTPCode()
             .then((response) => {
                 const qrCodeUrl: string = window.atob(response?.data?.qrCodeUrl);
@@ -701,6 +703,9 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                     level: AlertLevels.ERROR,
                     message: t(translateKey + "notifications.refreshError.error.message")
                 });
+            })
+            .finally(() => {
+                setIsLoading(false);
             });
     };
 
@@ -708,7 +713,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
      * 
      * @returns Modal content based on viewTOTPModalCurrentStep
      */
-    const renderViewTOTPWizardContent = (): JSX.Element => {
+    const renderViewTOTPWizardContent = (): React.ReactElement => {
         switch (viewTOTPModalCurrentStep) {
             case 0:
                 return (
@@ -734,6 +739,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                                         type="button"
                                         className=" totp-verify-action-button"
                                         onClick={ handleRegenerateQRCode }
+                                        disabled= { isLoading }
                                         data-testid={ `${ testId }-modal-actions-primary-button` }
                                     >
                                         { t(translateKey + "regenerate") }
@@ -799,7 +805,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
         }
     };
 
-    const renderViewTOTPWizardActions = (): JSX.Element => {
+    const renderViewTOTPWizardActions = (): React.ReactElement => {
         if (viewTOTPModalCurrentStep === 0 || viewTOTPModalCurrentStep === 1) {
             return (
                 <Message className="totp-tooltip display-flex">      
@@ -843,7 +849,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     /**
      * Renders the TOTP wizard
      */
-    const renderViewTOTPWizard = (): JSX.Element => {
+    const renderViewTOTPWizard = (): React.ReactElement => {
         return (
             <Modal
                 data-testid={ `${ testId }-modal` }
@@ -880,35 +886,35 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                     deleteBackupCode()
                         .then(() => {
                             onAlertFired({
-                                description: t(translateKey + "notifications.deleteError.error.description"),
+                                description: t(translateKey + "notifications.deleteSuccess.message"),
                                 level: AlertLevels.SUCCESS,
-                                message: t(translateKey + "notifications.deleteError.error.message")
+                                message: t(translateKey + "notifications.deleteSuccess.genericMessage")
                             });
                         })
                         .catch((errorMessage) => {
                             onAlertFired({
-                                description: t(translateKey + "notifications.deleteError.error.description", {
+                                description: t(translateKey + "notifications.deleteError.genericError.description", {
                                     error: errorMessage
                                 }),
                                 level: AlertLevels.ERROR,
-                                message: t(translateKey + "notifications.deleteError.error.message")
+                                message: t(translateKey + "notifications.deleteError.genericError.message")
                             });
                         });
                 } else {
                     onAlertFired({
-                        description: t(translateKey + "notifications.deleteError.error.description"),
+                        description: t(translateKey + "notifications.deleteSuccess.message"),
                         level: AlertLevels.SUCCESS,
-                        message: t(translateKey + "notifications.deleteError.error.message")
+                        message: t(translateKey + "notifications.deleteSuccess.genericMessage")
                     });
                 }
             })
             .catch((errorMessage) => {
                 onAlertFired({
-                    description: t(translateKey + "notifications.deleteError.error.description", {
+                    description: t(translateKey + "notifications.deleteError.genericError.description", {
                         error: errorMessage
                     }),
                     level: AlertLevels.ERROR,
-                    message: t(translateKey + "notifications.deleteError.error.message")
+                    message: t(translateKey + "notifications.deleteError.genericError.message")
                 });
             })
             .finally(() => {
@@ -1000,6 +1006,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                                                 size="small"
                                                 color="grey"
                                                 name="plus"
+                                                disabled={ isLoading }
                                                 data-testid={ `${testId}-view-button` }
                                             />)
                                         }
