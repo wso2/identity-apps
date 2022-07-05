@@ -20,13 +20,19 @@ import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { List } from "semantic-ui-react";
 import { BackupCodeAuthenticator, FIDOAuthenticator, SMSOTPAuthenticator, TOTPAuthenticator } from "./authenticators";
-import { getBackupCodes, getEnabledAuthenticators, updateEnabledAuthenticators } from "../../api";
+import { getEnabledAuthenticators } from "../../api";
 import { AppConstants } from "../../constants";
-import { AlertInterface, AlertLevels, EnabledAuthenticatorsInterface, FeatureConfigInterface } from "../../models";
+import { 
+    AlertInterface, 
+    AlertLevels,
+    EnabledAuthenticatorsInterface, 
+    FeatureConfigInterface 
+} from "../../models";
 import { AppState } from "../../store";
+import { getProfileInformation } from "../../store/actions";
 import { CommonUtils } from "../../utils";
 import { SettingsSection } from "../shared";
 
@@ -39,93 +45,40 @@ interface MfaProps extends SBACInterface<FeatureConfigInterface>, TestableCompon
 }
 
 export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (props: MfaProps): JSX.Element => {
-
     const {
         onAlertFired,
         featureConfig,
         ["data-testid"]: testId
     } = props;
+
     const { t } = useTranslation();
+    const dispatch = useDispatch();
 
     const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
     const isReadOnlyUser = useSelector((state: AppState) => state.authenticationInformation.profileInfo.isReadOnly);
-    const forceBackupCode: boolean = useSelector((state: AppState) => state?.config?.ui?.forceBackupCode);
+    const isBackupCodeForced: boolean = useSelector((state: AppState) => state?.config?.ui?.forceBackupCode);
     const enableMFAUserWise: boolean = useSelector((state: AppState) => state?.config?.ui?.enableMFAUserWise);
-    const [ isBackupCodeDisabled, setIsBackupCodeDisabled ] = useState<boolean>(true);
-    const [ showBackupWizard, setShowBackupWizard ] = useState<boolean>(false);
-    const [ openBackupWizard, setOpenBackupWizard ] = useState<boolean>(false);
-    const [ backupCodes, setBackupCodes ] = useState<Array<string>>();
+    
+    const [ enabledAuthenticators, setEnabledAuthenticators ] = useState<Array<string>>([]);
+    const [ isTOTPEnabled, setIsTOTPEnabled ] = useState<boolean>(false);
+    const [ isBackupCodesConfigured, setIsBackupCodesConfigured ] = useState<boolean>(false);
+    const [ initBackupCodeFlow, setInitBackupCodeFlow ] = useState<boolean>(false);
 
     const translateKey: string = "myAccount:components.mfa.backupCode.";
-    const backupAuthenticatorName: string = "Backup Code Authenticator";
+    const totpAuthenticatorName: string = "TOTP";
+    const backupCodeAuthenticatorName = "Backup Code Authenticator";
 
     /**
-     * Load backup codes when opening the modal.
+     * Fetch enabled authenticators and set to state.
      */
-    useEffect(()=> {
-        
-        if (enableMFAUserWise && isSuperTenantLogin()) {
-            getBackupCodes()
-                .then((response) => {
-                    setBackupCodes(response.backupCodes);
-                }).catch((errorMessage)=> {
-                    onAlertFired({
-                        description: t(
-                            translateKey +
-                            "notifications.retrieveError.error.description",
-                            {
-                                error: errorMessage
-                            }
-                        ),
-                        level: AlertLevels.ERROR,
-                        message: t(
-                            translateKey + "notifications.retrieveError.error.message"
-                        )
-                    });
-                });
-        }
-        
-    }, []);
-
-    /**
-    * Get enabled authenticators and check if backup authenticator is enabled.
-    */
     useEffect(() => {
-        if (enableMFAUserWise && isSuperTenantLogin()) {
-            getEnabledAuthenticators().then((authenticators: EnabledAuthenticatorsInterface) => {
-                let authenticatorList: Array<string>;
-
-                if (authenticators.enabledAuthenticators !== undefined ) {
-                    authenticatorList = authenticators.enabledAuthenticators.split(",");
-                } else {
-                    authenticatorList = [];
-                }
-
-                if (authenticatorList.length <= 1 && authenticatorList.includes(backupAuthenticatorName)) {
-                    authenticatorList.splice(authenticatorList.indexOf(backupAuthenticatorName), 1);
-                    const enabledAuthenticators = authenticatorList.join(",");
-
-                    updateEnabledAuthenticators(enabledAuthenticators)
-                        .then(() => {
-                            setIsBackupCodeDisabled(true);
-                        })
-                        .catch((errorMessage)=> {
-                            onAlertFired({
-                                description: t(translateKey + 
-                                    "notifications.updateAuthenticatorError.error.description", {
-                                    error: errorMessage
-                                }),
-                                level: AlertLevels.ERROR,
-                                message: t(translateKey + "notifications.updateAuthenticatorError.error.message")
-                            });
-                        });
-                } else if (authenticatorList.length > 1){
-                    setIsBackupCodeDisabled(false);
-                } else {
-                    setIsBackupCodeDisabled(true);
-                }
-
-            }).catch((errorMessage) => {
+        getEnabledAuthenticators()
+            .then((authenticators: EnabledAuthenticatorsInterface) => {
+                const authenticatorList: string[] = authenticators?.enabledAuthenticators?.split(",") ?? [];
+                                
+                setEnabledAuthenticators(authenticatorList);
+            })
+            .catch((errorMessage) => {
                 onAlertFired({
                     description: t(translateKey + "notifications.retrieveAuthenticatorError.error.description", {
                         error: errorMessage
@@ -134,9 +87,22 @@ export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (pro
                     message: t(translateKey + "notifications.retrieveAuthenticatorError.error.message")
                 });
             });
-        }
-   
-    }, [ isBackupCodeDisabled ]);
+    }, []);
+
+    /**
+     * Check whether the TOTP authenticator is enabled.
+     */
+    useEffect(() => {
+        setIsTOTPEnabled(enabledAuthenticators?.includes(totpAuthenticatorName) ?? false);
+        setIsBackupCodesConfigured(enabledAuthenticators?.includes(backupCodeAuthenticatorName) ?? false);
+    }, [ enabledAuthenticators ]);
+
+    /**
+     * Reset init backup code state, when the backup code setup flow is completed.
+     */
+    const handleBackupCodeFlowCompleted = (): void => {
+        setInitBackupCodeFlow(false);
+    };
 
     /**
      * Check if the login tenant is super tenant or not?
@@ -147,17 +113,13 @@ export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (pro
         return AppConstants.getTenant() === AppConstants.getSuperTenant();
     };
 
-    const backupWizard = (): JSX.Element => {
-        
-        return (<BackupCodeAuthenticator
-            onAlertFired={ onAlertFired }
-            isInit={ false }
-            openWizard={ openBackupWizard }
-            onOpenWizardToggle={ (isOpen : boolean) => {setOpenBackupWizard(isOpen); } }
-            onShowBackupCodeWizardToggle={ (show : boolean) => {setShowBackupWizard(show); } }
-            backupCodes= { backupCodes }
-            updateBackupCodes = { (backupCodesList) =>{setBackupCodes(backupCodesList);} }
-        />);
+    /**
+     * Update state when the authenticator list is updated.
+     * @param updatedAuthenticators Enabled authenticator list after updating
+     */
+    const handleEnabledAuthenticatorsUpdated = (updatedAuthenticators: Array<string>): void => {
+        setEnabledAuthenticators(updatedAuthenticators);
+        dispatch(getProfileInformation(true));
     };
 
     return (
@@ -165,14 +127,7 @@ export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (pro
             data-testid={ `${testId}-settings-section` }
             description={ t("myAccount:sections.mfa.description") }
             header={ t("myAccount:sections.mfa.heading") }
-            onPrimaryActionClick={ 
-                (isSuperTenantLogin() && !isBackupCodeDisabled) ? 
-                    () => { setOpenBackupWizard(true); } : 
-                    null 
-            }
-            primaryAction={ (isSuperTenantLogin() && !isBackupCodeDisabled) ? t(translateKey + "heading") : "" }
         >
-            { backupWizard() }
             <List
                 divided={ true }
                 verticalAlign="middle"
@@ -210,15 +165,22 @@ export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (pro
                     ) ? (
                         <List.Item className="inner-list-item">
                             <TOTPAuthenticator
+                                enabledAuthenticators={ enabledAuthenticators }
                                 onAlertFired={ onAlertFired }
-                                onBackupCodeAvailabilityToggle={ 
-                                    (isEnabled: boolean) => (setIsBackupCodeDisabled(!isEnabled)) 
-                                }
-                                isBackupCodeForced={ forceBackupCode && enableMFAUserWise }
+                                isBackupCodeForced={ isBackupCodeForced && enableMFAUserWise }
                                 isSuperTenantLogin={ isSuperTenantLogin() }
-                                backupCodes = { backupCodes }
-                                updateBackupCodes = { (backupCodeList) => {setBackupCodes(backupCodeList);} }
+                                onEnabledAuthenticatorsUpdated={ handleEnabledAuthenticatorsUpdated }
+                                triggerBackupCodesFlow={ () => setInitBackupCodeFlow(true) }
                             />
+                            { isSuperTenantLogin() && isTOTPEnabled && isBackupCodesConfigured
+                                ? (
+                                    <BackupCodeAuthenticator 
+                                        onAlertFired={ onAlertFired }
+                                        initBackupCodeFlow={ initBackupCodeFlow }
+                                        onBackupFlowCompleted={ handleBackupCodeFlowCompleted }
+                                    />
+                                ) : null
+                            }
                         </List.Item>
                     ) : null }
             </List>

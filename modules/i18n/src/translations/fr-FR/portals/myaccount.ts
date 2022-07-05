@@ -591,7 +591,7 @@ export const myAccount: MyAccountNS = {
         },
         mfa: {
             authenticatorApp: {
-                addHint: "Ajouter un nouveau code QR",
+                addHint: "Configurer le code QR",
                 configuredDescription: "Vous pouvez utiliser les codes TOTP de votre " +
                     "application d'authentification configurée pour une authentification à " +
                     "deux facteurs. Si vous n'avez pas accès à l'application, vous pouvez configurer " +
@@ -620,7 +620,10 @@ export const myAccount: MyAccountNS = {
                         heading: "Scannez ce code QR à l'aide d'une application d'authentification",
                         messageBody: "Vous pouvez utiliser une application d'authentification compatible dans " +
                             "cette liste :",
-                        messageHeading: "Vous n'avez pas d'application d'authentification ?"
+                        messageHeading: "Vous n'avez pas d'application d'authentification ?",
+                        regenerateWarning: "Lorsque vous régénérez un nouveau code QR, vous devez le scanner et " + 
+                            "reconfigurer votre application d'authentification. Votre configuration précédente " + 
+                            "ne fonctionnera plus."
                     },
                     toolTip: "Vous n'avez pas d'application? Téléchargez une application d'authentification " +
                         "telle que Google Authenticator depuis <3> App Store </3> ou <3> Google Play </3>",
@@ -665,8 +668,20 @@ export const myAccount: MyAccountNS = {
                             description: "Une erreur s'est produite lors de la récupération d'un nouveau code QR",
                             message: "Quelque chose s'est mal passé"
                         }
+                    },
+                    updateAuthenticatorError: {
+                        error: {
+                            description: "{{error}}",
+                            message: "Quelque chose s'est mal passé"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la tentative de mise " + 
+                                "à jour de la liste des authentificateurs activés",
+                            message: "Quelque chose s'est mal passé"
+                        }
                     }
-                }
+                },
+                regenerate: "Régénérer"
             },
             backupCode: {
                 download: {

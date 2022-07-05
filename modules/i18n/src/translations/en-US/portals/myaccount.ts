@@ -579,7 +579,7 @@ export const myAccount: MyAccountNS = {
         },
         mfa: {
             authenticatorApp: {
-                addHint:"Adds new QR code",
+                addHint:"Configure QR code",
                 configuredDescription: "You can use TOTP codes from your configured " +
                     "authenticator app for two-factor authentication. If you don't have " +
                     "access to the application you can set up a new authenticator app from here.",
@@ -603,7 +603,9 @@ export const myAccount: MyAccountNS = {
                         generate: "Generate a new code",
                         heading: "Scan the QR code below using an authenticator app",
                         messageBody: "You can find a list of Authenticator Apps available here.",
-                        messageHeading: "Don't have an Authenticator App installed?"
+                        messageHeading: "Don't have an Authenticator App installed?",
+                        regenerateWarning: "When you regenerate a new QR code, you must scan it and re-setup your " + 
+                            "authenticator app. Your previous setup won't work anymore."
                     },
                     toolTip: "Don't have an app? Download an authenticator application like " +
                         "Google Authenticator from <3>App Store</3> or <3>Google Play</3>",
@@ -647,8 +649,19 @@ export const myAccount: MyAccountNS = {
                             description: "An error occurred while trying to get a new QR code",
                             message: "Something went wrong"
                         }
+                    },
+                    updateAuthenticatorError: {
+                        error: {
+                            description: "{{error}}",
+                            message: "Something went wrong"
+                        },
+                        genericError: {
+                            description: "An error occurred while trying to update the enabled authenticator list",
+                            message: "Something went wrong"
+                        }
                     }
-                }
+                },
+                regenerate: "Regenerate"
             },
             backupCode: {
                 download: {

@@ -577,7 +577,7 @@ export const myAccount: MyAccountNS = {
         },
         mfa: {
             authenticatorApp: {
-                addHint: "Adicionar novo código QR",
+                addHint: "Configurar código QR",
                 configuredDescription: "Você pode usar códigos TOTP de seu aplicativo " +
                     "autenticador configurado para autenticação de dois fatores. " +
                     "Se você não tiver acesso ao aplicativo, pode configurar um novo aplicativo autenticador aqui",
@@ -603,7 +603,9 @@ export const myAccount: MyAccountNS = {
                         generate: "Gere um novo código",
                         heading: "Leia este QR Code usando um aplicativo Authenticator",
                         messageBody: "Você pode encontrar uma lista de aplicativos autenticadores disponíveis aqui.",
-                        messageHeading: "Não tem um aplicativo autenticador instalado?"
+                        messageHeading: "Não tem um aplicativo autenticador instalado?",
+                        regenerateWarning: "Ao gerar um novo código QR, você deve digitalizá-lo e reconfigurar seu " + 
+                            "aplicativo autenticador. Sua configuração anterior não funcionará mais."
                     },
                     toolTip: "Não tem um aplicativo? Baixe um aplicativo autenticador como o " +
                         "Google Authenticator na <3> App Store </3> ou <3> Google Play </3>",
@@ -647,8 +649,19 @@ export const myAccount: MyAccountNS = {
                             description: "Erro ao tentar obter um novo código QR",
                             message: "Algo deu errado"
                         }
+                    },
+                    updateAuthenticatorError: {
+                        error: {
+                            description: "{{error}}",
+                            message: "Algo deu errado"
+                        },
+                        genericError: {
+                            description: "Ocorreu um erro ao tentar atualizar a lista de autenticadores habilitados",
+                            message: "Algo deu errado"
+                        }
                     }
-                }
+                },
+                regenerate: "Regenerado"
             },
             backupCode: {
                 download: {
