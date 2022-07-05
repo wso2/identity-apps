@@ -19,6 +19,7 @@
 <%= htmlWebpackPlugin.options.contentType %>
 <%= htmlWebpackPlugin.options.importUtil %>
 <%= htmlWebpackPlugin.options.importSuperTenantConstant %>
+<%= htmlWebpackPlugin.options.importOwaspEncode %>
 
 <jsp:scriptlet>
     <%= htmlWebpackPlugin.options.requestForwardSnippet %>
