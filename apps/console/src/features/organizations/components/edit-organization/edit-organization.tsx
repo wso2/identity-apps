@@ -4,8 +4,8 @@ import React, { FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
 import { OrganizationAttributes } from "./organization-attributes";
 import { OrganizationProfile } from "./organization-profile";
-import { FeatureConfigInterface } from "../../core";
-import { OrganizationResponseInterface } from "../models";
+import { FeatureConfigInterface } from "../../../core";
+import { OrganizationResponseInterface } from "../../models";
 
 interface EditOrganizationPropsInterface extends SBACInterface<FeatureConfigInterface> {
     /**

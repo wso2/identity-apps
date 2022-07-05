@@ -1,6 +1,5 @@
-import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
-import { AlertLevels } from "@wso2is/core/src/models";
-import { addAlert } from "@wso2is/core/src/store";
+import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
 import {
     ConfirmationModal,
@@ -14,10 +13,10 @@ import React, { FunctionComponent, ReactElement, useCallback, useRef, useState }
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Button, Divider, Grid } from "semantic-ui-react";
-import { FeatureConfigInterface } from "../../core";
-import { deleteOrganization, patchOrganization } from "../api";
-import { ORGANIZATION_TYPE } from "../constants";
-import { OrganizationPatchData, OrganizationResponseInterface } from "../models";
+import { FeatureConfigInterface } from "../../../core";
+import { deleteOrganization, patchOrganization } from "../../api";
+import { ORGANIZATION_TYPE } from "../../constants";
+import { OrganizationPatchData, OrganizationResponseInterface } from "../../models";
 
 interface OrganizationProfilePropsInterface extends SBACInterface<FeatureConfigInterface>,
     TestableComponentInterface {
