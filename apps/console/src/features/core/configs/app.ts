@@ -110,7 +110,7 @@ export class Config {
             extensions: window[ "AppUtils" ].getConfig().extensions,
             idpConfigs: window[ "AppUtils" ].getConfig().idpConfigs,
             loginCallbackUrl: window[ "AppUtils" ].getConfig().loginCallbackURL,
-            serverHost: window[ "AppUtils" ].getConfig().serverOriginWithTenant,
+            serverHost: this.resolveServerHost(),
             serverOrigin: window[ "AppUtils" ].getConfig().serverOrigin,
             superTenant: window[ "AppUtils" ].getConfig().superTenant,
             tenant: window[ "AppUtils" ].getConfig().tenant,
