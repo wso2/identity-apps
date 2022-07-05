@@ -348,8 +348,7 @@ const SecretsList: FC<SecretsListProps> = (props: SecretsListProps): ReactElemen
     };
 
     /**
-     * Handles the `onFilter` callback action from the
-     * secrets search component.
+     * Handles the `onFilter` callback action from the secrets search component.
      *
      * @param {string} query - Search query.
      */
