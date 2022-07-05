@@ -18,6 +18,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%@ page import="org.apache.commons.lang.StringUtils" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClient" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClientException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <%@ page import="java.net.MalformedURLException" %>
@@ -34,6 +36,8 @@
 
 <%
     boolean isEmailNotificationEnabled = false;
+    boolean accountLockOnCreationEnabled = true;
+    boolean accountConfirmationOnCreation = false;
     String callback = (String) request.getAttribute("callback");
     String username = request.getParameter("username");
     String userStoreDomain = request.getParameter("userstoredomain");
@@ -50,6 +54,19 @@
 
     isEmailNotificationEnabled = Boolean.parseBoolean(application.getInitParameter(
             IdentityManagementEndpointConstants.ConfigConstants.ENABLE_EMAIL_NOTIFICATION));
+
+    /**
+    * For the tenant, should get if it has enabled account lock on creation and account confirmation upon creation.
+    */
+    if (StringUtils.isNotBlank(tenantDomain)) {
+        try {
+            PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
+            accountLockOnCreationEnabled = preferenceRetrievalClient.checkSelfRegistrationLockOnCreation(tenantDomain);
+            accountConfirmationOnCreation = preferenceRetrievalClient.checkSelfRegistrationSendConfirmationOnCreation(tenantDomain);
+        } catch (PreferenceRetrievalClientException e) {
+            accountLockOnCreationEnabled = true;
+        }
+    }
     boolean isSessionDataKeyPresent = false;
     if (StringUtils.isNotBlank(userStoreDomain)) {
         fullyQualifiedUsername = userStoreDomain + "/" + username + "@" + tenantDomain;
@@ -117,7 +134,7 @@
                 </p>
                 <%
                 } else {
-                    if (isEmailNotificationEnabled) {
+                    if ((accountLockOnCreationEnabled || accountConfirmationOnCreation) && isEmailNotificationEnabled) {
                 %>
                 <p><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Confirmation.sent.to.mail")%>
                 </p>
