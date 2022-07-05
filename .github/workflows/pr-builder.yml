@@ -143,7 +143,7 @@ jobs:
       matrix:
         node-version: [ 12.x ]
         maven-version: [ 3.6.3 ]
-        java-version: [ 1.8 ]
+        java-version: [ 11, 17 ]
     steps:
       - name: ⬇️ Checkout
         id: checkout
@@ -155,7 +155,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: ☕ Set up JDK 1.8
+      - name: ☕ Set up JDK 11 and JDK 17
         id: jdk-setup
         uses: actions/setup-java@v1
         with:
