@@ -26,7 +26,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { AppConstants, FeatureConfigInterface, history } from "../../core";
 import { getOrganization } from "../api";
-import { EditOrganization } from "../components/edit-organization";
+import { EditOrganization } from "../components/edit-organization/edit-organization";
 import { OrganizationIcon } from "../configs";
 import { OrganizationManagementConstants } from "../constants";
 import { OrganizationResponseInterface } from "../models";

@@ -50,11 +50,11 @@ import {
     UIConstants,
     getEmptyPlaceholderIllustrations,
     history
-} from "../../core";
-import { deleteOrganization } from "../api";
-import { OrganizationIcon } from "../configs";
-import { OrganizationManagementConstants } from "../constants";
-import { OrganizationInterface, OrganizationListInterface } from "../models";
+} from "../../../core";
+import { deleteOrganization } from "../../api";
+import { OrganizationIcon } from "../../configs";
+import { OrganizationManagementConstants } from "../../constants";
+import { OrganizationInterface, OrganizationListInterface } from "../../models";
 
 /**
  *
