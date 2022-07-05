@@ -53,6 +53,11 @@ export class Config {
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     private constructor() { }
 
+    /**
+     * This method adds organization path to the server host if an organization is selected.
+     *
+     * @returns {string}
+     */
     public static resolveServerHost(): string {
         if (OrganizationUtils.isRootOrganization(store.getState().organization.organization)) {
             return window[ "AppUtils" ].getConfig().serverOriginWithTenant;
