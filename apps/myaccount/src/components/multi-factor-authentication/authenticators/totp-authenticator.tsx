@@ -721,7 +721,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                         <h5 className=" text-center"> { t(translateKey + "modals.scan.heading") }</h5>
                         <Segment textAlign="center" basic className="qr-code">
                             { qrCode 
-                                ? <QRCode value={ qrCode } data-testid={ `${ testId }-modals-scan-qrcode` }/>
+                                ? <QRCode value={ qrCode } data-testid={ `${ testId }-view-modals-scan-qrcode` }/>
                                 : null
                             }
                         </Segment>
@@ -740,7 +740,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                                         className=" totp-verify-action-button"
                                         onClick={ handleRegenerateQRCode }
                                         disabled= { isLoading }
-                                        data-testid={ `${ testId }-modal-actions-primary-button` }
+                                        data-testid={ `${ testId }-view-modal-actions-primary-button` }
                                     >
                                         { t(translateKey + "regenerate") }
                                     </Button>
@@ -754,7 +754,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                                         type="button"
                                         onClick={ () => setIsViewTOTPModalOpen(false) }
                                         className="link-button totp-verify-action-button"
-                                        data-testid={ `${ testId }-modal-actions-cancel-button` }>
+                                        data-testid={ `${ testId }-view-modal-actions-cancel-button` }>
                                         { t("common:cancel") }
                                     </Button>
                                 </Grid.Column>
@@ -768,7 +768,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                     <Segment basic >
                         <h5 className=" text-center"> { t(translateKey + "modals.scan.heading") }</h5>
                         <Segment textAlign="center" basic className="qr-code">
-                            <QRCode value={ qrCode } data-testid={ `${ testId }-modals-scan-qrcode` }/>
+                            <QRCode value={ qrCode } data-testid={ `${ testId }-view-modals-scan-qrcode` }/>
                         </Segment>
                         { renderTOTPVerifyForm(true) }
                     </Segment>
@@ -835,13 +835,13 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
             <Button
                 primary
                 className = "totp-verify-done-button"
-                data-testid={ `${ testId }-modal-actions-primary-button` }
+                data-testid={ `${ testId }-view-modal-actions-primary-button` }
                 onClick= { () => {
                     setIsViewTOTPModalOpen(false);
                     setViewTOTPModalCurrentStep(0);
                 } }
             >
-                { "Done" }
+                { t("common:done") }
             </Button>
         );
     };
@@ -852,7 +852,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     const renderViewTOTPWizard = (): React.ReactElement => {
         return (
             <Modal
-                data-testid={ `${ testId }-modal` }
+                data-testid={ `${ testId }-view-modal` }
                 dimmer="blurring"
                 size="tiny"
                 open={ isViewTOTPModalOpen }
@@ -862,10 +862,10 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                 <Modal.Header className="wizard-header text-center">
                     { t(translateKey + "modals.heading") }
                 </Modal.Header>
-                <Modal.Content data-testid={ `${ testId }-modal-content` } scrolling>
+                <Modal.Content data-testid={ `${ testId }-view-modal-content` } scrolling>
                     { renderViewTOTPWizardContent() }
                 </Modal.Content>
-                <Modal.Actions data-testid={ `${ testId }-modal-actions` } className ="actions">
+                <Modal.Actions data-testid={ `${ testId }-view-modal-actions` } className ="actions">
                     { renderViewTOTPWizardActions() }
                 </Modal.Actions>
             </Modal>
