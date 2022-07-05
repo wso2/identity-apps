@@ -56,12 +56,13 @@ import {
 import { getEmptyPlaceholderIllustrations, updateResources } from "../../../core";
 import { getGroupList } from "../../../groups/api";
 import { APPLICATION_DOMAIN, INTERNAL_DOMAIN, PRIMARY_DOMAIN } from "../../constants";
+import { OrganizationRoleInterface } from "../../models";
 
 interface RoleGroupsPropsInterface extends TestableComponentInterface {
     /**
      * User profile
      */
-    role: RolesInterface;
+    role: OrganizationRoleInterface;
     /**
      * Handle user update callback.
      */
@@ -757,7 +758,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                                         </EmphasizedSegment>
                                     )
                                     : <ContentLoader className="p-3" active />
-                                )
+                            )
                         }
                     </Grid.Column>
                 </Grid.Row>

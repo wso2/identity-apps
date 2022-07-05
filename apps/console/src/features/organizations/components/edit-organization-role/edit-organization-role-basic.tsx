@@ -33,7 +33,7 @@ import { AppConstants, SharedUserStoreConstants, SharedUserStoreUtils, history }
 import { PRIMARY_USERSTORE_PROPERTY_VALUES } from "../../../userstores";
 import { deleteOrganizationRole, getOrganizationRoles, patchOrganizationRoleDetails } from "../../api";
 import { currentOrganizationId } from "../../constants";
-import { PatchOrganizationRoleDataInterface } from "../../models";
+import { OrganizationRoleInterface, PatchOrganizationRoleDataInterface } from "../../models";
 
 /**
  * Interface to contain props needed for component
@@ -46,7 +46,7 @@ interface BasicRoleProps extends TestableComponentInterface {
     /**
      * Role details
      */
-    roleObject: RolesInterface;
+    roleObject: OrganizationRoleInterface;
     /**
      * Show if it is role.
      */
@@ -195,7 +195,7 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
             if (isGroup) {
                 history.push(AppConstants.getPaths().get("GROUPS"));
             } else {
-                history.push(AppConstants.getPaths().get("ROLES"));
+                history.push(AppConstants.getPaths().get("ORGANIZATION_ROLE_UPDATE"));
             }
         });
     };
@@ -285,22 +285,7 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                                         value={ nameValue }
                                         validation={ async (value: string, validation: Validation) => {
                                             if (value) {
-                                                let isRoleNameValid = true;
-
-                                                await validateRoleNamePattern().then(regex => {
-                                                    isRoleNameValid = SharedUserStoreUtils
-                                                        .validateInputAgainstRegEx(value, regex);
-                                                });
-
-                                                if (!isRoleNameValid) {
-                                                    validation.isValid = false;
-                                                    validation.errorMessages.push(t("console:manage.features." +
-                                                        "roles.addRoleWizard.forms.roleBasicDetails.roleName." +
-                                                        "validations.invalid",
-                                                    { type: "role" }));
-                                                }
-
-                                                const filter = "displayName eq " + value.toString();
+                                                const filter = "name eq " + value.toString();
 
                                                 await getOrganizationRoles(
                                                     currentOrganizationId,
@@ -309,7 +294,7 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                                                     null,
                                                     null
                                                 ).then(response => {
-                                                    if (response?.roles.length !== 0) {
+                                                    if (response?.roles && response?.roles?.length !== 0) {
                                                         if (response?.roles[0]?.id !== roleId) {
                                                             validation.isValid = false;
                                                             validation.errorMessages.push(

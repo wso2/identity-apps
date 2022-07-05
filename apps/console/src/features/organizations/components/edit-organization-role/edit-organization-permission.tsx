@@ -24,7 +24,7 @@ import { useDispatch } from "react-redux";
 import { PermissionList } from "../../../roles";
 import { updateRole } from "../../api";
 import { currentOrganizationId } from "../../constants";
-import { TreeNode } from "../../models";
+import { OrganizationRoleInterface, TreeNode } from "../../models";
 
 /**
  * Interface to capture permission edit props.
@@ -33,7 +33,7 @@ interface RolePermissionDetailProps {
     /**
      * Role details
      */
-    roleObject: RolesInterface;
+    roleObject: OrganizationRoleInterface;
     /**
      * Show if it is role.
      */
