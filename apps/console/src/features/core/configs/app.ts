@@ -28,6 +28,7 @@ import { getGroupsResourceEndpoints } from "../../groups";
 import { getIDPResourceEndpoints } from "../../identity-providers";
 import { getScopesResourceEndpoints } from "../../oidc-scopes";
 import { getOrganizationsResourceEndpoints } from "../../organizations/configs";
+import { OrganizationUtils } from "../../organizations/utils";
 import { getRemoteFetchConfigResourceEndpoints } from "../../remote-repository-configuration";
 import { getRolesResourceEndpoints } from "../../roles";
 import { getSecretsManagementEndpoints } from "../../secrets/configs/endpoints";
@@ -37,12 +38,12 @@ import { getUserstoreResourceEndpoints } from "../../userstores";
 import { getApprovalsResourceEndpoints } from "../../workflow-approvals";
 import { I18nConstants } from "../constants";
 import { DeploymentConfigInterface, ServiceResourceEndpointsInterface, UIConfigInterface } from "../models";
+import { store } from "../store";
 
 /**
  * Class to handle application config operations.
  */
 export class Config {
-
     /**
      * Private constructor to avoid object instantiation from outside
      * the class.
@@ -51,6 +52,16 @@ export class Config {
      */
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     private constructor() { }
+
+    public static resolveServerHost(): string {
+        if (OrganizationUtils.isRootOrganization(store.getState().organization.organization)) {
+            return window[ "AppUtils" ].getConfig().serverOriginWithTenant;
+        } else {
+            return `${window["AppUtils"].getConfig().serverOrigin}/o/${
+                store.getState().organization.organization.name
+            }`;
+        }
+    }
 
     /**
      * Get the deployment config.
@@ -94,7 +105,7 @@ export class Config {
             extensions: window["AppUtils"].getConfig().extensions,
             idpConfigs: window["AppUtils"].getConfig().idpConfigs,
             loginCallbackUrl: window["AppUtils"].getConfig().loginCallbackURL,
-            serverHost: window["AppUtils"].getConfig().serverOriginWithTenant,
+            serverHost: this.resolveServerHost(),
             serverOrigin: window["AppUtils"].getConfig().serverOrigin,
             superTenant: window["AppUtils"].getConfig().superTenant,
             tenant: window["AppUtils"].getConfig().tenant,
