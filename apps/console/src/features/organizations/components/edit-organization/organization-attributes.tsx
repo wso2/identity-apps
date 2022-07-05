@@ -6,9 +6,9 @@ import React, { FunctionComponent, ReactElement, useCallback, useState } from "r
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Grid } from "semantic-ui-react";
-import { FeatureConfigInterface } from "../../core";
-import { patchOrganization } from "../api";
-import { OrganizationPatchData, OrganizationResponseInterface } from "../models";
+import { FeatureConfigInterface } from "../../../core";
+import { patchOrganization } from "../../api";
+import { OrganizationPatchData, OrganizationResponseInterface } from "../../models";
 
 interface OrganizationAttributesPropsInterface extends SBACInterface<FeatureConfigInterface>,
     TestableComponentInterface {
