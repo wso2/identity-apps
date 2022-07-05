@@ -71,9 +71,7 @@ export const RoleUserDetails: FunctionComponent<RoleUserDetailsProps> = (
         const newUsers: CreateOrganizationRoleMemberInterface[] = [];
 
         for (const selectedUser of userList) {
-            newUsers.push({
-                value: selectedUser.id
-            });
+            newUsers.push(selectedUser.id);
         }
 
         const roleData: PatchOrganizationRoleDataInterface = {

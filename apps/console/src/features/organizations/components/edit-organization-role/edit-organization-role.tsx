@@ -28,13 +28,14 @@ import { RolePermissionDetails } from "./edit-organization-permission";
 import { BasicRoleDetails } from "./edit-organization-role-basic";
 import { RoleUserDetails } from "./edit-organization-role-users";
 import { AppState, FeatureConfigInterface, history } from "../../../core";
+import { OrganizationRoleInterface } from "../../models";
 
 /**
  * Captures props needed for edit role component
  */
 interface EditRoleProps extends SBACInterface<FeatureConfigInterface> {
     roleId: string;
-    roleObject: RolesInterface;
+    roleObject: OrganizationRoleInterface;
     onRoleUpdate: () => void;
     readOnlyUserStores?: string[];
 }
@@ -44,7 +45,7 @@ interface EditRoleProps extends SBACInterface<FeatureConfigInterface> {
  *
  * @param props contains role details to be edited.
  */
-export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps): ReactElement => {
+export const EditOrganizationRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps): ReactElement => {
 
     const {
         roleId,

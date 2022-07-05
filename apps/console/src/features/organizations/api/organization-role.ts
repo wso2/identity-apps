@@ -187,3 +187,26 @@ export const patchOrganizationRoleDetails = (
             return Promise.reject(error);
         });
 };
+
+/**
+ * Retrieve Organization Role details for a give role id.
+ *
+ * @param organizationId organization id
+ * @param roleId role id to retrieve role details
+ */
+export const getOrganizationRoleById = (organizationId: string, roleId: string): Promise<any> => {
+    const requestConfig = {
+        headers: {
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: `${ store.getState().config.endpoints.organizations }/organizations/${ organizationId }/roles/${roleId}`
+    };
+
+    return httpClient(requestConfig)
+        .then((response) => {
+            return Promise.resolve(response);
+        }).catch((error) => {
+            return Promise.reject(error);
+        });
+};
