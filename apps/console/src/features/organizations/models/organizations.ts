@@ -1,3 +1,4 @@
+import { RolesInterface } from "@wso2is/core/models";
 import { PatchRoleDataInterface } from "../../roles";
 
 /**
@@ -76,20 +77,9 @@ export interface OrganizationPatchData {
     value: string;
 }
 
-export interface OrganizationRoleInterface {
-    displayName: string,
-    id: string,
-    users: Array<{
-        value: string,
-        $ref: string
-    }>,
-    permissions: Array<string>,
-    meta: {
-        location: string
-    }
-}
+export type OrganizationRoleInterface = RolesInterface;
 
-export type OrganizationRoleListItemInterface = Omit<OrganizationRoleInterface, "users" | "permissions">;
+export type OrganizationRoleListItemInterface = Omit<OrganizationRoleInterface, "users" | "permissions" | "groups">;
 
 export type OrganizationRoleListResponseInterface = {
     links: OrganizationLinkInterface[];

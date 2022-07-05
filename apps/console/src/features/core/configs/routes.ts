@@ -540,13 +540,27 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
                     },
                     {
                         category: "console:manage.features.sidePanel.categories.organizations",
+                        children: [
+                            {
+                                component: lazy(() => import("../../organizations/pages/organization-roles-edit")),
+                                exact: true,
+                                icon: {
+                                    icon: getSidePanelIcons().organization
+                                },
+                                id: "organization-roles-edit",
+                                name: "organization Roles Edit",
+                                path: AppConstants.getPaths().get("ORGANIZATION_ROLE_UPDATE"),
+                                protected: true,
+                                showOnSidePanel: false
+                            }
+                        ],
                         component: lazy(() => import("../../organizations/pages/organization-roles")),
                         exact: true,
                         icon: {
                             icon: getSidePanelIcons().organization
                         },
                         id: "organization-roles",
-                        name: "Organization Roles", // ToDo
+                        name: "Organization Roles",
                         order: 13,
                         path: AppConstants.getPaths().get("ORGANIZATION_ROLES"),
                         protected: true,

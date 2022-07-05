@@ -271,7 +271,7 @@ const OrganizationRoles: FunctionComponent<OrganizationRolesPageInterface> = (
                 );
 
                 setShowWizard(false);
-                history.push(AppConstants.getPaths().get("ROLE_EDIT").replace(":id", response.data.id));
+                history.push(AppConstants.getPaths().get("ORGANIZATION_ROLE_UPDATE").replace(":id", response.data.id));
             }
 
         }).catch(error => {
@@ -308,7 +308,6 @@ const OrganizationRoles: FunctionComponent<OrganizationRolesPageInterface> = (
         });
     }, [ createOrganizationRole, setShowWizard, setLoading, dispatch, history, currentOrganizationId, t ]);
 
-
     /**
      * Handles the `onSearchQueryClear` callback action.
      */
@@ -319,7 +318,9 @@ const OrganizationRoles: FunctionComponent<OrganizationRolesPageInterface> = (
     };
 
     const handleListItemClick = (_e, organizationRole: OrganizationRoleListItemInterface): void => {
-        console.log(`Role ${organizationRole.displayName} clicked`);
+        history.push(
+            AppConstants.getPaths().get("ORGANIZATION_ROLE_UPDATE").replace(":id", organizationRole.id)
+        );
     };
 
     useEffect(() => {
