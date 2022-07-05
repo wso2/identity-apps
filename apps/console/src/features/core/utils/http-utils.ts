@@ -82,14 +82,24 @@ export class HttpUtils {
         */
         const errorConfig: HttpRequestConfig  = error.config as HttpRequestConfig;
         const duration: number = new Date().getTime() - errorConfig?.startTimeInMs;
+        let pathName = null;
 
-        EventPublisher.getInstance().record(
-            new URL(error?.config?.url).pathname,
-            errorConfig?.startTimeInMs,
-            duration,
-            error?.response?.status,
-            false
-        );
+        try {
+            pathName = new URL(error?.config?.url).pathname;
+        } catch(e) {
+            // Add debug logs here one a logger is added.
+            // Tracked here https://github.com/wso2/product-is/issues/11650.
+        }
+
+        if (pathName) {
+            EventPublisher.getInstance().record(
+                pathName,
+                errorConfig?.startTimeInMs,
+                duration,
+                error?.response?.status,
+                false
+            );  
+        }
 
         // Terminate the session if the token endpoint returns a bad request(400)
         // The token binding feature will return a 400 status code when the session
@@ -123,6 +133,9 @@ export class HttpUtils {
         // the `401` error. Check the link in the doc comment.
         if (!error.response || error.response.status === 401) {
             if (error?.code === "SPA-WORKER_CORE-HR-SE01") {
+                dispatchEvent(new Event(AppConstantsCore.NETWORK_ERROR_EVENT));
+            }
+            if (error?.code === "SPA-AUTH_HELPER-HR-SE01") {
                 dispatchEvent(new Event(AppConstantsCore.NETWORK_ERROR_EVENT));
             }
         }
