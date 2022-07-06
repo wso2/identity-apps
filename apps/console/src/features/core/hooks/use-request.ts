@@ -15,16 +15,60 @@ const httpClient = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAC
 
 export type GetRequest = AxiosRequestConfig | null
 
-interface Return<Data, Error>
+/**
+ * Request error interface.
+ */
+export interface RequestResultInterface<Data = unknown, Error = unknown>
     extends Pick<
         SWRResponse<AxiosResponse<Data>, AxiosError<Error>>,
         "isValidating" | "error" | "mutate"
     > {
-    data: Data | undefined
-    response: AxiosResponse<Data> | undefined
+    /**
+     * Request data.
+     */
+    data: Data | undefined;
+    /**
+     * Request loading state.
+     */
+    isLoading?: boolean;
+    /**
+     * Request response.
+     */
+    response?: AxiosResponse<Data> | undefined;
 }
 
-export interface Config<Data = unknown, Error = unknown>
+/**
+ * Request error interface.
+ */
+export interface RequestErrorInterface {
+    /**
+     * Error code.
+     * @example example: AAA-00000
+     */
+    code: string;
+    /**
+     * Error message.
+     * @example example: Some error message.
+     */
+    message: string;
+    /**
+     * Error description.
+     * @example Some error description.
+     */
+    description?: string;
+    /**
+     * Error description alias.
+     * @example Some error description.
+     */
+    detail?: string;
+    /**
+     * Error trace id.
+     * @example e0fbcfeb-3617-43c4-8dd0-7b7d38e13047
+     */
+    traceId: string;
+}
+
+export interface SWRConfig<Data = unknown, Error = unknown>
     extends Omit<
         SWRConfiguration<AxiosResponse<Data>, AxiosError<Error>>,
         "fallbackData"
@@ -32,14 +76,12 @@ export interface Config<Data = unknown, Error = unknown>
     fallbackData?: Data
 }
 
-const globalConfig: SWRConfiguration = {
-    dedupingInterval: 360000
-};
+const globalConfig: SWRConfiguration = {};
 
 export default function useRequest<Data = unknown, Error = unknown>(
     request: GetRequest,
-    { fallbackData, ...config }: Config<Data, Error> = {}
-): Return<Data, Error> {
+    { fallbackData, ...config }: SWRConfig<Data, Error> = {}
+): RequestResultInterface<Data, Error> {
 
     const _config = {
         ...globalConfig,
