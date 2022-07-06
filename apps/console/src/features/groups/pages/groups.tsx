@@ -241,7 +241,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
             startIndex: 1
         };
 
-        if(userStore) {
+        if (userStore) {
             searchData = { ...searchData, domain: userStore };
         }
 
