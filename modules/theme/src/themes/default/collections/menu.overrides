@@ -78,11 +78,11 @@
                         padding-left: @appHeaderExtensionItemPaddingLeft;
                         padding-right: @appHeaderExtensionItemPaddingRight;
                     }
-    
+
                     >.item {
                         padding: @appHeaderExtensionInnerItemPadding;
                     }
-                    
+
                     .theme-icon {
                         i {
                             width: 100%;
@@ -278,6 +278,10 @@
                                     display: flex;
                                     justify-content: flex-end;
 
+                                    &.organizations {
+                                        margin-top: 1em;
+                                    }
+
                                     button {
                                         &:first-child {
                                             margin-left: 8px;
@@ -323,6 +327,10 @@
                                             padding-top: 5px;
                                             text-align: center;
                                         }
+                                    }
+
+                                    &.organizations {
+                                        max-height: none !important;
                                     }
                                 }
                                 .action-panel {
@@ -508,12 +516,12 @@
                 border-radius: @appHeaderSecondaryPanelInnerMenuBorderRadius;
                 background: @appHeaderSecondaryPanelInnerMenuBackground;
                 height: @appHeaderSecondaryPanelInnerMenuHeight;
-                
+
                 .item.secondary-panel-item {
                     background: @appHeaderSecondaryPanelPortalSwitchBackground;
                     color: @appHeaderSecondaryPanelPortalSwitchColor;
                     border-bottom: @appHeaderSecondaryPanelPortalSwitchBorderBottom;
-                    
+
                     &.active {
                         background: @appHeaderSecondaryPanelPortalSwitchActiveBackground;
                         color: @appHeaderSecondaryPanelPortalSwitchActiveColor;
@@ -523,7 +531,7 @@
                     &:not(.active) {
                         border-bottom: @appHeaderSecondaryPanelPortalSwitchInactiveBorderBottom;
                     }
-                    
+
                     &:first-child {
                         margin-left: @appHeaderSecondaryPanelPortalSwitchesLeftSpacing;
                     }
