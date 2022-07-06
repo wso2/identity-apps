@@ -224,8 +224,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
     const resolveAssociatedOrganizations = (): ReactElement => {
         if (Array.isArray(associatedOrganizations)) {
             return (
-                <Item.Group
-                    className="tenants-list organizations"
+                <Item.Group className="tenants-list organizations"
                     unstackable
                     data-componentid={ "associated-organizations-container" }
                 >
