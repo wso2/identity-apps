@@ -175,7 +175,10 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
     const resolveAssociatedOrganizations = (): ReactElement => {
         if (Array.isArray(associatedOrganizations)) {
             return (
-                <Item.Group className="tenants-list organizations" unstackable data-testid={ "associated-organizations-container" }>
+                <Item.Group
+                    className="tenants-list organizations"
+                    unstackable
+                    data-testid={ "associated-organizations-container" }>
                     { associatedOrganizations.length > 0 ? (
                         associatedOrganizations.map((organization, _) =>
                             organization.id !== currentOrganization?.id ? getOrganizationItemGroup(organization) : null
@@ -185,11 +188,8 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                             <Item.Content verticalAlign="middle">
                                 <Item.Description>
                                     <div className="message">
-                                        { // ToDo - Set this key
-                                            t(
-                                                "extensions:manage.features.tenant.header." +
-                                                "tenantSearch.emptyResultMessage"
-                                            ) }
+                                        {
+                                            t("console:common.header.organizationSwitch.emptyOrgListMessage") }
                                     </div>
                                 </Item.Description>
                             </Item.Content>
@@ -236,10 +236,10 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
     const tenantPagination = (
         <div className="tenant-pagination organizations">
             <Button disabled={ beforeCursor === undefined } onClick={ () => handlePaginationChange(false) }>
-                Previous
+                { t("common:previous") }
             </Button>
             <Button disabled={ afterCursor === undefined } onClick={ () => handlePaginationChange(true) }>
-                Next
+                { t("common:next") }
             </Button>
         </div>
     );
@@ -271,7 +271,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                                 icon="search"
                                 iconPosition="left"
                                 onChange={ searchOrganizationList }
-                                placeholder={ t("extensions:manage.features.tenant.header.tenantSearch.placeholder") }
+                                placeholder={ t("console:common.header.organizationSwitch.orgSearchPlaceholder") }
                                 floated="right"
                                 size="small"
                             />

@@ -79,6 +79,10 @@ export const console: ConsoleNS = {
                     name: "My Account"
                 },
                 tooltip: "Apps"
+            },
+            organizationSwitch: {
+                emptyOrgListMessage: "No organizations available",
+                orgSearchPlaceholder: "Search by organization name"
             }
         },
         modals: {
