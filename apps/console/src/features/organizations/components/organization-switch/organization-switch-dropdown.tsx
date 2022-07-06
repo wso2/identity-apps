@@ -228,6 +228,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                     className="tenants-list organizations"
                     unstackable
                     data-componentid={ "associated-organizations-container" }
+
                 >
                     { associatedOrganizations.length > 1 ? (
                         associatedOrganizations.map((organization, _) =>
