@@ -100,7 +100,6 @@ export class HttpUtils {
             error?.response?.status,
             false
         ); 
-       
         // Terminate the session if the token endpoint returns a bad request(400)
         // The token binding feature will return a 400 status code when the session
         // times out.
