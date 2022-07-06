@@ -87,7 +87,7 @@ export class HttpUtils {
         try {
             //Whenever the resulting URL pathname and duration is undefined we explicityly assign null 
             pathName = new URL(error?.config?.url).pathname;
-            duration = new Date().getTime() - errorConfig?.startTimeInMs ?? null;
+            duration = new Date().getTime() - errorConfig?.startTimeInMs;
         } catch(e) {
             // Add debug logs here one a logger is added.
             // Tracked here https://github.com/wso2/product-is/issues/11650.
