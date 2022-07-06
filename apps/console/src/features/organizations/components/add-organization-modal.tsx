@@ -71,14 +71,18 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
 
     const submitOrganization = async (values: OrganizationAddFormProps): Promise<void> => {
         if (values?.name) {
-            const response: OrganizationListInterface
-                = await getOrganizations(`name eq ${ values.name }`, 1, null, null, true);
+            try {
+                const response: OrganizationListInterface
+                    = await getOrganizations(`name eq ${ values.name }`, 1, null, null, true);
 
-            if (response?.organizations?.length > 0) {
-                setDuplicateName(true);
+                if (response?.organizations?.length > 0) {
+                    setDuplicateName(true);
 
-                return;
-            } else {
+                    return;
+                } else {
+                    setDuplicateName(false);
+                }
+            } catch(error) {
                 setDuplicateName(false);
             }
         }
