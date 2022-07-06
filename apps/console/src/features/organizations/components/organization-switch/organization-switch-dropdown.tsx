@@ -148,21 +148,23 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                                 </Placeholder>
                             ) }
 
-                            <GenericIcon
-                                transparent
-                                inline
-                                className="manage-tenant-icon"
-                                data-testid="associated-tenant-icon"
-                                icon={ getSidePanelIcons().serverConfigurations }
-                                onClick={ (event: SyntheticEvent) => {
-                                    history.push({
-                                        pathname: AppConstants.getPaths()
-                                            .get("ORGANIZATION_UPDATE")
-                                            .replace(":id", organization?.id)
-                                    });
-                                    event.stopPropagation();
-                                } }
-                            />
+                            { organization.id !== "ROOT"
+                                && (<GenericIcon
+                                    transparent
+                                    inline
+                                    className="manage-tenant-icon"
+                                    data-testid="associated-tenant-icon"
+                                    icon={ getSidePanelIcons().serverConfigurations }
+                                    onClick={ (event: SyntheticEvent) => {
+                                        history.push({
+                                            pathname: AppConstants.getPaths()
+                                                .get("ORGANIZATION_UPDATE")
+                                                .replace(":id", organization?.id)
+                                        });
+                                        event.stopPropagation();
+                                    } }
+                                />)
+                            }
                         </div>
                     </Item.Description>
                 </Item.Content>
@@ -173,7 +175,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
     const resolveAssociatedOrganizations = (): ReactElement => {
         if (Array.isArray(associatedOrganizations)) {
             return (
-                <Item.Group className="tenants-list" unstackable data-testid={ "associated-organizations-container" }>
+                <Item.Group className="tenants-list organizations" unstackable data-testid={ "associated-organizations-container" }>
                     { associatedOrganizations.length > 0 ? (
                         associatedOrganizations.map((organization, _) =>
                             organization.id !== currentOrganization?.id ? getOrganizationItemGroup(organization) : null
@@ -232,7 +234,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
     };
 
     const tenantPagination = (
-        <div className="tenant-pagination">
+        <div className="tenant-pagination organizations">
             <Button disabled={ beforeCursor === undefined } onClick={ () => handlePaginationChange(false) }>
                 Previous
             </Button>
@@ -252,6 +254,9 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                 pointing="top left"
                 className="tenant-dropdown"
                 data-testid={ "tenant-dropdown" }
+                onClick={ () => {
+                    getOrganizationList(listFilter, null, null);
+                } }
             >
                 <Dropdown.Menu onClick={ handleDropdownClick }>
                     { getOrganizationItemGroup(currentOrganization) }
