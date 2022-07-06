@@ -86,7 +86,7 @@ export class HttpUtils {
 
         try {
             //Whenever the resulting URL pathname and duration is undefined we explicityly assign null 
-            pathName = new URL(error?.config?.url).pathname ?? null;
+            pathName = new URL(error?.config?.url).pathname;
             duration = new Date().getTime() - errorConfig?.startTimeInMs ?? null;
         } catch(e) {
             // Add debug logs here one a logger is added.
