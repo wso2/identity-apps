@@ -93,6 +93,10 @@ export interface ConsoleNS {
                 myAccount: AppSwitchItemInterface;
                 tooltip: string;
             };
+            organizationSwitch: {
+                emptyOrgListMessage: string;
+                orgSearchPlaceholder: string;
+            }
         },
         modals: {
             editAvatarModal: ModalInterface;

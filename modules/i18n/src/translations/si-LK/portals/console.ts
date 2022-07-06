@@ -79,6 +79,10 @@ export const console: ConsoleNS = {
                     name: "My Account"
                 },
                 tooltip: "Apps"
+            },
+            organizationSwitch: {
+                emptyOrgListMessage: "සංවිධාන නොමැත",
+                orgSearchPlaceholder: "සංවිධානයේ නම අනුව සොයන්න"
             }
         },
         modals: {

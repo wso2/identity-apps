@@ -80,6 +80,10 @@ export const console: ConsoleNS = {
                     name: "My Account"
                 },
                 tooltip: "Apps"
+            },
+            organizationSwitch: {
+                emptyOrgListMessage: "Aucune organisation disponible",
+                orgSearchPlaceholder: "Rechercher par nom d'organisation"
             }
         },
         modals: {
