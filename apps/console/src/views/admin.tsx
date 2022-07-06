@@ -291,7 +291,8 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
                 commonConfig.checkForUIResourceScopes
             );
 
-            serverConfigurationConfig.showConnectorsOnTheSidePanel &&
+            setFilteredRoutes((prevFilteredRoutes: RouteInterface[]) => {
+                serverConfigurationConfig.showConnectorsOnTheSidePanel &&
                 governanceConnectorCategories.map((category: GovernanceConnectorCategoryInterface, index: number) => {
                     let subCategoryExists = false;
 
@@ -317,8 +318,8 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
                         name: category.name,
                         order:
                             category.id === ServerConfigurationsConstants.OTHER_SETTINGS_CONNECTOR_CATEGORY_ID
-                                ? filteredRoutes.length + governanceConnectorCategories.length
-                                : filteredRoutes.length + index,
+                                ? prevFilteredRoutes.length + governanceConnectorCategories.length
+                                : prevFilteredRoutes.length + index,
                         path: AppConstants.getPaths()
                             .get("GOVERNANCE_CONNECTORS")
                             .replace(":id", category.id),
@@ -327,7 +328,12 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
                     });
                 });
 
-            setFilteredRoutes(filteredRoutesClone);
+                if (!OrganizationUtils.isRootOrganization(organization.organization)) {
+                    return RouteUtils.filterOrganizationEnabledRoutes(filteredRoutesClone);
+                }
+
+                return filteredRoutesClone;
+            });
             setGovernanceConnectorRoutesAdded(true);
             setGovernanceConnectorsEvaluated(true);
         }
@@ -335,9 +341,9 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
         allowedScopes,
         governanceConnectorCategories,
         featureConfig,
-        filteredRoutes,
         governanceConnectorRoutesAdded,
-        getOrganizationEnabledRoutes
+        getOrganizationEnabledRoutes,
+        organization.organization
     ]);
 
     /**
