@@ -81,7 +81,7 @@ export class HttpUtils {
          * Publish an event on the http request error.
         */
         const errorConfig: HttpRequestConfig  = error.config as HttpRequestConfig;
-        let duration: number;
+        let duration: number = null;
         let pathName: string | null;
 
         try {
