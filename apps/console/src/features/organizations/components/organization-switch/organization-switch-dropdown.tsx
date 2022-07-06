@@ -148,8 +148,8 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                                 </Placeholder>
                             ) }
 
-                            { organization.id !== "ROOT"
-                                && (<GenericIcon
+                            { organization.id !== "ROOT" && (
+                                <GenericIcon
                                     transparent
                                     inline
                                     className="manage-tenant-icon"
@@ -163,8 +163,8 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                                         });
                                         event.stopPropagation();
                                     } }
-                                />)
-                            }
+                                />
+                            ) }
                         </div>
                     </Item.Description>
                 </Item.Content>
@@ -175,7 +175,11 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
     const resolveAssociatedOrganizations = (): ReactElement => {
         if (Array.isArray(associatedOrganizations)) {
             return (
-                <Item.Group className="tenants-list organizations" unstackable data-testid={ "associated-organizations-container" }>
+                <Item.Group
+                    className="tenants-list organizations"
+                    unstackable
+                    data-testid={ "associated-organizations-container" }
+                >
                     { associatedOrganizations.length > 0 ? (
                         associatedOrganizations.map((organization, _) =>
                             organization.id !== currentOrganization?.id ? getOrganizationItemGroup(organization) : null
