@@ -354,6 +354,7 @@ export class AppConstants {
     public static readonly ORGANIZATION_ENABLED_ROUTES: string[] = [
         "identityProviders",
         "users",
-        "organizations"
+        "organizations",
+        "organization-roles"
     ]
 }
