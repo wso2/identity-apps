@@ -770,7 +770,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                     <Segment basic >
                         <h5 className=" text-center"> { t(translateKey + "modals.scan.heading") }</h5>
                         <Segment textAlign="center" basic className="qr-code">
-                            <QRCode value={ qrCode } data-testid={ `${ testId }-view-modals-scan-qrcode` }/>
+                            <QRCode value={ qrCode } data-testid={ `${ testId }-modals-scan-qrcode` }/>
                         </Segment>
                         { renderTOTPVerifyForm(true) }
                     </Segment>
@@ -837,7 +837,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
             <Button
                 primary
                 className = "totp-verify-done-button"
-                data-testid={ `${ testId }-view-modal-actions-primary-button` }
+                data-testid={ `${ testId }-modal-actions-primary-button` }
                 onClick= { () => {
                     setIsViewTOTPModalOpen(false);
                     setViewTOTPModalCurrentStep(0);
