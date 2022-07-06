@@ -1,5 +1,5 @@
 import { RolesInterface } from "@wso2is/core/models";
-import { PatchRoleDataInterface } from "../../roles";
+import { ScimOperationsInterface } from "../../roles";
 
 /**
  * Copyright (c) 2022, WSO2 Inc. (http://www.wso2.com) All Rights Reserved.
@@ -86,7 +86,9 @@ export type OrganizationRoleListResponseInterface = {
     roles: Array<OrganizationRoleListItemInterface>
 };
 
-export type PatchOrganizationRoleDataInterface = Omit<PatchRoleDataInterface, "schemas">;
+export type PatchOrganizationRoleDataInterface = {
+    operations: ScimOperationsInterface[]
+};
 
 /**
  * Interface to store User information related to create role api

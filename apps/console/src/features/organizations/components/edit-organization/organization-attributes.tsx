@@ -47,7 +47,7 @@ export const OrganizationAttributes: FunctionComponent<OrganizationAttributesPro
 
     const updateOrgAttributes = useCallback((data: KeyValue[]) => {
         setIsSubmitting(true);
-        const attributes = organization.attributes;
+        const attributes = organization.attributes || [];
 
         const updatedAttributes: OrganizationPatchData[] = attributes
             .map((attribute) => {

@@ -345,7 +345,7 @@ const OrganizationRoles: FunctionComponent<OrganizationRolesPageInterface> = (
                             >
                                 <Icon name="add"/>
                                 { /*ToDo*/ }
-                                { t("console:manage.features.organizations.list.actions.add") }
+                                { t("Add Organization Role") }
                             </PrimaryButton>
                         </Show>
                     )
