@@ -39,8 +39,8 @@ export class OrganizationManagementConstants {
      * @default
      */
     public static readonly ROOT_ORGANIZATION: OrganizationInterface = {
-        id: "root",
-        name: "ROOT",
+        id: "ROOT",
+        name: "Root Organization",
         ref: ""
     };
 }
