@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { OrganizationInterface } from "../models";
+
 export class OrganizationManagementConstants {
     /**
      * Set of keys used to enable/disable features.
@@ -29,6 +31,18 @@ export class OrganizationManagementConstants {
         .set("ORGANIZATION_DELETE", "organizations.delete")
         .set("ORGANIZATION_READ", "organizations.read");
 
+    /**
+     * Root organization object.
+     *
+     * @@constant
+     * @type {OrganizationInterface}
+     * @default
+     */
+    public static readonly ROOT_ORGANIZATION: OrganizationInterface = {
+        id: "root",
+        name: "ROOT",
+        ref: ""
+    };
 }
 
 export enum ORGANIZATION_TYPE {
