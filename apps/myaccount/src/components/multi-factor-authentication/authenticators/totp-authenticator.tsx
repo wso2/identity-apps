@@ -725,40 +725,42 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                                 : null
                             }
                         </Segment>
-                        <Message className="display-flex" size="small" warning>
-                            <Icon name="warning sign" color="orange" corner />
-                            <Message.Content className="tiny">
-                                { t(translateKey + "modals.scan.regenerateWarning") }
-                            </Message.Content>
-                        </Message>
-                        <div className = "totp-verify-step-btn">
-                            <Grid.Row columns={ 1 }>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                    <Button
-                                        primary
-                                        type="button"
-                                        className=" totp-verify-action-button"
-                                        onClick={ handleRegenerateQRCode }
-                                        disabled= { isLoading }
-                                        data-testid={ `${ testId }-view-modal-actions-primary-button` }
-                                    >
-                                        { t(translateKey + "regenerate") }
-                                    </Button>
-                                </Grid.Column>
-                            </Grid.Row>
-                        </div>
-                        <div className = "totp-verify-step-btn">
-                            <Grid.Row columns={ 1 }>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                    <Button
-                                        type="button"
-                                        onClick={ () => setIsViewTOTPModalOpen(false) }
-                                        className="link-button totp-verify-action-button"
-                                        data-testid={ `${ testId }-view-modal-actions-cancel-button` }>
-                                        { t("common:cancel") }
-                                    </Button>
-                                </Grid.Column>
-                            </Grid.Row>
+                        <div className="ml-3 mr-3">
+                            <Message className="display-flex" size="small" warning>
+                                <Icon name="warning sign" color="orange" corner />
+                                <Message.Content className="tiny">
+                                    { t(translateKey + "modals.scan.regenerateWarning") }
+                                </Message.Content>
+                            </Message>
+                            <div className = "totp-verify-step-btn">
+                                <Grid.Row columns={ 1 }>
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                        <Button
+                                            primary
+                                            type="button"
+                                            className=" totp-verify-action-button"
+                                            onClick={ handleRegenerateQRCode }
+                                            disabled= { isLoading }
+                                            data-testid={ `${ testId }-view-modal-actions-primary-button` }
+                                        >
+                                            { t(translateKey + "regenerate") }
+                                        </Button>
+                                    </Grid.Column>
+                                </Grid.Row>
+                            </div>
+                            <div className = "totp-verify-step-btn">
+                                <Grid.Row columns={ 1 }>
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                        <Button
+                                            type="button"
+                                            onClick={ () => setIsViewTOTPModalOpen(false) }
+                                            className="link-button totp-verify-action-button"
+                                            data-testid={ `${ testId }-view-modal-actions-cancel-button` }>
+                                            { t("common:cancel") }
+                                        </Button>
+                                    </Grid.Column>
+                                </Grid.Row>
+                            </div>
                         </div>
                     </Segment>
                 );
