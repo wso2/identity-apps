@@ -135,6 +135,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const consumerAccountURL: string = useSelector((state: AppState) => 
         state?.config?.deployment?.accountApp?.tenantQualifiedPath);
+    const [ isLoadingForTheFirstTime, setIsLoadingForTheFirstTime ] = useState<boolean>(true);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -145,6 +146,19 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
         mutate: mutateApplicationListFetchRequest
     } = useApplicationList(listItemLimit, listOffset, searchQuery);
 
+    /**
+     * Sets the initial spinner.
+     * TODO: Remove this once the loaders are finalized.
+     */
+    useEffect(() => {
+        if (isApplicationListFetchRequestLoading === false && isLoadingForTheFirstTime === true) {
+            setIsLoadingForTheFirstTime(false);
+        }
+    }, [ isApplicationListFetchRequestLoading, isLoadingForTheFirstTime ]);
+
+    /**
+     * Handles the application list fetch request error.
+     */
     useEffect(() => {
 
         if (!applicationListFetchRequestError) {
@@ -379,7 +393,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
             contentTopMargin={ (AppConstants.getTenant() === AppConstants.getSuperTenant()) }
             data-testid={ `${ testId }-page-layout` }
         >
-            { !isApplicationListFetchRequestLoading? (
+            { !isLoadingForTheFirstTime? (
                 <>
                     { renderTenantedMyAccountLink() }
                     { renderRemoteFetchStatus() }
@@ -425,9 +439,9 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                         sortOptions={ APPLICATIONS_LIST_SORTING_OPTIONS }
                         sortStrategy={ listSortingStrategy }
                         totalPages={ Math.ceil(applicationList?.totalResults / listItemLimit) }
-                        totalListSize={ applicationList?.totalResults }
+                        totalListSize={ applicationList?.totalResults  }
                         paginationOptions={ {
-                            disableNextButton: !shouldShowNextPageNavigation
+                            disableNextButton: !shouldShowNextPageNavigation(applicationList)
                         } }
                         data-testid={ `${ testId }-list-layout` }
                     >
@@ -497,7 +511,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                 </>
             ) : (
                 <GridLayout
-                    isLoading={ isApplicationListFetchRequestLoading }
+                    isLoading={ isLoadingForTheFirstTime }
                 />
             )
             }
