@@ -75,8 +75,8 @@ export const RoleUserDetails: FunctionComponent<RoleUserDetailsProps> = (
         }
 
         const roleData: PatchOrganizationRoleDataInterface = {
-            Operations: [ {
-                "op": "replace",
+            operations: [ {
+                "op": "REPLACE",
                 "path": "users",
                 "value": newUsers
             } ]

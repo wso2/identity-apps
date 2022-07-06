@@ -55,8 +55,9 @@ import {
 } from "semantic-ui-react";
 import { getEmptyPlaceholderIllustrations, updateResources } from "../../../core";
 import { getGroupList } from "../../../groups/api";
-import { APPLICATION_DOMAIN, INTERNAL_DOMAIN, PRIMARY_DOMAIN } from "../../constants";
-import { OrganizationRoleInterface } from "../../models";
+import { patchOrganizationRoleDetails } from "../../api";
+import { APPLICATION_DOMAIN, INTERNAL_DOMAIN, PRIMARY_DOMAIN, currentOrganizationId } from "../../constants";
+import { OrganizationRoleInterface, PatchOrganizationRoleDataInterface } from "../../models";
 
 interface RoleGroupsPropsInterface extends TestableComponentInterface {
     /**
@@ -325,78 +326,19 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
      * @param groups - Assigned groups
      */
     const updateRoleGroup = (role: any, groups: any) => {
-        const groupIds = [];
+        const groupIds = groups.map((group) => group.id);
 
-        groups.map((group) => {
-            groupIds.push(group.id);
-        });
-
-        const bulkData: any = {
-            Operations: [],
-            failOnErrors: 1,
-            schemas: [ "urn:ietf:params:scim:api:messages:2.0:BulkRequest" ]
+        const roleData: PatchOrganizationRoleDataInterface = {
+            operations: [ {
+                "op": "REPLACE",
+                "path": "groups",
+                "value": groupIds
+            } ]
         };
-
-        const operation = {
-            data: {
-                "Operations": []
-            },
-            method: "PATCH",
-            path: "/Roles/" + role.id
-        };
-
-        const removeOperations = [];
-        const addOperations = [];
-        let removedIds = [];
-        const addedIds = [];
-
-        if (primaryGroupsList) {
-            removedIds = [ ...primaryGroupsList.values() ];
-        }
-
-        if (groupIds?.length > 0) {
-            groupIds.map((groupId) => {
-                if (removedIds?.includes(groupId)) {
-                    removedIds.splice(removedIds.indexOf(groupId), 1);
-                } else {
-                    addedIds.push(groupId);
-                }
-            });
-        }
-
-        if (removedIds && removedIds?.length > 0) {
-            removedIds.map((id) => {
-                const operation = {
-                    op: "remove",
-                    path: `groups[value eq ${ id }]`
-                };
-
-                removeOperations.push(operation);
-            });
-
-            operation.data.Operations.push(...removeOperations);
-            bulkData.Operations.push(operation);
-        }
-
-        if (addedIds && addedIds?.length > 0) {
-            addedIds.map((id) => {
-                addOperations.push({
-                    "op": "add",
-                    "value": {
-                        "groups": [ {
-                            "value": id
-                        } ]
-                    }
-                });
-            });
-
-            operation.data.Operations.push(...addOperations);
-            bulkData.Operations.push(operation);
-        }
 
         setIsSubmitting(true);
 
-        updateResources(bulkData)
+        patchOrganizationRoleDetails(currentOrganizationId, role.id, roleData)
             .then(() => {
                 dispatch(addAlert({
                     description: t(

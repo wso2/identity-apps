@@ -22,7 +22,7 @@ import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { PermissionList } from "../../../roles";
-import { updateRole } from "../../api";
+import { patchOrganizationRoleDetails } from "../../api";
 import { currentOrganizationId } from "../../constants";
 import { OrganizationRoleInterface, TreeNode } from "../../models";
 
@@ -68,17 +68,16 @@ export const RolePermissionDetails: FunctionComponent<RolePermissionDetailProps>
 
     const onPermissionUpdate = (updatedPerms: TreeNode[]) => {
         const roleData = {
-            "Operations": [ {
-                "op": "replace",
+            "operations": [ {
+                "op": "REPLACE",
                 "path": "permissions",
                 "value": updatedPerms.map((perm: TreeNode) => perm.key)
-            } ],
-            "schemas": [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
+            } ]
         };
 
         setIsSubmitting(true);
 
-        updateRole(currentOrganizationId, roleObject.id, roleData)
+        patchOrganizationRoleDetails(currentOrganizationId, roleObject.id, roleData)
             .then(() => {
                 dispatch(
                     addAlert({

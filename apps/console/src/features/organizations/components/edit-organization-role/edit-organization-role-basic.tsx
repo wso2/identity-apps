@@ -208,10 +208,12 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
         const newRoleName: string = values?.get("roleName")?.toString();
 
         const roleData: PatchOrganizationRoleDataInterface = {
-            Operations: [ {
-                "op": "replace",
+            operations: [ {
+                "op": "REPLACE",
                 "path": "displayName",
-                "value": labelText ? labelText + "/" + newRoleName : newRoleName
+                "value": [
+                    labelText ? labelText + "/" + newRoleName : newRoleName
+                ]
             } ]
         };
 
