@@ -16,11 +16,12 @@
  * under the License.
  */
 
+import { OrganizationManagementConstants } from "../../../organizations/constants";
 import { OrganizationReducerStateInterface } from "../../models";
 import { OrganizationAction, OrganizationActionTypes } from "../actions/types";
 
 const initialState: OrganizationReducerStateInterface = {
-    organization: null
+    organization: OrganizationManagementConstants.ROOT_ORGANIZATION
 };
 
 export const organizationReducer = (
