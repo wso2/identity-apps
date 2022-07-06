@@ -195,7 +195,9 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
             if (isGroup) {
                 history.push(AppConstants.getPaths().get("GROUPS"));
             } else {
-                history.push(AppConstants.getPaths().get("ORGANIZATION_ROLE_UPDATE"));
+                history.push(
+                    AppConstants.getPaths().get("ORGANIZATION_ROLES")
+                );
             }
         });
     };
