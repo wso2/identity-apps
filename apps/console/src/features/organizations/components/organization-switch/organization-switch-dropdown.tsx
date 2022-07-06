@@ -172,6 +172,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                 key={ `${ organization?.name }-organization-item` }
                 onClick={ () => {
                     handleOrganizationSwitch(organization);
+                    setIsDropDownOpen(false);
                 } }
             >
                 {
@@ -317,8 +318,9 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                     <Divider />
                 data-testid={ "tenant-dropdown" }
                 onClick={ () => {
-                    getOrganizationList(listFilter, null, null);
+                    setIsDropDownOpen(!isDropDownOpen);
                 } }
+                open={ isDropDownOpen }
             >
                 <Dropdown.Menu onClick={ handleDropdownClick }>
                     { getOrganizationItemGroup(currentOrganization) }
