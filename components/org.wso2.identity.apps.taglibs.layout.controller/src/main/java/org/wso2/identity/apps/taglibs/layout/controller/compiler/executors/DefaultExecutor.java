@@ -18,6 +18,7 @@
 
 package org.wso2.identity.apps.taglibs.layout.controller.compiler.executors;
 
+import org.apache.commons.lang.StringUtils;
 import org.owasp.encoder.Encode;
 import org.wso2.identity.apps.taglibs.layout.controller.compiler.CompilerException;
 import org.wso2.identity.apps.taglibs.layout.controller.compiler.identifiers.ComponentIdentifier;
@@ -211,6 +212,10 @@ public class DefaultExecutor implements Executor {
             if ((Boolean) value) {
                 executeContent = true;
             }
+        } else if (value instanceof String) {
+            if (!StringUtils.EMPTY.equals(value)) {
+                executeContent = true;
+            }
         }
         if (executeContent) {
             identifier.acceptChild(this, out);
@@ -239,6 +244,10 @@ public class DefaultExecutor implements Executor {
         boolean executeContent = false;
         if (value instanceof Boolean) {
             if (!((Boolean) value)) {
+                executeContent = true;
+            }
+        } else if (value instanceof String) {
+            if (StringUtils.EMPTY.equals(value)) {
                 executeContent = true;
             }
         } else if (value == null) {
