@@ -202,7 +202,7 @@ module.exports = {
         "object-curly-spacing": [ "warn", "always" ],
         "padding-line-between-statements": [ ...LINE_PADDING_RULES ],
         quotes: [ "warn", "double" ],
-        "react-hooks/exhaustive-deps": [ "off" ],
+        "react-hooks/exhaustive-deps": [ "warn" ],
         "react/display-name": 0,
         "react/jsx-curly-spacing": [
             "warn",

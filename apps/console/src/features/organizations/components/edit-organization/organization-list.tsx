@@ -8,7 +8,7 @@
  *
  *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by organizationlicable law or agreed to in writing,
+ * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  * KIND, either express or implied. See the License for the
@@ -21,9 +21,7 @@ import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertLevels,
     IdentifiableComponentInterface,
-    LoadableComponentInterface,
-    SBACInterface,
-    TestableComponentInterface
+    LoadableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -48,9 +46,9 @@ import {
     EventPublisher,
     FeatureConfigInterface,
     UIConstants,
-    getEmptyPlaceholderIllustrations,
     history
 } from "../../../core";
+import { getEmptyPlaceholderIllustrations } from "../../core/configs/ui";
 import { deleteOrganization } from "../../api";
 import { OrganizationIcon } from "../../configs";
 import { OrganizationManagementConstants } from "../../constants";
@@ -60,15 +58,9 @@ import { OrganizationInterface, OrganizationListInterface } from "../../models";
  *
  * Proptypes for the organizations list component.
  */
-interface OrganizationListPropsInterface
-    extends SBACInterface<FeatureConfigInterface>,
-    LoadableComponentInterface,
-    TestableComponentInterface,
+export interface OrganizationListPropsInterface
+    extends LoadableComponentInterface,
     IdentifiableComponentInterface {
-    /**
-     * Advanced Search component.
-     */
-    advancedSearch?: ReactNode;
     /**
      * Default list item limit.
      */
@@ -126,9 +118,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
     props: OrganizationListPropsInterface
 ): ReactElement => {
     const {
-        advancedSearch,
         defaultListItemLimit,
-        featureConfig,
         isLoading,
         list,
         onOrganizationDelete,
@@ -140,7 +130,6 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
         showListItemActions,
         isSetStrongerAuth,
         isRenderedOnPortal,
-        [ "data-testid" ]: testId,
         [ "data-componentid" ]: componentId
     } = props;
 
@@ -149,6 +138,8 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
     const dispatch = useDispatch();
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingOrganization, setDeletingOrganization ] = useState<OrganizationInterface>(undefined);
@@ -240,7 +231,12 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                 key: "name",
                 render: (organization: OrganizationInterface): ReactNode => {
                     return (
-                        <Header image as="h6" className="header-with-icon" data-testid={ `${ testId }-item-heading` }>
+                        <Header
+                            image
+                            as="h6"
+                            className="header-with-icon"
+                            data-componentid={ `${ componentId }-item-heading` }
+                        >
                             <GenericIcon
                                 bordered
                                 defaultIcon
@@ -265,7 +261,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                                 { organization.name }
                                 <Header.Subheader
                                     className="truncate ellipsis"
-                                    data-testid={ `${ testId }-item-sub-heading` }
+                                    data-componentid={ `${ componentId }-item-sub-heading` }
                                 >
                                     { organization.ref?.length > 80 ? (
                                         <Popup
@@ -305,7 +301,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
 
         return [
             {
-                "data-testid": `${ testId }-item-edit-button`,
+                "data-componentid": `${ componentId }-item-edit-button`,
                 hidden: (): boolean =>
                     !isFeatureEnabled(
                         featureConfig?.organizations,
@@ -334,7 +330,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                 renderer: "semantic-icon"
             },
             {
-                "data-testid": `${ testId }-item-delete-button`,
+                "data-componentid": `${ componentId }-item-delete-button`,
                 hidden: () => {
                     return !hasRequiredScopes(
                         featureConfig?.organizations,
@@ -359,7 +355,6 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
      * @return {React.ReactElement}
      */
     const showPlaceholders = (): ReactElement => {
-        // When the search returns empty.
         if (searchQuery && (isEmpty(list) || list?.organizations?.length === 0)) {
             return (
                 <EmptyPlaceholder
@@ -375,11 +370,12 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                         t("console:manage.placeholders.emptySearchResult.subtitles.0", { query: searchQuery }),
                         t("console:manage.placeholders.emptySearchResult.subtitles.1")
                     ] }
-                    data-testid={ `${ testId }-empty-search-placeholder` }
+                    data-componentid={ `${ componentId }-empty-search-placeholder` }
                 />
             );
         }
 
+        // When the search returns empty.
         if (isEmpty(list) || list?.organizations?.length === 0) {
             return (
                 <EmptyPlaceholder
@@ -402,7 +398,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
                     subtitle={ [ t("console:manage.features.organizations.placeholders.emptyList.subtitles.0") ] }
-                    data-testid={ `${ testId }-empty-placeholder` }
+                    data-componentid={ `${ componentId }-empty-placeholder` }
                 />
             );
         }
@@ -414,7 +410,6 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
         <>
             <DataTable<OrganizationInterface>
                 className="organizations-table"
-                externalSearch={ advancedSearch }
                 isLoading={ isLoading }
                 loadingStateOptions={ {
                     count: defaultListItemLimit ?? UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
@@ -430,7 +425,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                 selectable={ selection }
                 showHeader={ false }
                 transparent={ !isLoading && showPlaceholders() !== null }
-                data-testid={ testId }
+                data-componentid={ componentId }
             />
             { deletingOrganization && (
                 <ConfirmationModal
@@ -448,20 +443,21 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                         setAlert(null);
                     } }
                     onPrimaryActionClick={ (): void => handleOrganizationDelete(deletingOrganization.id) }
-                    data-testid={ `${ testId }-delete-confirmation-modal` }
+                    data-componentid={ `${ componentId }-delete-confirmation-modal` }
                     closeOnDimmerClick={ false }
                 >
-                    <ConfirmationModal.Header data-testid={ `${ testId }-delete-confirmation-modal-header` }>
+                    <ConfirmationModal.Header data-componentid={ `${ componentId }-delete-confirmation-modal-header` }>
                         { t("console:manage.features.organizations.confirmations.deleteOrganization.header") }
                     </ConfirmationModal.Header>
                     <ConfirmationModal.Message
                         attached
                         warning
-                        data-testid={ `${ testId }-delete-confirmation-modal-message` }
+                        data-componentid={ `${ componentId }-delete-confirmation-modal-message` }
                     >
                         { t("console:manage.features.organizations.confirmations.deleteOrganization.message") }
                     </ConfirmationModal.Message>
-                    <ConfirmationModal.Content data-testid={ `${ testId }-delete-confirmation-modal-content` }>
+                    <ConfirmationModal.Content
+                        data-componentid={ `${ componentId }-delete-confirmation-modal-content` }>
                         <div className="modal-alert-wrapper"> { alert && alertComponent }</div>
                         { t("console:manage.features.organizations.confirmations.deleteOrganization.content") }
                     </ConfirmationModal.Content>
@@ -475,8 +471,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
  * Default props for the component.
  */
 OrganizationList.defaultProps = {
-    "data-componentid": "organization",
-    "data-testid": "organization-list",
+    "data-componentid": "organization-list",
     selection: true,
     showListItemActions: true
 };

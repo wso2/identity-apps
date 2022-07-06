@@ -344,4 +344,16 @@ export class AppConstants {
         .set("NO_LOGIN_PERMISSION", "no_login_permission")
         .set("ACCESS_DENIED", "access_denied")
         .set("USER_DENIED_CONSENT", "consent_denied");
+
+    /**
+     * Route ids that are enabled in an organization.
+     * @constant
+     * @type {string[]}
+     * @default
+     * */
+    public static readonly ORGANIZATION_ENABLED_ROUTES: string[] = [
+        "identityProviders",
+        "users",
+        "organizations"
+    ]
 }

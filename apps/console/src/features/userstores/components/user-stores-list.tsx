@@ -162,20 +162,13 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
     const showDeleteConfirm = (): ReactElement => (
         <ConfirmationModal
             onClose={ closeDeleteConfirm }
-            type="warning"
+            type={ "negative" }
             open={ deleteConfirm }
             assertion={ deleteName }
             assertionHint={
-                <p>
-                    <Trans i18nKey="console:manage.features.userstores.confirmation.hint">
-                        Please type
-                        <strong data-testid={ `${ testId }-delete-confirmation-modal-assertion` }>
-                            { { name: deleteName } }
-                        </strong > to confirm.
-                    </Trans>
-                </p>
+                t("console:manage.features.userstores.confirmation.hint")
             }
-            assertionType="input"
+            assertionType={ "checkbox" }
             primaryAction={ t("common:confirm") }
             secondaryAction={ t("common:cancel") }
             onSecondaryActionClick={ closeDeleteConfirm }
@@ -223,7 +216,7 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
             </ConfirmationModal.Header>
             <ConfirmationModal.Message
                 attached
-                warning
+                negative
                 data-testid={ `${ testId }-delete-confirmation-modal-message` }
             >
                 { t("console:manage.features.userstores.confirmation.message") }

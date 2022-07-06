@@ -38,7 +38,7 @@ interface OrganizationAddFormProps {
 /**
  * Prop types of the `AddOrganizationModal` component.
  */
-interface AddOrganizationModalPropsInterface extends IdentifiableComponentInterface {
+export interface AddOrganizationModalPropsInterface extends IdentifiableComponentInterface {
     closeWizard: () => void;
     parent?: OrganizationInterface;
     /**
@@ -71,14 +71,18 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
 
     const submitOrganization = async (values: OrganizationAddFormProps): Promise<void> => {
         if (values?.name) {
-            const response: OrganizationListInterface
-                = await getOrganizations(`name eq ${ values.name }`, 1, null, null, true);
+            try {
+                const response: OrganizationListInterface
+                    = await getOrganizations(`name eq ${ values.name }`, 1, null, null, true);
 
-            if (response?.organizations?.length > 0) {
-                setDuplicateName(true);
+                if (response?.organizations?.length > 0) {
+                    setDuplicateName(true);
 
-                return;
-            } else {
+                    return;
+                } else {
+                    setDuplicateName(false);
+                }
+            } catch(error) {
                 setDuplicateName(false);
             }
         }
@@ -172,11 +176,11 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
                 onClose={ handleWizardClose }
                 closeOnDimmerClick={ false }
                 closeOnEscape
-                data-testid={ `${ testId }-modal` }
+                data-componentid={ `${ testId }-modal` }
             >
                 <Modal.Header className="wizard-header">
                     { t("console:manage.features.organizations.modals.addOrganization.header") }
-                    <Heading as="h6">
+                    <Heading as="h6" data-componentid={ `${ testId }-subheading` }>
                         { parent?.name
                             ? t("console:manage.features.organizations.modals.addOrganization.subtitle1",
                                 { parent: parent?.name })
@@ -189,7 +193,7 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
                         <Grid.Row columns={ 1 }>
                             <Grid.Column width={ 16 }>
                                 { duplicateName && (
-                                    <Message negative>
+                                    <Message negative data-componentid={ `${testId}-duplicate-name-error` }>
                                         <Message.Content>{
                                             t("console:manage.features.organizations.forms." +
                                                 "addOrganization.name.validation.duplicate")
@@ -213,7 +217,7 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
                                             "addOrganization.name.placeholder") }
                                         maxLength={ 32 }
                                         minLength={ 3 }
-                                        data-testid={ `${ testId }-organization-name-input` }
+                                        data-componentid={ `${ testId }-organization-name-input` }
                                         width={ 16 }
                                         listen={ () => {
                                             setDuplicateName(false);
@@ -230,7 +234,7 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
                                             "addOrganization.description.placeholder") }
                                         maxLength={ 32 }
                                         minLength={ 3 }
-                                        data-testid={ `${ testId }-description-input` }
+                                        data-componentid={ `${ testId }-description-input` }
                                         width={ 16 }
                                     />
                                 </Form>
@@ -275,7 +279,7 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
                                     onClick={ () => {
                                         submitForm?.current && submitForm?.current();
                                     } }
-                                    data-testid={ `${ testId }-next-button` }
+                                    data-componentid={ `${ testId }-next-button` }
                                     loading={ isSubmitting }
                                     disabled={ isSubmitting }
                                 >

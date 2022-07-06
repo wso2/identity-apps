@@ -28,6 +28,7 @@ import { getGroupsResourceEndpoints } from "../../groups";
 import { getIDPResourceEndpoints } from "../../identity-providers";
 import { getScopesResourceEndpoints } from "../../oidc-scopes";
 import { getOrganizationsResourceEndpoints } from "../../organizations/configs";
+import { OrganizationUtils } from "../../organizations/utils";
 import { getRemoteFetchConfigResourceEndpoints } from "../../remote-repository-configuration";
 import { getRolesResourceEndpoints } from "../../roles";
 import { getSecretsManagementEndpoints } from "../../secrets/configs/endpoints";
@@ -37,12 +38,12 @@ import { getUserstoreResourceEndpoints } from "../../userstores";
 import { getApprovalsResourceEndpoints } from "../../workflow-approvals";
 import { I18nConstants } from "../constants";
 import { DeploymentConfigInterface, ServiceResourceEndpointsInterface, UIConfigInterface } from "../models";
+import { store } from "../store";
 
 /**
  * Class to handle application config operations.
  */
 export class Config {
-
     /**
      * Private constructor to avoid object instantiation from outside
      * the class.
@@ -51,6 +52,21 @@ export class Config {
      */
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     private constructor() { }
+
+    /**
+     * This method adds organization path to the server host if an organization is selected.
+     *
+     * @returns {string}
+     */
+    public static resolveServerHost(): string {
+        if (OrganizationUtils.isRootOrganization(store.getState().organization.organization)) {
+            return window[ "AppUtils" ].getConfig().serverOriginWithTenant;
+        } else {
+            return `${window["AppUtils"].getConfig().serverOrigin}/o/${
+                store.getState().organization.organization.id
+            }`;
+        }
+    }
 
     /**
      * Get the deployment config.
@@ -94,7 +110,7 @@ export class Config {
             extensions: window["AppUtils"].getConfig().extensions,
             idpConfigs: window["AppUtils"].getConfig().idpConfigs,
             loginCallbackUrl: window["AppUtils"].getConfig().loginCallbackURL,
-            serverHost: window["AppUtils"].getConfig().serverOriginWithTenant,
+            serverHost: window[ "AppUtils" ].getConfig().serverOriginWithTenant,
             serverOrigin: window["AppUtils"].getConfig().serverOrigin,
             superTenant: window["AppUtils"].getConfig().superTenant,
             tenant: window["AppUtils"].getConfig().tenant,
@@ -171,11 +187,11 @@ export class Config {
             ...getApprovalsResourceEndpoints(this.getDeploymentConfig().serverHost),
             ...getClaimResourceEndpoints(this.getDeploymentConfig().serverHost),
             ...getCertificatesResourceEndpoints(this.getDeploymentConfig().serverHost),
-            ...getIDPResourceEndpoints(this.getDeploymentConfig().serverHost),
+            ...getIDPResourceEndpoints(this.resolveServerHost()),
             ...getEmailTemplatesResourceEndpoints(this.getDeploymentConfig().serverHost),
             ...getRolesResourceEndpoints(this.getDeploymentConfig().serverHost),
             ...getServerConfigurationsResourceEndpoints(this.getDeploymentConfig().serverHost),
-            ...getUsersResourceEndpoints(this.getDeploymentConfig().serverHost),
+            ...getUsersResourceEndpoints(this.resolveServerHost()),
             ...getUserstoreResourceEndpoints(this.getDeploymentConfig().serverHost),
             ...getScopesResourceEndpoints(this.getDeploymentConfig().serverHost),
             ...getGroupsResourceEndpoints(this.getDeploymentConfig().serverHost),

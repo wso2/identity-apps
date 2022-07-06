@@ -24,6 +24,7 @@ import { GenericIcon, PageLayout } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { RouteChildrenProps } from "react-router-dom";
 import { AppConstants, FeatureConfigInterface, history } from "../../core";
 import { getOrganization } from "../api";
 import { EditOrganization } from "../components/edit-organization/edit-organization";
@@ -33,7 +34,7 @@ import { OrganizationResponseInterface } from "../models";
 
 
 interface OrganizationEditPagePropsInterface extends SBACInterface<FeatureConfigInterface>,
-    TestableComponentInterface{
+    TestableComponentInterface, RouteChildrenProps{
 }
 
 const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface> = (
@@ -41,7 +42,8 @@ const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface
 ): ReactElement => {
 
     const {
-        featureConfig
+        featureConfig,
+        location
     } = props;
 
     const { t } = useTranslation();
@@ -49,13 +51,6 @@ const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface
 
     const [ organization, setOrganization ] = useState<OrganizationResponseInterface>();
     const [ isReadOnly, setIsReadOnly ] = useState(true);
-
-    useEffect(() => {
-        const path = history.location.pathname.split("/");
-        const id = path[path.length - 1];
-
-        getOrganizationData(id);
-    }, []);
 
     useEffect(() => {
         setIsReadOnly(!isFeatureEnabled(
@@ -89,7 +84,14 @@ const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface
                         "genericError.message")
                 }));
             });
-    }, [ organization, getOrganization, dispatch ]);
+    }, [ dispatch, t ]);
+
+    useEffect(() => {
+        const path = location.pathname.split("/");
+        const id = path[path.length - 1];
+
+        getOrganizationData(id);
+    }, [ location, getOrganizationData ]);
 
     const goBackToOrganizationList = useCallback(() =>
         history.push(AppConstants.getPaths().get("ORGANIZATIONS")),[ history ]
