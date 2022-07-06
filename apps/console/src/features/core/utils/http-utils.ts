@@ -82,7 +82,7 @@ export class HttpUtils {
         */
         const errorConfig: HttpRequestConfig  = error.config as HttpRequestConfig;
         let duration: number = null;
-        let pathName: string | null;
+        let pathName: string | null = null;
 
         try {
             //Whenever the resulting URL pathname and duration is undefined we explicityly assign null 
