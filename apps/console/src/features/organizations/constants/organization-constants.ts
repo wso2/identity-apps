@@ -52,7 +52,7 @@ export enum ORGANIZATION_TYPE {
 
 
 // Role constants
-export const currentOrganizationId = "4ed70bfe-7710-44be-8a41-8fc2c9ad1666";
+export const currentOrganizationId = "10084a8d-113f-4211-a0d5-efe36b082211";
 export class OrganizationRoleManagementConstants {
     /**
      * Set of keys used to enable/disable features.
