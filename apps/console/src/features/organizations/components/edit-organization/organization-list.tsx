@@ -46,10 +46,10 @@ import {
     EventPublisher,
     FeatureConfigInterface,
     UIConstants,
+    getEmptyPlaceholderIllustrations,
     history
 } from "../../core";
 import { getEmptyPlaceholderIllustrations } from "../../core/configs/ui";
-} from "../../../core";
 import { deleteOrganization } from "../../api";
 import { OrganizationIcon } from "../../configs";
 import { OrganizationManagementConstants } from "../../constants";
