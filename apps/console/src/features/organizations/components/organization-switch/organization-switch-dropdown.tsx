@@ -224,7 +224,8 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
     const resolveAssociatedOrganizations = (): ReactElement => {
         if (Array.isArray(associatedOrganizations)) {
             return (
-                <Item.Group className="tenants-list organizations"
+                <Item.Group
+                    className="tenants-list organizations"
                     unstackable
                     data-componentid={ "associated-organizations-container" }
                 >
@@ -286,10 +287,10 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
     const tenantPagination = (
         <div className="tenant-pagination organizations">
             <Button disabled={ beforeCursor === undefined } onClick={ () => handlePaginationChange(false) }>
-                Previous
+                { t("common:previous") }
             </Button>
             <Button disabled={ afterCursor === undefined } onClick={ () => handlePaginationChange(true) }>
-                Next
+                { t("common:next") }
             </Button>
         </div>
     );
