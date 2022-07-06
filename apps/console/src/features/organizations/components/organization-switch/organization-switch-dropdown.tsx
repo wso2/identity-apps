@@ -14,7 +14,15 @@ import React, { FunctionComponent, ReactElement, SyntheticEvent, useCallback, us
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Divider, Dropdown, Input, Item, Menu, Placeholder } from "semantic-ui-react";
-import { AppState, Config, getMiscellaneousIcons, getSidePanelIcons, setOrganization } from "../../../core";
+import {
+    AppConstants,
+    AppState,
+    Config,
+    getMiscellaneousIcons,
+    getSidePanelIcons,
+    history,
+    setOrganization
+} from "../../../core";
 import { getOrganizations } from "../../api";
 import { OrganizationManagementConstants } from "../../constants";
 import { OrganizationInterface, OrganizationLinkInterface, OrganizationListInterface } from "../../models";
@@ -50,10 +58,6 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
             setPaginationData(response.links);
         });
     }, []);
-
-    const resolveOrganizationName = (name: string): string => {
-        return name === "ROOT" ? "Root Organization" : name;
-    };
 
     const setPaginationData = (links: OrganizationLinkInterface[]) => {
         setAfterCursor(undefined);
@@ -96,8 +100,9 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                     <Placeholder data-testid="organization-loading-placeholder">
                         <Placeholder.Line />
                     </Placeholder>
-                ) : resolveOrganizationName(currentOrganization?.name)
-                }
+                ) : (
+                    currentOrganization?.name
+                ) }
             </div>
         </span>
     );
@@ -137,7 +142,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                             className="name ellipsis tenant-description"
                             data-testid={ "organization-dropdown-display-name" }
                         >
-                            { resolveOrganizationName(organization?.name) ?? (
+                            { organization?.name ?? (
                                 <Placeholder>
                                     <Placeholder.Line />
                                 </Placeholder>
@@ -149,6 +154,14 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                                 className="manage-tenant-icon"
                                 data-testid="associated-tenant-icon"
                                 icon={ getSidePanelIcons().serverConfigurations }
+                                onClick={ (event: SyntheticEvent) => {
+                                    history.push({
+                                        pathname: AppConstants.getPaths()
+                                            .get("ORGANIZATION_UPDATE")
+                                            .replace(":id", organization?.id)
+                                    });
+                                    event.stopPropagation();
+                                } }
                             />
                         </div>
                     </Item.Description>
@@ -170,7 +183,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                             <Item.Content verticalAlign="middle">
                                 <Item.Description>
                                     <div className="message">
-                                        {// ToDo - Set this key
+                                        { // ToDo - Set this key
                                             t(
                                                 "extensions:manage.features.tenant.header." +
                                                 "tenantSearch.emptyResultMessage"
