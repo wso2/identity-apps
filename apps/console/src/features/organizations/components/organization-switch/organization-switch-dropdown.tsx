@@ -7,13 +7,14 @@
  * You may not alter or remove any copyright or other notice from copies of this content."
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { setServiceResourceEndpoints } from "@wso2is/core/src/store";
 import { GenericIcon } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Divider, Dropdown, Input, Item, Menu, Placeholder } from "semantic-ui-react";
+import { Button, Divider, Dropdown, Input, Item, Menu, Placeholder, Popup } from "semantic-ui-react";
+import { ReactComponent as CrossIcon } from "../../../../themes/default/assets/images/icons/cross-icon.svg";
 import {
     AppConstants,
     AppState,
@@ -30,11 +31,13 @@ import { OrganizationInterface, OrganizationLinkInterface, OrganizationListInter
 /**
  * Interface for tenant dropdown.
  */
-type OrganizationSwitchDropdownInterface = TestableComponentInterface;
+type OrganizationSwitchDropdownInterface = IdentifiableComponentInterface;
 
 const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownInterface> = (
     props: OrganizationSwitchDropdownInterface
 ): ReactElement => {
+    const { "data-componentid": componentId } = props;
+
     const { t } = useTranslation();
 
     const dispatch = useDispatch();
@@ -48,14 +51,21 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
     const [ listFilter, setListFilter ] = useState("");
     const [ afterCursor, setAfterCursor ] = useState<string>();
     const [ beforeCursor, setBeforeCursor ] = useState<string>();
+    const [ isDropDownOpen, setIsDropDownOpen ] = useState<boolean>(true);
+    const [ search, setSearch ] = useState<string>("");
 
     const getOrganizationList = useCallback((filter: string, after: string, before: string) => {
         getOrganizations(filter, 5, after, before, true).then((response: OrganizationListInterface) => {
-            const organizations = [ OrganizationManagementConstants.ROOT_ORGANIZATION, ...response.organizations ];
+            if (!response || !response.organizations) {
+                setAssociatedOrganizations([ OrganizationManagementConstants.ROOT_ORGANIZATION ]);
+                setPaginationData(response.links);
+            } else {
+                const organizations = [ OrganizationManagementConstants.ROOT_ORGANIZATION, ...response?.organizations ];
 
-            setAssociatedOrganizations(organizations);
+                setAssociatedOrganizations(organizations);
 
-            setPaginationData(response.links);
+                setPaginationData(response.links);
+            }
         });
     }, []);
 
@@ -80,8 +90,12 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
     };
 
     useEffect(() => {
+        if (!isDropDownOpen) {
+            return;
+        }
+
         getOrganizationList(listFilter, null, null);
-    }, [ getOrganizationList, listFilter ]);
+    }, [ getOrganizationList, listFilter, isDropDownOpen ]);
 
     const triggerTenant = (
         <span className="tenant-dropdown-trigger" data-testid="tenant-dropdown-trigger">
@@ -124,6 +138,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                 onClick={ () => {
                     dispatch(setOrganization(organization));
                     dispatch(setServiceResourceEndpoints(Config.getServiceResourceEndpoints()));
+                    setIsDropDownOpen(false);
                 } }
             >
                 {
@@ -161,6 +176,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                                                 .get("ORGANIZATION_UPDATE")
                                                 .replace(":id", organization?.id)
                                         });
+                                        setIsDropDownOpen(false);
                                         event.stopPropagation();
                                     } }
                                 />
@@ -180,7 +196,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                     unstackable
                     data-testid={ "associated-organizations-container" }
                 >
-                    { associatedOrganizations.length > 0 ? (
+                    { associatedOrganizations.length > 1 ? (
                         associatedOrganizations.map((organization, _) =>
                             organization.id !== currentOrganization?.id ? getOrganizationItemGroup(organization) : null
                         )
@@ -190,10 +206,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                                 <Item.Description>
                                     <div className="message">
                                         { // ToDo - Set this key
-                                            t(
-                                                "extensions:manage.features.tenant.header." +
-                                                "tenantSearch.emptyResultMessage"
-                                            ) }
+                                            t("console:manage.features.organizations.switching." + "emptyList") }
                                     </div>
                                 </Item.Description>
                             </Item.Content>
@@ -209,10 +222,10 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
      *
      * @param event
      */
-    const searchOrganizationList = (event): void => {
-        const changeValue = event.target.value;
+    const searchOrganizationList = (search: string): void => {
+        const changeValue = search.trim();
 
-        setListFilter(`eq name ${ changeValue }`);
+        setListFilter(changeValue ? `name co ${ changeValue }` : "");
     };
 
     /**
@@ -222,6 +235,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
         setListFilter("");
         setAfterCursor(undefined);
         setBeforeCursor(undefined);
+        setIsDropDownOpen(false);
     };
 
     /**
@@ -259,8 +273,9 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                 className="tenant-dropdown"
                 data-testid={ "tenant-dropdown" }
                 onClick={ () => {
-                    getOrganizationList(listFilter, null, null);
+                    setIsDropDownOpen(!isDropDownOpen);
                 } }
+                open={ isDropDownOpen }
             >
                 <Dropdown.Menu onClick={ handleDropdownClick }>
                     { getOrganizationItemGroup(currentOrganization) }
@@ -274,10 +289,45 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                                 data-testid="list-search-input"
                                 icon="search"
                                 iconPosition="left"
-                                onChange={ searchOrganizationList }
-                                placeholder={ t("extensions:manage.features.tenant.header.tenantSearch.placeholder") }
+                                value={ search }
+                                onChange={ (event) => {
+                                    setSearch(event.target.value);
+                                } }
+                                onKeyDown={ (event: React.KeyboardEvent) => {
+                                    event.key === "Enter" && searchOrganizationList(search);
+                                    event.stopPropagation();
+                                } }
+                                placeholder={ t("console:manage.features.organizations.switching.search.placeholder") }
                                 floated="right"
                                 size="small"
+                                action={
+                                    search ? (
+                                        <Popup
+                                            trigger={
+                                                (<Button
+                                                    data-componentid={ `${ componentId }-clear-button` }
+                                                    basic
+                                                    compact
+                                                    className="input-add-on organizations"
+                                                >
+                                                    <GenericIcon
+                                                        size="nano"
+                                                        defaultIcon
+                                                        transparent
+                                                        icon={ CrossIcon }
+                                                        onClick={ () => {
+                                                            setSearch("");
+                                                            searchOrganizationList("");
+                                                        } }
+                                                    />
+                                                </Button>)
+                                            }
+                                            position="top center"
+                                            content={ t("console:common.advancedSearch.popups.clear") }
+                                            inverted={ true }
+                                        />
+                                    ) : null
+                                }
                             />
                         </div>
                     </Item.Group>
