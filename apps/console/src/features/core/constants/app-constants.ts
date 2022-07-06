@@ -355,6 +355,7 @@ export class AppConstants {
         "identityProviders",
         "users",
         "organizations",
-        "groups"
+        "groups",
+        "organization-roles"
     ]
 }
