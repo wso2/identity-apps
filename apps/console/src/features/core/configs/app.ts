@@ -63,7 +63,7 @@ export class Config {
             return window[ "AppUtils" ].getConfig().serverOriginWithTenant;
         } else {
             return `${window["AppUtils"].getConfig().serverOrigin}/o/${
-                store.getState().organization.organization.name
+                store.getState().organization.organization.id
             }`;
         }
     }
