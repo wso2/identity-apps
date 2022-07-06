@@ -8,13 +8,15 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
+import { setServiceResourceEndpoints } from "@wso2is/core/src/store";
 import { GenericIcon } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Button, Divider, Dropdown, Input, Item, Menu, Placeholder } from "semantic-ui-react";
-import { AppState, getMiscellaneousIcons, getSidePanelIcons } from "../../../core";
+import { AppState, Config, getMiscellaneousIcons, getSidePanelIcons, setOrganization } from "../../../core";
 import { getOrganizations } from "../../api";
+import { OrganizationManagementConstants } from "../../constants";
 import { OrganizationInterface, OrganizationLinkInterface, OrganizationListInterface } from "../../models";
 
 /**
@@ -25,39 +27,33 @@ type OrganizationSwitchDropdownInterface = TestableComponentInterface;
 const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownInterface> = (
     props: OrganizationSwitchDropdownInterface
 ): ReactElement => {
-
     const { t } = useTranslation();
 
-    const endpoints = useSelector((state: AppState) => state.config.endpoints);
-    const tenantDomain: string = useSelector((state: AppState) => state.auth.tenantDomain);
+    const dispatch = useDispatch();
 
-    const [ currentOrganization, setCurrentOrganization ] = useState<OrganizationInterface>({
-        id: tenantDomain,
-        name: tenantDomain,
-        ref: ""
-    });
+    const currentOrganization: OrganizationInterface = useSelector(
+        (state: AppState) => state.organization.organization
+    );
+
     const [ associatedOrganizations, setAssociatedOrganizations ] = useState<OrganizationInterface[]>([]);
     // ToDo - Need to set the current Organization ID
     const [ listFilter, setListFilter ] = useState("");
     const [ afterCursor, setAfterCursor ] = useState<string>();
     const [ beforeCursor, setBeforeCursor ] = useState<string>();
 
-    const getOrganizationList = useCallback(() => {
-        getOrganizations(
-            listFilter,
-            5,
-            afterCursor,
-            beforeCursor,
-            true
-        ).then((response: OrganizationListInterface) => {
-            const associatedOrganizations: Array<OrganizationInterface> = response.organizations
-                .map((organization) => organization);
+    const getOrganizationList = useCallback((filter: string, after: string, before: string) => {
+        getOrganizations(filter, 5, after, before, true).then((response: OrganizationListInterface) => {
+            const organizations = [ OrganizationManagementConstants.ROOT_ORGANIZATION, ...response.organizations ];
 
-            setAssociatedOrganizations(associatedOrganizations);
+            setAssociatedOrganizations(organizations);
 
             setPaginationData(response.links);
         });
-    }, [ listFilter, afterCursor, beforeCursor ]);
+    }, []);
+
+    const resolveOrganizationName = (name: string): string => {
+        return name === "ROOT" ? "Root Organization" : name;
+    };
 
     const setPaginationData = (links: OrganizationLinkInterface[]) => {
         setAfterCursor(undefined);
@@ -68,11 +64,11 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
 
         links.forEach((link) => {
             if (link.rel === "next") {
-                const afterCursorLink = link.href.toString().split("after=")[1];
+                const afterCursorLink = link.href.toString().split("after=")[ 1 ];
 
                 setAfterCursor(afterCursorLink);
             } else {
-                const beforeCursorLink = link.href.toString().split("before=")[1];
+                const beforeCursorLink = link.href.toString().split("before=")[ 1 ];
 
                 setBeforeCursor(beforeCursorLink);
             }
@@ -80,8 +76,8 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
     };
 
     useEffect(() => {
-        getOrganizationList();
-    }, [ listFilter, endpoints ]);
+        getOrganizationList(listFilter, null, null);
+    }, [ getOrganizationList, listFilter ]);
 
     const triggerTenant = (
         <span className="tenant-dropdown-trigger" data-testid="tenant-dropdown-trigger">
@@ -96,14 +92,11 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                 spaced="right"
             />
             <div className="tenant-dropdown-trigger-display-name ellipsis" data-testid="tenant-dropdown-display-name">
-                {
-                    !currentOrganization
-                        ? (
-                            <Placeholder data-testid="organization-loading-placeholder">
-                                <Placeholder.Line/>
-                            </Placeholder>
-                        )
-                        : currentOrganization?.name
+                { !currentOrganization ? (
+                    <Placeholder data-testid="organization-loading-placeholder">
+                        <Placeholder.Line />
+                    </Placeholder>
+                ) : resolveOrganizationName(currentOrganization?.name)
                 }
             </div>
         </span>
@@ -118,11 +111,15 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
         e.stopPropagation();
     };
 
-    const getOrganizationItemGroup = (organizationName: string) => (
+    const getOrganizationItemGroup = (organization: OrganizationInterface) => (
         <Item.Group className="tenant-item-wrapper" unstackable>
             <Item
                 className="header"
-                key={ `${organizationName}-organization-item` }
+                key={ `${ organization?.name }-organization-item` }
+                onClick={ () => {
+                    dispatch(setOrganization(organization));
+                    dispatch(setServiceResourceEndpoints(Config.getServiceResourceEndpoints()));
+                } }
             >
                 {
                     <GenericIcon
@@ -138,16 +135,13 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                     <Item.Description>
                         <div
                             className="name ellipsis tenant-description"
-                            data-testid={
-                                "organization-dropdown-display-name"
-                            }
+                            data-testid={ "organization-dropdown-display-name" }
                         >
-                            {
-                                organizationName
-                                ?? (<Placeholder>
-                                    <Placeholder.Line/>
-                                </Placeholder>)
-                            }
+                            { resolveOrganizationName(organization?.name) ?? (
+                                <Placeholder>
+                                    <Placeholder.Line />
+                                </Placeholder>
+                            ) }
 
                             <GenericIcon
                                 transparent
@@ -166,39 +160,26 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
     const resolveAssociatedOrganizations = (): ReactElement => {
         if (Array.isArray(associatedOrganizations)) {
             return (
-                <Item.Group
-                    className="tenants-list"
-                    unstackable
-                    data-testid={ "associated-organizations-container" }
-                >
-                    {
-                        associatedOrganizations.length > 0 ?
-                            (
-                                associatedOrganizations.map((organization, _) => (
-                                    (organization.id !== currentOrganization?.id) ?
-                                        getOrganizationItemGroup(organization.name)
-                                        : null
-                                ))
-                            )
-                            :
-                            (
-                                <Item
-                                    className="empty-list"
-                                >
-                                    <Item.Content verticalAlign="middle">
-                                        <Item.Description>
-                                            <div className="message">
-                                                {
-                                                    // ToDo - Set this key
-                                                    t("extensions:manage.features.tenant.header." +
-                                                        "tenantSearch.emptyResultMessage")
-                                                }
-                                            </div>
-                                        </Item.Description>
-                                    </Item.Content>
-                                </Item>
-                            )
-                    }
+                <Item.Group className="tenants-list" unstackable data-testid={ "associated-organizations-container" }>
+                    { associatedOrganizations.length > 0 ? (
+                        associatedOrganizations.map((organization, _) =>
+                            organization.id !== currentOrganization?.id ? getOrganizationItemGroup(organization) : null
+                        )
+                    ) : (
+                        <Item className="empty-list">
+                            <Item.Content verticalAlign="middle">
+                                <Item.Description>
+                                    <div className="message">
+                                        {// ToDo - Set this key
+                                            t(
+                                                "extensions:manage.features.tenant.header." +
+                                                "tenantSearch.emptyResultMessage"
+                                            ) }
+                                    </div>
+                                </Item.Description>
+                            </Item.Content>
+                        </Item>
+                    ) }
                 </Item.Group>
             );
         }
@@ -212,7 +193,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
     const searchOrganizationList = (event): void => {
         const changeValue = event.target.value;
 
-        setListFilter(`eq name ${changeValue}`);
+        setListFilter(`eq name ${ changeValue }`);
     };
 
     /**
@@ -227,23 +208,22 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
     /**
      * Handles the pagination change.
      *
-     * @param {React.MouseEvent<HTMLAnchorElement>} event - Mouse event.
      * @param {PaginationProps} data - Pagination component data.
      */
-    const handlePaginationChange = (event: React.MouseEvent<HTMLButtonElement>): void => {
-        getOrganizationList();
+    const handlePaginationChange = (isNext: boolean): void => {
+        if (isNext) {
+            getOrganizationList(listFilter, afterCursor, null);
+        } else {
+            getOrganizationList(listFilter, null, beforeCursor);
+        }
     };
 
     const tenantPagination = (
         <div className="tenant-pagination">
-            <Button
-                disabled={ beforeCursor === undefined }
-                onClick={ handlePaginationChange }>
+            <Button disabled={ beforeCursor === undefined } onClick={ () => handlePaginationChange(false) }>
                 Previous
             </Button>
-            <Button
-                disabled={ afterCursor === undefined }
-                onClick={ handlePaginationChange }>
+            <Button disabled={ afterCursor === undefined } onClick={ () => handlePaginationChange(true) }>
                 Next
             </Button>
         </div>
@@ -261,11 +241,9 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                 data-testid={ "tenant-dropdown" }
             >
                 <Dropdown.Menu onClick={ handleDropdownClick }>
-                    {
-                        getOrganizationItemGroup(currentOrganization?.name)
-                    }
+                    { getOrganizationItemGroup(currentOrganization) }
 
-                    <Divider/>
+                    <Divider />
 
                     <Item.Group className="search-bar">
                         <div className="advanced-search-wrapper aligned-left fill-default">
@@ -275,35 +253,24 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                                 icon="search"
                                 iconPosition="left"
                                 onChange={ searchOrganizationList }
-                                placeholder={
-                                    t("extensions:manage.features.tenant.header.tenantSearch.placeholder")
-                                }
+                                placeholder={ t("extensions:manage.features.tenant.header.tenantSearch.placeholder") }
                                 floated="right"
                                 size="small"
                             />
                         </div>
                     </Item.Group>
 
-                    {
-                        associatedOrganizations
-                            ? resolveAssociatedOrganizations()
-                            : null
-                    }
+                    { associatedOrganizations ? resolveAssociatedOrganizations() : null }
 
-                    <Divider/>
+                    <Divider />
 
                     { tenantPagination }
-
                 </Dropdown.Menu>
             </Dropdown>
         </Menu.Item>
     );
 
-    return (
-        <>
-            { tenantDropdownMenu }
-        </>
-    );
+    return <>{ tenantDropdownMenu }</>;
 };
 
 export default OrganizationSwitchDropdown;
