@@ -317,11 +317,9 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                 data-testid={ "tenant-dropdown" }
             >
                 <Dropdown.Menu onClick={ handleDropdownClick }>
-                    {
-                        getOrganizationItemGroup(currentOrganization?.name)
-                    }
+                    { getOrganizationItemGroup(currentOrganization) }
 
-                    <Divider/>
+                    <Divider />
 
                     <Item.Group className="search-bar">
                         <div className="advanced-search-wrapper aligned-left fill-default">
