@@ -81,26 +81,26 @@ export class HttpUtils {
          * Publish an event on the http request error.
         */
         const errorConfig: HttpRequestConfig  = error.config as HttpRequestConfig;
-        const duration: number = new Date().getTime() - errorConfig?.startTimeInMs;
-        let pathName = null;
+        let duration: number;
+        let pathName: string | null;
 
         try {
-            pathName = new URL(error?.config?.url).pathname;
+            //Whenever the resulting URL pathname and duration is undefined we explicityly assign null 
+            pathName = new URL(error?.config?.url).pathname ?? null;
+            duration = new Date().getTime() - errorConfig?.startTimeInMs ?? null;
         } catch(e) {
             // Add debug logs here one a logger is added.
             // Tracked here https://github.com/wso2/product-is/issues/11650.
         }
 
-        if (pathName) {
-            EventPublisher.getInstance().record(
-                pathName,
-                errorConfig?.startTimeInMs,
-                duration,
-                error?.response?.status,
-                false
-            );  
-        }
-
+        EventPublisher.getInstance().record(
+            pathName,
+            errorConfig?.startTimeInMs,
+            duration,
+            error?.response?.status,
+            false
+        ); 
+       
         // Terminate the session if the token endpoint returns a bad request(400)
         // The token binding feature will return a 400 status code when the session
         // times out.
