@@ -30,6 +30,8 @@
 <%@ page import="org.wso2.carbon.identity.core.util.IdentityTenantUtil" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.*" %>
 <%@ page import="org.wso2.carbon.identity.recovery.util.Utils" %>
+<%@ page import="org.wso2.carbon.identity.recovery.IdentityRecoveryConstants" %>
+<%@ page import="org.wso2.carbon.identity.base.IdentityRuntimeException" %>
 <%@ page import="org.json.simple.JSONObject" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.net.URLEncoder" %>
@@ -105,6 +107,23 @@
             boolean isSaaSApp = Boolean.parseBoolean(request.getParameter("isSaaSApp"));
             String policyURL = IdentityManagementServiceUtil.getInstance().getServiceContextURL().replace("/services",
                     "/authenticationendpoint/privacy_policy.do");
+
+            try {
+                if (StringUtils.isNotBlank(callback) && !Utils.validateCallbackURL(callback, tenantDomain,
+                    IdentityRecoveryConstants.ConnectorConfig.SELF_REGISTRATION_CALLBACK_REGEX)) {
+                    request.setAttribute("error", true);
+                    request.setAttribute("errorMsg", IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                        "Callback.url.format.invalid"));
+                    request.getRequestDispatcher("error.jsp").forward(request, response);
+                    return;
+                }
+            } catch (IdentityRuntimeException e) {
+                request.setAttribute("error", true);
+                request.setAttribute("errorMsg", e.getMessage());
+                request.getRequestDispatcher("error.jsp").forward(request, response);
+                return;
+            }
+
             if (StringUtils.isNotEmpty(consent)) {
                 consent = IdentityManagementEndpointUtil.buildConsentForResidentIDP
                         (username, consent, "USA",
