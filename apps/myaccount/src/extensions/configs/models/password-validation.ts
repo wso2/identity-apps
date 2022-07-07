@@ -16,7 +16,6 @@
  * under the License.
  */
 
-export * from "./common";
-export * from "./account-recovery";
-export * from "./profile";
-export * from "./password-validation";
+export interface PasswordValidationConfig {
+    showPasswordValidation : boolean;
+}

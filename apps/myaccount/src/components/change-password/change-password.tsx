@@ -21,7 +21,7 @@ import { Field, FormValue, Forms, useTrigger } from "@wso2is/forms";
 import React, { FunctionComponent, Suspense, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Container, Divider, Form, Modal } from "semantic-ui-react";
+import { Button, Container, Divider, Form, Icon, Modal, SemanticCOLORS } from "semantic-ui-react";
 import { updatePassword } from "../../api";
 import { getSettingsSectionIcons } from "../../configs";
 import { CommonConstants } from "../../constants";
@@ -30,6 +30,7 @@ import { AppState } from "../../store";
 import { setActiveForm } from "../../store/actions";
 import { useEndUserSession } from "../../utils";
 import { EditSection, SettingsSection } from "../shared";
+import { passwordValidationConfig } from "../../extensions/configs/password-validation";
 
 /**
  * Import password strength meter dynamically.
@@ -79,6 +80,67 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
     const dispatch = useDispatch();
 
     const endUserSession = useEndUserSession();
+
+    interface iconProps {
+        class : string;
+        color : SemanticCOLORS;
+    }
+
+    const getIconProps = (id : string) : iconProps =>{
+                
+        const iconProps = {
+            class : "circle",
+            color : "grey" as SemanticCOLORS
+        };
+
+        const lowerCaseLetters = /[a-z]/g;
+        const upperCaseLetters = /[A-Z]/g;
+        const numbers = /[0-9]/g;
+        const chars = /[!@#$%^&*~]/g;
+
+        if ( id === "password-validation-length" ){
+            if (password === "") {
+                iconProps.class = iconProps.class + " thin"
+            } else if ( password.length > 8 ) {
+                iconProps.class = "check " + iconProps.class
+                iconProps.color = "green" as SemanticCOLORS;
+            } else {
+                iconProps.class = "remove " + iconProps.class
+                iconProps.color = "red" as SemanticCOLORS;
+            }
+        } else if ( id === "password-validation-case" ) {
+            if (password === "") {
+                iconProps.class = iconProps.class + " thin"
+            } else if ( password.match(lowerCaseLetters) && password.match(upperCaseLetters) ) {
+                iconProps.class = "check " + iconProps.class
+                iconProps.color = "green" as SemanticCOLORS;
+            } else {
+                iconProps.class = "remove " + iconProps.class
+                iconProps.color = "red" as SemanticCOLORS;
+            }
+        } else if ( id === "password-validation-number" ) {
+            if (password === "") {
+                iconProps.class = iconProps.class + " thin"
+            } else if ( password.match(numbers) ) {
+                iconProps.class = "check " + iconProps.class
+                iconProps.color = "green" as SemanticCOLORS;
+            } else {
+                iconProps.class = "remove " + iconProps.class
+                iconProps.color = "red" as SemanticCOLORS;
+            }
+        } else if ( id === "password-validation-chars" ) {
+            if (password === "") {
+                iconProps.class = iconProps.class + " thin"
+            } else if ( password.match(chars) ) {
+                iconProps.class = "check " + iconProps.class
+                iconProps.color = "green" as SemanticCOLORS;
+            } else {
+                iconProps.class = "remove " + iconProps.class
+                iconProps.color = "red" as SemanticCOLORS;
+            }
+        }
+        return iconProps
+    };
 
     /**
      * Handles the `onSubmit` event of forms.
@@ -237,7 +299,7 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
             </Modal.Actions>
         </Modal>
     );
-
+    
     const showChangePasswordView = activeForm === CommonConstants.SECURITY + CHANGE_PASSWORD_FORM_IDENTIFIER
         ? (
             <EditSection data-testid={ `${testId}-edit-section` } >
@@ -315,6 +377,31 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                             />
                         </Suspense>
                     </Form.Field>
+                    
+                    { passwordValidationConfig.showPasswordValidation  &&
+                        <Form.Field width={ 9 } data-testid={ `${testId}-new-password-validation-field` }>
+                            <div className="password-policy-description">                                
+                                <Icon id = "password-validation-length" className = {getIconProps("password-validation-length").class} color = {getIconProps("password-validation-length").color}/>
+                                <p>More than 8 characters</p>
+                            </div>
+                            
+                            <div className="password-policy-description">                                
+                                <Icon id = "password-validation-case" className = {getIconProps("password-validation-case").class} color = {getIconProps("password-validation-case").color} />
+                                <p>At least one uppercase and lowercase letter</p>
+                            </div>
+                            
+                            <div className="password-policy-description">                                
+                                <Icon id = "password-validation-number" className = {getIconProps("password-validation-number").class} color = {getIconProps("password-validation-number").color}/>
+                                <p>At least one number</p>
+                            </div>
+                            
+                            <div className="password-policy-description">                                
+                                <Icon id = "password-validation-chars" className = {getIconProps("password-validation-chars").class} color = {getIconProps("password-validation-chars").color}/>
+                                <p>At least one of the symbols <code>(!@#$%^&*)</code></p>
+                            </div>
+
+                        </Form.Field>
+                    }
                     <Field
                         hidden={ true }
                         type="divider"
