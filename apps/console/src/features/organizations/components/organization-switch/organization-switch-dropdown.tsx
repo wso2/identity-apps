@@ -47,11 +47,10 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
     );
 
     const [ associatedOrganizations, setAssociatedOrganizations ] = useState<OrganizationInterface[]>([]);
-    // ToDo - Need to set the current Organization ID
     const [ listFilter, setListFilter ] = useState("");
     const [ afterCursor, setAfterCursor ] = useState<string>();
     const [ beforeCursor, setBeforeCursor ] = useState<string>();
-    const [ isDropDownOpen, setIsDropDownOpen ] = useState<boolean>(true);
+    const [ isDropDownOpen, setIsDropDownOpen ] = useState<boolean>(false);
     const [ search, setSearch ] = useState<string>("");
 
     const getOrganizationList = useCallback((filter: string, after: string, before: string) => {
