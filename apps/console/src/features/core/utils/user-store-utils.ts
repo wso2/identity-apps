@@ -17,11 +17,11 @@
  */
 
 import { getUserStoreList } from "@wso2is/core/api";
-import { AlertLevels, UserstoreListResponseInterface } from "@wso2is/core/models";
+import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
 import isEmpty from "lodash-es/isEmpty";
-import { UserStoreProperty } from "../../userstores/models";
+import { UserStoreListItem, UserStoreProperty } from "../../userstores/models";
 import { getAUserStore, getPrimaryUserStore } from "../api";
 import { SharedUserStoreConstants } from "../constants";
 import { UserStoreDetails } from "../models";
@@ -80,12 +80,12 @@ export class SharedUserStoreUtils {
     /**
      * The following method fetch the user store ids list.
      *
-     * @param {UserstoreListResponseInterface[]} userstores - Externally provided usertores list.
+     * @param {UserStoreListItem[]} userstores - Externally provided usertores list.
      * @returns {Promise<string[] | void>}
      */
-    public static async getUserStoreIds(userstores?: UserstoreListResponseInterface[]): Promise<string[] | void> {
+    public static async getUserStoreIds(userstores?: UserStoreListItem[]): Promise<string[] | void> {
 
-        const getIds = (_userstores: UserstoreListResponseInterface[]): string[] => {
+        const getIds = (_userstores: UserStoreListItem[]): string[] => {
             const userStoreIds: string[] = [];
 
             _userstores.map((userStore) => {
@@ -129,10 +129,10 @@ export class SharedUserStoreUtils {
     /**
      * The following method fetch the readonly user stores list.
      *
-     * @param {UserstoreListResponseInterface[]} userstores - Externally provided usertores list.
+     * @param {UserStoreListItem[]} userstores - Externally provided usertores list.
      * @deprecated Write these functionalities seperately get the caching support from SWR.
      */
-    public static async getReadOnlyUserStores(userstores?: UserstoreListResponseInterface[]): Promise<string[]> {
+    public static async getReadOnlyUserStores(userstores?: UserStoreListItem[]): Promise<string[]> {
         const ids: string[] = await SharedUserStoreUtils.getUserStoreIds(userstores) as string[];
         const primaryUserStore = await SharedUserStoreUtils.getPrimaryUserStore();
         const readOnlyUserStores: string[] = [];
