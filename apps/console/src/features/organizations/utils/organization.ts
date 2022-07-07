@@ -16,6 +16,7 @@
 * under the License.
 */
 
+import { OrganizationManagementConstants } from "../constants";
 import { OrganizationInterface } from "../models";
 
 export class OrganizationUtils {
@@ -34,6 +35,6 @@ export class OrganizationUtils {
      * @returns {boolean}
      */
     public static isRootOrganization(organization: OrganizationInterface): boolean {
-        return !organization || organization.id === "ROOT";
+        return !organization || organization.id === OrganizationManagementConstants.ROOT_ORGANIZATION_ID;
     }
 }

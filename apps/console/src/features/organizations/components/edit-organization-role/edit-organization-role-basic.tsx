@@ -27,13 +27,12 @@ import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { ConfirmationModal, DangerZone, DangerZoneGroup, EmphasizedSegment } from "@wso2is/react-components";
 import React, { ChangeEvent, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Button, Divider, Form, Grid, InputOnChangeData } from "semantic-ui-react";
-import { AppConstants, SharedUserStoreConstants, SharedUserStoreUtils, history } from "../../../core";
+import { AppConstants, AppState, SharedUserStoreConstants, SharedUserStoreUtils, history } from "../../../core";
 import { PRIMARY_USERSTORE_PROPERTY_VALUES } from "../../../userstores";
 import { deleteOrganizationRole, getOrganizationRoles, patchOrganizationRoleDetails } from "../../api";
-import { currentOrganizationId } from "../../constants";
-import { OrganizationRoleInterface, PatchOrganizationRoleDataInterface } from "../../models";
+import { OrganizationInterface, OrganizationRoleInterface, PatchOrganizationRoleDataInterface } from "../../models";
 
 /**
  * Interface to contain props needed for component
@@ -87,6 +86,9 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
     const [ isRegExLoading, setRegExLoading ] = useState<boolean>(false);
     const [ userStore ] = useState<string>(SharedUserStoreConstants.PRIMARY_USER_STORE);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+    const currentOrganization: OrganizationInterface = useSelector(
+        (state: AppState) => state.organization.organization
+    );
 
     useEffect(() => {
         if (roleObject && roleObject.displayName.indexOf("/") !== -1) {
@@ -186,7 +188,7 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
      * @param id - Role ID which needs to be deleted
      */
     const handleOnDelete = (id: string): void => {
-        deleteOrganizationRole(currentOrganizationId, id).then(() => {
+        deleteOrganizationRole(currentOrganization.id, id).then(() => {
             handleAlerts({
                 description: t("console:manage.features.roles.notifications.deleteRole.success.description"),
                 level: AlertLevels.SUCCESS,
@@ -221,7 +223,7 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
 
         setIsSubmitting(true);
 
-        patchOrganizationRoleDetails(currentOrganizationId, roleObject.id, roleData)
+        patchOrganizationRoleDetails(currentOrganization.id, roleObject.id, roleData)
             .then(() => {
                 onRoleUpdate();
                 handleAlerts({
@@ -292,7 +294,7 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                                                 const filter = "name eq " + value.toString();
 
                                                 await getOrganizationRoles(
-                                                    currentOrganizationId,
+                                                    currentOrganization.id,
                                                     filter,
                                                     10,
                                                     null,

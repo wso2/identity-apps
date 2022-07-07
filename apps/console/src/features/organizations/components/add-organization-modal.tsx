@@ -22,11 +22,11 @@ import { Field, Form } from "@wso2is/form";
 import { Heading, LinkButton, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Divider, Grid, Message, Modal, Form as SemanticForm } from "semantic-ui-react";
-import { EventPublisher } from "../../core";
+import { AppState, EventPublisher } from "../../core";
 import { addOrganization, getOrganizations } from "../api";
-import { ORGANIZATION_TYPE } from "../constants";
+import { ORGANIZATION_TYPE, OrganizationManagementConstants } from "../constants";
 import { AddOrganizationInterface, OrganizationInterface, OrganizationListInterface } from "../models";
 
 interface OrganizationAddFormProps {
@@ -64,6 +64,9 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ type, setType ] = useState<ORGANIZATION_TYPE>(ORGANIZATION_TYPE.STRUCTURAL);
     const [ duplicateName, setDuplicateName ] = useState<boolean>(false);
+    const currentOrganization: OrganizationInterface = useSelector(
+        (state: AppState) => state.organization.organization
+    );
 
     const submitForm = useRef<() => void>();
 
@@ -95,7 +98,7 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
         const organization: AddOrganizationInterface = {
             description: values?.description,
             name: values?.name,
-            parentId: parent?.id ?? "ROOT",
+            parentId: parent?.id ?? currentOrganization.id,
             type: ORGANIZATION_TYPE.TENANT
         };
 

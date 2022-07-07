@@ -32,6 +32,11 @@ export class OrganizationManagementConstants {
         .set("ORGANIZATION_READ", "organizations.read");
 
     /**
+     * Root organization id as per alpha pack 2
+     */
+    public static readonly ROOT_ORGANIZATION_ID: string = "10084a8d-113f-4211-a0d5-efe36b082211";
+
+    /**
      * Root organization object.
      *
      * @constant
@@ -39,7 +44,7 @@ export class OrganizationManagementConstants {
      * @default
      */
     public static readonly ROOT_ORGANIZATION: OrganizationInterface = {
-        id: "ROOT",
+        id: this.ROOT_ORGANIZATION_ID,
         name: "Root Organization",
         ref: ""
     };
@@ -52,7 +57,6 @@ export enum ORGANIZATION_TYPE {
 
 
 // Role constants
-export const currentOrganizationId = "10084a8d-113f-4211-a0d5-efe36b082211";
 export class OrganizationRoleManagementConstants {
     /**
      * Set of keys used to enable/disable features.
