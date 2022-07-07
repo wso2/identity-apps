@@ -150,7 +150,7 @@
                             <form action="<%=commonauthURL%>" method="post" id="totpForm" class="ui large form">
                                 <p id="instruction"></p>
                                 <div class="field">
-                                    <input type="text" name="token" class="form-control" autocomplete="off"
+                                    <input type="text" name="token" class="form-control" autocomplete="off" autofocus
                                     placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "verification.code")%>">
                                 </div>
                                 <input id="sessionDataKey" type="hidden" name="sessionDataKey"
