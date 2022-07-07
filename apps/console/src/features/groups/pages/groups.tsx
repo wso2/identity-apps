@@ -233,13 +233,17 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
     };
 
     const searchRoleListHandler = (searchQuery: string) => {
-        const searchData: SearchGroupInterface = {
+        let searchData: SearchGroupInterface = {
             filter: searchQuery,
             schemas: [
                 "urn:ietf:params:scim:api:messages:2.0:SearchRequest"
             ],
             startIndex: 1
         };
+
+        if (userStore) {
+            searchData = { ...searchData, domain: userStore };
+        }
 
         setSearchQuery(searchQuery);
 
