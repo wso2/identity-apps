@@ -299,7 +299,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
         <Fragment data-testid={ testId }>
             { heading && <Heading as="h6">{ heading }</Heading> }
             { authenticators.filter(authenticator => {
-                if (authenticator?.authenticators[0]?.name
+                if (authenticator?.name
                     .includes(IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR)) {
                     return false;
                 }
