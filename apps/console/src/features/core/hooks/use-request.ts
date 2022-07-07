@@ -38,7 +38,12 @@ export interface RequestResultInterface<Data = unknown, Error = unknown>
 }
 
 /**
- * Request error interface.
+ * Schema for the request config.
+ */
+export type RequestConfigInterface = AxiosRequestConfig;
+
+/**
+ * Schema of the Error response body returned by Identity Server REST APIs.
  */
 export interface RequestErrorInterface {
     /**
