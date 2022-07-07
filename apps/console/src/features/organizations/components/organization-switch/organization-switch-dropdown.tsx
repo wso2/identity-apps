@@ -65,18 +65,22 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
     const [ search, setSearch ] = useState<string>("");
 
     const getOrganizationList = useCallback((filter: string, after: string, before: string) => {
-        getOrganizations(filter, 5, after, before, true).then((response: OrganizationListInterface) => {
-            if (!response || !response.organizations) {
-                setAssociatedOrganizations([ OrganizationManagementConstants.ROOT_ORGANIZATION ]);
-                setPaginationData(response.links);
-            } else {
-                const organizations = [ OrganizationManagementConstants.ROOT_ORGANIZATION, ...response?.organizations ];
+        getOrganizations(filter, 5, after, before, true, true)
+            .then((response: OrganizationListInterface) => {
+                if (!response || !response.organizations) {
+                    setAssociatedOrganizations([ OrganizationManagementConstants.ROOT_ORGANIZATION ]);
+                    setPaginationData(response.links);
+                } else {
+                    const organizations = [
+                        OrganizationManagementConstants.ROOT_ORGANIZATION,
+                        ...response?.organizations
+                    ];
 
-                setAssociatedOrganizations(organizations);
+                    setAssociatedOrganizations(organizations);
 
-                setPaginationData(response.links);
-            }
-        });
+                    setPaginationData(response.links);
+                }
+            });
     }, []);
 
     const setPaginationData = (links: OrganizationLinkInterface[]) => {
