@@ -23,7 +23,7 @@ import { AdvancedSearch, AdvancedSearchPropsInterface, LinkButton, PrimaryButton
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Form, Grid } from "semantic-ui-react";
-import { commonConfig } from "../../../extensions";
+import { commonConfig } from "../../../extensions/configs/common";
 import { getAdvancedSearchIcons } from "../configs";
 
 /**
