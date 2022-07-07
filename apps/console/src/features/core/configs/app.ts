@@ -194,7 +194,7 @@ export class Config {
             ...getUsersResourceEndpoints(this.resolveServerHost()),
             ...getUserstoreResourceEndpoints(this.getDeploymentConfig().serverHost),
             ...getScopesResourceEndpoints(this.getDeploymentConfig().serverHost),
-            ...getGroupsResourceEndpoints(this.getDeploymentConfig().serverHost),
+            ...getGroupsResourceEndpoints(this.resolveServerHost()),
             ...getRemoteFetchConfigResourceEndpoints(this.getDeploymentConfig().serverHost),
             ...getSecretsManagementEndpoints(this.getDeploymentConfig().serverHost),
             ...getExtendedFeatureResourceEndpoints(this.getDeploymentConfig().serverHost),
