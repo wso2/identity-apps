@@ -20,11 +20,16 @@ import { AlertInterface, AlertLevels, RolesInterface } from "@wso2is/core/models
 import { addAlert } from "@wso2is/core/store";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { AppState } from "../../../core";
 import { AddRoleUsers } from "../../../roles";
 import { patchOrganizationRoleDetails } from "../../api";
-import { PRIMARY_DOMAIN, currentOrganizationId } from "../../constants";
-import { CreateOrganizationRoleMemberInterface, PatchOrganizationRoleDataInterface } from "../../models";
+import { PRIMARY_DOMAIN } from "../../constants";
+import {
+    CreateOrganizationRoleMemberInterface,
+    OrganizationInterface,
+    PatchOrganizationRoleDataInterface
+} from "../../models";
 
 interface RoleUserDetailsProps {
     roleObject: RolesInterface;
@@ -47,6 +52,9 @@ export const RoleUserDetails: FunctionComponent<RoleUserDetailsProps> = (
 
     const [ currentUserStore, setCurrentUserStore ] = useState<string>(undefined);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+    const currentOrganization: OrganizationInterface = useSelector(
+        (state: AppState) => state.organization.organization
+    );
 
     useEffect(() => {
         const roleName = roleObject.displayName;
@@ -84,7 +92,7 @@ export const RoleUserDetails: FunctionComponent<RoleUserDetailsProps> = (
 
         setIsSubmitting(true);
 
-        patchOrganizationRoleDetails(currentOrganizationId, roleObject.id, roleData)
+        patchOrganizationRoleDetails(currentOrganization.id, roleObject.id, roleData)
             .then(() => {
                 handleAlerts({
                     description: t("console:manage.features.roles.notifications.updateRole.success.description"),

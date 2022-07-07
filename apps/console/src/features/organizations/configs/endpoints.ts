@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { store } from "../../core";
 import { OrganizationResourceEndpointsInterface } from "../models";
 
 /**
@@ -26,6 +27,6 @@ import { OrganizationResourceEndpointsInterface } from "../models";
  */
 export const getOrganizationsResourceEndpoints = (serverHost: string): OrganizationResourceEndpointsInterface => {
     return {
-        organizations: `${ serverHost }/o/10084a8d-113f-4211-a0d5-efe36b082211/api/server/v1`
+        organizations: `${ serverHost }/o/${store.getState().organization.organization.id}/api/server/v1`
     };
 };

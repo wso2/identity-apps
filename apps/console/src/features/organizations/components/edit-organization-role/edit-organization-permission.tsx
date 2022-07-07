@@ -20,11 +20,11 @@ import { AlertLevels, RolesInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { AppState } from "../../../core";
 import { PermissionList } from "../../../roles";
 import { patchOrganizationRoleDetails } from "../../api";
-import { currentOrganizationId } from "../../constants";
-import { OrganizationRoleInterface, TreeNode } from "../../models";
+import { OrganizationInterface, OrganizationRoleInterface, TreeNode } from "../../models";
 
 /**
  * Interface to capture permission edit props.
@@ -58,6 +58,9 @@ export const RolePermissionDetails: FunctionComponent<RolePermissionDetailProps>
     const { t } = useTranslation();
     const dispatch = useDispatch();
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+    const currentOrganization: OrganizationInterface = useSelector(
+        (state: AppState) => state.organization.organization
+    );
 
     const {
         isReadOnly,
@@ -77,7 +80,7 @@ export const RolePermissionDetails: FunctionComponent<RolePermissionDetailProps>
 
         setIsSubmitting(true);
 
-        patchOrganizationRoleDetails(currentOrganizationId, roleObject.id, roleData)
+        patchOrganizationRoleDetails(currentOrganization.id, roleObject.id, roleData)
             .then(() => {
                 dispatch(
                     addAlert({

@@ -47,8 +47,11 @@ import {
 import { CreateRoleInterface, CreateRoleWizard } from "../../roles";
 import { createOrganizationRole, getOrganizationRoles } from "../api/organization-role";
 import { OrganizationRoleList } from "../components";
-import { currentOrganizationId } from "../constants";
-import { OrganizationRoleListItemInterface, OrganizationRoleListResponseInterface } from "../models";
+import {
+    OrganizationInterface,
+    OrganizationRoleListItemInterface,
+    OrganizationRoleListResponseInterface
+} from "../models";
 
 const ORGANIZATION_ROLES_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
     {
@@ -93,6 +96,9 @@ const OrganizationRoles: FunctionComponent<OrganizationRolesPageInterface> = (
     const [ activePage, setActivePage ] = useState<number>(1);
 
     const [ paginationReset, triggerResetPagination ] = useTrigger();
+    const currentOrganization: OrganizationInterface = useSelector(
+        (state: AppState) => state.organization.organization
+    );
 
     const resetPagination = (): void => {
         setActivePage(1);
@@ -113,7 +119,7 @@ const OrganizationRoles: FunctionComponent<OrganizationRolesPageInterface> = (
             setOrganizationRoleListRequestLoading(true);
 
             getOrganizationRoles(
-                currentOrganizationId,
+                currentOrganization.id,
                 filter,
                 limit,
                 after,
@@ -259,7 +265,7 @@ const OrganizationRoles: FunctionComponent<OrganizationRolesPageInterface> = (
 
         delete(roleData.schemas);
 
-        createOrganizationRole(currentOrganizationId, roleData).then(response => {
+        createOrganizationRole(currentOrganization.id, roleData).then(response => {
             if (response.status === 201) {
                 dispatch(
                     addAlert({
@@ -306,7 +312,7 @@ const OrganizationRoles: FunctionComponent<OrganizationRolesPageInterface> = (
         }).finally(() => {
             setLoading(false);
         });
-    }, [ createOrganizationRole, setShowWizard, setLoading, dispatch, history, currentOrganizationId, t ]);
+    }, [ setShowWizard, setLoading, dispatch, currentOrganization, t ]);
 
     /**
      * Handles the `onSearchQueryClear` callback action.
@@ -450,7 +456,7 @@ const OrganizationRoles: FunctionComponent<OrganizationRolesPageInterface> = (
                                     setShowWizard(true);
                                 } }
                                 onSearchQueryClear={ handleSearchQueryClear }
-                                organizationId={ currentOrganizationId }
+                                organizationId={ currentOrganization.id }
                                 searchQuery={ searchQuery }
                                 data-testid={ `${testId}-list` }
                                 data-componentid="organization"

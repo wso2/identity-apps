@@ -42,7 +42,7 @@ import forEachRight from "lodash-es/forEachRight";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
     Button,
     Divider,
@@ -53,11 +53,11 @@ import {
     Modal,
     Table
 } from "semantic-ui-react";
-import { getEmptyPlaceholderIllustrations, updateResources } from "../../../core";
+import { AppState, getEmptyPlaceholderIllustrations } from "../../../core";
 import { getGroupList } from "../../../groups/api";
 import { patchOrganizationRoleDetails } from "../../api";
-import { APPLICATION_DOMAIN, INTERNAL_DOMAIN, PRIMARY_DOMAIN, currentOrganizationId } from "../../constants";
-import { OrganizationRoleInterface, PatchOrganizationRoleDataInterface } from "../../models";
+import { APPLICATION_DOMAIN, INTERNAL_DOMAIN, PRIMARY_DOMAIN } from "../../constants";
+import { OrganizationInterface, OrganizationRoleInterface, PatchOrganizationRoleDataInterface } from "../../models";
 
 interface RoleGroupsPropsInterface extends TestableComponentInterface {
     /**
@@ -103,6 +103,9 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
     const [ isLoadingAssignedGroups, setIsLoadingAssignedGroups ] = useState<boolean>(true);
 
     const [ alert, setAlert, alertComponent ] = useWizardAlert();
+    const currentOrganization: OrganizationInterface = useSelector(
+        (state: AppState) => state.organization.organization
+    );
 
     useEffect(() => {
         if (!(role)) {
@@ -338,7 +341,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
 
         setIsSubmitting(true);
 
-        patchOrganizationRoleDetails(currentOrganizationId, role.id, roleData)
+        patchOrganizationRoleDetails(currentOrganization.id, role.id, roleData)
             .then(() => {
                 dispatch(addAlert({
                     description: t(
