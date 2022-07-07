@@ -7444,6 +7444,12 @@ export const console: ConsoleNS = {
                     }
                 },
                 subTitle: "Create and manage organizations.",
+                switching: {
+                    emptyList: "There is no organization to show.",
+                    search: {
+                        placeholder: "Search by Name"
+                    }
+                },
                 title: "Organizations"
             },
             overview: {

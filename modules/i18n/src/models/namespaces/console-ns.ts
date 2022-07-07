@@ -2348,6 +2348,12 @@ export interface ConsoleNS {
                     name: string;
                     description: string;
                 };
+                switching: {
+                    search: {
+                        placeholder: string;
+                    };
+                    emptyList: string;
+                }
             };
             users: {
                 consumerUsers: {

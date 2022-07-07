@@ -6016,6 +6016,12 @@ export const console: ConsoleNS = {
                     }
                 },
                 subTitle: "Créer et gérer des organisations.",
+                switching: {
+                    emptyList: "Il n'y a aucune organisation à afficher.",
+                    search: {
+                        placeholder: "Rechercher par nom"
+                    }
+                },
                 title: "Organisations"
             },
             overview: {

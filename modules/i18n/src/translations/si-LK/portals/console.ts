@@ -5886,6 +5886,12 @@ export const console: ConsoleNS = {
                     }
                 },
                 subTitle: "ආයතන සාදන්න සහ කළමනාකරණය කරන්න.",
+                switching: {
+                    emptyList: "පෙන්වීමට සංවිධානයක් නැත.",
+                    search: {
+                        placeholder: "නම අනුව සොයන්න"
+                    }
+                },
                 title: "ආයතන"
             },
             overview: {
