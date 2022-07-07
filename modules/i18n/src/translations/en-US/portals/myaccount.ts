@@ -263,6 +263,7 @@ export const myAccount: MyAccountNS = {
                         }
                     },
                     validations: {
+
                         genericError: {
                             description: "Something went wrong. Please try again",
                             message: "Change password error"
@@ -271,6 +272,10 @@ export const myAccount: MyAccountNS = {
                             description: "The current password you entered appears to be invalid. Please try again",
                             message: "Change password error"
                         },
+                        passwordCaseRequirement: "At least one uppercase and lowercase letter",
+                        passwordCharRequirement: "At least one of the symbols !@#$%^&*",
+                        passwordLengthRequirement: "More than 8 characters",
+                        passwordNumRequirement: "At least one number",
                         submitError: {
                             description: "{{description}}",
                             message: "Change password error"

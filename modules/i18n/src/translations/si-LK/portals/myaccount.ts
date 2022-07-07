@@ -271,6 +271,10 @@ export const myAccount: MyAccountNS = {
                             description: "ඔබ ඇතුලත් කළ මුරපදය අවලංගු බව පෙනේ. කරුණාකර නැවත උත්සාහ කරන්න",
                             message: "මුරපද වෙනස් කිරීමේ දෝෂයකිි"
                         },
+                        passwordCaseRequirement: "අවම වශයෙන් එක් ලොකු අකුරක් සහ කුඩා අකුරක්",
+                        passwordCharRequirement: "අවම වශයෙන් එක් සංකේතයක් වත් !@#$%^&*",
+                        passwordLengthRequirement: "අක්ෂර 8 කට වඩා",
+                        passwordNumRequirement: "අවම වශයෙන් එක් අංකයක්",
                         submitError: {
                             description: "{{description}}",
                             message: "මුරපද වෙනස් කිරීමේ දෝෂයකි"

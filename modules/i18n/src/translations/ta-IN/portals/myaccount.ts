@@ -272,6 +272,10 @@ export const myAccount: MyAccountNS = {
                             description: "நீங்கள் அளித்த தற்போதைய கடவுச்சொல் தவறானது. மீண்டும் முயற்சி செய்க.",
                             message: "கடவுச்சொல் பிழையை மாற்றவும்"
                         },
+                        passwordCaseRequirement: "குறைந்தபட்சம் ஒரு பெரிய எழுத்து மற்றும் சிறிய எழுத்து",
+                        passwordCharRequirement: "சின்னங்களில் ஒன்று !@#$%^&*",
+                        passwordLengthRequirement: "8 க்கும் மேற்பட்ட எழுத்துக்கள்",
+                        passwordNumRequirement: "குறைந்தது ஒரு எண்",
                         submitError: {
                             description: "{{description}}",
                             message: "கடவுச்சொல் பிழையை மாற்றவும்"
