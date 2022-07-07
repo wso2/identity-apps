@@ -133,7 +133,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
      */
     useEffect(() => {
         const sortedSchemas = ProfileUtils.flattenSchemas([ ...profileDetails.profileSchemas ])
-            .filter(item => item.name !== "meta.version") 
+            .filter(item => item.name !== ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("META_VERSION")) 
             .sort((a: ProfileSchema, b: ProfileSchema) => {
                 if (!a.displayOrder) {
                     return -1;

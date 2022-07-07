@@ -27,7 +27,7 @@ import {
     LinkButton,
     Message,
     PrimaryButton,
-    useDocumentation,
+    useDocumentation
 } from "@wso2is/react-components";
 import kebabCase from "lodash-es/kebabCase";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -130,6 +130,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
     const [ isDefaultScript, setIsDefaultScript ] = useState<boolean>(true);
     const [ isButtonDisabled, setIsButtonDisabled ] = useState<boolean>(false);
     const [ updatedSteps, setUpdatedSteps ] = useState<AuthenticationStepInterface[]>();
+    const [ showConditionalAuthContent, setShowConditionalAuthContent ] = useState<boolean>(true);
 
     const [ validationResult, setValidationResult ] =
         useState<ConnectionsJITUPConflictWithMFAReturnValue | undefined>(undefined);
@@ -179,6 +180,14 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
 
         setSteps(authenticationSequence.steps.length);
     }, [ authenticationSequence ]);
+
+    /**
+     * Allow to toggle conditional auth content script.
+     * @param next {boolean} value
+     */
+    const updateShowConditionalAuthContent = (next: boolean): void => {
+        setShowConditionalAuthContent(next);
+    };
 
     /**
      * Updates the number of authentication steps.
@@ -591,7 +600,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                     <Message
                         type="warning"
                         content={
-                            <>
+                            (<>
                                 <Trans
                                     i18nKey={
                                         t("console:develop.features.applications.edit.sections" +
@@ -609,7 +618,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                                 >
                                     { t("common:learnMore") }
                                 </DocumentationLink>
-                            </>
+                            </>)
                         }
                     />
                 )
@@ -654,17 +663,24 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                 : null
             }
             <Divider className="x2"/>
-            <ScriptBasedFlow
-                authenticationSequence={ sequence }
-                isLoading={ isLoading }
-                onTemplateSelect={ handleLoadingDataFromTemplate }
-                onScriptChange={ handleAdaptiveScriptChange }
-                readOnly={ readOnly }
-                data-testid={ `${ testId }-script-based-flow` }
-                authenticationSteps={ steps }
-                isDefaultScript={ isDefaultScript }
-                onAdaptiveScriptReset={ () => setIsDefaultScript(true) }
-            />
+            {
+                isAdaptiveAuthenticationAvailable && (
+                    <ScriptBasedFlow
+                        isMinimized={ true }
+                        showConditionalAuthContent={ showConditionalAuthContent }
+                        updateShowConditionalAuthContent={ updateShowConditionalAuthContent }
+                        authenticationSequence={ sequence }
+                        isLoading={ isLoading }
+                        onTemplateSelect={ handleLoadingDataFromTemplate }
+                        onScriptChange={ handleAdaptiveScriptChange }
+                        readOnly={ readOnly }
+                        data-testid={ `${ testId }-script-based-flow` }
+                        authenticationSteps={ steps }
+                        isDefaultScript={ isDefaultScript }
+                        onAdaptiveScriptReset={ () => setIsDefaultScript(true) }
+                    />
+                )
+            }
             {
                 (config?.ui?.isRequestPathAuthenticationEnabled === false)
                     ? null
