@@ -148,7 +148,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                                 </Placeholder>
                             ) }
 
-                            { organization.id !== "ROOT"
+                            { organization.id !== OrganizationManagementConstants.ROOT_ORGANIZATION_ID
                                 && (<GenericIcon
                                     transparent
                                     inline

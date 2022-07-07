@@ -5,8 +5,7 @@ import { useSelector } from "react-redux";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "../../core";
 import { getOrganizationRoleById } from "../api";
 import { EditOrganizationRole } from "../components/edit-organization-role";
-import { currentOrganizationId } from "../constants";
-import { OrganizationRoleInterface } from "../models";
+import { OrganizationInterface, OrganizationRoleInterface } from "../models";
 
 const OrganizationRolesEdit: FunctionComponent = (
 ): ReactElement => {
@@ -18,11 +17,14 @@ const OrganizationRolesEdit: FunctionComponent = (
     const [ roleId, setRoleId ] = useState<string>(undefined);
     const [ roleObject, setRoleObject ] = useState<OrganizationRoleInterface>();
     const [ isRoleDetailsRequestLoading, setIsRoleDetailsRequestLoading ] = useState<boolean>(false);
+    const currentOrganization: OrganizationInterface = useSelector(
+        (state: AppState) => state.organization.organization
+    );
 
     const getRoleDetails = (roleId: string ): void => {
         setIsRoleDetailsRequestLoading(true);
 
-        getOrganizationRoleById(currentOrganizationId, roleId)
+        getOrganizationRoleById(currentOrganization.id, roleId)
             .then(response => {
                 if (response.status === 200) {
                     setRoleObject(response.data);

@@ -15,6 +15,7 @@
 * specific language governing permissions and limitations
 * under the License.
 */
+import { OrganizationManagementConstants } from "../constants";
 
 export const addOrganizationMockResponse = {
     attributes: [],
@@ -25,7 +26,7 @@ export const addOrganizationMockResponse = {
     lastModified: "2022-01-01T00:00:00.000Z",
     name: "Organization One",
     parent: {
-        id: "ROOT",
+        id: OrganizationManagementConstants.ROOT_ORGANIZATION_ID,
         ref: "root/ref"
     },
     status: "ACTIVE",
