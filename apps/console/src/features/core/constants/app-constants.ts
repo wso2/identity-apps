@@ -356,6 +356,7 @@ export class AppConstants {
         "users",
         "organizations",
         "groups",
-        "organization-roles"
+        "organization-roles",
+        "applications"
     ]
 }
