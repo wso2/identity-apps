@@ -116,6 +116,7 @@ describe("UTC-1.0 - [Organization Management Feature] - Organization List Compon
         );
 
         expect(screen.getByText("Organization One"));
+        expect(screen.getAllByTestId("data-table-row")).toHaveLength(7);
     });
 
     test("UTC-1.6 - Test if an organization can be clicked", async () => {
@@ -134,7 +135,7 @@ describe("UTC-1.0 - [Organization Management Feature] - Organization List Compon
         expect(onListItemClickMock.mock.calls.length).toBe(1);
     });
 
-    test("UTC-1.7 - Test if an organizations can be deleted", async () => {
+    test("UTC-1.7 - Test if an organization can be deleted", async () => {
         render(
             <Provider store={ store }>
                 <AccessControlProvider
