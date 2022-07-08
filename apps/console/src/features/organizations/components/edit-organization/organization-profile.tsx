@@ -258,29 +258,6 @@ export const OrganizationProfile: FunctionComponent<OrganizationProfilePropsInte
                                     )
                                 }
                                 {
-                                    organization?.type && (
-                                        <Field.Input
-                                            data-testid={ `${testId}-profile-form-type-input` }
-                                            name="type"
-                                            label={ t("console:manage.features.organizations.edit.fields." +
-                                                "type.label") }
-                                            required={ false }
-                                            requiredErrorMessage=""
-                                            type="text"
-                                            readOnly={ true }
-                                            value={ organization.type === ORGANIZATION_TYPE.STRUCTURAL
-                                                ? "Structural"
-                                                : "Tenant"
-                                            }
-                                            ariaLabel={ t("console:manage.features.organizations.edit.fields." +
-                                                "type.ariaLabel") }
-                                            inputType="name"
-                                            maxLength={ 32 }
-                                            minLength={ 3 }
-                                        />
-                                    )
-                                }
-                                {
                                     organization?.created && (
                                         <Field.Input
                                             data-testid={ `${testId}-profile-form-created-input` }
