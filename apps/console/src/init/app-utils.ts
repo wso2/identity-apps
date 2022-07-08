@@ -64,7 +64,6 @@ export const AppUtils = (function() {
 
     const superTenantFallback = "carbon.super";
     const tenantPrefixFallback = "t";
-    const orgPrefixFallback = "o";
     const fallbackServerOrigin = "https://localhost:9443";
     const appBaseForHistoryAPIFallback = "/";
     const urlPathForSuperTenantOriginsFallback = "";
@@ -88,22 +87,22 @@ export const AppUtils = (function() {
                 return _config.appBaseNameForHistoryAPI;
             }
 
-            return this.isSaas() ? appBaseForHistoryAPIFallback + this.getAppBaseWithOrganization() : this.getAppBaseWithOrganizationAndTenant();
+            return this.isSaas() ? appBaseForHistoryAPIFallback : this.getAppBaseWithTenant();
         },
 
         /**
          * Constructs app paths.
          *
-         * @remarks For non SaaS apps, a relative path without the tenant and basename would suffice.
+         * @remarks For non SaaS apps, a relative path without the tenant and basename would surfise.
          * @param path - Path to be constructed.
          * @return {string | any}
          */
         constructAppPaths: function(path) {
             if (!this.isSaas()) {
-                return this.getAppBaseWithOrganization() + path;
+                return path;
             }
 
-            return this.getAppBaseWithOrganizationAndTenant() + path;
+            return this.getAppBaseWithTenant() + path;
         },
 
         /**
@@ -115,7 +114,7 @@ export const AppUtils = (function() {
          */
         constructRedirectURLs: function(url) {
             if (!this.isSaas()) {
-                return _config.clientOrigin + this.getTenantPath(true) + "/" + this.getOrganizationPath() +"/"+ _config.appBaseName + url;
+                return _config.clientOrigin + this.getTenantPath(true) + "/" + _config.appBaseName + url;
             }
 
             return _config.clientOrigin + (_config.appBaseName ? "/" + _config.appBaseName : "") + url;
@@ -142,25 +141,11 @@ export const AppUtils = (function() {
         },
 
         /**
-        * Get app base with organization.
-        *
-        * @returns {string}
-        */
-        getAppBaseWithOrganization: function () {
-            return `${ this.getTenantPath(true) }${ this.getOrganizationPath() }${ _config.appBaseName
-                ? ("/" + _config.appBaseName)
-                : "" }`;
-        },
-
-        /**
-         * Get app base with tenant and organization.
-         *
-         * @returns {string}
+         * Get app base with the tenant domain.
+         * @return {string}
          */
-        getAppBaseWithOrganizationAndTenant: function () {
-            return `${ this.getTenantPath(true) }${ this.getOrganizationPath() }${ _config.appBaseName
-                ? ("/" + _config.appBaseName)
-                : "" }`;
+        getAppBaseWithTenant: function() {
+            return this.getTenantPath(true) + (_config.appBaseName ? ("/" + _config.appBaseName) : "");
         },
 
         /**
@@ -201,8 +186,8 @@ export const AppUtils = (function() {
                     path: skipTenant ?
                         _config.accountAppOrigin + _config.accountApp.path:
                         _config.accountAppOrigin + this.getTenantPath(true) + _config.accountApp.path,
-                    tenantQualifiedPath: this.getTenantQualifiedAccountAppPath(skipTenant
-                        ? ""
+                    tenantQualifiedPath: this.getTenantQualifiedAccountAppPath(skipTenant 
+                        ? "" 
                         : _config.accountApp.path)
                 },
                 adminApp: {
@@ -213,7 +198,7 @@ export const AppUtils = (function() {
                 allowMultipleAppProtocols: allowMultipleAppProtocol,
                 appBase: _config.appBaseName,
                 appBaseNameForHistoryAPI: this.constructAppBaseNameForHistoryAPI(),
-                appBaseWithTenant: this.getAppBaseWithOrganizationAndTenant(),
+                appBaseWithTenant: this.getAppBaseWithTenant(),
                 clientID: (this.isSaas() || this.isSuperTenant())
                     ? _config.clientID
                     : _config.clientID + "_" + this.getTenantName(),
@@ -233,7 +218,6 @@ export const AppUtils = (function() {
                 isSaas: this.isSaas(),
                 loginCallbackURL: this.constructRedirectURLs(_config.loginCallbackPath),
                 logoutCallbackURL: this.constructRedirectURLs(_config.logoutCallbackPath),
-                organizationName: this.getOrganizationName(),
                 productVersionConfig: _config.ui.productVersionConfig,
                 routes: {
                     home: this.constructAppPaths(_config.routePaths.home),
@@ -267,44 +251,6 @@ export const AppUtils = (function() {
             }
 
             return path;
-        },
-
-        /**
-         * Get the organization name.
-         *
-         * @returns {string}
-         */
-        getOrganizationName: function () {
-            const path = window.location.pathname;
-            const pathChunks = path.split("/");
-
-            const orgPrefixIndex: number = pathChunks.indexOf(this.getOrganizationPrefix());
-
-            if (orgPrefixIndex !== -1) {
-                return pathChunks[ orgPrefixIndex + 1 ];
-            }
-
-            return "";
-        },
-
-        /**
-         * Get the organization path.
-         *
-         * @returns {string}
-         */
-        getOrganizationPath: function () {
-            return this.getOrganizationName() !== ""
-                ? `/${ this.getOrganizationPrefix() }/${ this.getOrganizationName() }`
-                : "";
-        },
-
-        /**
-         * Get the organization prefix.
-         *
-         * @returns {string}
-         */
-        getOrganizationPrefix: function () {
-            return _args.organizationPrefix || orgPrefixFallback;
         },
 
         /**
@@ -375,19 +321,19 @@ export const AppUtils = (function() {
 
         /**
          * Get the URL for the tenanted Myaccount.
-         *
+         * 
          * We append any given path to a qualified path.
-         * when skipTenant is false in tenantQualifiedPath,
-         * the argument _config.accountApp.path will get appended.
+         * when skipTenant is false in tenantQualifiedPath, 
+         * the argument _config.accountApp.path will get appended. 
          * This is because through extensions we can control the MyAccount path for different deployments.
-         *
+         * 
          * @return {string}
          */
         getTenantQualifiedAccountAppPath: function(pathname) {
             return (((this.getTenantPrefix() !== "") && (this.getTenantName() !== "")) ?
                 _config.accountAppOrigin +
                 "/" + this.getTenantPrefix() +
-                "/" + this.getTenantName() : "") + pathname;
+                "/" + this.getTenantName() : "") + pathname; 
         },
 
         /**
