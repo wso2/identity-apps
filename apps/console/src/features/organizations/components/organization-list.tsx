@@ -48,11 +48,11 @@ import {
     UIConstants,
     getEmptyPlaceholderIllustrations,
     history
-} from "../../../core";
-import { deleteOrganization } from "../../api";
-import { OrganizationIcon } from "../../configs";
-import { OrganizationManagementConstants } from "../../constants";
-import { OrganizationInterface, OrganizationListInterface } from "../../models";
+} from "../../core";
+import { deleteOrganization } from "../api";
+import { OrganizationIcon } from "../configs";
+import { OrganizationManagementConstants } from "../constants";
+import { OrganizationInterface, OrganizationListInterface } from "../models";
 
 /**
  *
@@ -187,6 +187,26 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
+                    console.log(error);
+                    if (error.response.data.code === "ORG-60007") {
+                        dispatch(
+                            setAlert({
+                                description: t(
+                                    "console:manage.features.organizations.notifications." +
+                                    "deleteOrganizationWithSubOrganizationError",
+                                    { organizationName: deletingOrganization.name }
+                                ),
+                                level: AlertLevels.ERROR,
+                                message: t(
+                                    "console:manage.features.organizations.notifications.deleteOrganization.error" +
+                                    ".message"
+                                )
+                            })
+                        );
+
+                        return;
+                    }
+
                     dispatch(
                         setAlert({
                             description: error.response.data.description,
