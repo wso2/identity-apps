@@ -138,11 +138,12 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
         let newOrgPath: string = "";
 
         if (OrganizationUtils.isRootOrganization(organization)) {
-            newOrgPath = `${ window[ "AppUtils" ].getConfig().tenantPath }/${
+            newOrgPath = `${ window[ "AppUtils" ].getConfig().tenantPathWithoutSuperTenant }/${
                 window[ "AppUtils" ].getConfig().appBase
             }`;
         } else {
-            newOrgPath = window[ "AppUtils" ].getConfig().tenantPath + "/o/" + organization.name + "/" +
+            newOrgPath = window[ "AppUtils" ].getConfig().tenantPathWithoutSuperTenant
+                + "/o/" + organization.id + "/" +
                 window[ "AppUtils" ].getConfig().appBase;
         }
 
