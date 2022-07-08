@@ -24,9 +24,8 @@ export interface BackupCodeInterface {
 }
 
 /**
- * The action types of the backup code post endpoint.
- */
-export enum PostBackupCodeActions {
-    INIT = "INIT",
-    REFRESH = "REFRESH"
+* Interface of the remaining backup codes count.
+*/
+export interface BackupCodesCountInterface {
+    remainingBackupCodesCount: number;
 }

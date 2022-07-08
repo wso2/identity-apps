@@ -74,7 +74,7 @@ export class Config {
             applications: `${this.getDeploymentConfig().serverHost}/api/users/v1/me/applications`,
             associations: `${this.getDeploymentConfig().serverHost}/api/users/v1/me/associations`,
             authorize: `${this.getDeploymentConfig().serverHost}/oauth2/authorize`,
-            backupCode: `${this.getDeploymentConfig().serverHost}/api/users/v1/me/backup-code`,
+            backupCode: `${this.getDeploymentConfig().serverHost}/api/users/v1/me/backup-codes`,
             challengeAnswers: `${this.getDeploymentConfig().serverHost}/api/users/v1/me/challenge-answers`,
             challenges: `${this.getDeploymentConfig().serverHost}/api/users/v1/me/challenges`,
             consentManagement: {
@@ -143,11 +143,11 @@ export class Config {
                 .getConfig()
                 .ui.appCopyright.replace("${copyright}", "\u00A9")
                 .replace("${year}", new Date().getFullYear()),
+            disableMFAForFederatedUsers: window["AppUtils"].getConfig().ui.disableMFAForFederatedUsers,
             disableMFAforSuperTenantUser: window["AppUtils"].getConfig().ui.disableMFAforSuperTenantUser,
             enableMFAUserWise: window["AppUtils"].getConfig().ui.enableMFAUserWise,
-            disableMFAForFederatedUsers: window["AppUtils"].getConfig().ui.disableMFAForFederatedUsers,
-            forceBackupCode: window["AppUtils"].getConfig().ui.forceBackupCode,
             features: window["AppUtils"].getConfig().ui.features,
+            forceBackupCode: window["AppUtils"].getConfig().ui.forceBackupCode,
             i18nConfigs: window["AppUtils"].getConfig().ui.i18nConfigs,
             isCookieConsentBannerEnabled: window["AppUtils"].getConfig().ui.isCookieConsentBannerEnabled,
             isHeaderAvatarLabelAllowed: window["AppUtils"].getConfig().ui.isHeaderAvatarLabelAllowed,
