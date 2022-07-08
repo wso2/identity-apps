@@ -372,14 +372,14 @@ export const OrganizationRoleList: FunctionComponent<OrganizationRolesListPropsI
                                     } }
                                 >
                                     <Icon name="add"/>
-                                    { t("console:manage.features.organizations.placeholders.emptyList.action") }
+                                    { t("console:manage.features.roles.list.emptyPlaceholders.search.action") }
                                 </PrimaryButton>
                             </Show>
                         )
                     }
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
-                    subtitle={ [ t("console:manage.features.organizations.placeholders.emptyList.subtitles.0") ] }
+                    subtitle={ [ "There are no organization roles at the momemnt" ] }
                     data-testid={ `${testId}-empty-placeholder` }
                 />
             );
@@ -414,7 +414,7 @@ export const OrganizationRoleList: FunctionComponent<OrganizationRolesListPropsI
                     type="warning"
                     open={ showDeleteConfirmationModal }
                     assertionHint={ t(
-                        "console:manage.features.organizations.confirmations.deleteOrganization." + "assertionHint"
+                        "console:manage.features.roles.list.confirmations.deleteItem.assertionHint"
                     ) }
                     assertionType="checkbox"
                     primaryAction={ t("common:confirm") }
@@ -427,19 +427,21 @@ export const OrganizationRoleList: FunctionComponent<OrganizationRolesListPropsI
                     data-testid={ `${testId}-delete-confirmation-modal` }
                     closeOnDimmerClick={ false }
                 >
-                    <ConfirmationModal.Header data-testid={ `${testId}-delete-confirmation-modal-header` }>
-                        { t("console:manage.features.organizations.confirmations.deleteOrganization.header") }
+                    <ConfirmationModal.Header data-testid={ `${testId}-delete-org-role-confirmation-modal-header` }>
+                        { t("console:manage.features.roles.list.confirmations.deleteItem.header") }
                     </ConfirmationModal.Header>
                     <ConfirmationModal.Message
                         attached
                         warning
-                        data-testid={ `${testId}-delete-confirmation-modal-message` }
+                        data-testid={ `${testId}-delete-org-role-confirmation-modal-message` }
                     >
-                        { t("console:manage.features.organizations.confirmations.deleteOrganization.message") }
+                        { t("console:manage.features.roles.list.confirmations.deleteItem.message",
+                            { type: "role" }) }
                     </ConfirmationModal.Message>
                     <ConfirmationModal.Content data-testid={ `${testId}-delete-confirmation-modal-content` }>
                         <div className="modal-alert-wrapper"> { alert && alertComponent }</div>
-                        { t("console:manage.features.organizations.confirmations.deleteOrganization.content") }
+                        { t("console:manage.features.roles.list.confirmations.deleteItem.content",
+                            { type: "role" }) }
                     </ConfirmationModal.Content>
                 </ConfirmationModal>
             ) }
