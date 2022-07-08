@@ -321,6 +321,16 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
 
         return [
             {
+                "data-componentid": `${ componentId }-item-go-to-organization-button`,
+                icon: (): SemanticICONS => {
+                    return "arrow alternate circle right";
+                },
+                onClick: (e: SyntheticEvent, organization: OrganizationInterface): void =>
+                    onListItemClick && onListItemClick(e, organization),
+                popupText: () => t("common:view"),
+                renderer: "semantic-icon"
+            },
+            {
                 "data-componentid": `${ componentId }-item-edit-button`,
                 hidden: (): boolean =>
                     !isFeatureEnabled(
