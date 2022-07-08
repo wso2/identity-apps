@@ -1,10 +1,19 @@
 /**
- * Copyright (c) 2022, WSO2 Inc. (http://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022, WSO2 Inc. (http://www.wso2.com) All Rights Reserved.
  *
- * This software is the property of WSO2 Inc. and its suppliers, if any.
- * Dissemination of any information or reproduction of any material contained
- * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
- * You may not alter or remove any copyright or other notice from copies of this content."
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -27,9 +36,10 @@ import {
 import { getOrganizations } from "../../api";
 import { OrganizationManagementConstants } from "../../constants";
 import { OrganizationInterface, OrganizationLinkInterface, OrganizationListInterface } from "../../models";
+import { OrganizationUtils } from "../../utils";
 
 /**
- * Interface for tenant dropdown.
+ * Interface for component dropdown.
  */
 type OrganizationSwitchDropdownInterface = IdentifiableComponentInterface;
 
@@ -97,20 +107,23 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
     }, [ getOrganizationList, listFilter, isDropDownOpen ]);
 
     const triggerTenant = (
-        <span className="tenant-dropdown-trigger" data-testid="tenant-dropdown-trigger">
+        <span className="tenant-dropdown-trigger" data-componentid="component-dropdown-trigger">
             <GenericIcon
                 transparent
                 inline
                 className="tenant-dropdown-trigger-icon"
-                data-testid="tenant-dropdown-trigger-icon"
+                data-componentid="component-dropdown-trigger-icon"
                 icon={ getMiscellaneousIcons().tenantIcon }
                 size="micro"
                 fill="white"
                 spaced="right"
             />
-            <div className="tenant-dropdown-trigger-display-name ellipsis" data-testid="tenant-dropdown-display-name">
+            <div
+                className="tenant-dropdown-trigger-display-name ellipsis"
+                data-componentid="component-dropdown-display-name"
+            >
                 { !currentOrganization ? (
-                    <Placeholder data-testid="organization-loading-placeholder">
+                    <Placeholder data-componentid="organization-loading-placeholder">
                         <Placeholder.Line />
                     </Placeholder>
                 ) : (
@@ -145,7 +158,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                         transparent
                         inline
                         className="associated-tenant-icon"
-                        data-testid="associated-organization-icon"
+                        data-componentid="associated-organization-icon"
                         icon={ getMiscellaneousIcons().tenantIcon }
                         size="mini"
                     />
@@ -154,7 +167,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                     <Item.Description>
                         <div
                             className="name ellipsis tenant-description"
-                            data-testid={ "organization-dropdown-display-name" }
+                            data-componentid={ "organization-dropdown-display-name" }
                         >
                             { organization?.name ?? (
                                 <Placeholder>
@@ -162,12 +175,12 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                                 </Placeholder>
                             ) }
 
-                            { organization.id !== "ROOT" && (
+                            { OrganizationUtils.isRootOrganization(organization) && (
                                 <GenericIcon
                                     transparent
                                     inline
                                     className="manage-tenant-icon"
-                                    data-testid="associated-tenant-icon"
+                                    data-componentid="associated-component-icon"
                                     icon={ getSidePanelIcons().serverConfigurations }
                                     onClick={ (event: SyntheticEvent) => {
                                         history.push({
@@ -193,7 +206,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                 <Item.Group
                     className="tenants-list organizations"
                     unstackable
-                    data-testid={ "associated-organizations-container" }
+                    data-componentid={ "associated-organizations-container" }
                 >
                     { associatedOrganizations.length > 1 ? (
                         associatedOrganizations.map((organization, _) =>
@@ -270,7 +283,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                 floating
                 pointing="top left"
                 className="tenant-dropdown"
-                data-testid={ "tenant-dropdown" }
+                data-componentid={ "component-dropdown" }
                 onClick={ () => {
                     setIsDropDownOpen(!isDropDownOpen);
                 } }
@@ -285,7 +298,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                         <div className="advanced-search-wrapper aligned-left fill-default">
                             <Input
                                 className="advanced-search with-add-on"
-                                data-testid="list-search-input"
+                                data-componentid="list-search-input"
                                 icon="search"
                                 iconPosition="left"
                                 value={ search }
@@ -345,3 +358,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
 };
 
 export default OrganizationSwitchDropdown;
+
+OrganizationSwitchDropdown.defaultProps = {
+    "data-componentid": "organization-switch-dropdown"
+};
