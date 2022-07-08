@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { SessionStorageUtils } from "@wso2is/core/utils";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { setServiceResourceEndpoints } from "@wso2is/core/src/store";
 import { GenericIcon } from "@wso2is/react-components";
@@ -133,6 +134,27 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
         </span>
     );
 
+    const handleOrganizationSwitch = (organization: OrganizationInterface): void => {
+        let newOrgPath: string = "";
+
+        if (OrganizationUtils.isRootOrganization(organization)) {
+            newOrgPath = `${ window[ "AppUtils" ].getConfig().tenantPath }/${
+                window[ "AppUtils" ].getConfig().appBase
+            }`;
+        } else {
+            newOrgPath = window[ "AppUtils" ].getConfig().tenantPath + "/o/" + organization.name + "/" +
+                window[ "AppUtils" ].getConfig().appBase;
+        }
+
+        // Clear the callback url of the previous organization.
+        SessionStorageUtils.clearItemFromSessionStorage("auth_callback_url_console");
+
+        // Redirect the user to the newly selected organization path.
+        window.location.replace(newOrgPath);
+
+        setIsDropDownOpen(false);
+    };
+
     /**
      * Stops the dropdown from closing on click.
      *
@@ -148,9 +170,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                 className="header"
                 key={ `${ organization?.name }-organization-item` }
                 onClick={ () => {
-                    dispatch(setOrganization(organization));
-                    dispatch(setServiceResourceEndpoints(Config.getServiceResourceEndpoints()));
-                    setIsDropDownOpen(false);
+                    handleOrganizationSwitch(organization);
                 } }
             >
                 {
