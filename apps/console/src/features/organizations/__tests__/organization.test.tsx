@@ -86,6 +86,7 @@ describe("UTC-1.0 - [Organization Management Feature] - Organization Page", () =
         expect(await screen.findByText("Organization Five")).toBeInTheDocument();
         expect(await screen.findByText("Organization Six")).toBeInTheDocument();
         expect(await screen.findByText("Organization Seven")).toBeInTheDocument();
+        expect(screen.getAllByTestId("data-table-row")).toHaveLength(7);
     });
 
     test("UTC-1.1 - Test if it is possible to navigate to Organization One", async () => {
@@ -111,6 +112,7 @@ describe("UTC-1.0 - [Organization Management Feature] - Organization Page", () =
             )
         ).toBeInTheDocument();
         expect(await screen.findByText("Organization Two")).toBeInTheDocument();
+        expect(screen.getByTestId("data-table-row")).toBeInTheDocument();
     });
 
     test("UTC-1.2 - Test if it is possible to navigate to Organization Two", async () => {
@@ -140,6 +142,7 @@ describe("UTC-1.0 - [Organization Management Feature] - Organization Page", () =
             )
         ).toBeInTheDocument();
         expect(await screen.findByText("Organization Three")).toBeInTheDocument();
+        expect(screen.getByTestId("data-table-row")).toBeInTheDocument();
     });
 
     test("UTC-1.3 - Test if it is possible to navigate using the breadcrumb", async () => {
@@ -170,6 +173,7 @@ describe("UTC-1.0 - [Organization Management Feature] - Organization Page", () =
             )
         ).toBeInTheDocument();
         expect(await screen.findByText("Organization Two")).toBeInTheDocument();
+        expect(screen.getByTestId("data-table-row")).toBeInTheDocument();
     });
 
     test("UTC-1.4 - Test if the next pagination button is enabled", async () => {
@@ -221,7 +225,7 @@ describe("UTC-1.0 - [Organization Management Feature] - Organization Page", () =
         ).not.toHaveClass("disabled");
     });
 
-    test("UTC-1.7 - Test if it the previous pagination button is clickable", async () => {
+    test("UTC-1.7 - Test if the previous pagination button is clickable", async () => {
         render(
             <Provider store={ store }>
                 <OrganizationsPage />
@@ -237,7 +241,7 @@ describe("UTC-1.0 - [Organization Management Feature] - Organization Page", () =
         await waitFor(() => expect(getOrganizationsMock).toHaveBeenCalledTimes(2));
     });
 
-    test("UTC-1.8 - Test if it the next pagination button is clickable", async () => {
+    test("UTC-1.8 - Test if the next pagination button is clickable", async () => {
         render(
             <Provider store={ store }>
                 <OrganizationsPage />
@@ -251,7 +255,7 @@ describe("UTC-1.0 - [Organization Management Feature] - Organization Page", () =
         await waitFor(() => expect(getOrganizationsMock).toHaveBeenCalledTimes(2));
     });
 
-    test("UTC-1.9 - Test if it the filter feature is functional", async () => {
+    test("UTC-1.9 - Test if the filter feature is functional", async () => {
         render(
             <Provider store={ store }>
                 <OrganizationsPage />
