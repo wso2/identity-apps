@@ -177,6 +177,10 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                 onClick={ () => {
                     handleOrganizationSwitch(organization);
                     setIsDropDownOpen(false);
+                    history.push({
+                        pathname: AppConstants.getPaths()
+                            .get("USERS")
+                    });
                 } }
             >
                 {
