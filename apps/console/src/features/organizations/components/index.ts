@@ -16,6 +16,6 @@
 * under the License.
 */
 
-export * from "./edit-organization/organization-list";
+export * from "./organization-list";
 export * from "./add-organization-modal";
 export * from "./organization-role-list";
