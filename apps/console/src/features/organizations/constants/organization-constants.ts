@@ -34,7 +34,7 @@ export class OrganizationManagementConstants {
     /**
      * Root organization object.
      *
-     * @@constant
+     * @constant
      * @type {OrganizationInterface}
      * @default
      */
