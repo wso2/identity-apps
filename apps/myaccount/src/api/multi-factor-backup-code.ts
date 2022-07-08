@@ -21,60 +21,21 @@ import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
 import { MultiFactorAuthenticationConstants } from "../constants/mfa-constants";
-import { BackupCodeInterface, PostBackupCodeActions } from "../models";
+import { BackupCodeInterface, BackupCodesCountInterface } from "../models";
 import { store } from "../store";
- 
+
 /**
  * Get an axios instance.
  *
  * @type {AxiosHttpClientInstance}
  */
 const httpClient = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
- 
-/**
- * Refresh backup codes of the authenticated user.
- */
-export const refreshBackupCode = (): Promise<BackupCodeInterface> => {
-    const requestConfig = {
-        data: {
-            action: PostBackupCodeActions.REFRESH
-        },
-        headers: {
-            "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost,
-            "Content-Type": "application/json"
-        },
-        method: HttpMethods.POST,
-        url: store.getState().config.endpoints.backupCode
-    };
- 
-    return httpClient(requestConfig)
-        .then((response: AxiosResponse) => {
-            if (response.status !== 200) {
-                return Promise.reject(`An error occurred. The server returned ${response.status}`);
-            } else {
-                return Promise.resolve(response.data as BackupCodeInterface);
-            }
-        })
-        .catch((error: AxiosError) => {
-            throw new IdentityAppsApiException(
-                MultiFactorAuthenticationConstants.MFA_BACKUP_CODE_REFRESH_ERROR,
-                error.stack,
-                error.code,
-                error.request,
-                error.response,
-                error.config);
-        });
-};
- 
+
 /**
  * Generate backup codes the authenticated user.
  */
-export const initBackupCode = (): Promise<BackupCodeInterface> => {
-     
+export const generateBackupCodes = (): Promise<BackupCodeInterface> => {
     const requestConfig = {
-        data: {
-            action: PostBackupCodeActions.INIT
-        },
         headers: {
             "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost,
             "Content-Type": "application/json"
@@ -82,7 +43,7 @@ export const initBackupCode = (): Promise<BackupCodeInterface> => {
         method: HttpMethods.POST,
         url: store.getState().config.endpoints.backupCode
     };
- 
+
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
             if (response.status !== 200) {
@@ -101,7 +62,7 @@ export const initBackupCode = (): Promise<BackupCodeInterface> => {
                 error.config);
         });
 };
- 
+
 /**
  * This API is used to delete backup codes of the authenticated user.
  */
@@ -114,13 +75,13 @@ export const deleteBackupCode = (): Promise<any> => {
         method: HttpMethods.DELETE,
         url: store.getState().config.endpoints.backupCode
     };
- 
+
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
- 
+
             return Promise.resolve(response);
         })
         .catch((error: AxiosError) => {
@@ -133,11 +94,11 @@ export const deleteBackupCode = (): Promise<any> => {
                 error.config);
         });
 };
- 
+
 /**
  * This API is used to retrieve backup codes of the authenticated user.
  */
-export const getBackupCodes = (): Promise<BackupCodeInterface> => {
+export const getRemainingBackupCodesCount = (): Promise<BackupCodesCountInterface> => {
     const requestConfig = {
         headers: {
             "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost,
@@ -146,14 +107,14 @@ export const getBackupCodes = (): Promise<BackupCodeInterface> => {
         method: HttpMethods.GET,
         url: store.getState().config.endpoints.backupCode
     };
- 
+
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
 
-            return Promise.resolve(response.data as BackupCodeInterface);
+            return Promise.resolve(response.data as BackupCodesCountInterface);
         })
         .catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
