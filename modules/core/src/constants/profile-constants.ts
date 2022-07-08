@@ -81,7 +81,8 @@ export class ProfileConstants {
         .set("META_DATA", "MetaData")
         .set("IDP_TYPE", "idpType")
         .set("IMS", "ims")
-        .set("PHOTOS", "photos");
+        .set("PHOTOS", "photos")
+        .set("META_VERSION", "meta.version");
 
     /**
      * States if the SCIM schema is mutable.

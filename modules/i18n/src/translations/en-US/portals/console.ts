@@ -1475,19 +1475,15 @@ export const console: ConsoleNS = {
                             grant: {
                                 children: {
                                     client_credential: {
-                                        hint: "Using 'openid' scope is not allowed with this grant type.",
+                                        hint: "This grant type does not support the 'openid' scope.",
                                         label: "(openid scope not allowed)"
                                     },
                                     implicit: {
-                                        hint: "Using the implicit grant with public applications is not recommended. " +
-                                            "{{productName}} adhere to security best practices, " +
-                                            "and do not implement the implicit grant.",
+                                        hint: "This grant type is not recommended.",
                                         label: "{{grantType}} (Not recommended)"
                                     },
                                     password: {
-                                        hint: "Using the password grant with public applications is not recommended. " +
-                                            "{{productName}} adhere to security best practices, " +
-                                            "and do not implement the password grant.",
+                                        hint: "This grant type is not recommended.",
                                         label: "{{grantType}} (Not recommended)"
                                     }
                                 },
@@ -8153,7 +8149,7 @@ export const console: ConsoleNS = {
                     addUserForm: {
                         buttons: {
                             radioButton: {
-                                label: "Select the method to reset the user password",
+                                label: "Select the method to set the user password",
                                 options: {
                                     askPassword: "Invite the user to set their own password",
                                     createPassword: "Set a temporary password for the user"
@@ -9021,7 +9017,7 @@ export const console: ConsoleNS = {
                     content: "If you delete this user store, the user data in this user store will also be deleted. "
                         + "Please proceed with caution.",
                     header: "Are you sure?",
-                    hint: "Please type <1>{{name}}</1> to confirm.",
+                    hint: "Please type confirm your action.",
                     message: "This action is irreversible and will permanently delete the"
                         + " selected user store and the data in it."
                 },

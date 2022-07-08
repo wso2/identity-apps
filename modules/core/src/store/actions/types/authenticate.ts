@@ -56,7 +56,7 @@ export enum CommonAuthenticateActionTypes {
     /**
      * Redux action type to set tenants.
      *
-     * @type {any[]}
+     * @type {string}
      */
      SET_TENANTS = "SET_TENANTS"
 

@@ -329,11 +329,11 @@ export const AppUtils = (function() {
          * 
          * @return {string}
          */
-        getTenantQualifiedAccountAppPath: function(append) {
+        getTenantQualifiedAccountAppPath: function(pathname) {
             return (((this.getTenantPrefix() !== "") && (this.getTenantName() !== "")) ?
                 _config.accountAppOrigin +
                 "/" + this.getTenantPrefix() +
-                "/" + this.getTenantName() : "") + append; 
+                "/" + this.getTenantName() : "") + pathname; 
         },
 
         /**

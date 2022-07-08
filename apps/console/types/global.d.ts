@@ -26,6 +26,7 @@ declare global {
     const serverOriginGlobal: string;
     const superTenantGlobal: string;
     const tenantPrefixGlobal: string;
+    const isAdaptiveAuthenticationAvailable: boolean;
 }
 
 export {};
