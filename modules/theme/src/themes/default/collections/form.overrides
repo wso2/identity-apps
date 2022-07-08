@@ -62,6 +62,18 @@
                 opacity: 1;
             }
         }
+
+        &.uppercase {
+            .ui.input {
+                > input {
+                    text-transform:uppercase;
+                }
+                
+                > input::placeholder {
+                    text-transform: none;
+                }   
+            }
+        }
     }
 }
 
