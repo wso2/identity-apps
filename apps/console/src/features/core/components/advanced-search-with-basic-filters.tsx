@@ -23,7 +23,7 @@ import { AdvancedSearch, AdvancedSearchPropsInterface, LinkButton, PrimaryButton
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Form, Grid } from "semantic-ui-react";
-import { commonConfig } from "../../../extensions/configs/common";
+import { commonConfig } from "../../../extensions";
 import { getAdvancedSearchIcons } from "../configs";
 
 /**
@@ -377,6 +377,6 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
 AdvancedSearchWithBasicFilters.defaultProps = {
     "data-testid": "advanced-search",
     dropdownPosition: "bottom left",
-    enableQuerySearch: commonConfig.advancedSearchWithBasicFilters.enableQuerySearch,
+    enableQuerySearch: commonConfig?.advancedSearchWithBasicFilters?.enableQuerySearch,
     showResetButton: false
 };
