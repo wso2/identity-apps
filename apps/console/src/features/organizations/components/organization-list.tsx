@@ -278,19 +278,19 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                             }
                             <Header.Content>
                                 { organization.name }
-                                <Header.Subheader
-                                    className="truncate ellipsis"
-                                    data-componentid={ `${ componentId }-item-sub-heading` }
-                                >
-                                    { organization.ref?.length > 80 ? (
-                                        <Popup
-                                            content={ organization.ref }
-                                            trigger={ <span>{ organization.ref }</span> }
-                                        />
-                                    ) : (
-                                        organization.ref
-                                    ) }
-                                </Header.Subheader>
+                                { /*<Header.Subheader*/ }
+                                { /*    className="truncate ellipsis"*/ }
+                                { /*    data-componentid={ `${ componentId }-item-sub-heading` }*/ }
+                                { /*>*/ }
+                                { /*    { organization.ref?.length > 80 ? (*/ }
+                                { /*        <Popup*/ }
+                                { /*            content={ organization.ref }*/ }
+                                { /*            trigger={ <span>{ organization.ref }</span> }*/ }
+                                { /*        />*/ }
+                                { /*    ) : (*/ }
+                                { /*        organization.ref*/ }
+                                { /*    ) }*/ }
+                                { /*</Header.Subheader>*/ }
                             </Header.Content>
                         </Header>
                     );
