@@ -7379,6 +7379,8 @@ export const console: ConsoleNS = {
                             message: "Organization deleted successfully"
                         }
                     },
+                    deleteOrganizationWithSubOrganizationError: "Organization {{ organizationName }} cannot be " +
+                        "deleted since it has one or more sub organizations.",
                     fetchOrganization: {
                         error: {
                             description: "{{description}}",

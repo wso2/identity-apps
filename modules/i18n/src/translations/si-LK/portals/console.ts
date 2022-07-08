@@ -5821,6 +5821,8 @@ export const console: ConsoleNS = {
                             message: "සංවිධානය සාර්ථකව මකා ඇත"
                         }
                     },
+                    deleteOrganizationWithSubOrganizationError: "{{ organizationName }} සංවිධානයට උප සංවිධාන එකක් හෝ " +
+                        "කිහිපයක් ඇති බැවින් එය මකා දැමිය නොහැක.",
                     fetchOrganization: {
                         error: {
                             description: "{{description}}",

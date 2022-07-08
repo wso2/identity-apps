@@ -2283,6 +2283,7 @@ export interface ConsoleNS {
                 notifications: {
                     fetchOrganization: Notification;
                     deleteOrganization: Notification;
+                    deleteOrganizationWithSubOrganizationError: string;
                     updateOrganization: Notification;
                     updateOrganizationAttributes: Notification;
                     addOrganization: Notification;

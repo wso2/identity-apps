@@ -138,6 +138,24 @@ export const OrganizationProfile: FunctionComponent<OrganizationProfilePropsInte
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
+                    if (error.response.data.code === "ORG-60007") {
+                        dispatch(
+                            addAlert({
+                                description: t(
+                                    "console:manage.features.organizations.notifications." +
+                                    "deleteOrganizationWithSubOrganizationError",
+                                    { organizationName: organization.name }
+                                ),
+                                level: AlertLevels.ERROR,
+                                message: t(
+                                    "console:manage.features.organizations.notifications.deleteOrganization.error" +
+                                    ".message"
+                                )
+                            })
+                        );
+
+                        return;
+                    }
                     dispatch(
                         addAlert({
                             description: error.response.data.description,
