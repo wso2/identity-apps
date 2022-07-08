@@ -543,7 +543,8 @@ module.exports = (env) => {
                     serverUrl: !isDeployedOnExternalServer
                         ? "<%=getServerURL(\"\", true, true)%>"
                         : "",
-                    authorizationCode: "<%=request.getParameter(\"code\")%>",
+                    importOwaspEncode: "<%@ page import=\"org.owasp.encoder.Encode\" %>",
+                    authorizationCode: "<%=Encode.forHtml(request.getParameter(\"code\"))%>",
                     getAdaptiveAuthenticationAvailability: !isDeployedOnExternalServer
                         ? "<%@ page import=\"static org.wso2.carbon.identity.application." +
                         "authentication.framework.util.FrameworkUtils.isAdaptiveAuthenticationAvailable\"%>"
@@ -570,7 +571,7 @@ module.exports = (env) => {
                         : "/",
                     basename: basename,
                     inject: false,
-                    sessionState: "<%=request.getParameter(\"session_state\")%>",
+                    sessionState: "<%=Encode.forHtml(request.getParameter(\"session_state\"))%>",
                     superTenantConstant: !isDeployedOnExternalServer
                         ? "<%=SUPER_TENANT_DOMAIN_NAME%>"
                         : "",
