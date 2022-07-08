@@ -671,8 +671,9 @@ export const myAccount: MyAccountNS = {
                 download: {
                     heading: "SAVE YOUR BACKUP CODES.",
                     info1: "You can only use each backup code once.",
-                    info2: "These codes were generated on: ",
-                    subHeading: "Keep these backup codes somewhere safe but accessible" 
+                    info2: "These codes were generated on ",
+                    subHeading: "You can use these backup codes to sign in to Asgardeo when you are " + 
+                        "away from your phone. Keep these backup codes somewhere safe but accessible."  
                 },
                 heading: "Backup Codes",
                 modals: {

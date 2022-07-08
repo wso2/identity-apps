@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { getUserNameWithoutDomain } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { CommonUtils } from "@wso2is/core/utils";
 import { ContentLoader, Heading, LinkButton } from "@wso2is/react-components";
@@ -89,6 +90,13 @@ export const BackupCodeAuthenticator : React.FunctionComponent<BackupCodeProps> 
     const minBackupCodesLimit: number = 4;
     
     /**
+     * Fetch remaining backup codes count
+     */
+    useEffect(() => {
+        getRemainingCount();
+    }, []);
+
+    /**
      * Starts backup code configuration flow
      */
     useEffect(() => {         
@@ -98,13 +106,6 @@ export const BackupCodeAuthenticator : React.FunctionComponent<BackupCodeProps> 
             initBackupCodes();
         }
     }, [ initBackupCodeFlow ]);
-
-    /**
-     * Fetch remaining backup codes count
-     */
-    useEffect(() => {
-        getRemainingCount();
-    }, []);
 
     /**
      * Fetch remaining backup codes count
@@ -214,11 +215,11 @@ export const BackupCodeAuthenticator : React.FunctionComponent<BackupCodeProps> 
             const blob = new Blob(
                 [
                     t(translateKey + "download.heading") + "\n",
+                    "Username: " + getUserNameWithoutDomain(profileDetails.profileInfo.userName) + "\n\n",
                     t(translateKey + "download.subHeading") + "\n\n",
-                    backupCodeString + "\n",
-                    "(" + profileDetails.username + ")\n\n",
+                    backupCodeString + "\n\n",
                     "*" + t(translateKey + "download.info1") + "\n",
-                    "*" + t(translateKey + "download.info2") + new Date()
+                    "*" + t(translateKey + "download.info2") + new Date() + "."
                 ],
     
                 { type: "application/json" }

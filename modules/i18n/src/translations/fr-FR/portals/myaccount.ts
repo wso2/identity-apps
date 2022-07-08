@@ -691,8 +691,10 @@ export const myAccount: MyAccountNS = {
                 download: {
                     heading: "ENREGISTREZ VOS CODES DE SECOURS.",
                     info1: "Vous ne pouvez utiliser chaque code de secours qu'une seule fois.",
-                    info2: "Ces codes ont été générés sur : ",
-                    subHeading: "Conservez ces codes de secours dans un endroit sûr mais accessible"
+                    info2: "Ces codes ont été générés sur ",
+                    subHeading: "Vous pouvez utiliser ces codes de secours pour vous connecter à " + 
+                        "Asgardeo lorsque vous êtes loin de votre téléphone. Conservez ces codes " + 
+                        "de sauvegarde dans un endroit sûr mais accessible."
                 },
                 heading: "Codes de sauvegarde",
                 modals: {

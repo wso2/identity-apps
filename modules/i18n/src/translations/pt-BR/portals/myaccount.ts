@@ -671,8 +671,9 @@ export const myAccount: MyAccountNS = {
                 download: {
                     heading: "SALVE SEUS CÓDIGOS DE BACKUP.",
                     info1: "Você só pode usar cada código de backup uma vez.",
-                    info2: "Esses códigos foram gerados em: ",
-                    subHeading: "Mantenha esses códigos de backup em algum lugar seguro, mas acessível"
+                    info2: "Esses códigos foram gerados em ",
+                    subHeading: "Você pode usar esses códigos de backup para entrar no Asgardeo quando estiver " + 
+                        "longe do telefone. Mantenha esses códigos de backup em algum lugar seguro, mas acessível."
                 },
                 heading: "Códigos de backup",
                 modals: {
