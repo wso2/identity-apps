@@ -60,7 +60,7 @@ import {
     UIConfigInterface
 } from "./features/core/models";
 import { AppState, setOrganization } from "./features/core/store";
-import { getOrganization, getOrganizations } from "./features/organizations/api";
+import { getOrganizations } from "./features/organizations/api";
 import { OrganizationListInterface } from "./features/organizations/models";
 
 /**
@@ -95,16 +95,17 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
     }, []);
 
     useEffect(() => {
-        if (!window[ "AppUtils" ].getConfig().organizationName) {
+        if (!window[ "AppUtils" ].getConfig().organizationName || !config.endpoints.organizations ) {
             return;
         }
+
         const orgName = window[ "AppUtils" ].getConfig().organizationName;
 
-        getOrganizations(`name eq ${ orgName }`, 1, null, null, true).then((response: OrganizationListInterface) => {
-            dispatch(setOrganization(response.organizations[0]));
+        getOrganizations(`id eq ${ orgName }`, 1, null, null, true).then((response: OrganizationListInterface) => {
+            dispatch(setOrganization(response.organizations[ 0 ]));
             dispatch(setServiceResourceEndpoints(Config.getServiceResourceEndpoints()));
         });
-    }, [ dispatch ]);
+    }, [ dispatch, config.endpoints.organizations ]);
 
     /**
      * Set the deployment configs in redux state.
