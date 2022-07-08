@@ -183,7 +183,7 @@ export class Config {
      */
     public static getServiceResourceEndpoints(): ServiceResourceEndpointsInterface {
         return {
-            ...getApplicationsResourceEndpoints(this.getDeploymentConfig().serverHost),
+            ...getApplicationsResourceEndpoints(this.resolveServerHost()),
             ...getApprovalsResourceEndpoints(this.getDeploymentConfig().serverHost),
             ...getClaimResourceEndpoints(this.getDeploymentConfig().serverHost),
             ...getCertificatesResourceEndpoints(this.getDeploymentConfig().serverHost),
