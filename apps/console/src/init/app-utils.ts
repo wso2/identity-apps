@@ -88,7 +88,9 @@ export const AppUtils = (function() {
                 return _config.appBaseNameForHistoryAPI;
             }
 
-            return this.isSaas() ? appBaseForHistoryAPIFallback + this.getAppBaseWithOrganization() : this.getAppBaseWithTenant();
+            return this.isSaas()
+                ? appBaseForHistoryAPIFallback + this.getAppBaseWithOrganization()
+                : this.getAppBaseWithTenant();
         },
 
         /**
