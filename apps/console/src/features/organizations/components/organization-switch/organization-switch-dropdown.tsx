@@ -142,6 +142,10 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                     dispatch(setOrganization(organization));
                     dispatch(setServiceResourceEndpoints(Config.getServiceResourceEndpoints()));
                     setIsDropDownOpen(false);
+                    history.push({
+                        pathname: AppConstants.getPaths()
+                            .get("USERS")
+                    });
                 } }
             >
                 {
