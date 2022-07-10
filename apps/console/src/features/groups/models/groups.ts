@@ -108,6 +108,7 @@ export interface GroupSCIMOperationsInterface {
  */
 export interface SearchGroupInterface {
     schemas: string[];
+    domain?: string;
     startIndex: number;
     filter: string;
 }

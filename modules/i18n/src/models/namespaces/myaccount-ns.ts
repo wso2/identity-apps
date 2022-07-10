@@ -357,6 +357,7 @@ export interface MyAccountNS {
                 enableHint: string;
                 addHint: string;
                 deleteHint: string;
+                regenerate: string;
                 modals: {
                     heading: string;
                     scan: {
@@ -366,6 +367,7 @@ export interface MyAccountNS {
                         messageHeading: string;
                         messageBody: string;
                         authenticatorApps: string;
+                        regenerateWarning: string;
                     };
                     verify: {
                         heading: string;
@@ -395,6 +397,14 @@ export interface MyAccountNS {
                     deleteError: {
                         genericError: NotificationItem;
                         error: NotificationItem;
+                    };
+                    updateAuthenticatorError: {
+                        error: NotificationItem;
+                        genericError: NotificationItem;
+                    };
+                    deleteSuccess: {
+                        genericMessage: string;
+                        message: string;
                     };
                 };
             };

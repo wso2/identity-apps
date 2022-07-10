@@ -92,7 +92,7 @@ export const InboundPassiveStsForm: FunctionComponent<InboundPassiveStsFormProps
      * Set the certificate type.
      */
     useEffect(() => {
-        if (certificate?.type){
+        if (certificate?.type) {
             setSelectedCertType(certificate?.type);
         }
 

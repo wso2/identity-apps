@@ -417,7 +417,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                     {
                         category.links.map((link: HeaderLinkInterface, linkIndex: number) => {
 
-                            if (!link){
+                            if (!link) {
                                 return;
                             }
 

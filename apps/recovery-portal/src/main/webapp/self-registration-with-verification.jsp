@@ -135,6 +135,8 @@
                 errorMsg = "Username '" + username + "' is already taken.";
             } else if (SelfRegistrationStatusCodes.CODE_USER_NAME_INVALID.equalsIgnoreCase(errorCode)) {
                 errorMsg = user.getUsername() + " is an invalid user name. Please pick a valid username.";
+            } else if (SelfRegistrationStatusCodes.ERROR_CODE_INVALID_USERSTORE.equalsIgnoreCase(errorCode)) {
+                errorMsg = "Invalid user store domain - " + user.getRealm() + ".";
             }
             request.setAttribute("errorMsg", errorMsg + " Please contact the administrator to fix this issue.");
             request.setAttribute("errorCode", errorCode);

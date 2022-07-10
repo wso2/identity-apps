@@ -24,7 +24,7 @@
     <groupId>org.wso2.identity.apps</groupId>
     <artifactId>identity-apps</artifactId>
     <packaging>pom</packaging>
-    <version>1.2.1018-SNAPSHOT</version>
+    <version>1.2.1033-SNAPSHOT</version>
     <name>WSO2 Identity Server Apps - Parent</name>
     <description>WSO2 Identity Server Web Apps</description>
 
@@ -662,7 +662,7 @@
         <carbon.extension.identity.authenticator.version>3.0.0</carbon.extension.identity.authenticator.version>
         <org.wso2.carbon.identity.association.account>5.1.5</org.wso2.carbon.identity.association.account>
         <identity.extension.utils>1.0.8</identity.extension.utils>
-        <carbon.identity.framework.version>5.21.0</carbon.identity.framework.version>
+        <carbon.identity.framework.version>5.21.3</carbon.identity.framework.version>
         <carbon.identity.framework.imp.pkg.version.range>[5.0.0, 6.0.0)</carbon.identity.framework.imp.pkg.version.range>
         <carbon.identity.oauth.version>6.7.130</carbon.identity.oauth.version>
         <carbon.identity.oauth.imp.pkg.version.range>[6.1.0, 7.0.0)</carbon.identity.oauth.imp.pkg.version.range>

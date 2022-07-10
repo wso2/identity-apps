@@ -41,8 +41,9 @@ export interface CommonConfig {
         getHeaderSubPanelExtensions: () => HeaderSubPanelItemInterface[];
         /**
          * Get the user dropdown link extensions.
-         * @param {string} tenantDomain - Current tenant
-         * @param {any[]} associatedTenants - Tenant list
+         * 
+         * @param {string} tenantDomain - Current tenant.
+         * @param {any[]} associatedTenants - Tenant list.
          * @return {HeaderLinkCategoryInterface[]}
          */
         getUserDropdownLinkExtensions: (tenantDomain: string,
