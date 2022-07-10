@@ -14,6 +14,7 @@
         "utils"
     ],
     "scripts": {
+        "preinstall": "npx npm-force-resolutions",
         "prebuild": "npm run clean",
         "build": "npm run compile",
         "clean": "rimraf ./dist",
@@ -46,6 +47,7 @@
         "eslint-plugin-import": "^2.20.2",
         "eslint-plugin-react": "^7.18.3",
         "eslint-plugin-react-hooks": "^4.0.0",
+        "npm-force-resolutions": "0.0.10",
         "rimraf": "^3.0.2",
         "run-script-os": "^1.0.7",
         "ts-jest": "^26.4.0",
@@ -54,5 +56,8 @@
     "peerDependencies": {
         "@types/react": "*",
         "react": "*"
+    },
+    "resolutions": {
+        "@types/react": "16.9.0"
     }
 }

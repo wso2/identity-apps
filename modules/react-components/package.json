@@ -14,6 +14,7 @@
     "main": "dist/src/index.js",
     "types": "dist/types/index.d.ts",
     "scripts": {
+        "preinstall": "npx npm-force-resolutions",
         "start:storybook": "NODE_PATH=src start-storybook -p 6006 -c .storybook -s ./dist",
         "build:storybook": "build-storybook",
         "build": "npm run clean && npm run compile && npm run transpile",
@@ -97,6 +98,7 @@
         "eslint-plugin-react": "^7.18.3",
         "eslint-plugin-react-hooks": "^4.0.0",
         "jest": "^26.4.2",
+        "npm-force-resolutions": "0.0.10",
         "react-docgen-typescript-loader": "^3.6.0",
         "rimraf": "^3.0.2",
         "run-script-os": "^1.0.7",
@@ -104,5 +106,8 @@
         "ts-node": "^8.5.4",
         "tsconfig-paths-webpack-plugin": "^3.2.0",
         "typescript": "^4.2.2"
+    },
+    "resolutions": {
+        "@types/react": "16.9.0"
     }
 }
