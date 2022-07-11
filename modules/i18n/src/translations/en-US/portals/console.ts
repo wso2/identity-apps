@@ -7300,7 +7300,7 @@ export const console: ConsoleNS = {
                     },
                     tabTitles: {
                         attributes: "Attributes",
-                        profile: "Profile"
+                        overview: "Overview"
                     }
                 },
                 forms: {
