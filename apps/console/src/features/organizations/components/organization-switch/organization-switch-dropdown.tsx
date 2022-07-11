@@ -196,7 +196,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                                 </Placeholder>
                             ) }
 
-                            { OrganizationUtils.isRootOrganization(organization) && (
+                            { !OrganizationUtils.isRootOrganization(organization) && (
                                 <GenericIcon
                                     transparent
                                     inline
