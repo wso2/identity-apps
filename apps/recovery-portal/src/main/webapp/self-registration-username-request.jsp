@@ -61,6 +61,8 @@
     } else if (StringUtils.equalsIgnoreCase(SelfRegistrationStatusCodes.ERROR_CODE_INVALID_EMAIL_USERNAME,
             errorCode)) {
         errorMsg = "Username is invalid. Username should be in email format.";
+    } else if (SelfRegistrationStatusCodes.ERROR_CODE_INVALID_USERSTORE.equalsIgnoreCase(errorCode)) {
+        errorMsg = "Invalid user store domain - " + user.getRealm();
     } else if (errorMsgObj != null) {
         errorMsg = errorMsgObj.toString();
     }

@@ -20,6 +20,11 @@ import { AsgardeoSPAClient } from "@asgardeo/auth-react";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
 import { store } from "../../core";
+import useRequest, {
+    RequestConfigInterface,
+    RequestErrorInterface,
+    RequestResultInterface
+} from "../../core/hooks/use-request";
 import {
     CreateGroupInterface,
     GroupListInterface,
@@ -64,6 +69,48 @@ export const getGroupList = (domain: string, excludedAttributes?: string): Promi
         .catch((error: AxiosError) => {
             return Promise.reject(error);
         });
+};
+
+/**
+ * Hook to get the Groups List from the API.
+ *
+ * @param {string} domain - User store domain.
+ * @param {string} excludedAttributes - Excluded Attributes.
+ * @returns {RequestResultInterface<Data, Error>}
+ */
+export const useGroupList = <Data = GroupListInterface, Error = RequestErrorInterface>(
+    domain: string,
+    excludedAttributes?: string
+): RequestResultInterface<Data, Error> => {
+
+    const requestConfig: RequestConfigInterface = {
+        headers: {
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        params: {
+            domain,
+            excludedAttributes
+        },
+        url: store.getState().config.endpoints.groups
+    };
+
+    const {
+        data,
+        error,
+        isValidating,
+        mutate,
+        response
+    } = useRequest<Data, Error>(requestConfig);
+
+    return {
+        data,
+        error,
+        isLoading: !error && !data,
+        isValidating,
+        mutate,
+        response
+    };
 };
 
 /**

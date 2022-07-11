@@ -253,7 +253,7 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
             <div className="list-container">
                 { children }
                 {
-                    (showPagination && totalListSize)
+                    (showPagination)
                         ? (
                             <Pagination
                                 minimal={ minimalPagination }
@@ -265,6 +265,7 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
                                 totalPages={ totalPages }
                                 onPageChange={ onPageChange }
                                 onItemsPerPageDropdownChange={ onItemsPerPageDropdownChange }
+                                hidden={ totalListSize === 0 || totalListSize === undefined }
                                 { ...paginationOptions }
                             />
                         )
