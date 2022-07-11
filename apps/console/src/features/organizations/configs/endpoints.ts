@@ -26,6 +26,6 @@ import { OrganizationResourceEndpointsInterface } from "../models";
  */
 export const getOrganizationsResourceEndpoints = (serverHost: string): OrganizationResourceEndpointsInterface => {
     return {
-        organizations: `${ serverHost }/o/root4a8d-113f-4211-a0d5-efe36b082211/api/server/v1`
+        organizations: `${ serverHost }/o/10084a8d-113f-4211-a0d5-efe36b082211/api/server/v1`
     };
 };

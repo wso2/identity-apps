@@ -291,4 +291,15 @@ export class RouteUtils {
             }
         });
     }
+
+    /**
+     * Filters and returns only the routes that are enabled for organizations.
+     *
+     * @param routes - Set of routes.
+     *
+     * @returns {RouteInterface[]}
+     */
+    public static filterOrganizationEnabledRoutes(routes: RouteInterface[]): RouteInterface[] {
+        return routes.filter((route: RouteInterface) => AppConstants.ORGANIZATION_ENABLED_ROUTES.includes(route.id));
+    }
 }

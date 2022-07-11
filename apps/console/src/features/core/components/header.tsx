@@ -38,6 +38,8 @@ import { Container, Menu } from "semantic-ui-react";
 import { commonConfig } from "../../../extensions";
 import { getApplicationList } from "../../applications/api";
 import { ApplicationListInterface } from "../../applications/models";
+import OrganizationSwitchDropdown
+    from "../../organizations/components/organization-switch/organization-switch-dropdown";
 import { AppSwitcherIcons, getAppHeaderIcons } from "../configs";
 import { AppConstants } from "../constants";
 import { history } from "../helpers";
@@ -382,6 +384,10 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                     showAppSwitchButton && commonConfig?.header?.renderAppSwitcherAsDropdown && {
                         component: renderAppSwitcher(),
                         floated: "right"
+                    },
+                    {
+                        component: <OrganizationSwitchDropdown />,
+                        floated: "left"
                     }
                 ])
             }
