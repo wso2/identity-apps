@@ -32,12 +32,12 @@ export class OrganizationManagementConstants {
         .set("ORGANIZATION_READ", "organizations.read");
 
     /**
-     * Root organization id as per alpha pack 2
+     * Super organization id as per alpha pack 2
      */
     public static readonly ROOT_ORGANIZATION_ID: string = "10084a8d-113f-4211-a0d5-efe36b082211";
 
     /**
-     * Root organization object.
+     * Super organization object.
      *
      * @constant
      * @type {OrganizationInterface}
@@ -45,7 +45,7 @@ export class OrganizationManagementConstants {
      */
     public static readonly ROOT_ORGANIZATION: OrganizationInterface = {
         id: this.ROOT_ORGANIZATION_ID,
-        name: "Root Organization",
+        name: "Super",
         ref: ""
     };
 }
