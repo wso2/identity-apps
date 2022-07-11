@@ -15,10 +15,9 @@ import { useDispatch } from "react-redux";
 import { Button, Divider, Grid } from "semantic-ui-react";
 import { FeatureConfigInterface } from "../../../core";
 import { deleteOrganization, patchOrganization } from "../../api";
-import { ORGANIZATION_TYPE } from "../../constants";
 import { OrganizationPatchData, OrganizationResponseInterface } from "../../models";
 
-interface OrganizationProfilePropsInterface extends SBACInterface<FeatureConfigInterface>,
+interface OrganizationOverviewPropsInterface extends SBACInterface<FeatureConfigInterface>,
     TestableComponentInterface {
     /**
      * Organization info
@@ -38,8 +37,8 @@ interface OrganizationProfilePropsInterface extends SBACInterface<FeatureConfigI
     onOrganizationDelete: (organizationId: string) => void;
 }
 
-export const OrganizationProfile: FunctionComponent<OrganizationProfilePropsInterface> = (
-    props: OrganizationProfilePropsInterface
+export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsInterface> = (
+    props: OrganizationOverviewPropsInterface
 ): ReactElement => {
 
     const {
@@ -201,26 +200,9 @@ export const OrganizationProfile: FunctionComponent<OrganizationProfilePropsInte
                                 triggerSubmit={ (submit) => (submitForm.current = submit) }
                             >
                                 {
-                                    organization?.id && (
-                                        <Field.Input
-                                            data-testid={ `${testId}-profile-form-id-input` }
-                                            name="id"
-                                            label={ t("console:manage.features.organizations.edit.fields.id.label") }
-                                            value={ organization.id }
-                                            required={ true }
-                                            readOnly={ true }
-                                            ariaLabel={ t("console:manage.features.organizations.edit." +
-                                                "fields.ariaLabel") }
-                                            inputType="identifier"
-                                            maxLength={ 32 }
-                                            minLength={ 3 }
-                                        />
-                                    )
-                                }
-                                {
                                     organization?.name && (
                                         <Field.Input
-                                            data-testid={ `${testId}-profile-form-name-input` }
+                                            data-testid={ `${testId}-overview-form-name-input` }
                                             name="name"
                                             label={ t("console:manage.features.organizations.edit.fields.name.label") }
                                             required={ true }
@@ -239,7 +221,7 @@ export const OrganizationProfile: FunctionComponent<OrganizationProfilePropsInte
                                 {
                                     (
                                         <Field.Textarea
-                                            data-testid={ `${testId}-profile-form-description-input` }
+                                            data-testid={ `${testId}-overview-form-description-input` }
                                             name="description"
                                             label={ t("console:manage.features.organizations.edit.fields." +
                                                 "description.label") }
@@ -259,7 +241,7 @@ export const OrganizationProfile: FunctionComponent<OrganizationProfilePropsInte
                                 {
                                     organization?.domain && (
                                         <Field.Input
-                                            data-testid={ `${testId}-profile-form-domain-input` }
+                                            data-testid={ `${testId}-overview-form-domain-input` }
                                             name="domain"
                                             label={ t("console:manage.features.organizations.edit.fields." +
                                                 "domain.label") }
@@ -278,7 +260,7 @@ export const OrganizationProfile: FunctionComponent<OrganizationProfilePropsInte
                                 {
                                     organization?.created && (
                                         <Field.Input
-                                            data-testid={ `${testId}-profile-form-created-input` }
+                                            data-testid={ `${testId}-overview-form-created-input` }
                                             name="created"
                                             label={ t("console:manage.features.organizations.edit.fields." +
                                                 "created.label") }
@@ -298,7 +280,7 @@ export const OrganizationProfile: FunctionComponent<OrganizationProfilePropsInte
                                 {
                                     organization?.lastModified && (
                                         <Field.Input
-                                            data-testid={ `${testId}-profile-form-last-modified-input` }
+                                            data-testid={ `${testId}-overview-form-last-modified-input` }
                                             name="lastModified"
                                             label={ t("console:manage.features.organizations.edit.fields." +
                                                 "lastModified.label") }
@@ -369,7 +351,7 @@ export const OrganizationProfile: FunctionComponent<OrganizationProfilePropsInte
                     showOrgDeleteConfirmation && (
                         <ConfirmationModal
                             onClose={ (): void => setShowOrgDeleteConfirmationModal(false) }
-                            type="warning"
+                            type="negative"
                             open={ showOrgDeleteConfirmation }
                             assertionHint={ t("console:manage.features.organizations.confirmations." +
                                 "deleteOrganization.assertionHint") }
@@ -403,6 +385,6 @@ export const OrganizationProfile: FunctionComponent<OrganizationProfilePropsInte
 /**
  * Default props for the component.
  */
-OrganizationProfile.defaultProps = {
-    "data-testid": "organization-profile"
+OrganizationOverview.defaultProps = {
+    "data-testid": "organization-overview"
 };
