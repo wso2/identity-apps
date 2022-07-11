@@ -138,6 +138,8 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
     const [ isMobileViewport, setIsMobileViewport ] = useState<boolean>(false);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
+    const organizationLoading: boolean
+        = useSelector((state: AppState) => state?.organization?.getOrganizationLoading);
 
     const getOrganizationEnabledRoutes = useCallback((): RouteInterface[] => {
         if (!OrganizationUtils.isRootOrganization(organization.organization)) {
@@ -441,6 +443,10 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
     const resolveRoutes = (): RouteInterface[] => {
         const resolvedRoutes = [];
 
+        if(organizationLoading){
+            return resolvedRoutes;
+        }
+
         const recurse = (routesArr): void => {
             routesArr.forEach((route, key) => {
                 if (route.path) {
@@ -505,7 +511,7 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
                     mobileSidePanelVisibility={ mobileSidePanelVisibility }
                     onSidePanelItemClick={ handleSidePanelItemClick }
                     onSidePanelPusherClick={ handleSidePanelPusherClick }
-                    routes={ CommonRouteUtils.sanitizeForUI(cloneDeep(filteredRoutes),
+                    routes={ !organizationLoading && CommonRouteUtils.sanitizeForUI(cloneDeep(filteredRoutes),
                         AppUtils.getHiddenRoutes()) }
                     selected={ selectedRoute }
                     translationHook={ t }
