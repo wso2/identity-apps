@@ -59,7 +59,7 @@ import {
     ServiceResourceEndpointsInterface,
     UIConfigInterface
 } from "./features/core/models";
-import { AppState, setOrganization } from "./features/core/store";
+import { AppState, setGetOrganizationLoading, setOrganization } from "./features/core/store";
 import { getOrganizations } from "./features/organizations/api";
 import { OrganizationListInterface } from "./features/organizations/models";
 
@@ -95,15 +95,20 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
     }, []);
 
     useEffect(() => {
-        if (!window[ "AppUtils" ].getConfig().organizationName || !config.endpoints.organizations ) {
+        if (!window[ "AppUtils" ].getConfig().organizationName || !config.endpoints.organizations) {
+            dispatch(setGetOrganizationLoading(false));
+
             return;
         }
 
         const orgName = window[ "AppUtils" ].getConfig().organizationName;
 
+        dispatch(setGetOrganizationLoading(true));
         getOrganizations(`id eq ${ orgName }`, 1, null, null, true).then((response: OrganizationListInterface) => {
             dispatch(setOrganization(response.organizations[ 0 ]));
             dispatch(setServiceResourceEndpoints(Config.getServiceResourceEndpoints()));
+        }).finally(() => {
+            dispatch(setGetOrganizationLoading(false));
         });
     }, [ dispatch, config.endpoints.organizations ]);
 
@@ -341,7 +346,13 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
                                                                 ? (
                                                                     <link
                                                                         href={
-                                                                            `${window?.origin}${window?.publicPath}/libs/themes/${theme}/theme.${window?.themeHash}.min.css`
+                                                                            `${
+                                                                                window?.origin
+                                                                            }${
+                                                                                window?.publicPath
+                                                                            }/libs/themes/${
+                                                                                theme
+                                                                            }/theme.${ window?.themeHash }.min.css`
                                                                         }
                                                                         rel="stylesheet"
                                                                         type="text/css"
