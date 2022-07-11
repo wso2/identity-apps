@@ -5871,7 +5871,7 @@ export const console: ConsoleNS = {
                     },
                     tabTitles: {
                         attributes: "Les attributs",
-                        profile: "Profil"
+                        overview: "Aperçu"
                     }
                 },
                 forms: {

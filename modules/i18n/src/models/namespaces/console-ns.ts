@@ -2304,7 +2304,7 @@ export interface ConsoleNS {
                     description: string;
                     back: string;
                     tabTitles: {
-                        profile: string;
+                        overview: string;
                         attributes: string;
                     },
                     fields: {
