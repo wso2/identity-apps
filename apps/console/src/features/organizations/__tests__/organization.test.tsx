@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor, within } from "@unit-testing";
 import { AccessControlProvider } from "@wso2is/access-control";
 import React from "react";
 import ReduxStoreStateMock from "../../../../test-configs/__mocks__/redux/redux-store-state";
