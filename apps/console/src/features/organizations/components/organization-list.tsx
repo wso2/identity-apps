@@ -460,7 +460,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
             { deletingOrganization && (
                 <ConfirmationModal
                     onClose={ (): void => setShowDeleteConfirmationModal(false) }
-                    type="warning"
+                    type="negative"
                     open={ showDeleteConfirmationModal }
                     assertionHint={ t(
                         "console:manage.features.organizations.confirmations.deleteOrganization." + "assertionHint"
