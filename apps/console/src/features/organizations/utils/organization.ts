@@ -28,7 +28,7 @@ export class OrganizationUtils {
     private constructor() { }
 
     /**
-     * Checks if the selected organization is the root organization.
+     * Checks if the selected organization is the Super organization.
      *
      * @param {OrganizationInterface} organization Organization object.
      *
