@@ -114,6 +114,10 @@ export interface PaginationPropsInterface extends PaginationProps, IdentifiableC
      * Toggles pagination reset.
      */
     resetPagination?: boolean;
+    /**
+     * Hide the pagination bar wthout losing state.
+     */
+    hidden?: boolean;
 }
 
 /**
@@ -135,6 +139,7 @@ export const Pagination: FunctionComponent<PaginationPropsInterface> = (
         className,
         disableNextButton,
         disablePreviousButton,
+        hidden,
         itemsPerPageDropdownLabel,
         itemsPerPageDropdownLowerLimit,
         itemsPerPageDropdownMultiple,
@@ -155,6 +160,9 @@ export const Pagination: FunctionComponent<PaginationPropsInterface> = (
 
     const classes = classNames(
         "pagination-bar",
+        {
+            hidden
+        },
         className
     );
 
