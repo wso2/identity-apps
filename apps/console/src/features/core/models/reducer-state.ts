@@ -76,6 +76,7 @@ export interface AccessControlReducerStateInterface {
  */
 export interface OrganizationReducerStateInterface {
     organization?: OrganizationInterface;
+    getOrganizationLoading: boolean;
 }
 
 export interface AuthReducerStateInterface extends CommonAuthReducerStateInterface, AuthenticatedUserInfo { }
