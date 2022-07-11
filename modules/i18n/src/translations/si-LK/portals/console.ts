@@ -5742,7 +5742,7 @@ export const console: ConsoleNS = {
                     },
                     tabTitles: {
                         attributes: "ගුණාංග",
-                        profile: "පැතිකඩ"
+                        overview: "දළ විශ්ලේෂණය"
                     }
                 },
                 forms: {
