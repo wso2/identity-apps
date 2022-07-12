@@ -19,7 +19,8 @@
 import { OrganizationInterface } from "../../../../organizations/models";
 
 export enum OrganizationActionTypes {
-    SET_ORGANIZATION
+    SET_ORGANIZATION,
+    SET_GET_ORGANIZATION_LOADING
 }
 
 export interface SetOrganizationActionInterface {
@@ -27,4 +28,9 @@ export interface SetOrganizationActionInterface {
     type: OrganizationActionTypes.SET_ORGANIZATION;
 }
 
-export type OrganizationAction = SetOrganizationActionInterface;
+export interface SetGetOrganizationLoadingActionInterface {
+    payload: boolean;
+    type: OrganizationActionTypes.SET_GET_ORGANIZATION_LOADING;
+}
+
+export type OrganizationAction = SetOrganizationActionInterface | SetGetOrganizationLoadingActionInterface;

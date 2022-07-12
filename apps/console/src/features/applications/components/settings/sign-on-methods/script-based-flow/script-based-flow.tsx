@@ -71,6 +71,13 @@ interface AdaptiveScriptsPropsInterface extends TestableComponentInterface {
      */
     authenticationSequence: AuthenticationSequenceInterface;
     /**
+     * Conditional auth content toggle state and its
+     * mutation function.
+     */
+    showConditionalAuthContent: boolean;
+    updateShowConditionalAuthContent: (next: boolean) => void;
+    
+    /**
      * The number of authentication steps.
      */
     authenticationSteps: number;
@@ -126,7 +133,8 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
         readOnly,
         authenticationSteps,
         isDefaultScript,
-        isMinimized,
+        showConditionalAuthContent,
+        updateShowConditionalAuthContent,
         onAdaptiveScriptReset,
         ["data-testid"]: testId
     } = props;
@@ -153,7 +161,6 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     const [ isNewlyAddedScriptTemplate, setIsNewlyAddedScriptTemplate ] = useState<boolean>(false);
     const [ showScriptResetWarning, setShowScriptResetWarning ] = useState<boolean>(false);
     const [ showScriptTemplateChangeWarning, setShowScriptTemplateChangeWarning ] = useState<boolean>(false);
-    const [ showConditionalAuthContent, setShowConditionalAuthContent ] = useState<boolean>(isMinimized);
     const [ isEditorFullScreen, setIsEditorFullScreen ] = useState<boolean>(false);
     const [ showAddSecretModal, setShowAddSecretModal ] = useState<boolean>(false);
     const [ editorInstance, setEditorInstance ] = useState<codemirror.Editor>(undefined);
@@ -339,23 +346,23 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
 
         // If the user has read only access, show the script editor.
         if (readOnly) {
-            setShowConditionalAuthContent(true);
+            updateShowConditionalAuthContent(true);
 
             return;
         }
 
         // If there is a script and if the script is not a default script,
         // assume the user has modified the script and show the editor.
-        if (authenticationSequence?.script
+        if (!showConditionalAuthContent && authenticationSequence?.script
             && !AdaptiveScriptUtils.isDefaultScript(authenticationSequence.script,
                 authenticationSequence?.steps?.length)) {
 
-            setShowConditionalAuthContent(true);
+            updateShowConditionalAuthContent(true);
 
             return;
         }
 
-        setShowConditionalAuthContent(false);
+        updateShowConditionalAuthContent(false);
     }, [ authenticationSequence ]);
 
     /**
@@ -374,7 +381,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     const resolveAdaptiveScript = (script: string): string | string[] => {
         // Check if there is no script defined and the step count is o.
         // If so, return the default script.
-        if (!script && authenticationSequence?.steps?.length === 0) {
+        if (showConditionalAuthContent && !script && authenticationSequence?.steps?.length === 0) {
             setSourceCode(AdaptiveScriptUtils.getDefaultScript());
             setIsScriptFromTemplate(false);
 
@@ -455,7 +462,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
         setSourceCode(AdaptiveScriptUtils.generateScript(authenticationSteps + 1));
         setIsScriptFromTemplate(false);
         onAdaptiveScriptReset();
-        setShowConditionalAuthContent(false);
+        updateShowConditionalAuthContent(false);
     };
 
     /**
@@ -497,7 +504,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
         }
 
         eventPublisher.publish("application-sign-in-method-enable-conditional-authentication");
-        setShowConditionalAuthContent(true);
+        updateShowConditionalAuthContent(true);
     };
 
     /**
@@ -1205,7 +1212,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                         <Menu.Menu position="right">
                                             { resolveApiDocumentationLink() }
                                             <Menu.Item 
-                                            className={ `action ${isSecretsDropdownOpen ? "selected-secret" : "" }` }>
+                                                className={ `action ${isSecretsDropdownOpen ? "selected-secret" : "" }` }>
                                                 <div>
                                                     { renderSecretListDropdown() }
                                                 </div>

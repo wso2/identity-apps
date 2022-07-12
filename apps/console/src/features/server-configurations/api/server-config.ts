@@ -21,6 +21,7 @@ import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { ServerConfigurationsInterface } from "./governance-connectors";
 import { store } from "../../core";
+import useRequest, { RequestErrorInterface, RequestResultInterface } from "../../core/hooks/use-request";
 import { ServerConfigurationsConstants } from "../constants";
 
 /**
@@ -69,4 +70,31 @@ export const getServerConfigs = () : Promise<ServerConfigurationsInterface> => {
                 error.config);
         });
 
+};
+
+/**
+ * Hook to get the server configurations.
+ * 
+ * @returns {RequestResultInterface<Data, Error>}
+ */
+export const useServerConfigs = <Data = ServerConfigurationsInterface,
+    Error = RequestErrorInterface>(): RequestResultInterface<Data, Error> => {
+
+    const requestConfig = {
+        headers: {
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: store.getState().config.endpoints.serverConfigurations
+    };
+
+    const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig);
+
+    return {
+        data,
+        error: error,
+        isLoading: !error && !data,
+        isValidating,
+        mutate: mutate
+    };
 };

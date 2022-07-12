@@ -21,6 +21,7 @@ import { OrganizationReducerStateInterface } from "../../models";
 import { OrganizationAction, OrganizationActionTypes } from "../actions/types";
 
 const initialState: OrganizationReducerStateInterface = {
+    getOrganizationLoading: true,
     organization: OrganizationManagementConstants.ROOT_ORGANIZATION
 };
 
@@ -33,6 +34,11 @@ export const organizationReducer = (
             return {
                 ...state,
                 organization: action.payload
+            };
+        case OrganizationActionTypes.SET_GET_ORGANIZATION_LOADING:
+            return {
+                ...state,
+                getOrganizationLoading: action.payload
             };
         default:
             return {

@@ -273,6 +273,10 @@ export const myAccount: MyAccountNS = {
                                 "Veuillez réessayer",
                             message: "Erreur lors de la modification du mot de passe"
                         },
+                        passwordCaseRequirement: "Au moins une lettre majuscule et minuscule",
+                        passwordCharRequirement: "Au moins un des symboles !@#$%^&*",
+                        passwordLengthRequirement: "Plus de 8 caractères",
+                        passwordNumRequirement: "Au moins un numéro",
                         submitError: {
                             description: "{{description}}",
                             message: "Erreur lors de la modification du mot de passe"
@@ -591,7 +595,7 @@ export const myAccount: MyAccountNS = {
         },
         mfa: {
             authenticatorApp: {
-                addHint: "Ajouter un nouveau code QR",
+                addHint: "Configurer le code QR",
                 configuredDescription: "Vous pouvez utiliser les codes TOTP de votre " +
                     "application d'authentification configurée pour une authentification à " +
                     "deux facteurs. Si vous n'avez pas accès à l'application, vous pouvez configurer " +
@@ -620,7 +624,10 @@ export const myAccount: MyAccountNS = {
                         heading: "Scannez ce code QR à l'aide d'une application d'authentification",
                         messageBody: "Vous pouvez utiliser une application d'authentification compatible dans " +
                             "cette liste :",
-                        messageHeading: "Vous n'avez pas d'application d'authentification ?"
+                        messageHeading: "Vous n'avez pas d'application d'authentification ?",
+                        regenerateWarning: "Lorsque vous régénérez un nouveau code QR, vous devez le scanner et " + 
+                            "reconfigurer votre application d'authentification. Votre configuration précédente " + 
+                            "ne fonctionnera plus."
                     },
                     toolTip: "Vous n'avez pas d'application? Téléchargez une application d'authentification " +
                         "telle que Google Authenticator depuis <3> App Store </3> ou <3> Google Play </3>",
@@ -646,6 +653,10 @@ export const myAccount: MyAccountNS = {
                             message: "Quelque chose s'est mal passé"
                         }
                     },
+                    deleteSuccess: {
+                        genericMessage: "Suppression réussie",
+                        message: "La configuration TOTP a bien été supprimée."
+                    },
                     initError: {
                         error: {
                             description: "{{error}}",
@@ -665,15 +676,29 @@ export const myAccount: MyAccountNS = {
                             description: "Une erreur s'est produite lors de la récupération d'un nouveau code QR",
                             message: "Quelque chose s'est mal passé"
                         }
+                    },
+                    updateAuthenticatorError: {
+                        error: {
+                            description: "{{error}}",
+                            message: "Quelque chose s'est mal passé"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la tentative de mise " + 
+                                "à jour de la liste des authentificateurs activés",
+                            message: "Quelque chose s'est mal passé"
+                        }
                     }
-                }
+                },
+                regenerate: "Régénérer"
             },
             backupCode: {
                 download: {
                     heading: "ENREGISTREZ VOS CODES DE SECOURS.",
                     info1: "Vous ne pouvez utiliser chaque code de secours qu'une seule fois.",
-                    info2: "Ces codes ont été générés sur : ",
-                    subHeading: "Conservez ces codes de secours dans un endroit sûr mais accessible"
+                    info2: "Ces codes ont été générés sur ",
+                    subHeading: "Vous pouvez utiliser ces codes de secours pour vous connecter à " + 
+                        "Asgardeo lorsque vous êtes loin de votre téléphone. Conservez ces codes " + 
+                        "de sauvegarde dans un endroit sûr mais accessible."
                 },
                 heading: "Codes de sauvegarde",
                 modals: {

@@ -127,6 +127,10 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
+    const organizationLoading: boolean
+            = useSelector((state: AppState) => state?.organization?.getOrganizationLoading);
+
+
     const getOrganizationEnabledRoutes = useCallback((): RouteInterface[] => {
         if (!OrganizationUtils.isRootOrganization(organization.organization)) {
             return RouteUtils.filterOrganizationEnabledRoutes(getDeveloperViewRoutes());
@@ -314,6 +318,10 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
     const resolveRoutes = (): RouteInterface[] => {
         const resolvedRoutes = [];
 
+        if (organizationLoading) {
+            return resolvedRoutes;
+        }
+
         const recurse = (routesArr): void => {
             routesArr.forEach((route, key) => {
                 if (route.path) {
@@ -366,7 +374,7 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
                     onSidePanelToggleClick={ handleSidePanelToggleClick }
                 />
             ) }
-            sidePanel={ (
+            sidePanel={  (
                 <SidePanel
                     ordered
                     categorized={
@@ -384,7 +392,8 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
                     mobileSidePanelVisibility={ mobileSidePanelVisibility }
                     onSidePanelItemClick={ handleSidePanelItemClick }
                     onSidePanelPusherClick={ handleSidePanelPusherClick }
-                    routes={ CommonRouteUtils.sanitizeForUI(cloneDeep(filteredRoutes), AppUtils.getHiddenRoutes()) }
+                    routes={ !organizationLoading
+                        && CommonRouteUtils.sanitizeForUI(cloneDeep(filteredRoutes), AppUtils.getHiddenRoutes()) }
                     selected={ selectedRoute }
                     translationHook={ t }
                     allowedScopes={ allowedScopes }

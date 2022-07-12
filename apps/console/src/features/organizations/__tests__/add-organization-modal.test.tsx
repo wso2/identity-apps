@@ -16,10 +16,8 @@
  * under the License.
  */
 
-import { fireEvent,render, screen, waitFor, within } from "@testing-library/react";
+import { fireEvent,render, screen, waitFor, within } from "@unit-testing";
 import React from "react";
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
 import {
     addOrganizationMockResponse,
     getOrganizationsEmptyMockResponse,
@@ -40,8 +38,6 @@ const addComponentModalProps: AddOrganizationModalPropsInterface = {
 };
 
 describe("UTC-1.0 - [Organization Management Feature] - Add Organization Modal", () => {
-    const mockStore = configureStore();
-    const store = mockStore({});
     const addOrganizationMock = jest.spyOn(api, "addOrganization");
     const getOrganizationsMock = jest.spyOn(api, "getOrganizations");
 
@@ -57,9 +53,7 @@ describe("UTC-1.0 - [Organization Management Feature] - Add Organization Modal",
 
     test("UTC-1.1 - Test if the parent name is shown in the subheading", () => {
         render(
-            <Provider store={ store }>
-                <AddOrganizationModal { ...addComponentModalProps } />
-            </Provider>
+            <AddOrganizationModal { ...addComponentModalProps } />
         );
 
         expect(screen.getByTestId("organization-create-wizard-subheading").innerHTML).toContain("Parent Organization");
@@ -67,9 +61,7 @@ describe("UTC-1.0 - [Organization Management Feature] - Add Organization Modal",
 
     test("UTC-1.2 - Test if the needed fields are shown", () => {
         render(
-            <Provider store={ store }>
-                <AddOrganizationModal { ...addComponentModalProps } />
-            </Provider>
+            <AddOrganizationModal { ...addComponentModalProps } />
         );
 
         expect(screen.getByTestId("organization-create-wizard-organization-name-input")).toBeInTheDocument();
@@ -79,9 +71,7 @@ describe("UTC-1.0 - [Organization Management Feature] - Add Organization Modal",
 
     test("UTC-1.3 - Test if name requirement validation is working", async () => {
         render(
-            <Provider store={ store }>
-                <AddOrganizationModal { ...addComponentModalProps } />
-            </Provider>
+            <AddOrganizationModal { ...addComponentModalProps } />
         );
 
         fireEvent.change(
@@ -98,9 +88,7 @@ describe("UTC-1.0 - [Organization Management Feature] - Add Organization Modal",
 
     test("UTC-1.4 - Test if duplicate name validation is working", async () => {
         render(
-            <Provider store={ store }>
-                <AddOrganizationModal { ...addComponentModalProps } />
-            </Provider>
+            <AddOrganizationModal { ...addComponentModalProps } />
         );
 
         fireEvent.change(
@@ -114,9 +102,7 @@ describe("UTC-1.0 - [Organization Management Feature] - Add Organization Modal",
 
     test("UTC-1.5 - Test if the form can be submitted", async () => {
         render(
-            <Provider store={ store }>
-                <AddOrganizationModal { ...addComponentModalProps } />
-            </Provider>
+            <AddOrganizationModal { ...addComponentModalProps } />
         );
 
         fireEvent.change(

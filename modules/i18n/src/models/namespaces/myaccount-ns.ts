@@ -209,6 +209,10 @@ export interface MyAccountNS {
                             description: string;
                             message: string;
                         };
+                        passwordCaseRequirement: string,
+                        passwordCharRequirement: string,
+                        passwordLengthRequirement: string,
+                        passwordNumRequirement: string,
                         submitError: {
                             description: string;
                             message: string;
@@ -357,6 +361,7 @@ export interface MyAccountNS {
                 enableHint: string;
                 addHint: string;
                 deleteHint: string;
+                regenerate: string;
                 modals: {
                     heading: string;
                     scan: {
@@ -366,6 +371,7 @@ export interface MyAccountNS {
                         messageHeading: string;
                         messageBody: string;
                         authenticatorApps: string;
+                        regenerateWarning: string;
                     };
                     verify: {
                         heading: string;
@@ -395,6 +401,14 @@ export interface MyAccountNS {
                     deleteError: {
                         genericError: NotificationItem;
                         error: NotificationItem;
+                    };
+                    updateAuthenticatorError: {
+                        error: NotificationItem;
+                        genericError: NotificationItem;
+                    };
+                    deleteSuccess: {
+                        genericMessage: string;
+                        message: string;
                     };
                 };
             };

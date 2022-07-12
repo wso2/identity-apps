@@ -16,11 +16,9 @@
  * under the License.
  */
 
-import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor, within } from "@unit-testing";
 import { AccessControlProvider } from "@wso2is/access-control";
 import React from "react";
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
 import ReduxStoreStateMock from "../../../../test-configs/__mocks__/redux/redux-store-state";
 import {
     addOrganizationMockResponse,
@@ -35,9 +33,6 @@ import * as api from "../api/organization";
 import OrganizationsPage from "../pages/organizations";
 
 describe("UTC-1.0 - [Organization Management Feature] - Organization Page", () => {
-    const mockStore = configureStore();
-    const store = mockStore(ReduxStoreStateMock);
-
     const getOrganizationsMock = jest.spyOn(api, "getOrganizations");
     const getOrganizationMock = jest.spyOn(api, "getOrganization");
 
@@ -72,9 +67,7 @@ describe("UTC-1.0 - [Organization Management Feature] - Organization Page", () =
 
     test("UTC-1.1 - Test if the list of organizations is shown", async () => {
         render(
-            <Provider store={ store }>
-                <OrganizationsPage />
-            </Provider>
+            <OrganizationsPage />
         );
 
         await waitFor(() => expect(getOrganizationsMock).toHaveBeenCalledTimes(1));
@@ -86,13 +79,12 @@ describe("UTC-1.0 - [Organization Management Feature] - Organization Page", () =
         expect(await screen.findByText("Organization Five")).toBeInTheDocument();
         expect(await screen.findByText("Organization Six")).toBeInTheDocument();
         expect(await screen.findByText("Organization Seven")).toBeInTheDocument();
+        expect(screen.getAllByTestId("data-table-row")).toHaveLength(7);
     });
 
     test("UTC-1.1 - Test if it is possible to navigate to Organization One", async () => {
         render(
-            <Provider store={ store }>
-                <OrganizationsPage />
-            </Provider>
+            <OrganizationsPage />
         );
 
         fireEvent.click(await screen.findByText("Organization One"));
@@ -111,13 +103,12 @@ describe("UTC-1.0 - [Organization Management Feature] - Organization Page", () =
             )
         ).toBeInTheDocument();
         expect(await screen.findByText("Organization Two")).toBeInTheDocument();
+        expect(screen.getByTestId("data-table-row")).toBeInTheDocument();
     });
 
     test("UTC-1.2 - Test if it is possible to navigate to Organization Two", async () => {
         render(
-            <Provider store={ store }>
-                <OrganizationsPage />
-            </Provider>
+            <OrganizationsPage />
         );
 
         fireEvent.click(await screen.findByText("Organization One"));
@@ -140,13 +131,12 @@ describe("UTC-1.0 - [Organization Management Feature] - Organization Page", () =
             )
         ).toBeInTheDocument();
         expect(await screen.findByText("Organization Three")).toBeInTheDocument();
+        expect(screen.getByTestId("data-table-row")).toBeInTheDocument();
     });
 
     test("UTC-1.3 - Test if it is possible to navigate using the breadcrumb", async () => {
         render(
-            <Provider store={ store }>
-                <OrganizationsPage />
-            </Provider>
+            <OrganizationsPage />
         );
 
         fireEvent.click(await screen.findByText("Organization One"));
@@ -170,13 +160,12 @@ describe("UTC-1.0 - [Organization Management Feature] - Organization Page", () =
             )
         ).toBeInTheDocument();
         expect(await screen.findByText("Organization Two")).toBeInTheDocument();
+        expect(screen.getByTestId("data-table-row")).toBeInTheDocument();
     });
 
     test("UTC-1.4 - Test if the next pagination button is enabled", async () => {
         render(
-            <Provider store={ store }>
-                <OrganizationsPage />
-            </Provider>
+            <OrganizationsPage />
         );
 
         expect(
@@ -189,9 +178,7 @@ describe("UTC-1.0 - [Organization Management Feature] - Organization Page", () =
 
     test("UTC-1.5 - Test if the next and previous pagination buttons are disabled", async () => {
         render(
-            <Provider store={ store }>
-                <OrganizationsPage />
-            </Provider>
+            <OrganizationsPage />
         );
 
         fireEvent.click(await screen.findByText("Organization Two"));
@@ -209,9 +196,7 @@ describe("UTC-1.0 - [Organization Management Feature] - Organization Page", () =
 
     test("UTC-1.6 - Test if the previous pagination button is enabled", async () => {
         render(
-            <Provider store={ store }>
-                <OrganizationsPage />
-            </Provider>
+            <OrganizationsPage />
         );
 
         fireEvent.click(await screen.findByText("Organization One"));
@@ -221,11 +206,9 @@ describe("UTC-1.0 - [Organization Management Feature] - Organization Page", () =
         ).not.toHaveClass("disabled");
     });
 
-    test("UTC-1.7 - Test if it the previous pagination button is clickable", async () => {
+    test("UTC-1.7 - Test if the previous pagination button is clickable", async () => {
         render(
-            <Provider store={ store }>
-                <OrganizationsPage />
-            </Provider>
+            <OrganizationsPage />
         );
 
         fireEvent.click(await screen.findByText("Organization One"));
@@ -237,11 +220,9 @@ describe("UTC-1.0 - [Organization Management Feature] - Organization Page", () =
         await waitFor(() => expect(getOrganizationsMock).toHaveBeenCalledTimes(2));
     });
 
-    test("UTC-1.8 - Test if it the next pagination button is clickable", async () => {
+    test("UTC-1.8 - Test if the next pagination button is clickable", async () => {
         render(
-            <Provider store={ store }>
-                <OrganizationsPage />
-            </Provider>
+            <OrganizationsPage />
         );
 
         fireEvent.click(
@@ -251,11 +232,9 @@ describe("UTC-1.0 - [Organization Management Feature] - Organization Page", () =
         await waitFor(() => expect(getOrganizationsMock).toHaveBeenCalledTimes(2));
     });
 
-    test("UTC-1.9 - Test if it the filter feature is functional", async () => {
+    test("UTC-1.9 - Test if the filter feature is functional", async () => {
         render(
-            <Provider store={ store }>
-                <OrganizationsPage />
-            </Provider>
+            <OrganizationsPage />
         );
 
         fireEvent.click(await screen.findByTestId("advanced-search-options-button"));
@@ -282,14 +261,12 @@ describe("UTC-1.0 - [Organization Management Feature] - Organization Page", () =
 
     test("UTC-1.10 - Test if it the add organization button is functional", async () => {
         render(
-            <Provider store={ store }>
-                <AccessControlProvider
-                    allowedScopes={ ReduxStoreStateMock.auth.scope }
-                    featureConfig={ ReduxStoreStateMock.config.ui }
-                >
-                    <OrganizationsPage />
-                </AccessControlProvider>
-            </Provider>
+            <AccessControlProvider
+                allowedScopes={ ReduxStoreStateMock.auth.scope }
+                featureConfig={ ReduxStoreStateMock.config.ui }
+            >
+                <OrganizationsPage />
+            </AccessControlProvider>
         );
 
         fireEvent.click(await screen.findByTestId("organizations-list-layout-add-button"));

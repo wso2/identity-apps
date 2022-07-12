@@ -20,7 +20,8 @@ import { AsgardeoSPAClient } from "@asgardeo/auth-react";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
-import { store } from "../../core";
+import useRequest, { RequestErrorInterface, RequestResultInterface } from "../../core/hooks/use-request";
+import { store } from "../../core/store";
 import { ApplicationManagementConstants } from "../constants";
 import {
     AdaptiveAuthTemplatesListInterface,
@@ -183,6 +184,45 @@ export const getApplicationList = (limit: number, offset: number,
         }).catch((error) => {
             return Promise.reject(error);
         });
+};
+
+/**
+ * Hook to get the applications list with limit and offset.
+ *
+ * @param {number} limit - Maximum Limit of the application List.
+ * @param {number} offset - Offset for get to start.
+ * @param {string} filter - Search filter. 
+ * @returns {RequestResultInterface<Data, Error>}
+ */
+export const useApplicationList = <Data = ApplicationListInterface, Error = RequestErrorInterface>(
+    limit?: number,
+    offset?: number,
+    filter?: string
+): RequestResultInterface<Data, Error> => {
+
+    const requestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        params: {
+            filter,
+            limit,
+            offset
+        },
+        url: store.getState().config.endpoints.applications
+    };
+
+    const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig);
+
+    return {
+        data,
+        error: error,
+        isLoading: !error && !data,
+        isValidating,
+        mutate
+    };
 };
 
 export const getApplicationsByIds = async (

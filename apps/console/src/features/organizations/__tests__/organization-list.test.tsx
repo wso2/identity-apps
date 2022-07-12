@@ -16,11 +16,9 @@
  * under the License.
  */
 
-import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor, within } from "@unit-testing";
 import { AccessControlProvider } from "@wso2is/access-control";
 import React from "react";
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
 import ReduxStoreStateMock from "../../../../test-configs/__mocks__/redux/redux-store-state";
 import { getOrganizationsEmptyMockResponse, getOrganizationsPageOneMockResponse } from "../__mocks__/organization";
 import * as api from "../api/organization";
@@ -41,18 +39,13 @@ const organizationListProps: OrganizationListPropsInterface = {
 };
 
 describe("UTC-1.0 - [Organization Management Feature] - Organization List Component", () => {
-    const mockStore = configureStore();
-    const store = mockStore(ReduxStoreStateMock);
-
     const deleteOrganizationMock = jest.spyOn(api, "deleteOrganization");
 
     deleteOrganizationMock.mockImplementation(() => Promise.resolve("organization-one"));
 
     test("UTC-1.1 - Test if the placeholder is shown", () => {
         render(
-            <Provider store={ store }>
-                <OrganizationList { ...organizationListProps } list={ getOrganizationsEmptyMockResponse } />
-            </Provider>
+            <OrganizationList { ...organizationListProps } list={ getOrganizationsEmptyMockResponse } />
         );
 
         expect(screen.getByTestId("organization-list-empty-placeholder")).toBeInTheDocument();
@@ -60,13 +53,11 @@ describe("UTC-1.0 - [Organization Management Feature] - Organization List Compon
 
     test("UTC-1.2 - Test if the empty search placeholder is shown", () => {
         render(
-            <Provider store={ store }>
-                <OrganizationList
-                    { ...organizationListProps }
-                    list={ getOrganizationsEmptyMockResponse }
-                    searchQuery="Organization"
-                />
-            </Provider>
+            <OrganizationList
+                { ...organizationListProps }
+                list={ getOrganizationsEmptyMockResponse }
+                searchQuery="Organization"
+            />
         );
 
         expect(screen.getByTestId("organization-list-empty-search-placeholder")).toBeInTheDocument();
@@ -74,13 +65,11 @@ describe("UTC-1.0 - [Organization Management Feature] - Organization List Compon
 
     test("UTC-1.3 - Test if the search query can be cleared", async () => {
         render(
-            <Provider store={ store }>
-                <OrganizationList
-                    { ...organizationListProps }
-                    list={ getOrganizationsEmptyMockResponse }
-                    searchQuery="Organization"
-                />
-            </Provider>
+            <OrganizationList
+                { ...organizationListProps }
+                list={ getOrganizationsEmptyMockResponse }
+                searchQuery="Organization"
+            />
         );
 
         fireEvent.click(screen.getByTestId("link-button"));
@@ -89,14 +78,12 @@ describe("UTC-1.0 - [Organization Management Feature] - Organization List Compon
 
     test("UTC-1.4 - Test if the add button in the empty placeholder works fine", async () => {
         render(
-            <Provider store={ store }>
-                <AccessControlProvider
-                    allowedScopes={ ReduxStoreStateMock.auth.scope }
-                    featureConfig={ ReduxStoreStateMock.config.ui }
-                >
-                    <OrganizationList { ...organizationListProps } list={ getOrganizationsEmptyMockResponse } />
-                </AccessControlProvider>
-            </Provider>
+            <AccessControlProvider
+                allowedScopes={ ReduxStoreStateMock.auth.scope }
+                featureConfig={ ReduxStoreStateMock.config.ui }
+            >
+                <OrganizationList { ...organizationListProps } list={ getOrganizationsEmptyMockResponse } />
+            </AccessControlProvider>
         );
 
         fireEvent.click(screen.getByTestId("primary-button"));
@@ -105,45 +92,40 @@ describe("UTC-1.0 - [Organization Management Feature] - Organization List Compon
 
     test("UTC-1.5 - Test if the organizations are shown in the list", async () => {
         render(
-            <Provider store={ store }>
-                <AccessControlProvider
-                    allowedScopes={ ReduxStoreStateMock.auth.scope }
-                    featureConfig={ ReduxStoreStateMock.config.ui }
-                >
-                    <OrganizationList { ...organizationListProps } />
-                </AccessControlProvider>
-            </Provider>
+            <AccessControlProvider
+                allowedScopes={ ReduxStoreStateMock.auth.scope }
+                featureConfig={ ReduxStoreStateMock.config.ui }
+            >
+                <OrganizationList { ...organizationListProps } />
+            </AccessControlProvider>
         );
 
         expect(screen.getByText("Organization One"));
+        expect(screen.getAllByTestId("data-table-row")).toHaveLength(7);
     });
 
     test("UTC-1.6 - Test if an organization can be clicked", async () => {
         render(
-            <Provider store={ store }>
-                <AccessControlProvider
-                    allowedScopes={ ReduxStoreStateMock.auth.scope }
-                    featureConfig={ ReduxStoreStateMock.config.ui }
-                >
-                    <OrganizationList { ...organizationListProps } />
-                </AccessControlProvider>
-            </Provider>
+            <AccessControlProvider
+                allowedScopes={ ReduxStoreStateMock.auth.scope }
+                featureConfig={ ReduxStoreStateMock.config.ui }
+            >
+                <OrganizationList { ...organizationListProps } />
+            </AccessControlProvider>
         );
 
         fireEvent.click(screen.getAllByTestId("data-table-row")[ 0 ]);
         expect(onListItemClickMock.mock.calls.length).toBe(1);
     });
 
-    test("UTC-1.7 - Test if an organizations can be deleted", async () => {
+    test("UTC-1.7 - Test if an organization can be deleted", async () => {
         render(
-            <Provider store={ store }>
-                <AccessControlProvider
-                    allowedScopes={ ReduxStoreStateMock.auth.scope }
-                    featureConfig={ ReduxStoreStateMock.config.ui }
-                >
-                    <OrganizationList { ...organizationListProps } />
-                </AccessControlProvider>
-            </Provider>
+            <AccessControlProvider
+                allowedScopes={ ReduxStoreStateMock.auth.scope }
+                featureConfig={ ReduxStoreStateMock.config.ui }
+            >
+                <OrganizationList { ...organizationListProps } />
+            </AccessControlProvider>
         );
 
         fireEvent.click(screen.getAllByTestId("organization-list-item-delete-button")[ 0 ]);

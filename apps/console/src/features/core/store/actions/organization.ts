@@ -1,5 +1,5 @@
 /**
-* Copyright (c) 2022, WSO2 Inc. (http://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 Inc. (http://www.wso2.com) All Rights Reserved.
 *
 * WSO2 Inc. licenses this file to you under the Apache License,
 * Version 2.0 (the "License"); you may not use this file except
@@ -30,5 +30,18 @@ export const setOrganization = (organization: OrganizationInterface): SetOrganiz
     return {
         payload: organization,
         type: OrganizationActionTypes.SET_ORGANIZATION
+    };
+};
+
+/**
+ * This action sets the loading state of the get organization API.
+ *
+ * @param {boolean} isLoading - A boolean value to set the loading state of the organization
+ * @returns {SetGetOrganizationLoadingActionInterface} - A set get organization loading action
+ */
+export const setGetOrganizationLoading = (isLoading: boolean): SetGetOrganizationLoadingActionInterface => {
+    return {
+        payload: isLoading,
+        type: OrganizationActionTypes.SET_GET_ORGANIZATION_LOADING
     };
 };
