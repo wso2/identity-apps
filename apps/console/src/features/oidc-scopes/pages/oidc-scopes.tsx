@@ -26,7 +26,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { DropdownItemProps, DropdownProps, Icon, Input } from "semantic-ui-react";
 import { AppState, FeatureConfigInterface, UIConstants, sortList } from "../../core";
-import { getOIDCScopesList } from "../api";
+import { useOIDCScopesList } from "../api";
 import { OIDCScopeCreateWizard, OIDCScopeList } from "../components";
 import { OIDCScopesListInterface } from "../models";
 
@@ -74,67 +74,74 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
-    const [ scopeList, setScopeList ] = useState<OIDCScopesListInterface[]>([]);
-    const [ tempScopeList, setTempScopeList ] = useState<OIDCScopesListInterface[]>([]);
-    const [ isScopesListRequestLoading, setScopesListRequestLoading ] = useState<boolean>(true);
+    const [ filteredScopeList, setFilteredScopeList ] = useState<OIDCScopesListInterface[]>(undefined);
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
-    const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
-    const [ sortOrder, setSortOrder ] = useState(true);
+    const [ listItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
+    const [ sortOrder, setSortOrder ] = useState<"ASC" | "DESC">("ASC");
     const [ sortByStrategy, setSortByStrategy ] = useState<DropdownItemProps>(SORT_BY[ 0 ]);
+    const [ searchQuery, setSearchQuery ] = useState<string>("");
 
-    const initialRender = useRef(true);
+    const {
+        data: scopeList,
+        isLoading: isScopeListFetchRequestLoading,
+        error: scopeListFetchRequestError,
+        mutate: mutateScopeListFetchRequest
+    } = useOIDCScopesList(sortByStrategy.value as string, sortOrder);
 
     /**
-     * Called on every `listOffset` & `listItemLimit` change.
+     * Sort the list when the sort order and strategy changes.
+     * NOTE: This is a fron-end level sort since the API does not support search.
      */
     useEffect(() => {
-        getOIDCScopes();
-    }, []);
+        setFilteredScopeList(sortList(filteredScopeList, sortByStrategy.value as string, sortOrder === "ASC"));
+    }, [ sortOrder, sortByStrategy ]);
 
     /**
-     * Updates the scope list on change.
+     * Filter the list when the seach query changes.
+     * NOTE: This is a fron-end level search since the API does not support search.
      */
     useEffect(() => {
-        setScopeList(scopeList);
-        setTempScopeList(scopeList);
-    }, [ scopeList ]);
+        if (searchQuery.length > 0) {
+            const result = scopeList.filter((item) =>
+                item.name.toLowerCase().indexOf(searchQuery.toLowerCase()) !== -1);
+
+            setFilteredScopeList(result);
+
+            return;
+        }
+
+        setFilteredScopeList(undefined);
+    }, [ searchQuery ]);
 
     /**
-     * Retrieves the list of OIDC scopes.
+     * Show errors when the API request fails.
      */
-    const getOIDCScopes = (): void => {
-        setScopesListRequestLoading(true);
+    useEffect(() => {
+        if (!scopeListFetchRequestError) {
+            return;
+        }
 
-        getOIDCScopesList<OIDCScopesListInterface[]>()
-            .then((response: OIDCScopesListInterface[]) => {
-                const sorted = sortBy(response, "displayName");
-                setScopeList(sorted);
-                setTempScopeList(sorted);
-            })
-            .catch((error) => {
-                if (error.response && error.response.data && error.response.data.description) {
-                    dispatch(addAlert({
-                        description: error.response.data.description,
-                        level: AlertLevels.ERROR,
-                        message: t("console:develop.features.applications.notifications.fetchApplications.error." +
-                            "message")
-                    }));
+        if (scopeListFetchRequestError.response
+            && scopeListFetchRequestError.response.data
+            && scopeListFetchRequestError.response.data.description) {
+            dispatch(addAlert({
+                description: scopeListFetchRequestError.response.data.description,
+                level: AlertLevels.ERROR,
+                message: t("console:develop.features.applications.notifications.fetchApplications.error." +
+                    "message")
+            }));
 
-                    return;
-                }
+            return;
+        }
 
-                dispatch(addAlert({
-                    description: t("console:develop.features.applications.notifications.fetchApplications" +
-                        ".genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("console:develop.features.applications.notifications.fetchApplications.genericError." +
-                        "message")
-                }));
-            })
-            .finally(() => {
-                setScopesListRequestLoading(false);
-            });
-    };
+        dispatch(addAlert({
+            description: t("console:develop.features.applications.notifications.fetchApplications" +
+                ".genericError.description"),
+            level: AlertLevels.ERROR,
+            message: t("console:develop.features.applications.notifications.fetchApplications.genericError." +
+                "message")
+        }));
+    }, [ scopeListFetchRequestError ]);
 
     /**
      * Search the scope list.
@@ -142,24 +149,8 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
      * @param event
      */
     const searchScopeList = (event) => {
-        const changeValue = event.target.value;
-
-        if (changeValue.length > 0) {
-            const result = scopeList.filter((item) =>
-                item.name.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1);
-            setTempScopeList(result);
-        } else {
-            setTempScopeList(scopeList);
-        }
+        setSearchQuery(event.target.value);
     };
-
-    useEffect(() => {
-        if (initialRender.current) {
-            initialRender.current = false;
-        } else {
-            setTempScopeList(sortList(tempScopeList, sortByStrategy.value as string, sortOrder));
-        }
-    }, [ sortBy, sortOrder ]);
 
     /**
     * Handles sort order change.
@@ -167,7 +158,7 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
     * @param {boolean} isAscending.
     */
     const handleSortOrderChange = (isAscending: boolean) => {
-        setSortOrder(isAscending);
+        setSortOrder(isAscending === true ? "ASC" : "DESC");
     };
 
     /**
@@ -184,12 +175,14 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
         <PageLayout
             pageTitle="Scopes"
             action={
-                (hasRequiredScopes(
-                    featureConfig?.applications, featureConfig?.applications?.scopes?.create, allowedScopes))
+                hasRequiredScopes(
+                    featureConfig?.applications, featureConfig?.applications?.scopes?.create,
+                    allowedScopes
+                )
                     ? (
                         <PrimaryButton
-                            disabled={ isScopesListRequestLoading }
-                            loading={ isScopesListRequestLoading }
+                            disabled={ isScopeListFetchRequestLoading }
+                            loading={ isScopeListFetchRequestLoading }
                             onClick={ () => setShowWizard(true) }
                             data-testid={ `${ testId }-list-layout-add-button` }
                         >
@@ -204,26 +197,27 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
             data-testid={ `${ testId }-page-layout` }
         >
             <ListLayout
-                showTopActionPanel={ (!isScopesListRequestLoading && !(scopeList?.length == 0)) }
+                showTopActionPanel={ (!isScopeListFetchRequestLoading && !(scopeList?.length == 0)) }
                 listItemLimit={ listItemLimit }
                 showPagination={ false }
                 onPageChange={ () => null }
                 totalPages={ Math.ceil(scopeList?.length / listItemLimit) }
                 data-testid={ `${ testId }-list-layout` }
-                leftActionPanel={
+                leftActionPanel={ (
                     <div className="advanced-search-wrapper aligned-left fill-default">
                         <Input
                             className="advanced-search with-add-on"
                             data-testid={ `${ testId }-list-search-input` }
                             icon="search"
                             iconPosition="left"
+                            value={ searchQuery }
                             onChange={ searchScopeList }
                             placeholder={ t("console:manage.features.oidcScopes.list.searchPlaceholder") }
                             floated="right"
                             size="small"
                         />
                     </div>
-                }
+                ) }
                 sortOptions={ SORT_BY }
                 sortStrategy={ sortBy }
                 onSortOrderChange={ handleSortOrderChange }
@@ -231,20 +225,20 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
             >
                 <OIDCScopeList
                     featureConfig={ featureConfig }
-                    isLoading={ isScopesListRequestLoading }
-                    list={ tempScopeList }
-                    onScopeDelete={ getOIDCScopes }
+                    isLoading={ isScopeListFetchRequestLoading }
+                    list={ filteredScopeList ?? scopeList }
+                    onScopeDelete={ () => mutateScopeListFetchRequest() }
                     onEmptyListPlaceholderActionClick={ () => setShowWizard(true) }
                     data-testid={ `${ testId }-list` }
-                    searchResult={ tempScopeList?.length }
-                    getOIDCScopesList={ getOIDCScopes }
+                    searchResult={ filteredScopeList?.length }
+                    getOIDCScopesList={  () => setSearchQuery("") }
                 />
                 {
                     showWizard && (
                         <OIDCScopeCreateWizard
                             data-testid="add-oidc-scope-wizard-modal"
                             closeWizard={ () => setShowWizard(false) }
-                            onUpdate={ getOIDCScopes }
+                            onUpdate={ () => mutateScopeListFetchRequest() }
                         />
                     )
                 }

@@ -39,6 +39,7 @@ import React, {
     ReactNode,
     Suspense,
     SyntheticEvent,
+    useCallback,
     useEffect,
     useState
 } from "react";
@@ -59,6 +60,7 @@ import {
     FeatureConfigInterface,
     Footer,
     Header,
+    OrganizationReducerStateInterface,
     ProtectedRoute,
     RouteUtils,
     StrictAppViewTypes,
@@ -71,6 +73,7 @@ import {
     useUIElementSizes
 } from "../features/core";
 import { setActiveView, setDeveloperVisibility, setManageVisibility } from "../features/core/store/actions";
+import { OrganizationUtils } from "../features/organizations/utils";
 
 /**
  * Developer View Prop types.
@@ -106,13 +109,14 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const profileInfo: ProfileInfoInterface = useSelector((state: AppState) => state.profile.profileInfo);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const organization: OrganizationReducerStateInterface = useSelector((state: AppState) => state.organization);
     const alert: AlertInterface = useSelector((state: AppState) => state.global.alert);
     const alertSystem: System = useSelector((state: AppState) => state.global.alertSystem);
     const isAJAXTopLoaderVisible: boolean = useSelector((state: AppState) => state.global.isAJAXTopLoaderVisible);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const activeView: AppViewTypes = useSelector((state: AppState) => state.global.activeView);
 
-    const [ manageRoutes ] = useState<RouteInterface[]>(getAdminViewRoutes());
+    const [ manageRoutes, setManageRoutes ] = useState<RouteInterface[]>(getAdminViewRoutes());
     const [ filteredRoutes, setFilteredRoutes ] = useState<RouteInterface[]>(getDeveloperViewRoutes());
     const [
         selectedRoute,
@@ -122,6 +126,25 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
     const [ isMobileViewport, setIsMobileViewport ] = useState<boolean>(false);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
+
+    const organizationLoading: boolean
+            = useSelector((state: AppState) => state?.organization?.getOrganizationLoading);
+
+
+    const getOrganizationEnabledRoutes = useCallback((): RouteInterface[] => {
+        if (!OrganizationUtils.isRootOrganization(organization.organization)) {
+            return RouteUtils.filterOrganizationEnabledRoutes(getDeveloperViewRoutes());
+        }
+
+        return getDeveloperViewRoutes();
+    }, [ organization.organization ]);
+
+    useEffect(() => {
+        const routes = getOrganizationEnabledRoutes();
+
+        setManageRoutes(routes);
+        setFilteredRoutes(routes);
+    }, [ getOrganizationEnabledRoutes ]);
 
     /**
      * Make sure `DEVELOP` tab is highlighted when this layout is used.
@@ -133,7 +156,7 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
         }
 
         dispatch(setActiveView(StrictAppViewTypes.DEVELOP));
-    }, []);
+    }, [ dispatch, activeView ]);
 
     /**
      * Listen to location changes and set the active route accordingly.
@@ -148,14 +171,13 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
     }, [ location?.pathname, filteredRoutes ]);
 
     useEffect(() => {
-
         // Allowed scopes is never empty. Wait until it's defined to filter the routes.
         if (isEmpty(allowedScopes)) {
             return;
         }
 
         let routes: RouteInterface[] = CommonRouteUtils.filterEnabledRoutes<FeatureConfigInterface>(
-            getDeveloperViewRoutes(),
+            getOrganizationEnabledRoutes(),
             featureConfig,
             allowedScopes,
             commonConfig.checkForUIResourceScopes);
@@ -165,19 +187,6 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
             && routes.filter(route => route.id === AccessControlUtils.DEVELOP_GETTING_STARTED_ID).length > 0
                 && routes.filter(route => route.id === "404").length > 0) {
             routes = routes.filter(route => route.id === "404");
-        }
-
-        const controlledRoutes = AccessControlUtils.getAuthenticatedRoutes(
-            routes, allowedScopes, featureConfig, commonConfig.checkForUIResourceScopes);
-        const sanitizedManageRoutes: RouteInterface[] = CommonRouteUtils.sanitizeForUI(cloneDeep(manageRoutes));
-
-        const tab: string = AccessControlUtils.getDisabledTab(
-            sanitizedManageRoutes, filteredRoutes, allowedScopes, featureConfig, commonConfig.checkForUIResourceScopes);
-
-        if (tab === "MANAGE") {
-            dispatch(setManageVisibility(false));
-        } else if (tab === "DEVELOP") {
-            dispatch(setDeveloperVisibility(false));
         }
 
         // Try to handle any un-expected routing issues. Returns a void if no issues are found.
@@ -191,7 +200,28 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
         }
 
         dispatch(getProfileInformation());
-    }, [ featureConfig, getDeveloperViewRoutes, allowedScopes ]);
+    }, [
+        featureConfig,
+        allowedScopes,
+        manageRoutes,
+        dispatch,
+        profileInfo,
+        location.pathname,
+        getOrganizationEnabledRoutes
+    ]);
+
+    useEffect(() => {
+        const sanitizedManageRoutes: RouteInterface[] = CommonRouteUtils.sanitizeForUI(cloneDeep(manageRoutes));
+
+        const tab: string = AccessControlUtils.getDisabledTab(
+            sanitizedManageRoutes, filteredRoutes, allowedScopes, featureConfig, commonConfig.checkForUIResourceScopes);
+
+        if (tab === "MANAGE") {
+            dispatch(setManageVisibility(false));
+        } else if (tab === "DEVELOP") {
+            dispatch(setDeveloperVisibility(false));
+        }
+    }, [ filteredRoutes, manageRoutes, allowedScopes, featureConfig, dispatch ]);
 
     /**
      * Handles side panel toggle click.
@@ -288,6 +318,10 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
     const resolveRoutes = (): RouteInterface[] => {
         const resolvedRoutes = [];
 
+        if (organizationLoading) {
+            return resolvedRoutes;
+        }
+
         const recurse = (routesArr): void => {
             routesArr.forEach((route, key) => {
                 if (route.path) {
@@ -340,7 +374,7 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
                     onSidePanelToggleClick={ handleSidePanelToggleClick }
                 />
             ) }
-            sidePanel={ (
+            sidePanel={  (
                 <SidePanel
                     ordered
                     categorized={
@@ -358,7 +392,8 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
                     mobileSidePanelVisibility={ mobileSidePanelVisibility }
                     onSidePanelItemClick={ handleSidePanelItemClick }
                     onSidePanelPusherClick={ handleSidePanelPusherClick }
-                    routes={ CommonRouteUtils.sanitizeForUI(cloneDeep(filteredRoutes), AppUtils.getHiddenRoutes()) }
+                    routes={ !organizationLoading
+                        && CommonRouteUtils.sanitizeForUI(cloneDeep(filteredRoutes), AppUtils.getHiddenRoutes()) }
                     selected={ selectedRoute }
                     translationHook={ t }
                     allowedScopes={ allowedScopes }

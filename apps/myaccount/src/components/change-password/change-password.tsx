@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -21,10 +21,11 @@ import { Field, FormValue, Forms, useTrigger } from "@wso2is/forms";
 import React, { FunctionComponent, Suspense, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Container, Divider, Form, Modal } from "semantic-ui-react";
+import { Button, Container, Divider, Form, Icon, Modal, SemanticCOLORS } from "semantic-ui-react";
 import { updatePassword } from "../../api";
 import { getSettingsSectionIcons } from "../../configs";
 import { CommonConstants } from "../../constants";
+import { passwordValidationConfig } from "../../extensions/configs/password-validation";
 import { AlertInterface, AlertLevels } from "../../models";
 import { AppState } from "../../store";
 import { setActiveForm } from "../../store/actions";
@@ -48,6 +49,15 @@ const CHANGE_PASSWORD_FORM_IDENTIFIER = "changePasswordForm";
  */
 interface ChangePasswordProps extends TestableComponentInterface {
     onAlertFired: (alert: AlertInterface) => void;
+}
+
+/**
+ * Prop types for the password validation icons.
+ */
+
+interface IconProps {
+    cssClassName : string;
+    color : SemanticCOLORS;
 }
 
 /**
@@ -79,6 +89,67 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
     const dispatch = useDispatch();
 
     const endUserSession = useEndUserSession();
+    const EMPTY_STRING = "";
+    
+    /**
+     * Returns Icon Props which are needed to set state of Password Validation Icons.
+     */
+    const getIconProps = (id : string) : IconProps =>{
+                
+        const DEFAULT: IconProps = {
+            color : "grey" as SemanticCOLORS,
+            cssClassName : "circle thin"
+        };
+
+        const POSITIVE: IconProps = {
+            color : "green" as SemanticCOLORS,
+            cssClassName : "check circle"
+        };
+
+        const NEGATIVE: IconProps = {
+            color : "red" as SemanticCOLORS,
+            cssClassName : "remove circle"
+        };
+
+        const lowerCaseLetters = /[a-z]/g;
+        const upperCaseLetters = /[A-Z]/g;
+        const numbers = /[0-9]/g;
+        const chars = /[!@#$%^&*~]/g;
+
+        if (id === "password-validation-length"){
+            if (password === EMPTY_STRING) {
+                return DEFAULT;
+            } else if (password.length > 8) {
+                return POSITIVE;
+            } else {
+                return NEGATIVE;
+            }
+        } else if (id === "password-validation-case") {
+            if (password === EMPTY_STRING) {
+                return DEFAULT;
+            } else if (password.match(lowerCaseLetters) && password.match(upperCaseLetters)) {
+                return POSITIVE;
+            } else {
+                return NEGATIVE;
+            }
+        } else if (id === "password-validation-number") {
+            if (password === EMPTY_STRING) {
+                return DEFAULT;
+            } else if (password.match(numbers)) {
+                return POSITIVE;
+            } else {
+                return NEGATIVE;
+            }
+        } else if (id === "password-validation-chars") {
+            if (password === EMPTY_STRING) {
+                return DEFAULT;
+            } else if (password.match(chars)) {
+                return POSITIVE;
+            } else {
+                return NEGATIVE;
+            }
+        }
+    };
 
     /**
      * Handles the `onSubmit` event of forms.
@@ -223,13 +294,15 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
             </Modal.Content>
             <Modal.Actions data-testid={ `${testId}-confirmation-modal-actions` }>
                 <Button
-                    className="link-button" onClick={ handleConfirmationModalClose }
+                    className="link-button" 
+                    onClick={ handleConfirmationModalClose }
                     data-testid={ `${testId}-confirmation-modal-actions-cancel-button` }
                 >
                     { t("common:cancel") }
                 </Button>
                 <Button
-                    primary={ true } onClick={ changePassword }
+                    primary={ true } 
+                    onClick={ changePassword }
                     data-testid={ `${testId}-confirmation-modal-actions-continue-button` }
                 >
                     { t("common:continue") }
@@ -237,7 +310,7 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
             </Modal.Actions>
         </Modal>
     );
-
+    
     const showChangePasswordView = activeForm === CommonConstants.SECURITY + CHANGE_PASSWORD_FORM_IDENTIFIER
         ? (
             <EditSection data-testid={ `${testId}-edit-section` } >
@@ -315,6 +388,47 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                             />
                         </Suspense>
                     </Form.Field>
+                    
+                    { passwordValidationConfig.showPasswordValidation  &&
+                        (<Form.Field width={ 9 } data-testid={ `${testId}-new-password-validation-field` }>
+                            <div className="password-policy-description">                                
+                                <Icon 
+                                    id="password-validation-length" 
+                                    className={ getIconProps("password-validation-length").cssClassName } 
+                                    color={ getIconProps("password-validation-length").color }/>
+                                <p>{ t("myAccount:components.changePassword.forms.passwordResetForm.validations."
+                                    + "passwordLengthRequirement") }</p>
+                            </div>
+                            
+                            <div className="password-policy-description">                                
+                                <Icon 
+                                    id="password-validation-case" 
+                                    className={ getIconProps("password-validation-case").cssClassName } 
+                                    color={ getIconProps("password-validation-case").color } />
+                                <p>{ t("myAccount:components.changePassword.forms.passwordResetForm.validations."
+                                    + "passwordCaseRequirement") }</p>
+                            </div>
+                            
+                            <div className="password-policy-description">                                
+                                <Icon 
+                                    id="password-validation-number" 
+                                    className={ getIconProps("password-validation-number").cssClassName } 
+                                    color={ getIconProps("password-validation-number").color }/>
+                                <p>{ t("myAccount:components.changePassword.forms.passwordResetForm.validations."
+                                    + "passwordNumRequirement") }</p>
+                            </div>
+                            
+                            <div className="password-policy-description">                                
+                                <Icon 
+                                    id="password-validation-chars" 
+                                    className={ getIconProps("password-validation-chars").cssClassName } 
+                                    color={ getIconProps("password-validation-chars").color }/>
+                                <p>{ t("myAccount:components.changePassword.forms.passwordResetForm.validations."
+                                    + "passwordCharRequirement") }</p>
+                            </div>
+
+                        </Form.Field>)
+                    }
                     <Field
                         hidden={ true }
                         type="divider"

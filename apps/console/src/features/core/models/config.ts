@@ -30,6 +30,7 @@ import { ClaimResourceEndpointsInterface } from "../../claims";
 import { GroupsResourceEndpointsInterface } from "../../groups";
 import { IDPResourceEndpointsInterface, IdentityProviderTemplateLoadingStrategies } from "../../identity-providers";
 import { ScopesResourceEndpointsInterface } from "../../oidc-scopes";
+import { OrganizationResourceEndpointsInterface } from "../../organizations/models";
 import { RolesResourceEndpointsInterface } from "../../roles";
 import { SecretsManagementEndpoints } from "../../secrets/models/endpoints";
 import { ServerConfigurationsResourceEndpointsInterface } from "../../server-configurations";
@@ -112,7 +113,7 @@ export interface FeatureConfigInterface {
      */
     secretsManagement?: FeatureAccessConfigInterface;
     /**
-     * Try It feature 
+     * Try It feature
      */
     tryIt?: FeatureAccessConfigInterface;
 }
@@ -292,7 +293,8 @@ export interface ServiceResourceEndpointsInterface extends ClaimResourceEndpoint
     ApplicationsResourceEndpointsInterface,
     IDPResourceEndpointsInterface,
     ScopesResourceEndpointsInterface,
-    SecretsManagementEndpoints {
+    SecretsManagementEndpoints,
+    OrganizationResourceEndpointsInterface {
 
     CORSOrigins: string;
     // TODO: Remove this endpoint and use ID token to get the details
