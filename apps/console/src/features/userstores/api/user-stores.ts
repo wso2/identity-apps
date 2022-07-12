@@ -18,13 +18,19 @@
 
 import { AsgardeoSPAClient } from "@asgardeo/auth-react";
 import { HttpMethods } from "@wso2is/core/models";
-import { store } from "../../core";
+import useRequest, {
+    RequestConfigInterface,
+    RequestErrorInterface,
+    RequestResultInterface
+} from "../../core/hooks/use-request";
+import { store } from "../../core/store";
 import {
     AttributeMapping,
     PatchData,
     QueryParams,
     TestConnection,
     UserStoreAttributes,
+    UserStoreListItem,
     UserStorePostData
 } from "../models";
 
@@ -70,6 +76,45 @@ export const getUserStores = (params: QueryParams): Promise<any> => {
                 return Promise.reject(error?.response?.data);
             }
         });
+};
+
+/**
+ * Hook to get the Userstores from the API.
+ *
+ * @param {QueryParams} params - sort, filter, limit, attributes, offset.
+ * @returns {RequestResultInterface<Data, Error>}
+ */
+export const useUserStores = <Data = UserStoreListItem[], Error = RequestErrorInterface>(
+    params: QueryParams
+): RequestResultInterface<Data, Error> => {
+
+    const requestConfig: RequestConfigInterface = {
+        headers: {
+            Accept: "application/json",
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        params,
+        url: store.getState().config.endpoints.userStores
+    };
+
+    const {
+        data,
+        error,
+        isValidating,
+        mutate,
+        response
+    } = useRequest<Data, Error>(requestConfig);
+
+    return {
+        data,
+        error,
+        isLoading: !error && !data,
+        isValidating,
+        mutate,
+        response
+    };
 };
 
 /**

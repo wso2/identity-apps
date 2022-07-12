@@ -33,6 +33,7 @@ import {
 } from "./config";
 import { PortalDocumentationStructureInterface } from "./help-panel";
 import { AppViewTypes } from "./ui";
+import { OrganizationInterface } from "../../organizations/models";
 
 /**
  * Portal config reducer state interface.
@@ -68,6 +69,14 @@ export interface HelpPanelReducerStateInterface {
 export interface AccessControlReducerStateInterface {
     isDevelopAllowed: boolean,
     isManageAllowed: boolean
+}
+
+/**
+ * Organization Reducer State Interface.
+ */
+export interface OrganizationReducerStateInterface {
+    organization?: OrganizationInterface;
+    getOrganizationLoading: boolean;
 }
 
 export interface AuthReducerStateInterface extends CommonAuthReducerStateInterface, AuthenticatedUserInfo { }

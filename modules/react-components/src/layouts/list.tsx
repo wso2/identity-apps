@@ -58,7 +58,7 @@ export interface ListLayoutPropsInterface extends PaginationProps, IdentifiableC
      */
     listItemLimit?: number;
     /**
-     * Flag to enable pagination minimal mode. 
+     * Flag to enable pagination minimal mode.
      */
     minimalPagination?: boolean;
     /**
@@ -120,6 +120,10 @@ export interface ListLayoutPropsInterface extends PaginationProps, IdentifiableC
      * @param {DropdownProps} data - Data.
      */
     onItemsPerPageDropdownChange?: (event: React.SyntheticEvent<HTMLElement>, data: DropdownProps) => void;
+    /**
+     * Active page.
+     */
+    activePage?: number;
 }
 
 /**
@@ -154,6 +158,7 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
         sortStrategy,
         totalListSize,
         totalPages,
+        activePage,
         [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId
     } = props;
@@ -253,7 +258,7 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
             <div className="list-container">
                 { children }
                 {
-                    (showPagination && totalListSize)
+                    (showPagination)
                         ? (
                             <Pagination
                                 minimal={ minimalPagination }
@@ -265,7 +270,9 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
                                 totalPages={ totalPages }
                                 onPageChange={ onPageChange }
                                 onItemsPerPageDropdownChange={ onItemsPerPageDropdownChange }
+                                hidden={ totalListSize === 0 || totalListSize === undefined }
                                 { ...paginationOptions }
+                                activePage={ activePage }
                             />
                         )
                         : null

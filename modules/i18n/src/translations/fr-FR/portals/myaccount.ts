@@ -273,6 +273,10 @@ export const myAccount: MyAccountNS = {
                                 "Veuillez réessayer",
                             message: "Erreur lors de la modification du mot de passe"
                         },
+                        passwordCaseRequirement: "Au moins une lettre majuscule et minuscule",
+                        passwordCharRequirement: "Au moins un des symboles !@#$%^&*",
+                        passwordLengthRequirement: "Plus de 8 caractères",
+                        passwordNumRequirement: "Au moins un numéro",
                         submitError: {
                             description: "{{description}}",
                             message: "Erreur lors de la modification du mot de passe"

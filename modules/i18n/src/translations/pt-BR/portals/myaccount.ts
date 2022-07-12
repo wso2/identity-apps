@@ -272,6 +272,10 @@ export const myAccount: MyAccountNS = {
                                 "novamente",
                             message: "Alterar erro de senha"
                         },
+                        passwordCaseRequirement: "Pelo menos uma letra maiúscula e minúscula",
+                        passwordCharRequirement: "Pelo menos um dos símbolos !@#$%^&*",
+                        passwordLengthRequirement: "Mais de 8 caracteres",
+                        passwordNumRequirement: "Pelo menos um numero",
                         submitError: {
                             description: "{{description}}",
                             message: "Alterar erro de senha"

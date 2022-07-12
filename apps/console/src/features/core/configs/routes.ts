@@ -510,7 +510,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
                         protected: true,
                         showOnSidePanel: false
                     },
-                    /* {
+                    {
                         category: "console:manage.features.sidePanel.categories.organizations",
                         children: [
                             {
@@ -537,7 +537,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
                         path: AppConstants.getPaths().get("ORGANIZATIONS"),
                         protected: true,
                         showOnSidePanel: true
-                    } */
+                    }
                 ],
                 "id"
             ),

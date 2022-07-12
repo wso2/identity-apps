@@ -251,6 +251,7 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
             filterConditionOptions={ filterConditionOptions || defaultFilterConditionOptions }
             filterAttributeOptions={ filterAttributeOptions }
             data-testid={ testId }
+            data-componentid={ testId }
         >
             <Grid>
                 <Grid.Row columns={ 1 }>
@@ -288,6 +289,7 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
                                 type="dropdown"
                                 value={ defaultSearchAttribute }
                                 data-testid={ `${ testId }-filter-attribute-dropdown` }
+                                data-componentid={ `${ testId }-filter-attribute-dropdown` }
                             />
                             <Form.Group widths="equal">
                                 <Field
@@ -339,6 +341,7 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
                                         ".filterValue.validations.empty") }
                                     type="text"
                                     data-testid={ `${ testId }-filter-value-input` }
+                                    data-componentid={ `${ testId }-filter-value-input` }
                                 />
                             </Form.Group>
                             <Divider hidden/>
@@ -347,6 +350,7 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
                                     size="small"
                                     type="submit"
                                     data-testid={ `${ testId }-search-button` }
+                                    data-componentid={ `${ testId }-search-button` }
                                 >
                                     { submitButtonLabel ? submitButtonLabel : t("common:search") }
                                 </PrimaryButton>
@@ -356,6 +360,7 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
                                             size="small"
                                             type="reset"
                                             data-testid={ `${ testId }-reset-button` }
+                                            data-componentid={ `${ testId }-reset-button` }
                                             onClick={ () => handleResetFilter() }
                                         >
                                             { resetButtonLabel ? resetButtonLabel : t("common:resetFilters") }
@@ -377,6 +382,6 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
 AdvancedSearchWithBasicFilters.defaultProps = {
     "data-testid": "advanced-search",
     dropdownPosition: "bottom left",
-    enableQuerySearch: commonConfig.advancedSearchWithBasicFilters.enableQuerySearch,
+    enableQuerySearch: commonConfig?.advancedSearchWithBasicFilters?.enableQuerySearch,
     showResetButton: false
 };

@@ -156,3 +156,26 @@
 
 @governanceConnectorCategoriesMenuWidth: 18rem;
 @activeBorderWidth: 5px;
+
+/*-------------------
+    Tenant Dropdown
+--------------------*/
+
+@tenantDropdownPadding: 12px 8px;
+@tenantDropdownMinWidth: 270px;
+@tenantDropdownTenantMargin: 5px 0;
+@tenantDropdownTenantPadding: 14px 20px;
+@tenantDropdownWrapperSpacingLeft: 15px;
+@tenantDropdownTriggerDisplayNameMaxWidth: 120px;
+@tenantDropdownSeparatorBorderColor: #7a8084;
+@tenantDropdownTriggerBorderRadius: 25px;
+@tenantDropdownTriggerTextColor: @textColor;
+@tenantDropdownTriggerHoverBackground: #EAEFF4;
+@tenantDropdownTriggerActiveBackground: #EAEFF4;
+@tenantDropdownDefaultLabelBackground: #eaeaea;
+@tenantDropdownDefaultLabelBorderColor: #767676;
+@tenantDropdownDefaultButtonBackground: #fff1eb;
+@tenantDropdownDefaultButtonBorderColor: #ffa176;
+@tenantDropdownDefaultButtonHoverBorderColor: #e64800;
+@tenantDropdownLinkMargin: 0;
+@tenantDropdownLinkMinHeight: 46px;
