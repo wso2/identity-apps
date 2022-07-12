@@ -16,7 +16,7 @@
 * under the License.
 */
 
-import { OrganizationActionTypes, SetOrganizationActionInterface } from "./types";
+import { OrganizationActionTypes, SetGetOrganizationLoadingActionInterface, SetOrganizationActionInterface } from "./types";
 import { OrganizationInterface } from "../../../organizations/models";
 
 /**
