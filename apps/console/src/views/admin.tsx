@@ -156,14 +156,6 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
         setFilteredRoutes(routes);
     }, [ getOrganizationEnabledRoutes ]);
 
-    const getOrganizationEnabledRoutes = useCallback((): RouteInterface[] => {
-        if (!OrganizationUtils.isRootOrganization(organization.organization)) {
-            return RouteUtils.filterOrganizationEnabledRoutes(getAdminViewRoutes());
-        }
-
-        return getAdminViewRoutes();
-    }, [ organization.organization ]);
-
     useEffect(() => {
         const routes = getOrganizationEnabledRoutes();
 
