@@ -183,7 +183,7 @@ export class Config {
      */
     public static getServiceResourceEndpoints(): ServiceResourceEndpointsInterface {
         return {
-            ...getApplicationsResourceEndpoints(this.getDeploymentConfig().serverHost),
+            ...getApplicationsResourceEndpoints(this.resolveServerHost()),
             ...getApprovalsResourceEndpoints(this.getDeploymentConfig().serverHost),
             ...getClaimResourceEndpoints(this.getDeploymentConfig().serverHost),
             ...getCertificatesResourceEndpoints(this.getDeploymentConfig().serverHost),
@@ -198,7 +198,7 @@ export class Config {
             ...getRemoteFetchConfigResourceEndpoints(this.getDeploymentConfig().serverHost),
             ...getSecretsManagementEndpoints(this.getDeploymentConfig().serverHost),
             ...getExtendedFeatureResourceEndpoints(this.getDeploymentConfig().serverHost),
-            ...getOrganizationsResourceEndpoints(this.getDeploymentConfig().serverHost),
+            ...getOrganizationsResourceEndpoints(this.resolveServerHost(), this.getDeploymentConfig().serverHost),
             CORSOrigins: `${ this.getDeploymentConfig().serverHost }/api/server/v1/cors/origins`,
             // TODO: Remove this endpoint and use ID token to get the details
             me: `${ this.getDeploymentConfig().serverHost }/scim2/Me`,

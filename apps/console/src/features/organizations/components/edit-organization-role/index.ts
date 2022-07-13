@@ -16,21 +16,8 @@
  * under the License.
  */
 
-import { store } from "../../core";
-import { OrganizationResourceEndpointsInterface } from "../models";
-
-/**
- * Get the resource endpoints for the Application Management feature.
- *
- * @param {string} serverHost - Server Host.
- * @return {OrganizationManagementEndpointsInterface}
- */
-export const getOrganizationsResourceEndpoints = (
-    serverHostWithOrgPath: string,
-    serverHost: string
-): OrganizationResourceEndpointsInterface => {
-    return {
-        organizations: `${ serverHostWithOrgPath }/api/server/v1`,
-        rootOrganization: `${ serverHost }/api/server/v1`
-    };
-};
+export * from "./edit-organization-role";
+export * from "./edit-organization-role-basic";
+export * from "./edit-organization-permission";
+export * from "./edit-organization-role-users";
+export * from "./edit-organization-groups";

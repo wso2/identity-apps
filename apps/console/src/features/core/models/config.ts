@@ -93,6 +93,10 @@ export interface FeatureConfigInterface {
      */
     organizations?: FeatureAccessConfigInterface;
     /**
+     * Organization role management feature.
+     */
+    organizationsRoles?: FeatureAccessConfigInterface;
+    /**
      * Remote Fetch Config management feature.
      */
     remoteFetchConfig?: FeatureAccessConfigInterface;
