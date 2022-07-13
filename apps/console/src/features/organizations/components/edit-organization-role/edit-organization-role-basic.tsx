@@ -16,12 +16,7 @@
  * under the License
  */
 
-import {
-    AlertInterface,
-    AlertLevels,
-    RolesInterface,
-    TestableComponentInterface
-} from "@wso2is/core/models";
+import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { ConfirmationModal, DangerZone, DangerZoneGroup, EmphasizedSegment } from "@wso2is/react-components";
@@ -32,6 +27,7 @@ import { Button, Divider, Form, Grid, InputOnChangeData } from "semantic-ui-reac
 import { AppConstants, AppState, SharedUserStoreConstants, SharedUserStoreUtils, history } from "../../../core";
 import { PRIMARY_USERSTORE_PROPERTY_VALUES } from "../../../userstores";
 import { deleteOrganizationRole, getOrganizationRoles, patchOrganizationRoleDetails } from "../../api";
+import { OrganizationRoleManagementConstants } from "../../constants";
 import { OrganizationInterface, OrganizationRoleInterface, PatchOrganizationRoleDataInterface } from "../../models";
 
 /**
@@ -362,7 +358,10 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
             </EmphasizedSegment>
             <Divider hidden />
             {
-                !isReadOnly && (
+                (
+                    !isReadOnly &&
+                    roleObject?.displayName !== OrganizationRoleManagementConstants.ORG_CREATOR_ROLE_NAME
+                ) && (
                     <DangerZoneGroup sectionHeader="Danger Zone">
                         <DangerZone
                             actionTitle={
@@ -389,8 +388,8 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                             onActionClick={ () => setShowDeleteConfirmationModal(!showRoleDeleteConfirmation) }
                             data-testid={
                                 isGroup
-                                    ? `${ testId }-group-danger-zone`
-                                    : `${ testId }-role-danger-zone`
+                                    ? `${testId}-group-danger-zone`
+                                    : `${testId}-role-danger-zone`
                             }
                         />
                     </DangerZoneGroup>

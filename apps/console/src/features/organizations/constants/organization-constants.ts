@@ -70,6 +70,8 @@ export class OrganizationRoleManagementConstants {
         .set("ORGANIZATION_ROLE_DELETE", "organization-roles.delete")
         .set("ORGANIZATION_ROLE_READ", "organization-roles.read");
 
+    public static readonly ORG_CREATOR_ROLE_NAME = "org-creator";
+
 }
 
 export const APPLICATION_DOMAIN = "Application/";
