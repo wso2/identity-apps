@@ -13,7 +13,7 @@
             "options": {
                 "outputPath": "modules/validation/dist",
                 "tsconfig": "modules/validation/tsconfig.json",
-                "command": "npm run build",
+                "command": "pnpm build",
                 "cwd": "modules/validation"
             }
         },

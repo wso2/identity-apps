@@ -13,7 +13,7 @@
             "options": {
                 "outputPath": "modules/core/dist",
                 "tsconfig": "modules/core/tsconfig.json",
-                "command": "npm run build",
+                "command": "pnpm build",
                 "cwd": "modules/core"
             }
         },

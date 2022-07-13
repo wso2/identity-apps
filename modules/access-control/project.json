@@ -13,7 +13,7 @@
             "options": {
                 "outputPath": "modules/access-control/dist",
                 "tsconfig": "modules/access-control/tsconfig.json",
-                "command": "npm run build",
+                "command": "pnpm build",
                 "cwd": "modules/access-control"
             }
         },
