@@ -17,7 +17,6 @@
  */
 
 import { AccessControlConstants, Show } from "@wso2is/access-control";
-import { getAllLocalClaims } from "@wso2is/core/api";
 import { AlertLevels, Claim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
@@ -29,6 +28,7 @@ import { useDispatch } from "react-redux";
 import { Button, Divider, Grid } from "semantic-ui-react";
 import { AttributeSelection, RoleMappingSettings, UriAttributesSettings } from "./attribute-management";
 import { AttributesSelectionV2 } from "./attribute-management/attribute-selection-v2";
+import { getAllLocalClaims } from "../../../claims/api";
 import {
     IdentityProviderClaimInterface,
     IdentityProviderClaimMappingInterface,

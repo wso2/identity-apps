@@ -16,7 +16,6 @@
 * under the License.
 */
 
-import { getUserStoreList } from "@wso2is/core/api";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -26,6 +25,7 @@ import { Divider, Grid } from "semantic-ui-react";
 import { attributeConfig } from "../../../../../extensions";
 import { AppState } from "../../../../core";
 import { UserStoreListItem } from "../../../../userstores";
+import { getUserStoreList } from "../../../../userstores/api";
 
 /**
  * Prop types of `MappedAttributes` component

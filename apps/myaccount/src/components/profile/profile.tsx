@@ -16,7 +16,6 @@
  * under the License
  */
 
-import { updateProfileImageURL } from "@wso2is/core/api";
 import { ProfileConstants } from "@wso2is/core/constants";
 import {
     getUserNameWithoutDomain,
@@ -36,7 +35,7 @@ import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { DropdownItemProps, Form, Grid, Icon, List, Placeholder, Popup, Responsive } from "semantic-ui-react";
-import { updateProfileInfo } from "../../api";
+import { updateProfileImageURL, updateProfileInfo } from "../../api";
 import { AppConstants, CommonConstants } from "../../constants";
 import * as UIConstants from "../../constants/ui-constants";
 import { commonConfig, profileConfig } from "../../extensions";

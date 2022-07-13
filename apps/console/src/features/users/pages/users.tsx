@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { getUserStoreList } from "@wso2is/core/api";
 import { CommonHelpers } from "@wso2is/core/helpers";
 import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -56,6 +55,7 @@ import {
     UserStorePostData,
     UserStoreProperty
 } from "../../userstores";
+import { getUserStoreList } from "../../userstores/api";
 import { deleteUser, getUsersList } from "../api";
 import { AddUserWizard, UsersList, UsersListOptionsComponent } from "../components";
 import { UserManagementConstants } from "../constants";

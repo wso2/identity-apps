@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { getRolesList } from "@wso2is/core/api";
 import { AlertLevels, RolesInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
@@ -28,7 +27,7 @@ import { Button, Grid, Icon, Modal } from "semantic-ui-react";
 import { GroupBasics } from "./group-basics";
 import { CreateGroupSummary } from "./group-summary";
 import { AppConstants, AssignRoles, RolePermissions, history } from "../../../core";
-import { updateRole } from "../../../roles/api";
+import { getRolesList, updateRole } from "../../../roles/api";
 import { createGroup } from "../../api";
 import { getGroupsWizardStepIcons } from "../../configs";
 import {

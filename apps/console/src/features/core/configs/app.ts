@@ -184,8 +184,6 @@ export class Config {
             ...getExtendedFeatureResourceEndpoints(this.getDeploymentConfig().serverHost),
             ...getOrganizationsResourceEndpoints(this.getDeploymentConfig().serverHost),
             CORSOrigins: `${this.getDeploymentConfig().serverHost}/api/server/v1/cors/origins`,
-            // TODO: Remove this endpoint and use ID token to get the details
-            me: `${this.getDeploymentConfig().serverHost}/scim2/Me`,
             saml2Meta: `${this.getDeploymentConfig().serverHost}/identity/metadata/saml2`,
             wellKnown: `${this.getDeploymentConfig().serverHost}/oauth2/token/.well-known/openid-configuration`
         };

@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { getUserStoreList } from "@wso2is/core/api";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -26,6 +25,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { AccordionTitleProps, Divider, Grid } from "semantic-ui-react";
 import { AppState, AuthenticatorAccordion, FeatureConfigInterface } from "../../../../core";
+import { getUserStoreList } from "../../../../userstores/api";
 import { updateApplicationConfigurations } from "../../../api";
 import { ProvisioningConfigurationInterface, SimpleUserStoreListItemInterface } from "../../../models";
 import { ProvisioningConfigurationsForm } from "../../forms";

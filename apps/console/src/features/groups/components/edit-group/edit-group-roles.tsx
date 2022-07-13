@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { getRolesList } from "@wso2is/core/api";
 import {
     AlertLevels,
     RolesMemberInterface,
@@ -53,6 +52,7 @@ import {
     Table
 } from "semantic-ui-react";
 import { getEmptyPlaceholderIllustrations, updateResources } from "../../../core";
+import { getRolesList } from "../../../roles/api";
 import { APPLICATION_DOMAIN, INTERNAL_DOMAIN } from "../../../roles/constants";
 import { UserRolePermissions } from "../../../users/components/user-role-permissions";
 import { RolePermissions } from "../../../users/components/wizard";

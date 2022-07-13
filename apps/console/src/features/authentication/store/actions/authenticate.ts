@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { getProfileInfo, getProfileSchemas } from "@wso2is/core/api";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import {
     AlertInterface,
@@ -34,9 +33,10 @@ import {
 import { I18n } from "@wso2is/i18n";
 import isEmpty from "lodash-es/isEmpty";
 import { Dispatch } from "redux";
+import { commonConfig } from "../../../../extensions";
 import { Config } from "../../../core/configs";
 import { store } from "../../../core/store";
-import { commonConfig } from "../../../../extensions";
+import { getProfileInfo, getProfileSchemas } from "../../../users/api";
 
 /**
  *  Gets profile information by making an API call

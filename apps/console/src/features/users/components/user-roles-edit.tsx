@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { getRolesList } from "@wso2is/core/api";
 import {
     AlertInterface,
     AlertLevels,
@@ -52,6 +51,7 @@ import {
 import { UserRolePermissions } from "./user-role-permissions";
 import { RolePermissions } from "./wizard";
 import { getEmptyPlaceholderIllustrations, updateResources } from "../../core";
+import { getRolesList } from "../../roles/api";
 import { APPLICATION_DOMAIN, INTERNAL_DOMAIN } from "../../roles/constants";
 
 interface UserRolesPropsInterface {

@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { getAllExternalClaims, getAllLocalClaims, getDialects } from "@wso2is/core/api";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import {
     AlertLevels,
@@ -39,6 +38,7 @@ import { AdvanceAttributeSettings } from "./advance-attribute-settings";
 import { AttributeSelection } from "./attribute-selection";
 import { RoleMapping } from "./role-mapping";
 import { applicationConfig } from "../../../../../extensions";
+import { getAllExternalClaims, getAllLocalClaims, getDialects } from "../../../../claims/api";
 import { AppState, EventPublisher, FeatureConfigInterface } from "../../../../core";
 import { SubjectAttributeListItem } from "../../../../identity-providers/components/settings";
 import { updateClaimConfiguration } from "../../../api/";

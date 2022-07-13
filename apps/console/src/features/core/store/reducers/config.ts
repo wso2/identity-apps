@@ -115,6 +115,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             requestPathAuthenticators: "",
             roles: "",
             saml2Meta: "",
+            schemas: "",
             selfSignUp: "",
             serverConfigurations: "",
             serverSupportedSchemas: "",

@@ -16,7 +16,6 @@
 * under the License.
 */
 
-import { getProfileSchemas } from "@wso2is/core/api";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, Claim, ProfileSchemaInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert, setProfileSchemaRequestLoadingStatus, setSCIMSchemas } from "@wso2is/core/store";
@@ -31,6 +30,7 @@ import { attributeConfig } from "../../../../extensions";
 import { AppState, EventPublisher } from "../../../core";
 import { AppConstants } from "../../../core/constants";
 import { history } from "../../../core/helpers";
+import { getProfileSchemas } from "../../../users/api";
 import { addDialect, addExternalClaim, addLocalClaim } from "../../api";
 import { getAddLocalClaimWizardStepIcons } from "../../configs";
 import { ClaimManagementConstants } from "../../constants";

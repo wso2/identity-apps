@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { getRolesList } from "@wso2is/core/api";
 import { AlertLevels, RolesInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
@@ -34,7 +33,7 @@ import { SCIMConfigs } from "../../../../extensions/configs/scim";
 import { AppConstants } from "../../../core/constants";
 import { history } from "../../../core/helpers";
 import { getGroupList, updateGroupDetails } from "../../../groups/api";
-import { updateRoleDetails } from "../../../roles/api";
+import { getRolesList, updateRoleDetails } from "../../../roles/api";
 import { addUser } from "../../api";
 import { getUserWizardStepIcons } from "../../configs";
 import { AddUserWizardStateInterface, UserDetailsInterface, createEmptyUserDetails } from "../../models";

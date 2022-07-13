@@ -17,7 +17,6 @@
  */
 
 import { AuthenticatedUserInfo, useAuthContext } from "@asgardeo/auth-react";
-import { getProfileSchemas } from "@wso2is/core/api";
 import { AppConstants as CommonAppConstants } from "@wso2is/core/constants";
 import { AuthenticateUtils } from "@wso2is/core/utils";
 import { I18n } from "@wso2is/i18n";
@@ -26,7 +25,7 @@ import { getProfileLinkedAccounts } from ".";
 import { addAlert } from "./global";
 import { setProfileInfoLoader, setProfileSchemaLoader } from "./loaders";
 import { AuthAction, authenticateActionTypes } from "./types";
-import { getProfileInfo, getUserReadOnlyStatus, switchAccount } from "../../api";
+import { getProfileInfo, getProfileSchemas, getUserReadOnlyStatus, switchAccount } from "../../api";
 // Keep statement as this to avoid cyclic dependency. Do not import from config index.
 import { SCIMConfigs } from "../../extensions/configs/scim";
 import { history } from "../../helpers";

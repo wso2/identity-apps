@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { getAllExternalClaims, getDialects } from "@wso2is/core/api";
 import { AlertLevels, ClaimDialect, ExternalClaim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -35,6 +34,7 @@ import { RouteChildrenProps } from "react-router";
 import { Image, StrictTabProps } from "semantic-ui-react";
 import ExternalDialectEditPage from "./external-dialect-edit";
 import { SCIMConfigs, attributeConfig } from "../../../extensions";
+import { getAllExternalClaims, getDialects } from "../../claims/api";
 import { AppConstants, AppState, getTechnologyLogos, history } from "../../core";
 import { } from "../components";
 import { ClaimManagementConstants } from "../constants";

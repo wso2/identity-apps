@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { getUserStoreList } from "@wso2is/core/api";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
@@ -33,6 +32,7 @@ import {
     APPLICATION_DOMAIN,
     INTERNAL_DOMAIN
 } from "../../../roles/constants";
+import { getUserStoreList } from "../../../userstores/api";
 import { searchGroupList } from "../../api";
 import { CreateGroupFormData, SearchGroupInterface } from "../../models";
 

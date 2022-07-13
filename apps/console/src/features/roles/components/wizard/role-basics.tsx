@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { getUserStoreList } from "@wso2is/core/api";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Forms, Validation } from "@wso2is/forms";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -25,6 +24,7 @@ import { Grid, GridColumn, GridRow } from "semantic-ui-react";
 import { searchRoleList } from "../..";
 import { SharedUserStoreConstants } from "../../../core/constants";
 import { SharedUserStoreUtils } from "../../../core/utils";
+import { getUserStoreList } from "../../../userstores/api";
 import {
     PRIMARY_DOMAIN
 } from "../../constants";

@@ -17,7 +17,10 @@
  */
 
 import { AsgardeoSPAClient } from "@asgardeo/auth-react";
-import { HttpMethods } from "@wso2is/core/models";
+import { UserstoreConstants } from "@wso2is/core/constants";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+import { HttpMethods, UserstoreListResponseInterface } from "@wso2is/core/models";
+import { AxiosError, AxiosResponse } from "axios";
 import { store } from "../../core";
 import {
     AttributeMapping,
@@ -69,6 +72,49 @@ export const getUserStores = (params: QueryParams): Promise<any> => {
             if (error?.response?.data?.message !== RESOURCE_NOT_FOUND_ERROR_MESSAGE) {
                 return Promise.reject(error?.response?.data);
             }
+        });
+};
+
+/**
+ * Retrieve the list of user stores that are currently in the system.
+ * TODO: Return `response.data` rather than `response` and stop returning any.
+ *
+ * @return {Promise<UserstoreListResponseInterface[] | any>}
+ * @throws {IdentityAppsApiException}
+ */
+export const getUserStoreList = (): Promise<UserstoreListResponseInterface[] | any> => {
+
+    const requestConfig = {
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: store.getState().config.endpoints.userStores
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 200) {
+                throw new IdentityAppsApiException(
+                    UserstoreConstants.USERSTORES_FETCH_REQUEST_INVALID_RESPONSE_CODE_ERROR,
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config);
+            }
+
+            return Promise.resolve(response);
+        })
+        .catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                UserstoreConstants.USERSTORES_FETCH_REQUEST_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
         });
 };
 

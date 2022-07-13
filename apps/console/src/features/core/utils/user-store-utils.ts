@@ -16,11 +16,11 @@
  * under the License.
  */
 
-import { getUserStoreList } from "@wso2is/core/api";
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
 import isEmpty from "lodash-es/isEmpty";
+import { getUserStoreList } from "../../userstores/api";
 import { UserStoreProperty } from "../../userstores/models";
 import { getAUserStore, getPrimaryUserStore } from "../api";
 import { SharedUserStoreConstants } from "../constants";

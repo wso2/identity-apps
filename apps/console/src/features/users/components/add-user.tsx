@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { getUserStoreList } from "@wso2is/core/api";
 import { UserstoreConstants } from "@wso2is/core/constants";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { PrimaryButton } from "@wso2is/react-components";
@@ -34,6 +33,7 @@ import {
     USERSTORE_REGEX_PROPERTIES,
     UserStoreListItem
 } from "../../userstores";
+import { getUserStoreList } from "../../userstores/api";
 import { getUsersList } from "../api";
 import { BasicUserDetailsInterface } from "../models";
 import { generatePassword } from "../utils";

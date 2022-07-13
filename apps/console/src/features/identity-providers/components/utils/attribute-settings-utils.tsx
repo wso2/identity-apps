@@ -16,13 +16,13 @@
  * under the License.
  */
 
-import { getAllLocalClaims } from "@wso2is/core/api";
 import { AlertLevels, Claim } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
 import find from "lodash-es/find";
 import isEmpty from "lodash-es/isEmpty";
 import { handleUpdateIDPRoleMappingsError } from "./common-utils";
+import { getAllLocalClaims } from "../../../claims/api";
 import { store } from "../../../core";
 import { updateClaimsConfigs, updateIDPRoleMappings } from "../../api";
 import {

@@ -22,6 +22,8 @@
 export interface UsersResourceEndpointsInterface {
     bulk: string;
     groups: string;
+    me: string;
+    schemas: string;
     userSessions: string;
     userStores: string;
     users: string;

@@ -17,7 +17,6 @@
 */
 
 import { AccessControlConstants, Show } from "@wso2is/access-control";
-import { getProfileSchemas } from "@wso2is/core/api";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import {
@@ -69,6 +68,7 @@ import {
     getEmptyPlaceholderIllustrations,
     history
 } from "../../core";
+import { getProfileSchemas } from "../../users/api";
 import { UserStoreListItem, getUserStores } from "../../userstores";
 import { deleteAClaim, deleteADialect, deleteAnExternalClaim } from "../api";
 import { ClaimManagementConstants } from "../constants";

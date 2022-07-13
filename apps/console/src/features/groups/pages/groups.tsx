@@ -17,7 +17,6 @@
  */
 
 import { AccessControlConstants, Show } from "@wso2is/access-control";
-import { getUserStoreList } from "@wso2is/core/api";
 import { AlertInterface, AlertLevels, RolesInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -42,6 +41,7 @@ import {
     getEmptyPlaceholderIllustrations
 } from "../../core";
 import { UserStorePostData } from "../../userstores";
+import { getUserStoreList } from "../../userstores/api";
 import { deleteGroupById, getGroupList, searchGroupList } from "../api";
 import { GroupList } from "../components";
 import { CreateGroupWizard } from "../components/wizard";
