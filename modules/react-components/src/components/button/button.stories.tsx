@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { withKnobs } from "@storybook/addon-knobs";
 import React, { ReactElement } from "react";
 import { meta } from "./button.stories.meta";
 import { DangerButton } from "./danger-button";
@@ -27,7 +26,6 @@ import { PrimaryButton } from "./primary-button";
 import { SecondaryButton } from "./secondary-button";
 
 export default {
-    decorators: [ withKnobs ],
     parameters: {
         component: Button,
         componentSubtitle: meta.description

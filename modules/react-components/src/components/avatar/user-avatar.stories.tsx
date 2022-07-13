@@ -18,7 +18,6 @@
  */
 
 import { action } from "@storybook/addon-actions";
-import { boolean, radios, select, text } from "@storybook/addon-knobs";
 import { UIConstants } from "@wso2is/core/constants";
 import React, { ReactElement } from "react";
 import { UserAvatar } from "./user-avatar";
@@ -297,48 +296,6 @@ UserAvatarSizes.story = {
     parameters: {
         docs: {
             storyDescription: meta.stories[ 7 ].description
-        }
-    }
-};
-
-/**
- * Story to enable user to dynamically interact with the avatar component.
- *
- * @return {React.ReactElement}
- */
-/* eslint-disable sort-keys */
-export const UserAvatarPlayground = (): ReactElement => (
-    <UserAvatar
-        name={ text("User's name", "Brion Silva") }
-        size={ select(
-            "Size",
-            {
-                Mini: "mini",
-                Little: "little",
-                Tiny: "tiny",
-                Small: "small",
-                Medium: "medium",
-                Large: "large",
-                Big: "big",
-                Huge: "huge",
-                Massive: "massive"
-            },
-            "tiny"
-        ) }
-        avatarInitialsLimit={
-            select("Avatar initials count", { One: 1, Two: 2 }, 1)
-        }
-        image={ text("Image URL", null) }
-        isLoading={ boolean("Loading", false) }
-        spaced={ radios("Spaced", { Right: "right", Left: "left" }, "right") }
-    />
-);
-/* eslint-enable sort-keys */
-
-UserAvatarPlayground.story = {
-    parameters: {
-        docs: {
-            storyDescription: meta.stories[ 8 ].description
         }
     }
 };

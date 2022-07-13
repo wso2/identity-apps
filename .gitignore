@@ -98,6 +98,7 @@ modules/theme/src/semantic-ui-core/definitions
 modules/theme/src/themes/sample
 modules/react-components/storybook-static
 modules/react-components/.cache
+modules/react-components/public/themes
 apps/*/build/
 apps/*/dist/
 apps/*/src/main/webapp/libs/themes

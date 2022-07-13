@@ -17,7 +17,6 @@
  *
  */
 
-import { select } from "@storybook/addon-knobs";
 import { ChildRouteInterface, RouteInterface } from "@wso2is/core/models";
 import React, { ReactElement, useState } from "react";
 import { ROUTES, ROUTES_WITH_CHILDREN, meta } from "./side-panel.stories.meta";
@@ -50,16 +49,7 @@ export const DefaultSidePanel = (): ReactElement => {
         <div style={ { margin: "1em 0", width: "200px" } }>
             <SidePanel
                 onSidePanelItemClick={ handleSidePanelItemClick }
-                hoverType={
-                    select(
-                        "Hover Type",
-                        {
-                            Background: "background",
-                            Highlighted: "highlighted"
-                        },
-                        "highlighted"
-                    )
-                }
+                hoverType="background"
                 routes={ ROUTES }
                 selected={ selectedRoute }
                 footerHeight={ 0 }
@@ -99,16 +89,7 @@ export const WithChildren = (): ReactElement => {
         <div style={ { margin: "1em 0", width: "200px" } }>
             <SidePanel
                 onSidePanelItemClick={ handleSidePanelItemClick }
-                hoverType={
-                    select(
-                        "Hover Type",
-                        {
-                            Background: "background",
-                            Highlighted: "highlighted"
-                        },
-                        "highlighted"
-                    )
-                }
+                hoverType="background"
                 routes={ ROUTES_WITH_CHILDREN }
                 selected={ selectedRoute }
                 footerHeight={ 0 }
@@ -148,16 +129,7 @@ export const Categorized = (): ReactElement => {
         <div style={ { margin: "1em 0", width: "200px" } }>
             <SidePanel
                 categorized={ true }
-                hoverType={
-                    select(
-                        "Hover Type",
-                        {
-                            Background: "background",
-                            Highlighted: "highlighted"
-                        },
-                        "background"
-                    )
-                }
+                hoverType="background"
                 onSidePanelItemClick={ handleSidePanelItemClick }
                 routes={ ROUTES_WITH_CHILDREN }
                 selected={ selectedRoute }

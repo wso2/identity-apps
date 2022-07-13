@@ -17,7 +17,6 @@
  *
  */
 
-import { boolean, number } from "@storybook/addon-knobs";
 import React, { ReactElement, useEffect, useState } from "react";
 import { TopLoadingBar } from "./top-loading-bar";
 import { meta } from "./top-loading-bar.stories.meta";
@@ -65,16 +64,8 @@ DefaultTopLoadingBar.story = {
  */
 export const TopLoadingBarPlayground = (): ReactElement => (
     <TopLoadingBar
-        height={
-            number("Height", 3,
-                {
-                    max: 50,
-                    min: 1,
-                    range: true,
-                    step: 1
-                })
-        }
-        visibility={ boolean("Visibility", false) }
+        height={ 3 }
+        visibility={ false }
     />
 );
 

@@ -18,7 +18,6 @@
  */
 
 import { action } from "@storybook/addon-actions";
-import { text } from "@storybook/addon-knobs";
 import React, { ReactElement } from "react";
 import { DangerZone } from "./danger-zone";
 import { DangerZoneGroup } from "./danger-zone-group";
@@ -116,11 +115,11 @@ GroupOfDangerZones.story = {
  * @return {React.ReactElement}
  */
 export const DangerZonePlayground = (): ReactElement => (
-    <DangerZoneGroup sectionHeader={ text("Section heading", "Danger Zone") }>
+    <DangerZoneGroup sectionHeader="Danger Zone">
         <DangerZone
-            actionTitle={ text("Action title", "Revoke") }
-            header={ text("Heading", "Revoke Consent") }
-            subheader={ text("Description", "You will have to provide consent for this application again.") }
+            actionTitle="Revoke"
+            header="Revoke Consent"
+            subheader="You will have to provide consent for this application again."
             onActionClick={ action("Clicked on revoke consent button.") }
         />
     </DangerZoneGroup>

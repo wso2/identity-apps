@@ -17,7 +17,6 @@
  *
  */
 
-import { boolean, radios, select, text } from "@storybook/addon-knobs";
 import React, { ReactElement } from "react";
 import { AppAvatar } from "./app-avatar";
 import { meta } from "./app-avatar.stories.meta";
@@ -164,47 +163,6 @@ AppAvatarSizes.story = {
     parameters: {
         docs: {
             storyDescription: meta.stories[ 4 ].description
-        }
-    }
-};
-
-/**
- * Story to enable user to dynamically interact with the avatar component.
- *
- * @return {React.ReactElement}
- */
-export const AppAvatarPlayground = (): ReactElement => (
-    <AppAvatar
-        name={ text("Application name", "My Account") }
-        size={
-            /* eslint-disable sort-keys */
-            select(
-                "Size",
-                {
-                    Mini: "mini",
-                    Little: "little",
-                    Tiny: "tiny",
-                    Small: "small",
-                    Medium: "medium",
-                    Large: "large",
-                    Big: "big",
-                    Huge: "huge",
-                    Massive: "massive"
-                },
-                "tiny"
-            )
-            /* eslint-enable sort-keys */
-        }
-        image={ text("Image URL", null) }
-        isLoading={ boolean("Loading", false) }
-        spaced={ radios("Spaced", { Left: "left",  Right: "right" }, "right") }
-    />
-);
-
-AppAvatarPlayground.story = {
-    parameters: {
-        docs: {
-            storyDescription: meta.stories[ 5 ].description
         }
     }
 };

@@ -17,14 +17,12 @@
  *
  */
 
-import { boolean, number, select, text, withKnobs } from "@storybook/addon-knobs";
 import { AlertLevels } from "@wso2is/core/models";
 import React, { ReactElement, useState } from "react";
 import { Alert } from "./alert";
 import { meta } from "./alert.stories.meta";
 
 export default {
-    decorators: [ withKnobs ],
     parameters: {
         component: Alert,
         componentSubtitle: meta.description
@@ -251,65 +249,6 @@ export const InfoAlert = (): ReactElement => {
 };
 
 InfoAlert.story = {
-    parameters: {
-        docs: {
-            storyDescription: meta.stories[ 4 ].description
-        }
-    }
-};
-
-/**
- * Story to enable user to dynamically interact with the alert component.
- *
- * @return {React.ReactElement}
- */
-export const AlertPlayground = (): ReactElement => {
-    const [ alertSystem, setAlertSystem ] = useState(null);
-
-    const handleAlertSystemInitialize = (system) => {
-        setAlertSystem(system);
-    };
-
-    return (
-        <Alert
-            absolute={ boolean("Absolute position", true) }
-            dismissInterval={ number("Dismiss interval", 100000) }
-            alertsPosition={
-                select(
-                    "Position",
-                    {
-                        "Bottom center": "bc",
-                        "Bottom left": "bl",
-                        "Bottom right": "br",
-                        "Top center": "tc",
-                        "Top left": "tl",
-                        "Top right": "tr"
-                    },
-                    "br"
-                )
-            }
-            alertSystem={ alertSystem }
-            alert={ {
-                description: text("Description", "This is a success message."),
-                level: select(
-                    "Alert level",
-                    {
-                        Error: AlertLevels.ERROR,
-                        Info: AlertLevels.INFO,
-                        Success: AlertLevels.SUCCESS,
-                        Warning: AlertLevels.WARNING
-                    },
-                    AlertLevels.SUCCESS
-                ),
-                message: text("Message", "Success message")
-            } }
-            onAlertSystemInitialize={ handleAlertSystemInitialize }
-            withIcon={ boolean("With icon", true) }
-        />
-    );
-};
-
-AlertPlayground.story = {
     parameters: {
         docs: {
             storyDescription: meta.stories[ 4 ].description

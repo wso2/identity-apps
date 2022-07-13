@@ -17,7 +17,6 @@
  *
  */
 
-import { boolean, text } from "@storybook/addon-knobs";
 import React, { ReactElement, useEffect, useState } from "react";
 import { ContentLoader } from "./content-loader";
 import { meta } from "./top-loading-bar.stories.meta";
@@ -65,9 +64,9 @@ DefaultContentLoader.story = {
  */
 export const ContentLoaderPlayground = (): ReactElement => (
     <ContentLoader
-        text={ text("Text", "Loading") }
-        active={ boolean("Active", true) }
-        dimmer={ boolean("Dimmer", true) }
+        text="Loading"
+        active={ true }
+        dimmer={ true }
     />
 );
 

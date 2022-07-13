@@ -16,14 +16,12 @@
  * under the License.
  */
 
-import { text, withKnobs } from "@storybook/addon-knobs";
 import * as React from "react";
 import { meta } from "./brand.stories.meta";
 import { Logo } from "./logo";
 import { ProductBrand } from "./product-brand";
 
 export default {
-    decorators: [ withKnobs ],
     parameters: {
         component: ProductBrand,
         componentSubtitle: meta.description
@@ -47,15 +45,14 @@ export const DefaultProductBrand = (): React.ReactElement => (
         } }
     >
         <ProductBrand
-            appName={ text("App Name", "Developer") }
+            appName="Developer"
             logo={ (
                 <Logo
-                    image={
-                        text("Logo URL", "https://wso2.cachefly.net/wso2/sites/all/2020-theme/images/wso2-logo.svg")
-                    }/>
+                    image="https://wso2.cachefly.net/wso2/sites/all/2020-theme/images/wso2-logo.svg"
+                />
             ) }
-            productName={ text("Product Name", "Identity Server") }
-            version={ text("version", "5.11.0-M24-SNAPSHOT") }
+            productName="Identity Server"
+            version="6.0.0-M24-SNAPSHOT"
         />
     </div>
 );

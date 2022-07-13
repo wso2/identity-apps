@@ -17,13 +17,11 @@
  *
  */
 
-import { select, withKnobs } from "@storybook/addon-knobs";
 import React, { ReactElement } from "react";
 import { CodeEditor } from "./code-editor";
 import { SampleJSCodeSnippet, SampleJSONSnippet, SampleTSCodeSnippet, meta } from "./code-editor.stories.meta";
 
 export default {
-    decorators: [ withKnobs ],
     parameters: {
         component: CodeEditor,
         componentSubtitle: meta.description
@@ -168,7 +166,7 @@ export const CodeEditorThemes = (): ReactElement => (
         language="javascript"
         smart={ true }
         lint={ true }
-        theme={ select("Theme", { Dark: "dark", Light: "light" }, "light") }
+        theme="light"
         sourceCode={ SampleJSCodeSnippet }
     />
 );
