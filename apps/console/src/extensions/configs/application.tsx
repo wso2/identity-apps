@@ -18,12 +18,12 @@
 
 import { ReactElement, ReactNode } from "react";
 import { ApplicationConfig } from "./models";
-import { ApplicationTabTypes } from "../../features/applications";
 import {
     ExtendedClaimInterface,
     ExtendedExternalClaimInterface,
     SelectedDialectInterface
 } from "../../features/applications/components/settings";
+import { ApplicationTabTypes } from "../../features/applications/models";
 
 export const applicationConfig: ApplicationConfig = {
     advancedConfigurations: {

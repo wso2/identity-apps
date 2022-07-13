@@ -17,7 +17,7 @@
  */
 
 import { AsgardeoSPAClient, HttpError, HttpRequestConfig, HttpResponse } from "@asgardeo/auth-react";
-import { HttpMethods } from "@wso2is/core/src/models";
+import { HttpMethods } from "@wso2is/core/models";
 import { store } from "../../core";
 import {
     AddOrganizationInterface,
