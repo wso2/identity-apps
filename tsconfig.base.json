@@ -26,6 +26,42 @@
             ],
             "@wso2is/forms": [
                 "modules/forms/src/index.ts"
+            ],
+            "@wso2is/core/api": [
+                "modules/core/src/api/index.ts"
+            ],
+            "@wso2is/core/configs": [
+                "modules/core/src/configs/index.ts"
+            ],
+            "@wso2is/core/constants": [
+                "modules/core/src/constants/index.ts"
+            ],
+            "@wso2is/core/errors": [
+                "modules/core/src/errors/index.ts"
+            ],
+            "@wso2is/core/exceptions": [
+                "modules/core/src/exceptions/index.ts"
+            ],
+            "@wso2is/core/helpers": [
+                "modules/core/src/helpers/index.ts"
+            ],
+            "@wso2is/core/hooks": [
+                "modules/core/src/hooks/index.ts"
+            ],
+            "@wso2is/core/models": [
+                "modules/core/src/models/index.ts"
+            ],
+            "@wso2is/core/store": [
+                "modules/core/src/store/index.ts"
+            ],
+            "@wso2is/core/utils": [
+                "modules/core/src/utils/index.ts"
+            ],
+            "@wso2is/core/workers": [
+                "modules/core/src/workers/index.ts"
+            ],
+            "@wso2is/core/workers/timer.worker": [
+                "modules/core/src/workers/timer.worker.ts"
             ]
         }
     },
