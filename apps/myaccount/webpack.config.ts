@@ -455,7 +455,7 @@ const getThemeConfigs = () => {
 };
 
 const getI18nConfigs = () => {
-    const I18N_DIR = path.resolve(__dirname, "src", "extensions", "i18n", "tmp");
+    const I18N_DIR = path.resolve(__dirname, "node_modules", "@wso2is", "i18n", "dist", "bundle");
 
     let metaFiles = null;
 
