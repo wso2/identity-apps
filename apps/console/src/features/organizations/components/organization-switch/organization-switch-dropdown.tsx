@@ -118,6 +118,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                 inline
                 className="tenant-dropdown-trigger-icon"
                 data-componentid="component-dropdown-trigger-icon"
+                data-testid="tenant-dropdown-trigger-icon"
                 icon={ getMiscellaneousIcons().tenantIcon }
                 size="micro"
                 fill="white"

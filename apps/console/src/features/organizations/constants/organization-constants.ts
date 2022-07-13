@@ -39,7 +39,7 @@ export class OrganizationManagementConstants {
     /**
      * Super organization object.
      *
-     * @constant
+     * @@constant
      * @type {OrganizationInterface}
      * @default
      */

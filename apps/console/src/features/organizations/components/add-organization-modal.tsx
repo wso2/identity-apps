@@ -90,7 +90,7 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
                 } else {
                     setDuplicateName(false);
                 }
-            } catch (error) {
+            } catch(error) {
                 setDuplicateName(false);
             }
         }
