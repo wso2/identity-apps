@@ -16,13 +16,20 @@
  * under the License.
  */
 
-import { create } from '@storybook/theming';
-import { version } from "../package.json";
+import { create } from "@storybook/theming";
+import Manifest from "../package.json";
+import DeploymentConfig from "../public/deployment.config.json";
 
-export const LightTheme = create({
-  base: "light",
-  colorSecondary: "#ff5000",
-  brandTitle: `IDENTITY SERVER REACT ${ version }`,
-  brandUrl: "https://wso2.com/identity-server/",
-  brandTarget: '_blank',
-});
+/**
+ * Get the moderated Theme from `deployment.config.json`.
+ * @returns Theme.
+ */
+const getTheme = () => {
+    const _theme = DeploymentConfig.theme;
+    delete _theme.name;
+    _theme.brandTitle = _theme.brandTitle.replace("${version}", Manifest.version);
+
+    return _theme;
+};
+
+export const Theme = create(getTheme());
