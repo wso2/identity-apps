@@ -19,6 +19,8 @@
 <%= htmlWebpackPlugin.options.importUtil %>
 <%= htmlWebpackPlugin.options.importTenantPrefix %>
 <%= htmlWebpackPlugin.options.importSuperTenantConstant %>
+<%= htmlWebpackPlugin.options.getAdaptiveAuthenticationAvailability %>
+
 
 <jsp:scriptlet>
     session.setAttribute("authCode", request.getParameter("code"));
@@ -42,6 +44,8 @@
             var serverOriginGlobal = "<%= htmlWebpackPlugin.options.serverUrl %>";
             var superTenantGlobal = "<%= htmlWebpackPlugin.options.superTenantConstant %>";
             var tenantPrefixGlobal = "<%= htmlWebpackPlugin.options.tenantPrefix %>";
+            var isAdaptiveAuthenticationAvailable = JSON.parse("<%= htmlWebpackPlugin.options.isAdaptiveAuthenticationAvailable %>");
+            
         </script>
 
         <script>

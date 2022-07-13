@@ -93,6 +93,10 @@ export interface ConsoleNS {
                 myAccount: AppSwitchItemInterface;
                 tooltip: string;
             };
+            organizationSwitch: {
+                emptyOrgListMessage: string;
+                orgSearchPlaceholder: string;
+            }
         },
         modals: {
             editAvatarModal: ModalInterface;
@@ -2279,6 +2283,9 @@ export interface ConsoleNS {
                 notifications: {
                     fetchOrganization: Notification;
                     deleteOrganization: Notification;
+                    deleteOrganizationWithSubOrganizationError: string;
+                    updateOrganization: Notification;
+                    updateOrganizationAttributes: Notification;
                     addOrganization: Notification;
                     getOrganizationList: Notification;
                 };
@@ -2292,6 +2299,34 @@ export interface ConsoleNS {
                 };
                 placeholders: {
                     emptyList: Placeholder;
+                };
+                edit: {
+                    description: string;
+                    back: string;
+                    tabTitles: {
+                        overview: string;
+                        attributes: string;
+                    },
+                    fields: {
+                        id: FormAttributes;
+                        name: FormAttributes;
+                        description: FormAttributes;
+                        domain: FormAttributes;
+                        type: FormAttributes;
+                        created: FormAttributes;
+                        lastModified: FormAttributes;
+                    },
+                    dangerZone: {
+                        title: string;
+                        subHeader: string;
+                    },
+                    attributes: {
+                        hint: string;
+                        key: string;
+                        value: string;
+                        keyRequiredErrorMessage: string;
+                        valueRequiredErrorMessage: string;
+                    }
                 };
                 modals: {
                     addOrganization: {
@@ -2313,6 +2348,12 @@ export interface ConsoleNS {
                 homeList: {
                     name: string;
                     description: string;
+                };
+                switching: {
+                    search: {
+                        placeholder: string;
+                    };
+                    emptyList: string;
                 }
             };
             users: {

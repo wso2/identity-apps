@@ -209,6 +209,10 @@ export interface MyAccountNS {
                             description: string;
                             message: string;
                         };
+                        passwordCaseRequirement: string,
+                        passwordCharRequirement: string,
+                        passwordLengthRequirement: string,
+                        passwordNumRequirement: string,
                         submitError: {
                             description: string;
                             message: string;
@@ -357,6 +361,7 @@ export interface MyAccountNS {
                 enableHint: string;
                 addHint: string;
                 deleteHint: string;
+                regenerate: string;
                 modals: {
                     heading: string;
                     scan: {
@@ -366,6 +371,7 @@ export interface MyAccountNS {
                         messageHeading: string;
                         messageBody: string;
                         authenticatorApps: string;
+                        regenerateWarning: string;
                     };
                     verify: {
                         heading: string;
@@ -395,6 +401,14 @@ export interface MyAccountNS {
                     deleteError: {
                         genericError: NotificationItem;
                         error: NotificationItem;
+                    };
+                    updateAuthenticatorError: {
+                        error: NotificationItem;
+                        genericError: NotificationItem;
+                    };
+                    deleteSuccess: {
+                        genericMessage: string;
+                        message: string;
                     };
                 };
             };
@@ -501,6 +515,9 @@ export interface MyAccountNS {
                     completionPercentage: string;
                     userSourceText: string;
                     header: string;
+                    description: string;
+                    readOnlyDescription: string;
+                    profileText:string
                 };
                 accountStatus: {
                     complete: string;
@@ -867,6 +884,7 @@ export interface MyAccountNS {
         personalInfoWithoutLinkedAccounts: Page;
         personalInfoWithoutExportProfile: Page;
         privacy: Page;
+        readOnlyProfileBanner: string;
         security: Page;
     };
     placeholders: {

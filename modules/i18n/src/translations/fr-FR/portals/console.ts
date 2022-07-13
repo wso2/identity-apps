@@ -80,6 +80,10 @@ export const console: ConsoleNS = {
                     name: "My Account"
                 },
                 tooltip: "Apps"
+            },
+            organizationSwitch: {
+                emptyOrgListMessage: "Aucune organisation disponible",
+                orgSearchPlaceholder: "Rechercher par nom d'organisation"
             }
         },
         modals: {
@@ -1511,20 +1515,15 @@ export const console: ConsoleNS = {
                             grant: {
                                 children: {
                                     client_credential: {
-                                        hint: "La portée openid n'est pas autorisée avec ce type de subvention.",
+                                        hint: "Ce type d'octroi ne prend pas en charge la portée 'openid'.",
                                         label: "(portée openid non autorisée)"
                                     },
                                     implicit: {
-                                        hint: "L'utilisation de l'octroi implicite avec des applications publiques " +
-                                            "n'est pas recommandée. {{productName}} adhérer aux meilleures " +
-                                            "pratiques desécurité et ne pas mettre en œuvre l'octroi implicite",
+                                        hint: "Ce type de subvention n'est pas recommandé.",
                                         label: "{{grantType}} (non recommandé)"
                                     },
                                     password: {
-                                        hint: "L'utilisation de l'octroi de mot de passe avec des applications " +
-                                            "publiques n'est pas recommandée. {{productName}} respectez les " +
-                                            "meilleures pratiques de sécurité et n'implémentez pas l'octroi " +
-                                            "de mot de passe",
+                                        hint: "Ce type de subvention n'est pas recommandé.",
                                         label: "{{grantType}} (non recommandé)"
                                     }
                                 },
@@ -5824,6 +5823,57 @@ export const console: ConsoleNS = {
                         message: "Cette action est irréversible et supprimera entièrement l'organisation."
                     }
                 },
+                edit: {
+                    attributes: {
+                        hint: "Configurer les attributs de l'organisation",
+                        key: "Nom",
+                        keyRequiredErrorMessage: "Le nom est requis",
+                        value: "Évaluer",
+                        valueRequiredErrorMessage: "Valeur est requise"
+                    },
+                    back: "Retour",
+                    dangerZone: {
+                        subHeader: "Voulez-vous vraiment supprimer cette organisation?",
+                        title: "Supprimer l'organisation"
+                    },
+                    description: "Modifier l'organisation",
+                    fields: {
+                        created: {
+                            ariaLabel: "Établi",
+                            label: "Établi"
+                        },
+                        description: {
+                            ariaLabel: "Description de l'organisation",
+                            label: "Description de l'organisation",
+                            placeholder: "Entrez la description de l'organisation"
+                        },
+                        domain: {
+                            ariaLabel: "Domaine de l'organisation",
+                            label: "Domaine de l'organisation"
+                        },
+                        id: {
+                            ariaLabel: "ID de l'organisation",
+                            label: "ID de l'organisation"
+                        },
+                        lastModified: {
+                            ariaLabel: "Dernière modification",
+                            label: "Dernière modification"
+                        },
+                        name: {
+                            ariaLabel: "Nom de l'organisation",
+                            label: "Nom de l'organisation",
+                            placeholder: "Entrez le nom de l'organisation"
+                        },
+                        type: {
+                            ariaLabel: "Type d'Organisation",
+                            label: "Type d'Organisation"
+                        }
+                    },
+                    tabTitles: {
+                        attributes: "Les attributs",
+                        overview: "Aperçu"
+                    }
+                },
                 forms: {
                     addOrganization: {
                         description: {
@@ -5900,6 +5950,8 @@ export const console: ConsoleNS = {
                             message: "Organisation supprimée avec succès"
                         }
                     },
+                    deleteOrganizationWithSubOrganizationError: "L'organisation {{ organizationName }} ne peut pas" +
+                        " être supprimée car elle possède une ou plusieurs sous-organisations.",
                     fetchOrganization: {
                         error: {
                             description: "{{description}}",
@@ -5923,6 +5975,35 @@ export const console: ConsoleNS = {
                             description: "Une erreur s'est produite lors de l'obtention de la liste des organisations",
                             message: "Quelque chose s'est mal passé"
                         }
+                    },
+                    updateOrganization: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Erreur lors de la mise à jour de l'organisation"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la mise à jour de l'organisation",
+                            message: "Quelque chose s'est mal passé"
+                        },
+                        success: {
+                            description: "Mise à jour réussie de l'organisation",
+                            message: "Organisation mise à jour avec succès"
+                        }
+                    },
+                    updateOrganizationAttributes: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Erreur lors de la mise à jour des attributs de l'organisation"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la mise à jour des attributs " +
+                                "de l'organisation",
+                            message: "Quelque chose s'est mal passé"
+                        },
+                        success: {
+                            description: "Mise à jour réussie des attributs de l'organisation",
+                            message: "Les attributs de l'organisation ont bien été mis à jour"
+                        }
                     }
                 },
                 placeholders: {
@@ -5937,6 +6018,12 @@ export const console: ConsoleNS = {
                     }
                 },
                 subTitle: "Créer et gérer des organisations.",
+                switching: {
+                    emptyList: "Il n'y a aucune organisation à afficher.",
+                    search: {
+                        placeholder: "Rechercher par nom"
+                    }
+                },
                 title: "Organisations"
             },
             overview: {
@@ -7574,7 +7661,7 @@ export const console: ConsoleNS = {
                     content: "En supprimant cet annuaire, vous supprimerez également toute sa " +
                         + " configuration. Veuillez procéder avec prudence.",
                     header: "Êtes-vous sûr ?",
-                    hint: "Veuillez saisir <1>{{name}}</1> pour confirmer.",
+                    hint: "Veuillez confirmer votre action.",
                     message: "Cette action est irréversible et supprimera définitivement "
                         + " l'annuaire sélectionné ainsi que ses configurations."
                 },

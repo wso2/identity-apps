@@ -79,6 +79,10 @@ export const console: ConsoleNS = {
                     name: "My Account"
                 },
                 tooltip: "Apps"
+            },
+            organizationSwitch: {
+                emptyOrgListMessage: "සංවිධාන නොමැත",
+                orgSearchPlaceholder: "සංවිධානයේ නම අනුව සොයන්න"
             }
         },
         modals: {
@@ -1479,19 +1483,15 @@ export const console: ConsoleNS = {
                             grant: {
                                 children: {
                                     client_credential: {
-                                        hint: "මෙම ප්‍රදාන වර්ගය සමඟ openid විෂය පථයට ඉඩ නොදේ.",
+                                        hint: "මෙම ප්‍රදාන වර්ගය 'openid' විෂය පථයට සහය නොදක්වයි.",
                                         label: "(openid විෂය පථයට අවසර නැත)"
                                     },
                                     implicit: {
-                                        hint: "පොදු අයදුම්පත් සමඟ ව්‍යංග ප්‍රදානය භාවිතා කිරීම නිර්දේශ නොකරයි. " +
-                                            "{{productName}} ආරක්ෂක පිළිවෙත් පිළිපදි, ව්‍යංග ප්‍රදානය " +
-                                            "ක්‍රියාත්මක නොකරන්න.",
+                                        hint: "මෙම ප්‍රදාන වර්ගය නිර්දේශ නොකරයි.",
                                         label: "{{grantType}} (නිර්දේශ නොකරයි)"
                                     },
                                     password: {
-                                        hint: "පොදු යෙදුම් සමඟ මුරපද ප්‍රදානය භාවිතා කිරීම නිර්දේශ නොකරයි. " +
-                                            "{{productName}} ආරක්ෂක පිළිවෙත් පිළිපදි, මුරපද ප්‍රදානය " +
-                                            "ක්‍රියාත්මක නොකරන්න.",
+                                        hint: "මෙම ප්‍රදාන වර්ගය නිර්දේශ නොකරයි.",
                                         label: "{{grantType}} (නිර්දේශ නොකරයි)"
                                     }
                                 },
@@ -5694,6 +5694,57 @@ export const console: ConsoleNS = {
                         message: "මෙම ක්‍රියාව ආපසු හැරවිය නොහැකි අතර සංවිධානය සම්පූර්ණයෙන්ම ඉවත් කරනු ඇත."
                     }
                 },
+                edit: {
+                    attributes: {
+                        hint: "සංවිධාන ගුණාංග වින්‍යාස කරන්න",
+                        key: "නාමය",
+                        keyRequiredErrorMessage: "නම අවශ්‍යයි",
+                        value: "අගය",
+                        valueRequiredErrorMessage: "අගය අවශ්ය වේ"
+                    },
+                    back: "ආපසු",
+                    dangerZone: {
+                        subHeader: "ඔබට මෙම සංවිධානය මැකීමට අවශ්‍ය බව විශ්වාසද?",
+                        title: "සංවිධානය මකන්න"
+                    },
+                    description: "සංවිධානය සංස්කරණය කරන්න",
+                    fields: {
+                        created: {
+                            ariaLabel: "නිර්මාණය කළ කාලය",
+                            label: "නනිර්මාණය කළ කාලය"
+                        },
+                        description: {
+                            ariaLabel: "සංවිධානයේ විස්තරය",
+                            label: "සංවිධානයේ විස්තරය",
+                            placeholder: "සංවිධානයේ විස්තරය ඇතුළත් කරන්න"
+                        },
+                        domain: {
+                            ariaLabel: "සංවිධාන වසම",
+                            label: "සංවිධාන වසම"
+                        },
+                        id: {
+                            ariaLabel: "සංවිධාන හැඳුනුම්පත",
+                            label: "සංවිධාන හැඳුනුම්පත"
+                        },
+                        lastModified: {
+                            ariaLabel: "අවසන් වරට වෙනස් කළ කාලය",
+                            label: "අවසන් වරට වෙනස් කළ කාලය"
+                        },
+                        name: {
+                            ariaLabel: "සංවිධානයේ නම",
+                            label: "සංවිධානයේ නම",
+                            placeholder: "සංවිධානයේ නම ඇතුළත් කරන්න"
+                        },
+                        type: {
+                            ariaLabel: "සංවිධානයේ වර්ගය",
+                            label: "සංවිධානයේ වර්ගය"
+                        }
+                    },
+                    tabTitles: {
+                        attributes: "ගුණාංග",
+                        overview: "දළ විශ්ලේෂණය"
+                    }
+                },
                 forms: {
                     addOrganization: {
                         description: {
@@ -5770,6 +5821,8 @@ export const console: ConsoleNS = {
                             message: "සංවිධානය සාර්ථකව මකා ඇත"
                         }
                     },
+                    deleteOrganizationWithSubOrganizationError: "{{ organizationName }} සංවිධානයට උප සංවිධාන එකක් හෝ " +
+                        "කිහිපයක් ඇති බැවින් එය මකා දැමිය නොහැක.",
                     fetchOrganization: {
                         error: {
                             description: "{{description}}",
@@ -5793,6 +5846,34 @@ export const console: ConsoleNS = {
                             description: "සංවිධාන ලැයිස්තුව ලබා ගැනීමේදී දෝෂයක් ඇති විය",
                             message: "මොකක්හරි වැරැද්දක් වෙලා"
                         }
+                    },
+                    updateOrganization: {
+                        error: {
+                            description: "{{description}}",
+                            message: "සංවිධානය යාවත්කාලීන කිරීමේදී දෝෂයකි"
+                        },
+                        genericError: {
+                            description: "සංවිධානය යාවත්කාලීන කිරීමේදී දෝෂයක් ඇති විය",
+                            message: "මොකක්හරි වැරැද්දක් වෙලා"
+                        },
+                        success: {
+                            description: "සංවිධානය සාර්ථකව යාවත්කාලීන කරන ලදී",
+                            message: "යාවත්කාලීන සංවිධානය"
+                        }
+                    },
+                    updateOrganizationAttributes: {
+                        error: {
+                            description: "{{description}}",
+                            message: "සංවිධානයේ ගුණාංග යාවත්කාලීන කිරීමේදී දෝෂයකි"
+                        },
+                        genericError: {
+                            description: "සංවිධාන ගුණාංග යාවත්කාලීන කිරීමේදී දෝෂයක් ඇති විය",
+                            message: "මොකක්හරි වැරැද්දක් වෙලා"
+                        },
+                        success: {
+                            description: "සංවිධානයේ උපලක්ෂණ සාර්ථකව යාවත්කාලීන කරන ලදී",
+                            message: "සංවිධානයේ උපලක්ෂණ යාවත්කාලීන කරන ලදී"
+                        }
                     }
                 },
                 placeholders: {
@@ -5807,6 +5888,12 @@ export const console: ConsoleNS = {
                     }
                 },
                 subTitle: "ආයතන සාදන්න සහ කළමනාකරණය කරන්න.",
+                switching: {
+                    emptyList: "පෙන්වීමට සංවිධානයක් නැත.",
+                    search: {
+                        placeholder: "නම අනුව සොයන්න"
+                    }
+                },
                 title: "ආයතන"
             },
             overview: {
@@ -7394,7 +7481,7 @@ export const console: ConsoleNS = {
                     content: "ඔබ මෙම පරිශීලක වෙළඳසැල මකා දැමුවහොත්, මෙම පරිශීලක වෙළඳසැලේ පරිශීලක දත්ත ද "
                         + "මකා දැමෙනු ඇත. කරුණාකර ප්‍රවේශමෙන් ඉදිරියට යන්න.",
                     header: "ඔබට විශ්වාසද?",
-                    hint: "තහවුරු කිරීමට කරුණාකර <1>{{name}}</1> ටයිප් කරන්න.",
+                    hint: "කරුණාකර ඔබගේ ක්‍රියාව තහවුරු කරන්න.",
                     message: "මෙම ක්‍රියාව ආපසු හැරවිය නොහැකි අතර තෝරාගත් පරිශීලක වෙළඳසැල සහ එහි "
                         + "ඇති දත්ත ස්ථිරවම මකා දමනු ඇත."
                 },

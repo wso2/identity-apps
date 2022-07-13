@@ -19,6 +19,7 @@
 import { ProfileConstants } from "@wso2is/core/constants";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { TestableComponentInterface } from "@wso2is/core/models";
+import { Message } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -26,11 +27,12 @@ import { Divider, Grid } from "semantic-ui-react";
 import { FederatedAssociations, LinkedAccounts, Profile, ProfileExport } from "../components";
 import { AppConstants } from "../constants";
 import { commonConfig } from "../extensions";
+import { SCIMConfigs } from "../extensions/configs/scim";
 import { InnerPageLayout } from "../layouts";
 import { AlertInterface, AuthStateInterface, FeatureConfigInterface } from "../models";
 import { AppState } from "../store";
 import { addAlert } from "../store/actions";
-import {SCIMConfigs} from "../extensions/configs/scim";
+import { CommonUtils } from "../utils";
 
 /**
  * Prop types for the basic details component.
@@ -57,6 +59,7 @@ const PersonalInfoPage:  FunctionComponent<PersonalInfoPagePropsInterface> = (
     const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
     const [ isNonLocalCredentialUser, setIsNonLocalCredentialUser ] = useState<boolean>(false);
     const profileDetails: AuthStateInterface = useSelector((state: AppState) => state.authenticationInformation);
+    const isReadOnlyUser = useSelector((state: AppState) => state.authenticationInformation.profileInfo.isReadOnly);
 
     /**
      * Dispatches the alert object to the redux store.
@@ -97,6 +100,14 @@ const PersonalInfoPage:  FunctionComponent<PersonalInfoPagePropsInterface> = (
                         : t("myAccount:pages.personalInfoWithoutExportProfile.subTitle") 
             }
         >
+            {
+                CommonUtils.isProfileReadOnly(isReadOnlyUser) && (
+                    <Message 
+                        type="info" 
+                        content={ t("myAccount:pages.readOnlyProfileBanner") }
+                    />
+                )
+            }
             <Grid>
                 {
                     hasRequiredScopes(accessConfig?.personalInfo,

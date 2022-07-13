@@ -27,6 +27,7 @@ import * as UIConstants from "../../../constants";
 import { history } from "../../../helpers";
 import { ConfigReducerStateInterface, ProfileCompletion, ProfileCompletionStatus, UserSession } from "../../../models";
 import { AppState } from "../../../store";
+import { CommonUtils } from "../../../utils";
 import { SettingsSection } from "../../shared";
 
 /**
@@ -62,7 +63,7 @@ export const ProfileWidget: FunctionComponent<ProfileWidgetPropsInterface> = (
     };
 
     const profileCompletion: ProfileCompletion = useSelector((state: AppState) => state.profile.completion);
-
+    const isReadOnlyUser = useSelector((state: AppState) => state.authenticationInformation.profileInfo.isReadOnly);
 
     /**
      * Return the profile completion percentage.
@@ -118,27 +119,40 @@ export const ProfileWidget: FunctionComponent<ProfileWidgetPropsInterface> = (
             }
         </Progress>
     );
+
     return (
         <div className="widget profile" data-testid={ testId }>
-            <SettingsSection className="overview"
+            <SettingsSection
+                className="overview"
                 data-testid={ `${testId}-settings-section` }
                 header={ t("myAccount:components.overview.widgets.profileStatus.header" ,
                     { productName: config.ui.productName }) }
                 description={
-                    <>
+                    (<>
                         {
-                            userSource &&
-                            <div
-                                className="overview-page-header"
-                            >
-                                {  t("myAccount:components.overview.widgets.profileStatus.userSourceText" ,
-                                    { source: userSource }) }
-                            </div>
+                            userSource && (
+                                <div
+                                    className="overview-page-header"
+                                >
+                                    {  
+                                        t("myAccount:components.overview.widgets.profileStatus.userSourceText" ,
+                                            { source: userSource }) 
+                                    }
+                                </div>
+                            )
                         }
-                        { generateCompletionProgress() }
-                    </>
+                        { 
+                            !CommonUtils.isProfileReadOnly(isReadOnlyUser) 
+                            ? generateCompletionProgress() 
+                            : t("myAccount:components.overview.widgets.profileStatus.profileText")
+                        }
+                    </>)
                 }
-                primaryAction={ "Manage your profile" }
+                primaryAction={ 
+                        !CommonUtils.isProfileReadOnly(isReadOnlyUser) 
+                        ? t("myAccount:components.overview.widgets.profileStatus.description")
+                        : t("myAccount:components.overview.widgets.profileStatus.readOnlyDescription")
+                    }
                 onPrimaryActionClick={ navigate }
                 icon={ getWidgetIcons().profile }
                 iconMini={ getWidgetIcons().profile }

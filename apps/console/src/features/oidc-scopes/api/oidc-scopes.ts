@@ -20,7 +20,9 @@ import { AsgardeoSPAClient } from "@asgardeo/auth-react";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
-import { store } from "../../core";
+import useRequest, { RequestErrorInterface, RequestResultInterface } from "../../core/hooks/use-request";
+import { store } from "../../core/store";
+import { sortList } from "../../core/utils";
 import { OIDCScopesManagementConstants } from "../constants";
 import { OIDCScopesListInterface } from "../models";
 
@@ -69,6 +71,42 @@ export const getOIDCScopesList = <T = {}>(): Promise<T> => {
                 error.response,
                 error.config);
         });
+};
+
+/**
+ * Hook to get the OIDC scopes list.
+ *
+ * @param {string} sortBy - Sort by attribute.
+ * @param {"ASC" | "DESC"} sortOrder - Sort order.
+ * @returns {RequestResultInterface<Data, Error>}
+ */
+export const useOIDCScopesList = <Data = OIDCScopesListInterface, Error = RequestErrorInterface>(
+    sortBy?: string,
+    sortOrder?: "ASC" | "DESC"
+): RequestResultInterface<Data[], Error> => {
+
+    const requestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: store.getState().config.endpoints.oidcScopes
+    };
+
+    const { data: rawData, error, isValidating, mutate } = useRequest<Data[], Error>(requestConfig);
+
+    const moderatedData = (sortBy && sortOrder)
+        ? sortList(rawData, sortBy, sortOrder === "ASC")
+        : rawData;
+
+    return {
+        data: moderatedData,
+        error,
+        isLoading: !error && !moderatedData,
+        isValidating,
+        mutate
+    };
 };
 
 /**

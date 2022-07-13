@@ -26,6 +26,16 @@ import * as crypto from "crypto";
  */
 
 /**
+ * t is defined here to avoid this function being re-initiated every time `useTranslation` is called.
+ * This can cause issues when t is used as a hook dependency.
+ */
+const t = (key: string, object: any) => {
+    const placeholders = object ? Object.values(object).map(val => val).join(".") : "";
+
+    return key + placeholders;
+};
+
+/**
  * Suggested fix for i18next warnings
  * See also {@link https://github.com/i18next/react-i18next/issues/876}
  */
@@ -33,7 +43,7 @@ jest.mock("react-i18next", () => ({
     // this mock makes sure any components using the translate hook can use it without a warning being shown
     Trans: ({ children }) => children,
     useTranslation: () => ({
-        t: key => key
+        t
     })
 }));
 
@@ -43,7 +53,7 @@ Object.defineProperty(global.self, "crypto", {
             if (!arr) {
                 return arr;
             }
-  
+
             return crypto.randomBytes(arr.buffer.byteLength);
         }
     }

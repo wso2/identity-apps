@@ -307,4 +307,29 @@ export class AccessControlConstants {
      */
     public static readonly ORGANIZATION_READ: string = "organization:read";
 
+    /**
+     * Organization feature permission.
+     */
+    public static readonly ORGANIZATION_ROLES: string = "organization_roles";
+
+    /**
+     * Organization write permission.
+     */
+    public static readonly ORGANIZATION_ROLES_WRITE: string = "organization_roles:write";
+
+    /**
+     * Organization edit permission.
+     */
+    public static readonly ORGANIZATION_ROLES_EDIT: string = "organization_roles:edit";
+
+    /**
+     * Organization delete permission.
+     */
+    public static readonly ORGANIZATION_ROLES_DELETE: string = "organization_roles:delete";
+
+    /**
+     * Organization read permission.
+     */
+    public static readonly ORGANIZATION_ROLES_READ: string = "organization_roles:read";
+
 }

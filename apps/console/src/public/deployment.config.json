@@ -2,6 +2,11 @@
     "accountApp": {
         "path": "/myaccount/overview"
     },
+    "analytics": {
+        "metrics": {
+            "dependencyTrackingEnabled": false
+        }
+    },
     "appBaseName": "console",
     "appBaseNameForHistoryAPI": "/",
     "clientID": "CONSOLE",
@@ -408,7 +413,9 @@
         "gravatarConfig": {
             "fallback": "404"
         },
-        "hiddenAuthenticators": [],
+        "hiddenAuthenticators": [
+            "MagicLinkAuthenticator"
+        ],
         "i18nConfigs": {
             "showLanguageSwitcher": false,
             "langAutoDetectEnabled":false

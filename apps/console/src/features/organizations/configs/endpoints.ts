@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { store } from "../../core";
 import { OrganizationResourceEndpointsInterface } from "../models";
 
 /**
@@ -24,8 +25,12 @@ import { OrganizationResourceEndpointsInterface } from "../models";
  * @param {string} serverHost - Server Host.
  * @return {OrganizationManagementEndpointsInterface}
  */
-export const getOrganizationsResourceEndpoints = (serverHost: string): OrganizationResourceEndpointsInterface => {
+export const getOrganizationsResourceEndpoints = (
+    serverHostWithOrgPath: string,
+    serverHost: string
+): OrganizationResourceEndpointsInterface => {
     return {
-        organizations: `${ serverHost }/api/identity/organization-mgt/v1.0`
+        organizations: `${ serverHostWithOrgPath }/api/server/v1`,
+        rootOrganization: `${ serverHost }/api/server/v1`
     };
 };

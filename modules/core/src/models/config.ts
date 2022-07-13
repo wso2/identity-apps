@@ -329,6 +329,10 @@ export interface FeatureAccessConfigInterface {
      * Enable the feature.
      */
     enabled?: boolean;
+    /**
+     * Enable the tour option
+     */
+     tryittourenabled?: boolean;
 }
 
 /**

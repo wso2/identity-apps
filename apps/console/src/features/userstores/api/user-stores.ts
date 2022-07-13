@@ -18,16 +18,22 @@
 
 import { AsgardeoSPAClient } from "@asgardeo/auth-react";
 import { UserstoreConstants } from "@wso2is/core/constants";
-import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods, UserstoreListResponseInterface } from "@wso2is/core/models";
+import useRequest, {
+    RequestConfigInterface,
+    RequestErrorInterface,
+    RequestResultInterface
+} from "../../core/hooks/use-request";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AxiosError, AxiosResponse } from "axios";
-import { store } from "../../core";
+import { store } from "../../core/store";
 import {
     AttributeMapping,
     PatchData,
     QueryParams,
     TestConnection,
     UserStoreAttributes,
+    UserStoreListItem,
     UserStorePostData
 } from "../models";
 
@@ -116,6 +122,45 @@ export const getUserStoreList = (): Promise<UserstoreListResponseInterface[] | a
                 error.response,
                 error.config);
         });
+};
+
+/**
+ * Hook to get the Userstores from the API.
+ *
+ * @param {QueryParams} params - sort, filter, limit, attributes, offset.
+ * @returns {RequestResultInterface<Data, Error>}
+ */
+export const useUserStores = <Data = UserStoreListItem[], Error = RequestErrorInterface>(
+    params: QueryParams
+): RequestResultInterface<Data, Error> => {
+
+    const requestConfig: RequestConfigInterface = {
+        headers: {
+            Accept: "application/json",
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        params,
+        url: store.getState().config.endpoints.userStores
+    };
+
+    const {
+        data,
+        error,
+        isValidating,
+        mutate,
+        response
+    } = useRequest<Data, Error>(requestConfig);
+
+    return {
+        data,
+        error,
+        isLoading: !error && !data,
+        isValidating,
+        mutate,
+        response
+    };
 };
 
 /**

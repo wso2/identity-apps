@@ -79,6 +79,10 @@ export const console: ConsoleNS = {
                     name: "My Account"
                 },
                 tooltip: "Apps"
+            },
+            organizationSwitch: {
+                emptyOrgListMessage: "No organizations available",
+                orgSearchPlaceholder: "Search by organization name"
             }
         },
         modals: {
@@ -1475,19 +1479,15 @@ export const console: ConsoleNS = {
                             grant: {
                                 children: {
                                     client_credential: {
-                                        hint: "Using 'openid' scope is not allowed with this grant type.",
+                                        hint: "This grant type does not support the 'openid' scope.",
                                         label: "(openid scope not allowed)"
                                     },
                                     implicit: {
-                                        hint: "Using the implicit grant with public applications is not recommended. " +
-                                            "{{productName}} adhere to security best practices, " +
-                                            "and do not implement the implicit grant.",
+                                        hint: "This grant type is not recommended.",
                                         label: "{{grantType}} (Not recommended)"
                                     },
                                     password: {
-                                        hint: "Using the password grant with public applications is not recommended. " +
-                                            "{{productName}} adhere to security best practices, " +
-                                            "and do not implement the password grant.",
+                                        hint: "This grant type is not recommended.",
                                         label: "{{grantType}} (Not recommended)"
                                     }
                                 },
@@ -7252,6 +7252,57 @@ export const console: ConsoleNS = {
                         message: "This action is irreversible and will remove the organization entirely."
                     }
                 },
+                edit: {
+                    attributes: {
+                        hint: "Configure organization attributes",
+                        key: "Name",
+                        keyRequiredErrorMessage: "Name is required",
+                        value: "Value",
+                        valueRequiredErrorMessage: "Value is required"
+                    },
+                    back: "Back",
+                    dangerZone: {
+                        subHeader: "Are you sure you want to delete this organization?",
+                        title: "Delete Organization"
+                    },
+                    description: "Edit Organization",
+                    fields: {
+                        created: {
+                            ariaLabel: "Created",
+                            label: "Created"
+                        },
+                        description: {
+                            ariaLabel: "Organization Description",
+                            label: "Organization Description",
+                            placeholder: "Enter organization description"
+                        },
+                        domain: {
+                            ariaLabel: "Organization Domain",
+                            label: "Organization Domain"
+                        },
+                        id: {
+                            ariaLabel: "Organization ID",
+                            label: "Organization ID"
+                        },
+                        lastModified: {
+                            ariaLabel: "Last Modified",
+                            label: "Last Modified"
+                        },
+                        name: {
+                            ariaLabel: "Organization Name",
+                            label: "Organization Name",
+                            placeholder: "Enter organization name"
+                        },
+                        type: {
+                            ariaLabel: "Organization Type",
+                            label: "Organization Type"
+                        }
+                    },
+                    tabTitles: {
+                        attributes: "Attributes",
+                        overview: "Overview"
+                    }
+                },
                 forms: {
                     addOrganization:{
                         description: {
@@ -7328,6 +7379,8 @@ export const console: ConsoleNS = {
                             message: "Organization deleted successfully"
                         }
                     },
+                    deleteOrganizationWithSubOrganizationError: "Organization {{ organizationName }} cannot be " +
+                        "deleted since it has one or more sub organizations.",
                     fetchOrganization: {
                         error: {
                             description: "{{description}}",
@@ -7351,6 +7404,34 @@ export const console: ConsoleNS = {
                             description: "An error occurred while getting the organization list",
                             message: "Something went wrong"
                         }
+                    },
+                    updateOrganization: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error while updating the organization"
+                        },
+                        genericError: {
+                            description: "An error occurred while updating the organization",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Successfully updated the organization",
+                            message: "Organization updated successfully"
+                        }
+                    },
+                    updateOrganizationAttributes: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error while updating the organization attributes"
+                        },
+                        genericError: {
+                            description: "An error occurred while updating the organization attributes",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Successfully updated the organization attributes",
+                            message: "Organization attributes updated successfully"
+                        }
                     }
                 },
                 placeholders: {
@@ -7365,6 +7446,12 @@ export const console: ConsoleNS = {
                     }
                 },
                 subTitle: "Create and manage organizations.",
+                switching: {
+                    emptyList: "There is no organization to show.",
+                    search: {
+                        placeholder: "Search by Name"
+                    }
+                },
                 title: "Organizations"
             },
             overview: {
@@ -8074,7 +8161,7 @@ export const console: ConsoleNS = {
                     addUserForm: {
                         buttons: {
                             radioButton: {
-                                label: "Select the method to reset the user password",
+                                label: "Select the method to set the user password",
                                 options: {
                                     askPassword: "Invite the user to set their own password",
                                     createPassword: "Set a temporary password for the user"
@@ -8942,7 +9029,7 @@ export const console: ConsoleNS = {
                     content: "If you delete this user store, the user data in this user store will also be deleted. "
                         + "Please proceed with caution.",
                     header: "Are you sure?",
-                    hint: "Please type <1>{{name}}</1> to confirm.",
+                    hint: "Please type confirm your action.",
                     message: "This action is irreversible and will permanently delete the"
                         + " selected user store and the data in it."
                 },

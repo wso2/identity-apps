@@ -177,6 +177,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                 />
             ) }
             <PageLayout
+                pageTitle="Attributes"
                 action={
                     attributeConfig.addAttributeMapping && (
                         <Show when={ AccessControlConstants.ATTRIBUTE_WRITE }>

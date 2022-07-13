@@ -50,6 +50,7 @@ const SamlIDPWizardHelp: FunctionComponent<Props> = (props: Props): ReactElement
     return (
         <div data-testid={ testId }>
             <Message
+                size="tiny"
                 type="info"
                 content={
                     <>

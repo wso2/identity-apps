@@ -43,7 +43,12 @@ import {
     IdentityProviderTemplateInterface
 } from "../../../../identity-providers";
 import { ApplicationManagementConstants } from "../../../constants";
-import { ApplicationInterface, AuthenticationSequenceInterface, LoginFlowTypes } from "../../../models";
+import {
+    ApplicationInterface,
+    AuthenticationSequenceInterface,
+    AuthenticationSequenceType,
+    LoginFlowTypes
+} from "../../../models";
 import { AdaptiveScriptUtils } from "../../../utils";
 
 /**
@@ -241,7 +246,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
         const isBasicScript: boolean = !authenticationSequence.script
             || AdaptiveScriptUtils.isDefaultScript(authenticationSequence.script, authenticationSequence.steps?.length);
 
-        return isBasicStep && isBasicScript;
+            return isBasicStep && isBasicScript && authenticationSequence.type === AuthenticationSequenceType.DEFAULT;
     };
 
     /**
