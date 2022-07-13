@@ -166,6 +166,8 @@ export class RouteUtils {
                     return true;
                 }
             }
+
+            return false;
         };
 
         return match(route?.path) || checkChildren(route?.children);
