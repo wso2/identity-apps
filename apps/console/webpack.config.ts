@@ -287,7 +287,7 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
         );
     }
 
-    // Update the existing `DefinePlugin` plugin added by NX.
+    // Update the existing `CopyPlugin` plugin added by NX.
     const existingCopyPlugin = config.plugins.find((plugin) => {
         return plugin.constructor.name === "CopyPlugin";
     });
