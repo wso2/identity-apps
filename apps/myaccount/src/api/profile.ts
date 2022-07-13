@@ -249,7 +249,7 @@ export const getProfileSchemas = (): Promise<ProfileSchemaInterface[]> => {
             "Accept": "application/json"
         },
         method: HttpMethods.GET,
-        url: store.getState().config.endpoints.profileSchemas
+        url: Config.getServiceResourceEndpoints().profileSchemas
     };
     const schemaAttributes: ProfileSchemaInterface[] = [];
 

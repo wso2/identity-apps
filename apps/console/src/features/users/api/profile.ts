@@ -21,6 +21,7 @@ import { ProfileConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods, ProfileInfoInterface, ProfileSchemaInterface } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
+import { Config } from "../../core/configs";
 import { store } from "../../core/store";
 
 /**
@@ -182,7 +183,7 @@ export const getProfileSchemas = (): Promise<ProfileSchemaInterface[]> => {
             "Accept": "application/json"
         },
         method: HttpMethods.GET,
-        url: store.getState().config.endpoints.schemas
+        url: Config.getServiceResourceEndpoints().schemas
     };
     const schemaAttributes: ProfileSchemaInterface[] = [];
 
