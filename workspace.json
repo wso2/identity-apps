@@ -11,7 +11,6 @@
         "myaccount": "apps/myaccount",
         "react-components": "modules/react-components",
         "recovery-portal": "apps/recovery-portal",
-        "sms-otp-authentication-portal": "apps/sms-otp-authentication-portal",
         "tests": "tests",
         "theme": "modules/theme",
         "theme-component": "components/theme",

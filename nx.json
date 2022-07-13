@@ -1,70 +1,70 @@
 {
-  "extends": "@nrwl/workspace/presets/npm.json",
-  "npmScope": "wso2is",
-  "workspaceLayout": {
-    "appsDir": "apps",
-    "libsDir": "modules"
-  },
-  "tasksRunnerOptions": {
-    "default": {
-      "runner": "nx/tasks-runners/default",
-      "options": {
-        "cacheableOperations": [
-          "build",
-          "test",
-          "lint",
-          "package",
-          "prepare",
-          "build-storybook"
+    "extends": "@nrwl/workspace/presets/npm.json",
+    "npmScope": "wso2is",
+    "workspaceLayout": {
+        "appsDir": "apps",
+        "libsDir": "modules"
+    },
+    "tasksRunnerOptions": {
+        "default": {
+            "runner": "nx/tasks-runners/default",
+            "options": {
+                "cacheableOperations": [
+                    "build",
+                    "test",
+                    "lint",
+                    "package",
+                    "prepare",
+                    "build-storybook"
+                ]
+            }
+        }
+    },
+    "targetDependencies": {
+        "build": [
+            {
+                "target": "build",
+                "projects": "dependencies"
+            }
+        ],
+        "prepare": [
+            {
+                "target": "prepare",
+                "projects": "dependencies"
+            }
+        ],
+        "package": [
+            {
+                "target": "package",
+                "projects": "dependencies"
+            }
         ]
-      }
+    },
+    "affected": {
+        "defaultBase": "master"
+    },
+    "pluginsConfig": {
+        "@nrwl/js": {
+            "analyzeSourceFiles": true
+        }
+    },
+    "generators": {
+        "@nrwl/react": {
+            "application": {
+                "style": "css",
+                "linter": "eslint",
+                "babel": true
+            },
+            "component": {
+                "style": "css"
+            },
+            "library": {
+                "style": "css",
+                "linter": "eslint"
+            }
+        }
+    },
+    "cli": {
+        "defaultCollection": "@nrwl/react"
     }
-  },
-  "targetDependencies": {
-    "build": [
-      {
-        "target": "build",
-        "projects": "dependencies"
-      }
-    ],
-    "prepare": [
-      {
-        "target": "prepare",
-        "projects": "dependencies"
-      }
-    ],
-    "package": [
-      {
-        "target": "package",
-        "projects": "dependencies"
-      }
-    ]
-  },
-  "affected": {
-    "defaultBase": "master"
-  },
-  "pluginsConfig": {
-    "@nrwl/js": {
-      "analyzeSourceFiles": false
-    }
-  },
-  "generators": {
-    "@nrwl/react": {
-      "application": {
-        "style": "css",
-        "linter": "eslint",
-        "babel": true
-      },
-      "component": {
-        "style": "css"
-      },
-      "library": {
-        "style": "css",
-        "linter": "eslint"
-      }
-    }
-  },
-  "cli": {
-    "defaultCollection": "@nrwl/react"
-  }
 }

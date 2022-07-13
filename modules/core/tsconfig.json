@@ -1,22 +1,32 @@
 {
     "extends": "../../tsconfig.base.react.json",
     "compilerOptions": {
-        "module": "commonjs",
-        "forceConsistentCasingInFileNames": true,
-        "strict": false,
-        "noImplicitOverride": true,
-        "noPropertyAccessFromIndexSignature": true,
-        "noImplicitReturns": true,
-        "noFallthroughCasesInSwitch": true
+        "declaration": true,
+        "declarationDir": "dist/types",
+        "experimentalDecorators": true,
+        "jsx": "react",
+        "outDir": "dist/src",
+        "rootDir": "src",
+        "resolveJsonModule": true,
+        "types": [ "node", "jest" ]
     },
-    "files": [],
-    "include": [],
-    "references": [
-        {
-            "path": "./tsconfig.lib.json"
-        },
-        {
-            "path": "./tsconfig.spec.json"
-        }
+    "exclude": [
+        "coverage",
+        "dist",
+        "node_modules",
+        "scripts",
+        "test-configs",
+        "jest.config.ts",
+        "**/tests/*",
+        "**/__tests__/*",
+        "**/__mocks__/*",
+        "**/*.test.js",
+        "**/*.test.jsx",
+        "**/*.test.ts",
+        "**/*.test.tsx",
+        "**/*.spec.js",
+        "**/*.spec.jsx",
+        "**/*.spec.ts",
+        "**/*.spec.tsx"
     ]
 }

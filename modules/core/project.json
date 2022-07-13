@@ -7,13 +7,15 @@
     "prefix": "@wso2is",
     "targets": {
         "build": {
-            "executor": "@nrwl/js:tsc",
-            "outputs": [ "{options.outputPath}" ],
+            "executor": "@nrwl/workspace:run-commands",
+            "outputs": [
+                "{options.outputPath}"
+            ],
             "options": {
                 "outputPath": "modules/core/dist",
-                "main": "modules/core/src/index.ts",
-                "tsConfig": "modules/core/tsconfig.lib.json",
-                "assets": [ "modules/core/*.md" ]
+                "tsconfig": "modules/core/tsconfig.json",
+                "command": "pnpm build",
+                "cwd": "modules/core"
             }
         },
         "lint": {
@@ -32,8 +34,5 @@
                 "parallel": false
             }
         }
-    },
-    "outputs": [
-        "{options.outputPath}"
-    ]
+    }
 }
