@@ -64,9 +64,6 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ type, setType ] = useState<ORGANIZATION_TYPE>(ORGANIZATION_TYPE.STRUCTURAL);
     const [ duplicateName, setDuplicateName ] = useState<boolean>(false);
-    const currentOrganization: OrganizationInterface = useSelector(
-        (state: AppState) => state.organization.organization
-    );
 
     const submitForm = useRef<() => void>();
 
@@ -98,7 +95,7 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
         const organization: AddOrganizationInterface = {
             description: values?.description,
             name: values?.name,
-            parentId: parent?.id ?? currentOrganization.id,
+            parentId: parent?.id ?? OrganizationManagementConstants.ROOT_ORGANIZATION_ID,
             type: ORGANIZATION_TYPE.TENANT
         };
 
