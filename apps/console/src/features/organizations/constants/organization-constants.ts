@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { OrganizationInterface } from "../models";
+import {OrganizationInterface} from "../models";
 
 export class OrganizationManagementConstants {
     /**
@@ -70,6 +70,7 @@ export class OrganizationRoleManagementConstants {
         .set("ORGANIZATION_ROLE_DELETE", "organization-roles.delete")
         .set("ORGANIZATION_ROLE_READ", "organization-roles.read");
 
+    public static readonly SUPER_ADMIN_PERMISSION_KEY = "/permission/protected";
 }
 
 export const APPLICATION_DOMAIN = "Application/";

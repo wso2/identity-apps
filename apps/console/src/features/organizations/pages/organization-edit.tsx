@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 Inc. (http://www.wso2.com) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,21 +16,21 @@
  * under the License.
  */
 
-import { isFeatureEnabled } from "@wso2is/core/helpers";
-import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
-import { AlertLevels } from "@wso2is/core/src/models";
-import { addAlert } from "@wso2is/core/store";
-import { GenericIcon, PageLayout } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useCallback, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
-import { RouteChildrenProps } from "react-router-dom";
-import { AppConstants, FeatureConfigInterface, history } from "../../core";
-import { getOrganization } from "../api";
-import { EditOrganization } from "../components/edit-organization/edit-organization";
-import { OrganizationIcon } from "../configs";
-import { OrganizationManagementConstants } from "../constants";
-import { OrganizationResponseInterface } from "../models";
+import {isFeatureEnabled} from "@wso2is/core/helpers";
+import {SBACInterface, TestableComponentInterface} from "@wso2is/core/models";
+import {AlertLevels} from "@wso2is/core/src/models";
+import {addAlert} from "@wso2is/core/store";
+import {GenericIcon, PageLayout} from "@wso2is/react-components";
+import React, {FunctionComponent, ReactElement, useCallback, useEffect, useState} from "react";
+import {useTranslation} from "react-i18next";
+import {useDispatch} from "react-redux";
+import {RouteChildrenProps} from "react-router-dom";
+import {AppConstants, FeatureConfigInterface, history} from "../../core";
+import {getOrganization} from "../api";
+import {EditOrganization} from "../components/edit-organization/edit-organization";
+import {OrganizationIcon} from "../configs";
+import {OrganizationManagementConstants} from "../constants";
+import {OrganizationResponseInterface} from "../models";
 
 
 interface OrganizationEditPagePropsInterface extends SBACInterface<FeatureConfigInterface>,
