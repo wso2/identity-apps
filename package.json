@@ -22,7 +22,7 @@
         "clean:root:lock-files": "pnpx rimraf package-lock.json && pnpx rimraf pnpm-lock.yaml && pnpx rimraf yarn.lock",
         "clean:root:node-modules": "pnpx rimraf node_modules",
         "clean:root:maven-folders": "pnpx rimraf target",
-        "nx": "./bin/nx.js",
+        "nx": "nx",
         "nyc:full-report": "pnpx nyc report --reporter=lcov --reporter=text",
         "nyc:text-report": "pnpx nyc report --reporter=text",
         "nyc:text-summary-report": "pnpx nyc report --reporter=text-summary",
