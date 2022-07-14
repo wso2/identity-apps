@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/x509-certificate-authentication-portal",
-    "version": "1.2.1041",
+    "version": "1.2.1042",
     "description": "WSO2 Identity Server X509 Certificate Authentication Portal",
     "author": "WSO2",
     "license": "Apache-2.0",
