@@ -16,25 +16,24 @@
  * under the License.
  */
 
-import { getRolesList } from "@wso2is/core/api";
 import { AlertLevels, RolesInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import { Heading, LinkButton, PrimaryButton, Steps, useWizardAlert } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Button, Grid, Icon, Modal } from "semantic-ui-react";
 import { GroupBasics } from "./group-basics";
 import { CreateGroupSummary } from "./group-summary";
-import { AppConstants, AssignRoles, RolePermissions, history } from "../../../core";
-import { updateRole } from "../../../roles/api";
+import { AppConstants, AppState, AssignRoles, RolePermissions, history } from "../../../core";
+import { getOrganizationRoles } from "../../../organizations/api";
+import { OrganizationRoleListItemInterface } from "../../../organizations/models";
+import { OrganizationUtils } from "../../../organizations/utils";
+import { getRolesList, updateRole } from "../../../roles/api";
 import { createGroup } from "../../api";
 import { getGroupsWizardStepIcons } from "../../configs";
-import {
-    CreateGroupInterface,
-    CreateGroupMemberInterface
-} from "../../models";
+import { CreateGroupInterface, CreateGroupMemberInterface } from "../../models";
 
 /**
  * Interface which captures create group props.
@@ -94,11 +93,17 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
     const [ isRoleSelected, setRoleSelection ] = useState<boolean>(false);
     const [ selectedRoleId, setSelectedRoleId ] = useState<string>();
 
-    const [ roleList, setRoleList ] = useState<RolesInterface[]>([]);
-    const [ tempRoleList, setTempRoleList ] = useState<RolesInterface[]>([]);
-    const [ initialRoleList, setInitialRoleList ] = useState<RolesInterface[]>([]);
-    const [ initialTempRoleList, setInitialTempRoleList ] = useState<RolesInterface[]>([]);
+    const [ roleList, setRoleList ] = useState<RolesInterface[] | OrganizationRoleListItemInterface[]>([]);
+    const [ tempRoleList, setTempRoleList ] = useState<RolesInterface[] | OrganizationRoleListItemInterface[]>([]);
+    const [ initialRoleList, setInitialRoleList ] = useState<RolesInterface[]
+        | OrganizationRoleListItemInterface[]>([]);
+    const [ initialTempRoleList, setInitialTempRoleList ] = useState<RolesInterface[]
+        | OrganizationRoleListItemInterface[]>([]);
     const [ isEnded, setEnded ] = useState<boolean>(false);
+
+    const currentOrganization = useSelector((state: AppState) => state.organization.organization);
+    const isRootOrganization = useMemo(() =>
+        OrganizationUtils.isRootOrganization(currentOrganization), [ currentOrganization ]);
 
     const [ alert, setAlert, alertComponent ] = useWizardAlert();
 
@@ -127,10 +132,17 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
 
     useEffect(() => {
         if (roleList.length < 1) {
-            getRolesList(null)
-                .then((response) => {
-                    setRoleList(response.data.Resources);
-                });
+            if (isRootOrganization) {
+                getRolesList(null)
+                    .then((response) => {
+                        setRoleList(response.data.Resources);
+                    });
+            } else {
+                getOrganizationRoles(currentOrganization.id, null, 100, null, null)
+                    .then((response) => {
+                        setRoleList(response.roles);
+                    });
+            }
         }
     }, []);
 
@@ -183,6 +195,7 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
 
         const members: CreateGroupMemberInterface[] = [];
         const users = groupDetails?.UserList;
+
         if (users?.length > 0) {
             users?.forEach(user => {
                 members?.push({
@@ -219,16 +232,16 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
                 }
 
                 const roleData = {
-                    "Operations": [{
+                    "Operations": [ {
                         "op": "add",
                         "value": {
-                            "groups": [{
+                            "groups": [ {
                                 "display": createdGroup.displayName,
                                 "value": createdGroup.id
-                            }]
+                            } ]
                         }
-                    }],
-                    "schemas": ["urn:ietf:params:scim:api:messages:2.0:PatchOp"]
+                    } ],
+                    "schemas": [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
                 };
 
                 if (rolesList && rolesList.length > 0) {
@@ -249,7 +262,7 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
                                         description: t("console:manage.features.groups.notifications." +
                                             "createPermission." +
                                             "error.description",
-                                            { description: error.response.data.detail }),
+                                        { description: error.response.data.detail }),
                                         level: AlertLevels.ERROR,
                                         message: t("console:manage.features.groups.notifications.createPermission." +
                                             "error.message")
@@ -297,7 +310,7 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
                 dispatch(
                     addAlert({
                         description: t("console:manage.features.groups.notifications.createGroup.error.description",
-                                { description: error.response.data.detail }),
+                            { description: error.response.data.detail }),
                         level: AlertLevels.ERROR,
                         message: t("console:manage.features.groups.notifications.createGroup.error.message")
                     })
@@ -369,15 +382,15 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
     };
 
     // Create group wizard steps
-    const WIZARD_STEPS = [{
+    const WIZARD_STEPS = [ {
         content: (
             <GroupBasics
                 data-testid="add-group-form"
                 triggerSubmit={ submitGeneralSettings }
                 initialValues={ wizardState
                     && {
-                        basicDetails: wizardState[ WizardStepsFormTypes.BASIC_DETAILS ],
-                        userList: wizardState[ WizardStepsFormTypes.USER_LIST ]
+                        basicDetails: wizardState[WizardStepsFormTypes.BASIC_DETAILS],
+                        userList: wizardState[WizardStepsFormTypes.USER_LIST]
                     }
                 }
                 onSubmit={ (values) => handleWizardSubmit(values, WizardStepsFormTypes.BASIC_DETAILS) }
@@ -388,12 +401,12 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
     },{
         content: (
             viewRolePermissions
-                ? <RolePermissions
-                    data-testid={ `${ testId }-group-permission` }
+                ? (<RolePermissions
+                    data-testid={ `${testId}-group-permission` }
                     handleNavigateBack={ handleViewRolePermission }
                     roleId={ selectedRoleId }
-                />
-                : <AssignRoles
+                />)
+                : (<AssignRoles
                     triggerSubmit={ submitRoleList }
                     onSubmit={ (values) => handleWizardSubmit(values, WizardStepsFormTypes.ROLE_LIST) }
                     initialValues={
@@ -409,7 +422,7 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
                     handleInitialTempListChange={ (roles) => handleAddedRoleInitialListChange(roles) }
                     handleInitialRoleListChange={ (roles) => handleInitialRoleListChange(roles) }
                     handleSetRoleId={ (roleId) => handleRoleIdSet(roleId) }
-                />
+                />)
         ),
         icon: getGroupsWizardStepIcons().roles,
         title: t("console:manage.features.roles.addRoleWizard.wizardSteps.5")
@@ -424,7 +437,7 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
         ),
         icon: getGroupsWizardStepIcons().summary,
         title: t("console:manage.features.roles.addRoleWizard.wizardSteps.3")
-    }];
+    } ];
 
     /**
      * Function to change the current wizard step to next.
@@ -433,12 +446,15 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
         switch(currentStep) {
             case 0:
                 setSubmitGeneralSettings();
+
                 break;
             case 1:
                 setSubmitRoleList();
+
                 break;
             case 2:
                 setFinishSubmit();
+
                 break;
 
         }
@@ -520,15 +536,15 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
                                 </PrimaryButton>
                             ) }
                             { currentStep === 0 && (
-                                    <Button
-                                        basic
-                                        color="orange"
-                                        floated="right"
-                                        onClick={ handleFinishFlow }
-                                        data-testid={ `${ testId }-initial-finish-button` }
-                                    >
-                                        { t("console:manage.features.roles.addRoleWizard.buttons.finish") }
-                                    </Button>
+                                <Button
+                                    basic
+                                    color="orange"
+                                    floated="right"
+                                    onClick={ handleFinishFlow }
+                                    data-testid={ `${testId}-initial-finish-button` }
+                                >
+                                    { t("console:manage.features.roles.addRoleWizard.buttons.finish") }
+                                </Button>
                             ) }
                             { currentStep === WIZARD_STEPS.length - 1 && (
                                 <PrimaryButton
