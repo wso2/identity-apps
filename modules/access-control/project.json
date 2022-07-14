@@ -33,8 +33,5 @@
                 "parallel": false
             }
         }
-    },
-    "outputs": [
-        "{options.outputPath}"
-    ]
+    }
 }
