@@ -90,7 +90,7 @@ export const AppUtils = (function() {
 
             return this.isSaas()
                 ? appBaseForHistoryAPIFallback + this.getAppBaseWithOrganization()
-                : this.getAppBaseWithTenant();
+                : this.getAppBaseWithTenantAndOrganization();
         },
 
         /**
@@ -105,7 +105,7 @@ export const AppUtils = (function() {
                 return this.getAppBaseWithOrganization() + path;
             }
 
-            return this.getAppBaseWithTenant() + path;
+            return this.getAppBaseWithTenantAndOrganization() + path;
         },
 
         /**
@@ -140,6 +140,7 @@ export const AppUtils = (function() {
                 return path;
             }
 
+
             return "/" + this.getLocationPathWithoutTenant().split("/")[1];
         },
 
@@ -158,7 +159,17 @@ export const AppUtils = (function() {
          * Get app base with the tenant domain.
          * @return {string}
          */
-        getAppBaseWithTenant: function() {
+        getAppBaseWithTenant: function () {
+            return `${ this.getTenantPath(true) }${ _config.appBaseName
+                ? ("/" + _config.appBaseName)
+                : "" }`;
+        },
+
+        /**
+         * Get app base with the tenant domain and organization.
+         * @return {string}
+         */
+        getAppBaseWithTenantAndOrganization: function() {
             return `${ this.getTenantPath(true) }${ this.getOrganizationPath() }${ _config.appBaseName
                 ? ("/" + _config.appBaseName)
                 : "" }`;
@@ -214,7 +225,7 @@ export const AppUtils = (function() {
                 allowMultipleAppProtocols: allowMultipleAppProtocol,
                 appBase: _config.appBaseName,
                 appBaseNameForHistoryAPI: this.constructAppBaseNameForHistoryAPI(),
-                appBaseWithTenant: this.getAppBaseWithTenant(),
+                appBaseWithTenant: this.getAppBaseWithTenantAndOrganization(),
                 clientID: (this.isSaas() || this.isSuperTenant())
                     ? _config.clientID
                     : _config.clientID + "_" + this.getTenantName(),
@@ -264,11 +275,14 @@ export const AppUtils = (function() {
 
             if ( (pathChunks[1] === this.getTenantPrefix()) && (pathChunks[2] === this.getTenantName(true)) ) {
                 pathChunks.splice(1, 2);
-
-                return pathChunks.join("/");
             }
 
-            return path;
+            if ((pathChunks[ 1 ] === this.getOrganizationPrefix())
+                && (pathChunks[ 2 ] === this.getOrganizationName(true))) {
+                pathChunks.splice(1, 2);
+            }
+
+            return pathChunks.join("/");
         },
 
         /**
