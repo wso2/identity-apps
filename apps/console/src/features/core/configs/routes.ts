@@ -520,7 +520,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
                                     icon: getSidePanelIcons().organization
                                 },
                                 id: "organization-edit",
-                                name: "organizationEdit",
+                                name: "organization Edit",
                                 path: AppConstants.getPaths().get("ORGANIZATION_UPDATE"),
                                 protected: true,
                                 showOnSidePanel: false
@@ -535,6 +535,34 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
                         name: "console:manage.features.sidePanel.organizations",
                         order: 12,
                         path: AppConstants.getPaths().get("ORGANIZATIONS"),
+                        protected: true,
+                        showOnSidePanel: true
+                    },
+                    {
+                        category: "console:manage.features.sidePanel.categories.organizations",
+                        children: [
+                            {
+                                component: lazy(() => import("../../organizations/pages/organization-roles-edit")),
+                                exact: true,
+                                icon: {
+                                    icon: getSidePanelIcons().organization
+                                },
+                                id: "organization-roles-edit",
+                                name: "organization Roles Edit",
+                                path: AppConstants.getPaths().get("ORGANIZATION_ROLE_UPDATE"),
+                                protected: true,
+                                showOnSidePanel: false
+                            }
+                        ],
+                        component: lazy(() => import("../../organizations/pages/organization-roles")),
+                        exact: true,
+                        icon: {
+                            icon: getSidePanelIcons().organization
+                        },
+                        id: "organization-roles",
+                        name: "Organization Roles",
+                        order: 13,
+                        path: AppConstants.getPaths().get("ORGANIZATION_ROLES"),
                         protected: true,
                         showOnSidePanel: true
                     }

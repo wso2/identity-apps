@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 Inc. (http://www.wso2.com) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -8,7 +8,7 @@
  *
  *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing,
+ * Unless required by organizationlicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  * KIND, either express or implied. See the License for the
@@ -21,14 +21,17 @@ import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertLevels,
     IdentifiableComponentInterface,
-    LoadableComponentInterface
+    LoadableComponentInterface,
+    SBACInterface,
+    TestableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
+    AnimatedAvatar,
+    AppAvatar,
     ConfirmationModal,
     DataTable,
     EmptyPlaceholder,
-    GenericIcon,
     LinkButton,
     PrimaryButton,
     TableActionsInterface,
@@ -39,44 +42,48 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Header, Icon, Popup, SemanticICONS } from "semantic-ui-react";
+import { Header, Icon, SemanticICONS } from "semantic-ui-react";
 import {
     AppConstants,
     AppState,
-    EventPublisher,
     FeatureConfigInterface,
     UIConstants,
+    getEmptyPlaceholderIllustrations,
     history
 } from "../../core";
-import { getEmptyPlaceholderIllustrations } from "../../core/configs/ui";
-import { deleteOrganization } from "../api";
-import { OrganizationIcon } from "../configs";
-import { OrganizationManagementConstants } from "../constants";
-import { OrganizationInterface, OrganizationListInterface } from "../models";
+import { deleteOrganizationRole } from "../api/organization-role";
+import { OrganizationRoleManagementConstants } from "../constants";
+import { OrganizationRoleListItemInterface } from "../models";
 
 /**
  *
- * Proptypes for the organizations list component.
+ * Proptypes for the organization role list component.
  */
-export interface OrganizationListPropsInterface
-    extends LoadableComponentInterface,
-    IdentifiableComponentInterface {
+interface OrganizationRolesListPropsInterface
+    extends SBACInterface<FeatureConfigInterface>,
+        LoadableComponentInterface,
+        TestableComponentInterface,
+        IdentifiableComponentInterface {
+    /**
+     * Advanced Search component.
+     */
+    advancedSearch?: ReactNode;
     /**
      * Default list item limit.
      */
     defaultListItemLimit?: number;
     /**
-     * Organization list.
+     * Organization role list.
      */
-    list: OrganizationListInterface;
+    list: Array<OrganizationRoleListItemInterface>
     /**
-     * On organization delete callback.
+     * On organization role delete callback.
      */
-    onOrganizationDelete?: () => void;
+    onOrganizationRoleDelete?: () => void;
     /**
      * On list item select callback.
      */
-    onListItemClick?: (event: SyntheticEvent, organization: OrganizationInterface) => void;
+    onListItemClick?: (event: SyntheticEvent, organization: OrganizationRoleListItemInterface) => void;
     /**
      * Callback for the search query clear action.
      */
@@ -85,6 +92,10 @@ export interface OrganizationListPropsInterface
      * Callback to be fired when clicked on the empty list placeholder action.
      */
     onEmptyListPlaceholderActionClick?: () => void;
+    /**
+     * Current Organization id
+     */
+    organizationId: string;
     /**
      * Search query for the list.
      */
@@ -107,30 +118,28 @@ export interface OrganizationListPropsInterface
     isRenderedOnPortal?: boolean;
 }
 
-/**
- * Organization list component.
- *
- * @param {OrganizationListPropsInterface} props - Props injected to the component.
- *
- * @return {React.ReactElement}
- */
-export const OrganizationList: FunctionComponent<OrganizationListPropsInterface> = (
-    props: OrganizationListPropsInterface
+export const OrganizationRoleList: FunctionComponent<OrganizationRolesListPropsInterface> = (
+    props: OrganizationRolesListPropsInterface
 ): ReactElement => {
+
     const {
+        advancedSearch,
         defaultListItemLimit,
+        featureConfig,
         isLoading,
         list,
-        onOrganizationDelete,
+        onOrganizationRoleDelete,
         onListItemClick,
         onEmptyListPlaceholderActionClick,
         onSearchQueryClear,
+        organizationId,
         searchQuery,
         selection,
         showListItemActions,
         isSetStrongerAuth,
         isRenderedOnPortal,
-        [ "data-componentid" ]: componentId
+        ["data-testid"]: testId,
+        ["data-componentid"]: componentId
     } = props;
 
     const { t } = useTranslation();
@@ -138,25 +147,23 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
     const dispatch = useDispatch();
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
-    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
-    const [ deletingOrganization, setDeletingOrganization ] = useState<OrganizationInterface>(undefined);
+    const [ deletingOrganizationRole, setDeletingOrganizationRole ] = useState<OrganizationRoleListItemInterface>(
+        undefined
+    );
 
     const [ alert, setAlert, alertComponent ] = useConfirmationModalAlert();
 
-    const eventPublisher: EventPublisher = EventPublisher.getInstance();
-
     /**
-     * Redirects to the organizations edit page when the edit button is clicked.
+     * Redirects to the organization role edit page when the edit button is clicked.
      *
      * @param {string} organizationId - Organization id.
      */
     const handleOrganizationEdit = (organizationId: string): void => {
         history.push({
             pathname: AppConstants.getPaths()
-                .get("ORGANIZATION_UPDATE")
+                .get("ORGANIZATION_ROLE_UPDATE")
                 .replace(":id", organizationId)
         });
     };
@@ -164,55 +171,37 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
     /**
      * Deletes an organization when the delete organization button is clicked.
      *
-     * @param {string} organizationId - Organization id.
+     * @param {string} roleId - Selected Role id.
      */
-    const handleOrganizationDelete = (organizationId: string): void => {
-        deleteOrganization(organizationId)
+    const handleOrganizationDelete = (roleId: string): void => {
+        deleteOrganizationRole(organizationId, roleId)
             .then(() => {
                 dispatch(
                     addAlert({
                         description: t(
                             "console:manage.features.organizations.notifications.deleteOrganization.success" +
-                            ".description"
+                            ".description" // ToDo
                         ),
                         level: AlertLevels.SUCCESS,
                         message: t(
+                            // ToDo
                             "console:manage.features.organizations.notifications.deleteOrganization.success.message"
                         )
                     })
                 );
 
                 setShowDeleteConfirmationModal(false);
-                onOrganizationDelete();
+                onOrganizationRoleDelete();
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
-                    if (error.response.data.code === "ORG-60007") {
-                        dispatch(
-                            setAlert({
-                                description: t(
-                                    "console:manage.features.organizations.notifications." +
-                                    "deleteOrganizationWithSubOrganizationError",
-                                    { organizationName: deletingOrganization.name }
-                                ),
-                                level: AlertLevels.ERROR,
-                                message: t(
-                                    "console:manage.features.organizations.notifications.deleteOrganization.error" +
-                                    ".message"
-                                )
-                            })
-                        );
-
-                        return;
-                    }
-
                     dispatch(
                         setAlert({
                             description: error.response.data.description,
                             level: AlertLevels.ERROR,
                             message: t(
                                 "console:manage.features.organizations.notifications.deleteOrganization.error" +
-                                ".message"
+                                ".message" // ToDo
                             )
                         })
                     );
@@ -224,12 +213,12 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                     setAlert({
                         description: t(
                             "console:manage.features.organizations.notifications.deleteOrganization" +
-                            ".genericError.description"
+                            ".genericError.description" // ToDo
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
                             "console:manage.features.organizations.notifications.deleteOrganization.genericError" +
-                            ".message"
+                            ".message" // ToDo
                         )
                     })
                 );
@@ -248,49 +237,23 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                 dataIndex: "name",
                 id: "name",
                 key: "name",
-                render: (organization: OrganizationInterface): ReactNode => {
+                render: (organizationRole: OrganizationRoleListItemInterface): ReactNode => {
                     return (
-                        <Header
-                            image
-                            as="h6"
-                            className="header-with-icon"
-                            data-componentid={ `${ componentId }-item-heading` }
-                        >
-                            <GenericIcon
-                                bordered
-                                defaultIcon
-                                relaxed="very"
-                                size="micro"
-                                shape="rounded"
+                        <Header image as="h6" className="header-with-icon" data-testid={ `${testId}-item-heading` }>
+                            <AppAvatar
+                                image={ (
+                                    <AnimatedAvatar
+                                        name={ organizationRole.displayName }
+                                        size="mini"
+                                        data-testid={ `${testId}-item-image-inner` }
+                                    />
+                                ) }
+                                size="mini"
                                 spaced="right"
-                                hoverable={ false }
-                                icon={ OrganizationIcon }
+                                data-testid={ `${testId}-item-image` }
                             />
-                            { organization.id === OrganizationManagementConstants.ROOT_ORGANIZATION_ID
-                               && (< Header.Content >
-                                   <Icon
-                                       className="mr-2 ml-0 vertical-aligned-baseline"
-                                       size="small"
-                                       name="circle"
-                                       color="green"
-                                   />
-                               </Header.Content>)
-                            }
                             <Header.Content>
-                                { organization.name }
-                                { /*<Header.Subheader*/ }
-                                { /*    className="truncate ellipsis"*/ }
-                                { /*    data-componentid={ `${ componentId }-item-sub-heading` }*/ }
-                                { /*>*/ }
-                                { /*    { organization.ref?.length > 80 ? (*/ }
-                                { /*        <Popup*/ }
-                                { /*            content={ organization.ref }*/ }
-                                { /*            trigger={ <span>{ organization.ref }</span> }*/ }
-                                { /*        />*/ }
-                                { /*    ) : (*/ }
-                                { /*        organization.ref*/ }
-                                { /*    ) }*/ }
-                                { /*</Header.Subheader>*/ }
+                                { organizationRole.displayName }
                             </Header.Content>
                         </Header>
                     );
@@ -320,37 +283,27 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
 
         return [
             {
-                "data-componentid": `${ componentId }-item-go-to-organization-button`,
-                icon: (): SemanticICONS => {
-                    return "arrow alternate circle right";
-                },
-                onClick: (e: SyntheticEvent, organization: OrganizationInterface): void =>
-                    onListItemClick && onListItemClick(e, organization),
-                popupText: () => t("common:view"),
-                renderer: "semantic-icon"
-            },
-            {
-                "data-componentid": `${ componentId }-item-edit-button`,
+                "data-testid": `${testId}-item-edit-button`,
                 hidden: (): boolean =>
                     !isFeatureEnabled(
-                        featureConfig?.organizations,
-                        OrganizationManagementConstants.FEATURE_DICTIONARY.get("ORGANIZATION_UPDATE")
+                        featureConfig?.organizationsRoles,
+                        OrganizationRoleManagementConstants.FEATURE_DICTIONARY.get("ORGANIZATION_ROLE_UPDATE")
                     ),
                 icon: (): SemanticICONS => {
                     return !hasRequiredScopes(
-                        featureConfig?.organizations,
-                        featureConfig?.organizations?.scopes?.update,
+                        featureConfig?.organizationsRoles,
+                        featureConfig?.organizationsRoles?.scopes?.update,
                         allowedScopes
                     )
                         ? "eye"
                         : "pencil alternate";
                 },
-                onClick: (e: SyntheticEvent, organization: OrganizationInterface): void =>
-                    handleOrganizationEdit(organization.id),
+                onClick: (e: SyntheticEvent, role: OrganizationRoleListItemInterface): void =>
+                    handleOrganizationEdit(role.id),
                 popupText: (): string => {
                     return !hasRequiredScopes(
-                        featureConfig?.organizations,
-                        featureConfig?.organizations?.scopes?.update,
+                        featureConfig?.organizationsRoles,
+                        featureConfig?.organizationsRoles?.scopes?.update,
                         allowedScopes
                     )
                         ? t("common:view")
@@ -359,18 +312,18 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                 renderer: "semantic-icon"
             },
             {
-                "data-componentid": `${ componentId }-item-delete-button`,
+                "data-testid": `${testId}-item-delete-button`,
                 hidden: () => {
                     return !hasRequiredScopes(
-                        featureConfig?.organizations,
-                        featureConfig?.organizations?.scopes?.delete,
+                        featureConfig?.organizationsRoles,
+                        featureConfig?.organizationsRoles?.scopes?.delete,
                         allowedScopes
                     );
                 },
                 icon: (): SemanticICONS => "trash alternate",
-                onClick: (e: SyntheticEvent, organization: OrganizationInterface): void => {
+                onClick: (e: SyntheticEvent, role: OrganizationRoleListItemInterface): void => {
                     setShowDeleteConfirmationModal(true);
-                    setDeletingOrganization(organization);
+                    setDeletingOrganizationRole(role);
                 },
                 popupText: (): string => t("common:delete"),
                 renderer: "semantic-icon"
@@ -384,7 +337,8 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
      * @return {React.ReactElement}
      */
     const showPlaceholders = (): ReactElement => {
-        if (searchQuery && (isEmpty(list) || list?.organizations?.length === 0)) {
+        // When the search returns empty.
+        if (searchQuery && (isEmpty(list) || list?.length === 0)) {
             return (
                 <EmptyPlaceholder
                     action={
@@ -399,46 +353,44 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                         t("console:manage.placeholders.emptySearchResult.subtitles.0", { query: searchQuery }),
                         t("console:manage.placeholders.emptySearchResult.subtitles.1")
                     ] }
-                    data-componentid={ `${ componentId }-empty-search-placeholder` }
+                    data-testid={ `${testId}-empty-search-placeholder` }
                 />
             );
         }
 
-        // When the search returns empty.
-        if (isEmpty(list) || list?.organizations?.length === 0) {
+        if (isEmpty(list) || list?.length === 0) {
             return (
                 <EmptyPlaceholder
                     className={ !isRenderedOnPortal ? "list-placeholder" : "" }
                     action={
                         onEmptyListPlaceholderActionClick && (
-                            <Show when={ AccessControlConstants.ORGANIZATION_WRITE }>
+                            <Show when={ AccessControlConstants.ORGANIZATION_ROLES_WRITE }>
                                 <PrimaryButton
                                     onClick={ () => {
-                                        eventPublisher.publish(componentId + "-click-new-organization-button");
+                                        // eventPublisher.publish(componentId + "-click-new-organization-button");
                                         onEmptyListPlaceholderActionClick();
                                     } }
                                 >
-                                    <Icon name="add" />
-                                    { t("console:manage.features.organizations.placeholders.emptyList.action") }
+                                    <Icon name="add"/>
+                                    { t("console:manage.features.roles.list.emptyPlaceholders.search.action") }
                                 </PrimaryButton>
                             </Show>
                         )
                     }
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
-                    subtitle={ [ t("console:manage.features.organizations.placeholders.emptyList.subtitles.0") ] }
-                    data-componentid={ `${ componentId }-empty-placeholder` }
+                    subtitle={ [ "There are no organization roles at the momemnt" ] }
+                    data-testid={ `${testId}-empty-placeholder` }
                 />
             );
         }
-
-        return null;
     };
 
     return (
         <>
-            <DataTable<OrganizationInterface>
-                className="organizations-table"
+            <DataTable<OrganizationRoleListItemInterface>
+                className="organization-roles-table"
+                externalSearch={ advancedSearch }
                 isLoading={ isLoading }
                 loadingStateOptions={ {
                     count: defaultListItemLimit ?? UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
@@ -446,23 +398,23 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                 } }
                 actions={ !isSetStrongerAuth && resolveTableActions() }
                 columns={ resolveTableColumns() }
-                data={ list?.organizations }
-                onRowClick={ (e: SyntheticEvent, organization: OrganizationInterface): void => {
-                    onListItemClick && onListItemClick(e, organization);
+                data={ list }
+                onRowClick={ (e: SyntheticEvent, role: OrganizationRoleListItemInterface): void => {
+                    onListItemClick && onListItemClick(e, role);
                 } }
                 placeholders={ showPlaceholders() }
                 selectable={ selection }
                 showHeader={ false }
-                transparent={ !isLoading && showPlaceholders() !== null }
-                data-componentid={ componentId }
+                // transparent={ !isLoading && showPlaceholders() !== null }
+                data-testid={ testId }
             />
-            { deletingOrganization && (
+            { deletingOrganizationRole && (
                 <ConfirmationModal
                     onClose={ (): void => setShowDeleteConfirmationModal(false) }
-                    type="negative"
+                    type="warning"
                     open={ showDeleteConfirmationModal }
                     assertionHint={ t(
-                        "console:manage.features.organizations.confirmations.deleteOrganization." + "assertionHint"
+                        "console:manage.features.roles.list.confirmations.deleteItem.assertionHint"
                     ) }
                     assertionType="checkbox"
                     primaryAction={ t("common:confirm") }
@@ -471,24 +423,25 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                         setShowDeleteConfirmationModal(false);
                         setAlert(null);
                     } }
-                    onPrimaryActionClick={ (): void => handleOrganizationDelete(deletingOrganization.id) }
-                    data-componentid={ `${ componentId }-delete-confirmation-modal` }
+                    onPrimaryActionClick={ (): void => handleOrganizationDelete(deletingOrganizationRole.id) }
+                    data-testid={ `${testId}-delete-confirmation-modal` }
                     closeOnDimmerClick={ false }
                 >
-                    <ConfirmationModal.Header data-componentid={ `${ componentId }-delete-confirmation-modal-header` }>
-                        { t("console:manage.features.organizations.confirmations.deleteOrganization.header") }
+                    <ConfirmationModal.Header data-testid={ `${testId}-delete-org-role-confirmation-modal-header` }>
+                        { t("console:manage.features.roles.list.confirmations.deleteItem.header") }
                     </ConfirmationModal.Header>
                     <ConfirmationModal.Message
                         attached
                         warning
-                        data-componentid={ `${ componentId }-delete-confirmation-modal-message` }
+                        data-testid={ `${testId}-delete-org-role-confirmation-modal-message` }
                     >
-                        { t("console:manage.features.organizations.confirmations.deleteOrganization.message") }
+                        { t("console:manage.features.roles.list.confirmations.deleteItem.message",
+                            { type: "role" }) }
                     </ConfirmationModal.Message>
-                    <ConfirmationModal.Content
-                        data-componentid={ `${ componentId }-delete-confirmation-modal-content` }>
+                    <ConfirmationModal.Content data-testid={ `${testId}-delete-confirmation-modal-content` }>
                         <div className="modal-alert-wrapper"> { alert && alertComponent }</div>
-                        { t("console:manage.features.organizations.confirmations.deleteOrganization.content") }
+                        { t("console:manage.features.roles.list.confirmations.deleteItem.content",
+                            { type: "role" }) }
                     </ConfirmationModal.Content>
                 </ConfirmationModal>
             ) }
@@ -499,8 +452,9 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
 /**
  * Default props for the component.
  */
-OrganizationList.defaultProps = {
-    "data-componentid": "organization-list",
+OrganizationRoleList.defaultProps = {
+    "data-componentid": "organization-roles",
+    "data-testid": "organization-role-list",
     selection: true,
     showListItemActions: true
 };
