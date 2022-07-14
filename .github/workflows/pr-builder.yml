@@ -34,9 +34,10 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: 🐳 Setup NX Shas 
-        id: set-up-nx-shas
-        uses: nrwl/nx-set-shas@v2
+      - name: 🐳 Nx set SHAs
+        uses: nrwl/nx-set-shas@v2.0.2
+        with:
+          main-branch-name: master
 
       - name: 🥡 Setup pnpm
         uses: pnpm/action-setup@v2.1.0
@@ -78,9 +79,10 @@ jobs:
           version: 6.0.2
           run_install: true
 
-      - name: 🐳 Setup NX Shas 
-        id: set-up-nx-shas
-        uses: nrwl/nx-set-shas@v2
+      - name: 🐳 Nx set SHAs
+        uses: nrwl/nx-set-shas@v2.0.2
+        with:
+          main-branch-name: master
 
       - name: 👷 Build Re-usable Modules
         id: build-reusable-modules
@@ -115,9 +117,10 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: 🐳 Setup NX Shas 
-        id: set-up-nx-shas
-        uses: nrwl/nx-set-shas@v2
+      - name: 🐳 Nx set SHAs
+        uses: nrwl/nx-set-shas@v2.0.2
+        with:
+          main-branch-name: master
 
       - name: 🥡 Setup pnpm
         uses: pnpm/action-setup@v2.1.0
