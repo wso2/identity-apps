@@ -3167,6 +3167,14 @@ export const console: ConsoleNS = {
                             }
                         },
                         google: {
+                            AdditionalQueryParameters: {
+                                hint: "Additional query parameters to be sent to Google.",
+                                label: "Additional Query Parameters",
+                                placeholder: "Enter additional query parameters.",
+                                validations: {
+                                    required: "Client secret is not a required field."
+                                }
+                            },
                             callbackUrl: {
                                 hint: "The authorized redirect URI used to obtain Google credentials.",
                                 label: "Authorized redirect URI",
@@ -3189,14 +3197,6 @@ export const console: ConsoleNS = {
                                 placeholder: "Enter Client secret from Google application.",
                                 validations: {
                                     required: "Client secret is a required field."
-                                }
-                            },
-                            AdditionalQueryParameters: {
-                                hint: "Additional query parameters to be sent to Google.",
-                                label: "Additional Query Parameters",
-                                placeholder: "Enter additional query parameters.",
-                                validations: {
-                                required: "Client secret is not a required field."
                                 }
                             },
                             scopes: {
