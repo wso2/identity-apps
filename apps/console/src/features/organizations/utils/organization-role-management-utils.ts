@@ -17,9 +17,9 @@
  */
 
 import isEmpty from "lodash-es/isEmpty";
-import {generatePermissionTree} from "../../roles/components/role-utils";
-import {getOrganizationPermissions} from "../api";
-import {PermissionObject, TreeNode} from "../models";
+import { generatePermissionTree } from "../../roles/components/role-utils";
+import { getOrganizationPermissions } from "../api";
+import { PermissionObject, TreeNode } from "../models";
 
 /**
  * Utility class for roles operations.

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import {OrganizationInterface} from "../models";
+import { OrganizationInterface } from "../models";
 
 export class OrganizationManagementConstants {
     /**

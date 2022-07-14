@@ -16,15 +16,15 @@
  * under the License.
  */
 
-import {RolesInterface, TestableComponentInterface} from "@wso2is/core/models";
-import {Forms} from "@wso2is/forms";
-import {ContentLoader, EmphasizedSegment} from "@wso2is/react-components";
+import { RolesInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { Forms } from "@wso2is/forms";
+import { ContentLoader, EmphasizedSegment } from "@wso2is/react-components";
 import Tree from "rc-tree";
-import React, {FunctionComponent, ReactElement, useEffect, useState} from "react";
-import {useTranslation} from "react-i18next";
-import {Button, Divider, Grid} from "semantic-ui-react";
-import {TreeNode} from "../../models";
-import {OrganizationRoleManagementUtils} from "../../utils/organization-role-management-utils";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Button, Divider, Grid } from "semantic-ui-react";
+import { TreeNode } from "../../models";
+import { OrganizationRoleManagementUtils } from "../../utils/organization-role-management-utils";
 
 /**
  * Interface to capture permission list props

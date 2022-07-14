@@ -16,11 +16,11 @@
  * under the License.
  */
 
-import {AsgardeoSPAClient, HttpError, HttpRequestConfig, HttpResponse} from "@asgardeo/auth-react";
-import {HttpMethods} from "@wso2is/core/models";
-import {store} from "../../core";
-import {CreateRoleInterface} from "../../roles";
-import {OrganizationRoleListResponseInterface, PatchOrganizationRoleDataInterface} from "../models";
+import { AsgardeoSPAClient, HttpError, HttpRequestConfig, HttpResponse } from "@asgardeo/auth-react";
+import { HttpMethods } from "@wso2is/core/models";
+import { store } from "../../core";
+import { CreateRoleInterface } from "../../roles";
+import { OrganizationRoleListResponseInterface, PatchOrganizationRoleDataInterface } from "../models";
 
 /**
  * Get an axios instance.
