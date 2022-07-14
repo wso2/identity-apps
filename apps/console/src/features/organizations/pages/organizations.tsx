@@ -35,7 +35,7 @@ import React, {
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
     Breadcrumb,
     Divider,
@@ -45,13 +45,7 @@ import {
     Icon,
     PaginationProps
 } from "semantic-ui-react";
-import {
-    AdvancedSearchWithBasicFilters,
-    AppState,
-    EventPublisher,
-    FeatureConfigInterface,
-    UIConstants
-} from "../../core";
+import { AdvancedSearchWithBasicFilters, EventPublisher, UIConstants } from "../../core";
 import { getOrganization, getOrganizations } from "../api";
 import { AddOrganizationModal, OrganizationList } from "../components";
 import {
@@ -90,19 +84,17 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
 
     const dispatch = useDispatch();
 
-    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-
     const [ organizationList, setOrganizationList ] = useState<OrganizationListInterface>(null);
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ listSortingStrategy, setListSortingStrategy ] = useState<DropdownItemProps>(
         ORGANIZATIONS_LIST_SORTING_OPTIONS[ 0 ]
     );
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
-    const [ isOrganizationListRequestLoading, setOrganizationListRequestLoading ] = useState<boolean>(false);
-    const [ isLoading, setLoading ] = useState<boolean>(true);
+    const [ isOrganizationListRequestLoading, setOrganizationListRequestLoading ] = useState<boolean>(true);
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ isOrganizationsNextPageAvailable, setIsOrganizationsNextPageAvailable ] = useState<boolean>(undefined);
+    const [ isOrganizationsPrevPageAvailable, setIsOrganizationsPrevPageAvailable ] = useState<boolean>(undefined);
     const [ parent, setParent ] = useState<OrganizationInterface>(null);
     const [ organizations, setOrganizations ] = useState<OrganizationInterface[]>([]);
     const [ organization, setOrganization ] = useState<OrganizationResponseInterface>(null);
@@ -123,23 +115,27 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                 const afterID = link.href.split("after=")[ 1 ];
 
                 setAfter(afterID);
+                setIsOrganizationsNextPageAvailable(true);
                 nextFound = true;
             }
 
-            if (link.rel === "prev") {
+            if (link.rel === "previous") {
                 const beforeID = link.href.split("before=")[ 1 ];
 
                 setBefore(beforeID);
+                setIsOrganizationsPrevPageAvailable(true);
                 prevFound = true;
             }
         });
 
         if (!nextFound) {
             setAfter("");
+            setIsOrganizationsNextPageAvailable(false);
         }
 
         if (!prevFound) {
             setBefore("");
+            setIsOrganizationsPrevPageAvailable(false);
         }
     }, [ organizationList ]);
 
@@ -164,8 +160,8 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                             description: error.description,
                             level: AlertLevels.ERROR,
                             message: t(
-                                "console:manage.features.organizations.notifications."
-                                + "fetchOrganization.error.message"
+                                "console:manage.features.organizations.notifications." +
+                                "fetchOrganization.error.message"
                             )
                         })
                     );
@@ -195,7 +191,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
         if (!parent || isEmpty(parent)) {
             filterQuery = searchQuery;
         } else {
-            filterQuery = `${ searchQuery ? searchQuery + " and" : "" } parentId eq ${ parent.id }`;
+            filterQuery = `${ searchQuery ? searchQuery + " and " : "" }parentId eq ${ parent.id }`;
         }
 
         return filterQuery;
@@ -211,10 +207,8 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
     const getOrganizationLists = useCallback(
         (limit?: number, filter?: string, after?: string, before?: string, recursive?: boolean): void => {
             setOrganizationListRequestLoading(true);
-
             getOrganizations(filter, limit, after, before, true)
                 .then((response: OrganizationListInterface) => {
-                    handleNextButtonVisibility(response);
                     setOrganizationList(response);
                 })
                 .catch((error) => {
@@ -249,7 +243,6 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                 })
                 .finally(() => {
                     setOrganizationListRequestLoading(false);
-                    setLoading(false);
                 });
         },
         [ dispatch, t ]
@@ -271,26 +264,6 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                 return data.value === option.value;
             })
         );
-    };
-
-    /**
-     *
-     * Sets the Next button visibility.
-     *
-     * @param {OrganizationListInterface} list - List of organizations.
-     */
-    const handleNextButtonVisibility = (list: OrganizationListInterface): void => {
-        if (!list.links) {
-            setIsOrganizationsNextPageAvailable(false);
-
-            return;
-        }
-
-        list.links?.forEach((link) => {
-            link.rel === "next"
-                ? setIsOrganizationsNextPageAvailable(true)
-                : setIsOrganizationsNextPageAvailable(false);
-        });
     };
 
     /**
@@ -318,6 +291,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
         } else if (newPage < activePage) {
             getOrganizationLists(listItemLimit, filterQuery, null, before);
         }
+
         setActivePage(newPage);
     };
 
@@ -388,7 +362,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
         <>
             <PageLayout
                 action={
-                    !isLoading &&
+                    !isOrganizationListRequestLoading &&
                     !(!searchQuery && (isEmpty(organizationList) || organizationList?.organizations?.length <= 0)) && (
                         <Show when={ AccessControlConstants.ORGANIZATION_WRITE }>
                             <PrimaryButton
@@ -398,7 +372,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                                     eventPublisher.publish("organization-click-new-organization-button");
                                     setShowWizard(true);
                                 } }
-                                data-testid={ `${ testId }-list-layout-add-button` }
+                                data-componentid={ `${ testId }-list-layout-add-button` }
                             >
                                 <Icon name="add" />
                                 { t("console:manage.features.organizations.list.actions.add") }
@@ -406,41 +380,43 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                         </Show>
                     )
                 }
-                title={ isOrganizationListRequestLoading
-                    ? null
-                    : organization ? organization.name : t("console:manage.features.organizations.homeList.name") }
+                title={
+                    isOrganizationListRequestLoading
+                        ? null
+                        : organization
+                            ? organization.name
+                            : t("console:manage.features.organizations.homeList.name")
+                }
                 description={
                     (<p>
                         { isOrganizationListRequestLoading
                             ? null
                             : organization
                                 ? organization.description
-                                : t("console:manage.features.organizations.homeList.description")
-                        }
+                                : null }
                     </p>)
                 }
-                data-testid={ `${ testId }-page-layout` }
+                data-componentid={ `${ testId }-page-layout` }
                 titleAs="h3"
                 componentAbovePageHeader={
                     (<>
-                        <Header as="h1">
+                        <Header as="h1" data-componentid={ `${ testId }-organization-header` }>
                             { t("console:manage.pages.organizations.title") }
                             <Header.Subheader
-                                data-componentid={ "organization-sub-title" }
-                                data-testid={ `${ testId }-sub-title` }
+                                data-componentid={ `${ testId }-sub-title` }
                             >
                                 { t("console:manage.pages.organizations.subTitle") }
                             </Header.Subheader>
                         </Header>
                         <Divider hidden />
                         { parent && organizations.length > 0 && (
-                            <Breadcrumb className="margined">
+                            <Breadcrumb className="margined" data-componentid={ `${ testId }-breadcrumb` }>
                                 <Breadcrumb.Section
                                     onClick={ () => {
                                         handleBreadCrumbClick(null, -1);
                                     } }
                                 >
-                                    <Icon name="home" />
+                                    <Icon name="home" data-componentid={ `${ testId }-breadcrumb-home` } />
                                 </Breadcrumb.Section>
                                 { organizations?.map((organization: OrganizationInterface, index: number) => {
                                     return (
@@ -465,7 +441,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                     </>)
                 }
             >
-                { !isLoading ? (
+                { !isOrganizationListRequestLoading ? (
                     <>
                         <ListLayout
                             advancedSearch={
@@ -496,7 +472,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                                     defaultSearchAttribute="name"
                                     defaultSearchOperator="co"
                                     triggerClearQuery={ triggerClearQuery }
-                                    data-testid={ `${ testId }-list-advanced-search` }
+                                    data-componentid={ `${ testId }-list-advanced-search` }
                                 />)
                             }
                             currentListSize={ organizationList?.organizations?.length }
@@ -511,47 +487,17 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                             }
                             sortOptions={ ORGANIZATIONS_LIST_SORTING_OPTIONS }
                             sortStrategy={ listSortingStrategy }
-                            totalPages={ after ? activePage + 1 : 1 }
+                            totalPages={ 10 }
                             totalListSize={ organizationList?.organizations?.length }
                             paginationOptions={ {
-                                disableNextButton: !isOrganizationsNextPageAvailable
+                                disableNextButton: !isOrganizationsNextPageAvailable,
+                                disablePreviousButton: !isOrganizationsPrevPageAvailable
                             } }
-                            data-testid={ `${ testId }-list-layout` }
+                            data-componentid={ `${ testId }-list-layout` }
                             resetPagination={ paginationReset }
+                            activePage={ activePage }
                         >
                             <OrganizationList
-                                advancedSearch={
-                                    (<AdvancedSearchWithBasicFilters
-                                        onFilter={ handleOrganizationFilter }
-                                        filterAttributeOptions={ [
-                                            {
-                                                key: 0,
-                                                text: t("common:name"),
-                                                value: "name"
-                                            }
-                                        ] }
-                                        filterAttributePlaceholder={ t(
-                                            "console:manage.features.organizations.advancedSearch." +
-                                            "form.inputs.filterAttribute.placeholder"
-                                        ) }
-                                        filterConditionsPlaceholder={ t(
-                                            "console:manage.features.organizations.advancedSearch." +
-                                            "form.inputs.filterCondition.placeholder"
-                                        ) }
-                                        filterValuePlaceholder={ t(
-                                            "console:manage.features.organizations.advancedSearch." +
-                                            "form.inputs.filterValue.placeholder"
-                                        ) }
-                                        placeholder={ t(
-                                            "console:manage.features.organizations.advancedSearch.placeholder"
-                                        ) }
-                                        defaultSearchAttribute="name"
-                                        defaultSearchOperator="co"
-                                        triggerClearQuery={ triggerClearQuery }
-                                        data-testid={ `${ testId }-list-advanced-search` }
-                                    />)
-                                }
-                                featureConfig={ featureConfig }
                                 isLoading={ isOrganizationListRequestLoading }
                                 list={ organizationList }
                                 onOrganizationDelete={ handleOrganizationDelete }
@@ -560,8 +506,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                                 } }
                                 onSearchQueryClear={ handleSearchQueryClear }
                                 searchQuery={ searchQuery }
-                                data-testid={ `${ testId }-list` }
-                                data-componentid="organization"
+                                data-componentid="organization-list"
                                 onListItemClick={ handleListItemClick }
                             />
                         </ListLayout>
@@ -574,7 +519,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                         ) }
                     </>
                 ) : (
-                    <GridLayout isLoading={ isLoading } />
+                    <GridLayout isLoading={ isOrganizationListRequestLoading } />
                 ) }
             </PageLayout>
         </>

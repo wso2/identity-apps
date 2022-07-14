@@ -24,7 +24,7 @@
     <groupId>org.wso2.identity.apps</groupId>
     <artifactId>identity-apps</artifactId>
     <packaging>pom</packaging>
-    <version>1.2.1031-SNAPSHOT</version>
+    <version>1.2.1041-SNAPSHOT</version>
     <name>WSO2 Identity Server Apps - Parent</name>
     <description>WSO2 Identity Server Web Apps</description>
 
@@ -677,7 +677,7 @@
         <com.fasterxml.jackson.version>2.10.5</com.fasterxml.jackson.version>
         <com.fasterxml.jackson.annotation.version>2.10.5</com.fasterxml.jackson.annotation.version>
         <com.fasterxml.jackson.jaxrs-json-provider-version>2.10.5</com.fasterxml.jackson.jaxrs-json-provider-version>
-        <com.google.code.gson.version>2.3.1</com.google.code.gson.version>
+        <com.google.code.gson.version>2.9.0</com.google.code.gson.version>
         <commons-codec.wso2.version>1.14.0.wso2v1</commons-codec.wso2.version>
         <axiom.version>1.2.11-wso2v16</axiom.version>
         <javax.ws.rs-api.version>2.1.1</javax.ws.rs-api.version>

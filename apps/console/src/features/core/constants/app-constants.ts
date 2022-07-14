@@ -313,7 +313,9 @@ export class AppConstants {
             .set("ATTRIBUTE_MAPPINGS", `${AppConstants.getAdminViewBasePath()}/attribute-mappings/:type`)
             .set("CREATE_TENANT", `${AppConstants.getMainViewBasePath()}/create-tenant`)
             .set("ORGANIZATIONS", `${AppConstants.getAdminViewBasePath()}/organizations`)
-            .set("ORGANIZATION_UPDATE", `${AppConstants.getAdminViewBasePath()}/organizations/:id`);
+            .set("ORGANIZATION_UPDATE", `${AppConstants.getAdminViewBasePath()}/organizations/:id`)
+            .set("ORGANIZATION_ROLES", `${AppConstants.getAdminViewBasePath()}/organization-roles`)
+            .set("ORGANIZATION_ROLE_UPDATE", `${AppConstants.getAdminViewBasePath()}/organization-roles/:id`);
     }
 
     /**
@@ -342,4 +344,19 @@ export class AppConstants {
         .set("NO_LOGIN_PERMISSION", "no_login_permission")
         .set("ACCESS_DENIED", "access_denied")
         .set("USER_DENIED_CONSENT", "consent_denied");
+
+    /**
+     * Route ids that are enabled in an organization.
+     * @constant
+     * @type {string[]}
+     * @default
+     * */
+    public static readonly ORGANIZATION_ENABLED_ROUTES: string[] = [
+        "identityProviders",
+        "users",
+        "organizations",
+        "groups",
+        "organization-roles",
+        "applications"
+    ]
 }

@@ -22,11 +22,11 @@ import { Field, Form } from "@wso2is/form";
 import { Heading, LinkButton, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Divider, Grid, Message, Modal, Form as SemanticForm } from "semantic-ui-react";
-import { EventPublisher } from "../../core";
+import { AppState, EventPublisher } from "../../core";
 import { addOrganization, getOrganizations } from "../api";
-import { ORGANIZATION_TYPE } from "../constants";
+import { ORGANIZATION_TYPE, OrganizationManagementConstants } from "../constants";
 import { AddOrganizationInterface, OrganizationInterface, OrganizationListInterface } from "../models";
 
 interface OrganizationAddFormProps {
@@ -38,7 +38,7 @@ interface OrganizationAddFormProps {
 /**
  * Prop types of the `AddOrganizationModal` component.
  */
-interface AddOrganizationModalPropsInterface extends IdentifiableComponentInterface {
+export interface AddOrganizationModalPropsInterface extends IdentifiableComponentInterface {
     closeWizard: () => void;
     parent?: OrganizationInterface;
     /**
@@ -71,14 +71,23 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
 
     const submitOrganization = async (values: OrganizationAddFormProps): Promise<void> => {
         if (values?.name) {
-            const response: OrganizationListInterface
-                = await getOrganizations(`name eq ${ values.name }`, 1, null, null, true);
+            try {
+                const response: OrganizationListInterface = await getOrganizations(
+                    `name eq ${ values.name }`,
+                    1,
+                    null,
+                    null,
+                    true
+                );
 
-            if (response?.organizations?.length > 0) {
-                setDuplicateName(true);
+                if (response?.organizations?.length > 0) {
+                    setDuplicateName(true);
 
-                return;
-            } else {
+                    return;
+                } else {
+                    setDuplicateName(false);
+                }
+            } catch(error) {
                 setDuplicateName(false);
             }
         }
@@ -86,7 +95,7 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
         const organization: AddOrganizationInterface = {
             description: values?.description,
             name: values?.name,
-            parentId: parent?.id ?? "ROOT",
+            parentId: parent?.id ?? OrganizationManagementConstants.ROOT_ORGANIZATION_ID,
             type: ORGANIZATION_TYPE.TENANT
         };
 
@@ -98,11 +107,14 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
                 closeWizard();
                 dispatch(
                     addAlert({
-                        description: t("console:manage.features.organizations.notifications." +
-                            "addOrganization.success.description"),
+                        description: t(
+                            "console:manage.features.organizations.notifications." +
+                            "addOrganization.success.description"
+                        ),
                         level: AlertLevels.SUCCESS,
-                        message: t("console:manage.features.organizations.notifications." +
-                            "addOrganization.success.message")
+                        message: t(
+                            "console:manage.features.organizations.notifications." + "addOrganization.success.message"
+                        )
                     })
                 );
                 if (onUpdate) {
@@ -113,24 +125,31 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
                 if (error?.description) {
                     dispatch(
                         addAlert({
-                            description: t("console:manage.features.organizations.notifications." +
+                            description: t(
+                                "console:manage.features.organizations.notifications." +
                                 "addOrganization.error.description",
-                            {
-                                description: error.description
-                            }),
+                                {
+                                    description: error.description
+                                }
+                            ),
                             level: AlertLevels.ERROR,
-                            message: t("console:manage.features.organizations.notifications." +
-                                "addOrganization.error.message")
+                            message: t(
+                                "console:manage.features.organizations.notifications." + "addOrganization.error.message"
+                            )
                         })
                     );
                 } else {
                     dispatch(
                         addAlert({
-                            description: t("console:manage.features.organizations.notifications." +
-                                "addOrganization.genericError.description"),
+                            description: t(
+                                "console:manage.features.organizations.notifications." +
+                                "addOrganization.genericError.description"
+                            ),
                             level: AlertLevels.ERROR,
-                            message: t("console:manage.features.organizations.notifications." +
-                                "addOrganization.genericError.message")
+                            message: t(
+                                "console:manage.features.organizations.notifications." +
+                                "addOrganization.genericError.message"
+                            )
                         })
                     );
                 }
@@ -148,8 +167,9 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
         }
 
         if (!values?.domainName && type === ORGANIZATION_TYPE.TENANT) {
-            error.domainName = t("console:manage.features.organizations.forms.addOrganization." +
-                "domainName.validation.empty");
+            error.domainName = t(
+                "console:manage.features.organizations.forms.addOrganization." + "domainName.validation.empty"
+            );
         }
 
         return error;
@@ -172,16 +192,16 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
                 onClose={ handleWizardClose }
                 closeOnDimmerClick={ false }
                 closeOnEscape
-                data-testid={ `${ testId }-modal` }
+                data-componentid={ `${ testId }-modal` }
             >
                 <Modal.Header className="wizard-header">
                     { t("console:manage.features.organizations.modals.addOrganization.header") }
-                    <Heading as="h6">
+                    <Heading as="h6" data-componentid={ `${ testId }-subheading` }>
                         { parent?.name
-                            ? t("console:manage.features.organizations.modals.addOrganization.subtitle1",
-                                { parent: parent?.name })
-                            :  t("console:manage.features.organizations.modals.addOrganization.subtitle2") }
-
+                            ? t("console:manage.features.organizations.modals.addOrganization.subtitle1", {
+                                parent: parent?.name
+                            })
+                            : t("console:manage.features.organizations.modals.addOrganization.subtitle2") }
                     </Heading>
                 </Modal.Header>
                 <Modal.Content>
@@ -189,11 +209,13 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
                         <Grid.Row columns={ 1 }>
                             <Grid.Column width={ 16 }>
                                 { duplicateName && (
-                                    <Message negative>
-                                        <Message.Content>{
-                                            t("console:manage.features.organizations.forms." +
-                                                "addOrganization.name.validation.duplicate")
-                                        }</Message.Content>
+                                    <Message negative data-componentid={ `${ testId }-duplicate-name-error` }>
+                                        <Message.Content>
+                                            { t(
+                                                "console:manage.features.organizations.forms." +
+                                                "addOrganization.name.validation.duplicate"
+                                            ) }
+                                        </Message.Content>
                                     </Message>
                                 ) }
                                 <Form
@@ -206,14 +228,18 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
                                         ariaLabel="Organization Name"
                                         inputType="name"
                                         name="name"
-                                        label={ t("console:manage.features.organizations.forms." +
-                                            "addOrganization.name.label") }
+                                        label={ t(
+                                            "console:manage.features.organizations.forms." +
+                                            "addOrganization.name.label"
+                                        ) }
                                         required={ true }
-                                        placeholder={ t("console:manage.features.organizations.forms." +
-                                            "addOrganization.name.placeholder") }
+                                        placeholder={ t(
+                                            "console:manage.features.organizations.forms." +
+                                            "addOrganization.name.placeholder"
+                                        ) }
                                         maxLength={ 32 }
                                         minLength={ 3 }
-                                        data-testid={ `${ testId }-organization-name-input` }
+                                        data-componentid={ `${ testId }-organization-name-input` }
                                         width={ 16 }
                                         listen={ () => {
                                             setDuplicateName(false);
@@ -223,14 +249,18 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
                                         ariaLabel="Description"
                                         inputType="description"
                                         name="description"
-                                        label={ t("console:manage.features.organizations.forms." +
-                                            "addOrganization.description.label") }
+                                        label={ t(
+                                            "console:manage.features.organizations.forms." +
+                                            "addOrganization.description.label"
+                                        ) }
                                         required={ false }
-                                        placeholder={ t("console:manage.features.organizations.forms." +
-                                            "addOrganization.description.placeholder") }
+                                        placeholder={ t(
+                                            "console:manage.features.organizations.forms." +
+                                            "addOrganization.description.placeholder"
+                                        ) }
                                         maxLength={ 32 }
                                         minLength={ 3 }
-                                        data-testid={ `${ testId }-description-input` }
+                                        data-componentid={ `${ testId }-description-input` }
                                         width={ 16 }
                                     />
                                 </Form>
@@ -275,7 +305,7 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
                                     onClick={ () => {
                                         submitForm?.current && submitForm?.current();
                                     } }
-                                    data-testid={ `${ testId }-next-button` }
+                                    data-componentid={ `${ testId }-next-button` }
                                     loading={ isSubmitting }
                                     disabled={ isSubmitting }
                                 >
