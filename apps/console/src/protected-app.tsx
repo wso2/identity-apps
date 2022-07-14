@@ -183,8 +183,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                         : false;
                     const firstName = idToken?.given_name;
                     const lastName = idToken?.family_name;
-                    const fullName = firstName ? firstName + lastName ? " " + lastName : ""
-                            : lastName ? lastName : response.email;
+                    const fullName = firstName ? (firstName + (lastName ? (" " + lastName) : "")) : response.email;
 
                     dispatch(
                         setSignIn<AuthenticatedUserInfo & TenantListInterface>({
@@ -197,7 +196,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                             tenantDomain: response.tenantDomain ?? tenantDomain,
                             username: idToken.sub,
                             isPrivilegedUser: isPrivilegedUser,
-                            fullname: fullName
+                            fullName: fullName
                         })
                     );
                 })
