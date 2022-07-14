@@ -187,6 +187,25 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
+                    if (error.response.data.code === "ORG-60007") {
+                        dispatch(
+                            setAlert({
+                                description: t(
+                                    "console:manage.features.organizations.notifications." +
+                                    "deleteOrganizationWithSubOrganizationError",
+                                    { organizationName: deletingOrganization.name }
+                                ),
+                                level: AlertLevels.ERROR,
+                                message: t(
+                                    "console:manage.features.organizations.notifications.deleteOrganization.error" +
+                                    ".message"
+                                )
+                            })
+                        );
+
+                        return;
+                    }
+
                     dispatch(
                         setAlert({
                             description: error.response.data.description,
@@ -247,7 +266,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                                 hoverable={ false }
                                 icon={ OrganizationIcon }
                             />
-                            { organization.name === "ROOT"
+                            { organization.id === OrganizationManagementConstants.ROOT_ORGANIZATION_ID
                                && (< Header.Content >
                                    <Icon
                                        className="mr-2 ml-0 vertical-aligned-baseline"
@@ -259,19 +278,19 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                             }
                             <Header.Content>
                                 { organization.name }
-                                <Header.Subheader
-                                    className="truncate ellipsis"
-                                    data-componentid={ `${ componentId }-item-sub-heading` }
-                                >
-                                    { organization.ref?.length > 80 ? (
-                                        <Popup
-                                            content={ organization.ref }
-                                            trigger={ <span>{ organization.ref }</span> }
-                                        />
-                                    ) : (
-                                        organization.ref
-                                    ) }
-                                </Header.Subheader>
+                                { /*<Header.Subheader*/ }
+                                { /*    className="truncate ellipsis"*/ }
+                                { /*    data-componentid={ `${ componentId }-item-sub-heading` }*/ }
+                                { /*>*/ }
+                                { /*    { organization.ref?.length > 80 ? (*/ }
+                                { /*        <Popup*/ }
+                                { /*            content={ organization.ref }*/ }
+                                { /*            trigger={ <span>{ organization.ref }</span> }*/ }
+                                { /*        />*/ }
+                                { /*    ) : (*/ }
+                                { /*        organization.ref*/ }
+                                { /*    ) }*/ }
+                                { /*</Header.Subheader>*/ }
                             </Header.Content>
                         </Header>
                     );
@@ -300,6 +319,16 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
         }
 
         return [
+            {
+                "data-componentid": `${ componentId }-item-go-to-organization-button`,
+                icon: (): SemanticICONS => {
+                    return "arrow alternate circle right";
+                },
+                onClick: (e: SyntheticEvent, organization: OrganizationInterface): void =>
+                    onListItemClick && onListItemClick(e, organization),
+                popupText: () => t("common:view"),
+                renderer: "semantic-icon"
+            },
             {
                 "data-componentid": `${ componentId }-item-edit-button`,
                 hidden: (): boolean =>
@@ -430,7 +459,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
             { deletingOrganization && (
                 <ConfirmationModal
                     onClose={ (): void => setShowDeleteConfirmationModal(false) }
-                    type="warning"
+                    type="negative"
                     open={ showDeleteConfirmationModal }
                     assertionHint={ t(
                         "console:manage.features.organizations.confirmations.deleteOrganization." + "assertionHint"

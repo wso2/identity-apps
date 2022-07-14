@@ -79,6 +79,10 @@ export const console: ConsoleNS = {
                     name: "My Account"
                 },
                 tooltip: "Apps"
+            },
+            organizationSwitch: {
+                emptyOrgListMessage: "No organizations available",
+                orgSearchPlaceholder: "Search by organization name"
             }
         },
         modals: {
@@ -7296,7 +7300,7 @@ export const console: ConsoleNS = {
                     },
                     tabTitles: {
                         attributes: "Attributes",
-                        profile: "Profile"
+                        overview: "Overview"
                     }
                 },
                 forms: {
@@ -7375,6 +7379,8 @@ export const console: ConsoleNS = {
                             message: "Organization deleted successfully"
                         }
                     },
+                    deleteOrganizationWithSubOrganizationError: "Organization {{ organizationName }} cannot be " +
+                        "deleted since it has one or more sub organizations.",
                     fetchOrganization: {
                         error: {
                             description: "{{description}}",
