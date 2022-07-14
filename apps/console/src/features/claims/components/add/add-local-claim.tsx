@@ -16,7 +16,7 @@
 * under the License.
 */
 
-import { getProfileSchemas } from "@wso2is/core/api";
+import { getProfileSchemas, getUserStoreList } from "@wso2is/core/api";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, Claim, ProfileSchemaInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert, setProfileSchemaRequestLoadingStatus, setSCIMSchemas } from "@wso2is/core/store";
@@ -27,6 +27,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
+import { UserStoreListItem } from "../../../../features/userstores";
 import { attributeConfig } from "../../../../extensions";
 import { AppState, EventPublisher } from "../../../core";
 import { AppConstants } from "../../../core/constants";
@@ -101,21 +102,52 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
     const [ alert, setAlert, alertComponent ] = useWizardAlert();
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
+    const [ userStore, setUserStore ] = useState<UserStoreListItem[]>([]);
+
+    useEffect(() => {
+        const userstore: UserStoreListItem[] = [];
+
+        if (attributeConfig.localAttributes.createWizard.showPrimaryUserStore) {
+            userstore.push({
+                description: "",
+                enabled: true,
+                id: "PRIMARY",
+                name: "PRIMARY",
+                self: ""
+            });
+        }
+        getUserStoreList().then((response) => {
+            if (hiddenUserStores && hiddenUserStores.length > 0) {
+                response.data.map((store: UserStoreListItem) => {
+                    if (hiddenUserStores.length > 0 && !hiddenUserStores.includes(store.name)) {
+                        userstore.push(store);
+                    }
+                });
+            } else {
+                userstore.push(...response.data);
+            }
+            setUserStore(userstore);
+        }).catch(() => {
+            setUserStore(userstore);
+        });
+    }, []);
 
     /**
      * Conditionally disable map attribute step
      * if there are no secondary user stores.
      */
     useEffect(() => {
-        if ( hiddenUserStores && hiddenUserStores.length > 0 ) {
-            attributeConfig.localAttributes.isUserStoresHidden(hiddenUserStores).then(state => {
-                setShowMapAttributes(state.length > 0);
-            });
-        } else {
-            setShowMapAttributes(true);
-        }
+        userStore.map((store: UserStoreListItem) => {   
+            if ( hiddenUserStores && hiddenUserStores.length > 0 ) {
+                attributeConfig.localAttributes.isUserStoresHidden(hiddenUserStores).then(state => {
+                    setShowMapAttributes(state.length > 0 && store.enabled);
+                });
+            } else {
+                setShowMapAttributes(true);
+            }
+        });
 
-    }, [ hiddenUserStores ]);
+    }, [ hiddenUserStores, userStore ]);
 
     /**
      * Navigate to the claim edit page after adding a claim.
