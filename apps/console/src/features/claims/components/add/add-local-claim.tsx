@@ -107,7 +107,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
     useEffect(() => {
         const userstore: UserStoreListItem[] = [];
 
-        if (attributeConfig.localAttributes.createWizard.showPrimaryUserStore) {
+        if (attributeConfig?.localAttributes?.createWizard?.showPrimaryUserStore) {
             userstore.push({
                 description: "",
                 enabled: true,
@@ -138,7 +138,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
      */
     useEffect(() => {
         userStore.map((store: UserStoreListItem) => {   
-            if ( hiddenUserStores && hiddenUserStores.length > 0 ) {
+            if (hiddenUserStores && hiddenUserStores.length > 0) {
                 attributeConfig.localAttributes.isUserStoresHidden(hiddenUserStores).then(state => {
                     setShowMapAttributes(state.length > 0 && store.enabled);
                 });
