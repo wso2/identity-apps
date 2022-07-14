@@ -106,7 +106,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     const activeView: AppViewTypes = useSelector((state: AppState) => state.global.activeView);
     const tenantDomain: string = useSelector((state: AppState) => state?.auth?.tenantDomain);
     const associatedTenants: any[] = useSelector((state: AppState) => state?.auth?.tenants);
-    const consumerAccountURL: string = useSelector((state: AppState) =>
+    const privilegedUserAccountURL: string = useSelector((state: AppState) =>
         state.config.deployment.accountApp.tenantQualifiedPath);
     const isPrivilegedUser: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
 
@@ -226,7 +226,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                             name: t("console:common.header.appSwitch.myAccount.name"),
                             onClick: () => {
                                 eventPublisher.publish("console-click-visit-my-account");
-                                window.open((isPrivilegedUser ? consumerAccountURL: accountAppURL)
+                                window.open((isPrivilegedUser ? privilegedUserAccountURL: accountAppURL)
                                     , "_blank", "noopener");
                             }
                         }
@@ -403,7 +403,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                                 name: t("console:manage.features.header.links.userPortalNav"),
                                 onClick: () => {
                                     eventPublisher.publish("console-click-visit-my-account");
-                                    window.open((isPrivilegedUser ? consumerAccountURL: accountAppURL),
+                                    window.open((isPrivilegedUser ? privilegedUserAccountURL: accountAppURL),
                                         "_blank", "noopener");
                                 }
                             }

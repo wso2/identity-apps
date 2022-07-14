@@ -20,7 +20,7 @@ export interface TenantAssociationsInterface extends TenantListInterface {
     username: string;
     currentTenant?: string;
     isPrivilegedUser?: boolean;
-    fullname?: string;
+    fullName?: string;
 }
 
 export interface TenantListInterface {
