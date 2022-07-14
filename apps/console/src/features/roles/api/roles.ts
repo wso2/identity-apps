@@ -16,13 +16,13 @@
  * under the License.
  */
 
-import {AsgardeoSPAClient} from "@asgardeo/auth-react";
-import {RoleConstants} from "@wso2is/core/constants";
-import {IdentityAppsApiException} from "@wso2is/core/exceptions";
-import {HttpMethods, RoleListInterface} from "@wso2is/core/models";
-import {AxiosError, AxiosResponse} from "axios";
-import {store} from "../../core";
-import {CreateRoleInterface, PatchRoleDataInterface, SearchRoleInterface} from "../models";
+import { AsgardeoSPAClient } from "@asgardeo/auth-react";
+import { RoleConstants } from "@wso2is/core/constants";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+import { HttpMethods, RoleListInterface } from "@wso2is/core/models";
+import { AxiosError, AxiosResponse } from "axios";
+import { store } from "../../core";
+import { CreateRoleInterface, PatchRoleDataInterface, SearchRoleInterface } from "../models";
 
 /**
  * Initialize an axios Http client.
