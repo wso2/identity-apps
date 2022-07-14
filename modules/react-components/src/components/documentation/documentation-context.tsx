@@ -16,6 +16,6 @@
  * under the License.
  */
 
-import { createContext } from "react";
+import { Context, createContext } from "react";
 
-export const DocumentationContext = createContext(null);
+export const DocumentationContext: Context<unknown> = createContext(null);
