@@ -393,7 +393,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                             ? null
                             : organization
                                 ? organization.description
-                                : t("console:manage.features.organizations.homeList.description") }
+                                : null }
                     </p>)
                 }
                 data-componentid={ `${ testId }-page-layout` }
