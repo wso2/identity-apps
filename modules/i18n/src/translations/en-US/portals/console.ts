@@ -3197,7 +3197,7 @@ export const console: ConsoleNS = {
                                 placeholder: "Enter additional query parameters.",
                                 validations: {
                                 required: "Client secret is not a required field."
-                                                            }
+                                }
                             },
                             scopes: {
                                 heading: "Scopes",
