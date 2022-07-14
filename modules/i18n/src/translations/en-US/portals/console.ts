@@ -3191,6 +3191,14 @@ export const console: ConsoleNS = {
                                     required: "Client secret is a required field."
                                 }
                             },
+                            AdditionalQueryParameters: {
+                                hint: "Additional query parameters to be sent to Google.",
+                                label: "Additional Query Parameters",
+                                placeholder: "Enter additional query parameters.",
+                                validations: {
+                                required: "Client secret is not a required field."
+                                                            }
+                            },
                             scopes: {
                                 heading: "Scopes",
                                 hint: "The type of access provided for the connected apps to access data " +
