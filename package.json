@@ -13,7 +13,7 @@
     "scripts": {
         "build": "pnpx nx run-many --target=build --all --with-deps",
         "build:apps": "pnpx nx run-many --target=build --projects=console,myaccount --with-deps",
-        "build:modules": "pnpx nx run-many --target=build --with-deps --projects=access-control,core,forms,form,i18n,react-components,theme,validation",
+        "build:modules": "pnpx nx run-many --target=build --projects=access-control,core,forms,form,i18n,react-components,theme,validation",
         "build:external": "pnpx nx run-many --target=build:external --projects=console,myaccount --with-deps",
         "build:external:static": "pnpx nx run-many --target=build:external:static --projects=console,myaccount --with-deps",
         "clean": "pnpx nx run-many --target=clean --all --parallel=false && pnpm clean:root",
