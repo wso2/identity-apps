@@ -116,6 +116,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
                 self: ""
             });
         }
+        
         getUserStoreList().then((response) => {
             if (hiddenUserStores && hiddenUserStores.length > 0) {
                 response.data.map((store: UserStoreListItem) => {
