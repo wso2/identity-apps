@@ -18,4 +18,4 @@
 
 import { Context, createContext } from "react";
 
-export const DocumentationContext: Context<unknown> = createContext(null);
+export const DocumentationContext: Context<any> = createContext(null);
