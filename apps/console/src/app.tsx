@@ -41,7 +41,7 @@ import {
 } from "@wso2is/react-components";
 import has from "lodash-es/has";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, Suspense, useEffect, useRef, useState } from "react";
 import { Helmet } from "react-helmet";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -75,6 +75,7 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
 
     const userName: string = useSelector((state: AppState) => state.auth.username);
     const loginInit: boolean = useSelector((state: AppState) => state.auth.loginInit);
+    const isPrivilegedUser: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const appTitle: string = useSelector((state: AppState) => state?.config?.ui?.appTitle);
@@ -88,6 +89,8 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
     const { trySignInSilently, getDecodedIDToken, signOut } = useAuthContext();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
+
+    const getOrgCalled = useRef(false);
 
     /**
      * Set the deployment configs in redux state.
@@ -103,45 +106,56 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
             return;
         }
 
+        if (config.endpoints.organizations.split("/").find(part => part === "o")) {
+            return;
+        }
+
+        if (getOrgCalled.current) {
+            return;
+        }
+
+        getOrgCalled.current = true;
+
         const orgName = window[ "AppUtils" ].getConfig().organizationName;
 
         dispatch(setGetOrganizationLoading(true));
-        getOrganizations(`id eq ${ orgName }`, 1, null, null, true).then((response: OrganizationListInterface) => {
-            dispatch(setOrganization(response.organizations[ 0 ]));
-            dispatch(setServiceResourceEndpoints(Config.getServiceResourceEndpoints()));
-        }).catch((error) => {
-            if (error?.description) {
+        getOrganizations(`id eq ${ orgName }`, 1, null, null, true, true)
+            .then((response: OrganizationListInterface) => {
+                dispatch(setOrganization(response.organizations[ 0 ]));
+                dispatch(setServiceResourceEndpoints(Config.getServiceResourceEndpoints()));
+            }).catch((error) => {
+                if (error?.description) {
+                    dispatch(
+                        addAlert({
+                            description: error.description,
+                            level: AlertLevels.ERROR,
+                            message: t(
+                                "console:manage.features.organizations.notifications." +
+                                "fetchOrganization.error.message"
+                            )
+                        })
+                    );
+
+                    return;
+                }
+
                 dispatch(
                     addAlert({
-                        description: error.description,
+                        description: t(
+                            "console:manage.features.organizations.notifications.fetchOrganization" +
+                            ".genericError.description"
+                        ),
                         level: AlertLevels.ERROR,
                         message: t(
                             "console:manage.features.organizations.notifications." +
-                                "fetchOrganization.error.message"
+                            "fetchOrganization.genericError.message"
                         )
                     })
                 );
-
-                return;
-            }
-
-            dispatch(
-                addAlert({
-                    description: t(
-                        "console:manage.features.organizations.notifications.fetchOrganization" +
-                            ".genericError.description"
-                    ),
-                    level: AlertLevels.ERROR,
-                    message: t(
-                        "console:manage.features.organizations.notifications." +
-                            "fetchOrganization.genericError.message"
-                    )
-                })
-            );
-        }).finally(() => {
-            dispatch(setGetOrganizationLoading(false));
-        });
-    }, [ dispatch, config.endpoints.organizations ]);
+            }).finally(() => {
+                dispatch(setGetOrganizationLoading(false));
+            });
+    }, [ config.endpoints.organizations, dispatch, t ]);
 
     /**
      * Set the deployment configs in redux state.
@@ -207,7 +221,7 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
             getDecodedIDToken()
                 .then((idToken: DecodedIDTokenPayload) => {
 
-                    if(has(idToken, "associated_tenants")) {
+                    if(has(idToken, "associated_tenants") || isPrivilegedUser) {
                         // If there is an assocation, the user is likely unauthorized by other criteria.
                         history.push({
                             pathname: AppConstants.getPaths().get("UNAUTHORIZED"),
