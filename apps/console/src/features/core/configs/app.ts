@@ -189,7 +189,7 @@ export class Config {
             ...getCertificatesResourceEndpoints(this.getDeploymentConfig().serverHost),
             ...getIDPResourceEndpoints(this.resolveServerHost()),
             ...getEmailTemplatesResourceEndpoints(this.getDeploymentConfig().serverHost),
-            ...getRolesResourceEndpoints(this.getDeploymentConfig().serverHost),
+            ...getRolesResourceEndpoints(this.resolveServerHost()),
             ...getServerConfigurationsResourceEndpoints(this.getDeploymentConfig().serverHost),
             ...getUsersResourceEndpoints(this.resolveServerHost()),
             ...getUserstoreResourceEndpoints(this.getDeploymentConfig().serverHost),

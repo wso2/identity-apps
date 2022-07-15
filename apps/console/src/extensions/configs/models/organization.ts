@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (http://www.wso2.com).
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,13 +16,6 @@
  * under the License.
  */
 
-export * from "./attribute";
-export * from "./documentation";
-export * from "./endpoints";
-export * from "./identity-providers";
-export * from "./application";
-export * from "./group";
-export * from "./common";
-export * from "./userstores";
-export * from "./user";
-export * from "./organization";
+export interface OrganizationConfigs {
+    showOrganizationDropdown: boolean
+}

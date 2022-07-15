@@ -143,10 +143,22 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
 
     const getOrganizationEnabledRoutes = useCallback((): RouteInterface[] => {
         if (!OrganizationUtils.isRootOrganization(organization.organization)) {
-            return RouteUtils.filterOrganizationEnabledRoutes(getAdminViewRoutes());
+            const orgRoutes = RouteUtils.filterOrganizationEnabledRoutes(getAdminViewRoutes());
+
+            // Mapping the name of org roles to "Roles" to unify role management sub menu item in both organization view
+            // and root organization view.
+            return orgRoutes
+                .map((route: RouteInterface) => {
+                    if (route.id === "organization-roles") {
+                        route.name = "Roles";
+                    }
+
+                    return route;
+                });
         }
 
-        return getAdminViewRoutes();
+        // Remove the organization only routes from the admin view routes for root organizations.
+        return RouteUtils.filterOutOrganizationOnlyRoutes(getAdminViewRoutes());
     }, [ organization.organization ]);
 
     useEffect(() => {

@@ -44,9 +44,10 @@ import {
     UIConstants,
     history
 } from "../../core";
-import { CreateRoleInterface, CreateRoleWizard } from "../../roles";
+import { CreateRoleInterface } from "../../roles";
 import { createOrganizationRole, getOrganizationRoles } from "../api/organization-role";
 import { OrganizationRoleList } from "../components";
+import { AddOrganizationRoleWizard } from "../components/add-organization-role-wizard";
 import {
     OrganizationInterface,
     OrganizationRoleListItemInterface,
@@ -464,9 +465,8 @@ const OrganizationRoles: FunctionComponent<OrganizationRolesPageInterface> = (
                             />
                         </ListLayout>
                         { showWizard && (
-                            // <div>123</div>
-                            <CreateRoleWizard
-                                data-testid="org-role-mgt-create-role-wizard"
+                            <AddOrganizationRoleWizard
+                                data-testid="org-role-mgt-add-role-wizard"
                                 isAddGroup={ false }
                                 closeWizard={ () => setShowWizard(false) }
                                 updateList={ () => handleOrganizationRoleListUpdate() }

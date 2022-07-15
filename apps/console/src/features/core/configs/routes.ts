@@ -539,13 +539,13 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
                         showOnSidePanel: true
                     },
                     {
-                        category: "console:manage.features.sidePanel.categories.organizations",
+                        category: "console:manage.features.sidePanel.categories.users",
                         children: [
                             {
                                 component: lazy(() => import("../../organizations/pages/organization-roles-edit")),
                                 exact: true,
                                 icon: {
-                                    icon: getSidePanelIcons().organization
+                                    icon: getSidePanelIcons().roles
                                 },
                                 id: "organization-roles-edit",
                                 name: "organization Roles Edit",
@@ -557,7 +557,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
                         component: lazy(() => import("../../organizations/pages/organization-roles")),
                         exact: true,
                         icon: {
-                            icon: getSidePanelIcons().organization
+                            icon: getSidePanelIcons().roles
                         },
                         id: "organization-roles",
                         name: "Organization Roles",
