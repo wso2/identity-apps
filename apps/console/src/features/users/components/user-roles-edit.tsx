@@ -828,7 +828,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                                                                 (<Icon
                                                                                     data-testid={
                                                                                         `user-mgt-roles-list-
-                                                                                        ${userRole[1]}-
+                                                                                        ${ userRole[ 1 ] }-
                                                                                         permissions-button` }
                                                                                     color="grey"
                                                                                     className="mr-2"

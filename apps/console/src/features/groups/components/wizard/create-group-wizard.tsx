@@ -402,7 +402,7 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
         content: (
             viewRolePermissions
                 ? (<RolePermissions
-                    data-testid={ `${testId}-group-permission` }
+                    data-testid={ `${ testId }-group-permission` }
                     handleNavigateBack={ handleViewRolePermission }
                     roleId={ selectedRoleId }
                 />)
