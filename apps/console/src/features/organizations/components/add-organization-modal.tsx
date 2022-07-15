@@ -23,10 +23,10 @@ import { Heading, LinkButton, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Divider, Grid, Message, Modal, Form as SemanticForm } from "semantic-ui-react";
+import { Grid, Message, Modal } from "semantic-ui-react";
 import { AppState, EventPublisher } from "../../core";
 import { addOrganization, getOrganizations } from "../api";
-import { ORGANIZATION_TYPE, OrganizationManagementConstants } from "../constants";
+import { ORGANIZATION_TYPE } from "../constants";
 import { AddOrganizationInterface, OrganizationInterface, OrganizationListInterface } from "../models";
 
 interface OrganizationAddFormProps {
@@ -68,6 +68,7 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
     const submitForm = useRef<() => void>();
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
+    const currentOrganization = useSelector((state: AppState) => state.organization.organization);
 
     const submitOrganization = async (values: OrganizationAddFormProps): Promise<void> => {
         if (values?.name) {
@@ -95,7 +96,7 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
         const organization: AddOrganizationInterface = {
             description: values?.description,
             name: values?.name,
-            parentId: parent?.id ?? OrganizationManagementConstants.ROOT_ORGANIZATION_ID,
+            parentId: parent?.id ?? currentOrganization.id,
             type: ORGANIZATION_TYPE.TENANT
         };
 
