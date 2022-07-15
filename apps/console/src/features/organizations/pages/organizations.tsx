@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 Inc. (http://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (http://www.wso2.com) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -207,7 +207,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
     const getOrganizationLists = useCallback(
         (limit?: number, filter?: string, after?: string, before?: string, recursive?: boolean): void => {
             setOrganizationListRequestLoading(true);
-            getOrganizations(filter, limit, after, before, true)
+            getOrganizations(filter, limit, after, before, false)
                 .then((response: OrganizationListInterface) => {
                     setOrganizationList(response);
                 })
