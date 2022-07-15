@@ -313,12 +313,12 @@ export const OrganizationRoleList: FunctionComponent<OrganizationRolesListPropsI
             },
             {
                 "data-testid": `${testId}-item-delete-button`,
-                hidden: () => {
+                hidden: (role: OrganizationRoleListItemInterface) => {
                     return !hasRequiredScopes(
                         featureConfig?.organizationsRoles,
                         featureConfig?.organizationsRoles?.scopes?.delete,
                         allowedScopes
-                    );
+                    ) || role.displayName === OrganizationRoleManagementConstants.ORG_CREATOR_ROLE_NAME;
                 },
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (e: SyntheticEvent, role: OrganizationRoleListItemInterface): void => {
