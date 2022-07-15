@@ -43,6 +43,7 @@ import { CreateRoleInterface, CreateRoleMemberInterface, TreeNode } from "../../
 interface CreateRoleProps extends TestableComponentInterface {
     closeWizard: () => void;
     updateList: () => void;
+    onCreateRoleRequested?: (role: CreateRoleInterface) => void;
     isAddGroup: boolean;
     initStep?: number;
 }
@@ -79,6 +80,7 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
         initStep,
         updateList,
         isAddGroup,
+        onCreateRoleRequested,
         [ "data-testid" ]: testId
     } = props;
 
@@ -186,52 +188,58 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
 
         setIsSubmitting(true);
 
-        // Create Role API Call.
-        createRole(roleData).then(response => {
-            if (response.status === 201) {
-                dispatch(
-                    addAlert({
-                        description: t("console:manage.features.roles.notifications.createRole.success.description"),
-                        level: AlertLevels.SUCCESS,
-                        message: t("console:manage.features.roles.notifications.createRole.success.message")
-                    })
-                );
+        if (onCreateRoleRequested) {
+            onCreateRoleRequested(roleData);
+        } else {
+            // Create Role API Call.
+            createRole(roleData).then(response => {
+                if (response.status === 201) {
+                    dispatch(
+                        addAlert({
+                            description: t("console:manage.features.roles.notifications.createRole." +
+                                "success.description"),
+                            level: AlertLevels.SUCCESS,
+                            message: t("console:manage.features.roles.notifications.createRole.success.message")
+                        })
+                    );
 
-                closeWizard();
-                history.push(AppConstants.getPaths().get("ROLE_EDIT").replace(":id", response.data.id));
-            }
+                    closeWizard();
+                    history.push(AppConstants.getPaths().get("ROLE_EDIT").replace(":id", response.data.id));
+                }
 
-        }).catch(error => {
-            if (!error.response || error.response.status === 401) {
-                closeWizard();
-                dispatch(
-                    addAlert({
-                        description: t("console:manage.features.roles.notifications.createRole.error.description"),
+            }).catch(error => {
+                if (!error.response || error.response.status === 401) {
+                    closeWizard();
+                    dispatch(
+                        addAlert({
+                            description: t("console:manage.features.roles.notifications.createRole.error.description"),
+                            level: AlertLevels.ERROR,
+                            message: t("console:manage.features.roles.notifications.createRole.error.message")
+                        })
+                    );
+                } else if (error.response && error.response.data.detail) {
+                    closeWizard();
+                    dispatch(
+                        addAlert({
+                            description: t("console:manage.features.roles.notifications.createRole.error.description",
+                                { description: error.response.data.detail }),
+                            level: AlertLevels.ERROR,
+                            message: t("console:manage.features.roles.notifications.createRole.error.message")
+                        })
+                    );
+                } else {
+                    closeWizard();
+                    dispatch(addAlert({
+                        description: t("console:manage.features.roles.notifications.createRole." +
+                            "genericError.description"),
                         level: AlertLevels.ERROR,
-                        message: t("console:manage.features.roles.notifications.createRole.error.message")
-                    })
-                );
-            } else if (error.response && error.response.data.detail) {
-                closeWizard();
-                dispatch(
-                    addAlert({
-                        description: t("console:manage.features.roles.notifications.createRole.error.description",
-                            { description: error.response.data.detail }),
-                        level: AlertLevels.ERROR,
-                        message: t("console:manage.features.roles.notifications.createRole.error.message")
-                    })
-                );
-            } else {
-                closeWizard();
-                dispatch(addAlert({
-                    description: t("console:manage.features.roles.notifications.createRole.genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("console:manage.features.roles.notifications.createRole.genericError.message")
-                }));
-            }
-        }).finally(() => {
-            setIsSubmitting(false);
-        });
+                        message: t("console:manage.features.roles.notifications.createRole.genericError.message")
+                    }));
+                }
+            }).finally(() => {
+                setIsSubmitting(false);
+            });
+        }
     };
 
     /**

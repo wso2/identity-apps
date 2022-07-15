@@ -65,18 +65,22 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
     const [ search, setSearch ] = useState<string>("");
 
     const getOrganizationList = useCallback((filter: string, after: string, before: string) => {
-        getOrganizations(filter, 5, after, before, true).then((response: OrganizationListInterface) => {
-            if (!response || !response.organizations) {
-                setAssociatedOrganizations([ OrganizationManagementConstants.ROOT_ORGANIZATION ]);
-                setPaginationData(response.links);
-            } else {
-                const organizations = [ OrganizationManagementConstants.ROOT_ORGANIZATION, ...response?.organizations ];
+        getOrganizations(filter, 5, after, before, true, true)
+            .then((response: OrganizationListInterface) => {
+                if (!response || !response.organizations) {
+                    setAssociatedOrganizations([ OrganizationManagementConstants.ROOT_ORGANIZATION ]);
+                    setPaginationData(response.links);
+                } else {
+                    const organizations = [
+                        OrganizationManagementConstants.ROOT_ORGANIZATION,
+                        ...response?.organizations
+                    ];
 
-                setAssociatedOrganizations(organizations);
+                    setAssociatedOrganizations(organizations);
 
-                setPaginationData(response.links);
-            }
-        });
+                    setPaginationData(response.links);
+                }
+            });
     }, []);
 
     const setPaginationData = (links: OrganizationLinkInterface[]) => {
@@ -114,6 +118,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                 inline
                 className="tenant-dropdown-trigger-icon"
                 data-componentid="component-dropdown-trigger-icon"
+                data-testid="tenant-dropdown-trigger-icon"
                 icon={ getMiscellaneousIcons().tenantIcon }
                 size="micro"
                 fill="white"
@@ -228,6 +233,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                     className="tenants-list organizations"
                     unstackable
                     data-componentid={ "associated-organizations-container" }
+
                 >
                     { associatedOrganizations.length > 1 ? (
                         associatedOrganizations.map((organization, _) =>
@@ -287,10 +293,10 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
     const tenantPagination = (
         <div className="tenant-pagination organizations">
             <Button disabled={ beforeCursor === undefined } onClick={ () => handlePaginationChange(false) }>
-                Previous
+                { t("common:previous") }
             </Button>
             <Button disabled={ afterCursor === undefined } onClick={ () => handlePaginationChange(true) }>
-                Next
+                { t("common:next") }
             </Button>
         </div>
     );

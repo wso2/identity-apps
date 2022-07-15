@@ -156,6 +156,13 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
         setFilteredRoutes(routes);
     }, [ getOrganizationEnabledRoutes ]);
 
+    useEffect(() => {
+        const routes = getOrganizationEnabledRoutes();
+
+        setDevelopRoutes(routes);
+        setFilteredRoutes(routes);
+    }, [ getOrganizationEnabledRoutes ]);
+
     /**
      * Make sure `MANAGE` tab is highlighted when this layout is used.
      */
