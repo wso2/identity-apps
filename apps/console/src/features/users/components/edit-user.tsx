@@ -23,7 +23,7 @@ import { addAlert } from "@wso2is/core/store";
 import { ResourceTab } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import isEqual from "lodash-es/isEqual";
-import React, { FunctionComponent, useEffect, useState } from "react";
+import React, { FunctionComponent, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { UserGroupsList } from "./user-groups-edit";
@@ -34,6 +34,7 @@ import { SCIMConfigs } from "../../../extensions/configs/scim";
 import { getServerConfigs } from "../../../features/server-configurations";
 import { FeatureConfigInterface } from "../../core/models";
 import { AppState, store } from "../../core/store";
+import { OrganizationUtils } from "../../organizations/utils";
 import { ConnectorPropertyInterface } from "../../server-configurations/models";
 import { UserManagementConstants } from "../constants";
 
@@ -94,6 +95,10 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
     ] = useState<boolean>(false);
     const [ hideTermination, setHideTermination ] = useState<boolean>(false);
     const [ user, setUser ] = useState<ProfileInfoInterface>(selectedUser);
+
+    const currentOrganization = useSelector((state: AppState) => state.organization.organization);
+    const isRootOrganization = useMemo(() =>
+        OrganizationUtils.isRootOrganization(currentOrganization), [ currentOrganization ]);
 
     useEffect(() => {
         //Since the parent component is refreshing twice we are doing a deep equals operation on the user object to 
@@ -210,7 +215,8 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                 </ResourceTab.Pane>
             )
         },
-        {
+        // ToDo - Enabled only for root organizations as BE doesn't have full SCIM support for organizations yet
+        isRootOrganization ? {
             menuItem: t("console:manage.features.users.editUser.tab.menuItems.2"),
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
@@ -223,7 +229,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                     />
                 </ResourceTab.Pane>
             )
-        },
+        } : null,
         {
             menuItem: t("console:manage.features.users.editUser.tab.menuItems.3"),
             render: () => (

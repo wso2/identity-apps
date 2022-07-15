@@ -181,9 +181,9 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
                     setPrimaryRoles(response.data.Resources);
                 });
         } else {
-            getOrganizationRoles(currentOrganization.id, null, 100, null, null)
+            getOrganizationRoles(currentOrganization.id, null, 100, null)
                 .then((response) => {
-                    setPrimaryRoles(response.roles);
+                    setPrimaryRoles(response.Resources);
                 });
         }
     }, []);

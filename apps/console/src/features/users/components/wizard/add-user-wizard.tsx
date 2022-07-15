@@ -155,10 +155,10 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                     });
             } else {
                 // Get Roles from the Organization API
-                getOrganizationRoles(currentOrganization.id, null, 100, null, null)
+                getOrganizationRoles(currentOrganization.id, null, 100, null)
                     .then((response) => {
-                        setRoleList(response.roles);
-                        setInitialRoleList(response.roles);
+                        setRoleList(response.Resources);
+                        setInitialRoleList(response.Resources);
                     });
             }
         }

@@ -202,13 +202,13 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                 });
         } else {
             // Get Roles from Organization API
-            getOrganizationRoles(currentOrganization.id, null, 100, null, null)
+            getOrganizationRoles(currentOrganization.id, null, 100, null)
                 .then((response) => {
-                    const roleResources = response.roles;
+                    const roleResources = response.Resources;
 
                     if (hideApplicationRoles) {
                         if (roleResources && roleResources instanceof Array) {
-                            response.roles = roleResources.filter((role: RolesInterface) => {
+                            response.Resources = roleResources.filter((role: RolesInterface) => {
                                 if (role.displayName?.includes(APPLICATION_DOMAIN)) {
                                     return false;
                                 }
@@ -217,7 +217,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                             });
                         }
                     }
-                    setPrimaryRoles(response.roles);
+                    setPrimaryRoles(response.Resources);
                 }).finally(() => {
                     setPrimaryRolesLoading(false);
                 });
