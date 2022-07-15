@@ -183,7 +183,7 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
         } else {
             getOrganizationRoles(currentOrganization.id, null, 100, null, null)
                 .then((response) => {
-                    setPrimaryRoles(response.roles);
+                    setPrimaryRoles(response.Resources);
                 });
         }
     }, []);

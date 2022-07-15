@@ -92,7 +92,7 @@ export const searchRoleList = (searchData: SearchRoleInterface): Promise<any> =>
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: store.getState().config.endpoints.roles + "/.search"
+        url: store.getState().config.endpoints.rolesWithoutOrgPath + "/.search"
     };
 
     return httpClient(requestConfig)

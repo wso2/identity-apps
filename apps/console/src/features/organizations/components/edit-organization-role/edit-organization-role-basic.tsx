@@ -296,8 +296,8 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                                                     null,
                                                     null
                                                 ).then(response => {
-                                                    if (response?.roles && response?.roles?.length !== 0) {
-                                                        if (response?.roles[0]?.id !== roleId) {
+                                                    if (response?.Resources && response?.Resources?.length !== 0) {
+                                                        if (response?.Resources[0]?.id !== roleId) {
                                                             validation.isValid = false;
                                                             validation.errorMessages.push(
                                                                 t("console:manage.features.roles.addRoleWizard." +

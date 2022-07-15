@@ -82,8 +82,11 @@ export type OrganizationRoleInterface = RolesInterface;
 export type OrganizationRoleListItemInterface = Omit<OrganizationRoleInterface, "users" | "permissions" | "groups">;
 
 export type OrganizationRoleListResponseInterface = {
-    links: OrganizationLinkInterface[];
-    roles: Array<OrganizationRoleListItemInterface>
+    totalResults: number;
+    ItemsPerPage: number;
+    NextCursor: string;
+    PreviousCursor: string;
+    Resources: Array<OrganizationRoleListItemInterface>;
 };
 
 export type PatchOrganizationRoleDataInterface = {

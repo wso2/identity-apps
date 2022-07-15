@@ -126,8 +126,8 @@ const OrganizationRoles: FunctionComponent<OrganizationRolesPageInterface> = (
                 after,
                 before)
                 .then((response: OrganizationRoleListResponseInterface) => {
-                    handleNextButtonVisibility(response);
-                    setOrganizationRoles(response.roles);
+                    handleCursorPagination(response.NextCursor, response.PreviousCursor);
+                    setOrganizationRoles(response.Resources);
                 })
                 .catch((error) => {
                     if (error?.description) {
@@ -185,20 +185,19 @@ const OrganizationRoles: FunctionComponent<OrganizationRolesPageInterface> = (
      *
      * Sets the Next button visibility.
      *
-     * @param {OrganizationListInterface} list - List of organizations.
+     * @param nextCursor
+     * @param previousCursor
      */
-    const handleNextButtonVisibility = (list: OrganizationRoleListResponseInterface): void => {
-        if (!list.links) {
-            setIsOrganizationRolesNextPageAvailable(false);
-
-            return;
+    const handleCursorPagination = (nextCursor: string | undefined, previousCursor: string | undefined): void => {
+        if (nextCursor) {
+            setAfter(nextCursor);
         }
 
-        list.links?.forEach((link) => {
-            link.rel === "next"
-                ? setIsOrganizationRolesNextPageAvailable(true)
-                : setIsOrganizationRolesNextPageAvailable(false);
-        });
+        if (previousCursor) {
+            setBefore(previousCursor);
+        }
+
+        setIsOrganizationRolesNextPageAvailable(!!nextCursor);
     };
 
     /**
@@ -414,7 +413,7 @@ const OrganizationRoles: FunctionComponent<OrganizationRolesPageInterface> = (
                             paginationOptions={ {
                                 disableNextButton: !isOrganizationRolesNextPageAvailable
                             } }
-                            data-testid={ `${testId}-list-layout` }
+                            data-testid={ `${ testId }-list-layout` }
                             resetPagination={ paginationReset }
                         >
                             <OrganizationRoleList
