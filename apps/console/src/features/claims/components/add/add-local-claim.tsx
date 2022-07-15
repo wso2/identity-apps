@@ -102,53 +102,31 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
     const [ alert, setAlert, alertComponent ] = useWizardAlert();
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
-    const [ userStore, setUserStore ] = useState<UserStoreListItem[]>([]);
-
-    useEffect(() => {
-        const userstore: UserStoreListItem[] = [];
-
-        if (attributeConfig?.localAttributes?.createWizard?.showPrimaryUserStore) {
-            userstore.push({
-                description: "",
-                enabled: true,
-                id: "PRIMARY",
-                name: "PRIMARY",
-                self: ""
-            });
-        }
-        
-        getUserStoreList().then((response) => {
-            if (hiddenUserStores && hiddenUserStores.length > 0) {
-                response.data.map((store: UserStoreListItem) => {
-                    if (hiddenUserStores.length > 0 && !hiddenUserStores.includes(store.name)) {
-                        userstore.push(store);
-                    }
-                });
-            } else {
-                userstore.push(...response.data);
-            }
-            setUserStore(userstore);
-        }).catch(() => {
-            setUserStore(userstore);
-        });
-    }, []);
 
     /**
      * Conditionally disable map attribute step
-     * if there are no secondary user stores.
+     * if there are no secondary user stores and 
+     * if the user stores are disabled
      */
     useEffect(() => {
-        userStore.map((store: UserStoreListItem) => {   
-            if (hiddenUserStores && hiddenUserStores.length > 0) {
-                attributeConfig.localAttributes.isUserStoresHidden(hiddenUserStores).then(state => {
-                    setShowMapAttributes(state.length > 0 && store.enabled);
-                });
-            } else {
-                setShowMapAttributes(true);
-            }
-        });
 
-    }, [ hiddenUserStores, userStore ]);
+        let userStoresEnabled: boolean = false;
+
+        if ( hiddenUserStores && hiddenUserStores.length > 0) {
+            attributeConfig.localAttributes.isUserStoresHidden(hiddenUserStores).then(state => {
+                state.map((store: UserStoreListItem) => {   
+                    if(store.enabled){
+                        userStoresEnabled = true;
+                    }
+                });
+
+                setShowMapAttributes(state.length > 0 && userStoresEnabled);
+            });
+        } else {
+            setShowMapAttributes(true);
+        }
+
+    }, [ hiddenUserStores ]);
 
     /**
      * Navigate to the claim edit page after adding a claim.
