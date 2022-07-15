@@ -89,7 +89,7 @@ export const AppUtils = (function() {
             }
 
             return this.isSaas()
-                ? this.getAppBaseWithOrganization()
+                ? appBaseForHistoryAPIFallback
                 : this.getAppBaseWithTenantAndOrganization();
         },
 
