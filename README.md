@@ -12,7 +12,7 @@ End-user apps in WSO2 Identity Server
 
     > 💡`npm` 7 has some breaking changes to peer dependencies. Hence, go with a `npm` version lower than `7`.
 2. Install Maven from [https://maven.apache.org/download.cgi](https://maven.apache.org/download.cgi). * For Maven 3.8 and up, please check the Troubleshoot section.
-3. Install JDK 1.8 [https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html](https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html).
+3. Install JDK 11 or JDK 17 (or JDK 1.8) [https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html](https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html).
 
 ## Build & Run
 

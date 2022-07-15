@@ -616,13 +616,17 @@
             </plugin>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
+                <version>3.10.1</version>
                 <inherited>true</inherited>
                 <configuration>
                     <encoding>UTF-8</encoding>
                     <source>1.8</source>
                     <target>1.8</target>
                 </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.3.2</version>
             </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
@@ -648,7 +652,7 @@
         <commons-logging.imp.pkg.version.range>[1.2, 2.0)</commons-logging.imp.pkg.version.range>
 
         <carbon.identity.version>5.0.7</carbon.identity.version>
-        <carbon.kernel.version>4.6.0</carbon.kernel.version>
+        <carbon.kernel.version>4.7.0-beta9</carbon.kernel.version>
         <carbon.kernel.imp.pkg.version.range>[4.5.0, 5.0.0)</carbon.kernel.imp.pkg.version.range>
         <carbon.kernel.registry.imp.pkg.version.range>[1.0.1, 2.0.0)</carbon.kernel.registry.imp.pkg.version.range>
         <carbon.user.api.imp.pkg.version.range>[1.0.1, 2.0.0)</carbon.user.api.imp.pkg.version.range>
@@ -662,7 +666,7 @@
         <carbon.extension.identity.authenticator.version>3.0.0</carbon.extension.identity.authenticator.version>
         <org.wso2.carbon.identity.association.account>5.1.5</org.wso2.carbon.identity.association.account>
         <identity.extension.utils>1.0.8</identity.extension.utils>
-        <carbon.identity.framework.version>5.21.3</carbon.identity.framework.version>
+        <carbon.identity.framework.version>5.21.7</carbon.identity.framework.version>
         <carbon.identity.framework.imp.pkg.version.range>[5.0.0, 6.0.0)</carbon.identity.framework.imp.pkg.version.range>
         <carbon.identity.oauth.version>6.7.130</carbon.identity.oauth.version>
         <carbon.identity.oauth.imp.pkg.version.range>[6.1.0, 7.0.0)</carbon.identity.oauth.imp.pkg.version.range>
