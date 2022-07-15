@@ -87,11 +87,11 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
 
         links.forEach((link) => {
             if (link.rel === "next") {
-                const afterCursorLink = link.href.toString().split("after=")[ 1 ];
+                const afterCursorLink = link.href.toString().split("after=")[1];
 
                 setAfterCursor(afterCursorLink);
             } else {
-                const beforeCursorLink = link.href.toString().split("before=")[ 1 ];
+                const beforeCursorLink = link.href.toString().split("before=")[1];
 
                 setBeforeCursor(beforeCursorLink);
             }
@@ -135,25 +135,53 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
     );
 
     const handleOrganizationSwitch = (organization: OrganizationInterface): void => {
-        let newOrgPath: string = "";
+        requestCustomGrant({
+            attachToken: false,
+            data: {
+                client_id: "{{clientID}}",
+                grant_type: "organization_switch",
+                scope: "openid SYSTEM",
+                switching_organization: organization.id,
+                token: "{{token}}"
+            },
+            id: "orgSwitch",
+            returnsSession: true,
+            signInRequired: true
+        });
 
-        if (OrganizationUtils.isRootOrganization(organization)) {
-            newOrgPath = `${ window[ "AppUtils" ].getConfig().tenantPathWithoutSuperTenant }/${
-                window[ "AppUtils" ].getConfig().appBase
-            }`;
-        } else {
-            newOrgPath = window[ "AppUtils" ].getConfig().tenantPathWithoutSuperTenant
-                + "/o/" + organization.id + "/" +
-                window[ "AppUtils" ].getConfig().appBase;
-        }
+        on(
+            Hooks.CustomGrant,
+            async () => {
+                await getBasicUserInfo().then((response: BasicUserInfo) => {
+                    getDecodedIDToken()
+                        .then((idToken) => {
+                            const subParts = idToken.sub.split("@");
+                            const tenantDomain = subParts[ subParts.length - 1 ];
 
-        // Clear the callback url of the previous organization.
-        SessionStorageUtils.clearItemFromSessionStorage("auth_callback_url_console");
+                            dispatch(
+                                setSignIn<AuthenticatedUserInfo & TenantListInterface>({
+                                    allowedScopes: response.allowedScopes,
+                                    associatedTenants: idToken?.associated_tenants,
+                                    defaultTenant: idToken?.default_tenant,
+                                    displayName: response.displayName,
+                                    display_name: response.displayName,
+                                    email: response.email,
+                                    tenantDomain: response.tenantDomain ?? tenantDomain,
+                                    username: idToken.sub
+                                })
+                            );
+                            dispatch(setOrganization(organization));
+                            dispatch(setServiceResourceEndpoints(Config.getServiceResourceEndpoints()));
+                        })
+                        .catch((error) => {
+                            throw error;
+                        });
+                });
 
-        // Redirect the user to the newly selected organization path.
-        window.location.replace(newOrgPath);
-
-        setIsDropDownOpen(false);
+                setIsDropDownOpen(false);
+            },
+            "orgSwitch"
+        );
     };
 
     /**
@@ -169,7 +197,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
         <Item.Group className="tenant-item-wrapper" unstackable>
             <Item
                 className="header"
-                key={ `${ organization?.name }-organization-item` }
+                key={ `${organization?.name}-organization-item` }
                 onClick={ () => {
                     handleOrganizationSwitch(organization);
                 } }
@@ -228,7 +256,6 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                     className="tenants-list organizations"
                     unstackable
                     data-componentid={ "associated-organizations-container" }
-
                 >
                     { associatedOrganizations.length > 0 ? (
                         associatedOrganizations.map((organization, _) =>
@@ -259,7 +286,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
     const searchOrganizationList = (search: string): void => {
         const changeValue = search.trim();
 
-        setListFilter(changeValue ? `name co ${ changeValue }` : "");
+        setListFilter(changeValue ? `name co ${changeValue}` : "");
     };
 
     /**
@@ -339,7 +366,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                                         <Popup
                                             trigger={
                                                 (<Button
-                                                    data-componentid={ `${ componentId }-clear-button` }
+                                                    data-componentid={ `${componentId}-clear-button` }
                                                     basic
                                                     compact
                                                     className="input-add-on organizations"
