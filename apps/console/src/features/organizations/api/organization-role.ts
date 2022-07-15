@@ -212,7 +212,9 @@ export const getOrganizationRoleById = (organizationId: string, roleId: string):
 };
 
 /**
- * Mock getter for Organization Permission List
+ * Getter for Organization Permission List
+ * ToDo - This is hardcoded in the FE for now since we don't have the needed backend API for this as of now.
+ * Need to change this to a real API once the BE is ready
  */
 export const getOrganizationPermissions = (): Promise<any> => {
     return new Promise((resolve) => {
