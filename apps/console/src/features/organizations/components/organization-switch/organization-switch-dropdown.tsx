@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 Inc. (http://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (http://www.wso2.com) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,24 +16,15 @@
  * under the License.
  */
 
-import { SessionStorageUtils } from "@wso2is/core/utils";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { setServiceResourceEndpoints } from "@wso2is/core/src/store";
+import { SessionStorageUtils } from "@wso2is/core/utils";
 import { GenericIcon } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Divider, Dropdown, Input, Item, Menu, Placeholder, Popup } from "semantic-ui-react";
 import { ReactComponent as CrossIcon } from "../../../../themes/default/assets/images/icons/cross-icon.svg";
-import {
-    AppConstants,
-    AppState,
-    Config,
-    getMiscellaneousIcons,
-    getSidePanelIcons,
-    history,
-    setOrganization
-} from "../../../core";
+import { AppConstants, AppState, getMiscellaneousIcons, getSidePanelIcons, history } from "../../../core";
 import { getOrganizations } from "../../api";
 import { OrganizationManagementConstants } from "../../constants";
 import { OrganizationInterface, OrganizationLinkInterface, OrganizationListInterface } from "../../models";
@@ -65,7 +56,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
     const [ search, setSearch ] = useState<string>("");
 
     const getOrganizationList = useCallback((filter: string, after: string, before: string) => {
-        getOrganizations(filter, 5, after, before, true, true)
+        getOrganizations(filter, 5, after, before, false, false)
             .then((response: OrganizationListInterface) => {
                 if (!response || !response.organizations) {
                     setAssociatedOrganizations([ OrganizationManagementConstants.ROOT_ORGANIZATION ]);
@@ -235,7 +226,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                     data-componentid={ "associated-organizations-container" }
 
                 >
-                    { associatedOrganizations.length > 1 ? (
+                    { associatedOrganizations.length > 0 ? (
                         associatedOrganizations.map((organization, _) =>
                             organization.id !== currentOrganization?.id ? getOrganizationItemGroup(organization) : null
                         )
