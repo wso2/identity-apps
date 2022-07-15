@@ -147,7 +147,6 @@ export const MappedAttributes: FunctionComponent<MappedAttributesPropsInterface>
                                             </Grid.Row>
                                         ) }
                                     </>
-                                    
                                 );
                             }) }
                         </Grid>
