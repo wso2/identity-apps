@@ -3168,6 +3168,7 @@ export const console: ConsoleNS = {
                         },
                         google: {
                             AdditionalQueryParameters: {
+                                ariaLabel: "Google authenticator additional query parameters",
                                 hint: "Additional query parameters to be sent to Google.",
                                 label: "Additional Query Parameters",
                                 placeholder: "Enter additional query parameters.",
