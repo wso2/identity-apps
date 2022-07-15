@@ -388,8 +388,8 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                             onActionClick={ () => setShowDeleteConfirmationModal(!showRoleDeleteConfirmation) }
                             data-testid={
                                 isGroup
-                                    ? `${testId}-group-danger-zone`
-                                    : `${testId}-role-danger-zone`
+                                    ? `${ testId }-group-danger-zone`
+                                    : `${ testId }-role-danger-zone`
                             }
                         />
                     </DangerZoneGroup>
