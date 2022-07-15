@@ -16,7 +16,7 @@
 * under the License.
 */
 
-import { getProfileSchemas } from "@wso2is/core/api";
+import { getProfileSchemas, getUserStoreList } from "@wso2is/core/api";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, Claim, ProfileSchemaInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert, setProfileSchemaRequestLoadingStatus, setSCIMSchemas } from "@wso2is/core/store";
@@ -27,6 +27,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
+import { UserStoreListItem } from "../../../../features/userstores";
 import { attributeConfig } from "../../../../extensions";
 import { AppState, EventPublisher } from "../../../core";
 import { AppConstants } from "../../../core/constants";
@@ -104,17 +105,26 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
 
     /**
      * Conditionally disable map attribute step
-     * if there are no secondary user stores.
+     * if there are no secondary user stores and 
+     * if the user stores are disabled
      */
     useEffect(() => {
-        if ( hiddenUserStores && hiddenUserStores.length > 0 ) {
+
+        let userStoresEnabled: boolean = false;
+
+        if ( hiddenUserStores && hiddenUserStores.length > 0) {
             attributeConfig.localAttributes.isUserStoresHidden(hiddenUserStores).then(state => {
-                setShowMapAttributes(state.length > 0);
+                state.map((store: UserStoreListItem) => {   
+                    if(store.enabled){
+                        userStoresEnabled = true;
+                    }
+                });
+
+                setShowMapAttributes(state.length > 0 && userStoresEnabled);
             });
         } else {
             setShowMapAttributes(true);
         }
-
     }, [ hiddenUserStores ]);
 
     /**
