@@ -293,7 +293,6 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                                                     currentOrganization.id,
                                                     filter,
                                                     10,
-                                                    null,
                                                     null
                                                 ).then(response => {
                                                     if (response?.Resources && response?.Resources?.length !== 0) {

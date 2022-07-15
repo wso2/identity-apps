@@ -83,9 +83,9 @@ export type OrganizationRoleListItemInterface = Omit<OrganizationRoleInterface, 
 
 export type OrganizationRoleListResponseInterface = {
     totalResults: number;
-    ItemsPerPage: number;
-    NextCursor: string;
-    PreviousCursor: string;
+    itemsPerPage: number;
+    nextCursor: string;
+    previousCursor: string;
     Resources: Array<OrganizationRoleListItemInterface>;
 };
 

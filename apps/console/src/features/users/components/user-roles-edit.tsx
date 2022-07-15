@@ -202,7 +202,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                 });
         } else {
             // Get Roles from Organization API
-            getOrganizationRoles(currentOrganization.id, null, 100, null, null)
+            getOrganizationRoles(currentOrganization.id, null, 100, null)
                 .then((response) => {
                     const roleResources = response.Resources;
 

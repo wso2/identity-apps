@@ -35,18 +35,16 @@ const httpClient = AsgardeoSPAClient.getInstance()
  *
  * @param {string} organizationId Identifier of the organization
  * @param {string} filter The filter query.
- * @param {number} limit The maximum number of organizations to return.
- * @param {string} after The previous range of data to be returned.
- * @param {string} before The next range of data to be returned.
+ * @param {number} count The maximum number of organizations to return.
+ * @param {string} cursor Cursor string for pagination
  *
  * @returns {Promise<OrganizationListInterface>}
  */
 export const getOrganizationRoles = (
     organizationId: string,
     filter: string,
-    limit: number,
-    after: string,
-    before: string
+    count: number,
+    cursor: string
 ): Promise<OrganizationRoleListResponseInterface> => {
     const config: HttpRequestConfig = {
         headers: {
@@ -55,10 +53,9 @@ export const getOrganizationRoles = (
         },
         method: HttpMethods.GET,
         params: {
-            after,
-            before,
-            filter,
-            limit
+            count,
+            cursor,
+            filter
         },
         url: `${ store.getState().config.endpoints.organizations }/organizations/${organizationId}/roles`
     };

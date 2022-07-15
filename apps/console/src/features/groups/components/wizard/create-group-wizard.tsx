@@ -138,7 +138,7 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
                         setRoleList(response.data.Resources);
                     });
             } else {
-                getOrganizationRoles(currentOrganization.id, null, 100, null, null)
+                getOrganizationRoles(currentOrganization.id, null, 100, null)
                     .then((response) => {
                         setRoleList(response.Resources);
                     });
