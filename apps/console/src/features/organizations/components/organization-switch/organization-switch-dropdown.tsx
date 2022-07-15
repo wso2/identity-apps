@@ -16,24 +16,16 @@
  * under the License.
  */
 
-import { SessionStorageUtils } from "@wso2is/core/utils";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { setServiceResourceEndpoints } from "@wso2is/core/src/store";
+import { SessionStorageUtils } from "@wso2is/core/utils";
 import { GenericIcon } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, SyntheticEvent, useCallback, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, SyntheticEvent, useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Divider, Dropdown, Input, Item, Menu, Placeholder, Popup } from "semantic-ui-react";
+import { organizationConfigs } from "../../../../extensions";
 import { ReactComponent as CrossIcon } from "../../../../themes/default/assets/images/icons/cross-icon.svg";
-import {
-    AppConstants,
-    AppState,
-    Config,
-    getMiscellaneousIcons,
-    getSidePanelIcons,
-    history,
-    setOrganization
-} from "../../../core";
+import { AppConstants, AppState, getMiscellaneousIcons, getSidePanelIcons, history } from "../../../core";
 import { getOrganizations } from "../../api";
 import { OrganizationManagementConstants } from "../../constants";
 import { OrganizationInterface, OrganizationLinkInterface, OrganizationListInterface } from "../../models";
@@ -63,6 +55,9 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
     const [ beforeCursor, setBeforeCursor ] = useState<string>();
     const [ isDropDownOpen, setIsDropDownOpen ] = useState<boolean>(false);
     const [ search, setSearch ] = useState<string>("");
+
+    const isOrgSwitcherEnabled = useMemo(() => organizationConfigs.showOrganizationDropdown,
+        [ organizationConfigs.showOrganizationDropdown ]);
 
     const getOrganizationList = useCallback((filter: string, after: string, before: string) => {
         getOrganizations(filter, 5, after, before, true, true)
@@ -373,7 +368,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
 
                     { associatedOrganizations ? resolveAssociatedOrganizations() : null }
 
-                    <Divider />
+                    <Divider/>
 
                     { tenantPagination }
                 </Dropdown.Menu>
@@ -381,7 +376,11 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
         </Menu.Item>
     );
 
-    return <>{ tenantDropdownMenu }</>;
+    return (<>{
+        isOrgSwitcherEnabled
+            ? tenantDropdownMenu
+            : null
+    }</>);
 };
 
 export default OrganizationSwitchDropdown;

@@ -26,3 +26,4 @@ export * from "./scim";
 export * from "./server-configuration";
 export * from "./userstores";
 export * from "./user";
+export * from "./organization";
