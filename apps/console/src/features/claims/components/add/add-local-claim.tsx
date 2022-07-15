@@ -125,7 +125,6 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
         } else {
             setShowMapAttributes(true);
         }
-
     }, [ hiddenUserStores ]);
 
     /**
