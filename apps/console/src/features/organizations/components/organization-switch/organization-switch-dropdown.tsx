@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 Inc. (http://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (http://www.wso2.com) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -60,7 +60,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
         [ organizationConfigs.showOrganizationDropdown ]);
 
     const getOrganizationList = useCallback((filter: string, after: string, before: string) => {
-        getOrganizations(filter, 5, after, before, true, true)
+        getOrganizations(filter, 5, after, before, false, false)
             .then((response: OrganizationListInterface) => {
                 if (!response || !response.organizations) {
                     setAssociatedOrganizations([ OrganizationManagementConstants.ROOT_ORGANIZATION ]);
@@ -230,7 +230,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                     data-componentid={ "associated-organizations-container" }
 
                 >
-                    { associatedOrganizations.length > 1 ? (
+                    { associatedOrganizations.length > 0 ? (
                         associatedOrganizations.map((organization, _) =>
                             organization.id !== currentOrganization?.id ? getOrganizationItemGroup(organization) : null
                         )

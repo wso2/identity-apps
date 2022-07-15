@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 Inc. (http://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (http://www.wso2.com) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -42,6 +42,8 @@ const httpClient = AsgardeoSPAClient.getInstance()
  * @param {number} limit The maximum number of organizations to return.
  * @param {string} after The previous range of data to be returned.
  * @param {string} before The next range of data to be returned.
+ * @param {boolean} recursive Whether we need to do a recursive search
+ * @param isRoot
  *
  * @returns {Promise<OrganizationListInterface>}
  */
