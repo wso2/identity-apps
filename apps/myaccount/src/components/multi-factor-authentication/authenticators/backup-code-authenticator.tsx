@@ -306,55 +306,18 @@ export const BackupCodeAuthenticator : React.FunctionComponent<BackupCodeProps> 
                     { !isLoading 
                         ? ( 
                             <Segment>
-                                <Container textAlign="right">
-                                    <Popup
-                                        trigger={
-                                            (
-                                                <Button
-                                                    className="ui basic primary button link-button"
-                                                    onMouseEnter={ () => setIsCodesDownloaded(false) }
-                                                    onClick={ handleDownloadBackupCodes }
-                                                    data-componentid={ `${componentid}-modal-download-button` }
-                                                >
-                                                    { t(translateKey + "modals.download.heading") }
-                                                </Button>
-                                            )
-                                        }
-                                        openOnTriggerFocus
-                                        closeOnTriggerBlur
-                                        position="top left"
-                                        content={ isCodesDownloaded ? "Downloaded!" : "Download Codes" }
-                                        inverted
-                                    />
-                                    <Popup
-                                        trigger={
-                                            (
-                                                <Button
-                                                    className="ui basic primary button link-button"
-                                                    onMouseEnter={ () => setIsCodesCopied(false) }
-                                                    onClick={ handleCopyBackupCodes }
-                                                    data-componentid={ `${componentid}-modal-copy-button` }
-                                                >
-                                                    { "Copy Codes" }
-                                                </Button>
-                                            )
-                                        }
-                                        openOnTriggerFocus
-                                        closeOnTriggerBlur
-                                        position="top left"
-                                        content={ isCodesCopied ? "Copied!" : "Copy to clipboard" }
-                                        inverted
-                                    />
-                                </Container>
-                                <Grid container columns={ 4 }>
+                                <Grid container columns={ 2 } textAlign="center">
                                     {
                                         backupCodes?.map((code, index)=> {
                                             return (
-                                                <GridColumn 
+                                                <GridColumn
                                                     key={ index }
+                                                    className="backup-code-column"
                                                     data-componentid={ `${ componentid }-modal-backup-code-${ index }` }
                                                 > 
-                                                    { code }
+                                                    <div>
+                                                        { code }
+                                                    </div>
                                                 </GridColumn>
                                             );
                                         })
@@ -369,16 +332,33 @@ export const BackupCodeAuthenticator : React.FunctionComponent<BackupCodeProps> 
                     }
                 </Modal.Content>
                 <Modal.Actions data-testid={ `${componentid}-modal-actions` }>
-                    <Button
-                        primary
-                        data-componentid={ `${componentid}-modal-actions-done-button` }
+                    <LinkButton
+                        floated="left"
                         onClick= { () => {
                             onBackupFlowCompleted();
                             getRemainingCount();
                             setIsModalOpen(false);
                         } }
+                        data-componentid={ `${componentid}-modal-actions-done-button` }
                     >
-                        { t("common:done") }
+                        { t("common:close") }
+                    </LinkButton>
+                    <Button
+                        basic
+                        primary
+                        onMouseEnter={ () => setIsCodesCopied(false) }
+                        onClick={ handleCopyBackupCodes }
+                        data-componentid={ `${componentid}-modal-copy-button` }
+                    >
+                        { "Copy Codes" }
+                    </Button>
+                    <Button
+                        primary
+                        onMouseEnter={ () => setIsCodesDownloaded(false) }
+                        onClick={ handleDownloadBackupCodes }
+                        data-componentid={ `${componentid}-modal-download-button` }
+                    >
+                        { t(translateKey + "modals.download.heading") }
                     </Button>
                 </Modal.Actions>
             </Modal>
