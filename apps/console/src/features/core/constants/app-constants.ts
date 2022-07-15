@@ -359,4 +359,14 @@ export class AppConstants {
         "organization-roles",
         "applications"
     ]
+
+    /**
+     * Route ids that are enabled in only for an organizations (Not allowed in root organization).
+     * @constant
+     * @type {string[]}
+     * @default
+     */
+    public static readonly ORGANIZATION_ONLY_ROUTES: string[] = [
+        "organization-roles"
+    ]
 }
