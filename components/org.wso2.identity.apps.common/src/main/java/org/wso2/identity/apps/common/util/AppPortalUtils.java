@@ -22,13 +22,7 @@ import org.apache.commons.lang.StringUtils;
 import org.wso2.carbon.context.PrivilegedCarbonContext;
 import org.wso2.carbon.identity.application.authentication.framework.util.FrameworkConstants;
 import org.wso2.carbon.identity.application.common.IdentityApplicationManagementException;
-import org.wso2.carbon.identity.application.common.model.Claim;
-import org.wso2.carbon.identity.application.common.model.ClaimConfig;
-import org.wso2.carbon.identity.application.common.model.ClaimMapping;
-import org.wso2.carbon.identity.application.common.model.InboundAuthenticationConfig;
-import org.wso2.carbon.identity.application.common.model.InboundAuthenticationRequestConfig;
-import org.wso2.carbon.identity.application.common.model.LocalAndOutboundAuthenticationConfig;
-import org.wso2.carbon.identity.application.common.model.ServiceProvider;
+import org.wso2.carbon.identity.application.common.model.*;
 import org.wso2.carbon.identity.application.mgt.ApplicationManagementService;
 import org.wso2.carbon.identity.core.util.IdentityUtil;
 import org.wso2.carbon.identity.oauth.IdentityOAuthAdminException;
@@ -47,11 +41,7 @@ import static org.wso2.carbon.identity.oauth.common.OAuthConstants.GrantTypes.AU
 import static org.wso2.carbon.identity.oauth.common.OAuthConstants.GrantTypes.REFRESH_TOKEN;
 import static org.wso2.carbon.identity.oauth.common.OAuthConstants.OAuthVersions.VERSION_2;
 import static org.wso2.carbon.utils.multitenancy.MultitenantConstants.SUPER_TENANT_DOMAIN_NAME;
-import static org.wso2.identity.apps.common.util.AppPortalConstants.DISPLAY_NAME_CLAIM_URI;
-import static org.wso2.identity.apps.common.util.AppPortalConstants.EMAIL_CLAIM_URI;
-import static org.wso2.identity.apps.common.util.AppPortalConstants.GRANT_TYPE_ACCOUNT_SWITCH;
-import static org.wso2.identity.apps.common.util.AppPortalConstants.INBOUND_AUTH2_TYPE;
-import static org.wso2.identity.apps.common.util.AppPortalConstants.INBOUND_CONFIG_TYPE;
+import static org.wso2.identity.apps.common.util.AppPortalConstants.*;
 
 /**
  * App portal utils.
@@ -90,6 +80,11 @@ public class AppPortalUtils {
         } else {
             callbackUrl = "regexp=(" + callbackUrl + "|" +
                     callbackUrl.replace(portalPath, "/t/(.*)" + portalPath) + ")";
+        }
+        if (StringUtils.equals(CONSOLE_APP, applicationName)) {
+            callbackUrl = IdentityUtil.getServerURL(portalPath, true, true);
+            callbackUrl = "regexp=(" + callbackUrl + "|" + callbackUrl.replace(portalPath, "/t/(.*)" +
+                    portalPath) + "|" + callbackUrl.replace(portalPath, "/o/(.*)" + portalPath) + ")";
         }
         oAuthConsumerAppDTO.setCallbackUrl(callbackUrl);
         oAuthConsumerAppDTO.setBypassClientCredentials(true);
@@ -174,6 +169,30 @@ public class AppPortalUtils {
         localAndOutboundAuthenticationConfig.setUseTenantDomainInLocalSubjectIdentifier(true);
         localAndOutboundAuthenticationConfig.setSkipConsent(true);
         localAndOutboundAuthenticationConfig.setSkipLogoutConsent(true);
+
+        if (StringUtils.equals(CONSOLE_APP, appName)) {
+            AuthenticationStep authenticationStep1 = new AuthenticationStep();
+            LocalAuthenticatorConfig identifierFirst = new LocalAuthenticatorConfig();
+            identifierFirst.setName("IdentifierExecutor");
+            identifierFirst.setDisplayName("identifier-first");
+            authenticationStep1.setLocalAuthenticatorConfigs(new LocalAuthenticatorConfig[]{identifierFirst});
+            authenticationStep1.setSubjectStep(false);
+            authenticationStep1.setAttributeStep(false);
+            authenticationStep1.setStepOrder(1);
+
+            AuthenticationStep authenticationStep2 = new AuthenticationStep();
+            LocalAuthenticatorConfig basic = new LocalAuthenticatorConfig();
+            basic.setName("BasicAuthenticator");
+            basic.setDisplayName("basic");
+            authenticationStep2.setLocalAuthenticatorConfigs(new LocalAuthenticatorConfig[]{basic});
+            authenticationStep2.setAttributeStep(true);
+            authenticationStep2.setSubjectStep(true);
+            authenticationStep2.setStepOrder(2);
+            localAndOutboundAuthenticationConfig.setAuthenticationType("flow");
+            localAndOutboundAuthenticationConfig
+                    .setAuthenticationSteps(new AuthenticationStep[]{authenticationStep1, authenticationStep2});
+        }
+
         serviceProvider.setLocalAndOutBoundAuthenticationConfig(localAndOutboundAuthenticationConfig);
 
         // Set requested claim mappings for the SP.
@@ -235,6 +254,10 @@ public class AppPortalUtils {
                 // Initiate portal
                 String consumerSecret = OAuthUtil.getRandomNumber();
                 List<String> grantTypes = Arrays.asList(AUTHORIZATION_CODE, REFRESH_TOKEN, GRANT_TYPE_ACCOUNT_SWITCH);
+                if (StringUtils.equals(appPortal.getName(), CONSOLE_APP)) {
+                    grantTypes = Arrays.asList(AUTHORIZATION_CODE, REFRESH_TOKEN, GRANT_TYPE_ACCOUNT_SWITCH,
+                            GRANT_TYPE_ORGANIZATION_SWITCH);
+                }
                 String consumerKey = appPortal.getConsumerKey();
                 if (!SUPER_TENANT_DOMAIN_NAME.equals(tenantDomain)) {
                     consumerKey = consumerKey + "_" + tenantDomain;
