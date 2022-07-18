@@ -402,6 +402,39 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
                 width={ 16 }
                 data-testid={ `${ testId }-authorized-redirect-url` }
             />
+            <Field.Input
+                ariaLabel={
+                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                        ".google.AdditionalQueryParameters.ariaLabel")
+                }
+                inputType="default"
+                name="AdditionalQueryParameters"
+                label={
+                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                        ".google.AdditionalQueryParameters.label")
+                }
+                placeholder={
+                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                        ".google.AdditionalQueryParameters.placeholder")
+                }
+                hint={
+                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                        ".google.AdditionalQueryParameters.hint")
+                }
+                required={ formFields?.AdditionalQueryParameters?.meta?.isMandatory }
+                value={ formFields?.AdditionalQueryParameters?.value }
+                readOnly={ readOnly || formFields?.AdditionalQueryParameters?.meta?.readOnly }
+                maxLength={
+                    IdentityProviderManagementConstants.GOOGLE_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS
+                        .ADDITIONAL_QUERY_PARAMS_MAX_LENGTH as number
+                }
+                minLength={
+                    IdentityProviderManagementConstants.GOOGLE_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS
+                        .ADDITIONAL_QUERY_PARAMS_MIN_LENGTH as number
+                }
+                width={ 16 }
+                data-testid={ `${ testId }-additional-query-parameters` }
+            />
             {
                 (formFields?.AdditionalQueryParameters?.value
                     && !isEmpty(extractScopes(formFields.AdditionalQueryParameters.value))) && (
