@@ -231,7 +231,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                 dispatch(addAlert({
                     description: t("console:develop.features.applications.notifications.deleteProtocolConfig" +
                         ".genericError.description"),
-                    level: AlertLevels.ERROR,
+                    level: AlertLevels.ERROR,Fh
                     message: t("console:develop.features.applications.notifications.deleteProtocolConfig" +
                         ".genericError.message")
                 }));
@@ -360,6 +360,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                     message: t("console:develop.features.applications.notifications.updateApplication.genericError" +
                         ".message")
                 }));
+                setIsLoading(false);
             });
     };
 
