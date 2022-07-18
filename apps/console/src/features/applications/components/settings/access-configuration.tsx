@@ -231,7 +231,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                 dispatch(addAlert({
                     description: t("console:develop.features.applications.notifications.deleteProtocolConfig" +
                         ".genericError.description"),
-                    level: AlertLevels.ERROR,Fh
+                    level: AlertLevels.ERROR,
                     message: t("console:develop.features.applications.notifications.deleteProtocolConfig" +
                         ".genericError.message")
                 }));
