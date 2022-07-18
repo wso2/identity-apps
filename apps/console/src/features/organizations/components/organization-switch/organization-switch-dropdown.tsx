@@ -341,7 +341,8 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                                     search ? (
                                         <Popup
                                             trigger={
-                                                (<Button
+trigger={ (
+    <Button
                                                     data-componentid={ `${componentId}-clear-button` }
                                                     basic
                                                     compact
