@@ -349,7 +349,6 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                         message: t("console:develop.features.applications.notifications.updateApplication.error" +
                             ".message")
                     }));
-
                     return;
                 }
 
@@ -360,6 +359,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                     message: t("console:develop.features.applications.notifications.updateApplication.genericError" +
                         ".message")
                 }));
+            }).finally(() => {
                 setIsLoading(false);
             });
     };
