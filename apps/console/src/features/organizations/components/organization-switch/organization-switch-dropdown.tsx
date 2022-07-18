@@ -21,11 +21,17 @@ import { SessionStorageUtils } from "@wso2is/core/utils";
 import { GenericIcon } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Button, Divider, Dropdown, Input, Item, Menu, Placeholder, Popup } from "semantic-ui-react";
 import { organizationConfigs } from "../../../../extensions";
 import { ReactComponent as CrossIcon } from "../../../../themes/default/assets/images/icons/cross-icon.svg";
-import { AppConstants, AppState, getMiscellaneousIcons, getSidePanelIcons, history } from "../../../core";
+import {
+    AppConstants,
+    AppState,
+    getMiscellaneousIcons,
+    getSidePanelIcons,
+    history
+} from "../../../core";
 import { getOrganizations } from "../../api";
 import { OrganizationManagementConstants } from "../../constants";
 import { OrganizationInterface, OrganizationLinkInterface, OrganizationListInterface } from "../../models";
@@ -42,8 +48,6 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
     const { "data-componentid": componentId } = props;
 
     const { t } = useTranslation();
-
-    const dispatch = useDispatch();
 
     const currentOrganization: OrganizationInterface = useSelector(
         (state: AppState) => state.organization.organization
@@ -135,53 +139,25 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
     );
 
     const handleOrganizationSwitch = (organization: OrganizationInterface): void => {
-        requestCustomGrant({
-            attachToken: false,
-            data: {
-                client_id: "{{clientID}}",
-                grant_type: "organization_switch",
-                scope: "openid SYSTEM",
-                switching_organization: organization.id,
-                token: "{{token}}"
-            },
-            id: "orgSwitch",
-            returnsSession: true,
-            signInRequired: true
-        });
+        let newOrgPath: string = "";
 
-        on(
-            Hooks.CustomGrant,
-            async () => {
-                await getBasicUserInfo().then((response: BasicUserInfo) => {
-                    getDecodedIDToken()
-                        .then((idToken) => {
-                            const subParts = idToken.sub.split("@");
-                            const tenantDomain = subParts[ subParts.length - 1 ];
+        if (OrganizationUtils.isRootOrganization(organization)) {
+            newOrgPath = `${ window[ "AppUtils" ].getConfig().tenantPathWithoutSuperTenant }/${
+                window[ "AppUtils" ].getConfig().appBase
+            }`;
+        } else {
+            newOrgPath = window[ "AppUtils" ].getConfig().tenantPathWithoutSuperTenant
+                + "/o/" + organization.id + "/" +
+                window[ "AppUtils" ].getConfig().appBase;
+        }
 
-                            dispatch(
-                                setSignIn<AuthenticatedUserInfo & TenantListInterface>({
-                                    allowedScopes: response.allowedScopes,
-                                    associatedTenants: idToken?.associated_tenants,
-                                    defaultTenant: idToken?.default_tenant,
-                                    displayName: response.displayName,
-                                    display_name: response.displayName,
-                                    email: response.email,
-                                    tenantDomain: response.tenantDomain ?? tenantDomain,
-                                    username: idToken.sub
-                                })
-                            );
-                            dispatch(setOrganization(organization));
-                            dispatch(setServiceResourceEndpoints(Config.getServiceResourceEndpoints()));
-                        })
-                        .catch((error) => {
-                            throw error;
-                        });
-                });
+        // Clear the callback url of the previous organization.
+        SessionStorageUtils.clearItemFromSessionStorage("auth_callback_url_console");
 
-                setIsDropDownOpen(false);
-            },
-            "orgSwitch"
-        );
+        // Redirect the user to the newly selected organization path.
+        window.location.replace(newOrgPath);
+
+        setIsDropDownOpen(false);
     };
 
     /**
