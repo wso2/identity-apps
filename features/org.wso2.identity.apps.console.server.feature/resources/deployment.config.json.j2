@@ -457,6 +457,34 @@
                 ]
             },
             {% endif %}
+            {% if console.organizations is defined %}
+            "organizations": {
+                "enabled": {{ console.organizations.enabled }},
+                "scopes": {
+                    {% if console.organizations.scopes is defined %}
+                    {% for operation, scopes in console.organizations.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                },
+                "disabledFeatures": [
+                    {% if console.organizations.disabled_features is defined %}
+                    {% for feature in console.organizations.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ]
+            },
+            {% endif %}
             {% if console.manage_getting_started is defined %}
             "manageGettingStarted": {
                 "disabledFeatures": [

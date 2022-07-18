@@ -90,72 +90,12 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
 
-    const getOrgCalled = useRef(false);
-
     /**
      * Set the deployment configs in redux state.
      */
     useEffect(() => {
         sessionStorageDisabled();
     }, []);
-
-    useEffect(() => {
-        if (!window[ "AppUtils" ].getConfig().organizationName || !config.endpoints.organizations) {
-            dispatch(setGetOrganizationLoading(false));
-
-            return;
-        }
-
-        if (config.endpoints.organizations.split("/").find(part => part === "o")) {
-            return;
-        }
-
-        if (getOrgCalled.current) {
-            return;
-        }
-
-        getOrgCalled.current = true;
-
-        const orgName = window[ "AppUtils" ].getConfig().organizationName;
-
-        dispatch(setGetOrganizationLoading(true));
-        getOrganizations(`id eq ${ orgName }`, 1, null, null, true, true)
-            .then((response: OrganizationListInterface) => {
-                dispatch(setOrganization(response.organizations[ 0 ]));
-                dispatch(setServiceResourceEndpoints(Config.getServiceResourceEndpoints()));
-            }).catch((error) => {
-                if (error?.description) {
-                    dispatch(
-                        addAlert({
-                            description: error.description,
-                            level: AlertLevels.ERROR,
-                            message: t(
-                                "console:manage.features.organizations.notifications." +
-                                "fetchOrganization.error.message"
-                            )
-                        })
-                    );
-
-                    return;
-                }
-
-                dispatch(
-                    addAlert({
-                        description: t(
-                            "console:manage.features.organizations.notifications.fetchOrganization" +
-                            ".genericError.description"
-                        ),
-                        level: AlertLevels.ERROR,
-                        message: t(
-                            "console:manage.features.organizations.notifications." +
-                            "fetchOrganization.genericError.message"
-                        )
-                    })
-                );
-            }).finally(() => {
-                dispatch(setGetOrganizationLoading(false));
-            });
-    }, [ config.endpoints.organizations, dispatch, t ]);
 
     /**
      * Set the deployment configs in redux state.

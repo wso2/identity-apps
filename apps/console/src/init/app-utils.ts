@@ -120,7 +120,8 @@ export const AppUtils = (function() {
                 return _config.clientOrigin + this.getTenantPath(true) + "/" + _config.appBaseName + url;
             }
 
-            return _config.clientOrigin + (_config.appBaseName ? "/" + _config.appBaseName : "") + url;
+            return _config.clientOrigin + this.getOrganizationPath()
+                + (_config.appBaseName ? "/" + _config.appBaseName : "") + url;
         },
 
         /**
@@ -510,7 +511,10 @@ export const AppUtils = (function() {
                             .replace(SUPER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER, this.getSuperTenantProxy())
                             .replace(USER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER, this.getTenantName()
                                 ? this.getTenantName()
-                                : ""),
+                                : this.getOrganizationName()
+                                    ? this.getOrganizationName()
+                                    : ""
+                            ),
                 jwksEndpointURL: _config.idpConfigs
                         && _config.idpConfigs.jwksEndpointURL
                         && _config.idpConfigs.jwksEndpointURL

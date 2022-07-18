@@ -19,9 +19,17 @@
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { SessionStorageUtils } from "@wso2is/core/utils";
 import { GenericIcon } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, SyntheticEvent, useCallback, useEffect, useMemo, useState } from "react";
+import React, {
+    FunctionComponent,
+    ReactElement,
+    SyntheticEvent,
+    useCallback,
+    useEffect,
+    useMemo,
+    useState
+} from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Button, Divider, Dropdown, Input, Item, Menu, Placeholder, Popup } from "semantic-ui-react";
 import { organizationConfigs } from "../../../../extensions";
 import { ReactComponent as CrossIcon } from "../../../../themes/default/assets/images/icons/cross-icon.svg";
@@ -43,8 +51,6 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
 
     const { t } = useTranslation();
 
-    const dispatch = useDispatch();
-
     const currentOrganization: OrganizationInterface = useSelector(
         (state: AppState) => state.organization.organization
     );
@@ -56,26 +62,23 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
     const [ isDropDownOpen, setIsDropDownOpen ] = useState<boolean>(false);
     const [ search, setSearch ] = useState<string>("");
 
-    const isOrgSwitcherEnabled = useMemo(() => organizationConfigs.showOrganizationDropdown,
-        [ organizationConfigs.showOrganizationDropdown ]);
+    const isOrgSwitcherEnabled = useMemo(() => organizationConfigs.showOrganizationDropdown, [
+        organizationConfigs.showOrganizationDropdown
+    ]);
 
     const getOrganizationList = useCallback((filter: string, after: string, before: string) => {
-        getOrganizations(filter, 5, after, before, false, false)
-            .then((response: OrganizationListInterface) => {
-                if (!response || !response.organizations) {
-                    setAssociatedOrganizations([ OrganizationManagementConstants.ROOT_ORGANIZATION ]);
-                    setPaginationData(response.links);
-                } else {
-                    const organizations = [
-                        OrganizationManagementConstants.ROOT_ORGANIZATION,
-                        ...response?.organizations
-                    ];
+        getOrganizations(filter, 5, after, before, false, false).then((response: OrganizationListInterface) => {
+            if (!response || !response.organizations) {
+                setAssociatedOrganizations([ OrganizationManagementConstants.ROOT_ORGANIZATION ]);
+                setPaginationData(response.links);
+            } else {
+                const organizations = [ OrganizationManagementConstants.ROOT_ORGANIZATION, ...response?.organizations ];
 
-                    setAssociatedOrganizations(organizations);
+                setAssociatedOrganizations(organizations);
 
-                    setPaginationData(response.links);
-                }
-            });
+                setPaginationData(response.links);
+            }
+        });
     }, []);
 
     const setPaginationData = (links: OrganizationLinkInterface[]) => {
@@ -138,12 +141,16 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
         let newOrgPath: string = "";
 
         if (OrganizationUtils.isRootOrganization(organization)) {
-            newOrgPath = `${ window[ "AppUtils" ].getConfig().tenantPathWithoutSuperTenant }/${
-                window[ "AppUtils" ].getConfig().appBase
+            newOrgPath = `${
+                window[ "AppUtils" ].getConfig().tenantPathWithoutSuperTenant
+            } /${ window[ "AppUtils" ].getConfig().appBase
             }`;
         } else {
-            newOrgPath = window[ "AppUtils" ].getConfig().tenantPathWithoutSuperTenant
-                + "/o/" + organization.id + "/" +
+            newOrgPath =
+                window[ "AppUtils" ].getConfig().tenantPathWithoutSuperTenant +
+                "/o/" +
+                organization.id +
+                "/" +
                 window[ "AppUtils" ].getConfig().appBase;
         }
 
@@ -228,7 +235,6 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                     className="tenants-list organizations"
                     unstackable
                     data-componentid={ "associated-organizations-container" }
-
                 >
                     { associatedOrganizations.length > 0 ? (
                         associatedOrganizations.map((organization, _) =>
@@ -337,9 +343,9 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                                 action={
                                     search ? (
                                         <Popup
-                                            trigger={
-                                                (<Button
-                                                    data-componentid={ `${ componentId }-clear-button` }
+                                            trigger={ (
+                                                <Button
+                                                    data-componentid={ `${componentId}-clear-button` }
                                                     basic
                                                     compact
                                                     className="input-add-on organizations"
@@ -354,8 +360,8 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                                                             searchOrganizationList("");
                                                         } }
                                                     />
-                                                </Button>)
-                                            }
+                                                </Button>
+                                            ) }
                                             position="top center"
                                             content={ t("console:common.advancedSearch.popups.clear") }
                                             inverted={ true }
@@ -368,7 +374,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
 
                     { associatedOrganizations ? resolveAssociatedOrganizations() : null }
 
-                    <Divider/>
+                    <Divider />
 
                     { tenantPagination }
                 </Dropdown.Menu>
@@ -376,11 +382,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
         </Menu.Item>
     );
 
-    return (<>{
-        isOrgSwitcherEnabled
-            ? tenantDropdownMenu
-            : null
-    }</>);
+    return <>{ isOrgSwitcherEnabled ? tenantDropdownMenu : null }</>;
 };
 
 export default OrganizationSwitchDropdown;
