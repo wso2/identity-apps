@@ -616,7 +616,7 @@ export const myAccount: MyAccountNS = {
                     },
                     done: "Réussi ! Vous pouvez maintenant utiliser votre application d'authentification pour une " +
                         "authentification en deux étapes",
-                    heading: "Set Up An Authenticator App",
+                    heading: "Configurer une application d'authentification",
                     scan: {
                         additionNote: "Le code QR a été ajouté avec succès à votre profil",
                         authenticatorApps: "Applications d'authentification",
@@ -633,7 +633,7 @@ export const myAccount: MyAccountNS = {
                         "telle que Google Authenticator depuis <3> App Store </3> ou <3> Google Play </3>",
                     verify: {
                         error: "La vérification a échoué. Veuillez réessayer.",
-                        heading: "Entrez le code de vérification fourni par l'application d'authentification",
+                        heading: "Entrez le code généré pour vérification",
                         label: "Code de vérification",
                         placeholder: "Entrez votre code de vérification",
                         reScan: "Re-scanner",
@@ -692,6 +692,8 @@ export const myAccount: MyAccountNS = {
                 regenerate: "Régénérer"
             },
             backupCode: {
+                description: "Vous pouvez utiliser des codes de secours pour vous connecter si vous " 
+                    + "ne pouvez pas recevoir de code de vérification via l'application d'authentification.",
                 download: {
                     heading: "ENREGISTREZ VOS CODES DE SECOURS.",
                     info1: "Vous ne pouvez utiliser chaque code de secours qu'une seule fois.",
@@ -717,7 +719,14 @@ export const myAccount: MyAccountNS = {
                     refresh: {
                         heading: "Rafraîchir"
                     },
-                    subHeading: "Codes d'accès à usage unique que vous pouvez utiliser pour vous connecter" 
+                    regenerate: {
+                        description: "Après avoir généré de nouveaux codes, vos anciens codes ne fonctionneront plus. " 
+                            + "Assurez-vous de sauvegarder les nouveaux codes une fois qu'ils sont générés.",
+                        heading: "Confirmation"
+                    },
+                    subHeading: "Codes d'accès à usage unique que vous pouvez utiliser pour vous connecter",
+                    warn: "Ces codes n'apparaîtront qu'une seule fois. Assurez-vous de les enregistrer " 
+                        + "maintenant et de les stocker dans un endroit sûr mais accessible."
                 },
                 notifications: {
                     deleteError: {

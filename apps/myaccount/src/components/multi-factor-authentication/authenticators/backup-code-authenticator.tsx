@@ -20,7 +20,7 @@ import { getUserNameWithoutDomain } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { CommonUtils } from "@wso2is/core/utils";
 import { ContentLoader, Heading, LinkButton } from "@wso2is/react-components";
-import React, { MouseEvent, PropsWithChildren, useEffect, useState } from "react";
+import React, { FunctionComponent, MouseEvent, PropsWithChildren, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import {
@@ -33,7 +33,6 @@ import {
     List,
     Message,
     Modal,
-    Popup,
     Segment    
 } from "semantic-ui-react";
 import {
@@ -59,9 +58,9 @@ interface BackupCodeProps extends IdentifiableComponentInterface {
     onBackupFlowCompleted: () => void;
 }
 
-export const BackupCodeAuthenticator : React.FunctionComponent<BackupCodeProps> = (
+export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
     props: PropsWithChildren<BackupCodeProps>
-): React.ReactElement => {
+): ReactElement => {
 
     const { 
         onAlertFired,
@@ -83,7 +82,6 @@ export const BackupCodeAuthenticator : React.FunctionComponent<BackupCodeProps> 
     const [ backupCodes, setBackupCodes ] = useState<Array<string>>([]);
     const [ remainingBackupCodes, setRemainingBackupCodes ] = useState<number>(0);
     const [ isCodesCopied, setIsCodesCopied ] = useState<boolean>(false);
-    const [ isCodesDownloaded, setIsCodesDownloaded ] = useState<boolean>(false);
     const [ isConfirmRegenerationModalOpen, setIsConfirmRegenerationModalOpen ] = useState<boolean>(false);
     const [ isWarnRemaingBackupCodes, setIsWarnRemaingBackupCodes ] = useState<boolean>(false);
 
@@ -234,8 +232,7 @@ export const BackupCodeAuthenticator : React.FunctionComponent<BackupCodeProps> 
             document.body.appendChild(a);
             a.click();
             window.URL.revokeObjectURL(url);
-    
-            setIsCodesDownloaded(true);
+
             // Sets a success notification.
             onAlertFired({
                 description: t(translateKey + "notifications.downloadSuccess.genericMessage.description"),
@@ -266,7 +263,7 @@ export const BackupCodeAuthenticator : React.FunctionComponent<BackupCodeProps> 
      * Render backup codes modal
      * @returns Backup codes modal
      */
-    const renderBackupCodeWizard = (): React.ReactElement => {
+    const renderBackupCodeWizard = (): ReactElement => {
         return (
             <Modal
                 data-componentid={ `${componentid}-modal` }
@@ -293,8 +290,7 @@ export const BackupCodeAuthenticator : React.FunctionComponent<BackupCodeProps> 
                     <Message className="display-flex" size="small" warning>
                         <Icon name="warning sign" color="orange" corner />
                         <Message.Content className="tiny">
-                            { "These will be shown only once. Save these backup codes and store it " 
-                                + "somewhere safe but accessible." }
+                            { t(translateKey + "modals.warn") }
                         </Message.Content>
                     </Message>
                     <Message className="display-flex" size="small" info>
@@ -350,11 +346,10 @@ export const BackupCodeAuthenticator : React.FunctionComponent<BackupCodeProps> 
                         onClick={ handleCopyBackupCodes }
                         data-componentid={ `${componentid}-modal-copy-button` }
                     >
-                        { "Copy Codes" }
+                        { isCodesCopied ? "Copied" : "Copy Codes" }
                     </Button>
                     <Button
                         primary
-                        onMouseEnter={ () => setIsCodesDownloaded(false) }
                         onClick={ handleDownloadBackupCodes }
                         data-componentid={ `${componentid}-modal-download-button` }
                     >
@@ -368,7 +363,7 @@ export const BackupCodeAuthenticator : React.FunctionComponent<BackupCodeProps> 
     /**
      * Render the Backup codes regenerate confirmation modal
      */
-    const renderConfirmRegenerateModal = (): React.ReactElement => {
+    const renderConfirmRegenerateModal = (): ReactElement => {
         return (
             <Modal
                 data-testid={ `${componentid}-regenerate-confirm-modal` }
@@ -379,13 +374,12 @@ export const BackupCodeAuthenticator : React.FunctionComponent<BackupCodeProps> 
             >
                 <Modal.Content data-testid={ `${componentid}-regenerate-confirm-modal-content` }>
                     <Container>
-                        <h3>{ "Confirmation" }</h3>
+                        <h3>{ t(translateKey + "modals.regenerate.heading") }</h3>
                     </Container>
                     <Message className="display-flex" size="small" warning>
                         <Icon name="info" color="orange" corner />
                         <Message.Content className="tiny">
-                            { "When you generate new backup codes, you must download or copy and save " 
-                                + "the new codes. Your old codes won't work anymore." }
+                            { t(translateKey + "modals.regenerate.description") }
                         </Message.Content>
                     </Message>
                 </Modal.Content>
@@ -439,8 +433,7 @@ export const BackupCodeAuthenticator : React.FunctionComponent<BackupCodeProps> 
                                 </List.Header>
                                 <List.Description>
                                     <div>
-                                        { "You can use backup codes to log in if you can't receive a " 
-                                            + "verification code via authenticator app." }
+                                        { t(translateKey + "description") }
                                     </div>
                                     <LinkButton 
                                         compact 
@@ -450,7 +443,7 @@ export const BackupCodeAuthenticator : React.FunctionComponent<BackupCodeProps> 
                                         data-testid={ `${componentid}-regenerate-button` }
                                     >
                                         <Icon name="refresh" />
-                                        { "Re-generate" }
+                                        { "Regenerate" }
                                     </LinkButton>
                                 </List.Description>
                             </List.Content>

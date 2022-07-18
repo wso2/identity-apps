@@ -600,7 +600,7 @@ export const myAccount: MyAccountNS = {
                     },
                     done: "Sucesso! Agora você pode usar seu aplicativo de autenticação para autenticação de dois " +
                         "fatores",
-                    heading: "Set Up An Authenticator App",
+                    heading: "Configurar um aplicativo autenticador",
                     scan: {
                         additionNote: "O código QR foi adicionado com sucesso ao seu perfil",
                         authenticatorApps: "Authenticator Apps",
@@ -615,7 +615,7 @@ export const myAccount: MyAccountNS = {
                         "Google Authenticator na <3> App Store </3> ou <3> Google Play </3>",
                     verify: {
                         error: "Falha na verificação. Por favor, tente novamente.",
-                        heading: "Digite o código de verificação no aplicativo de autenticação",
+                        heading: "Insira o código gerado para verificação",
                         label: "Código de verificação",
                         placeholder: "Digite seu código de verificação",
                         reScan: "Verificar novamente",
@@ -672,6 +672,8 @@ export const myAccount: MyAccountNS = {
                 regenerate: "Regenerado"
             },
             backupCode: {
+                description: "Você pode usar códigos de backup para fazer login se não conseguir receber um código " 
+                    + "de verificação por meio do aplicativo autenticador.",
                 download: {
                     heading: "SALVE SEUS CÓDIGOS DE BACKUP.",
                     info1: "Você só pode usar cada código de backup uma vez.",
@@ -696,7 +698,14 @@ export const myAccount: MyAccountNS = {
                     refresh: {
                         heading: "Atualizar"
                     },
-                    subHeading: "Senhas de uso único que você pode usar para fazer login"
+                    regenerate: {
+                        description: "Depois de gerar novos códigos, seus códigos antigos não funcionarão mais. " 
+                            + "Certifique-se de salvar os novos códigos assim que forem gerados.",
+                        heading: "Confirmação"
+                    },
+                    subHeading: "Senhas de uso único que você pode usar para fazer login",
+                    warn: "Esses códigos aparecerão apenas uma vez. Certifique-se de salvá-los agora e armazená-los " 
+                        + "em algum lugar seguro, mas acessível."
                 },
                 notifications: {
                     deleteError: {
