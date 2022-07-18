@@ -77,6 +77,7 @@ interface ApplicationWrapperCertificatesPropsInterface extends TestableComponent
     hidden: boolean;
     readOnly: boolean;
     triggerSubmit?: boolean;
+    canDiscardCerticate?: () => boolean;
 }
 
 /**
@@ -103,6 +104,7 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
         readOnly,
         updateCertFinalValue,
         updateCertType,
+        canDiscardCerticate,
         ["data-testid"]: testId
     } = props;
 
@@ -158,6 +160,7 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
      * Change related to cert type changne.
      */
     useEffect(() => {
+
         handleCertificateTypeChange(selectedCertType);
         if (CertificateTypeInterface.PEM === selectedCertType) {
             setJWKSValue("");
@@ -247,8 +250,13 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
                                 }
                                 name="certificateType"
                                 default={ CertificateTypeInterface.NONE }
+                                bef
                                 listen={
                                     (values) => {
+                                        if(CertificateTypeInterface.NONE === values.get("certificateType") && !canDiscardCerticate()){
+                                                alert("Unable toggle to none option!")
+                                                return;
+                                        }
                                         setSelectedCertType(
                                     values.get("certificateType") as CertificateTypeInterface
                                         );
