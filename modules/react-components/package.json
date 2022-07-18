@@ -73,7 +73,6 @@
         "tinycolor": "0.0.1"
     },
     "peerDependencies": {
-        "@types/react": "*",
         "react": "*"
     },
     "devDependencies": {
@@ -84,6 +83,7 @@
         "@types/js-beautify": "^1.8.2",
         "@types/lodash-es": "^4.17.4",
         "@types/node": "^13.9.2",
+        "@types/react": "^16.9.0",
         "@types/react-color": "^3.0.6",
         "@types/react-dom": "^16.8.5",
         "@types/react-notification-system": "^0.2.39",
@@ -108,6 +108,7 @@
         "typescript": "^4.2.2"
     },
     "resolutions": {
-        "@types/react": "16.9.0"
+        "@types/react": "16.9.0",
+        "@types/react-dom": "16.8.5"
     }
 }

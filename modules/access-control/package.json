@@ -43,6 +43,8 @@
     "devDependencies": {
         "@typescript-eslint/eslint-plugin": "^4.17.0",
         "@typescript-eslint/parser": "^4.17.0",
+        "@types/react": "^16.9.0",
+        "@types/react-dom": "^16.8.5",
         "eslint": "^7.20.0",
         "eslint-plugin-import": "^2.20.2",
         "eslint-plugin-react": "^7.18.3",
@@ -54,10 +56,10 @@
         "typescript": "^4.2.2"
     },
     "peerDependencies": {
-        "@types/react": "*",
         "react": "*"
     },
     "resolutions": {
-        "@types/react": "16.9.0"
+        "@types/react": "16.9.0",
+        "@types/react-dom": "16.8.5"
     }
 }
