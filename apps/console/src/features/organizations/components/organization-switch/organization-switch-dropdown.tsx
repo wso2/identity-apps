@@ -343,9 +343,8 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                                 action={
                                     search ? (
                                         <Popup
-                                            trigger={
-trigger={ (
-    <Button
+                                            trigger={ (
+                                                <Button
                                                     data-componentid={ `${componentId}-clear-button` }
                                                     basic
                                                     compact
@@ -361,8 +360,8 @@ trigger={ (
                                                             searchOrganizationList("");
                                                         } }
                                                     />
-                                                </Button>)
-                                            }
+                                                </Button>
+                                            ) }
                                             position="top center"
                                             content={ t("console:common.advancedSearch.popups.clear") }
                                             inverted={ true }
