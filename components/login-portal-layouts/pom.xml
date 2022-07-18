@@ -17,13 +17,12 @@
   ~ under the License.
   -->
 
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <parent>
         <groupId>org.wso2.identity.apps</groupId>
         <artifactId>identity-apps</artifactId>
-        <version>1.2.1055-SNAPSHOT</version>
+        <version>1.2.1055</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
@@ -51,7 +50,7 @@
                         <configuration>
                             <target>
                                 <ant antfile="layout-distribution.xml">
-                                    <target name="move-layouts"/>
+                                    <target name="move-layouts" />
                                 </ant>
                             </target>
                         </configuration>
