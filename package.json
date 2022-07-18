@@ -12,7 +12,7 @@
     "repository": "https://github.com/wso2/identity-apps.git",
     "scripts": {
         "preinstall": "npx npm-force-resolutions",
-        "bootstrap": "npm install && npx lerna bootstrap",
+        "bootstrap": "npm install --legacy-peer-deps && npx lerna bootstrap",
         "bootstrap:hoist": "npm install && npx lerna bootstrap --hoist --no-ci",
         "build:dev": "npm run bootstrap && npm run build -- --ignore @wso2is/theme && npx lerna run build:dev --stream --scope @wso2is/theme",
         "build": "npx lerna run build --stream",
