@@ -92,13 +92,13 @@ public class AppPortalUtils {
         if (!SUPER_TENANT_DOMAIN_NAME.equals(tenantDomain)) {
             callbackUrl = callbackUrl.replace(portalPath, "/t/" + tenantDomain.trim() + portalPath);
         } else {
-            callbackUrl = "regexp=(" + callbackUrl + "|" +
-                    callbackUrl.replace(portalPath, "/t/(.*)" + portalPath) + ")";
-        }
-        if (StringUtils.equals(CONSOLE_APP, applicationName)) {
-            callbackUrl = IdentityUtil.getServerURL(portalPath, true, true);
-            callbackUrl = "regexp=(" + callbackUrl + "|" + callbackUrl.replace(portalPath, "/t/(.*)" +
-                    portalPath) + "|" + callbackUrl.replace(portalPath, "/o/(.*)" + portalPath) + ")";
+            if (StringUtils.equals(CONSOLE_APP, applicationName)) {
+                callbackUrl = "regexp=(" + callbackUrl + "|" + callbackUrl.replace(portalPath, "/t/(.*)" +
+                        portalPath) + "|" + callbackUrl.replace(portalPath, "/o/(.*)" + portalPath) + ")";
+            } else {
+                callbackUrl = "regexp=(" + callbackUrl + "|" +
+                        callbackUrl.replace(portalPath, "/t/(.*)" + portalPath) + ")";
+            }
         }
         oAuthConsumerAppDTO.setCallbackUrl(callbackUrl);
         oAuthConsumerAppDTO.setBypassClientCredentials(true);
