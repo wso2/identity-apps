@@ -251,27 +251,6 @@
                     ]
                 }
             },
-            "organizationRoles": {
-                "enabled": false,
-                "disabledFeatures": [],
-                "scopes": {
-                    "feature": [
-                        "console:organizations"
-                    ],
-                    "create": [
-                        "internal_organization_create"
-                    ],
-                    "read": [
-                        "internal_organization_view"
-                    ],
-                    "update": [
-                        "internal_organization_update"
-                    ],
-                    "delete": [
-                        "internal_organization_delete"
-                    ]
-                }
-            },
             "oidcScopes": {
                 "enabled": true,
                 "disabledFeatures": [],
