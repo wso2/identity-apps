@@ -22,7 +22,15 @@ import org.apache.commons.lang.StringUtils;
 import org.wso2.carbon.context.PrivilegedCarbonContext;
 import org.wso2.carbon.identity.application.authentication.framework.util.FrameworkConstants;
 import org.wso2.carbon.identity.application.common.IdentityApplicationManagementException;
-import org.wso2.carbon.identity.application.common.model.*;
+import org.wso2.carbon.identity.application.common.model.AuthenticationStep;
+import org.wso2.carbon.identity.application.common.model.Claim;
+import org.wso2.carbon.identity.application.common.model.ClaimConfig;
+import org.wso2.carbon.identity.application.common.model.ClaimMapping;
+import org.wso2.carbon.identity.application.common.model.InboundAuthenticationConfig;
+import org.wso2.carbon.identity.application.common.model.InboundAuthenticationRequestConfig;
+import org.wso2.carbon.identity.application.common.model.LocalAndOutboundAuthenticationConfig;
+import org.wso2.carbon.identity.application.common.model.LocalAuthenticatorConfig;
+import org.wso2.carbon.identity.application.common.model.ServiceProvider;
 import org.wso2.carbon.identity.application.mgt.ApplicationManagementService;
 import org.wso2.carbon.identity.core.util.IdentityUtil;
 import org.wso2.carbon.identity.oauth.IdentityOAuthAdminException;
@@ -41,7 +49,13 @@ import static org.wso2.carbon.identity.oauth.common.OAuthConstants.GrantTypes.AU
 import static org.wso2.carbon.identity.oauth.common.OAuthConstants.GrantTypes.REFRESH_TOKEN;
 import static org.wso2.carbon.identity.oauth.common.OAuthConstants.OAuthVersions.VERSION_2;
 import static org.wso2.carbon.utils.multitenancy.MultitenantConstants.SUPER_TENANT_DOMAIN_NAME;
-import static org.wso2.identity.apps.common.util.AppPortalConstants.*;
+import static org.wso2.identity.apps.common.util.AppPortalConstants.CONSOLE_APP;
+import static org.wso2.identity.apps.common.util.AppPortalConstants.DISPLAY_NAME_CLAIM_URI;
+import static org.wso2.identity.apps.common.util.AppPortalConstants.EMAIL_CLAIM_URI;
+import static org.wso2.identity.apps.common.util.AppPortalConstants.GRANT_TYPE_ACCOUNT_SWITCH;
+import static org.wso2.identity.apps.common.util.AppPortalConstants.GRANT_TYPE_ORGANIZATION_SWITCH;
+import static org.wso2.identity.apps.common.util.AppPortalConstants.INBOUND_AUTH2_TYPE;
+import static org.wso2.identity.apps.common.util.AppPortalConstants.INBOUND_CONFIG_TYPE;
 
 /**
  * App portal utils.
@@ -170,7 +184,7 @@ public class AppPortalUtils {
         localAndOutboundAuthenticationConfig.setSkipConsent(true);
         localAndOutboundAuthenticationConfig.setSkipLogoutConsent(true);
 
-        if (StringUtils.equals(CONSOLE_APP, appName)) {
+        if (CONSOLE_APP.equals(appName)) {
             AuthenticationStep authenticationStep1 = new AuthenticationStep();
             LocalAuthenticatorConfig identifierFirst = new LocalAuthenticatorConfig();
             identifierFirst.setName("IdentifierExecutor");
@@ -254,7 +268,7 @@ public class AppPortalUtils {
                 // Initiate portal
                 String consumerSecret = OAuthUtil.getRandomNumber();
                 List<String> grantTypes = Arrays.asList(AUTHORIZATION_CODE, REFRESH_TOKEN, GRANT_TYPE_ACCOUNT_SWITCH);
-                if (StringUtils.equals(appPortal.getName(), CONSOLE_APP)) {
+                if (CONSOLE_APP.equals(appPortal.getName())) {
                     grantTypes = Arrays.asList(AUTHORIZATION_CODE, REFRESH_TOKEN, GRANT_TYPE_ACCOUNT_SWITCH,
                             GRANT_TYPE_ORGANIZATION_SWITCH);
                 }
