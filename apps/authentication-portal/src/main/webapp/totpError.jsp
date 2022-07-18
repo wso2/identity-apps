@@ -21,100 +21,110 @@
 <%@ page import="java.util.Map" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
+
 <%@ include file="includes/localize.jsp" %>
+<jsp:directive.include file="includes/layout-resolver.jsp"/>
 
-    <%
-        request.getSession().invalidate();
-        String queryString = request.getQueryString();
-        Map<String, String> idpAuthenticatorMapping = null;
-        if (request.getAttribute(Constants.IDP_AUTHENTICATOR_MAP) != null) {
-            idpAuthenticatorMapping = (Map<String, String>) request.getAttribute(Constants.IDP_AUTHENTICATOR_MAP);
-        }
+<%
+    request.getSession().invalidate();
+    String queryString = request.getQueryString();
+    Map<String, String> idpAuthenticatorMapping = null;
+    if (request.getAttribute(Constants.IDP_AUTHENTICATOR_MAP) != null) {
+        idpAuthenticatorMapping = (Map<String, String>) request.getAttribute(Constants.IDP_AUTHENTICATOR_MAP);
+    }
 
-        String errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle,"error.fail");
-        String authenticationFailed = "false";
+    String errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle,"error.fail");
+    String authenticationFailed = "false";
 
-        if (Boolean.parseBoolean(request.getParameter(Constants.AUTH_FAILURE))) {
-            authenticationFailed = "true";
+    if (Boolean.parseBoolean(request.getParameter(Constants.AUTH_FAILURE))) {
+        authenticationFailed = "true";
 
-            if (request.getParameter(Constants.AUTH_FAILURE_MSG) != null) {
-                errorMessage = request.getParameter(Constants.AUTH_FAILURE_MSG);
+        if (request.getParameter(Constants.AUTH_FAILURE_MSG) != null) {
+            errorMessage = request.getParameter(Constants.AUTH_FAILURE_MSG);
 
-                 if (errorMessage.equalsIgnoreCase("authentication.fail.message")) {
-                    errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle,"error.fail");
-                }
+                if (errorMessage.equalsIgnoreCase("authentication.fail.message")) {
+                errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle,"error.fail");
             }
         }
-    %>
+    }
+%>
 
-    <html>
-        <head>
-            <!-- header -->
-            <%
-                File headerFile = new File(getServletContext().getRealPath("extensions/header.jsp"));
-                if (headerFile.exists()) {
-            %>
-            <jsp:include page="extensions/header.jsp"/>
-            <% } else { %>
-            <jsp:include page="includes/header.jsp"/>
-            <% } %>
+<%-- Data for the layout from the page --%>
+<%
+    layoutData.put("containerSize", "medium");
+%>
 
-            <script src="js/scripts.js"></script>
-            <script src="/totpauthenticationendpoint/js/scripts.js"></script>
+<html>
+    <head>
+        <!-- header -->
+        <%
+            File headerFile = new File(getServletContext().getRealPath("extensions/header.jsp"));
+            if (headerFile.exists()) {
+        %>
+        <jsp:include page="extensions/header.jsp"/>
+        <% } else { %>
+        <jsp:include page="includes/header.jsp"/>
+        <% } %>
 
-            <!--[if lt IE 9]>
-            <script src="js/html5shiv.min.js"></script>
-            <script src="js/respond.min.js"></script>
-            <![endif]-->
-        </head>
+        <script src="js/scripts.js"></script>
+        <script src="/totpauthenticationendpoint/js/scripts.js"></script>
 
-        <body class="login-portal layout totp-portal-layout" onload="getLoginDiv()">
-            <main class="center-segment">
-                <div class="ui container medium center aligned middle aligned">
-                    <!-- product-title -->
-                    <%
-                        File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
-                        if (productTitleFile.exists()) {
-                    %>
-                    <jsp:include page="extensions/product-title.jsp"/>
-                    <% } else { %>
-                    <jsp:include page="includes/product-title.jsp"/>
-                    <% } %>
+        <!--[if lt IE 9]>
+        <script src="js/html5shiv.min.js"></script>
+        <script src="js/respond.min.js"></script>
+        <![endif]-->
+    </head>
 
-                    <div class="ui segment">
-                        <!-- page content -->
-                        <h2><%=AuthenticationEndpointUtil.i18n(resourceBundle, "error.fail")%></h2>
-                        <div class="segment-form">
-                            <form class="ui large form">
-                                <div class="field">
-                                </div>
-                                <div class="ui negative message" id="failed-msg">
-                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "error.totp.not.enabled")%>
-                                </div>                        
-                            </form>
-                        </div>
+    <body class="login-portal layout totp-portal-layout" onload="getLoginDiv()">
+        <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
+            <layout:component componentName="ProductHeader" >
+                <!-- product-title -->
+                <%
+                    File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
+                    if (productTitleFile.exists()) {
+                %>
+                <jsp:include page="extensions/product-title.jsp"/>
+                <% } else { %>
+                <jsp:include page="includes/product-title.jsp"/>
+                <% } %>
+            </layout:component>
+            <layout:component componentName="MainSection" >
+                <div class="ui segment">
+                    <!-- page content -->
+                    <h2><%=AuthenticationEndpointUtil.i18n(resourceBundle, "error.fail")%></h2>
+                    <div class="segment-form">
+                        <form class="ui large form">
+                            <div class="field">
+                            </div>
+                            <div class="ui negative message" id="failed-msg">
+                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "error.totp.not.enabled")%>
+                            </div>                        
+                        </form>
                     </div>
                 </div>
-            </main>
+            </layout:component>
+            <layout:component componentName="ProductFooter" >
+                <!-- product-footer -->
+                <%
+                    File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
+                    if (productFooterFile.exists()) {
+                %>
+                <jsp:include page="extensions/product-footer.jsp"/>
+                <% } else { %>
+                <jsp:include page="includes/product-footer.jsp"/>
+                <% } %>
+            </layout:component>
+        </layout:main>
 
-            <!-- product-footer -->
-            <%
-                File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
-                if (productFooterFile.exists()) {
-            %>
-            <jsp:include page="extensions/product-footer.jsp"/>
-            <% } else { %>
-            <jsp:include page="includes/product-footer.jsp"/>
-            <% } %>
-
-            <!-- footer -->
-            <%
-                File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
-                if (footerFile.exists()) {
-            %>
-            <jsp:include page="extensions/footer.jsp"/>
-            <% } else { %>
-            <jsp:include page="includes/footer.jsp"/>
-            <% } %>
-        </body>
-    </html>
+        <!-- footer -->
+        <%
+            File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
+            if (footerFile.exists()) {
+        %>
+        <jsp:include page="extensions/footer.jsp"/>
+        <% } else { %>
+        <jsp:include page="includes/footer.jsp"/>
+        <% } %>
+    </body>
+</html>
