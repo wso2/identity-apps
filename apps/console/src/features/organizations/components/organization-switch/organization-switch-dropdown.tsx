@@ -19,19 +19,21 @@
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { SessionStorageUtils } from "@wso2is/core/utils";
 import { GenericIcon } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, SyntheticEvent, useCallback, useEffect, useMemo, useState } from "react";
+import React, {
+    FunctionComponent,
+    ReactElement,
+    SyntheticEvent,
+    useCallback,
+    useEffect,
+    useMemo,
+    useState
+} from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Button, Divider, Dropdown, Input, Item, Menu, Placeholder, Popup } from "semantic-ui-react";
 import { organizationConfigs } from "../../../../extensions";
 import { ReactComponent as CrossIcon } from "../../../../themes/default/assets/images/icons/cross-icon.svg";
-import {
-    AppConstants,
-    AppState,
-    getMiscellaneousIcons,
-    getSidePanelIcons,
-    history
-} from "../../../core";
+import { AppConstants, AppState, getMiscellaneousIcons, getSidePanelIcons, history } from "../../../core";
 import { getOrganizations } from "../../api";
 import { OrganizationManagementConstants } from "../../constants";
 import { OrganizationInterface, OrganizationLinkInterface, OrganizationListInterface } from "../../models";
@@ -60,26 +62,23 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
     const [ isDropDownOpen, setIsDropDownOpen ] = useState<boolean>(false);
     const [ search, setSearch ] = useState<string>("");
 
-    const isOrgSwitcherEnabled = useMemo(() => organizationConfigs.showOrganizationDropdown,
-        [ organizationConfigs.showOrganizationDropdown ]);
+    const isOrgSwitcherEnabled = useMemo(() => organizationConfigs.showOrganizationDropdown, [
+        organizationConfigs.showOrganizationDropdown
+    ]);
 
     const getOrganizationList = useCallback((filter: string, after: string, before: string) => {
-        getOrganizations(filter, 5, after, before, false, false)
-            .then((response: OrganizationListInterface) => {
-                if (!response || !response.organizations) {
-                    setAssociatedOrganizations([ OrganizationManagementConstants.ROOT_ORGANIZATION ]);
-                    setPaginationData(response.links);
-                } else {
-                    const organizations = [
-                        OrganizationManagementConstants.ROOT_ORGANIZATION,
-                        ...response?.organizations
-                    ];
+        getOrganizations(filter, 5, after, before, false, false).then((response: OrganizationListInterface) => {
+            if (!response || !response.organizations) {
+                setAssociatedOrganizations([ OrganizationManagementConstants.ROOT_ORGANIZATION ]);
+                setPaginationData(response.links);
+            } else {
+                const organizations = [ OrganizationManagementConstants.ROOT_ORGANIZATION, ...response?.organizations ];
 
-                    setAssociatedOrganizations(organizations);
+                setAssociatedOrganizations(organizations);
 
-                    setPaginationData(response.links);
-                }
-            });
+                setPaginationData(response.links);
+            }
+        });
     }, []);
 
     const setPaginationData = (links: OrganizationLinkInterface[]) => {
@@ -91,11 +90,11 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
 
         links.forEach((link) => {
             if (link.rel === "next") {
-                const afterCursorLink = link.href.toString().split("after=")[1];
+                const afterCursorLink = link.href.toString().split("after=")[ 1 ];
 
                 setAfterCursor(afterCursorLink);
             } else {
-                const beforeCursorLink = link.href.toString().split("before=")[1];
+                const beforeCursorLink = link.href.toString().split("before=")[ 1 ];
 
                 setBeforeCursor(beforeCursorLink);
             }
@@ -142,12 +141,16 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
         let newOrgPath: string = "";
 
         if (OrganizationUtils.isRootOrganization(organization)) {
-            newOrgPath = `${ window[ "AppUtils" ].getConfig().tenantPathWithoutSuperTenant }/${
-                window[ "AppUtils" ].getConfig().appBase
+            newOrgPath = `${
+                window[ "AppUtils" ].getConfig().tenantPathWithoutSuperTenant
+            } /${ window[ "AppUtils" ].getConfig().appBase
             }`;
         } else {
-            newOrgPath = window[ "AppUtils" ].getConfig().tenantPathWithoutSuperTenant
-                + "/o/" + organization.id + "/" +
+            newOrgPath =
+                window[ "AppUtils" ].getConfig().tenantPathWithoutSuperTenant +
+                "/o/" +
+                organization.id +
+                "/" +
                 window[ "AppUtils" ].getConfig().appBase;
         }
 
@@ -173,7 +176,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
         <Item.Group className="tenant-item-wrapper" unstackable>
             <Item
                 className="header"
-                key={ `${organization?.name}-organization-item` }
+                key={ `${ organization?.name }-organization-item` }
                 onClick={ () => {
                     handleOrganizationSwitch(organization);
                 } }
@@ -262,7 +265,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
     const searchOrganizationList = (search: string): void => {
         const changeValue = search.trim();
 
-        setListFilter(changeValue ? `name co ${changeValue}` : "");
+        setListFilter(changeValue ? `name co ${ changeValue }` : "");
     };
 
     /**
@@ -372,7 +375,7 @@ trigger={ (
 
                     { associatedOrganizations ? resolveAssociatedOrganizations() : null }
 
-                    <Divider/>
+                    <Divider />
 
                     { tenantPagination }
                 </Dropdown.Menu>
@@ -380,11 +383,7 @@ trigger={ (
         </Menu.Item>
     );
 
-    return (<>{
-        isOrgSwitcherEnabled
-            ? tenantDropdownMenu
-            : null
-    }</>);
+    return <>{ isOrgSwitcherEnabled ? tenantDropdownMenu : null }</>;
 };
 
 export default OrganizationSwitchDropdown;
