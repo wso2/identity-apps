@@ -29,7 +29,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
 import { UserStoreListItem } from "../../../../features/userstores";
 import { attributeConfig } from "../../../../extensions";
-import { AppState, EventPublisher } from "../../../core";
+import { AppState, EventPublisher, store } from "../../../core";
 import { AppConstants } from "../../../core/constants";
 import { history } from "../../../core/helpers";
 import { addDialect, addExternalClaim, addLocalClaim } from "../../api";
@@ -105,7 +105,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
 
     /**
      * Conditionally disable map attribute step
-     * if there are no secondary user stores and 
+     * if there are no secondary user stores and
      * if the user stores are disabled
      */
     useEffect(() => {
@@ -114,7 +114,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
 
         if ( hiddenUserStores && hiddenUserStores.length > 0) {
             attributeConfig.localAttributes.isUserStoresHidden(hiddenUserStores).then(state => {
-                state.map((store: UserStoreListItem) => {   
+                state.map((store: UserStoreListItem) => {
                     if(store.enabled){
                         userStoresEnabled = true;
                     }
@@ -243,7 +243,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
     const fetchUpdatedSchemaList = (): void => {
         dispatch(setProfileSchemaRequestLoadingStatus(true));
 
-        getProfileSchemas()
+        getProfileSchemas(store.getState().config.endpoint?.schemas)
             .then((response: ProfileSchemaInterface[]) => {
                 dispatch(setSCIMSchemas<ProfileSchemaInterface[]>(response));
             })
