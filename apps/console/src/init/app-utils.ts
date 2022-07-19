@@ -242,6 +242,7 @@ export const AppUtils = (function() {
                 docSiteUrl: _config.docSiteUrl,
                 documentation: _config.documentation,
                 extensions: _config.extensions,
+                getProfileInfoFromIDToken: _config.getProfileInfoFromIDToken,
                 idpConfigs: this.resolveIdpConfigs(),
                 isSaas: this.isSaas(),
                 loginCallbackURL: this.constructRedirectURLs(_config.loginCallbackPath),

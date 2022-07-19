@@ -43,6 +43,7 @@
         "logoutEndpointURL": "${serverOrigin}/${tenantPrefix}/${superTenantDomain}/oidc/logout",
         "oidcSessionIFrameEndpointURL": "${serverOrigin}/${tenantPrefix}/${superTenantDomain}/oidc/checksession"
     },
+    "getProfileInfoFromIDToken": true,
     "i18nResourcePath": "",
     "isSaas": true,
     "loginCallbackPath": "",
