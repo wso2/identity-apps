@@ -25,26 +25,50 @@ public class CompilerException extends RuntimeException {
 
     private static final long serialVersionUID = 1088421038552580614L;
 
+    /**
+     * Constructor to create the default error.
+     */
     public CompilerException() {
 
         super();
     }
 
+    /**
+     * Constructor with custom message.
+     *
+     * @param message Exception message.
+     */
     public CompilerException(String message) {
 
         super(message);
     }
 
+    /**
+     * Constructor with custom message and throwable object.
+     *
+     * @param message Exception message.
+     * @param throwable Throwable object.
+     */
     public CompilerException(String message, Throwable throwable) {
 
         super(message, throwable);
     }
 
+    /**
+     * Constructor with custom throwable object.
+     * 
+     * @param throwable Throwable object.
+     */
     public CompilerException(Throwable throwable) {
 
         super(throwable);
     }
 
+    /**
+     * Constructor with custom exception.
+     *
+     * @param e Exception object.
+     */
     public CompilerException(Exception e) {
 
         super(e);
