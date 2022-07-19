@@ -206,7 +206,7 @@ export class RouteUtils {
          */
         for (const path of paths) {
             if (path) {
-                const expression = RegExp(`^${pathToARegex(path)}$`);
+                const expression = RegExp(`^${pathToARegex(path)}`);
                 const match = expression.exec(pathname);
 
                 if (match && match.length > 0) {
