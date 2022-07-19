@@ -33,12 +33,11 @@ import {
     TableColumnInterface
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
-import { Trans, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Divider, Header, Icon, List, SemanticICONS } from "semantic-ui-react";
+import { Divider, Header, Icon, Label, List, SemanticICONS } from "semantic-ui-react";
 import { handleIDPDeleteError } from "./utils";
-import { getApplicationDetails } from "../../applications/api";
-import { ApplicationBasicInterface } from "../../applications/models";
+import { ApplicationBasicInterface, getApplicationDetails } from "../../applications";
 import {
     AppConstants,
     AppState,
@@ -293,47 +292,61 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                 dataIndex: "name",
                 id: "name",
                 key: "name",
-                render: (idp: IdentityProviderInterface): ReactNode => (
-                    <Header
-                        image
-                        as="h6"
-                        className="header-with-icon"
-                        data-testid={ `${ testId }-item-heading` }
-                    >
-                        {
-                            idp.image
-                                ? (
-                                    <AppAvatar
-                                        size="mini"
-                                        name={ idp.name }
-                                        image={ idp.image }
-                                        spaced="right"
-                                        data-testid={ `${ testId }-item-image` }
-                                    />
-                                )
-                                : (
-                                    <AppAvatar
-                                        image={ (
-                                            <AnimatedAvatar
-                                                name={ idp.name }
-                                                size="mini"
-                                                data-testid={ `${ testId }-item-image-inner` }
-                                            />
-                                        ) }
-                                        size="mini"
-                                        spaced="right"
-                                        data-testid={ `${ testId }-item-image` }
-                                    />
-                                )
-                        }
-                        <Header.Content>
-                            { idp.name }
-                            <Header.Subheader data-testid={ `${ testId }-item-sub-heading` }>
-                                { idp.description }
-                            </Header.Subheader>
-                        </Header.Content>
-                    </Header>
-                ),
+                render: (idp: IdentityProviderInterface): ReactNode => {
+                    const isOrgIdp = (idp.federatedAuthenticators.defaultAuthenticatorId ===
+                        IdentityProviderManagementConstants.ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID);
+
+                    return (
+                        <Header
+                            image
+                            as="h6"
+                            className="header-with-icon"
+                            data-testid={ `${testId}-item-heading` }
+                        >
+                            {
+                                idp.image
+                                    ? (
+                                        <AppAvatar
+                                            size="mini"
+                                            name={ idp.name }
+                                            image={ idp.image }
+                                            spaced="right"
+                                            data-testid={ `${testId}-item-image` }
+                                        />
+                                    )
+                                    : (
+                                        <AppAvatar
+                                            image={ (
+                                                <AnimatedAvatar
+                                                    name={ idp.name }
+                                                    size="mini"
+                                                    data-testid={ `${testId}-item-image-inner` }
+                                                />
+                                            ) }
+                                            size="mini"
+                                            spaced="right"
+                                            data-testid={ `${testId}-item-image` }
+                                        />
+                                    )
+                            }
+                            <Header.Content>
+                                { idp.name }
+                                {
+                                    isOrgIdp && (
+                                        <Label
+                                            size="mini"
+                                            color="teal">
+                                            Organization IDP
+                                        </Label>
+                                    )
+                                }
+                                <Header.Subheader data-testid={ `${testId}-item-sub-heading` }>
+                                    { idp.description }
+                                </Header.Subheader>
+                            </Header.Content>
+                        </Header>
+                    );
+                },
                 title: t("console:develop.features.idp.list.name")
             },
             {
