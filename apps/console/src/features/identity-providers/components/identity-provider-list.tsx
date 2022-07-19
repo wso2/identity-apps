@@ -184,6 +184,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                     );
 
                     const appNames: string[] = [];
+
                     results.forEach((app) => {
                         appNames.push(app.name);
                     });
@@ -363,8 +364,8 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                 icon: (): SemanticICONS =>
                     hasRequiredScopes(featureConfig?.identityProviders,
                         featureConfig?.identityProviders?.scopes?.update, allowedScopes)
-                            ? "pencil alternate"
-                            : "eye",
+                        ? "pencil alternate"
+                        : "eye",
                 onClick: (e: SyntheticEvent, idp: IdentityProviderInterface): void =>
                     handleIdentityProviderEdit(idp.id),
                 popupText: (): string =>
@@ -416,7 +417,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                 deletingIDP && (
                     <ConfirmationModal
                         onClose={ (): void => setShowDeleteConfirmationModal(false) }
-                        type="warning"
+                        type="negative"
                         open={ showDeleteConfirmationModal }
                         assertion={ deletingIDP?.name }
                         assertionHint={ t("console:develop.features.authenticationProvider."+
@@ -436,7 +437,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message
                             attached
-                            warning
+                            negative
                             data-testid={ `${ testId }-delete-confirmation-modal-message` }
                         >
                             { t("console:develop.features.idp.confirmations.deleteIDP.message") }
@@ -474,8 +475,8 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                             <List ordered className="ml-6">
                                 {
                                     isAppsLoading ? (
-                                            <ContentLoader/>
-                                        ) :
+                                        <ContentLoader/>
+                                    ) :
                                         connectedApps?.map((app, index) => {
                                             return (
                                                 <List.Item key={ index }>{ app }</List.Item>
