@@ -166,9 +166,8 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                 });
             } else {
                 dispatch(setGetOrganizationLoading(false));
+                tenantDomain = CommonAuthenticateUtils.deriveTenantDomainFromSubject(response.sub);
             }
-
-            tenantDomain = CommonAuthenticateUtils.deriveTenantDomainFromSubject(response.sub);
 
             // Update the app base name with the newly resolved tenant.
             window[ "AppUtils" ].updateTenantQualifiedBaseName(tenantDomain);
