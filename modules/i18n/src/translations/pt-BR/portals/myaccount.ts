@@ -683,11 +683,14 @@ export const myAccount: MyAccountNS = {
                 },
                 heading: "Códigos de backup",
                 modals: {
+                    actions: {
+                        copied: "Copiado",
+                        copy: "Copiar códigos",
+                        download: "Códigos de download",
+                        regenerate: "Regenerado"
+                    },
                     description: "Use os códigos de backup para fazer login quando estiver longe do telefone. " + 
                         "Você pode gerar mais quando todos são usados",
-                    download: {
-                        heading: "Códigos de download"
-                    },
                     generate: {
                         description: "Todos os seus códigos de backup são usados. " + 
                             "Permite gerar um novo conjunto de códigos de backup",
@@ -695,9 +698,6 @@ export const myAccount: MyAccountNS = {
                     },
                     heading: "Códigos de backup",
                     info: "Cada código só pode ser usado uma vez",
-                    refresh: {
-                        heading: "Atualizar"
-                    },
                     regenerate: {
                         description: "Depois de gerar novos códigos, seus códigos antigos não funcionarão mais. " 
                             + "Certifique-se de salvar os novos códigos assim que forem gerados.",

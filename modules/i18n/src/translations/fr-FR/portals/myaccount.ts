@@ -704,11 +704,14 @@ export const myAccount: MyAccountNS = {
                 },
                 heading: "Codes de sauvegarde",
                 modals: {
+                    actions: {
+                        copied: "copié",
+                        copy: "Copier les codes",
+                        download: "Codes de téléchargement",
+                        regenerate: "Régénérer"
+                    },
                     description: "Utilisez les codes de secours pour vous connecter lorsque vous êtes " + 
                         "loin de votre téléphone. Vous pouvez en générer plus lorsqu'ils sont tous utilisés",
-                    download: {
-                        heading: "Codes de téléchargement"
-                    },
                     generate: {
                         description: "Tous vos codes de secours sont utilisés. " + 
                             "Permet de générer un nouvel ensemble de codes de secours",
@@ -716,9 +719,6 @@ export const myAccount: MyAccountNS = {
                     },
                     heading: "Codes de sauvegarde",
                     info: "Chaque code ne peut être utilisé qu'une seule fois",
-                    refresh: {
-                        heading: "Rafraîchir"
-                    },
                     regenerate: {
                         description: "Après avoir généré de nouveaux codes, vos anciens codes ne fonctionneront plus. " 
                             + "Assurez-vous de sauvegarder les nouveaux codes une fois qu'ils sont générés.",

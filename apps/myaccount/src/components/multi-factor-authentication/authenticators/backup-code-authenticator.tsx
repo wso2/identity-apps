@@ -346,14 +346,18 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
                         onClick={ handleCopyBackupCodes }
                         data-componentid={ `${componentid}-modal-copy-button` }
                     >
-                        { isCodesCopied ? "Copied" : "Copy Codes" }
+                        { 
+                            isCodesCopied 
+                                ? t(translateKey + "modals.actions.copied") 
+                                : t(translateKey + "modals.actions.copy") 
+                        }
                     </Button>
                     <Button
                         primary
                         onClick={ handleDownloadBackupCodes }
                         data-componentid={ `${componentid}-modal-download-button` }
                     >
-                        { t(translateKey + "modals.download.heading") }
+                        { t(translateKey + "modals.actions.download") }
                     </Button>
                 </Modal.Actions>
             </Modal>
@@ -393,8 +397,9 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
                     <Button
                         primary={ true }
                         onClick={ handleRefreshBackCodes }
-                        data-testid={ `${componentid}-regenerate-confirm-modal-actions-confirm-button` }>
-                        { "Regenerate" }
+                        data-testid={ `${componentid}-regenerate-confirm-modal-actions-confirm-button` }
+                    >
+                        { t(translateKey + "modals.actions.regenerate") }
                     </Button>
                 </Modal.Actions>
             </Modal>
@@ -443,7 +448,7 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
                                         data-testid={ `${componentid}-regenerate-button` }
                                     >
                                         <Icon name="refresh" />
-                                        { "Regenerate" }
+                                        { t(translateKey + "modals.actions.regenerate") }
                                     </LinkButton>
                                 </List.Description>
                             </List.Content>

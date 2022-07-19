@@ -684,19 +684,19 @@ export const myAccount: MyAccountNS = {
                 },
                 heading: "Backup Codes",
                 modals: {
-                    description: "Use backup codes to sign in when you are away from your phone.",
-                    download: {
-                        heading: "Download Codes"
+                    actions: {
+                        copied: "Copied",
+                        copy: "Copy Codes",
+                        download: "Download Codes",
+                        regenerate: "Regenerate"
                     },
+                    description: "Use backup codes to sign in when you are away from your phone.",
                     generate: {
                         description: "All of your backup codes are used. Lets generate a new set of backup codes",
                         heading: "Generate"
                     },
                     heading: "Backup Codes",
                     info: "Each code can only be used once. You can generate more when all are used.",
-                    refresh: {
-                        heading: "Refresh"
-                    },
                     regenerate: {
                         description: "After you generate new codes, your old codes will no longer work. " 
                             + "Be sure to save the new codes once they are generated.",

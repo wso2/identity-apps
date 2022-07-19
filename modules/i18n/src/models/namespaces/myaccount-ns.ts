@@ -422,10 +422,13 @@ export interface MyAccountNS {
                 };
                 heading: string;
                 modals: {
-                    description: string;
-                    download: {
-                        heading: string;
+                    actions: {
+                        download: string;
+                        regenerate: string;
+                        copy: string;
+                        copied: string;
                     };
+                    description: string;
                     generate: {
                         description: string;
                         heading: string;
@@ -435,9 +438,6 @@ export interface MyAccountNS {
                     regenerate: {
                         heading: string;
                         description: string;
-                    };
-                    refresh: {
-                        heading: string;
                     };
                     subHeading: string;
                     warn: string;
