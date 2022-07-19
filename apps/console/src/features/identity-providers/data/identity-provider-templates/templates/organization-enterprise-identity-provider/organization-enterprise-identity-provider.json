@@ -9,7 +9,7 @@
         "Organization-Login"
     ],
     "idp": {
-        "name": "SSO",
+        "name": "Organization IDP",
         "description": "IdP for Organization SSO",
         "image": "",
         "isPrimary": false,
