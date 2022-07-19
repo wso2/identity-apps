@@ -118,6 +118,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             rolesWithoutOrgPath: "",
             rootOrganization: "",
             saml2Meta: "",
+            schemas: "",
             selfSignUp: "",
             serverConfigurations: "",
             serverSupportedSchemas: "",
