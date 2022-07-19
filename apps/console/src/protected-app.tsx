@@ -25,7 +25,11 @@ import {
     SecureApp,
     useAuthContext
 } from "@asgardeo/auth-react";
-import { AppConstants as CommonAppConstants, CommonConstants as CommonConstantsCore } from "@wso2is/core/constants";
+import {
+    AppConstants as CommonAppConstants,
+    CommonConstants as CommonConstantsCore,
+    TokenConstants
+} from "@wso2is/core/constants";
 import { AlertLevels, IdentifiableComponentInterface, TenantListInterface } from "@wso2is/core/models";
 import {
     addAlert,
@@ -44,7 +48,7 @@ import {
 } from "@wso2is/i18n";
 import axios, { AxiosResponse } from "axios";
 import has from "lodash-es/has";
-import React, { FunctionComponent, ReactElement, lazy, useEffect } from "react";
+import React, { FunctionComponent, ReactElement, lazy, useEffect, useState } from "react";
 import { I18nextProvider, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { commonConfig } from "./extensions";
@@ -90,6 +94,8 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
 
     const { t } = useTranslation();
 
+    const [ renderApp, setRenderApp ] = useState<boolean>(false);
+
     useEffect(() => {
         on(Hooks.HttpRequestError, HttpUtils.onHttpRequestError);
         on(Hooks.HttpRequestFinish, HttpUtils.onHttpRequestFinish);
@@ -108,62 +114,65 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
 
             let tenantDomain: string = "";
 
+            await dispatch(setServiceResourceEndpoints(Config.getServiceResourceEndpoints()));
+
             if (window[ "AppUtils" ].getConfig().organizationName) {
                 const orgName = window[ "AppUtils" ].getConfig().organizationName;
 
-                await requestCustomGrant({
-                    attachToken: false,
-                    data: {
-                        client_id: "{{clientID}}",
-                        grant_type: "organization_switch",
-                        scope: "openid SYSTEM",
-                        switching_organization: orgName,
-                        token: "{{token}}"
-                    },
-                    id: "orgSwitch",
-                    returnsSession: true,
-                    signInRequired: true
-                }, async (grantResponse: BasicUserInfo) => {
-                    response = { ...grantResponse };
+                dispatch(setGetOrganizationLoading(true));
+                await getOrganizations(`id eq ${ orgName }`, 1, null, null, true, true)
+                    .then(async (orgResponse: OrganizationListInterface) => {
+                        dispatch(setOrganization(orgResponse.organizations[ 0 ]));
+                        await dispatch(setServiceResourceEndpoints(Config.getServiceResourceEndpoints()));
 
-                    dispatch(setGetOrganizationLoading(true));
-                    await getOrganizations(`id eq ${ orgName }`, 1, null, null, true, true)
-                        .then((response: OrganizationListInterface) => {
-                            dispatch(setOrganization(response.organizations[ 0 ]));
-                            dispatch(setServiceResourceEndpoints(Config.getServiceResourceEndpoints()));
-                        }).catch((error) => {
-                            if (error?.description) {
-                                dispatch(
-                                    addAlert({
-                                        description: error.description,
-                                        level: AlertLevels.ERROR,
-                                        message: t(
-                                            "console:manage.features.organizations.notifications." +
-                                "fetchOrganization.error.message"
-                                        )
-                                    })
-                                );
-
-                                return;
-                            }
-
+                        await requestCustomGrant({
+                            attachToken: false,
+                            data: {
+                                client_id: "{{clientID}}",
+                                grant_type: "organization_switch",
+                                scope: window[ "AppUtils" ].getConfig().idpConfigs?.scope.join(" ")
+                            ?? TokenConstants.SYSTEM_SCOPE,
+                                switching_organization: orgName,
+                                token: "{{token}}"
+                            },
+                            id: "orgSwitch",
+                            returnsSession: true,
+                            signInRequired: true
+                        }, async (grantResponse: BasicUserInfo) => {
+                            response = { ...grantResponse };
+                        });
+                    }).catch((error) => {
+                        if (error?.description) {
                             dispatch(
                                 addAlert({
-                                    description: t(
-                                        "console:manage.features.organizations.notifications.fetchOrganization" +
-                            ".genericError.description"
-                                    ),
+                                    description: error.description,
                                     level: AlertLevels.ERROR,
                                     message: t(
                                         "console:manage.features.organizations.notifications." +
-                            "fetchOrganization.genericError.message"
+                                "fetchOrganization.error.message"
                                     )
                                 })
                             );
-                        }).finally(() => {
-                            dispatch(setGetOrganizationLoading(false));
-                        });
-                });
+
+                            return;
+                        }
+
+                        dispatch(
+                            addAlert({
+                                description: t(
+                                    "console:manage.features.organizations.notifications.fetchOrganization" +
+                            ".genericError.description"
+                                ),
+                                level: AlertLevels.ERROR,
+                                message: t(
+                                    "console:manage.features.organizations.notifications." +
+                            "fetchOrganization.genericError.message"
+                                )
+                            })
+                        );
+                    }).finally(() => {
+                        dispatch(setGetOrganizationLoading(false));
+                    });
             } else {
                 dispatch(setGetOrganizationLoading(false));
                 tenantDomain = CommonAuthenticateUtils.deriveTenantDomainFromSubject(response.sub);
@@ -257,6 +266,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                 .then((idToken) => {
                     const subParts = idToken.sub.split("@");
                     const tenantDomain = subParts[ subParts.length - 1 ];
+
                     isPrivilegedUser = idToken?.amr?.length > 0
                         ? idToken?.amr[0] === "EnterpriseIDPAuthenticator"
                         : false;
@@ -278,6 +288,8 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                             fullName: fullName
                         })
                     );
+
+                    setRenderApp(true);
                 })
                 .catch((error) => {
                     throw error;
@@ -477,7 +489,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             } }
         >
             <I18nextProvider i18n={ I18n.instance }>
-                <App />
+                { renderApp ? <App /> : <PreLoader /> }
             </I18nextProvider>
         </SecureApp>
     );
