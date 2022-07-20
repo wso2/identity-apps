@@ -126,7 +126,6 @@ export const getProfileInformation = (
                     return;
                 }
                 dispatch(setProfileInfo<ProfileInfoInterface>(infoResponse));
-
                 commonConfig.hotjarTracking.tagAttributes();
 
                 getProfileSchema();
