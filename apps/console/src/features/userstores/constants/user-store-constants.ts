@@ -60,6 +60,8 @@ export class UserStoreManagementConstants {
  */
 export const JDBC = "JDBC";
 export const CONSUMER_USERSTORE_ID = "Q09OU1VNRVI";
+export const DEFAULT_USERSTORE_TYPE_IMAGE = "default";
+export const DEFAULT_DESCRIPTION_CUSTOM_USERSTORE = "This is a custom userstore manager implementation";
 
 export const USER_STORE_TYPE_DESCRIPTIONS = {
     ActiveDirectoryUserStoreManager: "Active Directory based userstore.",
