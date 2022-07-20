@@ -30,6 +30,8 @@
 <%@ page import="static org.wso2.carbon.identity.application.authentication.endpoint.util.Constants.AUTHENTICATION_MECHANISM_NOT_CONFIGURED" %>
 <%@ page import="static org.wso2.carbon.identity.application.authentication.endpoint.util.Constants.ENABLE_AUTHENTICATION_WITH_REST_API" %>
 <%@ page import="static org.wso2.carbon.identity.application.authentication.endpoint.util.Constants.ERROR_WHILE_BUILDING_THE_ACCOUNT_RECOVERY_ENDPOINT_URL" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.IdentityProviderDataRetrievalClient" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.IdentityProviderDataRetrievalClientException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.ArrayList" %>
@@ -314,6 +316,16 @@
                                             isHubIdp = true;
                                             idpName = idpName.substring(0, idpName.length() - 4);
                                         }
+
+                                        // Uses the `IdentityProviderDataRetrievalClient` to get the IDP image.
+                                        String imageURL = "libs/themes/default/assets/images/identity-providers/enterprise-idp-illustration.svg";
+
+                                        try {
+                                            IdentityProviderDataRetrievalClient identityProviderDataRetrievalClient = new IdentityProviderDataRetrievalClient();
+                                            imageURL = identityProviderDataRetrievalClient.getIdPImage(tenantDomain, idpName);
+                                        } catch (IdentityProviderDataRetrievalClientException e) {
+                                            // Exception is ignored and the default `imageURL` value will be used as a fallback.
+                                        }
                             %>
                                 <% if (isHubIdp) { %>
                                     <div class="field">
@@ -338,13 +350,16 @@
                                     </div>
                                 <% } else { %>
                                     <div class="field">
-                                        <button class="ui icon button fluid"
+                                        <button
+                                            class="ui icon button fluid"
                                             onclick="handleNoDomain(this,
                                                 '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpName))%>',
                                                 '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpEntry.getValue()))%>')"
                                             id="icon-<%=iconId%>"
-                                            title="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> <%=Encode.forHtmlAttribute(idpName)%>">
-                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> <strong><%=Encode.forHtmlContent(idpName)%></strong>
+                                            title="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> <%=Encode.forHtmlAttribute(idpName)%>"
+                                        >
+                                            <img class="ui image" src="<%=Encode.forHtmlAttribute(imageURL)%>">
+                                            <span><%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> <%=Encode.forHtmlContent(idpName)%></span>
                                         </button>
                                     </div>
                                 <% } %>
