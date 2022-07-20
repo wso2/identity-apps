@@ -294,6 +294,10 @@ export const getOrganizationPermissions = (): Promise<any> => {
                     "resourcePath": "/permission/admin/manage/identity/organizationmgt/delete"
                 },
                 {
+                    "displayName": "Users view",
+                    "resourcePath": "/permission/admin/manage/identity/usermgt/view"
+                },
+                {
                     "displayName": "Users list",
                     "resourcePath": "/permission/admin/manage/identity/usermgt/list"
                 },
@@ -308,6 +312,10 @@ export const getOrganizationPermissions = (): Promise<any> => {
                 {
                     "displayName": "Users delete",
                     "resourcePath": "/permission/admin/manage/identity/usermgt/delete"
+                },
+                {
+                    "displayName": "Identity Providers view",
+                    "resourcePath": "/permission/admin/manage/identity/idpmgt/view"
                 },
                 {
                     "displayName": "Identity Providers list",
@@ -326,6 +334,10 @@ export const getOrganizationPermissions = (): Promise<any> => {
                     "resourcePath": "/permission/admin/manage/identity/idpmgt/delete"
                 },
                 {
+                    "displayName": "Applications view",
+                    "resourcePath": "/permission/admin/manage/identity/applicationmgt/view"
+                },
+                {
                     "displayName": "Applications list",
                     "resourcePath": "/permission/admin/manage/identity/applicationmgt/list"
                 },
@@ -342,6 +354,10 @@ export const getOrganizationPermissions = (): Promise<any> => {
                     "resourcePath": "/permission/admin/manage/identity/applicationmgt/delete"
                 },
                 {
+                    "displayName": "Userstore view",
+                    "resourcePath": "/permission/admin/manage/identity/userstore/config/view"
+                },
+                {
                     "displayName": "Userstore list",
                     "resourcePath": "/permission/admin/manage/identity/userstore/config/list"
                 },
@@ -356,7 +372,55 @@ export const getOrganizationPermissions = (): Promise<any> => {
                 {
                     "displayName": "Userstore delete",
                     "resourcePath": "/permission/admin/manage/identity/userstore/config/delete"
-                }
+                },
+                {
+                    "displayName": "Group Management",
+                    "resourcePath": "/permission/admin/manage/identity/groupmgt/"
+                },
+                {
+                    "displayName": "Group view",
+                    "resourcePath": "/permission/admin/manage/identity/groupmgt/view"
+                },
+                {
+                    "displayName": "Governance",
+                    "resourcePath": "/permission/admin/manage/identity/governance/view"
+                },
+                {
+                    "displayName": "Governance view",
+                    "resourcePath": "/permission/admin/manage/identity/governance/view"
+                },
+                {
+                    "displayName": "Governance",
+                    "resourcePath": "/permission/admin/manage/identity/governance/view"
+                },
+                {
+                    "displayName": "Governance view",
+                    "resourcePath": "/permission/admin/manage/identity/governance/view"
+                },
+                {
+                    "displayName": "CORS Management",
+                    "resourcePath": "/permission/admin/manage/identity/cors/"
+                },
+                {
+                    "displayName": "CORS Origins",
+                    "resourcePath": "/permission/admin/manage/identity/cors/"
+                },
+                {
+                    "displayName": "CORS Origins view",
+                    "resourcePath": "/permission/admin/manage/identity/cors/origins/view"
+                },
+                {
+                    "displayName": "Claim Management",
+                    "resourcePath": "/permission/admin/manage/identity/claimmgt/"
+                },
+                {
+                    "displayName": "Claim Metadata",
+                    "resourcePath": "/permission/admin/manage/identity/claimmgt/metadata/"
+                },
+                {
+                    "displayName": "Claim Metadata view",
+                    "resourcePath": "/permission/admin/manage/identity/claimmgt/metadata/view"
+                },
             ],
             status: 200
         });
