@@ -335,88 +335,6 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
                                                 } }
                                                 type={ SessionTimeoutModalTypes.DEFAULT }
                                             >
-<<<<<<< HEAD
-                                                <>
-                                                    <Helmet>
-                                                        <title>{ appTitle }</title>
-                                                        {
-                                                            (window?.themeHash && window?.publicPath && theme)
-                                                                ? (
-                                                                    <link
-                                                                        href={
-                                                                            `${window?.origin}${window?.publicPath}/libs/themes/${theme}/theme.${window?.themeHash}.min.css`
-                                                                        }
-                                                                        rel="stylesheet"
-                                                                        type="text/css"
-                                                                    />
-                                                                ) 
-                                                                : null
-                                                        }
-                                                    </Helmet>
-                                                    <NetworkErrorModal
-                                                        heading={
-                                                            (<Trans
-                                                                i18nKey={ "common:networkErrorMessage.heading" }
-                                                            >
-                                                                Your session has expired
-                                                            </Trans>)
-                                                        }
-                                                        description={
-                                                            (<Trans
-                                                                i18nKey={ "common:networkErrorMessage.description" }
-                                                            >
-                                                                Please try signing in again.
-                                                            </Trans>)
-                                                        }
-                                                        primaryActionText={
-                                                            (<Trans
-                                                                i18nKey={
-                                                                    "common:networkErrorMessage.primaryActionText"
-                                                                }
-                                                            >
-                                                                Sign In
-                                                            </Trans>)
-                                                        }
-                                                        primaryAction={
-                                                            signOut
-                                                        }
-                                                    />
-                                                    <ChunkErrorModal
-                                                        heading={
-                                                            (<Trans
-                                                                i18nKey={
-                                                                    "common:chunkLoadErrorMessage.heading"
-                                                                }
-                                                            >
-                                                                Something went wrong
-                                                            </Trans>)
-                                                        }
-                                                        description={
-                                                            (<Trans
-                                                                i18nKey={
-                                                                    "common:chunkLoadErrorMessage.description"
-                                                                }
-                                                            >
-                                                                An error occurred when serving the requested
-                                                                application. Please try reloading the app.
-                                                            </Trans>)
-                                                        }
-                                                        primaryActionText={
-                                                            (<Trans
-                                                                i18nKey={
-                                                                    "common:chunkLoadErrorMessage.primaryActionText"
-                                                                }
-                                                            >
-                                                                Reload the App
-                                                            </Trans>)
-                                                        }
-                                                    />
-                                                    <Switch>
-                                                        <Redirect
-                                                            exact
-                                                            from="/"
-                                                            to={ AppConstants.getAppHomePath() }
-=======
                                                 <SessionTimedOutContext.Provider value={ sessionTimedOut }>
                                                     <>
                                                         <Helmet>
@@ -468,7 +386,6 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
                                                             primaryAction={
                                                                 signOut
                                                             }
->>>>>>> 353a72a047... Issue fix for advance search modal not disappearing on timeout
                                                         />
                                                         <ChunkErrorModal
                                                             heading={

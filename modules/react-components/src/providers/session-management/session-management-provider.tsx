@@ -28,6 +28,7 @@ import React, {
     useState
 } from "react";
 import { Trans } from "react-i18next";
+import { SessionTimedOutContext } from "./session-management-context";
 import { SessionTimeoutModal } from "../../components";
 
 /**
@@ -301,61 +302,63 @@ export const SessionManagementProvider: FunctionComponent<PropsWithChildren<
         };
 
         return (
-            <>
-                { children }
-                <SessionTimeoutModal
-                    closeOnEscape={ false }
-                    closeOnDimmerClick={ false }
-                    open={ showSessionTimeoutModal }
-                    onClose={ handleSessionTimeoutAbort }
-                    onPrimaryActionClick={ handlePrimaryActionClick }
-                    onSecondaryActionClick={ handleSessionLogout }
-                    sessionTimeOut={ sessionTimedOut }
-                    heading={
-                        (type === SessionTimeoutModalTypes.DEFAULT)
-                            ? (
-                                <Trans
-                                    i18nKey={ modalOptions?.headingI18nKey }
-                                >
-                                It looks like you have been inactive for a long time.
-                                </Trans>
-                            )
-                            : (
-                                <Trans
-                                    i18nKey={
-                                        !sessionTimedOut
-                                            ? modalOptions?.headingI18nKey
-                                            : modalOptions?.sessionTimedOutHeadingI18nKey
-                                    }
-                                    tOptions={
-                                        { time: timerDisplay }
-                                    }
-                                >
-                                You will be logged out in <strong>{ timerDisplay }</strong>.
-                                </Trans>
-                            )
-                    }
-                    description={
-                        (type === SessionTimeoutModalTypes.DEFAULT)
-                            ? modalOptions?.description
-                            : sessionTimedOut
-                                ? modalOptions?.sessionTimedOutDescription
-                                : modalOptions?.description
-                    }
-                    primaryButtonText={
-                        (type === SessionTimeoutModalTypes.DEFAULT)
-                            ? modalOptions?.primaryButtonText
-                            : sessionTimedOut
-                                ? modalOptions?.loginAgainButtonText
-                                : modalOptions?.primaryButtonText
-                    }
-                    secondaryButtonText={
-                        (type === SessionTimeoutModalTypes.COUNTER)
-                            ? modalOptions?.secondaryButtonText
-                            : null
-                    }
-                />
-            </>
+            <SessionTimedOutContext.Provider value={ sessionTimedOut } >
+                <>
+                    { children }
+                    <SessionTimeoutModal
+                        closeOnEscape={ false }
+                        closeOnDimmerClick={ false }
+                        open={ showSessionTimeoutModal }
+                        onClose={ handleSessionTimeoutAbort }
+                        onPrimaryActionClick={ handlePrimaryActionClick }
+                        onSecondaryActionClick={ handleSessionLogout }
+                        sessionTimeOut={ sessionTimedOut }
+                        heading={
+                            (type === SessionTimeoutModalTypes.DEFAULT)
+                                ? (
+                                    <Trans
+                                        i18nKey={ modalOptions?.headingI18nKey }
+                                    >
+                                    It looks like you have been inactive for a long time.
+                                    </Trans>
+                                )
+                                : (
+                                    <Trans
+                                        i18nKey={
+                                            !sessionTimedOut
+                                                ? modalOptions?.headingI18nKey
+                                                : modalOptions?.sessionTimedOutHeadingI18nKey
+                                        }
+                                        tOptions={
+                                            { time: timerDisplay }
+                                        }
+                                    >
+                                    You will be logged out in <strong>{ timerDisplay }</strong>.
+                                    </Trans>
+                                )
+                        }
+                        description={
+                            (type === SessionTimeoutModalTypes.DEFAULT)
+                                ? modalOptions?.description
+                                : sessionTimedOut
+                                    ? modalOptions?.sessionTimedOutDescription
+                                    : modalOptions?.description
+                        }
+                        primaryButtonText={
+                            (type === SessionTimeoutModalTypes.DEFAULT)
+                                ? modalOptions?.primaryButtonText
+                                : sessionTimedOut
+                                    ? modalOptions?.loginAgainButtonText
+                                    : modalOptions?.primaryButtonText
+                        }
+                        secondaryButtonText={
+                            (type === SessionTimeoutModalTypes.COUNTER)
+                                ? modalOptions?.secondaryButtonText
+                                : null
+                        }
+                    />
+                </>
+            </SessionTimedOutContext.Provider>
         );
     };
 
