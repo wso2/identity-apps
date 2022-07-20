@@ -118,6 +118,9 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
     const [ tabPaneExtensions, setTabPaneExtensions ] = useState<any>(undefined);
     const [ defaultActiveIndex, setDefaultActiveIndex ] = useState<any>(0);
 
+    const isOrganizationEnterpriseAuthenticator = identityProvider.federatedAuthenticators
+        .defaultAuthenticatorId === IdentityProviderManagementConstants.ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID;
+
     const urlSearchParams: URLSearchParams = new URLSearchParams(location.search);
 
     const idpAdvanceConfig: IdentityProviderAdvanceInterface = {
@@ -279,7 +282,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
             render: GeneralIdentityProviderSettingsTabPane
         });
 
-        panes.push({
+        !isOrganizationEnterpriseAuthenticator && panes.push({
             menuItem: "Settings",
             render: AuthenticatorSettingsTabPane
         });

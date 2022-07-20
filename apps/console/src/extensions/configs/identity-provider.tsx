@@ -52,6 +52,7 @@ export const identityProviderConfig: IdentityProviderConfig = {
         github: true,
         google: true,
         oidc: true,
+        organizationEnterprise: true,
         saml: true
     },
     fidoTags: [

@@ -29,12 +29,11 @@ import GitHubIDPTemplate from "./templates/github/github.json";
 import GoogleIDPTemplate from "./templates/google/google.json";
 import EnterpriseOIDCIdentityProviderTemplate
     from "./templates/oidc-identity-provider/enterprise-oidc-identity-provider.json";
+import OrganizationEnterpriseIDPTemplate from "./templates/organization-enterprise-identity-provider/organization-enterprise-identity-provider.json";
 import EnterpriseSAMLIdentityProviderTemplate
     from "./templates/saml-identity-provider/enterprise-saml-identity-provider.json";
 import { ExtensionsManager, identityProviderConfig } from "../../../../extensions";
-import {
-    EnterpriseIdentityProviderTemplateExtension
-} from "../../../../extensions/configs/identity-providers-templates";
+import { EnterpriseIdentityProviderTemplateExtension } from "../../../../extensions/configs/identity-providers-templates";
 import { IdentityProviderTemplateCategoryInterface, IdentityProviderTemplateGroupInterface } from "../../models";
 
 /**
@@ -139,13 +138,24 @@ export const getIdentityProviderTemplatesConfig = (): IdentityProviderTemplatesC
                         },
                         {
                             content: {
+                                wizardHelp: lazy(() => import("./templates/" +
+                                "organization-enterprise-identity-provider/create-wizard-help"))
+                            },
+                            enabled: window["AppUtils"].getConfig().ui.identityProviderTemplates
+                                ?.organizationEnterprise?.enabled
+                                ?? identityProviderConfig.templates.organizationEnterprise,
+                            id: OrganizationEnterpriseIDPTemplate.id,
+                            resource: OrganizationEnterpriseIDPTemplate
+                        },
+                        {
+                            content: {
                                 wizardHelp: lazy(() =>
                                     import("./templates/oidc-identity-provider/create-wizard-help")
                                 )
                             },
                             enabled: window["AppUtils"].getConfig()
                                 .ui.identityProviderTemplates?.enterpriseOIDC?.enabled
-                                    ?? identityProviderConfig.templates.oidc,
+                                ?? identityProviderConfig.templates.oidc,
                             id: EnterpriseOIDCIdentityProviderTemplate.id,
                             resource: EnterpriseOIDCIdentityProviderTemplate
                         },
