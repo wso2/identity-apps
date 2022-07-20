@@ -1,9 +1,9 @@
 {
     "id": "organization-enterprise-idp",
-    "name": "Organization Enterprise Login",
+    "name": "Organization SSO",
     "templateId": "organization-enterprise-idp",
     "category": "DEFAULT",
-    "description": "Organization Managed Enterprise login",
+    "description": "Organization SSO login",
     "displayOrder": 4,
     "tags": [
         "Organization-Login"

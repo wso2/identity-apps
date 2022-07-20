@@ -313,7 +313,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             null,
             null,
             null,
-            false,
+            true,
             false
         ).then((response) => {
             setSubOrganizationList(response.organizations);
