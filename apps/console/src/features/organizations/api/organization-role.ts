@@ -223,43 +223,63 @@ export const getOrganizationPermissions = (): Promise<any> => {
                 },
                 {
                     "displayName": "Admin",
-                    "resourcePath": "/permission/admin/"
+                    "resourcePath": "/permission/admin"
                 },
                 {
                     "displayName": "Manage",
-                    "resourcePath": "/permission/admin/manage/"
+                    "resourcePath": "/permission/admin/manage"
                 },
                 {
                     "displayName": "Identity",
-                    "resourcePath": "/permission/admin/manage/identity/"
+                    "resourcePath": "/permission/admin/manage/identity"
+                },
+                {
+                    "displayName": "Claim Management",
+                    "resourcePath": "/permission/admin/manage/identity/claimmgt"
+                },
+                {
+                    "displayName": "CORS Management",
+                    "resourcePath": "/permission/admin/manage/identity/cors"
+                },
+                {
+                    "displayName": "Governance",
+                    "resourcePath": "/permission/admin/manage/identity/governance"
+                },
+                {
+                    "displayName": "Group Management",
+                    "resourcePath": "/permission/admin/manage/identity/groupmgt"
                 },
                 {
                     "displayName": "Role Management",
-                    "resourcePath": "/permission/admin/manage/identity/rolemgt/"
+                    "resourcePath": "/permission/admin/manage/identity/rolemgt"
                 },
                 {
                     "displayName": "Organization Management",
-                    "resourcePath": "/permission/admin/manage/identity/organizationmgt/"
+                    "resourcePath": "/permission/admin/manage/identity/organizationmgt"
                 },
                 {
                     "displayName": "User Management",
-                    "resourcePath": "/permission/admin/manage/identity/usermgt/"
+                    "resourcePath": "/permission/admin/manage/identity/usermgt"
                 },
                 {
                     "displayName": "Identity Providers",
-                    "resourcePath": "/permission/admin/manage/identity/idpmgt/"
+                    "resourcePath": "/permission/admin/manage/identity/idpmgt"
                 },
                 {
                     "displayName": "Applications",
-                    "resourcePath": "/permission/admin/manage/identity/applicationmgt/"
+                    "resourcePath": "/permission/admin/manage/identity/applicationmgt"
                 },
                 {
                     "displayName": "Userstores",
-                    "resourcePath": "/permission/admin/manage/identity/userstore/"
+                    "resourcePath": "/permission/admin/manage/identity/userstore"
                 },
                 {
                     "displayName": "Userstores Config",
-                    "resourcePath": "/permission/admin/manage/identity/userstore/config/"
+                    "resourcePath": "/permission/admin/manage/identity/userstore/config"
+                },
+                {
+                    "displayName": "CORS Origins",
+                    "resourcePath": "/permission/admin/manage/identity/cors/origins"
                 },
                 {
                     "displayName": "Roles view",
@@ -374,53 +394,25 @@ export const getOrganizationPermissions = (): Promise<any> => {
                     "resourcePath": "/permission/admin/manage/identity/userstore/config/delete"
                 },
                 {
-                    "displayName": "Group Management",
-                    "resourcePath": "/permission/admin/manage/identity/groupmgt/"
-                },
-                {
                     "displayName": "Group view",
                     "resourcePath": "/permission/admin/manage/identity/groupmgt/view"
                 },
                 {
-                    "displayName": "Governance",
-                    "resourcePath": "/permission/admin/manage/identity/governance/view"
-                },
-                {
                     "displayName": "Governance view",
                     "resourcePath": "/permission/admin/manage/identity/governance/view"
-                },
-                {
-                    "displayName": "Governance",
-                    "resourcePath": "/permission/admin/manage/identity/governance/view"
-                },
-                {
-                    "displayName": "Governance view",
-                    "resourcePath": "/permission/admin/manage/identity/governance/view"
-                },
-                {
-                    "displayName": "CORS Management",
-                    "resourcePath": "/permission/admin/manage/identity/cors/"
-                },
-                {
-                    "displayName": "CORS Origins",
-                    "resourcePath": "/permission/admin/manage/identity/cors/"
                 },
                 {
                     "displayName": "CORS Origins view",
                     "resourcePath": "/permission/admin/manage/identity/cors/origins/view"
                 },
                 {
-                    "displayName": "Claim Management",
-                    "resourcePath": "/permission/admin/manage/identity/claimmgt/"
-                },
-                {
                     "displayName": "Claim Metadata",
-                    "resourcePath": "/permission/admin/manage/identity/claimmgt/metadata/"
+                    "resourcePath": "/permission/admin/manage/identity/claimmgt/metadata"
                 },
                 {
                     "displayName": "Claim Metadata view",
                     "resourcePath": "/permission/admin/manage/identity/claimmgt/metadata/view"
-                },
+                }
             ],
             status: 200
         });
