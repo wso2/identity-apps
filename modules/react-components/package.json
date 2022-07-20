@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/react-components",
-    "version": "1.2.1061",
+    "version": "1.2.1063",
     "description": "A React component library for WSO2 Identity Server frontend apps implementing Semantic UI Framework",
     "keywords": [
         "WSO2",
@@ -48,9 +48,9 @@
         "@storybook/addons": "^5.3.3",
         "@storybook/react": "^5.3.3",
         "@storybook/theming": "^5.3.3",
-        "@wso2is/core": "^1.2.1061",
-        "@wso2is/forms": "^1.2.1061",
-        "@wso2is/theme": "^1.2.1061",
+        "@wso2is/core": "^1.2.1063",
+        "@wso2is/forms": "^1.2.1063",
+        "@wso2is/theme": "^1.2.1063",
         "classnames": "^2.2.6",
         "codemirror": "^5.52.0",
         "i18next": "^17.0.11",
