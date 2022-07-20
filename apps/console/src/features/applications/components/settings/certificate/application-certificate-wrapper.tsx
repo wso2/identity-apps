@@ -160,15 +160,12 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
      * Change related to cert type changne.
      */
     useEffect(() => {
-
         handleCertificateTypeChange(selectedCertType);
         if (CertificateTypeInterface.PEM === selectedCertType) {
             setJWKSValue("");
         } else if (CertificateTypeInterface.JWKS === selectedCertType) {
             setPEMValue("");
-        } else {
-            updateCertFinalValue("");
-        }
+        } 
     }, [ selectedCertType ]);
 
     /**
@@ -250,17 +247,22 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
                                 }
                                 name="certificateType"
                                 default={ CertificateTypeInterface.NONE }
-                                bef
                                 listen={
                                     (values) => {
-                                        if(CertificateTypeInterface.NONE === values.get("certificateType") && !canDiscardCerticate()){
-                                                alert("Unable toggle to none option!")
-                                                return;
-                                        }
                                         setSelectedCertType(
                                     values.get("certificateType") as CertificateTypeInterface
                                         );
                                         updateCertType(values.get("certificateType") as CertificateTypeInterface);
+                                    }
+                                }
+                                onBefore={
+                                    (event,value) => {
+                                        const Certtype  =  value as CertificateTypeInterface;
+                                        if(CertificateTypeInterface.NONE === Certtype && !canDiscardCerticate()){
+                                                alert("Can not !!")
+                                                return false;
+                                        }
+                                        return true;
                                     }
                                 }
                                 type="radio"
