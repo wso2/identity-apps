@@ -37,7 +37,8 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Divider, Header, Icon, Label, List, SemanticICONS } from "semantic-ui-react";
 import { handleIDPDeleteError } from "./utils";
-import { ApplicationBasicInterface, getApplicationDetails } from "../../applications";
+import { getApplicationDetails } from "../../applications/api";
+import { ApplicationBasicInterface } from "../../applications/models";
 import {
     AppConstants,
     AppState,
