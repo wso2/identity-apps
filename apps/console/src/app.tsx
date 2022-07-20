@@ -65,6 +65,12 @@ import { getOrganizations } from "./features/organizations/api";
 import { OrganizationListInterface } from "./features/organizations/models";
 
 /**
+ * Context for state of Session Time Out.
+ *
+ */
+export const SessionTimedOutContext = React.createContext(false);
+
+/**
  * Main App component.
  *
  * @return {React.ReactElement}
@@ -88,6 +94,14 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
     const { trySignInSilently, getDecodedIDToken, signOut } = useAuthContext();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
+    const [ sessionTimedOut, setSessionTimedOut ] = useState<boolean>(false);
+
+    /**
+     * set the value of Session Timed Out.
+     */
+    const handleSessionTimeOut = (timedOut: boolean): void => {
+        setSessionTimedOut(timedOut);
+    };
 
     /**
      * Set the deployment configs in redux state.
@@ -312,6 +326,8 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
                                                 onSessionTimeoutAbort={ handleSessionTimeoutAbort }
                                                 onSessionLogout={ handleSessionLogout }
                                                 onLoginAgain={ handleStayLoggedIn }
+                                                setSessionTimedOut={ handleSessionTimeOut }
+                                                sessionTimedOut={ sessionTimedOut }
                                                 modalOptions={ {
                                                     description: (
                                                         <Trans
@@ -369,123 +385,125 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
                                                 } }
                                                 type={ SessionTimeoutModalTypes.DEFAULT }
                                             >
-                                                <>
-                                                    <Helmet>
-                                                        <title>{ appTitle }</title>
-                                                        {
-                                                            (window?.themeHash && window?.publicPath && theme)
-                                                                ? (
-                                                                    <link
-                                                                        href={
-                                                                            `${
-                                                                                window?.origin
-                                                                            }${
-                                                                                window?.publicPath
-                                                                            }/libs/themes/${
-                                                                                theme
-                                                                            }/theme.${ window?.themeHash }.min.css`
-                                                                        }
-                                                                        rel="stylesheet"
-                                                                        type="text/css"
-                                                                    />
-                                                                )
-                                                                : null
-                                                        }
-                                                    </Helmet>
-                                                    <NetworkErrorModal
-                                                        heading={
-                                                            (<Trans
-                                                                i18nKey={ "common:networkErrorMessage.heading" }
-                                                            >
-                                                                Your session has expired
-                                                            </Trans>)
-                                                        }
-                                                        description={
-                                                            (<Trans
-                                                                i18nKey={ "common:networkErrorMessage.description" }
-                                                            >
-                                                                Please try signing in again.
-                                                            </Trans>)
-                                                        }
-                                                        primaryActionText={
-                                                            (<Trans
-                                                                i18nKey={
-                                                                    "common:networkErrorMessage.primaryActionText"
-                                                                }
-                                                            >
-                                                                Sign In
-                                                            </Trans>)
-                                                        }
-                                                        primaryAction={
-                                                            signOut
-                                                        }
-                                                    />
-                                                    <ChunkErrorModal
-                                                        heading={
-                                                            (<Trans
-                                                                i18nKey={
-                                                                    "common:chunkLoadErrorMessage.heading"
-                                                                }
-                                                            >
-                                                                Something went wrong
-                                                            </Trans>)
-                                                        }
-                                                        description={
-                                                            (<Trans
-                                                                i18nKey={
-                                                                    "common:chunkLoadErrorMessage.description"
-                                                                }
-                                                            >
-                                                                An error occurred when serving the requested
-                                                                application. Please try reloading the app.
-                                                            </Trans>)
-                                                        }
-                                                        primaryActionText={
-                                                            (<Trans
-                                                                i18nKey={
-                                                                    "common:chunkLoadErrorMessage.primaryActionText"
-                                                                }
-                                                            >
-                                                                Reload the App
-                                                            </Trans>)
-                                                        }
-                                                    />
-                                                    <Switch>
-                                                        <Redirect
-                                                            exact
-                                                            from="/"
-                                                            to={ AppConstants.getAppHomePath() }
+                                                <SessionTimedOutContext.Provider value={ sessionTimedOut }>
+                                                    <>
+                                                        <Helmet>
+                                                            <title>{ appTitle }</title>
+                                                            {
+                                                                (window?.themeHash && window?.publicPath && theme)
+                                                                    ? (
+                                                                        <link
+                                                                            href={
+                                                                                `${
+                                                                                    window?.origin
+                                                                                }${
+                                                                                    window?.publicPath
+                                                                                }/libs/themes/${
+                                                                                    theme
+                                                                                }/theme.${ window?.themeHash }.min.css`
+                                                                            }
+                                                                            rel="stylesheet"
+                                                                            type="text/css"
+                                                                        />
+                                                                    )
+                                                                    : null
+                                                            }
+                                                        </Helmet>
+                                                        <NetworkErrorModal
+                                                            heading={
+                                                                (<Trans
+                                                                    i18nKey={ "common:networkErrorMessage.heading" }
+                                                                >
+                                                                    Your session has expired
+                                                                </Trans>)
+                                                            }
+                                                            description={
+                                                                (<Trans
+                                                                    i18nKey={ "common:networkErrorMessage.description" }
+                                                                >
+                                                                    Please try signing in again.
+                                                                </Trans>)
+                                                            }
+                                                            primaryActionText={
+                                                                (<Trans
+                                                                    i18nKey={
+                                                                        "common:networkErrorMessage.primaryActionText"
+                                                                    }
+                                                                >
+                                                                    Sign In
+                                                                </Trans>)
+                                                            }
+                                                            primaryAction={
+                                                                signOut
+                                                            }
                                                         />
-                                                        {
-                                                            baseRoutes.map((route, index) => {
-                                                                return (
-                                                                    route.protected ?
-                                                                        (
-                                                                            <ProtectedRoute
-                                                                                component={ route.component }
-                                                                                path={ route.path }
-                                                                                key={ index }
-                                                                                exact={ route.exact }
-                                                                            />
-                                                                        )
-                                                                        :
-                                                                        (
-                                                                            <Route
-                                                                                path={ route.path }
-                                                                                render={ (props) =>
-                                                                                    (<route.component
-                                                                                        { ...props }
-                                                                                    />)
-                                                                                }
-                                                                                key={ index }
-                                                                                exact={ route.exact }
-                                                                            />
-                                                                        )
-                                                                );
-                                                            })
-                                                        }
-                                                    </Switch>
-                                                </>
+                                                        <ChunkErrorModal
+                                                            heading={
+                                                                (<Trans
+                                                                    i18nKey={
+                                                                        "common:chunkLoadErrorMessage.heading"
+                                                                    }
+                                                                >
+                                                                    Something went wrong
+                                                                </Trans>)
+                                                            }
+                                                            description={
+                                                                (<Trans
+                                                                    i18nKey={
+                                                                        "common:chunkLoadErrorMessage.description"
+                                                                    }
+                                                                >
+                                                                    An error occurred when serving the requested
+                                                                    application. Please try reloading the app.
+                                                                </Trans>)
+                                                            }
+                                                            primaryActionText={
+                                                                (<Trans
+                                                                    i18nKey={
+                                                                        "common:chunkLoadErrorMessage.primaryActionText"
+                                                                    }
+                                                                >
+                                                                    Reload the App
+                                                                </Trans>)
+                                                            }
+                                                        />
+                                                        <Switch>
+                                                            <Redirect
+                                                                exact
+                                                                from="/"
+                                                                to={ AppConstants.getAppHomePath() }
+                                                            />
+                                                            {
+                                                                baseRoutes.map((route, index) => {
+                                                                    return (
+                                                                        route.protected ?
+                                                                            (
+                                                                                <ProtectedRoute
+                                                                                    component={ route.component }
+                                                                                    path={ route.path }
+                                                                                    key={ index }
+                                                                                    exact={ route.exact }
+                                                                                />
+                                                                            )
+                                                                            :
+                                                                            (
+                                                                                <Route
+                                                                                    path={ route.path }
+                                                                                    render={ (props) =>
+                                                                                        (<route.component
+                                                                                            { ...props }
+                                                                                        />)
+                                                                                    }
+                                                                                    key={ index }
+                                                                                    exact={ route.exact }
+                                                                                />
+                                                                            )
+                                                                    );
+                                                                })
+                                                            }
+                                                        </Switch>
+                                                    </>
+                                                </SessionTimedOutContext.Provider>
                                             </SessionManagementProvider>
                                         </AccessControlProvider>
                                     </Suspense>

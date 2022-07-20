@@ -23,6 +23,7 @@ import { AdvancedSearch, AdvancedSearchPropsInterface, LinkButton, PrimaryButton
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Form, Grid } from "semantic-ui-react";
+import { SessionTimedOutContext } from "../../../app";
 import { commonConfig } from "../../../extensions";
 import { getAdvancedSearchIcons } from "../configs";
 
@@ -149,6 +150,7 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
     const [ isFormSubmitted, setIsFormSubmitted ] = useState<boolean>(false);
     const [ isFiltersReset, setIsFiltersReset ] = useState<boolean>(false);
     const [ externalSearchQuery, setExternalSearchQuery ] = useState<string>("");
+    const sessionTimedOut = React.useContext(SessionTimedOutContext);
 
     /**
      * Handles the form submit.
@@ -243,6 +245,7 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
             placeholder={ placeholder }
             resetSubmittedState={ handleResetSubmittedState }
             searchOptionsHeader={ t("console:common.advancedSearch.options.header") }
+            sessionTimedOut={ sessionTimedOut }
             enableQuerySearch={ enableQuerySearch }
             externalSearchQuery={ externalSearchQuery }
             submitted={ isFormSubmitted }

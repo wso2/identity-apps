@@ -48,6 +48,14 @@ export interface SessionManagementProviderPropsInterface extends TestableCompone
      */
     onLoginAgain?: () => void;
     /**
+     * Session Timed Out callback.
+     */
+    setSessionTimedOut?: (sessionTimedOut : boolean ) => void;
+    /**
+     * Session Timed Out variable.
+     */
+    sessionTimedOut?: boolean;
+    /**
      * Modal options.
      */
     modalOptions?: SessionManagementModalOptionsInterface;
@@ -142,6 +150,8 @@ export const SessionManagementProvider: FunctionComponent<PropsWithChildren<
             onSessionLogout,
             onLoginAgain,
             onSessionTimeoutAbort,
+            setSessionTimedOut,
+            sessionTimedOut,
             modalOptions,
             type
         } = props;
@@ -154,8 +164,7 @@ export const SessionManagementProvider: FunctionComponent<PropsWithChildren<
         ] = useState<SessionTimeoutEventStateInterface>(undefined);
         const [ showSessionTimeoutModal, setShowSessionTimeoutModal ] = useState<boolean>(false);
         const [ timerDisplay, setTimerDisplay ] = useState<string>(undefined);
-        const [ sessionTimedOut, setSessionTimedOut ] = useState<boolean>(false);
-
+        
         useEffect(() => {
             const sessionTimeoutListener = (e: MessageEventInit) => {
                 const state = e.data;
@@ -181,7 +190,7 @@ export const SessionManagementProvider: FunctionComponent<PropsWithChildren<
                 if (JSON.parse(timeout) && type === SessionTimeoutModalTypes.COUNTER) {
                     startTimer(idleTimeout - idleWarningTimeout);
                 }
-
+                setSessionTimedOut(true);
                 setShowSessionTimeoutModal(JSON.parse(timeout));
             };
 
@@ -213,6 +222,7 @@ export const SessionManagementProvider: FunctionComponent<PropsWithChildren<
 
             performCleanupTasks();
             setShowSessionTimeoutModal(false);
+            setSessionTimedOut(false);
         };
 
         /**
@@ -221,6 +231,7 @@ export const SessionManagementProvider: FunctionComponent<PropsWithChildren<
         const handleSessionLogout = (): void => {
             performCleanupTasks();
             setShowSessionTimeoutModal(false);
+            setSessionTimedOut(false);
             onSessionLogout();
         };
 
@@ -230,6 +241,7 @@ export const SessionManagementProvider: FunctionComponent<PropsWithChildren<
         const handleLoginAgain = (): void => {
             performCleanupTasks();
             setShowSessionTimeoutModal(false);
+            setSessionTimedOut(false);
             onLoginAgain();
         };
 
@@ -241,12 +253,14 @@ export const SessionManagementProvider: FunctionComponent<PropsWithChildren<
             // If the counter runs out or if the type of the modal is default, try the login again option.
             if (sessionTimedOut || type === SessionTimeoutModalTypes.DEFAULT) {
                 handleLoginAgain();
+                setSessionTimedOut(false);
 
                 return;
             }
 
             // If the counter hasn't run out, and the type of modal is other than `default` abort the termination.
             handleSessionTimeoutAbort();
+            setSessionTimedOut(false);
         };
 
         /**
