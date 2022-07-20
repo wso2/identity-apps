@@ -235,7 +235,7 @@ export const getOrganizationPermissions = (): Promise<any> => {
                 },
                 {
                     "displayName": "Authentication",
-                    "resourcePath": "/permission/admin/manage/identity/authentication/"
+                    "resourcePath": "/permission/admin/manage/identity/authentication"
                 },
                 {
                     "displayName": "Claim Management",
@@ -283,7 +283,7 @@ export const getOrganizationPermissions = (): Promise<any> => {
                 },
                 {
                     "displayName": "Sessions",
-                    "resourcePath": "/permission/admin/manage/identity/authentication/session/"
+                    "resourcePath": "/permission/admin/manage/identity/authentication/session"
                 },
                 {
                     "displayName": "CORS Origins",
