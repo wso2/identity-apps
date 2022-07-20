@@ -141,7 +141,9 @@ export const getIdentityProviderTemplatesConfig = (): IdentityProviderTemplatesC
                                 wizardHelp: lazy(() => import("./templates/" +
                                 "organization-enterprise-identity-provider/create-wizard-help"))
                             },
-                            enabled: true,
+                            enabled: window["AppUtils"].getConfig().ui.identityProviderTemplates
+                                ?.organizationEnterprise?.enabled
+                                ?? identityProviderConfig.templates.organizationEnterprise,
                             id: OrganizationEnterpriseIDPTemplate.id,
                             resource: OrganizationEnterpriseIDPTemplate
                         },
