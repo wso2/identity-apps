@@ -16,7 +16,8 @@
  * under the License.
  */
 
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { SessionStorageUtils } from "@wso2is/core/utils";
 import { GenericIcon } from "@wso2is/react-components";
 import React, {
@@ -29,7 +30,7 @@ import React, {
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Button, Divider, Dropdown, Input, Item, Menu, Placeholder, Popup } from "semantic-ui-react";
 import { organizationConfigs } from "../../../../extensions";
 import { ReactComponent as CrossIcon } from "../../../../themes/default/assets/images/icons/cross-icon.svg";
@@ -50,6 +51,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
     const { "data-componentid": componentId } = props;
 
     const { t } = useTranslation();
+    const dispatch = useDispatch();
 
     const currentOrganization: OrganizationInterface = useSelector(
         (state: AppState) => state.organization.organization
@@ -78,6 +80,37 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
 
                 setPaginationData(response.links);
             }
+        }).catch((error) => {
+            setAssociatedOrganizations([ OrganizationManagementConstants.ROOT_ORGANIZATION ]);
+
+            if (error?.description) {
+                dispatch(
+                    addAlert({
+                        description: error.description,
+                        level: AlertLevels.ERROR,
+                        message: t(
+                            "console:manage.features.organizations.notifications." +
+                                    "getOrganizationList.error.message"
+                        )
+                    })
+                );
+
+                return;
+            }
+
+            dispatch(
+                addAlert({
+                    description: t(
+                        "console:manage.features.organizations.notifications.getOrganizationList" +
+                                ".genericError.description"
+                    ),
+                    level: AlertLevels.ERROR,
+                    message: t(
+                        "console:manage.features.organizations.notifications." +
+                                "getOrganizationList.genericError.message"
+                    )
+                })
+            );
         });
     }, []);
 
@@ -172,14 +205,17 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
         e.stopPropagation();
     };
 
-    const getOrganizationItemGroup = (organization: OrganizationInterface) => (
+    const getOrganizationItemGroup = (organization: OrganizationInterface, isClickable: boolean) => (
         <Item.Group className="tenant-item-wrapper" unstackable>
             <Item
                 className="header"
                 key={ `${ organization?.name }-organization-item` }
-                onClick={ () => {
-                    handleOrganizationSwitch(organization);
-                } }
+                onClick={ isClickable
+                    ? () => {
+                        handleOrganizationSwitch(organization);
+                    }
+                    : null
+                }
             >
                 {
                     <GenericIcon
@@ -238,7 +274,9 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                 >
                     { associatedOrganizations.length > 0 ? (
                         associatedOrganizations.map((organization, _) =>
-                            organization.id !== currentOrganization?.id ? getOrganizationItemGroup(organization) : null
+                            organization.id !== currentOrganization?.id
+                                ? getOrganizationItemGroup(organization, true)
+                                : null
                         )
                     ) : (
                         <Item className="empty-list">
@@ -318,7 +356,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                 open={ isDropDownOpen }
             >
                 <Dropdown.Menu onClick={ handleDropdownClick }>
-                    { getOrganizationItemGroup(currentOrganization) }
+                    { getOrganizationItemGroup(currentOrganization, false) }
 
                     <Divider />
 

@@ -218,12 +218,12 @@ export const updateProfileImageURL = (url: string): Promise<ProfileInfoInterface
  * @return {Promise<ProfileSchemaInterface[]>} Array of profile schemas as a Promise.
  * @throws {IdentityAppsApiException}
  */
-export const getProfileSchemas = (): Promise<ProfileSchemaInterface[]> => {
+export const getProfileSchemas = (url?: string): Promise<ProfileSchemaInterface[]> => {
 
     const requestConfig = {
         headers: HTTPRequestHeaders(ContextUtils.getRuntimeConfig().clientHost, null, ContentTypeHeaderValues.APP_JSON),
         method: HttpMethods.GET,
-        url: CommonServiceResourcesEndpoints(ContextUtils.getRuntimeConfig().serverHost).profileSchemas
+        url: url ?? CommonServiceResourcesEndpoints(ContextUtils.getRuntimeConfig().serverHost).profileSchemas
     };
     const schemaAttributes: ProfileSchemaInterface[] = [];
 

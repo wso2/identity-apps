@@ -107,6 +107,9 @@
         {% endfor %}
         {% endif %}
     },
+    {% if console.get_profile_info_from_id_token is defined %}
+        "getProfileInfoFromIDToken": {{ console.get_profile_info_from_id_token }},
+    {% endif %}
     "ui": {
         "announcements": [
             {% if console.ui.announcements is defined %}

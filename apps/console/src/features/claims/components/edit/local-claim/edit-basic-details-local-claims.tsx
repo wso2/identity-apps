@@ -46,7 +46,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Divider, Grid, Form as SemanticForm } from "semantic-ui-react";
 import { attributeConfig } from "../../../../../extensions";
 import { SCIMConfigs } from "../../../../../extensions/configs/scim";
-import { AppConstants, AppState, FeatureConfigInterface, history } from "../../../../core";
+import { AppConstants, AppState, FeatureConfigInterface, history, store } from "../../../../core";
 import { deleteAClaim, getExternalClaims, updateAClaim } from "../../../api";
 import { ClaimManagementConstants } from "../../../constants";
 
@@ -226,7 +226,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     const fetchUpdatedSchemaList = (): void => {
         dispatch(setProfileSchemaRequestLoadingStatus(true));
 
-        getProfileSchemas()
+        getProfileSchemas(store.getState().config.endpoint?.schemas)
             .then((response: ProfileSchemaInterface[]) => {
                 dispatch(setSCIMSchemas<ProfileSchemaInterface[]>(response));
             })
