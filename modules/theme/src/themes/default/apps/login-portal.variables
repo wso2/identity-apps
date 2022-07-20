@@ -14,3 +14,5 @@
 @loginPortalLoginCardBorderRadius: @defaultBorderRadius;
 @loginPortalProductTitleMargin: 2em 0 1em;
 @loginPortalProductTitleInHeaderMargin: 5px 0;
+@loginPortalExternalConnectionButtonBackgroundColor: #0000000a;
+@loginPortalExternalConnectionButtonHoverBackgroundColor: @white;

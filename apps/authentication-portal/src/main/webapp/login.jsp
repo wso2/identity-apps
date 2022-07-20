@@ -342,20 +342,24 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <br>
                                 <% } else { %>
-                                    <div class="field">
-                                        <button
-                                            class="ui icon button fluid"
-                                            onclick="handleNoDomain(this,
-                                                '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpName))%>',
-                                                '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpEntry.getValue()))%>')"
-                                            id="icon-<%=iconId%>"
-                                            title="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> <%=Encode.forHtmlAttribute(idpName)%>"
-                                        >
-                                            <img class="ui image" src="<%=Encode.forHtmlAttribute(imageURL)%>">
-                                            <span><%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> <%=Encode.forHtmlContent(idpName)%></span>
-                                        </button>
+                                    <div class="external-login blurring external-login-dimmer">
+                                        <div class="field">
+                                            <button
+                                                class="ui icon button fluid"
+                                                onclick="handleNoDomain(this,
+                                                    '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpName))%>',
+                                                    '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpEntry.getValue()))%>')"
+                                                id="icon-<%=iconId%>"
+                                                title="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> <%=Encode.forHtmlAttribute(idpName)%>"
+                                            >
+                                                <img class="ui image" src="<%=Encode.forHtmlAttribute(imageURL)%>">
+                                                <span><%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> <%=Encode.forHtmlContent(idpName)%></span>
+                                            </button>
+                                        </div>
                                     </div>
+                                    <br>
                                 <% } %>
                             <% } else if (localAuthenticatorNames.size() > 0) {
                                 if (localAuthenticatorNames.contains(IWA_AUTHENTICATOR)) {
