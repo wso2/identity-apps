@@ -234,6 +234,10 @@ export const getOrganizationPermissions = (): Promise<any> => {
                     "resourcePath": "/permission/admin/manage/identity"
                 },
                 {
+                    "displayName": "Authentication",
+                    "resourcePath": "/permission/admin/manage/identity/authentication/"
+                },
+                {
                     "displayName": "Claim Management",
                     "resourcePath": "/permission/admin/manage/identity/claimmgt"
                 },
@@ -276,6 +280,10 @@ export const getOrganizationPermissions = (): Promise<any> => {
                 {
                     "displayName": "Userstores Config",
                     "resourcePath": "/permission/admin/manage/identity/userstore/config"
+                },
+                {
+                    "displayName": "Sessions",
+                    "resourcePath": "/permission/admin/manage/identity/authentication/session/"
                 },
                 {
                     "displayName": "CORS Origins",
@@ -412,6 +420,10 @@ export const getOrganizationPermissions = (): Promise<any> => {
                 {
                     "displayName": "Claim Metadata view",
                     "resourcePath": "/permission/admin/manage/identity/claimmgt/metadata/view"
+                },
+                {
+                    "displayName": "Session view",
+                    "resourcePath": "/permission/admin/manage/identity/authentication/session/view"
                 }
             ],
             status: 200
