@@ -88,6 +88,14 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
     const { trySignInSilently, getDecodedIDToken, signOut } = useAuthContext();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
+    const [ sessionTimedOut, setSessionTimedOut ] = useState<boolean>(false);
+
+    /**
+     * set the value of Session Timed Out.
+     */
+    const handleSessionTimeOut = (timedOut: boolean): void => {
+        setSessionTimedOut(timedOut);
+    };
 
     /**
      * Set the deployment configs in redux state.
@@ -312,6 +320,8 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
                                                 onSessionTimeoutAbort={ handleSessionTimeoutAbort }
                                                 onSessionLogout={ handleSessionLogout }
                                                 onLoginAgain={ handleStayLoggedIn }
+                                                setSessionTimedOut={ handleSessionTimeOut }
+                                                sessionTimedOut={ sessionTimedOut }
                                                 modalOptions={ {
                                                     description: (
                                                         <Trans
