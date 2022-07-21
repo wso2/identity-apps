@@ -281,7 +281,9 @@ export const GitHubAuthenticationProviderCreateWizard: FunctionComponent<
         *
         * @param {GitHubAuthenticationProviderCreateWizardFormValuesInterface} values - Form values.
         */
-        const onSubmitWizard = (values: GitHubAuthenticationProviderCreateWizardFormValuesInterface): void => {
+        const onSubmitWizard = async (values: GitHubAuthenticationProviderCreateWizardFormValuesInterface): Promise<void> => {
+
+            await identityProviderConfig.overrideTemplate(template);
 
             const identityProvider: IdentityProviderInterface = { ...template.idp };
 

@@ -1286,6 +1286,7 @@ export interface ConsoleNS {
                             callbackUrl: FormAttributes;
                             clientId: FormAttributes;
                             clientSecret: FormAttributes;
+                            AdditionalQueryParameters: FormAttributes;
                             scopes: {
                                 heading: string;
                                 hint: string;

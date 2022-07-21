@@ -71,6 +71,7 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
 
     const userName: string = useSelector((state: AppState) => state.auth.username);
     const loginInit: boolean = useSelector((state: AppState) => state.auth.loginInit);
+    const isPrivilegedUser: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const appTitle: string = useSelector((state: AppState) => state?.config?.ui?.appTitle);
@@ -156,7 +157,7 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
             getDecodedIDToken()
                 .then((idToken: DecodedIDTokenPayload) => {
 
-                    if(has(idToken, "associated_tenants")) {
+                    if(has(idToken, "associated_tenants") || isPrivilegedUser) {
                         // If there is an assocation, the user is likely unauthorized by other criteria.
                         history.push({
                             pathname: AppConstants.getPaths().get("UNAUTHORIZED"),
