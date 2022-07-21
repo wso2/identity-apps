@@ -22,7 +22,6 @@ import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
 import { TemplateCardTagInterface } from "@wso2is/react-components";
 import groupBy from "lodash-es/groupBy";
-import isObject from "lodash-es/isObject";
 import startCase  from "lodash-es/startCase";
 import { getTechnologyLogos } from "../../core/configs";
 import { store } from "../../core/store";
@@ -190,22 +189,7 @@ export class ApplicationTemplateManagementUtils {
      * @return {TemplateCardTagInterface[]} Set of Technologies compatible for `TemplateCard`.
      */
     public static buildSupportedTechnologies(technologies: string[]): TemplateCardTagInterface[] {
-
-        const _technologies = technologies?.map((technology: string) => {
-
-            // If the technology is already resolved, return that istead of trying to resolve again.
-            if (typeof technology !== "string") {
-                if (isObject(technology)
-                    && Object.prototype.hasOwnProperty.call(technology, "displayName")
-                    && Object.prototype.hasOwnProperty.call(technology, "logo")
-                    && Object.prototype.hasOwnProperty.call(technology, "name")) {
-                    
-                    return technology;
-                }
-
-                return null;
-            }
-
+        return technologies?.map((technology: string) => {
             let logo = null;
 
             for (const [ key, value ] of Object.entries(getTechnologyLogos())) {
@@ -222,8 +206,6 @@ export class ApplicationTemplateManagementUtils {
                 name: technology
             };
         });
-
-        return _technologies.filter(Boolean);
     }
 
     /**

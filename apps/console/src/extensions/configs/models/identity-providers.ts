@@ -17,7 +17,7 @@
  */
 
 import { ReactNode } from "react";
-import { AuthenticatorInterface, IdentityProviderTemplateInterface } from "../../../features/identity-providers";
+import { AuthenticatorInterface } from "../../../features/identity-providers/models";
 
 export interface IdentityProviderConfig {
     /**
@@ -99,7 +99,6 @@ export interface IdentityProviderConfig {
     }
     fidoTags: string[];
     filterFidoTags: (tags: string[]) => string[];
-    overrideTemplate: (template?: IdentityProviderTemplateInterface) => void;
 }
 
 /**
