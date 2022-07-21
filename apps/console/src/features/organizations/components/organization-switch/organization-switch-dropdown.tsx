@@ -37,7 +37,12 @@ import { ReactComponent as CrossIcon } from "../../../../themes/default/assets/i
 import { AppConstants, AppState, getMiscellaneousIcons, getSidePanelIcons, history } from "../../../core";
 import { getOrganizations } from "../../api";
 import { OrganizationManagementConstants } from "../../constants";
-import { OrganizationInterface, OrganizationLinkInterface, OrganizationListInterface } from "../../models";
+import {
+    OrganizationInterface,
+    OrganizationLinkInterface,
+    OrganizationListInterface,
+    OrganizationResponseInterface
+} from "../../models";
 import { OrganizationUtils } from "../../utils";
 
 /**
@@ -53,7 +58,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
     const { t } = useTranslation();
     const dispatch = useDispatch();
 
-    const currentOrganization: OrganizationInterface = useSelector(
+    const currentOrganization: OrganizationResponseInterface = useSelector(
         (state: AppState) => state.organization.organization
     );
 
@@ -170,7 +175,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
         </span>
     );
 
-    const handleOrganizationSwitch = (organization: OrganizationInterface): void => {
+    const handleOrganizationSwitch = (organization: OrganizationInterface | OrganizationResponseInterface): void => {
         let newOrgPath: string = "";
 
         if (OrganizationUtils.isRootOrganization(organization)) {
@@ -205,7 +210,8 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
         e.stopPropagation();
     };
 
-    const getOrganizationItemGroup = (organization: OrganizationInterface, isClickable: boolean) => (
+    const getOrganizationItemGroup = (organization: OrganizationInterface | OrganizationResponseInterface,
+        isClickable: boolean) => (
         <Item.Group className="tenant-item-wrapper" unstackable>
             <Item
                 className="header"

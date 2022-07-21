@@ -24,7 +24,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { OrganizationPermissionList } from "./organization-role-permission";
 import { AppState } from "../../../core";
 import { patchOrganizationRoleDetails } from "../../api";
-import { OrganizationInterface, OrganizationRoleInterface, TreeNode } from "../../models";
+import { OrganizationResponseInterface, OrganizationRoleInterface, TreeNode } from "../../models";
 
 /**
  * Interface to capture permission edit props.
@@ -58,7 +58,7 @@ export const RolePermissionDetails: FunctionComponent<RolePermissionDetailProps>
     const { t } = useTranslation();
     const dispatch = useDispatch();
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
-    const currentOrganization: OrganizationInterface = useSelector(
+    const currentOrganization: OrganizationResponseInterface = useSelector(
         (state: AppState) => state.organization.organization
     );
 

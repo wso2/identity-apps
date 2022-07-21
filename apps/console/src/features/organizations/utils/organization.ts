@@ -17,7 +17,7 @@
 */
 
 import { OrganizationManagementConstants } from "../constants";
-import { OrganizationResponseInterface } from "../models";
+import { OrganizationInterface, OrganizationResponseInterface } from "../models";
 
 export class OrganizationUtils {
     /**
@@ -34,7 +34,7 @@ export class OrganizationUtils {
      *
      * @returns {boolean}
      */
-    public static isRootOrganization(organization: OrganizationResponseInterface): boolean {
+    public static isRootOrganization(organization: OrganizationResponseInterface | OrganizationInterface): boolean {
         return !organization || organization.id === OrganizationManagementConstants.ROOT_ORGANIZATION_ID;
     }
 }

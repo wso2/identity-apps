@@ -49,7 +49,7 @@ import { createOrganizationRole, getOrganizationRoles } from "../api/organizatio
 import { OrganizationRoleList } from "../components";
 import { AddOrganizationRoleWizard } from "../components/add-organization-role-wizard";
 import {
-    OrganizationInterface,
+    OrganizationResponseInterface,
     OrganizationRoleListItemInterface,
     OrganizationRoleListResponseInterface
 } from "../models";
@@ -98,7 +98,7 @@ const OrganizationRoles: FunctionComponent<OrganizationRolesPageInterface> = (
     const [ activePage, setActivePage ] = useState<number>(1);
 
     const [ paginationReset, triggerResetPagination ] = useTrigger();
-    const currentOrganization: OrganizationInterface = useSelector(
+    const currentOrganization: OrganizationResponseInterface = useSelector(
         (state: AppState) => state.organization.organization
     );
 
