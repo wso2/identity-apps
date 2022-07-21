@@ -48,22 +48,24 @@ import {
 } from "@wso2is/i18n";
 import axios, { AxiosResponse } from "axios";
 import has from "lodash-es/has";
-import React, { FunctionComponent, ReactElement, lazy, useEffect, useState } from "react";
+import React, {FunctionComponent, lazy, ReactElement, useEffect, useState } from "react";
 import { I18nextProvider, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { commonConfig } from "./extensions";
 import { AuthenticateUtils, getProfileInformation } from "./features/authentication";
-import { Config,
+import {
+    Config,
     DeploymentConfigInterface,
     HttpUtils,
     PreLoader,
     setGetOrganizationLoading,
     setOrganization,
-    store } from "./features/core";
+    store
+} from "./features/core";
 import { AppConstants, CommonConstants } from "./features/core/constants";
 import { history } from "./features/core/helpers";
-import { getOrganizations } from "./features/organizations/api";
-import { OrganizationListInterface } from "./features/organizations/models";
+import { getOrganization } from "./features/organizations/api";
+import { OrganizationResponseInterface } from "./features/organizations/models";
 
 const AUTHORIZATION_ENDPOINT = "authorization_endpoint";
 const TOKEN_ENDPOINT = "token_endpoint";
@@ -118,24 +120,40 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             await dispatch(setServiceResourceEndpoints(Config.getServiceResourceEndpoints()));
 
             if (window[ "AppUtils" ].getConfig().organizationName) {
-                const orgName = window[ "AppUtils" ].getConfig().organizationName;
+                // We are actually getting the orgId here rather than orgName
+                const orgId = window["AppUtils"].getConfig().organizationName;
+
+                // Setting a dummy object until real data comes from the API
+                dispatch(setOrganization({
+                    attributes: [],
+                    created: new Date().toString(),
+                    description: "",
+                    domain: "",
+                    id: orgId,
+                    lastModified: new Date().toString(),
+                    name: orgId,
+                    parent: {
+                        id: "",
+                        ref: ""
+                    },
+                    status: "",
+                    type: ""
+                }));
+                await dispatch(setServiceResourceEndpoints(Config.getServiceResourceEndpoints()));
 
                 dispatch(setGetOrganizationLoading(true));
-                await getOrganizations(`id eq ${ orgName }`, 1, null, null, true, true)
-                    .then(async (orgResponse: OrganizationListInterface) => {
-                        dispatch(setOrganization(orgResponse.organizations[ 0 ]));
-
-                        // Update the endpoints with organization path.
-                        await dispatch(setServiceResourceEndpoints(Config.getServiceResourceEndpoints()));
+                await getOrganization(orgId)
+                    .then(async (orgResponse: OrganizationResponseInterface) => {
+                        dispatch(setOrganization(orgResponse));
 
                         await requestCustomGrant({
                             attachToken: false,
                             data: {
                                 client_id: "{{clientID}}",
                                 grant_type: "organization_switch",
-                                scope: window[ "AppUtils" ].getConfig().idpConfigs?.scope.join(" ")
-                            ?? TokenConstants.SYSTEM_SCOPE,
-                                switching_organization: orgName,
+                                scope: window["AppUtils"].getConfig().idpConfigs?.scope.join(" ")
+                                    ?? TokenConstants.SYSTEM_SCOPE,
+                                switching_organization: orgId,
                                 token: "{{token}}"
                             },
                             id: "orgSwitch",

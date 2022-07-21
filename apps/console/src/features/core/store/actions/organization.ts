@@ -17,7 +17,7 @@
 */
 
 import { OrganizationActionTypes, SetGetOrganizationLoadingActionInterface, SetOrganizationActionInterface } from "./types";
-import { OrganizationInterface } from "../../../organizations/models";
+import { OrganizationInterface, OrganizationResponseInterface } from "../../../organizations/models";
 
 /**
  * This action sets an organization in the redux store.
@@ -26,7 +26,7 @@ import { OrganizationInterface } from "../../../organizations/models";
  *
  * @returns {SetOrganizationActionInterface} - A set organization action
  */
-export const setOrganization = (organization: OrganizationInterface): SetOrganizationActionInterface => {
+export const setOrganization = (organization: OrganizationResponseInterface): SetOrganizationActionInterface => {
     return {
         payload: organization,
         type: OrganizationActionTypes.SET_ORGANIZATION
