@@ -79,10 +79,9 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
         on(Hooks.HttpRequestStart, HttpUtils.onHttpRequestStart);
         on(Hooks.HttpRequestSuccess, HttpUtils.onHttpRequestSuccess);
 
-        on(Hooks.SignIn, async (response: BasicUserInfo) => {
+        on(Hooks.SignIn, (response: BasicUserInfo) => {
             let logoutUrl;
             let logoutRedirectUrl;
-            let isPrivilegedUser: boolean = false;
 
             const event = new Event(CommonConstantsCore.AUTHENTICATION_SUCCESSFUL_EVENT);
 
@@ -174,29 +173,21 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                     ContextUtils.setRuntimeConfig(Config.getDeploymentConfig());
                 });
 
-            await getDecodedIDToken()
+            getDecodedIDToken()
                 .then((idToken) => {
                     const subParts = idToken.sub.split("@");
                     const tenantDomain = subParts[ subParts.length - 1 ];
-                    isPrivilegedUser = idToken?.amr?.length > 0
-                        ? idToken?.amr[0] === "EnterpriseIDPAuthenticator"
-                        : false;
-                    const firstName = idToken?.given_name;
-                    const lastName = idToken?.family_name;
-                    const fullName = firstName ? (firstName + (lastName ? (" " + lastName) : "")) : response.email;
 
                     dispatch(
                         setSignIn<AuthenticatedUserInfo & TenantListInterface>({
                             allowedScopes: response.allowedScopes,
-                            associatedTenants:  isPrivilegedUser ? tenantDomain : idToken?.associated_tenants,
-                            defaultTenant: isPrivilegedUser ? tenantDomain : idToken?.default_tenant,
+                            associatedTenants: idToken?.associated_tenants,
+                            defaultTenant: idToken?.default_tenant,
                             displayName: response.displayName,
                             display_name: response.displayName,
                             email: response.email,
                             tenantDomain: response.tenantDomain ?? tenantDomain,
-                            username: idToken.sub,
-                            isPrivilegedUser: isPrivilegedUser,
-                            fullName: fullName
+                            username: idToken.sub
                         })
                     );
                 })
@@ -236,11 +227,6 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                         );
                     }
 
-                    if (isPrivilegedUser) {
-                        logoutRedirectUrl = window[ "AppUtils" ].getConfig().clientOrigin
-                            + window[ "AppUtils" ].getConfig().routes.login;
-                    }
-
                     sessionStorage.setItem(AUTHORIZATION_ENDPOINT, authorizationEndpoint);
                     sessionStorage.setItem(OIDC_SESSION_IFRAME_ENDPOINT, oidcSessionIframeEndpoint);
                     sessionStorage.setItem(TOKEN_ENDPOINT, tokenEndpoint);
@@ -259,7 +245,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                     throw error;
                 });
 
-            await !isPrivilegedUser && dispatch(
+            dispatch(
                 getProfileInformation(
                     Config.getServiceResourceEndpoints().me,
                     window[ "AppUtils" ].getConfig().clientOriginWithTenant
@@ -279,12 +265,9 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
              */
             getDecodedIDToken()
                 .then((idToken: DecodedIDTokenPayload) => {
-                    const isPrivilegedUser = idToken?.amr?.length > 0
-                        ? idToken?.amr[0] === "EnterpriseIDPAuthenticator"
-                        : false;
 
-                    if(has(idToken, "associated_tenants") || isPrivilegedUser) {
-                        // If there is an association, the user should be redirected to console landing page.
+                    if(has(idToken, "associated_tenants")) {
+                        // If there is an assocation, the user should be redirected to console landing page.
                         const location =
                             !AuthenticationCallbackUrl || AuthenticationCallbackUrl === AppConstants.getAppLoginPath()
                                 ? AppConstants.getAppHomePath()

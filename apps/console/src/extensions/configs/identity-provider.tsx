@@ -62,12 +62,6 @@ export const identityProviderConfig: IdentityProviderConfig = {
     filterFidoTags:(tags: string[]): string[] => {
         return tags;
     },
-    /**
-     * This is a temporary fix to set the provisioning userstore depending on the available userstore.
-     */
-    overrideTemplate: (): void => {
-        return;
-    },
     // Handles backward compatibility with the legacy IDP view & new connections view.
     // TODO: Remove this usage once https://github.com/wso2/product-is/issues/12052 is addressed.
     useNewConnectionsView: false,

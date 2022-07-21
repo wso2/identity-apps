@@ -125,28 +125,24 @@ export const MappedAttributes: FunctionComponent<MappedAttributesPropsInterface>
                         <Grid>
                             { userStore.map((store: UserStoreListItem, index: number) => {
                                 return (
-                                    <>
-                                        { store?.enabled && (
-                                            <Grid.Row columns={ 2 } key={ index }>
-                                                <Grid.Column className="centered-text" width={ 4 }>
-                                                    { store.name }
-                                                </Grid.Column>
-                                                <Grid.Column width={ 12 }>
-                                                    <Field
-                                                        type="text"
-                                                        name={ store.name }
-                                                        placeholder={ t("console:manage.features.claims.local.forms." +
-                                                            "attribute.placeholder") }
-                                                        required={ true }
-                                                        requiredErrorMessage={ t("console:manage.features.claims." +
-                                                            "local.forms.attribute.requiredErrorMessage") }
-                                                        value={ values?.get(store.name)?.toString() }
-                                                        data-testid={ `${ testId }-form-store-name-input` }
-                                                    />
-                                                </Grid.Column>
-                                            </Grid.Row>
-                                        ) }
-                                    </>
+                                    <Grid.Row columns={ 2 } key={ index }>
+                                        <Grid.Column className="centered-text" width={ 4 }>
+                                            { store.name }
+                                        </Grid.Column>
+                                        <Grid.Column width={ 12 }>
+                                            <Field
+                                                type="text"
+                                                name={ store.name }
+                                                placeholder={ t("console:manage.features.claims.local.forms." +
+                                                    "attribute.placeholder") }
+                                                required={ true }
+                                                requiredErrorMessage={ t("console:manage.features.claims.local.forms." +
+                                                    "attribute.requiredErrorMessage") }
+                                                value={ values?.get(store.name)?.toString() }
+                                                data-testid={ `${ testId }-form-store-name-input` }
+                                            />
+                                        </Grid.Column>
+                                    </Grid.Row>
                                 );
                             }) }
                         </Grid>
