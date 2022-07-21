@@ -4,7 +4,7 @@ name: PR Builder
 
 on:
   pull_request:
-    branches: [ master, 1.2.x ]
+    branches: [ master ]
     paths-ignore:
       - "docs/**"
       - "CONTRIBUTING.md"
