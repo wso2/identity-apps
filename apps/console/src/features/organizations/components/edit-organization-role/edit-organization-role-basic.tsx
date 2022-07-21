@@ -28,7 +28,11 @@ import { AppConstants, AppState, SharedUserStoreConstants, SharedUserStoreUtils,
 import { PRIMARY_USERSTORE_PROPERTY_VALUES } from "../../../userstores";
 import { deleteOrganizationRole, getOrganizationRoles, patchOrganizationRoleDetails } from "../../api";
 import { OrganizationRoleManagementConstants } from "../../constants";
-import { OrganizationInterface, OrganizationRoleInterface, PatchOrganizationRoleDataInterface } from "../../models";
+import {
+    OrganizationResponseInterface,
+    OrganizationRoleInterface,
+    PatchOrganizationRoleDataInterface
+} from "../../models";
 
 /**
  * Interface to contain props needed for component
@@ -82,7 +86,7 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
     const [ isRegExLoading, setRegExLoading ] = useState<boolean>(false);
     const [ userStore ] = useState<string>(SharedUserStoreConstants.PRIMARY_USER_STORE);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
-    const currentOrganization: OrganizationInterface = useSelector(
+    const currentOrganization: OrganizationResponseInterface = useSelector(
         (state: AppState) => state.organization.organization
     );
 
