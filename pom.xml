@@ -40,7 +40,7 @@
         <url>https://github.com/wso2/identity-apps.git</url>
         <developerConnection>scm:git:https://github.com/wso2/identity-apps.git</developerConnection>
         <connection>scm:git:https://github.com/wso2/identity-apps.git</connection>
-        <tag>v1.2.1066-SNAPSHOT</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <modules>
