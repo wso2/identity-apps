@@ -16,8 +16,12 @@
 * under the License.
 */
 
-import { OrganizationActionTypes, SetGetOrganizationLoadingActionInterface, SetOrganizationActionInterface } from "./types";
-import { OrganizationInterface, OrganizationResponseInterface } from "../../../organizations/models";
+import {
+    OrganizationActionTypes,
+    SetGetOrganizationLoadingActionInterface,
+    SetOrganizationActionInterface
+} from "./types";
+import { OrganizationResponseInterface } from "../../../organizations/models";
 
 /**
  * This action sets an organization in the redux store.
