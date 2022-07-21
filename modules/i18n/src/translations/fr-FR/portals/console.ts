@@ -1379,6 +1379,11 @@ export const console: ConsoleNS = {
                                     customSaml: "Ce certificat permet de valider les signatures des " +
                                         "requêtes signées et de chiffrer les assertions SAML renvoyées " +
                                         "après authentification."
+                                },
+                                invalidOperationModal: {
+                                    header: "Opération invalide",
+                                    message: "Pour supprimer le certificat, vous devez décocher la validation"+
+                                        " de la signature de la demande."
                                 }
                             }
                         }
