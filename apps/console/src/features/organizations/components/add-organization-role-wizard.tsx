@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2022, WSO2 Inc. (http://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (http://www.wso2.com) All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -21,15 +21,14 @@ import { useTrigger } from "@wso2is/forms";
 import { Heading, LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
 import { Button, Grid, Icon, Modal } from "semantic-ui-react";
+import { CreateOrganizationRoleSummary } from "./add-organization-role/organization-role-sumary";
 import { OrganizationPermissionList } from "./edit-organization-role/organization-role-permission";
 import { CreateGroupMemberInterface, GroupsInterface, getGroupList } from "../../groups";
 import {
     AssignGroupsUsers,
     CreateRoleInterface,
     CreateRoleMemberInterface,
-    CreateRoleSummary,
     RoleBasics,
     TreeNode,
     getRolesWizardStepIcons
@@ -86,7 +85,6 @@ export const AddOrganizationRoleWizard: FunctionComponent<AddOrganizationRolePro
     } = props;
 
     const { t } = useTranslation();
-    const dispatch = useDispatch();
 
     const [ currentStep, setCurrentWizardStep ] = useState<number>(initStep);
     const [ partiallyCompletedStep, setPartiallyCompletedStep ] = useState<number>(undefined);
@@ -308,8 +306,8 @@ export const AddOrganizationRoleWizard: FunctionComponent<AddOrganizationRolePro
         title: t("console:manage.features.roles.addRoleWizard.wizardSteps.4")
     }, {
         content: (
-            <CreateRoleSummary
-                data-testid="add-role-summary"
+            <CreateOrganizationRoleSummary
+                data-testid="organization-add-role-summary"
                 isAddGroup={ isAddGroup }
                 triggerSubmit={ finishSubmit }
                 onSubmit={ handleRoleWizardFinish }
