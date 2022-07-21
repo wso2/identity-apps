@@ -114,6 +114,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
 
             let tenantDomain: string = "";
 
+            // This is to make sure the call to the organization endpoint is generated.
             await dispatch(setServiceResourceEndpoints(Config.getServiceResourceEndpoints()));
 
             if (window[ "AppUtils" ].getConfig().organizationName) {
@@ -123,6 +124,8 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                 await getOrganizations(`id eq ${ orgName }`, 1, null, null, true, true)
                     .then(async (orgResponse: OrganizationListInterface) => {
                         dispatch(setOrganization(orgResponse.organizations[ 0 ]));
+
+                        // Update the endpoints with organization path.
                         await dispatch(setServiceResourceEndpoints(Config.getServiceResourceEndpoints()));
 
                         await requestCustomGrant({
@@ -180,6 +183,8 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
 
             // Update the app base name with the newly resolved tenant.
             window[ "AppUtils" ].updateTenantQualifiedBaseName(tenantDomain);
+            // Update the endpoints with tenant path.
+            await dispatch(setServiceResourceEndpoints(Config.getServiceResourceEndpoints()));
 
             // When the tenant domain changes, we have to reset the auth callback in session storage.
             // If not, it will hang and the app will be unresponsive with in the tab.
