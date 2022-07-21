@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!--
+  ~ Copyright (c) 2022, WSO2 Inc. (http://www.wso2.com).
+  ~
+  ~ WSO2 Inc. licenses this file to you under the Apache License,
+  ~ Version 2.0 (the "License"); you may not use this file except
+  ~ in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~ KIND, either express or implied.  See the License for the
+  ~ specific language governing permissions and limitations
+  ~ under the License.
+  -->
+
+<taglib xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://java.sun.com/xml/ns/j2ee"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
+    http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd"
+        version="2.0">
+
+    <description>
+        A tag library for control the login portal page layouts
+    </description>
+    <tlib-version>1.0</tlib-version>
+    <short-name>layout.controller</short-name>
+    <uri>org.wso2.identity.apps.taglibs.layout.controller</uri>
+
+    <tag>
+        <description>
+            Processes the layout file and write correct layout and component execution result into
+            JSP page
+        </description>
+        <name>main</name>
+        <tag-class>org.wso2.identity.apps.taglibs.layout.controller.MainTagHandler</tag-class>
+        <body-content>JSP</body-content>
+
+        <attribute>
+            <description>
+                Name of the layout
+            </description>
+            <name>layoutName</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>
+                Path to the layout file relative to the current servlet
+            </description>
+            <name>layoutFileRelativePath</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>
+                All dynamic attributes used in the layout
+            </description>
+            <name>data</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>
+                Running mode is dev or not
+            </description>
+            <name>devMode</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>
+                Path to the test layout relative to the current servlet
+            </description>
+            <name>testLayoutFileRelativePath</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+
+    <tag>
+        <description>
+            Component code will be hold this tag
+        </description>
+        <name>component</name>
+        <tag-class>org.wso2.identity.apps.taglibs.layout.controller.ComponentTagHandler</tag-class>
+        <body-content>JSP</body-content>
+
+        <attribute>
+            <description>
+                Name of the component
+            </description>
+            <name>componentName</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+
+    <tag>
+        <description>
+            Dynamic component will be called inside this tag - Using an include action statement
+        </description>
+        <name>dynamicComponent</name>
+        <tag-class>org.wso2.identity.apps.taglibs.layout.controller.DynamicComponentTagHandler</tag-class>
+        <body-content>JSP</body-content>
+
+        <attribute>
+            <description>
+                Variable name for storing the dynamic component file path
+            </description>
+            <name>filePathStoringVariableName</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+</taglib>

@@ -105,6 +105,8 @@ apps/*/cache
 apps/myaccount/src/themes/
 apps/console/src/themes/
 apps/console/src/extensions/i18n/dist
+apps/*/src/main/webapp/extensions/layouts
+apps/console/src/login-portal-layouts
 
 # Integration test module.
 tests/output/
