@@ -48,7 +48,7 @@ import {
 } from "@wso2is/i18n";
 import axios, { AxiosResponse } from "axios";
 import has from "lodash-es/has";
-import React, {FunctionComponent, lazy, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, lazy, useEffect, useState } from "react";
 import { I18nextProvider, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { commonConfig } from "./extensions";
@@ -116,9 +116,6 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
 
             let tenantDomain: string = "";
 
-            // This is to make sure the call to the organization endpoint is generated.
-            await dispatch(setServiceResourceEndpoints(Config.getServiceResourceEndpoints()));
-
             if (window[ "AppUtils" ].getConfig().organizationName) {
                 // We are actually getting the orgId here rather than orgName
                 const orgId = window["AppUtils"].getConfig().organizationName;
@@ -139,6 +136,8 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                     status: "",
                     type: ""
                 }));
+
+                // This is to make sure the endpoints are generated with the organization path.
                 await dispatch(setServiceResourceEndpoints(Config.getServiceResourceEndpoints()));
 
                 dispatch(setGetOrganizationLoading(true));
