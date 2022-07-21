@@ -1383,7 +1383,9 @@ export const console: ConsoleNS = {
                                 invalidOperationModal: {
                                     header: "Opération invalide",
                                     message: "Pour supprimer le certificat, vous devez décocher la validation"+
-                                        " de la signature de la demande."
+                                        " de la signature de la demande. Lorsque la signature de demande ou de" + 
+                                        " réponse est activée, il est nécessaire d'avoir un certificat valide pour" + 
+                                        " vérifier la signature."
                                 }
                             }
                         }

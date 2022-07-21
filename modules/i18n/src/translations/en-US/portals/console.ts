@@ -1347,7 +1347,8 @@ export const console: ConsoleNS = {
                                 invalidOperationModal: {
                                     header: "Operation Invalid",
                                     message: "Inorder to remove the certificate you should uncheck the request "+
-                                        "signature validation."
+                                        "signature validation. When request or response signing is enabled it is "+
+                                        "required to have a valid certificate to verify the signature."
                                 }
                             }
                         }
