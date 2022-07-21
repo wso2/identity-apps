@@ -199,22 +199,21 @@
                                     <input type="submit" value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "authenticate")%>" class="ui primary button">
                                 </div>
                             </div>
+                            </form>
                         </div>
-                        </form>
+                        <div class="ui divider hidden"></div>
+                        <%
+                            String multiOptionURI = request.getParameter("multiOptionURI");
+                            if (multiOptionURI != null && isSendVerificationCodeByEmailEnabled && AuthenticationEndpointUtil.isValidURL(multiOptionURI)) {
+                        %>
+                            <a class="ui button secondary" id="goBackLink"
+                            href='<%=Encode.forHtmlAttribute(multiOptionURI)%>'>
+                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "choose.other.option")%>
+                            </a>
+                        <%
+                            }
+                        %>
                     </div>
-                    <div class="ui divider hidden"></div>
-                    <%
-                        String multiOptionURI = request.getParameter("multiOptionURI");
-                        if (multiOptionURI != null && isSendVerificationCodeByEmailEnabled && AuthenticationEndpointUtil.isValidURL(multiOptionURI)) {
-                    %>
-                        <a class="ui button secondary" id="goBackLink"
-                        href='<%=Encode.forHtmlAttribute(multiOptionURI)%>'>
-                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "choose.other.option")%>
-                        </a>
-                    <%
-                        }
-                    %>
-                </div>
             </layout:component>
             <layout:component componentName="ProductFooter" >
                 <!-- product-footer -->
