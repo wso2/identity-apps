@@ -233,7 +233,7 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                                             ariaLabel={ t("console:manage.features.organizations.edit.fields." +
                                                 "description.ariaLabel") }
                                             inputType="description"
-                                            maxLength={ 50 }
+                                            maxLength={ 300 }
                                             minLength={ 3 }
                                         />
                                     )

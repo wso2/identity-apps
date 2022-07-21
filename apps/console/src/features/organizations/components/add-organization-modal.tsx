@@ -259,7 +259,7 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
                                             "console:manage.features.organizations.forms." +
                                             "addOrganization.description.placeholder"
                                         ) }
-                                        maxLength={ 32 }
+                                        maxLength={ 300 }
                                         minLength={ 3 }
                                         data-componentid={ `${ testId }-description-input` }
                                         width={ 16 }
