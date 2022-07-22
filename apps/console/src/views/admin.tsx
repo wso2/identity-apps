@@ -142,7 +142,7 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
         = useSelector((state: AppState) => state?.organization?.getOrganizationLoading);
 
     const getOrganizationEnabledRoutes = useCallback((): RouteInterface[] => {
- /*        if (!OrganizationUtils.isRootOrganization(organization.organization)) {
+        if (!OrganizationUtils.isRootOrganization(organization.organization)) {
             const orgRoutes = RouteUtils.filterOrganizationEnabledRoutes(getAdminViewRoutes());
 
             // Mapping the name of org roles to "Roles" to unify role management sub menu item in both organization view
@@ -158,16 +158,15 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
         }
 
         // Remove the organization only routes from the admin view routes for root organizations.
-        return RouteUtils.filterOutOrganizationOnlyRoutes(getAdminViewRoutes()); */
         return RouteUtils.filterOutOrganizationOnlyRoutes(getAdminViewRoutes());
     }, [ organization.organization ]);
 
-/*     useEffect(() => {
+    useEffect(() => {
         const routes = getOrganizationEnabledRoutes();
 
         setDevelopRoutes(routes);
         setFilteredRoutes(routes);
-    }, [ getOrganizationEnabledRoutes ]); */
+    }, [ getOrganizationEnabledRoutes ]);
 
     useEffect(() => {
         const routes = getOrganizationEnabledRoutes();
@@ -463,9 +462,9 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
     const resolveRoutes = (): RouteInterface[] => {
         const resolvedRoutes = [];
 
-/*         if(organizationLoading){
+        if(organizationLoading){
             return resolvedRoutes;
-        } */
+        }
 
         const recurse = (routesArr): void => {
             routesArr.forEach((route, key) => {
@@ -531,7 +530,7 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
                     mobileSidePanelVisibility={ mobileSidePanelVisibility }
                     onSidePanelItemClick={ handleSidePanelItemClick }
                     onSidePanelPusherClick={ handleSidePanelPusherClick }
-                    routes={ /* !organizationLoading && */ CommonRouteUtils.sanitizeForUI(cloneDeep(filteredRoutes),
+                    routes={ !organizationLoading && CommonRouteUtils.sanitizeForUI(cloneDeep(filteredRoutes),
                         AppUtils.getHiddenRoutes()) }
                     selected={ selectedRoute }
                     translationHook={ t }
