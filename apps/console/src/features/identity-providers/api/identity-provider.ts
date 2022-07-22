@@ -22,7 +22,11 @@ import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
 import { identityProviderConfig } from "../../../extensions/configs";
 import { store } from "../../core";
-import useRequest, { RequestErrorInterface, RequestResultInterface } from "../../core/hooks/use-request";
+import useRequest, {
+    RequestConfigInterface,
+    RequestErrorInterface,
+    RequestResultInterface
+} from "../../core/hooks/use-request";
 import { IdentityProviderManagementConstants } from "../constants";
 import {
     AuthenticatorInterface,
@@ -143,7 +147,7 @@ export const useIdentityProviderList = <Data = IdentityProviderListResponseInter
     requiredAttributes?: string
 ): RequestResultInterface<Data, Error> => {
 
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         headers: {
             "Accept": "application/json",
             "Content-Type": "application/json"
