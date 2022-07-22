@@ -132,19 +132,19 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
 
 
     const getOrganizationEnabledRoutes = useCallback((): RouteInterface[] => {
-        if (!OrganizationUtils.isRootOrganization(organization.organization)) {
+        /* if (!OrganizationUtils.isRootOrganization(organization.organization)) {
             return RouteUtils.filterOrganizationEnabledRoutes(getDeveloperViewRoutes());
-        }
+        } */
 
         return getDeveloperViewRoutes();
     }, [ organization.organization ]);
 
-    useEffect(() => {
+ /*    useEffect(() => {
         const routes = getOrganizationEnabledRoutes();
 
         setManageRoutes(routes);
         setFilteredRoutes(routes);
-    }, [ getOrganizationEnabledRoutes ]);
+    }, [ getOrganizationEnabledRoutes ]); */
 
     /**
      * Make sure `DEVELOP` tab is highlighted when this layout is used.
@@ -318,9 +318,9 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
     const resolveRoutes = (): RouteInterface[] => {
         const resolvedRoutes = [];
 
-        if (organizationLoading) {
+        /* if (organizationLoading) {
             return resolvedRoutes;
-        }
+        } */
 
         const recurse = (routesArr): void => {
             routesArr.forEach((route, key) => {
@@ -392,8 +392,8 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
                     mobileSidePanelVisibility={ mobileSidePanelVisibility }
                     onSidePanelItemClick={ handleSidePanelItemClick }
                     onSidePanelPusherClick={ handleSidePanelPusherClick }
-                    routes={ !organizationLoading
-                        && CommonRouteUtils.sanitizeForUI(cloneDeep(filteredRoutes), AppUtils.getHiddenRoutes()) }
+                    routes={ /* !organizationLoading
+                        && */ CommonRouteUtils.sanitizeForUI(cloneDeep(filteredRoutes), AppUtils.getHiddenRoutes()) }
                     selected={ selectedRoute }
                     translationHook={ t }
                     allowedScopes={ allowedScopes }
