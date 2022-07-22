@@ -86,6 +86,14 @@
         </context-param>
     {% endif %}
 
+    {% if authenticationendpoint.console_url is defined %}
+     <!-- *************** Console URL ********************** -->
+        <context-param>
+            <param-name>ConsoleURL</param-name>
+            <param-value>{{ authenticationendpoint.console_url }}</param-value>
+        </context-param>
+    {% endif %}
+
     <!-- *************** End of Account Recovery Endpoint Context URL Configuration ********************** -->
     <!-- *************** Identity Server Endpoint URL Configuration ********************** -->
     {% if authenticationendpoint.identity_server_endpoint_url is defined %}

@@ -34,7 +34,6 @@ import org.wso2.identity.apps.taglibs.layout.controller.compiler.parsers.Parser;
 import java.io.File;
 import java.net.URL;
 import java.util.UUID;
-
 import javax.cache.Cache;
 import javax.cache.CacheManager;
 import javax.cache.Caching;

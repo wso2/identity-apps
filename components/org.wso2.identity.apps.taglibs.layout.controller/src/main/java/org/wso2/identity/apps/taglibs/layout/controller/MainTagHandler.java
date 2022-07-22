@@ -24,7 +24,6 @@ import java.io.PrintWriter;
 import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.Map;
-
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
 
@@ -70,6 +69,11 @@ public class MainTagHandler extends TagSupport {
         this.data = data;
     }
 
+    /**
+     * Set the cache.
+     *
+     * @param cache Whether the cache is enabled or not.
+     */
     public void setCache(boolean cache) {
 
         this.cache = cache;
