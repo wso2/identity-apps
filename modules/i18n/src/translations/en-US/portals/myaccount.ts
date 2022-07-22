@@ -601,7 +601,7 @@ export const myAccount: MyAccountNS = {
                         message: "This action will remove the QR code added to your profile. Do you wish to continue ? "
                     },
                     done: "Success! Now you can use your Authenticator App for two-factor authentication",
-                    heading: "Setup an Authenticator App",
+                    heading: "Set up an Authenticator App",
                     scan: {
                         additionNote: "QR code has been successfully added to your profile!",
                         authenticatorApps: "Authenticator Apps",
@@ -616,7 +616,7 @@ export const myAccount: MyAccountNS = {
                         "Google Authenticator from <3>App Store</3> or <3>Google Play</3>",
                     verify: {
                         error: "Verification failed. Please try again.",
-                        heading: "Enter the generated code to verify",
+                        heading: "Enter the generated code for verification",
                         label: "Verification Code",
                         placeholder: "Enter your verification code",
                         reScan: "Re-scan",
@@ -673,6 +673,8 @@ export const myAccount: MyAccountNS = {
                 regenerate: "Regenerate"
             },
             backupCode: {
+                description: "You can use backup codes to sign in if you can’t receive a verification " 
+                    + "code via the authenticator app.",
                 download: {
                     heading: "SAVE YOUR BACKUP CODES.",
                     info1: "You can only use each backup code once.",
@@ -682,21 +684,27 @@ export const myAccount: MyAccountNS = {
                 },
                 heading: "Backup Codes",
                 modals: {
-                    description: "Use the backup codes to sign in when you are away from your phone. " + 
-                        "You can genarate more when they are all used",
-                    download: {
-                        heading: "Download Codes"
+                    actions: {
+                        copied: "Copied",
+                        copy: "Copy Codes",
+                        download: "Download Codes",
+                        regenerate: "Regenerate"
                     },
+                    description: "Use backup codes to sign in when you are away from your phone.",
                     generate: {
                         description: "All of your backup codes are used. Lets generate a new set of backup codes",
                         heading: "Generate"
                     },
                     heading: "Backup Codes",
-                    info: "Each code can only be used once",
-                    refresh: {
-                        heading: "Refresh"
+                    info: "Each code can only be used once. You can generate more when all are used.",
+                    regenerate: {
+                        description: "After you generate new codes, your old codes will no longer work. " 
+                            + "Be sure to save the new codes once they are generated.",
+                        heading: "Confirmation"
                     },
-                    subHeading: "One time passcodes that you can use to sign in"    
+                    subHeading: "One time passcodes that you can use to sign in",
+                    warn: "These codes will appear only once. Be sure to save them now and store " 
+                        + "them somewhere safe but accessible."
                 },
                 notifications: {
                     deleteError: {
