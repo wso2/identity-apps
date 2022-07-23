@@ -584,6 +584,7 @@
                 padding: @sidePanelModalContentPadding;
                 line-height: @sidePanelModalContentPadding;
                 overflow: auto;
+                width: 100%;
                 &:not(.steps-container) {
                     height: @sidePanelModalContentHeight;
                 }

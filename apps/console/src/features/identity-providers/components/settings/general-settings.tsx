@@ -21,7 +21,7 @@ import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ConfirmationModal, ContentLoader, DangerZone, DangerZoneGroup } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { Trans, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { CheckboxProps, Divider, List } from "semantic-ui-react";
 import { getApplicationDetails } from "../../../applications/api";
@@ -96,6 +96,10 @@ interface GeneralSettingsInterface extends TestableComponentInterface {
      * IdP is a OIDC provider or not.
      */
     isOidc?: boolean;
+    /**
+     * Loading Component.
+     */
+    loader: () => ReactElement;
 }
 
 /**
@@ -121,6 +125,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
         hideIdPLogoEditField,
         isSaml,
         isOidc,
+        loader: Loader,
         [ "data-testid" ]: testId
     } = props;
 
@@ -419,7 +424,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                     }
                 </>
             )
-            : <ContentLoader/>
+            : <Loader />
     );
 };
 
