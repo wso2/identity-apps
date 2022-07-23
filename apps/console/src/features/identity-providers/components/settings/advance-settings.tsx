@@ -44,9 +44,17 @@ interface AdvanceSettingsPropsInterface extends TestableComponentInterface {
      */
     onUpdate: (id: string) => void;
     /**
+     * Is the idp info request loading.
+     */
+    isLoading?: boolean;
+    /**
      * Specifies if the component should only be read-only.
      */
     isReadOnly: boolean;
+    /**
+     * Loading Component.
+     */
+    loader: () => ReactElement;
 }
 
 /**
@@ -64,6 +72,8 @@ export const AdvanceSettings: FunctionComponent<AdvanceSettingsPropsInterface> =
         advancedConfigurations,
         onUpdate,
         isReadOnly,
+        isLoading,
+        loader: Loader,
         [ "data-testid" ]: testId
     } = props;
 
@@ -99,6 +109,10 @@ export const AdvanceSettings: FunctionComponent<AdvanceSettingsPropsInterface> =
                 setIsSubmitting(false);
             });
     };
+
+    if (isLoading) {
+        return <Loader />;
+    }
 
     return (
         <EmphasizedSegment className="advanced-configuration-section">

@@ -20,7 +20,7 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
 import { EmphasizedSegment, Heading } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Grid } from "semantic-ui-react";
 import { identityProviderConfig } from "../../../../extensions";
@@ -127,6 +127,13 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
         [ "data-testid" ]: testId
     } = props;
 
+    const certificateOptionsForTemplate: {
+        PEM: boolean;
+        JWKS: boolean;
+    } = useMemo(() => {
+        return identityProviderConfig.editIdentityProvider.getCertificateOptionsForTemplate(editingIDP?.templateId);
+    }, []);
+
     // const [ modifiedName, setModifiedName ] = useState<string>(name);
 
     const { t } = useTranslation();
@@ -195,6 +202,23 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
             isPrimary: !!values.isPrimary,
             name: values.name?.toString()
         });
+    };
+
+    /**
+     * Checks if the certificates section should be shown.
+     * @returns {boolean}
+     */
+    const shouldShowCertificates = (): boolean => {
+
+        let showCertificate: boolean = identityProviderConfig.generalDetailsForm.showCertificate;
+
+        if (certificateOptionsForTemplate !== undefined
+            && !certificateOptionsForTemplate.JWKS
+            && !certificateOptionsForTemplate.PEM) {
+            showCertificate = false;
+        }
+
+        return showCertificate;
     };
 
     return (
@@ -281,7 +305,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     ) }
                 </Form>
             </EmphasizedSegment>
-            { identityProviderConfig.generalDetailsForm.showCertificate && (
+            { shouldShowCertificates() && (
                 <React.Fragment>
                     <Divider hidden/>
                     <Grid>
@@ -292,10 +316,19 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                         </Grid.Row>
                     </Grid>
                     <IdpCertificates
-                        enableJWKS={ !isSaml }
+                        isJWKSEnabled={
+                            certificateOptionsForTemplate !== undefined
+                                ? certificateOptionsForTemplate.JWKS
+                                : !isSaml
+                        }
                         isReadOnly={ isReadOnly }
                         editingIDP={ editingIDP }
                         onUpdate={ onUpdate }
+                        isPEMEnabled={
+                            certificateOptionsForTemplate !== undefined
+                                ? certificateOptionsForTemplate.PEM
+                                : true
+                        }
                     />
                 </React.Fragment>
             ) }

@@ -19,7 +19,7 @@
 import { getUserStoreList } from "@wso2is/core/api";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { ContentLoader, EmphasizedSegment } from "@wso2is/react-components";
+import { EmphasizedSegment } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -52,6 +52,10 @@ interface JITProvisioningSettingsInterface extends TestableComponentInterface {
      * Specifies if the component should only be read-only.
      */
     isReadOnly: boolean;
+    /**
+     * Loading Component.
+     */
+    loader: () => ReactElement;
 }
 
 /**
@@ -69,6 +73,7 @@ export const JITProvisioningSettings: FunctionComponent<JITProvisioningSettingsI
         jitProvisioningConfigurations,
         onUpdate,
         isReadOnly,
+        loader: Loader,
         [ "data-testid" ]: testId
     } = props;
 
@@ -138,7 +143,7 @@ export const JITProvisioningSettings: FunctionComponent<JITProvisioningSettingsI
                     />
                 </EmphasizedSegment>
             )
-            : <ContentLoader/>
+            : <Loader />
     );
 };
 
