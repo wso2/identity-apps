@@ -215,7 +215,7 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
         }
 
         // TODO: Creating internal mapping to resolve the IDP template.
-        // TODO: Should be removed once template id is supported from IDP REST API
+        // TODO: First phase of the issue is fixed, keeping this for backward compatibility.
         // Tracked Here - https://github.com/wso2/product-is/issues/11023
         const resolveTemplateId = (authenticatorId: string) => {
 
@@ -238,8 +238,8 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
 
         const template: IdentityProviderTemplateItemInterface = identityProviderTemplates
             .find((template: IdentityProviderTemplateItemInterface) => {
-                return template.id === resolveTemplateId(
-                    connector.federatedAuthenticators?.defaultAuthenticatorId);
+                return template.id === (connector.templateId
+                    ?? resolveTemplateId(connector.federatedAuthenticators?.defaultAuthenticatorId));
             });
 
         setIdentityProviderTemplate(template);

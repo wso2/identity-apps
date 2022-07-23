@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { identityProviderConfig } from "../../../extensions/configs/identity-provider";
 import BasicAuthIcon from "../../../themes/default/assets/images/authenticators/basic-auth.png";
 import SMSOTPIcon from "../../../themes/default/assets/images/authenticators/sms-otp.svg";
 import SalesforceLogo from "../../../themes/default/assets/images/connectors/salesforce.png";
@@ -141,7 +142,8 @@ export const getIdPIcons = (): any => {
         smsOTP: SMSOTPIcon,
         twitter: TwitterIdPIllustration,
         wsFed: WSFedLogo,
-        yahoo: YahooIdPIllustration
+        yahoo: YahooIdPIllustration,
+        ...identityProviderConfig.getIconExtensions()
     };
 };
 
