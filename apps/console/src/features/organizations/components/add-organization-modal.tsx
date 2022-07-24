@@ -63,7 +63,6 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
 
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ type, setType ] = useState<ORGANIZATION_TYPE>(ORGANIZATION_TYPE.STRUCTURAL);
-    const [ duplicateName, setDuplicateName ] = useState<boolean>(false);
 
     const submitForm = useRef<() => void>();
 
@@ -71,28 +70,6 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
     const currentOrganization = useSelector((state: AppState) => state.organization.organization);
 
     const submitOrganization = async (values: OrganizationAddFormProps): Promise<void> => {
-        if (values?.name) {
-            try {
-                const response: OrganizationListInterface = await getOrganizations(
-                    `name eq ${ values.name }`,
-                    1,
-                    null,
-                    null,
-                    true
-                );
-
-                if (response?.organizations?.length > 0) {
-                    setDuplicateName(true);
-
-                    return;
-                } else {
-                    setDuplicateName(false);
-                }
-            } catch(error) {
-                setDuplicateName(false);
-            }
-        }
-
         const organization: AddOrganizationInterface = {
             description: values?.description,
             name: values?.name,
@@ -209,16 +186,6 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
                     <Grid>
                         <Grid.Row columns={ 1 }>
                             <Grid.Column width={ 16 }>
-                                { duplicateName && (
-                                    <Message negative data-componentid={ `${ testId }-duplicate-name-error` }>
-                                        <Message.Content>
-                                            { t(
-                                                "console:manage.features.organizations.forms." +
-                                                "addOrganization.name.validation.duplicate"
-                                            ) }
-                                        </Message.Content>
-                                    </Message>
-                                ) }
                                 <Form
                                     uncontrolledForm={ false }
                                     onSubmit={ submitOrganization }
@@ -242,9 +209,6 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
                                         minLength={ 3 }
                                         data-componentid={ `${ testId }-organization-name-input` }
                                         width={ 16 }
-                                        listen={ () => {
-                                            setDuplicateName(false);
-                                        } }
                                     />
                                     <Field.Input
                                         ariaLabel="Description"
@@ -259,7 +223,7 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
                                             "console:manage.features.organizations.forms." +
                                             "addOrganization.description.placeholder"
                                         ) }
-                                        maxLength={ 32 }
+                                        maxLength={ 300 }
                                         minLength={ 3 }
                                         data-componentid={ `${ testId }-description-input` }
                                         width={ 16 }

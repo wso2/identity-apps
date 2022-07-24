@@ -17,14 +17,14 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { ResourceTab } from "@wso2is/react-components";
+import { ContentLoader, EmphasizedSegment, ResourceTab } from "@wso2is/react-components";
 import React, {
     FunctionComponent,
     ReactElement,
     useEffect,
     useState
 } from "react";
-import { Loader, TabProps } from "semantic-ui-react";
+import { TabProps } from "semantic-ui-react";
 import {
     AdvanceSettings,
     AttributeSettings,
@@ -38,6 +38,7 @@ import { IdentityProviderManagementConstants } from "../constants";
 import {
     IdentityProviderAdvanceInterface,
     IdentityProviderInterface,
+    IdentityProviderTabTypes,
     IdentityProviderTemplateInterface
 } from "../models";
 
@@ -118,6 +119,9 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
     const [ tabPaneExtensions, setTabPaneExtensions ] = useState<any>(undefined);
     const [ defaultActiveIndex, setDefaultActiveIndex ] = useState<any>(0);
 
+    const isOrganizationEnterpriseAuthenticator = identityProvider.federatedAuthenticators
+        .defaultAuthenticatorId === IdentityProviderManagementConstants.ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID;
+
     const urlSearchParams: URLSearchParams = new URLSearchParams(location.search);
 
     const idpAdvanceConfig: IdentityProviderAdvanceInterface = {
@@ -126,6 +130,12 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
         homeRealmIdentifier: identityProvider.homeRealmIdentifier,
         isFederationHub: identityProvider.isFederationHub
     };
+
+    const Loader = (): ReactElement => (
+        <EmphasizedSegment padded>
+            <ContentLoader inline="centered" active/>
+        </EmphasizedSegment>
+    );
 
     const GeneralIdentityProviderSettingsTabPane = (): ReactElement => (
         <ResourceTab.Pane controlledSegmentation>
@@ -149,6 +159,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
                 onUpdate={ onUpdate }
                 data-testid={ `${ testId }-general-settings` }
                 isReadOnly = { isReadOnly }
+                loader={ Loader }
             />
         </ResourceTab.Pane>
     );
@@ -179,6 +190,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
                     )
                 }
                 isReadOnly={ isReadOnly }
+                loader={ Loader }
             />
         </ResourceTab.Pane>
     );
@@ -191,6 +203,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
                 onUpdate={ onUpdate }
                 data-testid={ `${ testId }-authenticator-settings` }
                 isReadOnly={ isReadOnly }
+                loader={ Loader }
             />
         </ResourceTab.Pane>
     );
@@ -204,6 +217,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
                 onUpdate={ onUpdate }
                 data-testid={ `${ testId }-outbound-provisioning-settings` }
                 isReadOnly={ isReadOnly }
+                loader={ Loader }
             />
         </ResourceTab.Pane>
     );
@@ -217,6 +231,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
                 onUpdate={ onUpdate }
                 data-testid={ `${ testId }-jit-provisioning-settings` }
                 isReadOnly={ isReadOnly }
+                loader={ Loader }
             />
         </ResourceTab.Pane>
     );
@@ -229,6 +244,8 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
                 onUpdate={ onUpdate }
                 data-testid={ `${ testId }-advance-settings` }
                 isReadOnly={ isReadOnly }
+                isLoading={ isLoading }
+                loader={ Loader }
             />
         </ResourceTab.Pane>
     );
@@ -279,7 +296,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
             render: GeneralIdentityProviderSettingsTabPane
         });
 
-        panes.push({
+        !isOrganizationEnterpriseAuthenticator && panes.push({
             menuItem: "Settings",
             render: AuthenticatorSettingsTabPane
         });
@@ -346,22 +363,28 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
             return false;
         }
 
-        return true;
+        const isTabEnabledInExtensions: boolean | undefined = identityProviderConfig
+            .editIdentityProvider
+            .isTabEnabledForIdP(type, IdentityProviderTabTypes.USER_ATTRIBUTES);
+
+        return isTabEnabledInExtensions !== undefined
+            ? isTabEnabledInExtensions
+            : true;
     };
 
+    if (!identityProvider || isLoading) {
+        return <Loader />;
+    }
+
     return (
-        identityProvider && !isLoading
-            ?  (
-                <ResourceTab
-                    data-testid={ `${ testId }-resource-tabs` }
-                    panes={ getPanes() }
-                    defaultActiveIndex={ defaultActiveIndex }
-                    onTabChange={ (e, data: TabProps ) => {
-                        setDefaultActiveIndex(data.activeIndex);
-                    } }
-                />
-            )
-            : <Loader />
+        <ResourceTab
+            data-testid={ `${ testId }-resource-tabs` }
+            panes={ getPanes() }
+            defaultActiveIndex={ defaultActiveIndex }
+            onTabChange={ (e, data: TabProps ) => {
+                setDefaultActiveIndex(data.activeIndex);
+            } }
+        />
     );
 };
 

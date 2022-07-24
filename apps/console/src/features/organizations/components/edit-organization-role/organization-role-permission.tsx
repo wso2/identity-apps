@@ -99,7 +99,11 @@ export const OrganizationPermissionList: FunctionComponent<OrganizationPermissio
                 });
                 setPreviouslyCheckedKeys(previousFormCheckedKeys);
                 previouslyCheckedKeys?.forEach(key => {
-                    checkedNodes.push(getNodeByKey(key, permissions));
+                    const nodeByKey = getNodeByKey(key, permissions);
+
+                    if (nodeByKey !== null) {
+                        checkedNodes.push(nodeByKey);
+                    }
                 });
                 setCheckedPermission(checkedNodes);
             }
@@ -107,7 +111,12 @@ export const OrganizationPermissionList: FunctionComponent<OrganizationPermissio
             if (isRole && roleObject) {
                 setPreviouslyCheckedKeys(roleObject.permissions);
                 previouslyCheckedKeys?.forEach(key => {
-                    checkedNodes.push(getNodeByKey(key, permissions));
+
+                    const nodeByKey = getNodeByKey(key, permissions);
+
+                    if (nodeByKey !== null) {
+                        checkedNodes.push(nodeByKey);
+                    }
                 });
                 setCheckedPermission(checkedNodes);
             }

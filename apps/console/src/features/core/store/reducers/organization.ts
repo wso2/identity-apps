@@ -22,7 +22,22 @@ import { OrganizationAction, OrganizationActionTypes } from "../actions/types";
 
 const initialState: OrganizationReducerStateInterface = {
     getOrganizationLoading: true,
-    organization: OrganizationManagementConstants.ROOT_ORGANIZATION
+    organization: {
+        attributes: [],
+        created: new Date().toString(),
+        description: "",
+        domain: "",
+        id: OrganizationManagementConstants.ROOT_ORGANIZATION.id,
+        lastModified: new Date().toString(),
+        name: OrganizationManagementConstants.ROOT_ORGANIZATION.name,
+        parent: {
+            id: "",
+            ref: ""
+        },
+        status: "",
+        type: ""
+
+    }
 };
 
 export const organizationReducer = (

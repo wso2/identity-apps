@@ -23,8 +23,11 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.net.URISyntaxException" %>
+<%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 
 <jsp:directive.include file="includes/localize.jsp"/>
+<jsp:directive.include file="tenant-resolve.jsp"/>
+<jsp:directive.include file="includes/layout-resolver.jsp"/>
 
 <%
     String callback = IdentityManagementEndpointUtil.getStringValue(request.getParameter("callback"));
@@ -33,6 +36,11 @@
                 application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL), tenantDomain);
     }
     String username = IdentityManagementEndpointUtil.getStringValue(request.getParameter("username"));
+%>
+
+<%-- Data for the layout from the page --%>
+<%
+    layoutData.put("containerSize", "medium");
 %>
 
 <!doctype html>
@@ -48,6 +56,18 @@
     <% } %>
 </head>
 <body>
+    <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
+        <layout:component componentName="ProductHeader" >
+
+        </layout:component>
+        <layout:component componentName="MainSection" >
+
+        </layout:component>
+        <layout:component componentName="ProductFooter" >
+
+        </layout:component>
+    </layout:main>
+
     <div class="ui tiny modal notify">
         <div class="header">
             <h4>

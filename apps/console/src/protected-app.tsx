@@ -25,9 +25,19 @@ import {
     SecureApp,
     useAuthContext
 } from "@asgardeo/auth-react";
-import { AppConstants as CommonAppConstants, CommonConstants as CommonConstantsCore } from "@wso2is/core/constants";
-import { IdentifiableComponentInterface, TenantListInterface } from "@wso2is/core/models";
-import { setDeploymentConfigs, setSignIn, setSupportedI18nLanguages } from "@wso2is/core/store";
+import {
+    AppConstants as CommonAppConstants,
+    CommonConstants as CommonConstantsCore,
+    TokenConstants
+} from "@wso2is/core/constants";
+import { AlertLevels, IdentifiableComponentInterface, TenantListInterface } from "@wso2is/core/models";
+import {
+    addAlert,
+    setDeploymentConfigs,
+    setServiceResourceEndpoints,
+    setSignIn,
+    setSupportedI18nLanguages
+} from "@wso2is/core/store";
 import { AuthenticateUtils as CommonAuthenticateUtils, ContextUtils, StringUtils } from "@wso2is/core/utils";
 import {
     I18n,
@@ -38,14 +48,24 @@ import {
 } from "@wso2is/i18n";
 import axios, { AxiosResponse } from "axios";
 import has from "lodash-es/has";
-import React, { FunctionComponent, ReactElement, lazy, useEffect } from "react";
-import { I18nextProvider } from "react-i18next";
+import React, { FunctionComponent, ReactElement, lazy, useEffect, useState } from "react";
+import { I18nextProvider, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { commonConfig } from "./extensions";
 import { AuthenticateUtils, getProfileInformation } from "./features/authentication";
-import { Config, DeploymentConfigInterface, HttpUtils, PreLoader, store } from "./features/core";
+import {
+    Config,
+    DeploymentConfigInterface,
+    HttpUtils,
+    PreLoader,
+    setGetOrganizationLoading,
+    setOrganization,
+    store
+} from "./features/core";
 import { AppConstants, CommonConstants } from "./features/core/constants";
 import { history } from "./features/core/helpers";
+import { getOrganization } from "./features/organizations/api";
+import { OrganizationResponseInterface } from "./features/organizations/models";
 
 const AUTHORIZATION_ENDPOINT = "authorization_endpoint";
 const TOKEN_ENDPOINT = "token_endpoint";
@@ -68,10 +88,15 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
         getOIDCServiceEndpoints,
         updateConfig,
         signIn,
+        requestCustomGrant,
         state: { isAuthenticated }
     } = useAuthContext();
 
     const dispatch = useDispatch();
+
+    const { t } = useTranslation();
+
+    const [ renderApp, setRenderApp ] = useState<boolean>(false);
 
     useEffect(() => {
         on(Hooks.HttpRequestError, HttpUtils.onHttpRequestError);
@@ -79,7 +104,8 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
         on(Hooks.HttpRequestStart, HttpUtils.onHttpRequestStart);
         on(Hooks.HttpRequestSuccess, HttpUtils.onHttpRequestSuccess);
 
-        on(Hooks.SignIn, async (response: BasicUserInfo) => {
+        on(Hooks.SignIn, async (signInResponse: BasicUserInfo) => {
+            let response: BasicUserInfo = { ...signInResponse };
             let logoutUrl;
             let logoutRedirectUrl;
             let isPrivilegedUser: boolean = false;
@@ -88,10 +114,94 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
 
             dispatchEvent(event);
 
-            const tenantDomain: string = CommonAuthenticateUtils.deriveTenantDomainFromSubject(response.sub);
+            let tenantDomain: string = "";
+
+            if (window[ "AppUtils" ].getConfig().organizationName) {
+                // We are actually getting the orgId here rather than orgName
+                const orgId = window["AppUtils"].getConfig().organizationName;
+
+                // Setting a dummy object until real data comes from the API
+                dispatch(setOrganization({
+                    attributes: [],
+                    created: new Date().toString(),
+                    description: "",
+                    domain: "",
+                    id: orgId,
+                    lastModified: new Date().toString(),
+                    name: orgId,
+                    parent: {
+                        id: "",
+                        ref: ""
+                    },
+                    status: "",
+                    type: ""
+                }));
+
+                // This is to make sure the endpoints are generated with the organization path.
+                await dispatch(setServiceResourceEndpoints(Config.getServiceResourceEndpoints()));
+
+                dispatch(setGetOrganizationLoading(true));
+                await getOrganization(orgId)
+                    .then(async (orgResponse: OrganizationResponseInterface) => {
+                        dispatch(setOrganization(orgResponse));
+
+                        await requestCustomGrant({
+                            attachToken: false,
+                            data: {
+                                client_id: "{{clientID}}",
+                                grant_type: "organization_switch",
+                                scope: window["AppUtils"].getConfig().idpConfigs?.scope.join(" ")
+                                    ?? TokenConstants.SYSTEM_SCOPE,
+                                switching_organization: orgId,
+                                token: "{{token}}"
+                            },
+                            id: "orgSwitch",
+                            returnsSession: true,
+                            signInRequired: true
+                        }, async (grantResponse: BasicUserInfo) => {
+                            response = { ...grantResponse };
+                        });
+                    }).catch((error) => {
+                        if (error?.description) {
+                            dispatch(
+                                addAlert({
+                                    description: error.description,
+                                    level: AlertLevels.ERROR,
+                                    message: t(
+                                        "console:manage.features.organizations.notifications." +
+                                "fetchOrganization.error.message"
+                                    )
+                                })
+                            );
+
+                            return;
+                        }
+
+                        dispatch(
+                            addAlert({
+                                description: t(
+                                    "console:manage.features.organizations.notifications.fetchOrganization" +
+                            ".genericError.description"
+                                ),
+                                level: AlertLevels.ERROR,
+                                message: t(
+                                    "console:manage.features.organizations.notifications." +
+                            "fetchOrganization.genericError.message"
+                                )
+                            })
+                        );
+                    }).finally(() => {
+                        dispatch(setGetOrganizationLoading(false));
+                    });
+            } else {
+                dispatch(setGetOrganizationLoading(false));
+                tenantDomain = CommonAuthenticateUtils.deriveTenantDomainFromSubject(response.sub);
+            }
 
             // Update the app base name with the newly resolved tenant.
             window[ "AppUtils" ].updateTenantQualifiedBaseName(tenantDomain);
+            // Update the endpoints with tenant path.
+            await dispatch(setServiceResourceEndpoints(Config.getServiceResourceEndpoints()));
 
             // When the tenant domain changes, we have to reset the auth callback in session storage.
             // If not, it will hang and the app will be unresponsive with in the tab.
@@ -163,7 +273,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                 .catch((error) => {
                     // In case of failure customServerHost is set to the serverHost
                     window[ "AppUtils" ].updateCustomServerHost(Config.getDeploymentConfig().serverHost);
-                    
+
                     throw error;
                 })
                 .finally(() => {
@@ -178,6 +288,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                 .then((idToken) => {
                     const subParts = idToken.sub.split("@");
                     const tenantDomain = subParts[ subParts.length - 1 ];
+
                     isPrivilegedUser = idToken?.amr?.length > 0
                         ? idToken?.amr[0] === "EnterpriseIDPAuthenticator"
                         : false;
@@ -199,6 +310,8 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                             fullName: fullName
                         })
                     );
+
+                    setRenderApp(true);
                 })
                 .catch((error) => {
                     throw error;
@@ -398,7 +511,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             } }
         >
             <I18nextProvider i18n={ I18n.instance }>
-                <App />
+                { renderApp ? <App /> : <PreLoader /> }
             </I18nextProvider>
         </SecureApp>
     );

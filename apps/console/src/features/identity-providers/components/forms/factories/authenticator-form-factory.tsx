@@ -18,6 +18,7 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
+import { identityProviderConfig } from "../../../../../extensions/configs/identity-provider";
 import { IdentityProviderManagementConstants } from "../../../constants";
 import {
     FederatedAuthenticatorListItemInterface,
@@ -56,6 +57,10 @@ interface AuthenticatorFormFactoryInterface extends TestableComponentInterface {
      * Specifies if the form is submitting.
      */
     isSubmitting?: boolean;
+    /**
+     * Created template Id.
+     */
+    templateId?: string;
 }
 
 /**
@@ -79,8 +84,30 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
         showCustomProperties,
         isReadOnly,
         isSubmitting,
+        templateId,
         [ "data-testid" ]: testId
     } = props;
+
+    /**
+     * Override the form if it's defined in the extensions under `getOverriddenAuthenticatorForm` func.
+     */
+    const OverriddenForm: ReactElement | null = identityProviderConfig
+        .editIdentityProvider
+        .getOverriddenAuthenticatorForm(type, templateId, {
+            "data-componentid": testId,
+            enableSubmitButton,
+            initialValues,
+            isSubmitting,
+            metadata,
+            onSubmit,
+            readOnly: isReadOnly,
+            showCustomProperties,
+            triggerSubmit
+        });
+
+    if (OverriddenForm) {
+        return OverriddenForm;
+    }
 
     switch (type) {
         case IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID:

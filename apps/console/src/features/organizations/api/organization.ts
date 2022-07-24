@@ -248,3 +248,39 @@ export const deleteOrganization = (id: string): Promise<string> => {
             return Promise.reject(error);
         });
 };
+
+/**
+ * Creates a new application.
+ *
+ * @return {Promise<any>}
+ * @param {string} applicationId - ID of the application to be shared
+ * @param {string} organizationId - ID of the organization which the app needs to be shared with
+ */
+export const shareApplication = (
+    currentOrganizationId: string,
+    applicationId: string,
+    organizationId: Array<string>
+): Promise<any> => {
+    const requestConfig = {
+        data: organizationId,
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.POST,
+        url: `${store.getState().config.endpoints.organizations}/organizations/${currentOrganizationId}/applications/` +
+            `${applicationId}/share`
+    };
+
+    return httpClient(requestConfig)
+        .then((response) => {
+            if ((response.status !== 200)) {
+                return Promise.reject(new Error("Failed to share the application."));
+            }
+
+            return Promise.resolve(response);
+        }).catch((error) => {
+            return Promise.reject(error);
+        });
+};

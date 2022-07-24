@@ -21,7 +21,6 @@ import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
     ConfirmationModal,
-    ContentLoader,
     EmphasizedSegment,
     EmptyPlaceholder,
     PrimaryButton,
@@ -82,6 +81,10 @@ interface IdentityProviderSettingsPropsInterface extends TestableComponentInterf
      * Specifies if the component should only be read-only.
      */
     isReadOnly: boolean;
+    /**
+     * Loading Component.
+     */
+    loader: () => ReactElement;
 }
 
 const GOOGLE_CLIENT_ID_SECRET_MAX_LENGTH = 100;
@@ -104,6 +107,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
         isLoading,
         onUpdate,
         isReadOnly,
+        loader: Loader,
         [ "data-testid" ]: testId
     } = props;
 
@@ -685,6 +689,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                     data-testid={ `${ testId }-${ authenticator.meta?.name }-content` }
                     isReadOnly={ isReadOnly }
                     isSubmitting={ isSubmitting }
+                    templateId={ identityProvider.templateId }
                 />
             );
         } else {
@@ -803,7 +808,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                     }
                 </div>
             )
-            : <ContentLoader />
+            : <Loader />
     );
 };
 

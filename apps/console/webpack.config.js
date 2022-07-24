@@ -424,6 +424,12 @@ module.exports = (env) => {
                         },
                         to: "libs"
                     },
+                    {
+                        context: path.join(__dirname, "src"),
+                        from: "login-portal-layouts",
+                        noErrorOnMissing: true,
+                        to: path.join("libs", "login-portal-layouts")
+                    },
                     shouldCopyLessDistribution && {
                         context: path.resolve(__dirname, "node_modules", "@wso2is", "theme"),
                         from: "src",

@@ -24,6 +24,10 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ include file="includes/localize.jsp" %>
 <%@ include file="includes/init-url.jsp" %>
+<%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
+
+<jsp:directive.include file="includes/layout-resolver.jsp"/>
+
 <%
     request.getSession().invalidate();
     String queryString = request.getQueryString();
@@ -47,6 +51,12 @@
         }
     }
 %>
+
+<%-- Data for the layout from the page --%>
+<%
+    layoutData.put("containerSize", "medium");
+%>
+
 <html>
 <head>
     <!-- header -->
@@ -73,144 +83,146 @@
         <jsp:include page="util/timeout.jsp"/>
     <% } %>
 
-<main class="center-segment">
-    <div class="ui container medium center aligned middle aligned">
-        <!-- product-title -->
-        <%
-            File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
-            if (productTitleFile.exists()) {
-        %>
-        <jsp:include page="extensions/product-title.jsp"/>
-        <% } else { %>
-        <jsp:include page="includes/product-title.jsp"/>
-        <% } %>
-
-        <div class="ui segment">
-            <!-- page content -->
-            <h2><%=AuthenticationEndpointUtil.i18n(resourceBundle, "otp.verification")%>
-            </h2>
-            <div class="ui divider hidden"></div>
+    <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
+        <layout:component componentName="ProductHeader" >
+            <!-- product-title -->
             <%
-                if ("true".equals(authenticationFailed)) {
+                File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
+                if (productTitleFile.exists()) {
             %>
-            <div class="ui negative message" id="failed-msg"><%=Encode.forHtmlContent(errorMessage)%>
-            </div>
-            <div class="ui divider hidden"></div>
+            <jsp:include page="extensions/product-title.jsp"/>
+            <% } else { %>
+            <jsp:include page="includes/product-title.jsp"/>
             <% } %>
-            <div id="alertDiv"></div>
-            <div class="segment-form">
-                <form class="ui large form" id="codeForm" name="codeForm" action="<%=commonauthURL%>" method="POST">
-                    <%
-                        String loginFailed = request.getParameter("authFailure");
-                        if (loginFailed != null && "true".equals(loginFailed)) {
-                            String authFailureMsg = request.getParameter("authFailureMsg");
-                            if (authFailureMsg != null && "login.fail.message".equals(authFailureMsg)) {
-                    %>
-                    <div class="ui negative message"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "error.retry")%>
-                    </div>
-                    <div class="ui divider hidden"></div>
-                    <% }
-                    } %>
-                    <% if (request.getParameter("screenValue") != null) { %>
-                    <div class="field">
-                        <label for="password"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "enter.code")%>
-                            (<%=Encode.forHtmlContent(request.getParameter("screenValue"))%>)
-                        </label>
-                        <div class="ui fluid icon input addon-wrapper">
-                            <input type="password" id='OTPCode' name="OTPCode" c size='30'/>
-                            <i id="password-eye" class="eye icon right-align password-toggle" onclick="showOTPCode()"></i>
+        </layout:component>
+        <layout:component componentName="MainSection" >
+            <div class="ui segment">
+                <!-- page content -->
+                <h2><%=AuthenticationEndpointUtil.i18n(resourceBundle, "otp.verification")%>
+                </h2>
+                <div class="ui divider hidden"></div>
+                <%
+                    if ("true".equals(authenticationFailed)) {
+                %>
+                <div class="ui negative message" id="failed-msg"><%=Encode.forHtmlContent(errorMessage)%>
+                </div>
+                <div class="ui divider hidden"></div>
+                <% } %>
+                <div id="alertDiv"></div>
+                <div class="segment-form">
+                    <form class="ui large form" id="codeForm" name="codeForm" action="<%=commonauthURL%>" method="POST">
+                        <%
+                            String loginFailed = request.getParameter("authFailure");
+                            if (loginFailed != null && "true".equals(loginFailed)) {
+                                String authFailureMsg = request.getParameter("authFailureMsg");
+                                if (authFailureMsg != null && "login.fail.message".equals(authFailureMsg)) {
+                        %>
+                        <div class="ui negative message"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "error.retry")%>
                         </div>
-                            <% } else { %>
+                        <div class="ui divider hidden"></div>
+                        <% }
+                        } %>
+                        <% if (request.getParameter("screenValue") != null) { %>
                         <div class="field">
                             <label for="password"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "enter.code")%>
-                                :</label>
+                                (<%=Encode.forHtmlContent(request.getParameter("screenValue"))%>)
+                            </label>
                             <div class="ui fluid icon input addon-wrapper">
-                                <input type="password" id='OTPCode' name="OTPCode" size='30'/>
+                                <input type="password" id='OTPCode' name="OTPCode" c size='30'/>
                                 <i id="password-eye" class="eye icon right-align password-toggle" onclick="showOTPCode()"></i>
                             </div>
-                            <% } %>
-                        </div>
-                        <input type="hidden" name="sessionDataKey"
-                               value='<%=Encode.forHtmlAttribute(request.getParameter("sessionDataKey"))%>'/>
-                        <input type='hidden' name='resendCode' id='resendCode' value='false'/>
+                                <% } else { %>
+                            <div class="field">
+                                <label for="password"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "enter.code")%>
+                                    :</label>
+                                <div class="ui fluid icon input addon-wrapper">
+                                    <input type="password" id='OTPCode' name="OTPCode" size='30'/>
+                                    <i id="password-eye" class="eye icon right-align password-toggle" onclick="showOTPCode()"></i>
+                                </div>
+                                <% } %>
+                            </div>
+                            <input type="hidden" name="sessionDataKey"
+                                value='<%=Encode.forHtmlAttribute(request.getParameter("sessionDataKey"))%>'/>
+                            <input type='hidden' name='resendCode' id='resendCode' value='false'/>
 
-                        <div class="ui divider hidden"></div>
-                        <div class="align-right buttons">
-                            <%
-                                if ("true".equals(authenticationFailed)) {
-                            %>
-                            <a class="ui button secondary"
-                               id="resend"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "resend.code")%>
-                            </a>
-                            <% } %>
-                            <input type="button" name="authenticate" id="authenticate"
-                                   value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "authenticate")%>"
-                                   class="ui primary button"/>
-                        </div>
-                </form>
+                            <div class="ui divider hidden"></div>
+                            <div class="align-right buttons">
+                                <%
+                                    if ("true".equals(authenticationFailed)) {
+                                %>
+                                <a class="ui button secondary"
+                                id="resend"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "resend.code")%>
+                                </a>
+                                <% } %>
+                                <input type="button" name="authenticate" id="authenticate"
+                                    value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "authenticate")%>"
+                                    class="ui primary button"/>
+                            </div>
+                    </form>
+                </div>
             </div>
-        </div>
-    </div>
-</main>
+        </layout:component>
+        <layout:component componentName="ProductFooter" >
+            <!-- product-footer -->
+            <%
+                File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
+                if (productFooterFile.exists()) {
+            %>
+            <jsp:include page="extensions/product-footer.jsp"/>
+            <% } else { %>
+            <jsp:include page="includes/product-footer.jsp"/>
+            <% } %>
+        </layout:component>
+    </layout:main>
 
-<!-- product-footer -->
-<%
-    File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
-    if (productFooterFile.exists()) {
-%>
-<jsp:include page="extensions/product-footer.jsp"/>
-<% } else { %>
-<jsp:include page="includes/product-footer.jsp"/>
-<% } %>
+    <!-- footer -->
+    <%
+        File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
+        if (footerFile.exists()) {
+    %>
+    <jsp:include page="extensions/footer.jsp"/>
+    <% } else { %>
+    <jsp:include page="includes/footer.jsp"/>
+    <% } %>
 
-<!-- footer -->
-<%
-    File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
-    if (footerFile.exists()) {
-%>
-<jsp:include page="extensions/footer.jsp"/>
-<% } else { %>
-<jsp:include page="includes/footer.jsp"/>
-<% } %>
-
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('#authenticate').click(function () {
-            var code = document.getElementById("OTPCode").value;
-            if (code == "") {
-                document.getElementById('alertDiv').innerHTML
-                    = '<div id="error-msg" class="ui negative message"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "error.enter.code")%></div>'
-                        +'<div class="ui divider hidden"></div>';
-            } else {
-                if ($('#codeForm').data("submitted") === true) {
-                    console.warn("Prevented a possible double submit event");
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#authenticate').click(function () {
+                var code = document.getElementById("OTPCode").value;
+                if (code == "") {
+                    document.getElementById('alertDiv').innerHTML
+                        = '<div id="error-msg" class="ui negative message"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "error.enter.code")%></div>'
+                            +'<div class="ui divider hidden"></div>';
                 } else {
-                    $('#codeForm').data("submitted", true);
-                    $('#codeForm').submit();
+                    if ($('#codeForm').data("submitted") === true) {
+                        console.warn("Prevented a possible double submit event");
+                    } else {
+                        $('#codeForm').data("submitted", true);
+                        $('#codeForm').submit();
+                    }
                 }
+            });
+        });
+        $(document).ready(function () {
+            $('#resend').click(function () {
+                document.getElementById("resendCode").value = "true";
+                $('#codeForm').submit();
+            });
+        });
+
+        // Show OTP code function.
+        function showOTPCode() {
+            var otpField = $('#OTPCode');
+
+            if (otpField.attr("type") === 'text') {
+                otpField.attr("type", "password");
+                document.getElementById("password-eye").classList.remove("slash");
+            } else {
+                otpField.attr("type", "text");
+                document.getElementById("password-eye").classList.add("slash");
             }
-        });
-    });
-    $(document).ready(function () {
-        $('#resend').click(function () {
-            document.getElementById("resendCode").value = "true";
-            $('#codeForm').submit();
-        });
-    });
-
-    // Show OTP code function.
-    function showOTPCode() {
-        var otpField = $('#OTPCode');
-
-        if (otpField.attr("type") === 'text') {
-            otpField.attr("type", "password");
-            document.getElementById("password-eye").classList.remove("slash");
-        } else {
-            otpField.attr("type", "text");
-            document.getElementById("password-eye").classList.add("slash");
         }
-    }
 
-</script>
+    </script>
 </body>
 </html>
