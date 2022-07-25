@@ -33,7 +33,6 @@ import {
 import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
-    ErrorInfo,
     FunctionComponent,
     ReactElement,
     ReactNode,
@@ -116,7 +115,6 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const activeView: AppViewTypes = useSelector((state: AppState) => state.global.activeView);
 
-    const [ manageRoutes, setManageRoutes ] = useState<RouteInterface[]>(getAdminViewRoutes());
     const [ filteredRoutes, setFilteredRoutes ] = useState<RouteInterface[]>(getDeveloperViewRoutes());
     const [
         selectedRoute,
@@ -131,20 +129,13 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
             = useSelector((state: AppState) => state?.organization?.getOrganizationLoading);
 
 
-    const getOrganizationEnabledRoutes = useCallback((): RouteInterface[] => {
+    const getOrganizationEnabledRoutes = useCallback((routes: RouteInterface[]): RouteInterface[] => {
         if (!OrganizationUtils.isRootOrganization(organization.organization)) {
-            return RouteUtils.filterOrganizationEnabledRoutes(getDeveloperViewRoutes());
+            return RouteUtils.filterOrganizationEnabledRoutes(routes);
         }
 
-        return getDeveloperViewRoutes();
+        return routes;
     }, [ organization.organization ]);
-
-    useEffect(() => {
-        const routes = getOrganizationEnabledRoutes();
-
-        setManageRoutes(routes);
-        setFilteredRoutes(routes);
-    }, [ getOrganizationEnabledRoutes ]);
 
     /**
      * Make sure `DEVELOP` tab is highlighted when this layout is used.
@@ -158,26 +149,17 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
         dispatch(setActiveView(StrictAppViewTypes.DEVELOP));
     }, [ dispatch, activeView ]);
 
-    /**
-     * Listen to location changes and set the active route accordingly.
-     */
-    useEffect(() => {
-
-        if (isEmpty(filteredRoutes) || !location?.pathname) {
-            return;
-        }
-
-        setSelectedRoute(CommonRouteUtils.getInitialActiveRoute(location.pathname, filteredRoutes));
-    }, [ location?.pathname, filteredRoutes ]);
-
     useEffect(() => {
         // Allowed scopes is never empty. Wait until it's defined to filter the routes.
         if (isEmpty(allowedScopes)) {
             return;
         }
 
+        const devRoutes = getOrganizationEnabledRoutes(getDeveloperViewRoutes());
+        const manageRoutes = getOrganizationEnabledRoutes(getAdminViewRoutes());
+
         let routes: RouteInterface[] = CommonRouteUtils.filterEnabledRoutes<FeatureConfigInterface>(
-            getOrganizationEnabledRoutes(),
+            devRoutes,
             featureConfig,
             allowedScopes,
             commonConfig.checkForUIResourceScopes);
@@ -194,6 +176,18 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
 
         // Filter the routes and get only the enabled routes defined in the app config.
         setFilteredRoutes(routes);
+        setSelectedRoute(CommonRouteUtils.getInitialActiveRoute(location.pathname, routes));
+
+        const sanitizedManageRoutes: RouteInterface[] = CommonRouteUtils.sanitizeForUI(cloneDeep(manageRoutes));
+
+        const tab: string = AccessControlUtils.getDisabledTab(
+            sanitizedManageRoutes, routes, allowedScopes, featureConfig, commonConfig.checkForUIResourceScopes);
+
+        if (tab === "MANAGE") {
+            dispatch(setManageVisibility(false));
+        } else if (tab === "DEVELOP") {
+            dispatch(setDeveloperVisibility(false));
+        }
 
         if (!isEmpty(profileInfo)) {
             return;
@@ -203,25 +197,11 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
     }, [
         featureConfig,
         allowedScopes,
-        manageRoutes,
         dispatch,
         profileInfo,
         location.pathname,
         getOrganizationEnabledRoutes
     ]);
-
-    useEffect(() => {
-        const sanitizedManageRoutes: RouteInterface[] = CommonRouteUtils.sanitizeForUI(cloneDeep(manageRoutes));
-
-        const tab: string = AccessControlUtils.getDisabledTab(
-            sanitizedManageRoutes, filteredRoutes, allowedScopes, featureConfig, commonConfig.checkForUIResourceScopes);
-
-        if (tab === "MANAGE") {
-            dispatch(setManageVisibility(false));
-        } else if (tab === "DEVELOP") {
-            dispatch(setDeveloperVisibility(false));
-        }
-    }, [ filteredRoutes, manageRoutes, allowedScopes, featureConfig, dispatch ]);
 
     /**
      * Handles side panel toggle click.
