@@ -96,7 +96,7 @@
             <layout:component componentName="MainSection" >
                 <div class="ui segment">
                     <!-- page content -->
-                    <h2>Sign In with Enterprise Login</h2>
+                    <h2>Sign In with <%= StringUtils.isNotBlank(idp) ? idp : "Organization Login" %></h2>
                     <div class="ui divider hidden"></div>
 
                     <%
