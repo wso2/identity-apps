@@ -23,6 +23,7 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Icon, SemanticICONS } from "semantic-ui-react";
+import { AppConstants } from "../../../../core";
 import { IdentityProviderManagementConstants } from "../../../constants";
 import {
     AuthenticatorSettingsFormModes,
@@ -84,7 +85,7 @@ interface GoogleAuthenticatorFormPropsInterface extends TestableComponentInterfa
  */
 interface GoogleAuthenticatorFormInitialValuesInterface {
     /**
-     * Google Authenticator client secret field value.
+     * Google Authenticator query parameters field value.
      */
     AdditionalQueryParameters: string;
     /**
@@ -99,6 +100,10 @@ interface GoogleAuthenticatorFormInitialValuesInterface {
      * Google Authenticator client id field value.
      */
     ClientId: string;
+    /**
+    * Google Authenticator Google One Tap field value.
+    */
+    IsGoogleOneTapEnabled: boolean;
 }
 
 /**
@@ -106,7 +111,7 @@ interface GoogleAuthenticatorFormInitialValuesInterface {
  */
 interface GoogleAuthenticatorFormFieldsInterface {
     /**
-     * Google Authenticator client secret field value.
+     * Google Authenticator query parameters field value.
      */
     AdditionalQueryParameters: CommonAuthenticatorFormFieldInterface;
     /**
@@ -121,6 +126,10 @@ interface GoogleAuthenticatorFormFieldsInterface {
      * Google Authenticator client id field value.
      */
     ClientId: CommonAuthenticatorFormFieldInterface;
+    /**
+     * Google Authenticator Google One Tap field value.
+     */
+     IsGoogleOneTapEnabled: CommonAuthenticatorFormFieldInterface;
 }
 
 /**
@@ -183,17 +192,32 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
             const meta: CommonAuthenticatorFormFieldMetaInterface = metadata?.properties
                 .find((meta) => meta.key === value.key);
 
+            /**
+            * Parsing string  to boolean only for Google One Tap value
+            */
+            let localValue : any;
+
+            if(value.key === "IsGoogleOneTapEnabled" ) {
+                if( "true" === value.value ) {
+                    localValue = true;
+                } else {
+                    localValue = false;
+                }
+            } else {
+                localValue = value.value;
+            }
+
             resolvedFormFields = {
                 ...resolvedFormFields,
                 [ value.key ]: {
                     meta,
-                    value: value.value
+                    value: localValue
                 }
             };
 
             resolvedInitialValues = {
                 ...resolvedInitialValues,
-                [ value.key ]: value.value
+                [ value.key ]: localValue
             };
         });
 
@@ -201,6 +225,9 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
         setInitialValues(resolvedInitialValues);
     }, [ originalInitialValues ]);
 
+    const isSuperTenantLogin = (): boolean => {
+        return AppConstants.getTenant() === AppConstants.getSuperTenant();
+    };
     /**
      * Prepare form values for submitting.
      *
@@ -369,14 +396,14 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
                         ".google.clientSecret.placeholder")
                 }
                 hint={
-                    <Trans
+                    (<Trans
                         i18nKey={
                             "console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                             ".google.clientSecret.hint"
                         }
                     >
                         The <Code>App secret</Code> value of the Google application.
-                    </Trans>
+                    </Trans>)
                 }
                 required={ formFields?.ClientSecret?.meta?.isMandatory }
                 readOnly={
@@ -467,6 +494,31 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
                 width={ 16 }
                 data-testid={ `${ testId }-additional-query-parameters` }
             />
+            { isSuperTenantLogin() 
+                ? (
+                    <Field.Checkbox
+                        ariaLabel="Enable Google One Tap as a sign in option"
+                        name="IsGoogleOneTapEnabled"
+                        required={ false }
+                        requiredErrorMessage={ "Please select" }
+                        toggle
+                        label={
+                            t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                               ".google.enableGoogleOneTap.label")
+                        }
+                        placeholder={
+                            t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                               ".google.enableGoogleOneTap.placeholder")
+                        }
+                        hint={
+                            t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                               ".google.enableGoogleOneTap.hint")
+                        }
+                        readOnly={ readOnly }
+                        data-testid={ `${ testId }-google-one-tap` }
+                    />
+                ) : null
+            }
             {
                 (formFields?.AdditionalQueryParameters?.value
                     && !isEmpty(extractScopes(formFields.AdditionalQueryParameters.value))) && (
@@ -524,13 +576,13 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
                             >
                                 Scopes provide a way for connected apps to access data from Google.
                                 Click <a
-                                href={
-                                    "https://developers.google.com/identity/protocols/oauth2/" +
+                                    href={
+                                        "https://developers.google.com/identity/protocols/oauth2/" +
                                     "openid-connect#scope-param"
-                                }
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >here</a> to learn more.
+                                    }
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >here</a> to learn more.
                             </Trans>
                         </Hint>
                     </FormSection>
