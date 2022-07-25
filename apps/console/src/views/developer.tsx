@@ -183,9 +183,9 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
         const tab: string = AccessControlUtils.getDisabledTab(
             sanitizedManageRoutes, routes, allowedScopes, featureConfig, commonConfig.checkForUIResourceScopes);
 
-        if (tab === "MANAGE") {
+        if (tab === StrictAppViewTypes.MANAGE) {
             dispatch(setManageVisibility(false));
-        } else if (tab === "DEVELOP") {
+        } else if (tab === StrictAppViewTypes.DEVELOP) {
             dispatch(setDeveloperVisibility(false));
         }
 

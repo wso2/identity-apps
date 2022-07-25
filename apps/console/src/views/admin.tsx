@@ -260,9 +260,9 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
             adminRoutes, sanitizedDevelopRoutes, allowedScopes, featureConfig,
             commonConfig.checkForUIResourceScopes);
 
-        if (tab === "MANAGE") {
+        if (tab === StrictAppViewTypes.MANAGE) {
             dispatch(setManageVisibility(false));
-        } else if (tab === "DEVELOP") {
+        } else if (tab === StrictAppViewTypes.DEVELOP) {
             dispatch(setDeveloperVisibility(false));
         }
 
