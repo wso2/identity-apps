@@ -325,19 +325,6 @@
                    style="margin: 0 auto; right: 0; pointer-events: auto; cursor: pointer;"></i>
             </div>
         </div>
-    <%
-        if (reCaptchaEnabled) {
-    %>
-        <div class="field">
-            <div class="g-recaptcha"
-                data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>"
-                data-testid="login-page-g-recaptcha"
-            >
-            </div>
-        </div>
-    <%
-        }
-    %>
 
     <%
         String recoveryEPAvailable = application.getInitParameter("EnableRecoveryEndpoint");
