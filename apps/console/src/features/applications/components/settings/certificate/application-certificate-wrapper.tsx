@@ -447,10 +447,6 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
     );
 };
 
-
-
-
-
 /**
  * Default proptypes for the application certificate wrapper component.
  */
