@@ -198,7 +198,7 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
             let localValue : any;
 
             if(value.key === IdentityProviderManagementConstants.GOOGLE_ONE_TAP_ENABLED) {
-                if("true" === value.value) {
+                if(value.value === "true") {
                     localValue = true;
                 } else {
                     localValue = false;
@@ -396,16 +396,16 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
                     t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                         ".google.clientSecret.placeholder")
                 }
-                hint={
-                    (<Trans
+                hint={ (
+                    <Trans
                         i18nKey={
                             "console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                             ".google.clientSecret.hint"
                         }
                     >
                         The <Code>App secret</Code> value of the Google application.
-                    </Trans>)
-                }
+                    </Trans>
+                ) }
                 required={ formFields?.ClientSecret?.meta?.isMandatory }
                 readOnly={
                     readOnly || (
@@ -501,7 +501,6 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
                         ariaLabel="Enable Google One Tap as a sign in option"
                         name={ IdentityProviderManagementConstants.GOOGLE_ONE_TAP_ENABLED }
                         required={ false }
-                        requiredErrorMessage={ "Please select" }
                         toggle
                         label={
                             t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
