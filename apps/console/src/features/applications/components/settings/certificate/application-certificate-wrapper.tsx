@@ -77,7 +77,7 @@ interface ApplicationWrapperCertificatesPropsInterface extends TestableComponent
     hidden: boolean;
     readOnly: boolean;
     triggerSubmit?: boolean;
-    canDiscardCerticate?: () => boolean;
+    canDiscardCertificate?: () => boolean;
 }
 
 /**
