@@ -244,7 +244,7 @@ export const InnerField = React.forwardRef((props: InnerFieldPropsInterface, ref
                                     value={ value }
                                     checked={ form.get(inputField.name) === value }
                                     onChange={ (event: React.ChangeEvent<HTMLInputElement>, { value }) => {
-                                        if(inputField?.onBefore && !inputField.onBefore(event,value)){
+                                        if (inputField?.onBefore && !inputField.onBefore(event, value)) {
                                             return;
                                         }
                                         handleChange(value.toString(), inputField.name);
