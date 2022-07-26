@@ -289,7 +289,7 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
                                 }
                                 onBefore={
                                     (event,value) => {
-                                        const Certtype  =  value as CertificateTypeInterface;
+                                        const certType  =  value as CertificateTypeInterface;
 
                                         if(CertificateTypeInterface.NONE === Certtype && !canDiscardCerticate()){
                                             setShowInvalidOperationModal(true);
