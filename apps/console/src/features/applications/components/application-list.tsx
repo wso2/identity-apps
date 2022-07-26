@@ -256,12 +256,8 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
      * @return {TableColumnInterface[]}
      */
 
-    const templateIDArray = ["single_page", "standard_web", "other"];
-
     const resolveTableColumns = (): TableColumnInterface[] => {
-        // const randTempIdNo = 2;
-        const randTempIdNo = Math.floor(Math.random() * 3);
-        // console.log("hi there");
+        console.log("resolveTableColumns called")
         return [
             {
                 allowToggleVisibility: false,
@@ -314,17 +310,6 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                                     data-testid={ `${ testId }-item-sub-heading` }
                                 >
                                     {
-                                        template && (
-                                            <Label
-                                                size="mini"
-                                                className="compact spaced-right"
-                                                data-testid={ `${ testId }-template-type` }
-                                            >
-                                                { template.name }
-                                            </Label>
-                                        )
-                                    }
-                                    {
                                         app.description?.length > 80
                                             ? (
                                                 <Popup
@@ -355,82 +340,12 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                         && applicationTemplates instanceof Array
                         && applicationTemplates.length > 0
                         && applicationTemplates.find((template) => template.id === app.templateId);
-
-                    const randTempIdNo = Math.floor(Math.random() * 3);
-
+                    console.log({ app, template })
+                    // Displays the template name of the application
                     return (
                         <div>
-                            <p>{ templateIDArray[randTempIdNo] }</p>
-                            {/*<p>{app.templateId}</p>*/}
+                            <p>{ template?.name }</p>
                         </div>
-
-                        // <p>hi</p>
-                        // <Header
-                        //     image
-                        //     as="h6"
-                        //     className="header-with-icon"
-                        //     data-testid={ `${ testId }-item-heading` }
-                        // >
-                        //     {
-                        //         app.image
-                        //             ? (
-                        //                 <AppAvatar
-                        //                     size="mini"
-                        //                     name={ app.name }
-                        //                     image={ app.image }
-                        //                     spaced="right"
-                        //                     data-testid={ `${ testId }-item-image` }
-                        //                 />
-                        //             )
-                        //             : (
-                        //                 <AppAvatar
-                        //                     image={ (
-                        //                         <AnimatedAvatar
-                        //                             name={ app.name }
-                        //                             size="mini"
-                        //                             data-testid={ `${ testId }-item-image-inner` }
-                        //                         />
-                        //                     ) }
-                        //                     size="mini"
-                        //                     spaced="right"
-                        //                     data-testid={ `${ testId }-item-image` }
-                        //                 />
-                        //             )
-                        //     }
-                        //     <Header.Content>
-                        //         { app.name }
-                        //         <Header.Subheader
-                        //             className="truncate ellipsis"
-                        //             data-testid={ `${ testId }-item-sub-heading` }
-                        //         >
-                        //             {
-                        //                 template && (
-                        //                     <Label
-                        //                         size="mini"
-                        //                         className="compact spaced-right"
-                        //                         data-testid={ `${ testId }-template-type` }
-                        //                     >
-                        //                         { template.name }
-                        //                     </Label>
-                        //                 )
-                        //             }
-                        //             {
-                        //                 app.description?.length > 80
-                        //                     ? (
-                        //                         <Popup
-                        //                             content={ app.description }
-                        //                             trigger={ (
-                        //                                 <span>{
-                        //                                     app.description
-                        //                                 }</span>
-                        //                             ) }
-                        //                         />
-                        //                     )
-                        //                     : app.description
-                        //             }
-                        //         </Header.Subheader>
-                        //     </Header.Content>
-                        // </Header>
                     );
                 },
                 title: t("console:develop.features.applications.list.columns.name")
