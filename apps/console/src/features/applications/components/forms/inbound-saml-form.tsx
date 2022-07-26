@@ -1777,7 +1777,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     application={ application }
                                     updateCertFinalValue={ setFinalCertValue }
                                     updateCertType={ setSelectedCertType }
-                                    canDiscardCerticate = { ():boolean => !isRequestSignatureValidationEnabled }
+                                    canDiscardCerticate = { (): boolean => !isRequestSignatureValidationEnabled }
                                     certificate={ certificate }
                                     readOnly={ readOnly }
                                     hidden={ false }
