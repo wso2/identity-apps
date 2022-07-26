@@ -197,8 +197,8 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
             */
             let localValue : any;
 
-            if(value.key === "IsGoogleOneTapEnabled" ) {
-                if( "true" === value.value ) {
+            if(value.key === IdentityProviderManagementConstants.GOOGLE_ONE_TAP_ENABLED) {
+                if("true" === value.value) {
                     localValue = true;
                 } else {
                     localValue = false;
@@ -228,6 +228,7 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
     const isSuperTenantLogin = (): boolean => {
         return AppConstants.getTenant() === AppConstants.getSuperTenant();
     };
+
     /**
      * Prepare form values for submitting.
      *
@@ -498,7 +499,7 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
                 ? (
                     <Field.Checkbox
                         ariaLabel="Enable Google One Tap as a sign in option"
-                        name="IsGoogleOneTapEnabled"
+                        name={ IdentityProviderManagementConstants.GOOGLE_ONE_TAP_ENABLED }
                         required={ false }
                         requiredErrorMessage={ "Please select" }
                         toggle
