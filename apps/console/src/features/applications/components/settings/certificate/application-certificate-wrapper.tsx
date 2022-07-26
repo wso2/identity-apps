@@ -104,7 +104,7 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
         readOnly,
         updateCertFinalValue,
         updateCertType,
-        canDiscardCerticate,
+        canDiscardCertificate,
         ["data-testid"]: testId
     } = props;
 
@@ -291,7 +291,7 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
                                     (event,value) => {
                                         const certType  =  value as CertificateTypeInterface;
 
-                                        if(CertificateTypeInterface.NONE === Certtype && !canDiscardCerticate()){
+                                        if(CertificateTypeInterface.NONE === certType && !canDiscardCertificate()){
                                             setShowInvalidOperationModal(true);
                                             
                                             return false;
