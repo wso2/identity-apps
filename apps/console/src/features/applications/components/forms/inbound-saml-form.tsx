@@ -475,7 +475,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             setAssertionConsumerUrlError(true);
                             scrollToInValidField("consumerURL");
                         } else {
-                            if(selectedCertType === CertificateTypeInterface.NONE){
+                            if (selectedCertType === CertificateTypeInterface.NONE) {
                                 setFinalCertValue("");
                             } 
                             onSubmit(updateConfiguration(values));
