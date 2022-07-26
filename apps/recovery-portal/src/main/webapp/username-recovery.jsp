@@ -41,6 +41,11 @@
 <jsp:directive.include file="tenant-resolve.jsp"/>
 <jsp:directive.include file="includes/layout-resolver.jsp"/>
 
+<%!
+    private String reCaptchaAPI = null;
+    private String reCaptchaKey = null;
+%>
+
 <%
     if (!Boolean.parseBoolean(application.getInitParameter(
             IdentityManagementEndpointConstants.ConfigConstants.ENABLE_EMAIL_NOTIFICATION))) {
@@ -122,6 +127,11 @@
             "TRUE".equalsIgnoreCase((String) request.getAttribute("reCaptcha"))) {
         reCaptchaEnabled = true;
     }
+
+    if (reCaptchaEnabled) {
+        reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
+        reCaptchaAPI = CaptchaUtil.reCaptchaAPIURL();
+    }
 %>
 
 <%-- Data for the layout from the page --%>
@@ -144,9 +154,8 @@
 
     <%
         if (reCaptchaEnabled) {
-            String reCaptchaAPI = CaptchaUtil.reCaptchaAPIURL();
     %>
-    <script src='<%=(reCaptchaAPI)%>'></script>
+        <script src='<%=Encode.forHtmlContent(reCaptchaAPI)%>?render=<%=Encode.forHtmlContent(reCaptchaKey)%>'></script>
     <%
         }
     %>
@@ -265,20 +274,6 @@
                             }
                         %>
 
-                        <%
-                            if (reCaptchaEnabled) {
-                                String reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
-                        %>
-                        <div class="field">
-                            <div class="g-recaptcha"
-                                    data-sitekey=
-                                            "<%=Encode.forHtmlContent(reCaptchaKey)%>">
-                            </div>
-                        </div>
-                        <%
-                            }
-                        %>
-
                         <div class="ui divider hidden"></div>
 
                         <div class="align-right buttons">
@@ -347,20 +342,21 @@
                     }
                 <% } %>
 
-                <% if (reCaptchaEnabled) { %>
-                    const reCaptchaResponse = $("[name='g-recaptcha-response']")[0].value;
-
-                    if (reCaptchaResponse.trim() === "") {
-                        errorMessage.text("Please select reCaptcha.");
-                        errorMessage.show();
-                        $("html, body").animate({scrollTop: errorMessage.offset().top}, "slow");
-                        submitButton.removeClass("loading").attr("disabled", false);
-                        return false;
-                    }
-                <% } %>
-
                 return true;
             });
+
+            <%
+                if (reCaptchaEnabled) {
+            %>
+                grecaptcha.ready(function() {
+                    grecaptcha.execute('<%=Encode.forHtmlContent(reCaptchaKey)%>', {action: 'usernameRecovery'}).then(function(token) {
+                        $('#recoverDetailsForm').prepend('<input type="hidden" name="g-recaptcha-response" value="' + token + '">');
+                        $('#recoverDetailsForm').prepend('<input type="hidden" name="action" value="usernameRecovery">');
+                    });;
+                });
+            <%
+                }
+            %>
         });
     </script>
 </body>
