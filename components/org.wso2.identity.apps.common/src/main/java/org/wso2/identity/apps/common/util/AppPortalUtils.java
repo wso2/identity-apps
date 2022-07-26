@@ -44,6 +44,7 @@ import org.wso2.identity.apps.common.internal.AppsCommonDataHolder;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.wso2.carbon.identity.oauth.common.OAuthConstants.GrantTypes.AUTHORIZATION_CODE;
 import static org.wso2.carbon.identity.oauth.common.OAuthConstants.GrantTypes.REFRESH_TOKEN;
@@ -272,6 +273,9 @@ public class AppPortalUtils {
                     grantTypes = Arrays.asList(AUTHORIZATION_CODE, REFRESH_TOKEN, GRANT_TYPE_ACCOUNT_SWITCH,
                             GRANT_TYPE_ORGANIZATION_SWITCH);
                 }
+                List<String> allowedGrantTypes = Arrays.asList(AppsCommonDataHolder.getInstance()
+                        .getOAuthAdminService().getAllowedGrantTypes());
+                grantTypes = grantTypes.stream().filter(allowedGrantTypes::contains).collect(Collectors.toList());
                 String consumerKey = appPortal.getConsumerKey();
                 if (!SUPER_TENANT_DOMAIN_NAME.equals(tenantDomain)) {
                     consumerKey = consumerKey + "_" + tenantDomain;
