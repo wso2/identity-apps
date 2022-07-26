@@ -219,7 +219,7 @@ export const getOrganizationPermissions = (): Promise<any> => {
             data: [
                 {
                     "displayName": "All Permissions",
-                    "resourcePath": "/permission/"
+                    "resourcePath": "/permission"
                 },
                 {
                     "displayName": "Admin",
