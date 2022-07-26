@@ -112,19 +112,16 @@
 
 
                     <form class="ui large form" id="pin_form" name="pin_form" action="<%=commonauthURL%>" method="GET">
-                        <div class="ui segment">
-                            <p>Name of the Organization:</p>
-                            <input type="text" id='ORG_NAME' name="org" size='30'/>
-                            <input id="idp" name="idp" type="hidden" value="<%=Encode.forHtmlAttribute(idp)%>"/>
-                            <input id="authenticator" name="authenticator" type="hidden" value="<%=Encode.forHtmlAttribute(authenticator)%>"/>
-                            <input id="sessionDataKey" name="sessionDataKey" type="hidden" value="<%=Encode.forHtmlAttribute(sessionDataKey)%>"/>
-                            <div class="ui divider hidden"></div>
-                            <div class="align-right buttons">
-                                <button type="submit" class="ui primary large button">
-                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "Submit")%>
-                                </button>
-                            </div>
-
+                        <p>Name of the Organization:</p>
+                        <input type="text" id='ORG_NAME' name="org" size='30'/>
+                        <input id="idp" name="idp" type="hidden" value="<%=Encode.forHtmlAttribute(idp)%>"/>
+                        <input id="authenticator" name="authenticator" type="hidden" value="<%=Encode.forHtmlAttribute(authenticator)%>"/>
+                        <input id="sessionDataKey" name="sessionDataKey" type="hidden" value="<%=Encode.forHtmlAttribute(sessionDataKey)%>"/>
+                        <div class="ui divider hidden"></div>
+                        <div class="align-right buttons">
+                            <button type="submit" class="ui primary large button">
+                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "Submit")%>
+                            </button>
                         </div>
                     </form>
 
