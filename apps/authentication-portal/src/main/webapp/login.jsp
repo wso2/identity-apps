@@ -375,8 +375,8 @@
                                                 }
                                         } %>
 
-                                        <div class="external-login blurring external-login-dimmer" id="googleSignIn" style="display: none;">
-                                            <div class="field">
+                                        <div class="external-login blurring external-login-dimmer">
+                                            <div class="field" id="googleSignIn" style="display: none;">
                                                 <button
                                                     class="ui icon button fluid"
                                                     onclick="handleNoDomain(this,
