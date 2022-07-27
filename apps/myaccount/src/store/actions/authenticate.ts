@@ -295,12 +295,17 @@ export const useSignOut = (): () => (dispatch) => void => {
 export const handleAccountSwitching = (account: LinkedAccountInterface) => (dispatch) => {
     switchAccount(account)
         .then((response) => {
+            const subParts = response.sub.split("@");
+            const tenantDomain = subParts[ subParts.length - 1 ];
+            const username = response.sub;
+            
             dispatch(
                 setSignIn({
                     display_name: response?.displayName,
                     email: response?.email,
                     scope: response?.allowedScopes,
-                    username: response?.username
+                    tenantDomain: response?.tenantDomain ?? tenantDomain,
+                    username: username
                 })
             );
 
