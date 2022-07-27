@@ -78,6 +78,10 @@ interface ProvisioningSettingsPropsInterface extends TestableComponentInterface 
      * Specifies if the component should only be read-only.
      */
     isReadOnly: boolean;
+    /**
+     * Loading Component.
+     */
+    loader: () => ReactElement;
 }
 
 /**
@@ -96,6 +100,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
         isLoading,
         onUpdate,
         isReadOnly,
+        loader: Loader,
         [ "data-testid" ]: testId
     } = props;
 

@@ -16,7 +16,8 @@
 * under the License.
 */
 
-import { OrganizationInterface } from "../models";
+import { OrganizationManagementConstants } from "../constants";
+import { OrganizationInterface, OrganizationResponseInterface } from "../models";
 
 export class OrganizationUtils {
     /**
@@ -27,13 +28,13 @@ export class OrganizationUtils {
     private constructor() { }
 
     /**
-     * Checks if the selected organization is the root organization.
+     * Checks if the selected organization is the Super organization.
      *
      * @param {OrganizationInterface} organization Organization object.
      *
      * @returns {boolean}
      */
-    public static isRootOrganization(organization: OrganizationInterface): boolean {
-        return !organization || organization.id === "ROOT";
+    public static isRootOrganization(organization: OrganizationResponseInterface | OrganizationInterface): boolean {
+        return !organization || organization.id === OrganizationManagementConstants.ROOT_ORGANIZATION_ID;
     }
 }

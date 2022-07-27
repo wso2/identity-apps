@@ -79,6 +79,10 @@ export const console: ConsoleNS = {
                     name: "My Account"
                 },
                 tooltip: "Apps"
+            },
+            organizationSwitch: {
+                emptyOrgListMessage: "සංවිධාන නොමැත",
+                orgSearchPlaceholder: "සංවිධානයේ නම අනුව සොයන්න"
             }
         },
         modals: {
@@ -5738,7 +5742,7 @@ export const console: ConsoleNS = {
                     },
                     tabTitles: {
                         attributes: "ගුණාංග",
-                        profile: "පැතිකඩ"
+                        overview: "දළ විශ්ලේෂණය"
                     }
                 },
                 forms: {
@@ -5817,6 +5821,8 @@ export const console: ConsoleNS = {
                             message: "සංවිධානය සාර්ථකව මකා ඇත"
                         }
                     },
+                    deleteOrganizationWithSubOrganizationError: "{{ organizationName }} සංවිධානයට උප සංවිධාන එකක් හෝ " +
+                        "කිහිපයක් ඇති බැවින් එය මකා දැමිය නොහැක.",
                     fetchOrganization: {
                         error: {
                             description: "{{description}}",

@@ -3,9 +3,9 @@ import { ResourceTab } from "@wso2is/react-components";
 import React, { FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
 import { OrganizationAttributes } from "./organization-attributes";
-import { OrganizationProfile } from "./organization-profile";
-import { FeatureConfigInterface } from "../../core";
-import { OrganizationResponseInterface } from "../models";
+import { OrganizationOverview } from "./organization-overview";
+import { FeatureConfigInterface } from "../../../core";
+import { OrganizationResponseInterface } from "../../models";
 
 interface EditOrganizationPropsInterface extends SBACInterface<FeatureConfigInterface> {
     /**
@@ -44,10 +44,10 @@ export const EditOrganization: FunctionComponent<EditOrganizationPropsInterface>
 
     const panes = () => ([
         {
-            menuItem: t("console:manage.features.organizations.edit.tabTitles.profile"),
+            menuItem: t("console:manage.features.organizations.edit.tabTitles.overview"),
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
-                    <OrganizationProfile 
+                    <OrganizationOverview
                         organization={ organization }
                         isReadOnly={ isReadOnly }
                         onOrganizationUpdate={ onOrganizationUpdate }

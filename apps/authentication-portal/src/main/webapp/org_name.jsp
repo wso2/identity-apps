@@ -22,29 +22,36 @@
 <%@ page import="java.util.Map" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 <%@ include file="includes/localize.jsp" %>
 <%@ include file="includes/init-url.jsp" %>
+<jsp:directive.include file="includes/layout-resolver.jsp"/>
 
 <%
 
     String idp = request.getParameter("idp");
     String authenticator = request.getParameter("authenticator");
     String sessionDataKey = request.getParameter(Constants.SESSION_DATA_KEY);
-    
+
     String errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.retry");
     String authenticationFailed = "false";
-    
+
     if (Boolean.parseBoolean(request.getParameter(Constants.AUTH_FAILURE))) {
         authenticationFailed = "true";
-        
+
         if (request.getParameter(Constants.AUTH_FAILURE_MSG) != null) {
             errorMessage = request.getParameter(Constants.AUTH_FAILURE_MSG);
-            
+
             if (errorMessage.equalsIgnoreCase("authentication.fail.message")) {
                 errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.retry");
             }
         }
     }
+%>
+
+<%-- Data for the layout from the page --%>
+<%
+    layoutData.put("containerSize", "medium");
 %>
 
 <html>
@@ -70,8 +77,8 @@
     </head>
 
     <body class="login-portal layout authentication-portal-layout">
-        <main class="center-segment">
-            <div class="ui container medium center aligned middle aligned">
+        <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
+            <layout:component componentName="ProductHeader" >
                 <!-- product-title -->
                 <%
                     File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
@@ -85,10 +92,11 @@
                 <%
                     }
                 %>
-
+            </layout:component>
+            <layout:component componentName="MainSection" >
                 <div class="ui segment">
                     <!-- page content -->
-                    <h2>Sign In with Enterprise Login</h2>
+                    <h2>Sign In with <%= StringUtils.isNotBlank(idp) ? idp : "Organization Login" %></h2>
                     <div class="ui divider hidden"></div>
 
                     <%
@@ -104,39 +112,37 @@
 
 
                     <form class="ui large form" id="pin_form" name="pin_form" action="<%=commonauthURL%>" method="GET">
-                        <div class="ui segment">
-                            <p>Name of the Organization:</p>
-                            <input type="text" id='ORG_NAME' name="org" size='30'/>
-                            <input id="idp" name="idp" type="hidden" value="<%=Encode.forHtmlAttribute(idp)%>"/>
-                            <input id="authenticator" name="authenticator" type="hidden" value="<%=Encode.forHtmlAttribute(authenticator)%>"/>
-                            <input id="sessionDataKey" name="sessionDataKey" type="hidden" value="<%=Encode.forHtmlAttribute(sessionDataKey)%>"/>
-                            <div class="ui divider hidden"></div>
-                            <div class="align-right buttons">
-                                <button type="submit" class="ui primary large button">
-                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "Submit")%>
-                                </button>
-                            </div>
-
+                        <p>Name of the Organization:</p>
+                        <input type="text" id='ORG_NAME' name="org" size='30'/>
+                        <input id="idp" name="idp" type="hidden" value="<%=Encode.forHtmlAttribute(idp)%>"/>
+                        <input id="authenticator" name="authenticator" type="hidden" value="<%=Encode.forHtmlAttribute(authenticator)%>"/>
+                        <input id="sessionDataKey" name="sessionDataKey" type="hidden" value="<%=Encode.forHtmlAttribute(sessionDataKey)%>"/>
+                        <div class="ui divider hidden"></div>
+                        <div class="align-right buttons">
+                            <button type="submit" class="ui primary large button">
+                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "Submit")%>
+                            </button>
                         </div>
                     </form>
 
                 </div>
-            </div>
-        </main>
-
-        <!-- product-footer -->
-        <%
-            File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
-            if (productFooterFile.exists()) {
-        %>
-                <jsp:include page="extensions/product-footer.jsp"/>
-        <%
-            } else {
-        %>
-                <jsp:include page="includes/product-footer.jsp"/>
-        <%
-            }
-        %>
+            </layout:component>
+            <layout:component componentName="ProductFooter" >
+                <!-- product-footer -->
+                <%
+                    File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
+                    if (productFooterFile.exists()) {
+                %>
+                        <jsp:include page="extensions/product-footer.jsp"/>
+                <%
+                    } else {
+                %>
+                        <jsp:include page="includes/product-footer.jsp"/>
+                <%
+                    }
+                %>
+            </layout:component>
+        </layout:main>
 
         <!-- footer -->
         <%

@@ -1,6 +1,5 @@
-import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
-import { AlertLevels } from "@wso2is/core/src/models";
-import { addAlert } from "@wso2is/core/src/store";
+import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
 import {
     ConfirmationModal,
@@ -14,12 +13,11 @@ import React, { FunctionComponent, ReactElement, useCallback, useRef, useState }
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Button, Divider, Grid } from "semantic-ui-react";
-import { FeatureConfigInterface } from "../../core";
-import { deleteOrganization, patchOrganization } from "../api";
-import { ORGANIZATION_TYPE } from "../constants";
-import { OrganizationPatchData, OrganizationResponseInterface } from "../models";
+import { FeatureConfigInterface } from "../../../core";
+import { deleteOrganization, patchOrganization } from "../../api";
+import { OrganizationPatchData, OrganizationResponseInterface } from "../../models";
 
-interface OrganizationProfilePropsInterface extends SBACInterface<FeatureConfigInterface>,
+interface OrganizationOverviewPropsInterface extends SBACInterface<FeatureConfigInterface>,
     TestableComponentInterface {
     /**
      * Organization info
@@ -39,8 +37,8 @@ interface OrganizationProfilePropsInterface extends SBACInterface<FeatureConfigI
     onOrganizationDelete: (organizationId: string) => void;
 }
 
-export const OrganizationProfile: FunctionComponent<OrganizationProfilePropsInterface> = (
-    props: OrganizationProfilePropsInterface
+export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsInterface> = (
+    props: OrganizationOverviewPropsInterface
 ): ReactElement => {
 
     const {
@@ -139,6 +137,24 @@ export const OrganizationProfile: FunctionComponent<OrganizationProfilePropsInte
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
+                    if (error.response.data.code === "ORG-60007") {
+                        dispatch(
+                            addAlert({
+                                description: t(
+                                    "console:manage.features.organizations.notifications." +
+                                    "deleteOrganizationWithSubOrganizationError",
+                                    { organizationName: organization.name }
+                                ),
+                                level: AlertLevels.ERROR,
+                                message: t(
+                                    "console:manage.features.organizations.notifications.deleteOrganization.error" +
+                                    ".message"
+                                )
+                            })
+                        );
+
+                        return;
+                    }
                     dispatch(
                         addAlert({
                             description: error.response.data.description,
@@ -184,26 +200,9 @@ export const OrganizationProfile: FunctionComponent<OrganizationProfilePropsInte
                                 triggerSubmit={ (submit) => (submitForm.current = submit) }
                             >
                                 {
-                                    organization?.id && (
-                                        <Field.Input
-                                            data-testid={ `${testId}-profile-form-id-input` }
-                                            name="id"
-                                            label={ t("console:manage.features.organizations.edit.fields.id.label") }
-                                            value={ organization.id }
-                                            required={ true }
-                                            readOnly={ true }
-                                            ariaLabel={ t("console:manage.features.organizations.edit." +
-                                                "fields.ariaLabel") }
-                                            inputType="identifier"
-                                            maxLength={ 32 }
-                                            minLength={ 3 }
-                                        />
-                                    )
-                                }
-                                {
                                     organization?.name && (
                                         <Field.Input
-                                            data-testid={ `${testId}-profile-form-name-input` }
+                                            data-testid={ `${testId}-overview-form-name-input` }
                                             name="name"
                                             label={ t("console:manage.features.organizations.edit.fields.name.label") }
                                             required={ true }
@@ -222,7 +221,7 @@ export const OrganizationProfile: FunctionComponent<OrganizationProfilePropsInte
                                 {
                                     (
                                         <Field.Textarea
-                                            data-testid={ `${testId}-profile-form-description-input` }
+                                            data-testid={ `${testId}-overview-form-description-input` }
                                             name="description"
                                             label={ t("console:manage.features.organizations.edit.fields." +
                                                 "description.label") }
@@ -234,7 +233,7 @@ export const OrganizationProfile: FunctionComponent<OrganizationProfilePropsInte
                                             ariaLabel={ t("console:manage.features.organizations.edit.fields." +
                                                 "description.ariaLabel") }
                                             inputType="description"
-                                            maxLength={ 50 }
+                                            maxLength={ 300 }
                                             minLength={ 3 }
                                         />
                                     )
@@ -242,7 +241,7 @@ export const OrganizationProfile: FunctionComponent<OrganizationProfilePropsInte
                                 {
                                     organization?.domain && (
                                         <Field.Input
-                                            data-testid={ `${testId}-profile-form-domain-input` }
+                                            data-testid={ `${testId}-overview-form-domain-input` }
                                             name="domain"
                                             label={ t("console:manage.features.organizations.edit.fields." +
                                                 "domain.label") }
@@ -259,32 +258,9 @@ export const OrganizationProfile: FunctionComponent<OrganizationProfilePropsInte
                                     )
                                 }
                                 {
-                                    organization?.type && (
-                                        <Field.Input
-                                            data-testid={ `${testId}-profile-form-type-input` }
-                                            name="type"
-                                            label={ t("console:manage.features.organizations.edit.fields." +
-                                                "type.label") }
-                                            required={ false }
-                                            requiredErrorMessage=""
-                                            type="text"
-                                            readOnly={ true }
-                                            value={ organization.type === ORGANIZATION_TYPE.STRUCTURAL
-                                                ? "Structural"
-                                                : "Tenant"
-                                            }
-                                            ariaLabel={ t("console:manage.features.organizations.edit.fields." +
-                                                "type.ariaLabel") }
-                                            inputType="name"
-                                            maxLength={ 32 }
-                                            minLength={ 3 }
-                                        />
-                                    )
-                                }
-                                {
                                     organization?.created && (
                                         <Field.Input
-                                            data-testid={ `${testId}-profile-form-created-input` }
+                                            data-testid={ `${testId}-overview-form-created-input` }
                                             name="created"
                                             label={ t("console:manage.features.organizations.edit.fields." +
                                                 "created.label") }
@@ -304,7 +280,7 @@ export const OrganizationProfile: FunctionComponent<OrganizationProfilePropsInte
                                 {
                                     organization?.lastModified && (
                                         <Field.Input
-                                            data-testid={ `${testId}-profile-form-last-modified-input` }
+                                            data-testid={ `${testId}-overview-form-last-modified-input` }
                                             name="lastModified"
                                             label={ t("console:manage.features.organizations.edit.fields." +
                                                 "lastModified.label") }
@@ -375,7 +351,7 @@ export const OrganizationProfile: FunctionComponent<OrganizationProfilePropsInte
                     showOrgDeleteConfirmation && (
                         <ConfirmationModal
                             onClose={ (): void => setShowOrgDeleteConfirmationModal(false) }
-                            type="warning"
+                            type="negative"
                             open={ showOrgDeleteConfirmation }
                             assertionHint={ t("console:manage.features.organizations.confirmations." +
                                 "deleteOrganization.assertionHint") }
@@ -409,6 +385,6 @@ export const OrganizationProfile: FunctionComponent<OrganizationProfilePropsInte
 /**
  * Default props for the component.
  */
-OrganizationProfile.defaultProps = {
-    "data-testid": "organization-profile"
+OrganizationOverview.defaultProps = {
+    "data-testid": "organization-overview"
 };

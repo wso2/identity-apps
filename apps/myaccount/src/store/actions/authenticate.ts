@@ -100,7 +100,7 @@ export const getScimSchemas = (
 
     dispatch(setProfileSchemaLoader(true));
 
-    getProfileSchemas()
+    getProfileSchemas(store.getState().config.endpoint?.schemas)
         .then((response: ProfileSchema[]) => {
             dispatch(setProfileSchemaLoader(false));
             dispatch(setScimSchemas(response));
@@ -131,7 +131,7 @@ export const getProfileInformation = (updateProfileCompletion = false) => (dispa
                         dispatch(
                             setProfileInfo({
                                 ...infoResponse,
-                                isReadOnly: 
+                                isReadOnly:
                                     response[SCIMConfigs.scim.customEnterpriseSchema]
                                         ?.isReadOnlyUser
                             })

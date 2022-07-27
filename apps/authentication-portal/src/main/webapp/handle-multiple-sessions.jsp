@@ -16,17 +16,19 @@
   ~ under the License.
   --%>
 
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="com.google.gson.Gson" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthContextAPIClient" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
 <%@ page import="java.io.File" %>
 <%@ page import="org.wso2.carbon.identity.core.util.IdentityUtil" %>
 <%@ page import="java.net.URLEncoder" %>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 
 <%@include file="includes/localize.jsp" %>
 <jsp:directive.include file="includes/init-url.jsp"/>
 <jsp:directive.include file="includes/template-mapper.jsp"/>
+<jsp:directive.include file="includes/layout-resolver.jsp"/>
 
 <%@ taglib prefix="e" uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -50,6 +52,11 @@
     Map data = gson.fromJson(contextProperties, Map.class);
 %>
 
+<%-- Data for the layout from the page --%>
+<%
+    layoutData.put("containerSize", "medium");
+%>
+
 <!doctype html>
 <html>
 <head>
@@ -64,9 +71,8 @@
     <% } %>
 </head>
 <body class="login-portal layout authentication-portal-layout">
-    <main class="center-segment">
-        <div class="ui container medium center aligned middle">
-
+    <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
+        <layout:component componentName="ProductHeader" >
             <!-- product-title -->
             <%
                 File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
@@ -76,7 +82,8 @@
             <% } else { %>
                 <jsp:include page="includes/product-title.jsp"/>
             <% } %>
-
+        </layout:component>
+        <layout:component componentName="MainSection" >
             <div class="ui segment">
                 <div class="segment-form">
                     <c:set var="data" value="<%=data%>" scope="request"/>
@@ -153,8 +160,19 @@
                     </form>
                 </div>
             </div>
-        </div>
-    </main>
+        </layout:component>
+        <layout:component componentName="ProductFooter" >
+            <!-- product-footer -->
+            <%
+                File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
+                if (productFooterFile.exists()) {
+            %>
+                <jsp:include page="extensions/product-footer.jsp"/>
+            <% } else { %>
+                <jsp:include page="includes/product-footer.jsp"/>
+            <% } %>
+        </layout:component>
+    </layout:main>
 
     <div class="ui modal mini" id="selected_sessions_validation" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
         <div class="header">
@@ -171,16 +189,6 @@
             </button>
         </div>
     </div>
-
-    <!-- product-footer -->
-    <%
-        File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
-        if (productFooterFile.exists()) {
-    %>
-        <jsp:include page="extensions/product-footer.jsp"/>
-    <% } else { %>
-        <jsp:include page="includes/product-footer.jsp"/>
-    <% } %>
 
     <!-- footer -->
     <%

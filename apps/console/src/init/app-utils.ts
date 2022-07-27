@@ -89,8 +89,8 @@ export const AppUtils = (function() {
             }
 
             return this.isSaas()
-                ? appBaseForHistoryAPIFallback + this.getAppBaseWithOrganization()
-                : this.getAppBaseWithTenant();
+                ? appBaseForHistoryAPIFallback
+                : this.getAppBaseWithTenantAndOrganization();
         },
 
         /**
@@ -105,7 +105,7 @@ export const AppUtils = (function() {
                 return this.getAppBaseWithOrganization() + path;
             }
 
-            return this.getAppBaseWithTenant() + path;
+            return this.getAppBaseWithTenantAndOrganization() + path;
         },
 
         /**
@@ -120,7 +120,8 @@ export const AppUtils = (function() {
                 return _config.clientOrigin + this.getTenantPath(true) + "/" + _config.appBaseName + url;
             }
 
-            return _config.clientOrigin + (_config.appBaseName ? "/" + _config.appBaseName : "") + url;
+            return _config.clientOrigin + this.getOrganizationPath()
+                + (_config.appBaseName ? "/" + _config.appBaseName : "") + url;
         },
 
         /**
@@ -140,6 +141,7 @@ export const AppUtils = (function() {
                 return path;
             }
 
+
             return "/" + this.getLocationPathWithoutTenant().split("/")[1];
         },
 
@@ -158,7 +160,17 @@ export const AppUtils = (function() {
          * Get app base with the tenant domain.
          * @return {string}
          */
-        getAppBaseWithTenant: function() {
+        getAppBaseWithTenant: function () {
+            return `${ this.getTenantPath(true) }${ _config.appBaseName
+                ? ("/" + _config.appBaseName)
+                : "" }`;
+        },
+
+        /**
+         * Get app base with the tenant domain and organization.
+         * @return {string}
+         */
+        getAppBaseWithTenantAndOrganization: function() {
             return `${ this.getTenantPath(true) }${ this.getOrganizationPath() }${ _config.appBaseName
                 ? ("/" + _config.appBaseName)
                 : "" }`;
@@ -214,7 +226,7 @@ export const AppUtils = (function() {
                 allowMultipleAppProtocols: allowMultipleAppProtocol,
                 appBase: _config.appBaseName,
                 appBaseNameForHistoryAPI: this.constructAppBaseNameForHistoryAPI(),
-                appBaseWithTenant: this.getAppBaseWithTenant(),
+                appBaseWithTenant: this.getAppBaseWithTenantAndOrganization(),
                 clientID: (this.isSaas() || this.isSuperTenant())
                     ? _config.clientID
                     : _config.clientID + "_" + this.getTenantName(),
@@ -230,6 +242,7 @@ export const AppUtils = (function() {
                 docSiteUrl: _config.docSiteUrl,
                 documentation: _config.documentation,
                 extensions: _config.extensions,
+                getProfileInfoFromIDToken: _config.getProfileInfoFromIDToken,
                 idpConfigs: this.resolveIdpConfigs(),
                 isSaas: this.isSaas(),
                 loginCallbackURL: this.constructRedirectURLs(_config.loginCallbackPath),
@@ -264,11 +277,14 @@ export const AppUtils = (function() {
 
             if ( (pathChunks[1] === this.getTenantPrefix()) && (pathChunks[2] === this.getTenantName(true)) ) {
                 pathChunks.splice(1, 2);
-
-                return pathChunks.join("/");
             }
 
-            return path;
+            if ((pathChunks[ 1 ] === this.getOrganizationPrefix())
+                && (pathChunks[ 2 ] === this.getOrganizationName(true))) {
+                pathChunks.splice(1, 2);
+            }
+
+            return pathChunks.join("/");
         },
 
         /**
@@ -496,7 +512,10 @@ export const AppUtils = (function() {
                             .replace(SUPER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER, this.getSuperTenantProxy())
                             .replace(USER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER, this.getTenantName()
                                 ? this.getTenantName()
-                                : ""),
+                                : this.getOrganizationName()
+                                    ? this.getOrganizationName()
+                                    : ""
+                            ),
                 jwksEndpointURL: _config.idpConfigs
                         && _config.idpConfigs.jwksEndpointURL
                         && _config.idpConfigs.jwksEndpointURL

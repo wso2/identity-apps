@@ -26,6 +26,10 @@ import { FacebookAuthenticationProviderCreateWizard } from "./facebook";
 import { GitHubAuthenticationProviderCreateWizard } from "./github";
 import { GoogleAuthenticationProviderCreateWizard } from "./google";
 import { OidcAuthenticationProviderCreateWizard } from "./oidc-authentication-provider-create-wizard";
+import { identityProviderConfig } from "../../../../extensions/configs/identity-provider";
+import {
+    OrganizationEnterpriseAuthenticationProviderCreateWizard
+} from "./organization-enterprise/organization-enterprise-authentication-provider-create-wizard";
 import { ConfigReducerStateInterface } from "../../../core/models";
 import { AppState } from "../../../core/store";
 import { getIdentityProviderList, getIdentityProviderTemplate } from "../../api";
@@ -263,7 +267,13 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
             if (!idpList?.includes(idpName)) {
                 break;
             }
-            idpName = initialIdpName + i;
+
+            // If the IdP has spaces, append the number after a space.
+            if (idpName.split(" ").length > 1) {
+                idpName = initialIdpName + " " +  i;
+            } else {
+                idpName = initialIdpName + i;
+            }
         }
 
         return idpName;
@@ -342,14 +352,12 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
                     />
                 )
                 : null;
-        default:
+        case IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.ORGANIZATION_ENTERPRISE_IDP:
             return (showWizard && !isEmpty(selectedTemplateWithUniqueName))
                 ? (
-                    <EnterpriseIDPCreateWizard
-                        title= { t("console:develop.features.authenticationProvider.templates.enterprise." +
-                            "addWizard.title") }
-                        subTitle= { t("console:develop.features.authenticationProvider.templates.enterprise." +
-                            "addWizard.subtitle") }
+                    <OrganizationEnterpriseAuthenticationProviderCreateWizard
+                        title={ selectedTemplateWithUniqueName?.name }
+                        subTitle={ selectedTemplateWithUniqueName?.description }
                         onWizardClose={ () => {
                             setSelectedTemplateWithUniqueName(undefined);
                             setSelectedTemplate(undefined);
@@ -361,6 +369,39 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
                         { ...rest }
                     />
                 )
+                : null;
+        default:
+            return (showWizard && !isEmpty(selectedTemplateWithUniqueName))
+                ? identityProviderConfig.createIdentityProvider.getOverriddenCreateWizard(type, {
+                    onIDPCreate: rest.onIDPCreate,
+                    onWizardClose: () => {
+                        setSelectedTemplateWithUniqueName(undefined);
+                        setSelectedTemplate(undefined);
+                        setShowWizard(false);
+                        onWizardClose();
+                    },
+                    subTitle: selectedTemplateWithUniqueName?.description,
+                    template: selectedTemplateWithUniqueName,
+                    title: selectedTemplateWithUniqueName?.name,
+                    ...rest
+                })
+                    ?? (
+                        <EnterpriseIDPCreateWizard
+                            title= { t("console:develop.features.authenticationProvider.templates.enterprise." +
+                                "addWizard.title") }
+                            subTitle= { t("console:develop.features.authenticationProvider.templates.enterprise." +
+                                "addWizard.subtitle") }
+                            onWizardClose={ () => {
+                                setSelectedTemplateWithUniqueName(undefined);
+                                setSelectedTemplate(undefined);
+                                setShowWizard(false);
+                                onWizardClose();
+                            } }
+                            template={ selectedTemplateWithUniqueName }
+                            data-componentid={ selectedTemplate?.templateId }
+                            { ...rest }
+                        />
+                    )
                 : null;
     }
 };

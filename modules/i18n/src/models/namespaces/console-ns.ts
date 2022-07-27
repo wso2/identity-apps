@@ -93,6 +93,10 @@ export interface ConsoleNS {
                 myAccount: AppSwitchItemInterface;
                 tooltip: string;
             };
+            organizationSwitch: {
+                emptyOrgListMessage: string;
+                orgSearchPlaceholder: string;
+            }
         },
         modals: {
             editAvatarModal: ModalInterface;
@@ -1286,6 +1290,7 @@ export interface ConsoleNS {
                             callbackUrl: FormAttributes;
                             clientId: FormAttributes;
                             clientSecret: FormAttributes;
+                            AdditionalQueryParameters: FormAttributes;
                             scopes: {
                                 heading: string;
                                 hint: string;
@@ -2279,6 +2284,7 @@ export interface ConsoleNS {
                 notifications: {
                     fetchOrganization: Notification;
                     deleteOrganization: Notification;
+                    deleteOrganizationWithSubOrganizationError: string;
                     updateOrganization: Notification;
                     updateOrganizationAttributes: Notification;
                     addOrganization: Notification;
@@ -2299,7 +2305,7 @@ export interface ConsoleNS {
                     description: string;
                     back: string;
                     tabTitles: {
-                        profile: string;
+                        overview: string;
                         attributes: string;
                     },
                     fields: {

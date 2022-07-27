@@ -22,8 +22,10 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.net.URISyntaxException" %>
+<%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 
 <jsp:directive.include file="includes/localize.jsp"/>
+<jsp:directive.include file="includes/layout-resolver.jsp"/>
 
 <%
     String callback = (String) request.getAttribute("callback");
@@ -52,6 +54,11 @@
     }
 %>
 
+<%-- Data for the layout from the page --%>
+<%
+    layoutData.put("containerSize", "medium");
+%>
+
 <!doctype html>
 <html>
 <head>
@@ -65,6 +72,18 @@
     <% } %>
 </head>
 <body>
+    <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
+        <layout:component componentName="ProductHeader" >
+
+        </layout:component>
+        <layout:component componentName="MainSection" >
+
+        </layout:component>
+        <layout:component componentName="ProductFooter" >
+
+        </layout:component>
+    </layout:main>
+
     <div class="ui tiny modal notify">
         <div class="header">
             <h4 class="modal-title"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,

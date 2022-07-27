@@ -59,11 +59,11 @@ export const AuthenticatorSettings: FunctionComponent<AuthenticatorSettingsWizar
             onSubmit({
                 ...initialValues,
                 federatedAuthenticators: {
-                    authenticators: [{
+                    authenticators: [ {
                         ...authenticator,
                         isDefault: true,
                         isEnabled: true
-                    }],
+                    } ],
                     defaultAuthenticatorId: initialValues?.federatedAuthenticators?.defaultAuthenticatorId
                 }
             });
@@ -71,12 +71,12 @@ export const AuthenticatorSettings: FunctionComponent<AuthenticatorSettingsWizar
             // Add new authenticator instance
             onSubmit({
                 federatedAuthenticators: {
-                    authenticators: [{
+                    authenticators: [ {
                         authenticatorId: authenticator.authenticatorId,
                         isDefault: false,
                         isEnabled: true,
                         properties: authenticator.properties
-                    }],
+                    } ],
                     defaultAuthenticatorId: authenticator.authenticatorId
                 }
             });
@@ -86,18 +86,21 @@ export const AuthenticatorSettings: FunctionComponent<AuthenticatorSettingsWizar
     const authenticator = initialValues?.federatedAuthenticators?.authenticators.find(authenticator =>
         authenticator.authenticatorId === initialValues?.federatedAuthenticators?.defaultAuthenticatorId);
 
+    if (!metadata) {
+        return null;
+    }
+
     return (
-        ( metadata ?
-            <AuthenticatorFormFactory
-                metadata={ metadata }
-                initialValues={ (authenticator ? authenticator : {}) }
-                onSubmit={ handleSubmit }
-                type={ authenticator?.name }
-                triggerSubmit={ triggerSubmit }
-                enableSubmitButton={ false }
-                data-testid={ testId }
-                isReadOnly={ false }
-            /> : null
-        )
+        <AuthenticatorFormFactory
+            metadata={ metadata }
+            initialValues={ (authenticator ? authenticator : {}) }
+            onSubmit={ handleSubmit }
+            type={ authenticator?.name }
+            triggerSubmit={ triggerSubmit }
+            enableSubmitButton={ false }
+            data-testid={ testId }
+            isReadOnly={ false }
+            templateId={ initialValues.templateId }
+        />
     );
 };

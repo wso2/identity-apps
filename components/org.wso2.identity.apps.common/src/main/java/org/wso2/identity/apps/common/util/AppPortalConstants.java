@@ -34,7 +34,11 @@ public class AppPortalConstants {
 
     public static final String GRANT_TYPE_ACCOUNT_SWITCH = "account_switch";
 
+    public static final String GRANT_TYPE_ORGANIZATION_SWITCH = "organization_switch";
+
     public static final String SYSTEM_PROP_SKIP_SERVER_INITIALIZATION = "skipServerInitialization";
+
+    public static final String CONSOLE_APP = "Console";
 
     private AppPortalConstants() {
 

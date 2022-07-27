@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 Inc. (http://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (http://www.wso2.com) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -22,9 +22,9 @@ import { Field, Form } from "@wso2is/form";
 import { Heading, LinkButton, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
-import { Divider, Grid, Message, Modal, Form as SemanticForm } from "semantic-ui-react";
-import { EventPublisher } from "../../core";
+import { useDispatch, useSelector } from "react-redux";
+import { Grid, Message, Modal } from "semantic-ui-react";
+import { AppState, EventPublisher } from "../../core";
 import { addOrganization, getOrganizations } from "../api";
 import { ORGANIZATION_TYPE } from "../constants";
 import { AddOrganizationInterface, OrganizationInterface, OrganizationListInterface } from "../models";
@@ -63,39 +63,17 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
 
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ type, setType ] = useState<ORGANIZATION_TYPE>(ORGANIZATION_TYPE.STRUCTURAL);
-    const [ duplicateName, setDuplicateName ] = useState<boolean>(false);
 
     const submitForm = useRef<() => void>();
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
+    const currentOrganization = useSelector((state: AppState) => state.organization.organization);
 
     const submitOrganization = async (values: OrganizationAddFormProps): Promise<void> => {
-        if (values?.name) {
-            try {
-                const response: OrganizationListInterface = await getOrganizations(
-                    `name eq ${ values.name }`,
-                    1,
-                    null,
-                    null,
-                    true
-                );
-
-                if (response?.organizations?.length > 0) {
-                    setDuplicateName(true);
-
-                    return;
-                } else {
-                    setDuplicateName(false);
-                }
-            } catch (error) {
-                setDuplicateName(false);
-            }
-        }
-
         const organization: AddOrganizationInterface = {
             description: values?.description,
             name: values?.name,
-            parentId: parent?.id ?? "ROOT",
+            parentId: parent?.id ?? currentOrganization.id,
             type: ORGANIZATION_TYPE.TENANT
         };
 
@@ -208,16 +186,6 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
                     <Grid>
                         <Grid.Row columns={ 1 }>
                             <Grid.Column width={ 16 }>
-                                { duplicateName && (
-                                    <Message negative data-componentid={ `${ testId }-duplicate-name-error` }>
-                                        <Message.Content>
-                                            { t(
-                                                "console:manage.features.organizations.forms." +
-                                                "addOrganization.name.validation.duplicate"
-                                            ) }
-                                        </Message.Content>
-                                    </Message>
-                                ) }
                                 <Form
                                     uncontrolledForm={ false }
                                     onSubmit={ submitOrganization }
@@ -241,9 +209,6 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
                                         minLength={ 3 }
                                         data-componentid={ `${ testId }-organization-name-input` }
                                         width={ 16 }
-                                        listen={ () => {
-                                            setDuplicateName(false);
-                                        } }
                                     />
                                     <Field.Input
                                         ariaLabel="Description"
@@ -258,7 +223,7 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
                                             "console:manage.features.organizations.forms." +
                                             "addOrganization.description.placeholder"
                                         ) }
-                                        maxLength={ 32 }
+                                        maxLength={ 300 }
                                         minLength={ 3 }
                                         data-componentid={ `${ testId }-description-input` }
                                         width={ 16 }

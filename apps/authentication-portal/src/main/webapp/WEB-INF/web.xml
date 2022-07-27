@@ -367,6 +367,11 @@
         <jsp-file>/org_name.jsp</jsp-file>
     </servlet>
 
+    <servlet>
+        <servlet-name>select_org.do</servlet-name>
+        <jsp-file>/select_org.jsp</jsp-file>
+    </servlet>
+
     <servlet-mapping>
         <servlet-name>totp_enroll.do</servlet-name>
         <url-pattern>/totp_enroll.do</url-pattern>
@@ -425,6 +430,11 @@
     <servlet-mapping>
         <servlet-name>org_name.do</servlet-name>
         <url-pattern>/org_name.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>select_org.do</servlet-name>
+        <url-pattern>/select_org.do</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>

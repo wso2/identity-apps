@@ -16,17 +16,48 @@
  * under the License.
  */
 
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { FunctionComponent, ReactElement, SVGProps } from "react";
 import { IdentityProviderConfig } from "./models";
-import { AuthenticatorLabels, IdentityProviderManagementConstants } from "../../features/identity-providers";
+import { IdentityProviderManagementConstants } from "../../features/identity-providers/constants";
+import {
+    AuthenticatorLabels,
+    GenericIdentityProviderCreateWizardPropsInterface,
+    IdentityProviderTabTypes
+} from "../../features/identity-providers/models";
 
 export const identityProviderConfig: IdentityProviderConfig = {
     authenticatorResponseExtension: [],
     authenticators: {},
+    createIdentityProvider: {
+        getOverriddenCreateWizard: (
+            _templateId: string,
+            _props: GenericIdentityProviderCreateWizardPropsInterface & IdentifiableComponentInterface
+        ): ReactElement | null => {
+            return null;
+        }
+    },
     editIdentityProvider: {
         attributesSettings: true,
+        getCertificateOptionsForTemplate: (_templateId: string): { JWKS: boolean; PEM: boolean; } | undefined => {
+            return undefined;
+        },
+        getOverriddenAuthenticatorForm: (
+            _type: string,
+            _templateId: string,
+            _props: Record<string, any>
+        ): ReactElement | null => {
+            return null;
+        },
+        isTabEnabledForIdP: (_templateId: string, _tabType: IdentityProviderTabTypes): boolean | undefined => {
+            return true;
+        },
         showAdvancedSettings: true,
         showJitProvisioning: true,
         showOutboundProvisioning: true
+    },
+    getIconExtensions: (): Record<string, string | FunctionComponent<SVGProps<SVGSVGElement>>> => {
+        return {};
     },
     jitProvisioningSettings: {
         menuItemName: "Just-in-Time Provisioning",
@@ -52,6 +83,7 @@ export const identityProviderConfig: IdentityProviderConfig = {
         github: true,
         google: true,
         oidc: true,
+        organizationEnterprise: true,
         saml: true
     },
     fidoTags: [
@@ -61,6 +93,12 @@ export const identityProviderConfig: IdentityProviderConfig = {
     ],
     filterFidoTags:(tags: string[]): string[] => {
         return tags;
+    },
+    /**
+     * This is a temporary fix to set the provisioning userstore depending on the available userstore.
+     */
+    overrideTemplate: (): void => {
+        return;
     },
     // Handles backward compatibility with the legacy IDP view & new connections view.
     // TODO: Remove this usage once https://github.com/wso2/product-is/issues/12052 is addressed.

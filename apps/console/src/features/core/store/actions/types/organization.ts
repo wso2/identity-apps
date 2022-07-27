@@ -16,7 +16,7 @@
 * under the License.
 */
 
-import { OrganizationInterface } from "../../../../organizations/models";
+import { OrganizationResponseInterface } from "../../../../organizations/models";
 
 export enum OrganizationActionTypes {
     SET_ORGANIZATION,
@@ -24,7 +24,7 @@ export enum OrganizationActionTypes {
 }
 
 export interface SetOrganizationActionInterface {
-    payload: OrganizationInterface;
+    payload: OrganizationResponseInterface;
     type: OrganizationActionTypes.SET_ORGANIZATION;
 }
 

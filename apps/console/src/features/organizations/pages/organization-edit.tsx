@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 Inc. (http://www.wso2.com) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -27,7 +27,7 @@ import { useDispatch } from "react-redux";
 import { RouteChildrenProps } from "react-router-dom";
 import { AppConstants, FeatureConfigInterface, history } from "../../core";
 import { getOrganization } from "../api";
-import { EditOrganization } from "../components/edit-organization";
+import { EditOrganization } from "../components/edit-organization/edit-organization";
 import { OrganizationIcon } from "../configs";
 import { OrganizationManagementConstants } from "../constants";
 import { OrganizationResponseInterface } from "../models";

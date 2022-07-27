@@ -790,3 +790,13 @@ export enum AuthProtocolTypes {
     WS_TRUST = "ws-trust",
     CUSTOM= "custom"
 }
+
+/**
+ * Enum for IdP Tab types
+ */
+export enum IdentityProviderTabTypes {
+    GENERAL = "General",
+    SETTINGS ="settings",
+    USER_ATTRIBUTES = "user-attributes",
+    ADVANCED = "advanced",
+}

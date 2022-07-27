@@ -59,7 +59,7 @@ export class UserStoreManagementConstants {
  * @type {string}
  */
 export const JDBC = "JDBC";
-export const CONSUMER_USERSTORE_ID = "Q09OU1VNRVI";
+export const CONSUMER_USERSTORE_ID = "REVGQVVMVA";
 export const DEFAULT_USERSTORE_TYPE_IMAGE = "default";
 export const DEFAULT_DESCRIPTION_CUSTOM_USERSTORE = "This is a custom userstore manager implementation";
 
@@ -134,7 +134,7 @@ export const DISABLED = "Disabled";
  * @constant
  * @type {string}
  */
-export const CONSUMER_USERSTORE = "CUSTOMER-DEFAULT";
+export const CONSUMER_USERSTORE = "DEFAULT";
 
 /**
  * Name of the primary userstore.

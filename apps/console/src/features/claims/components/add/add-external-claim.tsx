@@ -504,7 +504,9 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                             </Grid.Column>
                         </Grid.Row>
                         {
-                            (isEmptyClaims || isEmptyServerSupportedClaims) && (
+                            ((!isLocalClaimsLoading && !serverSideClaimsLoading) 
+                                && (isEmptyServerSupportedClaims || isEmptyClaims)) 
+                            && (
                                 <Grid.Row columns={ 1 }>
                                     <Grid.Column width={ 16 } textAlign="left" verticalAlign="top">
                                         <Message

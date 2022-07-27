@@ -90,6 +90,7 @@ export class IdentityProviderManagementConstants {
         GITHUB: "github-idp",
         GOOGLE: "8ea23303-49c0-4253-b81f-82c0fe6fb4a0",
         OIDC: "oidc-idp",
+        ORGANIZATION_ENTERPRISE_IDP: "organization-enterprise-idp",
         SAML: "saml-idp"
     };
 
@@ -103,6 +104,8 @@ export class IdentityProviderManagementConstants {
         CLIENT_ID_MIN_LENGTH: 3,
         CLIENT_SECRET_MAX_LENGTH: 100,
         CLIENT_SECRET_MIN_LENGTH: 3,
+        IDP_DESCRIPTION_MAX_LENGTH: 50,
+        IDP_DESCRIPTION_MIN_LENGTH: 3,
         IDP_NAME_MAX_LENGTH: 50,
         IDP_NAME_MIN_LENGTH: 3
     };
@@ -139,6 +142,15 @@ export class IdentityProviderManagementConstants {
         OTP_LENGTH_MAX_VALUE: 10,
         OTP_LENGTH_MIN_LENGTH: 1,
         OTP_LENGTH_MIN_VALUE: 4
+    };
+
+    /**
+     * Google Authenticator Settings Form element constraints.
+     * @type {Record<string, number>}
+     */
+    public static readonly GOOGLE_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS: Record<string, number> = {
+        ADDITIONAL_QUERY_PARAMS_MIN_LENGTH: 0,
+        ADDITIONAL_QUERY_PARAMS_MAX_LENGTH: 1000
     };
 
     /**
@@ -311,6 +323,7 @@ export class IdentityProviderManagementConstants {
     // Known Enterprise authenticator IDs
     public static readonly OIDC_AUTHENTICATOR_ID: string = "T3BlbklEQ29ubmVjdEF1dGhlbnRpY2F0b3I";
     public static readonly SAML_AUTHENTICATOR_ID: string = "U0FNTFNTT0F1dGhlbnRpY2F0b3I";
+    public static readonly ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID: string = "T3JnYW5pemF0aW9uQXV0aGVudGljYXRvcg";
 
     // Known Local Authenticator IDS.
     public static readonly BASIC_AUTHENTICATOR_ID: string = "QmFzaWNBdXRoZW50aWNhdG9y";
