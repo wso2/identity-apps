@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -39,7 +39,7 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Header, Icon, Popup, SemanticICONS } from "semantic-ui-react";
+import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
 import {
     AppConstants,
     AppState,
@@ -277,19 +277,12 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                             }
                             <Header.Content>
                                 { organization.name }
-                                { /*<Header.Subheader*/ }
-                                { /*    className="truncate ellipsis"*/ }
-                                { /*    data-componentid={ `${ componentId }-item-sub-heading` }*/ }
-                                { /*>*/ }
-                                { /*    { organization.ref?.length > 80 ? (*/ }
-                                { /*        <Popup*/ }
-                                { /*            content={ organization.ref }*/ }
-                                { /*            trigger={ <span>{ organization.ref }</span> }*/ }
-                                { /*        />*/ }
-                                { /*    ) : (*/ }
-                                { /*        organization.ref*/ }
-                                { /*    ) }*/ }
-                                { /*</Header.Subheader>*/ }
+                                <Header.Subheader
+                                    className="truncate ellipsis"
+                                    data-componentid={ `${ componentId }-item-sub-heading` }
+                                >
+                                    Organization Id:<Label size="tiny">{ organization.id }</Label>
+                                </Header.Subheader>
                             </Header.Content>
                         </Header>
                     );

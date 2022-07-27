@@ -31,7 +31,7 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Divider, Dropdown, Input, Item, Menu, Placeholder, Popup } from "semantic-ui-react";
+import { Button, Divider, Dropdown, Input, Item, Label, Menu, Placeholder, Popup } from "semantic-ui-react";
 import { organizationConfigs } from "../../../../extensions";
 import { ReactComponent as CrossIcon } from "../../../../themes/default/assets/images/icons/cross-icon.svg";
 import { AppConstants, AppState, getMiscellaneousIcons, getSidePanelIcons, history } from "../../../core";
@@ -239,30 +239,39 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                             className="name ellipsis tenant-description"
                             data-componentid={ "organization-dropdown-display-name" }
                         >
-                            { organization?.name ?? (
-                                <Placeholder>
-                                    <Placeholder.Line />
-                                </Placeholder>
-                            ) }
+                            <div>
+                                <div>
+                                    { organization?.name ?? (
+                                        <Placeholder>
+                                            <Placeholder.Line />
+                                        </Placeholder>
+                                    ) }
+                                </div>
 
-                            { !OrganizationUtils.isRootOrganization(organization) && (
-                                <GenericIcon
-                                    transparent
-                                    inline
-                                    className="manage-tenant-icon"
-                                    data-componentid="associated-component-icon"
-                                    icon={ getSidePanelIcons().serverConfigurations }
-                                    onClick={ (event: SyntheticEvent) => {
-                                        history.push({
-                                            pathname: AppConstants.getPaths()
-                                                .get("ORGANIZATION_UPDATE")
-                                                .replace(":id", organization?.id)
-                                        });
-                                        setIsDropDownOpen(false);
-                                        event.stopPropagation();
-                                    } }
-                                />
-                            ) }
+                                <Label size="mini">{ organization.id }</Label>
+                            </div>
+
+
+                            <div className="manage-icon-wrapper" >
+                                { !OrganizationUtils.isRootOrganization(organization) && (
+                                    <GenericIcon
+                                        transparent
+                                        inline
+                                        className="manage-tenant-icon"
+                                        data-componentid="associated-component-icon"
+                                        icon={ getSidePanelIcons().serverConfigurations }
+                                        onClick={ (event: SyntheticEvent) => {
+                                            history.push({
+                                                pathname: AppConstants.getPaths()
+                                                    .get("ORGANIZATION_UPDATE")
+                                                    .replace(":id", organization?.id)
+                                            });
+                                            setIsDropDownOpen(false);
+                                            event.stopPropagation();
+                                        } }
+                                    />
+                                ) }
+                            </div>
                         </div>
                     </Item.Description>
                 </Item.Content>
