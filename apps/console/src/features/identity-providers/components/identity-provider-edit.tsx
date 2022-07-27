@@ -312,30 +312,37 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
         const attributesForSamlEnabled = isSaml && identityProviderConfig.editIdentityProvider.attributesSettings;
 
         // Evaluate whether to Show/Hide `Attributes`.
-        if (attributesForSamlEnabled || shouldShowAttributeSettings(type)) {
+        if ((attributesForSamlEnabled || shouldShowAttributeSettings(type))
+            && !isOrganizationEnterpriseAuthenticator) {
             panes.push({
                 menuItem: "Attributes",
                 render: AttributeSettingsTabPane
             });
         }
 
-        identityProviderConfig.editIdentityProvider.showOutboundProvisioning &&
+        if (identityProviderConfig.editIdentityProvider.showOutboundProvisioning
+            && !isOrganizationEnterpriseAuthenticator ) {
             panes.push({
                 menuItem: "Outbound Provisioning",
                 render: OutboundProvisioningSettingsTabPane
             });
+        }
 
-        identityProviderConfig.editIdentityProvider.showJitProvisioning &&
+        if (identityProviderConfig.editIdentityProvider.showJitProvisioning
+            && !isOrganizationEnterpriseAuthenticator) {
             panes.push({
                 menuItem: identityProviderConfig.jitProvisioningSettings?.menuItemName,
                 render: JITProvisioningSettingsTabPane
             });
+        }
 
-        identityProviderConfig.editIdentityProvider.showAdvancedSettings &&
+        if (identityProviderConfig.editIdentityProvider.showAdvancedSettings
+            && !isOrganizationEnterpriseAuthenticator) {
             panes.push({
                 menuItem: "Advanced",
                 render: AdvancedSettingsTabPane
             });
+        }
 
         return panes;
     };
