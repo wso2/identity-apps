@@ -413,28 +413,34 @@ export interface MyAccountNS {
                 };
             };
             backupCode: {
+                description: string;
                 download: {
-                    heading: string,
-                    info1: string,
-                    info2: string,
-                    subHeading: string
-                },
-                heading: string,
+                    heading: string;
+                    info1: string;
+                    info2: string;
+                    subHeading: string;
+                };
+                heading: string;
                 modals: {
-                    description: string,
-                    download: {
-                        heading: string
-                    },
+                    actions: {
+                        download: string;
+                        regenerate: string;
+                        copy: string;
+                        copied: string;
+                    };
+                    description: string;
                     generate: {
-                        description: string
-                        heading: string, 
-                    },
-                    heading: string,
-                    info: string,
-                    refresh: {
-                        heading: string
-                    },
-                    subHeading: string,
+                        description: string;
+                        heading: string;
+                    };
+                    heading: string;
+                    info: string;
+                    regenerate: {
+                        heading: string;
+                        description: string;
+                    };
+                    subHeading: string;
+                    warn: string;
                 },
                 notifications: {
                     deleteError: {
