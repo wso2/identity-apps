@@ -1346,9 +1346,11 @@ export const console: ConsoleNS = {
                     generalDetails: {
                         fields: {
                             accessUrl: {
-                                hint: "It is recommended to configure an access URL for this application. It will be used in the application" +
-                                    " catalog and discovery flows. We will use this to redirect the user in cases of login page time out," +
-                                    "password reset, self sign up verification etc. We will also show an option for the users to retry login during login failures.",
+                                hint: "It is recommended to configure an access URL for this application. " +
+                                    "It will be used in the application catalog and discovery flows. We will use " +
+                                    "this to redirect the user in cases of login page time out, password reset, " +
+                                    "self sign up verification etc. We will also show an option for "+
+                                    "the users to retry login during login failures.",
                                 label: "Access URL",
                                 placeholder: "https://myapp.io/home",
                                 validations: {
