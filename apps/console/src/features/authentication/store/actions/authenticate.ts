@@ -49,7 +49,7 @@ export const getProfileInformation = (
 
     dispatch(setProfileInfoRequestLoadingStatus(true));
 
-    const getProfileInfoFromToken = window[ "AppUtils" ].getConfig().getProfileInfoFromIDToken ?? false;
+    const getProfileInfoFromToken: boolean = store.getState().auth.isPrivilegedUser;
 
     const getProfileSchema = (): void => {
         // If the schemas in the redux store is empty, fetch the SCIM schemas from the API.
