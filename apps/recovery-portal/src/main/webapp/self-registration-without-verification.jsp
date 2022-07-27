@@ -28,6 +28,11 @@
 <%@ page import="javax.ws.rs.core.Response" %>
 <jsp:directive.include file="includes/localize.jsp"/>
 
+<%!
+    private String reCaptchaAPI = null;
+    private String reCaptchaKey = null;
+%>
+
 <%
     boolean error = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("error"));
     String errorMsg = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("errorMsg"));
@@ -64,6 +69,11 @@
     } else if (request.getParameter("reCaptcha") != null && Boolean.parseBoolean(request.getParameter("reCaptcha"))) {
         reCaptchaEnabled = true;
     }
+
+    if (reCaptchaEnabled) {
+        reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
+        reCaptchaAPI = CaptchaUtil.reCaptchaAPIURL();
+    }
 %>
 
     <html>
@@ -93,9 +103,8 @@
 
         <%
             if (reCaptchaEnabled) {
-                String reCaptchaAPI = CaptchaUtil.reCaptchaAPIURL();
         %>
-        <script src='<%=(reCaptchaAPI)%>'></script>
+        <script src='<%=Encode.forHtmlContent(reCaptchaAPI)%>?render=<%=Encode.forHtmlContent(reCaptchaKey)%>'></script>
         <%
             }
         %>
@@ -222,18 +231,6 @@
                                     }
                                 }
                             %>
-                            <%
-                                if (reCaptchaEnabled) {
-                                    String reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
-                            %>
-                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group">
-                                <div class="g-recaptcha"
-                                     data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>">
-                                </div>
-                            </div>
-                            <%
-                                }
-                            %>
 
                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group">
                                 <input id="isSelfRegistrationWithVerification" type="hidden"
@@ -316,23 +313,17 @@
                     return false;
                 }
 
-                <%
-                if(reCaptchaEnabled) {
-                %>
-                var resp = $("[name='g-recaptcha-response']")[0].value;
-                if (resp.trim() == '') {
-                    error_msg.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                    "Please.select.reCaptcha")%>");
-                    error_msg.show();
-                    $("html, body").animate({scrollTop: error_msg.offset().top}, 'slow');
-                    return false;
-                }
-                <%
-                }
-                %>
-
                 return true;
             });
+
+            <% if(reCaptchaEnabled) { %>
+                grecaptcha.ready(function() {
+                    grecaptcha.execute('<%=Encode.forHtmlContent(reCaptchaKey)%>', {action: 'register'}).then(function(token) {
+                        $('#register').prepend('<input type="hidden" name="g-recaptcha-response" value="' + token + '">');
+                        $('#register').prepend('<input type="hidden" name="action" value="register">');
+                    });;
+                });
+            <% } %>
         });
     </script>
     </body>

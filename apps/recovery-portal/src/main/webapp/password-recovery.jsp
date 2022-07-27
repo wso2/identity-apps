@@ -342,10 +342,10 @@
                 userName.value = userName.value.trim();
 
                 // Validate User Name
-                const firstName = $("#username").val();
+                const userName = $("#username").val();
 
-                if (firstName === "") {
-                    errorMessage.text("Please fill the first name.");
+                if (userName === "") {
+                    errorMessage.text("Please fill the username.");
                     errorMessage.show();
                     $("html, body").animate({scrollTop: errorMessage.offset().top}, "slow");
                     submitButton.removeClass("loading").attr("disabled", false);
