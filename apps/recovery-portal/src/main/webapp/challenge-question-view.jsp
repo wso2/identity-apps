@@ -28,6 +28,11 @@
 <jsp:directive.include file="includes/localize.jsp"/>
 <jsp:directive.include file="includes/layout-resolver.jsp"/>
 
+<%!
+    private String reCaptchaAPI = null;
+    private String reCaptchaKey = null;
+%>
+
 <%
     InitiateQuestionResponse initiateQuestionResponse = (InitiateQuestionResponse)
             session.getAttribute("initiateChallengeQuestionResponse");
@@ -35,6 +40,11 @@
     boolean reCaptchaEnabled = false;
     if (request.getAttribute("reCaptcha") != null && "TRUE".equalsIgnoreCase((String) request.getAttribute("reCaptcha"))) {
         reCaptchaEnabled = true;
+    }
+
+    if (reCaptchaEnabled) {
+        reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
+        reCaptchaAPI = CaptchaUtil.reCaptchaAPIURL();
     }
 %>
 
@@ -57,9 +67,8 @@
 
     <%
         if (reCaptchaEnabled) {
-            String reCaptchaAPI = CaptchaUtil.reCaptchaAPIURL();
     %>
-    <script src='<%=(reCaptchaAPI)%>'></script>
+        <script src='<%=Encode.forHtmlContent(reCaptchaAPI)%>?render=<%=Encode.forHtmlContent(reCaptchaKey)%>'></script>
     <%
         }
     %>
@@ -108,18 +117,6 @@
                             <input type="hidden" name="step"
                                    value="<%=Encode.forHtmlAttribute(request.getParameter("step"))%>"/>
                         </div>
-                        <%
-                            if (reCaptchaEnabled) {
-                                String reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
-                        %>
-                        <div class="field">
-                            <div class="g-recaptcha"
-                                 data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>">
-                            </div>
-                        </div>
-                        <%
-                            }
-                        %>
                         <div class="ui divider hidden"></div>
                         <div class="align-right buttons">
                             <button id="answerSubmit"
@@ -157,27 +154,14 @@
     <script type="text/javascript">
         $(document).ready(function () {
 
-            $("#securityQuestionForm").submit(function (e) {
-                $("#server-error-msg").hide();
-                var errorMessage = $("#error-msg");
-                errorMessage.hide();
-
-                // Validate reCaptcha
-                <% if (reCaptchaEnabled) { %>
-
-                var reCaptchaResponse = $("[name='g-recaptcha-response']")[0].value;
-
-                if (reCaptchaResponse.trim() == '') {
-                    errorMessage.text("Please select reCaptcha.");
-                    errorMessage.show();
-
-                    return false;
-                }
-
-                <% } %>
-
-                return true;
-            });
+            <% if(reCaptchaEnabled) { %>
+                grecaptcha.ready(function() {
+                    grecaptcha.execute('<%=Encode.forHtmlContent(reCaptchaKey)%>', {action: 'securityQuestion'}).then(function(token) {
+                        $('#securityQuestionForm').prepend('<input type="hidden" name="g-recaptcha-response" value="' + token + '">');
+                        $('#securityQuestionForm').prepend('<input type="hidden" name="action" value="securityQuestion">');
+                    });;
+                });
+            <% } %>
         });
 
     </script>

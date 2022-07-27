@@ -27,6 +27,11 @@
 <%@ page import="java.util.List" %>
 <jsp:include page="includes/localize.jsp"/>
 
+<%!
+    private String reCaptchaAPI = null;
+    private String reCaptchaKey = null;
+%>
+
 <%
     InitiateAllQuestionResponse initiateAllQuestionResponse = (InitiateAllQuestionResponse)
             session.getAttribute("initiateAllQuestionResponse");
@@ -36,6 +41,11 @@
     boolean reCaptchaEnabled = false;
     if (request.getAttribute("reCaptcha") != null && "TRUE".equalsIgnoreCase((String) request.getAttribute("reCaptcha"))) {
         reCaptchaEnabled = true;
+    }
+
+    if (reCaptchaEnabled) {
+        reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
+        reCaptchaAPI = CaptchaUtil.reCaptchaAPIURL();
     }
 %>
 
@@ -65,9 +75,8 @@
     <![endif]-->
     <%
         if (reCaptchaEnabled) {
-            String reCaptchaAPI = CaptchaUtil.reCaptchaAPIURL();
     %>
-    <script src='<%=(reCaptchaAPI)%>'></script>
+        <script src='<%=Encode.forHtmlContent(reCaptchaAPI)%>?render=<%=Encode.forHtmlContent(reCaptchaKey)%>'></script>
     <%
         }
     %>
@@ -122,18 +131,6 @@
                                 }
                             }
                         %>
-                        <%
-                            if (reCaptchaEnabled) {
-                                String reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
-                        %>
-                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group">
-                            <div class="g-recaptcha"
-                                 data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>">
-                            </div>
-                        </div>
-                        <%
-                            }
-                        %>
                         <div class="form-actions">
                             <button id="answerSubmit"
                                     class="wr-btn grey-bg col-xs-12 col-md-12 col-lg-12 uppercase font-extra-large"
@@ -164,5 +161,19 @@
         <jsp:include page="includes/footer.jsp"/>
 <% } %>
 
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        <% if(reCaptchaEnabled) { %>
+            grecaptcha.ready(function() {
+                grecaptcha.execute('<%=Encode.forHtmlContent(reCaptchaKey)%>', {action: 'securityQuestion'}).then(function(token) {
+                    $('#securityQuestionForm').prepend('<input type="hidden" name="g-recaptcha-response" value="' + token + '">');
+                    $('#securityQuestionForm').prepend('<input type="hidden" name="action" value="securityQuestion">');
+                });;
+            });
+        <% } %>
+    });
+
+</script>
 </body>
 </html>
