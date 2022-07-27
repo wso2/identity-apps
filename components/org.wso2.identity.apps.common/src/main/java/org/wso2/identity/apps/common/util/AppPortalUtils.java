@@ -184,30 +184,6 @@ public class AppPortalUtils {
         localAndOutboundAuthenticationConfig.setUseTenantDomainInLocalSubjectIdentifier(true);
         localAndOutboundAuthenticationConfig.setSkipConsent(true);
         localAndOutboundAuthenticationConfig.setSkipLogoutConsent(true);
-
-        if (CONSOLE_APP.equals(appName)) {
-            AuthenticationStep authenticationStep1 = new AuthenticationStep();
-            LocalAuthenticatorConfig identifierFirst = new LocalAuthenticatorConfig();
-            identifierFirst.setName("IdentifierExecutor");
-            identifierFirst.setDisplayName("identifier-first");
-            authenticationStep1.setLocalAuthenticatorConfigs(new LocalAuthenticatorConfig[]{identifierFirst});
-            authenticationStep1.setSubjectStep(false);
-            authenticationStep1.setAttributeStep(false);
-            authenticationStep1.setStepOrder(1);
-
-            AuthenticationStep authenticationStep2 = new AuthenticationStep();
-            LocalAuthenticatorConfig basic = new LocalAuthenticatorConfig();
-            basic.setName("BasicAuthenticator");
-            basic.setDisplayName("basic");
-            authenticationStep2.setLocalAuthenticatorConfigs(new LocalAuthenticatorConfig[]{basic});
-            authenticationStep2.setAttributeStep(true);
-            authenticationStep2.setSubjectStep(true);
-            authenticationStep2.setStepOrder(2);
-            localAndOutboundAuthenticationConfig.setAuthenticationType("flow");
-            localAndOutboundAuthenticationConfig
-                    .setAuthenticationSteps(new AuthenticationStep[]{authenticationStep1, authenticationStep2});
-        }
-
         serviceProvider.setLocalAndOutBoundAuthenticationConfig(localAndOutboundAuthenticationConfig);
 
         // Set requested claim mappings for the SP.
