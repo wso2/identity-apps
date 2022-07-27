@@ -144,8 +144,6 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingOrganization, setDeletingOrganization ] = useState<OrganizationInterface>(undefined);
 
-    const [ alert, setAlert, alertComponent ] = useConfirmationModalAlert();
-
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     /**
@@ -186,10 +184,11 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                 onOrganizationDelete();
             })
             .catch((error) => {
+                setShowDeleteConfirmationModal(false);
                 if (error.response && error.response.data && error.response.data.description) {
                     if (error.response.data.code === "ORG-60007") {
                         dispatch(
-                            setAlert({
+                            addAlert({
                                 description: t(
                                     "console:manage.features.organizations.notifications." +
                                     "deleteOrganizationWithSubOrganizationError",
@@ -207,7 +206,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                     }
 
                     dispatch(
-                        setAlert({
+                        addAlert({
                             description: error.response.data.description,
                             level: AlertLevels.ERROR,
                             message: t(
@@ -221,7 +220,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                 }
 
                 dispatch(
-                    setAlert({
+                    addAlert({
                         description: t(
                             "console:manage.features.organizations.notifications.deleteOrganization" +
                             ".genericError.description"
@@ -473,7 +472,6 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                     secondaryAction={ t("common:cancel") }
                     onSecondaryActionClick={ (): void => {
                         setShowDeleteConfirmationModal(false);
-                        setAlert(null);
                     } }
                     onPrimaryActionClick={ (): void => handleOrganizationDelete(deletingOrganization.id) }
                     data-componentid={ `${ componentId }-delete-confirmation-modal` }
@@ -484,14 +482,13 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                     </ConfirmationModal.Header>
                     <ConfirmationModal.Message
                         attached
-                        warning
+                        negative
                         data-componentid={ `${ componentId }-delete-confirmation-modal-message` }
                     >
                         { t("console:manage.features.organizations.confirmations.deleteOrganization.message") }
                     </ConfirmationModal.Message>
                     <ConfirmationModal.Content
                         data-componentid={ `${ componentId }-delete-confirmation-modal-content` }>
-                        <div className="modal-alert-wrapper"> { alert && alertComponent }</div>
                         { t("console:manage.features.organizations.confirmations.deleteOrganization.content") }
                     </ConfirmationModal.Content>
                 </ConfirmationModal>
