@@ -38,12 +38,12 @@ const httpClient = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAC
  * @return {Promise<UserstoreListResponseInterface[] | any>}
  * @throws {IdentityAppsApiException}
  */
-export const getUserStoreList = (): Promise<UserstoreListResponseInterface[] | any> => {
+export const getUserStoreList = (url?: string): Promise<UserstoreListResponseInterface[] | any> => {
 
     const requestConfig = {
         headers: HTTPRequestHeaders(ContextUtils.getRuntimeConfig().clientHost),
         method: HttpMethods.GET,
-        url: CommonServiceResourcesEndpoints(ContextUtils.getRuntimeConfig().serverHost).userstores
+        url: url ?? CommonServiceResourcesEndpoints(ContextUtils.getRuntimeConfig().serverHost).userstores
     };
 
     return httpClient(requestConfig)
