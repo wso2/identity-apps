@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { getUserNameWithoutDomain } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { CommonUtils } from "@wso2is/core/utils";
 import { ContentLoader, Heading, LinkButton } from "@wso2is/react-components";
@@ -42,7 +41,6 @@ import {
 import {
     AlertInterface,
     AlertLevels,
-    AuthStateInterface,
     BackupCodeInterface,
     BackupCodesCountInterface
 } from "../../../models";
@@ -73,9 +71,7 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
 
     const translateKey: string = "myAccount:components.mfa.backupCode.";
 
-    const profileDetails: AuthStateInterface = useSelector(
-        (state: AppState) => state.authenticationInformation
-    );
+    const productName: string = useSelector((state: AppState) => state?.config?.ui?.productName);
 
     const [ isLoading, setIsLoading ] = useState<boolean>(false);
     const [ isModalOpen, setIsModalOpen ] = useState<boolean>(false);
@@ -212,12 +208,11 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
     
             const blob = new Blob(
                 [
-                    t(translateKey + "download.heading") + "\n",
-                    "Username: " + getUserNameWithoutDomain(profileDetails.profileInfo.userName) + "\n\n",
-                    t(translateKey + "download.subHeading") + "\n\n",
+                    t(translateKey + "download.heading", { productName }) + "\n\n",
+                    t(translateKey + "download.subHeading", { productName }) + "\n\n",
                     backupCodeString + "\n\n",
-                    "*" + t(translateKey + "download.info1") + "\n",
-                    "*" + t(translateKey + "download.info2") + new Date() + "."
+                    "* " + t(translateKey + "download.info1") + "\n",
+                    "* " + t(translateKey + "download.info2") + new Date() + "."
                 ],
     
                 { type: "application/json" }
@@ -391,7 +386,8 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
                     <Button
                         className="link-button"
                         onClick={ () => setIsConfirmRegenerationModalOpen(false) }
-                        data-testid={ `${componentid}-regenerate-confirm-modal-actions-cancel-button` }>
+                        data-testid={ `${componentid}-regenerate-confirm-modal-actions-cancel-button` }
+                    >
                         { t("common:cancel") }
                     </Button>
                     <Button
@@ -412,7 +408,7 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
             { renderConfirmRegenerateModal() }
             <Grid padded={ true } data-testid={ componentid }>
                 <Grid.Column width={ 1 } className="first-column"/>
-                <Grid.Column width={ 14 } className="first-column">
+                <Grid.Column width={ 13 } className="first-column">
                     <Message 
                         className="display-flex" 
                         size="small" 
@@ -420,39 +416,40 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
                         warning={ isWarnRemaingBackupCodes }
                         data-testid={ `${componentid}-message` }
                     >
-                        { isWarnRemaingBackupCodes 
-                            ? <Icon name="warning sign" color="orange" size="large"/>
-                            : <Icon name="info circle" color="teal" size="large"/> 
+                        { 
+                            isWarnRemaingBackupCodes 
+                                ? <Icon name="warning sign" color="orange" size="large"/>
+                                : <Icon className="mt-1" name="info circle" color="teal" size="large"/> 
                         }
-                        <Message.Content className="tiny">
-                            <List.Content>
-                                <List.Header>
-                                    { "Backup Codes" }
-                                    <Label 
-                                        className={ `backup-code-label ${ isWarnRemaingBackupCodes 
-                                            ? "warning" : "info" }` }
-                                        data-testid={ `${componentid}-remaining-count-label` }
-                                    >
-                                        { `${remainingBackupCodes} Remaining` }
-                                    </Label>
-                                </List.Header>
-                                <List.Description>
-                                    <div>
-                                        { t(translateKey + "description") }
-                                    </div>
-                                    <LinkButton 
-                                        compact 
-                                        onClick={ () => {
-                                            setIsConfirmRegenerationModalOpen(true);
-                                        } }
-                                        data-testid={ `${componentid}-regenerate-button` }
-                                    >
-                                        <Icon name="refresh" />
-                                        { t(translateKey + "modals.actions.regenerate") }
-                                    </LinkButton>
-                                </List.Description>
-                            </List.Content>
-                        </Message.Content>
+                        <List.Content>
+                            <List.Header>
+                                { "Backup Codes" }
+                                <Label 
+                                    className={ `backup-code-label ${ isWarnRemaingBackupCodes 
+                                        ? "warning" : "info" }` }
+                                    data-testid={ `${componentid}-remaining-count-label` }
+                                >
+                                    { `${remainingBackupCodes} Remaining` }
+                                </Label>
+                            </List.Header>
+                            <List.Description>
+                                <div className="backup-code-description">
+                                    { t(translateKey + "description") }
+                                </div>
+                                <LinkButton 
+                                    compact 
+                                    className="mt-2"
+                                    floated="right"
+                                    onClick={ () => {
+                                        setIsConfirmRegenerationModalOpen(true);
+                                    } }
+                                    data-testid={ `${componentid}-regenerate-button` }
+                                >
+                                    <Icon name="refresh" />
+                                    { t(translateKey + "modals.actions.regenerate") }
+                                </LinkButton>
+                            </List.Description>
+                        </List.Content>
                     </Message>
                 </Grid.Column>
             </Grid>

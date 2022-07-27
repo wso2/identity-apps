@@ -589,9 +589,8 @@ export const myAccount: MyAccountNS = {
                     "authenticator app for two-factor authentication. If you don't have " +
                     "access to the application you can set up a new authenticator app from here.",
                 deleteHint: "Deletes QR code",
-                description: " Scan the QR code using an Authenticator App to use " +
-                    "time-based , one-time passcodes (also known as TOTP) as a " +
-                    "second factor when logging in to applications.",
+                description: "You can use the authenticator app to get verification codes for " + 
+                    "two-factor authentication.",
                 enableHint: "Enable/Disable TOTP Authenticator",
                 heading: "Authenticator App",
                 hint: "Show the QR Code",
@@ -612,7 +611,7 @@ export const myAccount: MyAccountNS = {
                         regenerateWarning: "When you regenerate a new QR code, you must scan it and re-setup your " + 
                             "authenticator app. Your previous setup won't work anymore."
                     },
-                    toolTip: "Don't have an app? Download an authenticator application like " +
+                    toolTip: "Don't have an authenticator app? Download an authenticator app like " +
                         "Google Authenticator from <3>App Store</3> or <3>Google Play</3>",
                     verify: {
                         error: "Verification failed. Please try again.",
@@ -673,13 +672,13 @@ export const myAccount: MyAccountNS = {
                 regenerate: "Regenerate"
             },
             backupCode: {
-                description: "You can use backup codes to sign in if you can’t receive a verification " 
-                    + "code via the authenticator app.",
+                description: "Use backup codes when you don’t have access to your authenticator app. You can " + 
+                    "regenerate new codes if required.",
                 download: {
-                    heading: "SAVE YOUR BACKUP CODES.",
+                    heading: "Backup codes for {{productName}}",
                     info1: "You can only use each backup code once.",
                     info2: "These codes were generated on ",
-                    subHeading: "You can use these backup codes to sign in to Asgardeo when you are " + 
+                    subHeading: "You can use these backup codes to sign in to {{productName}} when you are " + 
                         "away from your phone. Keep these backup codes somewhere safe but accessible."  
                 },
                 heading: "Backup Codes",
@@ -696,13 +695,13 @@ export const myAccount: MyAccountNS = {
                         heading: "Generate"
                     },
                     heading: "Backup Codes",
-                    info: "Each code can only be used once. You can generate more when all are used.",
+                    info: "Each code can only be used once. You can generate new codes at any time to replace these.",
                     regenerate: {
                         description: "After you generate new codes, your old codes will no longer work. " 
                             + "Be sure to save the new codes once they are generated.",
                         heading: "Confirmation"
                     },
-                    subHeading: "One time passcodes that you can use to sign in",
+                    subHeading: "One-time passcodes that you can use to sign in",
                     warn: "These codes will appear only once. Be sure to save them now and store " 
                         + "them somewhere safe but accessible."
                 },
