@@ -64,7 +64,6 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
     const { t } = useTranslation();
     const dispatch = useDispatch();
 
-    const submitForm = useRef<() => void>();
     const editableFields: Array<string> = [
         "name",
         "description"
@@ -73,60 +72,58 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
     const [ isSubmitting, setIsSubmitting ] = useState(false);
     const [ showOrgDeleteConfirmation, setShowOrgDeleteConfirmationModal ] = useState(false);
 
-    const handleSubmit = useCallback(
-        async (values: OrganizationResponseInterface): Promise<void> => {
-            setIsSubmitting(true);
+    const handleSubmit = useCallback(async (values: OrganizationResponseInterface): Promise<void> => {
+        setIsSubmitting(true);
 
-            const patchData: OrganizationPatchData[] = Object.keys(values)
-                .filter((field) => editableFields.includes(field))
-                .map((field) => {
-                    return {
-                        operation: "REPLACE",
-                        path: `/${field}`,
-                        value: values[field]
-                    };
-                });
+        const patchData: OrganizationPatchData[] = Object.keys(values)
+            .filter((field) => editableFields.includes(field))
+            .map((field) => {
+                return {
+                    operation: "REPLACE",
+                    path: `/${field}`,
+                    value: values[field]
+                };
+            });
 
-            patchOrganization(organization.id, patchData)
-                .then((_response) => {
-                    dispatch(
-                        addAlert({
-                            description: t("console:manage.features.organizations.notifications.updateOrganization." +
+        patchOrganization(organization.id, patchData)
+            .then((_response) => {
+                dispatch(
+                    addAlert({
+                        description: t("console:manage.features.organizations.notifications.updateOrganization." +
                                 "success.description"),
-                            level: AlertLevels.SUCCESS,
-                            message: t("console:manage.features.organizations.notifications.updateOrganization." +
+                        level: AlertLevels.SUCCESS,
+                        message: t("console:manage.features.organizations.notifications.updateOrganization." +
                                 "success.message")
-                        })
-                    );
+                    })
+                );
 
-                    onOrganizationUpdate(organization.id);
-                }).catch((error) => {
-                    if (error.description) {
-                        dispatch(
-                            addAlert({
-                                description: error.description,
-                                level: AlertLevels.ERROR,
-                                message: t("console:manage.features.organizations.notifications.updateOrganization." +
-                                    "error.message")
-                            })
-                        );
-
-                        return;
-                    }
-
+                onOrganizationUpdate(organization.id);
+            }).catch((error) => {
+                if (error.description) {
                     dispatch(
                         addAlert({
-                            description: t("console:manage.features.organizations.notifications" +
-                                ".updateOrganization.genericError.description"),
+                            description: error.description,
                             level: AlertLevels.ERROR,
-                            message: t("console:manage.features.organizations.notifications" +
-                                ".updateOrganization.genericError.message")
+                            message: t("console:manage.features.organizations.notifications.updateOrganization." +
+                                    "error.message")
                         })
                     );
-                })
-                .finally(() => setIsSubmitting(false));
-        }, [ organization, setIsSubmitting ]
-    );
+
+                    return;
+                }
+
+                dispatch(
+                    addAlert({
+                        description: t("console:manage.features.organizations.notifications" +
+                                ".updateOrganization.genericError.description"),
+                        level: AlertLevels.ERROR,
+                        message: t("console:manage.features.organizations.notifications" +
+                                ".updateOrganization.genericError.message")
+                    })
+                );
+            })
+            .finally(() => setIsSubmitting(false));
+    }, [ organization, setIsSubmitting ]);
 
     const handleOnDeleteOrganization = useCallback((organizationId: string) => {
         deleteOrganization(organizationId)
@@ -228,7 +225,6 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                                 onSubmit={ handleSubmit }
                                 uncontrolledForm={ false }
                                 validate={ validate }
-                                triggerSubmit={ (submit) => (submitForm.current = submit) }
                             >
                                 {
                                     organization?.name && (
@@ -340,9 +336,6 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                                                     className="form-button"
                                                     loading={ isSubmitting }
                                                     disabled={ isSubmitting }
-                                                    onClick={ () => {
-                                                        submitForm?.current && submitForm?.current();
-                                                    } }
                                                 >
                                                     { t("common:update") }
                                                 </Button>
