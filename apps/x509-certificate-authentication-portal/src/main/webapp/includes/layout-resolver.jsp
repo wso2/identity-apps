@@ -24,13 +24,29 @@
     String layout = "default";
 %>
 
+<%-- Activate the "custom" layout if exists --%>
+<%
+    if (config.getServletContext().getResource("extensions/layouts/custom/body.html") != null) {
+        layout = "custom";
+    }
+%>
+
 <%-- Layout Resolving Part --%>
 <%
-    String layoutFileRelativePath = "extensions/layouts/" + layout + "/body.html";
+    String layoutFileRelativePath;
     Map<String, Object> layoutData = new HashMap<String, Object>();
 
-    if (config.getServletContext().getResource(layoutFileRelativePath) == null) {
-        layout = "default";
-        layoutFileRelativePath = "extensions/layouts/default/body.html";
+    if (!layout.equals("custom")) {
+        if (layout.equals("default")) {
+            layoutFileRelativePath = "includes/layouts/" + layout + "/body.html";
+        } else {
+            layoutFileRelativePath = "extensions/layouts/" + layout + "/body.html";
+            if (config.getServletContext().getResource(layoutFileRelativePath) == null) {
+                layout = "default";
+                layoutFileRelativePath = "includes/layouts/default/body.html";
+            }
+        }
+    } else {
+        layoutFileRelativePath = "extensions/layouts/custom/body.html";
     }
 %>
