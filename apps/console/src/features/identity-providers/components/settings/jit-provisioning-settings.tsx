@@ -24,6 +24,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { SimpleUserStoreListItemInterface } from "../../../applications";
+import { store } from "../../../core";
 import { updateJITProvisioningConfigs } from "../../api";
 import { JITProvisioningResponseInterface } from "../../models";
 import { JITProvisioningConfigurationsForm } from "../forms";
@@ -76,7 +77,7 @@ export const JITProvisioningSettings: FunctionComponent<JITProvisioningSettingsI
 
     const { t } = useTranslation();
 
-    const [userStore, setUserStore] = useState<SimpleUserStoreListItemInterface[]>([]);
+    const [ userStore, setUserStore ] = useState<SimpleUserStoreListItemInterface[]>([]);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
 
@@ -111,11 +112,12 @@ export const JITProvisioningSettings: FunctionComponent<JITProvisioningSettingsI
 
     useEffect(() => {
         const userstore: SimpleUserStoreListItemInterface[] = [];
+
         userstore.push({
             id: "PRIMARY",
             name: "PRIMARY"
         });
-        getUserStoreList().then((response) => {
+        getUserStoreList(store.getState().config.endpoints.userStores).then((response) => {
             userstore.push(...response.data);
             setUserStore(userstore);
         }).catch(() => {

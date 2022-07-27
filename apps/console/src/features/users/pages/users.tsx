@@ -280,7 +280,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             value: ""
         };
 
-        getUserStoreList()
+        getUserStoreList(store.getState().config.endpoints.userStores)
             .then((response) => {
                 if (storeOptions === []) {
                     storeOptions.push(storeOption);

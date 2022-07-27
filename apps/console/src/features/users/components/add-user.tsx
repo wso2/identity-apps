@@ -27,6 +27,7 @@ import {
     Grid,
     Message
 } from "semantic-ui-react";
+import { store } from "../../core";
 import { SharedUserStoreUtils } from "../../core/utils";
 import {
     CONSUMER_USERSTORE,
@@ -201,7 +202,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                 value: ""
             };
 
-        getUserStoreList()
+        getUserStoreList(store.getState().config.endpoints.userStores)
             .then((response) => {
                 if (storeOptions === []) {
                     storeOptions.push(storeOption);
@@ -456,7 +457,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                                     if (value) {
                                         const usersList
                                             = await getUsersList(null, null, "userName eq " + value, null, userStore);
-                                            
+
                                         if (usersList?.totalResults > 0) {
                                             validation.isValid = false;
                                             validation.errorMessages.push(USER_ALREADY_EXIST_ERROR_MESSAGE);

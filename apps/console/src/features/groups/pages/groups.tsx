@@ -39,7 +39,8 @@ import {
     UIConstants,
     UserStoreProperty,
     getAUserStore,
-    getEmptyPlaceholderIllustrations
+    getEmptyPlaceholderIllustrations,
+    store
 } from "../../core";
 import { UserStorePostData } from "../../userstores";
 import { deleteGroupById, getGroupList, searchGroupList } from "../api";
@@ -127,11 +128,13 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
             .then((response) => {
                 if (response.status === 200) {
                     const groupResources = response.data.Resources;
+
                     if (groupResources && groupResources instanceof Array && groupResources.length !== 0) {
                         const updatedResources = groupResources.filter((role: GroupsInterface) => {
                             return !role.displayName.includes("Application/")
                                 && !role.displayName.includes("Internal/");
                         });
+
                         response.data.Resources = updatedResources;
                         setGroupsList(updatedResources);
                         setGroupsPage(0, listItemLimit, updatedResources);
@@ -191,7 +194,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
             value: ""
         };
 
-        getUserStoreList()
+        getUserStoreList(store.getState().config.endpoints.userStores)
             .then((response) => {
                 if (storeOptions === []) {
                     storeOptions.push(storeOption);
@@ -251,6 +254,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
             if (response.status === 200) {
                 const results = response.data.Resources;
                 let updatedResults = [];
+
                 if (results) {
                     updatedResults = results.filter((role: RolesInterface) => {
                         return !role.displayName.includes("Application/") && !role.displayName.includes("Internal/");
@@ -279,6 +283,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
 
     const handlePaginationChange = (event: React.MouseEvent<HTMLAnchorElement>, data: PaginationProps) => {
         const offsetValue = (data.activePage as number - 1) * listItemLimit;
+
         setListOffset(offsetValue);
         setGroupsPage(offsetValue, listItemLimit, groupList);
     };
@@ -336,6 +341,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
     const handleUserFilter = (query: string): void => {
         if (query === null || query === "displayName sw ") {
             getGroups();
+
             return;
         }
 
@@ -406,14 +412,14 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                 onSortStrategyChange={ handleListSortingStrategyOnChange }
                 sortStrategy={ listSortingStrategy }
                 rightActionPanel={
-                    <Dropdown
+                    (<Dropdown
                         data-testid="group-mgt-groups-list-stores-dropdown"
                         selection
                         options={ userStoreOptions && userStoreOptions }
                         placeholder={ t("console:manage.features.groups.list.storeOptions") }
                         value={ userStore && userStore }
                         onChange={ handleDomainChange }
-                    />
+                    />)
                 }
                 showPagination={ paginatedGroups.length > 0  }
                 showTopActionPanel={ isGroupsListRequestLoading
@@ -425,14 +431,14 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                 totalListSize={ groupList?.length }
             >
                 { groupsError
-                    ? <EmptyPlaceholder
+                    ? (<EmptyPlaceholder
                         subtitle={ [ t("console:manage.features.groups.placeholders.groupsError.subtitles.0"),
                             t("console:manage.features.groups.placeholders.groupsError.subtitles.1") ] }
                         title={ t("console:manage.features.groups.placeholders.groupsError.title") }
                         image={ getEmptyPlaceholderIllustrations().genericError }
                         imageSize="tiny"
-                    /> :
-                    <GroupList
+                    />) :
+                    (<GroupList
                         advancedSearch={ (
                             <AdvancedSearchWithBasicFilters
                                 data-testid="group-mgt-groups-list-advanced-search"
@@ -471,7 +477,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                         searchQuery={ searchQuery }
                         readOnlyUserStores={ readOnlyUserStoresList }
                         featureConfig={ featureConfig }
-                    />
+                    />)
                 }
             </ListLayout>
             {

@@ -35,6 +35,7 @@ import {
 } from "../../../roles/constants";
 import { searchGroupList } from "../../api";
 import { CreateGroupFormData, SearchGroupInterface } from "../../models";
+import { store } from "../../../core";
 
 /**
  * Interface to capture group basics props.
@@ -180,7 +181,7 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
             value: ""
         };
 
-        getUserStoreList()
+        getUserStoreList(store.getState().config.endpoints.userStores)
             .then((response) => {
                 if (storeOptions === []) {
                     storeOptions.push(storeOption);
@@ -273,7 +274,7 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
                                         }
 
                                         const searchData: SearchGroupInterface = {
-                                            filter: `displayName eq  ${ 
+                                            filter: `displayName eq  ${
                                                 userStore ?? SharedUserStoreConstants.PRIMARY_USER_STORE }/${ value }`,
                                             schemas: [
                                                 "urn:ietf:params:scim:api:messages:2.0:SearchRequest"
