@@ -15,7 +15,19 @@ import { useDispatch } from "react-redux";
 import { Button, Divider, Grid } from "semantic-ui-react";
 import { FeatureConfigInterface } from "../../../core";
 import { deleteOrganization, patchOrganization } from "../../api";
+import {
+    ORGANIZATION_DESCRIPTION_MAX_LENGTH,
+    ORGANIZATION_DESCRIPTION_MIN_LENGTH,
+    ORGANIZATION_NAME_MAX_LENGTH,
+    ORGANIZATION_NAME_MIN_LENGTH
+} from "../../constants";
 import { OrganizationPatchData, OrganizationResponseInterface } from "../../models";
+
+
+interface OrganizationEditFormProps {
+    name: string;
+    description?: string;
+}
 
 interface OrganizationOverviewPropsInterface extends SBACInterface<FeatureConfigInterface>,
     TestableComponentInterface {
@@ -178,7 +190,7 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                         level: AlertLevels.ERROR,
                         message: t(
                             "console:manage.features.organizations.notifications.deleteOrganization.genericError" +
-                                ".message"
+                            ".message"
                         )
                     })
                 );
@@ -186,6 +198,24 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
             .finally(() => setShowOrgDeleteConfirmationModal(false));
     }, [ organization ]
     );
+
+    const validate = async (values: OrganizationEditFormProps): Promise<Partial<OrganizationEditFormProps>> => {
+        const error: Partial<OrganizationEditFormProps> = {};
+
+        if (values?.name && (values.name.length < ORGANIZATION_NAME_MIN_LENGTH
+            || values?.name.length > ORGANIZATION_NAME_MAX_LENGTH)) {
+            error.name = `Organization name length should be at least ${ ORGANIZATION_NAME_MIN_LENGTH } `
+                + `and at most ${ ORGANIZATION_NAME_MAX_LENGTH } characters`;
+        }
+
+        if (values?.description && (values?.description.length > ORGANIZATION_DESCRIPTION_MAX_LENGTH
+            || values?.description.length < ORGANIZATION_DESCRIPTION_MIN_LENGTH)) {
+            error.description = `Organization description length should be at least 
+            ${ ORGANIZATION_DESCRIPTION_MIN_LENGTH } and at most ${ ORGANIZATION_DESCRIPTION_MAX_LENGTH } characters`;
+        }
+
+        return error;
+    };
 
     return (
         organization ?
@@ -197,6 +227,7 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                                 data-testid={ `${testId}-form` }
                                 onSubmit={ handleSubmit }
                                 uncontrolledForm={ false }
+                                validate={ validate }
                                 triggerSubmit={ (submit) => (submitForm.current = submit) }
                             >
                                 {
@@ -213,8 +244,8 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                                             placeholder={ t("console:manage.features.organizations.edit.fields." +
                                                 "name.placeholder") }
                                             inputType="name"
-                                            maxLength={ 32 }
-                                            minLength={ 3 }
+                                            maxLength={ ORGANIZATION_NAME_MAX_LENGTH }
+                                            minLength={ ORGANIZATION_NAME_MIN_LENGTH }
                                         />
                                     )
                                 }
@@ -233,8 +264,8 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                                             ariaLabel={ t("console:manage.features.organizations.edit.fields." +
                                                 "description.ariaLabel") }
                                             inputType="description"
-                                            maxLength={ 300 }
-                                            minLength={ 3 }
+                                            maxLength={ ORGANIZATION_DESCRIPTION_MAX_LENGTH }
+                                            minLength={ ORGANIZATION_DESCRIPTION_MIN_LENGTH }
                                         />
                                     )
                                 }
