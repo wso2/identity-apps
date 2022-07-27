@@ -38,13 +38,13 @@ import {
 } from "./settings";
 import { Info } from "./settings/info";
 import { ComponentExtensionPlaceholder, applicationConfig } from "../../../extensions";
-import { 
-    AppState, 
-    CORSOriginsListInterface, 
-    EventPublisher, 
-    FeatureConfigInterface, 
-    getCORSOrigins, 
-    history 
+import {
+    AppState,
+    CORSOriginsListInterface,
+    EventPublisher,
+    FeatureConfigInterface,
+    getCORSOrigins,
+    history
 } from "../../core";
 import { getInboundProtocolConfig } from "../api";
 import { ApplicationManagementConstants } from "../constants";
@@ -166,6 +166,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     const [ totalTabs, setTotalTabs ] = useState<number>(undefined);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
+
+    const isFragmentApp = application.advancedConfigurations.fragment;
 
     /**
      * Called when an application updates.
@@ -591,7 +593,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 featureConfig={ featureConfig }
                 template={ template }
                 readOnly={ readOnly || applicationConfig.editApplication.getTabPanelReadOnlyStatus(
-                                "APPLICATION_EDIT_GENERAL_SETTINGS", application.name) }
+                    "APPLICATION_EDIT_GENERAL_SETTINGS", application.name) }
                 data-testid={ `${ testId }-general-settings` }
                 isManagementApp={ application.isManagementApp }
             />
@@ -621,7 +623,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 featureConfig={ featureConfig }
                 template={ template }
                 readOnly={ readOnly || applicationConfig.editApplication.getTabPanelReadOnlyStatus(
-                                "APPLICATION_EDIT_ACCESS_CONFIG", application.name) }
+                    "APPLICATION_EDIT_ACCESS_CONFIG", application.name) }
                 data-testid={ `${ testId }-access-settings` }
             />
         </ResourceTab.Pane>
@@ -750,7 +752,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                         render: () => 
                             applicationConfig.editApplication.
                                 getOveriddenTab(
-                                    inboundProtocolConfig?.oidc?.clientId, 
+                                    inboundProtocolConfig?.oidc?.clientId,
                                     ApplicationTabTypes.GENERAL,
                                     GeneralApplicationSettingsTabPane(),
                                     application.name,
@@ -761,43 +763,44 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 }
             }
             if (isFeatureEnabled(featureConfig?.applications,
-                ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ACCESS_CONFIG"))) {
- 
-                applicationConfig.editApplication.
-                    isTabEnabledForApp(
-                        inboundProtocolConfig?.oidc?.clientId,
-                        ApplicationTabTypes.PROTOCOL,
-                        tenantDomain
-                    ) &&
-                  panes.push({
-                      componentId: "protocol",
-                      menuItem: t("console:develop.features.applications.edit.sections.access.tabName"),
-                      render: ApplicationSettingsTabPane
-                  });
+                ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ACCESS_CONFIG"))
+                && !isFragmentApp
+            ) {
+
+                applicationConfig.editApplication.isTabEnabledForApp(
+                    inboundProtocolConfig?.oidc?.clientId,
+                    ApplicationTabTypes.PROTOCOL,
+                    tenantDomain
+                ) &&
+                panes.push({
+                    componentId: "protocol",
+                    menuItem: t("console:develop.features.applications.edit.sections.access.tabName"),
+                    render: ApplicationSettingsTabPane
+                });
             }
             if (isFeatureEnabled(featureConfig?.applications,
-                ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ATTRIBUTE_MAPPING"))) {
+                ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ATTRIBUTE_MAPPING"))
+                && !isFragmentApp) {
 
-                applicationConfig.editApplication.
-                    isTabEnabledForApp(
-                        inboundProtocolConfig?.oidc?.clientId, ApplicationTabTypes.USER_ATTRIBUTES, tenantDomain) &&
-                  panes.push({
-                      componentId: "user-attributes",
-                      menuItem: 
-                         <Menu.Item data-tourid="attributes">
-                             { t("console:develop.features.applications.edit.sections.attributes.tabName") }
-                         </Menu.Item>,
-                      render: () => 
-                          applicationConfig.editApplication.
-                              getOveriddenTab(
-                                  inboundProtocolConfig?.oidc?.clientId, 
-                                  ApplicationTabTypes.USER_ATTRIBUTES,
-                                  AttributeSettingTabPane(),
-                                  application.name,
-                                  application.id,
-                                  tenantDomain
-                              ) 
-                  });
+                applicationConfig.editApplication.isTabEnabledForApp(
+                    inboundProtocolConfig?.oidc?.clientId, ApplicationTabTypes.USER_ATTRIBUTES, tenantDomain) &&
+                panes.push({
+                    componentId: "user-attributes",
+                    menuItem:
+                        <Menu.Item data-tourid="attributes">
+                            { t("console:develop.features.applications.edit.sections.attributes.tabName") }
+                        </Menu.Item>,
+                    render: () =>
+                        applicationConfig.editApplication.
+                            getOveriddenTab(
+                                inboundProtocolConfig?.oidc?.clientId,
+                                ApplicationTabTypes.USER_ATTRIBUTES,
+                                AttributeSettingTabPane(),
+                                application.name,
+                                application.id,
+                                tenantDomain
+                            )
+                });
             }
             if (isFeatureEnabled(featureConfig?.applications,
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_SIGN_ON_METHOD_CONFIG"))) {
@@ -807,28 +810,29 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                         inboundProtocolConfig?.oidc?.clientId, ApplicationTabTypes.SIGN_IN_METHOD, tenantDomain) &&
                   panes.push({
                       componentId: "sign-in-method",
-                      menuItem:  
-                         <Menu.Item data-tourid="sign-in-methods">
-                             { t("console:develop.features.applications.edit.sections.signOnMethod.tabName") }
-                         </Menu.Item> ,
+                      menuItem:
+                          <Menu.Item data-tourid="sign-in-methods">
+                              { t("console:develop.features.applications.edit.sections.signOnMethod.tabName") }
+                          </Menu.Item>,
                       render: SignOnMethodsTabPane
                   });
             }
             if (applicationConfig.editApplication.showProvisioningSettings
-                 && isFeatureEnabled(featureConfig?.applications,
-                     ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_PROVISIONING_SETTINGS"))) {
+                && isFeatureEnabled(featureConfig?.applications,
+                    ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_PROVISIONING_SETTINGS")) 
+                && !isFragmentApp) {
 
-                applicationConfig.editApplication.
-                    isTabEnabledForApp(
-                        inboundProtocolConfig?.oidc?.clientId, ApplicationTabTypes.PROVISIONING, tenantDomain) &&
-                      panes.push({
-                          componentId: "provisioning",
-                          menuItem: t("console:develop.features.applications.edit.sections.provisioning.tabName"),
-                          render: ProvisioningSettingsTabPane
-                      });
+                applicationConfig.editApplication.isTabEnabledForApp(
+                    inboundProtocolConfig?.oidc?.clientId, ApplicationTabTypes.PROVISIONING, tenantDomain) &&
+                panes.push({
+                    componentId: "provisioning",
+                    menuItem: t("console:develop.features.applications.edit.sections.provisioning.tabName"),
+                    render: ProvisioningSettingsTabPane
+                });
             }
             if (isFeatureEnabled(featureConfig?.applications,
-                ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ADVANCED_SETTINGS"))) {
+                ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ADVANCED_SETTINGS")) 
+                && !isFragmentApp) {
 
                 applicationConfig.editApplication.
                     isTabEnabledForApp(
@@ -843,15 +847,16 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                   });
             }
             if (isFeatureEnabled(featureConfig?.applications,
-                ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_INFO")) 
-                 && application?.templateId != ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS) {
+                ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_INFO"))
+                 && application?.templateId != ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS
+                    && !isFragmentApp) {
 
                 applicationConfig.editApplication.
                     isTabEnabledForApp(
                         inboundProtocolConfig?.oidc?.clientId,
                         ApplicationTabTypes.INFO,
                         tenantDomain
-                    ) && 
+                    ) &&
                  panes.push({
                      componentId: "info",
                      menuItem: {
