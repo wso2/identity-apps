@@ -248,8 +248,9 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
                     AppConstants.getAdminViewBasePath(),
                     location.pathname);
             }
-
-            GovernanceConnectorUtils.getGovernanceConnectors();
+            if (OrganizationUtils.isCurrentOrganizationRoot()) {
+                GovernanceConnectorUtils.getGovernanceConnectors();
+            }
         }
 
         setSelectedRoute(CommonRouteUtils.getInitialActiveRoute(location.pathname, adminRoutes));

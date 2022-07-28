@@ -20,7 +20,7 @@
 <%= htmlWebpackPlugin.options.importTenantPrefix %>
 <%= htmlWebpackPlugin.options.importSuperTenantConstant %>
 <%= htmlWebpackPlugin.options.getAdaptiveAuthenticationAvailability %>
-
+<%= htmlWebpackPlugin.options.getOrganizationManagementAvailability %>
 
 <jsp:scriptlet>
     session.setAttribute("authCode", request.getParameter("code"));
@@ -45,18 +45,18 @@
             var superTenantGlobal = "<%= htmlWebpackPlugin.options.superTenantConstant %>";
             var tenantPrefixGlobal = "<%= htmlWebpackPlugin.options.tenantPrefix %>";
             var isAdaptiveAuthenticationAvailable = JSON.parse("<%= htmlWebpackPlugin.options.isAdaptiveAuthenticationAvailable %>");
-            
+            var isOrganizationManagementEnabled = JSON.parse("<%= htmlWebpackPlugin.options.isOrganizationManagementEnabled %>");
         </script>
 
         <script>
 
             var userAccessedPath = sessionStorage.getItem("userAccessedPath");
-            var isSilentSignInDisabled = userAccessedPath.includes("disable_silent_sign_in") || 
+            var isSilentSignInDisabled = userAccessedPath.includes("disable_silent_sign_in") ||
                                             window.location.href.includes("disable_silent_sign_in");
             var isInviteUserFlow = userAccessedPath.includes("invite_user");
             var isApplicationsPath = userAccessedPath.includes("develop/applications") ||
                                         window.location.href.includes("develop/applications");
-            
+
             if(isInviteUserFlow) {
                 window.location.href = window.location.origin;
             }

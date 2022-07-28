@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { SessionStorageUtils } from "@wso2is/core/utils";
@@ -34,7 +35,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { Button, Divider, Dropdown, Input, Item, Label, Menu, Placeholder, Popup } from "semantic-ui-react";
 import { organizationConfigs } from "../../../../extensions";
 import { ReactComponent as CrossIcon } from "../../../../themes/default/assets/images/icons/cross-icon.svg";
-import { AppConstants, AppState, getMiscellaneousIcons, getSidePanelIcons, history } from "../../../core";
+import {
+    AppConstants,
+    AppState,
+    FeatureConfigInterface,
+    getMiscellaneousIcons,
+    getSidePanelIcons,
+    history
+} from "../../../core";
 import { getOrganizations } from "../../api";
 import { OrganizationManagementConstants } from "../../constants";
 import {
@@ -61,6 +69,8 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
     const currentOrganization: OrganizationResponseInterface = useSelector(
         (state: AppState) => state.organization.organization
     );
+    const feature: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const scopes = useSelector((state: AppState) => state.auth.allowedScopes);
 
     const [ associatedOrganizations, setAssociatedOrganizations ] = useState<OrganizationInterface[]>([]);
     const [ listFilter, setListFilter ] = useState("");
@@ -69,7 +79,11 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
     const [ isDropDownOpen, setIsDropDownOpen ] = useState<boolean>(false);
     const [ search, setSearch ] = useState<string>("");
 
-    const isOrgSwitcherEnabled = useMemo(() => organizationConfigs.showOrganizationDropdown, [
+    const isOrgSwitcherEnabled = useMemo(() => {
+        return isOrganizationManagementEnabled &&
+        hasRequiredScopes(feature?.organizations, feature?.organizations?.scopes?.read, scopes) &&
+        organizationConfigs.showOrganizationDropdown;
+    }, [
         organizationConfigs.showOrganizationDropdown
     ]);
 

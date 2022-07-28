@@ -16,7 +16,18 @@
 * under the License.
 */
 
-export * from "./organization-list";
-export * from "./add-organization-modal";
-export * from "./organization-role-list";
-export * from "./root-only-component";
+import React, { PropsWithChildren, ReactElement, ReactNode } from "react";
+import { OrganizationUtils } from "../utils";
+
+/**
+ * Renders the child component only in the root organization.
+ *
+ * @param {PropsWithChildren} props Children passed as props.
+ *
+ * @returns {ReactElement}
+ */
+export const RootOnlyComponent = (props: PropsWithChildren<ReactNode>): ReactElement => {
+    const { children } = props;
+
+    return <>{ OrganizationUtils.isCurrentOrganizationRoot() ? children : null }</>;
+};

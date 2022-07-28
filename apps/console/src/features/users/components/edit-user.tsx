@@ -87,11 +87,11 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
         (state: AppState) => state?.config?.ui?.isGroupAndRoleSeparationEnabled);
 
     const [ isReadOnly, setReadOnly ] = useState<boolean>(false);
-    const [ isSuperAdmin, setIsSuperAdmin ] = useState<boolean>(false); 
-    const [ isSelectedSuperAdmin, setIsSelectedSuperAdmin ] = useState<boolean>(false); 
-    const [ 
-        isSuperAdminIdentifierFetchRequestLoading, 
-        setIsSuperAdminIdentifierFetchRequestLoading 
+    const [ isSuperAdmin, setIsSuperAdmin ] = useState<boolean>(false);
+    const [ isSelectedSuperAdmin, setIsSelectedSuperAdmin ] = useState<boolean>(false);
+    const [
+        isSuperAdminIdentifierFetchRequestLoading,
+        setIsSuperAdminIdentifierFetchRequestLoading
     ] = useState<boolean>(false);
     const [ hideTermination, setHideTermination ] = useState<boolean>(false);
     const [ user, setUser ] = useState<ProfileInfoInterface>(selectedUser);
@@ -101,8 +101,8 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
         OrganizationUtils.isRootOrganization(currentOrganization), [ currentOrganization ]);
 
     useEffect(() => {
-        //Since the parent component is refreshing twice we are doing a deep equals operation on the user object to 
-        //see if they are the same values. If they are the same values we do not do anything. 
+        //Since the parent component is refreshing twice we are doing a deep equals operation on the user object to
+        //see if they are the same values. If they are the same values we do not do anything.
         //This makes sure the child components or side effects depending on the user object won't re-render or re-trigger.
         if (!selectedUser || isEqual(user, selectedUser)) {
             return;
@@ -122,10 +122,14 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
         ) {
             setReadOnly(true);
         }
-        
+
     }, [ user, readOnlyUserStores ]);
 
     useEffect(() => {
+        if (!OrganizationUtils.isCurrentOrganizationRoot()) {
+            return;
+        }
+
         checkIsSuperAdmin();
     }, [ user ]);
 
@@ -230,15 +234,15 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                 </ResourceTab.Pane>
             )
         } : null,
-        {
+        OrganizationUtils.isCurrentOrganizationRoot() && {
             menuItem: t("console:manage.features.users.editUser.tab.menuItems.3"),
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
-                    <UserSessions 
-                        user={ user } 
-                        showSessionTerminationButton={ (!isSuperAdminIdentifierFetchRequestLoading && !hideTermination) 
-                        && ((isSelectedSuperAdmin && isSuperAdmin) 
-                            || (!isSelectedSuperAdmin && isSuperAdmin) 
+                    <UserSessions
+                        user={ user }
+                        showSessionTerminationButton={ (!isSuperAdminIdentifierFetchRequestLoading && !hideTermination)
+                        && ((isSelectedSuperAdmin && isSuperAdmin)
+                            || (!isSelectedSuperAdmin && isSuperAdmin)
                             || (!isSelectedSuperAdmin && !isSuperAdmin))
                         } />
                 </ResourceTab.Pane>

@@ -510,7 +510,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
                         protected: true,
                         showOnSidePanel: false
                     },
-                    {
+                    isOrganizationManagementEnabled && {
                         category: "console:manage.features.sidePanel.categories.organizations",
                         children: [
                             {

@@ -23,6 +23,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { Grid, GridColumn, GridRow } from "semantic-ui-react";
 import { searchRoleList } from "../..";
+import { store } from "../../../core";
 import { SharedUserStoreConstants } from "../../../core/constants";
 import { SharedUserStoreUtils } from "../../../core/utils";
 import {
@@ -105,7 +106,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
             value: ""
         };
 
-        getUserStoreList()
+        getUserStoreList(store.getState().config.endpoints.userStores)
             .then((response) => {
                 if (storeOptions === []) {
                     storeOptions.push(storeOption);

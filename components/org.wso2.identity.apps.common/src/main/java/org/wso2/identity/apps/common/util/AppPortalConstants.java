@@ -30,6 +30,8 @@ public class AppPortalConstants {
 
     public static final String DISPLAY_NAME_CLAIM_URI = "http://wso2.org/claims/displayName";
 
+    public static final String USERNAME_CLAIM_URI = "http://wso2.org/claims/username";
+
     public static final String TOKEN_BINDING_TYPE_COOKIE = "cookie";
 
     public static final String GRANT_TYPE_ACCOUNT_SWITCH = "account_switch";

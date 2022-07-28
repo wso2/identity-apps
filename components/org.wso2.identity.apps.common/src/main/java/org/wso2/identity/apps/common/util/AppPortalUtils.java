@@ -208,14 +208,21 @@ public class AppPortalUtils {
         emailClaimMapping.setLocalClaim(emailClaim);
         emailClaimMapping.setRemoteClaim(emailClaim);
 
-        Claim roleClaim = new Claim();
-        roleClaim.setClaimUri(DISPLAY_NAME_CLAIM_URI);
-        ClaimMapping roleClaimMapping = new ClaimMapping();
-        roleClaimMapping.setRequested(true);
-        roleClaimMapping.setLocalClaim(roleClaim);
-        roleClaimMapping.setRemoteClaim(roleClaim);
+        Claim displayNameClaim = new Claim();
+        displayNameClaim.setClaimUri(DISPLAY_NAME_CLAIM_URI);
+        ClaimMapping displayNameClaimMapping = new ClaimMapping();
+        displayNameClaimMapping.setRequested(true);
+        displayNameClaimMapping.setLocalClaim(displayNameClaim);
+        displayNameClaimMapping.setRemoteClaim(displayNameClaim);
 
-        return new ClaimMapping[] { emailClaimMapping, roleClaimMapping };
+        Claim usernameClaim = new Claim();
+        usernameClaim.setClaimUri(EMAIL_CLAIM_URI);
+        ClaimMapping usernameClaimMapping = new ClaimMapping();
+        usernameClaimMapping.setRequested(true);
+        usernameClaimMapping.setLocalClaim(usernameClaim);
+        usernameClaimMapping.setRemoteClaim(usernameClaim);
+
+        return new ClaimMapping[] { emailClaimMapping, displayNameClaimMapping, usernameClaimMapping };
     }
 
     /**
