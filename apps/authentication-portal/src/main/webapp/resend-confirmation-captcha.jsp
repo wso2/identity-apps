@@ -154,6 +154,18 @@
 
         $(document).ready(function () {
             <% if (reCaptchaResendEnabled) { %>
+                var errorMessage = $("#error-msg");
+                errorMessage.hide();
+
+                $( "#recoverySubmit" ).click(function() {
+                    var reCaptchaResponse = $("[name='g-recaptcha-response']")[0].value;
+
+                    if (reCaptchaResponse.trim() == '') {
+                        errorMessage.text("Please select reCaptcha.");
+                        errorMessage.show();
+                        return false;
+                    }
+                });
                 $("#resend-captcha-container").show();
             <% } else { %>
                 $("#resendForm").submit();
