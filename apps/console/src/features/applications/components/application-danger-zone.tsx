@@ -36,6 +36,10 @@ interface ApplicationDangerZonePropsInterface extends
          */
         appId?: string;
         /**
+         * Client Id of the application.
+         */
+        clientId?: string;
+        /**
          * Name of the application.
          */
         name: string;
@@ -58,6 +62,7 @@ export const ApplicationDangerZoneComponent: FunctionComponent<ApplicationDanger
     const {
         featureConfig,
         appId,
+        clientId,
         name,
         content,
         [ "data-componentid" ]: testId
