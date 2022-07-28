@@ -255,7 +255,7 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                             "types.usernameless.description"
                                         )}
                                         onClick={() => {
-                                            eventPublisher.publish("application-begin-sign-in-password-less", {
+                                            eventPublisher.publish("application-begin-sign-in-biometrics-password-less", {
                                                 "client-id": clientId
                                             });
                                             onLoginFlowSelect(LoginFlowTypes.FIDO_LOGIN)
@@ -281,7 +281,12 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                             ".signOnMethod.sections.landing.flowBuilder." +
                                             "types.magicLink.description"
                                         )}
-                                        onClick={() => onLoginFlowSelect(LoginFlowTypes.MAGIC_LINK)}
+                                        onClick={() => {
+                                            eventPublisher.publish("application-begin-sign-in-magiclink-password-less", {
+                                                "client-id": clientId
+                                            });
+                                            onLoginFlowSelect(LoginFlowTypes.MAGIC_LINK)
+                                        }}
                                     />
                                 )}
                         </div>
