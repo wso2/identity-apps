@@ -717,6 +717,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                                     refreshAuthenticators={refreshAuthenticators}
                                     appId={appId}
                                     authenticators={authenticators}
+                                    clientId={clientId}
                                     authenticationSequence={moderatedAuthenticationSequence}
                                     onIDPCreateWizardTrigger={(type: string, cb: () => void, template: any) => {
                                         setSelectedIDPTemplate(template);
