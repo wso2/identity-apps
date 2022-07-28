@@ -23,7 +23,7 @@ import { ConfirmationModal, DangerZone, DangerZoneGroup } from "@wso2is/react-co
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { AppConstants, AppState, FeatureConfigInterface, UIConfigInterface, history } from "../../core";
+import { AppConstants, AppState, FeatureConfigInterface, UIConfigInterface, history, EventPublisher } from "../../core";
 import { deleteApplication } from "../api";
    
 /**
@@ -89,6 +89,10 @@ export const ApplicationDangerZoneComponent: FunctionComponent<ApplicationDanger
  
                 setShowDeleteConfirmationModal(false);
                 onDelete();
+
+                eventPublisher.publish("application-delete", {
+                    "client-id": clientId
+                });
             })
             .catch((error) => {
                 setIsDeletionInProgress(false);
