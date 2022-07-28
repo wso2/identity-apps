@@ -372,7 +372,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                     throw error;
                 });
 
-            await !isPrivilegedUser && dispatch(
+            await dispatch(
                 getProfileInformation(
                     Config.getServiceResourceEndpoints().me,
                     window[ "AppUtils" ].getConfig().clientOriginWithTenant
