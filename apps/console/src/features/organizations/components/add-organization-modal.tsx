@@ -23,11 +23,17 @@ import { Heading, LinkButton, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Grid, Message, Modal } from "semantic-ui-react";
+import { Grid, Modal } from "semantic-ui-react";
 import { AppState, EventPublisher } from "../../core";
-import { addOrganization, getOrganizations } from "../api";
-import { ORGANIZATION_TYPE } from "../constants";
-import { AddOrganizationInterface, OrganizationInterface, OrganizationListInterface } from "../models";
+import { addOrganization } from "../api";
+import {
+    ORGANIZATION_DESCRIPTION_MAX_LENGTH,
+    ORGANIZATION_DESCRIPTION_MIN_LENGTH,
+    ORGANIZATION_NAME_MAX_LENGTH,
+    ORGANIZATION_NAME_MIN_LENGTH,
+    ORGANIZATION_TYPE
+} from "../constants";
+import { AddOrganizationInterface, OrganizationInterface } from "../models";
 
 interface OrganizationAddFormProps {
     name: string;
@@ -205,8 +211,8 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
                                             "console:manage.features.organizations.forms." +
                                             "addOrganization.name.placeholder"
                                         ) }
-                                        maxLength={ 32 }
-                                        minLength={ 3 }
+                                        maxLength={ ORGANIZATION_NAME_MAX_LENGTH }
+                                        minLength={ ORGANIZATION_NAME_MIN_LENGTH }
                                         data-componentid={ `${ testId }-organization-name-input` }
                                         width={ 16 }
                                     />
@@ -223,8 +229,8 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
                                             "console:manage.features.organizations.forms." +
                                             "addOrganization.description.placeholder"
                                         ) }
-                                        maxLength={ 300 }
-                                        minLength={ 3 }
+                                        maxLength={ ORGANIZATION_DESCRIPTION_MAX_LENGTH }
+                                        minLength={ ORGANIZATION_DESCRIPTION_MIN_LENGTH }
                                         data-componentid={ `${ testId }-description-input` }
                                         width={ 16 }
                                     />
