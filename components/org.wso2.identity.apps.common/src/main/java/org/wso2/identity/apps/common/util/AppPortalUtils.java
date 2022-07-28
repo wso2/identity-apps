@@ -237,8 +237,8 @@ public class AppPortalUtils {
         displayNameClaim.setClaimUri(DISPLAY_NAME_CLAIM_URI);
         ClaimMapping displayNameClaimMapping = new ClaimMapping();
         displayNameClaimMapping.setRequested(true);
-        displayNameClaimMapping.setLocalClaim(roleClaim);
-        displayNameClaimMapping.setRemoteClaim(roleClaim);
+        displayNameClaimMapping.setLocalClaim(displayNameClaim);
+        displayNameClaimMapping.setRemoteClaim(displayNameClaim);
 
         Claim usernameClaim = new Claim();
         usernameClaim.setClaimUri(EMAIL_CLAIM_URI);
@@ -247,7 +247,7 @@ public class AppPortalUtils {
         usernameClaimMapping.setLocalClaim(usernameClaim);
         usernameClaimMapping.setRemoteClaim(usernameClaim);
 
-        return new ClaimMapping[] { emailClaimMapping, roleClaimMapping, usernameClaimMapping };
+        return new ClaimMapping[] { emailClaimMapping, displayNameClaimMapping, usernameClaimMapping };
     }
 
     /**
