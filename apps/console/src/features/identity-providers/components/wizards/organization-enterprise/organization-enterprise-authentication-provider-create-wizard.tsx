@@ -65,7 +65,7 @@ export interface OrganizationEnterpriseAuthenticationProviderCreateWizardFormVal
     /**
      * Description of the Idp
      */
-    description: string;
+    description?: string;
 }
 
 /**
@@ -79,7 +79,7 @@ export interface OrganizationEnterpriseAuthenticationProviderCreateWizardFormErr
     /**
      * Error message for the description.
      */
-    description: string;
+    description?: string;
 }
 
 /**
@@ -233,8 +233,8 @@ export const OrganizationEnterpriseAuthenticationProviderCreateWizard: FunctionC
         delete (identityProvider.claims);
         delete (identityProvider.provisioning);
 
-        // Use description from template.
-        identityProvider.description = template.description;
+        // Use description from template if the user description is not given.
+        identityProvider.description = identityProvider.description || template.description;
 
         createNewIdentityProvider(identityProvider);
     };
@@ -270,7 +270,7 @@ export const OrganizationEnterpriseAuthenticationProviderCreateWizard: FunctionC
         const identityProvider: IdentityProviderInterface = { ...template.idp };
 
         identityProvider.name = values.name.toString();
-        identityProvider.description = values.name.toString();
+        identityProvider.description = values.description?.toString();
 
         // // TODO: Refactor the usage of absolute image paths once Media Service is available.
         // // Tracked here - https://github.com/wso2/product-is/issues/12396

@@ -164,10 +164,6 @@ export const OrganizationEnterpriseAuthenticationProviderCreateWizardContent:
                 errors.name = t("console:develop.features.authenticationProvider.forms.common" +
                 ".requiredErrorMessage");
             }
-            if (!values.description) {
-                errors.description = t("console:develop.features.authenticationProvider.forms.common" +
-                ".requiredErrorMessage");
-            }
 
             return errors;
         };
@@ -221,7 +217,6 @@ export const OrganizationEnterpriseAuthenticationProviderCreateWizardContent:
                                     t("console:develop.features.authenticationProvider.forms." +
                                     "generalDetails.description.placeholder")
                                 }
-                                required={ true }
                                 message={
                                     t("console:develop.features.authenticationProvider.forms." +
                                     "generalDetails.description.placeholder")
