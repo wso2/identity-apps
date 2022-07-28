@@ -42,6 +42,7 @@ import {
     getEmptyPlaceholderIllustrations,
     store
 } from "../../core";
+import { OrganizationUtils } from "../../organizations/utils";
 import { UserStorePostData } from "../../userstores";
 import { deleteGroupById, getGroupList, searchGroupList } from "../api";
 import { GroupList } from "../components";
@@ -116,6 +117,10 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
     }, [ userStore ]);
 
     useEffect(() => {
+        if (!OrganizationUtils.isCurrentOrganizationRoot()) {
+            return;
+        }
+
         SharedUserStoreUtils.getReadOnlyUserStores().then((response) => {
             setReadOnlyUserStoresList(response);
         });
@@ -194,31 +199,35 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
             value: ""
         };
 
-        getUserStoreList(store.getState().config.endpoints.userStores)
-            .then((response) => {
-                if (storeOptions === []) {
-                    storeOptions.push(storeOption);
-                }
+        setUserStore(storeOptions[ 0 ].value);
 
-                response.data.map((store, index) => {
-                    getAUserStore(store.id).then((response: UserStorePostData) => {
-                        const isDisabled = response.properties.find(
-                            (property: UserStoreProperty) => property.name === "Disabled")?.value === "true";
+        if (OrganizationUtils.isCurrentOrganizationRoot()) {
+            getUserStoreList(store.getState().config.endpoints.userStores)
+                .then((response) => {
+                    if (storeOptions === []) {
+                        storeOptions.push(storeOption);
+                    }
 
-                        if (!isDisabled) {
-                            storeOption = {
-                                key: index,
-                                text: store.name,
-                                value: store.name
-                            };
-                            storeOptions.push(storeOption);
-                        }
-                    });
-                }
-                );
+                    response.data.map((store, index) => {
+                        getAUserStore(store.id).then((response: UserStorePostData) => {
+                            const isDisabled = response.properties.find(
+                                (property: UserStoreProperty) => property.name === "Disabled")?.value === "true";
 
-                setUserStoresList(storeOptions);
-            });
+                            if (!isDisabled) {
+                                storeOption = {
+                                    key: index,
+                                    text: store.name,
+                                    value: store.name
+                                };
+                                storeOptions.push(storeOption);
+                            }
+                        });
+                    }
+                    );
+
+                    setUserStoresList(storeOptions);
+                });
+        }
 
         setUserStoresList(storeOptions);
     };
