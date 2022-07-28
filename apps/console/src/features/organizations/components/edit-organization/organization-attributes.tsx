@@ -67,9 +67,14 @@ export const OrganizationAttributes: FunctionComponent<OrganizationAttributesPro
         setIsSubmitting(true);
         const attributes = organization.attributes || [];
 
+        const diffOnly = data.filter((updated: KeyValue) => {
+            return attributes.find((attribute) =>
+                attribute.key === updated.key && attribute.value === updated.value) === undefined;
+        });
+
         const updatedAttributes: OrganizationPatchData[] = attributes
             .map((attribute) => {
-                const updated = data.find((updated) => updated.key === attribute.key);
+                const updated = diffOnly.find((updated) => updated.key === attribute.key);
 
                 if (updated !== undefined) {
                     return {
@@ -77,7 +82,14 @@ export const OrganizationAttributes: FunctionComponent<OrganizationAttributesPro
                         path: `/attributes/${updated.key}`,
                         value: updated.value
                     };
-                } else {
+                }
+            });
+
+        const removedAttributes: OrganizationPatchData[] = attributes
+            .map((attribute) => {
+                const updated = data.find((updated) => updated.key === attribute.key);
+
+                if (updated === undefined) {
                     return {
                         operation: "REMOVE",
                         path: `/attributes/${attribute?.key}`,
@@ -87,18 +99,22 @@ export const OrganizationAttributes: FunctionComponent<OrganizationAttributesPro
             });
 
         const addedAttributes: OrganizationPatchData[] = data
-            .filter((updated) => attributes.findIndex((attribute) => attribute.key === updated.key) === -1)
-            .map((attribute) => ({
-                operation: "ADD",
-                path: `/attributes/${attribute.key}`,
-                value: attribute.value
-            }));
+            .map((updated) => {
+                if (attributes.findIndex((attribute) => attribute.key === updated.key) === -1) {
+                    return {
+                        operation: "ADD",
+                        path: `/attributes/${updated.key}`,
+                        value: updated.value
+                    };   
+                }
+            });
 
 
         const patchData: OrganizationPatchData[] = [
             ...updatedAttributes,
-            ...addedAttributes
-        ];
+            ...addedAttributes,
+            ...removedAttributes
+        ].filter((item) => item !== undefined);
 
         patchOrganization(organization.id, patchData)
             .then((_response) => {
