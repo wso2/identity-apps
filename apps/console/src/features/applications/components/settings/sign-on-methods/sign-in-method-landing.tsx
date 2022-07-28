@@ -254,7 +254,12 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                             ".signOnMethod.sections.landing.flowBuilder." +
                                             "types.usernameless.description"
                                         )}
-                                        onClick={() => onLoginFlowSelect(LoginFlowTypes.FIDO_LOGIN)}
+                                        onClick={() => {
+                                            eventPublisher.publish("application-begin-sign-in-password-less", {
+                                                "client-id": clientId
+                                            });
+                                            onLoginFlowSelect(LoginFlowTypes.FIDO_LOGIN)
+                                        }}
                                     />
                                 )}
                             {!hiddenOptions?.includes(LoginFlowTypes.MAGIC_LINK) &&
