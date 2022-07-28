@@ -286,8 +286,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
 
             await getDecodedIDToken()
                 .then((idToken) => {
-                    const subParts = idToken.sub.split("@");
-                    const tenantDomain = subParts[ subParts.length - 1 ];
+                    const tenantDomain: string = CommonAuthenticateUtils.deriveTenantDomainFromSubject(idToken?.sub);
 
                     isPrivilegedUser = idToken?.amr?.length > 0
                         ? idToken?.amr[0] === "EnterpriseIDPAuthenticator"
@@ -297,18 +296,14 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                     const fullName = firstName ? (firstName + (lastName ? (" " + lastName) : "")) : response.email;
 
                     dispatch(
-                        setSignIn<AuthenticatedUserInfo & TenantListInterface>({
-                            allowedScopes: response.allowedScopes,
-                            associatedTenants:  isPrivilegedUser ? tenantDomain : idToken?.associated_tenants,
-                            defaultTenant: isPrivilegedUser ? tenantDomain : idToken?.default_tenant,
-                            displayName: response.displayName,
-                            display_name: response.displayName,
-                            email: response.email,
-                            tenantDomain: response.tenantDomain ?? tenantDomain,
-                            username: idToken.sub,
-                            isPrivilegedUser: isPrivilegedUser,
-                            fullName: fullName
-                        })
+                        setSignIn<AuthenticatedUserInfo & TenantListInterface>(
+                            Object.assign(CommonAuthenticateUtils.getSignInState(response), {
+                                associatedTenants:  isPrivilegedUser ? tenantDomain : idToken?.associated_tenants,
+                                defaultTenant: isPrivilegedUser ? tenantDomain : idToken?.default_tenant,
+                                fullName: fullName,
+                                isPrivilegedUser: isPrivilegedUser
+                            })
+                        )
                     );
 
                     setRenderApp(true);
