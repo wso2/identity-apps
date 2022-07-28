@@ -22,8 +22,10 @@ import { Code, FormSection, GenericIcon, Hint } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Icon, SemanticICONS } from "semantic-ui-react";
-import { AppConstants } from "../../../../core";
+import { AppConstants, AppState } from "../../../../core";
+import { UIConfigInterface } from "../../../../core/models";
 import { IdentityProviderManagementConstants } from "../../../constants";
 import {
     AuthenticatorSettingsFormModes,
@@ -225,8 +227,27 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
         setInitialValues(resolvedInitialValues);
     }, [ originalInitialValues ]);
 
+    /**
+     * Importing all UI configurations.
+     */
+    const UIConfig: UIConfigInterface = useSelector((state: AppState) => {
+        return state?.config?.ui;
+    });
+    
+    /**
+     * Checking the current user is a super user or not.
+     * @returns Is super user logged in.
+     */
     const isSuperTenantLogin = (): boolean => {
         return AppConstants.getTenant() === AppConstants.getSuperTenant();
+    };
+
+    /**
+     * Checking ability to enable Google One Tap.
+     * @returns Whether enable Google One Tap or not.
+     */
+    const isEnableGoogleOneTap = (): boolean => {
+        return !UIConfig.enableGOTForSuperTenantUserOnly || isSuperTenantLogin();
     };
 
     /**
@@ -495,7 +516,7 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
                 width={ 16 }
                 data-testid={ `${ testId }-additional-query-parameters` }
             />
-            { isSuperTenantLogin() 
+            { isEnableGoogleOneTap()
                 ? (
                     <Field.Checkbox
                         ariaLabel="Enable Google One Tap as a sign in option"
