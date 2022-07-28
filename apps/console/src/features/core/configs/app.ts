@@ -221,6 +221,7 @@ export class Config {
             appName: window[ "AppUtils" ].getConfig().ui.appName,
             appTitle: window[ "AppUtils" ].getConfig().ui.appTitle,
             applicationTemplateLoadingStrategy: window[ "AppUtils" ].getConfig().ui.applicationTemplateLoadingStrategy,
+            enableGOTForSuperTenantUserOnly:window["AppUtils"].getConfig().ui.enableGOTForSuperTenantUserOnly,
             features: window[ "AppUtils" ].getConfig().ui.features,
             gravatarConfig: window[ "AppUtils" ].getConfig().ui.gravatarConfig,
             hiddenAuthenticators: window[ "AppUtils" ].getConfig().ui.hiddenAuthenticators,

@@ -404,7 +404,7 @@
                                                     data-cancel_on_tap_outside="false"
                                                     data-authenticator="<%=Encode.forHtmlAttribute(idpEntry.getValue())%>"
                                                     data-idp="<%=Encode.forHtmlAttribute(idpName)%>"
-                                                    data-one_tap_enabled="YES"
+                                                    data-one_tap_enabled="true"
                                                     data-moment_callback="onMoment">
                                                 </div>
                                             </div>
@@ -565,16 +565,18 @@
         }
     %>
     <script>
-        function onMoment(notification){
-            displayGoogleSignIn(notification.isNotDisplayed() || notification.isSkippedMoment() || notification.isDismissedMoment());
+        function onMoment(notification) {
+            displayGoogleSignIn(notification.isNotDisplayed() || notification.isSkippedMoment());
         }
 
-        function displayGoogleSignIn(display){
+        function displayGoogleSignIn(display) {
             var element = document.getElementById("googleSignIn");
-            if(element != null && display){
-                element.style.display = "block";
-            } else {
-                element.style.display = "none";
+            if(element != null) {
+                if(display) {
+                    element.style.display = "block";
+                } else {
+                    element.style.display = "none";
+                }
             }
         }
 
