@@ -286,7 +286,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
 
             await getDecodedIDToken()
                 .then((idToken) => {
-                    const tenantDomain = CommonAuthenticateUtils.deriveTenantDomainFromSubject(idToken?.sub);
+                    const tenantDomain: string = CommonAuthenticateUtils.deriveTenantDomainFromSubject(idToken?.sub);
 
                     isPrivilegedUser = idToken?.amr?.length > 0
                         ? idToken?.amr[0] === "EnterpriseIDPAuthenticator"
