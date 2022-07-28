@@ -220,7 +220,12 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                         "console:develop.features.applications.edit.sections" +
                                         ".signOnMethod.sections.landing.flowBuilder.types.totp.description"
                                     )}
-                                    onClick={() => onLoginFlowSelect(LoginFlowTypes.SECOND_FACTOR_TOTP)}
+                                    onClick={() => {
+                                        eventPublisher.publish("application-begin-sign-in-totp-mfa", {
+                                            "client-id": clientId
+                                        });
+                                        onLoginFlowSelect(LoginFlowTypes.SECOND_FACTOR_TOTP)
+                                    }}
                                 />
                             )}
                             <Heading as="h4">
