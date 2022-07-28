@@ -56,7 +56,7 @@
                     "claim": {
                         "uri": "http://wso2.org/claims/username"
                     },
-                    "mandatory": false
+                    "mandatory": true
                 }
             ]
         }
