@@ -148,7 +148,12 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                                     ".signOnMethod.sections.landing.flowBuilder." +
                                                     "types.google.description"
                                                 )}
-                                                onClick={() => onLoginFlowSelect(LoginFlowTypes.GOOGLE_LOGIN)}
+                                                onClick={() => {
+                                                    eventPublisher.publish("application-begin-sign-in-google-social-login", {
+                                                        type: clientId
+                                                    });
+                                                    onLoginFlowSelect(LoginFlowTypes.GOOGLE_LOGIN)
+                                                }}
                                             />
                                         )}
 
