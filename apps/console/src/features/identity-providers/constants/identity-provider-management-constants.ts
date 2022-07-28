@@ -18,6 +18,18 @@
 
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { DocumentationConstants } from "./documentation-constants";
+import EnterpriseIdPTemplate from
+    "../data/identity-provider-templates/templates/enterprise-identity-provider/enterprise-identity-provider.json";
+import ExpertModeIdPTemplate from "../data/identity-provider-templates/templates/expert-mode/expert-mode.json";
+import FacebookIdPTemplate from "../data/identity-provider-templates/templates/facebook/facebook.json";
+import GitHubIdPTemplate from "../data/identity-provider-templates/templates/github/github.json";
+import GoogleIdPTemplate from "../data/identity-provider-templates/templates/google/google.json";
+import EnterpriseOIDCIdPTemplate from
+    "../data/identity-provider-templates/templates/oidc-identity-provider/enterprise-oidc-identity-provider.json";
+import EnterpriseOrganizationIdPTemplate from
+    "../data/identity-provider-templates/templates/organization-enterprise-identity-provider/organization-enterprise-identity-provider.json";
+import EnterpriseSAMLIdPTemplate from
+    "../data/identity-provider-templates/templates/saml-identity-provider/enterprise-saml-identity-provider.json";
 import { IdentityProviderTemplateLoadingStrategies } from "../models";
 
 /**
@@ -82,16 +94,26 @@ export class IdentityProviderManagementConstants {
 
     /**
      * Set of IDP template Ids.
-     * @type {Record<string, unknown>}
+     * @type {object}
      */
-    public static readonly IDP_TEMPLATE_IDS: Record<string, string> = {
-        ENTERPRISE: "enterprise-idp",
-        FACEBOOK: "facebook-idp",
-        GITHUB: "github-idp",
-        GOOGLE: "8ea23303-49c0-4253-b81f-82c0fe6fb4a0",
-        OIDC: "oidc-idp",
-        ORGANIZATION_ENTERPRISE_IDP: "organization-enterprise-idp",
-        SAML: "saml-idp"
+    public static readonly IDP_TEMPLATE_IDS: {
+        ENTERPRISE: string;
+        EXPERT_MODE: string;
+        FACEBOOK: string;
+        GITHUB: string;
+        GOOGLE: string;
+        OIDC: string;
+        ORGANIZATION_ENTERPRISE_IDP: string;
+        SAML: string;
+    } = {
+        ENTERPRISE: EnterpriseIdPTemplate.id,
+        EXPERT_MODE: ExpertModeIdPTemplate.id,
+        FACEBOOK: FacebookIdPTemplate.id,
+        GITHUB: GitHubIdPTemplate.id,
+        GOOGLE: GoogleIdPTemplate.id,
+        OIDC: EnterpriseOIDCIdPTemplate.id,
+        ORGANIZATION_ENTERPRISE_IDP: EnterpriseOrganizationIdPTemplate.id,
+        SAML: EnterpriseSAMLIdPTemplate.id
     };
 
     /**
