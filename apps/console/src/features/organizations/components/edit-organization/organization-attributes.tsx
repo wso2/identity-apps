@@ -25,13 +25,13 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Grid } from "semantic-ui-react";
 import { FeatureConfigInterface } from "../../../core";
-import { patchOrganization } from "../../api";
-import { OrganizationPatchData, OrganizationResponseInterface } from "../../models";
+import { updateOrganization } from "../../api";
+import { OrganizationResponseInterface, UpdateOrganizationInterface } from "../../models";
 
 interface OrganizationAttributesPropsInterface extends SBACInterface<FeatureConfigInterface>,
     TestableComponentInterface {
     /**
-     * Organizatin Data
+     * Organization Data
      */
     organization: OrganizationResponseInterface;
 
@@ -62,61 +62,19 @@ export const OrganizationAttributes: FunctionComponent<OrganizationAttributesPro
 
     const [ submit, setSubmit ] = useTrigger();
     const [ isSubmitting, setIsSubmitting ] = useState(false);
-
+    
     const updateOrgAttributes = useCallback((data: KeyValue[]) => {
         setIsSubmitting(true);
-        const attributes = organization.attributes || [];
-
-        const diffOnly = data.filter((updated: KeyValue) => {
-            return attributes.find((attribute) =>
-                attribute.key === updated.key && attribute.value === updated.value) === undefined;
-        });
-
-        const updatedAttributes: OrganizationPatchData[] = attributes
-            .map((attribute) => {
-                const updated = diffOnly.find((updated) => updated.key === attribute.key);
-
-                if (updated !== undefined) {
-                    return {
-                        operation: "REPLACE",
-                        path: `/attributes/${updated.key}`,
-                        value: updated.value
-                    };
-                }
-            });
-
-        const removedAttributes: OrganizationPatchData[] = attributes
-            .map((attribute) => {
-                const updated = data.find((updated) => updated.key === attribute.key);
-
-                if (updated === undefined) {
-                    return {
-                        operation: "REMOVE",
-                        path: `/attributes/${attribute?.key}`,
-                        value: ""
-                    };
-                }
-            });
-
-        const addedAttributes: OrganizationPatchData[] = data
-            .map((updated) => {
-                if (attributes.findIndex((attribute) => attribute.key === updated.key) === -1) {
-                    return {
-                        operation: "ADD",
-                        path: `/attributes/${updated.key}`,
-                        value: updated.value
-                    };   
-                }
-            });
-
-
-        const patchData: OrganizationPatchData[] = [
-            ...updatedAttributes,
-            ...addedAttributes,
-            ...removedAttributes
-        ].filter((item) => item !== undefined);
-
-        patchOrganization(organization.id, patchData)
+        const updatedOrganization = {
+            attributes: [
+                ...data
+            ],
+            description: organization.description,
+            name: organization.name,
+            status: organization.status,
+        } as UpdateOrganizationInterface;
+        
+        updateOrganization(organization.id, updatedOrganization)
             .then((_response) => {
                 dispatch(
                     addAlert({
@@ -141,7 +99,7 @@ export const OrganizationAttributes: FunctionComponent<OrganizationAttributesPro
                             level: AlertLevels.ERROR,
                             message: t(
                                 "console:manage.features.organizations.notifications.updateOrganizationAttributes." +
-                                "error.message"
+                            "error.message"
                             )
                         })
                     );
