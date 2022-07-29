@@ -746,11 +746,11 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                     )) {
                     panes.push({
                         componentId: "general",
-                        menuItem: 
+                        menuItem:
                                  <Menu.Item data-tourid="general">
                                      { t("console:develop.features.applications.edit.sections.general.tabName") }
                                  </Menu.Item>,
-                        render: () => 
+                        render: () =>
                             applicationConfig.editApplication.
                                 getOveriddenTab(
                                     inboundProtocolConfig?.oidc?.clientId,
