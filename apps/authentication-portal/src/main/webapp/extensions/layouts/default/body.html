@@ -1,0 +1,45 @@
+<!--
+  ~ Copyright (c) 2022, WSO2 Inc. (http://www.wso2.com).
+  ~
+  ~ WSO2 Inc. licenses this file to you under the Apache License,
+  ~ Version 2.0 (the "License"); you may not use this file except
+  ~ in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~ KIND, either express or implied.  See the License for the
+  ~ specific language governing permissions and limitations
+  ~ under the License.
+  -->
+
+{{^isPolicyPage}}
+<main class="center-segment">
+    <div class="ui container {{containerSize}} center aligned middle aligned">
+        {{{ProductHeader}}}
+        {{{MainSection}}}
+    </div>
+</main>
+{{{ProductFooter}}}
+{{/isPolicyPage}}
+
+{{#isPolicyPage}}
+<main class="policy-page">
+    <div class="ui borderless top fixed app-header menu" id="app-header">
+        <div class="ui container">
+            <div class="header item product-logo">
+                {{{ProductHeader}}}
+            </div>
+        </div>
+    </div>
+    <div class="app-content policy-page-content" style="padding-top: 62px;">
+        <div class="ui container">
+            {{{MainSection}}}
+        </div>
+    </div>
+</main>
+{{{ProductFooter}}}
+{{/isPolicyPage}}

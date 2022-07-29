@@ -165,7 +165,6 @@ export const SessionManagementProvider: FunctionComponent<PropsWithChildren<
         ] = useState<SessionTimeoutEventStateInterface>(undefined);
         const [ showSessionTimeoutModal, setShowSessionTimeoutModal ] = useState<boolean>(false);
         const [ timerDisplay, setTimerDisplay ] = useState<string>(undefined);
-        
         useEffect(() => {
             const sessionTimeoutListener = (e: MessageEventInit) => {
                 const state = e.data;
