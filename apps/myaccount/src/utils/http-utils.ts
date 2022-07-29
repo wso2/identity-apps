@@ -80,10 +80,7 @@ export const onHttpRequestError = (error: any): null => {
     // or a forbidden status code (403). NOTE: Axios is unable to handle 401 errors.
     // `!error.response` will usually catch the `401` error. Check the link in the doc comment.
     if (!error.response || error.response.status === 403 || error.response.status === 401) {
-        if (error?.code === "SPA-WORKER_CORE-HR-SE01") {
-            dispatchEvent(new Event(AppConstantsCore.NETWORK_ERROR_EVENT));
-        }
-        if (error?.code === "SPA-AUTH_HELPER-HR-SE01") {
+        if (error?.code === "SPA-WORKER_CORE-HR-SE01" || error?.code === "SPA-AUTH_HELPER-HR-SE01") {
             dispatchEvent(new Event(AppConstantsCore.NETWORK_ERROR_EVENT));
         }
     }
