@@ -38,13 +38,13 @@ import {
 } from "./settings";
 import { Info } from "./settings/info";
 import { ComponentExtensionPlaceholder, applicationConfig } from "../../../extensions";
-import {
-    AppState,
-    CORSOriginsListInterface,
-    EventPublisher,
-    FeatureConfigInterface,
-    getCORSOrigins,
-    history
+import { 
+    AppState, 
+    CORSOriginsListInterface, 
+    EventPublisher, 
+    FeatureConfigInterface, 
+    getCORSOrigins, 
+    history 
 } from "../../core";
 import { getInboundProtocolConfig } from "../api";
 import { ApplicationManagementConstants } from "../constants";
@@ -129,7 +129,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         template,
         readOnly,
         urlSearchParams,
-        ["data-testid"]: testId
+        [ "data-testid" ]: testId
     } = props;
 
     const { t } = useTranslation();
@@ -146,24 +146,24 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         state.config.ui.isClientSecretHashEnabled);
     const tenantDomain: string = useSelector((state: AppState) => state.auth.tenantDomain);
 
-    const [isInboundProtocolConfigRequestLoading, setIsInboundProtocolConfigRequestLoading] = useState<boolean>(true);
-    const [inboundProtocolList, setInboundProtocolList] = useState<string[]>(undefined);
-    const [inboundProtocolConfig, setInboundProtocolConfig] = useState<any>(undefined);
-    const [isInboundProtocolsRequestLoading, setInboundProtocolsRequestLoading] = useState<boolean>(false);
-    const [tabPaneExtensions, setTabPaneExtensions] = useState<any>(undefined);
-    const [allowedOrigins, setAllowedOrigins] = useState([]);
-    const [isAllowedOriginsUpdated, setIsAllowedOriginsUpdated] = useState<boolean>(false);
-    const [isApplicationUpdated, setIsApplicationUpdated] = useState<boolean>(false);
-    const [showClientSecretHashDisclaimerModal, setShowClientSecretHashDisclaimerModal] = useState<boolean>(false);
+    const [ isInboundProtocolConfigRequestLoading, setIsInboundProtocolConfigRequestLoading ] = useState<boolean>(true);
+    const [ inboundProtocolList, setInboundProtocolList ] = useState<string[]>(undefined);
+    const [ inboundProtocolConfig, setInboundProtocolConfig ] = useState<any>(undefined);
+    const [ isInboundProtocolsRequestLoading, setInboundProtocolsRequestLoading ] = useState<boolean>(false);
+    const [ tabPaneExtensions, setTabPaneExtensions ] = useState<any>(undefined);
+    const [ allowedOrigins, setAllowedOrigins ] = useState([]);
+    const [ isAllowedOriginsUpdated, setIsAllowedOriginsUpdated ] = useState<boolean>(false);
+    const [ isApplicationUpdated, setIsApplicationUpdated ] = useState<boolean>(false);
+    const [ showClientSecretHashDisclaimerModal, setShowClientSecretHashDisclaimerModal ] = useState<boolean>(false);
     const [
         clientSecretHashDisclaimerModalInputs,
         setClientSecretHashDisclaimerModalInputs
     ] = useState<{ clientSecret: string; clientId: string }>({ clientId: "", clientSecret: "" });
-    const [isOIDCConfigsLoading, setOIDCConfigsLoading] = useState<boolean>(false);
-    const [isSAMLConfigsLoading, setSAMLConfigsLoading] = useState<boolean>(false);
-    const [activeTabIndex, setActiveTabIndex] = useState<number>(undefined);
-    const [defaultActiveIndex, setDefaultActiveIndex] = useState<number>(undefined);
-    const [totalTabs, setTotalTabs] = useState<number>(undefined);
+    const [ isOIDCConfigsLoading, setOIDCConfigsLoading ] = useState<boolean>(false);
+    const [ isSAMLConfigsLoading, setSAMLConfigsLoading ] = useState<boolean>(false);
+    const [ activeTabIndex, setActiveTabIndex ] = useState<number>(undefined);
+    const [ defaultActiveIndex, setDefaultActiveIndex ] = useState<number>(undefined);
+    const [ totalTabs, setTotalTabs ] = useState<number>(undefined);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -182,21 +182,21 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
      */
     useEffect(() => {
 
-        if (!template) {
+        if(!template) {
             return;
         }
 
         let defaultTabIndex: number = 0;
 
-        if (applicationConfig.editApplication.extendTabs) {
-            defaultTabIndex = 1;
+        if(applicationConfig.editApplication.extendTabs) {
+            defaultTabIndex=1;
         }
 
         setDefaultActiveIndex(defaultTabIndex);
 
-        if (isEmpty(window.location.hash)) {
+        if(isEmpty(window.location.hash)){
 
-            if (urlSearchParams.get(ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_KEY) !==
+            if(urlSearchParams.get(ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_KEY) !==
                 ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_VALUE) {
                 handleDefaultTabIndexChange(defaultTabIndex);
 
@@ -204,33 +204,33 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             }
 
             // When application selection is done through the strong authentication flow.
-            if (template.id === CustomApplicationTemplate.id) {
+            if(template.id === CustomApplicationTemplate.id) {
                 handleActiveTabIndexChange(3);
             } else {
                 handleActiveTabIndexChange(4);
             }
         }
-    }, [template]);
+    },[ template ]);
 
     /**
      * Called when the URL fragment updates.
      */
-    useEffect(() => {
+    useEffect( () => {
 
-        if (totalTabs === undefined || window.location.hash.includes(URLFragmentTypes.VIEW) ||
+        if(totalTabs === undefined || window.location.hash.includes(URLFragmentTypes.VIEW) ||
             isEmpty(window.location.hash)) {
 
             return;
         }
 
-        const urlFragment: string[] = window.location.hash.split("#" + URLFragmentTypes.TAB_INDEX);
+        const urlFragment: string[] = window.location.hash.split("#"+URLFragmentTypes.TAB_INDEX);
 
-        if (urlFragment.length === 2 && isEmpty(urlFragment[0]) && /^\d+$/.test(urlFragment[1])) {
+        if(urlFragment.length === 2 && isEmpty(urlFragment[0]) && /^\d+$/.test(urlFragment[1])) {
 
             const tabIndex: number = parseInt(urlFragment[1], 10);
 
-            if (inRange(tabIndex, 0, totalTabs)) {
-                if (tabIndex === activeTabIndex) {
+            if(inRange(tabIndex,  0, totalTabs)) {
+                if(tabIndex === activeTabIndex) {
                     return;
                 }
                 handleActiveTabIndexChange(tabIndex);
@@ -242,7 +242,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             // Change the tab index to defaultActiveIndex for invalid URL fragments.
             handleDefaultTabIndexChange(defaultActiveIndex);
         }
-    }, [window.location.hash, totalTabs]);
+    }, [ window.location.hash, totalTabs ]);
 
     /**
      * Fetch the allowed origins list whenever there's an update.
@@ -277,7 +277,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                         "genericError.message")
                 }));
             });
-    }, [isAllowedOriginsUpdated]);
+    }, [ isAllowedOriginsUpdated ]);
 
     /**
      * Called on `availableInboundProtocols` prop update.
@@ -293,7 +293,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             .finally(() => {
                 setInboundProtocolsRequestLoading(false);
             });
-    }, [availableInboundProtocols]);
+    }, [ availableInboundProtocols ]);
 
     /**
      * Watch for `inboundProtocols` array change and fetch configured protocols if there's a difference.
@@ -304,7 +304,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         }
 
         findConfiguredInboundProtocol(application.id);
-    }, [application?.inboundProtocols]);
+    }, [ application?.inboundProtocols ]);
 
     useEffect(() => {
         if (samlConfigurations !== undefined) {
@@ -316,7 +316,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             .finally(() => {
                 setSAMLConfigsLoading(false);
             });
-    }, [samlConfigurations, inboundProtocolConfig]);
+    }, [ samlConfigurations, inboundProtocolConfig ]);
 
     useEffect(() => {
         if (oidcConfigurations !== undefined) {
@@ -328,7 +328,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             .finally(() => {
                 setOIDCConfigsLoading(false);
             });
-    }, [oidcConfigurations, inboundProtocolConfig]);
+    }, [ oidcConfigurations, inboundProtocolConfig ]);
 
     useEffect(() => {
         if (tabPaneExtensions && !isApplicationUpdated) {
@@ -382,7 +382,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         }
 
         setShowClientSecretHashDisclaimerModal(true);
-    }, [urlSearchParams.get(ApplicationManagementConstants.CLIENT_SECRET_HASH_ENABLED_URL_SEARCH_PARAM_KEY)]);
+    }, [ urlSearchParams.get(ApplicationManagementConstants.CLIENT_SECRET_HASH_ENABLED_URL_SEARCH_PARAM_KEY) ]);
 
     /**
      * Handles the defaultActiveIndex change.
@@ -403,10 +403,10 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
      *
      * @param {number} tabIndex - Active tab index.
      */
-    const handleActiveTabIndexChange = (tabIndex: number): void => {
+    const handleActiveTabIndexChange = (tabIndex:number): void => {
 
         history.push({
-            hash: `#${URLFragmentTypes.TAB_INDEX}${tabIndex}`,
+            hash: `#${ URLFragmentTypes.TAB_INDEX }${ tabIndex }`,
             pathname: window.location.pathname
         });
         setActiveTabIndex(tabIndex);
@@ -456,8 +456,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     const normalizeSAMLNameIDFormat = (protocolConfigs: any): void => {
         const key = "saml";
 
-        if (protocolConfigs[key]) {
-            const assertion = protocolConfigs[key].singleSignOnProfile?.assertion;
+        if (protocolConfigs[ key ]) {
+            const assertion = protocolConfigs[ key ].singleSignOnProfile?.assertion;
 
             if (assertion) {
                 const ref = assertion.nameIdFormat as string;
@@ -495,10 +495,10 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 responses.forEach((response, index: number) => {
                     protocolConfigs = {
                         ...protocolConfigs,
-                        [protocolNames[index]]: response
+                        [ protocolNames[ index ] ]: response
                     };
 
-                    selectedProtocolList.push(protocolNames[index]);
+                    selectedProtocolList.push(protocolNames[ index ]);
                 });
 
             }))
@@ -578,22 +578,22 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     const GeneralApplicationSettingsTabPane = (): ReactElement => (
         <ResourceTab.Pane controlledSegmentation>
             <GeneralApplicationSettings
-                accessUrl={application.accessUrl}
-                appId={application.id}
-                description={application.description}
-                discoverability={application.advancedConfigurations?.discoverableByEndUsers}
-                hiddenFields={["imageUrl"]}
-                imageUrl={application.imageUrl}
-                name={application.name}
-                isLoading={isLoading}
-                onDelete={onDelete}
-                onUpdate={handleApplicationUpdate}
-                featureConfig={featureConfig}
-                template={template}
-                readOnly={readOnly || applicationConfig.editApplication.getTabPanelReadOnlyStatus(
-                    "APPLICATION_EDIT_GENERAL_SETTINGS", application.name)}
-                data-testid={`${testId}-general-settings`}
-                isManagementApp={application.isManagementApp}
+                accessUrl={ application.accessUrl }
+                appId={ application.id }
+                description={ application.description }
+                discoverability={ application.advancedConfigurations?.discoverableByEndUsers }
+                hiddenFields={ [ "imageUrl" ] }
+                imageUrl={ application.imageUrl }
+                name={ application.name }
+                isLoading={ isLoading }
+                onDelete={ onDelete }
+                onUpdate={ handleApplicationUpdate }
+                featureConfig={ featureConfig }
+                template={ template }
+                readOnly={ readOnly || applicationConfig.editApplication.getTabPanelReadOnlyStatus(
+                                "APPLICATION_EDIT_GENERAL_SETTINGS", application.name) }
+                data-testid={ `${ testId }-general-settings` }
+                isManagementApp={ application.isManagementApp }
             />
         </ResourceTab.Pane>
     );
@@ -601,28 +601,28 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     const ApplicationSettingsTabPane = (): ReactElement => (
         <ResourceTab.Pane controlledSegmentation>
             <AccessConfiguration
-                application={application}
-                allowedOriginList={allowedOrigins}
-                certificate={application.advancedConfigurations?.certificate}
-                onAllowedOriginsUpdate={() => setIsAllowedOriginsUpdated(!isAllowedOriginsUpdated)}
-                onApplicationSecretRegenerate={handleApplicationSecretRegenerate}
-                appId={application.id}
-                appName={application.name}
-                applicationTemplateId={application.templateId}
-                extendedAccessConfig={tabPaneExtensions !== undefined}
-                isLoading={isLoading}
-                setIsLoading={setIsLoading}
-                onUpdate={handleApplicationUpdate}
-                onProtocolUpdate={handleProtocolUpdate}
-                isInboundProtocolConfigRequestLoading={isInboundProtocolConfigRequestLoading}
-                inboundProtocolsLoading={isInboundProtocolConfigRequestLoading}
-                inboundProtocolConfig={inboundProtocolConfig}
-                inboundProtocols={inboundProtocolList}
-                featureConfig={featureConfig}
-                template={template}
-                readOnly={readOnly || applicationConfig.editApplication.getTabPanelReadOnlyStatus(
-                    "APPLICATION_EDIT_ACCESS_CONFIG", application.name)}
-                data-testid={`${testId}-access-settings`}
+                application={ application }
+                allowedOriginList={ allowedOrigins }
+                certificate={ application.advancedConfigurations?.certificate }
+                onAllowedOriginsUpdate={ () => setIsAllowedOriginsUpdated(!isAllowedOriginsUpdated) }
+                onApplicationSecretRegenerate={ handleApplicationSecretRegenerate }
+                appId={ application.id }
+                appName={ application.name }
+                applicationTemplateId={ application.templateId }
+                extendedAccessConfig={ tabPaneExtensions !== undefined }
+                isLoading={ isLoading }
+                setIsLoading={ setIsLoading }
+                onUpdate={ handleApplicationUpdate }
+                onProtocolUpdate = { handleProtocolUpdate }
+                isInboundProtocolConfigRequestLoading={ isInboundProtocolConfigRequestLoading }
+                inboundProtocolsLoading={ isInboundProtocolConfigRequestLoading }
+                inboundProtocolConfig={ inboundProtocolConfig }
+                inboundProtocols={ inboundProtocolList }
+                featureConfig={ featureConfig }
+                template={ template }
+                readOnly={ readOnly || applicationConfig.editApplication.getTabPanelReadOnlyStatus(
+                                "APPLICATION_EDIT_ACCESS_CONFIG", application.name) }
+                data-testid={ `${ testId }-access-settings` }
             />
         </ResourceTab.Pane>
     );
@@ -630,22 +630,22 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     const AttributeSettingTabPane = (): ReactElement => (
         <ResourceTab.Pane controlledSegmentation>
             <AttributeSettings
-                appId={application.id}
-                technology={application.inboundProtocols}
-                claimConfigurations={application.claimConfiguration}
-                featureConfig={featureConfig}
+                appId={ application.id }
+                technology={ application.inboundProtocols }
+                claimConfigurations={ application.claimConfiguration }
+                featureConfig={ featureConfig }
                 onlyOIDCConfigured={
                     (application?.templateId === CustomApplicationTemplate.id
                         || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC)
-                        && inboundProtocolList.length === 0
+                    && inboundProtocolList.length === 0
                         ? true
                         : inboundProtocolList.length === 1
-                        && (inboundProtocolList[0] === SupportedAuthProtocolTypes.OIDC)
+                        && (inboundProtocolList[ 0 ] === SupportedAuthProtocolTypes.OIDC)
                 }
-                onUpdate={handleApplicationUpdate}
-                applicationTemplateId={application?.templateId}
-                readOnly={readOnly}
-                data-testid={`${testId}-attribute-settings`}
+                onUpdate={ handleApplicationUpdate }
+                applicationTemplateId={ application?.templateId }
+                readOnly={ readOnly }
+                data-testid={ `${ testId }-attribute-settings` }
             />
         </ResourceTab.Pane>
     );
@@ -654,15 +654,15 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     const SignOnMethodsTabPane = (): ReactElement => (
         <ResourceTab.Pane controlledSegmentation>
             <SignOnMethods
-                application={application}
-                appId={application.id}
-                authenticationSequence={application.authenticationSequence}
+                application={ application }
+                appId={ application.id }
+                authenticationSequence={ application.authenticationSequence }
                 clientId={inboundProtocolConfig?.oidc?.clientId}
-                isLoading={isLoading}
-                onUpdate={handleApplicationUpdate}
-                featureConfig={featureConfig}
-                readOnly={readOnly}
-                data-testid={`${testId}-sign-on-methods`}
+                isLoading={ isLoading }
+                onUpdate={ handleApplicationUpdate }
+                featureConfig={ featureConfig }
+                readOnly={ readOnly }
+                data-testid={ `${ testId }-sign-on-methods` }
             />
         </ResourceTab.Pane>
     );
@@ -670,13 +670,13 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     const AdvancedSettingsTabPane = (): ReactElement => (
         <ResourceTab.Pane controlledSegmentation>
             <AdvancedSettings
-                appId={application.id}
-                advancedConfigurations={application.advancedConfigurations}
-                onUpdate={handleApplicationUpdate}
-                featureConfig={featureConfig}
-                readOnly={readOnly}
-                template={template}
-                data-testid={`${testId}-advanced-settings`}
+                appId={ application.id }
+                advancedConfigurations={ application.advancedConfigurations }
+                onUpdate={ handleApplicationUpdate }
+                featureConfig={ featureConfig }
+                readOnly={ readOnly }
+                template={ template }
+                data-testid={ `${ testId }-advanced-settings` }
             />
         </ResourceTab.Pane>
     );
@@ -686,12 +686,12 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             ? (
                 < ResourceTab.Pane controlledSegmentation>
                     <ProvisioningSettings
-                        application={application}
-                        provisioningConfigurations={application.provisioningConfigurations}
-                        onUpdate={handleApplicationUpdate}
-                        featureConfig={featureConfig}
-                        readOnly={readOnly}
-                        data-testid={`${testId}-provisioning-settings`}
+                        application={ application }
+                        provisioningConfigurations={ application.provisioningConfigurations }
+                        onUpdate={ handleApplicationUpdate }
+                        featureConfig={ featureConfig }
+                        readOnly={ readOnly }
+                        data-testid={ `${ testId }-provisioning-settings` }
                     />
                 </ResourceTab.Pane>
             )
@@ -701,11 +701,11 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     const InfoTabPane = (): ReactElement => (
         <ResourceTab.Pane controlledSegmentation>
             <Info
-                inboundProtocols={application?.inboundProtocols}
-                isOIDCConfigLoading={isOIDCConfigsLoading}
-                isSAMLConfigLoading={isSAMLConfigsLoading}
-                templateId={application?.templateId}
-                data-testid={`${testId}-server-endpoints`}
+                inboundProtocols={ application?.inboundProtocols }
+                isOIDCConfigLoading={ isOIDCConfigsLoading }
+                isSAMLConfigLoading={ isSAMLConfigsLoading }
+                templateId={ application?.templateId }
+                data-testid={ `${ testId }-server-endpoints` }
             />
         </ResourceTab.Pane>
     );
@@ -744,14 +744,14 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                     )) {
                     panes.push({
                         componentId: "general",
-                        menuItem:
-                            <Menu.Item data-tourid="general">
-                                {t("console:develop.features.applications.edit.sections.general.tabName")}
-                            </Menu.Item>,
-                        render: () =>
+                        menuItem: 
+                                 <Menu.Item data-tourid="general">
+                                     { t("console:develop.features.applications.edit.sections.general.tabName") }
+                                 </Menu.Item>,
+                        render: () => 
                             applicationConfig.editApplication.
                                 getOveriddenTab(
-                                    inboundProtocolConfig?.oidc?.clientId,
+                                    inboundProtocolConfig?.oidc?.clientId, 
                                     ApplicationTabTypes.GENERAL,
                                     GeneralApplicationSettingsTabPane(),
                                     application.name,
@@ -763,18 +763,18 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             }
             if (isFeatureEnabled(featureConfig?.applications,
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ACCESS_CONFIG"))) {
-
+ 
                 applicationConfig.editApplication.
                     isTabEnabledForApp(
                         inboundProtocolConfig?.oidc?.clientId,
                         ApplicationTabTypes.PROTOCOL,
                         tenantDomain
                     ) &&
-                    panes.push({
-                        componentId: "protocol",
-                        menuItem: t("console:develop.features.applications.edit.sections.access.tabName"),
-                        render: ApplicationSettingsTabPane
-                    });
+                  panes.push({
+                      componentId: "protocol",
+                      menuItem: t("console:develop.features.applications.edit.sections.access.tabName"),
+                      render: ApplicationSettingsTabPane
+                  });
             }
             if (isFeatureEnabled(featureConfig?.applications,
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ATTRIBUTE_MAPPING"))) {
@@ -782,23 +782,23 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 applicationConfig.editApplication.
                     isTabEnabledForApp(
                         inboundProtocolConfig?.oidc?.clientId, ApplicationTabTypes.USER_ATTRIBUTES, tenantDomain) &&
-                    panes.push({
-                        componentId: "user-attributes",
-                        menuItem:
-                            <Menu.Item data-tourid="attributes">
-                                {t("console:develop.features.applications.edit.sections.attributes.tabName")}
-                            </Menu.Item>,
-                        render: () =>
-                            applicationConfig.editApplication.
-                                getOveriddenTab(
-                                    inboundProtocolConfig?.oidc?.clientId,
-                                    ApplicationTabTypes.USER_ATTRIBUTES,
-                                    AttributeSettingTabPane(),
-                                    application.name,
-                                    application.id,
-                                    tenantDomain
-                                )
-                    });
+                  panes.push({
+                      componentId: "user-attributes",
+                      menuItem: 
+                         <Menu.Item data-tourid="attributes">
+                             { t("console:develop.features.applications.edit.sections.attributes.tabName") }
+                         </Menu.Item>,
+                      render: () => 
+                          applicationConfig.editApplication.
+                              getOveriddenTab(
+                                  inboundProtocolConfig?.oidc?.clientId, 
+                                  ApplicationTabTypes.USER_ATTRIBUTES,
+                                  AttributeSettingTabPane(),
+                                  application.name,
+                                  application.id,
+                                  tenantDomain
+                              ) 
+                  });
             }
             if (isFeatureEnabled(featureConfig?.applications,
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_SIGN_ON_METHOD_CONFIG"))) {
@@ -806,61 +806,61 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 applicationConfig.editApplication.
                     isTabEnabledForApp(
                         inboundProtocolConfig?.oidc?.clientId, ApplicationTabTypes.SIGN_IN_METHOD, tenantDomain) &&
-                    panes.push({
-                        componentId: "sign-in-method",
-                        menuItem:
-                            <Menu.Item data-tourid="sign-in-methods">
-                                {t("console:develop.features.applications.edit.sections.signOnMethod.tabName")}
-                            </Menu.Item>,
-                        render: SignOnMethodsTabPane
-                    });
+                  panes.push({
+                      componentId: "sign-in-method",
+                      menuItem:  
+                         <Menu.Item data-tourid="sign-in-methods">
+                             { t("console:develop.features.applications.edit.sections.signOnMethod.tabName") }
+                         </Menu.Item> ,
+                      render: SignOnMethodsTabPane
+                  });
             }
             if (applicationConfig.editApplication.showProvisioningSettings
-                && isFeatureEnabled(featureConfig?.applications,
-                    ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_PROVISIONING_SETTINGS"))) {
+                 && isFeatureEnabled(featureConfig?.applications,
+                     ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_PROVISIONING_SETTINGS"))) {
 
                 applicationConfig.editApplication.
                     isTabEnabledForApp(
                         inboundProtocolConfig?.oidc?.clientId, ApplicationTabTypes.PROVISIONING, tenantDomain) &&
-                    panes.push({
-                        componentId: "provisioning",
-                        menuItem: t("console:develop.features.applications.edit.sections.provisioning.tabName"),
-                        render: ProvisioningSettingsTabPane
-                    });
+                      panes.push({
+                          componentId: "provisioning",
+                          menuItem: t("console:develop.features.applications.edit.sections.provisioning.tabName"),
+                          render: ProvisioningSettingsTabPane
+                      });
             }
             if (isFeatureEnabled(featureConfig?.applications,
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ADVANCED_SETTINGS"))) {
 
                 applicationConfig.editApplication.
                     isTabEnabledForApp(
-                        inboundProtocolConfig?.oidc?.clientId, ApplicationTabTypes.ADVANCED, tenantDomain) &&
-                    panes.push({
-                        componentId: "advanced",
-                        menuItem: (
-                            <Menu.Item data-tourid="advanced">
-                                {t("console:develop.features.applications.edit.sections.advanced.tabName")}
-                            </Menu.Item>),
-                        render: AdvancedSettingsTabPane
-                    });
+                        inboundProtocolConfig?.oidc?.clientId , ApplicationTabTypes.ADVANCED, tenantDomain) &&
+                  panes.push({
+                      componentId: "advanced",
+                      menuItem: (
+                          <Menu.Item data-tourid="advanced">
+                              { t("console:develop.features.applications.edit.sections.advanced.tabName") }
+                          </Menu.Item> ),
+                      render: AdvancedSettingsTabPane
+                  });
             }
             if (isFeatureEnabled(featureConfig?.applications,
-                ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_INFO"))
-                && application?.templateId != ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS) {
+                ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_INFO")) 
+                 && application?.templateId != ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS) {
 
                 applicationConfig.editApplication.
                     isTabEnabledForApp(
                         inboundProtocolConfig?.oidc?.clientId,
                         ApplicationTabTypes.INFO,
                         tenantDomain
-                    ) &&
-                    panes.push({
-                        componentId: "info",
-                        menuItem: {
-                            content: t("console:develop.features.applications.edit.sections.info.tabName"),
-                            icon: "info circle grey"
-                        },
-                        render: InfoTabPane
-                    });
+                    ) && 
+                 panes.push({
+                     componentId: "info",
+                     menuItem: {
+                         content: t("console:develop.features.applications.edit.sections.info.tabName"),
+                         icon: "info circle grey"
+                     },
+                     render: InfoTabPane
+                 });
             }
 
             return panes;
@@ -936,20 +936,20 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
         return (
             <ConfirmationModal
-                data-testid={`${testId}-client-secret-hash-disclaimer-modal`}
+                data-testid={ `${ testId }-client-secret-hash-disclaimer-modal` }
                 type="warning"
-                open={true}
-                primaryAction={t("common:confirm")}
-                onPrimaryActionClick={(): void => {
+                open={ true }
+                primaryAction={ t("common:confirm") }
+                onPrimaryActionClick={ (): void => {
                     setShowClientSecretHashDisclaimerModal(false);
                     setClientSecretHashDisclaimerModalInputs({
                         clientId: "",
                         clientSecret: ""
                     });
-                }}
+                } }
             >
                 <ConfirmationModal.Header
-                    data-testid={`${testId}-client-secret-hash-disclaimer-modal-header`}
+                    data-testid={ `${ testId }-client-secret-hash-disclaimer-modal-header` }
                 >
                     {
                         t("console:develop.features.applications.confirmations.clientSecretHashDisclaimer" +
@@ -959,7 +959,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 <ConfirmationModal.Message
                     attached
                     warning
-                    data-testid={`${testId}-client-secret-hash-disclaimer-modal-message`}
+                    data-testid={ `${ testId }-client-secret-hash-disclaimer-modal-message` }
                 >
                     {
                         t("console:develop.features.applications.confirmations.clientSecretHashDisclaimer" +
@@ -967,7 +967,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                     }
                 </ConfirmationModal.Message>
                 <ConfirmationModal.Content
-                    data-testid={`${testId}-client-secret-hash-disclaimer-modal-content`}
+                    data-testid={ `${ testId }-client-secret-hash-disclaimer-modal-content` }
                 >
                     <Form>
                         <Grid.Row>
@@ -980,7 +980,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                                         }
                                     </label>
                                     <CopyInputField
-                                        value={clientId}
+                                        value={ clientId }
                                         hideSecretLabel={
                                             t("console:develop.features.applications.confirmations." +
                                                 "clientSecretHashDisclaimer.forms.clientIdSecretForm.clientId.hide")
@@ -989,7 +989,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                                             t("console:develop.features.applications.confirmations." +
                                                 "clientSecretHashDisclaimer.forms.clientIdSecretForm.clientId.show")
                                         }
-                                        data-testid={`${testId}-client-secret-readonly-input`}
+                                        data-testid={ `${ testId }-client-secret-readonly-input` }
                                     />
                                 </Form.Field>
                                 <Form.Field>
@@ -1002,7 +1002,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                                     </label>
                                     <CopyInputField
                                         secret
-                                        value={clientSecret}
+                                        value={ clientSecret }
                                         hideSecretLabel={
                                             t("console:develop.features.applications.confirmations." +
                                                 "clientSecretHashDisclaimer.forms.clientIdSecretForm.clientSecret.hide")
@@ -1011,7 +1011,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                                             t("console:develop.features.applications.confirmations." +
                                                 "clientSecretHashDisclaimer.forms.clientIdSecretForm.clientSecret.show")
                                         }
-                                        data-testid={`${testId}-client-secret-readonly-input`}
+                                        data-testid={ `${ testId }-client-secret-readonly-input` }
                                     />
                                 </Form.Field>
                             </Grid.Column>
@@ -1024,23 +1024,23 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
     return (
         application && !isInboundProtocolsRequestLoading && inboundProtocolList != undefined
-            && (tabPaneExtensions || !applicationConfig.editApplication.extendTabs
-                || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
-                || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS
-                || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_SAML)
+        && (tabPaneExtensions || !applicationConfig.editApplication.extendTabs
+            || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
+            || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS
+            || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_SAML )
             ? (
                 <>
                     <ResourceTab
-                        activeIndex={activeTabIndex}
-                        data-testid={`${testId}-resource-tabs`}
-                        defaultActiveIndex={defaultActiveIndex}
-                        onTabChange={handleTabChange}
-                        panes={resolveTabPanes()}
-                        onInitialize={({ panesLength }) => {
+                        activeIndex= { activeTabIndex }
+                        data-testid= { `${testId}-resource-tabs` }
+                        defaultActiveIndex={ defaultActiveIndex }
+                        onTabChange={ handleTabChange }
+                        panes= { resolveTabPanes() }
+                        onInitialize={ ({ panesLength }) => {
                             setTotalTabs(panesLength);
-                        }}
+                        } }
                     />
-                    {showClientSecretHashDisclaimerModal && renderClientSecretHashDisclaimerModal()}
+                    { showClientSecretHashDisclaimerModal && renderClientSecretHashDisclaimerModal() }
                 </>
             )
             : <ContentLoader />

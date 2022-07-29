@@ -77,6 +77,7 @@ export const ApplicationDangerZoneComponent: FunctionComponent<ApplicationDanger
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ isDeletionInProgress, setIsDeletionInProgress ] = useState<boolean>(false);
  
+    const eventPublisher: EventPublisher = EventPublisher.getInstance();
     /**
      * Deletes an application.
      */
