@@ -91,7 +91,7 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
     const [ sessionTimedOut, setSessionTimedOut ] = useState<boolean>(false);
 
     /**
-     * set the value of Session Timed Out.
+     * Set the value of Session Timed Out.
      */
     const handleSessionTimeOut = (timedOut: boolean): void => {
         setSessionTimedOut(timedOut);
