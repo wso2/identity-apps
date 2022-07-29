@@ -140,27 +140,27 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                 // This is to make sure the endpoints are generated with the organization path.
                 await dispatch(setServiceResourceEndpoints(Config.getServiceResourceEndpoints()));
 
+                await requestCustomGrant({
+                    attachToken: false,
+                    data: {
+                        client_id: "{{clientID}}",
+                        grant_type: "organization_switch",
+                        scope: window["AppUtils"].getConfig().idpConfigs?.scope.join(" ")
+                            ?? TokenConstants.SYSTEM_SCOPE,
+                        switching_organization: orgId,
+                        token: "{{token}}"
+                    },
+                    id: "orgSwitch",
+                    returnsSession: true,
+                    signInRequired: true
+                }, async (grantResponse: BasicUserInfo) => {
+                    response = { ...grantResponse };
+                });
+
                 dispatch(setGetOrganizationLoading(true));
                 await getOrganization(orgId)
                     .then(async (orgResponse: OrganizationResponseInterface) => {
                         dispatch(setOrganization(orgResponse));
-
-                        await requestCustomGrant({
-                            attachToken: false,
-                            data: {
-                                client_id: "{{clientID}}",
-                                grant_type: "organization_switch",
-                                scope: window["AppUtils"].getConfig().idpConfigs?.scope.join(" ")
-                                    ?? TokenConstants.SYSTEM_SCOPE,
-                                switching_organization: orgId,
-                                token: "{{token}}"
-                            },
-                            id: "orgSwitch",
-                            returnsSession: true,
-                            signInRequired: true
-                        }, async (grantResponse: BasicUserInfo) => {
-                            response = { ...grantResponse };
-                        });
                     }).catch((error) => {
                         if (error?.description) {
                             dispatch(
