@@ -55,6 +55,7 @@ import static org.wso2.identity.apps.common.util.AppPortalConstants.GRANT_TYPE_A
 import static org.wso2.identity.apps.common.util.AppPortalConstants.GRANT_TYPE_ORGANIZATION_SWITCH;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.INBOUND_AUTH2_TYPE;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.INBOUND_CONFIG_TYPE;
+import static org.wso2.identity.apps.common.util.AppPortalConstants.USERNAME_CLAIM_URI;
 
 /**
  * App portal utils.
