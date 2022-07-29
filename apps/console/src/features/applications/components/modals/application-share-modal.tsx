@@ -22,7 +22,7 @@ import { LinkButton, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, useCallback, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { DropdownItemProps, Form, Modal, ModalProps } from "semantic-ui-react";
-import { AppState } from "../../../core";
+import { AppState, EventPublisher } from "../../../core";
 import { shareApplication } from "../../../organizations/api";
 import { OrganizationInterface } from "../../../organizations/models";
 
@@ -31,6 +31,10 @@ export interface ApplicationShareModalPropsInterface extends ModalProps, Identif
      * ID of the application to be shared
      */
     applicationId: string;
+    /**
+     * ClientId of the application
+     */
+    clientId?: string;
     /**
      * Sub Organization list of the current organization.
      */
@@ -44,6 +48,7 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
     const {
         applicationId,
         subOrganizationList,
+        clientId,
         onClose,
         ["data-componentid"]: componentId,
         ...rest
@@ -53,6 +58,7 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
     const currentOrganization = useSelector((state: AppState) => state.organization.organization);
 
     const [ selectedOrganization, setSelectedOrganization ] = useState<Array<string>>([]);
+    const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     const handleShareApplication = useCallback(() => {
         if (!selectedOrganization) {
@@ -67,6 +73,9 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
                     level: AlertLevels.SUCCESS,
                     message: "Application shared!"
                 }));
+                eventPublisher.publish("application-share", {
+                    "client-id": clientId
+                });
             }).catch((error) => {
                 onClose(null, null);
                 if (error.response.data.message) {
@@ -82,6 +91,9 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
                         message: "Application sharing failed!"
                     }));
                 }
+                eventPublisher.publish("application-share-error", {
+                    "client-id": clientId
+                });
             });
     }, [ selectedOrganization ]);
 

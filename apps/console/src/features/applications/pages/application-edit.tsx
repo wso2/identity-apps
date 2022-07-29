@@ -556,6 +556,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                 <ApplicationShareModal
                     open={ showAppShareModal }
                     applicationId={ application.id }
+                    clientId={ inboundProtocolConfigs?.oidc?.clientId }
                     subOrganizationList={ subOrganizationList }
                     onClose={ () => setShowAppShareModal(false) }
                 />
