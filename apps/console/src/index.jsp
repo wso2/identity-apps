@@ -96,7 +96,7 @@
                     clientID: "<%= htmlWebpackPlugin.options.clientID %>",
                     baseUrl: getApiPath(),
                     responseMode: "form_post",
-                    scope: ["openid SYSTEM"],
+                    scope: ["openid SYSTEM profile"],
                     storage: "webWorker",
                     enablePKCE: true,
                     endpoints: {

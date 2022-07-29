@@ -55,6 +55,7 @@ import static org.wso2.identity.apps.common.util.AppPortalConstants.GRANT_TYPE_A
 import static org.wso2.identity.apps.common.util.AppPortalConstants.GRANT_TYPE_ORGANIZATION_SWITCH;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.INBOUND_AUTH2_TYPE;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.INBOUND_CONFIG_TYPE;
+import static org.wso2.identity.apps.common.util.AppPortalConstants.USERNAME_CLAIM_URI;
 
 /**
  * App portal utils.
@@ -216,7 +217,7 @@ public class AppPortalUtils {
         displayNameClaimMapping.setRemoteClaim(displayNameClaim);
 
         Claim usernameClaim = new Claim();
-        usernameClaim.setClaimUri(EMAIL_CLAIM_URI);
+        usernameClaim.setClaimUri(USERNAME_CLAIM_URI);
         ClaimMapping usernameClaimMapping = new ClaimMapping();
         usernameClaimMapping.setRequested(true);
         usernameClaimMapping.setLocalClaim(usernameClaim);
