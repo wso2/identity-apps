@@ -69,7 +69,7 @@ interface SignInMethodCustomizationPropsInterface extends SBACInterface<FeatureC
     /**
      * ClientId of the application.
      */
-    clientId: string;
+    clientId?: string;
     /**
      * Is the application info request loading.
      */
@@ -117,7 +117,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
         onUpdate,
         readOnly,
         refreshAuthenticators,
-        ["data-testid"]: testId
+        [ "data-testid" ]: testId
     } = props;
 
     const { t } = useTranslation();
@@ -126,17 +126,17 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
-    const [sequence, setSequence] = useState<AuthenticationSequenceInterface>(authenticationSequence);
-    const [updateTrigger, setUpdateTrigger] = useState<boolean>(false);
-    const [adaptiveScript, setAdaptiveScript] = useState<string | string[]>(undefined);
-    const [requestPathAuthenticators, setRequestPathAuthenticators] = useState<any>(undefined);
-    const [selectedRequestPathAuthenticators, setSelectedRequestPathAuthenticators] = useState<any>(undefined);
-    const [steps, setSteps] = useState<number>(1);
-    const [isDefaultScript, setIsDefaultScript] = useState<boolean>(true);
-    const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(false);
-    const [updatedSteps, setUpdatedSteps] = useState<AuthenticationStepInterface[]>();
+    const [ sequence, setSequence ] = useState<AuthenticationSequenceInterface>(authenticationSequence);
+    const [ updateTrigger, setUpdateTrigger ] = useState<boolean>(false);
+    const [ adaptiveScript, setAdaptiveScript ] = useState<string | string[]>(undefined);
+    const [ requestPathAuthenticators, setRequestPathAuthenticators ] = useState<any>(undefined);
+    const [ selectedRequestPathAuthenticators, setSelectedRequestPathAuthenticators ] = useState<any>(undefined);
+    const [ steps, setSteps ] = useState<number>(1);
+    const [ isDefaultScript, setIsDefaultScript ] = useState<boolean>(true);
+    const [ isButtonDisabled, setIsButtonDisabled ] = useState<boolean>(false);
+    const [ updatedSteps, setUpdatedSteps ] = useState<AuthenticationStepInterface[]>();
 
-    const [validationResult, setValidationResult] =
+    const [ validationResult, setValidationResult ] =
         useState<ConnectionsJITUPConflictWithMFAReturnValue | undefined>(undefined);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
@@ -153,7 +153,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
 
         setValidationResult(result);
 
-    }, [steps, authenticators, updatedSteps]);
+    }, [ steps, authenticators, updatedSteps ]);
 
     /**
      * Toggles the update trigger.
@@ -164,7 +164,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
         }
 
         setUpdateTrigger(false);
-    }, [updateTrigger]);
+    }, [ updateTrigger ]);
 
     /**
      * Fetch data on component load
@@ -183,7 +183,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
         }
 
         setSteps(authenticationSequence.steps.length);
-    }, [authenticationSequence]);
+    }, [ authenticationSequence ]);
 
     /**
      * Updates the number of authentication steps.
@@ -219,7 +219,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
         if (template.defaultAuthenticators) {
             const steps: AuthenticationStepInterface[] = [];
 
-            for (const [key, value] of Object.entries(template.defaultAuthenticators)) {
+            for (const [ key, value ] of Object.entries(template.defaultAuthenticators)) {
                 steps.push({
                     id: parseInt(key, 10),
                     options: value.local.map((authenticator) => {
@@ -344,7 +344,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                     dispatch(addAlert({
                         description: t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
                             "requestPathAuthenticators.notifications.getRequestPathAuthenticators.error.description",
-                            { description: error.response.data.description }),
+                        { description: error.response.data.description }),
                         level: AlertLevels.ERROR,
                         message: t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
                             "requestPathAuthenticators.notifications.getRequestPathAuthenticators.error.message")
@@ -382,7 +382,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
         }
 
         eventPublisher.compute(() => {
-            const eventPublisherProperties: {
+            const eventPublisherProperties : {
                 "script-based": boolean,
                 "step-based": Array<Record<number, string>>
             } = {
@@ -391,10 +391,10 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
             };
 
             updatedSteps.forEach((updatedStep) => {
-                const step: Record<number, string> = {};
+                const step : Record<number, string> = {};
 
                 if (Array.isArray(updatedStep?.options) && updatedStep.options.length > 0) {
-                    updatedStep.options.forEach((element, id) => {
+                    updatedStep.options.forEach((element,id) => {
                         step[id] = kebabCase(element?.authenticator);
                     });
                     eventPublisherProperties["step-based"].push(step);
@@ -412,20 +412,20 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
 
     const showRequestPathAuthenticators: ReactElement = (
         <>
-            <Heading as="h4">{t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
-                "requestPathAuthenticators.title")}</Heading>
-            <Hint>{t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
-                "requestPathAuthenticators.subTitle")}</Hint>
+            <Heading as="h4">{ t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                "requestPathAuthenticators.title") }</Heading>
+            <Hint>{ t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                "requestPathAuthenticators.subTitle") }</Hint>
             <Forms>
                 <Grid>
-                    <Grid.Row columns={1}>
-                        <Grid.Column mobile={16} tablet={16} computer={8}>
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                             <Field
                                 name="requestPathAuthenticators"
                                 label=""
                                 type="checkbox"
-                                required={false}
-                                value={authenticationSequence?.requestPathAuthenticators}
+                                required={ false }
+                                value={ authenticationSequence?.requestPathAuthenticators }
                                 requiredErrorMessage=""
                                 children={
                                     requestPathAuthenticators?.map(authenticator => {
@@ -440,8 +440,8 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                                         setSelectedRequestPathAuthenticators(values.get("requestPathAuthenticators"));
                                     }
                                 }
-                                readOnly={readOnly}
-                                data-testid={`${testId}-request-path-authenticators`}
+                                readOnly={ readOnly }
+                                data-testid={ `${ testId }-request-path-authenticators` }
                             />
                         </Grid.Column>
                     </Grid.Row>
@@ -470,14 +470,14 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
 
         return (
             <>
-                <Divider hidden />
+                <Divider hidden/>
                 <PrimaryButton
-                    onClick={handleUpdateClick}
-                    data-testid={`${testId}-update-button`}
-                    disabled={isButtonDisabled || isLoading}
-                    loading={isLoading}
+                    onClick={ handleUpdateClick }
+                    data-testid={ `${ testId }-update-button` }
+                    disabled={ isButtonDisabled || isLoading }
+                    loading={ isLoading }
                 >
-                    {t("common:update")}
+                    { t("common:update") }
                 </PrimaryButton>
             </>
         );
@@ -498,7 +498,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                 // Semantic hides warning messages inside <form> by default.
                 // Overriding the behaviour here to make sure it renders properly.
                 header="Warning"
-                content={(
+                content={ (
                     <>
                         {
                             moreThan1IdP
@@ -507,18 +507,18 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                                         Currently, Just-in-Time (JIT) user provisioning
                                         is <strong>disabled</strong> for the following connections:
                                         <ul className="mb-3">
-                                            {idpList?.map(({ name }, index) => (
-                                                <li key={index}>
-                                                    <strong>{name}</strong>
+                                            { idpList?.map(({ name }, index) => (
+                                                <li key={ index }>
+                                                    <strong>{ name }</strong>
                                                 </li>
-                                            ))}
+                                            )) }
                                         </ul>
                                     </>
                                 )
                                 : (
                                     <>
                                         Currently, Just-in-Time(JIT) user provisioning is disabled
-                                        for the <strong>{idpList[FIRST_ENTRY].name}</strong> connection.
+                                        for the <strong>{ idpList[FIRST_ENTRY].name }</strong> connection.
                                     </>
                                 )
                         }
@@ -539,11 +539,11 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                                     </>
                                 )
                         }
-                        <DocumentationLink link={getLink("develop.connections.edit.advancedSettings.jit")}>
+                        <DocumentationLink link={ getLink("develop.connections.edit.advancedSettings.jit") }>
                             Learn More
                         </DocumentationLink>
                     </>
-                )}
+                ) }
             />
         );
     };
@@ -565,13 +565,10 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                         <div className="display-inline-block floated right">
                             <LinkButton
                                 className="pr-0"
-                                onClick={() => {
-                                    eventPublisher.publish("application-revert-sign-in-method-default", {
-                                        "client-id": clientId
-                                    });
+                                onClick={ () => {
                                     handleSequenceUpdate(null, true);
                                     onReset();
-                                }}
+                                } }
                             >
                                 <Icon
                                     name="refresh"
@@ -594,7 +591,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
             </div>
             <Divider hidden />
             {
-                authenticationSequence.steps[0].options.find(authenticator =>
+                authenticationSequence.steps[ 0 ].options.find(authenticator =>
                     authenticator.authenticator === IdentityProviderManagementConstants.FIDO_AUTHENTICATOR)
                 && (
                     <Message
@@ -613,10 +610,10 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                                     registered via My Account.
                                 </Trans>
                                 <DocumentationLink
-                                    link={getLink("develop.applications.editApplication.signInMethod.fido")}
-                                    showEmptyLink={false}
+                                    link={ getLink("develop.applications.editApplication.signInMethod.fido") }
+                                    showEmptyLink={ false }
                                 >
-                                    {t("common:learnMore")}
+                                    { t("common:learnMore") }
                                 </DocumentationLink>
                             </>
                         }
@@ -624,9 +621,9 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                 )
             }
             {
-                authenticationSequence.steps[0].options.find(authenticator =>
+                authenticationSequence.steps[ 0 ].options.find(authenticator =>
                     authenticator.authenticator === IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR
-                    && applicationConfig.signInMethod.identifierFirstWarning)
+                && applicationConfig.signInMethod.identifierFirstWarning)
                 && (
                     <Message warning>
                         <Trans
@@ -642,40 +639,40 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                 )
             }
             <StepBasedFlow
-                refreshAuthenticators={refreshAuthenticators}
-                authenticators={authenticators}
-                authenticationSequence={sequence}
-                isLoading={isLoading}
-                onUpdate={handleSequenceUpdate}
-                triggerUpdate={updateTrigger}
-                readOnly={readOnly}
-                data-testid={`${testId}-step-based-flow`}
-                updateSteps={updateSteps}
-                onIDPCreateWizardTrigger={onIDPCreateWizardTrigger}
-                onAuthenticationSequenceChange={(isDisabled, updatedSteps) => {
+                refreshAuthenticators={ refreshAuthenticators }
+                authenticators={ authenticators }
+                authenticationSequence={ sequence }
+                isLoading={ isLoading }
+                onUpdate={ handleSequenceUpdate }
+                triggerUpdate={ updateTrigger }
+                readOnly={ readOnly }
+                data-testid={ `${ testId }-step-based-flow` }
+                updateSteps={ updateSteps }
+                onIDPCreateWizardTrigger={ onIDPCreateWizardTrigger }
+                onAuthenticationSequenceChange={ (isDisabled, updatedSteps) => {
                     handleButtonDisabledStateChange(isDisabled);
                     setUpdatedSteps(updatedSteps);
-                }}
+                } }
             />
-            <Divider className="x1" hidden />
-            {validationResult?.conflicting && validationResult?.idpList.length
+            <Divider className="x1" hidden/>
+            { validationResult?.conflicting && validationResult?.idpList.length
                 ? JITConflictMessage()
                 : null
             }
-            <Divider className="x2" />
-            {
+            <Divider className="x2"/>
+            { 
                 isAdaptiveAuthenticationAvailable
                 && (
-                    <ScriptBasedFlow
-                        authenticationSequence={sequence}
-                        isLoading={isLoading}
-                        onTemplateSelect={handleLoadingDataFromTemplate}
-                        onScriptChange={handleAdaptiveScriptChange}
-                        readOnly={readOnly}
-                        data-testid={`${testId}-script-based-flow`}
-                        authenticationSteps={steps}
-                        isDefaultScript={isDefaultScript}
-                        onAdaptiveScriptReset={() => setIsDefaultScript(true)}
+                    <ScriptBasedFlow 
+                        authenticationSequence={ sequence }
+                        isLoading={ isLoading }
+                        onTemplateSelect={ handleLoadingDataFromTemplate }
+                        onScriptChange={ handleAdaptiveScriptChange }
+                        readOnly={ readOnly }
+                        data-testid={ `${ testId }-script-based-flow` }
+                        authenticationSteps={ steps }
+                        isDefaultScript={ isDefaultScript }
+                        onAdaptiveScriptReset={ () => setIsDefaultScript(true) }
                     />
                 )
             }
@@ -684,7 +681,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                     ? null
                     : requestPathAuthenticators && showRequestPathAuthenticators
             }
-            {renderUpdateButton()}
+            { renderUpdateButton() }
         </div>
     );
 };
