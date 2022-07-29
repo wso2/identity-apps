@@ -290,9 +290,21 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
      */
     async function fetchAuthenticators() {
         const authenticators: FederatedAuthenticatorWithMetaInterface[] = [];
+
         for (const authenticator of identityProvider.federatedAuthenticators.authenticators) {
-            authenticators.push(await fetchAuthenticator(authenticator.authenticatorId));
+            if(authenticator?.isEnabled){
+                authenticators.push(await fetchAuthenticator(authenticator.authenticatorId));
+            }
         }
+
+        //Push default authenticator if not added.
+        if(!authenticators.length && identityProvider.federatedAuthenticators?.authenticators?.length){
+            authenticators.push(await fetchAuthenticator(
+                identityProvider.federatedAuthenticators?.authenticators[
+                    IdentityProviderManagementConstants.FIRST_AUTHENTICATOR].authenticatorId
+            ));
+        }
+
         return authenticators;
     }
 
@@ -304,7 +316,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
         setAvailableAuthenticators([]);
         fetchAuthenticators()
             .then((res) => {
-                const authenticator = res[ 0 ].data;
+                const authenticator = res[ IdentityProviderManagementConstants.FIRST_AUTHENTICATOR ].data;
                 authenticator.isEnabled = true;
                 // Make default authenticator if not added.
                 if (!identityProvider.federatedAuthenticators.defaultAuthenticatorId &&
