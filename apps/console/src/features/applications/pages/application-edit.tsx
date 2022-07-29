@@ -524,7 +524,9 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                     }
 
                     {
-                        (!application.advancedConfigurations.fragment && !application.isManagementApp) && (
+                        (isOrganizationManagementEnabled
+                            && !application.advancedConfigurations.fragment
+                            && !application.isManagementApp) && (
                             <PrimaryButton onClick={ () => setShowAppShareModal(true) }>
                                 Share Application
                             </PrimaryButton>
