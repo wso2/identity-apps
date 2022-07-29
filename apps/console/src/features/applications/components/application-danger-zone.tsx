@@ -120,6 +120,9 @@ export const ApplicationDangerZoneComponent: FunctionComponent<ApplicationDanger
                     message: t("console:develop.features.applications.notifications.deleteApplication.genericError" +
                          ".message")
                 }));
+                eventPublisher.publish("application-delete-error", {
+                    "client-id": clientId
+                });
             });
     };
  
