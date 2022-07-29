@@ -23,7 +23,7 @@ import { ConfirmationModal, DangerZone, DangerZoneGroup } from "@wso2is/react-co
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { AppConstants, AppState, FeatureConfigInterface, UIConfigInterface, history } from "../../core";
+import { AppConstants, AppState, FeatureConfigInterface, UIConfigInterface, history, EventPublisher } from "../../core";
 import { deleteApplication } from "../api";
    
 /**
@@ -35,6 +35,10 @@ interface ApplicationDangerZonePropsInterface extends
          * Currently editing application id.
          */
         appId?: string;
+        /**
+         * Client Id of the application.
+         */
+        clientId?: string;
         /**
          * Name of the application.
          */
@@ -58,6 +62,7 @@ export const ApplicationDangerZoneComponent: FunctionComponent<ApplicationDanger
     const {
         featureConfig,
         appId,
+        clientId,
         name,
         content,
         [ "data-componentid" ]: testId
@@ -72,6 +77,7 @@ export const ApplicationDangerZoneComponent: FunctionComponent<ApplicationDanger
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ isDeletionInProgress, setIsDeletionInProgress ] = useState<boolean>(false);
  
+    const eventPublisher: EventPublisher = EventPublisher.getInstance();
     /**
      * Deletes an application.
      */
@@ -89,6 +95,10 @@ export const ApplicationDangerZoneComponent: FunctionComponent<ApplicationDanger
  
                 setShowDeleteConfirmationModal(false);
                 onDelete();
+
+                eventPublisher.publish("application-delete", {
+                    "client-id": clientId
+                });
             })
             .catch((error) => {
                 setIsDeletionInProgress(false);

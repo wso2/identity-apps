@@ -659,6 +659,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 application={ application }
                 appId={ application.id }
                 authenticationSequence={ application.authenticationSequence }
+                clientId={inboundProtocolConfig?.oidc?.clientId}
                 isLoading={ isLoading }
                 onUpdate={ handleApplicationUpdate }
                 featureConfig={ featureConfig }
