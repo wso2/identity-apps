@@ -83,6 +83,9 @@ export const onHttpRequestError = (error: any): null => {
         if (error?.code === "SPA-WORKER_CORE-HR-SE01") {
             dispatchEvent(new Event(AppConstantsCore.NETWORK_ERROR_EVENT));
         }
+        if (error?.code === "SPA-AUTH_HELPER-HR-SE01") {
+            dispatchEvent(new Event(AppConstantsCore.NETWORK_ERROR_EVENT));
+        }
     }
 };
 
