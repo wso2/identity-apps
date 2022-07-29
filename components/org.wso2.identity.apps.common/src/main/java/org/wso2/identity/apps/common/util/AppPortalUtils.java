@@ -216,7 +216,7 @@ public class AppPortalUtils {
         displayNameClaimMapping.setRemoteClaim(displayNameClaim);
 
         Claim usernameClaim = new Claim();
-        usernameClaim.setClaimUri(EMAIL_CLAIM_URI);
+        usernameClaim.setClaimUri(USERNAME_CLAIM_URI);
         ClaimMapping usernameClaimMapping = new ClaimMapping();
         usernameClaimMapping.setRequested(true);
         usernameClaimMapping.setLocalClaim(usernameClaim);
