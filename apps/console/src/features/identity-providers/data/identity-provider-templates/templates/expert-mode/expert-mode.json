@@ -3,8 +3,8 @@
     "name": "Expert Mode",
     "description": "Create a new Identity Provider with minimum configurations.",
     "image": "expert",
-    "category": "MANUAL",
-    "displayOrder": 1,
+    "category": "DEFAULT",
+    "displayOrder": -1,
     "services": [],
     "tags": [ "Custom" ],
     "idp": {
