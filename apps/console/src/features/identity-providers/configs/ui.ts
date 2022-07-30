@@ -42,7 +42,7 @@ import {
 } from "../../../themes/default/assets/images/identity-providers/enterprise-idp-illustration.svg";
 import {
     ReactComponent as ExpertModeIdPIcon
-} from "../../../themes/default/assets/images/identity-providers/expert-idp-illustration.svg";
+} from "../../../themes/default/assets/images/identity-providers/expert.svg";
 import FacebookIdPIcon from "../../../themes/default/assets/images/identity-providers/facebook-idp-illustration.svg";
 import GithubIdPIcon from "../../../themes/default/assets/images/identity-providers/github-idp-illustration.svg";
 import GoogleIdPIcon from "../../../themes/default/assets/images/identity-providers/google-idp-illustration.svg";
@@ -130,6 +130,7 @@ export const getIdPIcons = (): any => {
         default: ConnectionIcon,
         emailOTP: EmailOTPIcon,
         enterprise: EnterpriseModeIdPIcon,
+        expert: ExpertModeIdPIcon,
         facebook: FacebookIdPIcon,
         github: GithubIdPIcon,
         google: GoogleIdPIcon,

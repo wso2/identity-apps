@@ -179,6 +179,11 @@ export const getIdentityProviderTemplatesConfig = (): IdentityProviderTemplatesC
                             resource: EnterpriseSAMLIdentityProviderTemplate
                         },
                         {
+                            content: {
+                                wizardHelp: lazy(() =>
+                                    import("./templates/expert-mode/create-wizard-help")
+                                )
+                            },
                             enabled: window["AppUtils"].getConfig()
                                 .ui.identityProviderTemplates?.expertMode?.enabled
                                     ?? identityProviderConfig.templates.expertMode,
