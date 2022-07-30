@@ -118,6 +118,7 @@ export interface CertificateConfigInterface {
 
 export interface FederatedAuthenticatorMetaDataInterface {
     authenticatorId: string;
+    description: string;
     icon: any;
     name: string;
     displayName: string;
