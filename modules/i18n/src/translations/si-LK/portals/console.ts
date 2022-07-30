@@ -2848,6 +2848,22 @@ export const console: ConsoleNS = {
                             invalidName: "වලංගු නමක් ඇතුළත් කරන්න",
                             name: "වලංගු නමක් ඇතුළත් කරන්න"
                         }
+                    },
+                    expert: {
+                        wizardHelp: {
+                            description: {
+                                connectionDescription: "සම්බන්ධතාවය සඳහා අද්විතීය නමක් සපයන්න.",
+                                heading: "නම",
+                                idpDescription: "අනන්යතා සැපයුම්කරු සඳහා අද්විතීය නමක් සපයන්න."
+                            },
+                            heading: "උදව්",
+                            name: {
+                                connectionDescription: "ඒ ගැන වැඩි විස්තර විස්තර කිරීමට සම්බන්ධතාවය සඳහා විස්තරයක් සපයන්න.",
+                                heading: "විස්තර",
+                                idpDescription: "අනන්යතා සැපයුම්කරු ඒ ගැන වැඩි විස්තර විස්තර කිරීමට විස්තරයක් සපයන්න."
+                            },
+                            subHeading: "පහත මාර්ගෝපදේශය භාවිතා කරන්න"
+                        }
                     }
                 }
             },

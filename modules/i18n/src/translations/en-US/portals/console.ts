@@ -4072,6 +4072,22 @@ export const console: ConsoleNS = {
                             name: "Please enter a valid name"
                         }
                     },
+                    expert: {
+                        wizardHelp: {
+                            description: {
+                                connectionDescription: "Provide a unique name for the connection.",
+                                heading: "Name",
+                                idpDescription: "Provide a unique name for the identity provider."
+                            },
+                            heading: "Help",
+                            name: {
+                                connectionDescription: "Provide a description for the connection to explain more about it.",
+                                heading: "Description",
+                                idpDescription: "Provide a description for the identity provider to explain more about it."
+                            },
+                            subHeading: "Use the guide below"
+                        }
+                    },
                     facebook: {
                         wizardHelp: {
                             clientId: {

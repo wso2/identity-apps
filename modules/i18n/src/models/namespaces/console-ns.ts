@@ -1413,6 +1413,22 @@ export interface ConsoleNS {
                         heading: string;
                         subHeading: string;
                     };
+                    expert: {
+                        wizardHelp: {
+                            heading: string;
+                            description: {
+                                connectionDescription: string;
+                                heading: string;
+                                idpDescription: string;
+                            };
+                            name: {
+                                connectionDescription: string;
+                                heading: string;
+                                idpDescription: string;
+                            };
+                            subHeading: string;
+                        };
+                    };
                     facebook?: {
                         wizardHelp: {
                             clientId: {
