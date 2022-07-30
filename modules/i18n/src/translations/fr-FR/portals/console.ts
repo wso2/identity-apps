@@ -2931,6 +2931,22 @@ export const console: ConsoleNS = {
                                 "des traits de soulignement (_) et des espaces.",
                             name: "Merci d'entrer un nom valide"
                         }
+                    },
+                    expert: {
+                        wizardHelp: {
+                            description: {
+                                connectionDescription: "Fournir un nom unique pour la connexion.",
+                                heading: "Nom",
+                                idpDescription: "Fournir un nom unique pour le fournisseur d'identité."
+                            },
+                            heading: "Aider",
+                            name: {
+                                connectionDescription: "Fournissez une description de la connexion pour en expliquer plus à ce sujet.",
+                                heading: "La description",
+                                idpDescription: "Fournir une description au fournisseur d'identité pour en expliquer davantage."
+                            },
+                            subHeading: "Utilisez le guide ci-dessous"
+                        }
                     }
                 }
             },
