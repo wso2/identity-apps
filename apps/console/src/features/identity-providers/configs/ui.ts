@@ -26,9 +26,9 @@ import CertificateColoredIcon from "../../../themes/default/assets/images/icons/
 import ClockColoredIcon from "../../../themes/default/assets/images/icons/clock-colored-icon.svg";
 import ConnectionIcon from "../../../themes/default/assets/images/icons/connection.svg";
 import { ReactComponent as DocumentIcon } from "../../../themes/default/assets/images/icons/document-icon.svg";
-import MagicLinkLogo from "../../../themes/default/assets/images/icons/magic-link-icon.svg";
 import FIDOLogo from "../../../themes/default/assets/images/icons/fingerprint.svg";
 import { ReactComponent as GearsIcon } from "../../../themes/default/assets/images/icons/gears-icon.svg";
+import MagicLinkLogo from "../../../themes/default/assets/images/icons/magic-link-icon.svg";
 import MagnifierColoredIcon from "../../../themes/default/assets/images/icons/magnifier-colored-icon.svg";
 import { ReactComponent as OpenBookIcon } from "../../../themes/default/assets/images/icons/open-book-icon.svg";
 import TOTPIcon from "../../../themes/default/assets/images/icons/outline-icons/clock-outline.svg";
@@ -46,8 +46,7 @@ import {
 import FacebookIdPIcon from "../../../themes/default/assets/images/identity-providers/facebook-idp-illustration.svg";
 import GithubIdPIcon from "../../../themes/default/assets/images/identity-providers/github-idp-illustration.svg";
 import GoogleIdPIcon from "../../../themes/default/assets/images/identity-providers/google-idp-illustration.svg";
-import IWAKerberosIdPIllustration
-    from "../../../themes/default/assets/images/identity-providers/iwa-idp-illustration.svg";
+import KerberosLogo from "../../../themes/default/assets/images/identity-providers/kerberos.svg";
 import Office365IdPIllustration
     from "../../../themes/default/assets/images/identity-providers/office365-idp-illustration.svg";
 import {
@@ -134,7 +133,7 @@ export const getIdPIcons = (): any => {
         facebook: FacebookIdPIcon,
         github: GithubIdPIcon,
         google: GoogleIdPIcon,
-        iwaKerberos: IWAKerberosIdPIllustration,
+        iwaKerberos: KerberosLogo,
         linkedIn: LinkedInLogo,
         microsoft: MicrosoftLogo,
         office365: Office365IdPIllustration,
