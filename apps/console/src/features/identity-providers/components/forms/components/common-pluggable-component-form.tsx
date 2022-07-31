@@ -23,6 +23,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { Button, Grid } from "semantic-ui-react";
 import {
+    AuthenticatorSettingsFormModes,
     CommonPluggableComponentFormPropsInterface,
     CommonPluggableComponentInterface,
     CommonPluggableComponentMetaPropertyInterface,
@@ -43,6 +44,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
 
     const {
         metadata,
+        mode,
         initialValues,
         onSubmit,
         triggerSubmit,
@@ -129,7 +131,8 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
      * @param propertyMetadata Metadata of the property.
      */
     const isCheckboxWithSubProperties = (propertyMetadata: CommonPluggableComponentMetaPropertyInterface): boolean => {
-        return propertyMetadata?.subProperties?.length > 0 && getFieldType(propertyMetadata) === FieldType.CHECKBOX;
+        return propertyMetadata?.subProperties?.length > 0
+            && getFieldType(propertyMetadata, mode) === FieldType.CHECKBOX;
     };
 
     /**
@@ -139,7 +142,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
      */
     const isRadioButtonWithSubProperties = (propertyMetadata
         : CommonPluggableComponentMetaPropertyInterface): boolean => {
-        return propertyMetadata?.subProperties?.length > 0 && getFieldType(propertyMetadata) === FieldType.RADIO;
+        return propertyMetadata?.subProperties?.length > 0 && getFieldType(propertyMetadata, mode) === FieldType.RADIO;
     };
 
     const getField = (property: CommonPluggableComponentPropertyInterface,
@@ -155,7 +158,18 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
                     <Grid.Column mobile={ 2 } tablet={ 2 } computer={ 1 }>
                     </Grid.Column>
                     <Grid.Column mobile={ 14 } tablet={ 14 } computer={ 7 }>
-                        { getPropertyField(property, { ...eachPropertyMeta, readOnly }, listen, testId) }
+                        {
+                            getPropertyField(
+                                property,
+                                {
+                                    ...eachPropertyMeta,
+                                    readOnly: mode === AuthenticatorSettingsFormModes.CREATE ? false : readOnly
+                                },
+                                mode,
+                                listen,
+                                testId
+                            )
+                        }
                     </Grid.Column>
                 </Grid.Row>
             );
@@ -163,7 +177,18 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
             return (
                 <Grid.Row columns={ 1 } key={ eachPropertyMeta?.displayOrder }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                        { getPropertyField(property, { ...eachPropertyMeta, readOnly }, listen, testId) }
+                        {
+                            getPropertyField(
+                                property,
+                                {
+                                    ...eachPropertyMeta,
+                                    readOnly: mode === AuthenticatorSettingsFormModes.CREATE ? false : readOnly
+                                },
+                                mode,
+                                listen,
+                                testId
+                            )
+                        }
                     </Grid.Column>
                 </Grid.Row>
             );
