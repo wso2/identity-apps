@@ -388,7 +388,6 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                 hidden: (app: ApplicationListItemInterface) => {
                     const hasScopes: boolean = !hasRequiredScopes(featureConfig?.applications,
                         featureConfig?.applications?.scopes?.delete, allowedScopes);
-
                     const isSuperTenant: boolean = (tenantDomain === AppConstants.getSuperTenant());
                     const isSystemApp: boolean = isSuperTenant && (UIConfig.systemAppsIdentifiers.includes(app?.name));
 
