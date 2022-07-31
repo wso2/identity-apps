@@ -405,4 +405,6 @@ export class IdentityProviderManagementConstants {
          "console:develop.features.authenticationProvider.notifications.apiLimitReachedError.error.message",
          "cec1f247-32fd-4624-9915-f469195a53ac"
      )
+
+     public static readonly SHOW_PREDEFINED_TEMPLATES_IN_EXPERT_MODE_SETUP: boolean = false;
 }
