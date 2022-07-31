@@ -19,6 +19,7 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import {
+    AuthenticatorSettingsFormModes,
     FederatedAuthenticatorListItemInterface,
     FederatedAuthenticatorMetaInterface,
     IdentityProviderInterface
@@ -92,6 +93,7 @@ export const AuthenticatorSettings: FunctionComponent<AuthenticatorSettingsWizar
 
     return (
         <AuthenticatorFormFactory
+            mode={ AuthenticatorSettingsFormModes.CREATE }
             metadata={ metadata }
             initialValues={ (authenticator ? authenticator : {}) }
             onSubmit={ handleSubmit }
