@@ -16,23 +16,24 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Forms } from "@wso2is/forms";
-import { Heading, Hint, SelectionCard } from "@wso2is/react-components";
+import { Heading, Hint, ResourceGrid } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Grid } from "semantic-ui-react";
+import { Divider, Grid } from "semantic-ui-react";
 import { getIdPIcons } from "../../../../configs";
 import {
     FederatedAuthenticatorMetaDataInterface,
     IdentityProviderInterface,
     IdentityProviderTemplateInterface
 } from "../../../../models";
+import { IdentityProviderManagementUtils } from "../../../../utils";
 
 /**
- * Proptypes for the general settings wizard form component.
+ * Prop-types for the general settings wizard form component.
  */
-interface AuthenticatorTemplateSelectionWizardFormPropsInterface extends TestableComponentInterface {
+interface AuthenticatorTemplateSelectionWizardFormPropsInterface extends IdentifiableComponentInterface {
     triggerSubmit: boolean;
     onSubmit: (values: any) => void;
     manualModeOptions: FederatedAuthenticatorMetaDataInterface[];
@@ -40,13 +41,14 @@ interface AuthenticatorTemplateSelectionWizardFormPropsInterface extends Testabl
 }
 
 /**
- * General settings wizard form component.
+ * Authenticator Selection Component.
  *
  * @param {AuthenticatorTemplateSelectionWizardFormPropsInterface} props - Props injected to the component.
  * @return {ReactElement}
  */
-export const AuthenticatorTemplateSelection:
-    FunctionComponent<AuthenticatorTemplateSelectionWizardFormPropsInterface> = (
+export const AuthenticatorTemplateSelection: FunctionComponent<
+    AuthenticatorTemplateSelectionWizardFormPropsInterface
+> = (
     props: AuthenticatorTemplateSelectionWizardFormPropsInterface
 ): ReactElement => {
 
@@ -55,7 +57,7 @@ export const AuthenticatorTemplateSelection:
         onSubmit,
         manualModeOptions,
         authenticatorTemplates,
-        [ "data-testid" ]: testId
+        [ "data-componentid" ]: componentId
     } = props;
 
     const [ selectedTemplate, setSelectedTemplate ] = useState<IdentityProviderInterface>(undefined);
@@ -99,68 +101,124 @@ export const AuthenticatorTemplateSelection:
         >
             <Grid>
                 {
-                    (authenticatorTemplates && authenticatorTemplates instanceof Array &&
-                        authenticatorTemplates.length > 0) &&
-                    <Grid.Row columns={ 1 }>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                            <Heading as="h4">
-                                { t("console:develop.features.authenticationProvider.wizards.addAuthenticator.steps." +
-                                    "authenticatorSelection.quickSetup.title") }
-                            </Heading>
-                            <Hint icon={ null }>
-                                { t("console:develop.features.authenticationProvider.wizards.addAuthenticator.steps." +
-                                    "authenticatorSelection.quickSetup.subTitle") }
-                            </Hint>
-                            { authenticatorTemplates.map((template, index) => (
-                                <SelectionCard
-                                    inline
-                                    id={ template.id }
-                                    key={ index }
-                                    header={ template.name }
-                                    image={ getIdPIcons()[template.image] }
-                                    imageOptions={ {
-                                        fill: "primary"
-                                    } }
-                                    onClick={ (): void => handleTemplateSelection(template) }
-                                    selected={ selectedTemplate?.id === template.id }
-                                    data-testid={ `${ testId }-template-${ index }` }
-                                />))
-                            }
-                        </Grid.Column>
-                    </Grid.Row>
+                    (
+                        authenticatorTemplates
+                        && authenticatorTemplates instanceof Array
+                        && authenticatorTemplates.length > 0
+                    )
+                        && (
+                            <Grid.Row columns={ 1 }>
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                    <Heading as="h4">
+                                        {
+                                            t("console:develop.features.authenticationProvider.wizards." +
+                                                "addAuthenticator.steps.authenticatorSelection.quickSetup.title")
+                                        }
+                                    </Heading>
+                                    <Hint>
+                                        {
+                                            t("console:develop.features.authenticationProvider.wizards." +
+                                                "addAuthenticator.steps.authenticatorSelection.quickSetup.subTitle")
+                                        }
+                                    </Hint>
+                                    <Divider hidden />
+                                    <ResourceGrid>
+                                        {
+                                            authenticatorTemplates.map((
+                                                template: IdentityProviderTemplateInterface,
+                                                templateIndex: number
+                                            ) => (
+                                                <ResourceGrid.Card
+                                                    key={ templateIndex }
+                                                    resourceName={
+                                                        template.name === "Enterprise"
+                                                            ? "Standard-Based IdP"
+                                                            : template.name
+                                                    }
+                                                    isResourceComingSoon={ template.comingSoon }
+                                                    disabled={ template.disabled }
+                                                    comingSoonRibbonLabel={ t("common:comingSoon") }
+                                                    resourceDescription={ template.description }
+                                                    resourceImage={
+                                                        IdentityProviderManagementUtils
+                                                            .resolveTemplateImage(template.image, getIdPIcons())
+                                                    }
+                                                    tags={ template.tags }
+                                                    onClick={ () => {
+                                                        handleTemplateSelection(template);
+                                                    } }
+                                                    showTooltips={ {
+                                                        description: true,
+                                                        header: false
+                                                    } }
+                                                    selected={ selectedTemplate?.id === template.id }
+                                                    data-testid={ `${ componentId }-${ template.name }` }
+                                                />
+                                            ))
+                                        }
+                                    </ResourceGrid>
+                                </Grid.Column>
+                            </Grid.Row>
+                        )
                 }
                 {
-                    (manualModeOptions && manualModeOptions instanceof Array && manualModeOptions.length > 0)
-                    &&
-                    <Grid.Row columns={ 1 }>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                            <Heading as="h4">
-                                { t("console:develop.features.authenticationProvider.wizards.addAuthenticator.steps." +
-                                    "authenticatorSelection.manualSetup.title") }
-                            </Heading>
-                            <Hint icon={ null }>
-                                { t("console:develop.features.authenticationProvider.wizards.addAuthenticator.steps." +
-                                    "authenticatorSelection.manualSetup.subTitle") }
-                            </Hint>
-                            { manualModeOptions.map((option, index) => (
-                                <SelectionCard
-                                    inline
-                                    id={ option.authenticatorId }
-                                    key={ index }
-                                    header={ option.displayName }
-                                    image={ option.icon }
-                                    imageOptions={ {
-                                        fill: "primary"
-                                    } }
-                                    onClick={ (): void => handleManualModeOptionSelection(option) }
-                                    selected={ selectedManualModeOption?.authenticatorId === option.authenticatorId }
-                                    data-testid={ `${ testId }-manual-option-${ index }` }
-                                />))
-                            }
-                        </Grid.Column>
-                    </Grid.Row>
+                    (
+                        manualModeOptions
+                        && manualModeOptions instanceof Array
+                        && manualModeOptions.length > 0
+                    )
+                        && (
+                            <Grid.Row columns={ 1 }>
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                    <Heading as="h4">
+                                        {
+                                            t("console:develop.features.authenticationProvider.wizards." +
+                                                "addAuthenticator.steps.authenticatorSelection.manualSetup.title")
+                                        }
+                                    </Heading>
+                                    <Hint>
+                                        {
+                                            t("console:develop.features.authenticationProvider.wizards." +
+                                                "addAuthenticator.steps.authenticatorSelection.manualSetup.subTitle")
+                                        }
+                                    </Hint>
+                                    <Divider hidden />
+                                    <ResourceGrid>
+                                        {
+                                            manualModeOptions.map((
+                                                template: FederatedAuthenticatorMetaDataInterface,
+                                                templateIndex: number
+                                            ) => (
+                                                <ResourceGrid.Card
+                                                    key={ templateIndex }
+                                                    resourceName={ template.displayName }
+                                                    resourceDescription={ template.description }
+                                                    resourceImage={ template.icon }
+                                                    onClick={ () => {
+                                                        handleManualModeOptionSelection(template);
+                                                    } }
+                                                    showTooltips={ { header: false, description: true } }
+                                                    data-testid={ `${ componentId }-${ template.name }` }
+                                                    selected={
+                                                        selectedManualModeOption?.authenticatorId === template
+                                                            .authenticatorId
+                                                    }
+                                                />
+                                            ))
+                                        }
+                                    </ResourceGrid>
+                                </Grid.Column>
+                            </Grid.Row>
+                        )
                 }
             </Grid>
         </Forms>
     );
+};
+
+/**
+ * Default props for the Authenticator selection.
+ */
+AuthenticatorTemplateSelection.defaultProps = {
+    "data-componentid": "authenticator-template-selection"
 };
