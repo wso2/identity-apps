@@ -16,10 +16,15 @@
  * under the License.
  */
 
-import { getAuthenticatorIcons, getIdPIcons } from "../../configs";
+import { getIdPIcons } from "../../configs";
 import { AuthenticatorMeta } from "../../meta";
-import { FederatedAuthenticatorMetaDataInterface, StrictGenericAuthenticatorInterface } from "../../models";
+import { FederatedAuthenticatorMetaDataInterface } from "../../models";
 
+/**
+ * The set of connectors shipped OOTB by Identity Server.
+ * TODO: Remove this mapping once there's an API to get the list of connectors.
+ * @returns {FederatedAuthenticatorMetaDataInterface[]}
+ */
 export const getFederatedAuthenticators = (): FederatedAuthenticatorMetaDataInterface[] => {
     return [
         {
@@ -105,56 +110,6 @@ export const getFederatedAuthenticators = (): FederatedAuthenticatorMetaDataInte
             displayName: "SMS OTP",
             icon: getIdPIcons().smsOTP,
             name: "SMSOTP"
-        }
-    ];
-};
-
-export const getSelectedFederatedAuthenticators = (): StrictGenericAuthenticatorInterface[] => {
-    return [
-        {
-            id: "TWljcm9zb2Z0V2luZG93c0xpdmVBdXRoZW50aWNhdG9y",
-            image: getAuthenticatorIcons()?.microsoft,
-            name: "MicrosoftWindowsLiveAuthenticator"
-        },
-        {
-            id: "R29vZ2xlT0lEQ0F1dGhlbnRpY2F0b3I",
-            image: getAuthenticatorIcons()?.google,
-            name: "GoogleOIDCAuthenticator"
-        },
-        {
-            id: "U01TT1RQ",
-            image: getAuthenticatorIcons()?.smsOTP,
-            name: "SMSOTP"
-        },
-        {
-            id: "VHdpdHRlckF1dGhlbnRpY2F0b3I",
-            image: getAuthenticatorIcons()?.twitter,
-            name: "TwitterAuthenticator"
-        },
-        {
-            id: "RW1haWxPVFA",
-            image: getAuthenticatorIcons()?.emailOTP,
-            name: "EmailOTP"
-        },
-        {
-            id: "WWFob29PQXV0aDJBdXRoZW50aWNhdG9y",
-            image: getAuthenticatorIcons()?.yahoo,
-            name: "YahooOAuth2Authenticator"
-        },
-        {
-            id: "SVdBS2VyYmVyb3NBdXRoZW50aWNhdG9y",
-            image: undefined,
-            name: "IWAKerberosAuthenticator"
-        },
-        {
-            id: "RmFjZWJvb2tBdXRoZW50aWNhdG9y",
-            image: getAuthenticatorIcons()?.facebook,
-            name: "FacebookAuthenticator"
-        },
-        {
-            id: "T2ZmaWNlMzY1QXV0aGVudGljYXRvcg",
-            image: getAuthenticatorIcons()?.office365,
-            name: "Office365Authenticator"
         }
     ];
 };
