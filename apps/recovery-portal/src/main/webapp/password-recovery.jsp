@@ -351,22 +351,17 @@
                     submitButton.removeClass("loading").attr("disabled", false);
                     return false;
                 }
-
-                return true;
-            });
-
-            <%
-                if (reCaptchaEnabled) {
-            %>
+            <% if (reCaptchaEnabled) { %>
                 grecaptcha.ready(function() {
                     grecaptcha.execute('<%=Encode.forHtmlContent(reCaptchaKey)%>', {action: 'passwordRecovery'}).then(function(token) {
                         $('#recoverDetailsForm').prepend('<input type="hidden" name="g-recaptcha-response" value="' + token + '">');
                         $('#recoverDetailsForm').prepend('<input type="hidden" name="action" value="passwordRecovery">');
-                    });;
+                        $('#recoverDetailsForm').unbind('submit').submit();
+                    });
                 });
-            <%
-                }
-            %>
+            <% } %>
+                return true;
+            });
         });
 
     </script>

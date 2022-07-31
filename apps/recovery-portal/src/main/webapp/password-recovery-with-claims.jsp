@@ -351,27 +351,17 @@
                 }
 
                 <% if (reCaptchaEnabled) { %>
-                var reCaptchaResponse = $("[name='g-recaptcha-response']")[0].value;
-
-                if (reCaptchaResponse.trim() == '') {
-                    errorMessage.text("Please select reCaptcha.");
-                    errorMessage.show();
-                    $("html, body").animate({scrollTop: errorMessage.offset().top}, 'slow');
-                    return false;
-                }
+                    grecaptcha.ready(function() {
+                        grecaptcha.execute('<%=Encode.forHtmlContent(reCaptchaKey)%>', {action: 'passwordRecovery'}).then(function(token) {
+                            $('#recoverDetailsForm').prepend('<input type="hidden" name="g-recaptcha-response" value="' + token + '">');
+                            $('#recoverDetailsForm').prepend('<input type="hidden" name="action" value="passwordRecovery">');
+                            $('#recoverDetailsForm').unbind('submit').submit();
+                        });
+                    });
                 <% } %>
 
                 return true;
             });
-
-            <% if(reCaptchaEnabled) { %>
-                grecaptcha.ready(function() {
-                    grecaptcha.execute('<%=Encode.forHtmlContent(reCaptchaKey)%>', {action: 'recoverDetails'}).then(function(token) {
-                        $('#recoverDetailsForm').prepend('<input type="hidden" name="g-recaptcha-response" value="' + token + '">');
-                        $('#recoverDetailsForm').prepend('<input type="hidden" name="action" value="recoverDetails">');
-                    });;
-                });
-            <% } %>
 
         });
     </script>

@@ -342,21 +342,19 @@
                     }
                 <% } %>
 
+                <% if (reCaptchaEnabled) { %>
+                    grecaptcha.ready(function() {
+                        grecaptcha.execute('<%=Encode.forHtmlContent(reCaptchaKey)%>', {action: 'usernameRecovery'}).then(function(token) {
+                            $('#recoverDetailsForm').prepend('<input type="hidden" name="g-recaptcha-response" value="' + token + '">');
+                            $('#recoverDetailsForm').prepend('<input type="hidden" name="action" value="usernameRecovery">');
+                            $('#recoverDetailsForm').unbind('submit').submit();
+                        });
+                    });
+                <% } %>
+
                 return true;
             });
 
-            <%
-                if (reCaptchaEnabled) {
-            %>
-                grecaptcha.ready(function() {
-                    grecaptcha.execute('<%=Encode.forHtmlContent(reCaptchaKey)%>', {action: 'usernameRecovery'}).then(function(token) {
-                        $('#recoverDetailsForm').prepend('<input type="hidden" name="g-recaptcha-response" value="' + token + '">');
-                        $('#recoverDetailsForm').prepend('<input type="hidden" name="action" value="usernameRecovery">');
-                    });;
-                });
-            <%
-                }
-            %>
         });
     </script>
 </body>

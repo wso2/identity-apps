@@ -314,16 +314,19 @@
                 }
 
                 return true;
+
+                <% if(reCaptchaEnabled) { %>
+                    grecaptcha.ready(function() {
+                        grecaptcha.execute('<%=Encode.forHtmlContent(reCaptchaKey)%>', {action: 'register'}).then(function(token) {
+                            $('#register').prepend('<input type="hidden" name="g-recaptcha-response" value="' + token + '">');
+                            $('#register').prepend('<input type="hidden" name="action" value="register">');
+                            $('#register').unbind('submit').submit();
+                        });
+                    });
+                <% } %>
             });
 
-            <% if(reCaptchaEnabled) { %>
-                grecaptcha.ready(function() {
-                    grecaptcha.execute('<%=Encode.forHtmlContent(reCaptchaKey)%>', {action: 'register'}).then(function(token) {
-                        $('#register').prepend('<input type="hidden" name="g-recaptcha-response" value="' + token + '">');
-                        $('#register').prepend('<input type="hidden" name="action" value="register">');
-                    });;
-                });
-            <% } %>
+
         });
     </script>
     </body>

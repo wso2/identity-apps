@@ -204,7 +204,7 @@
     <%
         if (reCaptchaEnabled || reCaptchaResendEnabled) {
     %>
-        <script src="<%=Encode.forHtmlContent(reCaptchaAPI)%>?render=<%=Encode.forHtmlContent(reCaptchaKey)%>"></script
+        <script src="<%=Encode.forHtmlContent(reCaptchaAPI)%>?render=<%=Encode.forHtmlContent(reCaptchaKey)%>"></script>
     <%
         }
     %>
@@ -524,18 +524,17 @@
                 $('.main-link').next().hide();
             });
 
-            <%
-                if(reCaptchaEnabled) {
-            %>
-                grecaptcha.ready(function() {
-                    grecaptcha.execute('<%=Encode.forHtmlContent(reCaptchaKey)%>', {action: 'login'}).then(function(token) {
-                        $('#loginForm').prepend('<input type="hidden" name="g-recaptcha-response" value="' + token + '">');
-                        $('#loginForm').prepend('<input type="hidden" name="action" value="login">');
-                    });;
+            <% if(reCaptchaEnabled) { %>
+                $("#loginForm").submit(function (e) {
+                    grecaptcha.ready(function() {
+                        grecaptcha.execute('<%=Encode.forHtmlContent(reCaptchaKey)%>', {action: 'login'}).then(function(token) {
+                            $('#loginForm').prepend('<input type="hidden" name="g-recaptcha-response" value="' + token + '">');
+                            $('#loginForm').prepend('<input type="hidden" name="action" value="login">');
+                            $('#loginForm').unbind('submit').submit();
+                        });
+                    });
                 });
-            <%
-                }
-            %>
+            <% } %>
         });
 
         function myFunction(key, value, name) {

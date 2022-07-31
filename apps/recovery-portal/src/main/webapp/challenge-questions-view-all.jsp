@@ -165,13 +165,16 @@
     $(document).ready(function () {
 
         <% if(reCaptchaEnabled) { %>
-            grecaptcha.ready(function() {
-                grecaptcha.execute('<%=Encode.forHtmlContent(reCaptchaKey)%>', {action: 'securityQuestion'}).then(function(token) {
-                    $('#securityQuestionForm').prepend('<input type="hidden" name="g-recaptcha-response" value="' + token + '">');
-                    $('#securityQuestionForm').prepend('<input type="hidden" name="action" value="securityQuestion">');
-                });;
-            });
-        <% } %>
+            $("#securityQuestionForm").submit(function (e) {
+                grecaptcha.ready(function() {
+                    grecaptcha.execute('<%=Encode.forHtmlContent(reCaptchaKey)%>', {action: 'securityQuestion'}).then(function(token) {
+                        $('#securityQuestionForm').prepend('<input type="hidden" name="g-recaptcha-response" value="' + token + '">');
+                        $('#securityQuestionForm').prepend('<input type="hidden" name="action" value="securityQuestion">');
+                        $('#securityQuestionForm').unbind('submit').submit();
+                    });
+                });
+            <% } %>
+        });
     });
 
 </script>
