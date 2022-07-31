@@ -133,10 +133,6 @@ export const OrganizationEnterpriseAuthenticationProviderCreateWizard: FunctionC
      */
     const createNewIdentityProvider = (identityProvider: IdentityProviderInterface): void => {
 
-        // TODO Uncomment below once template id is supported from IDP REST API
-        // Tracked Here - https://github.com/wso2/product-is/issues/11023
-        // identityProvider.templateId = template.id;
-
         setIsSubmitting(true);
 
         createIdentityProvider(identityProvider)
@@ -271,6 +267,7 @@ export const OrganizationEnterpriseAuthenticationProviderCreateWizard: FunctionC
 
         identityProvider.name = values.name.toString();
         identityProvider.description = values.description?.toString();
+        identityProvider.templateId = template.templateId;
 
         // // TODO: Refactor the usage of absolute image paths once Media Service is available.
         // // Tracked here - https://github.com/wso2/product-is/issues/12396
