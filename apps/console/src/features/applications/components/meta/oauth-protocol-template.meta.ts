@@ -22,12 +22,14 @@ import {
     DefaultProtocolTemplate,
     State
 } from "../../models";
+import {ApplicationManagementConstants} from "../../constants";
 
 export const OAuthProtocolTemplateItem: ApplicationTemplateListItemInterface = {
     authenticationProtocol: "oidc",
     id: DefaultProtocolTemplate.OIDC,
     image: "oidc",
-    name: "OIDC"
+    name: "OIDC",
+    templateId: ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
 };
 
 export const OAuthProtocolTemplate: ApplicationTemplateInterface = {
