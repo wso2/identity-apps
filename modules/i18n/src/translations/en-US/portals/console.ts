@@ -4201,6 +4201,15 @@ export const console: ConsoleNS = {
                                 },
                                 title: "Authenticator Selection"
                             },
+                            authenticatorSettings: {
+                                emptyPlaceholder: {
+                                    subtitles: [
+                                        "This authenticator does not have any settings available to be",
+                                        "configured at this level. Simply click on <1>Finish</1>."
+                                    ],
+                                    title: "No Settings available for this Authenticator."
+                                }
+                            },
                             summary: {
                                 title: "Summary"
                             }

@@ -26,7 +26,9 @@ import {
     PrimaryButton,
     SegmentedAccordionTitleActionInterface
 } from "@wso2is/react-components";
+import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
+import keyBy from "lodash-es/keyBy";
 import React, { FormEvent, FunctionComponent, MouseEvent, ReactElement, useEffect, useMemo, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -57,9 +59,9 @@ import {
     IdentityProviderTemplateListItemInterface,
     IdentityProviderTemplateLoadingStrategies
 } from "../../models";
-import { IdentityProviderTemplateManagementUtils } from "../../utils";
+import { IdentityProviderManagementUtils, IdentityProviderTemplateManagementUtils } from "../../utils";
 import { AuthenticatorFormFactory } from "../forms";
-import { getFederatedAuthenticators } from "../meta";
+import { getConnectorMetadata } from "../meta";
 import {
     handleGetFederatedAuthenticatorMetadataAPICallError,
     handleGetIDPTemplateAPICallError
@@ -119,6 +121,9 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
 
     const { t } = useTranslation();
 
+    const availableFederatedAuthenticators = useSelector((state: AppState) => {
+        return state.identityProvider.meta.authenticators;
+    });
     const identityProviderTemplates: IdentityProviderTemplateItemInterface[] = useSelector(
         (state: AppState) => state.identityProvider?.groupedTemplates);
 
@@ -131,8 +136,10 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
         useState<FederatedAuthenticatorWithMetaInterface[]>([]);
     const [ availableTemplates, setAvailableTemplates ] =
         useState<IdentityProviderTemplateInterface[]>(undefined);
-    const [ availableManualModeOptions, setAvailableManualModeOptions ] =
-        useState<FederatedAuthenticatorMetaDataInterface[]>(undefined);
+    const [
+        availableManualModeOptions,
+        setAvailableManualModeOptions
+    ] = useState<FederatedAuthenticatorMetaDataInterface[]>(undefined);
     const [ showAddAuthenticatorWizard, setShowAddAuthenticatorWizard ] = useState<boolean>(false);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ accordionActiveIndexes, setAccordionActiveIndexes ] = useState<number[]>([]);
@@ -148,6 +155,14 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
         return identityProviderConfig?.templates?.expertMode &&
             (identityProvider.templateId === ExpertModeIdpTemplate.id || !identityProvider.templateId);
     }, [ identityProvider, identityProviderConfig  ]);
+
+    /**
+     * When `availableAuthenticators` updates, filter the templates.
+     */
+    useEffect(() => {
+
+        filterTemplates();
+    }, [ availableAuthenticators ]);
 
     /**
      *  Get pre-defined IDP templates.
@@ -176,6 +191,18 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
             .getIdentityProviderTemplates(useAPI, skipGrouping, sortTemplates)
             .finally(() => setIdPTemplateFetchRequestLoading(false));
     }, [ identityProviderTemplates ]);
+
+    /**
+     * If `availableFederatedAuthenticators` is not in redux,
+     * Fetch it again and store in the store.
+     */
+    useEffect(() => {
+        if (!isEmpty(availableFederatedAuthenticators)) {
+            return;
+        }
+
+        IdentityProviderManagementUtils.getAuthenticators();
+    }, [ availableFederatedAuthenticators ]);
 
     /**
      * Handles the authenticator config form submit action.
@@ -516,9 +543,10 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
     };
 
     /**
-     * Handles add new authenticator action.
+     * Filters the templates that are given to the Authenticator create wizard.
+     * If the template is already used, we need to remove that from the list of options.
      */
-    const handleAddAuthenticator = () => {
+    const filterTemplates = (): void => {
 
         // Filter out already added authenticators and templates with federated authenticators.
         const availableAuthenticatorIDs = availableAuthenticators.map((a) => {
@@ -531,15 +559,28 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                     template.idp?.federatedAuthenticators?.defaultAuthenticatorId))
         );
 
-        // Set filtered manual mode options.
-        setAvailableManualModeOptions(getFederatedAuthenticators().filter(a =>
-            !availableAuthenticatorIDs.includes(a.authenticatorId)));
-
         // sort templateList based on display Order
         filteredTemplates.sort((a, b) => (a.displayOrder > b.displayOrder) ? 1 : -1);
+        
+        const flattenedConnectorMetadata: ({ [ key: string ]: FederatedAuthenticatorMetaDataInterface }) = keyBy(
+            getConnectorMetadata(), "authenticatorId"
+        );
+        let moderatedManualModeOptions: FederatedAuthenticatorMetaDataInterface[] = cloneDeep(
+            availableFederatedAuthenticators as FederatedAuthenticatorMetaDataInterface[]
+        );
 
+        moderatedManualModeOptions = moderatedManualModeOptions.map((option) => {
+            return {
+                ...option,
+                ...flattenedConnectorMetadata[ option.authenticatorId ]
+            };
+        });
+
+        moderatedManualModeOptions = moderatedManualModeOptions.filter(a =>
+            !availableAuthenticatorIDs.includes(a.authenticatorId));
+
+        setAvailableManualModeOptions(moderatedManualModeOptions);
         setAvailableTemplates(filteredTemplates);
-        setShowAddAuthenticatorWizard(true);
     };
 
     /**
@@ -670,7 +711,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
     const showAuthenticatorList = (): ReactElement => {
 
         const resolveAuthenticatorIcon = (authenticator: FederatedAuthenticatorWithMetaInterface) => {
-            const found: FederatedAuthenticatorMetaDataInterface = getFederatedAuthenticators()
+            const found: FederatedAuthenticatorMetaDataInterface = getConnectorMetadata()
                 .find((fedAuth: FederatedAuthenticatorMetaDataInterface) => {
                     if (fedAuth?.authenticatorId === authenticator?.id) {
                         return fedAuth;
@@ -687,7 +728,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
         };
 
         const resolveAuthenticatorDisplayName = (authenticator: FederatedAuthenticatorWithMetaInterface) => {
-            const found: FederatedAuthenticatorMetaDataInterface = getFederatedAuthenticators()
+            const found: FederatedAuthenticatorMetaDataInterface = getConnectorMetadata()
                 .find((fedAuth: FederatedAuthenticatorMetaDataInterface) => {
                     if (fedAuth?.authenticatorId === authenticator?.id) {
                         return fedAuth;
@@ -709,6 +750,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                     <Grid.Column width={ 16 } textAlign="right">
                         <PrimaryButton
                             onClick={ handleAddAuthenticator }
+                            disabled={ isEmpty(availableManualModeOptions) }
                             loading={ isIdPTemplateFetchRequestLoading }
                             data-testid={ `${ testId }-add-authenticator-button` }
                         >
@@ -757,7 +799,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                                                             templateId={ identityProvider.templateId }
                                                         />
                                                     ),
-                                                    hideChevron: isEmpty(authenticator.data?.properties),
+                                                    hideChevron: isEmpty(authenticator.meta?.properties),
                                                     icon: {
                                                         icon: resolveAuthenticatorIcon(authenticator)
                                                     },
@@ -780,6 +822,17 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
         );
     };
 
+    /**
+     * Handles the Add authenticator button clicks.
+     */
+    const handleAddAuthenticator = (): void => {
+
+        setShowAddAuthenticatorWizard(true);
+    };
+
+    /**
+     * Shows the Authenticator settings.
+     */
     const showAuthenticator = (): ReactElement => {
         if (availableAuthenticators.length > 0) {
             // Only show the Authenticator listing if `expertMode` is enabled.

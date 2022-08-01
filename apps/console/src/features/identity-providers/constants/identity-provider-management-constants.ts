@@ -342,9 +342,10 @@ export class IdentityProviderManagementConstants {
     public static readonly BACKUP_CODE_AUTHENTICATOR: string = "backup-code-authenticator";
     public static readonly MAGIC_LINK_AUTHENTICATOR: string = "MagicLinkAuthenticator";
 
-    // Known Enterprise authenticator IDs
+    // Known IS Predefined/Protocols authenticator IDs
     public static readonly OIDC_AUTHENTICATOR_ID: string = "T3BlbklEQ29ubmVjdEF1dGhlbnRpY2F0b3I";
     public static readonly SAML_AUTHENTICATOR_ID: string = "U0FNTFNTT0F1dGhlbnRpY2F0b3I";
+    public static readonly PASSIVE_STS_AUTHENTICATOR_ID: string = "UGFzc2l2ZVNUU0F1dGhlbnRpY2F0b3I";
     public static readonly ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID: string = "T3JnYW5pemF0aW9uQXV0aGVudGljYXRvcg";
 
     // Known Local Authenticator IDS.
@@ -363,17 +364,32 @@ export class IdentityProviderManagementConstants {
     public static readonly BACKUP_CODE_AUTHENTICATOR_ID: string = "YmFja3VwLWNvZGUtYXV0aGVudGljYXRvcgo=";
     public static readonly MAGIC_LINK_AUTHENTICATOR_ID: string = "TWFnaWNMaW5rQXV0aGVudGljYXRvcg";
 
-    // Known Social authenticator IDs.
+    // Known Social/Enterprise authenticator IDs.
     public static readonly GOOGLE_OIDC_AUTHENTICATOR_ID: string = "R29vZ2xlT0lEQ0F1dGhlbnRpY2F0b3I";
     public static readonly FACEBOOK_AUTHENTICATOR_ID: string = "RmFjZWJvb2tBdXRoZW50aWNhdG9y";
     public static readonly TWITTER_AUTHENTICATOR_ID: string = "VHdpdHRlckF1dGhlbnRpY2F0b3I";
     public static readonly GITHUB_AUTHENTICATOR_ID: string = "R2l0aHViQXV0aGVudGljYXRvcg";
+    public static readonly YAHOO_AUTHENTICATOR_ID: string = "WWFob29PQXV0aDJBdXRoZW50aWNhdG9y";
+    public static readonly OFFICE_365_AUTHENTICATOR_ID: string = "T2ZmaWNlMzY1QXV0aGVudGljYXRvcg";
+    public static readonly MS_LIVE_AUTHENTICATOR_ID: string = "TWljcm9zb2Z0V2luZG93c0xpdmVBdXRoZW50aWNhdG9y";
+    public static readonly IWA_KERBEROS_AUTHENTICATOR_ID: string = "SVdBS2VyYmVyb3NBdXRoZW50aWNhdG9y";
 
-    // Known Social authenticator names;
+    // Known IS Predefined/Protocols authenticator IDs
+    public static readonly PASSIVE_STS_AUTHENTICATOR_NAME: string = "PassiveSTSAuthenticator";
+    public static readonly SAML_AUTHENTICATOR_NAME: string = "SAMLSSOAuthenticator";
+    public static readonly OIDC_AUTHENTICATOR_NAME: string = "OpenIDConnectAuthenticator";
+    public static readonly LEGACY_EMAIL_OTP_AUTHENTICATOR_NAME: string = "EmailOTP";
+    public static readonly SMS_OTP_AUTHENTICATOR_NAME: string = "SMSOTP";
+
+    // Known Social/Enterprise authenticator names;
     public static readonly GOOGLE_OIDC_AUTHENTICATOR_NAME: string = "GoogleOIDCAuthenticator";
     public static readonly FACEBOOK_AUTHENTICATOR_NAME: string = "FacebookAuthenticator";
     public static readonly GITHUB_AUTHENTICATOR_NAME: string = "GithubAuthenticator";
+    public static readonly YAHOO_AUTHENTICATOR_NAME: string = "YahooOAuth2Authenticator";
     public static readonly TWITTER_AUTHENTICATOR_NAME: string = "TwitterAuthenticator";
+    public static readonly OFFICE_365_AUTHENTICATOR_NAME: string = "Office365Authenticator";
+    public static readonly MS_LIVE_AUTHENTICATOR_NAME: string = "MicrosoftWindowsLiveAuthenticator";
+    public static readonly IWA_KERBEROS_AUTHENTICATOR_NAME: string = "IWAKerberosAuthenticator";
 
     // Known Social authenticator display names;
     public static readonly GOOGLE_OIDC_AUTHENTICATOR_DISPLAY_NAME: string = "Google";

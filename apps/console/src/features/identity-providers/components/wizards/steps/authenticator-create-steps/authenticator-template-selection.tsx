@@ -38,6 +38,10 @@ interface AuthenticatorTemplateSelectionWizardFormPropsInterface extends Identif
     onSubmit: (values: any) => void;
     manualModeOptions: FederatedAuthenticatorMetaDataInterface[];
     authenticatorTemplates: IdentityProviderTemplateInterface[];
+    /**
+     * Callback to be executed when a template is selected.
+     */
+    onTemplateSelect: (template: IdentityProviderInterface) => void;
 }
 
 /**
@@ -57,12 +61,14 @@ export const AuthenticatorTemplateSelection: FunctionComponent<
         onSubmit,
         manualModeOptions,
         authenticatorTemplates,
+        onTemplateSelect,
         [ "data-componentid" ]: componentId
     } = props;
 
+    const { t } = useTranslation();
+
     const [ selectedTemplate, setSelectedTemplate ] = useState<IdentityProviderInterface>(undefined);
     const [ selectedManualModeOption, setSelectedManualModeOption ] = useState<any>(undefined);
-    const { t } = useTranslation();
 
     /**
      * Handles template selection.
@@ -71,6 +77,7 @@ export const AuthenticatorTemplateSelection: FunctionComponent<
      */
     const handleTemplateSelection = (template: IdentityProviderInterface): void => {
         setSelectedTemplate(template);
+        onTemplateSelect(template);
         setSelectedManualModeOption(undefined);
     };
 
@@ -81,6 +88,7 @@ export const AuthenticatorTemplateSelection: FunctionComponent<
      */
     const handleManualModeOptionSelection = (option): void => {
         setSelectedManualModeOption(option);
+        onTemplateSelect(option);
         setSelectedTemplate(undefined);
     };
 
@@ -170,18 +178,28 @@ export const AuthenticatorTemplateSelection: FunctionComponent<
                         && (
                             <Grid.Row columns={ 1 }>
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                    <Heading as="h4">
-                                        {
-                                            t("console:develop.features.authenticationProvider.wizards." +
-                                                "addAuthenticator.steps.authenticatorSelection.manualSetup.title")
-                                        }
-                                    </Heading>
-                                    <Hint>
-                                        {
-                                            t("console:develop.features.authenticationProvider.wizards." +
-                                                "addAuthenticator.steps.authenticatorSelection.manualSetup.subTitle")
-                                        }
-                                    </Hint>
+                                    {
+                                        authenticatorTemplates
+                                        && authenticatorTemplates instanceof Array
+                                        && authenticatorTemplates.length > 0 && (
+                                            <>
+                                                <Heading as="h4">
+                                                    {
+                                                        t("console:develop.features.authenticationProvider." +
+                                                            "wizards.addAuthenticator.steps.authenticatorSelection." +
+                                                            "manualSetup.title")
+                                                    }
+                                                </Heading>
+                                                <Hint>
+                                                    {
+                                                        t("console:develop.features.authenticationProvider.wizards." +
+                                                            "addAuthenticator.steps.authenticatorSelection." +
+                                                            "manualSetup.subTitle")
+                                                    }
+                                                </Hint>
+                                            </>
+                                        )
+                                    }
                                     <Divider hidden />
                                     <ResourceGrid>
                                         {
@@ -191,13 +209,16 @@ export const AuthenticatorTemplateSelection: FunctionComponent<
                                             ) => (
                                                 <ResourceGrid.Card
                                                     key={ templateIndex }
-                                                    resourceName={ template.displayName }
+                                                    resourceName={ template.displayName || template.name }
                                                     resourceDescription={ template.description }
-                                                    resourceImage={ template.icon }
+                                                    resourceImage={ template.icon || getIdPIcons().default }
                                                     onClick={ () => {
                                                         handleManualModeOptionSelection(template);
                                                     } }
-                                                    showTooltips={ { header: false, description: true } }
+                                                    showTooltips={ {
+                                                        description: true,
+                                                        header: false
+                                                    } }
                                                     data-testid={ `${ componentId }-${ template.name }` }
                                                     selected={
                                                         selectedManualModeOption?.authenticatorId === template

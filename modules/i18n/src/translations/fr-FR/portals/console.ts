@@ -2948,6 +2948,79 @@ export const console: ConsoleNS = {
                             subHeading: "Utilisez le guide ci-dessous"
                         }
                     }
+                },
+                wizards: {
+                    addAuthenticator: {
+                        header: "Remplissez les informations de base sur l'authentificateur.",
+                        steps: {
+                            authenticatorConfiguration: {
+                                title: "Configuration d'authentificateur"
+                            },
+                            authenticatorSelection: {
+                                manualSetup: {
+                                    subTitle: "Ajoutez un nouvel authentificateur avec des configurations personnalisées.",
+                                    title: "Configuration manuelle"
+                                },
+                                quickSetup: {
+                                    subTitle: "Modèles d'authentificateur prédéfinis pour accélérer le processus.",
+                                    title: "Installation rapide"
+                                },
+                                title: "Sélection des authentificateurs"
+                            },
+                            authenticatorSettings: {
+                                emptyPlaceholder: {
+                                    subtitles: [
+                                        "Cet authentificateur n'a aucun paramètre disponible pour être",
+                                        "configuré à ce niveau.Cliquez simplement sur <11> Terminer </1>."
+                                    ],
+                                    title: "Aucun paramètre disponible pour cet authentificateur."
+                                }
+                            },
+                            summary: {
+                                title: "Sommaire"
+                            }
+                        }
+                    },
+                    addIDP: {
+                        header: "Remplissez les informations de base sur le fournisseur d'identité.",
+                        steps: {
+                            authenticatorConfiguration: {
+                                title: "Configuration d'authentificateur"
+                            },
+                            generalSettings: {
+                                title: "Réglages généraux"
+                            },
+                            provisioningConfiguration: {
+                                title: "Configuration de l'approvisionnement"
+                            },
+                            summary: {
+                                title: "Sommaire"
+                            }
+                        }
+                    },
+                    addProvisioningConnector: {
+                        header: "Remplissez les informations de base sur le connecteur d'approvisionnement.",
+                        steps: {
+                            connectorConfiguration: {
+                                title: "Détails du connecteur"
+                            },
+                            connectorSelection: {
+                                defaultSetup: {
+                                    subTitle: "Sélectionnez le type du nouveau connecteur d'approvisionnement sortant",
+                                    title: "Types de connecteur"
+                                },
+                                title: "Sélection du connecteur"
+                            },
+                            summary: {
+                                title: "Sommaire"
+                            }
+                        }
+                    },
+                    buttons: {
+                        finish: "Finir",
+                        next: "Prochaine",
+                        previous: "Précédente"
+                    }
                 }
             },
             footer: {
