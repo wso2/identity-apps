@@ -18,6 +18,11 @@
 
 import { ConsoleNS } from "../../../models";
 
+/**
+ * NOTES: No need to care about the max-len for this file since it's easier to
+ * translate the strings to other languages easily with editor translation tools.
+ */
+/* eslint-disable max-len */
 export const console: ConsoleNS = {
     common: {
         advancedSearch: {
