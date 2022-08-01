@@ -71,6 +71,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
     );
     const feature: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const scopes = useSelector((state: AppState) => state.auth.allowedScopes);
+    const tenantDomain: string = useSelector((state: AppState) => state?.auth?.tenantDomain);
 
     const [ associatedOrganizations, setAssociatedOrganizations ] = useState<OrganizationInterface[]>([]);
     const [ listFilter, setListFilter ] = useState("");
@@ -80,11 +81,16 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
     const [ search, setSearch ] = useState<string>("");
 
     const isOrgSwitcherEnabled = useMemo(() => {
-        return isOrganizationManagementEnabled &&
-        hasRequiredScopes(feature?.organizations, feature?.organizations?.scopes?.read, scopes) &&
-        organizationConfigs.showOrganizationDropdown;
+        return (
+            isOrganizationManagementEnabled &&
+            tenantDomain === AppConstants.getSuperTenant() &&
+            hasRequiredScopes(feature?.organizations, feature?.organizations?.scopes?.read, scopes) &&
+            organizationConfigs.showOrganizationDropdown
+        );
     }, [
-        organizationConfigs.showOrganizationDropdown
+        organizationConfigs.showOrganizationDropdown,
+        tenantDomain,
+        feature.organizations
     ]);
 
     const getOrganizationList = useCallback((filter: string, after: string, before: string) => {
