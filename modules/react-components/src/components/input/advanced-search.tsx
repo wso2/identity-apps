@@ -109,6 +109,10 @@ export interface AdvancedSearchPropsInterface extends IdentifiableComponentInter
      */
     searchOptionsHeader?: string;
     /**
+     * Session Timed Out status.
+     */
+    sessionTimedOut?: boolean;
+    /**
      * Is form submitted.
      */
     submitted?: boolean;
@@ -159,6 +163,7 @@ export const AdvancedSearch: FunctionComponent<PropsWithChildren<AdvancedSearchP
         placeholder,
         resetSubmittedState,
         searchOptionsHeader,
+        sessionTimedOut,
         submitted,
         [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId,
@@ -173,6 +178,15 @@ export const AdvancedSearch: FunctionComponent<PropsWithChildren<AdvancedSearchP
     const [ showSearchFieldHint, setShowSearchFieldHint ] = useState<boolean>(false);
     const [ isDropdownVisible, setIsDropdownVisible ] = useState<boolean>(false);
     const [ internalQueryClearTriggerState, setInternalQueryClearTriggerState ] = useState<boolean>(false);
+
+    /**
+     * useEffect hook to handle `sessionTimedOut` change.
+     */
+    useEffect(() => {
+        if (sessionTimedOut) {
+            setIsDropdownVisible(false);
+        }
+    }, [ sessionTimedOut ]);
 
     /**
      * useEffect hook to handle `internalSearchQuery` change.

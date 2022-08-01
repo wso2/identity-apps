@@ -28,6 +28,7 @@ import React, {
     useState
 } from "react";
 import { Trans } from "react-i18next";
+import { SessionTimedOutContext } from "./session-management-context";
 import { SessionTimeoutModal } from "../../components";
 
 /**
@@ -47,6 +48,14 @@ export interface SessionManagementProviderPropsInterface extends TestableCompone
      * Login again callback.
      */
     onLoginAgain?: () => void;
+    /**
+     * Session Timed Out callback.
+     */
+    setSessionTimedOut?: (sessionTimedOut : boolean ) => void;
+    /**
+     * Session Timed Out variable.
+     */
+    sessionTimedOut?: boolean;
     /**
      * Modal options.
      */
@@ -142,6 +151,8 @@ export const SessionManagementProvider: FunctionComponent<PropsWithChildren<
             onSessionLogout,
             onLoginAgain,
             onSessionTimeoutAbort,
+            setSessionTimedOut,
+            sessionTimedOut,
             modalOptions,
             type
         } = props;
@@ -154,8 +165,7 @@ export const SessionManagementProvider: FunctionComponent<PropsWithChildren<
         ] = useState<SessionTimeoutEventStateInterface>(undefined);
         const [ showSessionTimeoutModal, setShowSessionTimeoutModal ] = useState<boolean>(false);
         const [ timerDisplay, setTimerDisplay ] = useState<string>(undefined);
-        const [ sessionTimedOut, setSessionTimedOut ] = useState<boolean>(false);
-
+        
         useEffect(() => {
             const sessionTimeoutListener = (e: MessageEventInit) => {
                 const state = e.data;
@@ -181,7 +191,7 @@ export const SessionManagementProvider: FunctionComponent<PropsWithChildren<
                 if (JSON.parse(timeout) && type === SessionTimeoutModalTypes.COUNTER) {
                     startTimer(idleTimeout - idleWarningTimeout);
                 }
-
+                setSessionTimedOut(true);
                 setShowSessionTimeoutModal(JSON.parse(timeout));
             };
 
@@ -213,6 +223,7 @@ export const SessionManagementProvider: FunctionComponent<PropsWithChildren<
 
             performCleanupTasks();
             setShowSessionTimeoutModal(false);
+            setSessionTimedOut(false);
         };
 
         /**
@@ -221,6 +232,7 @@ export const SessionManagementProvider: FunctionComponent<PropsWithChildren<
         const handleSessionLogout = (): void => {
             performCleanupTasks();
             setShowSessionTimeoutModal(false);
+            setSessionTimedOut(false);
             onSessionLogout();
         };
 
@@ -230,6 +242,7 @@ export const SessionManagementProvider: FunctionComponent<PropsWithChildren<
         const handleLoginAgain = (): void => {
             performCleanupTasks();
             setShowSessionTimeoutModal(false);
+            setSessionTimedOut(false);
             onLoginAgain();
         };
 
@@ -241,12 +254,14 @@ export const SessionManagementProvider: FunctionComponent<PropsWithChildren<
             // If the counter runs out or if the type of the modal is default, try the login again option.
             if (sessionTimedOut || type === SessionTimeoutModalTypes.DEFAULT) {
                 handleLoginAgain();
+                setSessionTimedOut(false);
 
                 return;
             }
 
             // If the counter hasn't run out, and the type of modal is other than `default` abort the termination.
             handleSessionTimeoutAbort();
+            setSessionTimedOut(false);
         };
 
         /**
@@ -287,61 +302,63 @@ export const SessionManagementProvider: FunctionComponent<PropsWithChildren<
         };
 
         return (
-            <>
-                { children }
-                <SessionTimeoutModal
-                    closeOnEscape={ false }
-                    closeOnDimmerClick={ false }
-                    open={ showSessionTimeoutModal }
-                    onClose={ handleSessionTimeoutAbort }
-                    onPrimaryActionClick={ handlePrimaryActionClick }
-                    onSecondaryActionClick={ handleSessionLogout }
-                    sessionTimeOut={ sessionTimedOut }
-                    heading={
-                        (type === SessionTimeoutModalTypes.DEFAULT)
-                            ? (
-                                <Trans
-                                    i18nKey={ modalOptions?.headingI18nKey }
-                                >
-                                It looks like you have been inactive for a long time.
-                                </Trans>
-                            )
-                            : (
-                                <Trans
-                                    i18nKey={
-                                        !sessionTimedOut
-                                            ? modalOptions?.headingI18nKey
-                                            : modalOptions?.sessionTimedOutHeadingI18nKey
-                                    }
-                                    tOptions={
-                                        { time: timerDisplay }
-                                    }
-                                >
-                                You will be logged out in <strong>{ timerDisplay }</strong>.
-                                </Trans>
-                            )
-                    }
-                    description={
-                        (type === SessionTimeoutModalTypes.DEFAULT)
-                            ? modalOptions?.description
-                            : sessionTimedOut
-                                ? modalOptions?.sessionTimedOutDescription
-                                : modalOptions?.description
-                    }
-                    primaryButtonText={
-                        (type === SessionTimeoutModalTypes.DEFAULT)
-                            ? modalOptions?.primaryButtonText
-                            : sessionTimedOut
-                                ? modalOptions?.loginAgainButtonText
-                                : modalOptions?.primaryButtonText
-                    }
-                    secondaryButtonText={
-                        (type === SessionTimeoutModalTypes.COUNTER)
-                            ? modalOptions?.secondaryButtonText
-                            : null
-                    }
-                />
-            </>
+            <SessionTimedOutContext.Provider value={ sessionTimedOut } >
+                <>
+                    { children }
+                    <SessionTimeoutModal
+                        closeOnEscape={ false }
+                        closeOnDimmerClick={ false }
+                        open={ showSessionTimeoutModal }
+                        onClose={ handleSessionTimeoutAbort }
+                        onPrimaryActionClick={ handlePrimaryActionClick }
+                        onSecondaryActionClick={ handleSessionLogout }
+                        sessionTimeOut={ sessionTimedOut }
+                        heading={
+                            (type === SessionTimeoutModalTypes.DEFAULT)
+                                ? (
+                                    <Trans
+                                        i18nKey={ modalOptions?.headingI18nKey }
+                                    >
+                                    It looks like you have been inactive for a long time.
+                                    </Trans>
+                                )
+                                : (
+                                    <Trans
+                                        i18nKey={
+                                            !sessionTimedOut
+                                                ? modalOptions?.headingI18nKey
+                                                : modalOptions?.sessionTimedOutHeadingI18nKey
+                                        }
+                                        tOptions={
+                                            { time: timerDisplay }
+                                        }
+                                    >
+                                    You will be logged out in <strong>{ timerDisplay }</strong>.
+                                    </Trans>
+                                )
+                        }
+                        description={
+                            (type === SessionTimeoutModalTypes.DEFAULT)
+                                ? modalOptions?.description
+                                : sessionTimedOut
+                                    ? modalOptions?.sessionTimedOutDescription
+                                    : modalOptions?.description
+                        }
+                        primaryButtonText={
+                            (type === SessionTimeoutModalTypes.DEFAULT)
+                                ? modalOptions?.primaryButtonText
+                                : sessionTimedOut
+                                    ? modalOptions?.loginAgainButtonText
+                                    : modalOptions?.primaryButtonText
+                        }
+                        secondaryButtonText={
+                            (type === SessionTimeoutModalTypes.COUNTER)
+                                ? modalOptions?.secondaryButtonText
+                                : null
+                        }
+                    />
+                </>
+            </SessionTimedOutContext.Provider>
         );
     };
 
