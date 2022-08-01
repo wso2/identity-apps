@@ -19,6 +19,7 @@
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { DocumentationConstants } from "./documentation-constants";
 import { IdentityProviderTemplateLoadingStrategies } from "../models";
+import { authenticatorConfig } from "../../../extensions/configs/authenticator";
 
 /**
  * Class containing identity provider management constants.
@@ -330,7 +331,7 @@ export class IdentityProviderManagementConstants {
     public static readonly IDENTIFIER_FIRST_AUTHENTICATOR_ID: string = "SWRlbnRpZmllckV4ZWN1dG9y";
     public static readonly JWT_BASIC_AUTHENTICATOR_ID: string = "SldUQmFzaWNBdXRoZW50aWNhdG9y";
     public static readonly FIDO_AUTHENTICATOR_ID: string = "RklET0F1dGhlbnRpY2F0b3I";
-    public static readonly SMS_OTP_AUTHENTICATOR_ID: string = "U01TT1RQ";
+    public static readonly SMS_OTP_AUTHENTICATOR_ID: string = authenticatorConfig.overriddenAuthenticatorIds.SMS_OTP_AUTHENTICATOR_ID ?? "U01TT1RQ";
     public static readonly TOTP_AUTHENTICATOR_ID: string = "dG90cA";
     public static readonly ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_ID: string = "U2Vzc2lvbkV4ZWN1dG9y";
     public static readonly X509_CERTIFICATE_AUTHENTICATOR_ID: string = "eDUwOUNlcnRpZmljYXRlQXV0aGVudGljYXRvcg";
