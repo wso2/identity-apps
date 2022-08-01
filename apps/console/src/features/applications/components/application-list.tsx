@@ -338,7 +338,6 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                 key: "templateID",
                 render: (app: ApplicationListItemInterface): ReactNode => {
 
-
                     // Note: the templateId for Standard-Based Applications in applicationTemplates is 'custom-application' (only 1 template is available)
                     // But backend passes 3 distinct ids for Standard Based Applications
                     // So, a deep clone of a template with templateId === 'custom-application' should be made
