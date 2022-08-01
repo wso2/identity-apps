@@ -38,6 +38,8 @@ import {
     TableColumnInterface,
     useConfirmationModalAlert
 } from "@wso2is/react-components";
+// eslint-disable-next-line no-restricted-imports
+import _ from "lodash";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -62,6 +64,7 @@ import {
 } from "../models";
 import { ApplicationTemplateManagementUtils } from "../utils";
 import { applicationConfig } from "../../../extensions";
+import {OAuthProtocolTemplateItem, PassiveStsProtocolTemplateItem, SAMLProtocolTemplateItem} from "./meta";
 
 /**
  *
@@ -336,17 +339,59 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                 id: "templateID",
                 key: "templateID",
                 render: (app: ApplicationListItemInterface): ReactNode => {
-                    const template = applicationTemplates
-                        && applicationTemplates instanceof Array
-                        && applicationTemplates.length > 0
-                        && applicationTemplates.find((template) => template.id === app.templateId);
-                    console.log({ app, template })
-                    // Displays the template name of the application
-                    return (
-                        <div>
-                            <p>{ template?.name }</p>
-                        </div>
-                    );
+
+                    // Note: the templateId for Standard-Based Applications in applicationTemplates is 'custom-application' (only 1 template is available)
+                    // But backend passes 3 distinct ids for Standard Based Applications
+                    // So, a deep clone of a template with templateId === 'custom-application' should be made
+                    // And change the name according to the templateId passed from the backend
+
+                    // Create a set with custom-application Ids
+                    const customApplicationIds = new Set( [
+                        ApplicationManagementConstants.CUSTOM_APPLICATION_SAML,
+                        ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC,
+                        ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS
+                    ]);
+
+                    // Checking whether the templateId from backend, is for a custom application
+                    // If so, find the single template from applicationTemplates
+                    if (customApplicationIds.has(app.templateId)) {
+                        const template = applicationTemplates
+                            && applicationTemplates instanceof Array
+                            && applicationTemplates.length > 0
+                            && applicationTemplates.find((template) => {
+                                return template.templateId === "custom-application";
+                            });
+
+                        // Cloning the template and replacing the name with specific template name
+                        const template_clone = _.cloneDeep(template);
+                        if (template_clone) {
+                            if (app.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_SAML) {
+                                template_clone.name = SAMLProtocolTemplateItem.name;
+                            } else if (app.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC) {
+                                template_clone.name = OAuthProtocolTemplateItem.name;
+                            } else if (app.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS) {
+                                template_clone.name = PassiveStsProtocolTemplateItem.name;
+                            }
+                        }
+
+                        return (
+                            <div>
+                                <p>{ template_clone?.name }</p>
+                            </div>
+                        );
+                    } else {
+                        // Displaying template name if it's not a Standard-Based Application
+                        const template = applicationTemplates
+                            && applicationTemplates instanceof Array
+                            && applicationTemplates.length > 0
+                            && applicationTemplates.find((template) => template.id === app.templateId);
+
+                        return (
+                            <div>
+                                <p>{template?.name}</p>
+                            </div>
+                        );
+                    }
                 },
                 title: t("console:develop.features.applications.list.columns.name")
             },
