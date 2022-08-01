@@ -235,8 +235,8 @@ export const ExpertModeAuthenticationProviderCreateWizard: FunctionComponent<
 
             const identityProvider: IdentityProviderInterface = { ...template.idp };
 
-            identityProvider.name = values.name.toString();
-            identityProvider.description = values.description.toString();
+            identityProvider.name = values?.name?.toString();
+            identityProvider.description = values?.description?.toString() || template.description;
             identityProvider.templateId = template.templateId;
 
             // TODO: Refactor the usage of absolute image paths once Media Service is available.
