@@ -584,16 +584,16 @@ export const myAccount: MyAccountNS = {
         },
         mfa: {
             authenticatorApp: {
-                addHint:"Configure QR code",
+                addHint:"Configure",
                 configuredDescription: "You can use TOTP codes from your configured " +
                     "authenticator app for two-factor authentication. If you don't have " +
                     "access to the application you can set up a new authenticator app from here.",
-                deleteHint: "Deletes QR code",
+                deleteHint: "Remove",
                 description: "You can use the authenticator app to get verification codes for " + 
                     "two-factor authentication.",
                 enableHint: "Enable/Disable TOTP Authenticator",
                 heading: "Authenticator App",
-                hint: "Show the QR Code",
+                hint: "View",
                 modals: {
                     delete : {
                         heading: "Confirmation",
