@@ -713,3 +713,22 @@ applications.developer_app.configs.path = "<PATH>" # Path to navigate the users 
 > :negative_squared_cross_mark: No value defined in Default JSON
 
 App extensions configuration.
+
+#### `connectors`
+
+> :bulb: No value defined in Default JSON
+
+Add UI metadata for the connectors you add to the Identity Server instance.
+
+> 📖 For more information, read through [Connectors guide](./CONNECTORS.md).
+
+
+The following configuration adds UI metadata for the LinkedIn connector.
+
+```toml
+[[console.extensions.connectors]]
+authenticatorId="TGlua2VkSW4"
+description="Login users with existing LinkedIn accounts"
+displayName="LinkedIn"
+icon="https://brand.linkedin.com/content/dam/me/business/en-us/amp/brand-site/v2/bg/LI-Bug.svg.original.svg"
+```

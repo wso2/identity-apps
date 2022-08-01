@@ -41,6 +41,7 @@ import {
     updateOutboundProvisioningConnectors
 } from "../../api";
 import {
+    AuthenticatorSettingsFormModes,
     IdentityProviderInterface,
     OutboundProvisioningConnectorInterface,
     OutboundProvisioningConnectorWithMetaInterface,
@@ -406,6 +407,9 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                                                                         actions: createAccordionActions(connector),
                                                                         content: (
                                                                             <OutboundProvisioningConnectorFormFactory
+                                                                                mode={
+                                                                                    AuthenticatorSettingsFormModes.EDIT
+                                                                                }
                                                                                 metadata={ connector.meta }
                                                                                 initialValues={ connector.data }
                                                                                 onSubmit={ 

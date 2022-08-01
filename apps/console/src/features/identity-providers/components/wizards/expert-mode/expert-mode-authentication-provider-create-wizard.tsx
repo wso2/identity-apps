@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (http://www.wso2.com) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,9 +17,10 @@
  */
 
 import { IdentityAppsError } from "@wso2is/core/errors";
-import { AlertLevels, IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
+    ContentLoader,
     DocumentationLink,
     GenericIcon,
     Heading,
@@ -28,92 +29,69 @@ import {
     useDocumentation,
     useWizardAlert
 } from "@wso2is/react-components";
-import { ContentLoader } from "@wso2is/react-components/src/components/loader/content-loader";
-import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
 import {
-    GitHubAuthenticationProviderCreateWizardContent
-} from "./github-authentication-provider-create-wizard-content";
-import { identityProviderConfig } from "../../../../../extensions/configs";
-import {
-    AppConstants,
-    AppState,
-    ConfigReducerStateInterface,
-    EventPublisher,
-    ModalWithSidePanel
-} from "../../../../../features/core";
-import { TierLimitReachErrorModal } from "../../../../core/components/tier-limit-reach-error-modal";
+    ExpertModeAuthenticationProviderCreateWizardContent
+} from "./expert-mode-authentication-provider-create-wizard-content";
+import { identityProviderConfig } from "../../../../../extensions/configs/identity-provider";
+import { ModalWithSidePanel, TierLimitReachErrorModal } from "../../../../core/components";
+import { AppConstants } from "../../../../core/constants";
+import { AppState } from "../../../../core/store";
+import { EventPublisher } from "../../../../core/utils";
 import { createIdentityProvider } from "../../../api";
 import { getIdPIcons } from "../../../configs";
 import { IdentityProviderManagementConstants } from "../../../constants";
 import {
     GenericIdentityProviderCreateWizardPropsInterface,
-    IdentityProviderInterface,
-    OutboundProvisioningConnectorInterface
+    IdentityProviderInterface
 } from "../../../models";
 
 /**
- * Proptypes for the GitHub Authentication Provider Create Wizard.
+ * Prop-types for the Expert Mode Authentication Provider Create Wizard.
  */
-interface GitHubAuthenticationProviderCreateWizardPropsInterface extends TestableComponentInterface,
+interface ExpertModeAuthenticationProviderCreateWizardPropsInterface extends IdentifiableComponentInterface,
     GenericIdentityProviderCreateWizardPropsInterface, IdentifiableComponentInterface {
 }
 
 /**
- * Proptypes for the GitHub Authentication Wizard Form values.
+ * Prop-types for the ExpertMode Authentication Wizard Form values.
  */
-export interface GitHubAuthenticationProviderCreateWizardFormValuesInterface {
+export interface ExpertModeAuthenticationProviderCreateWizardFormValuesInterface {
     /**
-     * GitHub Authenticator Client Secret.
-     */
-    clientSecret: string;
-    /**
-     * Callback URL.
-     */
-    callbackUrl: string;
-    /**
-     * GitHub Authenticator Client ID.
-     */
-    clientId: string;
-    /**
-     * GitHub Authenticator name.
+     * ExpertMode Authenticator name.
      */
     name: string;
+    /**
+     * ExpertMode Authenticator description.
+     */
+     description: string;
 }
 
 /**
- * Proptypes for the GitHub Authentication Wizard Form error messages.
+ * Prop-types for the Expert Mode Authentication Wizard Form error messages.
  */
-export interface GithubAuthenticationProviderCreateWizardFormErrorValidationsInterface {
+export interface ExpertModeAuthenticationProviderCreateWizardFormErrorValidationsInterface {
     /**
      * Error message for the Authenticator name.
      */
     name: string;
-    /**
-     * Error message for the Client ID.
-     */
-    clientId: string;
-    /**
-     * Error message for the Client Secret.
-     */
-    clientSecret: string
 }
 
 /**
- * GitHub Authentication Provider Create Wizard Component.
+ * Expert Mode Authentication Provider Create Wizard Component.
  *
- * @param {GitHubAuthenticationProviderCreateWizardPropsInterface} props - Props injected to the component.
+ * @param {ExpertModeAuthenticationProviderCreateWizardPropsInterface} props - Props injected to the component.
  *
  * @return {React.ReactElement}
  */
-export const GitHubAuthenticationProviderCreateWizard: FunctionComponent<
-    GitHubAuthenticationProviderCreateWizardPropsInterface
+export const ExpertModeAuthenticationProviderCreateWizard: FunctionComponent<
+    ExpertModeAuthenticationProviderCreateWizardPropsInterface
     > = (
-        props: GitHubAuthenticationProviderCreateWizardPropsInterface
+        props: ExpertModeAuthenticationProviderCreateWizardPropsInterface
     ): ReactElement => {
 
         const {
@@ -123,7 +101,6 @@ export const GitHubAuthenticationProviderCreateWizard: FunctionComponent<
             title,
             subTitle,
             template,
-            [ "data-testid" ]: testId,
             [ "data-componentid" ]: componentId
         } = props;
 
@@ -134,7 +111,7 @@ export const GitHubAuthenticationProviderCreateWizard: FunctionComponent<
 
         const [ alert, setAlert, alertComponent ] = useWizardAlert();
 
-        const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+        const theme: string = useSelector((state: AppState) => state?.config?.ui?.theme?.name);
 
         const [ currentWizardStep, setCurrentWizardStep ] = useState<number>(currentStep);
         const [ wizStep, setWizStep ] = useState<number>(0);
@@ -229,33 +206,6 @@ export const GitHubAuthenticationProviderCreateWizard: FunctionComponent<
         };
 
         /**
-        * Handles the final wizard submission.
-        *
-        * @param identityProvider - Identity provider data.
-        */
-        const handleWizardFormFinish = (identityProvider: IdentityProviderInterface): void => {
-
-            const connector: OutboundProvisioningConnectorInterface =
-            identityProvider?.provisioning?.outboundConnectors?.connectors[ 0 ];
-
-            const isGoogleConnector: boolean = get(connector,
-                IdentityProviderManagementConstants.PROVISIONING_CONNECTOR_DISPLAY_NAME) ===
-            IdentityProviderManagementConstants.PROVISIONING_CONNECTOR_GOOGLE;
-
-            // If the outbound connector is Google, remove the displayName from the connector.
-            if (connector && isGoogleConnector) {
-                delete connector[
-                    IdentityProviderManagementConstants.PROVISIONING_CONNECTOR_DISPLAY_NAME
-                ];
-            }
-
-            // Use description from template.
-            identityProvider.description = template.description;
-
-            createNewIdentityProvider(identityProvider);
-        };
-
-        /**
         * Called when modal close event is triggered.
         */
         const handleWizardClose = (): void => {
@@ -275,39 +225,19 @@ export const GitHubAuthenticationProviderCreateWizard: FunctionComponent<
         /**
         * Callback triggered when the form is submitted.
         *
-        * @param {GitHubAuthenticationProviderCreateWizardFormValuesInterface} values - Form values.
+        * @param {ExpertModeAuthenticationProviderCreateWizardFormValuesInterface} values - Form values.
         */
-        const onSubmitWizard = async (values: GitHubAuthenticationProviderCreateWizardFormValuesInterface): Promise<void> => {
+        const onSubmitWizard = async (
+            values: ExpertModeAuthenticationProviderCreateWizardFormValuesInterface
+        ): Promise<void> => {
 
             await identityProviderConfig.overrideTemplate(template);
 
             const identityProvider: IdentityProviderInterface = { ...template.idp };
 
-            identityProvider.name = values.name.toString();
+            identityProvider.name = values?.name?.toString();
+            identityProvider.description = values?.description?.toString() || template.description;
             identityProvider.templateId = template.templateId;
-
-            identityProvider.federatedAuthenticators.authenticators[ 0 ].properties = [
-                {
-                    "key": "ClientId",
-                    "value": values.clientId.toString()
-                },
-                {
-                    "key": "ClientSecret",
-                    "value": values.clientSecret.toString()
-                },
-                {
-                    "key": "callbackUrl",
-                    "value": config?.deployment?.customServerHost + "/commonauth"
-                },
-                {
-                    "key": "scope",
-                    "value": IdentityProviderManagementConstants.GITHUB_AUTHENTICATOR_REQUESTED_SCOPES.join(" ")
-                },
-                {
-                    "key": "UsePrimaryEmail",
-                    "value": "true"
-                }
-            ];
 
             // TODO: Refactor the usage of absolute image paths once Media Service is available.
             // Tracked here - https://github.com/wso2/product-is/issues/12396
@@ -315,14 +245,14 @@ export const GitHubAuthenticationProviderCreateWizard: FunctionComponent<
                 if (AppConstants.getAppBasename()) {
                     identityProvider.image = AppConstants.getClientOrigin() +
                     "/" + AppConstants.getAppBasename() +
-                    "/libs/themes/default/assets/images/identity-providers/github-idp-illustration.svg";
+                    `/libs/themes/${ theme }/assets/images/identity-providers/expert.svg`;
                 } else {
                     identityProvider.image = AppConstants.getClientOrigin() +
-                    "/libs/themes/default/assets/images/identity-providers/github-idp-illustration.svg";
+                    `/libs/themes/${ theme }/assets/images/identity-providers/expert.svg`;
                 }
             }
 
-            handleWizardFormFinish(identityProvider);
+            createNewIdentityProvider(identityProvider);
         };
 
         /**
@@ -339,7 +269,7 @@ export const GitHubAuthenticationProviderCreateWizard: FunctionComponent<
                             <LinkButton
                                 floated="left"
                                 onClick={ handleWizardClose }
-                                data-testid={ `${ testId }-modal-cancel-button` }
+                                data-componentid={ `${ componentId }-modal-cancel-button` }
                             >
                                 { t("common:cancel") }
                             </LinkButton>
@@ -351,7 +281,7 @@ export const GitHubAuthenticationProviderCreateWizard: FunctionComponent<
                                     onClick={ () => {
                                         submitForm();
                                     } }
-                                    data-testid={ `${ testId }-modal-finish-button` }
+                                    data-componentid={ `${ componentId }-modal-finish-button` }
                                     loading={ isSubmitting }
                                     disabled={ isSubmitting }
                                 >
@@ -364,7 +294,7 @@ export const GitHubAuthenticationProviderCreateWizard: FunctionComponent<
                                         onClick={ () => {
                                             submitForm();
                                         } }
-                                        data-testid={ `${ testId }-modal-finish-button` }
+                                        data-componentid={ `${ componentId }-modal-finish-button` }
                                         loading={ isSubmitting }
                                         disabled={ isSubmitting }
                                     >
@@ -373,16 +303,20 @@ export const GitHubAuthenticationProviderCreateWizard: FunctionComponent<
                                 </>
                             ) }
                             {
-                                currentWizardStep > 1 &&
-                            (<LinkButton
-                                floated="right"
-                                onClick={ () => {
-                                    triggerPreviousForm();
-                                } }
-                                data-testid={ `${ testId }-modal-previous-button` }
-                            >
-                                { t("console:develop.features.authenticationProvider.wizards.buttons.previous") }
-                            </LinkButton>)
+                                currentWizardStep > 1 && (
+                                    <LinkButton
+                                        floated="right"
+                                        onClick={ () => {
+                                            triggerPreviousForm();
+                                        } }
+                                        data-componentid={ `${ componentId }-modal-previous-button` }
+                                    >
+                                        {
+                                            t("console:develop.features.authenticationProvider.wizards" +
+                                                ".buttons.previous")
+                                        }
+                                    </LinkButton>
+                                )
                             }
                         </Grid.Column>
                     </Grid.Row>
@@ -410,7 +344,7 @@ export const GitHubAuthenticationProviderCreateWizard: FunctionComponent<
                 <ModalWithSidePanel.SidePanel>
                     <ModalWithSidePanel.Header className="wizard-header help-panel-header muted">
                         <div className="help-panel-header-text">
-                            { t("console:develop.features.authenticationProvider.templates.github.wizardHelp.heading") }
+                            { t("console:develop.features.authenticationProvider.templates.expert.wizardHelp.heading") }
                         </div>
                     </ModalWithSidePanel.Header>
                     <ModalWithSidePanel.Content>
@@ -434,8 +368,8 @@ export const GitHubAuthenticationProviderCreateWizard: FunctionComponent<
 
         return (
             <>
-                { openLimitReachedModal &&
-                    (<TierLimitReachErrorModal
+                { openLimitReachedModal && (
+                    <TierLimitReachErrorModal
                         actionLabel={ t(
                             "console:develop.features.idp.notifications." +
                         "tierLimitReachedError.emptyPlaceholder.action"
@@ -453,7 +387,8 @@ export const GitHubAuthenticationProviderCreateWizard: FunctionComponent<
                         "tierLimitReachedError.emptyPlaceholder.title"
                         ) }
                         openModal={ openLimitReachedModal }
-                    />) }
+                    />
+                ) }
                 <ModalWithSidePanel
                     open={ !openLimitReachedModal }
                     className="wizard identity-provider-create-wizard"
@@ -461,20 +396,20 @@ export const GitHubAuthenticationProviderCreateWizard: FunctionComponent<
                     onClose={ handleWizardClose }
                     closeOnDimmerClick={ false }
                     closeOnEscape
-                    data-testid={ `${ testId }-modal` }
+                    data-componentid={ `${ componentId }-modal` }
                 >
                     <ModalWithSidePanel.MainPanel>
                         <ModalWithSidePanel.Header
                             className="wizard-header"
-                            data-testid={ `${ testId }-modal-header` }
+                            data-componentid={ `${ componentId }-modal-header` }
                         >
                             <div className="display-flex">
                                 <GenericIcon
-                                    icon={ getIdPIcons().github }
+                                    icon={ getIdPIcons().expert }
                                     size="mini"
                                     transparent
                                     spaced="right"
-                                    data-testid={ `${ testId }-image` }
+                                    data-componentid={ `${ componentId }-image` }
                                 />
                                 <div className="ml-1">
                                     { title }
@@ -482,7 +417,7 @@ export const GitHubAuthenticationProviderCreateWizard: FunctionComponent<
                                 (<Heading as="h6">
                                     { subTitle }
                                     <DocumentationLink
-                                        link={ getLink("develop.connections.newConnection.github.learnMore") }
+                                        link={ getLink("develop.connections.newConnection.siwe.learnMore") }
                                     >
                                         { t("common:learnMore") }
                                     </DocumentationLink>
@@ -493,10 +428,10 @@ export const GitHubAuthenticationProviderCreateWizard: FunctionComponent<
                         </ModalWithSidePanel.Header>
                         <ModalWithSidePanel.Content
                             className="content-container"
-                            data-testid={ `${ testId }-modal-content` }
+                            data-componentid={ `${ componentId }-modal-content` }
                         >
                             { alert && alertComponent }
-                            <GitHubAuthenticationProviderCreateWizardContent
+                            <ExpertModeAuthenticationProviderCreateWizardContent
                                 onSubmit={ onSubmitWizard }
                                 triggerSubmission={ (submitFunctionCb: () => void) => {
                                     submitForm = submitFunctionCb;
@@ -509,7 +444,7 @@ export const GitHubAuthenticationProviderCreateWizard: FunctionComponent<
                                 template={ template }
                             />
                         </ModalWithSidePanel.Content>
-                        <ModalWithSidePanel.Actions data-testid={ `${ testId }-modal-actions` }>
+                        <ModalWithSidePanel.Actions data-componentid={ `${ componentId }-modal-actions` }>
                             { resolveStepActions() }
                         </ModalWithSidePanel.Actions>
                     </ModalWithSidePanel.MainPanel>
@@ -520,10 +455,9 @@ export const GitHubAuthenticationProviderCreateWizard: FunctionComponent<
     };
 
 /**
- * Default props for the GitHub Authentication Provider Create Wizard.
+ * Default props for the Expert Mode Authentication Provider Create Wizard.
  */
-GitHubAuthenticationProviderCreateWizard.defaultProps = {
+ExpertModeAuthenticationProviderCreateWizard.defaultProps = {
     currentStep: 1,
-    "data-componentid": "github-idp",
-    "data-testid": "github-idp-create-wizard"
+    "data-componentid": "expert-mode-idp-create-wizard"
 };
