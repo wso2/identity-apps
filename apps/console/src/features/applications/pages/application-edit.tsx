@@ -308,6 +308,10 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
      * Load the list of sub organizations under the current organization for application sharing.
      */
     useEffect(() => {
+        if (!showAppShareModal) {
+            return;
+        }
+
         getOrganizations(
             null,
             null,
@@ -483,7 +487,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                                 ) }
                             />
                         </div>
-                    ) 
+                    )
             ) }
             image={
                 applicationConfig.editApplication.getOverriddenImage(inboundProtocolConfigs?.oidc?.clientId,
