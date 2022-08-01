@@ -17,99 +17,141 @@
  */
 
 import { getIdPIcons } from "../../configs";
+import { IdentityProviderManagementConstants } from "../../constants";
 import { AuthenticatorMeta } from "../../meta";
 import { FederatedAuthenticatorMetaDataInterface } from "../../models";
 
 /**
- * The set of connectors shipped OOTB by Identity Server.
- * TODO: Remove this mapping once there's an API to get the list of connectors.
+ * The metadata set of connectors shipped OOTB by Identity Server.
+ * TODO: Remove this mapping once there's an API to get the connector icons, etc.
  * @returns {FederatedAuthenticatorMetaDataInterface[]}
  */
-export const getFederatedAuthenticators = (): FederatedAuthenticatorMetaDataInterface[] => {
+const getKnownConnectorMetadata = (): FederatedAuthenticatorMetaDataInterface[] => {
     return [
         {
-            authenticatorId: "T2ZmaWNlMzY1QXV0aGVudGljYXRvcg",
+            authenticatorId: IdentityProviderManagementConstants.OFFICE_365_AUTHENTICATOR_ID,
             description: "Seamless integration with Office 365.",
             displayName: "Office 365",
             icon: getIdPIcons().office365,
-            name: "Office365Authenticator"
+            name: IdentityProviderManagementConstants.OFFICE_365_AUTHENTICATOR_NAME
         },
         {
-            authenticatorId: "VHdpdHRlckF1dGhlbnRpY2F0b3I",
+            authenticatorId: IdentityProviderManagementConstants.TWITTER_AUTHENTICATOR_ID,
             description: "Login users with existing Twitter accounts.",
             displayName: "Twitter",
             icon: getIdPIcons().twitter,
-            name: "TwitterAuthenticator"
+            name: IdentityProviderManagementConstants.TWITTER_AUTHENTICATOR_NAME
         },
         {
-            authenticatorId: "RmFjZWJvb2tBdXRoZW50aWNhdG9y",
+            authenticatorId: IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_ID,
             description: "Login users with existing Facebook accounts.",
             displayName: "Facebook",
             icon: getIdPIcons().facebook,
-            name: "FacebookAuthenticator"
+            name: IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_NAME
         },
         {
-            authenticatorId: "R29vZ2xlT0lEQ0F1dGhlbnRpY2F0b3I",
+            authenticatorId: IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID,
             description: "Login users with existing Google accounts.",
             displayName: "Google",
             icon: getIdPIcons().google,
-            name: "GoogleOIDCAuthenticator"
+            name: IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_NAME
         },
         {
-            authenticatorId: "TWljcm9zb2Z0V2luZG93c0xpdmVBdXRoZW50aWNhdG9y",
+            authenticatorId: IdentityProviderManagementConstants.MS_LIVE_AUTHENTICATOR_ID,
             description: "Login users with their Microsoft Live accounts.",
             displayName: "Microsoft Windows Live",
             icon: getIdPIcons().microsoft,
-            name: "MicrosoftWindowsLiveAuthenticator"
+            name: IdentityProviderManagementConstants.MS_LIVE_AUTHENTICATOR_NAME
         },
         {
-            authenticatorId: "UGFzc2l2ZVNUU0F1dGhlbnRpY2F0b3I",
+            authenticatorId: IdentityProviderManagementConstants.PASSIVE_STS_AUTHENTICATOR_ID,
             description: "Login users with WS Federation.",
             displayName: "Passive STS",
             icon: getIdPIcons().wsFed,
-            name: "PassiveSTSAuthenticator"
+            name: IdentityProviderManagementConstants.PASSIVE_STS_AUTHENTICATOR_NAME
         },
         {
-            authenticatorId: "WWFob29PQXV0aDJBdXRoZW50aWNhdG9y",
-            description: "Login users with their Yahoo accounts.",
-            displayName: "Yahoo",
-            icon: getIdPIcons().yahoo,
-            name: "YahooOAuth2Authenticator"
-        },
-        {
-            authenticatorId: "SVdBS2VyYmVyb3NBdXRoZW50aWNhdG9y",
+            authenticatorId: IdentityProviderManagementConstants.IWA_KERBEROS_AUTHENTICATOR_ID,
             description: "Login users to Microsoft Windows servers.",
             displayName: "IWA Kerberos",
             icon: getIdPIcons().iwaKerberos,
-            name: "IWAKerberosAuthenticator"
+            name: IdentityProviderManagementConstants.IWA_KERBEROS_AUTHENTICATOR_NAME
         },
         {
-            authenticatorId: "U0FNTFNTT0F1dGhlbnRpY2F0b3I",
+            authenticatorId: IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID,
             description: "Login users with their accounts using SAML protocol.",
             displayName: "SAML",
             icon: getIdPIcons().saml,
-            name: "SAMLSSOAuthenticator"
+            name: IdentityProviderManagementConstants.SAML_AUTHENTICATOR_NAME
         },
         {
-            authenticatorId: "T3BlbklEQ29ubmVjdEF1dGhlbnRpY2F0b3I",
+            authenticatorId: IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_ID,
             description: "Login users with their accounts using OpenID Connect protocol.",
             displayName: "OpenID Connect",
             icon: getIdPIcons().oidc,
-            name: "OpenIDConnectAuthenticator"
+            name: IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_NAME
         },
         {
-            authenticatorId: "RW1haWxPVFA",
-            description: AuthenticatorMeta.getAuthenticatorDescription("RW1haWxPVFA"),
+            authenticatorId: IdentityProviderManagementConstants.LEGACY_EMAIL_OTP_AUTHENTICATOR_ID,
+            description: AuthenticatorMeta
+                .getAuthenticatorDescription(IdentityProviderManagementConstants.LEGACY_EMAIL_OTP_AUTHENTICATOR_ID),
             displayName: "Email OTP",
             icon: getIdPIcons().emailOTP,
-            name: "EmailOTP"
+            name: IdentityProviderManagementConstants.LEGACY_EMAIL_OTP_AUTHENTICATOR_NAME
         },
         {
-            authenticatorId: "U01TT1RQ",
+            authenticatorId: IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID,
             description: AuthenticatorMeta.getAuthenticatorDescription("U01TT1RQ"),
             displayName: "SMS OTP",
             icon: getIdPIcons().smsOTP,
-            name: "SMSOTP"
+            name: IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_NAME
         }
+    ];
+};
+
+/**
+ * The metadata set of connectors that we know are supported by Identity Server.
+ * TODO: Remove this mapping once there's an API to get the connector icons, etc.
+ * @returns {FederatedAuthenticatorMetaDataInterface[]}
+ */
+const getKnownExternalConnectorMetadata = (): FederatedAuthenticatorMetaDataInterface[] => {
+    return [
+        {
+            authenticatorId: IdentityProviderManagementConstants.YAHOO_AUTHENTICATOR_ID,
+            description: "Login users with their Yahoo accounts.",
+            displayName: "Yahoo",
+            icon: getIdPIcons().yahoo,
+            name: IdentityProviderManagementConstants.YAHOO_AUTHENTICATOR_NAME
+        },
+        {
+            authenticatorId: IdentityProviderManagementConstants.GITHUB_AUTHENTICATOR_ID,
+            description: "Login users with existing GitHub accounts",
+            displayName: "GitHub",
+            icon: getIdPIcons().github,
+            name: IdentityProviderManagementConstants.GITHUB_AUTHENTICATOR_NAME
+        }
+    ];
+};
+
+/**
+ * The metadata set of connectors that are added by user.
+ * TODO: Remove this mapping once there's an API to get the connector icons, etc.
+ * @returns {FederatedAuthenticatorMetaDataInterface[]}
+ */
+const getExternalConnectorMetadataExtensions = (): FederatedAuthenticatorMetaDataInterface[] => {
+    return [];
+};
+
+/**
+ * The metadata set of all the connectors that are available.
+ * TODO: Remove this mapping once there's an API to get the connector icons, etc.
+ * @returns {FederatedAuthenticatorMetaDataInterface[]}
+ */
+export const getConnectorMetadata = (): FederatedAuthenticatorMetaDataInterface[] => {
+
+    return [
+        ...getKnownConnectorMetadata(),
+        ...getKnownExternalConnectorMetadata(),
+        ...getExternalConnectorMetadataExtensions()
     ];
 };

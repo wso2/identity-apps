@@ -1642,6 +1642,15 @@ export interface ConsoleNS {
                             authenticatorConfiguration: {
                                 title: string;
                             };
+                            authenticatorSettings: {
+                                emptyPlaceholder: {
+                                    subtitles: [
+                                        string,
+                                        string
+                                    ];
+                                    title: string;
+                                };
+                            };
                             summary: {
                                 title: string;
                             };
