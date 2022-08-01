@@ -219,6 +219,10 @@ npm run build:external:static
 
 The respective build artifacts could be found inside the build folder. (`apps/(myaccount|console)/build`)
 
+## Connectors
+
+Go through our [connectors guide](./docs/CONNECTORS.md) to learn how to handle connectors in the Identity Server Console.
+
 ## Troubleshoot
 
 - If you face any out of memory build failures, make sure that you have set maven options to `set MAVEN_OPTS=-Xmx384M`
