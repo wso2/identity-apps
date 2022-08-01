@@ -142,27 +142,6 @@ export class AuthenticatorMeta {
     }
 
     /**
-     * Get Authenticator display name.
-     *
-     * @param {string} authenticatorId - Authenticator ID.
-     *
-     * @return {string}
-     */
-    public static getAuthenticatorDisplayName(authenticatorId: string): string {
-
-        return get({
-            [ IdentityProviderManagementConstants.BASIC_AUTHENTICATOR ]: "Username & Password",
-            [ IdentityProviderManagementConstants.BASIC_AUTHENTICATOR_ID ]: "Username & Password",
-            [ IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID ]: "Security Key/Biometrics",
-            [ IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID ]: "TOTP",
-            [ IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID ]: "Email OTP",
-            [ IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID ]: "Identifier First",
-            [ IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID ]: "SMS OTP",
-            [ IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID ]: "Magic Link"
-        }, authenticatorId);
-    }
-
-    /**
      * Get Authenticator Icon.
      *
      * @param {string} authenticatorId - Authenticator ID.
