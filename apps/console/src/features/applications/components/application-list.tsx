@@ -258,9 +258,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
      *
      * @return {TableColumnInterface[]}
      */
-
     const resolveTableColumns = (): TableColumnInterface[] => {
-        console.log("resolveTableColumns called")
         return [
             {
                 allowToggleVisibility: false,
