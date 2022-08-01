@@ -139,7 +139,7 @@ const getKnownExternalConnectorMetadata = (): FederatedAuthenticatorMetaDataInte
  * @returns {FederatedAuthenticatorMetaDataInterface[]}
  */
 const getExternalConnectorMetadataExtensions = (): FederatedAuthenticatorMetaDataInterface[] => {
-    return [];
+    return window[ "AppUtils" ]?.getConfig()?.extensions?.connectors ?? [];
 };
 
 /**
