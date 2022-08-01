@@ -750,7 +750,11 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                     <Grid.Column width={ 16 } textAlign="right">
                         <PrimaryButton
                             onClick={ handleAddAuthenticator }
-                            disabled={ isEmpty(availableManualModeOptions) }
+                            disabled={
+                                IdentityProviderManagementConstants.SHOW_PREDEFINED_TEMPLATES_IN_EXPERT_MODE_SETUP
+                                    ? isEmpty(availableTemplates) && isEmpty(availableManualModeOptions)
+                                    : isEmpty(availableManualModeOptions)
+                            }
                             loading={ isIdPTemplateFetchRequestLoading }
                             data-testid={ `${ testId }-add-authenticator-button` }
                         >
@@ -827,6 +831,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
      */
     const handleAddAuthenticator = (): void => {
 
+        filterTemplates();
         setShowAddAuthenticatorWizard(true);
     };
 
