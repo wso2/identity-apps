@@ -554,7 +554,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
         });
 
         const filteredTemplates = identityProviderTemplates.filter((template) =>
-            (template.idp?.federatedAuthenticators.defaultAuthenticatorId &&
+            (template.idp?.federatedAuthenticators?.defaultAuthenticatorId &&
                 !availableAuthenticatorIDs.includes(
                     template.idp?.federatedAuthenticators?.defaultAuthenticatorId))
         );
