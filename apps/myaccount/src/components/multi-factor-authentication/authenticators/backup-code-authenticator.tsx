@@ -261,7 +261,7 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
     const renderBackupCodeWizard = (): ReactElement => {
         return (
             <Modal
-                data-componentid={ `${componentid}-modal` }
+                data-testid={ `${componentid}-modal` }
                 size="small"
                 open={ isModalOpen }
                 closeOnDimmerClick={ false }
@@ -276,7 +276,7 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
                 </Modal.Header>
                     
                 <Modal.Content 
-                    data-componentid={ `${componentid}-modal-content` }
+                    data-testid={ `${componentid}-modal-content` }
                     scrolling
                 >
                     <Heading size={ "tiny" }  >
@@ -304,7 +304,7 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
                                                 <GridColumn
                                                     key={ index }
                                                     className="backup-code-column"
-                                                    data-componentid={ `${ componentid }-modal-backup-code-${ index }` }
+                                                    data-testid={ `${ componentid }-modal-backup-code-${ index }` }
                                                 > 
                                                     <div>
                                                         { code }
@@ -330,7 +330,7 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
                             getRemainingCount();
                             setIsModalOpen(false);
                         } }
-                        data-componentid={ `${componentid}-modal-actions-done-button` }
+                        data-testid={ `${componentid}-modal-actions-done-button` }
                     >
                         { t("common:close") }
                     </LinkButton>
@@ -339,7 +339,7 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
                         primary
                         onMouseEnter={ () => setIsCodesCopied(false) }
                         onClick={ handleCopyBackupCodes }
-                        data-componentid={ `${componentid}-modal-copy-button` }
+                        data-testid={ `${componentid}-modal-copy-button` }
                     >
                         { 
                             isCodesCopied 
@@ -350,7 +350,7 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
                     <Button
                         primary
                         onClick={ handleDownloadBackupCodes }
-                        data-componentid={ `${componentid}-modal-download-button` }
+                        data-testid={ `${componentid}-modal-download-button` }
                     >
                         { t(translateKey + "modals.actions.download") }
                     </Button>
