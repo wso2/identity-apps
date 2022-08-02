@@ -155,7 +155,7 @@
     <%
         if (reCaptchaEnabled) {
     %>
-        <script src='<%=Encode.forHtmlContent(reCaptchaAPI)%>?render=<%=Encode.forHtmlContent(reCaptchaKey)%>'></script>
+        <script src='<%=Encode.forHtmlContent(reCaptchaAPI)%>'></script>
     <%
         }
     %>
@@ -285,7 +285,7 @@
                                         class="ui primary button g-recaptcha"
                                         data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>"
                                         data-callback="onSubmit"
-                                        data-action="submit">
+                                        data-action="recoverUsername">
                                         <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                                         "Submit")%>
                                 </button>

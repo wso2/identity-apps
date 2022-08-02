@@ -489,7 +489,7 @@
                 role="button"
                 data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>"
                 data-callback="onSubmit"
-                data-action="submit"
+                data-action="login"
                 data-testid="login-page-continue-login-button"
             >
                 <%=StringEscapeUtils.escapeHtml4(AuthenticationEndpointUtil.i18n(resourceBundle, "continue"))%>

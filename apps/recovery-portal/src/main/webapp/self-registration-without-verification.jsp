@@ -104,7 +104,7 @@
         <%
             if (reCaptchaEnabled) {
         %>
-        <script src='<%=Encode.forHtmlContent(reCaptchaAPI)%>?render=<%=Encode.forHtmlContent(reCaptchaKey)%>'></script>
+        <script src='<%=Encode.forHtmlContent(reCaptchaAPI)%>'></script>
         <%
             }
         %>
@@ -245,7 +245,7 @@
                                             class="wr-btn grey-bg col-xs-12 col-md-12 col-lg-12 uppercase font-extra-large g-recaptcha"
                                             data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>"
                                             data-callback="onSubmit"
-                                            data-action="submit"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Next")%>
+                                            data-action="register"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Next")%>
                                     </button>
                                 </div>
                             </div>
