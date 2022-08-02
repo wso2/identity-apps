@@ -205,7 +205,7 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
     /**
      * Config for enabling GOT only for super users.
      */
-    enableGOTForSuperTenantUserOnly?: boolean;
+    isGOTEnabledForSuperTenantOnly?: boolean;
     /**
      * Should default dialects be allowed for editing.
      */

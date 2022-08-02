@@ -68,7 +68,7 @@
         "applicationTemplateLoadingStrategy": "LOCAL",
         "identityProviderTemplateLoadingStrategy": "LOCAL",
         "appLogoPath": "/assets/images/branding/logo.svg",
-        "enableGOTForSuperTenantUserOnly": true,
+        "isGOTEnabledForSuperTenantOnly": true,
         "features": {
             "applications": {
                 "disabledFeatures": [],

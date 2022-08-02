@@ -153,7 +153,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             appName: "",
             appTitle: "",
             applicationTemplateLoadingStrategy: undefined,
-            enableGOTForSuperTenantUserOnly: true,
+            isGOTEnabledForSuperTenantOnly: true,
             features: {
                 applications: null,
                 approvals: null,

@@ -247,7 +247,7 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
      * @returns Whether enable Google One Tap or not.
      */
     const isEnableGoogleOneTap = (): boolean => {
-        return !UIConfig.enableGOTForSuperTenantUserOnly || isSuperTenantLogin();
+        return !UIConfig.isGOTEnabledForSuperTenantOnly || isSuperTenantLogin();
     };
 
     /**
