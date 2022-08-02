@@ -1181,6 +1181,10 @@ export const console: ConsoleNS = {
                                                     "de passe, vos utilisateurs doivent avoir leurs clés de " +
                                                     "sécurité FIDO2 ou leurs données biométriques enregistrées " +
                                                     "via Mon compte."
+                                            },
+                                            smsOTP: {
+                                                description: "Activez une couche supplémentaire d'authentification avec OTP basé sur SMS.",
+                                                heading: "Ajouter SMS OTP comme deuxième facteur"
                                             }
                                         }
                                     }
