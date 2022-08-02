@@ -84,16 +84,23 @@ export class AdaptiveScriptUtils {
             + scriptBody
             + ApplicationManagementConstants.DEFAULT_ADAPTIVE_AUTH_SCRIPT_FOOTER;
 
-        return AdaptiveScriptUtils.minifyScript(moderatedScript) === AdaptiveScriptUtils.minifyScript(scriptComposed);
+        const userDefined = AdaptiveScriptUtils.minifyScript(moderatedScript, false);
+        const defaultScript = AdaptiveScriptUtils.minifyScript(scriptComposed, false);
+
+        return userDefined === defaultScript;
     }
 
     /**
      * Strips spaces and new lines in the script.
      *
      * @param {string | string[]} originalScript - Original script.
+     * @param ignoreComments {boolean}
      * @return {string}
      */
-    public static minifyScript(originalScript: string | string[]): string {
+    public static minifyScript(
+        originalScript: string | string[],
+        ignoreComments: boolean = true
+    ): string {
 
         if (!originalScript) return ApplicationManagementConstants.EMPTY_STRING;
 
@@ -122,11 +129,21 @@ export class AdaptiveScriptUtils {
          */
         const comments = /\/\*[\s\S]*?\*\/|\/\/.*/gm;
 
-        return script
-            .replace(comments, ApplicationManagementConstants.EMPTY_STRING)
+        let minimized = script;
+
+        if (ignoreComments)
+            minimized = minimized.replace(
+                comments,
+                ApplicationManagementConstants.EMPTY_STRING
+            );
+
+        minimized = minimized
             .replace(/(?:\r\n|\r|\n)/g, ApplicationManagementConstants.EMPTY_STRING)
             .replace(/\s/g, ApplicationManagementConstants.EMPTY_STRING)
             .trim();
+
+        return minimized;
+
     }
 
     public static isEmptyScript(script: string | string[]): boolean {
