@@ -32,6 +32,7 @@ import GitHubLoginSequenceTemplate from "./templates/github-login-sequence.json"
 import GoogleLoginSequenceTemplate from "./templates/google-login-sequence.json";
 import MagicLinkSequenceTemplate from "./templates/magic-link-sequence.json";
 import SecondFactorTOTPSequenceTemplate from "./templates/second-factor-totp-sequence.json";
+import SecondFactorSMSOTPSequenceTemplate from "./templates/second-factor-sms-otp-sequence.json";
 import UsernamelessSequenceTemplate from "./templates/usernameless-login-sequence.json";
 import { AppConstants, EventPublisher, FeatureConfigInterface, history } from "../../../../core";
 import {
@@ -285,7 +286,15 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                 ...authenticationSequence,
                 ...cloneDeep(SecondFactorTOTPSequenceTemplate)
             });
-        } else if (loginFlow === LoginFlowTypes.FIDO_LOGIN) {
+        } else if(loginFlow === LoginFlowTypes.SECOND_FACTOR_SMS_OTP){
+            eventPublisher.publish("application-sign-in-method-click-add", {
+                type: "second-factor-sms-otp"
+            });
+            setModeratedAuthenticationSequence({
+                ...authenticationSequence,
+                ...cloneDeep(SecondFactorSMSOTPSequenceTemplate)
+            });
+        }else if (loginFlow === LoginFlowTypes.FIDO_LOGIN) {
             eventPublisher.publish("application-sign-in-method-click-add", {
                 type: "first-factor-fido"
             });

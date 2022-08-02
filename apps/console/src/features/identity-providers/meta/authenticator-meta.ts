@@ -108,6 +108,9 @@ export class AuthenticatorMeta {
             [ IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID ]: [
                 AuthenticatorLabels.MULTI_FACTOR
             ],
+            [ IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID ]: [
+                AuthenticatorLabels.MULTI_FACTOR
+            ],
             [ IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID ]: [
                 AuthenticatorLabels.PASSWORDLESS
             ]
