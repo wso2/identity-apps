@@ -608,11 +608,15 @@
                                     <a href="javascript:goBack()" class="ui button secondary">
                                         <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Cancel")%>
                                     </a>
-                                    <button id="registrationSubmit"
-                                            class="ui primary button"
-                                            type="submit">
-                                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Register")%>
-                                    </button>
+                                    <div style="display: inline-block">
+                                        <button id="registrationSubmit"
+                                                class="ui primary button g-recaptcha"
+                                                data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>"
+                                                data-callback="onSubmit"
+                                                data-action="submit">
+                                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Register")%>
+                                        </button>
+                                    </div>
                                 </div>
                                 <div class="field">
                                     <input id="isSelfRegistrationWithVerification" type="hidden"
@@ -725,6 +729,10 @@
 
         function goBack() {
             window.history.back();
+        }
+
+        function onSubmit(token) {
+           $("#register").submit();
         }
 
         $(document).ready(function () {
@@ -860,16 +868,6 @@
                         $("html, body").animate({scrollTop: error_msg.offset().top}, 'slow');
                         return false;
                 }
-
-                <% if(reCaptchaEnabled) { %>
-                    grecaptcha.ready(function() {
-                        grecaptcha.execute('<%=Encode.forHtmlContent(reCaptchaKey)%>', {action: 'register'}).then(function(token) {
-                            $('#register').prepend('<input type="hidden" name="g-recaptcha-response" value="' + token + '">');
-                            $('#register').prepend('<input type="hidden" name="action" value="register">');
-                            $('#register').unbind('submit').submit();
-                        });
-                    });
-                <% } %>
 
                 <%
                 if (hasPurposes) {

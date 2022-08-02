@@ -484,10 +484,12 @@
         </div>
         <div class="column mobile center aligned tablet right aligned computer right aligned buttons tablet no-margin-right-last-child computer no-margin-right-last-child">
             <button
-                type="submit"
-                class="ui primary large button"
+                class="ui primary large button g-recaptcha"
                 tabindex="4"
                 role="button"
+                data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>"
+                data-callback="onSubmit"
+                data-action="submit"
                 data-testid="login-page-continue-login-button"
             >
                 <%=StringEscapeUtils.escapeHtml4(AuthenticationEndpointUtil.i18n(resourceBundle, "continue"))%>
@@ -544,6 +546,10 @@
                 $passwordInput.attr("type", "password");
             }
         });
+
+        function onSubmit(token) {
+           $("#loginForm").submit();
+        }
 
     </script>
 

@@ -68,7 +68,7 @@
     <%
         if (reCaptchaEnabled) {
     %>
-        <script src='<%=Encode.forHtmlContent(reCaptchaAPI)%>?render=<%=Encode.forHtmlContent(reCaptchaKey)%>'></script>
+    <script src='<%=Encode.forHtmlContent(reCaptchaAPI)%>?render=<%=Encode.forHtmlContent(reCaptchaKey)%>'></script>
     <%
         }
     %>
@@ -120,8 +120,11 @@
                         <div class="ui divider hidden"></div>
                         <div class="align-right buttons">
                             <button id="answerSubmit"
-                                    class="ui primary button"
-                                    type="submit"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Submit")%>
+                                    class="ui primary button g-recaptcha"
+                                    data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>"
+                                    data-callback="onSubmit"
+                                    data-action="submit">
+                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Submit")%>
                             </button>
                         </div>
                     </form>
@@ -153,18 +156,9 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-
-            <% if(reCaptchaEnabled) { %>
-                $("#securityQuestionForm").submit(function (e) {
-                    grecaptcha.ready(function() {
-                        grecaptcha.execute('<%=Encode.forHtmlContent(reCaptchaKey)%>', {action: 'securityQuestion'}).then(function(token) {
-                            $('#securityQuestionForm').prepend('<input type="hidden" name="g-recaptcha-response" value="' + token + '">');
-                            $('#securityQuestionForm').prepend('<input type="hidden" name="action" value="securityQuestion">');
-                            $('#securityQuestionForm').unbind('submit').submit();
-                        });
-                    });
-                <% } %>
-            });
+            function onSubmit(token) {
+               $("#securityQuestionForm").submit();
+            }
         });
 
     </script>

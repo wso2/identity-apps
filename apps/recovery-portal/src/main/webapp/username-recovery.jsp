@@ -280,11 +280,16 @@
                             <a href="javascript:goBack()" class="ui button secondary">
                                 <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Cancel")%>
                             </a>
-                            <button id="recoverySubmit"
-                                    class="ui primary large button"
-                                    type="submit"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                                    "Submit")%>
-                            </button>
+                            <div style="display: inline-block">
+                                <button id="recoverySubmit"
+                                        class="ui primary button g-recaptcha"
+                                        data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>"
+                                        data-callback="onSubmit"
+                                        data-action="submit">
+                                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                                        "Submit")%>
+                                </button>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -318,6 +323,10 @@
             window.history.back();
         }
 
+        function onSubmit(token) {
+           $("#recoverDetailsForm").submit();
+        }
+
         $(document).ready(function () {
 
             $("#recoverDetailsForm").submit(function (e) {
@@ -340,16 +349,6 @@
                         submitButton.removeClass("loading").attr("disabled", false);
                         return false;
                     }
-                <% } %>
-
-                <% if (reCaptchaEnabled) { %>
-                    grecaptcha.ready(function() {
-                        grecaptcha.execute('<%=Encode.forHtmlContent(reCaptchaKey)%>', {action: 'usernameRecovery'}).then(function(token) {
-                            $('#recoverDetailsForm').prepend('<input type="hidden" name="g-recaptcha-response" value="' + token + '">');
-                            $('#recoverDetailsForm').prepend('<input type="hidden" name="action" value="usernameRecovery">');
-                            $('#recoverDetailsForm').unbind('submit').submit();
-                        });
-                    });
                 <% } %>
 
                 return true;

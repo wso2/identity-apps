@@ -240,10 +240,14 @@
 
                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group">
                                 <br/>
-                                <button id="registrationSubmit"
-                                        class="wr-btn grey-bg col-xs-12 col-md-12 col-lg-12 uppercase font-extra-large"
-                                        type="submit"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Next")%>
-                                </button>
+                                <div style="display: inline-block">
+                                    <button id="registrationSubmit"
+                                            class="wr-btn grey-bg col-xs-12 col-md-12 col-lg-12 uppercase font-extra-large g-recaptcha"
+                                            data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>"
+                                            data-callback="onSubmit"
+                                            data-action="submit"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Next")%>
+                                    </button>
+                                </div>
                             </div>
                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group">
                                 <span class="margin-top padding-top-double font-large">
@@ -278,6 +282,10 @@
     <script src="libs/jquery_3.6.0/jquery-3.6.0.min.js"></script>
     <script src="libs/bootstrap_3.4.1/js/bootstrap.min.js"></script>
     <script type="text/javascript">
+
+        function onSubmit(token) {
+           $("#register").submit();
+        }
 
         $(document).ready(function () {
 
@@ -315,15 +323,6 @@
 
                 return true;
 
-                <% if(reCaptchaEnabled) { %>
-                    grecaptcha.ready(function() {
-                        grecaptcha.execute('<%=Encode.forHtmlContent(reCaptchaKey)%>', {action: 'register'}).then(function(token) {
-                            $('#register').prepend('<input type="hidden" name="g-recaptcha-response" value="' + token + '">');
-                            $('#register').prepend('<input type="hidden" name="action" value="register">');
-                            $('#register').unbind('submit').submit();
-                        });
-                    });
-                <% } %>
             });
 
 
