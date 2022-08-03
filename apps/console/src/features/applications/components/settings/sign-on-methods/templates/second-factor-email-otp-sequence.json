@@ -1,0 +1,22 @@
+{
+    "steps": [
+        {
+            "id": 1,
+            "options": [
+                {
+                    "authenticator": "BasicAuthenticator",
+                    "idp": "LOCAL"
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "options": [
+                {
+                    "authenticator": "email-otp-authenticator",
+                    "idp": "LOCAL"
+                }
+            ]
+        }
+    ]
+}
