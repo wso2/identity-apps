@@ -346,9 +346,10 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
 
         // If there is a script and if the script is not a default script,
         // assume the user has modified the script and show the editor.
-        if (authenticationSequence?.script
-            && !AdaptiveScriptUtils.isDefaultScript(authenticationSequence.script,
-                authenticationSequence?.steps?.length)) {
+        if (authenticationSequence?.script && !AdaptiveScriptUtils.isDefaultScript(
+            authenticationSequence.script,
+            authenticationSequence?.steps?.length
+        )) {
 
             setShowConditionalAuthContent(true);
 
@@ -1205,7 +1206,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                         <Menu.Menu position="right">
                                             { resolveApiDocumentationLink() }
                                             <Menu.Item 
-                                            className={ `action ${isSecretsDropdownOpen ? "selected-secret" : "" }` }>
+                                                className={ `action ${isSecretsDropdownOpen ? "selected-secret" : "" }` }>
                                                 <div>
                                                     { renderSecretListDropdown() }
                                                 </div>
