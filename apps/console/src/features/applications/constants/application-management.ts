@@ -420,6 +420,8 @@ export class ApplicationManagementConstants {
 
     public static readonly CUSTOM_APPLICATION_PASSIVE_STS = "custom-application-passive-sts";
 
+    public static readonly CUSTOM_APPLICATION = "custom-application";
+
     public static readonly CUSTOM_APPLICATION_PROTOCOL_ORDER: Map<string, number> =
         new Map<string, number>([
             [ "oidc", 0 ],

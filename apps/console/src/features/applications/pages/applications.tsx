@@ -144,7 +144,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
         isLoading: isApplicationListFetchRequestLoading,
         error: applicationListFetchRequestError,
         mutate: mutateApplicationListFetchRequest
-    } = useApplicationList("advancedConfigurations,templateId",listItemLimit, listOffset, searchQuery);
+    } = useApplicationList("advancedConfigurations,templateId", listItemLimit, listOffset, searchQuery);
 
     /**
      * Sets the initial spinner.

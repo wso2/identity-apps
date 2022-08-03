@@ -38,8 +38,7 @@ import {
     TableColumnInterface,
     useConfirmationModalAlert
 } from "@wso2is/react-components";
-// eslint-disable-next-line no-restricted-imports
-import _ from "lodash";
+import cloneDeep from "lodash-es/cloneDeep";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -64,7 +63,7 @@ import {
     ApplicationTemplateListItemInterface
 } from "../models";
 import { ApplicationTemplateManagementUtils } from "../utils";
-import {OAuthProtocolTemplateItem, PassiveStsProtocolTemplateItem, SAMLProtocolTemplateItem} from "./meta";
+import { OAuthProtocolTemplateItem, PassiveStsProtocolTemplateItem, SAMLProtocolTemplateItem } from "./meta";
 
 /**
  *
@@ -258,9 +257,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
      *
      * @return {TableColumnInterface[]}
      */
-
     const resolveTableColumns = (): TableColumnInterface[] => {
-        console.log("resolveTableColumns called")
         return [
             {
                 allowToggleVisibility: false,
@@ -346,7 +343,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                     // And change the name according to the templateId passed from the backend
 
                     // Create a set with custom-application Ids
-                    const customApplicationIds = new Set( [
+                    const customApplicationIds = new Set([
                         ApplicationManagementConstants.CUSTOM_APPLICATION_SAML,
                         ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC,
                         ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS
@@ -359,24 +356,25 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                             && applicationTemplates instanceof Array
                             && applicationTemplates.length > 0
                             && applicationTemplates.find((template) => {
-                                return template.templateId === "custom-application";
+                                return template.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION;
                             });
 
                         // Cloning the template and replacing the name with specific template name
-                        const template_clone = _.cloneDeep(template);
-                        if (template_clone) {
+                        const templateClone = cloneDeep(template);
+
+                        if (templateClone) {
                             if (app.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_SAML) {
-                                template_clone.name = SAMLProtocolTemplateItem.name;
+                                templateClone.name = SAMLProtocolTemplateItem.name;
                             } else if (app.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC) {
-                                template_clone.name = OAuthProtocolTemplateItem.name;
+                                templateClone.name = OAuthProtocolTemplateItem.name;
                             } else if (app.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS) {
-                                template_clone.name = PassiveStsProtocolTemplateItem.name;
+                                templateClone.name = PassiveStsProtocolTemplateItem.name;
                             }
                         }
 
                         return (
                             <div>
-                                <p>{ template_clone?.name }</p>
+                                { templateClone?.name }
                             </div>
                         );
                     } else {
@@ -385,10 +383,10 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                             && applicationTemplates instanceof Array
                             && applicationTemplates.length > 0
                             && applicationTemplates.find((template) => template.id === app.templateId);
-
+                        console.log(app.isManagementApp);
                         return (
                             <div>
-                                <p>{template?.name}</p>
+                                { template?.name }
                             </div>
                         );
                     }
