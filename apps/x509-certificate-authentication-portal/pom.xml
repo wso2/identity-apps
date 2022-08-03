@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.wso2.identity.apps</groupId>
         <artifactId>identity-apps</artifactId>
-        <version>1.3.35</version>
+        <version>1.3.36-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
