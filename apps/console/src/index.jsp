@@ -33,7 +33,7 @@
 <!DOCTYPE HTML>
 <html>
     <head>
-        <script src="https://unpkg.com/@asgardeo/auth-spa@0.3.3/dist/asgardeo-spa.production.min.js"></script>
+        <script src="console/auth-spa-0.3.3.min.js"></script>
     </head>
     <body>
         <script>
