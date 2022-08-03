@@ -110,15 +110,6 @@
         $('#loginForm').preventDoubleSubmission();
     });
 
-    function showResendReCaptcha() {
-        <% if (StringUtils.isNotBlank(request.getParameter("failedUsername"))){ %>
-            <% if (reCaptchaResendEnabled) { %>
-                window.location.href="resend-confirmation-captcha.jsp?<%=AuthenticationEndpointUtil.cleanErrorMessages(Encode.forJava(request.getQueryString()))%>";
-            <% } else { %>
-                window.location.href="login.do?resend_username=<%=Encode.forHtml(URLEncoder.encode(request.getParameter("failedUsername"), UTF_8))%>&<%=AuthenticationEndpointUtil.cleanErrorMessages(Encode.forJava(request.getQueryString()))%>";
-            <% } %>
-        <% } %>
-    }
 </script>
 
 <%!
@@ -257,18 +248,32 @@
 
 <% if (Boolean.parseBoolean(loginFailed) && errorCode.equals(IdentityCoreConstants.USER_ACCOUNT_NOT_CONFIRMED_ERROR_CODE) && request.getParameter("resend_username") == null) { %>
     <div class="ui visible warning message" id="error-msg" data-testid="login-page-error-message">
-        <%= AuthenticationEndpointUtil.i18n(resourceBundle, errorMessage) %>
+        <form action="login.do?resend_username=<%=Encode.forHtml(URLEncoder.encode(request.getParameter("failedUsername"), UTF_8))%>&<%=AuthenticationEndpointUtil.cleanErrorMessages(Encode.forJava(request.getQueryString()))%>" method="post" id="resendForm">
+            <%= AuthenticationEndpointUtil.i18n(resourceBundle, errorMessage) %>
 
-        <div class="ui divider hidden"></div>
+            <div class="ui divider hidden"></div>
 
-        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "no.confirmation.mail")%>
+            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "no.confirmation.mail")%>
 
-        <a id="registerLink"
-            href="javascript:showResendReCaptcha();"
-            data-testid="login-page-resend-confirmation-email-link"
-        >
-            <%=StringEscapeUtils.escapeHtml4(AuthenticationEndpointUtil.i18n(resourceBundle, "resend.mail"))%>
-        </a>
+            <button id="registerLink"
+                style="
+                    padding: 0 !important;
+                    background: none !important;
+                    border: none;
+                    cursor: pointer;
+                    color: #ff5000;
+                "
+                class="g-recaptcha"
+                data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>"
+                data-callback="onSubmitResend"
+                data-action="resendConfirmation"
+                onmouseover='this.style.textDecoration="underline"'
+                onmouseout='this.style.textDecoration="none"'
+                data-testid="login-page-resend-confirmation-email-link"
+            >
+                <%=StringEscapeUtils.escapeHtml4(AuthenticationEndpointUtil.i18n(resourceBundle, "resend.mail"))%>
+            </button>
+        </form>
     </div>
     <div class="ui divider hidden"></div>
 <% } %>
@@ -549,6 +554,10 @@
 
         function onSubmit(token) {
            $("#loginForm").submit();
+        }
+
+        function onSubmitResend(token) {
+           $("#resendForm").submit();
         }
 
     </script>
