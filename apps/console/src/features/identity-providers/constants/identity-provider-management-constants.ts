@@ -317,7 +317,7 @@ export class IdentityProviderManagementConstants {
     public static readonly FIDO_AUTHENTICATOR: string = "FIDOAuthenticator";
     public static readonly BASIC_AUTHENTICATOR: string = "BasicAuthenticator";
     public static readonly IDENTIFIER_FIRST_AUTHENTICATOR: string = "IdentifierExecutor";
-    public static readonly SMS_OTP_AUTHENTICATOR: string = "sms-otp";
+    public static readonly SMS_OTP_AUTHENTICATOR: string = authenticatorConfig.overriddenAuthenticatorNames.SMS_OTP_AUTHENTICATOR ?? "sms-otp";
     public static readonly BACKUP_CODE_AUTHENTICATOR: string = "backup-code-authenticator";
     public static readonly MAGIC_LINK_AUTHENTICATOR: string = "MagicLinkAuthenticator";
 

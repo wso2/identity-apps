@@ -10,6 +10,4 @@
 import { AuthenticatorConfig } from "./models/authenticator";
 
 export const authenticatorConfig : AuthenticatorConfig = {
-    overriddenAuthenticatorIds: {
-    }
 }
