@@ -29,4 +29,3 @@ import { TextDecoder, TextEncoder } from "util";
 // Hence adding the node.js one. See https://github.com/jsdom/jsdom/issues/2524.
 global.TextEncoder = TextEncoder;
 global.TextDecoder = TextDecoder;
-global.isOrganizationManagementEnabled = true;
