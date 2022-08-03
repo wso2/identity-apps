@@ -27,7 +27,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } 
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
-import { AppState, FeatureConfigInterface } from "../../../../core";
+import { AppState, FeatureConfigInterface, store } from "../../../../core";
 import { UserStoreListItem } from "../../../../userstores";
 import { updateAClaim } from "../../../api";
 
@@ -83,7 +83,7 @@ export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttrib
             name: "PRIMARY"
         });
 
-        getUserStoreList().then((response) => {
+        getUserStoreList(store.getState().config.endpoints.userStores).then((response) => {
             userstore.push(...response.data);
             setUserStore(userstore);
         }).catch(() => {

@@ -16,8 +16,9 @@
 * under the License.
 */
 
+import { store } from "../../core/store";
 import { OrganizationManagementConstants } from "../constants";
-import { OrganizationInterface } from "../models";
+import { OrganizationInterface, OrganizationResponseInterface } from "../models";
 
 export class OrganizationUtils {
     /**
@@ -34,7 +35,17 @@ export class OrganizationUtils {
      *
      * @returns {boolean}
      */
-    public static isRootOrganization(organization: OrganizationInterface): boolean {
+    public static isRootOrganization(organization: OrganizationResponseInterface | OrganizationInterface): boolean {
         return !organization || organization.id === OrganizationManagementConstants.ROOT_ORGANIZATION_ID;
+    }
+
+    /**
+     * Returns true if the current organization is teh root organization.
+     *
+     * @returns {boolean}
+     */
+    public static isCurrentOrganizationRoot(): boolean {
+        return store.getState().organization?.organization?.id
+            === OrganizationManagementConstants.ROOT_ORGANIZATION_ID;
     }
 }

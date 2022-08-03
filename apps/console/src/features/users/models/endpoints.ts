@@ -25,4 +25,5 @@ export interface UsersResourceEndpointsInterface {
     userSessions: string;
     userStores: string;
     users: string;
+    schemas: string;
 }

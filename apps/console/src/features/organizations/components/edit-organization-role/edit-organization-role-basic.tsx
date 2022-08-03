@@ -16,12 +16,7 @@
  * under the License
  */
 
-import {
-    AlertInterface,
-    AlertLevels,
-    RolesInterface,
-    TestableComponentInterface
-} from "@wso2is/core/models";
+import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { ConfirmationModal, DangerZone, DangerZoneGroup, EmphasizedSegment } from "@wso2is/react-components";
@@ -32,7 +27,12 @@ import { Button, Divider, Form, Grid, InputOnChangeData } from "semantic-ui-reac
 import { AppConstants, AppState, SharedUserStoreConstants, SharedUserStoreUtils, history } from "../../../core";
 import { PRIMARY_USERSTORE_PROPERTY_VALUES } from "../../../userstores";
 import { deleteOrganizationRole, getOrganizationRoles, patchOrganizationRoleDetails } from "../../api";
-import { OrganizationInterface, OrganizationRoleInterface, PatchOrganizationRoleDataInterface } from "../../models";
+import { OrganizationRoleManagementConstants } from "../../constants";
+import {
+    OrganizationResponseInterface,
+    OrganizationRoleInterface,
+    PatchOrganizationRoleDataInterface
+} from "../../models";
 
 /**
  * Interface to contain props needed for component
@@ -86,7 +86,7 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
     const [ isRegExLoading, setRegExLoading ] = useState<boolean>(false);
     const [ userStore ] = useState<string>(SharedUserStoreConstants.PRIMARY_USER_STORE);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
-    const currentOrganization: OrganizationInterface = useSelector(
+    const currentOrganization: OrganizationResponseInterface = useSelector(
         (state: AppState) => state.organization.organization
     );
 
@@ -297,11 +297,10 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                                                     currentOrganization.id,
                                                     filter,
                                                     10,
-                                                    null,
                                                     null
                                                 ).then(response => {
-                                                    if (response?.roles && response?.roles?.length !== 0) {
-                                                        if (response?.roles[0]?.id !== roleId) {
+                                                    if (response?.Resources && response?.Resources?.length !== 0) {
+                                                        if (response?.Resources[0]?.id !== roleId) {
                                                             validation.isValid = false;
                                                             validation.errorMessages.push(
                                                                 t("console:manage.features.roles.addRoleWizard." +
@@ -362,7 +361,10 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
             </EmphasizedSegment>
             <Divider hidden />
             {
-                !isReadOnly && (
+                (
+                    !isReadOnly &&
+                    roleObject?.displayName !== OrganizationRoleManagementConstants.ORG_CREATOR_ROLE_NAME
+                ) && (
                     <DangerZoneGroup sectionHeader="Danger Zone">
                         <DangerZone
                             actionTitle={

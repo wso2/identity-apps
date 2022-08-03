@@ -42,16 +42,20 @@ import org.wso2.identity.apps.common.internal.AppsCommonDataHolder;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.wso2.carbon.identity.oauth.common.OAuthConstants.GrantTypes.AUTHORIZATION_CODE;
 import static org.wso2.carbon.identity.oauth.common.OAuthConstants.GrantTypes.REFRESH_TOKEN;
 import static org.wso2.carbon.identity.oauth.common.OAuthConstants.OAuthVersions.VERSION_2;
 import static org.wso2.carbon.utils.multitenancy.MultitenantConstants.SUPER_TENANT_DOMAIN_NAME;
+import static org.wso2.identity.apps.common.util.AppPortalConstants.CONSOLE_APP;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.DISPLAY_NAME_CLAIM_URI;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.EMAIL_CLAIM_URI;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.GRANT_TYPE_ACCOUNT_SWITCH;
+import static org.wso2.identity.apps.common.util.AppPortalConstants.GRANT_TYPE_ORGANIZATION_SWITCH;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.INBOUND_AUTH2_TYPE;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.INBOUND_CONFIG_TYPE;
+import static org.wso2.identity.apps.common.util.AppPortalConstants.USERNAME_CLAIM_URI;
 
 /**
  * App portal utils.
@@ -88,8 +92,13 @@ public class AppPortalUtils {
         if (!SUPER_TENANT_DOMAIN_NAME.equals(tenantDomain)) {
             callbackUrl = callbackUrl.replace(portalPath, "/t/" + tenantDomain.trim() + portalPath);
         } else {
-            callbackUrl = "regexp=(" + callbackUrl + "|" +
-                    callbackUrl.replace(portalPath, "/t/(.*)" + portalPath) + ")";
+            if (StringUtils.equals(CONSOLE_APP, applicationName)) {
+                callbackUrl = "regexp=(" + callbackUrl + "|" + callbackUrl.replace(portalPath, "/t/(.*)" +
+                        portalPath) + "|" + callbackUrl.replace(portalPath, "/o/(.*)" + portalPath) + ")";
+            } else {
+                callbackUrl = "regexp=(" + callbackUrl + "|" +
+                        callbackUrl.replace(portalPath, "/t/(.*)" + portalPath) + ")";
+            }
         }
         oAuthConsumerAppDTO.setCallbackUrl(callbackUrl);
         oAuthConsumerAppDTO.setBypassClientCredentials(true);
@@ -200,14 +209,21 @@ public class AppPortalUtils {
         emailClaimMapping.setLocalClaim(emailClaim);
         emailClaimMapping.setRemoteClaim(emailClaim);
 
-        Claim roleClaim = new Claim();
-        roleClaim.setClaimUri(DISPLAY_NAME_CLAIM_URI);
-        ClaimMapping roleClaimMapping = new ClaimMapping();
-        roleClaimMapping.setRequested(true);
-        roleClaimMapping.setLocalClaim(roleClaim);
-        roleClaimMapping.setRemoteClaim(roleClaim);
+        Claim displayNameClaim = new Claim();
+        displayNameClaim.setClaimUri(DISPLAY_NAME_CLAIM_URI);
+        ClaimMapping displayNameClaimMapping = new ClaimMapping();
+        displayNameClaimMapping.setRequested(true);
+        displayNameClaimMapping.setLocalClaim(displayNameClaim);
+        displayNameClaimMapping.setRemoteClaim(displayNameClaim);
 
-        return new ClaimMapping[] { emailClaimMapping, roleClaimMapping };
+        Claim usernameClaim = new Claim();
+        usernameClaim.setClaimUri(USERNAME_CLAIM_URI);
+        ClaimMapping usernameClaimMapping = new ClaimMapping();
+        usernameClaimMapping.setRequested(true);
+        usernameClaimMapping.setLocalClaim(usernameClaim);
+        usernameClaimMapping.setRemoteClaim(usernameClaim);
+
+        return new ClaimMapping[] { emailClaimMapping, displayNameClaimMapping, usernameClaimMapping };
     }
 
     /**
@@ -235,6 +251,13 @@ public class AppPortalUtils {
                 // Initiate portal
                 String consumerSecret = OAuthUtil.getRandomNumber();
                 List<String> grantTypes = Arrays.asList(AUTHORIZATION_CODE, REFRESH_TOKEN, GRANT_TYPE_ACCOUNT_SWITCH);
+                if (CONSOLE_APP.equals(appPortal.getName())) {
+                    grantTypes = Arrays.asList(AUTHORIZATION_CODE, REFRESH_TOKEN, GRANT_TYPE_ACCOUNT_SWITCH,
+                            GRANT_TYPE_ORGANIZATION_SWITCH);
+                }
+                List<String> allowedGrantTypes = Arrays.asList(AppsCommonDataHolder.getInstance()
+                        .getOAuthAdminService().getAllowedGrantTypes());
+                grantTypes = grantTypes.stream().filter(allowedGrantTypes::contains).collect(Collectors.toList());
                 String consumerKey = appPortal.getConsumerKey();
                 if (!SUPER_TENANT_DOMAIN_NAME.equals(tenantDomain)) {
                     consumerKey = consumerKey + "_" + tenantDomain;

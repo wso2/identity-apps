@@ -171,20 +171,9 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             }
 
             getDecodedIDToken()
-                .then((idToken) => {
-                    const subParts = idToken.sub.split("@");
-                    const tenantDomain = subParts[ subParts.length - 1 ];
-                    const username = idToken.sub;
-
+                .then(() => {
                     dispatch(
-                        setSignIn<AuthenticatedUserInfo>({
-                            displayName: response.displayName,
-                            display_name: response.displayName,
-                            email: response.email,
-                            scope: response.allowedScopes,
-                            tenantDomain: response.tenantDomain ?? tenantDomain,
-                            username: username
-                        })
+                        setSignIn<AuthenticatedUserInfo>(AuthenticateUtils.getSignInState(response))
                     );
                 })
                 .catch((error) => {

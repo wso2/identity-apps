@@ -1290,6 +1290,7 @@ export interface ConsoleNS {
                             callbackUrl: FormAttributes;
                             clientId: FormAttributes;
                             clientSecret: FormAttributes;
+                            AdditionalQueryParameters: FormAttributes;
                             scopes: {
                                 heading: string;
                                 hint: string;
@@ -1411,6 +1412,22 @@ export interface ConsoleNS {
                     quickSetup?: {
                         heading: string;
                         subHeading: string;
+                    };
+                    expert: {
+                        wizardHelp: {
+                            heading: string;
+                            description: {
+                                connectionDescription: string;
+                                heading: string;
+                                idpDescription: string;
+                            };
+                            name: {
+                                connectionDescription: string;
+                                heading: string;
+                                idpDescription: string;
+                            };
+                            subHeading: string;
+                        };
                     };
                     facebook?: {
                         wizardHelp: {
@@ -1624,6 +1641,15 @@ export interface ConsoleNS {
                             };
                             authenticatorConfiguration: {
                                 title: string;
+                            };
+                            authenticatorSettings: {
+                                emptyPlaceholder: {
+                                    subtitles: [
+                                        string,
+                                        string
+                                    ];
+                                    title: string;
+                                };
                             };
                             summary: {
                                 title: string;

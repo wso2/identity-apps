@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 Inc. (http://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (http://www.wso2.com) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -91,7 +91,6 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
     );
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ isOrganizationListRequestLoading, setOrganizationListRequestLoading ] = useState<boolean>(true);
-    const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ isOrganizationsNextPageAvailable, setIsOrganizationsNextPageAvailable ] = useState<boolean>(undefined);
     const [ isOrganizationsPrevPageAvailable, setIsOrganizationsPrevPageAvailable ] = useState<boolean>(undefined);
@@ -139,10 +138,10 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
         }
     }, [ organizationList ]);
 
-    const resetPagination = (): void => {
+    const resetPagination = useCallback((): void => {
         setActivePage(1);
         triggerResetPagination();
-    };
+    }, [ setActivePage, triggerResetPagination ]);
 
     useEffect(() => {
         if (!parent || isEmpty(parent)) {
@@ -207,7 +206,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
     const getOrganizationLists = useCallback(
         (limit?: number, filter?: string, after?: string, before?: string, recursive?: boolean): void => {
             setOrganizationListRequestLoading(true);
-            getOrganizations(filter, limit, after, before, true)
+            getOrganizations(filter, limit, after, before, false)
                 .then((response: OrganizationListInterface) => {
                     setOrganizationList(response);
                 })
@@ -245,7 +244,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                     setOrganizationListRequestLoading(false);
                 });
         },
-        [ dispatch, t ]
+        [ getOrganizations, dispatch, t, setOrganizationList, setOrganizationListRequestLoading ]
     );
 
     useEffect(() => {
@@ -272,10 +271,10 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
      *
      * @param {string} query - Search query.
      */
-    const handleOrganizationFilter = (query: string): void => {
+    const handleOrganizationFilter = useCallback((query: string): void => {
         resetPagination();
         setSearchQuery(query);
-    };
+    }, [ resetPagination, setSearchQuery ]);
 
     /**
      * Handles the pagination change.
@@ -283,7 +282,10 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
      * @param {React.MouseEvent<HTMLAnchorElement>} event - Mouse event.
      * @param {PaginationProps} data - Pagination component data.
      */
-    const handlePaginationChange = (event: MouseEvent<HTMLAnchorElement>, data: PaginationProps): void => {
+    const handlePaginationChange = useCallback((
+        event: MouseEvent<HTMLAnchorElement>,
+        data: PaginationProps
+    ): void => {
         const newPage = parseInt(data?.activePage as string);
 
         if (newPage > activePage) {
@@ -293,7 +295,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
         }
 
         setActivePage(newPage);
-    };
+    }, [ getOrganizationLists, activePage, filterQuery, listItemLimit, after, before ]);
 
     /**
      * Handles per page dropdown page.
@@ -301,10 +303,13 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
      * @param {React.MouseEvent<HTMLAnchorElement>} event - Mouse event.
      * @param {DropdownProps} data - Dropdown data.
      */
-    const handleItemsPerPageDropdownChange = (event: MouseEvent<HTMLAnchorElement>, data: DropdownProps): void => {
+    const handleItemsPerPageDropdownChange = useCallback((
+        event: MouseEvent<HTMLAnchorElement>,
+        data: DropdownProps
+    ): void => {
         setListItemLimit(data.value as number);
         resetPagination();
-    };
+    }, [ setListItemLimit, resetPagination ]);
 
     /**
      * Handles organization delete action.
@@ -323,11 +328,10 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
     /**
      * Handles the `onSearchQueryClear` callback action.
      */
-    const handleSearchQueryClear = (): void => {
+    const handleSearchQueryClear = useCallback((): void => {
         setSearchQuery("");
         resetPagination();
-        setTriggerClearQuery(!triggerClearQuery);
-    };
+    }, [ setSearchQuery, resetPagination ]);
 
     const handleBreadCrumbClick = (organization: OrganizationInterface, index: number): void => {
         const newOrganizations = [ ...organizations ];
@@ -471,7 +475,6 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                                     ) }
                                     defaultSearchAttribute="name"
                                     defaultSearchOperator="co"
-                                    triggerClearQuery={ triggerClearQuery }
                                     data-componentid={ `${ testId }-list-advanced-search` }
                                 />)
                             }

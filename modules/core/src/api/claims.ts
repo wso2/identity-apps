@@ -43,13 +43,13 @@ const httpClient = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAC
  * @return {Promise<Claim[]>} response.
  * @throws {IdentityAppsApiException}
  */
-export const getAllLocalClaims = (params: ClaimsGetParams): Promise<Claim[]> => {
+export const getAllLocalClaims = (params: ClaimsGetParams, url?: string): Promise<Claim[]> => {
 
     const requestConfig = {
         headers: HTTPRequestHeaders(ContextUtils.getRuntimeConfig().clientHost),
         method: HttpMethods.GET,
         params,
-        url: CommonServiceResourcesEndpoints(ContextUtils.getRuntimeConfig().serverHost).localClaims
+        url: url ?? CommonServiceResourcesEndpoints(ContextUtils.getRuntimeConfig().serverHost).localClaims
     };
 
     return httpClient(requestConfig)
@@ -84,13 +84,13 @@ export const getAllLocalClaims = (params: ClaimsGetParams): Promise<Claim[]> => 
  * @return {Promise<ClaimDialect[]>} response.
  * @throws {IdentityAppsApiException}
  */
-export const getDialects = (params: ClaimsGetParams): Promise<ClaimDialect[]> => {
+export const getDialects = (params: ClaimsGetParams, url?: string): Promise<ClaimDialect[]> => {
 
     const requestConfig = {
         headers: HTTPRequestHeaders(ContextUtils.getRuntimeConfig().clientHost),
         method: HttpMethods.GET,
         params,
-        url: CommonServiceResourcesEndpoints(ContextUtils.getRuntimeConfig().serverHost).claims
+        url: url ?? CommonServiceResourcesEndpoints(ContextUtils.getRuntimeConfig().serverHost).claims
     };
 
     return httpClient(requestConfig)
@@ -126,13 +126,17 @@ export const getDialects = (params: ClaimsGetParams): Promise<ClaimDialect[]> =>
  * @return {Promise<ExternalClaim[]>} response.
  * @throws {IdentityAppsApiException}
  */
-export const getAllExternalClaims = (dialectID: string, params: ClaimsGetParams): Promise<ExternalClaim[]> => {
+export const getAllExternalClaims = (
+    dialectID: string,
+    params: ClaimsGetParams,
+    url?: string
+): Promise<ExternalClaim[]> => {
 
     const requestConfig = {
         headers: HTTPRequestHeaders(ContextUtils.getRuntimeConfig().clientHost),
         method: HttpMethods.GET,
         params,
-        url: CommonServiceResourcesEndpoints(ContextUtils.getRuntimeConfig().serverHost).externalClaims
+        url: (url ?? CommonServiceResourcesEndpoints(ContextUtils.getRuntimeConfig().serverHost).externalClaims)
             .replace("{0}", dialectID)
     };
 

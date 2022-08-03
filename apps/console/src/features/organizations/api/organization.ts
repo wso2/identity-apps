@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 Inc. (http://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (http://www.wso2.com) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -42,6 +42,8 @@ const httpClient = AsgardeoSPAClient.getInstance()
  * @param {number} limit The maximum number of organizations to return.
  * @param {string} after The previous range of data to be returned.
  * @param {string} before The next range of data to be returned.
+ * @param {boolean} recursive Whether we need to do a recursive search
+ * @param isRoot
  *
  * @returns {Promise<OrganizationListInterface>}
  */
@@ -152,11 +154,13 @@ export const getOrganization = (id: string, showChildren?: boolean): Promise<Org
 /**
  * Update an organization.
  *
+ * @param {string} organizationId Identifier of the organization needs to be updated.
  * @param {UpdateOrganizationInterface} organization The organization object to update the organization with.
  *
  * @returns {OrganizationResponseInterface}
  */
 export const updateOrganization = (
+    organizationId: string,
     organization: UpdateOrganizationInterface
 ): Promise<OrganizationResponseInterface> => {
     const config: HttpRequestConfig = {
@@ -166,7 +170,7 @@ export const updateOrganization = (
             "Content-Type": "application/json"
         },
         method: "PUT",
-        url: `${ store.getState().config.endpoints.organizations }/organizations/`
+        url: `${ store.getState().config.endpoints.organizations }/organizations/${organizationId}`
     };
 
     return httpClient(config)
@@ -243,6 +247,42 @@ export const deleteOrganization = (id: string): Promise<string> => {
             return Promise.resolve(response?.data);
         })
         .catch((error: HttpError) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * Creates a new application.
+ *
+ * @return {Promise<any>}
+ * @param {string} applicationId - ID of the application to be shared
+ * @param {string} organizationId - ID of the organization which the app needs to be shared with
+ */
+export const shareApplication = (
+    currentOrganizationId: string,
+    applicationId: string,
+    organizationId: Array<string>
+): Promise<any> => {
+    const requestConfig = {
+        data: organizationId,
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.POST,
+        url: `${store.getState().config.endpoints.organizations}/organizations/${currentOrganizationId}/applications/` +
+            `${applicationId}/share`
+    };
+
+    return httpClient(requestConfig)
+        .then((response) => {
+            if ((response.status !== 200)) {
+                return Promise.reject(new Error("Failed to share the application."));
+            }
+
+            return Promise.resolve(response);
+        }).catch((error) => {
             return Promise.reject(error);
         });
 };

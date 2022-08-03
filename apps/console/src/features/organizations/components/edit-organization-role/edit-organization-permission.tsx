@@ -16,15 +16,15 @@
  * under the License
  */
 
-import { AlertLevels, RolesInterface } from "@wso2is/core/models";
+import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { OrganizationPermissionList } from "./organization-role-permission";
 import { AppState } from "../../../core";
-import { PermissionList } from "../../../roles";
 import { patchOrganizationRoleDetails } from "../../api";
-import { OrganizationInterface, OrganizationRoleInterface, TreeNode } from "../../models";
+import { OrganizationResponseInterface, OrganizationRoleInterface, TreeNode } from "../../models";
 
 /**
  * Interface to capture permission edit props.
@@ -58,7 +58,7 @@ export const RolePermissionDetails: FunctionComponent<RolePermissionDetailProps>
     const { t } = useTranslation();
     const dispatch = useDispatch();
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
-    const currentOrganization: OrganizationInterface = useSelector(
+    const currentOrganization: OrganizationResponseInterface = useSelector(
         (state: AppState) => state.organization.organization
     );
 
@@ -147,7 +147,7 @@ export const RolePermissionDetails: FunctionComponent<RolePermissionDetailProps>
 
     return (
         <div className="permissions-edit-container">
-            <PermissionList
+            <OrganizationPermissionList
                 isReadOnly={ isReadOnly }
                 isEdit={ !isReadOnly }
                 isRole

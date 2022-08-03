@@ -41,6 +41,7 @@ import {
     updateOutboundProvisioningConnectors
 } from "../../api";
 import {
+    AuthenticatorSettingsFormModes,
     IdentityProviderInterface,
     OutboundProvisioningConnectorInterface,
     OutboundProvisioningConnectorWithMetaInterface,
@@ -78,6 +79,10 @@ interface ProvisioningSettingsPropsInterface extends TestableComponentInterface 
      * Specifies if the component should only be read-only.
      */
     isReadOnly: boolean;
+    /**
+     * Loading Component.
+     */
+    loader: () => ReactElement;
 }
 
 /**
@@ -96,6 +101,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
         isLoading,
         onUpdate,
         isReadOnly,
+        loader: Loader,
         [ "data-testid" ]: testId
     } = props;
 
@@ -401,6 +407,9 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                                                                         actions: createAccordionActions(connector),
                                                                         content: (
                                                                             <OutboundProvisioningConnectorFormFactory
+                                                                                mode={
+                                                                                    AuthenticatorSettingsFormModes.EDIT
+                                                                                }
                                                                                 metadata={ connector.meta }
                                                                                 initialValues={ connector.data }
                                                                                 onSubmit={ 

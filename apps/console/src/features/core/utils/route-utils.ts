@@ -206,7 +206,7 @@ export class RouteUtils {
          */
         for (const path of paths) {
             if (path) {
-                const expression = RegExp(`^${pathToARegex(path)}$`);
+                const expression = RegExp(`^${pathToARegex(path)}`);
                 const match = expression.exec(pathname);
 
                 if (match && match.length > 0) {
@@ -301,5 +301,9 @@ export class RouteUtils {
      */
     public static filterOrganizationEnabledRoutes(routes: RouteInterface[]): RouteInterface[] {
         return routes.filter((route: RouteInterface) => AppConstants.ORGANIZATION_ENABLED_ROUTES.includes(route.id));
+    }
+
+    public static filterOutOrganizationOnlyRoutes(routes: RouteInterface[]): RouteInterface[] {
+        return routes.filter((route: RouteInterface) => !AppConstants.ORGANIZATION_ONLY_ROUTES.includes(route.id));
     }
 }

@@ -27,7 +27,7 @@ import { patchOrganizationRoleDetails } from "../../api";
 import { PRIMARY_DOMAIN } from "../../constants";
 import {
     CreateOrganizationRoleMemberInterface,
-    OrganizationInterface,
+    OrganizationResponseInterface,
     PatchOrganizationRoleDataInterface
 } from "../../models";
 
@@ -52,7 +52,7 @@ export const RoleUserDetails: FunctionComponent<RoleUserDetailsProps> = (
 
     const [ currentUserStore, setCurrentUserStore ] = useState<string>(undefined);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
-    const currentOrganization: OrganizationInterface = useSelector(
+    const currentOrganization: OrganizationResponseInterface = useSelector(
         (state: AppState) => state.organization.organization
     );
 

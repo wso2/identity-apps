@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { identityProviderConfig } from "../../../extensions/configs/identity-provider";
 import BasicAuthIcon from "../../../themes/default/assets/images/authenticators/basic-auth.png";
 import SMSOTPIcon from "../../../themes/default/assets/images/authenticators/sms-otp.svg";
 import SalesforceLogo from "../../../themes/default/assets/images/connectors/salesforce.png";
@@ -25,9 +26,9 @@ import CertificateColoredIcon from "../../../themes/default/assets/images/icons/
 import ClockColoredIcon from "../../../themes/default/assets/images/icons/clock-colored-icon.svg";
 import ConnectionIcon from "../../../themes/default/assets/images/icons/connection.svg";
 import { ReactComponent as DocumentIcon } from "../../../themes/default/assets/images/icons/document-icon.svg";
-import MagicLinkLogo from "../../../themes/default/assets/images/icons/magic-link-icon.svg";
 import FIDOLogo from "../../../themes/default/assets/images/icons/fingerprint.svg";
 import { ReactComponent as GearsIcon } from "../../../themes/default/assets/images/icons/gears-icon.svg";
+import MagicLinkLogo from "../../../themes/default/assets/images/icons/magic-link-icon.svg";
 import MagnifierColoredIcon from "../../../themes/default/assets/images/icons/magnifier-colored-icon.svg";
 import { ReactComponent as OpenBookIcon } from "../../../themes/default/assets/images/icons/open-book-icon.svg";
 import TOTPIcon from "../../../themes/default/assets/images/icons/outline-icons/clock-outline.svg";
@@ -41,35 +42,24 @@ import {
 } from "../../../themes/default/assets/images/identity-providers/enterprise-idp-illustration.svg";
 import {
     ReactComponent as ExpertModeIdPIcon
-} from "../../../themes/default/assets/images/identity-providers/expert-idp-illustration.svg";
-import FacebookIdPIcon from "../../../themes/default/assets/images/identity-providers/facebook-idp-illustration.svg";
+} from "../../../themes/default/assets/images/identity-providers/expert.svg";
+import FacebookLogo from "../../../themes/default/assets/images/identity-providers/facebook-idp-illustration.svg";
 import GithubIdPIcon from "../../../themes/default/assets/images/identity-providers/github-idp-illustration.svg";
-import GoogleIdPIcon from "../../../themes/default/assets/images/identity-providers/google-idp-illustration.svg";
-import IWAKerberosIdPIllustration
-    from "../../../themes/default/assets/images/identity-providers/iwa-idp-illustration.svg";
-import Office365IdPIllustration
-    from "../../../themes/default/assets/images/identity-providers/office365-idp-illustration.svg";
-import {
-    ReactComponent as TwitterIdPIllustration
-} from "../../../themes/default/assets/images/identity-providers/twitter-idp-illustration.svg";
-import {
-    ReactComponent as YahooIdPIllustration
-} from "../../../themes/default/assets/images/identity-providers/yahoo-idp-illustration.svg";
+import GoogleLogo from "../../../themes/default/assets/images/identity-providers/google-idp-illustration.svg";
+import KerberosLogo from "../../../themes/default/assets/images/identity-providers/kerberos.png";
+import Office365Logo from "../../../themes/default/assets/images/identity-providers/office-365.svg";
+import TwitterLogo from "../../../themes/default/assets/images/identity-providers/twitter.svg";
+import YahooLogo from "../../../themes/default/assets/images/identity-providers/yahoo.svg";
 import OIDCLogo from "../../../themes/default/assets/images/protocols/openid-connect.png";
 import OpenIDLogo from "../../../themes/default/assets/images/protocols/openid.png";
 import SamlLogo from "../../../themes/default/assets/images/protocols/saml.png";
 import WSFedLogo from "../../../themes/default/assets/images/protocols/ws-fed.png";
-import FacebookLogo from "../../../themes/default/assets/images/social/facebook.svg";
-import GoogleLogo from "../../../themes/default/assets/images/social/google.svg";
-import TwitterLogo from "../../../themes/default/assets/images/social/twitter.svg";
 import JWTLogo from "../../../themes/default/assets/images/technologies/jwt-logo.svg";
 import AppleLogo
     from "../../../themes/default/assets/images/third-party/apple-logo.svg";
 import LinkedInLogo
     from "../../../themes/default/assets/images/third-party/linkedin-logo.svg";
 import MicrosoftLogo from "../../../themes/default/assets/images/third-party/microsoft-logo.svg";
-import Office365Logo from "../../../themes/default/assets/images/third-party/office-365-logo.svg";
-import YahooLogo from "../../../themes/default/assets/images/third-party/yahoo-logo.svg";
 import { SupportedServices } from "../models";
 
 export const getAddIDPCertificateWizardStepIcons = (): any => {
@@ -115,7 +105,7 @@ export const getAuthenticatorIcons = (): any => {
 export const getConnectorIcons = (): any => {
 
     return {
-        google: GoogleIdPIcon,
+        google: GoogleLogo,
         salesforce: SalesforceLogo,
         scim: SCIMLogo,
         spml: SPMLLogo
@@ -129,28 +119,30 @@ export const getIdPIcons = (): any => {
         default: ConnectionIcon,
         emailOTP: EmailOTPIcon,
         enterprise: EnterpriseModeIdPIcon,
-        facebook: FacebookIdPIcon,
+        expert: ExpertModeIdPIcon,
+        facebook: FacebookLogo,
         github: GithubIdPIcon,
-        google: GoogleIdPIcon,
-        iwaKerberos: IWAKerberosIdPIllustration,
+        google: GoogleLogo,
+        iwaKerberos: KerberosLogo,
         linkedIn: LinkedInLogo,
         microsoft: MicrosoftLogo,
-        office365: Office365IdPIllustration,
+        office365: Office365Logo,
         oidc: OIDCLogo,
         saml: SamlLogo,
         smsOTP: SMSOTPIcon,
-        twitter: TwitterIdPIllustration,
+        twitter: TwitterLogo,
         wsFed: WSFedLogo,
-        yahoo: YahooIdPIllustration
+        yahoo: YahooLogo,
+        ...identityProviderConfig.getIconExtensions()
     };
 };
 
 export const getIdPTemplateDocsIcons = (): any => {
 
     return {
-        facebook: FacebookIdPIcon,
+        facebook: FacebookLogo,
         github: GithubIdPIcon,
-        google: GoogleIdPIcon,
+        google: GoogleLogo,
         manualsetup: ExpertModeIdPIcon,
         openidconnect: OpenIDLogo
     };

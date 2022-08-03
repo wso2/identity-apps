@@ -1044,7 +1044,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                                             { t(translateKey + "heading") }
                                         </List.Header>
                                         <List.Description>
-                                            { t(translateKey + "configuredDescription") }
+                                            { t(translateKey + "description") }
                                         </List.Description>
                                     </List.Content>
                                 </Grid.Column>

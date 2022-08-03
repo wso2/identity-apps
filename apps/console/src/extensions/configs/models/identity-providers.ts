@@ -16,8 +16,14 @@
  * under the License.
  */
 
-import { ReactNode } from "react";
-import { AuthenticatorInterface } from "../../../features/identity-providers/models";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { FunctionComponent, ReactElement, ReactNode, SVGProps } from "react";
+import {
+    AuthenticatorInterface,
+    GenericIdentityProviderCreateWizardPropsInterface,
+    IdentityProviderTabTypes,
+    IdentityProviderTemplateInterface
+} from "../../../features/identity-providers/models";
 
 export interface IdentityProviderConfig {
     /**
@@ -30,6 +36,19 @@ export interface IdentityProviderConfig {
     authenticators: {
         [ key: string ]: AuthenticatorExtensionsConfigInterface;
     };
+    createIdentityProvider: {
+        /**
+         * Used to the IDP create wizard of a certain IDP template type.
+         * @param {string} templateId - The IDP Template Type.
+         * @param {
+         *  GenericIdentityProviderCreateWizardPropsInterface & IdentifiableComponentInterface
+        *  } templateId - Props for the component.
+         */
+        getOverriddenCreateWizard: (
+            templateId: string,
+            props: GenericIdentityProviderCreateWizardPropsInterface & IdentifiableComponentInterface
+        ) => ReactElement | null;
+    },
     editIdentityProvider: {
         showAdvancedSettings: boolean;
         showJitProvisioning: boolean;
@@ -40,7 +59,29 @@ export interface IdentityProviderConfig {
          * variable values is pointless.
          */
         attributesSettings: boolean;
+        /**
+         * Used enable/disable certain tabs for certain IDP template type.
+         * @param {string} templateId - The IDP Template Type.
+         * @param {IdentityProviderTabTypes} tabType - Tab Type.
+         */
+        isTabEnabledForIdP: (templateId: string, tabType: IdentityProviderTabTypes) => boolean | undefined;
+        /**
+         * Used to the IDP settings form of a certain IDP template type.
+         * @param {string} type - The IDP Authenticator ID.
+         * @param {string} templateId - The IDP Template Type.
+         * @param {Record<string, any>} templateId - Props for the component.
+         */
+        getOverriddenAuthenticatorForm: (
+            type: string,
+            templateId: string,
+            props: Record<string, any>
+        ) => ReactElement | null;
+        /**
+         * Certain IDP templates can have different settings for Certificate options.
+         */
+        getCertificateOptionsForTemplate: (templateId: string) => { JWKS: boolean; PEM: boolean } | undefined;
     };
+    getIconExtensions: () => Record<string, string | FunctionComponent<SVGProps<SVGSVGElement>>>;
     jitProvisioningSettings: {
         menuItemName: string;
         enableJitProvisioningField: {
@@ -90,15 +131,18 @@ export interface IdentityProviderConfig {
         google: boolean;
         github: boolean;
         enterprise: boolean;
+        expertMode: boolean;
         /**
          * Adding `saml` and `oidc` template enabled property to this
          * config under the group `enterprise-protocols`.
          */
         saml: boolean;
         oidc: boolean;
+        organizationEnterprise: boolean;
     }
     fidoTags: string[];
     filterFidoTags: (tags: string[]) => string[];
+    overrideTemplate: (template?: IdentityProviderTemplateInterface) => void;
 }
 
 /**

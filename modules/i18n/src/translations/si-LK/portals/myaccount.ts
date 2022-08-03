@@ -18,6 +18,11 @@
 
 import { MyAccountNS } from "../../../models";
 
+/**
+ * NOTES: No need to care about the max-len for this file since it's easier to
+ * translate the strings to other languages easily with editor translation tools.
+ */
+/* eslint-disable max-len */
 export const myAccount: MyAccountNS = {
     components: {
         accountRecovery: {
@@ -581,17 +586,17 @@ export const myAccount: MyAccountNS = {
         },
         mfa: {
             authenticatorApp: {
-                addHint: "QR කේතය වින්‍යාස කරන්න",
+                addHint: "වින්‍යාස කරන්න",
                 configuredDescription: "සාධක දෙකක සත්‍යාපනය සඳහා ඔබේ වින්‍යාසගත සත්‍යාපන " +
                     "යෙදුමෙන් ඔබට TOTP කේත භාවිතා කළ හැකිය. ඔබට යෙදුමට ප්‍රවේශය නොමැති නම් " +
                     "මෙතැනින් ඔබට නව සත්‍යාපන යෙදුමක් සැකසිය හැකිය",
-                deleteHint: "QR කේතය මකා දමයි",
+                deleteHint: "ඉවත් කරන්න",
                 description: "යෙදුම් වලට ප්‍රවේශවීමේදී දෙවන සාධකය ලෙස කාලය " +
                     "මත පදනම් වූ, එක් වරක් මුර කේත (TOTP ලෙසද හැඳින්වේ) භාවිතා " +
                     "කිරීමට Authenticator යෙදුමක් භාවිතයෙන් QR කේතය පරිලෝකනය කරන්න.",
                 enableHint: "TOTP සබල/අබල කරන්න",
                 heading: "සත්‍යාපන යෙදුම",
-                hint: "QR කේතය පෙන්වන්න",
+                hint: "පෙන්වන්න",
                 modals: {
                     delete : {
                         heading: "තහවුරු කිරීම",
@@ -599,7 +604,7 @@ export const myAccount: MyAccountNS = {
                             "ඔබ දිගටම කරගෙන යාමට කැමතිද ?"
                     },
                     done: "සාර්ථකත්වය! දැන් ඔබට සාධක දෙකක සත්‍යාපනය සඳහා ඔබේ සත්‍යාපන යෙදුම භාවිතා කළ හැකිය",
-                    heading: "Set Up An Authenticator App",
+                    heading: "Authenticator යෙදුමක් සකසන්න",
                     scan: {
                         additionNote: "QR කේතය ඔබේ පැතිකඩට සාර්ථකව එකතු කර ඇත!",
                         authenticatorApps: "සත්‍යාපන යෙදුම්",
@@ -615,7 +620,7 @@ export const myAccount: MyAccountNS = {
                         "වෙතින් Google Authenticator වැනි සත්‍යාපන යෙදුමක් බාගන්න.",
                     verify: {
                         error: "සත්‍යාපනය අසාර්ථක විය. කරුණාකර නැවත උත්සාහ කරන්න.",
-                        heading: "සත්‍යාපන යෙදුමෙන් සත්‍යාපන කේතය ඇතුළත් කරන්න",
+                        heading: "සත්‍යාපනය සඳහා ජනනය කළ කේතය ඇතුළත් කරන්න",
                         label: "සත්යාපන කේතය",
                         placeholder: "ඔබගේ සත්‍යාපන කේතය ඇතුළත් කරන්න",
                         reScan: "නැවත පරිලෝකනය කරන්න",
@@ -672,6 +677,8 @@ export const myAccount: MyAccountNS = {
                 regenerate: "නැවත උත්පාදනය කරන්න"
             },
             backupCode: {
+                description: "ඔබට සත්‍යාපන යෙදුම හරහා සත්‍යාපන කේතයක් ලබා ගත නොහැකි නම් පුරනය වීමට " 
+                    + "ඔබට උපස්ථ කේත භාවිතා කළ හැක.",
                 download: {
                     heading: "ඔබගේ උපස්ථ කේත සුරකින්න.",
                     info1: "ඔබට එක් එක් උපස්ථ කේතය භාවිතා කළ හැක්කේ එක් වරක් පමණි.",
@@ -681,21 +688,28 @@ export const myAccount: MyAccountNS = {
                 },
                 heading: "උපස්ථ කේත",
                 modals: {
+                    actions: {
+                        copied: "පිටපත් කර ඇත",
+                        copy: "කේත පිටපත් කරන්න",
+                        download: "කේත බාගන්න",
+                        regenerate: "නැවත උත්පාදනය කරන්න"
+                    },
                     description: "ඔබ ඔබගේ දුරකථනයෙන් බැහැරව සිටින විට පුරනය වීමට උපස්ථ කේත භාවිතා කරන්න. " + 
                         "ඒවා සියල්ලම භාවිතා කරන විට ඔබට තවත් උත්පාදනය කළ හැකිය",
-                    download: {
-                        heading: "කේත බාගන්න"
-                    },
                     generate: {
                         description: "ඔබගේ උපස්ථ කේත සියල්ලම භාවිතා වේ. නව උපස්ථ කේත කට්ටලයක් ජනනය කරමු",
                         heading: "උත්පාදනය කරන්න"
                     },
                     heading: "උපස්ථ කේත",
                     info: "සෑම කේතයක්ම භාවිතා කළ හැක්කේ එක් වරක් පමණි",
-                    refresh: {
-                        heading: "නැවුම් කරන්න"
+                    regenerate: {
+                        description: "ඔබ නව කේත ජනනය කිරීමෙන් පසු, ඔබේ පැරණි කේත තවදුරටත් ක්‍රියා නොකරනු ඇත. " 
+                            + "නව කේත උත්පාදනය වූ පසු ඒවා සුරැකීමට වග බලා ගන්න.",
+                        heading: "තහවුරු කිරීම"
                     },
-                    subHeading: "ඔබට පුරනය වීමට භාවිතා කළ හැකි එක් වරක් මුරකේත"
+                    subHeading: "ඔබට පුරනය වීමට භාවිතා කළ හැකි එක් වරක් මුරකේත",
+                    warn: "මෙම කේත දිස්වන්නේ එක් වරක් පමණි. ඒවා දැන් සුරැකීමට සහ ආරක්ෂිත නමුත් ප්‍රවේශ විය හැකි " 
+                        + "ස්ථානයක ගබඩා කිරීමට වග බලා ගන්න."
                 },
                 notifications: {
                     deleteError: {

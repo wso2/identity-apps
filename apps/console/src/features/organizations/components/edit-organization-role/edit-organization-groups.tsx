@@ -18,7 +18,6 @@
 
 import {
     AlertLevels,
-    RolesInterface,
     RolesMemberInterface,
     TestableComponentInterface
 } from "@wso2is/core/models";
@@ -57,7 +56,11 @@ import { AppState, getEmptyPlaceholderIllustrations } from "../../../core";
 import { getGroupList } from "../../../groups/api";
 import { patchOrganizationRoleDetails } from "../../api";
 import { APPLICATION_DOMAIN, INTERNAL_DOMAIN, PRIMARY_DOMAIN } from "../../constants";
-import { OrganizationInterface, OrganizationRoleInterface, PatchOrganizationRoleDataInterface } from "../../models";
+import {
+    OrganizationResponseInterface,
+    OrganizationRoleInterface,
+    PatchOrganizationRoleDataInterface
+} from "../../models";
 
 interface RoleGroupsPropsInterface extends TestableComponentInterface {
     /**
@@ -103,7 +106,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
     const [ isLoadingAssignedGroups, setIsLoadingAssignedGroups ] = useState<boolean>(true);
 
     const [ alert, setAlert, alertComponent ] = useWizardAlert();
-    const currentOrganization: OrganizationInterface = useSelector(
+    const currentOrganization: OrganizationResponseInterface = useSelector(
         (state: AppState) => state.organization.organization
     );
 

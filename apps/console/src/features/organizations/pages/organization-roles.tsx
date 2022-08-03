@@ -44,11 +44,12 @@ import {
     UIConstants,
     history
 } from "../../core";
-import { CreateRoleInterface, CreateRoleWizard } from "../../roles";
+import { CreateRoleInterface } from "../../roles";
 import { createOrganizationRole, getOrganizationRoles } from "../api/organization-role";
 import { OrganizationRoleList } from "../components";
+import { AddOrganizationRoleWizard } from "../components/add-organization-role-wizard";
 import {
-    OrganizationInterface,
+    OrganizationResponseInterface,
     OrganizationRoleListItemInterface,
     OrganizationRoleListResponseInterface
 } from "../models";
@@ -93,10 +94,11 @@ const OrganizationRoles: FunctionComponent<OrganizationRolesPageInterface> = (
     const [ organizationRoles, setOrganizationRoles ] = useState<Array<OrganizationRoleListItemInterface>>();
     const [ after, setAfter ] = useState<string>("");
     const [ before, setBefore ] = useState<string>("");
+    const [ cursor, setCursor ] = useState(null);
     const [ activePage, setActivePage ] = useState<number>(1);
 
     const [ paginationReset, triggerResetPagination ] = useTrigger();
-    const currentOrganization: OrganizationInterface = useSelector(
+    const currentOrganization: OrganizationResponseInterface = useSelector(
         (state: AppState) => state.organization.organization
     );
 
@@ -115,18 +117,17 @@ const OrganizationRoles: FunctionComponent<OrganizationRolesPageInterface> = (
      * @param {string} before - Before link for cursor based pagination
      */
     const getOrganizationRoleLists = useCallback(
-        (limit?: number, filter?: string, after?: string, before?: string): void => {
+        (limit?: number, filter?: string, cursor?: string): void => {
             setOrganizationRoleListRequestLoading(true);
 
             getOrganizationRoles(
                 currentOrganization.id,
                 filter,
                 limit,
-                after,
-                before)
+                cursor)
                 .then((response: OrganizationRoleListResponseInterface) => {
-                    handleNextButtonVisibility(response);
-                    setOrganizationRoles(response.roles);
+                    handleCursorPagination(response.nextCursor, response.previousCursor);
+                    setOrganizationRoles(response.Resources);
                 })
                 .catch((error) => {
                     if (error?.description) {
@@ -184,20 +185,23 @@ const OrganizationRoles: FunctionComponent<OrganizationRolesPageInterface> = (
      *
      * Sets the Next button visibility.
      *
-     * @param {OrganizationListInterface} list - List of organizations.
+     * @param nextCursor
+     * @param previousCursor
      */
-    const handleNextButtonVisibility = (list: OrganizationRoleListResponseInterface): void => {
-        if (!list.links) {
-            setIsOrganizationRolesNextPageAvailable(false);
+    const handleCursorPagination = (nextCursor: string | undefined, previousCursor: string | undefined): void => {
+        setCursor(null);
+        setAfter(undefined);
+        setBefore(undefined);
 
-            return;
+        if (nextCursor) {
+            setAfter(nextCursor);
         }
 
-        list.links?.forEach((link) => {
-            link.rel === "next"
-                ? setIsOrganizationRolesNextPageAvailable(true)
-                : setIsOrganizationRolesNextPageAvailable(false);
-        });
+        if (previousCursor) {
+            setBefore(previousCursor);
+        }
+
+        setIsOrganizationRolesNextPageAvailable(!!nextCursor);
     };
 
     /**
@@ -221,9 +225,11 @@ const OrganizationRoles: FunctionComponent<OrganizationRolesPageInterface> = (
         const newPage = parseInt(data?.activePage as string);
 
         if (newPage > activePage) {
-            getOrganizationRoleLists(listItemLimit, searchQuery, after, null);
+            setCursor(after);
+            getOrganizationRoleLists(listItemLimit, searchQuery, after);
         } else if (newPage < activePage) {
-            getOrganizationRoleLists(listItemLimit, searchQuery, null, before);
+            setCursor(before);
+            getOrganizationRoleLists(listItemLimit, searchQuery, before);
         }
         setActivePage(newPage);
     };
@@ -243,14 +249,14 @@ const OrganizationRoles: FunctionComponent<OrganizationRolesPageInterface> = (
      * Handles organization role delete action.
      */
     const handleOrganizationRoleDelete = (): void => {
-        getOrganizationRoleLists(listItemLimit, searchQuery, after, before);
+        getOrganizationRoleLists(listItemLimit, searchQuery, cursor);
     };
 
     /**
      * Handles organization list update action.
      */
     const handleOrganizationRoleListUpdate = (): void => {
-        getOrganizationRoleLists(listItemLimit, searchQuery, after, before);
+        getOrganizationRoleLists(listItemLimit, searchQuery, cursor);
     };
 
     const handleOrganizationRoleCreate = useCallback((roleData: CreateRoleInterface) => {
@@ -330,7 +336,7 @@ const OrganizationRoles: FunctionComponent<OrganizationRolesPageInterface> = (
     };
 
     useEffect(() => {
-        getOrganizationRoleLists(listItemLimit, searchQuery, null, null);
+        getOrganizationRoleLists(listItemLimit, searchQuery, cursor);
     }, [ listItemLimit, getOrganizationRoleLists, searchQuery ]);
 
     return (
@@ -413,7 +419,7 @@ const OrganizationRoles: FunctionComponent<OrganizationRolesPageInterface> = (
                             paginationOptions={ {
                                 disableNextButton: !isOrganizationRolesNextPageAvailable
                             } }
-                            data-testid={ `${testId}-list-layout` }
+                            data-testid={ `${ testId }-list-layout` }
                             resetPagination={ paginationReset }
                         >
                             <OrganizationRoleList
@@ -464,9 +470,8 @@ const OrganizationRoles: FunctionComponent<OrganizationRolesPageInterface> = (
                             />
                         </ListLayout>
                         { showWizard && (
-                            // <div>123</div>
-                            <CreateRoleWizard
-                                data-testid="org-role-mgt-create-role-wizard"
+                            <AddOrganizationRoleWizard
+                                data-testid="org-role-mgt-add-role-wizard"
                                 isAddGroup={ false }
                                 closeWizard={ () => setShowWizard(false) }
                                 updateList={ () => handleOrganizationRoleListUpdate() }

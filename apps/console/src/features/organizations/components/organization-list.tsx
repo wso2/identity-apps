@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -39,7 +39,7 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Header, Icon, Popup, SemanticICONS } from "semantic-ui-react";
+import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
 import {
     AppConstants,
     AppState,
@@ -144,8 +144,6 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingOrganization, setDeletingOrganization ] = useState<OrganizationInterface>(undefined);
 
-    const [ alert, setAlert, alertComponent ] = useConfirmationModalAlert();
-
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     /**
@@ -186,10 +184,11 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                 onOrganizationDelete();
             })
             .catch((error) => {
+                setShowDeleteConfirmationModal(false);
                 if (error.response && error.response.data && error.response.data.description) {
                     if (error.response.data.code === "ORG-60007") {
                         dispatch(
-                            setAlert({
+                            addAlert({
                                 description: t(
                                     "console:manage.features.organizations.notifications." +
                                     "deleteOrganizationWithSubOrganizationError",
@@ -207,7 +206,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                     }
 
                     dispatch(
-                        setAlert({
+                        addAlert({
                             description: error.response.data.description,
                             level: AlertLevels.ERROR,
                             message: t(
@@ -221,7 +220,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                 }
 
                 dispatch(
-                    setAlert({
+                    addAlert({
                         description: t(
                             "console:manage.features.organizations.notifications.deleteOrganization" +
                             ".genericError.description"
@@ -278,19 +277,12 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                             }
                             <Header.Content>
                                 { organization.name }
-                                { /*<Header.Subheader*/ }
-                                { /*    className="truncate ellipsis"*/ }
-                                { /*    data-componentid={ `${ componentId }-item-sub-heading` }*/ }
-                                { /*>*/ }
-                                { /*    { organization.ref?.length > 80 ? (*/ }
-                                { /*        <Popup*/ }
-                                { /*            content={ organization.ref }*/ }
-                                { /*            trigger={ <span>{ organization.ref }</span> }*/ }
-                                { /*        />*/ }
-                                { /*    ) : (*/ }
-                                { /*        organization.ref*/ }
-                                { /*    ) }*/ }
-                                { /*</Header.Subheader>*/ }
+                                <Header.Subheader
+                                    className="truncate ellipsis"
+                                    data-componentid={ `${ componentId }-item-sub-heading` }
+                                >
+                                    Organization Id:<Label size="tiny">{ organization.id }</Label>
+                                </Header.Subheader>
                             </Header.Content>
                         </Header>
                     );
@@ -396,7 +388,11 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                     imageSize="tiny"
                     title={ t("console:manage.placeholders.emptySearchResult.title") }
                     subtitle={ [
-                        t("console:manage.placeholders.emptySearchResult.subtitles.0", { query: searchQuery }),
+                        t("console:manage.placeholders.emptySearchResult.subtitles.0", {
+                            // searchQuery looks like "name co OrgName", so we only remove the filter string only to get
+                            // the actual user entered query
+                            query: searchQuery.split("name co ")[1]
+                        }),
                         t("console:manage.placeholders.emptySearchResult.subtitles.1")
                     ] }
                     data-componentid={ `${ componentId }-empty-search-placeholder` }
@@ -469,7 +465,6 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                     secondaryAction={ t("common:cancel") }
                     onSecondaryActionClick={ (): void => {
                         setShowDeleteConfirmationModal(false);
-                        setAlert(null);
                     } }
                     onPrimaryActionClick={ (): void => handleOrganizationDelete(deletingOrganization.id) }
                     data-componentid={ `${ componentId }-delete-confirmation-modal` }
@@ -480,14 +475,13 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                     </ConfirmationModal.Header>
                     <ConfirmationModal.Message
                         attached
-                        warning
+                        negative
                         data-componentid={ `${ componentId }-delete-confirmation-modal-message` }
                     >
                         { t("console:manage.features.organizations.confirmations.deleteOrganization.message") }
                     </ConfirmationModal.Message>
                     <ConfirmationModal.Content
                         data-componentid={ `${ componentId }-delete-confirmation-modal-content` }>
-                        <div className="modal-alert-wrapper"> { alert && alertComponent }</div>
                         { t("console:manage.features.organizations.confirmations.deleteOrganization.content") }
                     </ConfirmationModal.Content>
                 </ConfirmationModal>

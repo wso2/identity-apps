@@ -22,6 +22,11 @@ import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
 import { identityProviderConfig } from "../../../extensions/configs";
 import { store } from "../../core";
+import useRequest, {
+    RequestConfigInterface,
+    RequestErrorInterface,
+    RequestResultInterface
+} from "../../core/hooks/use-request";
 import { IdentityProviderManagementConstants } from "../constants";
 import {
     AuthenticatorInterface,
@@ -83,6 +88,7 @@ export const createIdentityProvider = (identityProvider: object): Promise<any> =
 /**
  * Gets the IdP list with limit and offset.
  *
+ * @deprecated Use `useIdentityProviderList` hook instead.
  * @param {number} limit - Maximum Limit of the IdP List.
  * @param {number} offset - Offset for get to start.
  * @param {string} filter - Search filter.
@@ -122,6 +128,49 @@ export const getIdentityProviderList = (
         }).catch((error) => {
             return Promise.reject(error);
         });
+};
+
+/**
+ * Hook to get the IDP list with limit and offset.
+ *
+ * @param {number} limit - Maximum Limit of the IdP List.
+ * @param {number} offset - Offset for get to start.
+ * @param {string} filter - Search filter.
+ * @param {string} requiredAttributes - Extra attribute to be included in the list response. ex:`isFederationHub`
+ *
+ * @returns {RequestResultInterface<Data, Error>}
+ */
+export const useIdentityProviderList = <Data = IdentityProviderListResponseInterface, Error = RequestErrorInterface>(
+    limit?: number,
+    offset?: number,
+    filter?: string,
+    requiredAttributes?: string
+): RequestResultInterface<Data, Error> => {
+
+    const requestConfig: RequestConfigInterface = {
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        params: {
+            filter,
+            limit,
+            offset,
+            requiredAttributes
+        },
+        url: store.getState().config.endpoints.identityProviders
+    };
+
+    const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig);
+
+    return {
+        data,
+        error: error,
+        isLoading: !error && !data,
+        isValidating,
+        mutate
+    };
 };
 
 /**

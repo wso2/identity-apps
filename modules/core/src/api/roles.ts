@@ -39,7 +39,7 @@ const httpClient = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAC
  * @return {Promise<RoleListInterface | any>}
  * @throws {IdentityAppsApiException}
  */
-export const getRolesList = (domain: string): Promise<RoleListInterface | any> => {
+export const getRolesList = (domain: string, url?: string): Promise<RoleListInterface | any> => {
 
     const requestConfig = {
         headers: HTTPRequestHeaders(ContextUtils.getRuntimeConfig().clientHost),
@@ -47,7 +47,7 @@ export const getRolesList = (domain: string): Promise<RoleListInterface | any> =
         params: {
             domain
         },
-        url: CommonServiceResourcesEndpoints(ContextUtils.getRuntimeConfig().serverHost).roles
+        url: url ?? CommonServiceResourcesEndpoints(ContextUtils.getRuntimeConfig().serverHost).roles
     };
 
     return httpClient(requestConfig)

@@ -21,12 +21,17 @@ import { RolesResourceEndpointsInterface } from "../models";
 /**
  * Get the resource endpoints for the Role Management feature.
  *
- * @param {string} serverHost - Server Host.
+ * @param {string} serverHostWithOrgPath - Server Host with Org Path.
+ * @param {string} serverHost - Server Host
  * @return {RolesResourceEndpointsInterface}
  */
-export const getRolesResourceEndpoints = (serverHost: string): RolesResourceEndpointsInterface => {
+export const getRolesResourceEndpoints = (
+    serverHostWithOrgPath: string,
+    serverHost: string
+): RolesResourceEndpointsInterface => {
     return {
-        permission: `${serverHost}/api/server/v1/permission-management/permissions`,
-        roles: `${serverHost}/scim2/Roles`
+        permission: `${serverHostWithOrgPath}/api/server/v1/permission-management/permissions`,
+        roles: `${serverHostWithOrgPath}/scim2/Roles`,
+        rolesWithoutOrgPath: `${serverHost}/scim2/Roles`
     };
 };

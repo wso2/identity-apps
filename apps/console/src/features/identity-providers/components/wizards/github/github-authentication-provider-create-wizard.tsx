@@ -158,10 +158,6 @@ export const GitHubAuthenticationProviderCreateWizard: FunctionComponent<
         */
         const createNewIdentityProvider = (identityProvider: IdentityProviderInterface): void => {
 
-            // TODO Uncomment below once template id is supported from IDP REST API
-            // Tracked Here - https://github.com/wso2/product-is/issues/11023
-            // identityProvider.templateId = template.id;
-
             setIsSubmitting(true);
 
             createIdentityProvider(identityProvider)
@@ -281,11 +277,14 @@ export const GitHubAuthenticationProviderCreateWizard: FunctionComponent<
         *
         * @param {GitHubAuthenticationProviderCreateWizardFormValuesInterface} values - Form values.
         */
-        const onSubmitWizard = (values: GitHubAuthenticationProviderCreateWizardFormValuesInterface): void => {
+        const onSubmitWizard = async (values: GitHubAuthenticationProviderCreateWizardFormValuesInterface): Promise<void> => {
+
+            await identityProviderConfig.overrideTemplate(template);
 
             const identityProvider: IdentityProviderInterface = { ...template.idp };
 
             identityProvider.name = values.name.toString();
+            identityProvider.templateId = template.templateId;
 
             identityProvider.federatedAuthenticators.authenticators[ 0 ].properties = [
                 {

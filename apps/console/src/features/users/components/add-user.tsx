@@ -27,7 +27,10 @@ import {
     Grid,
     Message
 } from "semantic-ui-react";
+import { store } from "../../core";
 import { SharedUserStoreUtils } from "../../core/utils";
+import { RootOnlyComponent } from "../../organizations/components";
+import { OrganizationUtils } from "../../organizations/utils";
 import {
     CONSUMER_USERSTORE,
     PRIMARY_USERSTORE_PROPERTY_VALUES,
@@ -201,25 +204,29 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                 value: ""
             };
 
-        getUserStoreList()
-            .then((response) => {
-                if (storeOptions === []) {
-                    storeOptions.push(storeOption);
-                }
-                response.data.map((store: UserStoreListItem, index) => {
-                    if (store.name !== CONSUMER_USERSTORE) {
-                        if (store.enabled) {
-                            storeOption = {
-                                key: index,
-                                text: store.name,
-                                value: store.name
-                            };
-                            storeOptions.push(storeOption);
-                        }
+        setUserStore(storeOptions[ 0 ].value);
+
+        if (OrganizationUtils.isCurrentOrganizationRoot()) {
+            getUserStoreList(store.getState().config.endpoints.userStores)
+                .then((response) => {
+                    if (storeOptions === []) {
+                        storeOptions.push(storeOption);
                     }
+                    response.data.map((store: UserStoreListItem, index) => {
+                        if (store.name !== CONSUMER_USERSTORE) {
+                            if (store.enabled) {
+                                storeOption = {
+                                    key: index,
+                                    text: store.name,
+                                    value: store.name
+                                };
+                                storeOptions.push(storeOption);
+                            }
+                        }
+                    });
+                    setUserStoresList(storeOptions);
                 });
-                setUserStoresList(storeOptions);
-            });
+        }
 
         setUserStoresList(storeOptions);
     };
@@ -288,7 +295,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
 
                                     let passwordRegex = "";
 
-                                    if (userStore !== UserstoreConstants.PRIMARY_USER_STORE) {
+                                    if (userStore !== UserstoreConstants.PRIMARY_USER_STORE.toLocaleLowerCase()) {
                                         // Set the username regEx of the secondary user store.
                                         passwordRegex
                                             = await SharedUserStoreUtils.getUserStoreRegEx(
@@ -416,24 +423,27 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
         >
             <Grid>
                 <Grid.Row columns={ 2 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                        <Field
-                            data-testid="user-mgt-add-user-form-domain-dropdown"
-                            type="dropdown"
-                            label={ t(
-                                "console:manage.features.user.forms.addUserForm.inputs.domain.label"
-                            ) }
-                            name="domain"
-                            children={ userStoreOptions }
-                            requiredErrorMessage={ t(
-                                "console:manage.features.user.forms.addUserForm.inputs.domain.validations.empty"
-                            ) }
-                            required={ true }
-                            value={ initialValues?.domain ? initialValues?.domain : userStoreOptions[0]?.value }
-                            listen={ handleUserStoreChange }
-                            tabIndex={ 1 }
-                        />
-                    </Grid.Column>
+                    <RootOnlyComponent>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                            <Field
+                                data-testid="user-mgt-add-user-form-domain-dropdown"
+                                type="dropdown"
+                                label={ t(
+                                    "console:manage.features.user.forms.addUserForm.inputs.domain.label"
+                                ) }
+                                name="domain"
+                                children={ userStoreOptions }
+                                requiredErrorMessage={ t(
+                                    "console:manage.features.user.forms.addUserForm.inputs.domain.validations.empty"
+                                ) }
+                                required={ true }
+                                value={ initialValues?.domain ? initialValues?.domain : userStoreOptions[0]?.value }
+                                listen={ handleUserStoreChange }
+                                tabIndex={ 1 }
+                            />
+                        </Grid.Column>
+                    </RootOnlyComponent>
+
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field
                             data-testid="user-mgt-add-user-form-username-input"
@@ -456,7 +466,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                                     if (value) {
                                         const usersList
                                             = await getUsersList(null, null, "userName eq " + value, null, userStore);
-                                            
+
                                         if (usersList?.totalResults > 0) {
                                             validation.isValid = false;
                                             validation.errorMessages.push(USER_ALREADY_EXIST_ERROR_MESSAGE);

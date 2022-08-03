@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AsgardeoSPAClient, DecodedIDTokenPayload } from "@asgardeo/auth-react";
 import { getProfileInfo, getProfileSchemas } from "@wso2is/core/api";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import {
@@ -34,9 +35,9 @@ import {
 import { I18n } from "@wso2is/i18n";
 import isEmpty from "lodash-es/isEmpty";
 import { Dispatch } from "redux";
+import { commonConfig } from "../../../../extensions";
 import { Config } from "../../../core/configs";
 import { store } from "../../../core/store";
-import { commonConfig } from "../../../../extensions";
 
 /**
  *  Gets profile information by making an API call
@@ -48,92 +49,116 @@ export const getProfileInformation = (
 
     dispatch(setProfileInfoRequestLoadingStatus(true));
 
-    // Get the profile info.
-    // TODO: Add the function to handle SCIM disabled error.
-    getProfileInfo(meEndpoint, clientOrigin, null)
-        .then((infoResponse: ProfileInfoInterface) => {
-            if (infoResponse.responseStatus !== 200) {
+    const getProfileInfoFromToken: boolean = store.getState().auth.isPrivilegedUser || 
+                                    (window[ "AppUtils" ].getConfig().getProfileInfoFromIDToken ?? false);
+
+    const getProfileSchema = (): void => {
+        // If the schemas in the redux store is empty, fetch the SCIM schemas from the API.
+        if (isEmpty(store.getState().profile.profileSchemas)) {
+            dispatch(setProfileSchemaRequestLoadingStatus(true));
+
+            getProfileSchemas(store.getState().config.endpoints?.schemas)
+                .then((response: ProfileSchemaInterface[]) => {
+                    dispatch(setSCIMSchemas<ProfileSchemaInterface[]>(response));
+                })
+                .catch((error: IdentityAppsApiException) => {
+                    if (error?.response?.data?.description) {
+                        dispatch(
+                            addAlert<AlertInterface>({
+                                description: error.response.data.description,
+                                level: AlertLevels.ERROR,
+                                message: I18n.instance.t("console:manage.notifications.getProfileSchema." +
+                                    "error.message")
+                            })
+                        );
+                    }
+
+                    dispatch(
+                        addAlert<AlertInterface>({
+                            description: I18n.instance.t(
+                                "console:manage.notifications.getProfileSchema.genericError.description"
+                            ),
+                            level: AlertLevels.ERROR,
+                            message: I18n.instance.t(
+                                "console:manage.notifications.getProfileSchema.genericError.message"
+                            )
+                        })
+                    );
+                })
+                .finally(() => {
+                    dispatch(setProfileSchemaRequestLoadingStatus(false));
+                });
+        }
+    };
+
+    if (getProfileInfoFromToken && meEndpoint.includes("scim2/Me")) {
+        AsgardeoSPAClient.getInstance().getDecodedIDToken().then((decodedToken: DecodedIDTokenPayload) => {
+            const profileInfo: ProfileInfoInterface = {
+                emails: [ decodedToken.email ] ?? [],
+                id: decodedToken.sub,
+                name: {
+                    familyName: decodedToken.family_name ?? "",
+                    givenName: decodedToken.given_name ?? ""
+                },
+                profileUrl: "",
+                userName: decodedToken.username
+            };
+
+            dispatch(setProfileInfo(profileInfo));
+            dispatch(setProfileInfoRequestLoadingStatus(false));
+            getProfileSchema();
+        });
+    } else {
+        // Get the profile info.
+        // TODO: Add the function to handle SCIM disabled error.
+        getProfileInfo(meEndpoint, clientOrigin, null)
+            .then((infoResponse: ProfileInfoInterface) => {
+                if (infoResponse.responseStatus !== 200) {
+                    dispatch(
+                        addAlert({
+                            description: I18n.instance.t(
+                                "console:manage.notifications.getProfileInfo.genericError.description"
+                            ),
+                            level: AlertLevels.ERROR,
+                            message: I18n.instance.t("console:manage.notifications.getProfileInfo.genericError.message")
+                        })
+                    );
+
+                    return;
+                }
+                dispatch(setProfileInfo<ProfileInfoInterface>(infoResponse));
+                commonConfig.hotjarTracking.tagAttributes();
+                getProfileSchema();
+
+                return;
+            })
+            .catch((error: IdentityAppsApiException) => {
+                if (error.response && error.response.data && error.response.data.detail) {
+                    dispatch(
+                        addAlert({
+                            description: I18n.instance.t(
+                                "console:manage.notifications.getProfileInfo.error.description", {
+                                    description: error.response.data.detail
+                                } ),
+                            level: AlertLevels.ERROR,
+                            message: I18n.instance.t("console:manage.notifications.getProfileInfo.error.message")
+                        })
+                    );
+
+                    return;
+                }
+
                 dispatch(
                     addAlert({
-                        description: I18n.instance.t(
-                            "console:manage.notifications.getProfileInfo.genericError.description"
-                        ),
+                        description: I18n.instance.t("console:manage.notifications.getProfileInfo.genericError." +
+                            "description"),
                         level: AlertLevels.ERROR,
                         message: I18n.instance.t("console:manage.notifications.getProfileInfo.genericError.message")
                     })
                 );
-
-                return;
-            }
-
-            dispatch(setProfileInfo<ProfileInfoInterface>(infoResponse));
-
-            commonConfig.hotjarTracking.tagAttributes();
-
-            // If the schemas in the redux store is empty, fetch the SCIM schemas from the API.
-            if (isEmpty(store.getState().profile.profileSchemas)) {
-                dispatch(setProfileSchemaRequestLoadingStatus(true));
-
-                getProfileSchemas()
-                    .then((response: ProfileSchemaInterface[]) => {
-                        dispatch(setSCIMSchemas<ProfileSchemaInterface[]>(response));
-                    })
-                    .catch((error: IdentityAppsApiException) => {
-                        if (error?.response?.data?.description) {
-                            dispatch(
-                                addAlert<AlertInterface>({
-                                    description: error.response.data.description,
-                                    level: AlertLevels.ERROR,
-                                    message: I18n.instance.t("console:manage.notifications.getProfileSchema." +
-                                        "error.message")
-                                })
-                            );
-                        }
-
-                        dispatch(
-                            addAlert<AlertInterface>({
-                                description: I18n.instance.t(
-                                    "console:manage.notifications.getProfileSchema.genericError.description"
-                                ),
-                                level: AlertLevels.ERROR,
-                                message: I18n.instance.t(
-                                    "console:manage.notifications.getProfileSchema.genericError.message"
-                                )
-                            })
-                        );
-                    })
-                    .finally(() => {
-                        dispatch(setProfileSchemaRequestLoadingStatus(false));
-                    });
-            }
-
-            return;
-        })
-        .catch((error: IdentityAppsApiException) => {
-            if (error.response && error.response.data && error.response.data.detail) {
-                dispatch(
-                    addAlert({
-                        description: I18n.instance.t("console:manage.notifications.getProfileInfo.error.description", {
-                            description: error.response.data.detail
-                        }),
-                        level: AlertLevels.ERROR,
-                        message: I18n.instance.t("console:manage.notifications.getProfileInfo.error.message")
-                    })
-                );
-
-                return;
-            }
-
-            dispatch(
-                addAlert({
-                    description: I18n.instance.t("console:manage.notifications.getProfileInfo.genericError." +
-                        "description"),
-                    level: AlertLevels.ERROR,
-                    message: I18n.instance.t("console:manage.notifications.getProfileInfo.genericError.message")
-                })
-            );
-        })
-        .finally(() => {
-            dispatch(setProfileInfoRequestLoadingStatus(false));
-        });
+            })
+            .finally(() => {
+                dispatch(setProfileInfoRequestLoadingStatus(false));
+            });
+    }
 };
