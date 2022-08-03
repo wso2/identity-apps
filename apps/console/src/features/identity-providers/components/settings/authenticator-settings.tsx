@@ -549,18 +549,18 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
     const filterTemplates = (): void => {
 
         // Filter out already added authenticators and templates with federated authenticators.
-        const availableAuthenticatorIDs = availableAuthenticators.map((a) => {
+        const availableAuthenticatorIDs = availableAuthenticators?.map((a) => {
             return a.id;
         });
 
-        const filteredTemplates = identityProviderTemplates.filter((template) =>
-            (template.idp?.federatedAuthenticators?.defaultAuthenticatorId &&
-                !availableAuthenticatorIDs.includes(
-                    template.idp?.federatedAuthenticators?.defaultAuthenticatorId))
+        const filteredTemplates = identityProviderTemplates?.filter((template) =>
+            (template?.idp?.federatedAuthenticators?.defaultAuthenticatorId &&
+                !availableAuthenticatorIDs?.includes(
+                    template?.idp?.federatedAuthenticators?.defaultAuthenticatorId))
         );
 
         // sort templateList based on display Order
-        filteredTemplates.sort((a, b) => (a.displayOrder > b.displayOrder) ? 1 : -1);
+        filteredTemplates?.sort((a, b) => (a?.displayOrder > b?.displayOrder) ? 1 : -1);
         
         const flattenedConnectorMetadata: ({ [ key: string ]: FederatedAuthenticatorMetaDataInterface }) = keyBy(
             getConnectorMetadata(), "authenticatorId"
@@ -569,15 +569,15 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
             availableFederatedAuthenticators as FederatedAuthenticatorMetaDataInterface[]
         );
 
-        moderatedManualModeOptions = moderatedManualModeOptions.map((option) => {
+        moderatedManualModeOptions = moderatedManualModeOptions?.map((option) => {
             return {
                 ...option,
-                ...flattenedConnectorMetadata[ option.authenticatorId ]
+                ...flattenedConnectorMetadata[ option?.authenticatorId ]
             };
         });
 
-        moderatedManualModeOptions = moderatedManualModeOptions.filter(a =>
-            !availableAuthenticatorIDs.includes(a.authenticatorId));
+        moderatedManualModeOptions = moderatedManualModeOptions?.filter(a =>
+            !availableAuthenticatorIDs.includes(a?.authenticatorId));
 
         setAvailableManualModeOptions(moderatedManualModeOptions);
         setAvailableTemplates(filteredTemplates);
