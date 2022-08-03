@@ -33,7 +33,7 @@
 <!DOCTYPE HTML>
 <html>
     <head>
-        <script src="console/auth-spa-0.3.3.min.js"></script>
+        <script src="<%= htmlWebpackPlugin.options.basename %>/auth-spa-0.3.3.min.js"></script>
     </head>
     <body>
         <script>
