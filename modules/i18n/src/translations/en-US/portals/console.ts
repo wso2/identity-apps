@@ -1146,6 +1146,10 @@ export const console: ConsoleNS = {
                                                 info: "To sign in with passwordless login, your users "
                                                     + "should have their FIDO2 security keys or biometrics "
                                                     + "registered via My Account."
+                                            },
+                                            emailOTP: {
+                                                description: "Enable additional authentication layer with Email based OTP.",
+                                                heading: "Add Email OTP as a second factor"
                                             }
                                         }
                                     }

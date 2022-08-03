@@ -692,6 +692,10 @@ export interface ConsoleNS {
                                                 description: string;
                                                 heading: string;
                                                 warning: string;
+                                            },
+                                            emailOTP: {
+                                                description: string,
+                                                heading: string,
                                             }
                                         }
                                     }
