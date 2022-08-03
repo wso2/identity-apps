@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { SessionStorageUtils } from "@wso2is/core/utils";
@@ -31,10 +32,17 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Divider, Dropdown, Input, Item, Menu, Placeholder, Popup } from "semantic-ui-react";
+import { Button, Divider, Dropdown, Input, Item, Label, Menu, Placeholder, Popup } from "semantic-ui-react";
 import { organizationConfigs } from "../../../../extensions";
 import { ReactComponent as CrossIcon } from "../../../../themes/default/assets/images/icons/cross-icon.svg";
-import { AppConstants, AppState, getMiscellaneousIcons, getSidePanelIcons, history } from "../../../core";
+import {
+    AppConstants,
+    AppState,
+    FeatureConfigInterface,
+    getMiscellaneousIcons,
+    getSidePanelIcons,
+    history
+} from "../../../core";
 import { getOrganizations } from "../../api";
 import { OrganizationManagementConstants } from "../../constants";
 import {
@@ -61,6 +69,9 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
     const currentOrganization: OrganizationResponseInterface = useSelector(
         (state: AppState) => state.organization.organization
     );
+    const feature: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const scopes = useSelector((state: AppState) => state.auth.allowedScopes);
+    const tenantDomain: string = useSelector((state: AppState) => state?.auth?.tenantDomain);
 
     const [ associatedOrganizations, setAssociatedOrganizations ] = useState<OrganizationInterface[]>([]);
     const [ listFilter, setListFilter ] = useState("");
@@ -69,8 +80,28 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
     const [ isDropDownOpen, setIsDropDownOpen ] = useState<boolean>(false);
     const [ search, setSearch ] = useState<string>("");
 
-    const isOrgSwitcherEnabled = useMemo(() => organizationConfigs.showOrganizationDropdown, [
-        organizationConfigs.showOrganizationDropdown
+    /**
+     * Show the organization switching dropdown only if
+     *  - the extensions config enables this
+     *  - the requires scopes are there
+     *  - the organization management feature is enabled by the backend
+     *  - the user is logged in to a non-super-tenant account
+     */
+    const isOrgSwitcherEnabled = useMemo(() => {
+        return (
+            isOrganizationManagementEnabled &&
+            // The `tenantDomain` takes the organization id when you log in to a sub-organization.
+            // So, we cannot use `tenantDomain` to check
+            // if the user is logged in to a non-super-tenant account reliably.
+            // So, we check if the organization id is there in the URL to see if the user is in a sub-organization.
+            (tenantDomain === AppConstants.getSuperTenant() || window[ "AppUtils" ].getConfig().organizationName) &&
+            hasRequiredScopes(feature?.organizations, feature?.organizations?.scopes?.read, scopes) &&
+            organizationConfigs.showOrganizationDropdown
+        );
+    }, [
+        organizationConfigs.showOrganizationDropdown,
+        tenantDomain,
+        feature.organizations
     ]);
 
     const getOrganizationList = useCallback((filter: string, after: string, before: string) => {
@@ -239,30 +270,39 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                             className="name ellipsis tenant-description"
                             data-componentid={ "organization-dropdown-display-name" }
                         >
-                            { organization?.name ?? (
-                                <Placeholder>
-                                    <Placeholder.Line />
-                                </Placeholder>
-                            ) }
+                            <div>
+                                <div>
+                                    { organization?.name ?? (
+                                        <Placeholder>
+                                            <Placeholder.Line />
+                                        </Placeholder>
+                                    ) }
+                                </div>
 
-                            { !OrganizationUtils.isRootOrganization(organization) && (
-                                <GenericIcon
-                                    transparent
-                                    inline
-                                    className="manage-tenant-icon"
-                                    data-componentid="associated-component-icon"
-                                    icon={ getSidePanelIcons().serverConfigurations }
-                                    onClick={ (event: SyntheticEvent) => {
-                                        history.push({
-                                            pathname: AppConstants.getPaths()
-                                                .get("ORGANIZATION_UPDATE")
-                                                .replace(":id", organization?.id)
-                                        });
-                                        setIsDropDownOpen(false);
-                                        event.stopPropagation();
-                                    } }
-                                />
-                            ) }
+                                <Label size="mini">{ organization.id }</Label>
+                            </div>
+
+
+                            <div className="manage-icon-wrapper" >
+                                { !OrganizationUtils.isRootOrganization(organization) && (
+                                    <GenericIcon
+                                        transparent
+                                        inline
+                                        className="manage-tenant-icon"
+                                        data-componentid="associated-component-icon"
+                                        icon={ getSidePanelIcons().serverConfigurations }
+                                        onClick={ (event: SyntheticEvent) => {
+                                            history.push({
+                                                pathname: AppConstants.getPaths()
+                                                    .get("ORGANIZATION_UPDATE")
+                                                    .replace(":id", organization?.id)
+                                            });
+                                            setIsDropDownOpen(false);
+                                            event.stopPropagation();
+                                        } }
+                                    />
+                                ) }
+                            </div>
                         </div>
                     </Item.Description>
                 </Item.Content>

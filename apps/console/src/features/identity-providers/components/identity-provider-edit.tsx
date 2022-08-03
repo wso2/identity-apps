@@ -17,14 +17,14 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { ResourceTab } from "@wso2is/react-components";
+import { ContentLoader, EmphasizedSegment, ResourceTab } from "@wso2is/react-components";
 import React, {
     FunctionComponent,
     ReactElement,
     useEffect,
     useState
 } from "react";
-import { Loader, TabProps } from "semantic-ui-react";
+import { TabProps } from "semantic-ui-react";
 import {
     AdvanceSettings,
     AttributeSettings,
@@ -38,6 +38,7 @@ import { IdentityProviderManagementConstants } from "../constants";
 import {
     IdentityProviderAdvanceInterface,
     IdentityProviderInterface,
+    IdentityProviderTabTypes,
     IdentityProviderTemplateInterface
 } from "../models";
 
@@ -130,6 +131,12 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
         isFederationHub: identityProvider.isFederationHub
     };
 
+    const Loader = (): ReactElement => (
+        <EmphasizedSegment padded>
+            <ContentLoader inline="centered" active/>
+        </EmphasizedSegment>
+    );
+
     const GeneralIdentityProviderSettingsTabPane = (): ReactElement => (
         <ResourceTab.Pane controlledSegmentation>
             <GeneralSettings
@@ -152,6 +159,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
                 onUpdate={ onUpdate }
                 data-testid={ `${ testId }-general-settings` }
                 isReadOnly = { isReadOnly }
+                loader={ Loader }
             />
         </ResourceTab.Pane>
     );
@@ -182,6 +190,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
                     )
                 }
                 isReadOnly={ isReadOnly }
+                loader={ Loader }
             />
         </ResourceTab.Pane>
     );
@@ -194,6 +203,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
                 onUpdate={ onUpdate }
                 data-testid={ `${ testId }-authenticator-settings` }
                 isReadOnly={ isReadOnly }
+                loader={ Loader }
             />
         </ResourceTab.Pane>
     );
@@ -207,6 +217,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
                 onUpdate={ onUpdate }
                 data-testid={ `${ testId }-outbound-provisioning-settings` }
                 isReadOnly={ isReadOnly }
+                loader={ Loader }
             />
         </ResourceTab.Pane>
     );
@@ -220,6 +231,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
                 onUpdate={ onUpdate }
                 data-testid={ `${ testId }-jit-provisioning-settings` }
                 isReadOnly={ isReadOnly }
+                loader={ Loader }
             />
         </ResourceTab.Pane>
     );
@@ -232,6 +244,8 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
                 onUpdate={ onUpdate }
                 data-testid={ `${ testId }-advance-settings` }
                 isReadOnly={ isReadOnly }
+                isLoading={ isLoading }
+                loader={ Loader }
             />
         </ResourceTab.Pane>
     );
@@ -298,30 +312,37 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
         const attributesForSamlEnabled = isSaml && identityProviderConfig.editIdentityProvider.attributesSettings;
 
         // Evaluate whether to Show/Hide `Attributes`.
-        if (attributesForSamlEnabled || shouldShowAttributeSettings(type)) {
+        if ((attributesForSamlEnabled || shouldShowAttributeSettings(type))
+            && !isOrganizationEnterpriseAuthenticator) {
             panes.push({
                 menuItem: "Attributes",
                 render: AttributeSettingsTabPane
             });
         }
 
-        identityProviderConfig.editIdentityProvider.showOutboundProvisioning &&
+        if (identityProviderConfig.editIdentityProvider.showOutboundProvisioning
+            && !isOrganizationEnterpriseAuthenticator ) {
             panes.push({
                 menuItem: "Outbound Provisioning",
                 render: OutboundProvisioningSettingsTabPane
             });
+        }
 
-        identityProviderConfig.editIdentityProvider.showJitProvisioning &&
+        if (identityProviderConfig.editIdentityProvider.showJitProvisioning
+            && !isOrganizationEnterpriseAuthenticator) {
             panes.push({
                 menuItem: identityProviderConfig.jitProvisioningSettings?.menuItemName,
                 render: JITProvisioningSettingsTabPane
             });
+        }
 
-        identityProviderConfig.editIdentityProvider.showAdvancedSettings &&
+        if (identityProviderConfig.editIdentityProvider.showAdvancedSettings
+            && !isOrganizationEnterpriseAuthenticator) {
             panes.push({
                 menuItem: "Advanced",
                 render: AdvancedSettingsTabPane
             });
+        }
 
         return panes;
     };
@@ -349,22 +370,28 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
             return false;
         }
 
-        return true;
+        const isTabEnabledInExtensions: boolean | undefined = identityProviderConfig
+            .editIdentityProvider
+            .isTabEnabledForIdP(type, IdentityProviderTabTypes.USER_ATTRIBUTES);
+
+        return isTabEnabledInExtensions !== undefined
+            ? isTabEnabledInExtensions
+            : true;
     };
 
+    if (!identityProvider || isLoading) {
+        return <Loader />;
+    }
+
     return (
-        identityProvider && !isLoading
-            ?  (
-                <ResourceTab
-                    data-testid={ `${ testId }-resource-tabs` }
-                    panes={ getPanes() }
-                    defaultActiveIndex={ defaultActiveIndex }
-                    onTabChange={ (e, data: TabProps ) => {
-                        setDefaultActiveIndex(data.activeIndex);
-                    } }
-                />
-            )
-            : <Loader />
+        <ResourceTab
+            data-testid={ `${ testId }-resource-tabs` }
+            panes={ getPanes() }
+            defaultActiveIndex={ defaultActiveIndex }
+            onTabChange={ (e, data: TabProps ) => {
+                setDefaultActiveIndex(data.activeIndex);
+            } }
+        />
     );
 };
 

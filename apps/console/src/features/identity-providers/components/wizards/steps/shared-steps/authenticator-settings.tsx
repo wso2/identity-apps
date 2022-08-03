@@ -16,9 +16,11 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { ContentLoader } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import {
+    AuthenticatorSettingsFormModes,
     FederatedAuthenticatorListItemInterface,
     FederatedAuthenticatorMetaInterface,
     IdentityProviderInterface
@@ -26,12 +28,26 @@ import {
 import { AuthenticatorFormFactory } from "../../../forms";
 
 /**
- * Proptypes for the authenticator settings wizard form component.
+ * Prop-types for the authenticator settings wizard form component.
  */
-interface AuthenticatorSettingsWizardFormPropsInterface extends TestableComponentInterface {
+interface AuthenticatorSettingsWizardFormPropsInterface extends TestableComponentInterface,
+    IdentifiableComponentInterface {
+
+    /**
+     * Authenticator metadata to generate the form.
+     */
     metadata: FederatedAuthenticatorMetaInterface;
+    /**
+     * Initial values for the form.
+     */
     initialValues: IdentityProviderInterface;
+    /**
+     * On submit callback.
+     */
     onSubmit: (values: IdentityProviderInterface) => void;
+    /**
+     * Trigger to submit the form.
+     */
     triggerSubmit: boolean;
 }
 
@@ -50,6 +66,7 @@ export const AuthenticatorSettings: FunctionComponent<AuthenticatorSettingsWizar
         initialValues,
         onSubmit,
         triggerSubmit,
+        [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId
     } = props;
 
@@ -86,18 +103,30 @@ export const AuthenticatorSettings: FunctionComponent<AuthenticatorSettingsWizar
     const authenticator = initialValues?.federatedAuthenticators?.authenticators.find(authenticator =>
         authenticator.authenticatorId === initialValues?.federatedAuthenticators?.defaultAuthenticatorId);
 
+    if (!metadata) {
+        return <ContentLoader />;
+    }
+
     return (
-        ( metadata ?
-            (<AuthenticatorFormFactory
-                metadata={ metadata }
-                initialValues={ (authenticator ? authenticator : {}) }
-                onSubmit={ handleSubmit }
-                type={ authenticator?.name }
-                triggerSubmit={ triggerSubmit }
-                enableSubmitButton={ false }
-                data-testid={ testId }
-                isReadOnly={ false }
-            />) : null
-        )
+        <AuthenticatorFormFactory
+            mode={ AuthenticatorSettingsFormModes.CREATE }
+            metadata={ metadata }
+            initialValues={ (authenticator ? authenticator : {}) }
+            onSubmit={ handleSubmit }
+            type={ authenticator?.name }
+            triggerSubmit={ triggerSubmit }
+            enableSubmitButton={ false }
+            data-testid={ testId }
+            data-componentid={ componentId }
+            isReadOnly={ false }
+            templateId={ initialValues.templateId }
+        />
     );
+};
+
+/**
+ * Default props of the component.
+ */
+AuthenticatorSettings.defaultProps = {
+    "data-componentid": "wizard-authenticator-settings"
 };

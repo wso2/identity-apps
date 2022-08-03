@@ -16,11 +16,10 @@
  * under the License.
  */
 
-import { getUserNameWithoutDomain } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { CommonUtils } from "@wso2is/core/utils";
 import { ContentLoader, Heading, LinkButton } from "@wso2is/react-components";
-import React, { MouseEvent, PropsWithChildren, useEffect, useState } from "react";
+import React, { FunctionComponent, MouseEvent, PropsWithChildren, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import {
@@ -33,7 +32,6 @@ import {
     List,
     Message,
     Modal,
-    Popup,
     Segment    
 } from "semantic-ui-react";
 import {
@@ -43,7 +41,6 @@ import {
 import {
     AlertInterface,
     AlertLevels,
-    AuthStateInterface,
     BackupCodeInterface,
     BackupCodesCountInterface
 } from "../../../models";
@@ -59,9 +56,9 @@ interface BackupCodeProps extends IdentifiableComponentInterface {
     onBackupFlowCompleted: () => void;
 }
 
-export const BackupCodeAuthenticator : React.FunctionComponent<BackupCodeProps> = (
+export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
     props: PropsWithChildren<BackupCodeProps>
-): React.ReactElement => {
+): ReactElement => {
 
     const { 
         onAlertFired,
@@ -74,16 +71,13 @@ export const BackupCodeAuthenticator : React.FunctionComponent<BackupCodeProps> 
 
     const translateKey: string = "myAccount:components.mfa.backupCode.";
 
-    const profileDetails: AuthStateInterface = useSelector(
-        (state: AppState) => state.authenticationInformation
-    );
+    const productName: string = useSelector((state: AppState) => state?.config?.ui?.productName);
 
     const [ isLoading, setIsLoading ] = useState<boolean>(false);
     const [ isModalOpen, setIsModalOpen ] = useState<boolean>(false);
     const [ backupCodes, setBackupCodes ] = useState<Array<string>>([]);
     const [ remainingBackupCodes, setRemainingBackupCodes ] = useState<number>(0);
     const [ isCodesCopied, setIsCodesCopied ] = useState<boolean>(false);
-    const [ isCodesDownloaded, setIsCodesDownloaded ] = useState<boolean>(false);
     const [ isConfirmRegenerationModalOpen, setIsConfirmRegenerationModalOpen ] = useState<boolean>(false);
     const [ isWarnRemaingBackupCodes, setIsWarnRemaingBackupCodes ] = useState<boolean>(false);
 
@@ -214,12 +208,11 @@ export const BackupCodeAuthenticator : React.FunctionComponent<BackupCodeProps> 
     
             const blob = new Blob(
                 [
-                    t(translateKey + "download.heading") + "\n",
-                    "Username: " + getUserNameWithoutDomain(profileDetails.profileInfo.userName) + "\n\n",
-                    t(translateKey + "download.subHeading") + "\n\n",
+                    t(translateKey + "download.heading", { productName }) + "\n\n",
+                    t(translateKey + "download.subHeading", { productName }) + "\n\n",
                     backupCodeString + "\n\n",
-                    "*" + t(translateKey + "download.info1") + "\n",
-                    "*" + t(translateKey + "download.info2") + new Date() + "."
+                    "* " + t(translateKey + "download.info1") + "\n",
+                    "* " + t(translateKey + "download.info2") + new Date() + "."
                 ],
     
                 { type: "application/json" }
@@ -234,8 +227,7 @@ export const BackupCodeAuthenticator : React.FunctionComponent<BackupCodeProps> 
             document.body.appendChild(a);
             a.click();
             window.URL.revokeObjectURL(url);
-    
-            setIsCodesDownloaded(true);
+
             // Sets a success notification.
             onAlertFired({
                 description: t(translateKey + "notifications.downloadSuccess.genericMessage.description"),
@@ -266,7 +258,7 @@ export const BackupCodeAuthenticator : React.FunctionComponent<BackupCodeProps> 
      * Render backup codes modal
      * @returns Backup codes modal
      */
-    const renderBackupCodeWizard = (): React.ReactElement => {
+    const renderBackupCodeWizard = (): ReactElement => {
         return (
             <Modal
                 data-componentid={ `${componentid}-modal` }
@@ -293,8 +285,7 @@ export const BackupCodeAuthenticator : React.FunctionComponent<BackupCodeProps> 
                     <Message className="display-flex" size="small" warning>
                         <Icon name="warning sign" color="orange" corner />
                         <Message.Content className="tiny">
-                            { "These will be shown only once. Save these backup codes and store it " 
-                                + "somewhere safe but accessible." }
+                            { t(translateKey + "modals.warn") }
                         </Message.Content>
                     </Message>
                     <Message className="display-flex" size="small" info>
@@ -306,55 +297,18 @@ export const BackupCodeAuthenticator : React.FunctionComponent<BackupCodeProps> 
                     { !isLoading 
                         ? ( 
                             <Segment>
-                                <Container textAlign="right">
-                                    <Popup
-                                        trigger={
-                                            (
-                                                <Button
-                                                    className="ui basic primary button link-button"
-                                                    onMouseEnter={ () => setIsCodesDownloaded(false) }
-                                                    onClick={ handleDownloadBackupCodes }
-                                                    data-componentid={ `${componentid}-modal-download-button` }
-                                                >
-                                                    { t(translateKey + "modals.download.heading") }
-                                                </Button>
-                                            )
-                                        }
-                                        openOnTriggerFocus
-                                        closeOnTriggerBlur
-                                        position="top left"
-                                        content={ isCodesDownloaded ? "Downloaded!" : "Download Codes" }
-                                        inverted
-                                    />
-                                    <Popup
-                                        trigger={
-                                            (
-                                                <Button
-                                                    className="ui basic primary button link-button"
-                                                    onMouseEnter={ () => setIsCodesCopied(false) }
-                                                    onClick={ handleCopyBackupCodes }
-                                                    data-componentid={ `${componentid}-modal-copy-button` }
-                                                >
-                                                    { "Copy Codes" }
-                                                </Button>
-                                            )
-                                        }
-                                        openOnTriggerFocus
-                                        closeOnTriggerBlur
-                                        position="top left"
-                                        content={ isCodesCopied ? "Copied!" : "Copy to clipboard" }
-                                        inverted
-                                    />
-                                </Container>
-                                <Grid container columns={ 4 }>
+                                <Grid container columns={ 2 } textAlign="center">
                                     {
                                         backupCodes?.map((code, index)=> {
                                             return (
-                                                <GridColumn 
+                                                <GridColumn
                                                     key={ index }
+                                                    className="backup-code-column"
                                                     data-componentid={ `${ componentid }-modal-backup-code-${ index }` }
                                                 > 
-                                                    { code }
+                                                    <div>
+                                                        { code }
+                                                    </div>
                                                 </GridColumn>
                                             );
                                         })
@@ -369,16 +323,36 @@ export const BackupCodeAuthenticator : React.FunctionComponent<BackupCodeProps> 
                     }
                 </Modal.Content>
                 <Modal.Actions data-testid={ `${componentid}-modal-actions` }>
-                    <Button
-                        primary
-                        data-componentid={ `${componentid}-modal-actions-done-button` }
+                    <LinkButton
+                        floated="left"
                         onClick= { () => {
                             onBackupFlowCompleted();
                             getRemainingCount();
                             setIsModalOpen(false);
                         } }
+                        data-componentid={ `${componentid}-modal-actions-done-button` }
                     >
-                        { t("common:done") }
+                        { t("common:close") }
+                    </LinkButton>
+                    <Button
+                        basic
+                        primary
+                        onMouseEnter={ () => setIsCodesCopied(false) }
+                        onClick={ handleCopyBackupCodes }
+                        data-componentid={ `${componentid}-modal-copy-button` }
+                    >
+                        { 
+                            isCodesCopied 
+                                ? t(translateKey + "modals.actions.copied") 
+                                : t(translateKey + "modals.actions.copy") 
+                        }
+                    </Button>
+                    <Button
+                        primary
+                        onClick={ handleDownloadBackupCodes }
+                        data-componentid={ `${componentid}-modal-download-button` }
+                    >
+                        { t(translateKey + "modals.actions.download") }
                     </Button>
                 </Modal.Actions>
             </Modal>
@@ -388,7 +362,7 @@ export const BackupCodeAuthenticator : React.FunctionComponent<BackupCodeProps> 
     /**
      * Render the Backup codes regenerate confirmation modal
      */
-    const renderConfirmRegenerateModal = (): React.ReactElement => {
+    const renderConfirmRegenerateModal = (): ReactElement => {
         return (
             <Modal
                 data-testid={ `${componentid}-regenerate-confirm-modal` }
@@ -399,13 +373,12 @@ export const BackupCodeAuthenticator : React.FunctionComponent<BackupCodeProps> 
             >
                 <Modal.Content data-testid={ `${componentid}-regenerate-confirm-modal-content` }>
                     <Container>
-                        <h3>{ "Confirmation" }</h3>
+                        <h3>{ t(translateKey + "modals.regenerate.heading") }</h3>
                     </Container>
                     <Message className="display-flex" size="small" warning>
                         <Icon name="info" color="orange" corner />
                         <Message.Content className="tiny">
-                            { "When you generate new backup codes, you must download or copy and save " 
-                                + "the new codes. Your old codes won't work anymore." }
+                            { t(translateKey + "modals.regenerate.description") }
                         </Message.Content>
                     </Message>
                 </Modal.Content>
@@ -413,14 +386,16 @@ export const BackupCodeAuthenticator : React.FunctionComponent<BackupCodeProps> 
                     <Button
                         className="link-button"
                         onClick={ () => setIsConfirmRegenerationModalOpen(false) }
-                        data-testid={ `${componentid}-regenerate-confirm-modal-actions-cancel-button` }>
+                        data-testid={ `${componentid}-regenerate-confirm-modal-actions-cancel-button` }
+                    >
                         { t("common:cancel") }
                     </Button>
                     <Button
                         primary={ true }
                         onClick={ handleRefreshBackCodes }
-                        data-testid={ `${componentid}-regenerate-confirm-modal-actions-confirm-button` }>
-                        { "Regenerate" }
+                        data-testid={ `${componentid}-regenerate-confirm-modal-actions-confirm-button` }
+                    >
+                        { t(translateKey + "modals.actions.regenerate") }
                     </Button>
                 </Modal.Actions>
             </Modal>
@@ -433,7 +408,7 @@ export const BackupCodeAuthenticator : React.FunctionComponent<BackupCodeProps> 
             { renderConfirmRegenerateModal() }
             <Grid padded={ true } data-testid={ componentid }>
                 <Grid.Column width={ 1 } className="first-column"/>
-                <Grid.Column width={ 14 } className="first-column">
+                <Grid.Column width={ 13 } className="first-column">
                     <Message 
                         className="display-flex" 
                         size="small" 
@@ -441,40 +416,40 @@ export const BackupCodeAuthenticator : React.FunctionComponent<BackupCodeProps> 
                         warning={ isWarnRemaingBackupCodes }
                         data-testid={ `${componentid}-message` }
                     >
-                        { isWarnRemaingBackupCodes 
-                            ? <Icon name="warning sign" color="orange" size="large"/>
-                            : <Icon name="info circle" color="teal" size="large"/> 
+                        { 
+                            isWarnRemaingBackupCodes 
+                                ? <Icon name="warning sign" color="orange" size="large"/>
+                                : <Icon className="mt-1" name="info circle" color="teal" size="large"/> 
                         }
-                        <Message.Content className="tiny">
-                            <List.Content>
-                                <List.Header>
-                                    { "Backup Codes" }
-                                    <Label 
-                                        className={ `backup-code-label ${ isWarnRemaingBackupCodes 
-                                            ? "warning" : "info" }` }
-                                        data-testid={ `${componentid}-remaining-count-label` }
-                                    >
-                                        { `${remainingBackupCodes} Remaining` }
-                                    </Label>
-                                </List.Header>
-                                <List.Description>
-                                    <div>
-                                        { "You can use backup codes to log in if you can't receive a " 
-                                            + "verification code via authenticator app." }
-                                    </div>
-                                    <LinkButton 
-                                        compact 
-                                        onClick={ () => {
-                                            setIsConfirmRegenerationModalOpen(true);
-                                        } }
-                                        data-testid={ `${componentid}-regenerate-button` }
-                                    >
-                                        <Icon name="refresh" />
-                                        { "Re-generate" }
-                                    </LinkButton>
-                                </List.Description>
-                            </List.Content>
-                        </Message.Content>
+                        <List.Content>
+                            <List.Header>
+                                { "Backup Codes" }
+                                <Label 
+                                    className={ `backup-code-label ${ isWarnRemaingBackupCodes 
+                                        ? "warning" : "info" }` }
+                                    data-testid={ `${componentid}-remaining-count-label` }
+                                >
+                                    { `${remainingBackupCodes} Remaining` }
+                                </Label>
+                            </List.Header>
+                            <List.Description>
+                                <div className="backup-code-description">
+                                    { t(translateKey + "description") }
+                                </div>
+                                <LinkButton 
+                                    compact 
+                                    className="mt-2"
+                                    floated="right"
+                                    onClick={ () => {
+                                        setIsConfirmRegenerationModalOpen(true);
+                                    } }
+                                    data-testid={ `${componentid}-regenerate-button` }
+                                >
+                                    <Icon name="refresh" />
+                                    { t(translateKey + "modals.actions.regenerate") }
+                                </LinkButton>
+                            </List.Description>
+                        </List.Content>
                     </Message>
                 </Grid.Column>
             </Grid>

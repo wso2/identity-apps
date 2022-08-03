@@ -24,7 +24,7 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
 import { attributeConfig } from "../../../../../extensions";
-import { AppState } from "../../../../core";
+import { AppState, store } from "../../../../core";
 import { UserStoreListItem } from "../../../../userstores";
 
 /**
@@ -80,7 +80,7 @@ export const MappedAttributes: FunctionComponent<MappedAttributesPropsInterface>
                 self: ""
             });
         }
-        getUserStoreList().then((response) => {
+        getUserStoreList(store.getState().config.endpoints.userStores).then((response) => {
             if (hiddenUserStores && hiddenUserStores.length > 0) {
                 response.data.map((store: UserStoreListItem) => {
                     if (hiddenUserStores.length > 0 && !hiddenUserStores.includes(store.name)) {

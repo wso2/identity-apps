@@ -133,7 +133,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
-    const consumerAccountURL: string = useSelector((state: AppState) => 
+    const consumerAccountURL: string = useSelector((state: AppState) =>
         state?.config?.deployment?.accountApp?.tenantQualifiedPath);
     const [ isLoadingForTheFirstTime, setIsLoadingForTheFirstTime ] = useState<boolean>(true);
 
@@ -297,7 +297,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                 <List>
                     <List.Item>
                         <Grid verticalAlign="middle">
-                            <Grid.Column 
+                            <Grid.Column
                                 floated="left"
                                 width={ 10 }
                             >
@@ -335,7 +335,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                             <Popup
                                 trigger={
                                     (<Grid.Column
-                                        floated="right" 
+                                        floated="right"
                                         width={ 6 }
                                     >
                                         <CopyInputField
@@ -396,7 +396,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
             { !isLoadingForTheFirstTime? (
                 <>
                     { renderTenantedMyAccountLink() }
-                    { renderRemoteFetchStatus() }
+                    { /* renderRemoteFetchStatus() */ }
                     <ListLayout
                         advancedSearch={ (
                             <AdvancedSearchWithBasicFilters
@@ -433,8 +433,8 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                         onPageChange={ handlePaginationChange }
                         onSortStrategyChange={ handleListSortingStrategyOnChange }
                         showPagination={ true }
-                        showTopActionPanel={ 
-                            isApplicationListFetchRequestLoading 
+                        showTopActionPanel={
+                            isApplicationListFetchRequestLoading
                         || !(!searchQuery && applicationList?.totalResults <= 0) }
                         sortOptions={ APPLICATIONS_LIST_SORTING_OPTIONS }
                         sortStrategy={ listSortingStrategy }

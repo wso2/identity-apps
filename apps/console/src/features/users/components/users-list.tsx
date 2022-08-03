@@ -26,6 +26,7 @@ import {
     SBACInterface,
     TestableComponentInterface
 } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { CommonUtils } from "@wso2is/core/utils";
 import {
     ConfirmationModal,
@@ -35,12 +36,11 @@ import {
     PrimaryButton,
     TableActionsInterface,
     TableColumnInterface,
-    UserAvatar,
-    useConfirmationModalAlert
+    UserAvatar
 } from "@wso2is/react-components";
 import React, { ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Header, Icon, ListItemProps, SemanticICONS } from "semantic-ui-react";
 import { SCIMConfigs } from "../../../extensions/configs/scim";
 import {
@@ -155,10 +155,10 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
     } = props;
 
     const { t } = useTranslation();
+    const dispatch = useDispatch();
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingUser, setDeletingUser ] = useState<UserBasicInterface>(undefined);
-    const [ alert, setAlert, alertComponent ] = useConfirmationModalAlert();
     const [ loading, setLoading ] = useState(false);
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
@@ -170,34 +170,40 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
     const handleUserDelete = (userId: string): Promise<void> => {
         return deleteUser(userId)
             .then(() => {
-                setAlert({
-                    description: t(
-                        "console:manage.features.users.notifications.deleteUser.success.description"
-                    ),
-                    level: AlertLevels.SUCCESS,
-                    message: t(
-                        "console:manage.features.users.notifications.deleteUser.success.message"
-                    )
-                });
+                dispatch(
+                    addAlert({
+                        description: t(
+                            "console:manage.features.users.notifications.deleteUser.success.description"
+                        ),
+                        level: AlertLevels.SUCCESS,
+                        message: t(
+                            "console:manage.features.users.notifications.deleteUser.success.message"
+                        )
+                    })
+                );
                 onUserDelete();
             }).catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
-                    setAlert({
-                        description: error.response.data.description,
-                        level: AlertLevels.ERROR,
-                        message: t("console:manage.features.users." +
+                    dispatch(
+                        addAlert({
+                            description: error.response.data.description,
+                            level: AlertLevels.ERROR,
+                            message: t("console:manage.features.users." +
                         "notifications.deleteUser.error.message")
-                    });
+                        })
+                    );
 
                     return;
                 }
-                setAlert({
-                    description: t("console:manage.features.users." +
-                    "notifications.deleteUser.genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("console:manage.features.users." +
-                    "notifications.deleteUser.genericError.message")
-                });
+                dispatch(
+                    addAlert({
+                        description: t("console:manage.features.users." +
+                            "notifications.deleteUser.genericError.description"),
+                        level: AlertLevels.ERROR,
+                        message: t("console:manage.features.users." +
+                            "notifications.deleteUser.genericError.message")
+                    })
+                );
             });
     };
 
@@ -478,7 +484,6 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                 secondaryAction="Cancel"
                 onSecondaryActionClick={ (): void => {
                     setShowDeleteConfirmationModal(false);
-                    setAlert(null);
                 } }
                 onPrimaryActionClick={ (): void => {
                     setLoading(true);
@@ -501,7 +506,6 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                     { t("console:manage.features.user.deleteUser.confirmationModal.message") }
                 </ConfirmationModal.Message>
                 <ConfirmationModal.Content data-testid={ `${testId}-confirmation-modal-content` }>
-                    <div className="modal-alert-wrapper"> { alert && alertComponent }</div>
                     {
                         deletingUser && deletingUser[SCIMConfigs.scim.enterpriseSchema]?.userSourceId
                             ? t("console:manage.features.user.deleteJITUser.confirmationModal.content")

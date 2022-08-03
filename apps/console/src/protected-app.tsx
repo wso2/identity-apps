@@ -140,27 +140,27 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                 // This is to make sure the endpoints are generated with the organization path.
                 await dispatch(setServiceResourceEndpoints(Config.getServiceResourceEndpoints()));
 
+                await requestCustomGrant({
+                    attachToken: false,
+                    data: {
+                        client_id: "{{clientID}}",
+                        grant_type: "organization_switch",
+                        scope: window["AppUtils"].getConfig().idpConfigs?.scope.join(" ")
+                            ?? TokenConstants.SYSTEM_SCOPE,
+                        switching_organization: orgId,
+                        token: "{{token}}"
+                    },
+                    id: "orgSwitch",
+                    returnsSession: true,
+                    signInRequired: true
+                }, async (grantResponse: BasicUserInfo) => {
+                    response = { ...grantResponse };
+                });
+
                 dispatch(setGetOrganizationLoading(true));
                 await getOrganization(orgId)
                     .then(async (orgResponse: OrganizationResponseInterface) => {
                         dispatch(setOrganization(orgResponse));
-
-                        await requestCustomGrant({
-                            attachToken: false,
-                            data: {
-                                client_id: "{{clientID}}",
-                                grant_type: "organization_switch",
-                                scope: window["AppUtils"].getConfig().idpConfigs?.scope.join(" ")
-                                    ?? TokenConstants.SYSTEM_SCOPE,
-                                switching_organization: orgId,
-                                token: "{{token}}"
-                            },
-                            id: "orgSwitch",
-                            returnsSession: true,
-                            signInRequired: true
-                        }, async (grantResponse: BasicUserInfo) => {
-                            response = { ...grantResponse };
-                        });
                     }).catch((error) => {
                         if (error?.description) {
                             dispatch(
@@ -286,8 +286,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
 
             await getDecodedIDToken()
                 .then((idToken) => {
-                    const subParts = idToken.sub.split("@");
-                    const tenantDomain = subParts[ subParts.length - 1 ];
+                    const tenantDomain: string = CommonAuthenticateUtils.deriveTenantDomainFromSubject(idToken?.sub);
 
                     isPrivilegedUser = idToken?.amr?.length > 0
                         ? idToken?.amr[0] === "EnterpriseIDPAuthenticator"
@@ -297,18 +296,14 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                     const fullName = firstName ? (firstName + (lastName ? (" " + lastName) : "")) : response.email;
 
                     dispatch(
-                        setSignIn<AuthenticatedUserInfo & TenantListInterface>({
-                            allowedScopes: response.allowedScopes,
-                            associatedTenants:  isPrivilegedUser ? tenantDomain : idToken?.associated_tenants,
-                            defaultTenant: isPrivilegedUser ? tenantDomain : idToken?.default_tenant,
-                            displayName: response.displayName,
-                            display_name: response.displayName,
-                            email: response.email,
-                            tenantDomain: response.tenantDomain ?? tenantDomain,
-                            username: idToken.sub,
-                            isPrivilegedUser: isPrivilegedUser,
-                            fullName: fullName
-                        })
+                        setSignIn<AuthenticatedUserInfo & TenantListInterface>(
+                            Object.assign(CommonAuthenticateUtils.getSignInState(response), {
+                                associatedTenants:  isPrivilegedUser ? tenantDomain : idToken?.associated_tenants,
+                                defaultTenant: isPrivilegedUser ? tenantDomain : idToken?.default_tenant,
+                                fullName: fullName,
+                                isPrivilegedUser: isPrivilegedUser
+                            })
+                        )
                     );
 
                     setRenderApp(true);
@@ -372,7 +367,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                     throw error;
                 });
 
-            await !isPrivilegedUser && dispatch(
+            await dispatch(
                 getProfileInformation(
                     Config.getServiceResourceEndpoints().me,
                     window[ "AppUtils" ].getConfig().clientOriginWithTenant

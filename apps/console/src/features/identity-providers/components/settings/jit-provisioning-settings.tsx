@@ -19,11 +19,12 @@
 import { getUserStoreList } from "@wso2is/core/api";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { ContentLoader, EmphasizedSegment } from "@wso2is/react-components";
+import { EmphasizedSegment } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { SimpleUserStoreListItemInterface } from "../../../applications";
+import { store } from "../../../core";
 import { updateJITProvisioningConfigs } from "../../api";
 import { JITProvisioningResponseInterface } from "../../models";
 import { JITProvisioningConfigurationsForm } from "../forms";
@@ -52,6 +53,10 @@ interface JITProvisioningSettingsInterface extends TestableComponentInterface {
      * Specifies if the component should only be read-only.
      */
     isReadOnly: boolean;
+    /**
+     * Loading Component.
+     */
+    loader: () => ReactElement;
 }
 
 /**
@@ -69,6 +74,7 @@ export const JITProvisioningSettings: FunctionComponent<JITProvisioningSettingsI
         jitProvisioningConfigurations,
         onUpdate,
         isReadOnly,
+        loader: Loader,
         [ "data-testid" ]: testId
     } = props;
 
@@ -76,7 +82,7 @@ export const JITProvisioningSettings: FunctionComponent<JITProvisioningSettingsI
 
     const { t } = useTranslation();
 
-    const [userStore, setUserStore] = useState<SimpleUserStoreListItemInterface[]>([]);
+    const [ userStore, setUserStore ] = useState<SimpleUserStoreListItemInterface[]>([]);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
 
@@ -111,11 +117,12 @@ export const JITProvisioningSettings: FunctionComponent<JITProvisioningSettingsI
 
     useEffect(() => {
         const userstore: SimpleUserStoreListItemInterface[] = [];
+
         userstore.push({
             id: "PRIMARY",
             name: "PRIMARY"
         });
-        getUserStoreList().then((response) => {
+        getUserStoreList(store.getState().config.endpoints.userStores).then((response) => {
             userstore.push(...response.data);
             setUserStore(userstore);
         }).catch(() => {
@@ -138,7 +145,7 @@ export const JITProvisioningSettings: FunctionComponent<JITProvisioningSettingsI
                     />
                 </EmphasizedSegment>
             )
-            : <ContentLoader/>
+            : <Loader />
     );
 };
 

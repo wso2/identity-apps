@@ -211,15 +211,20 @@
                                     justify-content: space-between;
                                     cursor: pointer;
 
-                                    .manage-tenant-icon {
-                                        padding: 4px;
-                                        border: 1px solid @defaultBorderColor;
+                                    .manage-icon-wrapper {
                                         display: flex;
-                                        border-radius: 4px;
-                                    }
+                                        align-items: center;
 
-                                    .manage-tenant-icon:hover {
-                                        background-color: darken(@defaultBorderColor, 0.08);
+                                        .manage-tenant-icon {
+                                            padding: 4px;
+                                            border: 1px solid @defaultBorderColor;
+                                            display: flex;
+                                            border-radius: 4px;
+                                        }
+
+                                        .manage-tenant-icon:hover {
+                                            background-color: darken(@defaultBorderColor, 0.08);
+                                        }
                                     }
                                 }
                                 .spaced-right {

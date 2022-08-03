@@ -296,14 +296,8 @@ export const handleAccountSwitching = (account: LinkedAccountInterface) => (disp
     switchAccount(account)
         .then((response) => {
             dispatch(
-                setSignIn({
-                    display_name: response?.displayName,
-                    email: response?.email,
-                    scope: response?.allowedScopes,
-                    username: response?.username
-                })
+                setSignIn(AuthenticateUtils.getSignInState(response))
             );
-
             dispatch(getProfileInformation());
             dispatch(getProfileLinkedAccounts());
         })

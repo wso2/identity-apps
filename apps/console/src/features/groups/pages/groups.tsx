@@ -39,8 +39,10 @@ import {
     UIConstants,
     UserStoreProperty,
     getAUserStore,
-    getEmptyPlaceholderIllustrations
+    getEmptyPlaceholderIllustrations,
+    store
 } from "../../core";
+import { OrganizationUtils } from "../../organizations/utils";
 import { UserStorePostData } from "../../userstores";
 import { deleteGroupById, getGroupList, searchGroupList } from "../api";
 import { GroupList } from "../components";
@@ -115,6 +117,10 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
     }, [ userStore ]);
 
     useEffect(() => {
+        if (!OrganizationUtils.isCurrentOrganizationRoot()) {
+            return;
+        }
+
         SharedUserStoreUtils.getReadOnlyUserStores().then((response) => {
             setReadOnlyUserStoresList(response);
         });
@@ -127,11 +133,13 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
             .then((response) => {
                 if (response.status === 200) {
                     const groupResources = response.data.Resources;
+
                     if (groupResources && groupResources instanceof Array && groupResources.length !== 0) {
                         const updatedResources = groupResources.filter((role: GroupsInterface) => {
                             return !role.displayName.includes("Application/")
                                 && !role.displayName.includes("Internal/");
                         });
+
                         response.data.Resources = updatedResources;
                         setGroupsList(updatedResources);
                         setGroupsPage(0, listItemLimit, updatedResources);
@@ -191,31 +199,35 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
             value: ""
         };
 
-        getUserStoreList()
-            .then((response) => {
-                if (storeOptions === []) {
-                    storeOptions.push(storeOption);
-                }
+        setUserStore(storeOptions[ 0 ].value);
 
-                response.data.map((store, index) => {
-                    getAUserStore(store.id).then((response: UserStorePostData) => {
-                        const isDisabled = response.properties.find(
-                            (property: UserStoreProperty) => property.name === "Disabled")?.value === "true";
+        if (OrganizationUtils.isCurrentOrganizationRoot()) {
+            getUserStoreList(store.getState().config.endpoints.userStores)
+                .then((response) => {
+                    if (storeOptions === []) {
+                        storeOptions.push(storeOption);
+                    }
 
-                        if (!isDisabled) {
-                            storeOption = {
-                                key: index,
-                                text: store.name,
-                                value: store.name
-                            };
-                            storeOptions.push(storeOption);
-                        }
-                    });
-                }
-                );
+                    response.data.map((store, index) => {
+                        getAUserStore(store.id).then((response: UserStorePostData) => {
+                            const isDisabled = response.properties.find(
+                                (property: UserStoreProperty) => property.name === "Disabled")?.value === "true";
 
-                setUserStoresList(storeOptions);
-            });
+                            if (!isDisabled) {
+                                storeOption = {
+                                    key: index,
+                                    text: store.name,
+                                    value: store.name
+                                };
+                                storeOptions.push(storeOption);
+                            }
+                        });
+                    }
+                    );
+
+                    setUserStoresList(storeOptions);
+                });
+        }
 
         setUserStoresList(storeOptions);
     };
@@ -251,6 +263,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
             if (response.status === 200) {
                 const results = response.data.Resources;
                 let updatedResults = [];
+
                 if (results) {
                     updatedResults = results.filter((role: RolesInterface) => {
                         return !role.displayName.includes("Application/") && !role.displayName.includes("Internal/");
@@ -279,6 +292,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
 
     const handlePaginationChange = (event: React.MouseEvent<HTMLAnchorElement>, data: PaginationProps) => {
         const offsetValue = (data.activePage as number - 1) * listItemLimit;
+
         setListOffset(offsetValue);
         setGroupsPage(offsetValue, listItemLimit, groupList);
     };
@@ -336,6 +350,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
     const handleUserFilter = (query: string): void => {
         if (query === null || query === "displayName sw ") {
             getGroups();
+
             return;
         }
 
@@ -406,14 +421,14 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                 onSortStrategyChange={ handleListSortingStrategyOnChange }
                 sortStrategy={ listSortingStrategy }
                 rightActionPanel={
-                    <Dropdown
+                    (<Dropdown
                         data-testid="group-mgt-groups-list-stores-dropdown"
                         selection
                         options={ userStoreOptions && userStoreOptions }
                         placeholder={ t("console:manage.features.groups.list.storeOptions") }
                         value={ userStore && userStore }
                         onChange={ handleDomainChange }
-                    />
+                    />)
                 }
                 showPagination={ paginatedGroups.length > 0  }
                 showTopActionPanel={ isGroupsListRequestLoading
@@ -425,14 +440,14 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                 totalListSize={ groupList?.length }
             >
                 { groupsError
-                    ? <EmptyPlaceholder
+                    ? (<EmptyPlaceholder
                         subtitle={ [ t("console:manage.features.groups.placeholders.groupsError.subtitles.0"),
                             t("console:manage.features.groups.placeholders.groupsError.subtitles.1") ] }
                         title={ t("console:manage.features.groups.placeholders.groupsError.title") }
                         image={ getEmptyPlaceholderIllustrations().genericError }
                         imageSize="tiny"
-                    /> :
-                    <GroupList
+                    />) :
+                    (<GroupList
                         advancedSearch={ (
                             <AdvancedSearchWithBasicFilters
                                 data-testid="group-mgt-groups-list-advanced-search"
@@ -471,7 +486,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                         searchQuery={ searchQuery }
                         readOnlyUserStores={ readOnlyUserStoresList }
                         featureConfig={ featureConfig }
-                    />
+                    />)
                 }
             </ListLayout>
             {

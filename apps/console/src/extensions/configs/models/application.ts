@@ -81,6 +81,7 @@ export interface ApplicationConfig {
             tenantDomain: string
         ) => ReactNode,
         getOverriddenImage: (clientId: string, tenantDomain: string) => ReactElement;
+        showApplicationShare: boolean;
     };
     inboundOIDCForm: {
         shouldValidateCertificate: boolean;

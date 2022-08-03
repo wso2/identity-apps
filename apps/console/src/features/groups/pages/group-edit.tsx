@@ -21,6 +21,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { AppConstants, AppState, FeatureConfigInterface, SharedUserStoreUtils, history } from "../../core";
+import { OrganizationUtils } from "../../organizations/utils";
 import { getGroupById } from "../api";
 import { EditGroup } from "../components";
 import { GroupsInterface } from "../models";
@@ -40,6 +41,10 @@ const GroupEditPage: FunctionComponent<any> = (): ReactElement => {
      * Get the readOnly user stores list.
      */
     useEffect(() => {
+        if (!OrganizationUtils.isCurrentOrganizationRoot()) {
+            return;
+        }
+
         SharedUserStoreUtils.getReadOnlyUserStores().then((response) => {
             setReadOnlyUserStoresList(response);
         });

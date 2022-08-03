@@ -1,3 +1,21 @@
+/**
+ * Copyright (c) 2022, WSO2 LLC. (http://www.wso2.com) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
 import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
@@ -7,13 +25,13 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Grid } from "semantic-ui-react";
 import { FeatureConfigInterface } from "../../../core";
-import { patchOrganization } from "../../api";
-import { OrganizationPatchData, OrganizationResponseInterface } from "../../models";
+import { updateOrganization } from "../../api";
+import { OrganizationResponseInterface, UpdateOrganizationInterface } from "../../models";
 
 interface OrganizationAttributesPropsInterface extends SBACInterface<FeatureConfigInterface>,
     TestableComponentInterface {
     /**
-     * Organizatin Data
+     * Organization Data
      */
     organization: OrganizationResponseInterface;
 
@@ -44,45 +62,19 @@ export const OrganizationAttributes: FunctionComponent<OrganizationAttributesPro
 
     const [ submit, setSubmit ] = useTrigger();
     const [ isSubmitting, setIsSubmitting ] = useState(false);
-
+    
     const updateOrgAttributes = useCallback((data: KeyValue[]) => {
         setIsSubmitting(true);
-        const attributes = organization.attributes || [];
-
-        const updatedAttributes: OrganizationPatchData[] = attributes
-            .map((attribute) => {
-                const updated = data.find((updated) => updated.key === attribute.key);
-
-                if (updated !== undefined) {
-                    return {
-                        operation: "REPLACE",
-                        path: `/attributes/${updated.key}`,
-                        value: updated.value
-                    };
-                } else {
-                    return {
-                        operation: "REMOVE",
-                        path: `/attributes/${attribute?.key}`,
-                        value: ""
-                    };
-                }
-            });
-
-        const addedAttributes: OrganizationPatchData[] = data
-            .filter((updated) => attributes.findIndex((attribute) => attribute.key === updated.key) === -1)
-            .map((attribute) => ({
-                operation: "ADD",
-                path: `/attributes/${attribute.key}`,
-                value: attribute.value
-            }));
-
-
-        const patchData: OrganizationPatchData[] = [
-            ...updatedAttributes,
-            ...addedAttributes
-        ];
-
-        patchOrganization(organization.id, patchData)
+        const updatedOrganization = {
+            attributes: [
+                ...data
+            ],
+            description: organization.description,
+            name: organization.name,
+            status: organization.status,
+        } as UpdateOrganizationInterface;
+        
+        updateOrganization(organization.id, updatedOrganization)
             .then((_response) => {
                 dispatch(
                     addAlert({
@@ -107,7 +99,7 @@ export const OrganizationAttributes: FunctionComponent<OrganizationAttributesPro
                             level: AlertLevels.ERROR,
                             message: t(
                                 "console:manage.features.organizations.notifications.updateOrganizationAttributes." +
-                                "error.message"
+                            "error.message"
                             )
                         })
                     );

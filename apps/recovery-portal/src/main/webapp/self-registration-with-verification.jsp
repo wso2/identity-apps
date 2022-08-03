@@ -1248,7 +1248,7 @@
                 var rowTemplate =
                     '{{#purposes}}' +
                     '<div class="ui bulleted list">' +
-                    '<div class="item"><span>{{purpose}} {{#if description}}<i id="description" class="info circle icon" data-variation="inverted" data-content="{{description}}" data-placement="right"/>{{/if}}</span></div></div>' +
+                    '<div class="item"><span>{{purpose}} {{#if description}}<i id="description" class="info circle icon" data-variation="inverted" data-content="{{description}}" data-placement="right"></i>{{/if}}</span></div></div>' +
                     '<div class="ui form">' +
                     '{{#grouped_each 2 piiCategories}}' +
                     '{{#each this }}' +
@@ -1256,12 +1256,12 @@
                     '<div class="ui checkbox">' +
                     '<input type="checkbox" name="switch" id="consent-checkbox-{{../../purposeId}}-{{piiCategoryId}}" {{#if mandatory}}required{{/if}} />' +
                     '<label for="consent-checkbox-{{../../purposeId}}-{{piiCategoryId}}" data-piicategoryid="{{piiCategoryId}}" data-mandetorypiicatergory="{{mandatory}}" data-purposeid="{{../../purposeId}}">' +
-                    '<span>{{#if displayName}}{{displayName}}{{else}}{{piiCategory}}{{/if}}'+
+                    '<span>{{#if displayName}}{{displayName}}{{else}}{{piiCategory}}{{/if}}</span>'+
                     '</label></div>' +
                     '</div>'+
                     '{{/each}}' +
                     '{{/grouped_each}}' +
-                    '</div></div>' +
+                    '</div>' +
                     '{{/purposes}}';
 
                 var rows = Handlebars.compile(rowTemplate);

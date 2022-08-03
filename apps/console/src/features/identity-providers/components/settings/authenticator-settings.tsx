@@ -21,28 +21,33 @@ import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
     ConfirmationModal,
-    ContentLoader,
     EmphasizedSegment,
     EmptyPlaceholder,
     PrimaryButton,
     SegmentedAccordionTitleActionInterface
 } from "@wso2is/react-components";
+import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FormEvent, FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
+import keyBy from "lodash-es/keyBy";
+import React, { FormEvent, FunctionComponent, MouseEvent, ReactElement, useEffect, useMemo, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { CheckboxProps, Grid, Icon } from "semantic-ui-react";
+import { AccordionTitleProps, CheckboxProps, Grid, Icon } from "semantic-ui-react";
+import { identityProviderConfig } from "../../../../extensions/configs/identity-provider";
 import { AppState, ConfigReducerStateInterface, getEmptyPlaceholderIllustrations } from "../../../core";
+import { AuthenticatorAccordion } from "../../../core/components";
 import {
     getFederatedAuthenticatorDetails,
     getFederatedAuthenticatorMeta,
     getIdentityProviderTemplate,
-    getIdentityProviderTemplateList,
     updateFederatedAuthenticator,
     updateFederatedAuthenticators
 } from "../../api";
+import { getIdPIcons } from "../../configs/ui";
 import { IdentityProviderManagementConstants } from "../../constants";
+import ExpertModeIdpTemplate from "../../data/identity-provider-templates/templates/expert-mode/expert-mode.json"
 import {
+    AuthenticatorSettingsFormModes,
     CommonPluggableComponentMetaPropertyInterface,
     CommonPluggableComponentPropertyInterface,
     FederatedAuthenticatorListItemInterface,
@@ -50,15 +55,16 @@ import {
     FederatedAuthenticatorWithMetaInterface,
     IdentityProviderInterface,
     IdentityProviderTemplateInterface,
+    IdentityProviderTemplateItemInterface,
     IdentityProviderTemplateListItemInterface,
-    IdentityProviderTemplateListResponseInterface
+    IdentityProviderTemplateLoadingStrategies
 } from "../../models";
+import { IdentityProviderManagementUtils, IdentityProviderTemplateManagementUtils } from "../../utils";
 import { AuthenticatorFormFactory } from "../forms";
-import { getFederatedAuthenticators } from "../meta";
+import { getConnectorMetadata } from "../meta";
 import {
     handleGetFederatedAuthenticatorMetadataAPICallError,
-    handleGetIDPTemplateAPICallError,
-    handleGetIDPTemplateListError
+    handleGetIDPTemplateAPICallError
 } from "../utils";
 import { AuthenticatorCreateWizard } from "../wizards/authenticator-create-wizard";
 
@@ -82,9 +88,12 @@ interface IdentityProviderSettingsPropsInterface extends TestableComponentInterf
      * Specifies if the component should only be read-only.
      */
     isReadOnly: boolean;
+    /**
+     * Loading Component.
+     */
+    loader: () => ReactElement;
 }
 
-const GOOGLE_CLIENT_ID_SECRET_MAX_LENGTH = 100;
 const OIDC_CLIENT_ID_SECRET_MAX_LENGTH = 100;
 const URL_MAX_LENGTH: number = 2048;
 const AUTHORIZED_REDIRECT_URL: string = "callbackUrl";
@@ -104,12 +113,19 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
         isLoading,
         onUpdate,
         isReadOnly,
+        loader: Loader,
         [ "data-testid" ]: testId
     } = props;
 
     const dispatch = useDispatch();
 
     const { t } = useTranslation();
+
+    const availableFederatedAuthenticators = useSelector((state: AppState) => {
+        return state.identityProvider.meta.authenticators;
+    });
+    const identityProviderTemplates: IdentityProviderTemplateItemInterface[] = useSelector(
+        (state: AppState) => state.identityProvider?.groupedTemplates);
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [
@@ -120,14 +136,73 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
         useState<FederatedAuthenticatorWithMetaInterface[]>([]);
     const [ availableTemplates, setAvailableTemplates ] =
         useState<IdentityProviderTemplateInterface[]>(undefined);
-    const [ availableManualModeOptions, setAvailableManualModeOptions ] =
-        useState<FederatedAuthenticatorMetaDataInterface[]>(undefined);
+    const [
+        availableManualModeOptions,
+        setAvailableManualModeOptions
+    ] = useState<FederatedAuthenticatorMetaDataInterface[]>(undefined);
     const [ showAddAuthenticatorWizard, setShowAddAuthenticatorWizard ] = useState<boolean>(false);
-    const [ isTemplatesLoading, setIsTemplatesLoading ] = useState<boolean>(false);
-    const [ isPageLoading, setIsPageLoading ] = useState<boolean>(true);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+    const [ accordionActiveIndexes, setAccordionActiveIndexes ] = useState<number[]>([]);
+    const [ isIdPTemplateFetchRequestLoading, setIdPTemplateFetchRequestLoading ] = useState<boolean>(undefined);
+    const [
+        isFederatedAuthenticatorFetchRequestLoading,
+        setFederatedAuthenticatorFetchRequestLoading
+    ] = useState<boolean>(undefined);
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+
+    const isActiveTemplateExpertMode: boolean = useMemo(() => {
+        return identityProviderConfig?.templates?.expertMode &&
+            (identityProvider.templateId === ExpertModeIdpTemplate.id || !identityProvider.templateId);
+    }, [ identityProvider, identityProviderConfig  ]);
+
+    /**
+     * When `availableAuthenticators` updates, filter the templates.
+     */
+    useEffect(() => {
+
+        filterTemplates();
+    }, [ availableAuthenticators ]);
+
+    /**
+     *  Get pre-defined IDP templates.
+     */
+    useEffect(() => {
+
+        if (identityProviderTemplates !== undefined) {
+            return;
+        }
+
+        setIdPTemplateFetchRequestLoading(true);
+
+        const useAPI: boolean = config.ui.identityProviderTemplateLoadingStrategy
+            ? config.ui.identityProviderTemplateLoadingStrategy === IdentityProviderTemplateLoadingStrategies.REMOTE
+            : (IdentityProviderManagementConstants.DEFAULT_IDP_TEMPLATE_LOADING_STRATEGY ===
+                IdentityProviderTemplateLoadingStrategies.REMOTE);
+
+        /**
+         * With {@link skipGrouping} being {@code false} we say
+         * we need to group the existing templates based on their
+         * template-group.
+         */
+        const skipGrouping = false, sortTemplates = true;
+
+        IdentityProviderTemplateManagementUtils
+            .getIdentityProviderTemplates(useAPI, skipGrouping, sortTemplates)
+            .finally(() => setIdPTemplateFetchRequestLoading(false));
+    }, [ identityProviderTemplates ]);
+
+    /**
+     * If `availableFederatedAuthenticators` is not in redux,
+     * Fetch it again and store in the store.
+     */
+    useEffect(() => {
+        if (!isEmpty(availableFederatedAuthenticators)) {
+            return;
+        }
+
+        IdentityProviderManagementUtils.getAuthenticators();
+    }, [ availableFederatedAuthenticators ]);
 
     /**
      * Handles the authenticator config form submit action.
@@ -138,23 +213,29 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
         isDefaultAuthSet: boolean = true): void => {
 
         addCallbackUrl(values);
-        setIsPageLoading(true);
-        // Special checks on Google IDP
-        if (values.authenticatorId === "R29vZ2xlT0lEQ0F1dGhlbnRpY2F0b3I") {
-            // Enable/disable the Google authenticator based on client id and secret
-            const props: CommonPluggableComponentPropertyInterface[] = values.properties;
-            let isEnabled = true;
-            props.forEach((prop: CommonPluggableComponentPropertyInterface) => {
-                if (prop.key === "ClientId" || prop.key === "ClientSecret") {
-                    if (isEmpty(prop.value)) {
-                        isEnabled = false;
-                    }
-                }
-            });
-            values.isEnabled = isEnabled;
 
-            // Remove scopes
-            removeElementFromProps(props, "scopes");
+        // Only execute this when not in the expert mode since it makes it impossible
+        // to disable a Google authenticator in expert mode.
+        if (!isActiveTemplateExpertMode) {
+            // Special checks on Google IDP
+            if (values.authenticatorId === IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID) {
+                // Enable/disable the Google authenticator based on client id and secret
+                const props: CommonPluggableComponentPropertyInterface[] = values.properties;
+                let isEnabled = true;
+
+                props.forEach((prop: CommonPluggableComponentPropertyInterface) => {
+                    if (prop.key === "ClientId" || prop.key === "ClientSecret") {
+                        if (isEmpty(prop.value)) {
+                            isEnabled = false;
+                        }
+                    }
+                });
+
+                values.isEnabled = isEnabled;
+
+                // Remove scopes
+                removeElementFromProps(props, "scopes");
+            }
         }
 
         /**
@@ -293,15 +374,23 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
     }
 
     useEffect(() => {
-        if (isEmpty(identityProvider.federatedAuthenticators)) {
+        if (isEmpty(identityProvider.federatedAuthenticators?.authenticators)) {
             return;
         }
-        setIsPageLoading(true);
+
+        setFederatedAuthenticatorFetchRequestLoading(true);
         setAvailableAuthenticators([]);
         fetchAuthenticators()
             .then((res) => {
                 const authenticator = res[ 0 ].data;
-                authenticator.isEnabled = true;
+
+                // TODO: Validate if this is necessary to do on the FE side.
+                // Added with:
+                // https://github.com/wso2/identity-apps/pull/2053/commits/177e8475aa3e48a7933f877a25c82306b7b3739f
+                // This poses issues with the enable toggle in IdP expert mode. So, not executing when in expert mode.
+                if (!isActiveTemplateExpertMode) {
+                    authenticator.isEnabled = true;
+                }
                 // Make default authenticator if not added.
                 if (!identityProvider.federatedAuthenticators.defaultAuthenticatorId &&
                     identityProvider.federatedAuthenticators.authenticators.length > 0) {
@@ -314,8 +403,8 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                     handleAuthenticatorConfigFormSubmit(authenticator, isDefaultAuthIdSet);
                 }
                 setAvailableAuthenticators(res);
-                setIsPageLoading(false);
-            });
+            })
+            .finally(() => setFederatedAuthenticatorFetchRequestLoading(false));
     }, [ identityProvider?.federatedAuthenticators ]);
 
     /**
@@ -454,49 +543,44 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
     };
 
     /**
-     * Handles add new authenticator action.
+     * Filters the templates that are given to the Authenticator create wizard.
+     * If the template is already used, we need to remove that from the list of options.
      */
-    const handleAddAuthenticator = () => {
-        setIsTemplatesLoading(true);
-        setShowAddAuthenticatorWizard(false);
+    const filterTemplates = (): void => {
 
-        // Get the list of available templates from the server
-        getIdentityProviderTemplateList()
-            .then((response: IdentityProviderTemplateListResponseInterface) => {
-                if (!response?.totalResults) {
-                    return;
-                }
-                // Load all templates
-                fetchIDPTemplates(response?.templates)
-                    .then((templates) => {
+        // Filter out already added authenticators and templates with federated authenticators.
+        const availableAuthenticatorIDs = availableAuthenticators?.map((a) => {
+            return a.id;
+        });
 
-                        // Filter out already added authenticators and templates with federated authenticators.
-                        const availableAuthenticatorIDs = availableAuthenticators.map((a) => {
-                            return a.id;
-                        });
-                        const filteredTemplates = templates.filter((template) =>
-                            (template.idp.federatedAuthenticators.defaultAuthenticatorId &&
-                                !availableAuthenticatorIDs.includes(
-                                    template.idp.federatedAuthenticators.defaultAuthenticatorId))
-                        );
+        const filteredTemplates = identityProviderTemplates?.filter((template) =>
+            (template?.idp?.federatedAuthenticators?.defaultAuthenticatorId &&
+                !availableAuthenticatorIDs?.includes(
+                    template?.idp?.federatedAuthenticators?.defaultAuthenticatorId))
+        );
 
-                        // Set filtered manual mode options.
-                        setAvailableManualModeOptions(getFederatedAuthenticators().filter(a =>
-                            !availableAuthenticatorIDs.includes(a.authenticatorId)));
+        // sort templateList based on display Order
+        filteredTemplates?.sort((a, b) => (a?.displayOrder > b?.displayOrder) ? 1 : -1);
+        
+        const flattenedConnectorMetadata: ({ [ key: string ]: FederatedAuthenticatorMetaDataInterface }) = keyBy(
+            getConnectorMetadata(), "authenticatorId"
+        );
+        let moderatedManualModeOptions: FederatedAuthenticatorMetaDataInterface[] = cloneDeep(
+            availableFederatedAuthenticators as FederatedAuthenticatorMetaDataInterface[]
+        );
 
-                        // sort templateList based on display Order
-                        filteredTemplates.sort((a, b) => (a.displayOrder > b.displayOrder) ? 1 : -1);
+        moderatedManualModeOptions = moderatedManualModeOptions?.map((option) => {
+            return {
+                ...option,
+                ...flattenedConnectorMetadata[ option?.authenticatorId ]
+            };
+        });
 
-                        setAvailableTemplates(filteredTemplates);
-                        setShowAddAuthenticatorWizard(true);
-                    });
-            })
-            .catch((error) => {
-                handleGetIDPTemplateListError(error);
-            })
-            .finally(() => {
-                setIsTemplatesLoading(false);
-            });
+        moderatedManualModeOptions = moderatedManualModeOptions?.filter(a =>
+            !availableAuthenticatorIDs.includes(a?.authenticatorId));
+
+        setAvailableManualModeOptions(moderatedManualModeOptions);
+        setAvailableTemplates(filteredTemplates);
     };
 
     /**
@@ -555,6 +639,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
         authenticator: FederatedAuthenticatorWithMetaInterface
     ): SegmentedAccordionTitleActionInterface[] => {
         const isDefaultAuthenticator = isDefaultAuthenticatorPredicate(authenticator);
+
         return [
             // Checkbox which triggers the default state of authenticator.
             {
@@ -594,8 +679,172 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
         }
     };
 
+    /**
+     * Handles accordion title click.
+     *
+     * @param {React.SyntheticEvent} e - Click event.
+     * @param {AccordionTitleProps} SegmentedAuthenticatedAccordion - Clicked title.
+     */
+    const handleAccordionOnClick = (e: MouseEvent<HTMLDivElement>,
+        SegmentedAuthenticatedAccordion: AccordionTitleProps): void => {
+        if (!SegmentedAuthenticatedAccordion) {
+            return;
+        }
+        const newIndexes = [ ...accordionActiveIndexes ];
+
+        if (newIndexes.includes(SegmentedAuthenticatedAccordion.accordionIndex)) {
+            const removingIndex = newIndexes.indexOf(SegmentedAuthenticatedAccordion.accordionIndex);
+
+            newIndexes.splice(removingIndex, 1);
+        } else {
+            newIndexes.push(SegmentedAuthenticatedAccordion.accordionIndex);
+        }
+
+        setAccordionActiveIndexes(newIndexes);
+    };
+
+    /**
+     * Shows the authenticator list.
+     *
+     * @returns {ReactElement}
+     */
+    const showAuthenticatorList = (): ReactElement => {
+
+        const resolveAuthenticatorIcon = (authenticator: FederatedAuthenticatorWithMetaInterface) => {
+            const found: FederatedAuthenticatorMetaDataInterface = getConnectorMetadata()
+                .find((fedAuth: FederatedAuthenticatorMetaDataInterface) => {
+                    if (fedAuth?.authenticatorId === authenticator?.id) {
+                        return fedAuth;
+                    }
+
+                    return null;
+                });
+
+            if (!found?.icon) {
+                return getIdPIcons().default;
+            }
+
+            return found.icon;
+        };
+
+        const resolveAuthenticatorDisplayName = (authenticator: FederatedAuthenticatorWithMetaInterface) => {
+            const found: FederatedAuthenticatorMetaDataInterface = getConnectorMetadata()
+                .find((fedAuth: FederatedAuthenticatorMetaDataInterface) => {
+                    if (fedAuth?.authenticatorId === authenticator?.id) {
+                        return fedAuth;
+                    }
+
+                    return null;
+                });
+
+            if (!found?.displayName) {
+                return authenticator.meta?.displayName || authenticator?.data?.name || authenticator.id;
+            }
+
+            return found.displayName;
+        };
+
+        return (
+            <Grid>
+                <Grid.Row>
+                    <Grid.Column width={ 16 } textAlign="right">
+                        <PrimaryButton
+                            onClick={ handleAddAuthenticator }
+                            disabled={
+                                IdentityProviderManagementConstants.SHOW_PREDEFINED_TEMPLATES_IN_EXPERT_MODE_SETUP
+                                    ? isEmpty(availableTemplates) && isEmpty(availableManualModeOptions)
+                                    : isEmpty(availableManualModeOptions)
+                            }
+                            loading={ isIdPTemplateFetchRequestLoading }
+                            data-testid={ `${ testId }-add-authenticator-button` }
+                        >
+                            <Icon name="add"/>
+                            { t("console:develop.features.authenticationProvider.buttons.addAuthenticator") }
+                        </PrimaryButton>
+                    </Grid.Column>
+                </Grid.Row>
+                <Grid.Row>
+                    <Grid.Column width={ 16 }>
+                        {
+                            availableAuthenticators.map((authenticator, index) => {
+                                return (
+                                    <AuthenticatorAccordion
+                                        key={ index }
+                                        globalActions={ [
+                                            {
+                                                disabled: isDefaultAuthenticatorPredicate(authenticator),
+                                                icon: "trash alternate",
+                                                onClick: handleAuthenticatorDeleteOnClick,
+                                                popoverText: "Remove Authenticator",
+                                                type: "icon"
+                                            }
+                                        ] }
+                                        authenticators={
+                                            [
+                                                {
+                                                    actions: createAccordionActions(authenticator),
+                                                    content: authenticator && (
+                                                        <AuthenticatorFormFactory
+                                                            mode={ AuthenticatorSettingsFormModes.CREATE }
+                                                            authenticator={ authenticator }
+                                                            metadata={ authenticator.meta }
+                                                            showCustomProperties={
+                                                                authenticator.id !== IdentityProviderManagementConstants
+                                                                    .GITHUB_AUTHENTICATOR_ID
+                                                            }
+                                                            initialValues={ authenticator.data }
+                                                            onSubmit={ handleAuthenticatorConfigFormSubmit }
+                                                            type={ undefined }
+                                                            data-testid={
+                                                                `${ testId }-${ authenticator.meta?.name }-content`
+                                                            }
+                                                            isReadOnly={ isReadOnly }
+                                                            isSubmitting={ isSubmitting }
+                                                            templateId={ identityProvider.templateId }
+                                                        />
+                                                    ),
+                                                    hideChevron: isEmpty(authenticator.meta?.properties),
+                                                    icon: {
+                                                        icon: resolveAuthenticatorIcon(authenticator)
+                                                    },
+                                                    id: authenticator?.id,
+                                                    title: resolveAuthenticatorDisplayName(authenticator)
+                                                }
+                                            ]
+                                        }
+                                        accordionActiveIndexes={ accordionActiveIndexes }
+                                        accordionIndex={ index }
+                                        handleAccordionOnClick={ handleAccordionOnClick }
+                                        data-testid={ `${ testId }-accordion` }
+                                    />
+                                );
+                            })
+                        }
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid>
+        );
+    };
+
+    /**
+     * Handles the Add authenticator button clicks.
+     */
+    const handleAddAuthenticator = (): void => {
+
+        filterTemplates();
+        setShowAddAuthenticatorWizard(true);
+    };
+
+    /**
+     * Shows the Authenticator settings.
+     */
     const showAuthenticator = (): ReactElement => {
         if (availableAuthenticators.length > 0) {
+            // Only show the Authenticator listing if `expertMode` is enabled.
+            if (isActiveTemplateExpertMode) {
+                return showAuthenticatorList();
+            }
+
             const authenticator: FederatedAuthenticatorWithMetaInterface =
                 availableAuthenticators.find(authenticator => (
                     identityProvider.federatedAuthenticators.defaultAuthenticatorId === authenticator.id
@@ -674,6 +923,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
 
             return (
                 <AuthenticatorFormFactory
+                    mode={ AuthenticatorSettingsFormModes.EDIT }
                     authenticator={ authenticator }
                     metadata={ authenticator.meta }
                     showCustomProperties={
@@ -685,6 +935,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                     data-testid={ `${ testId }-${ authenticator.meta?.name }-content` }
                     isReadOnly={ isReadOnly }
                     isSubmitting={ isSubmitting }
+                    templateId={ identityProvider.templateId }
                 />
             );
         } else {
@@ -692,8 +943,11 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                 <EmptyPlaceholder
                     action={ (
                         <Show when={ AccessControlConstants.IDP_EDIT }>
-                            <PrimaryButton onClick={ handleAddAuthenticator } loading={ isTemplatesLoading }
-                                data-testid={ `${ testId }-add-authenticator-button` }>
+                            <PrimaryButton
+                                onClick={ handleAddAuthenticator }
+                                loading={ isIdPTemplateFetchRequestLoading }
+                                data-testid={ `${ testId }-add-authenticator-button` }
+                            >
                                 <Icon name="add" />
                                 { t("console:develop.features.authenticationProvider.buttons.addAuthenticator") }
                             </PrimaryButton>
@@ -717,93 +971,104 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
         }
     };
 
+    if (isLoading || isFederatedAuthenticatorFetchRequestLoading) {
+        return <Loader />;
+    }
+
     return (
-        (!isLoading && !isPageLoading)
-            ? (
-                <div className="authentication-section">
-                    <Grid>
-                        <Grid.Row>
-                            <Grid.Column width={ 16 }>
-                                <EmphasizedSegment padded="very">
-                                    { showAuthenticator() }
-                                </EmphasizedSegment>
-                            </Grid.Column>
-                        </Grid.Row>
-                    </Grid>
+        <div className="authentication-section">
+            <Grid>
+                <Grid.Row>
+                    <Grid.Column width={ 16 }>
+                        <EmphasizedSegment padded="very">
+                            { showAuthenticator() }
+                        </EmphasizedSegment>
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid>
 
-                    { /*<Divider hidden />*/ }
-                    { /*{ showCertificateDetails() }*/ }
+            { /*<Divider hidden />*/ }
+            { /*{ showCertificateDetails() }*/ }
 
-                    {
-                        deletingAuthenticator && (
-                            <ConfirmationModal
-                                onClose={ (): void => setShowDeleteConfirmationModal(false) }
-                                type="warning"
-                                open={ showDeleteConfirmationModal }
-                                assertion={ deletingAuthenticator?.name }
-                                assertionHint={ (
-                                    <p>
-                                        <Trans
-                                            i18nKey={ "console:develop.features.authenticationProvider." +
-                                                "confirmations.deleteAuthenticator.assertionHint" }
-                                            tOptions={ { name: deletingAuthenticator?.name } }
-                                        >
-                                            Please type <strong>{ deletingAuthenticator?.name }</strong> to confirm.
-                                        </Trans>
-                                    </p>
-                                ) }
-                                assertionType="input"
-                                primaryAction={ t("common:confirm") }
-                                secondaryAction={ t("common:cancel") }
-                                onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
-                                onPrimaryActionClick={
-                                    (): void => handleAuthenticatorDelete(deletingAuthenticator.authenticatorId)
-                                }
-                                data-testid={ `${ testId }-authenticator-delete-confirmation` }
-                                closeOnDimmerClick={ false }
-                            >
-                                <ConfirmationModal.Header
-                                    data-testid={ `${ testId }-authenticator-delete-confirmation` }>
-                                    { t("console:develop.features.authenticationProvider.confirmations." +
-                                        "deleteAuthenticator.header") }
-                                </ConfirmationModal.Header>
-                                <ConfirmationModal.Message
-                                    attached warning
-                                    data-testid={ `${ testId }-authenticator-delete-confirmation` }>
-                                    { t("console:develop.features.authenticationProvider.confirmations." +
-                                        "deleteAuthenticator.message") }
-                                </ConfirmationModal.Message>
-                                <ConfirmationModal.Content
-                                    data-testid={ `${ testId }-authenticator-delete-confirmation` }>
-                                    { t("console:develop.features.authenticationProvider.confirmations." +
-                                        "deleteAuthenticator.content") }
-                                </ConfirmationModal.Content>
-                            </ConfirmationModal>
-                        )
-                    }
-                    {
-                        showAddAuthenticatorWizard && (
-                            <AuthenticatorCreateWizard
-                                title={ t("console:develop.features.authenticationProvider.modals." +
-                                    "addAuthenticator.title") }
-                                subTitle={ t("console:develop.features.authenticationProvider.modals." +
-                                    "addAuthenticator.subTitle",
-                                    { idpName: identityProvider.name }) }
-                                closeWizard={ () => {
-                                    setShowAddAuthenticatorWizard(false);
-                                    setAvailableAuthenticators([]);
-                                    onUpdate(identityProvider.id);
-                                } }
-                                manualModeOptions={ availableManualModeOptions }
-                                availableTemplates={ availableTemplates }
-                                idpId={ identityProvider.id }
-                                data-testid={ `${ testId }-authenticator-create-wizard` }
-                            />
-                        )
-                    }
-                </div>
-            )
-            : <ContentLoader />
+            {
+                deletingAuthenticator && (
+                    <ConfirmationModal
+                        onClose={ (): void => setShowDeleteConfirmationModal(false) }
+                        type="warning"
+                        open={ showDeleteConfirmationModal }
+                        assertion={ deletingAuthenticator?.name }
+                        assertionHint={ (
+                            <p>
+                                <Trans
+                                    i18nKey={ "console:develop.features.authenticationProvider." +
+                                        "confirmations.deleteAuthenticator.assertionHint" }
+                                    tOptions={ { name: deletingAuthenticator?.name } }
+                                >
+                                    Please type <strong>{ deletingAuthenticator?.name }</strong> to confirm.
+                                </Trans>
+                            </p>
+                        ) }
+                        assertionType="input"
+                        primaryAction={ t("common:confirm") }
+                        secondaryAction={ t("common:cancel") }
+                        onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
+                        onPrimaryActionClick={
+                            (): void => handleAuthenticatorDelete(deletingAuthenticator.authenticatorId)
+                        }
+                        data-testid={ `${ testId }-authenticator-delete-confirmation` }
+                        closeOnDimmerClick={ false }
+                    >
+                        <ConfirmationModal.Header
+                            data-testid={ `${ testId }-authenticator-delete-confirmation` }>
+                            { t("console:develop.features.authenticationProvider.confirmations." +
+                                "deleteAuthenticator.header") }
+                        </ConfirmationModal.Header>
+                        <ConfirmationModal.Message
+                            attached
+                            warning
+                            data-testid={ `${ testId }-authenticator-delete-confirmation` }>
+                            { t("console:develop.features.authenticationProvider.confirmations." +
+                                "deleteAuthenticator.message") }
+                        </ConfirmationModal.Message>
+                        <ConfirmationModal.Content
+                            data-testid={ `${ testId }-authenticator-delete-confirmation` }>
+                            { t("console:develop.features.authenticationProvider.confirmations." +
+                                "deleteAuthenticator.content") }
+                        </ConfirmationModal.Content>
+                    </ConfirmationModal>
+                )
+            }
+            {
+                showAddAuthenticatorWizard && (
+                    <AuthenticatorCreateWizard
+                        title={ t("console:develop.features.authenticationProvider.modals." +
+                            "addAuthenticator.title") }
+                        subTitle={
+                            t("console:develop.features.authenticationProvider.modals." +
+                            "addAuthenticator.subTitle", { idpName: identityProvider.name })
+                        }
+                        closeWizard={ () => {
+                            setShowAddAuthenticatorWizard(false);
+                            setAvailableAuthenticators([]);
+                            onUpdate(identityProvider.id);
+                        } }
+                        manualModeOptions={ availableManualModeOptions }
+                        availableTemplates={
+                            // TODO: To show predefined templates in the Authenticator add wizard,
+                            // The experience should be properly finalized.
+                            // 1. Ex: If we show Predefined Facebook Template,
+                            //    Should we show the Facebook OIDC Authenticator?
+                            // 2. Once the Authenticator is added, there's no way of figuring out
+                            //    if the Authenticator is predefined or not in the edit view.
+                            IdentityProviderManagementConstants
+                                .SHOW_PREDEFINED_TEMPLATES_IN_EXPERT_MODE_SETUP && availableTemplates
+                        }
+                        idpId={ identityProvider.id }
+                        data-testid={ `${ testId }-authenticator-create-wizard` }
+                    />
+                )
+            }
+        </div>
     );
 };
 

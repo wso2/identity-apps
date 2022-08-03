@@ -98,7 +98,8 @@ export const applicationConfig: ApplicationConfig = {
         },
         getTabPanelReadOnlyStatus: (tabPanelName: string, applicationName: string): boolean => {
             return false;
-        }
+        },
+        showApplicationShare: true
     },
     excludeIdentityClaims: false,
     excludeSubjectClaim: false,

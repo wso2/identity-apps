@@ -18,6 +18,11 @@
 
 import { MyAccountNS } from "../../../models";
 
+/**
+ * NOTES: No need to care about the max-len for this file since it's easier to
+ * translate the strings to other languages easily with editor translation tools.
+ */
+/* eslint-disable max-len */
 export const myAccount: MyAccountNS = {
     components: {
         accountRecovery: {
@@ -584,24 +589,23 @@ export const myAccount: MyAccountNS = {
         },
         mfa: {
             authenticatorApp: {
-                addHint:"Configure QR code",
+                addHint:"Configure",
                 configuredDescription: "You can use TOTP codes from your configured " +
                     "authenticator app for two-factor authentication. If you don't have " +
                     "access to the application you can set up a new authenticator app from here.",
-                deleteHint: "Deletes QR code",
-                description: " Scan the QR code using an Authenticator App to use " +
-                    "time-based , one-time passcodes (also known as TOTP) as a " +
-                    "second factor when logging in to applications.",
+                deleteHint: "Remove",
+                description: "You can use the authenticator app to get verification codes for " + 
+                    "two-factor authentication.",
                 enableHint: "Enable/Disable TOTP Authenticator",
                 heading: "Authenticator App",
-                hint: "Show the QR Code",
+                hint: "View",
                 modals: {
                     delete : {
                         heading: "Confirmation",
                         message: "This action will remove the QR code added to your profile. Do you wish to continue ? "
                     },
                     done: "Success! Now you can use your Authenticator App for two-factor authentication",
-                    heading: "Setup an Authenticator App",
+                    heading: "Set up an Authenticator App",
                     scan: {
                         additionNote: "QR code has been successfully added to your profile!",
                         authenticatorApps: "Authenticator Apps",
@@ -612,11 +616,11 @@ export const myAccount: MyAccountNS = {
                         regenerateWarning: "When you regenerate a new QR code, you must scan it and re-setup your " + 
                             "authenticator app. Your previous setup won't work anymore."
                     },
-                    toolTip: "Don't have an app? Download an authenticator application like " +
+                    toolTip: "Don't have an authenticator app? Download an authenticator app like " +
                         "Google Authenticator from <3>App Store</3> or <3>Google Play</3>",
                     verify: {
                         error: "Verification failed. Please try again.",
-                        heading: "Enter the generated code to verify",
+                        heading: "Enter the generated code for verification",
                         label: "Verification Code",
                         placeholder: "Enter your verification code",
                         reScan: "Re-scan",
@@ -673,30 +677,38 @@ export const myAccount: MyAccountNS = {
                 regenerate: "Regenerate"
             },
             backupCode: {
+                description: "Use backup codes when you don’t have access to your authenticator app. You can " + 
+                    "regenerate new codes if required.",
                 download: {
-                    heading: "SAVE YOUR BACKUP CODES.",
+                    heading: "Backup codes for {{productName}}",
                     info1: "You can only use each backup code once.",
                     info2: "These codes were generated on ",
-                    subHeading: "You can use these backup codes to sign in to Asgardeo when you are " + 
+                    subHeading: "You can use these backup codes to sign in to {{productName}} when you are " + 
                         "away from your phone. Keep these backup codes somewhere safe but accessible."  
                 },
                 heading: "Backup Codes",
                 modals: {
-                    description: "Use the backup codes to sign in when you are away from your phone. " + 
-                        "You can genarate more when they are all used",
-                    download: {
-                        heading: "Download Codes"
+                    actions: {
+                        copied: "Copied",
+                        copy: "Copy Codes",
+                        download: "Download Codes",
+                        regenerate: "Regenerate"
                     },
+                    description: "Use backup codes to sign in when you are away from your phone.",
                     generate: {
                         description: "All of your backup codes are used. Lets generate a new set of backup codes",
                         heading: "Generate"
                     },
                     heading: "Backup Codes",
-                    info: "Each code can only be used once",
-                    refresh: {
-                        heading: "Refresh"
+                    info: "Each code can only be used once. You can generate new codes at any time to replace these.",
+                    regenerate: {
+                        description: "After you generate new codes, your old codes will no longer work. " 
+                            + "Be sure to save the new codes once they are generated.",
+                        heading: "Confirmation"
                     },
-                    subHeading: "One time passcodes that you can use to sign in"    
+                    subHeading: "One-time passcodes that you can use to sign in",
+                    warn: "These codes will appear only once. Be sure to save them now and store " 
+                        + "them somewhere safe but accessible."
                 },
                 notifications: {
                     deleteError: {

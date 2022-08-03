@@ -478,6 +478,10 @@ module.exports = (env) => {
                         ? "<%@ page import=\"static org.wso2.carbon.identity.application." +
                         "authentication.framework.util.FrameworkUtils.isAdaptiveAuthenticationAvailable\"%>"
                         : "",
+                    getOrganizationManagementAvailability: !isDeployedOnExternalServer
+                        ? "<%@ page import=\"static org.wso2.carbon.identity.application." +
+                        "authentication.framework.util.FrameworkUtils.isOrganizationManagementEnabled\"%>"
+                        : "",
                     hash: true,
                     // eslint-disable-next-line max-len
                     hotjarSystemVariable: "<% String hotjar_track_code_system_var = System.getenv().getOrDefault(\"hotjar_tracking_code\", null); %>",
@@ -494,6 +498,9 @@ module.exports = (env) => {
                         : "",
                     isAdaptiveAuthenticationAvailable: !isDeployedOnExternalServer
                         ? "<%= isAdaptiveAuthenticationAvailable() %>"
+                        : "false",
+                    isOrganizationManagementEnabled: !isDeployedOnExternalServer
+                        ? "<%= isOrganizationManagementEnabled() %>"
                         : "false",
                     importUtil: !isDeployedOnExternalServer
                         ? "<%@ page import=\"" +
@@ -536,7 +543,7 @@ module.exports = (env) => {
             isProduction && !isDeployedOnStaticServer
                 ? new HtmlWebpackPlugin({
                     authenticatedIdPs: "<%=request.getParameter(\"AuthenticatedIdPs\")%>",
-                    contentType: "<%@ page language=\"java\" contentType=\"text/html; charset=ISO-8859-1\" " + 
+                    contentType: "<%@ page language=\"java\" contentType=\"text/html; charset=ISO-8859-1\" " +
                     "pageEncoding=\"ISO-8859-1\"%>",
                     filename: path.join(distFolder, "index.jsp"),
                     hash: true,

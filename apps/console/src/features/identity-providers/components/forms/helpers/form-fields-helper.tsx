@@ -27,6 +27,7 @@ import { FormValidation } from "@wso2is/validation";
 import React, { ReactElement } from "react";
 import { Grid } from "semantic-ui-react";
 import {
+    AuthenticatorSettingsFormModes,
     CommonPluggableComponentMetaPropertyInterface,
     CommonPluggableComponentPropertyInterface
 } from "../../../models";
@@ -505,7 +506,10 @@ export enum CommonConstants {
  *
  * @param propertyMetadata Property metadata of type {@link CommonPluggableComponentMetaPropertyInterface}.
  */
-export const getFieldType = (propertyMetadata: CommonPluggableComponentMetaPropertyInterface): FieldType => {
+export const getFieldType = (
+    propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
+    mode: AuthenticatorSettingsFormModes
+): FieldType => {
     if (propertyMetadata?.type?.toUpperCase() === CommonConstants.BOOLEAN) {
         return FieldType.CHECKBOX;
     } else if (propertyMetadata?.isConfidential) {
@@ -513,7 +517,7 @@ export const getFieldType = (propertyMetadata: CommonPluggableComponentMetaPrope
     } else if (propertyMetadata?.key === CommonConstants.SCOPE_KEY) {
         return FieldType.TABLE;
     } else if (propertyMetadata?.key.toUpperCase().includes(CommonConstants.FIELD_COMPONENT_KEYWORD_URL)) {
-        if (propertyMetadata?.key === AUTHORIZATION_REDIRECT_URL) {
+        if (propertyMetadata?.key === AUTHORIZATION_REDIRECT_URL && mode !== AuthenticatorSettingsFormModes.CREATE) {
             return  FieldType.COPY_INPUT;
         } else {
             // TODO: Need proper backend support to identity URL fields-https://github.com/wso2/product-is/issues/12501.
@@ -540,13 +544,15 @@ export const getFieldType = (propertyMetadata: CommonPluggableComponentMetaPrope
  * @param listen Listener method for the on change events of a checkbox field
  * @return Corresponding property field.
  */
-export const getPropertyField = (property: CommonPluggableComponentPropertyInterface,
-                                 propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
-                                 listen?: (key: string, values: Map<string, FormValue>) => void,
-                                 testId?: string):
-    ReactElement => {
+export const getPropertyField = (
+    property: CommonPluggableComponentPropertyInterface,
+    propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
+    mode: AuthenticatorSettingsFormModes,
+    listen?: (key: string, values: Map<string, FormValue>) => void,
+    testId?: string
+): ReactElement => {
 
-    switch (getFieldType(propertyMetadata)) {
+    switch (getFieldType(propertyMetadata, mode)) {
         case FieldType.CHECKBOX : {
             if (listen) {
                 return getCheckboxFieldWithListener(property, propertyMetadata, listen, testId);

@@ -22,6 +22,7 @@ import { Heading, LinkButton, PrimaryButton, Steps } from "@wso2is/react-compone
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Grid, Icon, Modal } from "semantic-ui-react";
+import { OrganizationRoleBasics } from "./add-organization-role/organization-role-basics";
 import { CreateOrganizationRoleSummary } from "./add-organization-role/organization-role-sumary";
 import { OrganizationPermissionList } from "./edit-organization-role/organization-role-permission";
 import { CreateGroupMemberInterface, GroupsInterface, getGroupList } from "../../groups";
@@ -29,7 +30,6 @@ import {
     AssignGroupsUsers,
     CreateRoleInterface,
     CreateRoleMemberInterface,
-    RoleBasics,
     TreeNode,
     getRolesWizardStepIcons
 } from "../../roles";
@@ -255,7 +255,7 @@ export const AddOrganizationRoleWizard: FunctionComponent<AddOrganizationRolePro
     // Create role wizard steps
     const WIZARD_STEPS = [ {
         content: (
-            <RoleBasics
+            <OrganizationRoleBasics
                 data-testid="add-role-form"
                 isAddGroup={ isAddGroup }
                 triggerSubmit={ submitGeneralSettings }

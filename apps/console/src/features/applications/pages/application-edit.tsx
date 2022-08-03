@@ -308,6 +308,10 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
      * Load the list of sub organizations under the current organization for application sharing.
      */
     useEffect(() => {
+        if (!showAppShareModal) {
+            return;
+        }
+
         getOrganizations(
             null,
             null,
@@ -483,7 +487,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                                 ) }
                             />
                         </div>
-                    ) 
+                    )
             ) }
             image={
                 applicationConfig.editApplication.getOverriddenImage(inboundProtocolConfigs?.oidc?.clientId,
@@ -524,7 +528,10 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                     }
 
                     {
-                        (!application.advancedConfigurations.fragment && !application.isManagementApp) && (
+                        (isOrganizationManagementEnabled
+                            && applicationConfig.editApplication.showApplicationShare
+                            && !application.advancedConfigurations.fragment
+                            && !application.isManagementApp) && (
                             <PrimaryButton onClick={ () => setShowAppShareModal(true) }>
                                 Share Application
                             </PrimaryButton>
@@ -556,6 +563,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                 <ApplicationShareModal
                     open={ showAppShareModal }
                     applicationId={ application.id }
+                    clientId={ inboundProtocolConfigs?.oidc?.clientId }
                     subOrganizationList={ subOrganizationList }
                     onClose={ () => setShowAppShareModal(false) }
                 />

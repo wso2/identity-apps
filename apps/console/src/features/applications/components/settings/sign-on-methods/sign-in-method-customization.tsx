@@ -67,6 +67,10 @@ interface SignInMethodCustomizationPropsInterface extends SBACInterface<FeatureC
      */
     authenticationSequence: AuthenticationSequenceInterface;
     /**
+     * ClientId of the application.
+     */
+    clientId?: string;
+    /**
      * Is the application info request loading.
      */
     isLoading?: boolean;
@@ -105,6 +109,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
         appId,
         authenticators,
         authenticationSequence,
+        clientId,
         isLoading,
         setIsLoading,
         onIDPCreateWizardTrigger,
@@ -397,7 +402,8 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
             });
 
             eventPublisher.publish("application-sign-in-method-click-update-button", {
-                type: eventPublisherProperties
+                type: eventPublisherProperties,
+                "client-id": clientId
             });
         });
 
