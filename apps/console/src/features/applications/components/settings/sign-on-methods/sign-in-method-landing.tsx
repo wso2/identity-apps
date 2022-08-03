@@ -228,6 +228,28 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                     }}
                                 />
                             )}
+                            {!hiddenOptions.includes(LoginFlowTypes.SECOND_FACTOR_EMAIL_OTP) && (
+                                <InfoCard
+                                    fluid
+                                    data-testid="sms-otp-mfa-flow-card"
+                                    image={getAuthenticatorIcons().emailOTP}
+                                    imageSize="mini"
+                                    header={t(
+                                        "console:develop.features.applications.edit.sections" +
+                                        ".signOnMethod.sections.landing.flowBuilder.types.emailOTP.heading"
+                                    )}
+                                    description={t(
+                                        "console:develop.features.applications.edit.sections" +
+                                        ".signOnMethod.sections.landing.flowBuilder.types.emailOTP.description"
+                                    )}
+                                    onClick={() => {
+                                        eventPublisher.publish("application-begin-sign-in-email-otp-mfa", {
+                                            "client-id": clientId
+                                        });
+                                        onLoginFlowSelect(LoginFlowTypes.SECOND_FACTOR_EMAIL_OTP)
+                                    }}
+                                />
+                            )}
                             <Heading as="h4">
                                 {t(
                                     "console:develop.features.applications.edit." +
