@@ -84,8 +84,8 @@ export class AdaptiveScriptUtils {
             + scriptBody
             + ApplicationManagementConstants.DEFAULT_ADAPTIVE_AUTH_SCRIPT_FOOTER;
 
-        const userDefined = AdaptiveScriptUtils.minifyScript(moderatedScript, false);
-        const defaultScript = AdaptiveScriptUtils.minifyScript(scriptComposed, false);
+        const userDefined: string = AdaptiveScriptUtils.minifyScript(moderatedScript, false);
+        const defaultScript: string = AdaptiveScriptUtils.minifyScript(scriptComposed, false);
 
         return userDefined === defaultScript;
     }
@@ -94,8 +94,8 @@ export class AdaptiveScriptUtils {
      * Strips spaces and new lines in the script.
      *
      * @param {string | string[]} originalScript - Original script.
-     * @param ignoreComments {boolean}
-     * @return {string}
+     * @param {boolean} ignoreComments Whether to ignore code comments.
+     * @return {string} Minified string.
      */
     public static minifyScript(
         originalScript: string | string[],
