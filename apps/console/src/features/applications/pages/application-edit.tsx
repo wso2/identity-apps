@@ -322,7 +322,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         ).then((response) => {
             setSubOrganizationList(response.organizations);
         });
-    }, [ getOrganizations ]);
+    }, [ getOrganizations, showAppShareModal ]);
 
     const determineApplicationTemplate = () => {
 
