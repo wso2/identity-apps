@@ -384,6 +384,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                         </Show>
                     )
                 }
+                pageTitle="Organizations"
                 title={
                     isOrganizationListRequestLoading
                         ? null

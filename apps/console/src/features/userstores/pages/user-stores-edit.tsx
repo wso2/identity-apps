@@ -189,7 +189,7 @@ const UserStoresEditPage: FunctionComponent<UserStoresEditPageInterface> = (
     return (
         <PageLayout
             image={
-                <GenericIcon
+                (<GenericIcon
                     bordered
                     defaultIcon
                     size="x60"
@@ -197,9 +197,14 @@ const UserStoresEditPage: FunctionComponent<UserStoresEditPageInterface> = (
                     shape="rounded"
                     hoverable={ false }
                     icon={ getDatabaseAvatarGraphic() }
-                />
+                />)
             }
             title={
+                userStore?.name === CONSUMER_USERSTORE
+                    ? UserstoreConstants.CUSTOMER_USER_STORE_MAPPING
+                    : userStore?.name
+            }
+            pageTitle={
                 userStore?.name === CONSUMER_USERSTORE
                     ? UserstoreConstants.CUSTOMER_USER_STORE_MAPPING
                     : userStore?.name

@@ -59,11 +59,12 @@ const OrganizationRolesEdit: FunctionComponent = (
     return (
         <PageLayout
             isLoading={ isRoleDetailsRequestLoading }
-            title={
+            pageTitle={
                 roleObject && roleObject?.displayName ?
                     roleObject?.displayName :
                     t("console:manage.pages.rolesEdit.title")
             }
+            title="Edit Organization Role"
             backButton={ {
                 onClick: handleBackButtonClick,
                 text: t("console:manage.pages.rolesEdit.backButton", { type: "roles" })

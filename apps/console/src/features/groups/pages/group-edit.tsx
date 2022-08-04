@@ -71,7 +71,7 @@ const GroupEditPage: FunctionComponent<any> = (): ReactElement => {
                 }
             }).catch(() => {
             // TODO: handle error
-        })
+            })
             .finally(() => {
                 setIsGroupDetailsRequestLoading(false);
             });
@@ -93,6 +93,7 @@ const GroupEditPage: FunctionComponent<any> = (): ReactElement => {
                     group.displayName :
                     t("console:manage.pages.rolesEdit.title")
             }
+            pageTitle={ t("console:manage.pages.rolesEdit.title") }
             backButton={ {
                 onClick: handleBackButtonClick,
                 text: t("console:manage.pages.rolesEdit.backButton", { type: "groups" })

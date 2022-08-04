@@ -544,6 +544,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 )
             }
             title={ t("console:manage.pages.users.title") }
+            pageTitle={ t("console:manage.pages.users.title") }
             description={ t("console:manage.pages.users.subTitle") }
             data-testid={ `${ testId }-page-layout` }
         >
