@@ -635,7 +635,7 @@ export const myAccount: MyAccountNS = {
                             "ne fonctionnera plus."
                     },
                     toolTip: "Vous n'avez pas d'application? Téléchargez une application d'authentification " +
-                        "telle que Google Authenticator depuis <3> App Store </3> ou <3> Google Play </3>",
+                        "telle que Google Authenticator depuis <1>App Store</1> ou <3>Google Play</3>",
                     verify: {
                         error: "La vérification a échoué. Veuillez réessayer.",
                         heading: "Entrez le code généré pour vérification",
