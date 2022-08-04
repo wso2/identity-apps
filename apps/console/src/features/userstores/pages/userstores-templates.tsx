@@ -170,6 +170,7 @@ const UserstoresTemplates: FunctionComponent<UserstoresTemplatesPageInterface> =
             <PageLayout
                 isLoading={ isLoading }
                 title={ t("console:manage.features.userstores.pageLayout.templates.title") }
+                pageTitle={ t("console:manage.features.userstores.pageLayout.templates.title") }
                 description={ t("console:manage.features.userstores.pageLayout.templates.description") }
                 contentTopMargin={ true }
                 backButton={ {

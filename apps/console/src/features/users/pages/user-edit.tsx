@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { resolveUserDisplayName, resolveUserEmails, hasRequiredScopes } from "@wso2is/core/helpers";
+import { hasRequiredScopes, resolveUserDisplayName, resolveUserEmails } from "@wso2is/core/helpers";
 import {
     AlertInterface,
     AlertLevels,
@@ -161,7 +161,7 @@ const UserEditPage = (): ReactElement => {
                     }
                 }
             ],
-            schemas: ["urn:ietf:params:scim:api:messages:2.0:PatchOp"]
+            schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
         };
 
         setIsSubmitting(true);
@@ -219,6 +219,7 @@ const UserEditPage = (): ReactElement => {
      */
     const resolvePrimaryEmail = (emails: (string | MultiValueAttributeInterface)[]): string => {
         let primaryEmail: string | MultiValueAttributeInterface = "";
+
         if (emails && Array.isArray(emails) && emails.length > 0) {
             primaryEmail = emails.find((value) => typeof value === "string");
         }
@@ -230,6 +231,7 @@ const UserEditPage = (): ReactElement => {
         <PageLayout
             isLoading={ isUserDetailsRequestLoading }
             title={ resolveUserDisplayName(user, null, "Administrator") }
+            pageTitle="Edit User"
             description={ t("" + user.emails && user.emails !== undefined ? resolvePrimaryEmail(user?.emails) :
                 user.userName) }
             image={ (

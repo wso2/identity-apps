@@ -177,12 +177,13 @@ const CertificatesTruststore: FunctionComponent<CertificatesTruststorePageInterf
     return (
         <PageLayout
             title="Certificates in the Truststore"
+            pageTitle="Certificates in the Truststore"
             description="Create and manage certificates in the truststore"
             data-testid={ `${ testId }-page-layout` }
         >
             <ListLayout
                 advancedSearch={
-                    <AdvancedSearchWithBasicFilters
+                    (<AdvancedSearchWithBasicFilters
                         onFilter={ handleTruststoreFilter }
                         filterAttributeOptions={ [
                             {
@@ -209,7 +210,7 @@ const CertificatesTruststore: FunctionComponent<CertificatesTruststorePageInterf
                         defaultSearchAttribute="alias"
                         defaultSearchOperator="co"
                         data-testid={ `${ testId }-advanced-search` }
-                    />
+                    />)
                 }
                 currentListSize={ listItemLimit }
                 listItemLimit={ listItemLimit }
@@ -227,7 +228,7 @@ const CertificatesTruststore: FunctionComponent<CertificatesTruststorePageInterf
             >
                 <CertificatesList
                     advancedSearch={
-                        <AdvancedSearchWithBasicFilters
+                        (<AdvancedSearchWithBasicFilters
                             onFilter={ handleTruststoreFilter }
                             filterAttributeOptions={ [
                                 {
@@ -254,7 +255,7 @@ const CertificatesTruststore: FunctionComponent<CertificatesTruststorePageInterf
                             defaultSearchAttribute="alias"
                             defaultSearchOperator="co"
                             data-testid={ `${ testId }-advanced-search` }
-                        />
+                        />)
                     }
                     isLoading={ isLoading }
                     list={ paginate(filteredCertificatesTruststore, listItemLimit, offset) }
