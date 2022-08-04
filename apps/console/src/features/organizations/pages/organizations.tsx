@@ -48,6 +48,7 @@ import {
 import { AdvancedSearchWithBasicFilters, EventPublisher, UIConstants } from "../../core";
 import { getOrganization, getOrganizations } from "../api";
 import { AddOrganizationModal, OrganizationList } from "../components";
+import { OrganizationManagementConstants } from "../constants";
 import {
     OrganizationInterface,
     OrganizationLinkInterface,
@@ -384,6 +385,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                         </Show>
                     )
                 }
+                pageTitle="Organizations"
                 title={
                     isOrganizationListRequestLoading
                         ? null
@@ -420,7 +422,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                                         handleBreadCrumbClick(null, -1);
                                     } }
                                 >
-                                    <Icon name="home" data-componentid={ `${ testId }-breadcrumb-home` } />
+                                    { OrganizationManagementConstants.ROOT_ORGANIZATION.name }
                                 </Breadcrumb.Section>
                                 { organizations?.map((organization: OrganizationInterface, index: number) => {
                                     return (
@@ -511,6 +513,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                                 searchQuery={ searchQuery }
                                 data-componentid="organization-list"
                                 onListItemClick={ handleListItemClick }
+                                parentOrganization={ parent }
                             />
                         </ListLayout>
                         { showWizard && (
