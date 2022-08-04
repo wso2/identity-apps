@@ -5798,6 +5798,11 @@ export const console: ConsoleNS = {
                     },
                     back: "ආපසු",
                     dangerZone: {
+                        disableOrganization: {
+                            disableActionTitle: "සංවිධානය අක්‍රීය කරන්න",
+                            enableActionTitle: "සංවිධානය සක්‍රීය කරන්න",
+                            subheader: "සංවිධානයක් අක්‍රිය කිරීමෙන් ඔබට සංවිධානයට සම්බන්ධ ප්‍රවේශය අහිමි විය හැක. කල්පනාකාරීව ඉදිරියට යන්න."
+                        },
                         subHeader: "ඔබට මෙම සංවිධානය මැකීමට අවශ්‍ය බව විශ්වාසද?",
                         title: "සංවිධානය මකන්න"
                     },
@@ -5917,6 +5922,36 @@ export const console: ConsoleNS = {
                     },
                     deleteOrganizationWithSubOrganizationError: "{{ organizationName }} සංවිධානයට උප සංවිධාන එකක් හෝ " +
                         "කිහිපයක් ඇති බැවින් එය මකා දැමිය නොහැක.",
+                    disableOrganization: {
+                        error: {
+                            description: "{{description}}",
+                            message: "සංවිධානය අක්‍රිය කිරීමේදී දෝෂයකි"
+                        },
+                        genericError: {
+                            description: "සංවිධානය අක්‍රිය කිරීමේදී දෝෂයක් ඇති විය",
+                            message: "මොකක්හරි වැරැද්දක් වෙලා"
+                        },
+                        success: {
+                            description: "සංවිධානය සාර්ථකව අක්‍රිය කර ඇත",
+                            message: "සංවිධානය සාර්ථකව අක්‍රිය කර ඇත"
+                        }
+                    },
+                    disableOrganizationWithSubOrganizationError: "Organization {{ organizationName }} cannot be " +
+                        "disabled since it has one or more sub organizations.",
+                    enableOrganization: {
+                        error: {
+                            description: "{{description}}",
+                            message: "සංවිධානය සක්‍රීය කිරීමේදී දෝෂයකි"
+                        },
+                        genericError: {
+                            description: "සංවිධානය සක්‍රීය කිරීමේදී දෝෂයක් ඇති විය",
+                            message: "මොකක්හරි වැරැද්දක් වෙලා"
+                        },
+                        success: {
+                            description: "සංවිධානය සාර්ථකව සක්‍රීය කර ඇත",
+                            message: "සංවිධානය සාර්ථකව සක්‍රීය කර ඇත"
+                        }
+                    },
                     fetchOrganization: {
                         error: {
                             description: "{{description}}",
