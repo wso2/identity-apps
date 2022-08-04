@@ -357,14 +357,6 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
      */
     const shouldShowAttributeSettings = (type: string): boolean => {
 
-        if (type === IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.FACEBOOK) {
-            return false;
-        } else if (type === IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.GOOGLE) {
-            return false;
-        } else if (type === IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.GITHUB) {
-            return false;
-        }
-
         const isTabEnabledInExtensions: boolean | undefined = identityProviderConfig
             .editIdentityProvider
             .isTabEnabledForIdP(type, IdentityProviderTabTypes.USER_ATTRIBUTES);
