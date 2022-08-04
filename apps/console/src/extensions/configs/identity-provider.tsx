@@ -50,6 +50,14 @@ export const identityProviderConfig: IdentityProviderConfig = {
             return null;
         },
         isTabEnabledForIdP: (_templateId: string, _tabType: IdentityProviderTabTypes): boolean | undefined => {
+            if (!_templateId) {
+                return true;
+            }
+            if (_templateId === IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.OIDC,
+            _tabType === IdentityProviderTabTypes.USER_ATTRIBUTES) {
+                return true;
+            }
+
             return true;
         },
         showAdvancedSettings: true,
