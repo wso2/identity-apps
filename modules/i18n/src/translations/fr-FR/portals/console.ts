@@ -1185,10 +1185,6 @@ export const console: ConsoleNS = {
                                             smsOTP: {
                                                 description: "Activez une couche supplémentaire d'authentification avec OTP basé sur SMS.",
                                                 heading: "Ajouter SMS OTP comme deuxième facteur"
-                                            },
-                                            emailOTP: {
-                                                description: "Activez une couche supplémentaire d'authentification avec OTP basé sur Email.",
-                                                heading: "Ajouter Email OTP comme deuxième facteur"
                                             }
                                         }
                                     }

@@ -1150,10 +1150,6 @@ export const console: ConsoleNS = {
                                             smsOTP: {
                                                 description: "Enable additional authentication layer with SMS based OTP.",
                                                 heading: "Add SMS OTP as a second factor"
-                                            },
-                                            emailOTP: {
-                                                description: "Enable additional authentication layer with Email based OTP.",
-                                                heading: "Add Email OTP as a second factor"
                                             }
                                         }
                                     }

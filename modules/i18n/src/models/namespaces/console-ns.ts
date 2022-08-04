@@ -696,10 +696,6 @@ export interface ConsoleNS {
                                             smsOTP: {
                                                 description: string;
                                                 heading: string;
-                                            },
-                                            emailOTP: {
-                                                description: string,
-                                                heading: string,
                                             }
                                         }
                                     }
