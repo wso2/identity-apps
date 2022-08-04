@@ -461,26 +461,26 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                     </Grid.Row>
                 </Grid>
                 <Divider hidden/>
-                {
-                    !isReadOnly && (
-                        <DangerZoneGroup sectionHeader={ t("common:dangerZone") }>
-                            <DangerZone
-                                actionTitle={ t(organization.status === "ACTIVE"
-                                    ? "console:manage.features.organizations.edit.dangerZone.disableOrganization" +
+                <DangerZoneGroup sectionHeader={ t("common:dangerZone") }>
+                    <DangerZone
+                        actionTitle={ t(organization.status === "ACTIVE"
+                            ? "console:manage.features.organizations.edit.dangerZone.disableOrganization" +
                                     ".disableActionTitle"
-                                    : "console:manage.features.organizations.edit.dangerZone.disableOrganization" +
+                            : "console:manage.features.organizations.edit.dangerZone.disableOrganization" +
                                     ".enableActionTitle")
-                                }
-                                header={ t("common:dangerZone") }
-                                subheader={ t("console:manage.features.organizations.edit.dangerZone" +
+                        }
+                        header={ t("common:dangerZone") }
+                        subheader={ t("console:manage.features.organizations.edit.dangerZone" +
                                     ".disableOrganization.subheader") }
-                                onActionClick={ undefined }
-                                data-testid={ `${testId}-disable-danger-zone` }
-                                toggle={ {
-                                    checked: organization.status === "ACTIVE",
-                                    onChange: handleDisableOrganization
-                                } }
-                            />
+                        onActionClick={ undefined }
+                        data-testid={ `${testId}-disable-danger-zone` }
+                        toggle={ {
+                            checked: organization.status === "ACTIVE",
+                            onChange: handleDisableOrganization
+                        } }
+                    />
+                    {
+                        !isReadOnly && (
                             <DangerZone
                                 actionTitle={
                                     t("console:manage.features.organizations.edit" +
@@ -497,10 +497,9 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                                 data-testid={
                                     `${testId}-role-danger-zone`
                                 }
-                            />
-                        </DangerZoneGroup>
-                    )
-                }
+                            />)
+                    }
+                </DangerZoneGroup>
                 {
                     showOrgDeleteConfirmation && (
                         <ConfirmationModal
