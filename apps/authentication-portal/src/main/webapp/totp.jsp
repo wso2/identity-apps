@@ -156,12 +156,6 @@
                     <div class="ui segment">
                         <!-- page content -->
                         <div class="uii divider hidden"></div>
-                        <%
-                            if ("true".equals(authenticationFailed)) {
-                        %>
-                                <div class="ui negative message" id="failed-msg"><%=errorMessage%></div>
-                                <div class="ui divider hidden"></div>
-                        <% } %>
 
                         <input id="username" type="hidden"
                                value='<%=Encode.forHtmlAttribute(request.getParameter("username"))%>'>
