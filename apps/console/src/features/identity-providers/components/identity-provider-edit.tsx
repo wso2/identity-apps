@@ -179,18 +179,19 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
                     )
                 }
                 isRoleMappingsEnabled={
-                    isSaml && identityProviderConfig.utils.isRoleMappingsEnabled(
+                    isSaml || identityProviderConfig.utils.isRoleMappingsEnabled(
                         identityProvider.federatedAuthenticators.defaultAuthenticatorId
                     )
                 }
                 data-testid={ `${ testId }-attribute-settings` }
                 provisioningAttributesEnabled={
-                    isSaml && identityProviderConfig.utils.isProvisioningAttributesEnabled(
+                    isSaml || identityProviderConfig.utils.isProvisioningAttributesEnabled(
                         identityProvider.federatedAuthenticators.defaultAuthenticatorId
                     )
                 }
                 isReadOnly={ isReadOnly }
                 loader={ Loader }
+                isSaml={ isSaml }
             />
         </ResourceTab.Pane>
     );
@@ -356,17 +357,11 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
      */
     const shouldShowAttributeSettings = (type: string): boolean => {
 
-        if (!type) {
-            return false;
-        }
-
         if (type === IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.FACEBOOK) {
             return false;
         } else if (type === IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.GOOGLE) {
             return false;
         } else if (type === IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.GITHUB) {
-            return false;
-        } else if (type === IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.OIDC) {
             return false;
         }
 
