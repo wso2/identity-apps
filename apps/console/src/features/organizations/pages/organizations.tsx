@@ -422,7 +422,9 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                                         handleBreadCrumbClick(null, -1);
                                     } }
                                 >
-                                    { OrganizationManagementConstants.ROOT_ORGANIZATION.name }
+                                    <span data-componentid={ `${ testId }-breadcrumb-home` }>
+                                        { OrganizationManagementConstants.ROOT_ORGANIZATION.name }
+                                    </span>
                                 </Breadcrumb.Section>
                                 { organizations?.map((organization: OrganizationInterface, index: number) => {
                                     return (
