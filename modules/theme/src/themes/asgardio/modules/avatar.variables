@@ -1,0 +1,68 @@
+/*******************************
+        Avatar Variables
+*******************************/
+
+@avatarDefaultBackground: @dustyGray;
+@avatarInitialsColor: @white;
+@avatarEditableCursor: pointer;
+
+@avatarHoverableCursor: pointer;
+@avatarHoverableOpacity: 0.7;
+
+/* Size */
+@littleWidth: 48px;
+@miniWidth: 35px;
+@x30Width: 30px;
+@x50Width: 50px;
+@x60Width: 60px;
+@tinyWidth: 80px;
+@smallWidth: 150px;
+@mediumWidth: 300px;
+@largeWidth: 450px;
+@bigWidth: 600px;
+@hugeWidth: 800px;
+@massiveWidth: 960px;
+
+/*-------------------------------
+        Avatar Wrapper
+--------------------------------*/
+
+@avatarWrapperDisplayInline: inline-block;
+@avatarWrapperRounded: @defaultBorderRadius;
+
+/*-------------------------------
+        Avatar Container
+--------------------------------*/
+
+@avatarContainerPosition: relative;
+@avatarContainerDisplay: inline-block;
+
+@avatarCustomLabelPosition: absolute;
+@avatarCustomLabelZIndex: 9;
+@avatarCustomLabelWidth: 1.5em;
+@avatarCustomLabelHeight: 1.5em;
+@avatarCustomLabelTop: 0;
+@avatarCustomLabelRight: 5%;
+
+@editAvatarIconPosition: absolute;
+@editAvatarIconBottom: 0;
+@editAvatarIconRight: 0;
+@editAvatarIconColor: @black;
+
+/*-------------------------------
+        Circular Avatar
+--------------------------------*/
+
+@circularAvatarTextAlign: center;
+@circularAvatarBackground: @avatarDefaultBackground;
+@circularAvatarInitialsColor: @avatarInitialsColor;
+@circularAvatarEditableCursor: @avatarEditableCursor;
+@circularAvatarSpacingRight: 1em;
+@circularAvatarSpacingLeft: 1em;
+
+/*-------------------------------
+        Square Avatar
+--------------------------------*/
+
+@squareAvatarSpacingRight: 1em;
+@squareAvatarSpacingLeft: 1em;

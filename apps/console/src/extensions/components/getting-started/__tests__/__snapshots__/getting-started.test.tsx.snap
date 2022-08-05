@@ -1,0 +1,534 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test if the Getting Started page is working as expected <GettingStartedPage /> matches snapshot 1`] = `
+<div>
+   
+  <div
+    class="layout page-layout getting-started-page"
+    data-componentid="getting-started-page-layout"
+    data-testid="getting-started-page-layout"
+  >
+    <div
+      class="layout-content"
+    >
+      <div
+        class="greeting"
+      >
+        <h1
+          class="ui header heading bold-500 compact ellipsis"
+          data-componentid="welcome-greeting-header"
+          data-suppress=""
+          data-testid="welcome-greeting-header"
+        >
+          <div
+            class="ui placeholder"
+            data-componentid="welcome-greeting-placeholder"
+            data-testid="welcome-greeting-placeholder"
+          >
+            <div
+              class="header"
+            >
+              <div
+                class="line very long"
+              />
+            </div>
+          </div>
+        </h1>
+        <h5
+          class="ui header heading ellipsis subheading"
+          data-componentid="welcome-greeting-sub-header"
+          data-testid="welcome-greeting-sub-header"
+        >
+          extensions:common.quickStart.greeting.subHeading
+        </h5>
+      </div>
+      <div
+        class="ui stackable stretched grid"
+      >
+        <div
+          class="six wide computer six wide large screen sixteen wide mobile sixteen wide tablet six wide widescreen column"
+        >
+          <div
+            class="ui fluid card basic-card no-hover context-card"
+            data-componentid="application-integration-card"
+            data-testid="application-integration-card"
+          >
+            <div
+              class="extra content no-borders mb-0 pb-0"
+            >
+              <div
+                class="card-heading"
+              >
+                <h2
+                  class="ui header heading"
+                  data-componentid="heading"
+                  data-testid="heading"
+                >
+                  Integrate your application
+                </h2>
+                <div
+                  class="text-typography muted mb-0 pb-0"
+                  data-componentid="text"
+                  data-testid="text"
+                >
+                  Choose application type
+                </div>
+              </div>
+            </div>
+            <div
+              class="ui hidden divider 0.5x"
+            />
+            <div
+              class="content pt-0 px-2 no-borders"
+            >
+              <div
+                class="ui grid"
+              >
+                <div
+                  class="two column row"
+                  style="row-gap: 20px;"
+                >
+                  <div
+                    class="eight wide column"
+                  >
+                    <div
+                      class="application-tile auto-vh-center clipped white-bg ui scale transition animating in visible"
+                      data-componentid="dynamic-application-context-card-single-page-application-creation-tile"
+                      style="animation-duration: 350ms;"
+                    >
+                      <div
+                        class="body center"
+                      >
+                        <div
+                          style="display: flex; flex-direction: column; row-gap: 5px;"
+                        >
+                          <div
+                            style="display: flex; flex-direction: row; justify-content: center; padding-top: 5px;"
+                          >
+                            <div
+                              class="theme-icon fill-primary hover-rounded tiny square transparent card-image"
+                              data-componentid="Single-Page Application-tech-stack-icon-0"
+                              data-testid="Single-Page Application-tech-stack-icon-0"
+                            >
+                              <img
+                                alt="icon"
+                                class="icon"
+                                src="div"
+                              />
+                            </div>
+                          </div>
+                          <div
+                            class="text-typography text-center px-2"
+                            data-componentid="text"
+                            data-testid="text"
+                          >
+                            Single-Page Application
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="eight wide column"
+                  >
+                    <div
+                      class="application-tile auto-vh-center clipped white-bg ui scale transition animating in visible"
+                      data-componentid="dynamic-application-context-card-traditional-web-application-creation-tile"
+                      style="animation-duration: 350ms;"
+                    >
+                      <div
+                        class="body center"
+                      >
+                        <div
+                          style="display: flex; flex-direction: column; row-gap: 5px;"
+                        >
+                          <div
+                            style="display: flex; flex-direction: row; justify-content: center; padding-top: 5px;"
+                          >
+                            <div
+                              class="theme-icon fill-primary hover-rounded tiny square transparent card-image"
+                              data-componentid="Traditional Web Application-tech-stack-icon-0"
+                              data-testid="Traditional Web Application-tech-stack-icon-0"
+                            >
+                              <img
+                                alt="icon"
+                                class="icon"
+                                src="div"
+                              />
+                            </div>
+                          </div>
+                          <div
+                            class="text-typography text-center px-2"
+                            data-componentid="text"
+                            data-testid="text"
+                          >
+                            Traditional Web Application
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="eight wide column"
+                  >
+                    <div
+                      class="application-tile auto-vh-center clipped cursor-not-allowed grayscale white-bg ui scale transition animating in visible"
+                      data-componentid="dynamic-application-context-card-mobile-application-creation-tile"
+                      style="animation-duration: 350ms;"
+                    >
+                      <div
+                        class="body center"
+                      >
+                        <div
+                          style="display: flex; flex-direction: column; row-gap: 5px;"
+                        >
+                          <div
+                            class="coming-soon-ribbon"
+                          >
+                            common:comingSoon
+                          </div>
+                          <div
+                            style="display: flex; flex-direction: row; justify-content: center; padding-top: 5px;"
+                          >
+                            <div
+                              class="theme-icon disabled fill-primary hover-rounded tiny square transparent card-image"
+                              data-componentid="Mobile Application-tech-stack-icon-0"
+                              data-testid="Mobile Application-tech-stack-icon-0"
+                            >
+                              <img
+                                alt="icon"
+                                class="icon"
+                                src="div"
+                              />
+                            </div>
+                          </div>
+                          <div
+                            class="text-typography muted text-center px-2"
+                            data-componentid="text"
+                            data-testid="text"
+                          >
+                            Mobile Application
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="eight wide column"
+                  >
+                    <div
+                      class="application-tile auto-vh-center clipped white-bg ui scale transition animating in visible"
+                      data-componentid="dynamic-application-context-card-custom-application-creation-tile"
+                      style="animation-duration: 350ms;"
+                    >
+                      <div
+                        class="body center"
+                      >
+                        <div
+                          style="display: flex; flex-direction: column; row-gap: 5px;"
+                        >
+                          <div
+                            style="display: flex; flex-direction: row; justify-content: center; padding-top: 5px;"
+                          >
+                            <div
+                              class="theme-icon fill-primary hover-rounded tiny square transparent card-image"
+                              data-componentid="Standard-Based Application-tech-stack-icon-0"
+                              data-testid="Standard-Based Application-tech-stack-icon-0"
+                            >
+                              <img
+                                alt="icon"
+                                class="icon"
+                                src="div"
+                              />
+                            </div>
+                          </div>
+                          <div
+                            class="text-typography text-center px-2"
+                            data-componentid="text"
+                            data-testid="text"
+                          >
+                            Standard-Based Application
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="one column row"
+                >
+                  <div
+                    class="sixteen wide column"
+                  >
+                    <button
+                      class="ui button card-expanded-navigation-button card-rich-navigation-button"
+                      data-componentid="dynamic-application-context-card-navigate-to-application-list-button"
+                    >
+                      <span>
+                        View all applications
+                      </span>
+                      <i
+                        aria-hidden="true"
+                        class="angle right icon"
+                      />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="loaders content-loader"
+              data-componentid="content-loader-wrapper"
+              data-testid="content-loader-wrapper"
+            >
+              <div
+                class="ui active transition visible inverted dimmer"
+                data-componentid="content-loader-dimmer"
+                data-testid="content-loader-dimmer"
+                style="display: flex;"
+              >
+                <div
+                  class="content"
+                >
+                  <div
+                    class="ui inverted loader"
+                    data-componentid="content-loader"
+                    data-testid="content-loader"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="six wide computer six wide large screen sixteen wide mobile sixteen wide tablet six wide widescreen column"
+        >
+          <div
+            class="ui fluid card basic-card no-hover getting-started-card manage-users-card"
+          >
+            <div
+              class="content illustration-container"
+            >
+              <div
+                class="theme-icon hover-rounded auto transparent onboard-users-animated-illustration"
+                data-componentid="generic-icon"
+                data-testid="generic-icon"
+              >
+                <img
+                  alt="icon"
+                  class="icon"
+                  src="div"
+                />
+              </div>
+            </div>
+            <div
+              class="extra content description-container"
+            >
+              <div
+                class="card-heading"
+              >
+                <h2
+                  class="ui header heading"
+                  data-componentid="heading"
+                  data-testid="heading"
+                >
+                  extensions:common.quickStart.sections.manageUsers.heading
+                </h2>
+              </div>
+              <div
+                class="text-typography muted"
+                data-componentid="text"
+                data-testid="text"
+              >
+                extensions:common.quickStart.sections.manageUsers.description
+              </div>
+              <div
+                class="ui labels"
+              >
+                <div
+                  class="ui label"
+                >
+                  extensions:common.quickStart.sections.manageUsers.capabilities.customers
+                </div>
+                <div
+                  class="ui label"
+                >
+                  extensions:common.quickStart.sections.manageUsers.capabilities.collaborators
+                </div>
+                <div
+                  class="ui label"
+                >
+                  extensions:common.quickStart.sections.manageUsers.capabilities.groups
+                </div>
+              </div>
+            </div>
+            <div
+              class="extra content action-container"
+            >
+              <button
+                class="ui basic loading primary button link-button compact quick-start-action"
+                data-componentid="getting-started-page-add-user-button"
+                data-testid="getting-started-page-add-user-button"
+              >
+                <span
+                  class="button-text"
+                  data-componentid="getting-started-page-add-user-button-text"
+                >
+                  extensions:common.quickStart.sections.manageUsers.actions.create
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div
+          class="four wide computer four wide large screen sixteen wide mobile sixteen wide tablet four wide widescreen column"
+        >
+          <div
+            class="ui fluid card basic-card no-hover getting-started-card social-connections-card"
+          >
+            <div
+              class="content illustration-container"
+            >
+              <div
+                class="theme-icon hover-rounded auto transparent social-connections-animated-illustration"
+                data-componentid="generic-icon"
+                data-testid="generic-icon"
+              >
+                <img
+                  alt="icon"
+                  class="icon"
+                  src="div"
+                />
+              </div>
+            </div>
+            <div
+              class="content description-container"
+            >
+              <div
+                class="card-heading"
+              >
+                <h2
+                  class="ui header heading"
+                  data-componentid="heading"
+                  data-testid="heading"
+                >
+                  extensions:common.quickStart.sections.addSocialLogin.heading
+                </h2>
+              </div>
+              <div
+                class="text-typography muted"
+                data-componentid="text"
+                data-testid="text"
+              >
+                extensions:common.quickStart.sections.addSocialLogin.description
+              </div>
+            </div>
+            <div
+              class="extra content action-container"
+            >
+              <button
+                class="ui basic primary button link-button compact quick-start-action py-0"
+                data-componentid="develop-getting-started-page-add-social-login"
+                data-testid="develop-getting-started-page-add-social-login"
+              >
+                <span
+                  class="button-text"
+                  data-componentid="develop-getting-started-page-add-social-login-text"
+                >
+                  extensions:common.quickStart.sections.addSocialLogin.actions.setup
+                </span>
+              </button>
+            </div>
+          </div>
+          <div
+            class="ui fluid card basic-card no-hover getting-started-card learn-card"
+          >
+            <div
+              class="content description-container"
+            >
+              <div
+                class="card-heading"
+              >
+                <h2
+                  class="ui header heading"
+                  data-componentid="heading"
+                  data-testid="heading"
+                >
+                  extensions:common.quickStart.sections.learn.heading
+                </h2>
+              </div>
+              <div
+                class="text-typography muted"
+                data-componentid="text"
+                data-testid="text"
+              >
+                extensions:common.quickStart.sections.addSocialLogin.description
+              </div>
+            </div>
+            <div
+              class="extra content action-container"
+            >
+              <button
+                class="ui basic primary button link-button compact quick-start-action"
+                data-componentid="develop-getting-started-page-view-docs"
+                data-testid="develop-getting-started-page-view-docs"
+              >
+                <span
+                  class="button-text"
+                  data-componentid="develop-getting-started-page-view-doc-text"
+                >
+                  extensions:common.quickStart.sections.learn.actions.view
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="community-link-container"
+        data-componentid="community-link-section"
+      >
+        <div
+          class="contact-icon-container"
+        >
+          <div
+            class="theme-icon fill-default hover-rounded mini spaced-right transparent"
+            data-componentid="generic-icon"
+            data-testid="generic-icon"
+          >
+            <img
+              alt="icon"
+              class="icon"
+              src="div"
+            />
+          </div>
+        </div>
+        <div>
+          <h5
+            class="ui header heading compact"
+            data-componentid="heading"
+            data-testid="heading"
+          >
+            Help & Support
+          </h5>
+          <div
+            class="text-typography compact muted"
+            data-componentid="text"
+            data-testid="text"
+          >
+            For assistance, contact
+             
+            <a
+              data-componentid="community-link-mail-trigger"
+              href="mailto:asgardeo-help@wso2.com"
+            >
+              asgardeo-help@wso2.com
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+   
+</div>
+`;

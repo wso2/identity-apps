@@ -241,7 +241,7 @@ export class AppConstants {
      * @return {Map<string, string>}
      */
     public static getPaths(): Map<string, string> {
-        
+
         const useNewConnectionsView: boolean = identityProviderConfig?.useNewConnectionsView;
 
         return new Map<string, string>()
@@ -295,22 +295,27 @@ export class AppConstants {
             .set("ROLES", `${ AppConstants.getAdminViewBasePath() }/roles`)
             .set("ROLE_EDIT", `${ AppConstants.getAdminViewBasePath() }/roles/:id`)
             .set("ROOT", "/")
-            .set("GOVERNANCE_CONNECTORS", `${ AppConstants.getAdminViewBasePath() }/governance-connectors/:id`)
-            .set("UNAUTHORIZED", `${ AppConstants.getMainViewBasePath() }/unauthorized`)
-            .set("USERS", `${ AppConstants.getAdminViewBasePath() }/users`)
-            .set("USER_EDIT", `${ AppConstants.getAdminViewBasePath() }/users/:id`)
-            .set("USERSTORES", `${ AppConstants.getAdminViewBasePath() }/user-stores`)
-            .set("USERSTORES_EDIT", `${ AppConstants.getAdminViewBasePath() }/edit-user-store/:id`)
-            .set("USERSTORE_TEMPLATES", `${ AppConstants.getAdminViewBasePath() }/userstore-templates`)
-            .set("STORING_DATA_DISABLED", `${ AppConstants.getMainViewBasePath() }/storing_data_disabled`)
-            .set("GOVERNANCE_CONNECTOR", `${ AppConstants.getAdminViewBasePath() }/connector/:id`)
-            .set("GOVERNANCE_CONNECTOR_EDIT", `${ 
-                AppConstants.getAdminViewBasePath() }/connector/:categoryId/:connectorId`)
-            .set("SECRETS", `${ AppConstants.getDeveloperViewBasePath() }/secrets`)
-            .set("SECRET_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/secrets/:type/:name`)
-            .set("ATTRIBUTE_MAPPINGS", `${ AppConstants.getAdminViewBasePath() }/attribute-mappings/:type`)
-            .set("CREATE_TENANT", `${ AppConstants.getMainViewBasePath() }/create-tenant`);
-            
+            .set("GOVERNANCE_CONNECTORS", `${AppConstants.getAdminViewBasePath()}/governance-connectors/:id`)
+            .set("UNAUTHORIZED", `${AppConstants.getMainViewBasePath()}/unauthorized`)
+            .set("USERS", `${AppConstants.getAdminViewBasePath()}/users`)
+            .set("USER_EDIT", `${AppConstants.getAdminViewBasePath()}/users/:id`)
+            .set("USERSTORES", `${AppConstants.getAdminViewBasePath()}/user-stores`)
+            .set("USERSTORES_EDIT", `${AppConstants.getAdminViewBasePath()}/edit-user-store/:id`)
+            .set("USERSTORE_TEMPLATES", `${AppConstants.getAdminViewBasePath()}/userstore-templates`)
+            .set("STORING_DATA_DISABLED", `${AppConstants.getMainViewBasePath()}/storing_data_disabled`)
+            .set("GOVERNANCE_CONNECTOR", `${AppConstants.getAdminViewBasePath()}/connector/:id`)
+            .set(
+                "GOVERNANCE_CONNECTOR_EDIT",
+                `${AppConstants.getAdminViewBasePath()}/connector/:categoryId/:connectorId`
+            )
+            .set("SECRETS", `${AppConstants.getDeveloperViewBasePath()}/secrets`)
+            .set("SECRET_EDIT", `${AppConstants.getDeveloperViewBasePath()}/secrets/:type/:name`)
+            .set("ATTRIBUTE_MAPPINGS", `${AppConstants.getAdminViewBasePath()}/attribute-mappings/:type`)
+            .set("CREATE_TENANT", `${AppConstants.getMainViewBasePath()}/create-tenant`)
+            .set("ORGANIZATIONS", `${AppConstants.getAdminViewBasePath()}/organizations`)
+            .set("ORGANIZATION_UPDATE", `${AppConstants.getAdminViewBasePath()}/organizations/:id`)
+            .set("ORGANIZATION_ROLES", `${AppConstants.getAdminViewBasePath()}/organization-roles`)
+            .set("ORGANIZATION_ROLE_UPDATE", `${AppConstants.getAdminViewBasePath()}/organization-roles/:id`);
     }
 
     /**
@@ -339,4 +344,29 @@ export class AppConstants {
         .set("NO_LOGIN_PERMISSION", "no_login_permission")
         .set("ACCESS_DENIED", "access_denied")
         .set("USER_DENIED_CONSENT", "consent_denied");
+
+    /**
+     * Route ids that are enabled in an organization.
+     * @constant
+     * @type {string[]}
+     * @default
+     * */
+    public static readonly ORGANIZATION_ENABLED_ROUTES: string[] = [
+        "identityProviders",
+        "users",
+        "organizations",
+        "groups",
+        "organization-roles",
+        "applications"
+    ]
+
+    /**
+     * Route ids that are enabled in only for an organizations (Not allowed in root organization).
+     * @constant
+     * @type {string[]}
+     * @default
+     */
+    public static readonly ORGANIZATION_ONLY_ROUTES: string[] = [
+        "organization-roles"
+    ]
 }

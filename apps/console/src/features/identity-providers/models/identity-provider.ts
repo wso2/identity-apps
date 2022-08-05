@@ -118,6 +118,7 @@ export interface CertificateConfigInterface {
 
 export interface FederatedAuthenticatorMetaDataInterface {
     authenticatorId: string;
+    description: string;
     icon: any;
     name: string;
     displayName: string;
@@ -421,6 +422,12 @@ export interface OutboundProvisioningConnectorWithMetaInterface {
 }
 
 export interface CommonPluggableComponentFormPropsInterface extends TestableComponentInterface {
+    /**
+     * The intended mode of the authenticator form.
+     * If the mode is "EDIT", the form will be used in the edit view and will rely on metadata for readonly states, etc.
+     * If the mode is "CREATE", the form will be used in the add wizards and will all the fields will be editable.
+     */
+    mode: AuthenticatorSettingsFormModes;
     metadata?: CommonPluggableComponentMetaInterface;
     initialValues: CommonPluggableComponentInterface;
     onSubmit: (values: CommonPluggableComponentInterface) => void;
@@ -493,6 +500,11 @@ export interface CommonPluggableComponentMetaPropertyInterface {
     readOnly?: boolean;
     properties?: any;
     subProperties?: CommonPluggableComponentMetaPropertyInterface[];
+}
+
+export enum AuthenticatorSettingsFormModes {
+    CREATE = "CREATE",
+    EDIT = "EDIT"
 }
 
 /**
@@ -789,4 +801,14 @@ export enum AuthProtocolTypes {
     WS_FEDERATION = "passive-sts",
     WS_TRUST = "ws-trust",
     CUSTOM= "custom"
+}
+
+/**
+ * Enum for IdP Tab types
+ */
+export enum IdentityProviderTabTypes {
+    GENERAL = "General",
+    SETTINGS ="settings",
+    USER_ATTRIBUTES = "user-attributes",
+    ADVANCED = "advanced",
 }

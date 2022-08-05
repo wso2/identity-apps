@@ -206,7 +206,7 @@ export class RouteUtils {
          */
         for (const path of paths) {
             if (path) {
-                const expression = RegExp(`^${pathToARegex(path)}$`);
+                const expression = RegExp(`^${pathToARegex(path)}`);
                 const match = expression.exec(pathname);
 
                 if (match && match.length > 0) {
@@ -290,5 +290,20 @@ export class RouteUtils {
                 return pathsToSkip.some((path: string) => route.path === path);
             }
         });
+    }
+
+    /**
+     * Filters and returns only the routes that are enabled for organizations.
+     *
+     * @param routes - Set of routes.
+     *
+     * @returns {RouteInterface[]}
+     */
+    public static filterOrganizationEnabledRoutes(routes: RouteInterface[]): RouteInterface[] {
+        return routes.filter((route: RouteInterface) => AppConstants.ORGANIZATION_ENABLED_ROUTES.includes(route.id));
+    }
+
+    public static filterOutOrganizationOnlyRoutes(routes: RouteInterface[]): RouteInterface[] {
+        return routes.filter((route: RouteInterface) => !AppConstants.ORGANIZATION_ONLY_ROUTES.includes(route.id));
     }
 }

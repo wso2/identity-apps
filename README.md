@@ -219,34 +219,13 @@ npm run build:external:static
 
 The respective build artifacts could be found inside the build folder. (`apps/(myaccount|console)/build`)
 
+## Connectors
+
+Go through our [connectors guide](./docs/CONNECTORS.md) to learn how to handle connectors in the Identity Server Console.
+
 ## Troubleshoot
 
 - If you face any out of memory build failures, make sure that you have set maven options to `set MAVEN_OPTS=-Xmx384M`
-- For Maven v3.8 up, add below configuration to the `~/.m2/settings.xml` (Create a new file if the file exist)
-  ```xml
-  <settings>
-    <mirrors>
-      <mirror>
-        <id>wso2-nexus-public</id>
-        <mirrorOf>external:http:*</mirrorOf>
-        <url>http://maven.wso2.org/nexus/content/groups/wso2-public/</url>
-        <blocked>false</blocked>
-      </mirror>
-      <mirror>
-        <id>wso2-nexus-release</id>
-        <mirrorOf>external:http:*</mirrorOf>
-        <url>http://maven.wso2.org/nexus/content/repositories/releases/</url>
-        <blocked>false</blocked>
-      </mirror>
-      <mirror>
-        <id>wso2-nexus-snapshots</id>
-        <mirrorOf>external:http:*</mirrorOf>
-        <url>http://maven.wso2.org/nexus/content/repositories/snapshots/</url>
-        <blocked>false</blocked>
-      </mirror>
-    </mirrors>
-  </settings>
-  ```
 
 ## Contributing
 

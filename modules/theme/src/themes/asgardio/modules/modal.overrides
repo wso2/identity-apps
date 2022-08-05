@@ -1,0 +1,27 @@
+/*********************************************
+                    Wizards
+*********************************************/
+
+.ui.modal {
+    &.wizard {
+        &.add-tenant-wizard {
+            .content-container {
+                &:not(.height-auto) {
+                    height: @wizardContentHeight;
+                }
+                .valid-tenant {
+                    color: #54AB47;
+                }
+                .invalid-tenant {
+                    color: #f50d0d;
+                }
+                .placeholder-uri {
+                    color: #a9a9a9;
+                }
+                .placeholder-uri-bold {
+                    font-weight: 600;
+                }
+            }
+        }
+    }
+}

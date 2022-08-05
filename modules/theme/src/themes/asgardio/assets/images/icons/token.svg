@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+-->
+
+<svg id="token-icon" class="icon" width="14" height="14" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" xml:space="preserve">
+  <g id="Group_57" data-name="Group 57">
+    <g id="Group_56" data-name="Group 56">
+      <path id="Path_290" data-name="Path 290" d="M341.333,0c-94.1,0-170.667,76.563-170.667,170.667a168.306,168.306,0,0,0,3.625,34.26l-19.063,9.531a10.663,10.663,0,0,0-2.77,17.083l13.792,13.792L155.583,256H138.666A10.661,10.661,0,0,0,128,266.667v16.917l-15.083,15.083H96a10.661,10.661,0,0,0-10.667,10.667v16.917L70.25,341.333H53.333A10.661,10.661,0,0,0,42.666,352v16.917L3.125,408.458A10.659,10.659,0,0,0,0,416v85.333A10.661,10.661,0,0,0,10.667,512H96a10.66,10.66,0,0,0,7.542-3.125L266.667,345.75l13.792,13.792a10.663,10.663,0,0,0,17.083-2.77l9.531-19.063C415.6,360.333,512,275.979,512,170.667,512,76.563,435.438,0,341.333,0ZM303.948,315.083a10.712,10.712,0,0,0-12.2,5.563l-6.677,13.344-10.865-10.865a10.662,10.662,0,0,0-15.083,0L91.583,490.667H21.333v-70.25l39.542-39.542A10.659,10.659,0,0,0,64,373.333V362.666H74.667a10.66,10.66,0,0,0,7.542-3.125l21.333-21.333a10.659,10.659,0,0,0,3.125-7.542V320h10.667a10.66,10.66,0,0,0,7.542-3.125l21.333-21.333A10.659,10.659,0,0,0,149.334,288V277.333H160a10.66,10.66,0,0,0,7.542-3.125l21.333-21.333a10.662,10.662,0,0,0,0-15.083L178.01,226.927l13.344-6.677a10.669,10.669,0,0,0,5.563-12.2A150.328,150.328,0,0,1,192,170.667c0-82.344,66.99-149.333,149.333-149.333s149.333,66.99,149.333,149.333C490.667,265.156,402.49,340.458,303.948,315.083Z"/>
+      <path id="Path_291" data-name="Path 291" d="M394.667,64A53.333,53.333,0,1,0,448,117.333,53.4,53.4,0,0,0,394.667,64Zm0,85.333a32,32,0,1,1,32-32A32.035,32.035,0,0,1,394.667,149.333Z"/>
+      <path id="Path_292" data-name="Path 292" d="M216.458,280.458,67.125,429.792a10.666,10.666,0,1,0,15.084,15.083L231.542,295.542a10.666,10.666,0,0,0-15.084-15.084Z"/>
+    </g>
+  </g>
+</svg>

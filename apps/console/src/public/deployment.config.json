@@ -2,6 +2,11 @@
     "accountApp": {
         "path": "/myaccount/overview"
     },
+    "analytics": {
+        "metrics": {
+            "dependencyTrackingEnabled": false
+        }
+    },
     "appBaseName": "console",
     "appBaseNameForHistoryAPI": "/",
     "clientID": "CONSOLE",
@@ -31,10 +36,14 @@
         "enablePKCE": true,
         "clockTolerance": 300,
         "responseMode": "query",
-        "scope": [ "SYSTEM" ],
+        "scope": [ "SYSTEM", "profile", "openid" ],
         "serverOrigin": "https://localhost:9443",
-        "storage": "webWorker"
+        "storage": "webWorker",
+        "authorizeEndpointURL": "${serverOrigin}/${tenantPrefix}/${superTenantDomain}/oauth2/authorize?ut=${userTenantDomain}",
+        "logoutEndpointURL": "${serverOrigin}/${tenantPrefix}/${superTenantDomain}/oidc/logout",
+        "oidcSessionIFrameEndpointURL": "${serverOrigin}/${tenantPrefix}/${superTenantDomain}/oidc/checksession"
     },
+    "getProfileInfoFromIDToken": true,
     "i18nResourcePath": "",
     "isSaas": true,
     "loginCallbackPath": "",
@@ -224,6 +233,27 @@
                     ]
                 }
             },
+            "organizations": {
+                "enabled": true,
+                "disabledFeatures": [],
+                "scopes": {
+                    "feature": [
+                        "console:organizations"
+                    ],
+                    "create": [
+                        "internal_organization_create"
+                    ],
+                    "read": [
+                        "internal_organization_view"
+                    ],
+                    "update": [
+                        "internal_organization_update"
+                    ],
+                    "delete": [
+                        "internal_organization_delete"
+                    ]
+                }
+            },
             "oidcScopes": {
                 "enabled": true,
                 "disabledFeatures": [],
@@ -387,7 +417,9 @@
         "gravatarConfig": {
             "fallback": "404"
         },
-        "hiddenAuthenticators": [],
+        "hiddenAuthenticators": [
+            "MagicLinkAuthenticator"
+        ],
         "i18nConfigs": {
             "showLanguageSwitcher": false,
             "langAutoDetectEnabled":false

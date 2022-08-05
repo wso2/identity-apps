@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.com). All Rights Reserved.
+ *
+ * This software is the property of WSO2 Inc. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content."
+-->
+
+<svg version="1.1" id="asgardeo-trifacta-half" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+	 x="0px" y="0px" viewBox="0 0 353.6 675.1" style="enable-background:new 0 0 353.6 675.1;" xml:space="preserve">
+	<g id="Group" transform="translate(-153.069 -228.5)">
+		<polygon points="506.6,553.8 456.1,641.2 506.6,641.2" fill="#ff7300"/>
+		<polygon points="506.6,553.8 355,291.5 290.1,404 362,528.7 218.2,528.7 153.1,641.2 506.6,641.2" fill="#ff7300"/>
+		<polygon points="506.6,554.2 304.6,903.6 434.6,903.6 506.6,779.2" fill="#fff"/>
+	</g>
+</svg>

@@ -1,0 +1,14 @@
+{
+    "id": "linkedin-idp",
+    "name": "LinkedIn",
+    "description": "Login users with existing LinkedIn accounts.",
+    "image": "linkedIn",
+    "category": "DEFAULT",
+    "displayOrder": 2,
+    "services": [],
+    "tags": [ "Social-Login" ],
+    "idp": {},
+    "type": "SOCIAL",
+    "templateId": "linkedin-idp",
+    "comingSoon": true
+}

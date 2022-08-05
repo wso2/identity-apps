@@ -1,0 +1,19 @@
+/*******************************
+        Input Overrides
+*******************************/
+
+/*-------------------------------
+ Consumer Myaccount URL Display Input Field
+--------------------------------*/
+.ui.input {
+    &.consumer-url-input {
+        height: 3em;
+        font-size: 14px;
+        input {
+            border: none;
+        }
+        input:focus {
+            border: none
+        }
+    }
+}

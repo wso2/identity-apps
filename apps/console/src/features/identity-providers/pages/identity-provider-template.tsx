@@ -400,6 +400,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
 
     return (
         <PageLayout
+            pageTitle="Create New Connection"
             isLoading={ useNewConnectionsView === undefined }
             title={
                 useNewConnectionsView
@@ -460,28 +461,36 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                                             category.templates.map((
                                                 template: IdentityProviderTemplateInterface,
                                                 templateIndex: number
-                                            ) => (
-                                                <ResourceGrid.Card
-                                                    key={ templateIndex }
-                                                    resourceName={
-                                                        template.name === "Enterprise" ? "Standard-Based IdP" : template.name
-                                                    }
-                                                    isResourceComingSoon={ template.comingSoon }
-                                                    disabled={ template.disabled }
-                                                    comingSoonRibbonLabel={ t("common:comingSoon") }
-                                                    resourceDescription={ template.description }
-                                                    resourceImage={
-                                                        IdentityProviderManagementUtils
-                                                            .resolveTemplateImage(template.image, getIdPIcons())
-                                                    }
-                                                    tags={ template.tags }
-                                                    onClick={ (e: SyntheticEvent) => {
-                                                        handleTemplateSelection(e, template.id);
-                                                    } }
-                                                    showTooltips={ { header: false, description: true } }
-                                                    data-testid={ `${ testId }-${ template.name }` }
-                                                />
-                                            ))
+                                            ) => {
+                                                const isOrgIdp = template.templateId === "organization-enterprise-idp";
+
+                                                if (isOrgIdp && !isOrganizationManagementEnabled) {
+                                                    return null;
+                                                }
+
+                                                return (
+                                                    <ResourceGrid.Card
+                                                        key={ templateIndex }
+                                                        resourceName={
+                                                            template.name === "Enterprise" ? "Standard-Based IdP" : template.name
+                                                        }
+                                                        isResourceComingSoon={ template.comingSoon }
+                                                        disabled={ template.disabled }
+                                                        comingSoonRibbonLabel={ t("common:comingSoon") }
+                                                        resourceDescription={ template.description }
+                                                        resourceImage={
+                                                            IdentityProviderManagementUtils
+                                                                .resolveTemplateImage(template.image, getIdPIcons())
+                                                        }
+                                                        tags={ template.tags }
+                                                        onClick={ (e: SyntheticEvent) => {
+                                                            handleTemplateSelection(e, template.id);
+                                                        } }
+                                                        showTooltips={ { header: false, description: true } }
+                                                        data-testid={ `${ testId }-${ template.name }` }
+                                                    />
+                                                );
+                                            })
                                         }
                                     </ResourceGrid>
                                 ))

@@ -1,0 +1,24 @@
+<!--
+ * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.com). All Rights Reserved.
+ *
+ * This software is the property of WSO2 Inc. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content."
+-->
+
+<svg id="asgardeo-logo-sprite" class="icon" xmlns="http://www.w3.org/2000/svg" width="362.387" height="508.839"
+     viewBox="0 0 362.387 508.839">
+    <g id="Group_1044" data-name="Group 1044" transform="translate(-0.002 -118.135)">
+        <g id="Group_1022" data-name="Group 1022">
+            <g id="Group_600" data-name="Group 600">
+                <path id="Subtraction_12" data-name="Subtraction 12"
+                      d="M-3496.611,1660.087H-3859V1571.2l87.43-151.066h133.055l-71.9,125.179h146.907l66.894,114.773h0Z"
+                      transform="translate(3859 -1302)" fill="#d7e2de"/>
+                <path id="Subtraction_10" data-name="Subtraction 10"
+                      d="M206.59,358.085,0,0H133.137L206.59,127.891l.367-.639v230.2l-.366.635Z"
+                      transform="translate(206.959 626.977) rotate(180)" fill="#ff7300"/>
+            </g>
+        </g>
+    </g>
+</svg>

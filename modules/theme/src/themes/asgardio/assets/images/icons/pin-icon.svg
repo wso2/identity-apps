@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!--
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+-->
+
+<svg xmlns="http://www.w3.org/2000/svg" id="pin-icon" class="icon" width="14" height="14" viewBox="0 0 13.995 14">
+    <path id="pin" class="path fill primary"
+          d="M.212,14.67a.3.3,0,0,1,0-.425L6.381,8.077,4.338,6.034a.18.18,0,0,1,.04-.212A4.021,4.021,0,0,1,7.743,4.607l2.909-2.622-.327-.327a.516.516,0,0,1,.054-.723A.517.517,0,0,1,11.1.881L14,3.776a.517.517,0,0,1-.055.723.517.517,0,0,1-.724.055l-.327-.328L10.271,7.134A4.015,4.015,0,0,1,9.054,10.5a.181.181,0,0,1-.211.042L6.805,8.5.636,14.67a.3.3,0,0,1-.424,0Z"
+          transform="translate(-0.125 -0.758)" fill="#464646"/>
+</svg>

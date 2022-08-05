@@ -1,0 +1,21 @@
+/*******************************
+        Product Variables
+*******************************/
+
+/*-----------------------------
+      Product Branding
+------------------------------*/
+
+@productLogoHeight: 20px;
+@productTitleFontWeight: 600;
+@productTitleFontSize: 1.3rem;
+@productTitleAppNameMargin: 0 0 0 5px;
+
+@productTitleAppNameColor: @white;
+
+/*-------------------------------
+        Preloader
+--------------------------------*/
+
+@preLoaderWrapperBackgroundColor: #F5F6F6;
+@preLoaderWrapperBackgroundImage: unset;

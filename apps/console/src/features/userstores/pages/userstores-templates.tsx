@@ -28,6 +28,8 @@ import { getAType, getUserstoreTypes } from "../api";
 import { AddUserStore } from "../components";
 import { getUserstoreTemplateIllustrations } from "../configs";
 import {
+    DEFAULT_DESCRIPTION_CUSTOM_USERSTORE,
+    DEFAULT_USERSTORE_TYPE_IMAGE,
     USERSTORE_TYPE_DISPLAY_NAMES,
     USERSTORE_TYPE_IMAGES,
     USER_STORE_TYPE_DESCRIPTIONS
@@ -91,7 +93,6 @@ const UserstoresTemplates: FunctionComponent<UserstoresTemplatesPageInterface> =
             const typeRequests: Promise<any>[] = response.map((type: TypeResponse) => {
                 return getAType(type.typeId, null);
             });
-
             const results: UserstoreType[] = await Promise.all(
                 typeRequests.map(response => response.catch(error => {
                     dispatch(addAlert({
@@ -109,6 +110,7 @@ const UserstoresTemplates: FunctionComponent<UserstoresTemplatesPageInterface> =
             const userstoreTypes: UserstoreTypeListItem[] = [];
             const uniqueUserstoreTypes: UserstoreTypeListItem[] = [];
             const rawUserstoreTypes: UserstoreType[] = [];
+
             results.forEach((type: UserstoreType) => {
                 if (type && !userstoresConfig.shouldShowUserstore(type.typeName)) {
                     rawUserstoreTypes.push(type);
@@ -125,11 +127,11 @@ const UserstoresTemplates: FunctionComponent<UserstoresTemplatesPageInterface> =
                     } else {
                         userstoreTypes.push(
                             {
-                                description: type.description
-                                    ?? USER_STORE_TYPE_DESCRIPTIONS[ type.typeName ],
+                                description: USER_STORE_TYPE_DESCRIPTIONS[ type.typeName ] 
+                                    ?? DEFAULT_DESCRIPTION_CUSTOM_USERSTORE,
                                 id: type.typeId,
-                                image: USERSTORE_TYPE_IMAGES[ type.typeName ],
-                                name: USERSTORE_TYPE_DISPLAY_NAMES[ type.typeName ]
+                                image: USERSTORE_TYPE_IMAGES[ type.typeName ] ?? DEFAULT_USERSTORE_TYPE_IMAGE,
+                                name: USERSTORE_TYPE_DISPLAY_NAMES[ type.typeName ] ?? type.typeName
                             }
                         );
                     }

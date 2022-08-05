@@ -209,6 +209,10 @@ export interface MyAccountNS {
                             description: string;
                             message: string;
                         };
+                        passwordCaseRequirement: string,
+                        passwordCharRequirement: string,
+                        passwordLengthRequirement: string,
+                        passwordNumRequirement: string,
                         submitError: {
                             description: string;
                             message: string;
@@ -357,6 +361,7 @@ export interface MyAccountNS {
                 enableHint: string;
                 addHint: string;
                 deleteHint: string;
+                regenerate: string;
                 modals: {
                     heading: string;
                     scan: {
@@ -366,6 +371,7 @@ export interface MyAccountNS {
                         messageHeading: string;
                         messageBody: string;
                         authenticatorApps: string;
+                        regenerateWarning: string;
                     };
                     verify: {
                         heading: string;
@@ -396,31 +402,45 @@ export interface MyAccountNS {
                         genericError: NotificationItem;
                         error: NotificationItem;
                     };
+                    updateAuthenticatorError: {
+                        error: NotificationItem;
+                        genericError: NotificationItem;
+                    };
+                    deleteSuccess: {
+                        genericMessage: string;
+                        message: string;
+                    };
                 };
             };
             backupCode: {
+                description: string;
                 download: {
-                    heading: string,
-                    info1: string,
-                    info2: string,
-                    subHeading: string
-                },
-                heading: string,
+                    heading: string;
+                    info1: string;
+                    info2: string;
+                    subHeading: string;
+                };
+                heading: string;
                 modals: {
-                    description: string,
-                    download: {
-                        heading: string
-                    },
+                    actions: {
+                        download: string;
+                        regenerate: string;
+                        copy: string;
+                        copied: string;
+                    };
+                    description: string;
                     generate: {
-                        description: string
-                        heading: string, 
-                    },
-                    heading: string,
-                    info: string,
-                    refresh: {
-                        heading: string
-                    },
-                    subHeading: string,
+                        description: string;
+                        heading: string;
+                    };
+                    heading: string;
+                    info: string;
+                    regenerate: {
+                        heading: string;
+                        description: string;
+                    };
+                    subHeading: string;
+                    warn: string;
                 },
                 notifications: {
                     deleteError: {
@@ -501,6 +521,9 @@ export interface MyAccountNS {
                     completionPercentage: string;
                     userSourceText: string;
                     header: string;
+                    description: string;
+                    readOnlyDescription: string;
+                    profileText:string
                 };
                 accountStatus: {
                     complete: string;
@@ -867,6 +890,7 @@ export interface MyAccountNS {
         personalInfoWithoutLinkedAccounts: Page;
         personalInfoWithoutExportProfile: Page;
         privacy: Page;
+        readOnlyProfileBanner: string;
         security: Page;
     };
     placeholders: {

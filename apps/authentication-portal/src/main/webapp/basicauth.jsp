@@ -480,7 +480,7 @@
     <div class="ui divider hidden"></div>
 
     <div class="ui two column stackable grid">
-        <div class="column mobile center aligned tablet left aligned computer left aligned buttons tablet no-padding-left-first-child computer no-padding-left-first-child">
+        <div class="column mobile center aligned tablet left aligned computer left aligned buttons tablet computer">
             <% if (isSelfSignUpEPAvailable && !isIdentifierFirstLogin(inputType) && isSelfSignUpEnabledInTenant) { %>
             <button
                 type="button"

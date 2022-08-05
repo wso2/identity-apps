@@ -25,6 +25,7 @@ import { useSelector } from "react-redux";
 import { Divider, Grid, SemanticWIDTHS } from "semantic-ui-react";
 import { AppState, ConfigReducerStateInterface } from "../../../../core";
 import {
+    AuthenticatorSettingsFormModes,
     CommonAuthenticatorFormInitialValuesInterface,
     FederatedAuthenticatorWithMetaInterface
 } from "../../../models";
@@ -59,6 +60,12 @@ const I18N_TARGET_KEY = "console:develop.features.authenticationProvider.forms.a
  * {@link SamlAuthenticatorSettingsForm.defaultProps}.
  */
 interface SamlSettingsFormPropsInterface extends TestableComponentInterface {
+    /**
+     * The intended mode of the authenticator form.
+     * If the mode is "EDIT", the form will be used in the edit view and will rely on metadata for readonly states, etc.
+     * If the mode is "CREATE", the form will be used in the add wizards and will all the fields will be editable.
+     */
+    mode: AuthenticatorSettingsFormModes;
     authenticator: FederatedAuthenticatorWithMetaInterface;
     onSubmit: (values: CommonAuthenticatorFormInitialValuesInterface) => void;
     readOnly?: boolean;

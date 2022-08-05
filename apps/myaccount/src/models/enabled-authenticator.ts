@@ -23,10 +23,8 @@
  * @enum {string}
  */
 export enum EnabledAuthenticatorUpdateAction {
-    INIT_TOTP,
-    DELETE_TOTP,
-    TOTP_TOGGLE_DISABLE,
-    TOTP_TOGGLE_ENABLE
+    ADD,
+    REMOVE,
 }
 
 /**

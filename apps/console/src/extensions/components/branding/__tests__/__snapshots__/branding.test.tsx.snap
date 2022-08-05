@@ -1,0 +1,422 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test if the Branding page is working as expected <BrandingPage /> matches snapshot 1`] = `
+<div>
+   
+  <div
+    class="layout page-layout branding-page"
+    data-componentid="branding-page-layout"
+    data-testid="page-layout"
+  >
+    <div
+      class="layout-content padded"
+    >
+      <div
+        class="page-header-wrapper"
+        data-componentid="branding-page-layout-page-header"
+        data-testid="page-layout-page-header"
+      >
+        <div
+          class="ui grid"
+        >
+          <div
+            class="row"
+          >
+            <div
+              class="ten wide computer column heading-wrapper"
+            >
+              <div
+                class="page-header-inner"
+              >
+                <h1
+                  class="ui left aligned header page-header ellipsis"
+                  data-componentid="branding-page-layout-page-header-text-wrapper-loading"
+                  data-testid="page-layout-page-header-text-wrapper-loading"
+                >
+                  <div
+                    style="width: 250px;"
+                  >
+                    <div
+                      class="ui fluid placeholder"
+                    >
+                      <div
+                        class="header"
+                      >
+                        <div
+                          class="line"
+                        />
+                        <div
+                          class="line"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </h1>
+              </div>
+            </div>
+            <div
+              class="six wide computer column action-wrapper"
+            >
+              <div
+                class="floated right action"
+              >
+                <div
+                  class="ui toggle checkbox"
+                  data-componentid="branding-preference-publish-toggle"
+                >
+                  <input
+                    class="hidden"
+                    readonly=""
+                    tabindex="0"
+                    type="checkbox"
+                    value=""
+                  />
+                  <label>
+                    extensions:develop.branding.publishToggle.label
+                  </label>
+                </div>
+                <div
+                  class="ui-hint inline popup"
+                  data-componentid="hint"
+                  data-testid="hint"
+                >
+                  <i
+                    aria-hidden="true"
+                    class="grey info circle icon"
+                    floated="left"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="ui hidden divider"
+      />
+      <div
+        class="ui horizontal segments basic branding-preference-tab-group"
+        data-componentid="branding-preference-tabs"
+      >
+        <div
+          class="ui basic segment"
+        >
+          <div
+            class="tabs resource-tabs attached"
+            data-componentid="branding-preference-tabs-forms"
+            data-testid="resource-tabs"
+          >
+            <div
+              class="ui top attached menu"
+            >
+              <a
+                class="active item"
+              >
+                extensions:develop.branding.tabs.general.label
+              </a>
+              <a
+                class="item"
+              >
+                extensions:develop.branding.tabs.design.label
+              </a>
+              <a
+                class="item"
+              >
+                extensions:develop.branding.tabs.advance.label
+              </a>
+            </div>
+            <div
+              class="ui bottom attached segment active loading tab resource-tab-pane"
+              data-componentid="branding-preference-general-tab"
+              data-testid="resource-tab-pane"
+            >
+              <div
+                class="ui basic loading very padded segment preference-form-container"
+                data-componentid="branding-preference-general-tab-content-container"
+              >
+                <form
+                  novalidate=""
+                >
+                  <form
+                    class="ui form"
+                    novalidate=""
+                  >
+                    <div
+                      class="ui grid form-container with-max-width"
+                    >
+                      <div
+                        class="row"
+                      >
+                        <div
+                          class="sixteen wide column"
+                        >
+                          <div
+                            class="sixteen wide field"
+                          >
+                            <label>
+                              extensions:develop.branding.forms.general.fields.siteTitle.label
+                            </label>
+                            <div
+                              arialabel="Site title input field"
+                              class="ui input"
+                              data-componentid="branding-preference-general-details-form-site-title"
+                              hint="extensions:develop.branding.forms.general.fields.siteTitle.hint"
+                              inputtype="default"
+                            >
+                              <input
+                                aria-label="Site title input field"
+                                maxlength="100"
+                                minlength="3"
+                                name="organizationDetails.siteTitle"
+                                placeholder="extensions:develop.branding.forms.general.fields.siteTitle.placeholder"
+                                type="text"
+                                value=""
+                              />
+                            </div>
+                          </div>
+                          <div
+                            class="ui-hint compact"
+                            data-componentid="hint"
+                            data-testid="hint"
+                          >
+                            <div
+                              style="column-gap: .2rem; display: inline-flex;"
+                            >
+                              <i
+                                aria-hidden="true"
+                                class="grey info circle icon"
+                                floated="left"
+                              />
+                              <div>
+                                extensions:develop.branding.forms.general.fields.siteTitle.hint
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        class="row"
+                      >
+                        <div
+                          class="sixteen wide column"
+                        >
+                          <div
+                            class="sixteen wide field"
+                          >
+                            <label>
+                              extensions:develop.branding.forms.general.fields.copyrightText.label
+                            </label>
+                            <div
+                              arialabel="Copyright text input field"
+                              class="ui input"
+                              data-componentid="branding-preference-general-details-form-copyright-text"
+                              hint="extensions:develop.branding.forms.general.fields.copyrightText.hint"
+                              inputtype="default"
+                            >
+                              <input
+                                aria-label="Copyright text input field"
+                                maxlength="100"
+                                minlength="3"
+                                name="organizationDetails.copyrightText"
+                                placeholder="extensions:develop.branding.forms.general.fields.copyrightText.placeholder"
+                                type="text"
+                                value=""
+                              />
+                            </div>
+                          </div>
+                          <div
+                            class="ui-hint compact"
+                            data-componentid="hint"
+                            data-testid="hint"
+                          >
+                            <div
+                              style="column-gap: .2rem; display: inline-flex;"
+                            >
+                              <i
+                                aria-hidden="true"
+                                class="grey info circle icon"
+                                floated="left"
+                              />
+                              <div>
+                                extensions:develop.branding.forms.general.fields.copyrightText.hint
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        class="row"
+                      >
+                        <div
+                          class="sixteen wide column"
+                        >
+                          <div
+                            class="sixteen wide field"
+                          >
+                            <label>
+                              extensions:develop.branding.forms.general.fields.supportEmail.label
+                            </label>
+                            <div
+                              arialabel="Contact email input field"
+                              class="ui input"
+                              data-componentid="branding-preference-general-details-form-support-email"
+                              hint="extensions:develop.branding.forms.general.fields.supportEmail.hint"
+                              inputtype="email"
+                            >
+                              <input
+                                aria-label="Contact email input field"
+                                maxlength="100"
+                                minlength="3"
+                                name="organizationDetails.supportEmail"
+                                placeholder="extensions:develop.branding.forms.general.fields.supportEmail.placeholder"
+                                type="text"
+                                value=""
+                              />
+                            </div>
+                          </div>
+                          <div
+                            class="ui-hint compact"
+                            data-componentid="hint"
+                            data-testid="hint"
+                          >
+                            <div
+                              style="column-gap: .2rem; display: inline-flex;"
+                            >
+                              <i
+                                aria-hidden="true"
+                                class="grey info circle icon"
+                                floated="left"
+                              />
+                              <div>
+                                extensions:develop.branding.forms.general.fields.supportEmail.hint
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </form>
+              </div>
+              <div
+                class="ui bottom attached very padded segment sticky-action-container"
+                data-componentid="sticky-tab-action-panel"
+              >
+                <button
+                  arialabel="Branding preference form save button"
+                  class="ui small primary button"
+                  data-componentid="branding-preference-general-details-form-submit-button"
+                  data-testid="primary-button"
+                >
+                  common:save
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ui basic segment preview"
+        >
+          <div
+            class="tabs resource-tabs attached"
+            data-componentid="branding-preference-tabs-preview"
+            data-testid="resource-tabs"
+          >
+            <div
+              class="ui top attached menu"
+            >
+              <a
+                class="active item"
+              >
+                extensions:develop.branding.tabs.preview.label
+              </a>
+            </div>
+            <div
+              class="ui bottom attached segment active tab resource-tab-pane preview-tab"
+              data-componentid="branding-preference-preview-tab"
+              data-testid="resource-tab-pane"
+            >
+              <div
+                class="ui floating info top attached message preview-disclaimer"
+                data-componentid="branding-preference-preview-disclaimer"
+              >
+                <div
+                  class="content"
+                >
+                  <i
+                    aria-hidden="true"
+                    class="info circle icon"
+                  />
+                  extensions:develop.branding.tabs.preview.disclaimer
+                </div>
+              </div>
+              <div
+                class="branding-preference-preview-container"
+                data-componentid="branding-preference-preview"
+              >
+                <div
+                  class="ui iframe responsive loading"
+                  data-componentid="branding-preference-preview-iframe-wrapper"
+                >
+                  <iframe
+                    data-componentid="branding-preference-preview-iframe"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="danger-zone-group-wrapper"
+      >
+        <h5
+          class="ui header bold-text"
+          data-componentid="danger-zone-group-header"
+          data-testid="danger-zone-group-header"
+        >
+          extensions:develop.branding.dangerZoneGroup.header
+        </h5>
+        <div
+          class="ui segments danger-zone-group"
+          data-componentid="danger-zone-group"
+          data-testid="danger-zone-group"
+        >
+          <div
+            class="ui clearing padded segment danger-zone"
+            data-componentid="branding-page-danger-zone"
+            data-testid="danger-zone"
+          >
+            <h5
+              class="ui red left floated header"
+              data-componentid="branding-page-danger-zone-header"
+              data-testid="danger-zone-header"
+            >
+              extensions:develop.branding.dangerZoneGroup.revertBranding.header
+              <div
+                class="sub header sub-header"
+                data-componentid="branding-page-danger-zone-sub-header"
+                data-testid="danger-zone-sub-header"
+              >
+                extensions:develop.branding.dangerZoneGroup.revertBranding.subheader
+              </div>
+            </h5>
+            <div
+              class="inline-button"
+            >
+              <button
+                class="ui negative button"
+                data-componentid="branding-page-danger-zone-delete-button"
+                data-testid="danger-zone-delete-button"
+              >
+                extensions:develop.branding.dangerZoneGroup.revertBranding.actionTitle
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+   
+</div>
+`;

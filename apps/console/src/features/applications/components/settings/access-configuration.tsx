@@ -26,7 +26,7 @@ import {
     DocumentationLink,
     EmphasizedSegment,
     GenericIcon,
-    Text,
+    Message,
     useDocumentation
 } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
@@ -35,7 +35,7 @@ import sortBy from "lodash-es/sortBy";
 import React, { Fragment, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Divider, Grid, Header, Message, Popup, Button as SemButton } from "semantic-ui-react";
+import { Divider, Grid, Header, Popup, Button as SemButton } from "semantic-ui-react";
 import { SAMLSelectionLanding } from "./protocols";
 import { applicationConfig } from "../../../../extensions";
 import { AppState, FeatureConfigInterface, store } from "../../../core";
@@ -349,7 +349,6 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                         message: t("console:develop.features.applications.notifications.updateApplication.error" +
                             ".message")
                     }));
-
                     return;
                 }
 
@@ -360,6 +359,8 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                     message: t("console:develop.features.applications.notifications.updateApplication.genericError" +
                         ".message")
                 }));
+            }).finally(() => {
+                setIsLoading(false);
             });
     };
 
@@ -566,8 +567,10 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
 
             return (
                 <Fragment>
-                    <Message visible>
-                        <Text>
+                    <Message
+                        visible
+                        type="info"
+                        content={
                             <Trans
                                 i18nKey={ i18nKey }
                                 tOptions={ {
@@ -581,14 +584,14 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                 <Code withBackground={ false }>
                                     {
                                         ApplicationManagementUtils.resolveProtocolDisplayName(
-                                                selectedProtocol as SupportedAuthProtocolTypes
+                                            selectedProtocol as SupportedAuthProtocolTypes
                                         )
                                     }
                                 </Code>
                                 protocol to implement login in your applications.
                             </Trans>
-                        </Text>
-                    </Message>
+                        }
+                    />
                     <Divider hidden />
                 </Fragment>
             );

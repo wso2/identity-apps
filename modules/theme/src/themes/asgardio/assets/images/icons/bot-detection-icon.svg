@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="12" height="14" viewBox="0 0 12 14">
+    <g id="bot-detection-icon" transform="translate(-287 -363)">
+        <g id="Rectangle_964" data-name="Rectangle 964" transform="translate(287 368)" fill="none" stroke="#313131"
+           stroke-width="1">
+            <rect width="12" height="9" rx="1" stroke="none"/>
+            <rect x="0.5" y="0.5" width="11" height="8" rx="0.5" fill="none"/>
+        </g>
+        <rect id="Rectangle_965" data-name="Rectangle 965" width="1" height="4" transform="translate(292.5 365)"
+              fill="#313131"/>
+        <circle id="Ellipse_343" data-name="Ellipse 343" cx="1.5" cy="1.5" r="1.5" transform="translate(291.5 363)"
+                fill="#313131"/>
+        <circle id="Ellipse_344" data-name="Ellipse 344" cx="1" cy="1" r="1" transform="translate(289.5 370.5)"
+                fill="#313131"/>
+        <circle id="Ellipse_345" data-name="Ellipse 345" cx="1" cy="1" r="1" transform="translate(294.5 370.5)"
+                fill="#313131"/>
+        <g id="Rectangle_966" data-name="Rectangle 966" transform="translate(291 374)" fill="#fff" stroke="#313131"
+           stroke-width="1">
+            <rect width="4" height="1" rx="0.5" stroke="none"/>
+            <rect x="0.5" y="0.5" width="3" fill="none"/>
+        </g>
+    </g>
+</svg>

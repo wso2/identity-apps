@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the License); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -207,6 +207,7 @@ export interface AdvancedConfigurationsInterface {
     skipLogoutConsent?: boolean;
     returnAuthenticatedIdpList?: boolean;
     enableAuthorization?: boolean;
+    fragment?: boolean;
     additionalSpProperties?: additionalSpProperty[]
 }
 /**
@@ -707,4 +708,17 @@ export enum LoginFlowTypes {
 export enum URLFragmentTypes {
     TAB_INDEX = "tab=",
     VIEW = "view=",
+}
+
+/**
+ * Enum for customized tab types
+ */
+export enum ApplicationTabTypes {
+    GENERAL = "General",
+    PROTOCOL ="protocol",
+    USER_ATTRIBUTES = "user-attributes",
+    SIGN_IN_METHOD = "sign-in-method",
+    PROVISIONING = "provisioning",
+    ADVANCED = "advanced",
+    INFO = "info"
 }

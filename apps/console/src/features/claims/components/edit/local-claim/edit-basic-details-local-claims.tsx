@@ -36,16 +36,17 @@ import {
     DangerZoneGroup,
     EmphasizedSegment,
     Hint,
-    Link
+    Link,
+    Message
 } from "@wso2is/react-components";
 import Axios from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Divider, Grid, Message, Form as SemanticForm } from "semantic-ui-react";
+import { Divider, Grid, Form as SemanticForm } from "semantic-ui-react";
 import { attributeConfig } from "../../../../../extensions";
 import { SCIMConfigs } from "../../../../../extensions/configs/scim";
-import { AppConstants, AppState, FeatureConfigInterface, history } from "../../../../core";
+import { AppConstants, AppState, FeatureConfigInterface, history, store } from "../../../../core";
 import { deleteAClaim, getExternalClaims, updateAClaim } from "../../../api";
 import { ClaimManagementConstants } from "../../../constants";
 
@@ -225,7 +226,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     const fetchUpdatedSchemaList = (): void => {
         dispatch(setProfileSchemaRequestLoadingStatus(true));
 
-        getProfileSchemas()
+        getProfileSchemas(store.getState().config.endpoint?.schemas)
             .then((response: ProfileSchemaInterface[]) => {
                 dispatch(setSCIMSchemas<ProfileSchemaInterface[]>(response));
             })
@@ -398,34 +399,32 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                             !hideSpecialClaims &&
                             (<Grid.Row columns={ 1 } >
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
-                                    <Message color="teal">
-                                        <Hint>
-                                            {
-                                                !hasMapping ? (
-                                                    <>
-                                                        { t("console:manage.features.claims.local.forms.infoMessages." +
-                                                            "disabledConfigInfo") }
-                                                        <div>
-                                                            Add SCIM mapping from
-                                                            <Link
-                                                                external={ false }
-                                                                onClick={ () => {
-                                                                    history.push(
-                                                                        AppConstants.getPaths().get("SCIM_MAPPING")
-                                                                    );
-                                                                }
-                                                                }
-                                                            >
-                                                            </Link>.
-                                                        </div>
-                                                    </>
-                                                ):(
-                                                    t("console:manage.features.claims.local.forms.infoMessages." +
+                                    <Message
+                                        type="info"
+                                        content={
+                                            !hasMapping ? (
+                                                <>
+                                                    { t("console:manage.features.claims.local.forms.infoMessages." +
+                                                        "disabledConfigInfo") }
+                                                    <div>
+                                                        Add SCIM mapping from
+                                                        <Link
+                                                            external={ false }
+                                                            onClick={ () =>
+                                                                history.push(
+                                                                    AppConstants.getPaths().get("SCIM_MAPPING")
+                                                                )
+                                                            }
+                                                        > here
+                                                        </Link>.
+                                                    </div>
+                                                </>
+                                            ):(
+                                                t("console:manage.features.claims.local.forms.infoMessages." +
                                                     "configApplicabilityInfo")
-                                                )
-                                            }
-                                        </Hint>
-                                    </Message>
+                                            )
+                                        }
+                                    />
                                 </Grid.Column>
                             </Grid.Row>)
                         )

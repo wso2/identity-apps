@@ -1,0 +1,15 @@
+/*******************************
+     Breadcrumb Overrides
+*******************************/
+
+.ui.breadcrumb {
+    &.muted {
+        a {
+            color: @nobel;
+
+            &:hover {
+                color: darken(@nobel, 10);
+            }
+        }
+    }
+}

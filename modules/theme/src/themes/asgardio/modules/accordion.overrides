@@ -1,0 +1,51 @@
+/*******************************
+      Accordion Overrides
+*******************************/
+
+.ui.accordion {
+    .title {
+        .chevron {
+             transition: transform .1s ease-in-out;
+         }
+         &.active {
+             .chevron {
+                 transform: rotate(90deg);
+             }
+         }
+    }
+}
+
+.ui.accordion {
+    .title.disabled {
+        cursor: default;
+        opacity: 0.5 !important;
+        pointer-events: none;
+    }
+}
+
+/*-----------------------------
+      Segmented Variation
+------------------------------*/
+
+.ui.accordion {
+    &.segmented-accordion {
+        .segmented-accordion-title {
+            .chevron {
+                transition: transform .1s ease-in-out;
+            }
+            &.active {
+                border-bottom-right-radius: 0;
+                border-bottom-left-radius: 0;
+
+                .chevron {
+                    transform: rotate(90deg);
+                }
+            }
+        }
+        .segmented-accordion-content {
+            border-top-right-radius: 0;
+            border-top-left-radius: 0;
+            border: @defaultBorderWidth solid @lightBorderColor;
+        }
+    }
+}

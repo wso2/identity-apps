@@ -19,8 +19,9 @@
 import { DecodedIDTokenPayload, useAuthContext } from "@asgardeo/auth-react";
 import { AccessControlProvider } from "@wso2is/access-control";
 import { CommonHelpers, isPortalAccessGranted } from "@wso2is/core/helpers";
-import { RouteInterface, emptyIdentityAppsSettings } from "@wso2is/core/models";
+import { AlertLevels, RouteInterface, emptyIdentityAppsSettings } from "@wso2is/core/models";
 import {
+    addAlert,
     setDeploymentConfigs,
     setI18nConfigs,
     setServiceResourceEndpoints,
@@ -40,9 +41,9 @@ import {
 } from "@wso2is/react-components";
 import has from "lodash-es/has";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, Suspense, useEffect, useRef, useState } from "react";
 import { Helmet } from "react-helmet";
-import { Trans } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, Router, Switch } from "react-router-dom";
 import { commonConfig } from "./extensions";
@@ -59,7 +60,9 @@ import {
     ServiceResourceEndpointsInterface,
     UIConfigInterface
 } from "./features/core/models";
-import { AppState } from "./features/core/store";
+import { AppState, setGetOrganizationLoading, setOrganization } from "./features/core/store";
+import { getOrganizations } from "./features/organizations/api";
+import { OrganizationListInterface } from "./features/organizations/models";
 
 /**
  * Main App component.
@@ -68,9 +71,11 @@ import { AppState } from "./features/core/store";
  */
 export const App: FunctionComponent<Record<string, never>> = (): ReactElement => {
     const dispatch = useDispatch();
+    const { t } = useTranslation();
 
     const userName: string = useSelector((state: AppState) => state.auth.username);
     const loginInit: boolean = useSelector((state: AppState) => state.auth.loginInit);
+    const isPrivilegedUser: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const appTitle: string = useSelector((state: AppState) => state?.config?.ui?.appTitle);
@@ -84,6 +89,14 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
     const { trySignInSilently, getDecodedIDToken, signOut } = useAuthContext();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
+    const [ sessionTimedOut, setSessionTimedOut ] = useState<boolean>(false);
+
+    /**
+     * Set the value of Session Timed Out.
+     */
+    const handleSessionTimeOut = (timedOut: boolean): void => {
+        setSessionTimedOut(timedOut);
+    };
 
     /**
      * Set the deployment configs in redux state.
@@ -156,7 +169,7 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
             getDecodedIDToken()
                 .then((idToken: DecodedIDTokenPayload) => {
 
-                    if(has(idToken, "associated_tenants")) {
+                    if(has(idToken, "associated_tenants") || isPrivilegedUser) {
                         // If there is an assocation, the user is likely unauthorized by other criteria.
                         history.push({
                             pathname: AppConstants.getPaths().get("UNAUTHORIZED"),
@@ -261,6 +274,8 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
                                                 onSessionTimeoutAbort={ handleSessionTimeoutAbort }
                                                 onSessionLogout={ handleSessionLogout }
                                                 onLoginAgain={ handleStayLoggedIn }
+                                                setSessionTimedOut={ handleSessionTimeOut }
+                                                sessionTimedOut={ sessionTimedOut }
                                                 modalOptions={ {
                                                     description: (
                                                         <Trans
@@ -326,12 +341,18 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
                                                                 ? (
                                                                     <link
                                                                         href={
-                                                                            `${window?.origin}${window?.publicPath}/libs/themes/${theme}/theme.${window?.themeHash}.min.css`
+                                                                            `${
+                                                                                window?.origin
+                                                                            }${
+                                                                                window?.publicPath
+                                                                            }/libs/themes/${
+                                                                                theme
+                                                                            }/theme.${ window?.themeHash }.min.css`
                                                                         }
                                                                         rel="stylesheet"
                                                                         type="text/css"
                                                                     />
-                                                                ) 
+                                                                )
                                                                 : null
                                                         }
                                                     </Helmet>

@@ -178,6 +178,58 @@ export const AccessControlContext: FunctionComponent<PropsWithChildren<AccessCon
                     featureConfig?.secretsManagement,
                     featureConfig?.secretsManagement?.scopes?.delete,
                     allowedScopes
+                ),
+
+                [ AccessControlConstants.ORGANIZATION ]: hasRequiredScopes(
+                    featureConfig?.organizations,
+                    featureConfig?.organizations?.scopes?.feature,
+                    allowedScopes
+                ),
+                [ AccessControlConstants.ORGANIZATION_READ ]: hasRequiredScopes(
+                    featureConfig?.organizations,
+                    featureConfig?.organizations?.scopes?.read,
+                    allowedScopes
+                ),
+                [ AccessControlConstants.ORGANIZATION_EDIT ]: hasRequiredScopes(
+                    featureConfig?.organizations,
+                    featureConfig?.organizations?.scopes?.update,
+                    allowedScopes
+                ),
+                [ AccessControlConstants.ORGANIZATION_DELETE ]: hasRequiredScopes(
+                    featureConfig?.organizations,
+                    featureConfig?.organizations?.scopes?.delete,
+                    allowedScopes
+                ),
+                [ AccessControlConstants.ORGANIZATION_WRITE ]: hasRequiredScopes(
+                    featureConfig?.organizations,
+                    featureConfig?.organizations?.scopes?.create,
+                    allowedScopes
+                ),
+
+                [ AccessControlConstants.ORGANIZATION_ROLES ]: hasRequiredScopes(
+                    featureConfig?.organization_roles,
+                    featureConfig?.organization_roles?.scopes?.feature,
+                    allowedScopes
+                ),
+                [ AccessControlConstants.ORGANIZATION_ROLES_READ ]: hasRequiredScopes(
+                    featureConfig?.organization_roles,
+                    featureConfig?.organization_roles?.scopes?.read,
+                    allowedScopes
+                ),
+                [ AccessControlConstants.ORGANIZATION_ROLES_EDIT ]: hasRequiredScopes(
+                    featureConfig?.organization_roles,
+                    featureConfig?.organization_roles?.scopes?.update,
+                    allowedScopes
+                ),
+                [ AccessControlConstants.ORGANIZATION_ROLES_DELETE ]: hasRequiredScopes(
+                    featureConfig?.organization_roles,
+                    featureConfig?.organization_roles?.scopes?.delete,
+                    allowedScopes
+                ),
+                [ AccessControlConstants.ORGANIZATION_ROLES_WRITE ]: hasRequiredScopes(
+                    featureConfig?.organization_roles,
+                    featureConfig?.organization_roles?.scopes?.create,
+                    allowedScopes
                 )
             }
         });

@@ -1,0 +1,62 @@
+/*******************************
+        Login Variables
+*******************************/
+
+/*-----------------------------
+     Login Portals Commons
+------------------------------*/
+
+@loginPortalBackgroundColor: #F5F6F6;
+@loginPortalBackgroundImage: url("assets/images/accounts-page-background.svg");
+@loginPortalBackgroundSize: auto;
+@loginPortalBackgroundPosition: 0 calc(100% - 39px);
+@loginPortalProductLogoHeight: 30px;
+@loginPortalLoginCardBorderRadius: 12px;
+@loginPortalLoginCardBoxShadow: none;
+@loginPortalLoginCardBorderColor: transparent;
+@loginPortalLoginCardBorder: @defaultBorderWidth solid @loginPortalLoginCardBorderColor;
+@loginPortalLoginCardPadding: 3.3rem 3.3rem;
+@loginPortalExternalLinkFontSize: 14px;
+@loginPortalCenterContainer: calc(100% - 41px);
+@loginPortalClickableLinkColor: @primaryColor;
+@loginPortalExternalConnectionButtonBackgroundColor: #0000000a;
+@loginPortalExternalConnectionButtonHoverBackgroundColor: @white;
+
+@landingPageBackground: url("assets/images/landing-bg.svg");
+@landingPageBackgroundPosition: 100% calc(100% - 39px);
+
+@centeredMessageHeaderColor: @black;
+@centeredMessageDescColor: #999ea2;
+
+@loginPortalLogoTaglineMaxWidth: 570px;
+@LoginPortalRegistrationMaxWidth: 500px;
+
+@loginPortalLogoTaglineColor: #231F20;
+@loginPortalErrorSloganColor: #d95858;
+@loginPortalLogoTaglineFontWeight: 600;
+@loginPortalLogoTaglineFontSize: 24px;
+@loginPortalLogoTaglineFontLineHeight: 32px;
+@loginPortalLogoTaglineMarginTop: 1.9em;
+@loginPortalLogoTaglineMarginRight: 0;
+@loginPortalLogoTaglineDescriptionColor: #4e4b4b;
+@loginPortalLogoTaglineDescriptionMarginTop: 24px;
+@loginPortalLogoTaglineDescriptionPaddingBottom: 18px;
+@loginPortalLogoSecondaryTagLineColor: #FF7300;
+@loginPortalLogoSecondaryTagLineFontSize: 16px;
+@loginPortalLogoSecondaryTagLineFontWeight: 400;
+@loginPortalLogoSecondaryTagLineFontLineHeight: 3.5em;
+
+@loginPortalFooterBackground: linear-gradient(to top right, #212A32, #36414B);
+@loginPortalFooterBorderTop: 1px solid #DCDCDC;
+@loginPortalFooterHorizontalPadding: 8rem;
+@loginPortalFooterVerticalPadding: 0.3rem;
+@loginPortalFooterPadding: @loginPortalFooterVerticalPadding @loginPortalFooterHorizontalPadding;
+@loginPortalFooterLineHeight: 40px;
+@loginPortalFooterColor: #909599;
+
+@loginPortalAppHeaderLogoHeight: 30px;
+@loginPortalAppHeaderBackground: @asgardeoBlack;
+@loginPortalAppHeaderBorderBottom: 1px solid #454d52;
+
+@policyPageBackgroundImage: none;
+@policyPageTOCBackground: @asgardeoBlack;

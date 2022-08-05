@@ -1,0 +1,334 @@
+/*******************************
+         Theme Overrides
+*******************************/
+
+.ui.menu {
+    &.app-header {
+        .header-extensions {
+            .header-link {
+                .header-link-inner {
+                    background: @appHeaderExtensionLinkBackground;
+                    border-radius: 50%;
+                    color: @appHeaderExtensionLinkColor;
+                    width: 50px;
+                    height: 50px;
+                    position: relative;
+
+                    &:hover {
+                        cursor: pointer;
+                        background: @appHeaderExtensionLinkHoverBackground;
+                    }
+
+                    .theme-icon {
+                        position: absolute;
+                        top: 50%;
+                        right: 50%;
+                        transform: translate(50%,-50%);
+                    }
+                }
+             }
+         }
+        .secondary-panel {
+            padding: 0 !important;
+            border-top: none;
+
+            .inner-menu {
+                .item.secondary-panel-item {
+                    border-color: transparent;
+
+                    &.active {
+                        background: @primaryColor;
+                        border-color: @primaryColor;
+                        color: @white;
+
+                        &.quickstart-page-switch {
+                            .theme-icon {
+                                svg.icon path {
+                                    fill: @white;
+                                }
+                            }
+                        }
+                    }
+                    &:hover {
+                        border-color: @primaryColor;
+                    }
+                    &:first-child {
+                        margin-left: 0;
+                    }
+                }
+            }
+        }
+
+        // Only add spacing and left formatting if the hamburger is present.
+        &.show-hamburger {
+            .tenant-dropdown-wrapper {
+                padding-left: @tenantDropdownWrapperSpacingLeft;
+
+                .tenant-dropdown {
+                    margin-left: 5px;
+
+                    &:before {
+                        content: '';
+                        width: 5px;
+                        height: 100%;
+                        position: absolute;
+                        border-left: 1px solid @tenantDropdownSeparatorBorderColor;
+                        left: -@tenantDropdownWrapperSpacingLeft;
+                    }
+                }
+            }
+        }
+        .tenant-dropdown-wrapper {
+            padding-left: 0;
+
+            .tenant-dropdown {
+                background: @tenantDropdownTriggerBackground;
+                border-radius: @tenantDropdownTriggerBorderRadius !important;
+                color: @tenantDropdownTriggerTextColor;
+                padding: 10px 15px;
+
+                &:hover, &:active, &:focus {
+                    color: darken(@tenantDropdownTriggerTextColor, 10);
+
+                    .tenant-dropdown-trigger {
+                        .theme-icon {
+                            svg {
+                                > path {
+                                    fill: darken(@tenantDropdownTriggerTextColor, 10);
+                                }
+                            }
+                        }
+                    }
+                }
+                &:hover {
+                    background: @tenantDropdownTriggerHoverBackground;
+                }
+                &.active {
+                    background: @tenantDropdownTriggerActiveBackground;
+                }
+
+                .tenant-dropdown-trigger {
+                    display: contents;
+
+                    .tenant-dropdown-trigger-display-name {
+                        max-width: @tenantDropdownTriggerDisplayNameMaxWidth;
+                        line-height: initial;
+                        margin-top: -3px;
+                    }
+
+                    .theme-icon {
+                        svg {
+                            > path {
+                                fill: @tenantDropdownTriggerTextColor;
+                            }
+                        }
+                    }
+                }
+                .ui.items {
+                    margin: 0;
+                }
+            }
+        }
+        .tenant-dropdown {
+            .divider {
+                margin: 0;
+            }
+            .current-tenant {
+                .name {
+                    max-width: 150px;
+                }
+                .spaced-right {
+                    padding-right: 5px;
+                }
+            }
+            .menu {
+                min-width: @tenantDropdownMinWidth;
+                padding: @tenantDropdownPadding;
+
+                .header {
+                    border-bottom: 1px solid @defaultBorderColor;
+
+                    .content{
+                        padding-left: 15px;
+
+                        .description {
+                            margin-top: 0;
+
+                            .name {
+                                font-weight: bold;
+                                min-width: 100px;
+                            }
+                            .default-button {
+                                min-width: 60px;
+                                padding: 0.4em 1em;
+                                font-size: 0.8em;
+
+                                &.active {
+                                    box-shadow: 0 0 0 1px @tenantDropdownDefaultButtonBorderColor inset!important;
+                                    background-color: @tenantDropdownDefaultButtonBackground!important;
+                                    &:hover {
+                                        box-shadow: 0 0 0 1px @tenantDropdownDefaultButtonHoverBorderColor inset!important;
+                                    }
+                                }
+                                &.disabled {
+                                    box-shadow: 0 0 0 1px @tenantDropdownDefaultLabelBorderColor inset!important;
+                                    background-color: @tenantDropdownDefaultLabelBackground!important;
+                                    color: @black!important;
+                                    &.loading {
+                                        color: transparent!important;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                .back-button-wrapper {
+                    padding-left: 20px !important;
+                }
+                .search-bar {
+                    padding: 10px 20px;
+                }
+                .tenants-list {
+                    max-height: 210px;
+                    overflow: auto;
+
+                    .tenant-account {
+                        border-radius: @defaultBorderRadius !important;
+                        padding: @tenantDropdownTenantPadding !important;
+                        border: none;
+                        transition: none !important;
+                        margin: 0;
+
+                        .theme-icon {
+                            margin-top: 0 !important;
+                        }
+                        .description {
+                            margin-top: 0;
+                        }
+                        &:hover {
+                            cursor: pointer;
+                            background: darken(@whiteSmoke, 2);
+                        }
+                        .name {
+                            font-weight: 400;
+                        }
+                        .email {
+                            color: @nobel;
+                        }
+                    }
+                    .empty-list {
+                        margin: 8px 0;
+                        padding: 5px 10px !important;
+
+                        .message {
+                            color: @nobel;
+                            height: 30px;
+                            padding-top: 5px;
+                            text-align: center;
+                        }
+                    }
+                }
+                .action-panel {
+                    border: none;
+                    margin: @tenantDropdownLinkMargin;
+                    padding: 14px 20px !important;
+                    border-radius: 0;
+                    min-height: @tenantDropdownLinkMinHeight;
+
+                    &:last-child {
+                        margin-bottom: 0 !important;
+                    }
+                    &.no-hover {
+                        &:hover {
+                            background: transparent !important;
+                        }
+                    }
+                    .link-icon {
+                        color: @textColor;
+                    }
+                    .link-text {
+                        color: @textColor;
+                        text-decoration: none;
+                    }
+                    .action-button {
+                        background: #f8f8f8;
+                        border: 1px solid #c6c6c6;
+                        line-height: 28px;
+                        padding: 6px 20px;
+                        color: #666;
+
+                        &, &:hover {
+                            text-decoration: none;
+                        }
+                    }
+                }
+            }
+        }
+        .ui.dropdown.item.tenant-dropdown .menu .item.tenant-account {
+            &, &:not(.filtered) {
+                display: flex;
+                padding: @relativeMini @relativeLarge;
+            }
+        }
+        .ui.dropdown.item.tenant-dropdown .menu .item.header {
+            &, &:not(.filtered) {
+                display: flex;
+                padding: @relativeMini @relativeLarge;
+            }
+            .ui.divider {
+                margin: 0.5rem 0rem;
+            }
+        }
+    }
+}
+
+// Fix for the unstackable list item images getting weird sizes on mobile.
+@media only screen and (max-width: @tabletBreakpoint) {
+    .ui.menu {
+        &.app-header {
+            .tenant-dropdown {
+                .current-tenant {
+                    .ui.image.tenant-image.x60 {
+                        width: 60px !important;
+                    }
+                    .name {
+                        max-width: 200px;
+                    }
+                }
+            }
+            // Fix for username and avatar in the header being pushed right to the right edge in tablet view
+            &:not(.fluid-header) {
+                .tenant-dropdown {
+                    padding-right: 0.92857143em;
+                }
+            }
+        }
+    }
+}
+
+// If hamburger should not be shown, only hide the tenant dropdown separator in tablet and mobile views.
+@media only screen and (min-width: @tabletBreakpoint) {
+    .ui.menu {
+        &.app-header {
+            // Only add spacing and left formatting if the hamburger is present.
+            &:not(.show-hamburger) {
+                .tenant-dropdown-wrapper {
+                    padding-left: @tenantDropdownWrapperSpacingLeft;
+                    
+                    .tenant-dropdown {
+                        margin-left: 5px;
+
+                        &:before {
+                            content: '';
+                            width: 5px;
+                            height: 100%;
+                            position: absolute;
+                            border-left: 1px solid @tenantDropdownSeparatorBorderColor;
+                            left: -@tenantDropdownWrapperSpacingLeft;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

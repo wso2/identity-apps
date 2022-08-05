@@ -1,0 +1,160 @@
+/*******************************
+        Form Overrides
+*******************************/
+
+/*-------------------------
+      Readonly Fields
+--------------------------*/
+
+.ui.form {
+
+    textarea[readonly] {
+        cursor: @readOnlyFieldCursor;
+        background-color: @readOnlyFormFieldBgColor !important;
+    }
+
+    input[readonly] {
+        cursor: @readOnlyFieldCursor;
+        background-color: @readOnlyFormFieldBgColor !important;
+    }
+
+    .ui.read-only.checkbox ~ .box:before,
+    .ui.read-only.checkbox ~ label:before,
+    .ui.read-only.checkbox input.hidden+label:before,
+    .ui.read-only.checkbox input:checked ~ .box:before,
+    .ui.read-only.checkbox input:checked ~ label:before {
+        background-color: @readOnlyFormFieldBgColor !important;
+        cursor: @readOnlyFieldCursor;
+    }
+
+    .ui.checkbox input.hidden+label,
+    .ui.checkbox input[type=checkbox],
+    .ui.checkbox input[type=radio] {
+        cursor: @readOnlyFieldCursor;
+    }
+
+    .field.read-only .field {
+        .ui.dropdown {
+            cursor: @readOnlyFieldCursor;
+            background-color: @readOnlyFormFieldBgColor !important;
+        }
+    }
+}
+
+/*-------------------------------
+      Hidden/Disable Field
+--------------------------------*/
+
+.ui.form {
+    .field {
+        label::after {
+            position: absolute;
+        }
+        
+        &.hidden {
+            display: none;
+        }
+
+        &.disabled {
+            opacity: 1;
+
+            >label {
+                opacity: 1;
+            }
+        }
+    }
+}
+
+/*--------------------------------------
+      Hidden/Disable TextArea Field
+---------------------------------------*/
+
+.ui.form {
+    .field {
+        &.disabled.with-lock-icon {
+            > textarea {
+                background: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' id='lock-icon' class='icon' width='14' height='14' viewBox='0 0 10 14'%3e%3cpath id='locked-outline' class='path fill primary' d='M.5,14a.5.5,0,0,1-.5-.5v-8A.5.5,0,0,1,.5,5H2V2.95H2a3,3,0,0,1,6,0V5H9.5a.5.5,0,0,1,.5.5v8a.5.5,0,0,1-.5.5ZM.6,5.7v7.6a.1.1,0,0,0,.1.1H9.3a.1.1,0,0,0,.1-.1V5.7a.1.1,0,0,0-.1-.1H.7A.1.1,0,0,0,.6,5.7Zm2-2.75V5H7.4V3A2.4,2.4,0,0,0,2.6,2.95ZM4.7,11.4V9.954a1,1,0,1,1,.6,0V11.4ZM4.6,9A.4.4,0,1,0,5,8.6.4.4,0,0,0,4.6,9Z' fill='%23464646'/%3e%3c/svg%3e");
+                background-repeat: no-repeat !important;
+                background-position: center !important;
+                background-size: 40px !important;
+                background-color: @readOnlyFormFieldBgColor !important;
+                cursor: @readOnlyFieldCursor !important;
+                resize: none !important;
+            }
+        }
+    }
+}
+
+/*-------------------------------
+      Certificate Editor
+--------------------------------*/
+
+.ui.form {
+    textarea{
+        &.certificate-editor, :focus {
+            font-family: monospace;
+            line-height: 1.5em;
+            font-size: 0.9em;
+
+            &.dark {
+                color: teal;
+                background-color: #232323;
+
+                &::-webkit-resizer {
+                    background-color: #232323;
+                }
+            }
+
+            &.light {
+                color: @nobel;
+                background-color: white;
+
+                &::-webkit-resizer {
+                    background-color: white;
+                }
+            }
+
+        }
+    }
+}
+
+/*-------------------------------
+      Secret Value Editor
+--------------------------------*/
+.ui.form {
+    div{
+        &.edit-button-transition {
+            position: absolute;
+            top: 0;
+            right: -40px;
+        }
+    }
+}
+
+/*-------------------------------
+  Addon wrapper for input fields to avoid
+  overlapping with browser added icons
+  ex: Password Managers
+--------------------------------*/
+.ui.form {
+    .ui.input.addon-wrapper {
+        > input {
+            border: none;
+        }
+    }
+}
+
+/*-------------------------------
+  Addon field wrapper for input fields in My Account
+  & Console to avoid overlapping with browser added icons
+  ex: Password Managers
+--------------------------------*/
+.ui.form {
+    .addon-field-wrapper{
+        .ui.input {
+            > input {
+                border: none;
+            }
+        }
+    }
+}

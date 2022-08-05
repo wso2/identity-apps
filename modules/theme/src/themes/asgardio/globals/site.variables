@@ -1,0 +1,35 @@
+/*******************************
+        Site Variables
+*******************************/
+
+/*-------------------
+       Fonts
+--------------------*/
+
+@primaryFont          : Montserrat;
+
+/*-------------------
+     Borders
+--------------------*/
+
+@relativeBorderRadius: 4px;
+@absoluteBorderRadius: 4px;
+@defaultBorderRadius: @absoluteBorderRadius;
+
+@fixedElementBorderColor: @mako;
+
+/*-------------------
+    Site Colors
+--------------------*/
+
+@primaryColor        : #FF7300;
+@ebonyClay           : #212A32;
+@concrete            : #f3f3f3;
+@mako                : #454d52;
+@paleGray            : #d6d6d6;
+
+/*-------------------
+    Brand Colors
+--------------------*/
+
+@asgardeoBlack        : @ebonyClay;

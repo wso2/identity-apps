@@ -1,0 +1,14 @@
+{
+    "id": "sms-otp",
+    "name": "SMS OTP",
+    "description": "Two-factor authentication using SMS one-time passcode.",
+    "image": "smsOTP",
+    "category": "DEFAULT",
+    "displayOrder": 8,
+    "services": [],
+    "tags": [ "MFA" ],
+    "idp": {},
+    "type": "MFA",
+    "templateId": "sms-otp",
+    "comingSoon": true
+}

@@ -1,0 +1,60 @@
+/*******************************************
+        Labeled Dropdown Variation
+*******************************************/
+
+.ui.dropdown {
+    &.labeled {
+        &.horizontal {
+            &.right {
+                margin-left: @labeledDropdownHorizontalSpacing;
+            }
+            &.left {
+                margin-right: @labeledDropdownHorizontalSpacing;
+            }
+        }
+    }
+
+    &.disabled {
+        opacity: 1;
+
+        >.text {
+            opacity: 0.45;
+        }
+
+        .dropdown.icon {
+            display: none;
+        }
+    }
+}
+
+/*******************************************
+        User Type Dropdown Variation
+*******************************************/
+
+.ui.dropdown {
+    &.user-dropdown {
+        .menu {
+            .item {
+                &.user-dropdown-menu-item {
+                    width: 148px;
+                }
+            }
+        }
+    }
+}
+
+/*******************************************
+        Help Center Dropdown
+*******************************************/
+
+.ui.dropdown {
+    &.help-dropdown {
+        .menu {
+            .item {
+                &.help-dropdown-item {
+                    padding: 1.5em!important;
+                }
+            }
+        }
+    }
+}

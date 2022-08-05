@@ -1,0 +1,18 @@
+/*******************************
+       Message Variables
+*******************************/
+
+/*-------------------
+    Announcement
+--------------------*/
+
+@announcementPadding: 0.5em 1.5em;
+
+/*-------------------
+    TOTP
+--------------------*/
+
+@tooltipBachGroundoxColor: #E3E3E3;
+@tooltipColor: #545353;
+@tooltipErrorBachGroundoxColor: #fff6f6;
+@tooltipErrorColor: #9f3a38;

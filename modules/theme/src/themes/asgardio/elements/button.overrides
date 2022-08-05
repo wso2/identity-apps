@@ -1,0 +1,338 @@
+/*!
+ * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ *
+ */
+
+.ui.button.basic {
+    &.link-button {
+        // Remove outline.
+        box-shadow: none !important;
+
+        // Override outline in primary variation.
+        &.primary {
+            box-shadow: none !important;
+        }
+
+        &:hover {
+            &.hover {
+                &-underline {
+                    text-decoration: underline;
+                }
+            }
+        }
+        &.compact {
+            padding: 0;
+        }
+        &.positive {
+            color: @positiveColor;
+        }
+        &.negative {
+            color: @negativeColor;
+        }
+        &.warning {
+            color: @warningColor !important;
+        }
+        &.info {
+            color: @infoColor !important;
+        }
+        &.loader {
+            &-left, &-right {
+                display: inline-flex;
+
+                .ui.loader {
+                    margin: 0 6px;
+                }
+            }
+        }
+        &.with-hover {
+            &:hover {
+                background: @backgroundColor;
+            }
+            &:active {
+                background: @downBackgroundColor;
+            }
+        }
+        &.with-bold-text {
+            font-weight: bold;
+        }
+        &.with-no-border {
+            -webkit-border-radius: 0;
+            -moz-border-radius: 0;
+            border-radius: 0;
+            border-style: none;
+            border: 0px transparent;
+            box-shadow: none !important;
+
+            &:hover, &:focus, &:active {
+                color: inherit;
+                background: transparent !important;
+                box-shadow: none !important;
+            }
+        }
+    }
+    &.positive-modal-link-button {
+        background: transparent;
+        color: @positivePrimaryButtonColor;
+
+        &.with-hover {
+            &:hover {
+                background: @backgroundColor;
+            }
+            &:active {
+                background: @downBackgroundColor;
+            }
+        }
+    }
+    &.negative-modal-link-button {
+        background: transparent;
+        color: @negativePrimaryButtonColor;
+
+        &.with-hover {
+            &:hover {
+                background: @backgroundColor;
+            }
+            &:active {
+                background: @downBackgroundColor;
+            }
+        }
+    }
+    &.warning-modal-link-button {
+        background: transparent;
+        color: @warningPrimaryButtonColor;
+
+        &.with-hover {
+            &:hover {
+                background: @backgroundColor;
+            }
+            &:active {
+                background: @downBackgroundColor;
+            }
+        }
+    }
+    &.info-modal-link-button {
+        background: transparent;
+        color: @infoPrimaryButtonColor;
+
+        &.with-hover {
+            &:hover {
+                background: @backgroundColor;
+            }
+            &:active {
+                background: @downBackgroundColor;
+            }
+        }
+    }
+    &.positive-modal-primary-button {
+        background-color: @positivePrimaryButtonColor;
+        color: @modalPrimaryButtonFontColor;
+    }
+    &.negative-modal-primary-button {
+        background-color: @negativePrimaryButtonColor;
+        color: @modalPrimaryButtonFontColor;
+    }
+    &.warning-modal-primary-button {
+        background-color: @warningPrimaryButtonColor;
+        color: @modalPrimaryButtonFontColor;
+
+    }
+    &.info-modal-primary-button {
+        background-color: @infoPrimaryButtonColor;
+        color: @modalPrimaryButtonFontColor;
+    }
+    &.grid-button {
+        margin-top: 23px;
+
+        &.wizard {
+            margin-top: -8px;
+            margin-right: 0;
+        }
+    }
+}
+
+.ui.basic.button {
+    &.borderless-button {
+        border: none;
+        margin-right: -15px;
+        box-shadow: none !important;
+
+        &:hover, &:focus, &:active {
+            background: transparent !important;
+            box-shadow: none !important;
+        }
+    }
+    &.input-add-on {
+        box-shadow: none;
+        padding-right: 0.4em;
+        border: @inputAddOnBorder;
+        border-left: 0;
+    }
+
+    &.test-button {
+        color: @primaryColor !important;
+        border-color: @primaryColor;
+        box-shadow: 0 0 0 1px @primaryColor inset;
+
+        &:hover, &:focus {
+            box-shadow: 0 0 0 1px @primaryColor inset;
+            color: @primaryColor !important;
+
+            i {
+                color: @primaryColor;
+            }
+        }
+
+        i {
+            color: @primaryColor;
+
+            &:hover {
+                color: @primaryColor;
+            }
+        }
+
+        &.red {
+            color: @red !important;
+
+            &:hover {
+                color: @red !important;
+            }
+        }
+
+        &.green {
+            color: @green !important;
+
+            &:hover {
+                color: @green !important;
+            }
+        }
+    }
+}
+
+.ui.labeled.icon.button {
+    &.borderless-button {
+        border: none;
+        box-shadow: none;
+        padding-left: 3em !important;
+        margin-right: -15px;
+
+        i {
+            background: transparent;
+        }
+    }
+}
+
+.ui.button {
+    &.warning {
+        color: @white;
+        background-color: @warningColor;
+    }
+    &.info {
+        color: @white;
+        background-color: @infoColor;
+    }
+}
+
+/*******************************
+     Claim Mapping Variation
+*******************************/
+
+.ui.button.toggle.active {
+     &.claim-mapping-button {
+       background-color: #f47b20 !important;
+     }
+}
+
+.ui.button {
+   &.claim-mapping-button {
+       background: #e8e8e8 none;
+   }
+    &.claim-selection-add-button {
+          background: #f4f7f9 none;
+    }
+}
+
+.ui.button:hover {
+   &.claim-mapping-button {
+        background-color: #CACBCD;
+        background-image: none;
+        box-shadow: 0px 0px 0px 1px transparent inset, 0px 0em 0px 0px rgba(34, 36, 38, 0.15) inset;
+        color: rgba(0, 0, 0, 0.8);
+    }
+    &.claim-selection-add-button {
+            background-color: #CACBCD;
+            background-image: none;
+            box-shadow: 0px 0px 0px 1px transparent inset, 0px 0em 0px 0px rgba(34, 36, 38, 0.15) inset;
+            color: rgba(0, 0, 0, 0.8);
+        }
+}
+
+.ui.button {
+    &.meta-columns-button {
+        padding: @metaColumnsButtonPadding;
+    }
+}
+
+.ui.button {
+    &.generate-password-button {
+        padding: @generatePasswordButtonPadding;
+        margin-top: @generatePasswordButtonMarginTop;
+    }
+}
+
+.ui.button {
+    &.oidc-action-button {
+        min-width: @OIDCActionButtonMinWidth;
+        padding: @OIDCActionButtonPadding;
+        font-size: @OIDCActionButtonFontSize;
+        margin-left: @OIDCActionButtonMarginLeft;
+    }
+}
+
+.ui.button {
+   &.certificate-info-link-button {
+      padding-left: 0px;
+   }
+}
+
+.ui.button {
+   &.idp-certificate-download-button {
+      width: 188px;
+   }
+}
+.ui.button {
+    &.totp-verify-action-button {
+        width: @TOTPVerifyActionButtonWidth;
+        font-size: large;
+    }
+}
+.ui.button {
+    &.totp-verify-done-button {
+        margin: 0.5rem;
+    }
+}
+
+.ui.button {
+    &.protocol-button {
+           width: 220px;
+          .protocol-button-icon {
+              float:right;
+          }
+          .protocol-change-title {
+                float: left;
+                fontSize: medium;
+          }
+    }
+}

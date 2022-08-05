@@ -23,6 +23,15 @@
         {% endfor %}
         {% endif %}
     },
+    "analytics": {
+        {% if console.analytics.metrics is defined %}
+        "metrics": {
+        {% for param, value in console.analytics.metrics.items() %}
+            "{{ param }}": {{ value }}{{ "," if not loop.last }}
+        {% endfor %}
+        }
+        {% endif %}
+    },
     "appBaseName": "{{ console.app_base_name }}",
     {% if console.app_base_name_for_history_api is defined %}
         "appBaseNameForHistoryAPI": "{{ console.app_base_name_for_history_api }}",
@@ -85,6 +94,48 @@
         {% for key, value in console.extensions.items() %}
         {% if value is number %}
             "{{ key }}": {{ value }}{{ "," if not loop.last }}
+        {% elif value is mapping %}
+            "{{ key }}": {
+                {% for level_1_key, level_1_value in value.items() %}
+                    {% if level_1_value is mapping %}
+                        "{{ level_1_key }}": {
+                            {% for level_2_key, level_2_value in level_1_value.items() %}
+                                {% if level_2_value is iterable %}
+                                    "{{ level_2_key }}": [
+                                        {% for level_2_value_item in level_2_value %}
+                                            "{{ level_2_value_item }}"{{ "," if not loop.last }}
+                                        {% endfor %}
+                                    ]{{ "," if not loop.last }}
+                                {% else %}
+                                    "{{ level_2_key }}": "{{ level_2_value }}"{{ "," if not loop.last }}
+                                {% endif %}
+                            {% endfor %}
+                        }{{ "," if not loop.last }}
+                    {% else %}
+                        "{{ level_1_key }}": "{{ level_1_value }}"{{ "," if not loop.last }}
+                    {% endif %}
+                {% endfor %}
+            }{{ "," if not loop.last }}
+        {% elif value is iterable %}
+            "{{ key }}": [
+                {% for item in value %}
+                    {% if item is mapping %}
+                        {
+                            {% for array_obj_key, array_obj_value in item.items() %}
+                                {% if array_obj_value is number %}
+                                    "{{ array_obj_key }}": {{ array_obj_value }}{{ "," if not loop.last }}
+                                {% elif array_obj_value is boolean %}
+                                    "{{ array_obj_key }}": {{ array_obj_value }}{{ "," if not loop.last }}
+                                {% else %}
+                                    "{{ array_obj_key }}": "{{ array_obj_value }}"{{ "," if not loop.last }}
+                                {% endif %}
+                            {% endfor %}
+                        }{{ "," if not loop.last }}
+                    {% else %}
+                        "{{ level_1_key }}": "{{ level_1_value }}"{{ "," if not loop.last }}
+                    {% endif %}
+                {% endfor %}
+            ]{{ "," if not loop.last }}
         {% else %}
             "{{ key }}": "{{ value }}"{{ "," if not loop.last }}
         {% endif %}
@@ -98,6 +149,9 @@
         {% endfor %}
         {% endif %}
     },
+    {% if console.get_profile_info_from_id_token is defined %}
+        "getProfileInfoFromIDToken": {{ console.get_profile_info_from_id_token }},
+    {% endif %}
     "ui": {
         "announcements": [
             {% if console.ui.announcements is defined %}
@@ -442,6 +496,34 @@
                 "disabledFeatures": [
                     {% if console.secrets_management.disabled_features is defined %}
                     {% for feature in console.secrets_management.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ]
+            },
+            {% endif %}
+            {% if console.organizations is defined %}
+            "organizations": {
+                "enabled": {{ console.organizations.enabled }},
+                "scopes": {
+                    {% if console.organizations.scopes is defined %}
+                    {% for operation, scopes in console.organizations.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                },
+                "disabledFeatures": [
+                    {% if console.organizations.disabled_features is defined %}
+                    {% for feature in console.organizations.disabled_features %}
                     "{{ feature }}"{{ "," if not loop.last }}
                     {% endfor %}
                     {% endif %}

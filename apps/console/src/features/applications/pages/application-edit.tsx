@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,7 +19,7 @@
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, StorageIdentityAppsSettingsInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { AnimatedAvatar, AppAvatar, LabelWithPopup, PageLayout } from "@wso2is/react-components";
+import { AnimatedAvatar, AppAvatar, LabelWithPopup, PageLayout, PrimaryButton } from "@wso2is/react-components";
 import cloneDeep from "lodash-es/cloneDeep";
 import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
@@ -28,6 +28,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Label, Popup } from "semantic-ui-react";
+import { applicationConfig } from "../../../extensions/configs/application";
 import {
     AppConstants,
     AppState,
@@ -38,8 +39,11 @@ import {
     setHelpPanelDocsContentURL,
     toggleHelpPanelVisibility
 } from "../../core";
+import { getOrganizations } from "../../organizations/api";
+import { OrganizationInterface } from "../../organizations/models";
 import { getApplicationDetails } from "../api";
 import { EditApplication, InboundProtocolDefaultFallbackTemplates } from "../components";
+import { ApplicationShareModal } from "../components/modals/application-share-modal";
 import { ApplicationManagementConstants } from "../constants";
 import CustomApplicationTemplate
     from "../data/application-templates/templates/custom-application/custom-application.json";
@@ -56,7 +60,8 @@ import { ApplicationTemplateManagementUtils } from "../utils";
 /**
  * Proptypes for the applications edit page component.
  */
-interface ApplicationEditPageInterface extends TestableComponentInterface, RouteComponentProps { }
+interface ApplicationEditPageInterface extends TestableComponentInterface, RouteComponentProps {
+}
 
 /**
  * Application Edit page component.
@@ -89,6 +94,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     const applicationTemplates: ApplicationTemplateListItemInterface[] = useSelector(
         (state: AppState) => state.application.templates);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const tenantDomain: string = useSelector((state: AppState) => state.auth.tenantDomain);
 
     const [ application, setApplication ] = useState<ApplicationInterface>(emptyApplication);
     const [ applicationTemplate, setApplicationTemplate ] = useState<ApplicationTemplateListItemInterface>(undefined);
@@ -96,6 +102,8 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     const [ inboundProtocolList, setInboundProtocolList ] = useState<string[]>(undefined);
     const [ inboundProtocolConfigs, setInboundProtocolConfigs ] = useState<Record<string, any>>(undefined);
     const [ isDescTruncated, setIsDescTruncated ] = useState<boolean>(false);
+    const [ showAppShareModal, setShowAppShareModal ] = useState(false);
+    const [ subOrganizationList, setSubOrganizationList ] = useState<Array<OrganizationInterface>>([]);
 
     useEffect(() => {
         /**
@@ -292,9 +300,29 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         dispatch(
             setHelpPanelDocsContentURL(editApplicationDocs[
                 ApplicationManagementConstants.APPLICATION_TEMPLATE_DOC_MAPPING
-                    .get(applicationTemplate.id) ]?.[ ApplicationManagementConstants.APPLICATION_DOCS_OVERVIEW ])
+                    .get(applicationTemplate.id)]?.[ApplicationManagementConstants.APPLICATION_DOCS_OVERVIEW])
         );
     }, [ applicationTemplate, helpPanelDocStructure ]);
+
+    /**
+     * Load the list of sub organizations under the current organization for application sharing.
+     */
+    useEffect(() => {
+        if (!showAppShareModal) {
+            return;
+        }
+
+        getOrganizations(
+            null,
+            null,
+            null,
+            null,
+            true,
+            false
+        ).then((response) => {
+            setSubOrganizationList(response.organizations);
+        });
+    }, [ getOrganizations, showAppShareModal ]);
 
     const determineApplicationTemplate = () => {
 
@@ -433,6 +461,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
 
     return (
         <PageLayout
+            pageTitle="Edit Application"
             title={ (
                 <>
                     <span>{ application.name }</span>
@@ -443,38 +472,46 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             ) }
             contentTopMargin={ true }
             description={ (
-                <div className="with-label ellipsis" ref={ appDescElement }>
-                    { applicationTemplate?.name && (
-                        <Label size="small">{ applicationTemplate.name }</Label>
-                    ) }
-                    <Popup
-                        disabled={ !isDescTruncated }
-                        content={ application?.description }
-                        trigger={ (
-                            <span>{ application?.description }</span>
-                        ) }
-                    />
-                </div>
+                applicationConfig.editApplication.getOverriddenDescription(inboundProtocolConfigs?.oidc?.clientId,
+                    tenantDomain, applicationTemplate?.name)
+                    ?? (
+                        <div className="with-label ellipsis" ref={ appDescElement }>
+                            { applicationTemplate?.name && (
+                                <Label size="small">{ applicationTemplate.name }</Label>
+                            ) }
+                            <Popup
+                                disabled={ !isDescTruncated }
+                                content={ application?.description }
+                                trigger={ (
+                                    <span>{ application?.description }</span>
+                                ) }
+                            />
+                        </div>
+                    )
             ) }
             image={
-                application.imageUrl
-                    ? (
-                        <AppAvatar
-                            name={ application.name }
-                            image={ application.imageUrl }
-                            size="tiny"
-                        />
-                    )
-                    : (
-                        <AnimatedAvatar
-                            name={ application.name }
-                            size="tiny"
-                            floated="left"
-                        />
-                    )
+                applicationConfig.editApplication.getOverriddenImage(inboundProtocolConfigs?.oidc?.clientId,
+                    tenantDomain)
+                ?? (
+                    application.imageUrl
+                        ? (
+                            <AppAvatar
+                                name={ application.name }
+                                image={ application.imageUrl }
+                                size="tiny"
+                            />
+                        )
+                        : (
+                            <AnimatedAvatar
+                                name={ application.name }
+                                size="tiny"
+                                floated="left"
+                            />
+                        )
+                )
             }
             backButton={ {
-                "data-testid": `${ testId }-page-back-button`,
+                "data-testid": `${testId}-page-back-button`,
                 onClick: handleBackButtonClick,
                 text: t("console:develop.pages.applicationsEdit.backButton")
             } }
@@ -483,6 +520,25 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             pageHeaderMaxWidth={ true }
             data-testid={ `${ testId }-page-layout` }
             truncateContent={ true }
+            action={ (
+                <>
+                    {
+                        applicationConfig.editApplication.getActions(inboundProtocolConfigs?.oidc?.clientId,
+                            tenantDomain, testId)
+                    }
+
+                    {
+                        (isOrganizationManagementEnabled
+                            && applicationConfig.editApplication.showApplicationShare
+                            && !application.advancedConfigurations.fragment
+                            && application.access === ApplicationAccessTypes.WRITE) && (
+                            <PrimaryButton onClick={ () => setShowAppShareModal(true) }>
+                                Share Application
+                            </PrimaryButton>
+                        )
+                    }
+                </>
+            ) }
         >
             <EditApplication
                 application={ application }
@@ -502,6 +558,16 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                 } }
                 readOnly={ resolveReadOnlyState() }
             />
+
+            { (showAppShareModal && application) && (
+                <ApplicationShareModal
+                    open={ showAppShareModal }
+                    applicationId={ application.id }
+                    clientId={ inboundProtocolConfigs?.oidc?.clientId }
+                    subOrganizationList={ subOrganizationList }
+                    onClose={ () => setShowAppShareModal(false) }
+                />
+            ) }
         </PageLayout>
     );
 };

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+-->
+
+<svg id="authentication-logo" class="icon" width="14" height="14" viewBox="0 0 192 192" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <linearGradient id="New_Gradient_Swatch_1" gradientUnits="userSpaceOnUse" x1="39.89" x2="92.753" y1="56.11" y2="3.247">
+        <stop offset="0" stop-color="#34cdfa"/>
+        <stop offset="1" stop-color="#e8d9f1"/>
+    </linearGradient>
+    <path d="m109.443 25.922a8 8 0 0 0 -7.487-5.183h-59.912a8 8 0 0 0 -7.487 5.183 40 40 0 1 0 74.886 0z" fill="#e6f9fe"/>
+    <path d="m88 75a40.005 40.005 0 0 1 -37.443-54.078c.024-.064.059-.12.085-.183h-8.6a8 8 0 0 0 -7.487 5.183 39.98 39.98 0 0 0 57.083 48.905c-1.199.109-2.411.173-3.638.173z" fill="#ccf2fe"/>
+    <path d="m96 80h-48a32.036 32.036 0 0 0 -32 32v72a8 8 0 0 0 8 8h96a8 8 0 0 0 8-8v-72a32.036 32.036 0 0 0 -32-32z" fill="#99e6fd"/>
+    <path d="m40 184v-72a32.036 32.036 0 0 1 32-32h-24a32.036 32.036 0 0 0 -32 32v72a8 8 0 0 0 8 8h24a8 8 0 0 1 -8-8z" fill="#67d9fb"/>
+    <path d="m107.155 20.422c-6.585-13.169-19.069-20.422-35.155-20.422-14.422 0-22.193 5.181-28.437 9.344-5.579 3.719-9.985 6.656-19.563 6.656a8 8 0 0 0 -7.786 9.838 30.633 30.633 0 0 0 14.656 19.768c9.5 5.713 22.121 7.527 34.328 7.527 19.372 0 37.7-4.573 40.831-5.4a8 8 0 0 0 5.971-7.733 47.4 47.4 0 0 0 -4.845-19.578z" fill="url(#New_Gradient_Swatch_1)"/>
+    <circle cx="128" cy="144" fill="#67d9fb" r="48"/>
+    <path d="m144 176a47.98 47.98 0 0 1 -40.975-72.975 47.99 47.99 0 1 0 65.95 65.95 47.711 47.711 0 0 1 -24.975 7.025z" fill="#34cdfa"/>
+    <path d="m128 160a7.961 7.961 0 0 1 -3.573-.846l-16-8 7.156-14.31 9.683 4.841 12.083-18.123 13.312 8.875-16 24a8 8 0 0 1 -6.661 3.563z" fill="#e6f9fe"/>
+</svg>

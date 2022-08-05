@@ -1,0 +1,12 @@
+<!--
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.com). All Rights Reserved.
+ * 
+ * This software is the property of WSO2 Inc. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content."
+-->
+
+<svg xmlns="http://www.w3.org/2000/svg" width="14.005" height="13.338" viewBox="0 0 14.005 13.338">
+	<path id="Union_50" data-name="Union 50" d="M1.873,13.312A.333.333,0,0,1,1.667,13V10H1A1,1,0,0,1,0,9V1A1,1,0,0,1,1,0H13.005a1,1,0,0,1,1,1V9a1,1,0,0,1-1,1H5.473L2.237,13.24a.334.334,0,0,1-.236.1A.318.318,0,0,1,1.873,13.312ZM.667,1V9A.333.333,0,0,0,1,9.337H2a.333.333,0,0,1,.333.333V12.2L5.1,9.434a.333.333,0,0,1,.236-.1h7.67A.333.333,0,0,0,13.337,9V1a.332.332,0,0,0-.332-.332H1A.332.332,0,0,0,.667,1ZM6.6,7.155a.3.3,0,1,1,.3.3A.3.3,0,0,1,6.6,7.155Zm0-.755V3h.6V6.4Z"/>
+</svg>

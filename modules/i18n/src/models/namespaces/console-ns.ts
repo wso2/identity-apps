@@ -93,6 +93,10 @@ export interface ConsoleNS {
                 myAccount: AppSwitchItemInterface;
                 tooltip: string;
             };
+            organizationSwitch: {
+                emptyOrgListMessage: string;
+                orgSearchPlaceholder: string;
+            }
         },
         modals: {
             editAvatarModal: ModalInterface;
@@ -1080,7 +1084,7 @@ export interface ConsoleNS {
                         }
                     }
                 };
-            };
+            }
             authenticationProvider?: {
                 advancedSearch?: {
                     form: {
@@ -1286,6 +1290,7 @@ export interface ConsoleNS {
                             callbackUrl: FormAttributes;
                             clientId: FormAttributes;
                             clientSecret: FormAttributes;
+                            AdditionalQueryParameters: FormAttributes;
                             scopes: {
                                 heading: string;
                                 hint: string;
@@ -1407,6 +1412,22 @@ export interface ConsoleNS {
                     quickSetup?: {
                         heading: string;
                         subHeading: string;
+                    };
+                    expert: {
+                        wizardHelp: {
+                            heading: string;
+                            description: {
+                                connectionDescription: string;
+                                heading: string;
+                                idpDescription: string;
+                            };
+                            name: {
+                                connectionDescription: string;
+                                heading: string;
+                                idpDescription: string;
+                            };
+                            subHeading: string;
+                        };
                     };
                     facebook?: {
                         wizardHelp: {
@@ -1620,6 +1641,15 @@ export interface ConsoleNS {
                             };
                             authenticatorConfiguration: {
                                 title: string;
+                            };
+                            authenticatorSettings: {
+                                emptyPlaceholder: {
+                                    subtitles: [
+                                        string,
+                                        string
+                                    ];
+                                    title: string;
+                                };
                             };
                             summary: {
                                 title: string;
@@ -2247,6 +2277,110 @@ export interface ConsoleNS {
                 fields: {
                     groupName: FormAttributes;
                 };
+            };
+            organizations: {
+                advancedSearch: {
+                    form: {
+                        inputs: {
+                            filterAttribute: {
+                                placeholder: string;
+                            };
+                            filterCondition: {
+                                placeholder: string;
+                            };
+                            filterValue: {
+                                placeholder: string;
+                            };
+                        };
+                    };
+                    placeholder: string;
+                };
+                list: {
+                    actions: {
+                        add: string;
+                    };
+                    columns: {
+                        name: string;
+                        actions: string;
+                    };
+                };
+                title: string;
+                subTitle: string;
+                notifications: {
+                    fetchOrganization: Notification;
+                    deleteOrganization: Notification;
+                    deleteOrganizationWithSubOrganizationError: string;
+                    updateOrganization: Notification;
+                    updateOrganizationAttributes: Notification;
+                    addOrganization: Notification;
+                    getOrganizationList: Notification;
+                };
+                confirmations: {
+                    deleteOrganization: {
+                        assertionHint: string;
+                        header: string;
+                        message: string;
+                        content: string;
+                    };
+                };
+                placeholders: {
+                    emptyList: Placeholder;
+                };
+                edit: {
+                    description: string;
+                    back: string;
+                    tabTitles: {
+                        overview: string;
+                        attributes: string;
+                    },
+                    fields: {
+                        id: FormAttributes;
+                        name: FormAttributes;
+                        description: FormAttributes;
+                        domain: FormAttributes;
+                        type: FormAttributes;
+                        created: FormAttributes;
+                        lastModified: FormAttributes;
+                    },
+                    dangerZone: {
+                        title: string;
+                        subHeader: string;
+                    },
+                    attributes: {
+                        hint: string;
+                        key: string;
+                        value: string;
+                        keyRequiredErrorMessage: string;
+                        valueRequiredErrorMessage: string;
+                    }
+                };
+                modals: {
+                    addOrganization: {
+                        header: string;
+                        subtitle1: string;
+                        subtitle2: string;
+                    };
+                };
+                forms: {
+                    addOrganization: {
+                        name: FormAttributes;
+                        description: FormAttributes;
+                        domainName: FormAttributes;
+                        type: string;
+                        structural: string;
+                        tenant: string;
+                    };
+                };
+                homeList: {
+                    name: string;
+                    description: string;
+                };
+                switching: {
+                    search: {
+                        placeholder: string;
+                    };
+                    emptyList: string;
+                }
             };
             users: {
                 consumerUsers: {
@@ -3495,6 +3629,7 @@ export interface ConsoleNS {
                     general: string;
                     users: string;
                     userstores: string;
+                    organizations: string;
                 };
                 certificates: string;
                 configurations: string;
@@ -3510,6 +3645,7 @@ export interface ConsoleNS {
                 generalConfigurations: string;
                 groups: string;
                 localDialect: string;
+                organizations: string;
                 overview: string;
                 roles: string;
                 users: string;
@@ -4081,6 +4217,7 @@ export interface ConsoleNS {
             emailTemplates: EditPage;
             emailTemplatesWithDisplayName: EditPage;
             groups: Page;
+            organizations: Page;
             overview: Page;
             oidcScopes: Page;
             oidcScopesEdit: EditPage;

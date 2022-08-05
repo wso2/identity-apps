@@ -1,0 +1,92 @@
+<!--
+ * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+-->
+
+<svg xmlns="http://www.w3.org/2000/svg" id="basic-auth-illustration" width="210" height="175" viewBox="0 0 210 175">
+    <g transform="translate(-578 -190)">
+        <g id="app-window" transform="translate(577.999 190)">
+            <rect id="Rectangle_360" data-name="Rectangle 360" width="183" height="131" rx="2"
+                  transform="translate(0.001)" fill="#f4f4f4"/>
+            <path id="Rectangle_361" data-name="Rectangle 361"
+                  d="M2,0H181a2,2,0,0,1,2,2V13a0,0,0,0,1,0,0H0a0,0,0,0,1,0,0V2A2,2,0,0,1,2,0Z"
+                  transform="translate(0.001)" fill="rgba(218,226,232,0.6)"/>
+            <circle id="Ellipse_103" data-name="Ellipse 103" cx="1.5" cy="1.5" r="1.5" transform="translate(6.001 5)"
+                    fill="#545454"/>
+            <circle id="Ellipse_104" data-name="Ellipse 104" cx="1.5" cy="1.5" r="1.5" transform="translate(10.001 5)"
+                    fill="#a1a1a1"/>
+            <circle id="Ellipse_105" data-name="Ellipse 105" cx="1.5" cy="1.5" r="1.5" transform="translate(14.001 5)"
+                    fill="#7d7d7d"/>
+            <rect id="Rectangle_366" data-name="Rectangle 366" width="37" height="104" rx="1"
+                  transform="translate(8.001 18)" fill="#3b4257"/>
+            <rect id="Rectangle_367" data-name="Rectangle 367" width="124" height="18" rx="1"
+                  transform="translate(51.001 18)" fill="#3b4257"/>
+            <rect id="Rectangle_368" data-name="Rectangle 368" width="28" height="20" rx="1"
+                  transform="translate(51.001 40)" fill="#e1e1e1"/>
+            <rect id="Rectangle_372" data-name="Rectangle 372" width="60" height="7" rx="1"
+                  transform="translate(51.001 69)" fill="#e1e1e1"/>
+            <rect id="Rectangle_376" data-name="Rectangle 376" width="60" height="8" rx="1"
+                  transform="translate(51.001 111)" fill="#e1e1e1"/>
+            <rect id="Rectangle_374" data-name="Rectangle 374" width="79" height="8" rx="1"
+                  transform="translate(51.001 89)" fill="#e1e1e1"/>
+            <rect id="Rectangle_373" data-name="Rectangle 373" width="46" height="8" rx="1"
+                  transform="translate(51.001 79)" fill="#e1e1e1"/>
+            <rect id="Rectangle_375" data-name="Rectangle 375" width="46" height="8" rx="1"
+                  transform="translate(51.001 101)" fill="#e1e1e1"/>
+            <rect id="Rectangle_369" data-name="Rectangle 369" width="29" height="20" rx="1"
+                  transform="translate(82.001 40)" fill="#e1e1e1"/>
+            <rect id="Rectangle_370" data-name="Rectangle 370" width="28" height="20" rx="1"
+                  transform="translate(114.001 40)" fill="#e1e1e1"/>
+            <rect id="Rectangle_371" data-name="Rectangle 371" width="29" height="20" rx="1"
+                  transform="translate(146.001 40)" fill="#e1e1e1"/>
+        </g>
+        <g id="login-box" transform="translate(45 4)">
+            <rect id="Rectangle_678" data-name="Rectangle 678" width="119" height="148" rx="4"
+                  transform="translate(624 213)" fill="#f3f3f3"/>
+            <path id="Subtraction_7" data-name="Subtraction 7"
+                  d="M-3960-3943h-18a2,2,0,0,1-2-2v-18a2,2,0,0,1,2-2h18a2,2,0,0,1,2,2v18A2,2,0,0,1-3960-3943Zm-11.937-12.084a1.064,1.064,0,0,0-1.063,1.063v4.958a1.064,1.064,0,0,0,1.063,1.063h6.375a1.064,1.064,0,0,0,1.063-1.063v-4.958a1.064,1.064,0,0,0-1.063-1.063h-.354v-1.416a2.836,2.836,0,0,0-2.833-2.833,2.837,2.837,0,0,0-2.835,2.833v1.416Zm6.375,6.376h-6.375a.355.355,0,0,1-.355-.355v-4.958a.355.355,0,0,1,.355-.354h6.375a.355.355,0,0,1,.355.354v4.958A.355.355,0,0,1-3965.563-3948.708Zm-3.186-4.486a.945.945,0,0,0-.945.944.942.942,0,0,0,.59.876v1.131a.355.355,0,0,0,.354.355.355.355,0,0,0,.354-.355v-1.131a.943.943,0,0,0,.59-.876A.945.945,0,0,0-3968.749-3953.194Zm0,1.181a.237.237,0,0,1-.237-.237.236.236,0,0,1,.237-.236.236.236,0,0,1,.236.236A.237.237,0,0,1-3968.749-3952.013Zm2.125-3.071h-4.251v-1.416a2.128,2.128,0,0,1,2.126-2.125,2.127,2.127,0,0,1,2.125,2.125v1.415Z"
+                  transform="translate(4653 4205)" fill="#3b4257"/>
+            <rect id="Rectangle_682" data-name="Rectangle 682" width="94" height="16" rx="2"
+                  transform="translate(637 325)" fill="#3b4257"/>
+            <g id="Group_694" data-name="Group 694">
+                <rect id="Rectangle_681" data-name="Rectangle 681" width="94" height="16" rx="2"
+                      transform="translate(637 297)" fill="#d2d2d2"/>
+                <g id="Group_711" data-name="Group 711" transform="translate(0 23)">
+                    <circle id="Ellipse_228" data-name="Ellipse 228" cx="2.5" cy="2.5" r="2.5"
+                            transform="translate(643 280)" fill="#3b4257" opacity="0.51"/>
+                    <circle id="Ellipse_229" data-name="Ellipse 229" cx="2.5" cy="2.5" r="2.5"
+                            transform="translate(650 280)" fill="#3b4257" opacity="0.51"/>
+                    <circle id="Ellipse_230" data-name="Ellipse 230" cx="2.5" cy="2.5" r="2.5"
+                            transform="translate(657 280)" fill="#3b4257" opacity="0.51"/>
+                    <circle id="Ellipse_231" data-name="Ellipse 231" cx="2.5" cy="2.5" r="2.5"
+                            transform="translate(664 280)" fill="#3b4257" opacity="0.51"/>
+                    <circle id="Ellipse_232" data-name="Ellipse 232" cx="2.5" cy="2.5" r="2.5"
+                            transform="translate(671 280)" fill="#3b4257" opacity="0.51"/>
+                    <circle id="Ellipse_239" data-name="Ellipse 239" cx="2.5" cy="2.5" r="2.5"
+                            transform="translate(678 280)" fill="#3b4257" opacity="0.51"/>
+                </g>
+            </g>
+            <g id="Group_693" data-name="Group 693" transform="translate(0 1)">
+                <rect id="Rectangle_680" data-name="Rectangle 680" width="94" height="16" rx="2"
+                      transform="translate(637 274)" fill="#d2d2d2"/>
+                <rect id="Rectangle_694" data-name="Rectangle 694" width="51" height="5" rx="2.5"
+                      transform="translate(643 280)" fill="#858893"/>
+            </g>
+        </g>
+        <path id="connector" d="M4584.133,4300.974V4312.5s.441,4.867,5.3,4.867h59.522"
+              transform="translate(-3980 -3980)" fill="none" stroke="#707070" stroke-width="1" stroke-dasharray="3"/>
+    </g>
+</svg>

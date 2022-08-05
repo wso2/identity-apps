@@ -22,10 +22,11 @@ import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertLevels,
     LoadableComponentInterface,
+    MultiValueAttributeInterface,
     SBACInterface,
     TestableComponentInterface
 } from "@wso2is/core/models";
-import { MultiValueAttributeInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { CommonUtils } from "@wso2is/core/utils";
 import {
     ConfirmationModal,
@@ -35,12 +36,11 @@ import {
     PrimaryButton,
     TableActionsInterface,
     TableColumnInterface,
-    UserAvatar,
-    useConfirmationModalAlert
+    UserAvatar
 } from "@wso2is/react-components";
 import React, { ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Header, Icon, ListItemProps, SemanticICONS } from "semantic-ui-react";
 import { SCIMConfigs } from "../../../extensions/configs/scim";
 import {
@@ -155,10 +155,11 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
     } = props;
 
     const { t } = useTranslation();
+    const dispatch = useDispatch();
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingUser, setDeletingUser ] = useState<UserBasicInterface>(undefined);
-    const [ alert, setAlert, alertComponent ] = useConfirmationModalAlert();
+    const [ loading, setLoading ] = useState(false);
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
@@ -166,36 +167,44 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
         history.push(AppConstants.getPaths().get("USER_EDIT").replace(":id", userId));
     };
 
-    const handleUserDelete = (userId: string): void => {
-        deleteUser(userId)
+    const handleUserDelete = (userId: string): Promise<void> => {
+        return deleteUser(userId)
             .then(() => {
-                setAlert({
-                    description: t(
-                        "console:manage.features.users.notifications.deleteUser.success.description"
-                    ),
-                    level: AlertLevels.SUCCESS,
-                    message: t(
-                        "console:manage.features.users.notifications.deleteUser.success.message"
-                    )
-                });
-                setDeletingUser(undefined);
+                dispatch(
+                    addAlert({
+                        description: t(
+                            "console:manage.features.users.notifications.deleteUser.success.description"
+                        ),
+                        level: AlertLevels.SUCCESS,
+                        message: t(
+                            "console:manage.features.users.notifications.deleteUser.success.message"
+                        )
+                    })
+                );
                 onUserDelete();
             }).catch((error) => {
-            if (error.response && error.response.data && error.response.data.description) {
-                setAlert({
-                    description: error.response.data.description,
-                    level: AlertLevels.ERROR,
-                    message: t("console:manage.features.users.notifications.deleteUser.error.message")
-                });
-                return;
-            }
-            setAlert({
-                description: t("console:manage.features.users.notifications.deleteUser.genericError.description"),
-                level: AlertLevels.ERROR,
-                message: t("console:manage.features.users.notifications.deleteUser.genericError" +
-                    ".message")
+                if (error.response && error.response.data && error.response.data.description) {
+                    dispatch(
+                        addAlert({
+                            description: error.response.data.description,
+                            level: AlertLevels.ERROR,
+                            message: t("console:manage.features.users." +
+                        "notifications.deleteUser.error.message")
+                        })
+                    );
+
+                    return;
+                }
+                dispatch(
+                    addAlert({
+                        description: t("console:manage.features.users." +
+                            "notifications.deleteUser.genericError.description"),
+                        level: AlertLevels.ERROR,
+                        message: t("console:manage.features.users." +
+                            "notifications.deleteUser.genericError.message")
+                    })
+                );
             });
-        });
     };
 
     /**
@@ -215,7 +224,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                     let subHeader: string | MultiValueAttributeInterface;
                     const isNameAvailable = user.name?.familyName === undefined && user.name?.givenName === undefined;
 
-                    if (user[ SCIMConfigs.scim.enterpriseSchema ]?.userSourceId) {
+                    if (user[SCIMConfigs.scim.enterpriseSchema]?.userSourceId) {
                         subHeader = user.emails[0]
                             ? user.emails[0]
                             : user.id;
@@ -239,7 +248,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                             image
                             as="h6"
                             className="header-with-icon"
-                            data-testid={ `${ testId }-item-heading` }
+                            data-testid={ `${testId}-item-heading` }
                         >
                             <UserAvatar
                                 data-testid="users-list-item-image"
@@ -252,11 +261,12 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                                 <div className={ isNameAvailable ? "mt-2" : "" }>{ header }</div>
                                 {
                                     (!isNameAvailable) &&
-                                    <Header.Subheader
-                                        data-testid={ `${ testId }-item-sub-heading` }
-                                    >
-                                        { subHeader }
-                                    </Header.Subheader>
+                                    (
+                                        <Header.Subheader
+                                            data-testid={ `${testId}-item-sub-heading` }>
+                                            { subHeader }
+                                        </Header.Subheader>
+                                    )
                                 }
                             </Header.Content>
                         </Header>
@@ -280,7 +290,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
 
         const dynamicColumns: TableColumnInterface[]= [];
 
-        for (const [key, value] of userMetaListContent.entries()) {
+        for (const [ key, value ] of userMetaListContent.entries()) {
             if (key === "name" || key === "emails" || key === "profileUrl" || value === "") {
                 continue;
             }
@@ -410,11 +420,11 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
         if (usersList.totalResults === 0) {
             return (
                 <EmptyPlaceholder
-                    data-testid={ `${ testId }-empty-placeholder` }
+                    data-testid={ `${testId}-empty-placeholder` }
                     action={ (
                         <Show when={ AccessControlConstants.USER_WRITE }>
                             <PrimaryButton
-                                data-testid={ `${ testId }-empty-placeholder-add-user-button` }
+                                data-testid={ `${testId}-empty-placeholder-add-user-button` }
                                 onClick={ () => onEmptyListPlaceholderActionClick() }
                             >
                                 <Icon name="add"/>
@@ -461,46 +471,48 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                 transparent={ !isLoading && (showPlaceholders() !== null) }
                 data-testid={ testId }
             />
-            {
-                deletingUser && (
-                    <ConfirmationModal
-                        data-testid={ `${ testId }-confirmation-modal` }
-                        onClose={ (): void => setShowDeleteConfirmationModal(false) }
-                        type="negative"
-                        open={ showDeleteConfirmationModal }
-                        assertionHint={ t("console:manage.features.user.deleteUser.confirmationModal." +
-                            "assertionHint") }
-                        assertionType="checkbox"
-                        primaryAction="Confirm"
-                        secondaryAction="Cancel"
-                        onSecondaryActionClick={ (): void =>{
-                            setShowDeleteConfirmationModal(false);
-                            setAlert(null);
-                        } }
-                        onPrimaryActionClick={ (): void => handleUserDelete(deletingUser.id) }
-                        closeOnDimmerClick={ false }
-                    >
-                        <ConfirmationModal.Header data-testid={ `${ testId }-confirmation-modal-header` }>
-                            { t("console:manage.features.user.deleteUser.confirmationModal.header") }
-                        </ConfirmationModal.Header>
-                        <ConfirmationModal.Message
-                            data-testid={ `${ testId }-confirmation-modal-message` }
-                            attached
-                            negative
-                        >
-                            { t("console:manage.features.user.deleteUser.confirmationModal.message") }
-                        </ConfirmationModal.Message>
-                        <ConfirmationModal.Content data-testid={ `${ testId }-confirmation-modal-content` }>
-                            <div className="modal-alert-wrapper"> { alert && alertComponent }</div>
-                            {
-                                deletingUser[SCIMConfigs.scim.enterpriseSchema]?.userSourceId
-                                    ? t("console:manage.features.user.deleteJITUser.confirmationModal.content")
-                                    : t("console:manage.features.user.deleteUser.confirmationModal.content")
-                            }
-                        </ConfirmationModal.Content>
-                    </ConfirmationModal>
-                )
-            }
+            <ConfirmationModal
+                primaryActionLoading={ loading }
+                data-testid={ `${testId}-confirmation-modal` }
+                onClose={ (): void => setShowDeleteConfirmationModal(false) }
+                type="negative"
+                open={ showDeleteConfirmationModal }
+                assertionHint={ t("console:manage.features.user.deleteUser.confirmationModal." +
+                    "assertionHint") }
+                assertionType="checkbox"
+                primaryAction="Confirm"
+                secondaryAction="Cancel"
+                onSecondaryActionClick={ (): void => {
+                    setShowDeleteConfirmationModal(false);
+                } }
+                onPrimaryActionClick={ (): void => {
+                    setLoading(true);
+                    handleUserDelete(deletingUser?.id).finally(() => {
+                        setLoading(false);
+                        setDeletingUser(undefined);
+                        setShowDeleteConfirmationModal(false);
+                    });
+                } }
+                closeOnDimmerClick={ false }
+            >
+                <ConfirmationModal.Header data-testid={ `${testId}-confirmation-modal-header` }>
+                    { t("console:manage.features.user.deleteUser.confirmationModal.header") }
+                </ConfirmationModal.Header>
+                <ConfirmationModal.Message
+                    data-testid={ `${testId}-confirmation-modal-message` }
+                    attached
+                    negative
+                >
+                    { t("console:manage.features.user.deleteUser.confirmationModal.message") }
+                </ConfirmationModal.Message>
+                <ConfirmationModal.Content data-testid={ `${testId}-confirmation-modal-content` }>
+                    {
+                        deletingUser && deletingUser[SCIMConfigs.scim.enterpriseSchema]?.userSourceId
+                            ? t("console:manage.features.user.deleteJITUser.confirmationModal.content")
+                            : t("console:manage.features.user.deleteUser.confirmationModal.content")
+                    }
+                </ConfirmationModal.Content>
+            </ConfirmationModal>
         </>
     );
 };

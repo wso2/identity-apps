@@ -179,6 +179,10 @@
         padding-right: 0.4em;
         border: @inputAddOnBorder;
         border-left: 0;
+
+        &.organizations{
+            padding-right: 1.4em !important;
+        }
     }
 
     &.test-button {

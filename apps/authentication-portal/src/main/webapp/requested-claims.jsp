@@ -20,9 +20,11 @@
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="java.io.File" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 
 <%@ include file="includes/localize.jsp" %>
 <%@ include file="includes/init-url.jsp" %>
+<jsp:directive.include file="includes/layout-resolver.jsp"/>
 
 <%
     String[] missingClaimList = null;
@@ -34,6 +36,11 @@
     if (request.getParameter(Constants.REQUEST_PARAM_SP) != null) {
         appName = request.getParameter(Constants.REQUEST_PARAM_SP);
     }
+%>
+
+<%-- Data for the layout from the page --%>
+<%
+    layoutData.put("containerSize", "medium");
 %>
 
 <!doctype html>
@@ -61,9 +68,8 @@
         <jsp:include page="util/timeout.jsp"/>
     <% } %>
 
-    <main class="center-segment">
-        <div class="ui container medium center aligned middle aligned">
-
+    <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
+        <layout:component componentName="ProductHeader" >
             <!-- product-title -->
             <%
                 File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
@@ -73,7 +79,8 @@
             <% } else { %>
                 <jsp:include page="includes/product-title.jsp"/>
             <% } %>
-
+        </layout:component>
+        <layout:component componentName="MainSection" >
             <div class="ui segment">
                 <h3 class="ui header" data-testid="request-claims-page-mandatory-header-text">
                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "provide.mandatory.details")%>
@@ -165,18 +172,19 @@
                     </div>
                 </form>
             </div>
-        </div>
-    </main>
-
-    <!-- product-footer -->
-    <%
-        File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
-        if (productFooterFile.exists()) {
-    %>
-        <jsp:include page="extensions/product-footer.jsp"/>
-    <% } else { %>
-        <jsp:include page="includes/product-footer.jsp"/>
-    <% } %>
+        </layout:component>
+        <layout:component componentName="ProductFooter" >
+            <!-- product-footer -->
+            <%
+                File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
+                if (productFooterFile.exists()) {
+            %>
+                <jsp:include page="extensions/product-footer.jsp"/>
+            <% } else { %>
+                <jsp:include page="includes/product-footer.jsp"/>
+            <% } %>
+        </layout:component>
+    </layout:main>
 
     <!-- footer -->
     <%

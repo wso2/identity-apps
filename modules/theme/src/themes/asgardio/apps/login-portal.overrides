@@ -1,0 +1,902 @@
+/*******************************
+        Login Overrides
+*******************************/
+
+/*-----------------------------
+     Login Portals Commons
+------------------------------*/
+
+.login-portal {
+    &.layout {
+        .page-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: radial-gradient(circle at 50% 50%,rgba(243,115,33,.21836485) 0,rgba(245,246,246,.38559174) 35%,rgba(245,246,246,1) 100%),
+                        radial-gradient(circle at 50% 50%,rgba(144,37,142,.123433123) 0,rgba(245,246,246,.38559174) 47%,rgba(245,246,246,1) 100%);
+
+
+            &.right-aligned {
+                background: radial-gradient(circle at 72% 47%,rgba(243,115,33,.13836485) 0,rgba(245,246,246,.28559174) 29%,rgba(245,246,246,1) 100%),
+                radial-gradient(circle at 72% 47%,rgba(144,37,142,.10433123) 0,rgba(245,246,246,.08559174) 27%,rgba(245,246,246,1) 100%);
+            }
+
+            &.success-page {
+                background: radial-gradient(circle at 50% 50%, rgba(0,167,157,0.1852182262569832) 0%, rgba(245,246,246,1) 40%, rgba(245,246,246,1) 100%);
+            }
+
+            &.error-page {
+                background: radial-gradient(circle at 50% 50%,rgba(217,88,88,.21840258) 0%,rgba(245,246,246,1) 40%,rgba(245,246,246,1) 100%);
+
+                .slogan-message {
+                    color: @loginPortalErrorSloganColor !important;
+                }
+
+                .segment {
+                    border-bottom-left-radius: 0px !important;
+                    border-bottom-right-radius: 0px !important;
+                }
+            }
+
+            &.no-background {
+                background: none;
+            }
+
+            &.default {
+
+                &.error-page {
+                    background: radial-gradient(circle at 68% 47%,rgba(217,88,88,.21840258) 0%,rgba(245,246,246,1) 25%,rgba(245,246,246,1) 100%);
+                }
+
+                &.success-page {
+                    background: radial-gradient(circle at 70% 47%, rgba(0,167,157,0.1852182262569832) 0%, rgba(245,246,246,1) 25%, rgba(245,246,246,1) 100%);
+
+                }
+
+            }
+
+            .sub-tagline {
+                font-size: 17px;
+                opacity: 0.8;
+                color: @loginPortalLogoTaglineColor;
+            }
+
+            .registration-loader {
+                svg #_1{
+                    animation-name: alert-success;
+                    animation-duration: 3s;
+                    position: relative;
+                    animation-delay: 0s;
+                    animation-iteration-count: infinite;
+                }
+
+                svg #_2{
+                    animation-name: alert-success;
+                    animation-duration: 3s;
+                    position: relative;
+                    animation-delay: 1s;
+                    animation-iteration-count: infinite;
+                }
+
+                svg #_3{
+                    animation-name: alert-success;
+                    animation-duration: 3s;
+                    position: relative;
+                    animation-delay: 2s;
+                    animation-iteration-count: infinite;
+                }
+
+                @keyframes alert-success{
+                    0%   {
+                        opacity: 1;
+                    }
+                    100% {
+                        opacity: 0;
+                    }
+                }
+            }
+        }
+
+        .ui {
+            &.popup {
+                background-color: #A9A9A9;
+                color: @white;
+                border: none;
+                font-weight: 100;
+
+                &::before {
+                    background: #A9A9A9;
+                }
+            }
+        }
+
+        .signup-form {
+            .early-signup-error {
+                font-size: 13px !important;
+                color: #FF5000;
+
+                .icon {
+                    line-height: 17px;
+                }
+
+                .content {
+                    line-height: 17px !important;
+                }
+            }
+
+            .user-email {
+                font-family: "Open Sans" !important;
+            }
+        }
+
+        input[type="password"]::-ms-reveal,
+        input[type="password"]::-ms-clear {
+            display: none;
+        }
+
+        /* Disable autocomplete in safari */
+        input[type="password"]::-webkit-contacts-auto-fill-button,
+        input[type="password"]::-webkit-credentials-auto-fill-button {
+            visibility: hidden;
+            pointer-events: none;
+            position: absolute;
+            right: 0;
+        }
+
+        .tenant-description, .privacy {
+            font-size: 13px;
+        }
+
+        .header .tenant-user {
+            color: @loginPortalLogoTaglineColor !important;
+            font-weight: 500!important;
+            font-size: 26px!important;
+        }
+
+        .association-success {
+            margin-bottom: 1em !important;
+        }
+
+        .ui.button {
+            &.spacing {
+                margin-bottom: 0.5em;
+            }
+            &.reject {
+                color: @primaryColor;
+            }
+        }
+
+        .context-message {
+            text-align: left;
+            margin-bottom: 1.5em;
+        }
+
+        .portal-logo-tagline {
+            &.sub-tagline {
+                font-size: 17px;
+            }
+
+            &.landing-page {
+                max-width: 830px;
+                font-size: 43px;
+                line-height: 56px;
+                margin: 100px auto 50px;
+                font-weight: 700;
+
+                span {
+                    color: #FF7300;
+                    font-size: 18px;
+                    line-height: 56px;
+                }
+            }
+            &.login-page {
+                max-width: 450px;
+                margin-right: 7em;
+            }
+
+            color: @loginPortalLogoTaglineColor;
+            font-weight: @loginPortalLogoTaglineFontWeight;
+            max-width: @loginPortalLogoTaglineMaxWidth;
+            font-size: @loginPortalLogoTaglineFontSize;
+            line-height: @loginPortalLogoTaglineFontLineHeight;
+            margin-top: @loginPortalLogoTaglineMarginTop;
+            margin-right: @loginPortalLogoTaglineMarginRight;
+
+            span {
+                color: @loginPortalLogoSecondaryTagLineColor;
+                font-size: @loginPortalLogoSecondaryTagLineFontSize;
+                font-weight: @loginPortalLogoSecondaryTagLineFontWeight;
+                line-height: @loginPortalLogoSecondaryTagLineFontLineHeight;
+            }
+        }
+
+        .ui.bottom.attached.message.support-message-container {
+            box-shadow: none;
+        }
+
+        .password-toggle {
+            right: 0 !important;
+            left: auto !important;
+            pointer-events: all !important;
+            cursor: pointer !important;
+        }
+
+        .portal-tagline-description {
+            color: @loginPortalLogoTaglineDescriptionColor;
+            margin-top: @loginPortalLogoTaglineDescriptionMarginTop;
+            max-width: @loginPortalLogoTaglineMaxWidth;
+            font-size: 17px;
+            font-weight: 500;
+            padding-bottom: @loginPortalLogoTaglineDescriptionPaddingBottom;
+        }
+
+        .slogan-description {
+            font-size: 17px;
+            color: @textColor;
+            font-weight: 300;
+            max-width: 500px;
+            margin-right: 7em;
+        }
+
+        .tracking-reference-container {
+            display: flex;
+            align-items: center;
+            max-width: @loginPortalLogoTaglineMaxWidth;
+
+            &.centered {
+                justify-content: center;
+                column-gap: 10px;
+            }
+        }
+
+        .tracking-reference-title {
+            color: #4e4b4b;
+            margin-bottom: 2px;
+            font-size: 14px;
+        }
+
+        .tracking-reference {
+            color: #838383;
+            max-width: 250px;
+            word-wrap: break-word;
+            margin-top: 0px;
+            font-size: 13px;
+        }
+
+        .tenant-url {
+            font-size: 13px;
+
+            span {
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                display: inline-block;
+                vertical-align: bottom;
+                margin-right: 0.5em;
+            }
+
+            .valid-tenant {
+                color: #54AB47;
+            }
+
+            .invalid-tenant {
+                color: #f50d0d;
+            }
+
+            .placeholder-uri {
+                color: #a9a9a9;
+            }
+
+        }
+
+        .app-header {
+            background: @loginPortalAppHeaderBackground;
+            border-bottom: @loginPortalAppHeaderBorderBottom;
+
+            .product-title {
+                display: block;
+
+                .portal-logo {
+                    img {
+                        height: @loginPortalAppHeaderLogoHeight;
+                    }
+                }
+            }
+        }
+
+        &.landing-layout{
+
+            .ui.button {
+                background-color: @primaryColor;
+
+                &.request-signup {
+                    box-shadow: 0 0 0 1px #fff inset;
+                    color: #00000094 !important;
+                    background-color: @white;
+
+                    &:hover {
+                        box-shadow: 0 0 0 1px #ff7300 inset !important;
+                        background: transparent !important;
+                        color: #FF7300 !important;
+                    }
+                }
+            }
+
+        }
+
+        .landing-segment {
+            &.center-segment {
+                max-width: 1300px;
+            }
+
+            .slogan-container {
+                padding-right: 550px;
+                min-width: 540px;
+                margin-right: 0;
+
+                .portal-logo-tagline {
+                    color: #d9e1e8;
+                    font-size: 37px;
+                    max-width: 540px;
+
+                    span {
+                        color: #ff7300;
+                        display: block;
+                        font-size: 30px;
+                    }
+                }
+            }
+
+            .slogan-description {
+                margin-top: 0;
+                font-size: 17px;
+                color: #dedede;
+                font-weight: 200;
+            }
+
+            .action-container {
+                display: inline-flex;
+                flex: 0 0 100%;
+
+                .landing-page {
+                    display: inline-flex;
+                    flex: 0 0 100%;
+                    margin-top: 74px;
+                }
+            }
+
+            .product-logo {
+                width: 250px;
+            }
+        }
+
+        .center-segment {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            > .ui.container {
+                margin: 50px 0;
+
+                &.regular {
+                    max-width: 430px !important;
+                }
+
+                &.medium {
+                    max-width: 410px !important;
+                }
+
+                > .ui.segment {
+                    box-shadow: @loginPortalLoginCardBoxShadow;
+                    border: @loginPortalLoginCardBorder;
+
+                    .ui.header {
+                        margin-bottom: 30px;
+
+                        .user {
+                            font-size: 2.3em;
+                        }
+
+                        &:first-child {
+                            text-align: left;
+                        }
+                    }
+
+                    .identifier-container {
+                        margin: 0.5em 0;
+                        display: flex;
+
+                        img {
+                            width: 22px;
+                        }
+
+                        span {
+                            margin-left: 0.3em;
+                            line-height: 2em;
+                            font-size: 16px;
+                            font-weight: 200;
+                        }
+                    }
+
+                    .social-login {
+                        &.social-dimmer {
+                            &.dimmable{
+                                overflow: inherit !important;
+                                z-index: 998 !important;
+                            }
+                            .ui {
+                                &.inverted {
+                                    &.dimmer {
+                                        border-radius: 5px;
+                                    }
+                                }
+                            }
+                            .content {
+                                p {
+                                    font-size: 12px;
+                                    padding: 1.5em;
+                                    color: #474747;
+                                }
+                            }
+                        }
+                        .ui.button {
+                            width: 100%;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            box-shadow: 0 0 1px 0 rgba(0,0,0,0.12), 0 1px 1px 0 rgba(0,0,0,0.24);
+                            background: @loginPortalExternalConnectionButtonBackgroundColor;
+
+                            .ui.image {
+                                height: 22px;
+                                width: 22px;
+                                margin-right: auto;
+                            }
+
+                            span {
+                                margin-right: auto;
+                                margin-left: -1em
+                            }
+
+                            &:hover {
+                                background: @loginPortalExternalConnectionButtonHoverBackgroundColor;
+                            }
+                        }
+                    }
+
+                    .ui.labeled.icon.button,
+                    .ui.labeled.icon.buttons .button {
+                        padding-left: 2.1em !important;
+                    }
+
+                    .account-linking {
+                        &.ui-label {
+                            text-align: left;
+                            margin-bottom: 1em;
+                            margin-top: unset;
+                            font-size: 15px;
+                            font-weight: 400;
+                            color: rgba(0,0,0,.87);
+                        }
+                    }
+                }
+            }
+        }
+
+        .product-title {
+            display: none;
+        }
+
+        .centered-message {
+            .message-header {
+                color: @centeredMessageHeaderColor;
+                font-weight: 300 !important;
+                font-size: 26px;
+            }
+
+            .message-description {
+                color: @centeredMessageDescColor;
+                font-size: 17px;
+
+                .special {
+                    color: @primaryColor;
+                }
+            }
+
+            .addtional-message {
+                color: @centeredMessageDescColor;
+                font-size: 15px;
+                font-weight: 300;
+            }
+        }
+
+        .slogan-container {
+            margin-right: 70px;
+            min-width: 540px;
+
+            .ui.header {
+                &.description {
+                    color: #FDFDFD;
+                }
+                &.tagline {
+                    color: #e0e0e0;
+                    margin-top: 0;
+                }
+            }
+
+            .slogan-message {
+                color: #D95858 !important;
+            }
+
+            .portal-tagline-description {
+                i.icon.primary {
+                    color: @primaryColor;
+                }
+            }
+        }
+
+        .footer {
+            &.fixed{
+                position: fixed;
+                left: 0;
+                bottom: 0;
+                width: 100%;
+            }
+
+            padding: @loginPortalFooterPadding;
+            border-top: @loginPortalFooterBorderTop;
+
+            .seperator {
+                background-color: #535c65;
+                width: 6px;
+                height: 6px;
+                border-radius: 1em;
+                align-self: center;
+                margin: 0 2px;
+            }
+
+            .ui.text.menu {
+                margin: 0;
+                line-height: @loginPortalFooterLineHeight;
+
+                .item {
+                    color: @loginPortalFooterColor;
+
+                    &.no-hover {
+                        cursor: auto;
+                    }
+                    &:not(.no-hover) {
+                        &:hover {
+                            color: @primaryColor;
+                            text-decoration: underline;
+                        }
+                    }
+                }
+            }
+            
+            .powered-by-logo-divider {
+                margin-left: 5px;
+                margin-right: 5px;
+            }
+            
+            .powered-by-logo {
+                cursor: pointer;
+
+                img {
+                    width: 80px;
+                    max-height: 20px;
+                    margin-top: 6px;
+                    margin-left: 4px;
+                }
+            }
+        }
+
+        &.policy-page-layout {
+            background-image: @policyPageBackgroundImage;
+
+            .policy-page {
+                .policy-page-content {
+                    color: @white;
+
+                    .toc {
+                        background: @policyPageTOCBackground;
+                        border: none;
+                        box-shadow: none;
+                        color: @white;
+
+                        ul.ui.list.nav>li>a {
+                            color: @white;
+
+                            &:hover {
+                                color: @primaryColor;
+                            }
+                        }
+
+                        ul.ui.list li:before {
+                            color: @white;
+                        }
+                    }
+                }
+            }
+        }
+
+        .external-link-container {
+
+            &.text-small {
+                font-size: @loginPortalExternalLinkFontSize;
+                color: rgba(0, 0, 0, 0.87);
+                line-height: 18px;
+            }
+        }
+
+        .clickable-link {
+            color: @loginPortalClickableLinkColor;
+            cursor: pointer;
+        }
+
+        .validation-error-message {
+            color: #FF0000;
+            font-size: 14px;
+        }
+
+        .password-policy-description i {
+            float: left;
+        }
+
+        .password-policy-description {
+            font-size: 13px;
+            color: grey;
+        }
+    }
+}
+
+@media only screen and (max-width: 1200px) {
+    .login-portal {
+        &.layout {
+            .center-segment:not(.landing-segment) {
+
+                .slogan-container {
+                    max-width: 30em;
+                    min-width: 17em;
+                    margin-right: 0;
+                }
+
+                .login-page {
+                    max-width: 450px;
+                    margin-right: 1em;
+                }
+            }
+            .error-page, .success-page {
+                .center-segment {
+                    width: 95%;
+                }
+            }
+        }
+
+    }
+}
+
+@media only screen and (max-width: 933px) {
+    .login-portal {
+        &.layout {
+            background-image: none;
+
+            .landing-segment {
+                &.center-segment {
+                    max-width: 900px;
+                    margin-top: 50px;
+                }
+            }
+
+            .center-segment:not(.landing-segment) {
+                .product-title {
+                    display: block;
+                }
+
+                .slogan-container {
+                    display: none;
+                }
+            }
+            .error-page, .success-page {
+                .center-segment {
+                    width: 85%;
+
+                    .slogan-container {
+                        display: block;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .footer {
+        .ui{
+            &.text.menu {
+                align-items: center;
+            }
+
+            &.stackable.menu {
+                .left.menu {
+                    flex-direction: initial !important;
+                }
+
+                .right.menu {
+                    flex-direction: initial !important;
+                }
+            }
+
+            &.stackable.menu .item {
+                width: unset !important;
+            }
+        }
+
+    }
+
+    .login-portal {
+        &.layout {
+            footer {
+                padding: 0.6rem 0 !important;
+            }
+            .error-page, .success-page {
+                .center-segment {
+                    width: 85%;
+
+                    .slogan-container {
+                        display: block;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 425px) {
+    .login-portal {
+        &.layout {
+            .error-page, .success-page {
+                .center-segment {
+                    width: 85%;
+
+                    .slogan-container {
+                        display: block;
+                    }
+                }
+                .thank-you-img, img {
+                    display:none;
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 375px) {
+    .login-portal {
+        &.layout {
+            .center-segment {
+                > .ui.container {
+                    > .ui.segment {
+                        padding: 3.3rem 1.3rem;
+                    }
+                }
+            }
+            .error-page, .success-page {
+                .center-segment {
+                    width: 85%;
+
+                    .slogan-container {
+                        display: block;
+                    }
+                }
+                .thank-you-img, img {
+                    display:none;
+                }
+            }
+        }
+    }
+}
+
+.login-portal-app-font {
+    color: @loginPortalClickableLinkColor;
+}
+
+.login-portal-app-des-font {
+    font-size: small !important;
+
+    .text-typography {
+        font-size: inherit !important;
+    }
+
+    .break-all-words {
+        word-break: break-all;
+    }
+}
+
+.login-portal-app-des2-font {
+    font-size: medium !important;
+
+    .text-typography {
+        font-size: inherit !important;
+    }
+}
+
+.segment-with-attached {
+    border-bottom-right-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+    margin-top: 1em;
+}
+
+.consent-item-bullet {
+   padding-top: 5px !important;
+   color: @primaryColor !important;
+}
+
+.claim-list {
+    max-height: 200px;
+    overflow: auto;
+    margin-inline: 1vw;
+}
+
+.sticky-checkbox {
+    margin-bottom: .4rem !important;
+    position: sticky;
+    background-color: inherit;
+
+    label {
+        font-weight: normal !important;
+        color: rgba(0, 0, 0, 0.87) !important;
+    }
+}
+
+.app-name-container {
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+.light-popup {
+    background-color: white !important;
+    color: black !important;
+    border: none !important;
+    font-weight: 400 !important;
+
+    &::before {
+        background: white !important;
+    }
+}
+
+.login-portal-app-consent-request {
+    margin: .1em 0;
+    text-align: left;
+    color: @mutedTextColor;
+    font-size: .9em;
+}
+
+.field-validation-error-description {
+    display: none;
+    color: #ff5000;
+    font-size: 14px !important;
+}
+
+.tenant-creation-page {
+    .valid-tenant {
+        color: #54AB47;
+    }
+
+    .invalid-tenant {
+        color: #f50d0d;
+    }
+
+    .placeholder-uri {
+        color: #a9a9a9;
+    }
+
+    .placeholder-uri-bold {
+        font-weight: 600;
+    }
+
+    .tenant-uri-prefix {
+        margin-bottom: 10px;
+        padding-top: 10px;
+    }
+}

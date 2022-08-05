@@ -1,0 +1,16 @@
+{
+    "category": "DEFAULT",
+    "description": "Applications developed to target mobile devices.",
+    "enabled": true,
+    "id": "mobile",
+    "templateId": "mobile-application",
+    "displayOrder": 2,
+    "image": "oidcMobile",
+    "name": "Mobile Application",
+    "subTemplatesSectionTitle": "Technology",
+    "types": [
+        "android",
+        "ios"
+    ],
+    "comingSoon": true
+}

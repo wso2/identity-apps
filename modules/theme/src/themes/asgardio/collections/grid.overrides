@@ -1,0 +1,386 @@
+/*!
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ *
+ */
+
+/*----------------------------------
+  Horizontally Centered Responsive
+------------------------------------*/
+
+.grid-horizontally-centered-responsive(@screen) {
+    /* Left Aligned */
+    .ui[class*="@{screen} left aligned"].grid > .column,
+    .ui[class*="@{screen} left aligned"].grid > .row > .column,
+    .ui.grid > [class*="@{screen} left aligned"].row > .column,
+    .ui.grid > [class*="@{screen} left aligned"].column.column,
+    .ui.grid > .row > [class*="@{screen} left aligned"].column.column {
+        text-align: left !important;
+        align-self: inherit;
+    }
+
+    /* Center Aligned */
+    .ui[class*="@{screen} center aligned"].grid > .column,
+    .ui[class*="@{screen} center aligned"].grid > .row > .column,
+    .ui.grid > [class*="@{screen} center aligned"].row > .column,
+    .ui.grid > [class*="@{screen} center aligned"].column.column,
+    .ui.grid > .row > [class*="@{screen} center aligned"].column.column {
+        text-align: center !important;
+        align-self: inherit;
+    }
+    .ui[class*="@{screen} center aligned"].grid {
+        justify-content: center !important;
+    }
+
+    /* Right Aligned */
+    .ui[class*="@{screen} right aligned"].grid > .column,
+    .ui[class*="@{screen} right aligned"].grid > .row > .column,
+    .ui.grid > [class*="@{screen} right aligned"].row > .column,
+    .ui.grid > [class*="@{screen} right aligned"].column.column,
+    .ui.grid > .row > [class*="@{screen} right aligned"].column.column {
+        text-align: right !important;
+        align-self: inherit;
+    }
+
+    /* Justified */
+    .ui[class*="@{screen} justified"].grid > .column,
+    .ui.grid[class*="@{screen} justified"] > .row > .column,
+    .ui.grid > .row[class*="@{screen} justified"] > .column,
+    .ui.grid > .column.column[class*="@{screen} justified"],
+    .ui.grid > .row > .column.column[class*="@{screen} justified"] {
+        text-align: justify !important;
+        hyphens: auto;
+    }
+}
+
+/* Mobile */
+@media only screen and (max-width: @largestMobileScreen) {
+    .grid-horizontally-centered-responsive("mobile");
+}
+
+/* Tablet */
+@media only screen and (min-width: @tabletBreakpoint) and (max-width: @largestTabletScreen) {
+    .grid-horizontally-centered-responsive("tablet");
+}
+
+/* Computer */
+@media only screen and (min-width: @computerBreakpoint) {
+    .grid-horizontally-centered-responsive("computer");
+}
+
+.test-class {
+    color: #000;
+}
+
+/*-----------------------------------
+  Padding Spacing Responsive
+-------------------------------------*/
+
+.grid-padding-responsive(@screen, @type) {
+    .ui[class*="@{screen} no-@{type}-left-first-child"].grid > :first-child,
+    .ui[class*="@{screen} no-@{type}-left-first-child"].grid > .row > .column > :first-child,
+    .ui.grid > [class*="@{screen} no-@{type}-left-first-child"].row > .column > :first-child,
+    .ui.grid > [class*="@{screen} no-@{type}-left-first-child"].column.column > :first-child,
+    .ui.grid > .row > [class*="@{screen} no-@{type}-left-first-child"].column.column > :first-child,
+    .ui[class*="@{screen} no-@{type}-left-last-child"].grid > :last-child,
+    .ui[class*="@{screen} no-@{type}-left-last-child"].grid > .row > .column > :last-child,
+    .ui.grid > [class*="@{screen} no-@{type}-left-last-child"].row > .column > :last-child,
+    .ui.grid > [class*="@{screen} no-@{type}-left-last-child"].column.column > :last-child,
+    .ui.grid > .row > [class*="@{screen} no-@{type}-left-last-child"].column.column > :last-child {
+        padding-left: 0 !important;
+    }
+
+    .ui[class*="@{screen} no-@{type}-right-first-child"].grid > :first-child,
+    .ui[class*="@{screen} no-@{type}-right-first-child"].grid > .row > .column > :first-child,
+    .ui.grid > [class*="@{screen} no-@{type}-right-first-child"].row > .column > :first-child,
+    .ui.grid > [class*="@{screen} no-@{type}-right-first-child"].column.column > :first-child,
+    .ui.grid > .row > [class*="@{screen} no-@{type}-right-first-child"].column.column > :first-child,
+    .ui[class*="@{screen} no-@{type}-right-last-child"].grid > :last-child,
+    .ui[class*="@{screen} no-@{type}-right-last-child"].grid > .row > .column > :last-child,
+    .ui.grid > [class*="@{screen} no-@{type}-right-last-child"].row > .column > :last-child,
+    .ui.grid > [class*="@{screen} no-@{type}-right-last-child"].column.column > :last-child,
+    .ui.grid > .row > [class*="@{screen} no-@{type}-right-last-child"].column.column > :last-child {
+        padding-right: 0 !important;
+    }
+}
+
+/* Mobile */
+@media only screen and (max-width: @largestMobileScreen) {
+    .grid-padding-responsive("mobile", "padding");
+}
+
+/* Tablet */
+@media only screen and (min-width: @tabletBreakpoint) and (max-width: @largestTabletScreen) {
+    .grid-padding-responsive("tablet", "padding");
+}
+
+/* Computer */
+@media only screen and (min-width: @computerBreakpoint) {
+    .grid-padding-responsive("computer", "padding");
+}
+
+
+/*-----------------------------------
+  Margin Spacing Responsive
+-------------------------------------*/
+
+.grid-margin-responsive(@screen, @type) {
+    .ui[class*="@{screen} no-@{type}-left-first-child"].grid > :first-child,
+    .ui[class*="@{screen} no-@{type}-left-first-child"].grid > .row > .column > :first-child,
+    .ui.grid > [class*="@{screen} no-@{type}-left-first-child"].row > .column > :first-child,
+    .ui.grid > [class*="@{screen} no-@{type}-left-first-child"].column.column > :first-child,
+    .ui.grid > .row > [class*="@{screen} no-@{type}-left-first-child"].column.column > :first-child,
+    .ui[class*="@{screen} no-@{type}-left-last-child"].grid > :last-child,
+    .ui[class*="@{screen} no-@{type}-left-last-child"].grid > .row > .column > :last-child,
+    .ui.grid > [class*="@{screen} no-@{type}-left-last-child"].row > .column > :last-child,
+    .ui.grid > [class*="@{screen} no-@{type}-left-last-child"].column.column > :last-child,
+    .ui.grid > .row > [class*="@{screen} no-@{type}-left-last-child"].column.column > :last-child {
+        margin-left: 0 !important;
+    }
+
+    .ui[class*="@{screen} no-@{type}-right-first-child"].grid > :first-child,
+    .ui[class*="@{screen} no-@{type}-right-first-child"].grid > .row > .column > :first-child,
+    .ui.grid > [class*="@{screen} no-@{type}-right-first-child"].row > .column > :first-child,
+    .ui.grid > [class*="@{screen} no-@{type}-right-first-child"].column.column > :first-child,
+    .ui.grid > .row > [class*="@{screen} no-@{type}-right-first-child"].column.column > :first-child,
+    .ui[class*="@{screen} no-@{type}-right-last-child"].grid > :last-child,
+    .ui[class*="@{screen} no-@{type}-right-last-child"].grid > .row > .column > :last-child,
+    .ui.grid > [class*="@{screen} no-@{type}-right-last-child"].row > .column > :last-child,
+    .ui.grid > [class*="@{screen} no-@{type}-right-last-child"].column.column > :last-child,
+    .ui.grid > .row > [class*="@{screen} no-@{type}-right-last-child"].column.column > :last-child {
+        margin-right: 0 !important;
+    }
+}
+
+/* Mobile */
+@media only screen and (max-width: @largestMobileScreen) {
+    .grid-margin-responsive("mobile", "margin");
+}
+
+/* Tablet */
+@media only screen and (min-width: @tabletBreakpoint) and (max-width: @largestTabletScreen) {
+    .grid-margin-responsive("tablet", "margin");
+}
+
+/* Computer */
+@media only screen and (min-width: @computerBreakpoint) {
+    .grid-margin-responsive("computer", "margin");
+}
+
+.ui.grid {
+      .row {
+           &.urlComponentLabelRow {
+                margin-bottom: @ZeroMargin;
+                padding-bottom: @SmallPadding;
+           }
+
+           &.urlComponentInputRow {
+                margin-top: @ZeroMargin;
+                padding-top: @ZeroMargin;
+                margin-bottom: @ZeroMargin;
+                padding-bottom: @SmallPadding;
+           }
+
+           &.urlComponentTagRow {
+                margin-top: @SmallMargin;
+                margin-bottom: @SmallMargin;
+                padding: @ZeroPadding;
+
+                .decoded-path {
+                    white-space: pre;
+                }
+           }
+
+           &.flex-row {
+               display : flex;
+               justify-content: space-between;
+           }
+
+      }
+
+      .column {
+          &.resource-item-column {
+              display: flex;
+              justify-content: row;
+              align-items: center;
+
+              >.image {
+                  flex-shrink: 0;
+              }
+          }
+
+          &.overflow-wrap {
+              overflow-wrap: break-word;
+          }
+      }
+}
+
+/*-----------------------------------
+ Application Attribute mapping variation
+-------------------------------------*/
+
+.ui.grid {
+     &.claim-mapping {
+         .row {
+           &.claim-list-row {
+                 .column {
+                   &.claim-list-column {
+                     overflow-y: auto;
+                     height: 250px;
+                     overflow-x: hidden;
+                     &.selected {
+                       background-color: #f4f7f9
+                     }
+                   }
+                 }
+             }
+          }
+     }
+     &.claim-mapping-item {
+         .row {
+           &.claim-mapping-row {
+              vertical-align: middle;
+              min-height: 75px;
+              .column {
+                 &.claim-mapping-edit-column {
+                     display: flex;
+                     flex-direction: row;
+                 }
+              }
+              &.selected {
+                min-height: 70px
+              }
+           }
+         }
+     }
+}
+
+/*-----------------------------------
+          Transfer Component
+-------------------------------------*/
+
+.ui.grid {
+     &.transfer-list {
+
+         width: 100% !important;
+         margin-left: 0em !important;
+
+         .row {
+             &.transfer-list-row {
+                 display: flex;
+                 justify-content: space-between;
+                 flex-wrap: nowrap;
+
+                 .column {
+                     flex-grow: 1;
+                     flex-shrink: 1;
+
+                     &.transfer-list-button-column {
+                         flex-grow: 0;
+                         width: unset !important;
+                         padding: 0 !important;
+                         flex-shrink: 0;
+
+                         .ui.basic.button {
+                             margin-bottom: 1em;
+                             margin-right: 0;
+                         }
+
+                         .row {
+                             text-align: center;
+                             min-width: 50px !important;
+                         }
+                     }
+                 }
+             }
+         }
+
+         &.compact {
+            .transfer-list-column {
+                padding: 0;
+            }
+         }
+
+         &.bordered {
+            .transfer-segment {
+                border: @defaultBorderWidth solid @defaultBorderColor;
+                border-radius: @defaultBorderRadius;
+            }
+         }
+     }
+}
+
+/*----------------------------------
+     Column with bottom gutters
+------------------------------------*/
+
+.ui.grid {
+    .row {
+        .column {
+            &.with-bottom-gutters {
+                padding-bottom: (@gutterWidth / 2);
+            }
+
+            &.centered-text {
+                margin-top: auto;
+                margin-bottom: auto;
+
+                 &::after {
+                    margin: -0.2em 0 0 0.2em;
+                    content: '*';
+                    color: #db2828;
+                 }
+            }
+
+              &.session-display {
+                 padding-top: 0.5em;
+              }
+        }
+    }
+}
+
+/*----------------------------------
+  Column count exceeded Scenario
+------------------------------------*/
+
+.ui.grid {
+    .row {
+        &.column-count-exceeded {
+            .column {
+                padding-bottom: (@gutterWidth / 2);
+            }
+        }
+         &.session-display-padded {
+              padding-top: 0.25em;
+              padding-bottom: 0.25em;
+         }
+    }
+}
+
+/*----------------------------------
+     Certificate Grid variation
+------------------------------------*/
+
+.ui.grid {
+    &.certificate-issuer {
+        margin-top: 0rem;
+        margin-bottom: 2rem;
+
+        .row {
+            padding-bottom: 0rem;
+        }
+    }
+}

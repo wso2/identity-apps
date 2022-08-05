@@ -1,0 +1,21 @@
+<!--
+ * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+-->
+
+<svg xmlns="http://www.w3.org/2000/svg" id="console-icon" class="icon" width="14" height="14" viewBox="0 0 14 14">
+  <path id="console-2" d="M-140-187a2,2,0,0,1-2-2v-10a2,2,0,0,1,2-2h10a2,2,0,0,1,2,2v10a2,2,0,0,1-2,2Zm-1-12v10a1,1,0,0,0,1,1h10a1,1,0,0,0,1-1v-10a1,1,0,0,0-1-1h-10A1,1,0,0,0-141-199Zm4.833,10-.245-1.261a3.973,3.973,0,0,1-1.123-.645l-1.211.417-1.168-2.02.971-.844h0A4.107,4.107,0,0,1-139-194a4,4,0,0,1,.056-.645l-.971-.844,1.168-2.021,1.212.418a3.976,3.976,0,0,1,1.122-.645l.245-1.262h2.334l.245,1.262a3.974,3.974,0,0,1,1.123.644l1.211-.417,1.168,2.02-.971.845h0A3.985,3.985,0,0,1-131-194a4,4,0,0,1-.057.646l.97.845-1.167,2.02-1.212-.418a3.966,3.966,0,0,1-1.122.646l-.245,1.261Zm-.733-2.68a2.973,2.973,0,0,0,.842.483l.522.2.194,1h.684l.194-1,.522-.2h0a2.966,2.966,0,0,0,.841-.483l.433-.354.96.331.343-.594-.768-.668.089-.55A3.008,3.008,0,0,0-132-194a3,3,0,0,0-.044-.485h0l-.088-.549.768-.668-.343-.593-.961.33-.432-.354a2.978,2.978,0,0,0-.842-.482l-.522-.2-.194-1h-.685l-.194,1-.522.2a2.973,2.973,0,0,0-.842.482l-.432.355-.961-.331-.343.594.769.668-.089.55A3,3,0,0,0-138-194a3.072,3.072,0,0,0,.044.486h0l.089.548-.769.669.343.593.961-.33ZM-137-194a2.008,2.008,0,0,1,2-2,2.008,2.008,0,0,1,2,2,2.008,2.008,0,0,1-2,2A2.008,2.008,0,0,1-137-194Zm1,0a1,1,0,0,0,1,1,1,1,0,0,0,1-1,1,1,0,0,0-1-1A1,1,0,0,0-136-194Z" transform="translate(142 201)"/>
+</svg>

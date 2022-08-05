@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!--
+ * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+-->
+
+<svg id="codeFileIcon" class="icon" height="512" viewBox="0 0 74 74" width="512" xmlns="http://www.w3.org/2000/svg">
+    <path d="m64.19 37.54a1 1 0 0 1 -1-1v-3.09a1 1 0 0 1 2 0v3.09a1 1 0 0 1 -1 1z"/>
+    <path d="m64.19 65.72h-48.11a1 1 0 0 1 -1-1v-61.72a1 1 0 0 1 1-1h33.59a1 1 0 0 1 .707.293l14.523 14.52a1 1 0 0 1 .293.707v8.48a1 1 0 0 1 -2 0v-8.066l-13.937-13.934h-32.176v59.72h46.11v-9.11a1 1 0 0 1 2 0v10.11a1 1 0 0 1 -1 1z"/>
+    <path d="m64.19 48.16a1 1 0 0 1 -1-1v-3.16a1 1 0 0 1 2 0v3.16a1 1 0 0 1 -1 1z"/>
+    <path d="m58.958 72h-49.149a1 1 0 0 1 -1-1v-62.769a1 1 0 0 1 1-1h6.277a1 1 0 0 1 0 2h-5.277v60.769h47.149v-5.277a1 1 0 0 1 2 0v6.277a1 1 0 0 1 -1 1z"/>
+    <path d="m64.191 18.523h-14.523a1 1 0 0 1 -1-1v-14.523a1 1 0 0 1 2 0v13.523h13.523a1 1 0 0 1 0 2z"/>
+    <path d="m48.177 48.337a1 1 0 0 1 -.707-1.707l5.322-5.322-5.322-5.323a1 1 0 0 1 1.414-1.414l6.03 6.03a1 1 0 0 1 0 1.414l-6.03 6.029a1 1 0 0 1 -.707.293z"/>
+    <path d="m32.1 48.337a.993.993 0 0 1 -.707-.293l-6.03-6.029a1 1 0 0 1 0-1.414l6.03-6.03a1 1 0 0 1 1.414 1.414l-5.323 5.323 5.323 5.322a1 1 0 0 1 -.707 1.707z"/>
+    <path d="m36 54.309a.981.981 0 0 1 -.326-.056 1 1 0 0 1 -.619-1.271l8.276-24a1 1 0 1 1 1.89.653l-8.276 24a1 1 0 0 1 -.945.674z"/>
+</svg>

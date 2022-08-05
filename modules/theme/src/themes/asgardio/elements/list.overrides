@@ -1,0 +1,422 @@
+/*!
+ * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ *
+ */
+
+.ui.list {
+    &.settings-section-inner-list {
+        .item {
+            .header {
+                &.with-left-padding {
+                    padding-left: @settingsSectionInnerListHeaderPaddingLeft;
+                }
+            }
+        }
+    }
+}
+
+/*******************************
+    Resource List Variation
+*******************************/
+
+.ui.list {
+    &.resource-list {
+        > .item > .image:not(:only-child):not(img) {
+            padding-right: unset;
+        }
+
+        .resource-list-header {
+            border: none;
+
+            .resource-list-header-cell {
+                font-weight: 500;
+                color: @lightFontColor;
+            }
+        }
+
+        > .item {
+            padding: @veryRelaxedItemVerticalPadding 0.5em !important;
+            border-color: @resourceListItemBorderColor;
+
+            .list-item-description {
+                max-width: 300px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                color: grey;
+                font-size: 13px;
+            }
+
+            .list-item-action-panel {
+                .list-item-action {
+                    display: inline-block;
+                    margin-top: 10px;
+                }
+                > .list-item-action:not(:last-child) {
+                    margin-right: 10px;
+                }
+            }
+
+            .list-item-meta {
+                padding-top: 10px;
+                max-width: 100%;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .content {
+                x-overflow: hidden;
+
+                .list-item-name {
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+            }
+        }
+        
+        &.fill {
+            &-default {
+                border: @resourceListFillVariationOuterBorder;
+                border-radius: @defaultBorderRadius;
+                background: @lightPageBackground;
+                
+                > .item {
+                    padding: @resourceListFillVariationItemPadding;
+                }     
+            }
+        }
+    }
+}
+
+/*******************************
+     Claim List Variation
+*******************************/
+
+.ui.list {
+    &.claim-list {
+        padding-top: 0;
+        padding-left: 0;
+
+        .ui.checkbox {
+            margin: 5px 0px;
+
+            &.revoked {
+                text-decoration: line-through;
+            }
+        }
+        .revoked-label {
+            margin-left: 8px;
+            background: transparent;
+            color: @negativeColor;
+        }
+    }
+}
+
+/*******************************
+     Application List Variation
+*******************************/
+
+.ui.list {
+    &.application-list {
+        .application-list-item {
+            margin: 15px 2px;
+            padding: 10px;
+            position: relative;
+            border-radius: @defaultBorderRadius;
+            transition: all 0.1s;
+
+            .action-bar {
+                .enable-toggle {
+                    margin-right: 10px;
+
+                    label {
+                        &::before {
+                            background-color: #c5c1c1 !important;
+                        }
+                    }
+                }
+            }
+
+            .delete-icon {
+                padding-top:70px;
+                .enable-toggle {
+                    margin-right: 10px;
+
+                    label {
+                        &::before {
+                            background-color: #c5c1c1 !important;
+                        }
+                    }
+                }
+            }
+            .app-list-row{
+              position: relative;
+              padding: 0px;
+
+            }
+            .app-toggle{
+                background-color: #f4f7f9;
+                padding: 2%;
+            }
+            .app-actions{
+               background-color: #dae2e7;
+               padding: 2% 1%;
+            }
+
+            .app-content {
+               display: inline-block;
+               padding-left: 2%;
+               padding-top:2%;
+               background-color: #f4f7f9;
+                &:hover {
+                   background-color: darken(#f4f7f9, 10);
+                  }
+            }
+            .app-details {
+               padding: 0px;
+               padding-top: 0px;
+               padding-bottom: 10px;
+               background-color: #f4f7f9;
+               width: 100%;
+            }
+        }
+    }
+}
+
+/*******************************
+     User Role List Variation
+*******************************/
+
+.ui.list {
+    &.user-role-list {
+        .user-role-list-item {
+            padding: @userRolesListPadding;
+            margin: @userRolesListMargin;
+            color: @userRolesListItemFontColor;
+
+            i {
+                visibility: hidden;
+                padding-right: @userRolesListIconPaddingRight;
+                float: right;
+            }
+            &:hover {
+                background: @userRolesListItemBackgroundColorOnHover;
+                border-radius: @userRolesListItemBorderRadius;
+                i {
+                    visibility: visible;
+                }
+            }
+        }
+    }
+}
+
+/*******************************
+     Claim Mapping Variation
+*******************************/
+.ui.list {
+    &.claim-list {
+        .claim-list-item {
+            margin: 15px 1px;
+            padding: 1%;
+            border-radius: @defaultBorderRadius;
+            background-color: #f4f7f9;
+            color: #686f77;
+
+            .action-bar {
+                .claim-icon {
+                    margin: 5% 5%;
+                     &:hover {
+                         background-color: darken(#f4f7f9, 8);
+                      }
+                }
+
+                margin-top: 5px;
+            }
+
+
+            .claim-list-content {
+                   display: inline-block;
+                   padding-left: 3%;
+                   width: 100%;
+
+                   .sub-content {
+                       overflow-wrap: break-word;
+                       font-size: 0.9em;
+                       color: #908e8eee;
+                   }
+
+                   .main-content {
+                        overflow-wrap: break-word;
+                        font-size: 0.9em;
+                   }
+            }
+
+            .app-actions{
+               display: inline-block;
+               padding: 2% 1%;
+            }
+
+            .app-content {
+               display: inline-block;
+               padding-left: 2%;
+               padding-top:2%;
+            }
+            &.dark {
+               background-color: #e8e8e8;
+            }
+        }
+    }
+}
+
+/*******************************
+    Role Management Variation
+*******************************/
+.ui.list {
+    &.roles-list {
+        > .resource-list-item {
+            padding: @userRolesListPadding;
+            margin: @userRolesListMargin;
+            color: @userRolesListItemFontColor;
+
+            .user-image {
+                width: @userRoleAvatarSize;
+                height: @userRoleAvatarSize;
+            }
+
+            .wrapper{ 
+                background-color: @roleListWrapperColor;
+            }
+
+            .list-item-name {
+                display: inline-block;
+                margin-left: 0.5em;
+            }
+
+            i {
+                visibility: visible;
+                padding-right: @userRolesListIconPaddingRight;
+                float: right;
+            }
+        }
+
+    }
+}
+
+/*******************************
+        Dynamic Fields
+*******************************/
+
+.ui.list {
+    &.dynamic-field {
+        display: flex;
+        justify-content: flex-start;
+
+        input {
+            border: none !important;
+        }
+
+        .item {
+            flex-shrink: 1;
+            flex-grow: 1;
+            display: flex;
+            border: @menuBorder;
+            padding: 0;
+            width: calc( (100% - @dynamicFieldButtons) / 2 );
+            .label {
+                border-radius: unset;
+            }
+
+            .field {
+                width: 100%;
+                height: 100%;
+
+                .error.field {
+                    position: relative;
+
+                    .ui.pointing.above.prompt.label {
+                        position: absolute;
+                        top: 36px;
+                        left: 0;
+                        z-index: 99;
+                    }
+                }
+                
+                & * {
+                    height: 100%;
+                }
+            }
+
+            .ui.selection {
+                border: none;
+
+                .item {
+                    width: 100%;
+                }
+            }
+        }
+
+        .item:nth-child(1) {
+            border-top-left-radius: @menuBorderRadius;
+            border-bottom-left-radius: @menuBorderRadius;
+       
+        }
+
+        .item:nth-child(2) {
+            border-left: none;
+            border-right: none;
+        }
+
+        .item:nth-child(3) {
+            justify-content: stretch;
+            overflow: hidden;
+            width: @dynamicFieldButtons;
+            flex-shrink: 0;
+            flex-grow: 0;
+            border: none;
+            
+            button {
+                border-radius: unset;
+                margin: 0;
+                border-left: none;
+                border-right: none;
+            }
+
+            button:last-child {
+                border-left: none;
+                border-top-right-radius: @menuBorderRadius;
+                border-bottom-right-radius: @menuBorderRadius;
+            }
+        }
+    }
+}
+
+/*******************************
+      UI List Certificates
+*******************************/
+
+.ui.list {
+    .with-muted-list-item-header {
+        color: grey !important;
+        font-style: italic !important;
+
+        i {
+           color: grey !important;
+           cursor: pointer;
+        }
+    }
+}

@@ -1,0 +1,123 @@
+/*!
+ * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ *
+ */
+
+/*******************************
+         Theme Overrides
+*******************************/
+
+.ui.basic.label {
+    &.filter-label {
+        padding-left: @filterLabelHorizontalPadding;
+        padding-right: @filterLabelHorizontalPadding;
+        border-radius: @filterLabelBorderRadius;
+
+        i {
+            margin: 0 0 0 6px;
+        }
+        &:hover {
+            color: @filterLabelHoverTextColor;
+            border-color: @filterLabelHoverBorderColor;
+        }
+        &.active {
+            background: @filterLabelActiveBackgroundColor;
+            border-color: @filterLabelActiveBorderColor;
+            color: @filterLabelActiveTextColor;
+        }
+    }
+}
+
+.ui.label {
+    &.properties-label {
+        width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        padding: 11px 14.5px;
+    }
+}
+
+/*******************************
+            Sizing
+*******************************/
+
+.ui.label {
+    &.mini {
+        &.compact {
+            padding: 0.4em;
+        }
+        &.spaced {
+            &-left {
+                margin-left: 0.4em;
+            }
+            &-right {
+                margin-right: 0.4em;
+            }
+        }
+    }
+}
+
+.ui.circular.label {
+    &.micro {
+        min-width: @microCircularLabelMinWidth;
+        min-height: @microCircularLabelMinHeight;
+        &.spaced {
+            &-left {
+                margin-left: @microCircularLabelLeftMargin;
+            }
+            &-right {
+                margin-right: @microCircularLabelRightMargin;
+            }
+        }
+    }
+}
+
+.ui.circular.label {
+    &.status-label-with-popup {
+        cursor: pointer !important;
+        opacity: .7 !important;
+
+        &:hover {
+            opacity: 1 !important;
+        }
+    }
+}
+
+/*******************************
+        Header Label
+*******************************/
+
+.ui.header {
+    .ui.label {
+        &.no-margin-left {
+            margin-left: 0 !important;
+        }
+    }
+}
+
+/*******************************
+        Preview Label
+*******************************/
+
+.ui.label {
+    &.preview-label {
+        color: #01698a;
+        font-weight: 500;
+        background-color: #c3e6f6;
+        text-transform: uppercase;
+    }
+}

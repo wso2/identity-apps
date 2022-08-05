@@ -16,18 +16,20 @@
  * under the License.
  */
 
-import { ReactNode } from "react";
+import { ReactElement, ReactNode } from "react";
 import { Dispatch } from "redux";
 import {
     ExtendedClaimInterface,
     ExtendedExternalClaimInterface,
     SelectedDialectInterface
 } from "../../../features/applications/components/settings";
+import { ApplicationTabTypes } from "../../../features/applications/models";
 import { ApplicationInterface } from "../../../features/applications";
 
 export interface ApplicationConfig {
     advancedConfigurations: {
         showEnableAuthorization: boolean;
+        showMyAccount: boolean;
         showSaaS: boolean;
         showReturnAuthenticatedIdPs: boolean;
     };
@@ -60,6 +62,27 @@ export interface ApplicationConfig {
         showDangerZone: (application: ApplicationInterface) => boolean;
         showDeleteButton: (application: ApplicationInterface) => boolean;
         getTabPanelReadOnlyStatus: (tabPanelName: string, application: ApplicationInterface) => boolean;
+        isTabEnabledForApp: (clientId: string, tabType: ApplicationTabTypes, tenantDomain: string) => boolean;
+        getActions: (
+            clientId: string,
+            tenant: string,
+            testId: string
+        ) => ReactElement;
+        getOverriddenDescription: (
+            clientId: string,
+            tenantDomain: string,
+            templateName: string
+        ) => ReactElement,
+        getOveriddenTab: (
+            clientId: string,
+            tabName: any,
+            defaultComponent: ReactElement,
+            appName: string,
+            appId: string,
+            tenantDomain: string
+        ) => ReactNode,
+        getOverriddenImage: (clientId: string, tenantDomain: string) => ReactElement;
+        showApplicationShare: boolean;
     };
     inboundOIDCForm: {
         shouldValidateCertificate: boolean;

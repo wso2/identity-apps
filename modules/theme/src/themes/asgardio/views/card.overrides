@@ -1,0 +1,1382 @@
+/**
+ * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ *
+ */
+
+/*-----------------------------
+     Global Card Overrides
+------------------------------*/
+
+.ui.card {
+    .content {
+        &.extra {
+            &.selection {
+                cursor: pointer;
+
+                &:hover {
+                    background: @extraSelectionHoverBackground;
+                }
+            }
+        }
+        &.compact {
+            padding: 0;
+        }
+    }
+    &.clipped {
+        overflow: clip;
+    }
+    &.rounded {
+       border-radius: 100%;
+    }
+}
+
+
+/*-----------------------------
+   Application Card Variation
+------------------------------*/
+
+.ui.card {
+    &.application-card {
+        &.recent {
+            color: @recentApplicationCardDefaultColor;
+            width: 100%;
+            margin-bottom: 25px;
+
+            &:hover {
+                transform: none;
+            }
+            .logo {
+                background: transparent;
+                padding: 3em 0;
+                height: 170px;
+            }
+            .application-image {
+                text-align: center;
+
+                &.default {
+                    background: @whiteSmoke;
+                }
+            }
+            .application-content {
+                .text-content-container {
+                    display: inline-block;
+
+                    .application-name {
+                        color: @recentApplicationCardHeaderColor;
+                        font-size: @recentApplicationCardHeaderFontSize;
+                        line-height: @recentApplicationCardHeaderFontSize;
+                        margin-bottom: 4px;
+                        max-width: @recentApplicationCardHeaderMaxWidth;
+                        white-space: nowrap;
+                        text-overflow: ellipsis;
+                        overflow: hidden;
+                    }
+                    .application-description {
+                        color: @recentApplicationCardDescColor;
+                        max-width: @recentApplicationCardDescMaxWidth;
+                        min-height: @recentApplicationCardDescMinWidth;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                    }
+                    .application-tag {
+                        margin: 0;
+                        font-size: 0.8em;
+                    }
+                }
+                .icon-container {
+                    display: inline-block;
+                    font-size: 1.3em;
+                    float: right;
+                    margin-top: 10px;
+
+                    .favourite-icon {
+                        &.favoured {
+                            color: @starColor;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    &.settings-card {
+        border: @settingsCardBorder;
+        box-shadow: none;
+
+        &.with-top-action-bar {
+            .ui.list {
+                margin-top: 0;
+            }
+        }
+        &.overview {
+            min-height: 220px;
+        }
+        // override the default the margin bottom
+        &:last-child {
+            margin-bottom: 0.3em;
+        }
+        .no-padding {
+            padding: 0;
+        }
+        .header-section {
+            padding: @settingsCardHeaderPadding;
+
+            // override the semantic H2 margin
+            .ui.header {
+                font-size: @settingsCardHeaderFontSize;
+                margin-bottom: 5px;
+            }
+        }
+        .top-action-panel {
+            background: @settingsCardTopActionPanelBackground;
+            box-shadow: none;
+            padding: 0 @settingsCardPadding;
+            border-left: 0;
+            border-right: 0;
+            border-radius: 0;
+
+            .description {
+                display: flex;
+                align-items: center;
+            }
+            &.no-margin-bottom {
+                margin-bottom: 0;
+            }
+        }
+        .main-content {
+            .main-content-inner {
+                .edit-segment {
+                    padding: @settingsCardPadding;
+                }
+                .inner-list-item {
+                    padding: 0;
+
+                    .description {
+                        .placeholder-text {
+                            color: lighten(@black, 40);
+                        }
+                        .small-text {
+                            font-size: 11px;
+                        }
+                        &.padded-description {
+                            padding-top: 0.7em;
+                        }
+                    }
+                    .list-item-action {
+                        display: inline-block;
+                        padding-top: 10px;
+                    }
+                    .first-column {
+                        padding-left: @settingsCardPadding;
+                    }
+                    .last-column {
+                        padding-right: @settingsCardPadding;
+                    }
+                }
+                &.no-margin-top {
+                    margin-top: 0;
+                }
+            }
+        }
+        .extra-content {
+            padding: 0;
+            border-top: 1px solid @borderColor !important;
+
+            .action-button {
+                padding: 16px @settingsCardPadding;
+
+                .action-button-text {
+                    color: @settingsCardActionButtonColor;
+                    font-weight: 500;
+                }
+                &.disabled {
+                    .action-button-text {
+                        color: @black;
+                    }
+                }
+            }
+        }
+        .settings-section-tab {
+            .ui.attached.menu:not(.tabular) {
+                border-radius: 0;
+                border-left: none;
+                border-right: none;
+            }
+            .ui.secondary.pointing.menu .item {
+                padding-left: @settingsCardPadding;
+                padding-right: @settingsCardPadding;
+                border-bottom-width: @settingsCardTabItemBorderBottom;
+
+                &:active, &.active {
+                    border-bottom-color: @settingsCardTabItemBorderBottomColor;
+                }
+            }
+            .ui.segment {
+                &.tab-pane {
+                    border: none;
+                    box-shadow: none;
+                    margin-top: 0;
+                    padding: 0;
+                }
+            }
+        }
+    }
+}
+
+/*-----------------------------
+     Basic Card Variation
+------------------------------*/
+
+.ui.card {
+    &.basic-card {
+        transition: @basicCardTransition;
+        border: @basicCardBorder;
+        box-shadow: none;
+
+        &:hover {
+            transform: none !important;
+            text-decoration: none;
+        }
+        &:not(.no-hover) {
+            &:hover {
+                cursor: pointer !important;
+                box-shadow: @basicCardHoverBoxShadow !important;
+            }
+        }
+
+        &.no-hover {
+            &:hover {
+                box-shadow: none !important;
+            }
+        }
+
+        &.no-background {
+            background: unset !important;
+            background-color: transparent !important;
+        }
+    }
+}
+
+/*******************************
+    Selection Card Variation
+*******************************/
+
+.ui.card {
+    &.selection-card {
+        transition: @selectionCardTransition;
+        border: @selectionCardBorder;
+        box-shadow: none;
+
+        &.default {
+            width: @selectionCardDefaultWidth;
+        }
+        &.small {
+            width: @selectionCardSmallWidth;
+        }
+        &.x100 {
+            width: @selectionCardX100Width;
+        }
+        &.x120 {
+            width: @selectionCardX120Width;
+        }
+        &:hover {
+            transform: none;
+            text-decoration: none;
+            cursor: pointer;
+            box-shadow: @defaultCardHoverBoxShadow;
+        }
+        &.inline {
+            display: inline-block;
+            margin-right: @selectionCardRightSpacing;
+        }
+        &.image-inline {
+            .card-text-container {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: nowrap;
+                align-content: center;
+                justify-content: center;
+                align-items: center;
+            }
+        }
+        &.selected {
+            &.underlined-selection {
+                &:after {
+                    visibility: visible;
+                }
+            }
+            &.filled-selection {
+                background: lighten(@primaryColor, 40);
+                border: 1px solid @primaryColor;
+            }
+        }
+        &.disabled {
+            cursor: not-allowed;
+        }
+        &.grayscale {
+            filter: grayscale(100%);
+        }
+        &.spaced {
+            &-bottom {
+                margin-bottom: @selectionCardSpacedBottomMargin;
+            }
+        }
+        &.no-content-top-border {
+            .card-text-container {
+                border-top: 0;
+            }
+        }
+        .card-text-container {
+            padding: @selectionCardTextContainerPadding;
+
+            .header {
+                font-size: @selectionCardHeaderFontSize;
+                line-height: @selectionCardHeaderLineHeight;
+                max-width: @selectionCardHeaderMaxWidth;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                overflow: hidden;
+            }
+            .description {
+                font-size: @selectionCardDescriptionFontSize;
+                max-width: @selectionCardDescriptionMaxWidth;
+                min-height: @selectionCardDescriptionMinHeight;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+
+                &.multiline {
+                    white-space: normal;
+                    display: -webkit-box;
+                    -webkit-line-clamp: 2;
+                    -webkit-box-orient: vertical;
+                    text-overflow: ellipsis;
+                }
+            }
+        }
+        &:after {
+            display: block;
+            background: @selectionCardSelectedStateBorderColor;
+            content: '';
+            height: 3px;
+            visibility: hidden;
+        }
+        &.no-actions {
+            cursor: not-allowed !important;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+    }
+}
+
+/* Selection card with radio button */
+.ui.card {
+    &.selection-card {
+        &.radio-selection-card {
+            border: none !important;
+            box-shadow: none !important;
+            background: @selectionCardWithRadioBackground;
+            border-left: @selectionCardWithRadioBorderLeft !important;
+
+            .integrate-radio {
+                flex-grow: 0;
+                width: 80px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                .ui.radio.checkbox {
+                    margin-top: -5px !important;
+                }
+
+                .ui.radio.checkbox label::after {
+                    width: 22px !important;
+                    height: 22px !important;
+                    top: 0px !important;
+                    left: -1px !important;
+                    background-color: @primaryColor !important;
+                }
+
+                .ui.radio.checkbox label::before {
+                    width: 20px !important;
+                    height: 20px !important;
+                    border-color: #c8c8c8 !important;
+                    border-width: 2px !important;
+                }
+            }
+
+             &.card-selected {
+                 box-shadow: none !important;
+                 background: @selectionCardWithRadioSelectedBackground;
+                 border-left: @selectionCardWithRadioSelectedBorderLeft !important;
+
+                 .integrate-radio {
+                     .ui.radio.checkbox label::before {
+                         border-color: @primaryColor !important;
+                     }
+                 }
+
+                 .selection-card-content {
+                    .meta {
+                        span {
+                            color: @selectionCardWithRadioSelectedSubheaderColor;
+                        }
+                    }
+                 }
+
+                 &:hover {
+                    background: @selectionCardWithRadioSelectedBackground;
+                 }
+             }
+
+             .selection-card-content {
+                 display: flex;
+                 flex-direction: row;
+                 padding: 1.4em 1em !important;
+                 cursor: pointer;
+
+                 .header {
+                     font-size: 1.4em;
+
+                     span {
+                         color: @selectionCardWithRadioHighlightedHeaderColor;
+                         font-weight: @selectionCardWithRadioHighlightedHeaderFontWeight;
+                     }
+                 }
+
+                 .meta {
+                     span {
+                         font-size: 0.9em;
+                     }
+                 }
+             }
+
+             &:hover {
+                background: @selectionCardWithRadioHoverBackground;
+             }
+        }
+    }
+}
+
+/*-----------------------------
+     Resource Cards Grid
+------------------------------*/
+
+.ui.cards {
+    &.resource-grid {
+        .ui.card {
+            &.info-card {
+                width: @resourceCardDefaultWidth;
+
+                .content {
+                    &:not(:first-child) {
+                        padding-top: 0.4em;
+
+                        &:not(:last-child) {
+                            padding-bottom: 0.4em;
+                        }
+                    }
+                }
+                .action-container {
+                    min-height: 55px !important;
+
+                    .actions {
+                        display: flex;
+                        justify-content: space-between;
+
+                        .delete-button {
+                            visibility: hidden;
+                            color: @negativeColor;
+                        }
+                    }
+                }
+
+                &:hover {
+                    .action-container {
+                        .delete-button {
+                            visibility: visible;
+                        }
+                    }
+                }
+
+                &.disabled {
+                    opacity: @resourceCardDisabledOpacity;
+                }
+            }
+        }
+    }
+}
+
+/*********************************************
+             Template Card Variation
+*********************************************/
+
+.ui.cards {
+    .ui.card {
+        &.template-card {
+            width: @templateCardDefaultWidth;
+            transition: @templateCardTransition;
+            border: @templateCardBorder;
+            box-shadow: none;
+
+            &:hover {
+                transform: none;
+                text-decoration: none;
+                cursor: pointer;
+                box-shadow: @templateCardHoverBoxShadow;
+            }
+            &.inline {
+                display: inline-block;
+                margin-right: @templateCardRightSpacing;
+            }
+            &.selected {
+                border-bottom-width: @templateCardBorderBottomWidth;
+                border-bottom-color: @templateCardSelectedStateBorderBottomColor;
+            }
+            &.disabled {
+                cursor: not-allowed;
+                box-shadow: none !important;
+            }
+            &.grayscale {
+                filter: grayscale(100%);
+            }
+            .card-image-container {
+            }
+            .card-text-container {
+                padding: @templateCardTextContainerPadding;
+                border-top: none;
+
+                .header {
+                    font-size: @templateCardHeaderFontSize;
+                    font-weight: @templateCardHeaderFontWeight;
+                    line-height: @templateCardHeaderLineHeight;
+                    max-width: @templateCardHeaderMaxWidth;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                    overflow: hidden;
+                }
+                .description {
+                    font-size: @templateCardDescriptionFontSize;
+                    max-width: @templateCardDescriptionMaxWidth;
+                    min-height: @templateCardDescriptionMinHeight;
+                    display: -webkit-box;
+                    -webkit-line-clamp: 2;
+                    -webkit-box-orient: vertical;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    height: @templateCardDescriptionHeight;
+                }
+                .tags-container {
+                    margin: 8px 0;
+
+                    .title {
+                        font-size: @templateCardTagTitleFontSize;
+                        color: @lightFontColor;
+                        margin-bottom: 5px;
+                    }
+
+                    .tags {
+                        display: flex;
+                        flex-direction: row;
+                        flex-wrap: nowrap;
+                        align-content: center;
+                        justify-content: center;
+                        align-items: center;
+
+                        .tag-icon {
+                            color: @templateCardTagIconColor;
+                        }
+
+                        .tag {
+                            &.default {
+                                font-size: @templateCardTextTagFontSize;
+                                color: @templateCardTextTagColor;
+                            }
+
+                            &:not(:first-child) {
+                                margin: @templateCardTextTagMargin;
+                            }
+                        }
+                    }
+                }
+            }
+            .ribbon {
+                font-size: 0.8em;
+                font-weight: 500;
+                color: @white;
+                right: 0;
+                height: 24px;
+                position: absolute;
+                min-width: 100px;
+                background: linear-gradient(270deg, lighten(@primaryColor, 15) 0%, @primaryColor 100%);
+                display: flex;
+                flex-direction: row;
+                align-content: center;
+                align-items: center;
+                justify-content: space-around;
+                clip-path: polygon(4% 0, 0 100%, 100% 100%, 100% 0, 100% 0);
+                -webkit-clip-path: polygon(4% 0, 0 100%, 100% 100%, 100% 0, 100% 0);
+            }
+        }
+    }
+}
+
+/*******************************
+     Labeled Card Variation
+*******************************/
+
+.labeled-card-wrapper {
+    text-align: center;
+
+    &.basic {
+        .labeled-card {
+            border: none !important;
+        }
+    }
+    &.padding {
+        &-none {
+            .labeled-card {
+                .card-image-container {
+                    padding: 0;
+                }
+            }
+        }
+    }
+    &.tiny {
+        width: @labeledCardTiny;
+    }
+    &.with-bottom-margin {
+        margin-bottom: @labeledCardWrapperMarginBottom;
+    }
+    &:hover {
+        cursor: pointer;
+
+        .ui.card {
+            &.labeled-card {
+                transform: none;
+                text-decoration: none;
+                cursor: pointer;
+                box-shadow: @labeledCardHoverBoxShadow;
+
+                .close-button {
+                    visibility: visible;
+                }
+            }
+        }
+        &.hover-raised {
+            &-none {
+                .labeled-card {
+                    box-shadow: none !important;
+                }
+            }
+        }
+    }
+    &.inline {
+        display: inline-block;
+        margin-right: @labeledCardRightSpacing;
+    }
+    .ui.card {
+        &.labeled-card {
+            width: auto;
+            transition: @labeledCardTransition;
+            border: @labeledCardBorder;
+            box-shadow: none;
+            margin-bottom: @labeledCardMarginBottom;
+
+            &:hover {
+                transform: none;
+                text-decoration: none;
+                cursor: pointer;
+                box-shadow: @labeledCardHoverBoxShadow;
+            }
+            &.background {
+                &-transparent {
+                    background: transparent;
+                }
+            }
+            .close-button {
+                border-radius: 50% !important;
+                display: inline-table;
+                font-weight: 500;
+                visibility: hidden;
+
+                &:hover {
+                    box-shadow: 1px 1px 4px @darkGray;
+                }
+            }
+            &.selected {
+                border-color: @labeledCardSelectedBorder;
+            }
+            &.disabled {
+                cursor: not-allowed;
+                filter: grayscale(100%);
+            }
+       }
+    }
+
+    .card-label {
+        font-size: @labeledCardLabelFontColor;
+
+        &.multiline {
+            word-break: break-word;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            line-height: 1.2em;
+            min-height: 2.2em;
+            max-height: 3.2em;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            white-space: normal !important;
+        }
+    }
+
+    &.fluid {
+        width: 100%;
+    }
+}
+
+/*******************************
+      Info Card Variation
+*******************************/
+
+.ui.card {
+    &.info-card {
+        transition: @defaultCardTransition;
+        border: @defaultCardBorder;
+        box-shadow: none;
+
+        &:hover {
+            transform: none;
+            text-decoration: none;
+
+            &:not(.no-hover) {
+                cursor: pointer;
+                box-shadow: @infoCardHoverBoxShadow;
+            }
+        }
+        &.selected {
+            border-color: @infoCardSelectedBorder;
+        }
+        &.disabled {
+            cursor: not-allowed;
+            filter: grayscale(100%);
+        }
+        .ribbon {
+            font-size: 0.8em;
+            font-weight: 500;
+            color: @white;
+            right: 0;
+            height: 24px;
+            position: absolute;
+            min-width: 100px;
+            background: linear-gradient(270deg, lighten(@primaryColor, 15) 0%, @primaryColor 100%);
+            display: flex;
+            flex-direction: row;
+            align-content: center;
+            align-items: center;
+            justify-content: space-around;
+            clip-path: polygon(4% 0, 0 100%, 100% 100%, 100% 0, 100% 0);
+            -webkit-clip-path: polygon(4% 0, 0 100%, 100% 100%, 100% 0, 100% 0);
+        }
+        .content {
+            border: none;
+        }
+        .card-image {
+            margin-right: 0.7em;
+        }
+        .card-header-section {
+            .card-header {
+                font-weight: 500;
+            }
+        }
+        .card-subheader {
+            font-size: @infoCardSubHeaderFontSize;
+            color: @lightFontColor;
+        }
+        .card-description-container {
+            padding-top: 0.5em;
+            min-height: 45px;
+        }
+        .card-description {
+            font-size: 0.9em;
+            word-break: break-word;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            line-height: 1.2em;
+            max-height: 2.8em;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            color: @lightFontColor;
+        }
+        &:not(.fluid) {
+            .github-meta {
+                padding-top: 0.3em;
+            }
+        }
+        &.fluid {
+            .card-description {
+                padding-top: 0.3em;
+                padding-bottom: 0.3em;
+            }
+            .github-meta {
+                margin-top: 3px;
+            }
+            .card-image {
+                margin-right: 1em;
+            }
+        }
+        .card-tags {
+            padding-top: 0.6em;
+            padding-bottom: 0.6em;
+
+            .label {
+                font-weight: 600;
+                color: @white;
+                background: lighten(@nobel, 20);
+            }
+        }
+        .github-meta {
+            .ui.labels {
+                display: flex;
+
+                .label {
+                    background: @lightGray;
+                }
+            }
+            &.inline {
+                display: inline-block;
+            }
+        }
+        .action-container {
+            .info-card-inner-action {
+                padding-left: 0;
+
+                .icon {
+                    margin-left: 0 !important;
+                    text-decoration: auto;
+                }
+            }
+        }
+    }
+}
+
+/*-----------------------------
+   Statistics Count Variation
+------------------------------*/
+
+.ui.card {
+    &.stat-count-card {
+        transition: @statCountCardTransition;
+        border: @statCountCardBorder;
+        box-shadow: none;
+
+        .ui.statistic {
+            margin-top: 0 !important;
+
+            .label {
+                color: @lightFontColor;
+            }
+        }
+        &:hover {
+            transform: none;
+            text-decoration: none;
+            cursor: pointer;
+            box-shadow: @statCountCardHoverBoxShadow;
+        }
+    }
+}
+
+/*-----------------------------
+      Relaxed Variation
+------------------------------*/
+
+.ui.card {
+    &.relaxed {
+        .content {
+            padding: @relaxedCardContentPadding;
+        }
+    }
+}
+
+/*-----------------------------------------
+      User Type Selection Card Variation
+-------------------------------------------*/
+
+.ui.card {
+    &.user-selection-card {
+        transition: @selectionCardTransition;
+        border: @selectionCardBorder;
+        box-shadow: none;
+        height: 290px;
+        width: 205px;
+
+        &.small {
+            width: @selectionCardSmallWidth;
+        }
+        &.x100 {
+            width: @selectionCardX100Width;
+        }
+        &.x120 {
+            width: @selectionCardX120Width;
+        }
+        &:hover {
+            transform: none;
+            text-decoration: none;
+            cursor: pointer;
+            box-shadow: @defaultCardHoverBoxShadow;
+        }
+        &.inline {
+            display: inline-block;
+        }
+        &.selected {
+            &.underlined-selection {
+                &:after {
+                    visibility: visible;
+                }
+            }
+            &.filled-selection {
+                background: lighten(@primaryColor, 40);
+                border: 1px solid @primaryColor;
+            }
+        }
+        &.disabled {
+            cursor: not-allowed;
+            filter: grayscale(100%);
+        }
+        &.spaced {
+            &-bottom {
+                margin-bottom: @selectionCardSpacedBottomMargin;
+            }
+        }
+        .card-text-container {
+            text-align: center;
+            border-top: 0;
+
+            .header {
+                font-size: 1em !important;
+                line-height: @selectionCardHeaderLineHeight;
+            }
+            .description {
+                font-size: 0.8em;
+            }
+
+            &.consumer {
+                margin-top: -47px;
+            }
+        }
+        .card-image-container {
+            height: 145px;
+        }
+        &:after {
+            display: block;
+            background: @selectionCardSelectedStateBorderColor;
+            content: '';
+            height: 3px;
+            visibility: hidden;
+        }
+    }
+}
+
+/*----------------------------------------------
+      User Account Type Switch Card Variation
+-----------------------------------------------*/
+
+.ui.card {
+    &.user-type-switch-card {
+        &.radio-selection-card {
+            border: none !important;
+            box-shadow: none !important;
+            border-left: @selectionCardWithRadioBorderLeft !important;
+            height: 60px;
+
+            .user-type-radio {
+                flex-grow: 0;
+                width: 35px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                .ui.radio.checkbox {
+                    margin-top: -5px !important;
+                }
+
+                .ui.radio.checkbox label::after {
+                    width: 22px !important;
+                    height: 22px !important;
+                    top: 0px !important;
+                    left: -1px !important;
+                    background-color: @primaryColor !important;
+                }
+
+                .ui.radio.checkbox label::before {
+                    width: 20px !important;
+                    height: 20px !important;
+                    border-color: #c8c8c8 !important;
+                    border-width: 2px !important;
+                }
+            }
+
+            &.disabled {
+                background: #fbfbfb;
+                cursor: not-allowed;
+                filter: grayscale(100%);
+                pointer-events: none !important;
+                color: #8c8c8c;
+            }
+
+             &.card-selected {
+                 box-shadow: none !important;
+                 background: @selectionCardWithRadioSelectedBackground;
+                 border-left: @selectionCardWithRadioSelectedBorderLeft !important;
+
+                 .user-type-radio {
+                     .ui.radio.checkbox label::before {
+                         border-color: @primaryColor !important;
+                     }
+                 }
+
+                 .selection-card-content {
+                    .meta {
+                        span {
+                            color: @selectionCardWithRadioSelectedSubheaderColor;
+                        }
+                    }
+                 }
+
+                 &:hover {
+                    background: @selectionCardWithRadioSelectedBackground;
+                 }
+             }
+
+             .selection-card-content {
+                 display: flex;
+                 flex-direction: row;
+                 padding: 10px 10px !important;
+                 cursor: pointer;
+
+                 .header {
+                     font-size: 1.1em !important;
+                     margin-left: 10px;
+
+                     span {
+                         color: @selectionCardWithRadioHighlightedHeaderColor;
+                         font-weight: @selectionCardWithRadioHighlightedHeaderFontWeight;
+                     }
+                 }
+
+                 .meta {
+                     margin-left: 10px;
+                     span {
+                         font-size: 12px;
+                     }
+                 }
+             }
+
+             &:hover {
+                background: @selectionCardWithRadioHoverBackground;
+             }
+        }
+    }
+}
+
+/*-----------------------------------------
+      Disabled User Card
+-------------------------------------------*/
+
+.ui.card {
+    &.disabled-card {
+        transition: @selectionCardTransition;
+        border: none;
+        box-shadow: none;
+        height: 290px;
+        width: 205px;
+
+        &.small {
+            width: @selectionCardSmallWidth;
+        }
+        &.x100 {
+            width: @selectionCardX100Width;
+        }
+        &.x120 {
+            width: @selectionCardX120Width;
+        }
+        &.inline {
+            display: inline-block;
+        }
+        &.spaced {
+            &-bottom {
+                margin-bottom: @selectionCardSpacedBottomMargin;
+            }
+        }
+        .card-text-container {
+            text-align: center;
+            border-top: 0;
+
+            .header {
+                color: #616161;
+                font-size: 1em !important;
+                line-height: @selectionCardHeaderLineHeight;
+            }
+            .description {
+                color: #9e9b9b;
+                font-size: 0.8em;
+            }
+        }
+        .card-image-container {
+            height: 145px;
+            opacity: 0.6;
+        }
+    }
+}
+
+/*-----------------------------------------
+         Reusable Card Directives
+-------------------------------------------*/
+
+.ui.card {
+    .coming-soon-ribbon {
+        top: 0;
+        width: fit-content;
+        min-width: 100px;
+        font-size: 0.8em;
+        height: 24px;
+        position: absolute;
+        right: 0;
+        display: flex;
+        flex-direction: row;
+        align-content: center;
+        align-items: center;
+        justify-content: space-around;
+        font-weight: 500;
+        color: @white;
+        background: linear-gradient(270deg, lighten(@primaryColor, 15) 0%, @primaryColor 100%);
+        clip-path: polygon(4% 0, 0 100%, 100% 100%, 100% 0, 100% 0);
+        -webkit-clip-path: polygon(4% 0, 0 100%, 100% 100%, 100% 0, 100% 0);
+    }
+}
+
+.ui.card {
+
+    &.context-card {
+        padding: 15px;
+    }
+    .no-borders {
+        border: none !important;
+    }
+
+    .application-tile {
+        position: relative;
+        align-content: space-between;
+        background-color: @galleryGray;
+        border-radius: 8px;
+        cursor: pointer;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 150px;
+        padding: 15px;
+        transition: @selectionCardTransition;
+        border: @selectionCardBorder;
+        box-shadow: none;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        display: flex !important;
+
+        &:hover {
+            transform: none;
+            text-decoration: none;
+            cursor: pointer;
+            box-shadow: @defaultCardHoverBoxShadow;
+        }
+        &.auto-vh-center {
+            justify-content: center;
+            align-content: center;
+            align-items: center;
+            justify-items: center;
+        }
+        &.outlined {
+            background-color: unset !important;
+            box-shadow: unset !important;
+            border-style: dashed;
+            border-width: 2px;
+            border-color: lightgray;
+        }
+        &.cursor-not-allowed {
+            pointer-events: none !important;
+            cursor: not-allowed !important;
+        }
+        &.cursor-pointer {
+            cursor: pointer !important;
+        }
+        &.clipped {
+            overflow: clip;
+        }
+        &.grayscale {
+            filter: grayscale(100%);
+        }
+        &.opacity-50 {
+            opacity: 0.5;
+        }
+        &.white-bg {
+            background-color: white;
+        }
+
+        .header {
+            margin-top: 0 !important;
+            width: 100%;
+
+            > h1 {
+               margin: 0 !important;
+               padding: 0 !important;
+               font-size: 16px !important;
+               font-weight: 500;
+               text-overflow: ellipsis;
+               overflow: hidden;
+               white-space: nowrap;
+               width: 90%;
+            }
+
+            > h2 {
+               margin: 0 !important;
+               padding: 0 !important;
+               font-size: 12px !important;
+               text-overflow: ellipsis;
+            }
+        }
+
+        .body {
+            height: 100%;
+            display: flex;
+
+            > h1 {
+               position: relative;
+               margin: 0 !important;
+               padding: 0 !important;
+               font-size: 16px !important;
+               font-weight: 500;
+               white-space: normal;
+               word-break: break-all;
+               word-wrap: break-word;
+               width: 90%;
+               text-align: left;
+               overflow: clip; /* Faster than hidden */
+               text-overflow: ellipsis; /* Required for line-clamp */
+               display: -webkit-box; /* Required for line-clamp */
+               line-clamp: 2; /* Number of lines to show */
+               -webkit-line-clamp: 2; /* Chrome */
+               -webkit-box-orient: vertical; /* Chrome */
+            }
+
+            &.center {
+                justify-content: center;
+                align-items: center;
+            }
+
+            &.start {
+                justify-content: start;
+                align-items: start;
+            }
+
+            .content {
+                margin-top: 10px;
+                font-size: 11px;
+                max-height: 50px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                background: -webkit-linear-gradient(top, transparent 80%, @galleryGray);
+            }
+
+            .stacked-content {
+                display: flex;
+                flex-direction: column;
+                row-gap: 10px;
+                text-align: center;
+            }
+        }
+
+        .footer {
+            display: flex;
+            justify-content: space-between;
+
+            &.justify-end {
+                justify-content: end !important;
+            }
+            &.justify-start {
+                justify-content: start !important;
+            }
+        }
+
+        .coming-soon-ribbon {
+            top: 0;
+            width: fit-content;
+            min-width: 100px;
+            font-size: 0.8em;
+            height: 24px;
+            position: absolute;
+            right: 0;
+            display: flex;
+            flex-direction: row;
+            align-content: center;
+            align-items: center;
+            justify-content: space-around;
+            font-weight: 500;
+            color: @white;
+            background: linear-gradient(270deg, lighten(@primaryColor, 15) 0%, @primaryColor 100%);
+            clip-path: polygon(4% 0, 0 100%, 100% 100%, 100% 0, 100% 0);
+            -webkit-clip-path: polygon(4% 0, 0 100%, 100% 100%, 100% 0, 100% 0);
+        }
+    }
+
+    .card-expanded-navigation-button {
+        border: none !important;
+        border-radius: 6px;
+        width: 100%;
+        padding: 15px 0 0 0 !important;
+        margin-bottom: 0 !important;
+        display: flex !important;
+        flex-direction: row !important;
+        background-color: @galleryGray;
+        text-decoration: none;
+        align-items: center;
+        text-overflow: ellipsis !important;
+        color: @primaryColor !important;
+        background-color: transparent !important;
+        box-shadow: unset !important;
+        height: 45px;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+
+    .card-rich-navigation-button {
+        color: darken(@galleryGray, 95) !important;
+        justify-content: space-between !important;
+        background-color: darken(@galleryGray, 3) !important;
+        text-decoration: none !important;
+        box-shadow: revert !important;
+        padding: 15px !important;
+
+        &:hover {
+            color: darken(@galleryGray, 100) !important;
+            background-color: darken(@galleryGray, 8) !important;
+        }
+    }
+}

@@ -1,0 +1,14 @@
+{
+    "id": "apple-idp",
+    "name": "Apple",
+    "description": "Login users with existing Apple accounts.",
+    "image": "apple",
+    "category": "DEFAULT",
+    "displayOrder": 2,
+    "services": [],
+    "tags": [ "Social-Login" ],
+    "idp": {},
+    "type": "SOCIAL",
+    "templateId": "apple-idp",
+    "comingSoon": true
+}

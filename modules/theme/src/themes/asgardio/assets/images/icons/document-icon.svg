@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!--
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+-->
+
+<svg version="1.1" class="icon" id="document-icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512" xml:space="preserve" width="14" height="14">
+	<g>
+		<path class="path primary" d="M316,30h-17.57C292.239,12.539,275.556,0,256,0s-36.239,12.539-42.43,30H196c-8.284,0-15,6.716-15,15v15H76   c-8.284,0-15,6.716-15,15v422c0,8.284,6.716,15,15,15h360c8.284,0,15-6.716,15-15V75c0-8.284-6.716-15-15-15H331V45   C331,36.716,324.284,30,316,30z M211,60h15c8.284,0,15-6.716,15-15c0-8.271,6.729-15,15-15s15,6.729,15,15c0,8.284,6.716,15,15,15   h15v30h-90V60z M421,90v392H91V90h90v15c0,8.284,6.716,15,15,15h120c8.284,0,15-6.716,15-15V90H421z" />
+		<path class="path secondary" d="M181,165c0,8.284,6.716,15,15,15h180c8.284,0,15-6.716,15-15s-6.716-15-15-15H196C187.716,150,181,156.716,181,165z" />
+		<circle class="path primary" cx="136" cy="165" r="15" />
+		<path class="path secondary" d="M376,210H196c-8.284,0-15,6.716-15,15s6.716,15,15,15h180c8.284,0,15-6.716,15-15S384.284,210,376,210z" />
+		<circle class="path primary" cx="136" cy="225" r="15" />
+		<path class="path secondary" d="M376,270H196c-8.284,0-15,6.716-15,15s6.716,15,15,15h180c8.284,0,15-6.716,15-15S384.284,270,376,270z" />
+		<circle class="path primary" cx="136" cy="285" r="15" />
+		<path class="path primary" d="M376,330H136c-8.284,0-15,6.716-15,15v92c0,8.284,6.716,15,15,15h240c8.284,0,15-6.716,15-15v-92   C391,336.716,384.284,330,376,330z M361,422H151v-62h210V422z" />
+	</g>
+</svg>

@@ -1,0 +1,14 @@
+{
+    "id": "microsoft-azure-idp",
+    "name": "Microsoft",
+    "description": "Login users with existing Microsoft accounts.",
+    "image": "microsoft",
+    "category": "DEFAULT",
+    "displayOrder": 2,
+    "services": [],
+    "tags": [ "Social-Login" ],
+    "idp": {},
+    "type": "SOCIAL",
+    "templateId": "microsoft-idp",
+    "comingSoon": true
+}

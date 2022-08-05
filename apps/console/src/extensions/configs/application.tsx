@@ -16,8 +16,9 @@
  * under the License.
  */
 
-import { ReactNode } from "react";
+import { ReactElement, ReactNode } from "react";
 import { ApplicationConfig } from "./models";
+import { ApplicationTabTypes } from "../../features/applications";
 import {
     ExtendedClaimInterface,
     ExtendedExternalClaimInterface,
@@ -28,6 +29,7 @@ import { ApplicationInterface } from "../../features/applications";
 export const applicationConfig: ApplicationConfig = {
     advancedConfigurations: {
         showEnableAuthorization: true,
+        showMyAccount: false,
         showReturnAuthenticatedIdPs: true,
         showSaaS: true
     },
@@ -68,6 +70,23 @@ export const applicationConfig: ApplicationConfig = {
     },
     editApplication: {
         extendTabs: false,
+        getActions: (_clientId: string, _tenant: string, _testId: string) => {
+            return null;
+        },
+        // TODO: Move the default to the usage
+        getOveriddenTab: (_clientId: string, _tabName: ApplicationTabTypes, 
+            defaultComponent: ReactElement, _appName: string, _appId: string, _tenantDomain: string) => {
+            return defaultComponent;
+        },
+        getOverriddenDescription: (_clientId: string, _templateName: string, _tenantDomain: string) => {
+            return null;
+        },
+        getOverriddenImage: (_clientId: string, _tenantDomain: string) => {
+            return null;
+        },
+        isTabEnabledForApp: (_clientId: string, _tabType: ApplicationTabTypes, _tenantDomain: string): boolean => {
+            return true;
+        },
         renderHelpPanelItems: (): ReactNode => {
             return null;
         },
@@ -80,7 +99,8 @@ export const applicationConfig: ApplicationConfig = {
         },
         getTabPanelReadOnlyStatus: (tabPanelName: string, applicationName: ApplicationInterface): boolean => {
             return false;
-        }
+        },
+        showApplicationShare: true
     },
     excludeIdentityClaims: false,
     excludeSubjectClaim: false,

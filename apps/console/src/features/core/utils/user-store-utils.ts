@@ -21,7 +21,7 @@ import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
 import isEmpty from "lodash-es/isEmpty";
-import { UserStoreProperty } from "../../userstores/models";
+import { UserStoreListItem, UserStoreProperty } from "../../userstores/models";
 import { getAUserStore, getPrimaryUserStore } from "../api";
 import { SharedUserStoreConstants } from "../constants";
 import { UserStoreDetails } from "../models";
@@ -50,9 +50,9 @@ export class SharedUserStoreUtils {
     public static async getUserStoreRegEx(userstore: string, regExName: string): Promise<string> {
         let usernameRegEx: UserStoreProperty = null;
 
-        return getUserStoreList()
+        return getUserStoreList(store.getState().config.endpoints.userStores)
             .then((response) => {
-                const store = response.data.find(item => item.name === userstore);
+                const store = response?.data?.find(item => item.name === userstore);
 
                 if (!isEmpty(store)) {
                     return getAUserStore(store.id)
@@ -79,17 +79,34 @@ export class SharedUserStoreUtils {
 
     /**
      * The following method fetch the user store ids list.
+     *
+     * @param {UserStoreListItem[]} userstores - Externally provided usertores list.
+     * @returns {Promise<string[] | void>}
      */
-    public static async getUserStoreIds(): Promise<string[]> {
-        const userStoreIds: string[] = [];
+    public static async getUserStoreIds(userstores?: UserStoreListItem[]): Promise<string[] | void> {
 
-        return getUserStoreList().then((response) => {
-            response.data.map((userStore) => {
+        const getIds = (_userstores: UserStoreListItem[]): string[] => {
+            const userStoreIds: string[] = [];
+
+            _userstores.map((userStore) => {
                 userStoreIds.push(userStore.id);
             });
 
             return userStoreIds;
-        });
+        };
+
+        if (userstores) {
+            return getIds(userstores);
+        }
+
+        return getUserStoreList(store.getState().config.endpoints.userStores)
+            .then((response) => {
+                return getIds(response.data);
+            })
+            .catch(() => {
+                // Add debug logs here one a logger is added.
+                // Tracked here https://github.com/wso2/product-is/issues/11650.
+            });
     }
 
     /**
@@ -103,7 +120,7 @@ export class SharedUserStoreUtils {
                 description: I18n.instance.t("console:develop.features.userstores.notifications.fetchUserstores." +
                     "genericError.description"),
                 level: AlertLevels.INFO,
-                message: I18n.instance.t("console:develop.features.userstores.notifications.fetchUserstores." + 
+                message: I18n.instance.t("console:develop.features.userstores.notifications.fetchUserstores." +
                     "genericError.message")
             }));
         });
@@ -111,14 +128,17 @@ export class SharedUserStoreUtils {
 
     /**
      * The following method fetch the readonly user stores list.
+     *
+     * @param {UserStoreListItem[]} userstores - Externally provided usertores list.
+     * @deprecated Write these functionalities seperately get the caching support from SWR.
      */
-    public static async getReadOnlyUserStores(): Promise<string[]> {
-        const ids = await SharedUserStoreUtils.getUserStoreIds();
+    public static async getReadOnlyUserStores(userstores?: UserStoreListItem[]): Promise<string[]> {
+        const ids: string[] = await SharedUserStoreUtils.getUserStoreIds(userstores) as string[];
         const primaryUserStore = await SharedUserStoreUtils.getPrimaryUserStore();
         const readOnlyUserStores: string[] = [];
 
         // Checks if the primary user store is readonly as well.
-        if ( primaryUserStore && primaryUserStore.properties.find(property => { 
+        if ( primaryUserStore && primaryUserStore.properties.find(property => {
             return property.name === SharedUserStoreConstants.READONLY_USER_STORE; }).value === "true"
         ) {
             readOnlyUserStores.push(primaryUserStore.name.toUpperCase());

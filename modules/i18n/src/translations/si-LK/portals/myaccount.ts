@@ -18,6 +18,11 @@
 
 import { MyAccountNS } from "../../../models";
 
+/**
+ * NOTES: No need to care about the max-len for this file since it's easier to
+ * translate the strings to other languages easily with editor translation tools.
+ */
+/* eslint-disable max-len */
 export const myAccount: MyAccountNS = {
     components: {
         accountRecovery: {
@@ -271,6 +276,10 @@ export const myAccount: MyAccountNS = {
                             description: "ඔබ ඇතුලත් කළ මුරපදය අවලංගු බව පෙනේ. කරුණාකර නැවත උත්සාහ කරන්න",
                             message: "මුරපද වෙනස් කිරීමේ දෝෂයකිි"
                         },
+                        passwordCaseRequirement: "අවම වශයෙන් එක් ලොකු අකුරක් සහ කුඩා අකුරක්",
+                        passwordCharRequirement: "අවම වශයෙන් එක් සංකේතයක් වත් !@#$%^&*",
+                        passwordLengthRequirement: "අක්ෂර 8 කට වඩා",
+                        passwordNumRequirement: "අවම වශයෙන් එක් අංකයක්",
                         submitError: {
                             description: "{{description}}",
                             message: "මුරපද වෙනස් කිරීමේ දෝෂයකි"
@@ -577,17 +586,17 @@ export const myAccount: MyAccountNS = {
         },
         mfa: {
             authenticatorApp: {
-                addHint: "නව QR කේතය එකතු කරන්න",
+                addHint: "වින්‍යාස කරන්න",
                 configuredDescription: "සාධක දෙකක සත්‍යාපනය සඳහා ඔබේ වින්‍යාසගත සත්‍යාපන " +
                     "යෙදුමෙන් ඔබට TOTP කේත භාවිතා කළ හැකිය. ඔබට යෙදුමට ප්‍රවේශය නොමැති නම් " +
                     "මෙතැනින් ඔබට නව සත්‍යාපන යෙදුමක් සැකසිය හැකිය",
-                deleteHint: "QR කේතය මකා දමයි",
+                deleteHint: "ඉවත් කරන්න",
                 description: "යෙදුම් වලට ප්‍රවේශවීමේදී දෙවන සාධකය ලෙස කාලය " +
                     "මත පදනම් වූ, එක් වරක් මුර කේත (TOTP ලෙසද හැඳින්වේ) භාවිතා " +
                     "කිරීමට Authenticator යෙදුමක් භාවිතයෙන් QR කේතය පරිලෝකනය කරන්න.",
                 enableHint: "TOTP සබල/අබල කරන්න",
                 heading: "සත්‍යාපන යෙදුම",
-                hint: "QR කේතය පෙන්වන්න",
+                hint: "පෙන්වන්න",
                 modals: {
                     delete : {
                         heading: "තහවුරු කිරීම",
@@ -595,20 +604,23 @@ export const myAccount: MyAccountNS = {
                             "ඔබ දිගටම කරගෙන යාමට කැමතිද ?"
                     },
                     done: "සාර්ථකත්වය! දැන් ඔබට සාධක දෙකක සත්‍යාපනය සඳහා ඔබේ සත්‍යාපන යෙදුම භාවිතා කළ හැකිය",
-                    heading: "Set Up An Authenticator App",
+                    heading: "Authenticator යෙදුමක් සකසන්න",
                     scan: {
                         additionNote: "QR කේතය ඔබේ පැතිකඩට සාර්ථකව එකතු කර ඇත!",
                         authenticatorApps: "සත්‍යාපන යෙදුම්",
                         generate: "නව කේතයක් ජනනය කරන්න",
                         heading: "සත්‍යාපන යෙදුමක් භාවිතයෙන් මෙම QR කේතය පරිලෝකනය කරන්න",
                         messageBody: "ඔබට මෙහි ඇති සත්‍යාපන යෙදුම් ලැයිස්තුවක් සොයාගත හැකිය.",
-                        messageHeading: "සත්‍යාපන යෙදුමක් ස්ථාපනය කර නොමැතිද?"
+                        messageHeading: "සත්‍යාපන යෙදුමක් ස්ථාපනය කර නොමැතිද?",
+                        regenerateWarning: "ඔබ නව QR කේතයක් නැවත උත්පාදනය කරන විට, ඔබ එය පරිලෝකනය " + 
+                            "කර ඔබගේ සත්‍යාපන යෙදුම නැවත පිහිටුවිය යුතුය. ඔබගේ පෙර පිහිටුවීම තවදුරටත් " + 
+                            "ක්‍රියා නොකරනු ඇත."
                     },
                     toolTip: "යෙදුමක් නැද්ද? <3> යෙදුම් වෙළඳසැල </ 3> App Store <3> Google Play </ 3> " +
                         "වෙතින් Google Authenticator වැනි සත්‍යාපන යෙදුමක් බාගන්න.",
                     verify: {
                         error: "සත්‍යාපනය අසාර්ථක විය. කරුණාකර නැවත උත්සාහ කරන්න.",
-                        heading: "සත්‍යාපන යෙදුමෙන් සත්‍යාපන කේතය ඇතුළත් කරන්න",
+                        heading: "සත්‍යාපනය සඳහා ජනනය කළ කේතය ඇතුළත් කරන්න",
                         label: "සත්යාපන කේතය",
                         placeholder: "ඔබගේ සත්‍යාපන කේතය ඇතුළත් කරන්න",
                         reScan: "නැවත පරිලෝකනය කරන්න",
@@ -626,6 +638,10 @@ export const myAccount: MyAccountNS = {
                             description: "TOTP සත්‍යාපනකාරක වින්‍යාසය මැකීමේදී දෝෂයක් සිදු විය",
                             message: "මොකක්හරි වැරැද්දක් වෙලා"
                         }
+                    },
+                    deleteSuccess: {
+                        genericMessage: "සාර්ථකව ඉවත් කරන ලදී",
+                        message: "TOTP වින්‍යාසය සාර්ථකව ඉවත් කරන ලදී."
                     },
                     initError: {
                         error: {
@@ -646,33 +662,54 @@ export const myAccount: MyAccountNS = {
                             description: "නව QR කේතයක් ලබා ගැනීමට උත්සාහ කිරීමේදී දෝෂයකි",
                             message: "මොකක්හරි වැරැද්දක් වෙලා"
                         }
+                    },
+                    updateAuthenticatorError: {
+                        error: {
+                            description: "{{error}}",
+                            message: "මොකක්හරි වැරැද්දක් වෙලා"
+                        },
+                        genericError: {
+                            description: "සබල කළ සත්‍යාපන ලැයිස්තුව යාවත්කාලීන කිරීමට උත්සාහ කිරීමේදී දෝෂයක් ඇති විය",
+                            message: "මොකක්හරි වැරැද්දක් වෙලා"
+                        }
                     }
-                }
+                },
+                regenerate: "නැවත උත්පාදනය කරන්න"
             },
             backupCode: {
+                description: "ඔබට සත්‍යාපන යෙදුම හරහා සත්‍යාපන කේතයක් ලබා ගත නොහැකි නම් පුරනය වීමට " 
+                    + "ඔබට උපස්ථ කේත භාවිතා කළ හැක.",
                 download: {
                     heading: "ඔබගේ උපස්ථ කේත සුරකින්න.",
                     info1: "ඔබට එක් එක් උපස්ථ කේතය භාවිතා කළ හැක්කේ එක් වරක් පමණි.",
-                    info2: "මෙම කේත ජනනය කරන ලදී: ",
-                    subHeading: "මෙම උපස්ථ කේත ආරක්ෂිත නමුත් ප්‍රවේශ විය හැකි ස්ථානයක තබා ගන්න"
+                    info2: "මෙම කේත ජනනය කරන ලදී ",
+                    subHeading: "ඔබ ඔබගේ දුරකථනයෙන් බැහැරව සිටින විට Asgardeo වෙත පුරනය වීමට ඔබට මෙම උපස්ථ " + 
+                        "කේත භාවිතා කළ හැක. මෙම උපස්ථ කේත ආරක්ෂිත නමුත් ප්‍රවේශ විය හැකි ස්ථානයක තබා ගන්න."
                 },
                 heading: "උපස්ථ කේත",
                 modals: {
+                    actions: {
+                        copied: "පිටපත් කර ඇත",
+                        copy: "කේත පිටපත් කරන්න",
+                        download: "කේත බාගන්න",
+                        regenerate: "නැවත උත්පාදනය කරන්න"
+                    },
                     description: "ඔබ ඔබගේ දුරකථනයෙන් බැහැරව සිටින විට පුරනය වීමට උපස්ථ කේත භාවිතා කරන්න. " + 
                         "ඒවා සියල්ලම භාවිතා කරන විට ඔබට තවත් උත්පාදනය කළ හැකිය",
-                    download: {
-                        heading: "කේත බාගන්න"
-                    },
                     generate: {
                         description: "ඔබගේ උපස්ථ කේත සියල්ලම භාවිතා වේ. නව උපස්ථ කේත කට්ටලයක් ජනනය කරමු",
                         heading: "උත්පාදනය කරන්න"
                     },
                     heading: "උපස්ථ කේත",
                     info: "සෑම කේතයක්ම භාවිතා කළ හැක්කේ එක් වරක් පමණි",
-                    refresh: {
-                        heading: "නැවුම් කරන්න"
+                    regenerate: {
+                        description: "ඔබ නව කේත ජනනය කිරීමෙන් පසු, ඔබේ පැරණි කේත තවදුරටත් ක්‍රියා නොකරනු ඇත. " 
+                            + "නව කේත උත්පාදනය වූ පසු ඒවා සුරැකීමට වග බලා ගන්න.",
+                        heading: "තහවුරු කිරීම"
                     },
-                    subHeading: "ඔබට පුරනය වීමට භාවිතා කළ හැකි එක් වරක් මුරකේත"
+                    subHeading: "ඔබට පුරනය වීමට භාවිතා කළ හැකි එක් වරක් මුරකේත",
+                    warn: "මෙම කේත දිස්වන්නේ එක් වරක් පමණි. ඒවා දැන් සුරැකීමට සහ ආරක්ෂිත නමුත් ප්‍රවේශ විය හැකි " 
+                        + "ස්ථානයක ගබඩා කිරීමට වග බලා ගන්න."
                 },
                 notifications: {
                     deleteError: {
@@ -905,7 +942,10 @@ export const myAccount: MyAccountNS = {
                 },
                 profileStatus: {
                     completionPercentage: "ඔබගේ ගිණුම සම්පුර්ණ කිරීමේ ප්‍රතිශතය {{percentage}}%",
+                    description: "ඔබගේ පැතිකඩ කළමනාකරණය කරන්න",
                     header: "ඔබගේ  {{productName}} ගිණුම",
+                    profileText: "ඔබගේ පුද්ගලික පැතිකඩ පිළිබඳ විස්තර",
+                    readOnlyDescription: "ඔබගේ පැතිකඩ බලන්න",
                     userSourceText: "({{source} හරහා පුරනය වී ඇත)"
                 }
             }
@@ -1492,6 +1532,8 @@ export const myAccount: MyAccountNS = {
             subTitle: "",
             title: "WSO2 හැඳුනුම් සේවාදායක රහස්‍යතා ප්‍රතිපත්තිය"
         },
+        readOnlyProfileBanner: "ඔබගේ පැතිකඩ මෙම ද්වාරයෙන් වෙනස් කළ නොහැක. වැඩි විස්තර සඳහා " +
+            "කරුණාකර ඔබේ පරිපාලක අමතන්න.",
         security: {
             subTitle: "සියලුම ආරක්ෂක සැකසුම් සහ නිර්දේශ සමඟ යාවත්කාලීනව සිටීමෙන් ඔබගේ ගිණුම සුරක්ෂිත කිරීම",
             title: "ආරක්ෂාව"

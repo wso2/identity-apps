@@ -1,0 +1,15 @@
+/*******************************
+       Message Overrides
+*******************************/
+
+/*------------------------------
+          Info Message
+------------------------------*/
+
+.ui.info.message {
+    &.info-message-with-icon {
+        .text-typography {
+            color: unset !important;
+        }
+    }
+}

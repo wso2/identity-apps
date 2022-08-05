@@ -1,0 +1,52 @@
+<!--
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+-->
+
+<svg xmlns="http://www.w3.org/2000/svg" width="1139.916" height="228.275" viewBox="0 0 1139.916 228.275">
+    <g id="sprites" transform="translate(-344.912 -81.737)">
+        <circle id="Ellipse_104" cx="3" cy="3" r="3" transform="translate(1256 262)"
+                fill="#ffba35"/>
+        <g id="cross" transform="translate(-182 -96)">
+            <rect id="Rectangle_354" width="1" height="7" transform="translate(1517 227)"
+                  fill="#f2730b"/>
+            <rect id="Rectangle_355" width="1" height="7"
+                  transform="translate(1521 230) rotate(90)" fill="#f2730b"/>
+        </g>
+        <rect id="Rectangle_356" width="5" height="5"
+              transform="matrix(0.695, 0.719, -0.719, 0.695, 1481.355, 197.453)" fill="#2c2d6e"/>
+        <circle id="Ellipse_105" cx="5" cy="5" r="5" transform="translate(631 97)"
+                fill="#00b7e1"/>
+        <path id="Polygon_1" d="M6,0l6,11H0Z" transform="translate(1007.554 81.737) rotate(30)"
+              fill="#ffba35"/>
+        <g id="cross-2" transform="matrix(0.875, 0.485, -0.485, 0.875, -728.356, -748.152)">
+            <rect id="Rectangle_354-2" width="2.467" height="9.869"
+                  transform="translate(1517.701 227)" fill="#f5385b"/>
+            <rect id="Rectangle_355-2" width="2.467" height="9.869"
+                  transform="translate(1523.869 230.701) rotate(90)" fill="#f5385b"/>
+        </g>
+        <g id="cross-3" transform="translate(-424.356 -1024.824) rotate(51)">
+            <rect id="Rectangle_354-3" width="3.285" height="13.141"
+                  transform="translate(1518.928 227)" fill="#777dff"/>
+            <rect id="Rectangle_355-3" width="3.285" height="13.141"
+                  transform="translate(1527.141 231.928) rotate(90)" fill="#777dff"/>
+        </g>
+        <path id="Polygon_2" d="M5.5,0,11,10H0Z" transform="translate(1116.18 269.273) rotate(87)"
+              fill="#00b7e1"/>
+        <path id="Polygon_4" d="M3.5,0,7,6H0Z" transform="translate(1406.621 282.639) rotate(72)"
+              fill="#f5385b"/>
+    </g>
+</svg>

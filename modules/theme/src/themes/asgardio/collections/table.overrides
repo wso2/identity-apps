@@ -1,0 +1,141 @@
+/*!
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ *
+ */
+
+ /*******************************
+          Theme Overrides
+ *******************************/
+
+.ui.table {
+    &.sub-section-table {
+        margin: 0.7em 1em;
+    }
+}
+
+/*-------------------------------
+          Data Table
+--------------------------------*/
+
+.ui.table {
+    &.data-table {
+        &.transparent {
+            background: @dataTableTransparentBackground;
+            border: @dataTableTransparentBorder;
+        }
+
+        &.selectable {
+            .data-table-body .data-table-row {
+                cursor: @dataTableSelectableRowCursor;
+            }
+        }
+
+        .data-table-header {
+            th {
+                font-weight: @dataTableHeaderFontWeight;
+
+                .header-with-popup {
+                    display: flex;
+                    align-items: center;
+                }
+            }
+        }
+
+        .data-table-column-selector {
+            // Check popup.overrides for column selector popup styles.
+        }
+
+        .data-table-row {
+            &:hover {
+                &.no-hover {
+                    background: transparent !important;
+                }
+            }
+
+            &.no-selectable {
+                cursor: unset !important;
+                &:hover {
+                    background: transparent !important;
+                }
+            }
+        }
+
+        .data-table-cell {
+            .header-with-icon {
+                display: @dataTableRowHeaderDisplay;
+                align-items: center;
+
+                .content {
+                    vertical-align: @dataTableRowHeaderContentVerticalAlignment;
+
+                    .sub.header {
+                        &.truncate {
+                            max-width: @dataTableRowSubHeaderMaxWidth;
+                        }
+                    }
+                }
+
+                .theme-icon {
+                    display: @dataTableRowHeaderIconDisplay;
+
+                    // Semantic UI header components adds a ` margin-right: .75rem;` to `.icon` class.
+                    .icon {
+                        margin-right: 0;
+                    }
+                }
+            }
+
+            &.actions-cell {
+                &.items-1 {
+                    min-width: @actionsCellItemOneWidth;
+                }
+
+                &.items-2 {
+                    min-width: @actionsCellItemsTwoWidth;
+                }
+
+                &.items-3 {
+                    min-width: @actionsCellItemsThreeWidth;
+                }
+            }
+        }
+    }
+
+     &.opaque {
+            border: none;
+            background: none;
+        }
+}
+
+@media only screen and (max-width: @tabletBreakpoint) {
+    .ui.table {
+        &.data-table {
+            .data-table-search {
+                margin-bottom: @mobileDataTableSearchMarginBottom;
+            }
+        }
+    }
+}
+
+/*******************************
+    Approval Task Claims List
+*******************************/
+.ui.table {
+    .values-list {
+        overflow-wrap: anywhere;
+    }
+}

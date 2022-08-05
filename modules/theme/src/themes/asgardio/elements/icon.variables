@@ -1,0 +1,7 @@
+/*******************************
+        Icon Variables
+*******************************/
+
+@dataTableListIconMinHeight: 2em;
+@dataTableListIconMinWidth: 2em;
+@dataTableListIconTopPadding: 0.5em;

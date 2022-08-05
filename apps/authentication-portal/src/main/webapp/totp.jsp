@@ -24,124 +24,138 @@
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
+
 <%@ include file="includes/localize.jsp" %>
 <%@ include file="includes/init-url.jsp" %>
+<jsp:directive.include file="includes/layout-resolver.jsp"/>
 
-    <%
-        request.getSession().invalidate();
-        String queryString = request.getQueryString();
-        Map<String, String> idpAuthenticatorMapping = null;
-        if (request.getAttribute(Constants.IDP_AUTHENTICATOR_MAP) != null) {
-            idpAuthenticatorMapping = (Map<String, String>) request.getAttribute(Constants.IDP_AUTHENTICATOR_MAP);
-        }
+<%
+    request.getSession().invalidate();
+    String queryString = request.getQueryString();
+    Map<String, String> idpAuthenticatorMapping = null;
+    if (request.getAttribute(Constants.IDP_AUTHENTICATOR_MAP) != null) {
+        idpAuthenticatorMapping = (Map<String, String>) request.getAttribute(Constants.IDP_AUTHENTICATOR_MAP);
+    }
 
-        boolean isSendVerificationCodeByEmailEnabled = TOTPUtil.isSendVerificationCodeByEmailEnabled();
+    boolean isSendVerificationCodeByEmailEnabled = TOTPUtil.isSendVerificationCodeByEmailEnabled();
 
-        String errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle,"error.retry");
-        String authenticationFailed = "false";
+    String errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle,"error.retry");
+    String authenticationFailed = "false";
 
-        if (Boolean.parseBoolean(request.getParameter(Constants.AUTH_FAILURE))) {
-            authenticationFailed = "true";
+    if (Boolean.parseBoolean(request.getParameter(Constants.AUTH_FAILURE))) {
+        authenticationFailed = "true";
 
-            if (request.getParameter(Constants.AUTH_FAILURE_MSG) != null) {
-                errorMessage = Encode.forHtmlAttribute(request.getParameter(Constants.AUTH_FAILURE_MSG));
+        if (request.getParameter(Constants.AUTH_FAILURE_MSG) != null) {
+            errorMessage = Encode.forHtmlAttribute(request.getParameter(Constants.AUTH_FAILURE_MSG));
 
-                 if (errorMessage.equalsIgnoreCase("authentication.fail.message") ||
-                         errorMessage.equalsIgnoreCase("login.fail.message")) {
-                    errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle,"error.retry");
-                }
+                if (errorMessage.equalsIgnoreCase("authentication.fail.message") ||
+                        errorMessage.equalsIgnoreCase("login.fail.message")) {
+                errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle,"error.retry");
             }
         }
-    %>
-    <html>
-        <head>
-            <!-- header -->
-            <%
-                File headerFile = new File(getServletContext().getRealPath("extensions/header.jsp"));
-                if (headerFile.exists()) {
-            %>
-            <jsp:include page="extensions/header.jsp"/>
-            <% } else { %>
-            <jsp:include page="includes/header.jsp"/>
-            <% } %>
+    }
+%>
 
-            <script src="js/scripts.js"></script>
-            <script src="/totpauthenticationendpoint/js/scripts.js"></script>
-            <!--[if lt IE 9]>
-            <script src="js/html5shiv.min.js"></script>
-            <script src="js/respond.min.js"></script>
-            <![endif]-->
+<%-- Data for the layout from the page --%>
+<%
+    layoutData.put("containerSize", "medium");
+%>
 
-            <script>
-                // Handle form submission preventing double submission.
-                $(document).ready(function(){
-                    $.fn.preventDoubleSubmission = function() {
-                        $(this).on('submit',function(e){
-                            var $form = $(this);
-                            if ($form.data('submitted') === true) {
-                                // Previously submitted - don't submit again.
-                                e.preventDefault();
-                                console.warn("Prevented a possible double submit event");
-                            } else {
-                                // Mark it so that the next submit can be ignored.
-                                $form.data('submitted', true);
-                            }
-                        });
+<html>
+    <head>
+        <!-- header -->
+        <%
+            File headerFile = new File(getServletContext().getRealPath("extensions/header.jsp"));
+            if (headerFile.exists()) {
+        %>
+        <jsp:include page="extensions/header.jsp"/>
+        <% } else { %>
+        <jsp:include page="includes/header.jsp"/>
+        <% } %>
 
-                        return this;
-                    };
-                    $('#totpForm').preventDoubleSubmission();
-                });
-            </script>
-            <script type="text/javascript">
-                var emailLinkClicked = false;
+        <script src="js/scripts.js"></script>
+        <script src="/totpauthenticationendpoint/js/scripts.js"></script>
+        <!--[if lt IE 9]>
+        <script src="js/html5shiv.min.js"></script>
+        <script src="js/respond.min.js"></script>
+        <![endif]-->
 
-                function generateInstruction() {
-                    var isEmailCodeEnabled = "<%= isSendVerificationCodeByEmailEnabled %>" === "true" ? true : false;
-                    var authAppCodeText = '<%=AuthenticationEndpointUtil.i18n(resourceBundle, "enter.verification.code.got.by.device")%>';
-                    var emailCodeText = '<%=AuthenticationEndpointUtil.i18n(resourceBundle, "enter.verification.code.got.via.email")%>';
+        <script>
+            // Handle form submission preventing double submission.
+            $(document).ready(function(){
+                $.fn.preventDoubleSubmission = function() {
+                    $(this).on('submit',function(e){
+                        var $form = $(this);
+                        if ($form.data('submitted') === true) {
+                            // Previously submitted - don't submit again.
+                            e.preventDefault();
+                            console.warn("Prevented a possible double submit event");
+                        } else {
+                            // Mark it so that the next submit can be ignored.
+                            $form.data('submitted', true);
+                        }
+                    });
 
-                    var text = isEmailCodeEnabled && emailLinkClicked ? emailCodeText : authAppCodeText;
-                    $("#instruction").empty().append(text);
-                }
+                    return this;
+                };
+                $('#totpForm').preventDoubleSubmission();
+            });
+        </script>
+        <script type="text/javascript">
+            var emailLinkClicked = false;
 
-                $(document).ready(function() {
-                    generateInstruction();
-                })
-            </script>
-        </head>
+            function generateInstruction() {
+                var isEmailCodeEnabled = "<%= isSendVerificationCodeByEmailEnabled %>" === "true" ? true : false;
+                var authAppCodeText = '<%=AuthenticationEndpointUtil.i18n(resourceBundle, "enter.verification.code.got.by.device")%>';
+                var emailCodeText = '<%=AuthenticationEndpointUtil.i18n(resourceBundle, "enter.verification.code.got.via.email")%>';
 
-        <body class="login-portal layout totp-portal-layout">
+                var text = isEmailCodeEnabled && emailLinkClicked ? emailCodeText : authAppCodeText;
+                $("#instruction").empty().append(text);
+            }
 
-            <% if (new File(getServletContext().getRealPath("extensions/timeout.jsp")).exists()) { %>
-                <jsp:include page="extensions/timeout.jsp"/>
-            <% } else { %>
-                <jsp:include page="util/timeout.jsp"/>
-            <% } %>
+            $(document).ready(function() {
+                generateInstruction();
+            })
+        </script>
+    </head>
 
-            <main class="center-segment">
-                <div class="ui container medium center aligned middle aligned">
-                    <!-- product-title -->
+    <body class="login-portal layout totp-portal-layout">
+
+        <% if (new File(getServletContext().getRealPath("extensions/timeout.jsp")).exists()) { %>
+            <jsp:include page="extensions/timeout.jsp"/>
+        <% } else { %>
+            <jsp:include page="util/timeout.jsp"/>
+        <% } %>
+
+        <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
+            <layout:component componentName="ProductHeader" >
+                <!-- product-title -->
+                <%
+                    File productTitleFile = new File(getServletContext()
+                                            .getRealPath("extensions/product-title.jsp"));
+                    if (productTitleFile.exists()) {
+                %>
+                <jsp:include page="extensions/product-title.jsp"/>
+                <% } else { %>
+                <jsp:include page="includes/product-title.jsp"/>
+                <% } %>
+            </layout:component>
+            <layout:component componentName="MainSection" >
+                <div class="ui segment">
+                    <!-- page content -->
+                    <h2><%=AuthenticationEndpointUtil.i18n(resourceBundle, "auth.totp")%></h2>
+                    <div class="uii divider hidden"></div>
                     <%
-                        File productTitleFile = new File(getServletContext()
-                                                .getRealPath("extensions/product-title.jsp"));
-                        if (productTitleFile.exists()) {
+                        if ("true".equals(authenticationFailed)) {
                     %>
-                    <jsp:include page="extensions/product-title.jsp"/>
-                    <% } else { %>
-                    <jsp:include page="includes/product-title.jsp"/>
+                            <div class="ui negative message" id="failed-msg"><%=errorMessage%></div>
+                            <div class="ui divider hidden"></div>
                     <% } %>
 
                     <div class="ui segment">
                         <!-- page content -->
-                        <h2><%=AuthenticationEndpointUtil.i18n(resourceBundle, "auth.totp")%></h2>
                         <div class="uii divider hidden"></div>
-                        <%
-                            if ("true".equals(authenticationFailed)) {
-                        %>
-                                <div class="ui negative message" id="failed-msg"><%=errorMessage%></div>
-                                <div class="ui divider hidden"></div>
-                        <% } %>
 
                         <input id="username" type="hidden"
                                value='<%=Encode.forHtmlAttribute(request.getParameter("username"))%>'>
@@ -150,14 +164,15 @@
                             <form action="<%=commonauthURL%>" method="post" id="totpForm" class="ui large form">
                                 <p id="instruction"></p>
                                 <div class="field">
-                                    <input type="text" name="token" class="form-control" placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "verification.code")%>">
+                                    <input type="text" name="token" class="form-control" autocomplete="off" autofocus
+                                    placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "verification.code")%>">
                                 </div>
                                 <input id="sessionDataKey" type="hidden" name="sessionDataKey"
                                        value='<%=Encode.forHtmlAttribute(request.getParameter("sessionDataKey"))%>' />
                                 <div class="ui divider hidden"></div>
                                 <div class="ui two column stackable grid">
 
-                                <div class="ten wide column mobile center aligned tablet left aligned computer left aligned buttons tablet no-padding-left-first-child computer no-padding-left-first-child">
+                                <div class="ten wide column mobile center aligned tablet left aligned computer left aligned buttons tablet computer">
                                     <% if(isSendVerificationCodeByEmailEnabled) { %>
                                         <a class="ui button secondary" id="genToken" href="#"
                                         onclick="return requestTOTPToken();">
@@ -180,39 +195,40 @@
                             </form>
                         </div>
                         <div class="ui divider hidden"></div>
-                            <%
-                                String multiOptionURI = request.getParameter("multiOptionURI");
-                                if (multiOptionURI != null && isSendVerificationCodeByEmailEnabled && AuthenticationEndpointUtil.isValidURL(multiOptionURI)) {
-                            %>
-                                <a class="ui button secondary" id="goBackLink"
-                                href='<%=Encode.forHtmlAttribute(multiOptionURI)%>'>
-                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "choose.other.option")%>
-                                </a>
-                            <%
-                                }
-                            %>
+                        <%
+                            String multiOptionURI = request.getParameter("multiOptionURI");
+                            if (multiOptionURI != null && isSendVerificationCodeByEmailEnabled && AuthenticationEndpointUtil.isValidURL(multiOptionURI)) {
+                        %>
+                            <a class="ui button secondary" id="goBackLink"
+                            href='<%=Encode.forHtmlAttribute(multiOptionURI)%>'>
+                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "choose.other.option")%>
+                            </a>
+                        <%
+                            }
+                        %>
                     </div>
-                </div>
-            </main>
+            </layout:component>
+            <layout:component componentName="ProductFooter" >
+                <!-- product-footer -->
+                <%
+                    File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
+                    if (productFooterFile.exists()) {
+                %>
+                <jsp:include page="extensions/product-footer.jsp"/>
+                <% } else { %>
+                <jsp:include page="includes/product-footer.jsp"/>
+                <% } %>
+            </layout:component>
+        </layout:main>
 
-            <!-- product-footer -->
-            <%
-                File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
-                if (productFooterFile.exists()) {
-            %>
-            <jsp:include page="extensions/product-footer.jsp"/>
-            <% } else { %>
-            <jsp:include page="includes/product-footer.jsp"/>
-            <% } %>
-
-            <!-- footer -->
-            <%
-                File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
-                if (footerFile.exists()) {
-            %>
-            <jsp:include page="extensions/footer.jsp"/>
-            <% } else { %>
-            <jsp:include page="includes/footer.jsp"/>
-            <% } %>
-        </body>
-    </html>
+        <!-- footer -->
+        <%
+            File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
+            if (footerFile.exists()) {
+        %>
+        <jsp:include page="extensions/footer.jsp"/>
+        <% } else { %>
+        <jsp:include page="includes/footer.jsp"/>
+        <% } %>
+    </body>
+</html>

@@ -25,6 +25,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { Icon, SemanticICONS } from "semantic-ui-react";
 import { IdentityProviderManagementConstants } from "../../../constants";
 import {
+    AuthenticatorSettingsFormModes,
     CommonAuthenticatorFormFieldInterface,
     CommonAuthenticatorFormFieldMetaInterface,
     CommonAuthenticatorFormInitialValuesInterface,
@@ -36,6 +37,12 @@ import {
  * Interface for Google Authenticator Form props.
  */
 interface GoogleAuthenticatorFormPropsInterface extends TestableComponentInterface {
+    /**
+     * The intended mode of the authenticator form.
+     * If the mode is "EDIT", the form will be used in the edit view and will rely on metadata for readonly states, etc.
+     * If the mode is "CREATE", the form will be used in the add wizards and will all the fields will be editable.
+     */
+    mode: AuthenticatorSettingsFormModes;
     /**
      * Google Authenticator metadata.
      */
@@ -147,6 +154,7 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
 
     const {
         metadata,
+        mode,
         initialValues: originalInitialValues,
         onSubmit,
         readOnly,
@@ -329,7 +337,13 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
                     </Trans>
                 ) }
                 required={ formFields?.ClientId?.meta?.isMandatory }
-                readOnly={ readOnly || formFields?.ClientId?.meta?.readOnly }
+                readOnly={
+                    readOnly || (
+                        mode === AuthenticatorSettingsFormModes.CREATE
+                            ? false
+                            : formFields?.ClientId?.meta?.readOnly
+                    )
+                }
                 value={ formFields?.ClientId?.value }
                 maxLength={ IdentityProviderManagementConstants
                     .AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.CLIENT_ID_MAX_LENGTH as number }
@@ -365,7 +379,13 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
                     </Trans>
                 }
                 required={ formFields?.ClientSecret?.meta?.isMandatory }
-                readOnly={ readOnly || formFields?.ClientSecret?.meta?.readOnly }
+                readOnly={
+                    readOnly || (
+                        mode === AuthenticatorSettingsFormModes.CREATE
+                            ? false
+                            : formFields?.ClientSecret?.meta?.readOnly
+                    )
+                }
                 value={ formFields?.ClientSecret?.value }
                 maxLength={ formFields?.ClientSecret?.meta?.maxLength }
                 minLength={
@@ -393,7 +413,13 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
                 }
                 required={ formFields?.callbackUrl?.meta?.isMandatory }
                 value={ formFields?.callbackUrl?.value }
-                readOnly={ readOnly || formFields?.callbackUrl?.meta?.readOnly }
+                readOnly={
+                    readOnly || (
+                        mode === AuthenticatorSettingsFormModes.CREATE
+                            ? false
+                            : formFields?.callbackUrl?.meta?.readOnly
+                    )
+                }
                 maxLength={ formFields?.callbackUrl?.meta?.maxLength }
                 minLength={
                     IdentityProviderManagementConstants
@@ -401,6 +427,45 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
                 }
                 width={ 16 }
                 data-testid={ `${ testId }-authorized-redirect-url` }
+            />
+            <Field.Input
+                ariaLabel={
+                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                        ".google.AdditionalQueryParameters.ariaLabel")
+                }
+                inputType="default"
+                name="AdditionalQueryParameters"
+                label={
+                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                        ".google.AdditionalQueryParameters.label")
+                }
+                placeholder={
+                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                        ".google.AdditionalQueryParameters.placeholder")
+                }
+                hint={
+                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                        ".google.AdditionalQueryParameters.hint")
+                }
+                required={ formFields?.AdditionalQueryParameters?.meta?.isMandatory }
+                value={ formFields?.AdditionalQueryParameters?.value }
+                readOnly={
+                    readOnly || (
+                        mode === AuthenticatorSettingsFormModes.CREATE
+                            ? false
+                            : formFields?.AdditionalQueryParameters?.meta?.readOnly
+                    )
+                }
+                maxLength={
+                    IdentityProviderManagementConstants.GOOGLE_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS
+                        .ADDITIONAL_QUERY_PARAMS_MAX_LENGTH as number
+                }
+                minLength={
+                    IdentityProviderManagementConstants.GOOGLE_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS
+                        .ADDITIONAL_QUERY_PARAMS_MIN_LENGTH as number
+                }
+                width={ 16 }
+                data-testid={ `${ testId }-additional-query-parameters` }
             />
             {
                 (formFields?.AdditionalQueryParameters?.value

@@ -1,0 +1,68 @@
+/*******************************
+   Developer Portal Variables
+*******************************/
+
+/*-------------------------------
+     Getting Started Page
+--------------------------------*/
+
+@gettingStartedPageMaxWidth: 1400px;
+@gettingStartedPageSectionCardPadding: 1em;
+@gettingStartedPageSectionCardMinHeight: 200px;
+
+@feedbackIconMargin: 0.1em .7em 0 0;
+@feedbackIconFloat: left;
+
+/*-------------------------------
+          Welcome Tour
+--------------------------------*/
+
+@consoleWelcomeTourMaskBackground: @asgardeoBlack;
+@consoleWelcomeTourMinWidth: 480px;
+@consoleWelcomeTourTextAlign: center;
+@consoleWelcomeTourBoxShadow: none;
+@consoleWelcomeTourPadding: 40px;
+@consoleWelcomeTourStepDescriptionFontSize: 16px;
+@consoleWelcomeTourStepDescriptionLetterSpacing: 0;
+@consoleWelcomeTourStepDescriptionMinHeight: 80px;
+@consoleWelcomeTourStepDescriptionLineHeight: 25px;
+
+/*-------------------------------
+    Application Quickstart Tab
+--------------------------------*/
+
+@applicationSampleConfigEditorMinHeight: max-content;
+@applicationSampleConfigEditorHeight: auto;
+
+@darkCodeBlockBgColor: #263238;
+@darkCodeBlockColor: @white;
+
+@quickStartStepPaddingLeft: 46px;
+@quickStartStepMarginTop: -28px;
+
+@quickStartCardTitleHeight: 1.3em;
+@quickStartCardContentHeight: 1.1em;
+
+@checkboxDisabledOpacity: 0.5;
+
+/*-------------------------------
+    Application Tabs common
+--------------------------------*/
+
+@applicationListItemLineHeight: 1.4285em;
+@applicationSubjectSelectWidth: 820px;
+
+/*-------------------------------
+    Help Center Button
+--------------------------------*/
+
+@helpCenterButtonIconColor: @galleryGray;
+
+/*---------------------------------------
+              Theme Swatch
+----------------------------------------*/
+
+@themeSwatchWidth: 156px;
+@themeSwatchPreviewHeader: #f8f8fa;
+@themeSwatchPreviewHeaderBorderColor: #e9e9e9;
+@themeSwatchPreviewContentBackgroundColor: #F5F6F6;

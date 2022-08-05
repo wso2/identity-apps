@@ -17,11 +17,11 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Code, CopyInputField, Heading } from "@wso2is/react-components";
+import { Code, CopyInputField, Heading, Message } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Divider, Message } from "semantic-ui-react";
+import { Divider } from "semantic-ui-react";
 import { identityProviderConfig } from "../../../../../../extensions/configs";
 import { AppState, ConfigReducerStateInterface } from "../../../../../core";
 
@@ -64,54 +64,57 @@ const GoogleIDPCreateWizardHelp: FunctionComponent<GoogleIDPCreateWizardHelpProp
 
     return (
         <div data-testid={ testId }>
-            <Message info>
-                <Heading as="h5" className="mb-3">
-                    {
-                        t("console:develop.features.authenticationProvider.templates.google.wizardHelp." +
-                            "preRequisites.heading")
-                    }
-                </Heading>
-                <p>
-                    <Trans
-                        i18nKey={
-                            "console:develop.features.authenticationProvider.templates.google.wizardHelp." +
-                            "preRequisites.getCredentials"
-                        }
-                    >
-                        Before you begin, create an <strong>OAuth credential</strong> on the <a
-                            href="https://console.developers.google.com"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        > Google developer console</a>, and obtain a <strong>Client ID & secret</strong>.
-                    </Trans>
-                </p>
-                <p>
+            <Message
+                type="info"
+                header={
+                    t("console:develop.features.authenticationProvider.templates.google.wizardHelp." +
+                        "preRequisites.heading")
+                }
+                content={
+                    <>
+                        <p>
+                            <Trans
+                                i18nKey={
+                                    "console:develop.features.authenticationProvider.templates.google.wizardHelp." +
+                                    "preRequisites.getCredentials"
+                                }
+                            >
+                                Before you begin, create an <strong>OAuth credential</strong> on the <a
+                                href="https://console.developers.google.com"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            > Google developer console</a>, and obtain a <strong>Client ID & secret</strong>.
+                            </Trans>
+                        </p>
+                        <p>
 
-                    <Trans
-                        i18nKey={
-                            "console:develop.features.authenticationProvider.templates.google.wizardHelp" +
-                            ".preRequisites.configureRedirectURL"
-                        }
-                    >
-                        Use the following URL as the <strong>Authorized Redirect URI</strong>.
-                    </Trans>
+                            <Trans
+                                i18nKey={
+                                    "console:develop.features.authenticationProvider.templates.google.wizardHelp" +
+                                    ".preRequisites.configureRedirectURL"
+                                }
+                            >
+                                Use the following URL as the <strong>Authorized Redirect URI</strong>.
+                            </Trans>
 
-                    <CopyInputField
-                        className="copy-input-dark spaced"
-                        value={ config?.deployment?.customServerHost + "/commonauth" }
-                    />
+                            <CopyInputField
+                                className="copy-input-dark spaced"
+                                value={ config?.deployment?.customServerHost + "/commonauth" }
+                            />
 
-                    <a
-                        href="https://support.google.com/googleapi/answer/6158849"
-                        target="_blank"
-                        rel="noopener noreferrer">
-                        {
-                            t("console:develop.features.authenticationProvider.templates.google.wizardHelp." +
-                                "preRequisites.configureOAuthApps")
-                        }
-                    </a>
-                </p>
-            </Message>
+                            <a
+                                href="https://support.google.com/googleapi/answer/6158849"
+                                target="_blank"
+                                rel="noopener noreferrer">
+                                {
+                                    t("console:develop.features.authenticationProvider.templates.google.wizardHelp." +
+                                        "preRequisites.configureOAuthApps")
+                                }
+                            </a>
+                        </p>
+                    </>
+                }
+            />
 
             <Heading as="h5">
                 {

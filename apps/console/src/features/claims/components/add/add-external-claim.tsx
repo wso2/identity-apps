@@ -20,11 +20,11 @@ import { getAllLocalClaims } from "@wso2is/core/api";
 import { AlertLevels, Claim, ClaimsGetParams, ExternalClaim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms, Validation, useTrigger } from "@wso2is/forms";
-import { Code, ContentLoader, Hint, Link, PrimaryButton } from "@wso2is/react-components";
+import { Code, ContentLoader, Hint, Link, Message, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { DropdownItemProps, DropdownOnSearchChangeData, Grid, Label, Message } from "semantic-ui-react";
+import { DropdownItemProps, DropdownOnSearchChangeData, Grid, Label } from "semantic-ui-react";
 import { SCIMConfigs, attributeConfig } from "../../../../extensions";
 import { AppConstants, history } from "../../../core";
 import { addExternalClaim, getServerSupportedClaimsForSchema } from "../../api";
@@ -141,7 +141,7 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
      * Handle the warning message to be shown.
      */
     useEffect(() => {
-        if (SCIMConfigs.serverSupportedClaimsAvailable.includes(claimDialectUri) && 
+        if (SCIMConfigs.serverSupportedClaimsAvailable.includes(claimDialectUri) &&
             serverSupportedClaims?.length === 0) {
             setEmptyServerSupportedClaims(true);
         } else {
@@ -392,9 +392,9 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                                                 })
                                                 ?? []
                                             }
-                                        /> 
-                                    ) 
-                                    : 
+                                        />
+                                    )
+                                    :
                                     (
                                         <Field
                                             name="claimURI"
@@ -438,7 +438,7 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                                                 }
                                             } }
                                         />
-                                    ) 
+                                    )
                                 }
 
                             </Grid.Column>
@@ -492,7 +492,7 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                             </Grid.Column>
                             <Grid.Column width={ 16 }>
                                 {
-                                    (attributeType !== ClaimManagementConstants.OIDC && 
+                                    (attributeType !== ClaimManagementConstants.OIDC &&
                                         attributeType !== ClaimManagementConstants.OTHERS) &&
                                     (
                                         <Label className="mb-3 mt-2 ml-0">
@@ -504,46 +504,55 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                             </Grid.Column>
                         </Grid.Row>
                         {
-                            (isEmptyClaims || isEmptyServerSupportedClaims) && (
+                            ((!isLocalClaimsLoading && !serverSideClaimsLoading) 
+                                && (isEmptyServerSupportedClaims || isEmptyClaims)) 
+                            && (
                                 <Grid.Row columns={ 1 }>
                                     <Grid.Column width={ 16 } textAlign="left" verticalAlign="top">
-                                        <Message visible warning>
-                                            {
-                                                !isEmptyServerSupportedClaims
-                                                    ? (
-                                                        <Hint warning>
-                                                            <Trans
-                                                                i18nKey={
-                                                                    "console:manage.features.claims.external.forms." +
-                                                                    "warningMessage"
-                                                                }
-                                                            >
-                                                                There are no local attributes available for mapping.
-                                                                Add new local attributes from
-                                                            </Trans>
-                                                            <Link
-                                                                external={ false }
-                                                                onClick={ () =>
-                                                                    history.push(AppConstants.getPaths()
-                                                                        .get("LOCAL_CLAIMS"))
-                                                                }
-                                                            > here
-                                                            </Link>.
-                                                        </Hint>
-                                                    ) : (
-                                                        <Hint warning>
-                                                            <Trans
-                                                                i18nKey={
-                                                                    "console:manage.features.claims.external.forms." +
-                                                                    "emptyMessage"
-                                                                }
-                                                            >
-                                                                All the SCIM attributes are mapped to local claims.
-                                                            </Trans>
-                                                        </Hint>
-                                                    )
+                                        <Message
+                                            visible
+                                            type="warning"
+                                            content={
+                                                <>
+                                                    {
+                                                        !isEmptyServerSupportedClaims
+                                                            ? (
+                                                                <Hint warning>
+                                                                    <Trans
+                                                                        i18nKey={
+                                                                            "console:manage.features.claims." +
+                                                                            "external.forms.warningMessage"
+                                                                        }
+                                                                    >
+                                                                        There are no local attributes available for
+                                                                        mapping. Add new local attributes from
+                                                                    </Trans>
+                                                                    <Link
+                                                                        external={ false }
+                                                                        onClick={ () =>
+                                                                            history.push(AppConstants.getPaths()
+                                                                                .get("LOCAL_CLAIMS"))
+                                                                        }
+                                                                    > here
+                                                                    </Link>.
+                                                                </Hint>
+                                                            ) : (
+                                                                <Hint warning>
+                                                                    <Trans
+                                                                        i18nKey={
+                                                                            "console:manage.features.claims." +
+                                                                            "external.forms.emptyMessage"
+                                                                        }
+                                                                    >
+                                                                        All the SCIM attributes are mapped to local
+                                                                        claims.
+                                                                    </Trans>
+                                                                </Hint>
+                                                            )
+                                                    }
+                                                </>
                                             }
-                                        </Message>
+                                        />
                                     </Grid.Column>
                                 </Grid.Row>
                             )

@@ -1,0 +1,91 @@
+/*!
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ *
+ */
+
+/*-----------------------------
+         Resource Tabs
+------------------------------*/
+
+.tabs {
+    &.resource-tabs {
+        > .ui.menu {
+            .item {
+                &.active {
+                    border-bottom-color: @primaryColor;
+                    color: @primaryColor
+                }
+
+                // To be used for tabs which are disabled and labeled as coming soon features.
+                &.upcoming-item {
+                    cursor: not-allowed !important;
+                    border-color: transparent;
+
+                    .coming-soon-label {
+                        margin-left: 0.2em;
+                        font-style: italic;
+                    }
+                }
+
+                // To be used for tabs which are disabled and labeled as coming soon features.
+                &.upcoming-item {
+                    cursor: not-allowed !important;
+                    border-color: transparent;
+    
+                    .coming-soon-label {
+                        margin-left: 0.2em;
+                        font-style: italic;
+                    }
+                }
+            }
+            
+            &:not(.secondary) {
+                background: transparent;
+                
+                .item {
+                    background-color: transparent;
+                    border-bottom-width: 2px;
+                    border-bottom-style: solid;
+                    border-bottom-color: transparent;
+                    
+                    &.active {
+                        border-bottom-color: @primaryColor;
+                    }
+                    
+                    &:before {
+                        background: transparent;
+                    }
+                }
+            }
+        }
+        
+        &:not(.attached){
+            .resource-tab-pane {
+                border: none;
+                box-shadow: none;
+                margin-top: @resourceTabsPaneMarginTop;
+            }
+        }
+        
+        .resource-tab-pane {
+            &.controlled-segments {
+                background: @resourceTabsControlledSegmentsPaneBackground;
+                padding: @resourceTabsControlledSegmentsPanePadding;
+            }
+        }
+    }
+}

@@ -1,0 +1,12 @@
+<!--
+ * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.com). All Rights Reserved.
+ * 
+ * This software is the property of WSO2 Inc. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content."
+-->
+
+<svg xmlns="http://www.w3.org/2000/svg" width="14" height="10.822" viewBox="0 0 14 10.822">
+	<path  class="path" id="customer-support-outline" d="M10.536,10.634c-.3-.237-.925-.723-1.928-1.484H7v-.6H8.753c1.11.871,1.7,1.329,1.794,1.4a.207.207,0,0,0,.126.049c.1,0,.158-.111.167-.132V8.55h1.809A.751.751,0,0,0,13.4,7.8V3a.751.751,0,0,0-.751-.75H12.5v-.6H13a1,1,0,0,1,1,1v5.5a1,1,0,0,1-1,1H11.442v1.214s-.142.457-.478.457A.713.713,0,0,1,10.536,10.634ZM2.558,8.714V7.5H1a1,1,0,0,1-1-1V1A1,1,0,0,1,1,0h9a1,1,0,0,1,1,1V6.5a1,1,0,0,1-1,1H5.391c-.968.736-1.626,1.244-1.928,1.484a.713.713,0,0,1-.428.187C2.694,9.171,2.559,8.718,2.558,8.714Zm.6-1.814V8.218s.058.132.167.132a.208.208,0,0,0,.126-.05c.1-.076.723-.56,1.793-1.4h4.4a.751.751,0,0,0,.75-.751V1.35A.751.751,0,0,0,9.65.6H1.35A.751.751,0,0,0,.6,1.35v4.8A.751.751,0,0,0,1.35,6.9H3.159ZM2.5,4.35v-.6h6v.6Zm0-1.2v-.6h6v.6Z" fill="##ff"/>
+</svg>

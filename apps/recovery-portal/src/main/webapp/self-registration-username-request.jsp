@@ -27,9 +27,11 @@
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.Map" %>
 <%@ page import="java.util.Enumeration" %>
+<%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 
 <jsp:directive.include file="includes/localize.jsp"/>
 <jsp:directive.include file="tenant-resolve.jsp"/>
+<jsp:directive.include file="includes/layout-resolver.jsp"/>
 
 <%
     boolean error = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("error"));
@@ -61,9 +63,16 @@
     } else if (StringUtils.equalsIgnoreCase(SelfRegistrationStatusCodes.ERROR_CODE_INVALID_EMAIL_USERNAME,
             errorCode)) {
         errorMsg = "Username is invalid. Username should be in email format.";
+    } else if (SelfRegistrationStatusCodes.ERROR_CODE_INVALID_USERSTORE.equalsIgnoreCase(errorCode)) {
+        errorMsg = "Invalid user store domain - " + user.getRealm();
     } else if (errorMsgObj != null) {
         errorMsg = errorMsgObj.toString();
     }
+%>
+
+<%-- Data for the layout from the page --%>
+<%
+    layoutData.put("containerSize", "medium");
 %>
 
 <!doctype html>
@@ -80,8 +89,8 @@
     <% } %>
 </head>
 <body class="login-portal layout recovery-layout">
-    <main class="center-segment">
-        <div class="ui container medium center aligned middle aligned">
+    <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
+        <layout:component componentName="ProductHeader" >
             <!-- product-title -->
             <%
                 File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
@@ -91,6 +100,8 @@
             <% } else { %>
             <jsp:include page="includes/product-title.jsp"/>
             <% } %>
+        </layout:component>
+        <layout:component componentName="MainSection" >
             <div class="ui segment">
                 <h3 class="ui header">
                     <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Start.signing.up")%>
@@ -152,17 +163,19 @@
                     </form>
                 </div>
             </div>
-        </div>
-    </main>
-    <!-- product-footer -->
-    <%
-        File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
-        if (productFooterFile.exists()) {
-    %>
-    <jsp:include page="extensions/product-footer.jsp"/>
-    <% } else { %>
-    <jsp:include page="includes/product-footer.jsp"/>
-    <% } %>
+        </layout:component>
+        <layout:component componentName="ProductFooter" >
+            <!-- product-footer -->
+            <%
+                File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
+                if (productFooterFile.exists()) {
+            %>
+            <jsp:include page="extensions/product-footer.jsp"/>
+            <% } else { %>
+            <jsp:include page="includes/product-footer.jsp"/>
+            <% } %>
+        </layout:component>
+    </layout:main>
 
     <!-- footer -->
     <%
@@ -200,6 +213,9 @@
             $.fn.preventDoubleSubmission = function() {
                 $(this).on("submit", function(e){
                     var $form = $(this);
+                    $("#error-msg").hide(); 
+                    $("#server-error-msg").hide();
+                    $("#error-msg").text("");
 
                     if ($form.data("submitted") === true) {
                         // Previously submitted - don't submit again.
@@ -209,7 +225,17 @@
                         e.preventDefault();
 
                         var userName = document.getElementById("username");
-                        userName.value = userName.value.trim();
+                        var normalizedUsername = userName.value.trim();
+                        userName.value = normalizedUsername;
+                        
+                        if (normalizedUsername) {
+                            if (!/^[^/].*[^@]$/g.test(normalizedUsername)) {
+                                $("#error-msg").text("Username pattern policy violated");
+                                $("#error-msg").show();
+                                $("#username").val("");
+                                return;
+                            }
+                        }
 
                         // Mark it so that the next submit can be ignored.
                         $form.data("submitted", true);

@@ -26,7 +26,7 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Form, Grid, TabProps } from "semantic-ui-react";
+import { Form, Grid, Menu, TabProps } from "semantic-ui-react";
 import { InboundProtocolsMeta } from "./meta";
 import {
     AccessConfiguration,
@@ -38,20 +38,22 @@ import {
 } from "./settings";
 import { Info } from "./settings/info";
 import { ComponentExtensionPlaceholder, applicationConfig } from "../../../extensions";
-import { 
-    AppState, 
-    CORSOriginsListInterface, 
-    EventPublisher, 
-    FeatureConfigInterface, 
-    getCORSOrigins, 
-    history 
+import {
+    AppState,
+    CORSOriginsListInterface,
+    EventPublisher,
+    FeatureConfigInterface,
+    getCORSOrigins,
+    history
 } from "../../core";
+import { OrganizationUtils } from "../../organizations/utils";
 import { getInboundProtocolConfig } from "../api";
 import { ApplicationManagementConstants } from "../constants";
 import CustomApplicationTemplate
     from "../data/application-templates/templates/custom-application/custom-application.json";
 import {
     ApplicationInterface,
+    ApplicationTabTypes,
     ApplicationTemplateInterface,
     AuthProtocolMetaListItemInterface,
     OIDCApplicationConfigurationInterface,
@@ -143,9 +145,10 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         (state: AppState) => state.application.samlConfigurations);
     const isClientSecretHashEnabled: boolean = useSelector((state: AppState) =>
         state.config.ui.isClientSecretHashEnabled);
+    const tenantDomain: string = useSelector((state: AppState) => state.auth.tenantDomain);
 
     const [ isInboundProtocolConfigRequestLoading, setIsInboundProtocolConfigRequestLoading ] = useState<boolean>(true);
-    const [ inboundProtocolList, setInboundProtocolList ] = useState<string[]>([]);
+    const [ inboundProtocolList, setInboundProtocolList ] = useState<string[]>(undefined);
     const [ inboundProtocolConfig, setInboundProtocolConfig ] = useState<any>(undefined);
     const [ isInboundProtocolsRequestLoading, setInboundProtocolsRequestLoading ] = useState<boolean>(false);
     const [ tabPaneExtensions, setTabPaneExtensions ] = useState<any>(undefined);
@@ -164,6 +167,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     const [ totalTabs, setTotalTabs ] = useState<number>(undefined);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
+
+    const isFragmentApp = application.advancedConfigurations.fragment;
 
     /**
      * Called when an application updates.
@@ -248,33 +253,35 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     useEffect(() => {
         const allowedCORSOrigins = [];
 
-        getCORSOrigins()
-            .then((response: CORSOriginsListInterface[]) => {
-                response.map((origin) => {
-                    allowedCORSOrigins.push(origin.url);
-                });
-                setAllowedOrigins(allowedCORSOrigins);
-            })
-            .catch((error) => {
-                if (error?.response?.data?.description) {
+        if (OrganizationUtils.isCurrentOrganizationRoot()) {
+            getCORSOrigins()
+                .then((response: CORSOriginsListInterface[]) => {
+                    response.map((origin) => {
+                        allowedCORSOrigins.push(origin.url);
+                    });
+                    setAllowedOrigins(allowedCORSOrigins);
+                })
+                .catch((error) => {
+                    if (error?.response?.data?.description) {
+                        dispatch(addAlert({
+                            description: error.response.data.description,
+                            level: AlertLevels.ERROR,
+                            message: t("console:develop.features.applications.notifications.fetchAllowedCORSOrigins." +
+                                "error.message")
+                        }));
+
+                        return;
+                    }
+
                     dispatch(addAlert({
-                        description: error.response.data.description,
+                        description: t("console:develop.features.applications.notifications.fetchAllowedCORSOrigins" +
+                            ".genericError.description"),
                         level: AlertLevels.ERROR,
                         message: t("console:develop.features.applications.notifications.fetchAllowedCORSOrigins." +
-                            "error.message")
+                            "genericError.message")
                     }));
-
-                    return;
-                }
-
-                dispatch(addAlert({
-                    description: t("console:develop.features.applications.notifications.fetchAllowedCORSOrigins" +
-                        ".genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("console:develop.features.applications.notifications.fetchAllowedCORSOrigins." +
-                        "genericError.message")
-                }));
-            });
+                });
+        }
     }, [ isAllowedOriginsUpdated ]);
 
     /**
@@ -309,7 +316,6 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             return;
         }
         setSAMLConfigsLoading(true);
-
 
         ApplicationManagementUtils.getSAMLApplicationMeta()
             .finally(() => {
@@ -526,10 +532,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                     }));
                 })
                 .finally(() => {
-
                     // Mutate the saml: NameIDFormat property according to the specification.
                     normalizeSAMLNameIDFormat(protocolConfigs);
-
                     setIsApplicationUpdated(true);
                     setInboundProtocolList(selectedProtocolList);
                     setInboundProtocolConfig(protocolConfigs);
@@ -586,7 +590,6 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 hiddenFields={ [ "imageUrl" ] }
                 imageUrl={ application.imageUrl }
                 name={ application.name }
-                application = { application }
                 isLoading={ isLoading }
                 onDelete={ onDelete }
                 onUpdate={ handleApplicationUpdate }

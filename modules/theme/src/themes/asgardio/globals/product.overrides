@@ -1,0 +1,67 @@
+/*******************************
+        Product Overrides
+*******************************/
+
+.product-title {
+    .product-title-main {
+        display: flex;
+    }
+    .product-title-text {
+        margin-top: 2px !important;
+    }
+}
+
+/*******************************
+        Connector Page Layout
+*******************************/
+
+.layout {
+    &.page-layout {
+        .ui.header {
+            &.page-header {
+                &:not(.no-max-width) {
+                    max-width: 70%;
+                }
+            }
+        }
+    }
+}
+
+/*-------------------------------
+       Preloader Animation
+--------------------------------*/
+
+.trifacta-pre-loader {
+    svg #_1{
+        animation-name: alert-success;
+        animation-duration: 3s;
+        position: relative;
+        animation-delay: 0s;
+        animation-iteration-count: infinite;
+    }
+
+    svg #_2{
+        animation-name: alert-success;
+        animation-duration: 3s;
+        position: relative;
+        animation-delay: 1s;
+        animation-iteration-count: infinite;
+    }
+
+    svg #_3{
+        animation-name: alert-success;
+        animation-duration: 3s;
+        position: relative;
+        animation-delay: 2s;
+        animation-iteration-count: infinite;
+    }
+
+    @keyframes alert-success{
+        0%   { 
+            opacity: 1; 
+        }
+        100% { 
+            opacity: 0; 
+        }
+    }
+}

@@ -1,0 +1,23 @@
+<!--
+ * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+-->
+
+<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="11.373" height="14.216" viewBox="0 0 11.373 14.216">
+    <path class="path" id="docs-icon"
+          d="M10.519,2h-5.1A1.426,1.426,0,0,0,4,3.422V14.794a1.426,1.426,0,0,0,1.422,1.422h8.529a1.426,1.426,0,0,0,1.422-1.422V6.853a1.422,1.422,0,0,0-.417-1.005L11.524,2.417A1.422,1.422,0,0,0,10.519,2Zm1.3,11.373H7.554a.711.711,0,0,1-.711-.711h0a.711.711,0,0,1,.711-.711h4.265a.711.711,0,0,1,.711.711h0A.711.711,0,0,1,11.819,13.373Zm0-2.843H7.554a.711.711,0,0,1-.711-.711h0a.711.711,0,0,1,.711-.711h4.265a.711.711,0,0,1,.711.711h0A.711.711,0,0,1,11.819,10.529ZM10.4,6.976V3.066l3.909,3.909Z"
+          transform="translate(-4 -2)" fill="#fff"/>
+</svg>

@@ -1,0 +1,24 @@
+<!--
+ * Copyright (c) 2022, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+-->
+
+<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="14" height="14.002" viewBox="0 0 14 14.002">
+  <g id="home-filled" transform="translate(-12841 1863)">
+    <rect id="Rectangle_766" data-name="Rectangle 766" width="14" height="14" transform="translate(12841 -1863)" fill="#fff" opacity="0"/>
+    <path id="Path_2512" data-name="Path 2512" d="M7.958,14.165a.41.41,0,0,1-.41-.41v-.023a.431.431,0,0,1-.02-.128V9.634H5.216V13.6a.39.39,0,0,1-.023.135c0,.006,0,.012,0,.017a.41.41,0,0,1-.406.41H.5a.4.4,0,0,1-.4-.485A.433.433,0,0,1,.095,13.6V5.223a.408.408,0,0,1,.144-.311.408.408,0,0,1,.084-.088L6.106.263A.408.408,0,0,1,6.319.169h0l.015,0h.086l.012,0h0l.014,0h0l.012,0h0l.015,0h0a.408.408,0,0,1,.143.076L12.42,4.823a.408.408,0,0,1,.085.09.409.409,0,0,1,.143.311V13.6a.412.412,0,0,1-.007.075.41.41,0,0,1-.4.486Z" transform="translate(12841.605 -1863.164)"/>
+  </g>
+</svg>

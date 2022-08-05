@@ -1,0 +1,18 @@
+<!--
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.com). All Rights Reserved.
+ * 
+ * This software is the property of WSO2 Inc. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content."
+-->
+
+<svg xmlns="http://www.w3.org/2000/svg"  width="100%" height="100%"  viewBox="0 0 40.326 42.719">
+	<g id="angular-icon" transform="translate(-0.849 -0.341)">
+		<path id="Path_1966" data-name="Path 1966" d="M20.948.341.849,7.414,4.025,33.747,20.969,43.06,38,33.621,41.175,7.289Z" fill="#b3b3b3"/>
+		<path id="Path_1967" data-name="Path 1967" d="M145.58,20.7l-18.27-6.23V52.72l15.311-8.474L145.58,20.7Z" transform="translate(-106.409 -11.885)" fill="#a6120d"/>
+		<path id="Path_1968" data-name="Path 1968" d="M15.073,20.805l2.722,23.55,15.074,8.361V14.462L15.073,20.8Z" transform="translate(-11.969 -11.882)" fill="#dd1b16"/>
+		<path id="Path_1969" data-name="Path 1969" d="M66.395,42.2l-5.029,2.352h-5.3l-2.492,6.232-4.634.086L61.366,23.227,66.395,42.2Zm-.486-1.184L61.4,32.091l-3.7,8.774h3.665l4.543.154Z" transform="translate(-40.465 -19.257)" fill="#f2f2f2"/>
+		<path id="Path_1970" data-name="Path 1970" d="M127.309,23.226l.033,8.864,4.2,8.781h-4.221l-.01,3.677,5.837.006,2.728,6.319,4.434.082-13-27.728Z" transform="translate(-106.408 -19.256)" fill="#b3b3b3"/>
+	</g>
+</svg>

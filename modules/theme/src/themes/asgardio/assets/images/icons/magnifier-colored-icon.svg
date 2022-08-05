@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!--
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+-->
+
+<svg version="1.1" id="magnifier-colored-icon" class="icon" height="14" width="14" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+    <g>
+        <circle cx="44.793" cy="44.793" fill="#f95050" r="38.487" />
+        <circle cx="44.793" cy="44.793" fill="#e2e8ed" r="28.745" />
+        <rect fill="#f95050" height="49.102" rx="5.532" transform="matrix(.707 -.707 .707 .707 -41.589 100.405)" width="17.591" x="91.61" y="75.855" />
+        <g fill="#6d7a84">
+            <path d="m86.89 79.65-.01.01a5.469 5.469 0 0 0 -1.53 1.08l-4.61 4.61a5.469 5.469 0 0 0 -1.08 1.53l-.01.01-11.5-11.5a38.779 38.779 0 0 0 7.24-7.24z" />
+            <path d="m65.195 44.713a1.749 1.749 0 0 1 -1.741-1.595 18.785 18.785 0 0 0 -13.729-16.4 1.75 1.75 0 1 1 .919-3.377 22.3 22.3 0 0 1 16.3 19.471 1.751 1.751 0 0 1 -1.589 1.9q-.082.001-.16.001z" />
+            <path d="m37.17 27.525a1.75 1.75 0 0 1 -.652-3.374 22.1 22.1 0 0 1 6.132-1.49 1.75 1.75 0 0 1 .334 3.485 18.572 18.572 0 0 0 -5.162 1.254 1.745 1.745 0 0 1 -.652.125z" />
+        </g>
+    </g>
+</svg>

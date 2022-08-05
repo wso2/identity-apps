@@ -1,0 +1,49 @@
+<!--
+ * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+-->
+
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="128" height="128" viewBox="0 0 128 128" class="icon">
+    <defs>
+        <clipPath id="clip-path">
+            <rect id="Rectangle_937" data-name="Rectangle 937" width="128" height="128" rx="4" transform="translate(701 312)" fill="#c1c1c1"/>
+        </clipPath>
+    </defs>
+    <g id="Mask_Group_1" data-name="Mask Group 1" transform="translate(-701 -312)" clip-path="url(#clip-path)">
+        <g id="holding" transform="translate(706.333 312)">
+            <path id="Path_2355" data-name="Path 2355" d="M32,44.48c-2.72,0-4.64,0-5.067.053l-5.6,4.267L15.84,52.96A40.167,40.167,0,0,0,0,84.8v40.533a2.585,2.585,0,0,0,1.6,2.453A2.388,2.388,0,0,0,2.667,128H45.333A2.641,2.641,0,0,0,48,125.333V117.12a15.98,15.98,0,0,0,13.333-15.787V44.587S42.773,44.48,32,44.48Z" fill="#ffcc80"/>
+            <path id="Path_2356" data-name="Path 2356" d="M61.333,96v5.333A15.98,15.98,0,0,1,48,117.12v8.213A2.641,2.641,0,0,1,45.333,128h-40V96Z" fill="#ffa726"/>
+            <path id="Path_2357" data-name="Path 2357" d="M32,53.419l-8.437,8.395A25.944,25.944,0,0,0,15.915,80H32Z" fill="#ffa726"/>
+            <path id="Path_2358" data-name="Path 2358" d="M109.333,101.333H34.667a8.01,8.01,0,0,1-8-8V8a8.01,8.01,0,0,1,8-8h74.667a8.01,8.01,0,0,1,8,8V93.333A8.01,8.01,0,0,1,109.333,101.333Z" fill="#eceff1"/>
+            <path id="Path_2359" data-name="Path 2359" d="M72,0H34.667a8.01,8.01,0,0,0-8,8V93.333a8.01,8.01,0,0,0,8,8H72Z" fill="#cdd0d2"/>
+            <g id="Group_1307" data-name="Group 1307">
+                <path id="Path_2360" data-name="Path 2360" d="M72,90.667a4,4,0,0,1-4-4V25.333a4,4,0,1,1,8,0V86.667A4,4,0,0,1,72,90.667Z" fill="#607d8b"/>
+                <path id="Path_2361" data-name="Path 2361" d="M72.005,90.667a3.988,3.988,0,0,1-3.4-1.888L46.261,52.832a4,4,0,0,1,6.795-4.224L75.4,84.555a4,4,0,0,1-3.4,6.112Z" fill="#607d8b"/>
+                <path id="Path_2362" data-name="Path 2362" d="M69.888,90.064A4,4,0,0,1,68.6,84.555L90.949,48.608a4,4,0,1,1,6.795,4.224L75.4,88.779a4,4,0,0,1-5.509,1.285Z" fill="#607d8b"/>
+            </g>
+            <path id="Path_2363" data-name="Path 2363" d="M71.973,90.667h0Zm-.027,0h0Zm-.208-.011h.011A.007.007,0,0,1,71.739,90.656Zm-1.531-.416a3.954,3.954,0,0,0,1.515.416,4.122,4.122,0,0,1-.88-.16c-.005,0-.011-.005-.016-.005h-.005a4.108,4.108,0,0,1-.613-.251ZM72,21.333a4,4,0,0,0-4,4V72.651l4,6.432Z" fill="#546d79"/>
+            <path id="Path_2364" data-name="Path 2364" d="M98.667,54.667A10.667,10.667,0,1,1,109.333,44,10.677,10.677,0,0,1,98.667,54.667Z" fill="#00c3bd"/>
+            <path id="Path_2365" data-name="Path 2365" d="M72,32A10.667,10.667,0,1,1,82.667,21.333,10.677,10.677,0,0,1,72,32Z" fill="#2196f3"/>
+            <path id="Path_2366" data-name="Path 2366" d="M72,10.667A10.667,10.667,0,0,0,72,32Z" fill="#1d83d4"/>
+            <path id="Path_2367" data-name="Path 2367" d="M98.667,33.333a10.667,10.667,0,1,0,0,21.333Z" fill="#00aaa5"/>
+            <path id="Path_2368" data-name="Path 2368" d="M47.541,47.323a4.006,4.006,0,0,0-1.285,5.509L68.544,88.683a4,4,0,0,1,.059-4.128L72,79.088l-4-6.432L53.051,48.608a4,4,0,0,0-5.509-1.285Z" fill="#546d79"/>
+            <path id="Path_2369" data-name="Path 2369" d="M72,79.088l-3.4,5.467a3.908,3.908,0,0,0-.059,4.128,4.016,4.016,0,0,0,3.445,1.984h.005V79.088Z" fill="#546d79"/>
+            <path id="Path_2370" data-name="Path 2370" d="M45.333,54.667A10.667,10.667,0,1,1,56,44,10.677,10.677,0,0,1,45.333,54.667Z" fill="#f77102"/>
+            <path id="Path_2371" data-name="Path 2371" d="M45.333,33.333a10.667,10.667,0,1,0,0,21.333Z" fill="#e76c06"/>
+            <path id="Path_2372" data-name="Path 2372" d="M49.707,67.627,40,77.333a18.5,18.5,0,0,1,1.92,8.16,18.036,18.036,0,0,1-4.267,11.68l-8.32,9.973V128H2.667a2.388,2.388,0,0,1-1.067-.213A2.585,2.585,0,0,1,0,125.333V92.32L46.027,49.653a2.657,2.657,0,0,1,3.68.053,12.619,12.619,0,0,1,0,17.92Z" fill="#ffcc80"/>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,25 @@
+/*******************************
+        Popup Variables
+*******************************/
+
+/*-----------------------------
+        Compact Tooltip
+------------------------------*/
+
+@compactTooltipPadding: 5px 10px;
+
+/*-------------------------------
+          Data Table
+--------------------------------*/
+
+@dataTableColumnSelectorPopupPadding: 0;
+@dataTableColumnSelectorPopupHeadingFontSize: 1em;
+@dataTableColumnSelectorPopupHeadingFontWeight: 500;
+@dataTableColumnSelectorPopupHeadingContainerBorderBottom: @defaultBorderWidth solid @borderColor;
+@dataTableColumnSelectorPopupHeadingContainerBackground: @offWhite;
+
+/*-------------------------------
+        CORS Details Popup
+--------------------------------*/
+
+@corsDetailsPopupDividerMargin: 1em 0 0 0;

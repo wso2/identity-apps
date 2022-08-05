@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!--
+ * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+-->
+
+<svg xmlns="http://www.w3.org/2000/svg" id="dashboard-icon" class="icon" width="14" height="14" viewBox="0 0 14 10.391">
+    <path id="dashboard-outline" class="path fill primary"
+          d="M10.931,9.695l.309-.515,1.4.842A6.382,6.382,0,0,0,13.4,7a6.448,6.448,0,0,0-.038-.7l-1.7.3-.1-.591,1.708-.3a6.379,6.379,0,0,0-1.862-3.344L10.26,3.728,9.8,3.342l1.151-1.373A6.349,6.349,0,0,0,7.3.608V2.46H6.7V.608A6.346,6.346,0,0,0,3.064,1.957L4.226,3.342l-.46.386L2.608,2.348A6.368,6.368,0,0,0,.731,5.707l1.7.3-.1.59L.637,6.3A6.575,6.575,0,0,0,.6,7a6.4,6.4,0,0,0,.763,3.028L2.774,9.18l.309.514-1.158.7H.877a7,7,0,1,1,12.246,0H12.088Zm-.931.7H4V9.8h6v.589h0ZM6.674,6.814,4.656,4.3l2.59,1.9a.572.572,0,1,1-.572.608Z"
+          fill="#464646"/>
+</svg>
