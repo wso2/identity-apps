@@ -23,7 +23,7 @@ import { ConfirmationModal, DangerZone, DangerZoneGroup } from "@wso2is/react-co
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { AppConstants, AppState, FeatureConfigInterface, UIConfigInterface, history, EventPublisher } from "../../core";
+import { AppConstants, AppState, EventPublisher, FeatureConfigInterface, UIConfigInterface, history } from "../../core";
 import { deleteApplication } from "../api";
    
 /**

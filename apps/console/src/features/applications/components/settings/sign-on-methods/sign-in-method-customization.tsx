@@ -27,7 +27,7 @@ import {
     LinkButton,
     Message,
     PrimaryButton,
-    useDocumentation,
+    useDocumentation
 } from "@wso2is/react-components";
 import kebabCase from "lodash-es/kebabCase";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -402,8 +402,8 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
             });
 
             eventPublisher.publish("application-sign-in-method-click-update-button", {
-                type: eventPublisherProperties,
-                "client-id": clientId
+                "client-id": clientId,
+                type: eventPublisherProperties
             });
         });
 
@@ -597,7 +597,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                     <Message
                         type="warning"
                         content={
-                            <>
+                            (<>
                                 <Trans
                                     i18nKey={
                                         t("console:develop.features.applications.edit.sections" +
@@ -615,7 +615,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                                 >
                                     { t("common:learnMore") }
                                 </DocumentationLink>
-                            </>
+                            </>)
                         }
                     />
                 )
