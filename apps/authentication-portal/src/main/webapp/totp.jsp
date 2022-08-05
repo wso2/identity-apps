@@ -155,14 +155,7 @@
 
                     <div class="ui segment">
                         <!-- page content -->
-                        <h2><%=AuthenticationEndpointUtil.i18n(resourceBundle, "auth.totp")%></h2>
                         <div class="uii divider hidden"></div>
-                        <%
-                            if ("true".equals(authenticationFailed)) {
-                        %>
-                                <div class="ui negative message" id="failed-msg"><%=errorMessage%></div>
-                                <div class="ui divider hidden"></div>
-                        <% } %>
 
                         <input id="username" type="hidden"
                                value='<%=Encode.forHtmlAttribute(request.getParameter("username"))%>'>
@@ -179,7 +172,7 @@
                                 <div class="ui divider hidden"></div>
                                 <div class="ui two column stackable grid">
 
-                                <div class="ten wide column mobile center aligned tablet left aligned computer left aligned buttons tablet no-padding-left-first-child computer no-padding-left-first-child">
+                                <div class="ten wide column mobile center aligned tablet left aligned computer left aligned buttons tablet computer">
                                     <% if(isSendVerificationCodeByEmailEnabled) { %>
                                         <a class="ui button secondary" id="genToken" href="#"
                                         onclick="return requestTOTPToken();">

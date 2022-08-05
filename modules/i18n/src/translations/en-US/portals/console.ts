@@ -18,6 +18,11 @@
 
 import { ConsoleNS } from "../../../models";
 
+/**
+ * NOTES: No need to care about the max-len for this file since it's easier to
+ * translate the strings to other languages easily with editor translation tools.
+ */
+/* eslint-disable max-len */
 export const console: ConsoleNS = {
     common: {
         advancedSearch: {
@@ -4072,6 +4077,22 @@ export const console: ConsoleNS = {
                             name: "Please enter a valid name"
                         }
                     },
+                    expert: {
+                        wizardHelp: {
+                            description: {
+                                connectionDescription: "Provide a unique name for the connection.",
+                                heading: "Name",
+                                idpDescription: "Provide a unique name for the identity provider."
+                            },
+                            heading: "Help",
+                            name: {
+                                connectionDescription: "Provide a description for the connection to explain more about it.",
+                                heading: "Description",
+                                idpDescription: "Provide a description for the identity provider to explain more about it."
+                            },
+                            subHeading: "Use the guide below"
+                        }
+                    },
                     facebook: {
                         wizardHelp: {
                             clientId: {
@@ -4184,6 +4205,15 @@ export const console: ConsoleNS = {
                                     title: "Quick Setup"
                                 },
                                 title: "Authenticator Selection"
+                            },
+                            authenticatorSettings: {
+                                emptyPlaceholder: {
+                                    subtitles: [
+                                        "This authenticator does not have any settings available to be",
+                                        "configured at this level. Simply click on <1>Finish</1>."
+                                    ],
+                                    title: "No Settings available for this Authenticator."
+                                }
                             },
                             summary: {
                                 title: "Summary"

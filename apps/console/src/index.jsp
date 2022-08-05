@@ -33,7 +33,7 @@
 <!DOCTYPE HTML>
 <html>
     <head>
-        <script src="https://unpkg.com/@asgardeo/auth-spa@0.3.3/dist/asgardeo-spa.production.min.js"></script>
+        <script src="/<%= htmlWebpackPlugin.options.basename %>/auth-spa-0.3.3.min.js"></script>
     </head>
     <body>
         <script>
@@ -96,7 +96,7 @@
                     clientID: "<%= htmlWebpackPlugin.options.clientID %>",
                     baseUrl: getApiPath(),
                     responseMode: "form_post",
-                    scope: ["openid SYSTEM"],
+                    scope: ["openid SYSTEM profile"],
                     storage: "webWorker",
                     enablePKCE: true,
                     endpoints: {

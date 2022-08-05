@@ -149,6 +149,7 @@ const SecretsPage: FC<SecretsPageProps> = (props: SecretsPageProps): ReactElemen
             
             isLoading={ isSecretListLoading }
             title={ t("console:develop.features.secrets.page.title") }
+            pageTitle={ t("console:develop.features.secrets.page.title") }
             description={ t("console:develop.features.secrets.page.description") }
         >
                

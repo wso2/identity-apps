@@ -71,6 +71,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
     );
     const feature: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const scopes = useSelector((state: AppState) => state.auth.allowedScopes);
+    const tenantDomain: string = useSelector((state: AppState) => state?.auth?.tenantDomain);
 
     const [ associatedOrganizations, setAssociatedOrganizations ] = useState<OrganizationInterface[]>([]);
     const [ listFilter, setListFilter ] = useState("");
@@ -79,12 +80,28 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
     const [ isDropDownOpen, setIsDropDownOpen ] = useState<boolean>(false);
     const [ search, setSearch ] = useState<string>("");
 
+    /**
+     * Show the organization switching dropdown only if
+     *  - the extensions config enables this
+     *  - the requires scopes are there
+     *  - the organization management feature is enabled by the backend
+     *  - the user is logged in to a non-super-tenant account
+     */
     const isOrgSwitcherEnabled = useMemo(() => {
-        return isOrganizationManagementEnabled &&
-        hasRequiredScopes(feature?.organizations, feature?.organizations?.scopes?.read, scopes) &&
-        organizationConfigs.showOrganizationDropdown;
+        return (
+            isOrganizationManagementEnabled &&
+            // The `tenantDomain` takes the organization id when you log in to a sub-organization.
+            // So, we cannot use `tenantDomain` to check
+            // if the user is logged in to a non-super-tenant account reliably.
+            // So, we check if the organization id is there in the URL to see if the user is in a sub-organization.
+            (tenantDomain === AppConstants.getSuperTenant() || window[ "AppUtils" ].getConfig().organizationName) &&
+            hasRequiredScopes(feature?.organizations, feature?.organizations?.scopes?.read, scopes) &&
+            organizationConfigs.showOrganizationDropdown
+        );
     }, [
-        organizationConfigs.showOrganizationDropdown
+        organizationConfigs.showOrganizationDropdown,
+        tenantDomain,
+        feature.organizations
     ]);
 
     const getOrganizationList = useCallback((filter: string, after: string, before: string) => {

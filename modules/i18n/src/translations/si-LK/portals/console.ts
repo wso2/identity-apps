@@ -18,6 +18,11 @@
 
 import { ConsoleNS } from "../../../models";
 
+/**
+ * NOTES: No need to care about the max-len for this file since it's easier to
+ * translate the strings to other languages easily with editor translation tools.
+ */
+/* eslint-disable max-len */
 export const console: ConsoleNS = {
     common: {
         advancedSearch: {
@@ -2848,6 +2853,95 @@ export const console: ConsoleNS = {
                             invalidName: "වලංගු නමක් ඇතුළත් කරන්න",
                             name: "වලංගු නමක් ඇතුළත් කරන්න"
                         }
+                    },
+                    expert: {
+                        wizardHelp: {
+                            description: {
+                                connectionDescription: "සම්බන්ධතාවය සඳහා අද්විතීය නමක් සපයන්න.",
+                                heading: "නම",
+                                idpDescription: "අනන්යතා සැපයුම්කරු සඳහා අද්විතීය නමක් සපයන්න."
+                            },
+                            heading: "උදව්",
+                            name: {
+                                connectionDescription: "ඒ ගැන වැඩි විස්තර විස්තර කිරීමට සම්බන්ධතාවය සඳහා විස්තරයක් සපයන්න.",
+                                heading: "විස්තර",
+                                idpDescription: "අනන්යතා සැපයුම්කරු ඒ ගැන වැඩි විස්තර විස්තර කිරීමට විස්තරයක් සපයන්න."
+                            },
+                            subHeading: "පහත මාර්ගෝපදේශය භාවිතා කරන්න"
+                        }
+                    }
+                },
+                wizards: {
+                    addAuthenticator: {
+                        header: "සත්යාපනය පිළිබඳ මූලික තොරතුරු පුරවන්න.",
+                        steps: {
+                            authenticatorConfiguration: {
+                                title: "සත්යාපන වින්යාසය"
+                            },
+                            authenticatorSelection: {
+                                manualSetup: {
+                                    subTitle: "අභිරුචි වින්යාසයන් සහිත නව සත්යාපකයෙකු එක් කරන්න.",
+                                    title: "අතින් සැකසුම"
+                                },
+                                quickSetup: {
+                                    subTitle: "ක්රියාවලිය වේගවත් කිරීම සඳහා පූර්ව නිශ්චිත සත්යාපන සැකිලි.",
+                                    title: "ඉක්මන් පිහිටුවීම්"
+                                },
+                                title: "සත්යාපන තේරීම"
+                            },
+                            authenticatorSettings: {
+                                emptyPlaceholder: {
+                                    subtitles: [
+                                        "මෙම සත්යාපකයාට කිසිදු සැකසීම් නොමැත",
+                                        "මෙම මට්ටමින් වින්යාස කර ඇත.<1> අවසන් කරන්න </ 1> මත ක්ලික් කරන්න."
+                                    ],
+                                    title: "මෙම සත්යාපකය සඳහා කිසිදු සැකසුම් නොමැත."
+                                }
+                            },
+                            summary: {
+                                title: "සාරාංශය"
+                            }
+                        }
+                    },
+                    addIDP: {
+                        header: "අනන්යතා සැපයුම්කරු පිළිබඳ මූලික තොරතුරු පුරවන්න.",
+                        steps: {
+                            authenticatorConfiguration: {
+                                title: "සත්යාපන වින්යාසය"
+                            },
+                            generalSettings: {
+                                title: "සාමාන්ය සැකසුම්"
+                            },
+                            provisioningConfiguration: {
+                                title: "ප්රතිපාදන වින්යාසය"
+                            },
+                            summary: {
+                                title: "සාරාංශය"
+                            }
+                        }
+                    },
+                    addProvisioningConnector: {
+                        header: "ප්රතිපාදන සම්බන්ධකය පිළිබඳ මූලික තොරතුරු පුරවන්න.",
+                        steps: {
+                            connectorConfiguration: {
+                                title: "සම්බන්ධක විස්තර"
+                            },
+                            connectorSelection: {
+                                defaultSetup: {
+                                    subTitle: "නව පිටතට යන විධිමත් සම්බන්ධක වර්ගය තෝරන්න",
+                                    title: "සම්බන්ධක වර්ග"
+                                },
+                                title: "සම්බන්ධක තේරීම"
+                            },
+                            summary: {
+                                title: "සාරාංශය"
+                            }
+                        }
+                    },
+                    buttons: {
+                        finish: "අවසන්",
+                        next: "ඊළඟ",
+                        previous: "කලින්"
                     }
                 }
             },

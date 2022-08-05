@@ -18,3 +18,4 @@
  */
 
 export * from "./session-management-provider";
+export * from "./session-management-context";

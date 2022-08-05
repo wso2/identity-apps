@@ -18,6 +18,18 @@
 
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { DocumentationConstants } from "./documentation-constants";
+import EnterpriseIdPTemplate from
+    "../data/identity-provider-templates/templates/enterprise-identity-provider/enterprise-identity-provider.json";
+import ExpertModeIdPTemplate from "../data/identity-provider-templates/templates/expert-mode/expert-mode.json";
+import FacebookIdPTemplate from "../data/identity-provider-templates/templates/facebook/facebook.json";
+import GitHubIdPTemplate from "../data/identity-provider-templates/templates/github/github.json";
+import GoogleIdPTemplate from "../data/identity-provider-templates/templates/google/google.json";
+import EnterpriseOIDCIdPTemplate from
+    "../data/identity-provider-templates/templates/oidc-identity-provider/enterprise-oidc-identity-provider.json";
+import EnterpriseOrganizationIdPTemplate from
+    "../data/identity-provider-templates/templates/organization-enterprise-identity-provider/organization-enterprise-identity-provider.json";
+import EnterpriseSAMLIdPTemplate from
+    "../data/identity-provider-templates/templates/saml-identity-provider/enterprise-saml-identity-provider.json";
 import { IdentityProviderTemplateLoadingStrategies } from "../models";
 
 /**
@@ -82,16 +94,26 @@ export class IdentityProviderManagementConstants {
 
     /**
      * Set of IDP template Ids.
-     * @type {Record<string, unknown>}
+     * @type {object}
      */
-    public static readonly IDP_TEMPLATE_IDS: Record<string, string> = {
-        ENTERPRISE: "enterprise-idp",
-        FACEBOOK: "facebook-idp",
-        GITHUB: "github-idp",
-        GOOGLE: "8ea23303-49c0-4253-b81f-82c0fe6fb4a0",
-        OIDC: "oidc-idp",
-        ORGANIZATION_ENTERPRISE_IDP: "organization-enterprise-idp",
-        SAML: "saml-idp"
+    public static readonly IDP_TEMPLATE_IDS: {
+        ENTERPRISE: string;
+        EXPERT_MODE: string;
+        FACEBOOK: string;
+        GITHUB: string;
+        GOOGLE: string;
+        OIDC: string;
+        ORGANIZATION_ENTERPRISE_IDP: string;
+        SAML: string;
+    } = {
+        ENTERPRISE: EnterpriseIdPTemplate.id,
+        EXPERT_MODE: ExpertModeIdPTemplate.id,
+        FACEBOOK: FacebookIdPTemplate.id,
+        GITHUB: GitHubIdPTemplate.id,
+        GOOGLE: GoogleIdPTemplate.id,
+        OIDC: EnterpriseOIDCIdPTemplate.id,
+        ORGANIZATION_ENTERPRISE_IDP: EnterpriseOrganizationIdPTemplate.id,
+        SAML: EnterpriseSAMLIdPTemplate.id
     };
 
     /**
@@ -320,9 +342,10 @@ export class IdentityProviderManagementConstants {
     public static readonly BACKUP_CODE_AUTHENTICATOR: string = "backup-code-authenticator";
     public static readonly MAGIC_LINK_AUTHENTICATOR: string = "MagicLinkAuthenticator";
 
-    // Known Enterprise authenticator IDs
+    // Known IS Predefined/Protocols authenticator IDs
     public static readonly OIDC_AUTHENTICATOR_ID: string = "T3BlbklEQ29ubmVjdEF1dGhlbnRpY2F0b3I";
     public static readonly SAML_AUTHENTICATOR_ID: string = "U0FNTFNTT0F1dGhlbnRpY2F0b3I";
+    public static readonly PASSIVE_STS_AUTHENTICATOR_ID: string = "UGFzc2l2ZVNUU0F1dGhlbnRpY2F0b3I";
     public static readonly ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID: string = "T3JnYW5pemF0aW9uQXV0aGVudGljYXRvcg";
 
     // Known Local Authenticator IDS.
@@ -337,20 +360,36 @@ export class IdentityProviderManagementConstants {
     public static readonly BASIC_AUTH_AUTHENTICATOR_ID: string = "QmFzaWNBdXRoUmVxdWVzdFBhdGhBdXRoZW50aWNhdG9y";
     public static readonly OAUTH_BEARER_AUTHENTICATOR_ID: string = "T0F1dGhSZXF1ZXN0UGF0aEF1dGhlbnRpY2F0b3I";
     public static readonly EMAIL_OTP_AUTHENTICATOR_ID: string = "ZW1haWwtb3RwLWF1dGhlbnRpY2F0b3I";
+    public static readonly LEGACY_EMAIL_OTP_AUTHENTICATOR_ID: string = "RW1haWxPVFA";
     public static readonly BACKUP_CODE_AUTHENTICATOR_ID: string = "YmFja3VwLWNvZGUtYXV0aGVudGljYXRvcgo=";
     public static readonly MAGIC_LINK_AUTHENTICATOR_ID: string = "TWFnaWNMaW5rQXV0aGVudGljYXRvcg";
 
-    // Known Social authenticator IDs.
+    // Known Social/Enterprise authenticator IDs.
     public static readonly GOOGLE_OIDC_AUTHENTICATOR_ID: string = "R29vZ2xlT0lEQ0F1dGhlbnRpY2F0b3I";
     public static readonly FACEBOOK_AUTHENTICATOR_ID: string = "RmFjZWJvb2tBdXRoZW50aWNhdG9y";
     public static readonly TWITTER_AUTHENTICATOR_ID: string = "VHdpdHRlckF1dGhlbnRpY2F0b3I";
     public static readonly GITHUB_AUTHENTICATOR_ID: string = "R2l0aHViQXV0aGVudGljYXRvcg";
+    public static readonly YAHOO_AUTHENTICATOR_ID: string = "WWFob29PQXV0aDJBdXRoZW50aWNhdG9y";
+    public static readonly OFFICE_365_AUTHENTICATOR_ID: string = "T2ZmaWNlMzY1QXV0aGVudGljYXRvcg";
+    public static readonly MS_LIVE_AUTHENTICATOR_ID: string = "TWljcm9zb2Z0V2luZG93c0xpdmVBdXRoZW50aWNhdG9y";
+    public static readonly IWA_KERBEROS_AUTHENTICATOR_ID: string = "SVdBS2VyYmVyb3NBdXRoZW50aWNhdG9y";
 
-    // Known Social authenticator names;
+    // Known IS Predefined/Protocols authenticator IDs
+    public static readonly PASSIVE_STS_AUTHENTICATOR_NAME: string = "PassiveSTSAuthenticator";
+    public static readonly SAML_AUTHENTICATOR_NAME: string = "SAMLSSOAuthenticator";
+    public static readonly OIDC_AUTHENTICATOR_NAME: string = "OpenIDConnectAuthenticator";
+    public static readonly LEGACY_EMAIL_OTP_AUTHENTICATOR_NAME: string = "EmailOTP";
+    public static readonly SMS_OTP_AUTHENTICATOR_NAME: string = "SMSOTP";
+
+    // Known Social/Enterprise authenticator names;
     public static readonly GOOGLE_OIDC_AUTHENTICATOR_NAME: string = "GoogleOIDCAuthenticator";
     public static readonly FACEBOOK_AUTHENTICATOR_NAME: string = "FacebookAuthenticator";
     public static readonly GITHUB_AUTHENTICATOR_NAME: string = "GithubAuthenticator";
+    public static readonly YAHOO_AUTHENTICATOR_NAME: string = "YahooOAuth2Authenticator";
     public static readonly TWITTER_AUTHENTICATOR_NAME: string = "TwitterAuthenticator";
+    public static readonly OFFICE_365_AUTHENTICATOR_NAME: string = "Office365Authenticator";
+    public static readonly MS_LIVE_AUTHENTICATOR_NAME: string = "MicrosoftWindowsLiveAuthenticator";
+    public static readonly IWA_KERBEROS_AUTHENTICATOR_NAME: string = "IWAKerberosAuthenticator";
 
     // Known Social authenticator display names;
     public static readonly GOOGLE_OIDC_AUTHENTICATOR_DISPLAY_NAME: string = "Google";
@@ -382,4 +421,6 @@ export class IdentityProviderManagementConstants {
          "console:develop.features.authenticationProvider.notifications.apiLimitReachedError.error.message",
          "cec1f247-32fd-4624-9915-f469195a53ac"
      )
+
+     public static readonly SHOW_PREDEFINED_TEMPLATES_IN_EXPERT_MODE_SETUP: boolean = false;
 }

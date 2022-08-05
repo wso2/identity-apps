@@ -154,11 +154,13 @@ export const getOrganization = (id: string, showChildren?: boolean): Promise<Org
 /**
  * Update an organization.
  *
+ * @param {string} organizationId Identifier of the organization needs to be updated.
  * @param {UpdateOrganizationInterface} organization The organization object to update the organization with.
  *
  * @returns {OrganizationResponseInterface}
  */
 export const updateOrganization = (
+    organizationId: string,
     organization: UpdateOrganizationInterface
 ): Promise<OrganizationResponseInterface> => {
     const config: HttpRequestConfig = {
@@ -168,7 +170,7 @@ export const updateOrganization = (
             "Content-Type": "application/json"
         },
         method: "PUT",
-        url: `${ store.getState().config.endpoints.organizations }/organizations/`
+        url: `${ store.getState().config.endpoints.organizations }/organizations/${organizationId}`
     };
 
     return httpClient(config)

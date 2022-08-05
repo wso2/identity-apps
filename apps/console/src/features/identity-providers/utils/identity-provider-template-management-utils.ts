@@ -21,9 +21,10 @@ import { I18n } from "@wso2is/i18n";
 import groupBy from "lodash-es/groupBy";
 import { store } from "../../core";
 import { getIdentityProviderTemplateList } from "../api";
-import { ExpertModeTemplate, handleGetIDPTemplateListError } from "../components";
+import { handleGetIDPTemplateListError } from "../components";
 import { getIdPCapabilityIcons } from "../configs";
-import { getIdentityProviderTemplatesConfig, TemplateConfigInterface } from "../data/identity-provider-templates";
+import { TemplateConfigInterface, getIdentityProviderTemplatesConfig } from "../data/identity-provider-templates";
+import ExpertModeIdPTemplate from "../data/identity-provider-templates/templates/expert-mode/expert-mode.json";
 import {
     IdentityProviderTemplateCategoryInterface,
     IdentityProviderTemplateGroupInterface,
@@ -116,7 +117,7 @@ export class IdentityProviderTemplateManagementUtils {
                     IdentityProviderTemplateManagementUtils.interpretAvailableTemplates(response?.templates);
 
                 // Add expert mode template
-                availableTemplates.unshift(ExpertModeTemplate);
+                availableTemplates.unshift(ExpertModeIdPTemplate);
 
                 store.dispatch(setIdentityProviderTemplates(availableTemplates));
                 return Promise.resolve(availableTemplates);
