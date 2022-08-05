@@ -186,6 +186,11 @@ export class IdentityProviderManagementConstants {
     };
 
     /**
+     * Google One Tap enabling request parameter
+     */
+    public static readonly GOOGLE_ONE_TAP_ENABLED: string = "IsGoogleOneTapEnabled";
+
+    /**
      * GitHub Scope mappings.
      * @type {Record<string, string>}
      */
