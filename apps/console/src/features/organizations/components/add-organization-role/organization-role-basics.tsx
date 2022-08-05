@@ -70,10 +70,6 @@ export const OrganizationRoleBasics: FunctionComponent<OrganizationRoleBasicProp
         (state: AppState) => state.organization.organization
     );
 
-    useEffect(() => {
-        getUserStores();
-    }, [ isAddGroup ]);
-
     /**
      * The following function validates role name against the user store regEx.
      *
@@ -93,43 +89,6 @@ export const OrganizationRoleBasics: FunctionComponent<OrganizationRoleBasicProp
             userStoreRegEx = SharedUserStoreConstants.PRIMARY_USERSTORE_PROPERTY_VALUES.RolenameJavaScriptRegEx;
         }
         setIsRoleNamePatternValid(SharedUserStoreUtils.validateInputAgainstRegEx(roleName, userStoreRegEx));
-    };
-
-    /**
-     * The following function fetch the user store list and set it to the state.
-     */
-    const getUserStores = () => {
-        const storeOptions = [
-            {
-                key: -1,
-                text: "Primary",
-                value: "primary"
-            }
-        ];
-        let storeOption = {
-            key: null,
-            text: "",
-            value: ""
-        };
-
-        getUserStoreList()
-            .then((response) => {
-                if (storeOptions === []) {
-                    storeOptions.push(storeOption);
-                }
-                response.data.map((store, index) => {
-                    storeOption = {
-                        key: index,
-                        text: store.name,
-                        value: store.name
-                    };
-                    storeOptions.push(storeOption);
-                }
-                );
-                setUserStoresList(storeOptions);
-            });
-
-        setUserStoresList(storeOptions);
     };
 
     /**
