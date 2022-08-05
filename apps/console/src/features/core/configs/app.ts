@@ -185,7 +185,7 @@ export class Config {
         return {
             ...getApplicationsResourceEndpoints(this.resolveServerHost()),
             ...getApprovalsResourceEndpoints(this.getDeploymentConfig().serverHost),
-            ...getClaimResourceEndpoints(this.getDeploymentConfig().serverHost),
+            ...getClaimResourceEndpoints(this.resolveServerHost()),
             ...getCertificatesResourceEndpoints(this.getDeploymentConfig().serverHost),
             ...getIDPResourceEndpoints(this.resolveServerHost()),
             ...getEmailTemplatesResourceEndpoints(this.getDeploymentConfig().serverHost),
