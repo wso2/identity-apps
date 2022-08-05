@@ -178,6 +178,8 @@
         "identityProviderTemplateLoadingStrategy": "{{ console.ui.identity_provider_template_loading_strategy }}",
         {% endif %}
         "appLogoPath": "{{ console.ui.app_logo_path }}",
+        {% if console.enable_google_one_tap_for_super_tenant_only is defined %}
+        "isGOTEnabledForSuperTenantOnly": "{{ console.enable_google_one_tap_for_super_tenant_only }}",
         {% if console.ui.show_app_switch_button is defined %}
         "showAppSwitchButton": "{{ console.ui.show_app_switch_button }}",
         {% endif %}

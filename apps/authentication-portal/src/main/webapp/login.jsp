@@ -19,6 +19,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="com.google.gson.Gson" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthContextAPIClient" %>
+<%@ page import="org.wso2.carbon.identity.application.authentication.framework.util.FrameworkUtils" %>
+<%@ page import="org.wso2.carbon.identity.application.authentication.framework.config.ConfigurationFacade" %>
+<%@ page import="org.wso2.carbon.identity.application.authentication.framework.config.model.ExternalIdPConfig" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
 <%@ page import="org.wso2.carbon.identity.core.util.IdentityCoreConstants" %>
 <%@ page import="org.wso2.carbon.identity.core.util.IdentityUtil" %>
@@ -312,9 +315,12 @@
                                     if (!idpEntry.getKey().equals(Constants.RESIDENT_IDP_RESERVED_NAME)) {
                                         String idpName = idpEntry.getKey();
                                         boolean isHubIdp = false;
+                                        boolean isGoogleIdp = false;
                                         if (idpName.endsWith(".hub")) {
                                             isHubIdp = true;
                                             idpName = idpName.substring(0, idpName.length() - 4);
+                                        } else if (idpName.contains("Google")) {
+                                            isGoogleIdp = true;
                                         }
 
                                         // Uses the `IdentityProviderDataRetrievalClient` to get the IDP image.
@@ -350,22 +356,82 @@
                                     </div>
                                     <br>
                                 <% } else { %>
-                                    <div class="external-login blurring external-login-dimmer">
-                                        <div class="field">
-                                            <button
-                                                class="ui icon button fluid"
-                                                onclick="handleNoDomain(this,
-                                                    '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpName))%>',
-                                                    '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpEntry.getValue()))%>')"
-                                                id="icon-<%=iconId%>"
-                                                title="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> <%=Encode.forHtmlAttribute(idpName)%>"
-                                            >
-                                                <img class="ui image" src="<%=Encode.forHtmlAttribute(imageURL)%>">
-                                                <span><%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> <%=Encode.forHtmlContent(idpName)%></span>
-                                            </button>
+                                    <% if(isGoogleIdp) {
+                                        String GOOGLE_CLIENT_ID = "";
+                                        String GOOGLE_CALLBACK_URL = "";
+                                        boolean GOOGLE_ONE_TAP_ENABLED = false;
+                                        ExternalIdPConfig externalIdPConfig = ConfigurationFacade.getInstance().getIdPConfigByName(idpName, "carbon.super");
+
+                                        if(externalIdPConfig != null) {
+                                            Map<String, String> googleAuthenticatorProperties = FrameworkUtils.getAuthenticatorPropertyMapFromIdP(externalIdPConfig, idpEntry.getValue());
+                                                if(googleAuthenticatorProperties != null) {
+                                                    GOOGLE_CLIENT_ID = googleAuthenticatorProperties.get("ClientId");
+                                                    GOOGLE_CALLBACK_URL = googleAuthenticatorProperties.get("callbackUrl");
+                                                    String oneTapEnabledString = googleAuthenticatorProperties.get("IsGoogleOneTapEnabled");
+
+                                                    if(StringUtils.isNotEmpty(oneTapEnabledString)) {
+                                                        GOOGLE_ONE_TAP_ENABLED = oneTapEnabledString.equals("true");
+                                                    }
+                                                }
+                                        } %>
+
+                                        <div class="external-login blurring external-login-dimmer">
+                                            <div class="field" id="googleSignIn" style="display: none;">
+                                                <button
+                                                    class="ui icon button fluid"
+                                                    onclick="handleNoDomain(this,
+                                                        '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpName))%>',
+                                                        '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpEntry.getValue()))%>')"
+                                                    id="icon-<%=iconId%>"
+                                                    title="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> <%=Encode.forHtmlAttribute(idpName)%>"
+                                                >
+                                                    <img class="ui image" src="<%=Encode.forHtmlAttribute(imageURL)%>">
+                                                    <span><%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> <%=Encode.forHtmlContent(idpName)%></span>
+                                                </button>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <br>
+
+                                        <% if(GOOGLE_ONE_TAP_ENABLED) { %>
+
+                                            <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+                                            <div id="google_parent" class="google-one-tap-container">
+                                                <div id="g_id_onload"
+                                                    data-client_id="<%=Encode.forHtmlAttribute(GOOGLE_CLIENT_ID)%>"
+                                                    data-login_uri="<%=Encode.forHtmlAttribute(GOOGLE_CALLBACK_URL)%>"
+                                                    data-prompt_parent_id="google_parent"
+                                                    data-state="<%=request.getParameter("sessionDataKey")%>"
+                                                    data-cancel_on_tap_outside="false"
+                                                    data-authenticator="<%=Encode.forHtmlAttribute(idpEntry.getValue())%>"
+                                                    data-idp="<%=Encode.forHtmlAttribute(idpName)%>"
+                                                    data-one_tap_enabled="true"
+                                                    data-moment_callback="onMoment">
+                                                </div>
+                                            </div>
+                                        <% } else { %>
+                                            <script>
+                                                document.getElementById("googleSignIn").style.display = "block";
+                                            </script>
+                                        <%  } %>
+
+                                    <% } else { %>
+                                        <div class="external-login blurring external-login-dimmer">
+                                            <div class="field">
+                                                <button
+                                                    class="ui icon button fluid"
+                                                    onclick="handleNoDomain(this,
+                                                        '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpName))%>',
+                                                        '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpEntry.getValue()))%>')"
+                                                    id="icon-<%=iconId%>"
+                                                    title="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> <%=Encode.forHtmlAttribute(idpName)%>"
+                                                >
+                                                    <img class="ui image" src="<%=Encode.forHtmlAttribute(imageURL)%>">
+                                                    <span><%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> <%=Encode.forHtmlContent(idpName)%></span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <br>
+                                    <% } %>
                                 <% } %>
                             <% } else if (localAuthenticatorNames.size() > 0) {
                                 if (localAuthenticatorNames.contains(IWA_AUTHENTICATOR)) {
@@ -419,21 +485,21 @@
                                 }
                                 if (localAuthenticatorNames.contains(MAGIC_LINK_AUTHENTICATOR)) {
                             %>
-                            <div class="field">
-                                <button class="ui grey labeled icon button fluid"
-                                    onclick="handleNoDomain(this,
+                            <div class="social-login blurring social-dimmer">
+                                <div class="field">
+                                    <button class="ui button" onclick="handleNoDomain(this,
                                         '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpEntry.getKey()))%>',
-                                        '<%=MAGIC_LINK_AUTHENTICATOR%>')"
-                                    id="icon-<%=iconId%>"
-                                    title="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%>
-                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with" )%>">
-                                    <i class="email icon"></i>
-                                    <img src="libs/themes/default/assets/images/icons/magic-link-icon.svg" alt="Magic Link Logo" />
-                                    <span>
-                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with" )%>
-                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "magic.link" )%>
-                                    </span>
-                                </button>
+                                        '<%=MAGIC_LINK_AUTHENTICATOR%>')" id="icon-<%=iconId%>"
+                                        title="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%>
+                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "magic.link" )%>"
+                                        data-componentid="login-page-sign-in-with-magic-link">
+                                        <img class="ui image" src="libs/themes/default/assets/images/icons/magic-link-icon.svg" alt="Magic Link Logo" />
+                                        <span>
+                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with" )%>
+                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "magic.link" )%>
+                                        </span>
+                                    </button>
+                                </div>
                             </div>
                             <%
                                 }
@@ -499,6 +565,21 @@
         }
     %>
     <script>
+        function onMoment(notification) {
+            displayGoogleSignIn(notification.isNotDisplayed() || notification.isSkippedMoment());
+        }
+
+        function displayGoogleSignIn(display) {
+            var element = document.getElementById("googleSignIn");
+            if(element != null) {
+                if(display) {
+                    element.style.display = "block";
+                } else {
+                    element.style.display = "none";
+                }
+            }
+        }
+
         function checkSessionKey() {
             var proxyPath = "<%=contextPath%>"
             $.ajax({

@@ -75,6 +75,7 @@ const SecretEdit: FC<SecretEditProps> = (props: SecretEditProps): ReactElement =
                         level: AlertLevels.ERROR,
                         message: error.response.data?.message
                     }));
+
                     return;
                 }
                 dispatch(addAlert({
@@ -92,6 +93,7 @@ const SecretEdit: FC<SecretEditProps> = (props: SecretEditProps): ReactElement =
     const extractDataFromPath = (): { secretType: string, secretName: string } => {
         const path = history.location.pathname.split("/");
         const TYPE = path.length - 2, NAME = path.length - 1;
+
         return {
             secretName: path[NAME],
             secretType: path[TYPE]
@@ -110,16 +112,17 @@ const SecretEdit: FC<SecretEditProps> = (props: SecretEditProps): ReactElement =
                 <PageLayout
                     isLoading={ loading }
                     title={ secretName }
+                    pageTitle={ secretName }
                     description={ "Edit secret" }
                     image={
-                        <GenericIcon
+                        (<GenericIcon
                             size="x60"
                             shape="rounded"
                             colored
                             background={ true }
                             hoverable={ false }
                             icon={ getSecretManagementIllustrations().editingSecretIcon }
-                        />
+                        />)
                     }
                     backButton={ {
                         onClick: () => history.push(AppConstants.getPaths().get(FEATURE_BASE_PATH)),
@@ -128,10 +131,10 @@ const SecretEdit: FC<SecretEditProps> = (props: SecretEditProps): ReactElement =
                     {
                         (loading && !resourceNotFound)
                             ? <ContentLoader/>
-                            : <EditSecret
+                            : (<EditSecret
                                 data-componentid={ testId }
                                 editingSecret={ editingSecret }
-                            />
+                            />)
                     }
                 </PageLayout>
             )

@@ -322,7 +322,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         ).then((response) => {
             setSubOrganizationList(response.organizations);
         });
-    }, [ getOrganizations ]);
+    }, [ getOrganizations, showAppShareModal ]);
 
     const determineApplicationTemplate = () => {
 
@@ -531,7 +531,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                         (isOrganizationManagementEnabled
                             && applicationConfig.editApplication.showApplicationShare
                             && !application.advancedConfigurations.fragment
-                            && !application.isManagementApp) && (
+                            && application.access === ApplicationAccessTypes.WRITE) && (
                             <PrimaryButton onClick={ () => setShowAppShareModal(true) }>
                                 Share Application
                             </PrimaryButton>

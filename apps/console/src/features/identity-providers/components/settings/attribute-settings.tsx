@@ -112,6 +112,10 @@ interface AttributeSelectionPropsInterface extends TestableComponentInterface {
      * Loading Component.
      */
     loader: () => ReactElement;
+    /**
+     * Is the IdP type SAML
+     */
+    isSaml: boolean;
 }
 
 export const LocalDialectURI = "http://wso2.org/claims";
@@ -131,6 +135,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         isReadOnly,
         isRoleMappingsEnabled,
         loader: Loader,
+        isSaml,
         [ "data-testid" ]: testId
     } = props;
 
@@ -369,6 +374,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                         subjectError={ isSubmitting && !subjectClaimUri }
                         isReadOnly={ isReadOnly }
                         isMappingEmpty={ isEmpty(selectedClaimsWithMapping) }
+                        isSaml={ isSaml }
                     /> }
                     <Divider hidden/>
 

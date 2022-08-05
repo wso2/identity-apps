@@ -28,6 +28,7 @@ import { GroupBasics } from "./group-basics";
 import { CreateGroupSummary } from "./group-summary";
 import { AppConstants, AppState, AssignRoles, RolePermissions, history } from "../../../core";
 import { getOrganizationRoles } from "../../../organizations/api";
+import { OrganizationRoleManagementConstants } from "../../../organizations/constants";
 import { OrganizationRoleListItemInterface } from "../../../organizations/models";
 import { OrganizationUtils } from "../../../organizations/utils";
 import { getRolesList, updateRole } from "../../../roles/api";
@@ -140,7 +141,14 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
             } else {
                 getOrganizationRoles(currentOrganization.id, null, 100, null)
                     .then((response) => {
-                        setRoleList(response.Resources);
+                        if (!response.Resources) {
+                            return;
+                        }
+
+                        const roles = response.Resources.filter((role) =>
+                            role.displayName !== OrganizationRoleManagementConstants.ORG_CREATOR_ROLE_NAME);
+                        
+                        setRoleList(roles);
                     });
             }
         }

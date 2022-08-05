@@ -35,6 +35,7 @@ import { AppConstants } from "../../../core/constants";
 import { history } from "../../../core/helpers";
 import { getGroupList, updateGroupDetails } from "../../../groups/api";
 import { getOrganizationRoles } from "../../../organizations/api";
+import { OrganizationRoleManagementConstants } from "../../../organizations/constants";
 import { OrganizationRoleListItemInterface } from "../../../organizations/models";
 import { OrganizationUtils } from "../../../organizations/utils";
 import { getRolesList, updateRoleDetails } from "../../../roles/api";
@@ -157,8 +158,15 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                 // Get Roles from the Organization API
                 getOrganizationRoles(currentOrganization.id, null, 100, null)
                     .then((response) => {
-                        setRoleList(response.Resources);
-                        setInitialRoleList(response.Resources);
+                        if (!response.Resources) {
+                            return;
+                        }
+
+                        const roles = response.Resources.filter((role) =>
+                            role.displayName !== OrganizationRoleManagementConstants.ORG_CREATOR_ROLE_NAME);
+
+                        setRoleList(roles);
+                        setInitialRoleList(roles);
                     });
             }
         }

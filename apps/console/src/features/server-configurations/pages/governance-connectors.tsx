@@ -135,6 +135,7 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
     return (
         <PageLayout
             title={ serverConfigurationConfig.showPageHeading && connectorCategory?.name }
+            pageTitle={ serverConfigurationConfig.showPageHeading && connectorCategory?.name }
             description={
                 serverConfigurationConfig.showPageHeading && (connectorCategory?.description
                     ? connectorCategory.description
