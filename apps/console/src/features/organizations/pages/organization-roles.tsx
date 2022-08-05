@@ -364,6 +364,7 @@ const OrganizationRoles: FunctionComponent<OrganizationRolesPageInterface> = (
                 }
                 // ToDo
                 title={ "Organization Roles" }
+                pageTitle="Organization Roles"
                 description={ "Manage organization roles here" }
                 data-testid={ `${testId}-page-layout` }
                 titleAs="h3"

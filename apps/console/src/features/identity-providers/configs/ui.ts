@@ -48,6 +48,7 @@ import GithubIdPIcon from "../../../themes/default/assets/images/identity-provid
 import GoogleLogo from "../../../themes/default/assets/images/identity-providers/google-idp-illustration.svg";
 import KerberosLogo from "../../../themes/default/assets/images/identity-providers/kerberos.png";
 import Office365Logo from "../../../themes/default/assets/images/identity-providers/office-365.svg";
+import OrganizationSSOIcon from "../../../themes/default/assets/images/identity-providers/organization-sso.svg";
 import TwitterLogo from "../../../themes/default/assets/images/identity-providers/twitter.svg";
 import YahooLogo from "../../../themes/default/assets/images/identity-providers/yahoo.svg";
 import OIDCLogo from "../../../themes/default/assets/images/protocols/openid-connect.png";
@@ -128,6 +129,7 @@ export const getIdPIcons = (): any => {
         microsoft: MicrosoftLogo,
         office365: Office365Logo,
         oidc: OIDCLogo,
+        organizationSSO:  OrganizationSSOIcon,
         saml: SamlLogo,
         smsOTP: SMSOTPIcon,
         twitter: TwitterLogo,

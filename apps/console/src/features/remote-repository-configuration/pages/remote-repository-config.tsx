@@ -286,9 +286,9 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                 } }
             >
                 <Grid padded>
-                {
+                    {
                         remoteRepoConfigDetail &&
-                            <>
+                            (<>
                                 <Grid.Row columns={ 2 }>
                                     <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 8 }>
                                         <label>
@@ -327,7 +327,7 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                                     </Grid.Column>
                                 </Grid.Row>
                                 <Divider />
-                            </>
+                            </>)
                     }
                     <GridRow columns={ 2 }>
                         <GridColumn mobile={ 16 } tablet={ 16 } computer={ 8 }>
@@ -453,7 +453,7 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                     </GridRow>
                     {
                         connectivity === "POLLING" &&
-                        <>
+                        (<>
                             <GridRow columns={ 2 }>
                                 <GridColumn mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                     <Field
@@ -518,11 +518,11 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                                     />
                                 </GridColumn>
                             </GridRow>
-                        </>
+                        </>)
                     }
                     {
                         connectivity === "WEB_HOOK" &&
-                        <GridRow columns={ 1 }>
+                        (<GridRow columns={ 1 }>
                             <GridColumn mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Field
                                     type="text"
@@ -537,14 +537,14 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                                     data-componentid={ `${ componentId }-form-git-shared-key` }
                                 />
                             </GridColumn>
-                        </GridRow>
+                        </GridRow>)
                     }
                 </Grid>
                 <Grid padded>
                     <Grid.Row column={ 1 }>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                             { !remoteRepoConfig &&
-                                <PrimaryButton
+                                (<PrimaryButton
                                     disabled={ !!remoteRepoConfig || isSubmitting }
                                     floated="left"
                                     data-componentid={ `${ componentId }-save-configuration` }
@@ -553,10 +553,10 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                                     {
                                         t("console:manage.features.remoteFetch.forms.getRemoteFetchForm.actions.save")
                                     }
-                                </PrimaryButton>
+                                </PrimaryButton>)
                             }
                             { remoteRepoConfig &&
-                                <LinkButton
+                                (<LinkButton
                                     floated="left"
                                     attached
                                     data-componentid={ `${ componentId }-remove-configuration` }
@@ -567,10 +567,10 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                                     {
                                         t("console:manage.features.remoteFetch.forms.getRemoteFetchForm.actions.remove")
                                     }
-                                </LinkButton>
+                                </LinkButton>)
                             }
                             { showFetchForm &&
-                                <LinkButton
+                                (<LinkButton
                                     floated="left"
                                     data-componentid={ `${ componentId }-cancel-configuration` }
                                     onClick={ () => {
@@ -578,7 +578,7 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                                     } }
                                 >
                                     { t("common:cancel") }
-                                </LinkButton>
+                                </LinkButton>)
                             }
                         </Grid.Column>
                     </Grid.Row>
@@ -590,6 +590,7 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
     return (
         <PageLayout
             title={ t("console:manage.features.remoteFetch.pages.listing.title") }
+            pageTitle={ t("console:manage.features.remoteFetch.pages.listing.title") }
             description={ t("console:manage.features.remoteFetch.pages.listing.subTitle") }
             data-componentid={ `${ componentId }-page-layout` }
         >
@@ -630,9 +631,9 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                                         }
                                         {
                                             !remoteRepoConfigDetail && !showFetchForm &&
-                                            <EmptyPlaceholder
+                                            (<EmptyPlaceholder
                                                 action={
-                                                    <PrimaryButton
+                                                    (<PrimaryButton
                                                         data-componentid={ `${ componentId }-add-configuration` }
                                                         onClick={ () => { setShowFetchForm(true); } }
                                                     >
@@ -641,7 +642,7 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                                                             t("console:manage.features.remoteFetch.placeholders." +
                                                                 "emptyListPlaceholder.action")
                                                         }
-                                                    </PrimaryButton>
+                                                    </PrimaryButton>)
                                                 }
                                                 title={
                                                     t("console:manage.features.remoteFetch.placeholders." +
@@ -653,7 +654,7 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                                                 ] }
                                                 image={ getEmptyPlaceholderIllustrations().add }
                                                 imageSize="tiny"
-                                            />
+                                            />)
                                         }
                                     </Grid.Column>
                                 </Grid.Row>
@@ -664,7 +665,7 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
             </Grid>
             {
                 showConfigDeleteConfirmation &&
-                <ConfirmationModal
+                (<ConfirmationModal
                     data-componentid={ `${ componentId }-confirmation-modal` }
                     onClose={ (): void => setShowDeleteConfirmationModal(false) }
                     type="warning"
@@ -701,7 +702,7 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                     <ConfirmationModal.Content>
                         { t("console:manage.features.remoteConfig.list.confirmations.deleteConfig.content") }
                     </ConfirmationModal.Content>
-                </ConfirmationModal>
+                </ConfirmationModal>)
             }
         </PageLayout>
     );

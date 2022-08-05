@@ -185,7 +185,7 @@ export class Config {
         return {
             ...getApplicationsResourceEndpoints(this.resolveServerHost()),
             ...getApprovalsResourceEndpoints(this.getDeploymentConfig().serverHost),
-            ...getClaimResourceEndpoints(this.getDeploymentConfig().serverHost),
+            ...getClaimResourceEndpoints(this.resolveServerHost()),
             ...getCertificatesResourceEndpoints(this.getDeploymentConfig().serverHost),
             ...getIDPResourceEndpoints(this.resolveServerHost()),
             ...getEmailTemplatesResourceEndpoints(this.getDeploymentConfig().serverHost),
@@ -221,6 +221,7 @@ export class Config {
             appName: window[ "AppUtils" ].getConfig().ui.appName,
             appTitle: window[ "AppUtils" ].getConfig().ui.appTitle,
             applicationTemplateLoadingStrategy: window[ "AppUtils" ].getConfig().ui.applicationTemplateLoadingStrategy,
+            isGOTEnabledForSuperTenantOnly:window["AppUtils"].getConfig().ui.isGOTEnabledForSuperTenantOnly,
             features: window[ "AppUtils" ].getConfig().ui.features,
             gravatarConfig: window[ "AppUtils" ].getConfig().ui.gravatarConfig,
             hiddenAuthenticators: window[ "AppUtils" ].getConfig().ui.hiddenAuthenticators,

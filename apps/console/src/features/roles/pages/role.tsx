@@ -26,7 +26,7 @@ import React, { ReactElement, SyntheticEvent, useEffect, useState } from "react"
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
-import { AdvancedSearchWithBasicFilters, store, UIConstants } from "../../core";
+import { AdvancedSearchWithBasicFilters, UIConstants, store } from "../../core";
 import { CreateRoleWizard, RoleList } from "../../roles";
 import { deleteRoleById, searchRoleList } from "../api";
 import { APPLICATION_DOMAIN, INTERNAL_DOMAIN } from "../constants";
@@ -326,6 +326,7 @@ const RolesPage = (): ReactElement => {
                 )
             }
             title={ t("console:manage.pages.roles.title") }
+            pageTitle={ t("console:manage.pages.roles.title") }
             description={ t("console:manage.pages.roles.subTitle") }
         >
             {
