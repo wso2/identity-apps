@@ -611,7 +611,13 @@
                                     <div style="display: inline-block">
                                         <button id="registrationSubmit"
                                                 class="ui primary button g-recaptcha"
+                                                <%
+                                                    if (reCaptchaEnabled) {
+                                                %>
                                                 data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>"
+                                                <%
+                                                    }
+                                                %>
                                                 data-callback="onSubmit"
                                                 data-action="register">
                                             <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Register")%>

@@ -121,7 +121,13 @@
                         <div class="align-right buttons">
                             <button id="answerSubmit"
                                     class="ui primary button g-recaptcha"
+                                    <%
+                                        if (reCaptchaEnabled) {
+                                    %>
                                     data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>"
+                                    <%
+                                        }
+                                    %>
                                     data-callback="onSubmit"
                                     data-action="securityQuestion">
                                 <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Submit")%>

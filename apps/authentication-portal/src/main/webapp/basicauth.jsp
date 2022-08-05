@@ -264,7 +264,13 @@
                     color: #ff5000;
                 "
                 class="g-recaptcha"
+                <%
+                    if (reCaptchaResendEnabled) {
+                %>
                 data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>"
+                <%
+                    }
+                %>
                 data-callback="onSubmitResend"
                 data-action="resendConfirmation"
                 onmouseover='this.style.textDecoration="underline"'
@@ -477,9 +483,15 @@
                 class="ui primary fluid large button g-recaptcha"
                 tabindex="4"
                 role="button"
+                <%
+                    if (reCaptchaEnabled) {
+                %>
                 data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>"
-                data-callback="onSubmit"
+                <%
+                    }
+                %>
                 data-action="login"
+                data-callback="onSubmit"
                 data-testid="login-page-continue-login-button"
             >
                 <%=StringEscapeUtils.escapeHtml4(AuthenticationEndpointUtil.i18n(resourceBundle, "continue"))%>

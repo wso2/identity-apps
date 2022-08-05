@@ -243,7 +243,13 @@
                                 <div style="display: inline-block">
                                     <button id="registrationSubmit"
                                             class="wr-btn grey-bg col-xs-12 col-md-12 col-lg-12 uppercase font-extra-large g-recaptcha"
+                                            <%
+                                                if (reCaptchaEnabled) {
+                                            %>
                                             data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>"
+                                            <%
+                                                }
+                                            %>
                                             data-callback="onSubmit"
                                             data-action="register"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Next")%>
                                     </button>

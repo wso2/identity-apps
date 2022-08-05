@@ -283,7 +283,13 @@
                             <div style="display: inline-block">
                                 <button id="recoverySubmit"
                                         class="ui primary button g-recaptcha"
+                                        <%
+                                            if (reCaptchaEnabled) {
+                                        %>
                                         data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>"
+                                        <%
+                                            }
+                                        %>
                                         data-callback="onSubmit"
                                         data-action="recoverUsername">
                                         <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
