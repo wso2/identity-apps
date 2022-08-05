@@ -97,6 +97,10 @@ interface GeneralApplicationSettingsInterface extends SBACInterface<FeatureConfi
      * Specifies a Management Application
      */
     isManagementApp?: boolean;
+    /**
+     * Application.
+     */
+    application?: ApplicationInterface
 }
 
 /**
@@ -124,6 +128,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
         onUpdate,
         readOnly,
         isManagementApp,
+        application,
         [ "data-testid" ]: testId
     } = props;
 
@@ -238,7 +243,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
             return null;
         }
 
-        if (!applicationConfig.editApplication.showDangerZone(name)) {
+        if (!applicationConfig.editApplication.showDangerZone(application)) {
             return null;
         }
 
@@ -282,6 +287,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                         <GeneralDetailsForm
                             name={ name }
                             appId={ appId }
+                            application={ application }
                             description={ description }
                             discoverability={ discoverability }
                             onSubmit={ handleFormSubmit }

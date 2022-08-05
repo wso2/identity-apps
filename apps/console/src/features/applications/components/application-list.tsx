@@ -394,7 +394,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                     return hasScopes ||
                             isSystemApp ||
                             (app?.access === ApplicationAccessTypes.READ) ||
-                            !applicationConfig.editApplication.showDeleteButton(app.name);
+                            !applicationConfig.editApplication.showDeleteButton(app);
                 },
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (e: SyntheticEvent, app: ApplicationListItemInterface): void => {

@@ -590,13 +590,14 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 hiddenFields={ [ "imageUrl" ] }
                 imageUrl={ application.imageUrl }
                 name={ application.name }
+                application = { application }
                 isLoading={ isLoading }
                 onDelete={ onDelete }
                 onUpdate={ handleApplicationUpdate }
                 featureConfig={ featureConfig }
                 template={ template }
                 readOnly={ readOnly || applicationConfig.editApplication.getTabPanelReadOnlyStatus(
-                    "APPLICATION_EDIT_GENERAL_SETTINGS", application.name) }
+                    "APPLICATION_EDIT_GENERAL_SETTINGS", application) }
                 data-testid={ `${ testId }-general-settings` }
                 isManagementApp={ application.isManagementApp }
             />
@@ -626,7 +627,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 featureConfig={ featureConfig }
                 template={ template }
                 readOnly={ readOnly || applicationConfig.editApplication.getTabPanelReadOnlyStatus(
-                    "APPLICATION_EDIT_ACCESS_CONFIG", application.name) }
+                    "APPLICATION_EDIT_ACCESS_CONFIG", application) }
                 data-testid={ `${ testId }-access-settings` }
             />
         </ResourceTab.Pane>
