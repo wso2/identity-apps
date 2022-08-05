@@ -38,7 +38,7 @@ public class MainTagHandler extends TagSupport {
     private String layoutName = "";
     private String layoutFileRelativePath = "";
     private Map<String, Object> data = new HashMap<>();
-    private boolean cache = true;
+    private boolean compile = false;
     private LocalTemplateEngineWithCache engine = null;
 
     /**
@@ -72,13 +72,13 @@ public class MainTagHandler extends TagSupport {
     }
 
     /**
-     * Set the cache.
+     * Set whether to compile the layout or not.
      *
-     * @param cache Whether the cache is enabled or not.
+     * @param compile Whether the compilation is enabled or not.
      */
-    public void setCache(boolean cache) {
+    public void setCompile(boolean compile) {
 
-        this.cache = cache;
+        this.compile = compile;
     }
 
     /**
@@ -91,9 +91,16 @@ public class MainTagHandler extends TagSupport {
 
         engine = new LocalTemplateEngineWithCache();
         try {
-            engine.execute(layoutName, layoutFileRelativePath.startsWith("http") ? new URL(layoutFileRelativePath) :
-                            pageContext.getServletContext().getResource(layoutFileRelativePath), data,
-                    new PrintWriter(pageContext.getOut()), cache);
+            if (compile) {
+                String rawLayoutFilePath = layoutFileRelativePath.replaceFirst(".ser", ".html");
+                engine.execute(layoutName, pageContext.getServletContext().getResource(rawLayoutFilePath), data,
+                        new PrintWriter(pageContext.getOut()));
+            } else {
+                engine.executeWithoutCompile(layoutName,
+                        layoutFileRelativePath.startsWith("http") ? new URL(layoutFileRelativePath) :
+                                pageContext.getServletContext().getResource(layoutFileRelativePath), data,
+                        new PrintWriter(pageContext.getOut()));
+            }
         } catch (MalformedURLException e) {
             throw new JspException("Can't create a URL to the given relative path", e);
         }
@@ -114,9 +121,16 @@ public class MainTagHandler extends TagSupport {
     public int doAfterBody() throws JspException {
 
         try {
-            engine.execute(layoutName, layoutFileRelativePath.startsWith("http") ? new URL(layoutFileRelativePath) :
-                            pageContext.getServletContext().getResource(layoutFileRelativePath), data,
-                    new PrintWriter(pageContext.getOut()), cache);
+            if (compile) {
+                String rawLayoutFilePath = layoutFileRelativePath.replaceFirst(".ser", ".html");
+                engine.execute(layoutName, pageContext.getServletContext().getResource(rawLayoutFilePath), data,
+                        new PrintWriter(pageContext.getOut()));
+            } else {
+                engine.executeWithoutCompile(layoutName,
+                        layoutFileRelativePath.startsWith("http") ? new URL(layoutFileRelativePath) :
+                                pageContext.getServletContext().getResource(layoutFileRelativePath), data,
+                        new PrintWriter(pageContext.getOut()));
+            }
         } catch (MalformedURLException e) {
             throw new JspException("Can't create a URL to the given relative path", e);
         }
