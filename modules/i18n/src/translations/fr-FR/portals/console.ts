@@ -6106,7 +6106,8 @@ export const console: ConsoleNS = {
                         subtitles: {
                             0: "Il n'y a pas d'organisations pour le moment.",
                             1: "Vous pouvez facilement ajouter une nouvelle organisation en",
-                            2: "en cliquant sur le bouton ci-dessous."
+                            2: "en cliquant sur le bouton ci-dessous.",
+                            3: "Il n'y a aucune organisation sous {{parent}} pour le moment."
                         },
                         title: "Ajouter une nouvelle organisation"
                     }
