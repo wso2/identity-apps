@@ -377,7 +377,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                         isReadOnly={ isReadOnly }
                         isMappingEmpty={ isEmpty(selectedClaimsWithMapping) }
                         isSaml={ isSaml }
-                    /> }
+                    />) }
                     <Divider hidden/>
 
                     { /* Select attributes for provisioning. */ }
