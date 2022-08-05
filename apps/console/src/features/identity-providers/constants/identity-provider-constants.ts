@@ -55,6 +55,23 @@ export class IdentityProviderConstants {
     public static readonly IDENTITY_PROVIDER_MGT_CONFIG_PATHS: any = {
         META: "configs/identity-provider-mgt.meta.json"
     };
+
+    /**
+     * Internal domain name.
+     *
+     * @constant
+     * @type {string}
+     */
+    public static readonly INTERNAL_DOMAIN = "Internal/";
+
+    /**
+     * Application domain name.
+     *
+     * @constant
+     * @type {string}
+     */
+    public static readonly APPLICATION_DOMAIN = "Application/";
+
 }
 
 export const GOOGLE_IDP_NAME = "Google";
@@ -62,4 +79,3 @@ export const GOOGLE_IDP_NAME = "Google";
 export const GOOGLE_IDP_ID = "8ea23303-49c0-4253-b81f-82c0fe6fb4a0";
 export const OIDC_IDP_ID = "oidc-idp";
 export const ENTERPRISE_IDP_ID = "enterprise-idp";
-
