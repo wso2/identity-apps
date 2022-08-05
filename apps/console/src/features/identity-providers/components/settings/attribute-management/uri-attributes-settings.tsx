@@ -46,7 +46,7 @@ interface AdvanceAttributeSettingsPropsInterface extends TestableComponentInterf
      * Specifies if the component should only be read-only.
      */
     isReadOnly: boolean;
-        /**
+    /**
      * Is the IdP type SAML
      */
     isSaml: boolean;
@@ -124,8 +124,8 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                         />
                     </Form>
                     <Hint>
-                        { isSaml ?
-                            (
+                        { isSaml 
+                            ? (
                                 <Trans
                                     i18nKey={
                                         "console:console:develop.features.authenticationProvider.forms" +
@@ -139,8 +139,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                                 subject attribute.
                                 </Trans>
                             )
-                            : 
-                            (
+                            : (
                                 <Trans
                                     i18nKey={
                                         "console:console:develop.features.idp.forms.uriAttributeSettings" +

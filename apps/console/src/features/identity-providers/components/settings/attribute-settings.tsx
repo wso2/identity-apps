@@ -374,7 +374,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                         subjectError={ isSubmitting && !subjectClaimUri }
                         isReadOnly={ isReadOnly }
                         isMappingEmpty={ isEmpty(selectedClaimsWithMapping) }
-                        isSaml= { isSaml }
+                        isSaml={ isSaml }
                     /> }
                     <Divider hidden/>
 
