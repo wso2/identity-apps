@@ -63,6 +63,28 @@ public class LocalTemplateEngineWithCache implements TemplateEngine {
     }
 
     /**
+     * Check the existance of the layout file.
+     *
+     * @param layoutName Name of the layout.
+     * @param layoutFile Layout file path as a URL object.
+     * 
+     * @return Whether the layout file exist or not.
+     */
+    public boolean exists(String layoutName, URL layoutFile) {
+        LayoutCache layoutCache = LayoutCache.getInstance();
+        try {
+            ExecutableIdentifier compiledLayout = layoutCache.getLayout(layoutName, layoutFile);
+            if (compiledLayout == null) {
+                return false;
+            } else {
+                return true;
+            }
+        } catch (Exception exception) {
+            return false;
+        }
+    }
+
+    /**
      * Get the compiled layout file as an object
      *
      * @return Compiled layout will be return
