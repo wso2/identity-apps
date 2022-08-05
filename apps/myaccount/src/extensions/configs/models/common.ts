@@ -38,7 +38,10 @@ export interface CommonConfig {
         mfa: {
             fido2: {
                 allowLegacyKeyRegistration: boolean;
-            }
+            };
+            totp: {
+                showRegenerateConfirmation: boolean;
+            };
         }
     };
     personalInfoPage: {

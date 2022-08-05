@@ -36,6 +36,9 @@ export const commonConfig: CommonConfig = {
         mfa: {
             fido2: {
                 allowLegacyKeyRegistration: true
+            },
+            totp: {
+                showRegenerateConfirmation: true
             }
         }
     },

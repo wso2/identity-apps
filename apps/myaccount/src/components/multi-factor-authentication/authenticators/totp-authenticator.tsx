@@ -46,6 +46,7 @@ import {
     validateTOTPCode
 } from "../../../api";
 import { getMFAIcons } from "../../../configs";
+import { commonConfig } from "../../../extensions";
 import {
     AlertInterface,
     AlertLevels,
@@ -104,6 +105,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     const [ isRevokeTOTPModalOpen, setIsRevokeTOTPModalOpen ] = useState<boolean>(false);
     const [ isViewTOTPModalOpen, setIsViewTOTPModalOpen ] = useState<boolean>(false);
     const [ viewTOTPModalCurrentStep, setViewTOTPModalCurrentStep ] = useState<number>(0);
+    const [ isConfirmRegenerate, setIsConfirmRegenerate ] = useState<boolean>(false);
     
     const pinCode1 = useRef<HTMLInputElement>();
     const pinCode2 = useRef<HTMLInputElement>();
@@ -684,6 +686,13 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     };
 
     /**
+     * Handle confirm QR code regeneration checkbox event
+     */
+    const handleConfirmRegenerateQRCode = (_: React.FormEvent<HTMLInputElement>, data: CheckboxProps): void => {
+        setIsConfirmRegenerate(data.checked ?? false);
+    };
+
+    /**
      * Handle regenerate QR code event
      */
     const handleRegenerateQRCode = (): void => {
@@ -732,6 +741,18 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                                     { t(translateKey + "modals.scan.regenerateWarning") }
                                 </Message.Content>
                             </Message>
+                            {
+                                commonConfig.accountSecurityPage.mfa.totp.showRegenerateConfirmation
+                                    ? (
+                                        <Checkbox
+                                            className="mb-2"
+                                            label={ "Confirm regenerating a new QR code" }
+                                            checked={ isConfirmRegenerate }
+                                            onChange={ handleConfirmRegenerateQRCode }
+                                            data-componentid={ `${ testId }-regenerate-assertion-checkbox` }
+                                        />
+                                    ) : null
+                            }
                             <div className = "totp-verify-step-btn">
                                 <Grid.Row columns={ 1 }>
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
@@ -740,7 +761,11 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                                             type="button"
                                             className=" totp-verify-action-button"
                                             onClick={ handleRegenerateQRCode }
-                                            disabled= { isLoading }
+                                            disabled= { 
+                                                isLoading 
+                                                || (commonConfig.accountSecurityPage
+                                                    .mfa.totp.showRegenerateConfirmation && !isConfirmRegenerate) 
+                                            }
                                             data-testid={ `${ testId }-view-modal-actions-primary-button` }
                                         >
                                             { t(translateKey + "regenerate") }
@@ -753,7 +778,10 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                         <Button
                                             type="button"
-                                            onClick={ () => setIsViewTOTPModalOpen(false) }
+                                            onClick={ () => {
+                                                setIsConfirmRegenerate(false);
+                                                setIsViewTOTPModalOpen(false);
+                                            } }
                                             className="link-button totp-verify-action-button"
                                             data-testid={ `${ testId }-view-modal-actions-cancel-button` }>
                                             { t("common:cancel") }
@@ -839,6 +867,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                 className = "totp-verify-done-button"
                 data-testid={ `${ testId }-modal-actions-primary-button` }
                 onClick= { () => {
+                    setIsConfirmRegenerate(false);
                     setIsViewTOTPModalOpen(false);
                     setViewTOTPModalCurrentStep(0);
                 } }
