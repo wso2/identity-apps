@@ -383,6 +383,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                 )
             }
             title={ t("console:manage.pages.groups.title") }
+            pageTitle={ t("console:manage.pages.groups.title") }
             description={ t("console:manage.pages.groups.subTitle") }
         >
             <ListLayout
