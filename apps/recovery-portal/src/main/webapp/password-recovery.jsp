@@ -38,6 +38,11 @@
 <jsp:directive.include file="tenant-resolve.jsp"/>
 <jsp:directive.include file="includes/layout-resolver.jsp"/>
 
+<%!
+    private String reCaptchaAPI = null;
+    private String reCaptchaKey = null;
+%>
+
 <%
     boolean error = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("error"));
     String errorMsg = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("errorMsg"));
@@ -89,6 +94,11 @@
         reCaptchaEnabled = true;
     }
 
+    if (reCaptchaEnabled) {
+        reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
+        reCaptchaAPI = CaptchaUtil.reCaptchaAPIURL();
+    }
+
     Boolean isQuestionBasedPasswordRecoveryEnabledByTenant;
     Boolean isNotificationBasedPasswordRecoveryEnabledByTenant;
     Boolean isMultiAttributeLoginEnabledInTenant;
@@ -131,9 +141,8 @@
 
     <%
         if (reCaptchaEnabled) {
-            String reCaptchaAPI = CaptchaUtil.reCaptchaAPIURL();
     %>
-    <script src='<%=(reCaptchaAPI)%>'></script>
+    <script src='<%=Encode.forHtmlContent(reCaptchaAPI)%>'></script>
     <%
         }
     %>
@@ -274,29 +283,26 @@
                             }
                         %>
 
-                        <%
-                            if (reCaptchaEnabled) {
-                                String reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
-                        %>
-                        <div class="field">
-                            <div class="g-recaptcha"
-                                 data-sitekey=
-                                         "<%=Encode.forHtmlContent(reCaptchaKey)%>">
-                            </div>
-                        </div>
-                        <%
-                            }
-                        %>
                         <div class="ui divider hidden"></div>
                         <div class="align-right buttons">
                             <a href="javascript:goBack()" class="ui button secondary">
                                 <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Cancel")%>
                             </a>
-                            <button id="recoverySubmit"
-                                    class="ui primary button"
-                                    type="submit">
-                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Submit")%>
-                            </button>
+                            <div style="display: inline-block">
+                                <button id="recoverySubmit"
+                                        class="ui primary button g-recaptcha"
+                                        <%
+                                            if (reCaptchaEnabled) {
+                                        %>
+                                        data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>"
+                                        <%
+                                            }
+                                        %>
+                                        data-callback="onSubmit"
+                                        data-action="recoverPassword">
+                                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Submit")%>
+                                </button>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -330,6 +336,10 @@
             window.history.back();
         }
 
+        function onSubmit(token) {
+           $("#recoverDetailsForm").submit();
+        }
+
         $(document).ready(function () {
 
             $("#recoverDetailsForm").submit(function (e) {
@@ -355,21 +365,6 @@
                     submitButton.removeClass("loading").attr("disabled", false);
                     return false;
                 }
-
-                // Validate reCaptcha
-                <% if (reCaptchaEnabled) { %>
-
-                const reCaptchaResponse = $("[name='g-recaptcha-response']")[0].value;
-
-                if (reCaptchaResponse.trim() === "") {
-                    errorMessage.text("Please select reCaptcha.");
-                    errorMessage.show();
-                    $("html, body").animate({scrollTop: errorMessage.offset().top}, "slow");
-                    submitButton.removeClass("loading").attr("disabled", false);
-                    return false;
-                }
-
-                <% } %>
 
                 return true;
             });
