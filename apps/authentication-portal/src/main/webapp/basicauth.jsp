@@ -469,7 +469,7 @@
     <div class="ui divider hidden"></div>
 
     <div class="mt-0">
-        <div class="column mobile center aligned tablet left aligned computer left aligned buttons tablet computer">
+        <div>
             <button
                 class="ui primary fluid large button g-recaptcha"
                 tabindex="4"
@@ -488,7 +488,7 @@
                 <%=StringEscapeUtils.escapeHtml4(AuthenticationEndpointUtil.i18n(resourceBundle, "continue"))%>
             </button>
         </div>
-        <div class="column mobile center aligned tablet left aligned computer left aligned buttons tablet computer">
+        <div>
             <% if (isSelfSignUpEPAvailable && !isIdentifierFirstLogin(inputType) && isSelfSignUpEnabledInTenant) { %>
             <button
                 type="button"
