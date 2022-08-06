@@ -21,3 +21,4 @@ export * from "./email-otp-authenticator-form";
 export * from "./facebook-authenticator-form";
 export * from "./github-authenticator-form";
 export * from "./google-authenticator-form";
+export * from "./sms-otp-authenticator-form";

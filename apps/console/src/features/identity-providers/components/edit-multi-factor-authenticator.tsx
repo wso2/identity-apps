@@ -265,6 +265,23 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
             });
         }
 
+        // If the MFA is SMS OTP, add the SMS Provider tab.
+        if (authenticator.id === IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID) {
+            panes.push({
+                menuItem: (
+                    <Menu.Item disabled key="messages" className="upcoming-item">
+                        <Trans
+                            i18nKey={
+                                "console:develop.features.authenticationProvider.edit.smsOTP.smsProvider.tabName"
+                            }
+                        >
+                            SMS Provider <span className="coming-soon-label">(Coming Soon)</span>
+                        </Trans>
+                    </Menu.Item>
+                ),
+                render: null
+            });
+        }
         return panes;
     };
 

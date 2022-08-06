@@ -2941,6 +2941,11 @@ export const console: ConsoleNS = {
                         emailTemplate: {
                             tabName: "Email Template <1>(Coming Soon)</1>"
                         }
+                    },
+                    smsOTP: {
+                        smsProvider:{
+                            tabName: "SMS Provider <1>(Comming Soon)</1>"
+                        }
                     }
                 },
                 forms: {
@@ -3058,6 +3063,49 @@ export const console: ConsoleNS = {
                                 label: "Use only numeric characters for OTP token",
                                 validations: {
                                     required: "Use only numeric characters for OTP token is a required field."
+                                }
+                            }
+                        },
+                        smsOTP: {
+                            expiryTime: {
+                                hint: "Please pick a value between <1>1 minutes</1> & <3> 1440 minutes(1 day)</3>.",
+                                label: "SMS OTP Expiry Time",
+                                placeholder: "Enter SMS OTP expiry time.",
+                                unit: "minutes",
+                                validations: {
+                                    invalid: "SMS OTP expiry time should be an integer.",
+                                    range: "SMS OTP expiry time should be between 1 minutes & 1440 minutes(1 day).",
+                                    required: "SMS OTP expiry time is a required field."
+                                }
+                            },
+                            tokenLength: {
+                                hint: "The number of allowed characters in the OTP. Please, " +
+                                    "pick a value between <1>4-10</1>.",
+                                label: "SMS OTP Length",
+                                placeholder: "Enter SMS OTP length.",
+                                validations: {
+                                    invalid: "SMS OTP length should be an integer.",
+                                    range: "SMS OTP length should be between 4 & 10 characters.",
+                                    required: "SMS OTP length is a required field."
+                                },
+                                unit: {
+                                    digits: "digits",
+                                    characters: "characters"
+                                }
+                            },
+                            useNumericChars: {
+                                hint: "Only numeric characters (<1>0-9</1>) are used for the OTP token. " +
+                                    "Please clear this checkbox to enable alphanumeric characters.",
+                                label: "Use only numeric characters for OTP token",
+                                validations: {
+                                    required: "Use only numeric characters for OTP token is a required field."
+                                }
+                            },
+                            allowFirstLoginMobileNoConfiguration: {
+                                hint: "If there was no configured mobile number, prompt user to enter the mobile number.",
+                                label: "Allow users to configure mobile number on the first login",
+                                validations: {
+                                    required: "Allow users to configure mobile number on the first login is a required field",
                                 }
                             }
                         },

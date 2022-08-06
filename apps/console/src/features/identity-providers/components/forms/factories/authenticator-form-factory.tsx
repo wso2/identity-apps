@@ -30,7 +30,8 @@ import {
     EmailOTPAuthenticatorForm,
     FacebookAuthenticatorForm,
     GithubAuthenticatorForm,
-    GoogleAuthenticatorForm
+    GoogleAuthenticatorForm,
+    SMSOTPAuthenticatorForm
 } from "../authenticators";
 import { SamlAuthenticatorSettingsForm } from "../authenticators/saml-authenticator-form";
 
@@ -166,6 +167,19 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
                     isSubmitting={ isSubmitting }
                 />
             );
+        case IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID:return (
+            <SMSOTPAuthenticatorForm
+                initialValues={ initialValues }
+                metadata={ metadata }
+                onSubmit={ onSubmit }
+                triggerSubmit={ triggerSubmit }
+                enableSubmitButton={ enableSubmitButton }
+                data-testid={ testId }
+                showCustomProperties={ showCustomProperties }
+                readOnly={ isReadOnly }
+                isSubmitting={ isSubmitting }
+            />
+        );
         case IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID:
             return (
                 <SamlAuthenticatorSettingsForm

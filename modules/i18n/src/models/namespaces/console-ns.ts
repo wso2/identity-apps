@@ -1135,6 +1135,11 @@ export interface ConsoleNS {
                             tabName: string;
                         };
                     };
+                    smsOTP: {
+                        smsProvider: {
+                            tabName: string;
+                        };
+                    };
                 };
                 forms?: {
                     advancedConfigs: {
@@ -1225,6 +1230,47 @@ export interface ConsoleNS {
                                 };
                             };
                         };
+                        smsOTP: {
+                            expiryTime: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    invalid: string;
+                                    range: string;
+                                    required: string;
+                                };
+                                unit: string;
+                            };
+                            tokenLength: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    invalid: string;
+                                    range: string;
+                                    required: string;
+                                };
+                                unit: {
+                                    digits: string;
+                                    characters: string;
+                                }
+                            };
+                            useNumericChars: {
+                                hint: string;
+                                label: string;
+                                validations: {
+                                    required: string;
+                                };
+                            };
+                            allowFirstLoginMobileNoConfiguration: {
+                                hint: string;
+                                label: string;
+                                validations: {
+                                    required: string;
+                                };
+                            };
+                        }
                         facebook: {
                             callbackUrl: FormAttributes;
                             clientId: FormAttributes;
