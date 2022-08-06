@@ -493,7 +493,7 @@
             <button
                 type="button"
                 onclick="window.location.href='<%=StringEscapeUtils.escapeHtml4(getRegistrationUrl(accountRegistrationEndpointURL, urlEncodedURL, urlParameters))%>';"
-                class="ui fluid large button secondary"
+                class="ui secondary fluid large button"
                 id="registerLink"
                 tabindex="8"
                 role="button"
