@@ -209,7 +209,7 @@
     <%
         if (reCaptchaEnabled || reCaptchaResendEnabled) {
     %>
-        <script src="<%=Encode.forHtmlContent(reCaptchaAPI)%>"></script>
+        <script src='<%=(Encode.forJavaScriptSource(reCaptchaAPI))%>'></script>
     <%
         }
     %>
@@ -623,6 +623,25 @@
                 $(this).hide();
                 $('.main-link').next().hide();
             });
+
+            <%
+                if(reCaptchaEnabled) {
+            %>
+                var error_msg = $("#error-msg");
+
+                $("#loginForm").submit(function (e) {
+                    var resp = $("[name='g-recaptcha-response']")[0].value;
+                    if (resp.trim() == '') {
+                        error_msg.text("<%=AuthenticationEndpointUtil.i18n(resourceBundle,"please.select.recaptcha")%>");
+                        error_msg.show();
+                        $("html, body").animate({scrollTop: error_msg.offset().top}, 'slow');
+                        return false;
+                    }
+                    return true;
+                });
+            <%
+                }
+            %>
         });
 
         function myFunction(key, value, name) {

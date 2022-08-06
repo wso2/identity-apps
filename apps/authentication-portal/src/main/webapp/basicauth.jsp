@@ -110,6 +110,15 @@
         $('#loginForm').preventDoubleSubmission();
     });
 
+    function showResendReCaptcha() {
+        <% if (StringUtils.isNotBlank(request.getParameter("failedUsername"))){ %>
+            <% if (reCaptchaResendEnabled) { %>
+                window.location.href="resend-confirmation-captcha.jsp?<%=AuthenticationEndpointUtil.cleanErrorMessages(Encode.forJava(request.getQueryString()))%>";
+            <% } else { %>
+                window.location.href="login.do?resend_username=<%=Encode.forHtml(URLEncoder.encode(request.getParameter("failedUsername"), UTF_8))%>&<%=AuthenticationEndpointUtil.cleanErrorMessages(Encode.forJava(request.getQueryString()))%>";
+            <% } %>
+        <% } %>
+    }
 </script>
 
 <%!
@@ -248,38 +257,18 @@
 
 <% if (Boolean.parseBoolean(loginFailed) && errorCode.equals(IdentityCoreConstants.USER_ACCOUNT_NOT_CONFIRMED_ERROR_CODE) && request.getParameter("resend_username") == null) { %>
     <div class="ui visible warning message" id="error-msg" data-testid="login-page-error-message">
-        <form action="login.do?resend_username=<%=Encode.forHtml(URLEncoder.encode(request.getParameter("failedUsername"), UTF_8))%>&<%=AuthenticationEndpointUtil.cleanErrorMessages(Encode.forJava(request.getQueryString()))%>" method="post" id="resendForm">
-            <%= AuthenticationEndpointUtil.i18n(resourceBundle, errorMessage) %>
+        <%= AuthenticationEndpointUtil.i18n(resourceBundle, errorMessage) %>
 
-            <div class="ui divider hidden"></div>
+        <div class="ui divider hidden"></div>
 
-            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "no.confirmation.mail")%>
+        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "no.confirmation.mail")%>
 
-            <button id="registerLink"
-                style="
-                    padding: 0 !important;
-                    background: none !important;
-                    border: none;
-                    cursor: pointer;
-                    color: #ff5000;
-                "
-                class="g-recaptcha"
-                <%
-                    if (reCaptchaResendEnabled) {
-                %>
-                data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>"
-                <%
-                    }
-                %>
-                data-callback="onSubmitResend"
-                data-action="resendConfirmation"
-                onmouseover='this.style.textDecoration="underline"'
-                onmouseout='this.style.textDecoration="none"'
-                data-testid="login-page-resend-confirmation-email-link"
-            >
-                <%=StringEscapeUtils.escapeHtml4(AuthenticationEndpointUtil.i18n(resourceBundle, "resend.mail"))%>
-            </button>
-        </form>
+        <a id="registerLink"
+            href="javascript:showResendReCaptcha();"
+            data-testid="login-page-resend-confirmation-email-link"
+        >
+            <%=StringEscapeUtils.escapeHtml4(AuthenticationEndpointUtil.i18n(resourceBundle, "resend.mail"))%>
+        </a>
     </div>
     <div class="ui divider hidden"></div>
 <% } %>
@@ -336,6 +325,19 @@
                    style="margin: 0 auto; right: 0; pointer-events: auto; cursor: pointer;"></i>
             </div>
         </div>
+    <%
+        if (reCaptchaEnabled) {
+    %>
+        <div class="field">
+            <div class="g-recaptcha"
+                data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>"
+                data-testid="login-page-g-recaptcha"
+            >
+            </div>
+        </div>
+    <%
+        }
+    %>
 
     <%
         String recoveryEPAvailable = application.getInitParameter("EnableRecoveryEndpoint");
@@ -480,18 +482,10 @@
     <div class="mt-0">
         <div class="column mobile center aligned tablet right aligned computer right aligned buttons tablet no-margin-right-last-child computer no-margin-right-last-child">
             <button
-                class="ui primary fluid large button g-recaptcha"
+                type="submit"
+                class="ui primary fluid large button"
                 tabindex="4"
                 role="button"
-                <%
-                    if (reCaptchaEnabled) {
-                %>
-                data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>"
-                <%
-                    }
-                %>
-                data-action="login"
-                data-callback="onSubmit"
                 data-testid="login-page-continue-login-button"
             >
                 <%=StringEscapeUtils.escapeHtml4(AuthenticationEndpointUtil.i18n(resourceBundle, "continue"))%>
@@ -563,14 +557,6 @@
                 $passwordInput.attr("type", "password");
             }
         });
-
-        function onSubmit(token) {
-           $("#loginForm").submit();
-        }
-
-        function onSubmitResend(token) {
-           $("#resendForm").submit();
-        }
 
     </script>
 
