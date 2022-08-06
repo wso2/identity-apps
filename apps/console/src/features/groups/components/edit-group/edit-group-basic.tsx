@@ -105,6 +105,7 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
      */
     const validateGroupNamePattern = async (): Promise<string> => {
         let userStoreRegEx = "";
+
         if (userStore !== SharedUserStoreConstants.PRIMARY_USER_STORE) {
             await SharedUserStoreUtils.getUserStoreRegEx(userStore,
                 SharedUserStoreConstants.USERSTORE_REGEX_PROPERTIES.RolenameRegEx)
@@ -124,6 +125,7 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
         }
 
         setRegExLoading(false);
+
         return new Promise((resolve, reject) => {
             if (userStoreRegEx !== "") {
                 resolve(userStoreRegEx);
@@ -171,12 +173,12 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
         const newName = values?.get("groupName")?.toString();
 
         const groupData: PatchGroupDataInterface = {
-            Operations: [{
+            Operations: [ {
                 "op": "replace",
                 "path": "displayName",
                 "value": labelText ? labelText + "/" + newName : newName
-            }],
-            schemas: ["urn:ietf:params:scim:api:messages:2.0:PatchOp"]
+            } ],
+            schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
         };
 
         setIsSubmitting(true);
@@ -190,15 +192,15 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
                     message: t("console:manage.features.groups.notifications.updateGroup.success.message")
                 });
             }).catch(() => {
-            handleAlerts({
-                description: t("console:manage.features.groups.notifications.updateGroup.error.description"),
-                level: AlertLevels.ERROR,
-                message: t("console:manage.features.groups.notifications.updateGroup.error.message")
-            });
+                handleAlerts({
+                    description: t("console:manage.features.groups.notifications.updateGroup.error.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("console:manage.features.groups.notifications.updateGroup.error.message")
+                });
             }).finally(() => {
                 setIsSubmitting(false);
             })
-;
+        ;
     };
 
     return (
@@ -248,6 +250,7 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
                                         validation={ async (value: string, validation: Validation) => {
                                             if (value) {
                                                 let isGroupNameValid = true;
+
                                                 await validateGroupNamePattern().then(regex => {
                                                     isGroupNameValid = SharedUserStoreUtils
                                                         .validateInputAgainstRegEx(value, regex);
@@ -258,7 +261,7 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
                                                     validation.errorMessages.push(t("console:manage.features." +
                                                         "roles.addRoleWizard.forms.roleBasicDetails.roleName." +
                                                         "validations.invalid",
-                                                        { type: "group" }));
+                                                    { type: "group" }));
                                                 }
 
                                                 const searchData: SearchGroupInterface = {
@@ -277,7 +280,7 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
                                                                 t("console:manage.features.roles." + "addRoleWizard." +
                                                                     "forms.roleBasicDetails.roleName." +
                                                                     "validations.duplicate",
-                                                                    { type: "Group" }));
+                                                                { type: "Group" }));
                                                         }
                                                     }
 
@@ -338,23 +341,23 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
                             actionTitle={
                                 isGroup
                                     ? t("console:manage.features.roles.edit.basics.dangerZone.actionTitle",
-                                    { type: "Group" })
+                                        { type: "Group" })
                                     : t("console:manage.features.roles.edit.basics.dangerZone.actionTitle",
-                                    { type: "Role" })
+                                        { type: "Role" })
                             }
                             header={
                                 isGroup
                                     ? t("console:manage.features.roles.edit.basics.dangerZone.header",
-                                    { type: "group" })
+                                        { type: "group" })
                                     : t("console:manage.features.roles.edit.basics.dangerZone.header",
-                                    { type: "role" })
+                                        { type: "role" })
                             }
                             subheader={
                                 isGroup
                                     ? t("console:manage.features.roles.edit.basics.dangerZone.subheader",
-                                    { type: "group" })
+                                        { type: "group" })
                                     : t("console:manage.features.roles.edit.basics.dangerZone.subheader",
-                                    { type: "role" })
+                                        { type: "role" })
                             }
                             onActionClick={ () => setShowDeleteConfirmationModal(!showGroupDeleteConfirmation) }
                             data-testid={
@@ -368,7 +371,7 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
             }
             {
                 showGroupDeleteConfirmation &&
-                <ConfirmationModal
+                (<ConfirmationModal
                     onClose={ (): void => setShowDeleteConfirmationModal(false) }
                     type="warning"
                     open={ showGroupDeleteConfirmation }
@@ -393,9 +396,9 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
                     </ConfirmationModal.Message>
                     <ConfirmationModal.Content>
                         { t("console:manage.features.roles.edit.basics.confirmation.content",
-                            { type: isGroup ? "group." : "role." }) }
+                            { type: isGroup ? "group" : "role" }) }
                     </ConfirmationModal.Content>
-                </ConfirmationModal>
+                </ConfirmationModal>)
             }
         </>
     );

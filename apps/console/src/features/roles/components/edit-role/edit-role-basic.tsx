@@ -434,7 +434,7 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content>
                             { t("console:manage.features.roles.edit.basics.confirmation.content",
-                                { type: isGroup ? "group." : "role." }) }
+                                { type: isGroup ? "group" : "role" }) }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
                 )
