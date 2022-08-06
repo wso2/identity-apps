@@ -256,7 +256,7 @@
             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "no.confirmation.mail")%>
 
             <button id="registerLink"
-                class="g-recaptcha"
+                class="resend-button g-recaptcha"
                 <%
                     if (reCaptchaResendEnabled) {
                 %>
