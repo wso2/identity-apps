@@ -28,11 +28,6 @@
 <jsp:directive.include file="includes/localize.jsp"/>
 <jsp:directive.include file="includes/layout-resolver.jsp"/>
 
-<%!
-    private String reCaptchaAPI = null;
-    private String reCaptchaKey = null;
-%>
-
 <%
     InitiateQuestionResponse initiateQuestionResponse = (InitiateQuestionResponse)
             session.getAttribute("initiateChallengeQuestionResponse");
@@ -40,11 +35,6 @@
     boolean reCaptchaEnabled = false;
     if (request.getAttribute("reCaptcha") != null && "TRUE".equalsIgnoreCase((String) request.getAttribute("reCaptcha"))) {
         reCaptchaEnabled = true;
-    }
-
-    if (reCaptchaEnabled) {
-        reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
-        reCaptchaAPI = CaptchaUtil.reCaptchaAPIURL();
     }
 %>
 
@@ -67,8 +57,9 @@
 
     <%
         if (reCaptchaEnabled) {
+            String reCaptchaAPI = CaptchaUtil.reCaptchaAPIURL();
     %>
-    <script src='<%=Encode.forHtmlContent(reCaptchaAPI)%>'></script>
+    <script src='<%=(reCaptchaAPI)%>'></script>
     <%
         }
     %>
@@ -117,20 +108,23 @@
                             <input type="hidden" name="step"
                                    value="<%=Encode.forHtmlAttribute(request.getParameter("step"))%>"/>
                         </div>
+                        <%
+                            if (reCaptchaEnabled) {
+                                String reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
+                        %>
+                        <div class="field">
+                            <div class="g-recaptcha"
+                                 data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>">
+                            </div>
+                        </div>
+                        <%
+                            }
+                        %>
                         <div class="ui divider hidden"></div>
                         <div class="align-right buttons">
                             <button id="answerSubmit"
-                                    class="ui primary button g-recaptcha"
-                                    <%
-                                        if (reCaptchaEnabled) {
-                                    %>
-                                    data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>"
-                                    <%
-                                        }
-                                    %>
-                                    data-callback="onSubmit"
-                                    data-action="securityQuestion">
-                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Submit")%>
+                                    class="ui primary button"
+                                    type="submit"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Submit")%>
                             </button>
                         </div>
                     </form>
@@ -162,9 +156,28 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-            function onSubmit(token) {
-               $("#securityQuestionForm").submit();
-            }
+
+            $("#securityQuestionForm").submit(function (e) {
+                $("#server-error-msg").hide();
+                var errorMessage = $("#error-msg");
+                errorMessage.hide();
+
+                // Validate reCaptcha
+                <% if (reCaptchaEnabled) { %>
+
+                var reCaptchaResponse = $("[name='g-recaptcha-response']")[0].value;
+
+                if (reCaptchaResponse.trim() == '') {
+                    errorMessage.text("Please select reCaptcha.");
+                    errorMessage.show();
+
+                    return false;
+                }
+
+                <% } %>
+
+                return true;
+            });
         });
 
     </script>
