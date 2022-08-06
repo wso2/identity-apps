@@ -82,19 +82,19 @@ interface SMSOTPAuthenticatorFormInitialValuesInterface {
     /**
      * SMS OTP expiry time in seconds.
      */
-    SMSOTP_ExpiryTime: string;
+    SmsOTP_ExpiryTime: string;
     /**
      * Number of characters in the OTP token.
      */
-    SMSOTP_OTPLength: string;
+    SmsOTP_OTPLength: string;
     /**
      * Allow OTP token to have 0-9 characters only.
      */
-    SMSOTP_OtpRegex_UseNumericChars: string;
+    SmsOTP_OtpRegex_UseNumericChars: boolean;
     /**
      * Allow users to configure the mobile number on the first login
      */
-    SMSOTP_OtpRegex_AllowFirstLoginMobileNoConfiguration: string;
+    SmsOTP_OtpRegex_AllowFirstLoginMobileNoConfiguration: boolean;
 }
 
 /**
@@ -104,19 +104,19 @@ interface SMSOTPAuthenticatorFormFieldsInterface {
     /**
      * SMS OTP expiry time field.
      */
-    SMSOTP_ExpiryTime: CommonAuthenticatorFormFieldInterface;
+    SmsOTP_ExpiryTime: CommonAuthenticatorFormFieldInterface;
     /**
      * Number of characters in the OTP token field.
      */
-    SMSOTP_OTPLength: CommonAuthenticatorFormFieldInterface;
+    SmsOTP_OTPLength: CommonAuthenticatorFormFieldInterface;
     /**
      * Allow OTP token to have 0-9 characters only field.
      */
-    SMSOTP_OtpRegex_UseNumericChars: CommonAuthenticatorFormFieldInterface;
+    SmsOTP_OtpRegex_UseNumericChars: CommonAuthenticatorFormFieldInterface;
     /**
      * Allow users to configure the mobile number on the first login
      */
-    SMSOTP_OtpRegex_AllowFirstLoginMobileNoConfiguration: CommonAuthenticatorFormFieldInterface;
+    SmsOTP_OtpRegex_AllowFirstLoginMobileNoConfiguration: CommonAuthenticatorFormFieldInterface;
 }
 
 /**
@@ -126,19 +126,19 @@ export interface SMSOTPAuthenticatorFormErrorValidationsInterface {
     /**
      * SMS OTP expiry time field.
      */
-    SMSOTP_ExpiryTime: string;
+    SmsOTP_ExpiryTime: string;
     /**
      * Number of characters in the OTP token field.
      */
-    SMSOTP_OTPLength: string;
+    SmsOTP_OTPLength: string;
     /**
      * Allow OTP token to have 0-9 characters only field.
      */
-    SMSOTP_OtpRegex_UseNumericChars: string;
+    SmsOTP_OtpRegex_UseNumericChars: string;
     /**
      * Allow users to configure the mobile number on the first login
      */
-    SMSOTP_OtpRegex_AllowFirstLoginMobileNoConfiguration: undefined
+    SMSOTP_OtpRegex_AllowFirstLoginMobileNoConfiguration: string
 }
 
 /**
@@ -167,6 +167,9 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
     // This can be used when `meta` support is there.
     const [ formFields, setFormFields ] = useState<SMSOTPAuthenticatorFormFieldsInterface>(undefined);
     const [ initialValues, setInitialValues ] = useState<SMSOTPAuthenticatorFormInitialValuesInterface>(undefined);
+
+    // SMS OTP length unit is set to digits or characters according to the state of this variable
+    const [ isOTPANumber, setIsOTPANumber] = useState<boolean>();
 
     /**
      * Flattens and resolved form initial values and field metadata.
@@ -203,7 +206,14 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
                     : value.value
             };
         });
+        // TODO: Remove setting this value once the data is available from the backend
+        resolvedFormFields.SmsOTP_OtpRegex_AllowFirstLoginMobileNoConfiguration = {
+            meta: undefined,
+            value: JSON.parse("false"),
+        }
+        resolvedInitialValues.SmsOTP_OtpRegex_AllowFirstLoginMobileNoConfiguration = false;
 
+        setIsOTPANumber(resolvedInitialValues.SmsOTP_OtpRegex_UseNumericChars)
         setFormFields(resolvedFormFields);
         setInitialValues(resolvedInitialValues);
     }, [ originalInitialValues ]);
@@ -249,51 +259,46 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
         SMSOTPAuthenticatorFormErrorValidationsInterface => {
 
         const errors: SMSOTPAuthenticatorFormErrorValidationsInterface = {
-            SMSOTP_ExpiryTime: undefined,
-            SMSOTP_OTPLength: undefined,
-            SMSOTP_OtpRegex_UseNumericChars: undefined,
+            SmsOTP_ExpiryTime: undefined,
+            SmsOTP_OTPLength: undefined,
+            SmsOTP_OtpRegex_UseNumericChars: undefined,
             SMSOTP_OtpRegex_AllowFirstLoginMobileNoConfiguration: undefined
         };
 
-        if (!values.SMSOTP_ExpiryTime) {
+        if (!values.SmsOTP_ExpiryTime) {
             // Check for required error.
-            errors.SMSOTP_ExpiryTime = t("console:develop.features.authenticationProvider.forms" +
+            errors.SmsOTP_ExpiryTime = t("console:develop.features.authenticationProvider.forms" +
                 ".authenticatorSettings.smsOTP.expiryTime.validations.required");
-        } else if (!FormValidation.isInteger(values.SMSOTP_ExpiryTime as unknown as number)) {
+        } else if (!FormValidation.isInteger(values.SmsOTP_ExpiryTime as unknown as number)) {
             // Check for invalid input.
-            errors.SMSOTP_ExpiryTime = t("console:develop.features.authenticationProvider.forms" +
+            errors.SmsOTP_ExpiryTime = t("console:develop.features.authenticationProvider.forms" +
                 ".authenticatorSettings.smsOTP.expiryTime.validations.invalid");
-        } else if ((parseInt(values.SMSOTP_ExpiryTime, 10) < IdentityProviderManagementConstants
+        } else if ((parseInt(values.SmsOTP_ExpiryTime, 10) < IdentityProviderManagementConstants
             .SMS_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.EXPIRY_TIME_MIN_VALUE)
-        || (parseInt(values.SMSOTP_ExpiryTime, 10) > IdentityProviderManagementConstants
+        || (parseInt(values.SmsOTP_ExpiryTime, 10) > IdentityProviderManagementConstants
                 .SMS_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.EXPIRY_TIME_MAX_VALUE)) {
             // Check for invalid range.
-            errors.SMSOTP_ExpiryTime = t("console:develop.features.authenticationProvider.forms" +
+            errors.SmsOTP_ExpiryTime = t("console:develop.features.authenticationProvider.forms" +
                 ".authenticatorSettings.smsOTP.expiryTime.validations.range");
         }
 
-        if (!values.SMSOTP_OTPLength) {
+        if (!values.SmsOTP_OTPLength) {
             // Check for required error.
-            errors.SMSOTP_OTPLength = t("console:develop.features.authenticationProvider.forms" +
+            errors.SmsOTP_OTPLength = t("console:develop.features.authenticationProvider.forms" +
                 ".authenticatorSettings.smsOTP.tokenLength.validations.required");
-        } else if (!FormValidation.isInteger(values.SMSOTP_OTPLength as unknown as number)) {
+        } else if (!FormValidation.isInteger(values.SmsOTP_OTPLength as unknown as number)) {
             // Check for invalid input.
-            errors.SMSOTP_OTPLength = t("console:develop.features.authenticationProvider.forms" +
+            errors.SmsOTP_OTPLength = t("console:develop.features.authenticationProvider.forms" +
                 ".authenticatorSettings.smsOTP.tokenLength.validations.invalid");
-        } else if ((parseInt(values.SMSOTP_OTPLength, 10) < IdentityProviderManagementConstants
+        } else if ((parseInt(values.SmsOTP_OTPLength, 10) < IdentityProviderManagementConstants
                 .SMS_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.OTP_LENGTH_MIN_VALUE)
-            || (parseInt(values.SMSOTP_OTPLength, 10) > IdentityProviderManagementConstants
+            || (parseInt(values.SmsOTP_OTPLength, 10) > IdentityProviderManagementConstants
                 .SMS_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.OTP_LENGTH_MAX_VALUE)) {
             // Check for invalid range.
-            errors.SMSOTP_OTPLength = t("console:develop.features.authenticationProvider.forms" +
+            errors.SmsOTP_OTPLength = t("console:develop.features.authenticationProvider.forms" +
                 ".authenticatorSettings.smsOTP.tokenLength.validations.range");
         }
 
-        if(values.SMSOTP_OtpRegex_AllowFirstLoginMobileNoConfiguration){
-            console.log(values)
-        }
-
-        console.log(values)
         return errors;
     };
 
@@ -309,7 +314,7 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
             <Field.Input
                 ariaLabel="SMS OTP expiry time"
                 inputType="number"
-                name="SMSOTP_ExpiryTime"
+                name="SmsOTP_ExpiryTime"
                 label={
                     t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                         ".smsOTP.expiryTime.label")
@@ -357,34 +362,36 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
             </Field.Input>
             <Field.Checkbox
                 ariaLabel="Use numeric characters for SMS OTP token"
-                name="SMSOTP_OtpRegex_UseNumericChars"
+                name="SmsOTP_OtpRegex_UseNumericChars"
                 label={
                     t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                         ".smsOTP.useNumericChars.label")
                 }
-                hint={
-                    <Trans
-                        i18nKey={
-                            "console:develop.features.authenticationProvider.forms.authenticatorSettings" +
-                            ".smsOTP.useNumericChars.hint"
-                        }
-                    >
-                        Only numeric characters (<Code>0-9</Code>) are used for the OTP token.
-                        Please clear this checkbox to enable alphanumeric characters.
-                    </Trans>
-                }
+                // hint={
+                //     <Trans
+                //         i18nKey={
+                //             "console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                //             ".smsOTP.useNumericChars.hint"
+                //         }
+                //     >
+                //         Only numeric characters (<Code>0-9</Code>) are used for the OTP token.
+                //         Please clear this checkbox to enable alphanumeric characters.
+                //     </Trans>
+                // }
                 readOnly={ readOnly }
                 width={ 16 }
                 data-testid={ `${ testId }-sms-otp-regex-use-numeric` }
+                listen={ (e:boolean) => {setIsOTPANumber(e)}}
             />
             <Field.Input
                 ariaLabel="SMS OTP length"
                 inputType="number"
-                name="SMSOTP_OTPLength"
+                name="SmsOTP_OTPLength"
                 label={
                     t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                         ".smsOTP.tokenLength.label")
                 }
+                labelPosition="right"
                 placeholder={
                     t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                         ".smsOTP.tokenLength.placeholder")
@@ -393,7 +400,7 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
                     <Trans
                         i18nKey={
                             "console:develop.features.authenticationProvider.forms.authenticatorSettings" +
-                            ".smsOTP.tokenLength.hint.digit"
+                            ".smsOTP.tokenLength.hint"
                         }
                     >
                         The number of allowed characters in the OTP. Please pick a value between
@@ -416,15 +423,14 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
                 <input />
                 <Label>
                     {
-
                         t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
-                            ".smsOTP.tokenLength.unit")
+                            `.smsOTP.tokenLength.unit.${isOTPANumber? "digits" : "characters"}`)
                     }
                 </Label>
             </Field.Input>
             <Field.Checkbox
                 ariaLabel="Allow users to configure mobile number on the first login"
-                name="SMSOTP_OtpRegex_AllowFirstLoginMobileNoConfiguration"
+                name="SmsOTP_OtpRegex_AllowFirstLoginMobileNoConfiguration"
                 label={
                     t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                         ".smsOTP.allowFirstLoginMobileNoConfiguration.label")
