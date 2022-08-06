@@ -150,6 +150,13 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
     }, [ dispatch, activeView ]);
 
     useEffect(() => {
+        // Try to handle any un-expected routing issues. Returns a void if no issues are found.
+        RouteUtils.gracefullyHandleRouting(filteredRoutes, AppConstants.getDeveloperViewBasePath(), location.pathname);
+
+        setSelectedRoute(CommonRouteUtils.getInitialActiveRoute(location.pathname, filteredRoutes));
+    }, [ location.pathname, filteredRoutes ]);
+
+    useEffect(() => {
         // Allowed scopes is never empty. Wait until it's defined to filter the routes.
         if (isEmpty(allowedScopes)) {
             return;
@@ -171,12 +178,8 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
             routes = routes.filter(route => route.id === "404");
         }
 
-        // Try to handle any un-expected routing issues. Returns a void if no issues are found.
-        RouteUtils.gracefullyHandleRouting(routes, AppConstants.getDeveloperViewBasePath(), location.pathname);
-
         // Filter the routes and get only the enabled routes defined in the app config.
         setFilteredRoutes(routes);
-        setSelectedRoute(CommonRouteUtils.getInitialActiveRoute(location.pathname, routes));
 
         const sanitizedManageRoutes: RouteInterface[] = CommonRouteUtils.sanitizeForUI(cloneDeep(manageRoutes));
 
@@ -199,7 +202,6 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
         allowedScopes,
         dispatch,
         profileInfo,
-        location.pathname,
         getOrganizationEnabledRoutes
     ]);
 

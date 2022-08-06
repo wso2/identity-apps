@@ -142,6 +142,14 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
     const getList = (limit: number, offset: number, filter: string, attribute: string, userStore: string) => {
         getUsersList(limit, offset, filter, attribute, userStore)
             .then((response) => {
+                if (!response.Resources) {
+                    setUsersList([]);
+                    setInitialUserList([]);
+                    setIsSelectedUsersLoading(false);
+
+                    return;
+                }
+
                 const responseUsers = response.Resources.filter((user
                 ) => user.userName.split("/")[0] !== CONSUMER_USERSTORE);
 

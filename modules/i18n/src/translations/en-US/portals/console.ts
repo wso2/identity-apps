@@ -3209,11 +3209,6 @@ export const console: ConsoleNS = {
                                     required: "Client secret is a required field."
                                 }
                             },
-                            enableGoogleOneTap: {
-                                hint: "Enabling Google One Tap as a sign in option",
-                                label: "Google One Tap",
-                                placeholder: "Google one tap as a sign in option"
-                            },
                             scopes: {
                                 heading: "Scopes",
                                 hint: "The type of access provided for the connected apps to access data " +
@@ -7484,7 +7479,8 @@ export const console: ConsoleNS = {
                         subtitles: {
                             0: "There are no organizations at the moment.",
                             1: "You can add a new organization easily by",
-                            2: "clicking on the button below."
+                            2: "clicking on the button below.",
+                            3: "There are no organizations under {{parent}} at the moment."
                         },
                         title: "Add a new Organization"
                     }
