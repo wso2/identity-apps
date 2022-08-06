@@ -306,7 +306,7 @@
                     </div>
                     <% } %>
                     <div class="field">
-                        <div class="ui vertical ui center aligned segment form">
+                        <div class="ui vertical ui center aligned segment form" style="max-width: 300px; margin: 0 auto;">
                             <%
                                 int iconId = 0;
                                 if (idpAuthenticatorMapping != null) {
@@ -378,7 +378,7 @@
                                         <div class="external-login blurring external-login-dimmer">
                                             <div class="field" id="googleSignIn" style="display: none;">
                                                 <button
-                                                    class="ui button fluid"
+                                                    class="ui icon button fluid"
                                                     onclick="handleNoDomain(this,
                                                         '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpName))%>',
                                                         '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpEntry.getValue()))%>')"
@@ -413,12 +413,12 @@
                                                 document.getElementById("googleSignIn").style.display = "block";
                                             </script>
                                         <%  } %>
-                                        <br>
+
                                     <% } else { %>
                                         <div class="external-login blurring external-login-dimmer">
                                             <div class="field">
                                                 <button
-                                                    class="ui button fluid"
+                                                    class="ui icon button fluid"
                                                     onclick="handleNoDomain(this,
                                                         '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpName))%>',
                                                         '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpEntry.getValue()))%>')"
