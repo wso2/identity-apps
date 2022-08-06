@@ -911,7 +911,6 @@
                 return true;
             });
 
-
             function compareArrays(arr1, arr2) {
                 return $(arr1).not(arr2).length == 0 && $(arr2).not(arr1).length == 0
             }

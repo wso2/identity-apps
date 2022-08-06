@@ -502,7 +502,7 @@
             <button
                 type="button"
                 onclick="window.location.href='<%=StringEscapeUtils.escapeHtml4(getRegistrationUrl(accountRegistrationEndpointURL, urlEncodedURL, urlParameters))%>';"
-                class="ui fluid large button secondary"
+                class="ui large button secondary"
                 id="registerLink"
                 tabindex="8"
                 role="button"
