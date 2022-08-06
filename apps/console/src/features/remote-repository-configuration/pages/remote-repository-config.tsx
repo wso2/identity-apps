@@ -668,7 +668,7 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                 (<ConfirmationModal
                     data-componentid={ `${ componentId }-confirmation-modal` }
                     onClose={ (): void => setShowDeleteConfirmationModal(false) }
-                    type="warning"
+                    type="negative"
                     open={ showConfigDeleteConfirmation }
                     assertion={ remoteRepoConfigDetail?.remoteFetchName }
                     assertionHint={
@@ -696,7 +696,7 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                     <ConfirmationModal.Header>
                         { t("console:manage.features.remoteConfig.list.confirmations.deleteConfig.header") }
                     </ConfirmationModal.Header>
-                    <ConfirmationModal.Message attached warning>
+                    <ConfirmationModal.Message attached negative>
                         { t("console:manage.features.remoteConfig.list.confirmations.deleteConfig.message") }
                     </ConfirmationModal.Message>
                     <ConfirmationModal.Content>

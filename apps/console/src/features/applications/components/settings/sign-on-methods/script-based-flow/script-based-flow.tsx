@@ -1101,7 +1101,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
             } }
             onPrimaryActionClick={ onSecretDeleteClick }
             open={ showDeleteConfirmationModal }
-            type="warning"
+            type="negative"
             assertionHint={ t("console:develop.features.secrets.modals.deleteSecret.assertionHint") }
             assertionType="checkbox"
             primaryAction={ t("console:develop.features.secrets.modals.deleteSecret.primaryActionButtonText") }
@@ -1113,7 +1113,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
             </ConfirmationModal.Header>
             <ConfirmationModal.Message
                 attached
-                warning
+                negative
                 data-testid={ `${ testId }-delete-confirmation-modal-message` }>
                 { t("console:develop.features.secrets.modals.deleteSecret.warningMessage") }
             </ConfirmationModal.Message>
