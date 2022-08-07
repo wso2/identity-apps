@@ -27,9 +27,9 @@ import {
     EmptyPlaceholder,
     GenericIcon,
     GridLayout,
-    Message,
     LinkButton,
     ListLayout,
+    Message,
     TableActionsInterface,
     TableColumnInterface
 } from "@wso2is/react-components";
@@ -416,7 +416,7 @@ const SecretsList: FC<SecretsListProps> = (props: SecretsListProps): ReactElemen
             } }
             onPrimaryActionClick={ onSecretDeleteClick }
             open={ showDeleteConfirmationModal }
-            type="warning"
+            type="negative"
             assertionHint={ t("console:develop.features.secrets.modals.deleteSecret.assertionHint") }
             assertionType="checkbox"
             primaryAction={ t("console:develop.features.secrets.modals.deleteSecret.primaryActionButtonText") }
@@ -428,7 +428,7 @@ const SecretsList: FC<SecretsListProps> = (props: SecretsListProps): ReactElemen
             </ConfirmationModal.Header>
             <ConfirmationModal.Message
                 attached
-                warning
+                negative
                 data-testid={ `${ testId }-delete-confirmation-modal-message` }>
                 { t("console:develop.features.secrets.modals.deleteSecret.warningMessage") }
             </ConfirmationModal.Message>

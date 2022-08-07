@@ -411,7 +411,7 @@ export const OrganizationRoleList: FunctionComponent<OrganizationRolesListPropsI
             { deletingOrganizationRole && (
                 <ConfirmationModal
                     onClose={ (): void => setShowDeleteConfirmationModal(false) }
-                    type="warning"
+                    type="negative"
                     open={ showDeleteConfirmationModal }
                     assertionHint={ t(
                         "console:manage.features.roles.list.confirmations.deleteItem.assertionHint"
@@ -432,7 +432,7 @@ export const OrganizationRoleList: FunctionComponent<OrganizationRolesListPropsI
                     </ConfirmationModal.Header>
                     <ConfirmationModal.Message
                         attached
-                        warning
+                        negative
                         data-testid={ `${testId}-delete-org-role-confirmation-modal-message` }
                     >
                         { t("console:manage.features.roles.list.confirmations.deleteItem.message",

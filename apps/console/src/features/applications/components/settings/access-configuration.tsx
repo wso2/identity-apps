@@ -349,6 +349,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                         message: t("console:develop.features.applications.notifications.updateApplication.error" +
                             ".message")
                     }));
+
                     return;
                 }
 
@@ -571,7 +572,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                         visible
                         type="info"
                         content={
-                            <Trans
+                            (<Trans
                                 i18nKey={ i18nKey }
                                 tOptions={ {
                                     protocol: ApplicationManagementUtils
@@ -589,7 +590,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                     }
                                 </Code>
                                 protocol to implement login in your applications.
-                            </Trans>
+                            </Trans>)
                         }
                     />
                     <Divider hidden />
@@ -973,7 +974,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                             showDeleteConfirmationModal && (
                                 <ConfirmationModal
                                     onClose={ (): void => setShowDeleteConfirmationModal(false) }
-                                    type="warning"
+                                    type="negative"
                                     open={ showDeleteConfirmationModal }
                                     assertion={ protocolToDelete }
                                     assertionHint={ (
@@ -1012,7 +1013,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                     </ConfirmationModal.Header>
                                     <ConfirmationModal.Message
                                         attached
-                                        warning
+                                        negative
                                         data-testid={ `${ testId }-protocol-delete-confirmation-modal-message` }
                                     >
                                         {
@@ -1035,7 +1036,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                             showProtocolSwitchModal && (
                                 <ConfirmationModal
                                     onClose={ (): void => setShowDeleteConfirmationModal(false) }
-                                    type="warning"
+                                    type="negative"
                                     open={ showProtocolSwitchModal }
                                     primaryAction={ t("common:confirm") }
                                     secondaryAction={ t("common:cancel") }
@@ -1061,7 +1062,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                     </ConfirmationModal.Header>
                                     <ConfirmationModal.Message
                                         attached
-                                        warning
+                                        negative
                                         data-testid={ `${ testId }-protocol-delete-confirmation-modal-message` }
                                     >
                                         { t("console:develop.features.applications.confirmations" +

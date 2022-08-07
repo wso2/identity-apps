@@ -614,7 +614,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
         return (
             <ConfirmationModal
                 onClose={ (): void => setShowDeleteConfirmationModal(false) }
-                type="warning"
+                type="negative"
                 open={ showDeleteConfirmationModal }
                 primaryAction={ t("common:confirm") }
                 secondaryAction={ t("common:cancel") }
@@ -636,7 +636,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                 </ConfirmationModal.Header>
                 <ConfirmationModal.Message
                     attached
-                    warning
+                    negative
                     data-testid={ `${ testId }-delete-confirmation-modal-message` }
                 >
                     { t("console:develop.features.applications.confirmations.removeApplicationUserAttribute." +
