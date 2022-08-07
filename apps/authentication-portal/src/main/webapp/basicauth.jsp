@@ -63,6 +63,10 @@
         document.getElementById("restartFlowForm").submit();
     }
 
+    function onCompleted() {
+        $('#loginForm').submit();
+    }
+
     // Handle form submission preventing double submission.
     $(document).ready(function(){
         $.fn.preventDoubleSubmission = function() {
@@ -74,7 +78,17 @@
                     console.warn("Prevented a possible double submit event");
                 } else {
                     e.preventDefault();
-
+                    <%
+                        if (reCaptchaEnabled) {
+                    %>
+                    if (!grecaptcha.getResponse()) {
+                        event.preventDefault(); //prevent form submit
+                        grecaptcha.execute();
+                        return;
+                    }
+                    <%
+                        }
+                    %>
                     var userName = document.getElementById("username");
                     userName.value = userName.value.trim();
 
@@ -329,6 +343,19 @@
         </div>
 
     <%
+    if (reCaptchaEnabled) {
+    %>
+        <div class="g-recaptcha"
+                data-size="invisible"
+                data-callback="onCompleted"
+                data-sitekey=
+                        "<%=Encode.forHtmlContent(reCaptchaKey)%>">
+        </div>
+    <%
+        }
+    %>
+
+    <%
         String recoveryEPAvailable = application.getInitParameter("EnableRecoveryEndpoint");
         String enableSelfSignUpEndpoint = application.getInitParameter("EnableSelfSignUpEndpoint");
         Boolean isRecoveryEPAvailable = false;
@@ -469,26 +496,16 @@
     <div class="ui divider hidden"></div>
 
     <div class="mt-0">
-        <div>
+        <div class="column buttons">
             <button
-                class="ui primary fluid large button g-recaptcha"
+                class="ui primary fluid large button"
                 tabindex="4"
-                role="button"
-                <%
-                    if (reCaptchaEnabled) {
-                %>
-                data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>"
-                <%
-                    }
-                %>
-                data-action="login"
-                data-callback="onSubmit"
-                data-testid="login-page-continue-login-button"
+                type="submit"
             >
                 <%=StringEscapeUtils.escapeHtml4(AuthenticationEndpointUtil.i18n(resourceBundle, "continue"))%>
             </button>
         </div>
-        <div>
+        <div class="column buttons">
             <% if (isSelfSignUpEPAvailable && !isIdentifierFirstLogin(inputType) && isSelfSignUpEnabledInTenant) { %>
             <button
                 type="button"
@@ -554,10 +571,6 @@
                 $passwordInput.attr("type", "password");
             }
         });
-
-        function onSubmit(token) {
-           $("#loginForm").submit();
-        }
 
         function onSubmitResend(token) {
            $("#resendForm").submit();
