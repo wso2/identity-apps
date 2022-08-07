@@ -734,7 +734,7 @@
             window.history.back();
         }
 
-        function onCompleted(token) {
+        function onCompleted() {
            $("#register").submit();
         }
 

@@ -326,7 +326,7 @@
         }
 
         function onCompleted() {
-            $('#recoverDetailsForm').submit();
+            $("#recoverDetailsForm").submit();
         }
 
         $(document).ready(function () {

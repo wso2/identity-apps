@@ -336,11 +336,12 @@
             window.history.back();
         }
 
-        $(document).ready(function () {
 
-            function onCompleted() {
-                $('#recoverDetailsForm').submit();
-            }
+        function onCompleted() {
+            $('#recoverDetailsForm').submit();
+        }
+
+        $(document).ready(function () {
 
             $("#recoverDetailsForm").submit(function (e) {
 
@@ -377,6 +378,7 @@
 
                 return true;
             });
+
         });
     </script>
 </body>
