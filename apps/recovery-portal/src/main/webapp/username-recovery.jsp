@@ -195,7 +195,7 @@
                             <div class="two fields">
                                 <% if (isFirstNameInClaims) { %>
                                 <div class="required field">
-                                    <input id="first-name" required type="text" name="http://wso2.org/claims/givenname"
+                                    <input id="first-name" type="text" name="http://wso2.org/claims/givenname"
                                         placeholder="<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                                             "First.name")%>*" />
                                 </div>
@@ -242,7 +242,7 @@
                             <input id="tenant-domain" type="hidden" name="tenantDomain" value="<%=Encode.forHtmlAttribute(tenantDomain)%>"/>
                         </div>
                         <% } else { %>
-                        <div class="field">
+                        <div class="required field">
                             <label class="control-label">
                                 <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Tenant.domain")%>
                             </label>

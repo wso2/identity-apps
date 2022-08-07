@@ -300,7 +300,7 @@
         </div>
    <% } %>
     <% if (!isIdentifierFirstLogin(inputType)) { %>
-        <div class="field">
+        <div class="required field">
             <div class="ui fluid left icon input">
                 <input
                     type="text"
@@ -317,7 +317,7 @@
     <% } else { %>
         <input id="username" name="username" type="hidden" data-testid="login-page-username-input" value="<%=username%>">
     <% } %>
-        <div class="field">
+        <div class="required field">
             <div class="ui fluid left icon input addon-wrapper">
                 <input
                     type="password"
