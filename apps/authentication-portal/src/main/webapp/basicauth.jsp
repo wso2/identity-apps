@@ -499,8 +499,8 @@
     <div class="ui divider hidden"></div>
 
     <div class="mt-0">
-        <div>
-            <button id="loginSubmit"
+        <div class="column buttons">
+            <button
                 class="ui primary fluid large button"
                 tabindex="4"
                 type="submit"
@@ -508,7 +508,7 @@
                 <%=StringEscapeUtils.escapeHtml4(AuthenticationEndpointUtil.i18n(resourceBundle, "continue"))%>
             </button>
         </div>
-        <div>
+        <div class="column buttons">
             <% if (isSelfSignUpEPAvailable && !isIdentifierFirstLogin(inputType) && isSelfSignUpEnabledInTenant) { %>
             <button
                 type="button"
