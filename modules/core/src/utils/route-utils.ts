@@ -84,8 +84,10 @@ export class RouteUtils {
                         filteredRoutes.push(route);
 
                         if (route.showOnSidePanel) {
-                            route.children = [];
-                            sanitizedRoutes.push(route);
+                            const sanitizedRoute = { ...route };
+
+                            sanitizedRoute.children = [];
+                            sanitizedRoutes.push(sanitizedRoute);
                         }
                     }
                 };
@@ -202,36 +204,23 @@ export class RouteUtils {
     public static getInitialActiveRoute(pathname: string,
         routes: RouteInterface[]): RouteInterface | ChildRouteInterface {
 
-        let found = false;
         let activeRoute: RouteInterface | ChildRouteInterface = null;
 
-        const recurse = (routesArr: RouteInterface[] | ChildRouteInterface[]): void => {
-            for (const route of routesArr) {
-                // Terminate the evaluation if the route is
-                // not supposed to be displayed on the side panel.
-                if (!route.showOnSidePanel) {
-                    continue;
-                }
-
-                activeRoute = route;
-
-                if (this.isActiveRoute(pathname, route)) {
-                    found = true;
-
-                    break;
-                } else {
-                    if (route.children && route.children.length && route.children.length > 0) {
-                        recurse(route.children);
-                        if (found) {
-                            break;
-                        }
-                    }
-                }
-                activeRoute = null;
+        for (const route of routes) {
+            // Terminate the evaluation if the route is
+            // not supposed to be displayed on the side panel.
+            if (!route.showOnSidePanel) {
+                continue;
             }
-        };
 
-        recurse(routes);
+            activeRoute = route;
+
+            if (this.isActiveRoute(pathname, route)) {
+                break;
+            }
+            activeRoute = null;
+        }
+
 
         return activeRoute;
     }
