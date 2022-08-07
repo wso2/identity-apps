@@ -256,14 +256,7 @@
             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "no.confirmation.mail")%>
 
             <button id="registerLink"
-                style="
-                    padding: 0 !important;
-                    background: none !important;
-                    border: none;
-                    cursor: pointer;
-                    color: #ff5000;
-                "
-                class="g-recaptcha"
+                class="resend-button g-recaptcha"
                 <%
                     if (reCaptchaResendEnabled) {
                 %>
@@ -273,8 +266,6 @@
                 %>
                 data-callback="onSubmitResend"
                 data-action="resendConfirmation"
-                onmouseover='this.style.textDecoration="underline"'
-                onmouseout='this.style.textDecoration="none"'
                 data-testid="login-page-resend-confirmation-email-link"
             >
                 <%=StringEscapeUtils.escapeHtml4(AuthenticationEndpointUtil.i18n(resourceBundle, "resend.mail"))%>
@@ -478,7 +469,7 @@
     <div class="ui divider hidden"></div>
 
     <div class="mt-0">
-        <div class="column mobile center aligned tablet right aligned computer right aligned buttons tablet no-margin-right-last-child computer no-margin-right-last-child">
+        <div>
             <button
                 class="ui primary fluid large button g-recaptcha"
                 tabindex="4"
@@ -497,7 +488,7 @@
                 <%=StringEscapeUtils.escapeHtml4(AuthenticationEndpointUtil.i18n(resourceBundle, "continue"))%>
             </button>
         </div>
-        <div class="column mobile center aligned tablet left aligned computer left aligned buttons tablet computer">
+        <div>
             <% if (isSelfSignUpEPAvailable && !isIdentifierFirstLogin(inputType) && isSelfSignUpEnabledInTenant) { %>
             <button
                 type="button"

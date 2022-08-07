@@ -206,7 +206,7 @@
     <%
         if (reCaptchaEnabled || reCaptchaResendEnabled) {
     %>
-        <script src="<%=Encode.forHtmlContent(reCaptchaAPI)%>"></script>
+    <script src="<%=Encode.forHtmlContent(reCaptchaAPI)%>"></script>
     <%
         }
     %>
