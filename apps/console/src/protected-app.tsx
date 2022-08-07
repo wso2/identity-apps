@@ -536,7 +536,9 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
     }, [ filterRoutes, isAuthenticated ]);
 
     useEffect(() => {
-        if (!governanceConnectorCategories || governanceConnectorsLoaded.current) {
+        if (!governanceConnectorCategories ||
+            governanceConnectorCategories.length === 0 ||
+            governanceConnectorsLoaded.current) {
             return;
         }
 
@@ -590,6 +592,10 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
     }, [ governanceConnectorCategories, filteredManageRoutes, sanitizedManageRoutes ]);
 
     useEffect(() => {
+        if (!allowedScopes) {
+            return;
+        }
+
         if (!(governanceConnectorCategories !== undefined && governanceConnectorCategories.length > 0)) {
             if (
                 (
@@ -606,7 +612,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                 GovernanceConnectorUtils.getGovernanceConnectors();
             }
         }
-    }, [ governanceConnectorCategories ]);
+    }, [ governanceConnectorCategories, featureConfig, allowedScopes ]);
 
     useEffect(() => {
         const error = new URLSearchParams(location.search).get("error_description");
