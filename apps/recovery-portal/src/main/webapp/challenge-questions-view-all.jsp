@@ -27,6 +27,11 @@
 <%@ page import="java.util.List" %>
 <jsp:include page="includes/localize.jsp"/>
 
+<%!
+    private String reCaptchaAPI = null;
+    private String reCaptchaKey = null;
+%>
+
 <%
     InitiateAllQuestionResponse initiateAllQuestionResponse = (InitiateAllQuestionResponse)
             session.getAttribute("initiateAllQuestionResponse");
@@ -36,6 +41,11 @@
     boolean reCaptchaEnabled = false;
     if (request.getAttribute("reCaptcha") != null && "TRUE".equalsIgnoreCase((String) request.getAttribute("reCaptcha"))) {
         reCaptchaEnabled = true;
+    }
+
+    if (reCaptchaEnabled) {
+        reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
+        reCaptchaAPI = CaptchaUtil.reCaptchaAPIURL();
     }
 %>
 
@@ -65,9 +75,8 @@
     <![endif]-->
     <%
         if (reCaptchaEnabled) {
-            String reCaptchaAPI = CaptchaUtil.reCaptchaAPIURL();
     %>
-    <script src='<%=(reCaptchaAPI)%>'></script>
+        <script src='<%=Encode.forHtmlContent(reCaptchaAPI)%>'></script>
     <%
         }
     %>
@@ -127,7 +136,6 @@
                                     class="wr-btn grey-bg col-xs-12 col-md-12 col-lg-12 uppercase font-extra-large g-recaptcha"
                                     <%
                                         if (reCaptchaEnabled) {
-                                            String reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
                                     %>
                                     data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>"
                                     <%

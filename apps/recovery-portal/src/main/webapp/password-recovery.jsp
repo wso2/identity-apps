@@ -38,6 +38,11 @@
 <jsp:directive.include file="tenant-resolve.jsp"/>
 <jsp:directive.include file="includes/layout-resolver.jsp"/>
 
+<%!
+    private String reCaptchaAPI = null;
+    private String reCaptchaKey = null;
+%>
+
 <%
     boolean error = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("error"));
     String errorMsg = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("errorMsg"));
@@ -89,6 +94,11 @@
         reCaptchaEnabled = true;
     }
 
+    if (reCaptchaEnabled) {
+        reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
+        reCaptchaAPI = CaptchaUtil.reCaptchaAPIURL();
+    }
+
     Boolean isQuestionBasedPasswordRecoveryEnabledByTenant;
     Boolean isNotificationBasedPasswordRecoveryEnabledByTenant;
     Boolean isMultiAttributeLoginEnabledInTenant;
@@ -131,9 +141,8 @@
 
     <%
         if (reCaptchaEnabled) {
-            String reCaptchaAPI = CaptchaUtil.reCaptchaAPIURL();
     %>
-    <script src='<%=(reCaptchaAPI)%>'></script>
+    <script src='<%=Encode.forHtmlContent(reCaptchaAPI)%>'></script>
     <%
         }
     %>
@@ -284,7 +293,6 @@
                                         class="ui primary button g-recaptcha"
                                         <%
                                             if (reCaptchaEnabled) {
-                                                String reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
                                         %>
                                         data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>"
                                         <%
@@ -312,7 +320,7 @@
             <% } %>
         </layout:component>
     </layout:main>
-
+    
     <!-- footer -->
     <%
         File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));

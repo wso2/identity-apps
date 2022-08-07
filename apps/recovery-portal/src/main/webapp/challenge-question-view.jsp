@@ -28,6 +28,11 @@
 <jsp:directive.include file="includes/localize.jsp"/>
 <jsp:directive.include file="includes/layout-resolver.jsp"/>
 
+<%!
+    private String reCaptchaAPI = null;
+    private String reCaptchaKey = null;
+%>
+
 <%
     InitiateQuestionResponse initiateQuestionResponse = (InitiateQuestionResponse)
             session.getAttribute("initiateChallengeQuestionResponse");
@@ -35,6 +40,11 @@
     boolean reCaptchaEnabled = false;
     if (request.getAttribute("reCaptcha") != null && "TRUE".equalsIgnoreCase((String) request.getAttribute("reCaptcha"))) {
         reCaptchaEnabled = true;
+    }
+
+    if (reCaptchaEnabled) {
+        reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
+        reCaptchaAPI = CaptchaUtil.reCaptchaAPIURL();
     }
 %>
 
@@ -57,9 +67,8 @@
 
     <%
         if (reCaptchaEnabled) {
-            String reCaptchaAPI = CaptchaUtil.reCaptchaAPIURL();
     %>
-    <script src='<%=(reCaptchaAPI)%>'></script>
+    <script src='<%=Encode.forHtmlContent(reCaptchaAPI)%>'></script>
     <%
         }
     %>
@@ -114,7 +123,6 @@
                                     class="ui primary button g-recaptcha"
                                     <%
                                         if (reCaptchaEnabled) {
-                                            String reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
                                     %>
                                     data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>"
                                     <%
@@ -141,7 +149,7 @@
             <% } %>
         </layout:component>
     </layout:main>
-
+    
     <!-- footer -->
     <%
         File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
