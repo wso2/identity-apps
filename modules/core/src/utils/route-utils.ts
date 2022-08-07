@@ -46,6 +46,7 @@ export class RouteUtils {
      * @param {boolean} checkForUIResourceScopes - Sets if UI Resource Scopes should be considered for filtering.
      * @param {string[]} hiddenRoutes - Routes to be hidden.
      * @param {string[]} allowedRoutes - Routes to be shown.
+     * @param {(route: RouteInterface) => void} - Custom logic to perform on route object.
      *
      * @return {RouteInterface[]} Filtered routes.
      */
@@ -54,7 +55,8 @@ export class RouteUtils {
         allowedScopes: string,
         checkForUIResourceScopes?: boolean,
         hiddenRoutes?: string[],
-        allowedRoutes?: string[]): [ RouteInterface[], RouteInterface[] ] {
+        allowedRoutes?: string[],
+        customLogic?: (route: RouteInterface) => void): [ RouteInterface[], RouteInterface[] ] {
 
         const filteredRoutes: RouteInterface[] = [];
         const sanitizedRoutes: RouteInterface[] = [];
@@ -87,6 +89,8 @@ export class RouteUtils {
                         }
                     }
                 };
+
+                customLogic && customLogic(route);
 
                 if (!feature) {
                     handleRouteEnabled();
