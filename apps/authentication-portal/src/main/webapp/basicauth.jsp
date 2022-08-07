@@ -64,7 +64,6 @@
     }
 
     function onCompleted() {
-        console.log('captcha completed.');
         $('#loginForm').submit();
     }
 
@@ -83,8 +82,6 @@
                         if (reCaptchaEnabled) {
                     %>
                     if (!grecaptcha.getResponse()) {
-                        console.log('captcha not yet completed.');
-
                         event.preventDefault(); //prevent form submit
                         grecaptcha.execute();
                         return;
