@@ -237,7 +237,7 @@
                             <label class="control-label">
                                 <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Tenant.domain")%>
                             </label>
-                            <input id="tenant-domain" type="text" name="tenantDomain" class="form-control">
+                            <input id="tenant-domain" type="text" required name="tenantDomain" class="form-control">
                         </div>
                         <% } %>
 
