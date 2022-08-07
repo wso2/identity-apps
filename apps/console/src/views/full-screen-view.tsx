@@ -91,7 +91,7 @@ export const FullScreenView: FunctionComponent<FullScreenViewPropsInterface> = (
             return;
         }
 
-        const routes: RouteInterface[] = CommonRouteUtils.filterEnabledRoutes<FeatureConfigInterface>(
+        const [ routes, _sanitizedROutes ] = CommonRouteUtils.filterEnabledRoutes<FeatureConfigInterface>(
             getFullScreenViewRoutes(),
             featureConfig,
             allowedScopes);
