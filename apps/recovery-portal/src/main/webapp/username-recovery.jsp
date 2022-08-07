@@ -197,7 +197,7 @@
                                 <div class="required field">
                                     <input id="first-name" required type="text" name="http://wso2.org/claims/givenname"
                                         placeholder="<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                                            "First.name")%>" />
+                                            "First.name")%>*" />
                                 </div>
                                 <% } %>
                                 <% if (isLastNameInClaims) { %>
