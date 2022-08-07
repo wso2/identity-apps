@@ -40,7 +40,12 @@ import {
     setSignIn,
     setSupportedI18nLanguages
 } from "@wso2is/core/store";
-import { AuthenticateUtils as CommonAuthenticateUtils, ContextUtils, RouteUtils, StringUtils } from "@wso2is/core/utils";
+import {
+    AuthenticateUtils as CommonAuthenticateUtils,
+    ContextUtils,
+    RouteUtils,
+    StringUtils
+} from "@wso2is/core/utils";
 import {
     I18n,
     I18nInstanceInitException,
@@ -51,7 +56,7 @@ import {
 import axios, { AxiosResponse } from "axios";
 import has from "lodash-es/has";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, lazy, useEffect, useState, useCallback } from "react";
+import React, { FunctionComponent, ReactElement, lazy, useCallback, useEffect, useState } from "react";
 import { I18nextProvider, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { commonConfig, serverConfigurationConfig } from "./extensions";
@@ -67,22 +72,26 @@ import {
     getAdminViewRoutes,
     getDeveloperViewRoutes,
     getSidePanelIcons,
-    setGetOrganizationLoading,
-    setOrganization,
-    store,
+    setDeveloperVisibility,
     setFilteredDevelopRoutes,
     setFilteredManageRoutes,
+    setGetOrganizationLoading,
+    setManageVisibility,
+    setOrganization,
     setSanitizedDevelopRoutes,
     setSanitizedManageRoutes,
-    setManageVisibility,
-    setDeveloperVisibility
+    store
 } from "./features/core";
 import { AppConstants, CommonConstants } from "./features/core/constants";
 import { history } from "./features/core/helpers";
 import { getOrganization } from "./features/organizations/api";
 import { OrganizationResponseInterface } from "./features/organizations/models";
 import { OrganizationUtils } from "./features/organizations/utils";
-import { GovernanceConnectorCategoryInterface, GovernanceConnectorUtils, ServerConfigurationsConstants } from "./features/server-configurations";
+import {
+    GovernanceConnectorCategoryInterface,
+    GovernanceConnectorUtils,
+    ServerConfigurationsConstants
+} from "./features/server-configurations";
 
 const AUTHORIZATION_ENDPOINT = "authorization_endpoint";
 const TOKEN_ENDPOINT = "token_endpoint";
@@ -121,10 +130,10 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
         (state: AppState) => state.governanceConnector.categories);
 
     useEffect(() => {
-       /*  dispatch(setFilteredDevelopRoutes(getDeveloperViewRoutes()));
+        dispatch(setFilteredDevelopRoutes(getDeveloperViewRoutes()));
         dispatch(setFilteredManageRoutes(getAdminViewRoutes()));
         dispatch(setSanitizedDevelopRoutes(getDeveloperViewRoutes()));
-        dispatch(setSanitizedManageRoutes(getAdminViewRoutes())); */
+        dispatch(setSanitizedManageRoutes(getAdminViewRoutes()));
     }, [ dispatch ]);
 
     useEffect(() => {
