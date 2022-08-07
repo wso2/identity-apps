@@ -25,11 +25,13 @@ import {
     SecureApp,
     useAuthContext
 } from "@asgardeo/auth-react";
+import { AccessControlUtils } from "@wso2is/access-control";
 import {
     AppConstants as CommonAppConstants,
     CommonConstants as CommonConstantsCore,
     TokenConstants
 } from "@wso2is/core/constants";
+import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface, TenantListInterface } from "@wso2is/core/models";
 import {
     addAlert,
@@ -38,7 +40,7 @@ import {
     setSignIn,
     setSupportedI18nLanguages
 } from "@wso2is/core/store";
-import { AuthenticateUtils as CommonAuthenticateUtils, ContextUtils, StringUtils } from "@wso2is/core/utils";
+import { AuthenticateUtils as CommonAuthenticateUtils, ContextUtils, RouteUtils, StringUtils } from "@wso2is/core/utils";
 import {
     I18n,
     I18nInstanceInitException,
@@ -48,24 +50,39 @@ import {
 } from "@wso2is/i18n";
 import axios, { AxiosResponse } from "axios";
 import has from "lodash-es/has";
-import React, { FunctionComponent, ReactElement, lazy, useEffect, useState } from "react";
+import isEmpty from "lodash-es/isEmpty";
+import React, { FunctionComponent, ReactElement, lazy, useEffect, useState, useCallback } from "react";
 import { I18nextProvider, useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
-import { commonConfig } from "./extensions";
+import { useDispatch, useSelector } from "react-redux";
+import { commonConfig, serverConfigurationConfig } from "./extensions";
 import { AuthenticateUtils, getProfileInformation } from "./features/authentication";
 import {
+    AppState,
+    AppUtils,
     Config,
     DeploymentConfigInterface,
+    FeatureConfigInterface,
     HttpUtils,
     PreLoader,
+    getAdminViewRoutes,
+    getDeveloperViewRoutes,
+    getSidePanelIcons,
     setGetOrganizationLoading,
     setOrganization,
-    store
+    store,
+    setFilteredDevelopRoutes,
+    setFilteredManageRoutes,
+    setSanitizedDevelopRoutes,
+    setSanitizedManageRoutes,
+    setManageVisibility,
+    setDeveloperVisibility
 } from "./features/core";
 import { AppConstants, CommonConstants } from "./features/core/constants";
 import { history } from "./features/core/helpers";
 import { getOrganization } from "./features/organizations/api";
 import { OrganizationResponseInterface } from "./features/organizations/models";
+import { OrganizationUtils } from "./features/organizations/utils";
+import { GovernanceConnectorCategoryInterface, GovernanceConnectorUtils, ServerConfigurationsConstants } from "./features/server-configurations";
 
 const AUTHORIZATION_ENDPOINT = "authorization_endpoint";
 const TOKEN_ENDPOINT = "token_endpoint";
@@ -97,6 +114,18 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
     const { t } = useTranslation();
 
     const [ renderApp, setRenderApp ] = useState<boolean>(false);
+
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const governanceConnectorCategories: GovernanceConnectorCategoryInterface[] = useSelector(
+        (state: AppState) => state.governanceConnector.categories);
+
+    useEffect(() => {
+       /*  dispatch(setFilteredDevelopRoutes(getDeveloperViewRoutes()));
+        dispatch(setFilteredManageRoutes(getAdminViewRoutes()));
+        dispatch(setSanitizedDevelopRoutes(getDeveloperViewRoutes()));
+        dispatch(setSanitizedManageRoutes(getAdminViewRoutes())); */
+    }, [ dispatch ]);
 
     useEffect(() => {
         on(Hooks.HttpRequestError, HttpUtils.onHttpRequestError);
@@ -373,6 +402,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                     window[ "AppUtils" ].getConfig().clientOriginWithTenant
                 )
             );
+
         });
     }, []);
 
@@ -420,6 +450,113 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             history.push(location);
         }
     };
+
+    const filterRoutes = useCallback((): void => {
+        if (isEmpty(allowedScopes)) {
+            return;
+        }
+
+        const [ devRoutes, sanitizedDevRoutes ] = RouteUtils.filterEnabledRoutes<FeatureConfigInterface>(
+            getDeveloperViewRoutes(),
+            featureConfig,
+            allowedScopes,
+            commonConfig.checkForUIResourceScopes,
+            AppUtils.getHiddenRoutes(),
+            !OrganizationUtils.isCurrentOrganizationRoot() && AppConstants.ORGANIZATION_ENABLED_ROUTES);
+
+        const [ manageRoutes, sanitizedManageRoutes ] = RouteUtils.filterEnabledRoutes<FeatureConfigInterface>(
+            getAdminViewRoutes(),
+            featureConfig,
+            allowedScopes,
+            commonConfig.checkForUIResourceScopes,
+            AppUtils.getHiddenRoutes(),
+            !OrganizationUtils.isCurrentOrganizationRoot() && AppConstants.ORGANIZATION_ENABLED_ROUTES);
+
+        // TODO : Remove this logic once getting started pages are removed.
+        if (devRoutes.length === 2
+            && devRoutes.filter(route => route.id === AccessControlUtils.DEVELOP_GETTING_STARTED_ID
+                || route.id === "404").length === 2) {
+            devRoutes[0] = devRoutes[0].filter(route => route.id === "404");
+        }
+
+        serverConfigurationConfig.showConnectorsOnTheSidePanel &&
+                governanceConnectorCategories?.map((category: GovernanceConnectorCategoryInterface, index: number) => {
+                    let subCategoryExists = false;
+
+                    category.connectors?.map((connector) => {
+                        if (connector.subCategory !== "DEFAULT") {
+                            subCategoryExists = true;
+
+                            return;
+                        }
+                    });
+                    if (subCategoryExists) {
+                        // TODO: Implement sub category handling logic here.
+                    }
+
+                    const route = {
+                        category: "console:manage.features.sidePanel.categories.configurations",
+                        component: lazy(() => import("./features/server-configurations/pages/governance-connectors")),
+                        exact: true,
+                        icon: {
+                            icon: getSidePanelIcons().connectors[ category.id ]
+                                ?? getSidePanelIcons().connectors.default
+                        },
+                        id: category.id,
+                        name: category.name,
+                        order:
+                            category.id === ServerConfigurationsConstants.OTHER_SETTINGS_CONNECTOR_CATEGORY_ID
+                                ? manageRoutes.length + governanceConnectorCategories.length
+                                : manageRoutes.length + index,
+                        path: AppConstants.getPaths()
+                            .get("GOVERNANCE_CONNECTORS")
+                            .replace(":id", category.id),
+                        protected: true,
+                        showOnSidePanel: true
+                    };
+
+                    manageRoutes.unshift(route);
+                    sanitizedManageRoutes.unshift(route);
+                });
+
+        if (!(governanceConnectorCategories !== undefined && governanceConnectorCategories.length > 0)) {
+            if (
+                (
+                    featureConfig?.governanceConnectors?.enabled  &&
+                    serverConfigurationConfig.showConnectorsOnTheSidePanel &&
+                    hasRequiredScopes(
+                        featureConfig.governanceConnectors,
+                        featureConfig.governanceConnectors.scopes.read,
+                        allowedScopes
+                    ) &&
+                    OrganizationUtils.isCurrentOrganizationRoot()
+                )
+            ) {
+                GovernanceConnectorUtils.getGovernanceConnectors();
+            }
+        }
+
+        dispatch(setFilteredDevelopRoutes(devRoutes));
+        dispatch(setFilteredManageRoutes(manageRoutes));
+        dispatch(setSanitizedDevelopRoutes(sanitizedDevRoutes));
+        dispatch(setSanitizedManageRoutes(sanitizedManageRoutes));
+
+        if (sanitizedManageRoutes.length < 1) {
+            dispatch(setManageVisibility(false));
+        }
+
+        if (sanitizedDevRoutes.length < 1) {
+            dispatch(setDeveloperVisibility(false));
+        }
+    }, [ allowedScopes, dispatch, featureConfig, governanceConnectorCategories ]);
+
+    useEffect(() => {
+        if (!isAuthenticated) {
+            return;
+        }
+
+        filterRoutes();
+    }, [ filterRoutes, isAuthenticated ]);
 
     useEffect(() => {
         const error = new URLSearchParams(location.search).get("error_description");
