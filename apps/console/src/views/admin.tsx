@@ -36,8 +36,8 @@ import React, {
     ReactNode,
     Suspense,
     SyntheticEvent,
-    useCallback,
     useEffect,
+    useRef,
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
@@ -54,10 +54,8 @@ import {
     AppViewTypes,
     ConfigReducerStateInterface,
     EventPublisher,
-    FeatureConfigInterface,
     Footer,
     Header,
-    OrganizationReducerStateInterface,
     ProtectedRoute,
     RouteUtils,
     StrictAppViewTypes,
@@ -69,9 +67,6 @@ import {
     useUIElementSizes
 } from "../features/core";
 import { setActiveView } from "../features/core/store/actions";
-import { OrganizationUtils } from "../features/organizations/utils";
-import {
-    GovernanceConnectorCategoryInterface } from "../features/server-configurations";
 
 /**
  * Admin View Prop types.
@@ -106,14 +101,10 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const profileInfo: ProfileInfoInterface = useSelector((state: AppState) => state.profile.profileInfo);
-    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const organization: OrganizationReducerStateInterface = useSelector((state: AppState) => state.organization);
     const alert: AlertInterface = useSelector((state: AppState) => state.global.alert);
     const alertSystem: System = useSelector((state: AppState) => state.global.alertSystem);
     const isAJAXTopLoaderVisible: boolean = useSelector((state: AppState) => state.global.isAJAXTopLoaderVisible);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
-    const governanceConnectorCategories: GovernanceConnectorCategoryInterface[] = useSelector(
-        (state: AppState) => state.governanceConnector.categories);
     const activeView: AppViewTypes = useSelector((state: AppState) => state.global.activeView);
 
     const filteredRoutes: RouteInterface[] = useSelector(
@@ -134,26 +125,7 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
     const organizationLoading: boolean
         = useSelector((state: AppState) => state?.organization?.getOrganizationLoading);
 
-    const getOrganizationEnabledRoutes = useCallback((routes: RouteInterface[]): RouteInterface[] => {
-        if (!OrganizationUtils.isRootOrganization(organization.organization)) {
-            const orgRoutes = RouteUtils.filterOrganizationEnabledRoutes(routes);
-
-            // Mapping the name of org roles to "Roles" to unify role management sub menu item in both organization view
-            // and root organization view.
-            return orgRoutes
-                .map((route: RouteInterface) => {
-                    if (route.id === "organization-roles") {
-                        route.name = "Roles";
-                    }
-
-                    return route;
-                });
-        }
-
-        // Remove the organization only routes from the admin view routes for root organizations.
-        return RouteUtils.filterOutOrganizationOnlyRoutes(routes);
-    }, [ organization.organization ]);
-
+    const initLoad = useRef(true);
 
     /**
      * Make sure `MANAGE` tab is highlighted when this layout is used.
@@ -168,8 +140,17 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
     }, [ dispatch, activeView ]);
 
     useEffect(() => {
+        if (!location?.pathname) {
+            return;
+        }
+
+        if (initLoad.current) {
+            // Try to handle any un-expected routing issues. Returns a void if no issues are found.
+            RouteUtils.gracefullyHandleRouting(filteredRoutes, AppConstants.getAdminViewBasePath(), location.pathname);
+            initLoad.current = false;
+        }
+
         setSelectedRoute(CommonRouteUtils.getInitialActiveRoute(location.pathname, filteredRoutes));
-        RouteUtils.gracefullyHandleRouting(filteredRoutes, AppConstants.getAdminViewBasePath(), location.pathname);
 
     }, [ location.pathname, filteredRoutes ]);
 
@@ -181,11 +162,6 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
         dispatch(getProfileInformation());
 
     }, [
-        allowedScopes,
-        governanceConnectorCategories,
-        featureConfig,
-        getOrganizationEnabledRoutes,
-        organization.organization,
         dispatch,
         profileInfo
     ]);

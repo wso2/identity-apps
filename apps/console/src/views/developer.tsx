@@ -38,6 +38,7 @@ import React, {
     SyntheticEvent,
     useCallback,
     useEffect,
+    useRef,
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
@@ -113,7 +114,6 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
         (state: AppState) => state.routes.developeRoutes.sanitizedRoutes
     );
 
-
     const [
         selectedRoute,
         setSelectedRoute
@@ -125,6 +125,8 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
 
     const organizationLoading: boolean
             = useSelector((state: AppState) => state?.organization?.getOrganizationLoading);
+
+    const initLoad = useRef(true);
 
     /**
      * Make sure `DEVELOP` tab is highlighted when this layout is used.
@@ -139,8 +141,19 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
     }, [ dispatch, activeView ]);
 
     useEffect(() => {
-        // Try to handle any un-expected routing issues. Returns a void if no issues are found.
-        RouteUtils.gracefullyHandleRouting(filteredRoutes, AppConstants.getDeveloperViewBasePath(), location.pathname);
+        if (!location?.pathname) {
+            return;
+        }
+
+        if (initLoad.current) {
+            // Try to handle any un-expected routing issues. Returns a void if no issues are found.
+            RouteUtils.gracefullyHandleRouting(
+                filteredRoutes,
+                AppConstants.getDeveloperViewBasePath(),
+                location.pathname
+            );
+            initLoad.current = false;
+        }
 
         setSelectedRoute(CommonRouteUtils.getInitialActiveRoute(location.pathname, filteredRoutes));
     }, [ location.pathname, filteredRoutes ]);
