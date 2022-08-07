@@ -38,7 +38,8 @@ import {
     setDeploymentConfigs,
     setServiceResourceEndpoints,
     setSignIn,
-    setSupportedI18nLanguages
+    setSupportedI18nLanguages,
+    setUIConfigs
 } from "@wso2is/core/store";
 import {
     AuthenticateUtils as CommonAuthenticateUtils,
@@ -56,7 +57,7 @@ import {
 import axios, { AxiosResponse } from "axios";
 import has from "lodash-es/has";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, lazy, useCallback, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, lazy, useCallback, useEffect, useRef, useState } from "react";
 import { I18nextProvider, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { commonConfig, serverConfigurationConfig } from "./extensions";
@@ -69,6 +70,7 @@ import {
     FeatureConfigInterface,
     HttpUtils,
     PreLoader,
+    UIConfigInterface,
     getAdminViewRoutes,
     getDeveloperViewRoutes,
     getSidePanelIcons,
@@ -123,11 +125,25 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
     const { t } = useTranslation();
 
     const [ renderApp, setRenderApp ] = useState<boolean>(false);
+    const [ routesFiltered, setRoutesFiltered ] = useState<boolean>(false);
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const governanceConnectorCategories: GovernanceConnectorCategoryInterface[] = useSelector(
         (state: AppState) => state.governanceConnector.categories);
+    const filteredManageRoutes: RouteInterface[] = useSelector(
+        (state: AppState) => state.routes.manageRoutes.filteredRoutes
+    );
+    const sanitizedManageRoutes: RouteInterface[] = useSelector(
+        (state: AppState) => state.routes.manageRoutes.sanitizedRoutes
+    );
+
+    const governanceConnectorsLoaded = useRef(false);
+
+    useEffect(() => {
+        dispatch(setDeploymentConfigs<DeploymentConfigInterface>(Config.getDeploymentConfig()));
+        dispatch(setUIConfigs<UIConfigInterface>(Config.getUIConfig()));
+    }, []);
 
     useEffect(() => {
         dispatch(setFilteredDevelopRoutes(getDeveloperViewRoutes()));
@@ -461,7 +477,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
     };
 
     const filterRoutes = useCallback((): void => {
-        if (isEmpty(allowedScopes)) {
+        if (isEmpty(allowedScopes) || !featureConfig.applications || !featureConfig.users) {
             return;
         }
 
@@ -494,6 +510,38 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                 || route.id === "404").length === 2) {
             devRoutes[0] = devRoutes[0].filter(route => route.id === "404");
         }
+
+        dispatch(setFilteredDevelopRoutes(devRoutes));
+        dispatch(setFilteredManageRoutes(manageRoutes));
+        dispatch(setSanitizedDevelopRoutes(sanitizedDevRoutes));
+        dispatch(setSanitizedManageRoutes(sanitizedManageRoutes));
+
+        setRoutesFiltered(true);
+
+        if (sanitizedManageRoutes.length < 1) {
+            dispatch(setManageVisibility(false));
+        }
+
+        if (sanitizedDevRoutes.length < 1) {
+            dispatch(setDeveloperVisibility(false));
+        }
+    }, [ allowedScopes, dispatch, featureConfig ]);
+
+    useEffect(() => {
+        if (!isAuthenticated) {
+            return;
+        }
+
+        filterRoutes();
+    }, [ filterRoutes, isAuthenticated ]);
+
+    useEffect(() => {
+        if (!governanceConnectorCategories || governanceConnectorsLoaded.current) {
+            return;
+        }
+
+        const manageRoutes = [ ...filteredManageRoutes ];
+        const sanitizedRoutes = [ ...sanitizedManageRoutes ];
 
         serverConfigurationConfig.showConnectorsOnTheSidePanel &&
                 governanceConnectorCategories?.map((category: GovernanceConnectorCategoryInterface, index: number) => {
@@ -532,9 +580,16 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                     };
 
                     manageRoutes.unshift(route);
-                    sanitizedManageRoutes.unshift(route);
+                    sanitizedRoutes.unshift(route);
                 });
 
+        dispatch(setFilteredManageRoutes(manageRoutes));
+        dispatch(setSanitizedManageRoutes(sanitizedRoutes));
+        governanceConnectorsLoaded.current = true;
+
+    }, [ governanceConnectorCategories, filteredManageRoutes, sanitizedManageRoutes ]);
+
+    useEffect(() => {
         if (!(governanceConnectorCategories !== undefined && governanceConnectorCategories.length > 0)) {
             if (
                 (
@@ -551,28 +606,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                 GovernanceConnectorUtils.getGovernanceConnectors();
             }
         }
-
-        dispatch(setFilteredDevelopRoutes(devRoutes));
-        dispatch(setFilteredManageRoutes(manageRoutes));
-        dispatch(setSanitizedDevelopRoutes(sanitizedDevRoutes));
-        dispatch(setSanitizedManageRoutes(sanitizedManageRoutes));
-
-        if (sanitizedManageRoutes.length < 1) {
-            dispatch(setManageVisibility(false));
-        }
-
-        if (sanitizedDevRoutes.length < 1) {
-            dispatch(setDeveloperVisibility(false));
-        }
-    }, [ allowedScopes, dispatch, featureConfig, governanceConnectorCategories ]);
-
-    useEffect(() => {
-        if (!isAuthenticated) {
-            return;
-        }
-
-        filterRoutes();
-    }, [ filterRoutes, isAuthenticated ]);
+    }, [ governanceConnectorCategories ]);
 
     useEffect(() => {
         const error = new URLSearchParams(location.search).get("error_description");
@@ -659,7 +693,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             } }
         >
             <I18nextProvider i18n={ I18n.instance }>
-                { renderApp ? <App /> : <PreLoader /> }
+                { renderApp && routesFiltered ? <App /> : <PreLoader /> }
             </I18nextProvider>
         </SecureApp>
     );
