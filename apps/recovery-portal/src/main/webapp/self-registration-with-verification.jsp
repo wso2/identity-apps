@@ -563,6 +563,22 @@
                                 }
                             %>
                             <div class="field">
+                                <%
+                                    if (reCaptchaEnabled) {
+                                        String reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
+                                %>
+                                <div class="field">
+                                    <div class="g-recaptcha"
+                                            data-size="invisible"
+                                            data-callback="onCompleted"
+                                            data-action="register"
+                                            data-sitekey=
+                                                    "<%=Encode.forHtmlContent(reCaptchaKey)%>">
+                                    </div>
+                                </div>
+                                <%
+                                    }
+                                %>
                                 <div class="ui divider hidden"></div>
                                 <div>
                                     <!--Cookie Policy-->
@@ -599,22 +615,11 @@
                                     <a href="javascript:goBack()" class="ui button secondary">
                                         <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Cancel")%>
                                     </a>
-                                    <div style="display: inline-block">
-                                        <button id="registrationSubmit"
-                                                class="ui primary button g-recaptcha"
-                                                <%
-                                                    if (reCaptchaEnabled) {
-                                                        String reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
-                                                %>
-                                                data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>"
-                                                <%
-                                                    }
-                                                %>
-                                                data-callback="onSubmit"
-                                                data-action="register">
-                                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Register")%>
-                                        </button>
-                                    </div>
+                                    <button id="registrationSubmit"
+                                            class="ui primary button"
+                                            type="submit">
+                                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Register")%>
+                                    </button>
                                 </div>
                                 <div class="field">
                                     <input id="isSelfRegistrationWithVerification" type="hidden"
@@ -729,7 +734,7 @@
             window.history.back();
         }
 
-        function onSubmit(token) {
+        function onCompleted(token) {
            $("#register").submit();
         }
 
@@ -800,6 +805,18 @@
             $(".form-info").popup();
 
             $("#register").submit(function (e) {
+
+                <%
+                    if (reCaptchaEnabled) {
+                %>
+                if (!grecaptcha.getResponse()) {
+                    e.preventDefault();
+                    grecaptcha.execute();
+                    return true;
+                }
+                <%
+                    }
+                %>
                 var unsafeCharPattern = /[<>`\"]/;
                 var elements = document.getElementsByTagName("input");
                 var invalidInput = false;

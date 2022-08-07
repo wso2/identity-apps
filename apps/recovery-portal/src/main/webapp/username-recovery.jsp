@@ -186,7 +186,7 @@
                             <div class="two fields">
                                 <% if (isFirstNameInClaims) { %>
                                 <div class="required field">
-                                    <input id="first-name" type="text" name="http://wso2.org/claims/givenname"
+                                    <input id="first-name" type="text" required name="http://wso2.org/claims/givenname"
                                         placeholder="<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                                             "First.name")%>*" />
                                 </div>
@@ -264,6 +264,22 @@
                                 }
                             }
                         %>
+                        <%
+                            if (reCaptchaEnabled) {
+                                String reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
+                        %>
+                        <div class="field">
+                            <div class="g-recaptcha"
+                                    data-size="invisible"
+                                    data-callback="onCompleted"
+                                    data-action="usernameRecovery"
+                                    data-sitekey=
+                                            "<%=Encode.forHtmlContent(reCaptchaKey)%>">
+                            </div>
+                        </div>
+                        <%
+                            }
+                        %>
 
                         <div class="ui divider hidden"></div>
 
@@ -271,23 +287,11 @@
                             <a href="javascript:goBack()" class="ui button secondary">
                                 <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Cancel")%>
                             </a>
-                            <div style="display: inline-block">
-                                <button id="recoverySubmit"
-                                        class="ui primary button g-recaptcha"
-                                        <%
-                                            if (reCaptchaEnabled) {
-                                                String reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
-                                        %>
-                                        data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>"
-                                        <%
-                                            }
-                                        %>
-                                        data-callback="onSubmit"
-                                        data-action="recoverUsername">
-                                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                                        "Submit")%>
-                                </button>
-                            </div>
+                            <button id="recoverySubmit"
+                                    class="ui primary button"
+                                    type="submit">
+                                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Submit")%>
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -321,13 +325,24 @@
             window.history.back();
         }
 
-        function onSubmit(token) {
-           $("#recoverDetailsForm").submit();
+        function onCompleted() {
+            $('#recoverDetailsForm').submit();
         }
 
         $(document).ready(function () {
 
             $("#recoverDetailsForm").submit(function (e) {
+                <%
+                    if (reCaptchaEnabled) {
+                %>
+                if (!grecaptcha.getResponse()) {
+                    e.preventDefault();
+                    grecaptcha.execute();
+                    return true;
+                }
+                <%
+                    }
+                %>
 
                 // Prevent clicking multiple times, and notify the user something
                 // is happening in the background.
