@@ -32,7 +32,7 @@ import {
     TokenConstants
 } from "@wso2is/core/constants";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
-import { AlertLevels, IdentifiableComponentInterface, TenantListInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface, RouteInterface, TenantListInterface } from "@wso2is/core/models";
 import {
     addAlert,
     setDeploymentConfigs,
@@ -42,8 +42,8 @@ import {
 } from "@wso2is/core/store";
 import {
     AuthenticateUtils as CommonAuthenticateUtils,
+    RouteUtils as CommonRouteUtils,
     ContextUtils,
-    RouteUtils,
     StringUtils
 } from "@wso2is/core/utils";
 import {
@@ -465,7 +465,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             return;
         }
 
-        const [ devRoutes, sanitizedDevRoutes ] = RouteUtils.filterEnabledRoutes<FeatureConfigInterface>(
+        const [ devRoutes, sanitizedDevRoutes ] = CommonRouteUtils.filterEnabledRoutes<FeatureConfigInterface>(
             getDeveloperViewRoutes(),
             featureConfig,
             allowedScopes,
@@ -473,13 +473,20 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             AppUtils.getHiddenRoutes(),
             !OrganizationUtils.isCurrentOrganizationRoot() && AppConstants.ORGANIZATION_ENABLED_ROUTES);
 
-        const [ manageRoutes, sanitizedManageRoutes ] = RouteUtils.filterEnabledRoutes<FeatureConfigInterface>(
+        const [ manageRoutes, sanitizedManageRoutes ] = CommonRouteUtils.filterEnabledRoutes<FeatureConfigInterface>(
             getAdminViewRoutes(),
             featureConfig,
             allowedScopes,
             commonConfig.checkForUIResourceScopes,
-            AppUtils.getHiddenRoutes(),
-            !OrganizationUtils.isCurrentOrganizationRoot() && AppConstants.ORGANIZATION_ENABLED_ROUTES);
+            OrganizationUtils.isCurrentOrganizationRoot()
+                ? [ ...AppUtils.getHiddenRoutes(), ...AppConstants.ORGANIZATION_ONLY_ROUTES ]
+                : AppUtils.getHiddenRoutes(),
+            !OrganizationUtils.isCurrentOrganizationRoot() && AppConstants.ORGANIZATION_ENABLED_ROUTES,
+            (route: RouteInterface) => {
+                if (route.id === "organization-roles") {
+                    route.name = "Roles";
+                }
+            });
 
         // TODO : Remove this logic once getting started pages are removed.
         if (devRoutes.length === 2
