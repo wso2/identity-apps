@@ -171,6 +171,7 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                             data-testid={ `${ testId }-form-name-input` }
                             validation={ async (value: FormValue, validation: Validation) => {
                                 let userStores: UserStoreListItem[] = null;
+                                
                                 try {
                                     userStores = await getUserStores(null);
                                 } catch (error) {
@@ -229,6 +230,7 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                                         .find(attribute => attribute.name === "type").value === "password";
                                     const toggle = selectedTypeDetail.attributes
                                         .find(attribute => attribute.name === "type")?.value === "boolean";
+                                    
                                     return (
                                         isPassword
                                             ? (
@@ -241,16 +243,16 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                                                     requiredErrorMessage={
                                                         t("console:manage.features.userstores.forms." +
                                                             "custom.requiredErrorMessage",
-                                                            {
-                                                                name: name
-                                                            })
+                                                        {
+                                                            name: name
+                                                        })
                                                     }
                                                     placeholder={
                                                         t("console:manage.features.userstores.forms." +
                                                             "custom.placeholder",
-                                                            {
-                                                                name: name
-                                                            })
+                                                        {
+                                                            name: name
+                                                        })
                                                     }
                                                     showPassword={ t("common:showPassword") }
                                                     hidePassword={ t("common:hidePassword") }
@@ -273,16 +275,16 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                                                         requiredErrorMessage={
                                                             t("console:manage.features.userstores.forms." +
                                                                 "custom.requiredErrorMessage",
-                                                                {
-                                                                    name: name
-                                                                })
+                                                            {
+                                                                name: name
+                                                            })
                                                         }
                                                         placeholder={
                                                             t("console:manage.features.userstores.forms." +
                                                                 "custom.placeholder",
-                                                                {
-                                                                    name: name
-                                                                })
+                                                            {
+                                                                name: name
+                                                            })
                                                         }
                                                         value={
                                                             isDisabledField
@@ -322,16 +324,16 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                                                         requiredErrorMessage={
                                                             t("console:manage.features.userstores.forms." +
                                                                 "custom.requiredErrorMessage",
-                                                                {
-                                                                    name: name
-                                                                })
+                                                            {
+                                                                name: name
+                                                            })
                                                         }
                                                         placeholder={
                                                             t("console:manage.features.userstores.forms." +
                                                                 "custom.placeholder",
-                                                                {
-                                                                    name: name
-                                                                })
+                                                            {
+                                                                name: name
+                                                            })
                                                         }
                                                         value={
                                                             values?.get(selectedTypeDetail?.name)?.toString()
@@ -353,6 +355,7 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                                         .find(attribute => attribute.name === "type").value === "password";
                                     const toggle = selectedTypeDetail.attributes
                                         .find(attribute => attribute.name === "type")?.value === "boolean";
+                                    
                                     return (
                                         isPassword
                                             ? (
@@ -366,16 +369,16 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                                                     requiredErrorMessage={
                                                         t("console:manage.features.userstores.forms." +
                                                             "custom.requiredErrorMessage",
-                                                            {
-                                                                name: name
-                                                            })
+                                                        {
+                                                            name: name
+                                                        })
                                                     }
                                                     placeholder={
                                                         t("console:manage.features.userstores.forms." +
                                                             "custom.placeholder",
-                                                            {
-                                                                name: name
-                                                            })
+                                                        {
+                                                            name: name
+                                                        })
                                                     }
                                                     showPassword={ t("common:showPassword") }
                                                     hidePassword={ t("common:hidePassword") }
@@ -400,16 +403,16 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                                                         requiredErrorMessage={
                                                             t("console:manage.features.userstores.forms." +
                                                                 "custom.requiredErrorMessage",
-                                                                {
-                                                                    name: name
-                                                                })
+                                                            {
+                                                                name: name
+                                                            })
                                                         }
                                                         placeholder={
                                                             t("console:manage.features.userstores.forms." +
                                                                 "custom.placeholder",
-                                                                {
-                                                                    name: name
-                                                                })
+                                                            {
+                                                                name: name
+                                                            })
                                                         }
                                                         value={
                                                             values?.get(selectedTypeDetail?.name)?.toString()
@@ -432,16 +435,16 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                                                         requiredErrorMessage={
                                                             t("console:manage.features.userstores.forms." +
                                                                 "custom.requiredErrorMessage",
-                                                                {
-                                                                    name: name
-                                                                })
+                                                            {
+                                                                name: name
+                                                            })
                                                         }
                                                         placeholder={
                                                             t("console:manage.features.userstores.forms." +
                                                                 "custom.placeholder",
-                                                                {
-                                                                    name: name
-                                                                })
+                                                            {
+                                                                name: name
+                                                            })
                                                         }
                                                         value={
                                                             values?.get(selectedTypeDetail?.name)?.toString()
@@ -473,6 +476,7 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                                             driverName: formValue?.get("driverName").toString(),
                                             username: formValue?.get("userName").toString()
                                         };
+                                        
                                         testConnection(testData).then((response) => {
                                             setIsTesting(false);
                                             if (response?.connection) {
