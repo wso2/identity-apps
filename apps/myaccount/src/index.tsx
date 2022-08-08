@@ -46,7 +46,10 @@ if ((window.location.pathname !== AppConstants.getAppLoginPath())
     && (window.location.pathname !== AppConstants.getPaths().get("PAGE_NOT_FOUND")
     && (window.location.pathname !== AppConstants.getPaths().get("STORING_DATA_DISABLED")))) {
     AuthenticateUtils.updateAuthenticationCallbackUrl(AppConstantsCore.MY_ACCOUNT_APP,
-        window.location.pathname + window.location.hash);
+        window.location.pathname.endsWith("/")
+            ? window.location.pathname.slice(0, -1)
+            : window.location.pathname
+        + window.location.hash);
 }
 
 const getAuthParams = (): Promise<AuthParams> => {
