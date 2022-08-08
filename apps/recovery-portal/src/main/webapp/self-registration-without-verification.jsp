@@ -222,6 +222,22 @@
                                     }
                                 }
                             %>
+                            <%
+                                if (reCaptchaEnabled) {
+                                    String reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
+                            %>
+                            <div class="field">
+                                <div class="g-recaptcha"
+                                        data-size="invisible"
+                                        data-callback="onCompleted"
+                                        data-action="register"
+                                        data-sitekey=
+                                                "<%=Encode.forHtmlContent(reCaptchaKey)%>">
+                                </div>
+                            </div>
+                            <%
+                                }
+                            %>
 
                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group">
                                 <input id="isSelfRegistrationWithVerification" type="hidden"
@@ -231,21 +247,10 @@
 
                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group">
                                 <br/>
-                                <div style="display: inline-block">
-                                    <button id="registrationSubmit"
-                                            class="wr-btn grey-bg col-xs-12 col-md-12 col-lg-12 uppercase font-extra-large g-recaptcha"
-                                            <%
-                                                if (reCaptchaEnabled) {
-                                                    String reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
-                                            %>
-                                            data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>"
-                                            <%
-                                                }
-                                            %>
-                                            data-callback="onSubmit"
-                                            data-action="register"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Next")%>
-                                    </button>
-                                </div>
+                                <button id="registrationSubmit"
+                                        class="wr-btn grey-bg col-xs-12 col-md-12 col-lg-12 uppercase font-extra-large"
+                                        type="submit"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Next")%>
+                                </button>
                             </div>
                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group">
                                 <span class="margin-top padding-top-double font-large">
@@ -285,9 +290,26 @@
            $("#register").submit();
         }
 
+        function onCompleted() {
+            $('#register').submit();
+        }
+
         $(document).ready(function () {
 
             $("#register").submit(function (e) {
+
+                <%
+                    if (reCaptchaEnabled) {
+                %>
+                if (!grecaptcha.getResponse()) {
+                    e.preventDefault();
+                    grecaptcha.execute();
+
+                    return true;
+                }
+                <%
+                    }
+                %>
 
                 var unsafeCharPattern = /[<>`\"]/;
                 var elements = document.getElementsByTagName("input");

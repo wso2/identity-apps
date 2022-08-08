@@ -275,28 +275,33 @@
                             }
                         %>
 
+                        <%
+                            if (reCaptchaEnabled) {
+                                String reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
+                        %>
+                        <div class="field">
+                            <div class="g-recaptcha"
+                                    data-size="invisible"
+                                    data-callback="onCompleted"
+                                    data-action="passwordRecovery"
+                                    data-sitekey=
+                                            "<%=Encode.forHtmlContent(reCaptchaKey)%>">
+                            </div>
+                        </div>
+                        <%
+                            }
+                        %>
                         <div class="ui divider hidden"></div>
 
                         <div class="align-right buttons">
                             <a href="javascript:goBack()" class="ui button secondary">
                                 <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Cancel")%>
                             </a>
-                            <div style="display: inline-block">
-                                <button id="recoverySubmit"
-                                        class="ui primary large button g-recaptcha"
-                                        <%
-                                            if (reCaptchaEnabled) {
-                                                String reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
-                                        %>
-                                        data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>"
-                                        <%
-                                            }
-                                        %>
-                                        data-callback="onSubmit"
-                                        data-action="recoverPassword">
-                                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"Submit")%>
-                                </button>
-                            </div>
+                            <button id="recoverySubmit"
+                                    class="ui primary large button"
+                                    type="submit"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                                    "Submit")%>
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -331,13 +336,27 @@
             window.history.back();
         }
 
-        function onSubmit(token) {
-           $("#recoverDetailsForm").submit();
+
+        function onCompleted() {
+            $('#recoverDetailsForm').submit();
         }
 
         $(document).ready(function () {
 
             $("#recoverDetailsForm").submit(function (e) {
+
+                <%
+                    if (reCaptchaEnabled) {
+                %>
+                if (!grecaptcha.getResponse()) {
+                    e.preventDefault();
+                    grecaptcha.execute();
+
+                    return true;
+                }
+                <%
+                    }
+                %>
                 var errorMessage = $("#error-msg");
                 errorMessage.hide();
 
