@@ -338,7 +338,7 @@ export const App = (): ReactElement => {
                                                                     route.redirectTo
                                                                         ? (<Redirect
                                                                             to={ route.redirectTo }
-                                                                            path={ route.path }
+                                                                            from={ route.path }
                                                                         />)
                                                                         : route.protected ?
                                                                             (
