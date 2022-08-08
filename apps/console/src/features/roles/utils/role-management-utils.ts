@@ -87,11 +87,10 @@ export class RoleManagementUtils {
                     return nodes;
                 },[]);
 
-                if (tenantDomain !== AppConstants.getSuperTenant()
-                    && permissionTree[0]?.key?.toString().replace(/^\/|\/$/g, "").split("/").length == 2) {
+                if (permissionTree[0]?.title !== AppConstants.PERMISSIONS_ROOT_NODE) {
                     return permissionTree[0]?.children;
                 }
-                
+ 
                 return permissionTree;
             }
         });
