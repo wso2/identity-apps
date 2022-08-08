@@ -658,6 +658,12 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     return;
                 }
 
+                // Hides the organization switch grant type if the organization management feature disabled.
+                if (name === ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT
+                    && !isOrganizationManagementEnabled) {
+                    return;
+                }
+
                 // Remove un-allowed grant types.
                 if (template
                     && template.id
@@ -2770,7 +2776,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                     <Message
                                                         type="info"
                                                         content={
-                                                            <Trans
+                                                            (<Trans
                                                                 i18nKey={
                                                                     "console:develop.features.applications." +
                                                                     "forms.inboundOIDC.fields.clientSecret.message"
@@ -2781,7 +2787,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                                 <Code withBackground>client_secret</Code> to native
                                                                 applications or web browser-based applications for
                                                                 the purpose of client authentication.
-                                                            </Trans>
+                                                            </Trans>)
                                                         }
                                                     />
                                                 )
