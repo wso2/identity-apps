@@ -50,6 +50,9 @@ public class LayoutCompiler {
                     return new File(current, name).isDirectory();
                 }
             });
+            if (directories == null) {
+                return;
+            }
             for (String directoryName : directories) {
                 String layoutDirPath = homeDir + "/" + directoryName + "/";
                 ExecutableIdentifier compiledLayout =
@@ -57,7 +60,7 @@ public class LayoutCompiler {
                 try (FileOutputStream compiledLayoutFile = new FileOutputStream(layoutDirPath + "body.ser");
                     ObjectOutputStream out = new ObjectOutputStream(compiledLayoutFile)) {
                     out.writeObject(compiledLayout);
-                } catch (Exception e) {
+                } catch (IOException | ClassNotFoundException e) {
                     throw new RuntimeException("Can't serialized the compiled layout: " + directoryName, e);
                 }
             }
