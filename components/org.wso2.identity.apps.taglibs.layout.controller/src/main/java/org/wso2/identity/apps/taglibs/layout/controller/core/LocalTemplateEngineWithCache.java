@@ -23,6 +23,7 @@ import org.wso2.identity.apps.taglibs.layout.controller.compiler.identifiers.Exe
 import org.wso2.identity.apps.taglibs.layout.controller.compiler.parsers.DefaultParser;
 import org.wso2.identity.apps.taglibs.layout.controller.compiler.parsers.Parser;
 
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Writer;
 import java.net.URL;
@@ -70,7 +71,7 @@ public class LocalTemplateEngineWithCache implements TemplateEngine {
             try (ObjectInputStream objectReader = new ObjectInputStream(layoutFile.openStream())) {
                 compiledObject = (ExecutableIdentifier) objectReader.readObject();
                 executor = new DefaultExecutor(data);
-            } catch (Exception exception) {
+            } catch (IOException | ClassNotFoundException exception) {
                 throw new RuntimeException("Can't read the layout file: " + layoutName, exception);
             }
         }
