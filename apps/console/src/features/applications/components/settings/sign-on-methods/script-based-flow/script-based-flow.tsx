@@ -49,6 +49,7 @@ import { Checkbox, Dropdown, Header, Icon, Input, Menu, Popup, Sidebar } from "s
 import { stripSlashes } from "slashes";
 import { ScriptTemplatesSidePanel } from "./script-templates-side-panel";
 import { AppUtils, EventPublisher, getOperationIcons } from "../../../../../core";
+import { OrganizationUtils } from "../../../../../organizations/utils";
 import { deleteSecret, getSecretList } from "../../../../../secrets/api/secret";
 import AddSecretWizard from "../../../../../secrets/components/add-secret-wizard";
 import { ADAPTIVE_SCRIPT_SECRETS } from "../../../../../secrets/constants/secrets.common";
@@ -186,31 +187,33 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
      */
     const loadSecretListForSecretType = (): void => {
 
-        setIsSecretListLoading(true);
+        if (OrganizationUtils.isCurrentOrganizationRoot()) {
+            setIsSecretListLoading(true);
 
-        getSecretList({
-            params: { secretType: ADAPTIVE_SCRIPT_SECRETS }
-        }).then((axiosResponse: AxiosResponse<GetSecretListResponse>) => {
-            setSecretList(axiosResponse.data);
-            setFilteredSecretList(axiosResponse.data);
-        }).catch((error) => {
-            if (error.response && error.response.data && error.response.data.description) {
+            getSecretList({
+                params: { secretType: ADAPTIVE_SCRIPT_SECRETS }
+            }).then((axiosResponse: AxiosResponse<GetSecretListResponse>) => {
+                setSecretList(axiosResponse.data);
+                setFilteredSecretList(axiosResponse.data);
+            }).catch((error) => {
+                if (error.response && error.response.data && error.response.data.description) {
+                    dispatch(addAlert({
+                        description: error.response.data?.description,
+                        level: AlertLevels.ERROR,
+                        message: error.response.data?.message
+                    }));
+
+                    return;
+                }
                 dispatch(addAlert({
-                    description: error.response.data?.description,
+                    description: t("console:develop.features.secrets.errors.generic.description"),
                     level: AlertLevels.ERROR,
-                    message: error.response.data?.message
+                    message: t("console:develop.features.secrets.errors.generic.message")
                 }));
-
-                return;
-            }
-            dispatch(addAlert({
-                description: t("console:develop.features.secrets.errors.generic.description"),
-                level: AlertLevels.ERROR,
-                message: t("console:develop.features.secrets.errors.generic.message")
-            }));
-        }).finally(() => {
-            setIsSecretListLoading(false);
-        });
+            }).finally(() => {
+                setIsSecretListLoading(false);
+            });
+        }
 
     };
 
@@ -490,7 +493,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
      * Handles conditional authentication on/off swicth.
      */
     const handleConditionalAuthToggleChange = (): void => {
-        
+
         if (showConditionalAuthContent) {
             setShowScriptResetWarning(true);
 
@@ -609,7 +612,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                             }
                         >
                             Click here if you need to add more steps to the flow.
-                            Once you add a new step,<Code>executeStep(STEP_NUMBER);</Code> will appear on 
+                            Once you add a new step,<Code>executeStep(STEP_NUMBER);</Code> will appear on
                             the script editor.
                         </Trans>
                     </Text>
@@ -1098,7 +1101,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
             } }
             onPrimaryActionClick={ onSecretDeleteClick }
             open={ showDeleteConfirmationModal }
-            type="warning"
+            type="negative"
             assertionHint={ t("console:develop.features.secrets.modals.deleteSecret.assertionHint") }
             assertionType="checkbox"
             primaryAction={ t("console:develop.features.secrets.modals.deleteSecret.primaryActionButtonText") }
@@ -1110,7 +1113,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
             </ConfirmationModal.Header>
             <ConfirmationModal.Message
                 attached
-                warning
+                negative
                 data-testid={ `${ testId }-delete-confirmation-modal-message` }>
                 { t("console:develop.features.secrets.modals.deleteSecret.warningMessage") }
             </ConfirmationModal.Message>
@@ -1205,7 +1208,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                     <Menu attached="top" className="action-panel" secondary>
                                         <Menu.Menu position="right">
                                             { resolveApiDocumentationLink() }
-                                            <Menu.Item 
+                                            <Menu.Item
                                                 className={ `action ${isSecretsDropdownOpen ? "selected-secret" : "" }` }>
                                                 <div>
                                                     { renderSecretListDropdown() }

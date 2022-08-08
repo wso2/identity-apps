@@ -126,9 +126,13 @@
                             if (reCaptchaEnabled) {
                                 String reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
                         %>
-                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group">
+                        <div class="field">
                             <div class="g-recaptcha"
-                                 data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>">
+                                    data-size="invisible"
+                                    data-callback="onCompleted"
+                                    data-action="securityQuestion"
+                                    data-sitekey=
+                                            "<%=Encode.forHtmlContent(reCaptchaKey)%>">
                             </div>
                         </div>
                         <%
@@ -164,5 +168,28 @@
         <jsp:include page="includes/footer.jsp"/>
 <% } %>
 
+<script type="text/javascript">
+    function onCompleted() {
+        $('#securityQuestionForm').submit();
+    }
+    $(document).ready(function () {
+        $("#securityQuestionForm").submit(function (e) {
+           <%
+               if (reCaptchaEnabled) {
+           %>
+           if (!grecaptcha.getResponse()) {
+               e.preventDefault();
+               grecaptcha.execute();
+
+               return true;
+           }
+           <%
+               }
+           %>
+           return true;
+        }
+    });
+
+</script>
 </body>
 </html>

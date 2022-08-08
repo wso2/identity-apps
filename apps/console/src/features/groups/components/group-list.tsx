@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { LoadableComponentInterface, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { CommonUtils } from "@wso2is/core/utils";
@@ -44,7 +45,6 @@ import {
 } from "../../core";
 import { GroupConstants } from "../constants";
 import { GroupsInterface } from "../models";
-import { AccessControlConstants, Show } from "@wso2is/access-control";
 
 interface GroupListProps extends SBACInterface<FeatureConfigInterface>,
     LoadableComponentInterface, TestableComponentInterface {
@@ -389,10 +389,10 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
             />
             {
                 showGroupDeleteConfirmation &&
-                    <ConfirmationModal
+                    (<ConfirmationModal
                         data-testid={ `${ testId }-delete-item-confirmation-modal` }
                         onClose={ (): void => setShowDeleteConfirmationModal(false) }
-                        type="warning"
+                        type="negative"
                         open={ showGroupDeleteConfirmation }
                         assertionHint={ t("console:manage.features.roles.list.confirmations.deleteItem.assertionHint") }
                         assertionType="checkbox"
@@ -408,7 +408,7 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
                         <ConfirmationModal.Header>
                             { t("console:manage.features.roles.list.confirmations.deleteItem.header") }
                         </ConfirmationModal.Header>
-                        <ConfirmationModal.Message attached warning>
+                        <ConfirmationModal.Message attached negative>
                             { t("console:manage.features.roles.list.confirmations.deleteItem.message",
                                 { type: "group" }) }
                         </ConfirmationModal.Message>
@@ -416,7 +416,7 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
                             { t("console:manage.features.roles.list.confirmations.deleteItem.content",
                                 { type: "group" }) }
                         </ConfirmationModal.Content>
-                    </ConfirmationModal>
+                    </ConfirmationModal>)
             }
         </>
     );

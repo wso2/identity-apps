@@ -1348,6 +1348,12 @@ export const console: ConsoleNS = {
                                     customSaml: "This certificate is used to validate the signatures of the " +
                                         "signed requests and to encrypt the SAML assertions returned after " +
                                         "authentication."
+                                },
+                                invalidOperationModal: {
+                                    header: "Operation Invalid",
+                                    message: "You should disable the request signature validation to remove "+
+                                        "the certificate. If request or response signing is enabled, "+
+                                        "it is essential to have a valid certificate to verify the signature."
                                 }
                             }
                         }
@@ -7479,7 +7485,8 @@ export const console: ConsoleNS = {
                         subtitles: {
                             0: "There are no organizations at the moment.",
                             1: "You can add a new organization easily by",
-                            2: "clicking on the button below."
+                            2: "clicking on the button below.",
+                            3: "There are no organizations under {{parent}} at the moment."
                         },
                         title: "Add a new Organization"
                     }
