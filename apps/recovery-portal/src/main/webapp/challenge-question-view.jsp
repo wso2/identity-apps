@@ -178,7 +178,7 @@
                    }
                %>
                return true;
-            }
+            });
         });
 
     </script>
