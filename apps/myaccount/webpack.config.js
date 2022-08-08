@@ -437,6 +437,10 @@ module.exports = (env) => {
                     contentType: "<%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\" " +
                         "pageEncoding=\"UTF-8\" %>",
                     filename: path.join(distFolder, "home.jsp"),
+                    getOrganizationManagementAvailability: !isDeployedOnExternalServer
+                        ? "<%@ page import=\"static org.wso2.carbon.identity.application." +
+                        "authentication.framework.util.FrameworkUtils.isOrganizationManagementEnabled\"%>"
+                        : "",
                     hash: true,
                     importSuperTenantConstant: !isDeployedOnExternalServer
                         ? "<%@ page import=\"static org.wso2.carbon.utils.multitenancy." +
@@ -450,6 +454,9 @@ module.exports = (env) => {
                         ? "<%@ page import=\"" +
                         "static org.wso2.carbon.identity.core.util.IdentityUtil.getServerURL\" %>"
                         : "",
+                    isOrganizationManagementEnabled: !isDeployedOnExternalServer
+                        ? "<%= isOrganizationManagementEnabled() %>"
+                        : "false",
                     minify: false,
                     publicPath: !isRootContext
                         ? publicPath
@@ -488,7 +495,7 @@ module.exports = (env) => {
             isProduction && !isDeployedOnStaticServer
                 ? new HtmlWebpackPlugin({
                     authenticatedIdPs: "<%=request.getParameter(\"AuthenticatedIdPs\")%>",
-                    contentType: "<%@ page language=\"java\" contentType=\"text/html; charset=ISO-8859-1\" " + 
+                    contentType: "<%@ page language=\"java\" contentType=\"text/html; charset=ISO-8859-1\" " +
                     "pageEncoding=\"ISO-8859-1\"%>",
                     filename: path.join(distFolder, "index.jsp"),
                     hash: true,
