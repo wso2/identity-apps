@@ -180,6 +180,7 @@
            if (!grecaptcha.getResponse()) {
                e.preventDefault();
                grecaptcha.execute();
+
                return true;
            }
            <%
