@@ -187,7 +187,7 @@
                }
            %>
            return true;
-        }
+        });
     });
 
 </script>
