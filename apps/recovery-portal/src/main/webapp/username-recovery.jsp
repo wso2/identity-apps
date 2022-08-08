@@ -242,6 +242,7 @@
                         <% } %>
 
                         <input type="hidden" id="isUsernameRecovery" name="isUsernameRecovery" value="true">
+                        <input id="isSaaSApp" name="isSaaSApp" value="<%= isSaaSApp %>" type="hidden">
 
                         <% for (Claim claim : claims) {
                             if (claim.getRequired() &&

@@ -25,6 +25,7 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApiException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.api.UsernameRecoveryApi" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.api.PasswordRecoveryApiV1" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementServiceUtil" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.Claim" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.UserClaim" %>
 <%@ page import="org.wso2.carbon.identity.recovery.util.Utils" %>
@@ -54,6 +55,7 @@
     String confirmationKey = request.getParameter("confirmationKey");
     String callback = request.getParameter("callback");
     String userTenant = request.getParameter("t");
+    boolean isSaaSApp = Boolean.parseBoolean(request.getParameter("isSaaSApp"));
 
     if (StringUtils.isBlank(callback)) {
         callback = IdentityManagementEndpointUtil.getUserPortalUrl(
@@ -68,8 +70,19 @@
     // Password recovery parameters
     String recoveryOption = request.getParameter("recoveryOption");
 
+    // Resolve tenant domain for callback url validation  
+    String recoveryTeantDomain = userTenant;
+
+    if (StringUtils.isBlank(recoveryTeantDomain)) {
+        if (StringUtils.isNotBlank(username) && isSaaSApp) {
+            recoveryTeantDomain = IdentityManagementServiceUtil.getInstance().getUser(username).getTenantDomain();
+        } else {
+            recoveryTeantDomain = tenantDomain;
+        }
+    }
+
     try {
-        if (StringUtils.isNotBlank(callback) && !Utils.validateCallbackURL(callback, tenantDomain,
+        if (StringUtils.isNotBlank(callback) && !Utils.validateCallbackURL(callback, recoveryTeantDomain,
             IdentityRecoveryConstants.ConnectorConfig.RECOVERY_CALLBACK_REGEX)) {
             request.setAttribute("error", true);
             request.setAttribute("errorMsg", IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
