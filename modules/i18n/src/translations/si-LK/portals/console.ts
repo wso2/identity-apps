@@ -5323,6 +5323,16 @@ export const console: ConsoleNS = {
             governanceConnectors: {
                 categories: "ප්රවර්ග",
                 connectorSubHeading: "{{Name}} සැකසුම් වින්‍යාස කරන්න.",
+                connectors: {
+                    "analytics-engine": {
+                        messages: {
+                            deprecation: {
+                                description: "WSO2 Identity Server විශ්ලේෂණ දැන් ඉවත් කර ඇත.<1> එල්ක් ඇන්ටිෆික් </ 1> වෙනුවට භාවිතා කරන්න.",
+                                heading: "අවලංගු කරන ලදි"
+                            }
+                        }
+                    }
+                },
                 disabled: "අක්‍රීය කර ඇත",
                 enabled: "සක්‍රීය කර ඇත",
                 form: {

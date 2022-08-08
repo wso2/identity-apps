@@ -6667,6 +6667,16 @@ export const console: ConsoleNS = {
             governanceConnectors: {
                 categories: "Categories",
                 connectorSubHeading: "Configure {{ name }} settings.",
+                connectors: {
+                    "analytics-engine": {
+                        messages: {
+                            deprecation: {
+                                description: "WSO2 Identity Server Analytics is now deprecated. Use <1>ELK Analytics</1> instead.",
+                                heading: "Deprecated"
+                            }
+                        }
+                    }
+                },
                 disabled: "Disabled",
                 enabled: "Enabled",
                 form: {
