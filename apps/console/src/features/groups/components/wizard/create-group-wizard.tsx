@@ -147,7 +147,7 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
 
                         const roles = response.Resources.filter((role) =>
                             role.displayName !== OrganizationRoleManagementConstants.ORG_CREATOR_ROLE_NAME);
-                        
+
                         setRoleList(roles);
                     });
             }
@@ -390,7 +390,7 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
     };
 
     // Create group wizard steps
-    const WIZARD_STEPS = [ {
+    const ALL_WIZARD_STEPS = [ {
         content: (
             <GroupBasics
                 data-testid="add-group-form"
@@ -447,6 +447,10 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
         title: t("console:manage.features.roles.addRoleWizard.wizardSteps.3")
     } ];
 
+    const WIZARD_STEPS = OrganizationUtils.isCurrentOrganizationRoot()
+        ? [ ...ALL_WIZARD_STEPS ]
+        : [ ...ALL_WIZARD_STEPS.slice(0, 1), ...ALL_WIZARD_STEPS.slice(2) ];
+
     /**
      * Function to change the current wizard step to next.
      */
@@ -457,7 +461,9 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
 
                 break;
             case 1:
-                setSubmitRoleList();
+                OrganizationUtils.isCurrentOrganizationRoot()
+                    ? setSubmitRoleList()
+                    : setFinishSubmit();
 
                 break;
             case 2:
