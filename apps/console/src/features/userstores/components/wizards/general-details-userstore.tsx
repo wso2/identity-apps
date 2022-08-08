@@ -305,7 +305,10 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                                                         listen={ (values: Map<string, FormValue>) => {
                                                             const value = values
                                                                 .get(selectedTypeDetail.name).toString();
-                                                            setEnabled(value !== "false");
+                                                            
+                                                            if (selectedTypeDetail.name === "Disabled") {
+                                                                setEnabled(value !== "false");
+                                                            }
                                                         } }
                                                     />
                                                 ) :
