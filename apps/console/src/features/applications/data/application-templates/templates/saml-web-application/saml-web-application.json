@@ -54,7 +54,7 @@
             "requestedClaims": [
                 {
                     "claim": {
-                        "uri": "http://wso2.org/claims/username"
+                        "uri": "http://wso2.org/claims/userid"
                     },
                     "mandatory": true
                 }
