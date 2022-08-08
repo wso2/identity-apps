@@ -738,7 +738,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                             <Message className="display-flex" size="small" warning>
                                 <Icon name="warning sign" color="orange" corner />
                                 <Message.Content className="tiny">
-                                    { t(translateKey + "modals.scan.regenerateWarning") }
+                                    { t(commonConfig.accountSecurityPage.mfa.totp.regenerateWarning) }
                                 </Message.Content>
                             </Message>
                             {

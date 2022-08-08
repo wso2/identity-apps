@@ -38,6 +38,7 @@ export const commonConfig: CommonConfig = {
                 allowLegacyKeyRegistration: true
             },
             totp: {
+                regenerateWarning: "myAccount:components.mfa.authenticatorApp.modals.scan.regenerateWarning.extended",
                 showRegenerateConfirmation: true
             }
         }

@@ -40,6 +40,7 @@ export interface CommonConfig {
                 allowLegacyKeyRegistration: boolean;
             };
             totp: {
+                regenerateWarning: string;
                 showRegenerateConfirmation: boolean;
             };
         }
