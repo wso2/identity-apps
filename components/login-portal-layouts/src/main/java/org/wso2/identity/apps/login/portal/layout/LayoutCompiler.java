@@ -60,7 +60,7 @@ public class LayoutCompiler {
                 try (FileOutputStream compiledLayoutFile = new FileOutputStream(layoutDirPath + "body.ser");
                     ObjectOutputStream out = new ObjectOutputStream(compiledLayoutFile)) {
                     out.writeObject(compiledLayout);
-                } catch (IOException | ClassNotFoundException e) {
+                } catch (IOException e) {
                     throw new RuntimeException("Can't serialized the compiled layout: " + directoryName, e);
                 }
             }
