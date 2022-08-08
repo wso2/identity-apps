@@ -703,6 +703,10 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
             return null;
         }
 
+        if (template.id === "mobile" || template.id === "desktop") {
+            return null;
+        }
+
         const templates: SupportedAuthProtocolTypes[] | ApplicationTemplateInterface[] = isCustom
             ? getSupportedCustomProtocols()
             : subTemplates;
