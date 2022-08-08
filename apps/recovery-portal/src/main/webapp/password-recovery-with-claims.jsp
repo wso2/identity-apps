@@ -281,14 +281,16 @@
                         %>
                         <div class="field">
                             <div class="g-recaptcha"
-                                 data-sitekey=
-                                         "<%=Encode.forHtmlContent(reCaptchaKey)%>">
+                                    data-size="invisible"
+                                    data-callback="onCompleted"
+                                    data-action="passwordRecovery"
+                                    data-sitekey=
+                                            "<%=Encode.forHtmlContent(reCaptchaKey)%>">
                             </div>
                         </div>
                         <%
                             }
                         %>
-
                         <div class="ui divider hidden"></div>
 
                         <div class="align-right buttons">
@@ -334,9 +336,27 @@
             window.history.back();
         }
 
+
+        function onCompleted() {
+            $('#recoverDetailsForm').submit();
+        }
+
         $(document).ready(function () {
 
             $("#recoverDetailsForm").submit(function (e) {
+
+                <%
+                    if (reCaptchaEnabled) {
+                %>
+                if (!grecaptcha.getResponse()) {
+                    e.preventDefault();
+                    grecaptcha.execute();
+
+                    return true;
+                }
+                <%
+                    }
+                %>
                 var errorMessage = $("#error-msg");
                 errorMessage.hide();
 
@@ -356,19 +376,10 @@
                     return false;
                 }
 
-                <% if (reCaptchaEnabled) { %>
-                var reCaptchaResponse = $("[name='g-recaptcha-response']")[0].value;
-
-                if (reCaptchaResponse.trim() == '') {
-                    errorMessage.text("Please select reCaptcha.");
-                    errorMessage.show();
-                    $("html, body").animate({scrollTop: errorMessage.offset().top}, 'slow');
-                    return false;
-                }
-                <% } %>
 
                 return true;
             });
+
         });
     </script>
 </body>

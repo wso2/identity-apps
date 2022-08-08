@@ -22,14 +22,15 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { EnterpriseIDPCreateWizard } from "./enterprise-idp-create-wizard";
+import { ExpertModeAuthenticationProviderCreateWizard } from "./expert-mode";
 import { FacebookAuthenticationProviderCreateWizard } from "./facebook";
 import { GitHubAuthenticationProviderCreateWizard } from "./github";
 import { GoogleAuthenticationProviderCreateWizard } from "./google";
 import { OidcAuthenticationProviderCreateWizard } from "./oidc-authentication-provider-create-wizard";
-import { identityProviderConfig } from "../../../../extensions/configs/identity-provider";
 import {
     OrganizationEnterpriseAuthenticationProviderCreateWizard
 } from "./organization-enterprise/organization-enterprise-authentication-provider-create-wizard";
+import { identityProviderConfig } from "../../../../extensions/configs/identity-provider";
 import { ConfigReducerStateInterface } from "../../../core/models";
 import { AppState } from "../../../core/store";
 import { getIdentityProviderList, getIdentityProviderTemplate } from "../../api";
@@ -356,6 +357,24 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
             return (showWizard && !isEmpty(selectedTemplateWithUniqueName))
                 ? (
                     <OrganizationEnterpriseAuthenticationProviderCreateWizard
+                        title={ selectedTemplateWithUniqueName?.name }
+                        subTitle={ selectedTemplateWithUniqueName?.description }
+                        onWizardClose={ () => {
+                            setSelectedTemplateWithUniqueName(undefined);
+                            setSelectedTemplate(undefined);
+                            setShowWizard(false);
+                            onWizardClose();
+                        } }
+                        template={ selectedTemplateWithUniqueName }
+                        data-componentid={ selectedTemplate?.templateId }
+                        { ...rest }
+                    />
+                )
+                : null;
+        case IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.EXPERT_MODE:
+            return (showWizard && !isEmpty(selectedTemplateWithUniqueName))
+                ? (
+                    <ExpertModeAuthenticationProviderCreateWizard
                         title={ selectedTemplateWithUniqueName?.name }
                         subTitle={ selectedTemplateWithUniqueName?.description }
                         onWizardClose={ () => {

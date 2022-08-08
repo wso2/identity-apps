@@ -18,6 +18,11 @@
 
 import { MyAccountNS } from "../../../models";
 
+/**
+ * NOTES: No need to care about the max-len for this file since it's easier to
+ * translate the strings to other languages easily with editor translation tools.
+ */
+/* eslint-disable max-len */
 export const myAccount: MyAccountNS = {
     components: {
         accountRecovery: {
@@ -585,18 +590,18 @@ export const myAccount: MyAccountNS = {
         },
         mfa: {
             authenticatorApp: {
-                addHint: "QR குறியீட்டை உள்ளமைக்கவும்",
+                addHint: "கட்டமைக்கவும்",
                 configuredDescription: "இரண்டு காரணி அங்கீகாரத்திற்காக உங்கள் உள்ளமைக்கப்பட்ட " +
                     "அங்கீகார பயன்பாட்டிலிருந்து TOTP குறியீடுகளைப் பயன்படுத்தலாம். பயன்பாட்டிற்கான அணுகல் " +
                     "உங்களிடம் இல்லையென்றால், இங்கிருந்து ஒரு புதிய அங்கீகார பயன்பாட்டை அமைக்கலாம்",
-                deleteHint: "QR குறியீட்டை நீக்குகிறது",
+                deleteHint: "அகற்று",
                 description: "பயன்பாடுகளில் உள்நுழையும்போது இரண்டாவது காரணியாக " +
                     "நேர அடிப்படையிலான, ஒரு முறை கடவுக்குறியீடுகளை " +
                     "(TOTP என்றும் அழைக்கப்படுகிறது) பயன்படுத்த ஒரு அங்கீகார " +
                     "பயன்பாட்டைப் பயன்படுத்தி QR குறியீட்டை ஸ்கேன் செய்யுங்கள்.",
                 enableHint: "TOTP அங்கீகாரத்தை இயக்கு/முடக்கு",
                 heading: "அங்கீகார பயன்பாடு",
-                hint: "QR குறியீட்டினை காண்பி",
+                hint: "காண்க",
                 modals: {
                     delete : {
                         heading: "உறுதிப்படுத்தல்",

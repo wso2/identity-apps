@@ -20,6 +20,7 @@ import { LoadableComponentInterface, TestableComponentInterface } from "@wso2is/
 import { ContentLoader } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import {
+    AuthenticatorSettingsFormModes,
     IdentityProviderInterface,
     OutboundProvisioningConnectorInterface,
     OutboundProvisioningConnectorListItemInterface,
@@ -79,6 +80,7 @@ export const OutboundProvisioningSettings: FunctionComponent<OutboundProvisionin
         !isLoading
             ? (
                 <OutboundProvisioningConnectorFormFactory
+                    mode={ AuthenticatorSettingsFormModes.EDIT }
                     metadata={ metadata }
                     initialValues={ initialValues?.provisioning?.outboundConnectors?.connectors[ 0 ] }
                     onSubmit={ handleSubmit }

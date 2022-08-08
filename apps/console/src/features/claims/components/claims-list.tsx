@@ -507,7 +507,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
         return (
             <ConfirmationModal
                 onClose={ closeDeleteConfirm }
-                type="warning"
+                type="negative"
                 open={ deleteConfirm }
                 assertionHint={ t("console:manage.features.claims.list.confirmation.hint") }
                 assertionType="checkbox"
@@ -532,7 +532,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                 </ConfirmationModal.Header>
                 <ConfirmationModal.Message
                     attached
-                    warning
+                    negative
                     data-testid={ `${ testId }-delete-confirmation-modal-message` }
                 >
                     { t("console:manage.features.claims.list.confirmation.message", {

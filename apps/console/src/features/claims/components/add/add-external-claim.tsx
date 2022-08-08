@@ -513,11 +513,11 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                                             visible
                                             type="warning"
                                             content={
-                                                <>
+                                                (<>
                                                     {
                                                         !isEmptyServerSupportedClaims
                                                             ? (
-                                                                <Hint warning>
+                                                                <>
                                                                     <Trans
                                                                         i18nKey={
                                                                             "console:manage.features.claims." +
@@ -535,22 +535,20 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                                                                         }
                                                                     > here
                                                                     </Link>.
-                                                                </Hint>
+                                                                </>
                                                             ) : (
-                                                                <Hint warning>
-                                                                    <Trans
-                                                                        i18nKey={
-                                                                            "console:manage.features.claims." +
+                                                                <Trans
+                                                                    i18nKey={
+                                                                        "console:manage.features.claims." +
                                                                             "external.forms.emptyMessage"
-                                                                        }
-                                                                    >
+                                                                    }
+                                                                >
                                                                         All the SCIM attributes are mapped to local
                                                                         claims.
-                                                                    </Trans>
-                                                                </Hint>
+                                                                </Trans>
                                                             )
                                                     }
-                                                </>
+                                                </>)
                                             }
                                         />
                                     </Grid.Column>

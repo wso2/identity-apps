@@ -22,12 +22,14 @@ import org.apache.commons.lang.StringUtils;
 import org.wso2.carbon.context.PrivilegedCarbonContext;
 import org.wso2.carbon.identity.application.authentication.framework.util.FrameworkConstants;
 import org.wso2.carbon.identity.application.common.IdentityApplicationManagementException;
+import org.wso2.carbon.identity.application.common.model.AuthenticationStep;
 import org.wso2.carbon.identity.application.common.model.Claim;
 import org.wso2.carbon.identity.application.common.model.ClaimConfig;
 import org.wso2.carbon.identity.application.common.model.ClaimMapping;
 import org.wso2.carbon.identity.application.common.model.InboundAuthenticationConfig;
 import org.wso2.carbon.identity.application.common.model.InboundAuthenticationRequestConfig;
 import org.wso2.carbon.identity.application.common.model.LocalAndOutboundAuthenticationConfig;
+import org.wso2.carbon.identity.application.common.model.LocalAuthenticatorConfig;
 import org.wso2.carbon.identity.application.common.model.ServiceProvider;
 import org.wso2.carbon.identity.application.mgt.ApplicationManagementService;
 import org.wso2.carbon.identity.core.util.IdentityUtil;
@@ -92,7 +94,8 @@ public class AppPortalUtils {
         if (!SUPER_TENANT_DOMAIN_NAME.equals(tenantDomain)) {
             callbackUrl = callbackUrl.replace(portalPath, "/t/" + tenantDomain.trim() + portalPath);
         } else {
-            if (StringUtils.equals(CONSOLE_APP, applicationName)) {
+            if (StringUtils.equals(CONSOLE_APP, applicationName) &&
+                    AppsCommonDataHolder.getInstance().isOrganizationManagementEnabled()) {
                 callbackUrl = "regexp=(" + callbackUrl + "|" + callbackUrl.replace(portalPath, "/t/(.*)" +
                         portalPath) + "|" + callbackUrl.replace(portalPath, "/o/(.*)" + portalPath) + ")";
             } else {
@@ -183,6 +186,30 @@ public class AppPortalUtils {
         localAndOutboundAuthenticationConfig.setUseTenantDomainInLocalSubjectIdentifier(true);
         localAndOutboundAuthenticationConfig.setSkipConsent(true);
         localAndOutboundAuthenticationConfig.setSkipLogoutConsent(true);
+
+        if (CONSOLE_APP.equals(appName) && AppsCommonDataHolder.getInstance().isOrganizationManagementEnabled()) {
+            AuthenticationStep authenticationStep1 = new AuthenticationStep();
+            LocalAuthenticatorConfig identifierFirst = new LocalAuthenticatorConfig();
+            identifierFirst.setName("IdentifierExecutor");
+            identifierFirst.setDisplayName("identifier-first");
+            authenticationStep1.setLocalAuthenticatorConfigs(new LocalAuthenticatorConfig[]{identifierFirst});
+            authenticationStep1.setSubjectStep(false);
+            authenticationStep1.setAttributeStep(false);
+            authenticationStep1.setStepOrder(1);
+
+            AuthenticationStep authenticationStep2 = new AuthenticationStep();
+            LocalAuthenticatorConfig basic = new LocalAuthenticatorConfig();
+            basic.setName("BasicAuthenticator");
+            basic.setDisplayName("basic");
+            authenticationStep2.setLocalAuthenticatorConfigs(new LocalAuthenticatorConfig[]{basic});
+            authenticationStep2.setAttributeStep(true);
+            authenticationStep2.setSubjectStep(true);
+            authenticationStep2.setStepOrder(2);
+            localAndOutboundAuthenticationConfig.setAuthenticationType("flow");
+            localAndOutboundAuthenticationConfig
+                    .setAuthenticationSteps(new AuthenticationStep[]{authenticationStep1, authenticationStep2});
+        }
+
         serviceProvider.setLocalAndOutBoundAuthenticationConfig(localAndOutboundAuthenticationConfig);
 
         // Set requested claim mappings for the SP.

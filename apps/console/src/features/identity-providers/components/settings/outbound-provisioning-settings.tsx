@@ -41,6 +41,7 @@ import {
     updateOutboundProvisioningConnectors
 } from "../../api";
 import {
+    AuthenticatorSettingsFormModes,
     IdentityProviderInterface,
     OutboundProvisioningConnectorInterface,
     OutboundProvisioningConnectorWithMetaInterface,
@@ -406,6 +407,9 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                                                                         actions: createAccordionActions(connector),
                                                                         content: (
                                                                             <OutboundProvisioningConnectorFormFactory
+                                                                                mode={
+                                                                                    AuthenticatorSettingsFormModes.EDIT
+                                                                                }
                                                                                 metadata={ connector.meta }
                                                                                 initialValues={ connector.data }
                                                                                 onSubmit={ 
@@ -479,7 +483,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                 deletingConnector && (
                     <ConfirmationModal
                         onClose={ (): void => setShowDeleteConfirmationModal(false) }
-                        type="warning"
+                        type="negative"
                         open={ showDeleteConfirmationModal }
                         assertion={ deletingConnector?.meta.name }
                         assertionHint={ (
@@ -509,7 +513,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message
                             attached
-                            warning
+                            negative
                             data-testid={ `${ testId }-authenticator-delete-confirmation` }>
                             { t("console:develop.features.authenticationProvider.confirmations." +
                                 "deleteConnector.message") }

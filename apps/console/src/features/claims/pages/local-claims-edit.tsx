@@ -170,6 +170,7 @@ const LocalClaimsEditPage: FunctionComponent<LocalClaimsEditPageInterface> = (
                 </Image>
             ) }
             title={ claim?.displayName }
+            pageTitle="Edit Attributes"
             description={ t("console:manage.features.claims.local.pageLayout.edit.description") }
             backButton={ {
                 onClick: () => {

@@ -64,7 +64,18 @@ import { ReactComponent as StartButtonIcon } from "../../../themes/default/asset
 import { ReactComponent as TokenIcon } from "../../../themes/default/assets/images/icons/token.svg";
 import { ReactComponent as UserInfoIcon } from "../../../themes/default/assets/images/icons/userInfo.svg";
 import { ReactComponent as WarningIcon } from "../../../themes/default/assets/images/icons/warning-icon.svg";
+import {
+    ReactComponent as FacebookLogo
+} from "../../../themes/default/assets/images/identity-providers/facebook-idp-illustration.svg";
 import GithubIdPIcon from "../../../themes/default/assets/images/identity-providers/github-idp-illustration.svg";
+import {
+    ReactComponent as GoogleLogo
+} from "../../../themes/default/assets/images/identity-providers/google-idp-illustration.svg";
+import {
+    ReactComponent as Office365Logo
+} from "../../../themes/default/assets/images/identity-providers/office-365.svg";
+import { ReactComponent as TwitterLogo } from "../../../themes/default/assets/images/identity-providers/twitter.svg";
+import { ReactComponent as YahooLogo } from "../../../themes/default/assets/images/identity-providers/yahoo.svg";
 import {
     ReactComponent as ProtocolPredefined
 } from "../../../themes/default/assets/images/illustrations/application-predefined.svg";
@@ -124,13 +135,8 @@ import OpenIDLogo from "../../../themes/default/assets/images/protocols/openid.p
 import SamlLogo from "../../../themes/default/assets/images/protocols/saml.png";
 import WSFedLogo from "../../../themes/default/assets/images/protocols/ws-fed.png";
 import WSTrustLogo from "../../../themes/default/assets/images/protocols/ws-trust.png";
-import { ReactComponent as FacebookLogo } from "../../../themes/default/assets/images/social/facebook.svg";
-import { ReactComponent as GoogleLogo } from "../../../themes/default/assets/images/social/google.svg";
-import { ReactComponent as TwitterLogo } from "../../../themes/default/assets/images/social/twitter.svg";
 import { ReactComponent as JWTLogo } from "../../../themes/default/assets/images/technologies/jwt-logo.svg";
 import { ReactComponent as MicrosoftLogo } from "../../../themes/default/assets/images/third-party/microsoft-logo.svg";
-import { ReactComponent as Office365Logo } from "../../../themes/default/assets/images/third-party/office-365-logo.svg";
-import { ReactComponent as YahooLogo } from "../../../themes/default/assets/images/third-party/yahoo-logo.svg";
 import { SupportedAuthProtocolTypes } from "../models";
 
 export const getInboundProtocolLogos = (): {

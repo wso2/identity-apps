@@ -206,7 +206,7 @@
     <%
         if (reCaptchaEnabled || reCaptchaResendEnabled) {
     %>
-        <script src='<%=(Encode.forJavaScriptSource(reCaptchaAPI))%>'></script>
+    <script src="<%=Encode.forHtmlContent(reCaptchaAPI)%>"></script>
     <%
         }
     %>
@@ -419,21 +419,21 @@
                                 }
                                 if (localAuthenticatorNames.contains(MAGIC_LINK_AUTHENTICATOR)) {
                             %>
-                            <div class="field">
-                                <button class="ui grey labeled icon button fluid"
-                                    onclick="handleNoDomain(this,
+                            <div class="social-login blurring social-dimmer">
+                                <div class="field">
+                                    <button class="ui button" onclick="handleNoDomain(this,
                                         '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpEntry.getKey()))%>',
-                                        '<%=MAGIC_LINK_AUTHENTICATOR%>')"
-                                    id="icon-<%=iconId%>"
-                                    title="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%>
-                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with" )%>">
-                                    <i class="email icon"></i>
-                                    <img src="libs/themes/default/assets/images/icons/magic-link-icon.svg" alt="Magic Link Logo" />
-                                    <span>
-                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with" )%>
-                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "magic.link" )%>
-                                    </span>
-                                </button>
+                                        '<%=MAGIC_LINK_AUTHENTICATOR%>')" id="icon-<%=iconId%>"
+                                        title="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%>
+                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "magic.link" )%>"
+                                        data-componentid="login-page-sign-in-with-magic-link">
+                                        <img class="ui image" src="libs/themes/default/assets/images/icons/magic-link-icon.svg" alt="Magic Link Logo" />
+                                        <span>
+                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with" )%>
+                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "magic.link" )%>
+                                        </span>
+                                    </button>
+                                </div>
                             </div>
                             <%
                                 }
@@ -542,25 +542,6 @@
                 $(this).hide();
                 $('.main-link').next().hide();
             });
-
-            <%
-                if(reCaptchaEnabled) {
-            %>
-                var error_msg = $("#error-msg");
-
-                $("#loginForm").submit(function (e) {
-                    var resp = $("[name='g-recaptcha-response']")[0].value;
-                    if (resp.trim() == '') {
-                        error_msg.text("<%=AuthenticationEndpointUtil.i18n(resourceBundle,"please.select.recaptcha")%>");
-                        error_msg.show();
-                        $("html, body").animate({scrollTop: error_msg.offset().top}, 'slow');
-                        return false;
-                    }
-                    return true;
-                });
-            <%
-                }
-            %>
         });
 
         function myFunction(key, value, name) {

@@ -410,7 +410,7 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                             <ConfirmationModal.Header>
                                 { t("console:manage.features.organizations.confirmations.deleteOrganization.header") }
                             </ConfirmationModal.Header>
-                            <ConfirmationModal.Message attached warning>
+                            <ConfirmationModal.Message attached negative>
                                 { t("console:manage.features.organizations.confirmations.deleteOrganization.message") }
                             </ConfirmationModal.Message>
                             <ConfirmationModal.Content>
