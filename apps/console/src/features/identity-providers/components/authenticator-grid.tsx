@@ -277,7 +277,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                     subtitle={ [
                         t("console:develop.features.authenticationProvider.placeHolders." +
                             "emptyIDPSearchResults.subtitles.0",
-                            { searchQuery: searchQuery }),
+                        { searchQuery: searchQuery }),
                         t("console:develop.features.authenticationProvider.placeHolders." +
                             "emptyIDPSearchResults.subtitles.1")
                     ] }
@@ -429,7 +429,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                 deletingIDP && (
                     <ConfirmationModal
                         onClose={ (): void => setShowDeleteConfirmationModal(false) }
-                        type="warning"
+                        type="negative"
                         open={ showDeleteConfirmationModal }
                         assertion={ deletingIDP?.name }
                         assertionHint={ t("console:develop.features.authenticationProvider."+
@@ -449,7 +449,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message
                             attached
-                            warning
+                            negative
                             data-testid={ `${ testId }-delete-confirmation-modal-message` }
                         >
                             { t("console:develop.features.authenticationProvider.confirmations.deleteIDP.message") }
@@ -464,7 +464,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                 showDeleteErrorDueToConnectedAppsModal && (
                     <ConfirmationModal
                         onClose={ (): void => setShowDeleteErrorDueToConnectedAppsModal(false) }
-                        type="warning"
+                        type="negative"
                         open={ showDeleteErrorDueToConnectedAppsModal }
                         secondaryAction={ t("common:close") }
                         onSecondaryActionClick={ (): void => setShowDeleteErrorDueToConnectedAppsModal(false) }
@@ -475,8 +475,10 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                             { t("console:develop.features.authenticationProvider.confirmations." +
                                 "deleteIDPWithConnectedApps.header") }
                         </ConfirmationModal.Header>
-                        <ConfirmationModal.Message attached warning
-                                                   data-testid={ `${ testId }-delete-idp-confirmation` }>
+                        <ConfirmationModal.Message
+                            attached
+                            negative
+                            data-testid={ `${ testId }-delete-idp-confirmation` }>
                             { t("console:develop.features.authenticationProvider." +
                             "confirmations.deleteIDPWithConnectedApps.message") }
                         </ConfirmationModal.Message>
@@ -487,8 +489,8 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                             <List ordered className="ml-6">
                                 {
                                     isAppsLoading ? (
-                                            <ContentLoader/>
-                                        ) :
+                                        <ContentLoader/>
+                                    ) :
                                         connectedApps?.map((app, index) => {
                                             return (
                                                 <List.Item key={ index }>{ app }</List.Item>

@@ -23,20 +23,6 @@
 @import (multiple) '../../theme.less';
 .loadVariables();
 
-/*-----------------------------
-     Google One Tap Styles
-------------------------------*/
-.google-one-tap-container {
-    #credential_picker_container {
-        display: flex;
-        flex-direction: column;
-        flex-wrap: nowrap;
-        align-content: center;
-        justify-content: flex-start;
-        align-items: center;
-    }
-}
-
 .login-form {
     .user-image {
         margin-bottom: 1rem;
@@ -114,6 +100,18 @@
                                     padding: .78571429em 1.5em .78571429em 0;
                                 }
                             }
+                        }
+
+                        .resend-button {
+                            padding: 0 !important;
+                            background: none !important;
+                            border: none;
+                            cursor: pointer;
+                            color: #ff5000;
+                        }
+
+                        .resend-button:hover {
+                            text-decoration: underline;
                         }
 
                         .align-center {

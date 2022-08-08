@@ -63,6 +63,10 @@
         document.getElementById("restartFlowForm").submit();
     }
 
+    function onCompleted() {
+        $('#loginForm').submit();
+    }
+
     // Handle form submission preventing double submission.
     $(document).ready(function(){
         $.fn.preventDoubleSubmission = function() {
@@ -74,7 +78,17 @@
                     console.warn("Prevented a possible double submit event");
                 } else {
                     e.preventDefault();
-
+                    <%
+                        if (reCaptchaEnabled) {
+                    %>
+                    if (!grecaptcha.getResponse()) {
+                        event.preventDefault(); //prevent form submit
+                        grecaptcha.execute();
+                        return;
+                    }
+                    <%
+                        }
+                    %>
                     var userName = document.getElementById("username");
                     userName.value = userName.value.trim();
 
@@ -110,15 +124,6 @@
         $('#loginForm').preventDoubleSubmission();
     });
 
-    function showResendReCaptcha() {
-        <% if (StringUtils.isNotBlank(request.getParameter("failedUsername"))){ %>
-            <% if (reCaptchaResendEnabled) { %>
-                window.location.href="resend-confirmation-captcha.jsp?<%=AuthenticationEndpointUtil.cleanErrorMessages(Encode.forJava(request.getQueryString()))%>";
-            <% } else { %>
-                window.location.href="login.do?resend_username=<%=Encode.forHtml(URLEncoder.encode(request.getParameter("failedUsername"), UTF_8))%>&<%=AuthenticationEndpointUtil.cleanErrorMessages(Encode.forJava(request.getQueryString()))%>";
-            <% } %>
-        <% } %>
-    }
 </script>
 
 <%!
@@ -257,18 +262,29 @@
 
 <% if (Boolean.parseBoolean(loginFailed) && errorCode.equals(IdentityCoreConstants.USER_ACCOUNT_NOT_CONFIRMED_ERROR_CODE) && request.getParameter("resend_username") == null) { %>
     <div class="ui visible warning message" id="error-msg" data-testid="login-page-error-message">
-        <%= AuthenticationEndpointUtil.i18n(resourceBundle, errorMessage) %>
+        <form action="login.do?resend_username=<%=Encode.forHtml(URLEncoder.encode(request.getParameter("failedUsername"), UTF_8))%>&<%=AuthenticationEndpointUtil.cleanErrorMessages(Encode.forJava(request.getQueryString()))%>" method="post" id="resendForm">
+            <%= AuthenticationEndpointUtil.i18n(resourceBundle, errorMessage) %>
 
-        <div class="ui divider hidden"></div>
+            <div class="ui divider hidden"></div>
 
-        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "no.confirmation.mail")%>
+            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "no.confirmation.mail")%>
 
-        <a id="registerLink"
-            href="javascript:showResendReCaptcha();"
-            data-testid="login-page-resend-confirmation-email-link"
-        >
-            <%=StringEscapeUtils.escapeHtml4(AuthenticationEndpointUtil.i18n(resourceBundle, "resend.mail"))%>
-        </a>
+            <button id="registerLink"
+                class="resend-button g-recaptcha"
+                <%
+                    if (reCaptchaResendEnabled) {
+                %>
+                data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>"
+                <%
+                    }
+                %>
+                data-callback="onSubmitResend"
+                data-action="resendConfirmation"
+                data-testid="login-page-resend-confirmation-email-link"
+            >
+                <%=StringEscapeUtils.escapeHtml4(AuthenticationEndpointUtil.i18n(resourceBundle, "resend.mail"))%>
+            </button>
+        </form>
     </div>
     <div class="ui divider hidden"></div>
 <% } %>
@@ -325,15 +341,15 @@
                    style="margin: 0 auto; right: 0; pointer-events: auto; cursor: pointer;"></i>
             </div>
         </div>
+
     <%
-        if (reCaptchaEnabled) {
+    if (reCaptchaEnabled) {
     %>
-        <div class="field">
-            <div class="g-recaptcha"
-                data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>"
-                data-testid="login-page-g-recaptcha"
-            >
-            </div>
+        <div class="g-recaptcha"
+                data-size="invisible"
+                data-callback="onCompleted"
+                data-sitekey=
+                        "<%=Encode.forHtmlContent(reCaptchaKey)%>">
         </div>
     <%
         }
@@ -480,23 +496,21 @@
     <div class="ui divider hidden"></div>
 
     <div class="mt-0">
-        <div class="column mobile center aligned tablet right aligned computer right aligned buttons tablet no-margin-right-last-child computer no-margin-right-last-child">
+        <div class="column buttons">
             <button
-                type="submit"
                 class="ui primary fluid large button"
                 tabindex="4"
-                role="button"
-                data-testid="login-page-continue-login-button"
+                type="submit"
             >
                 <%=StringEscapeUtils.escapeHtml4(AuthenticationEndpointUtil.i18n(resourceBundle, "continue"))%>
             </button>
         </div>
-        <div class="column mobile center aligned tablet left aligned computer left aligned buttons tablet computer">
+        <div class="column buttons">
             <% if (isSelfSignUpEPAvailable && !isIdentifierFirstLogin(inputType) && isSelfSignUpEnabledInTenant) { %>
             <button
                 type="button"
                 onclick="window.location.href='<%=StringEscapeUtils.escapeHtml4(getRegistrationUrl(accountRegistrationEndpointURL, urlEncodedURL, urlParameters))%>';"
-                class="ui fluid large button secondary"
+                class="ui secondary fluid large button"
                 id="registerLink"
                 tabindex="8"
                 role="button"
@@ -557,6 +571,10 @@
                 $passwordInput.attr("type", "password");
             }
         });
+
+        function onSubmitResend(token) {
+           $("#resendForm").submit();
+        }
 
     </script>
 

@@ -42,6 +42,7 @@ import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useE
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Header, Icon, Label, Popup, SemanticICONS } from "semantic-ui-react";
+import { applicationConfig } from "../../../extensions";
 import {
     AppConstants,
     AppState,
@@ -61,7 +62,6 @@ import {
     ApplicationTemplateListItemInterface
 } from "../models";
 import { ApplicationTemplateManagementUtils } from "../utils";
-import { applicationConfig } from "../../../extensions";
 
 /**
  *
@@ -490,7 +490,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                 deletingApplication && (
                     <ConfirmationModal
                         onClose={ (): void => setShowDeleteConfirmationModal(false) }
-                        type="warning"
+                        type="negative"
                         open={ showDeleteConfirmationModal }
                         assertionHint={ t("console:develop.features.applications.confirmations.deleteApplication." +
                             "assertionHint") }
@@ -512,7 +512,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message
                             attached
-                            warning
+                            negative
                             data-testid={ `${ testId }-delete-confirmation-modal-message` }
                         >
                             { t("console:develop.features.applications.confirmations.deleteApplication.message") }

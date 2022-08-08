@@ -265,31 +265,29 @@
                             }
                         %>
 
-                        <%
-                            if (reCaptchaEnabled) {
-                                String reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
-                        %>
-                        <div class="field">
-                            <div class="g-recaptcha"
-                                    data-sitekey=
-                                            "<%=Encode.forHtmlContent(reCaptchaKey)%>">
-                            </div>
-                        </div>
-                        <%
-                            }
-                        %>
-
                         <div class="ui divider hidden"></div>
 
                         <div class="align-right buttons">
                             <a href="javascript:goBack()" class="ui button secondary">
                                 <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Cancel")%>
                             </a>
-                            <button id="recoverySubmit"
-                                    class="ui primary large button"
-                                    type="submit"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                                    "Submit")%>
-                            </button>
+                            <div style="display: inline-block">
+                                <button id="recoverySubmit"
+                                        class="ui primary button g-recaptcha"
+                                        <%
+                                            if (reCaptchaEnabled) {
+                                                String reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
+                                        %>
+                                        data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>"
+                                        <%
+                                            }
+                                        %>
+                                        data-callback="onSubmit"
+                                        data-action="recoverUsername">
+                                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                                        "Submit")%>
+                                </button>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -323,6 +321,10 @@
             window.history.back();
         }
 
+        function onSubmit(token) {
+           $("#recoverDetailsForm").submit();
+        }
+
         $(document).ready(function () {
 
             $("#recoverDetailsForm").submit(function (e) {
@@ -340,18 +342,6 @@
 
                     if (firstName === "") {
                         errorMessage.text("Please fill the first name.");
-                        errorMessage.show();
-                        $("html, body").animate({scrollTop: errorMessage.offset().top}, "slow");
-                        submitButton.removeClass("loading").attr("disabled", false);
-                        return false;
-                    }
-                <% } %>
-
-                <% if (reCaptchaEnabled) { %>
-                    const reCaptchaResponse = $("[name='g-recaptcha-response']")[0].value;
-
-                    if (reCaptchaResponse.trim() === "") {
-                        errorMessage.text("Please select reCaptcha.");
                         errorMessage.show();
                         $("html, body").animate({scrollTop: errorMessage.offset().top}, "slow");
                         submitButton.removeClass("loading").attr("disabled", false);
