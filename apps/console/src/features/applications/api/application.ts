@@ -191,10 +191,11 @@ export const getApplicationList = (limit: number, offset: number,
  *
  * @param {number} limit - Maximum Limit of the application List.
  * @param {number} offset - Offset for get to start.
- * @param {string} filter - Search filter. 
+ * @param {string} filter - Search filter.
  * @returns {RequestResultInterface<Data, Error>}
  */
 export const useApplicationList = <Data = ApplicationListInterface, Error = RequestErrorInterface>(
+    attributes?: string,
     limit?: number,
     offset?: number,
     filter?: string
@@ -207,6 +208,7 @@ export const useApplicationList = <Data = ApplicationListInterface, Error = Requ
         },
         method: HttpMethods.GET,
         params: {
+            attributes,
             filter,
             limit,
             offset
