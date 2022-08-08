@@ -759,6 +759,10 @@ export interface ConsoleNS {
                                     pemValue: FormAttributes;
                                     type: FormAttributes;
                                 };
+                                invalidOperationModal?: {
+                                    header: string;
+                                    message: string;
+                                };
                             };
                         };
                     };

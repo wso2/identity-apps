@@ -1348,6 +1348,12 @@ export const console: ConsoleNS = {
                                     customSaml: "This certificate is used to validate the signatures of the " +
                                         "signed requests and to encrypt the SAML assertions returned after " +
                                         "authentication."
+                                },
+                                invalidOperationModal: {
+                                    header: "Operation Invalid",
+                                    message: "You should disable the request signature validation to remove "+
+                                        "the certificate. If request or response signing is enabled, "+
+                                        "it is essential to have a valid certificate to verify the signature."
                                 }
                             }
                         }
