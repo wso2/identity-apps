@@ -20,7 +20,7 @@ import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { URLUtils } from "@wso2is/core/utils";
 import { Field, Forms, Validation } from "@wso2is/forms";
-import { Code, Heading, Hint, Message } from "@wso2is/react-components";
+import { Code, ConfirmationModal, Heading, Hint, Message } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
@@ -77,6 +77,7 @@ interface ApplicationWrapperCertificatesPropsInterface extends TestableComponent
     hidden: boolean;
     readOnly: boolean;
     triggerSubmit?: boolean;
+    canDiscardCertificate?: () => boolean;
 }
 
 /**
@@ -103,6 +104,7 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
         readOnly,
         updateCertFinalValue,
         updateCertType,
+        canDiscardCertificate,
         ["data-testid"]: testId
     } = props;
 
@@ -113,6 +115,7 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
     const [ selectedCertType, setSelectedCertType ] = useState<CertificateTypeInterface>(CertificateTypeInterface.NONE);
     const [ PEMValue, setPEMValue ] = useState<string>(undefined);
     const [ JWKSValue, setJWKSValue ] = useState<string>(undefined);
+    const [ showInvalidOperationModal, setShowInvalidOperationModal ] = useState<boolean>(false);
 
     /**
      * Set the certificate type
@@ -163,9 +166,7 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
             setJWKSValue("");
         } else if (CertificateTypeInterface.JWKS === selectedCertType) {
             setPEMValue("");
-        } else {
-            updateCertFinalValue("");
-        }
+        } 
     }, [ selectedCertType ]);
 
     /**
@@ -218,6 +219,37 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
         }
     };
 
+    /**
+     * Renders the certificate operation invalid modal.
+     * @return {ReactElement}
+     */
+    const renderInvalidOperationModal = (): ReactElement => (
+        <ConfirmationModal
+            onClose={ (): void => setShowInvalidOperationModal(false) }
+            type="negative"
+            open={ showInvalidOperationModal }
+            primaryAction={ t("common:okay") }
+            onPrimaryActionClick={ (): void => {
+                setShowInvalidOperationModal(false);
+            } }
+            closeOnDimmerClick={ false }
+        >
+            <ConfirmationModal.Header
+                data-testid={ `${ testId }-invalid-operation-modal-header` }
+            >
+                {
+                    t("console:develop.features.applications.forms." +
+            "advancedConfig.sections.certificate.invalidOperationModal.header") }
+            </ConfirmationModal.Header>
+            <ConfirmationModal.Content
+                data-testid={ `${ testId }-invalid-operation-modal-content` }
+            >
+                { t("console:develop.features.applications.forms." +
+            "advancedConfig.sections.certificate.invalidOperationModal.message") }
+            </ConfirmationModal.Content>
+        </ConfirmationModal>
+    );
+
     return (
         !hidden
             ? (
@@ -253,6 +285,19 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
                                     values.get("certificateType") as CertificateTypeInterface
                                         );
                                         updateCertType(values.get("certificateType") as CertificateTypeInterface);
+                                    }
+                                }
+                                onBefore={
+                                    (event,value) => {
+                                        const certType = value as CertificateTypeInterface;
+
+                                        if(CertificateTypeInterface.NONE === certType && !canDiscardCertificate()){
+                                            setShowInvalidOperationModal(true);
+                                            
+                                            return false;
+                                        }
+                                        
+                                        return true;
                                     }
                                 }
                                 type="radio"
@@ -395,6 +440,7 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
                             { protocol && <Hint>{ resolveHintContent(protocol) }</Hint> }
                         </Grid.Column>
                     </Grid.Row>
+                    { showInvalidOperationModal && renderInvalidOperationModal() }
                 </Forms>
             )
             : null

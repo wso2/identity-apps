@@ -22,8 +22,9 @@ import { ContentLoader, EmphasizedSegment } from "@wso2is/react-components";
 import Tree from "rc-tree";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Button, Divider, Grid } from "semantic-ui-react";
-import { store } from "../../../core";
+import { AppState, store } from "../../../core";
 import { getServerConfigs } from "../../../server-configurations";
 import { RoleConstants } from "../../constants";
 import { TreeNode } from "../../models";
@@ -83,11 +84,12 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
     const [ defaultExpandedKeys, setDefaultExpandKeys ] = useState<string[]>([]);
     const [ isPermissionsLoading, setIsPermissionsLoading ] = useState<boolean>(true);
     const [ isSuperAdmin, setIsSuperAdmin ] = useState<boolean>(false);
+    const tenantDomain: string = useSelector<AppState, string>((state: AppState) => state.config.deployment.tenant);
 
     useEffect(() => {
         const checkedNodes: TreeNode[] = [];
 
-        RoleManagementUtils.getAllPermissions(permissionsToHide)
+        RoleManagementUtils.getAllPermissions(permissionsToHide, tenantDomain)
             .then((permissionTree: TreeNode[]) => {
                 disableSuperAdminTreeNode(isSuperAdmin, permissionTree);
                 setPermissions(permissionTree);

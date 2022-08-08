@@ -617,7 +617,7 @@ export const myAccount: MyAccountNS = {
                             "authenticator app. Your previous setup won't work anymore."
                     },
                     toolTip: "Don't have an authenticator app? Download an authenticator app like " +
-                        "Google Authenticator from <3>App Store</3> or <3>Google Play</3>",
+                        "Google Authenticator from <1>App Store</1> or <3>Google Play</3>",
                     verify: {
                         error: "Verification failed. Please try again.",
                         heading: "Enter the generated code for verification",
