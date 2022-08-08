@@ -17,6 +17,7 @@
  */
 
 import isEmpty from "lodash-es/isEmpty";
+import { AppConstants } from "../../../features/core";
 import { getPermissionList, searchRoleList } from "../api";
 import { generatePermissionTree } from "../components/role-utils";
 import { PermissionObject, SearchRoleInterface, TreeNode } from "../models";
@@ -86,7 +87,7 @@ export class RoleManagementUtils {
                     return nodes;
                 },[]);
 
-                if (tenantDomain !== "carbon.super"
+                if (tenantDomain !== AppConstants.getSuperTenant()
                     && permissionTree[0]?.key?.toString().replace(/^\/|\/$/g, "").split("/").length == 2) {
                     return permissionTree[0]?.children;
                 }
