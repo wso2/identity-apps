@@ -5442,6 +5442,16 @@ export const console: ConsoleNS = {
             governanceConnectors: {
                 categories: "Catégories",
                 connectorSubHeading: "Configurer les paramètre {{ name }}.",
+                connectors: {
+                    "analytics-engine": {
+                        messages: {
+                            deprecation: {
+                                description: "WSO2 Identity Server Analytics est désormais obsolète.Utilisez <1>Elk Analytics</1> à la place.",
+                                heading: "Décousue"
+                            }
+                        }
+                    }
+                },
                 disabled: "Désactivé",
                 enabled: "Activé",
                 form: {

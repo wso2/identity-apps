@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import React, { ReactElement } from "react";
+import React, { ReactElement, ReactNode } from "react";
 import { Divider, Grid, Header } from "semantic-ui-react";
 import { ServerConfigurationConfig } from "./models/server-configuration";
 import { GovernanceConnectorInterface } from "../../features/server-configurations";
@@ -31,10 +31,13 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
         "all"
     ],
     intendSettings: true,
-    renderConnector: (connector: GovernanceConnectorInterface,
-                      connectorForm: ReactElement,
-                      connectorIllustration: string,
-                      connectorSubHeading: string): ReactElement => {
+    renderConnector: (
+        connector: GovernanceConnectorInterface,
+        connectorForm: ReactElement,
+        connectorIllustration: string,
+        connectorSubHeading: ReactNode,
+        message: ReactNode
+    ): ReactElement => {
         return(
             <Grid>
                 <Grid.Row columns={ 1 }>
@@ -58,6 +61,7 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
                                 </Grid.Column>
                             </Grid.Row>
                         </Grid>
+                        { message }
                         <Divider />
                         { connectorForm }
                     </Grid.Column>
