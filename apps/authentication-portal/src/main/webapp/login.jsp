@@ -303,7 +303,7 @@
                     </div>
                     <% } %>
                     <div class="field">
-                        <div class="ui vertical ui center aligned segment form" style="margin: 0 auto;">
+                        <div class="ui vertical ui center aligned segment form">
                             <%
                                 int iconId = 0;
                                 if (idpAuthenticatorMapping != null) {
