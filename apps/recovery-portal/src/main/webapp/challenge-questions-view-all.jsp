@@ -122,19 +122,26 @@
                                 }
                             }
                         %>
+                        <%
+                            if (reCaptchaEnabled) {
+                                String reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
+                        %>
+                        <div class="field">
+                            <div class="g-recaptcha"
+                                    data-size="invisible"
+                                    data-callback="onCompleted"
+                                    data-action="securityQuestion"
+                                    data-sitekey=
+                                            "<%=Encode.forHtmlContent(reCaptchaKey)%>">
+                            </div>
+                        </div>
+                        <%
+                            }
+                        %>
                         <div class="form-actions">
                             <button id="answerSubmit"
-                                    class="wr-btn grey-bg col-xs-12 col-md-12 col-lg-12 uppercase font-extra-large g-recaptcha"
-                                    <%
-                                        if (reCaptchaEnabled) {
-                                            String reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
-                                    %>
-                                    data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>"
-                                    <%
-                                        }
-                                    %>
-                                    data-callback="onSubmit"
-                                    data-action="securityQuestion"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Submit")%>
+                                    class="wr-btn grey-bg col-xs-12 col-md-12 col-lg-12 uppercase font-extra-large"
+                                    type="submit"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Submit")%>
                             </button>
                         </div>
                         <div class="clearfix"></div>
@@ -162,9 +169,24 @@
 <% } %>
 
 <script type="text/javascript">
+    function onCompleted() {
+        $('#securityQuestionForm').submit();
+    }
     $(document).ready(function () {
-        function onSubmit(token) {
-           $("#securityQuestionForm").submit();
+        $("#securityQuestionForm").submit(function (e) {
+           <%
+               if (reCaptchaEnabled) {
+           %>
+           if (!grecaptcha.getResponse()) {
+               e.preventDefault();
+               grecaptcha.execute();
+
+               return true;
+           }
+           <%
+               }
+           %>
+           return true;
         }
     });
 

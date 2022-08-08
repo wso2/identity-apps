@@ -82,7 +82,6 @@
                         if (reCaptchaEnabled) {
                     %>
                     if (!grecaptcha.getResponse()) {
-                        event.preventDefault(); //prevent form submit
                         grecaptcha.execute();
                         return;
                     }
@@ -348,6 +347,7 @@
         <div class="g-recaptcha"
                 data-size="invisible"
                 data-callback="onCompleted"
+                data-action="login"
                 data-sitekey=
                         "<%=Encode.forHtmlContent(reCaptchaKey)%>">
         </div>
