@@ -16,8 +16,6 @@
  * under the License.
  */
 
-import { AccessControlUtils } from "@wso2is/access-control";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertInterface, ChildRouteInterface, ProfileInfoInterface, RouteInterface } from "@wso2is/core/models";
 import { initializeAlertSystem } from "@wso2is/core/store";
 import { RouteUtils as CommonRouteUtils, CommonUtils } from "@wso2is/core/utils";
@@ -31,7 +29,6 @@ import {
     SidePanel,
     TopLoadingBar
 } from "@wso2is/react-components";
-import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
     FunctionComponent,
@@ -39,9 +36,8 @@ import React, {
     ReactNode,
     Suspense,
     SyntheticEvent,
-    lazy,
-    useCallback,
     useEffect,
+    useRef,
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
@@ -49,7 +45,7 @@ import { System } from "react-notification-system";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
 import { Responsive } from "semantic-ui-react";
-import { commonConfig, serverConfigurationConfig } from "../extensions";
+import { commonConfig } from "../extensions";
 import { getProfileInformation } from "../features/authentication/store";
 import {
     AppConstants,
@@ -58,29 +54,19 @@ import {
     AppViewTypes,
     ConfigReducerStateInterface,
     EventPublisher,
-    FeatureConfigInterface,
     Footer,
     Header,
-    OrganizationReducerStateInterface,
     ProtectedRoute,
     RouteUtils,
     StrictAppViewTypes,
     UIConstants,
     getAdminViewRoutes,
-    getDeveloperViewRoutes,
     getEmptyPlaceholderIllustrations,
-    getSidePanelIcons,
     getSidePanelMiscIcons,
     history,
     useUIElementSizes
 } from "../features/core";
-import { setActiveView, setDeveloperVisibility, setManageVisibility } from "../features/core/store/actions";
-import { OrganizationUtils } from "../features/organizations/utils";
-import {
-    GovernanceConnectorCategoryInterface,
-    GovernanceConnectorUtils,
-    ServerConfigurationsConstants
-} from "../features/server-configurations";
+import { setActiveView } from "../features/core/store/actions";
 
 /**
  * Admin View Prop types.
@@ -115,17 +101,19 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const profileInfo: ProfileInfoInterface = useSelector((state: AppState) => state.profile.profileInfo);
-    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const organization: OrganizationReducerStateInterface = useSelector((state: AppState) => state.organization);
     const alert: AlertInterface = useSelector((state: AppState) => state.global.alert);
     const alertSystem: System = useSelector((state: AppState) => state.global.alertSystem);
     const isAJAXTopLoaderVisible: boolean = useSelector((state: AppState) => state.global.isAJAXTopLoaderVisible);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
-    const governanceConnectorCategories: GovernanceConnectorCategoryInterface[] = useSelector(
-        (state: AppState) => state.governanceConnector.categories);
     const activeView: AppViewTypes = useSelector((state: AppState) => state.global.activeView);
 
-    const [ filteredRoutes, setFilteredRoutes ] = useState<RouteInterface[]>(getAdminViewRoutes());
+    const filteredRoutes: RouteInterface[] = useSelector(
+        (state: AppState) => state.routes.manageRoutes.filteredRoutes
+    );
+    const sanitizedRoutes: RouteInterface[] = useSelector(
+        (state: AppState) => state.routes.manageRoutes.sanitizedRoutes
+    );
+
     const [
         selectedRoute,
         setSelectedRoute
@@ -137,26 +125,7 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
     const organizationLoading: boolean
         = useSelector((state: AppState) => state?.organization?.getOrganizationLoading);
 
-    const getOrganizationEnabledRoutes = useCallback((routes: RouteInterface[]): RouteInterface[] => {
-        if (!OrganizationUtils.isRootOrganization(organization.organization)) {
-            const orgRoutes = RouteUtils.filterOrganizationEnabledRoutes(routes);
-
-            // Mapping the name of org roles to "Roles" to unify role management sub menu item in both organization view
-            // and root organization view.
-            return orgRoutes
-                .map((route: RouteInterface) => {
-                    if (route.id === "organization-roles") {
-                        route.name = "Roles";
-                    }
-
-                    return route;
-                });
-        }
-
-        // Remove the organization only routes from the admin view routes for root organizations.
-        return RouteUtils.filterOutOrganizationOnlyRoutes(routes);
-    }, [ organization.organization ]);
-
+    const initLoad = useRef(true);
 
     /**
      * Make sure `MANAGE` tab is highlighted when this layout is used.
@@ -171,106 +140,21 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
     }, [ dispatch, activeView ]);
 
     useEffect(() => {
-        setSelectedRoute(CommonRouteUtils.getInitialActiveRoute(location.pathname, filteredRoutes));
-
-        if (!(governanceConnectorCategories !== undefined && governanceConnectorCategories.length > 0)) {
-            if (
-                !(
-                    featureConfig?.governanceConnectors?.enabled  &&
-                    serverConfigurationConfig.showConnectorsOnTheSidePanel &&
-                    hasRequiredScopes(
-                        featureConfig.governanceConnectors,
-                        featureConfig.governanceConnectors.scopes.read,
-                        allowedScopes
-                    )
-                )
-            ) {
-                RouteUtils.gracefullyHandleRouting(filteredRoutes,
-                    AppConstants.getAdminViewBasePath(),
-                    location.pathname);
-            }
-
-            if (OrganizationUtils.isCurrentOrganizationRoot()) {
-                GovernanceConnectorUtils.getGovernanceConnectors();
-            }
-        }
-
-    }, [ location.pathname, filteredRoutes, governanceConnectorCategories ]);
-
-    useEffect(() => {
-        // Allowed scopes is never empty. Wait until it's defined to filter the routes.
-        if (isEmpty(allowedScopes)) {
+        if (!location?.pathname) {
             return;
         }
 
-        const adminRoutes = getOrganizationEnabledRoutes(getAdminViewRoutes());
-        const devRoutes = getOrganizationEnabledRoutes(getDeveloperViewRoutes());
-
-        let adminRoutesWithGov;
-
-        const filteredRoutesClone: RouteInterface[] = CommonRouteUtils.filterEnabledRoutes<FeatureConfigInterface>(
-            adminRoutes,
-            featureConfig,
-            allowedScopes,
-            commonConfig.checkForUIResourceScopes
-        );
-
-        serverConfigurationConfig.showConnectorsOnTheSidePanel &&
-                governanceConnectorCategories?.map((category: GovernanceConnectorCategoryInterface, index: number) => {
-                    let subCategoryExists = false;
-
-                    category.connectors?.map((connector) => {
-                        if (connector.subCategory !== "DEFAULT") {
-                            subCategoryExists = true;
-
-                            return;
-                        }
-                    });
-                    if (subCategoryExists) {
-                        // TODO: Implement sub category handling logic here.
-                    }
-
-                    filteredRoutesClone.unshift({
-                        category: "console:manage.features.sidePanel.categories.configurations",
-                        component: lazy(() => import("../features/server-configurations/pages/governance-connectors")),
-                        exact: true,
-                        icon: {
-                            icon: getSidePanelIcons().connectors[category.id] ?? getSidePanelIcons().connectors.default
-                        },
-                        id: category.id,
-                        name: category.name,
-                        order:
-                            category.id === ServerConfigurationsConstants.OTHER_SETTINGS_CONNECTOR_CATEGORY_ID
-                                ? filteredRoutesClone.length + governanceConnectorCategories.length
-                                : filteredRoutesClone.length + index,
-                        path: AppConstants.getPaths()
-                            .get("GOVERNANCE_CONNECTORS")
-                            .replace(":id", category.id),
-                        protected: true,
-                        showOnSidePanel: true
-                    });
-                });
-
-        if (!OrganizationUtils.isRootOrganization(organization.organization)) {
-            adminRoutesWithGov = RouteUtils.filterOrganizationEnabledRoutes(filteredRoutesClone);
-        } else {
-            adminRoutesWithGov = filteredRoutesClone;
+        if (initLoad.current) {
+            // Try to handle any un-expected routing issues. Returns a void if no issues are found.
+            RouteUtils.gracefullyHandleRouting(filteredRoutes, AppConstants.getAdminViewBasePath(), location.pathname);
+            initLoad.current = false;
         }
 
-        setFilteredRoutes(adminRoutesWithGov);
+        setSelectedRoute(CommonRouteUtils.getInitialActiveRoute(location.pathname, filteredRoutes));
 
-        const sanitizedDevelopRoutes: RouteInterface[] = CommonRouteUtils.sanitizeForUI(cloneDeep(devRoutes));
+    }, [ location.pathname, filteredRoutes ]);
 
-        const tab: string = AccessControlUtils.getDisabledTab(
-            adminRoutes, sanitizedDevelopRoutes, allowedScopes, featureConfig,
-            commonConfig.checkForUIResourceScopes);
-
-        if (tab === StrictAppViewTypes.MANAGE) {
-            dispatch(setManageVisibility(false));
-        } else if (tab === StrictAppViewTypes.DEVELOP) {
-            dispatch(setDeveloperVisibility(false));
-        }
-
+    useEffect(() => {
         if (!isEmpty(profileInfo)) {
             return;
         }
@@ -278,11 +162,8 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
         dispatch(getProfileInformation());
 
     }, [
-        allowedScopes,
-        governanceConnectorCategories,
-        featureConfig,
-        getOrganizationEnabledRoutes,
-        organization.organization
+        dispatch,
+        profileInfo
     ]);
 
     /**
@@ -380,23 +261,9 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
     const resolveRoutes = (): RouteInterface[] => {
         const resolvedRoutes = [];
 
-        if(organizationLoading){
-            return resolvedRoutes;
-        }
-
-        const recurse = (routesArr): void => {
-            routesArr.forEach((route, key) => {
-                if (route.path) {
-                    resolvedRoutes.push(renderRoute(route, key));
-                }
-
-                if (route.children && route.children instanceof Array && route.children.length > 0) {
-                    recurse(route.children);
-                }
-            });
-        };
-
-        recurse([ ...filteredRoutes ]);
+        filteredRoutes.forEach((route, key) => {
+            resolvedRoutes.push(renderRoute(route, key));
+        });
 
         return resolvedRoutes;
     };
@@ -448,8 +315,7 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
                     mobileSidePanelVisibility={ mobileSidePanelVisibility }
                     onSidePanelItemClick={ handleSidePanelItemClick }
                     onSidePanelPusherClick={ handleSidePanelPusherClick }
-                    routes={ !organizationLoading && CommonRouteUtils.sanitizeForUI(cloneDeep(filteredRoutes),
-                        AppUtils.getHiddenRoutes()) }
+                    routes={ !organizationLoading && sanitizedRoutes }
                     selected={ selectedRoute }
                     translationHook={ t }
                     allowedScopes={ allowedScopes }
