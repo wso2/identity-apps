@@ -498,6 +498,10 @@ module.exports = (env) => {
                     contentType: "<%@ page language=\"java\" contentType=\"text/html; charset=ISO-8859-1\" " +
                     "pageEncoding=\"ISO-8859-1\"%>",
                     filename: path.join(distFolder, "index.jsp"),
+                    getOrganizationManagementAvailability: !isDeployedOnExternalServer
+                        ? "<%@ page import=\"static org.wso2.carbon.identity.application." +
+                        "authentication.framework.util.FrameworkUtils.isOrganizationManagementEnabled\"%>"
+                        : "",
                     hash: true,
                     serverUrl: !isDeployedOnExternalServer
                         ? "<%=getServerURL(\"\", true, true)%>"
@@ -522,6 +526,9 @@ module.exports = (env) => {
                         ? publicPath
                         : "/",
                     basename: basename,
+                    isOrganizationManagementEnabled: !isDeployedOnExternalServer
+                        ? "<%= isOrganizationManagementEnabled() %>"
+                        : "false",
                     inject: false,
                     sessionState: "<%=Encode.forHtml(request.getParameter(\"session_state\"))%>",
                     superTenantConstant: !isDeployedOnExternalServer
