@@ -333,7 +333,7 @@ export const Iframe: FunctionComponent<PropsWithChildren<IframeProps>> = (
                 className={ !isWrapped && classes }
                 ref={ contentRef }
                 data-componentid={ componentId }
-                { ...rest }
+                { ...rest as any }
             >
                 { iFrameBodyNode && createPortal(children, iFrameBodyNode) }
             </iframe>
