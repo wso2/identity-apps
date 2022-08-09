@@ -274,7 +274,7 @@ export const console: ConsoleNS = {
                     para1: "This policy describes how WSO2 IS captures your personal information, the purposes of" +
                         " collection, and information about the retention of your personal information.",
                     para2: "Please note that this policy is for reference only, and is applicable for the software " +
-                        "as a product. WSO2 Inc. and its developers have no access to the information held within " +
+                        "as a product. WSO2 LLC. and its developers have no access to the information held within " +
                         "WSO2 IS. Please see the <1>disclaimer</1> section for more information.",
                     para3: "Entities, organizations or individuals controlling the use and administration of WSO2 IS " +
                         "should create their own privacy policies setting out the manner in which data is controlled " +
