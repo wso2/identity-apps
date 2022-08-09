@@ -42,7 +42,7 @@ import cloneDeep from "lodash-es/cloneDeep";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Header, Icon, Popup, SemanticICONS } from "semantic-ui-react";
+import { Header, Icon, Label, Popup, SemanticICONS } from "semantic-ui-react";
 import { OAuthProtocolTemplateItem, PassiveStsProtocolTemplateItem, SAMLProtocolTemplateItem } from "./meta";
 import { applicationConfig } from "../../../extensions";
 import {
@@ -64,6 +64,7 @@ import {
     ApplicationTemplateListItemInterface
 } from "../models";
 import { ApplicationTemplateManagementUtils } from "../utils";
+import { OAuthProtocolTemplateItem, PassiveStsProtocolTemplateItem, SAMLProtocolTemplateItem } from "./meta";
 
 /**
  *
@@ -305,6 +306,11 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                             }
                             <Header.Content>
                                 { app.name }
+                                {
+                                    app.advancedConfigurations.fragment && (
+                                        <Label size="mini">Fragment App</Label>
+                                    )
+                                }
                                 <Header.Subheader
                                     className="truncate ellipsis"
                                     data-testid={ `${ testId }-item-sub-heading` }
