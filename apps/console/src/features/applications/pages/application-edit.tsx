@@ -39,7 +39,7 @@ import {
     setHelpPanelDocsContentURL,
     toggleHelpPanelVisibility
 } from "../../core";
-import { getOrganizations } from "../../organizations/api";
+import { getOrganizations, getSharedOrganizations } from "../../organizations/api";
 import { OrganizationInterface } from "../../organizations/models";
 import { getApplicationDetails } from "../api";
 import { EditApplication, InboundProtocolDefaultFallbackTemplates } from "../components";
@@ -95,6 +95,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         (state: AppState) => state.application.templates);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const tenantDomain: string = useSelector((state: AppState) => state.auth.tenantDomain);
+    const currentOrganization = useSelector((state: AppState) => state.organization.organization);
 
     const [ application, setApplication ] = useState<ApplicationInterface>(emptyApplication);
     const [ applicationTemplate, setApplicationTemplate ] = useState<ApplicationTemplateListItemInterface>(undefined);
@@ -104,6 +105,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     const [ isDescTruncated, setIsDescTruncated ] = useState<boolean>(false);
     const [ showAppShareModal, setShowAppShareModal ] = useState(false);
     const [ subOrganizationList, setSubOrganizationList ] = useState<Array<OrganizationInterface>>([]);
+    const [ sharedOrganizationList, setSharedOrganizationList ] = useState<Array<OrganizationInterface>>([]);
 
     useEffect(() => {
         /**
@@ -305,10 +307,11 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     }, [ applicationTemplate, helpPanelDocStructure ]);
 
     /**
-     * Load the list of sub organizations under the current organization for application sharing.
+     * Load the list of sub organizations under the current organization & list of already shared organizations of the
+     * application for application sharing.
      */
     useEffect(() => {
-        if (!showAppShareModal) {
+        if (!showAppShareModal || !isOrganizationManagementEnabled) {
             return;
         }
 
@@ -321,6 +324,13 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             false
         ).then((response) => {
             setSubOrganizationList(response.organizations);
+        });
+
+        getSharedOrganizations(
+            currentOrganization.id,
+            application.id
+        ).then((response) => {
+            setSharedOrganizationList(response.data.organizations);
         });
     }, [ getOrganizations, showAppShareModal ]);
 
@@ -533,7 +543,8 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                             && !application.advancedConfigurations.fragment
                             && application.access === ApplicationAccessTypes.WRITE) && (
                             <PrimaryButton onClick={ () => setShowAppShareModal(true) }>
-                                Share Application
+                                { t("console:develop.features.applications.edit.sections" +
+                                    ".shareApplication.shareApplication") }
                             </PrimaryButton>
                         )
                     }
@@ -565,6 +576,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                     applicationId={ application.id }
                     clientId={ inboundProtocolConfigs?.oidc?.clientId }
                     subOrganizationList={ subOrganizationList }
+                    sharedOrganizationList={ sharedOrganizationList }
                     onClose={ () => setShowAppShareModal(false) }
                 />
             ) }

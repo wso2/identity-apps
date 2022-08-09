@@ -716,6 +716,12 @@ export interface ConsoleNS {
                                 };
                             };
                         };
+                        shareApplication: {
+                            heading: string;
+                            shareApplication: string;
+                            addSharingNotification: Notification;
+                            stopSharingNotification: Notification;
+                        }
                     };
                 };
                 forms: {
