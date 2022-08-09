@@ -202,7 +202,7 @@ export class ApplicationManagementConstants {
     public static readonly JWT_BEARER: string = "urn:ietf:params:oauth:grant-type:jwt-bearer";
     public static readonly IWA_NTLM: string = "iwa:ntlm";
     public static readonly UMA_TICKET: string = "urn:ietf:params:oauth:grant-type:uma-ticket";
-    public static readonly DEVICE_GRANT: string = "device_code"
+    public static readonly DEVICE_GRANT: string = "urn:ietf:params:oauth:grant-type:device_code"
 ;
 
     /**
