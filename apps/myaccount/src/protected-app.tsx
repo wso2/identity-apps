@@ -44,7 +44,7 @@ import {
     isLanguageSupported
 } from "@wso2is/i18n";
 import axios from "axios";
-import React, { FunctionComponent, ReactElement, lazy, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, lazy, useEffect } from "react";
 import { I18nextProvider } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { PreLoader } from "./components";
@@ -81,8 +81,6 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
     } = useAuthContext();
 
     const dispatch = useDispatch();
-
-    const [renderApp, setRenderApp] = useState<boolean>(false);
 
     useEffect(() => {
         on(Hooks.HttpRequestError, onHttpRequestError);
@@ -173,12 +171,10 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             }
 
             getDecodedIDToken()
-                .then(async () => {
-                    await dispatch(
+                .then(() => {
+                    dispatch(
                         setSignIn<AuthenticatedUserInfo>(AuthenticateUtils.getSignInState(response))
                     );
-
-                    setRenderApp(true);
                 })
                 .catch((error) => {
                     throw error;
@@ -352,7 +348,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             } }
         >
             <I18nextProvider i18n={ I18n.instance }>
-                { renderApp ? <App /> : <PreLoader /> }
+                <App />
             </I18nextProvider>
         </SecureApp>
     );
