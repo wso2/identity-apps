@@ -342,7 +342,8 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                 key: "templateID",
                 render: (app: ApplicationListItemInterface): ReactNode => {
 
-                    // Note: the templateId for Standard-Based Applications in applicationTemplates is 'custom-application' (only 1 template is available)
+                    // Note: the templateId for Standard-Based Applications in applicationTemplates is
+                    // 'custom-application'(only 1 template is available)
                     // But backend passes 3 distinct ids for Standard Based Applications
                     // So, a deep clone of a template with templateId === 'custom-application' should be made
                     // And change the name according to the templateId passed from the backend
@@ -372,7 +373,8 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                                 templateClone.name = SAMLProtocolTemplateItem.name;
                             } else if (app.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC) {
                                 templateClone.name = OAuthProtocolTemplateItem.name;
-                            } else if (app.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS) {
+                            } else if (app.templateId
+                                === ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS) {
                                 templateClone.name = PassiveStsProtocolTemplateItem.name;
                             }
                         }

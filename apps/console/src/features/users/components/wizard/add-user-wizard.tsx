@@ -257,7 +257,9 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
 
                 break;
             case 2:
-                setSubmitRoleList();
+                OrganizationUtils.isCurrentOrganizationRoot()
+                    ? setSubmitRoleList()
+                    : setFinishSubmit();
 
                 break;
             case 3:
@@ -578,7 +580,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         });
     };
 
-    const STEPS = [
+    const ALL_STEPS = [
         {
             content: (
                 <AddUser
@@ -620,7 +622,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                     ? (<RolePermissions
                         data-testid={ `${ testId }-role-permission` }
                         handleNavigateBack={ handleViewRolePermission }
-                        handleViewNextButton = { handleViewNextButton }
+                        handleViewNextButton={ handleViewNextButton }
                         roleId={ selectedRoleId }
                     />)
                     : (<AddUserRole
@@ -657,6 +659,11 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
             title: t("console:manage.features.user.modals.addUserWizard.steps.summary")
         }
     ];
+
+    const STEPS = OrganizationUtils.isCurrentOrganizationRoot()
+        ? [ ...ALL_STEPS ]
+        : [ ...ALL_STEPS.slice(0, 2), ...ALL_STEPS.slice(3) ];
+
 
     return (
         <Modal

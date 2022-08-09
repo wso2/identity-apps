@@ -62,7 +62,8 @@ export class RouteUtils {
         const sanitizedRoutes: RouteInterface[] = [];
 
         // Filters features based on scope requirements.
-        const filter = (routeArr: RouteInterface[] | ChildRouteInterface[], allowedScopes: string) => {
+        // `allow` enables child routes of allowed routes to be added to the `filteredRoutes` array.
+        const filter = (routeArr: RouteInterface[] | ChildRouteInterface[], allowedScopes: string, allow?: boolean) => {
             routeArr.forEach((route: RouteInterface | ChildRouteInterface) => {
                 let feature: FeatureAccessConfigInterface = null;
 
@@ -75,12 +76,13 @@ export class RouteUtils {
                 }
 
                 const handleRouteEnabled = () => {
+                    const isRouteAllowed: boolean = (!allowedRoutes || allowedRoutes.includes(route.id));
+
                     if (route.children) {
-                        filter(route.children, allowedScopes);
+                        filter(route.children, allowedScopes, isRouteAllowed);
                     }
 
-                    if (!hiddenRoutes?.includes(route.id) &&
-                        (!allowedRoutes || allowedRoutes.includes(route.id))) {
+                    if (!hiddenRoutes?.includes(route.id) && (isRouteAllowed || allow)) {
                         filteredRoutes.push(route);
 
                         if (route.showOnSidePanel) {
