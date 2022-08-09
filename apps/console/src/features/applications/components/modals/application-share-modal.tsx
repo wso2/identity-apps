@@ -199,6 +199,16 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
         }
     };
 
+    const handleHeaderCheckboxChange = useCallback(() => {
+        if (checkedUnassignedListItems.length === subOrganizationList.length) {
+            setCheckedUnassignedListItems([]);
+
+            return;
+        }
+
+        setCheckedUnassignedListItems(subOrganizationList);
+    }, [ subOrganizationList, setTempOrganizationList, checkedUnassignedListItems ]);
+
     return (
         <Modal
             closeOnDimmerClick
@@ -223,6 +233,8 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
                     >
                         <TransferList
                             isListEmpty={ !(tempOrganizationList?.length > 0) }
+                            handleHeaderCheckboxChange={ handleHeaderCheckboxChange }
+                            isHeaderCheckboxChecked={ checkedUnassignedListItems.length === subOrganizationList.length }
                             listType="unselected"
                             listHeaders={ [
                                 t("console:manage.features.transferList.list.headers.1"), ""
