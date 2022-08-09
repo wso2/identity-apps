@@ -105,7 +105,9 @@ export const applicationConfig: ApplicationConfig = {
     excludeIdentityClaims: false,
     excludeSubjectClaim: false,
     inboundOIDCForm: {
-        disabledGrantTypes: [],
+        disabledGrantTypes: {
+            "custom-application": []
+        },
         shouldValidateCertificate: true,
         showBackChannelLogout: true,
         showCertificates: true,
