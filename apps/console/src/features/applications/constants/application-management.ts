@@ -202,6 +202,8 @@ export class ApplicationManagementConstants {
     public static readonly JWT_BEARER: string = "urn:ietf:params:oauth:grant-type:jwt-bearer";
     public static readonly IWA_NTLM: string = "iwa:ntlm";
     public static readonly UMA_TICKET: string = "urn:ietf:params:oauth:grant-type:uma-ticket";
+    public static readonly DEVICE_GRANT: string = "urn:ietf:params:oauth:grant-type:device_code"
+;
 
     /**
      * Currently refresh grant type is recommended to use at least one of below.
@@ -240,7 +242,8 @@ export class ApplicationManagementConstants {
             ApplicationManagementConstants.PASSWORD,
             ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT,
             ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
-            ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT
+            ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT,
+            ApplicationManagementConstants.DEVICE_GRANT
         ]
     };
 
