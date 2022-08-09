@@ -340,7 +340,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                 });
 
             await getDecodedIDToken()
-                .then((idToken) => {
+                .then(async (idToken) => {
                     const tenantDomain: string = CommonAuthenticateUtils.deriveTenantDomainFromSubject(idToken?.sub);
 
                     isPrivilegedUser = idToken?.amr?.length > 0
@@ -350,7 +350,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                     const lastName = idToken?.family_name;
                     const fullName = firstName ? (firstName + (lastName ? (" " + lastName) : "")) : response.email;
 
-                    dispatch(
+                    await dispatch(
                         setSignIn<AuthenticatedUserInfo & TenantListInterface>(
                             Object.assign(CommonAuthenticateUtils.getSignInState(response), {
                                 associatedTenants:  isPrivilegedUser ? tenantDomain : idToken?.associated_tenants,
