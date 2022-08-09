@@ -200,15 +200,9 @@
                 <version>${totp.authenticator.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.wso2.carbon.identity.organization.management</groupId>
+                <groupId>org.wso2.carbon.identity.organization.management.core</groupId>
                 <artifactId>org.wso2.carbon.identity.organization.management.service</artifactId>
-                <version>${identity.organization.management.service.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>org.wso2.carbon.identity.auth.rest</groupId>
-                        <artifactId>org.wso2.carbon.identity.authz.service</artifactId>
-                    </exclusion>
-                </exclusions>
+                <version>${identity.organization.management.core.service.version}</version>
             </dependency>
 
             <dependency>
@@ -692,8 +686,9 @@
         <identity.extension.utils>1.0.8</identity.extension.utils>
         <carbon.identity.framework.version>5.21.30</carbon.identity.framework.version>
         <carbon.identity.framework.imp.pkg.version.range>[5.0.0, 6.0.0)</carbon.identity.framework.imp.pkg.version.range>
-        <identity.organization.management.service.version>1.0.65</identity.organization.management.service.version>
-        <identity.org.mgt.version.range>[1.0.65, 2.0.0)</identity.org.mgt.version.range>
+        <identity.organization.management.core.service.version>1.0.0
+        </identity.organization.management.core.service.version>
+        <identity.org.mgt.core.version.range>[1.0.0, 2.0.0)</identity.org.mgt.core.version.range>
         <carbon.identity.oauth.version>6.7.130</carbon.identity.oauth.version>
         <carbon.identity.oauth.imp.pkg.version.range>[6.1.0, 7.0.0)</carbon.identity.oauth.imp.pkg.version.range>
         <identity.governance.version>1.5.48</identity.governance.version>
