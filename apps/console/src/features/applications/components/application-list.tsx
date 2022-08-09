@@ -43,6 +43,7 @@ import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useE
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Header, Icon, Label, Popup, SemanticICONS } from "semantic-ui-react";
+import { OAuthProtocolTemplateItem, PassiveStsProtocolTemplateItem, SAMLProtocolTemplateItem } from "./meta";
 import { applicationConfig } from "../../../extensions";
 import {
     AppConstants,
@@ -63,7 +64,6 @@ import {
     ApplicationTemplateListItemInterface
 } from "../models";
 import { ApplicationTemplateManagementUtils } from "../utils";
-import { OAuthProtocolTemplateItem, PassiveStsProtocolTemplateItem, SAMLProtocolTemplateItem } from "./meta";
 
 /**
  *
@@ -305,6 +305,11 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                             }
                             <Header.Content>
                                 { app.name }
+                                {
+                                    app.advancedConfigurations.fragment && (
+                                        <Label size="mini">Fragment App</Label>
+                                    )
+                                }
                                 <Header.Subheader
                                     className="truncate ellipsis"
                                     data-testid={ `${ testId }-item-sub-heading` }
@@ -383,7 +388,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                             && applicationTemplates instanceof Array
                             && applicationTemplates.length > 0
                             && applicationTemplates.find((template) => template.id === app.templateId);
-                        console.log(app.isManagementApp);
+
                         return (
                             <div>
                                 { template?.name }
