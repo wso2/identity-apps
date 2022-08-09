@@ -907,6 +907,30 @@ export const console: ConsoleNS = {
                             },
                             tabName: "Provisionnement"
                         },
+                        shareApplication: {
+                            addSharingNotification: {
+                                genericError: {
+                                    description: "Le partage d'application a échoué. Veuillez réessayer",
+                                    message: "Le partage d'application a échoué!"
+                                },
+                                success: {
+                                    description: "Application partagée avec succès avec l'organisation ou les organisations",
+                                    message: "Application partagée!"
+                                }
+                            },
+                            heading: "Partager l'application",
+                            shareApplication: "Partager l'application",
+                            stopSharingNotification: {
+                                genericError: {
+                                    description: "Échec de l'arrêt du partage d'application pour {{organization}}",
+                                    message: "Échec de l'arrêt du partage d'application!"
+                                },
+                                success: {
+                                    description: "Le partage d'application s'est arrêté avec succès avec l'{{organisation}}",
+                                    message: "L'application partagée s'est arrêtée avec succès!"
+                                }
+                            }
+                        },
                         signOnMethod: {
                             sections: {
                                 authenticationFlow: {
