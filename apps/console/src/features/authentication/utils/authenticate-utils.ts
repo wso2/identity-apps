@@ -88,10 +88,10 @@ export class AuthenticateUtils {
             ) {
                 return Storage.SessionStorage;
             }
-    
+
             return window["AppUtils"].getConfig().idpConfigs?.storage;
         }
-    
+
         return storageFallback;
     }
 
