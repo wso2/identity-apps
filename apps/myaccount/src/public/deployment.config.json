@@ -7,9 +7,12 @@
         "enablePKCE": true,
         "clockTolerance": 300,
         "responseMode": "query",
-        "scope": [ "SYSTEM" ],
+        "scope": ["SYSTEM"],
         "serverOrigin": "https://localhost:9443",
-        "storage": "webWorker"
+        "storage": "webWorker",
+        "authorizeEndpointURL": "${serverOrigin}/${tenantPrefix}/${superTenantDomain}/oauth2/authorize?ut=${userTenantDomain}",
+        "logoutEndpointURL": "${serverOrigin}/${tenantPrefix}/${superTenantDomain}/oidc/logout",
+        "oidcSessionIFrameEndpointURL": "${serverOrigin}/${tenantPrefix}/${superTenantDomain}/oidc/checksession"
     },
     "i18nResourcePath": "",
     "isSaas": true,
