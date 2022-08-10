@@ -918,6 +918,12 @@ export const console: ConsoleNS = {
                                     message: "Application partagée!"
                                 }
                             },
+                            getSharedOrganizations: {
+                                genericError: {
+                                    description: "Échec de l'obtention de la liste des organisations partagées!",
+                                    message: "Échec de l'obtention de la liste des organisations partagées!"
+                                }
+                            },
                             heading: "Partager l'application",
                             shareApplication: "Partager l'application",
                             stopSharingNotification: {
