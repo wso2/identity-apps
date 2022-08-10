@@ -545,7 +545,9 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                         (isOrganizationManagementEnabled
                             && applicationConfig.editApplication.showApplicationShare
                             && !application.advancedConfigurations.fragment
-                            && application.access === ApplicationAccessTypes.WRITE) && (
+                            && application.access === ApplicationAccessTypes.WRITE
+                            && hasRequiredScopes(featureConfig?.applications,
+                                featureConfig?.applications?.scopes?.update, allowedScopes)) && (
                             <PrimaryButton onClick={ () => setShowAppShareModal(true) }>
                                 { t("console:develop.features.applications.edit.sections" +
                                     ".shareApplication.shareApplication") }
