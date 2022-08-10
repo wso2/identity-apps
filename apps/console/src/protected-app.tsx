@@ -526,6 +526,13 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
         if (sanitizedDevRoutes.length < 1) {
             dispatch(setDeveloperVisibility(false));
         }
+
+        if (sanitizedDevRoutes.length < 1 && sanitizedManageRoutes.length < 1) {
+            history.push({
+                pathname: AppConstants.getPaths().get("UNAUTHORIZED"),
+                search: "?error=" + AppConstants.LOGIN_ERRORS.get("ACCESS_DENIED")
+            });
+        }
     }, [ allowedScopes, dispatch, featureConfig ]);
 
     useEffect(() => {
