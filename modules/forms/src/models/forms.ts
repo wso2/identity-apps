@@ -137,6 +137,7 @@ export interface RadioField extends FormFieldModel {
     default: string;
     children: RadioChild[];
     value?: string;
+    onBefore?: (event: React.SyntheticEvent,value: string | number) => boolean; 
     [extra: string]: any;
 }
 

@@ -23,3 +23,4 @@ export * from "./loaders";
 export * from "./profile";
 export * from "./access-control";
 export * from "./organization";
+export * from "./routes";

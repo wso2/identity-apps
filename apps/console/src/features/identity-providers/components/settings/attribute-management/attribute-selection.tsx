@@ -105,7 +105,10 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
     };
 
     const renderMappingTable = (): ReactElement => (
-        <Grid data-testid={ testId } className="user-role-edit-header-segment clearing attributes">
+        <Grid 
+            data-testid={ testId } 
+            className="user-role-edit-header-segment clearing attributes ml-0 mr-0"
+        >
             <Grid.Row>
                 <Table data-testid={ `${ testId }-action-bar` } basic="very" compact>
                     <Table.Body>

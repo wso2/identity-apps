@@ -401,7 +401,7 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                     <ConfirmationModal
                         data-testid={ `${ testId }-delete-item-confirmation-modal` }
                         onClose={ (): void => setShowDeleteConfirmationModal(false) }
-                        type="warning"
+                        type="negative"
                         open={ showRoleDeleteConfirmation }
                         assertionHint={ t("console:manage.features.roles.list.confirmations.deleteItem.assertionHint") }
                         assertionType="checkbox"
@@ -417,7 +417,7 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                         <ConfirmationModal.Header>
                             { t("console:manage.features.roles.list.confirmations.deleteItem.header") }
                         </ConfirmationModal.Header>
-                        <ConfirmationModal.Message attached warning>
+                        <ConfirmationModal.Message attached negative>
                             { t("console:manage.features.roles.list.confirmations.deleteItem.message",
                                 { type: "role" }) }
                         </ConfirmationModal.Message>

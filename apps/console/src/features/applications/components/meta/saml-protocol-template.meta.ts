@@ -21,12 +21,14 @@ import {
     ApplicationTemplateListItemInterface,
     DefaultProtocolTemplate
 } from "../../models";
+import {ApplicationManagementConstants} from "../../constants";
 
 export const SAMLProtocolTemplateItem: ApplicationTemplateListItemInterface = {
     authenticationProtocol: "saml",
     id: DefaultProtocolTemplate.SAML,
     image: "saml",
-    name: "SAML"
+    name: "SAML",
+    templateId: ApplicationManagementConstants.CUSTOM_APPLICATION_SAML
 };
 
 export const SAMLProtocolTemplate: ApplicationTemplateInterface = {

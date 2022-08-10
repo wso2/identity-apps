@@ -49,7 +49,23 @@ export const identityProviderConfig: IdentityProviderConfig = {
         ): ReactElement | null => {
             return null;
         },
-        isTabEnabledForIdP: (_templateId: string, _tabType: IdentityProviderTabTypes): boolean | undefined => {
+        isTabEnabledForIdP: (templateType: string, tabType: IdentityProviderTabTypes): boolean | undefined => {
+
+            const templateMapping = new Map<string, Set<string>>([
+                [
+                    IdentityProviderTabTypes.USER_ATTRIBUTES, new Set([
+                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.FACEBOOK,
+                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.GOOGLE,
+                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.GITHUB,
+                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.OIDC
+                    ])
+                ]
+            ]);
+
+            if (templateMapping.get(tabType)?.has(templateType)) {
+                return true;
+            }
+
             return true;
         },
         showAdvancedSettings: true,

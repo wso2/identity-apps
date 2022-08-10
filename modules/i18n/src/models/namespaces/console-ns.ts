@@ -761,6 +761,10 @@ export interface ConsoleNS {
                                     pemValue: FormAttributes;
                                     type: FormAttributes;
                                 };
+                                invalidOperationModal?: {
+                                    header: string;
+                                    message: string;
+                                };
                             };
                         };
                     };
@@ -3227,6 +3231,16 @@ export interface ConsoleNS {
                 categories: string;
                 pageSubHeading: string;
                 connectorSubHeading: string;
+                connectors: {
+                    "analytics-engine": {
+                        messages: {
+                            deprecation: {
+                                description: string;
+                                heading: string;
+                            };
+                        };
+                    };
+                };
             };
             helpPanel: {
                 notifications: {

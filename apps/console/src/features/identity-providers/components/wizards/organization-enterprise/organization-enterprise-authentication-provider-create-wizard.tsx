@@ -19,7 +19,7 @@
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { GenericIcon, LinkButton, PrimaryButton, useWizardAlert } from "@wso2is/react-components";
+import { GenericIcon, Heading, LinkButton, PrimaryButton, useWizardAlert } from "@wso2is/react-components";
 import { ContentLoader } from "@wso2is/react-components/src/components/loader/content-loader";
 import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
@@ -32,6 +32,7 @@ import {
 } from "./organization-enterprise-authentication-provider-create-wizard-content";
 import { identityProviderConfig } from "../../../../../extensions/configs";
 import {
+    AppConstants,
     AppState,
     ConfigReducerStateInterface,
     EventPublisher,
@@ -99,6 +100,7 @@ export const OrganizationEnterpriseAuthenticationProviderCreateWizard: FunctionC
         onIDPCreate,
         currentStep,
         title,
+        subTitle,
         template,
         ["data-componentid"]: componentId
     } = props;
@@ -224,7 +226,6 @@ export const OrganizationEnterpriseAuthenticationProviderCreateWizard: FunctionC
             ];
         }
 
-        delete (identityProvider.image);
         delete (identityProvider.certificate);
         delete (identityProvider.claims);
         delete (identityProvider.provisioning);
@@ -271,16 +272,16 @@ export const OrganizationEnterpriseAuthenticationProviderCreateWizard: FunctionC
 
         // // TODO: Refactor the usage of absolute image paths once Media Service is available.
         // // Tracked here - https://github.com/wso2/product-is/issues/12396
-        // if (AppConstants.getClientOrigin()) {
-        //     if (AppConstants.getAppBasename()) {
-        //         identityProvider.image = AppConstants.getClientOrigin() +
-        //         "/" + AppConstants.getAppBasename() +
-        //         "/libs/themes/default/assets/images/identity-providers/enterprise-idp-illustration.svg";
-        //     } else {
-        //         identityProvider.image = AppConstants.getClientOrigin() +
-        //         "/libs/themes/default/assets/images/identity-providers/enterprise-idp-illustration.svg";
-        //     }
-        // }
+        if (AppConstants.getClientOrigin()) {
+            if (AppConstants.getAppBasename()) {
+                identityProvider.image = AppConstants.getClientOrigin() +
+                "/" + AppConstants.getAppBasename() +
+                "/libs/themes/default/assets/images/identity-providers/organization-sso.svg";
+            } else {
+                identityProvider.image = AppConstants.getClientOrigin() +
+                "/libs/themes/default/assets/images/identity-providers/organization-sso.svg";
+            }
+        }
 
         handleWizardFormFinish(identityProvider);
     };
@@ -433,7 +434,7 @@ export const OrganizationEnterpriseAuthenticationProviderCreateWizard: FunctionC
                     >
                         <div className="display-flex">
                             <GenericIcon
-                                icon={ getIdPIcons().default }
+                                icon={ getIdPIcons().organizationSSO }
                                 size="mini"
                                 transparent
                                 spaced="right"
@@ -441,6 +442,11 @@ export const OrganizationEnterpriseAuthenticationProviderCreateWizard: FunctionC
                             />
                             <div className="ml-1">
                                 { title }
+                                { subTitle &&
+                                    (<Heading as="h6">
+                                        { subTitle }
+                                    </Heading>)
+                                }
                             </div>
                         </div>
                     </ModalWithSidePanel.Header>

@@ -399,7 +399,7 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
                     (<ConfirmationModal
                         data-testid={ `${ testId }-delete-item-confirmation-modal` }
                         onClose={ (): void => setShowDeleteConfirmationModal(false) }
-                        type="warning"
+                        type="negative"
                         open={ showGroupDeleteConfirmation }
                         assertionHint={ t("console:manage.features.roles.list.confirmations.deleteItem.assertionHint") }
                         assertionType="checkbox"
@@ -415,7 +415,7 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
                         <ConfirmationModal.Header>
                             { t("console:manage.features.roles.list.confirmations.deleteItem.header") }
                         </ConfirmationModal.Header>
-                        <ConfirmationModal.Message attached warning>
+                        <ConfirmationModal.Message attached negative>
                             { t("console:manage.features.roles.list.confirmations.deleteItem.message",
                                 { type: "group" }) }
                         </ConfirmationModal.Message>

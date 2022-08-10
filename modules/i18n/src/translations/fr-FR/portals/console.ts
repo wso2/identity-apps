@@ -277,7 +277,7 @@ export const console: ConsoleNS = {
                     para1: "This policy describes how WSO2 IS captures your personal information, the purposes of" +
                         " collection, and information about the retention of your personal information.",
                     para2: "Please note that this policy is for reference only, and is applicable for the software " +
-                        "as a product. WSO2 Inc. and its developers have no access to the information held within " +
+                        "as a product. WSO2 LLC. and its developers have no access to the information held within " +
                         "WSO2 IS. Please see the <1>disclaimer</1> section for more information.",
                     para3: "Entities, organizations or individuals controlling the use and administration of WSO2 IS " +
                         "should create their own privacy policies setting out the manner in which data is controlled " +
@@ -1387,6 +1387,13 @@ export const console: ConsoleNS = {
                                     customSaml: "Ce certificat permet de valider les signatures des " +
                                         "requêtes signées et de chiffrer les assertions SAML renvoyées " +
                                         "après authentification."
+                                },
+                                invalidOperationModal: {
+                                    header: "Opération invalide",
+                                    message: "Vous devez désactiver la validation de la signature de la demande pour"+
+                                        " supprimer le certificat. Si la signature de requête ou de réponse est" + 
+                                        " activée, il est essentiel de disposer d'un certificat valide" + 
+                                        " pour vérifier la signature."
                                 }
                             }
                         }
@@ -5445,6 +5452,16 @@ export const console: ConsoleNS = {
             governanceConnectors: {
                 categories: "Catégories",
                 connectorSubHeading: "Configurer les paramètre {{ name }}.",
+                connectors: {
+                    "analytics-engine": {
+                        messages: {
+                            deprecation: {
+                                description: "WSO2 Identity Server Analytics est désormais obsolète.Utilisez <1>Elk Analytics</1> à la place.",
+                                heading: "Décousue"
+                            }
+                        }
+                    }
+                },
                 disabled: "Désactivé",
                 enabled: "Activé",
                 form: {
@@ -6109,7 +6126,8 @@ export const console: ConsoleNS = {
                         subtitles: {
                             0: "Il n'y a pas d'organisations pour le moment.",
                             1: "Vous pouvez facilement ajouter une nouvelle organisation en",
-                            2: "en cliquant sur le bouton ci-dessous."
+                            2: "en cliquant sur le bouton ci-dessous.",
+                            3: "Il n'y a aucune organisation sous {{parent}} pour le moment."
                         },
                         title: "Ajouter une nouvelle organisation"
                     }

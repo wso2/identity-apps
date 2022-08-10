@@ -403,6 +403,7 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
             <PageLayout
                 isLoading={ isLoading }
                 title={ resolvePageHeading() }
+                pageTitle={ resolvePageHeading() }
                 description={ resolvePageDescription() }
                 data-testid={ `${ testId }-page-layout` }
                 image={ resolvePageHeaderImage() }

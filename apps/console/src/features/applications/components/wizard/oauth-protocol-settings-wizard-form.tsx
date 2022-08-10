@@ -550,42 +550,42 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                     />
                                     { (callBackURLFromTemplate) && (
                                         <Message
-                                             type="info"
-                                             content={
-                                                 <>
-                                                     {
-                                                         <Trans
-                                                             i18nKey={ "console:develop.features." +
+                                            type="info"
+                                            content={
+                                                (<>
+                                                    {
+                                                        <Trans
+                                                            i18nKey={ "console:develop.features." +
                                                              "applications.forms.inboundOIDC.fields." +
                                                              "callBackUrls.info" }
-                                                             tOptions={ {
-                                                                 callBackURLFromTemplate: callBackURLFromTemplate
-                                                             } }
-                                                         >
+                                                            tOptions={ {
+                                                                callBackURLFromTemplate: callBackURLFromTemplate
+                                                            } }
+                                                        >
                                                              Don’t have an app? Try out a sample app
                                                              using <strong>{ callBackURLFromTemplate }</strong>
                                                              as the Authorized URL.
-                                                         </Trans>
-                                                     }
-                                                     {
-                                                         (callBackUrls === undefined || callBackUrls === "") && (
-                                                             <LinkButton
-                                                                 className={ "m-1 p-1 with-no-border orange" }
-                                                                 onClick={ (e) => {
-                                                                     e.preventDefault();
-                                                                     const host = new URL(callBackURLFromTemplate);
+                                                        </Trans>
+                                                    }
+                                                    {
+                                                        (callBackUrls === undefined || callBackUrls === "") && (
+                                                            <LinkButton
+                                                                className={ "m-1 p-1 with-no-border orange" }
+                                                                onClick={ (e) => {
+                                                                    e.preventDefault();
+                                                                    const host = new URL(callBackURLFromTemplate);
 
-                                                                     handleAddAllowOrigin(host.origin);
-                                                                     setCallBackUrls(callBackURLFromTemplate);
-                                                                 } }
-                                                                 data-testid={ `${ testId }-add-now-button` }
-                                                             >
-                                                                 <span style={ { fontWeight: "bold" } }>Add Now</span>
-                                                             </LinkButton>
-                                                         )
-                                                     }
-                                                 </>
-                                             }
+                                                                    handleAddAllowOrigin(host.origin);
+                                                                    setCallBackUrls(callBackURLFromTemplate);
+                                                                } }
+                                                                data-testid={ `${ testId }-add-now-button` }
+                                                            >
+                                                                <span style={ { fontWeight: "bold" } }>Add Now</span>
+                                                            </LinkButton>
+                                                        )
+                                                    }
+                                                </>)
+                                            }
                                         />
                                     ) }
                                 </Grid.Column>

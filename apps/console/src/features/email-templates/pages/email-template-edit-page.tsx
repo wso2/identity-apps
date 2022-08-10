@@ -156,6 +156,12 @@ const EmailTemplateEditPage: FunctionComponent<EmailTemplateEditPagePropsInterfa
                         { template: emailTemplateTypeDetails?.displayName })
                     : t("console:manage.pages.addEmailTemplate.title")
             }
+            pageTitle={
+                formMode === EmailTemplateFormModes.EDIT
+                    ? t("console:manage.pages.editTemplate.title",
+                        { template: emailTemplateTypeDetails?.displayName })
+                    : t("console:manage.pages.addEmailTemplate.title")
+            }
             backButton={ {
                 onClick: handleBackButtonClick,
                 text: formMode === EmailTemplateFormModes.EDIT

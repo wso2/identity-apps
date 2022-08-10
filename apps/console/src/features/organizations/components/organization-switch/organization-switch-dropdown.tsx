@@ -80,10 +80,21 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
     const [ isDropDownOpen, setIsDropDownOpen ] = useState<boolean>(false);
     const [ search, setSearch ] = useState<string>("");
 
+    /**
+     * Show the organization switching dropdown only if
+     *  - the extensions config enables this
+     *  - the requires scopes are there
+     *  - the organization management feature is enabled by the backend
+     *  - the user is logged in to a non-super-tenant account
+     */
     const isOrgSwitcherEnabled = useMemo(() => {
         return (
             isOrganizationManagementEnabled &&
-            tenantDomain === AppConstants.getSuperTenant() &&
+            // The `tenantDomain` takes the organization id when you log in to a sub-organization.
+            // So, we cannot use `tenantDomain` to check
+            // if the user is logged in to a non-super-tenant account reliably.
+            // So, we check if the organization id is there in the URL to see if the user is in a sub-organization.
+            (tenantDomain === AppConstants.getSuperTenant() || window[ "AppUtils" ].getConfig().organizationName) &&
             hasRequiredScopes(feature?.organizations, feature?.organizations?.scopes?.read, scopes) &&
             organizationConfigs.showOrganizationDropdown
         );

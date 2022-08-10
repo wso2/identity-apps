@@ -266,6 +266,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
 
     const getMappedClaims = (newClaimId) => {
         if (newClaimId !== null) {
+            console.log("obtain claimid:"+newClaimId);
             getAllExternalClaims(newClaimId, null)
                 .then((response) => {
                     setIsClaimRequestLoading(true);
