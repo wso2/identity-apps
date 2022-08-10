@@ -453,11 +453,13 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                         featureConfig?.applications?.scopes?.delete, allowedScopes);
                     const isSuperTenant: boolean = (tenantDomain === AppConstants.getSuperTenant());
                     const isSystemApp: boolean = isSuperTenant && (UIConfig.systemAppsIdentifiers.includes(app?.name));
+                    const isFragmentApp: boolean = app.advancedConfigurations.fragment;
 
                     return hasScopes ||
                             isSystemApp ||
                             (app?.access === ApplicationAccessTypes.READ) ||
-                            !applicationConfig.editApplication.showDeleteButton(app);
+                            !applicationConfig.editApplication.showDeleteButton(app) ||
+                            isFragmentApp;
                 },
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (e: SyntheticEvent, app: ApplicationListItemInterface): void => {
