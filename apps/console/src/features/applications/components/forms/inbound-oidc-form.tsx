@@ -735,13 +735,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         }
 
         // Remove disabled grant types from the sorted list.
-        if (applicationConfig.inboundOIDCForm.disabledGrantTypes &&
-            applicationConfig.inboundOIDCForm.disabledGrantTypes.length > 0) {
-            const filteredGrantList = allowedList.filter(function( item ) {
-                return (!applicationConfig.inboundOIDCForm.disabledGrantTypes.includes(item.value));
-            });
+        if (applicationConfig.inboundOIDCForm.disabledGrantTypes
+            && applicationConfig.inboundOIDCForm.disabledGrantTypes[template.id]) {
+            const disabledGrantTypes = applicationConfig.inboundOIDCForm.disabledGrantTypes[template.id];
 
-            return filteredGrantList;
+            return allowedList.filter((grant) => !disabledGrantTypes.includes(grant.value));
         }
 
         return allowedList;

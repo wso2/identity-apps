@@ -95,7 +95,9 @@ export interface ApplicationConfig {
         showRequestObjectSignatureValidation: boolean;
         showCertificates: boolean;
         showReturnAuthenticatedIdPList: boolean;
-        disabledGrantTypes: string[];
+        disabledGrantTypes: {
+            "custom-application": string[]
+        };
     };
     inboundSAMLForm: {
         showApplicationQualifier: boolean;
