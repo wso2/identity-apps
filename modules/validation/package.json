@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/validation",
-    "version": "1.4.28",
+    "version": "1.4.29",
     "description": "Validator module for WSO2 Identity Server web-apps.",
     "keywords": [
         "WSO2",
