@@ -2309,6 +2309,9 @@ export const console: ConsoleNS = {
                     columns: {
                         actions: "ක්‍රියා",
                         name: "නම"
+                    },
+                    labels: {
+                        fragment: "ඛණ්ඩක යෙදුම"
                     }
                 },
                 myaccount: {

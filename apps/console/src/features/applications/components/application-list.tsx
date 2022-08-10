@@ -307,7 +307,9 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                                 { app.name }
                                 {
                                     app.advancedConfigurations.fragment && (
-                                        <Label size="mini">Fragment App</Label>
+                                        <Label size="mini">
+                                            { t("console:develop.features.applications.list.labels.fragment") }
+                                        </Label>
                                     )
                                 }
                                 <Header.Subheader

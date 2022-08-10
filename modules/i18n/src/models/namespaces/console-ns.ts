@@ -1002,6 +1002,9 @@ export interface ConsoleNS {
                         predefined: string;
                         custom: string;
                     };
+                    labels: {
+                        fragment: string;
+                    }
                 };
                 myaccount: {
                     title: string;

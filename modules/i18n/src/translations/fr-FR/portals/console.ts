@@ -2369,6 +2369,9 @@ export const console: ConsoleNS = {
                     columns: {
                         actions: "Actions",
                         name: "Nom"
+                    },
+                    labels: {
+                        fragment: "Fragmenter App"
                     }
                 },
                 myaccount: {
