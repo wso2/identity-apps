@@ -127,6 +127,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             userSessions: "",
             userStores: "",
             users: "",
+            usersSuperOrganization: "",
             wellKnown: ""
         },
         features: {

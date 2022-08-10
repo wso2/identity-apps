@@ -31,6 +31,7 @@ export const getOrganizationsResourceEndpoints = (
 ): OrganizationResourceEndpointsInterface => {
     return {
         organizations: `${ serverHostWithOrgPath }/api/server/v1`,
-        rootOrganization: `${ serverHost }/api/server/v1`
+        rootOrganization: `${ serverHost }/api/server/v1`,
+        usersSuperOrganization: `${ serverHost }/api/users/v1/me/organizations`
     };
 };
