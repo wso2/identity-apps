@@ -484,8 +484,9 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                                     }
                                     defaultSearchAttribute="name"
                                     defaultSearchOperator="co"
-                                    predefinedDefaultSearchStrategy={"name co %search-value% " +
-                                    "or clientId co %search-value%"}
+                                    predefinedDefaultSearchStrategy={
+                                        "name co %search-value% or clientId co %search-value%"
+                                    }
                                     triggerClearQuery={ triggerClearQuery }
                                     data-testid={ `${ testId }-list-advanced-search` }
                                 />
