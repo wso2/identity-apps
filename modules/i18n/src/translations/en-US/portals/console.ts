@@ -2325,6 +2325,9 @@ export const console: ConsoleNS = {
                     columns: {
                         actions: "Actions",
                         name: "Name"
+                    },
+                    labels: {
+                        fragment: "Fragment App"
                     }
                 },
                 myaccount: {
