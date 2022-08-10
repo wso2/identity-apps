@@ -142,7 +142,10 @@
                         <% Map<String, String[]> requestMap = request.getParameterMap();
                             for (Map.Entry<String, String[]> entry : requestMap.entrySet()) {
                                 String key = Encode.forHtmlAttribute(entry.getKey());
-                                String value = Encode.forHtmlAttribute(entry.getValue()[0]); %>
+                                String value = Encode.forHtmlAttribute(entry.getValue()[0]);
+                                if (StringUtils.equalsIgnoreCase("reCaptcha", key)) {
+                                    continue;
+                                } %>
                         <div class="field">
                             <input id="<%= key%>" name="<%= key%>" type="hidden"
                                    value="<%=value%>" class="form-control">
