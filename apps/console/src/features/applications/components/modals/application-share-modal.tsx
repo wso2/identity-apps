@@ -47,6 +47,10 @@ export interface ApplicationShareModalPropsInterface extends ModalProps, Identif
      * List of organization that this application is shared with.
      */
     sharedOrganizationList: Array<OrganizationInterface>;
+    /**
+     * Callback when the application sharing completed.
+     */
+    onApplicationSharingCompleted: () => void;
 }
 
 export const ApplicationShareModal: FunctionComponent<ApplicationShareModalPropsInterface> = (
@@ -59,6 +63,7 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
         sharedOrganizationList,
         clientId,
         onClose,
+        onApplicationSharingCompleted,
         ["data-componentid"]: componentId,
         ...rest
     } = props;
@@ -120,7 +125,8 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
                     eventPublisher.publish("application-share-error", {
                         "client-id": clientId
                     });
-                });
+                })
+                .finally(() => onApplicationSharingCompleted());
         }
 
         removedOrganization.forEach((removedOrganization) => {

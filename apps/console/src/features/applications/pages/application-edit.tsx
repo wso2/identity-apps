@@ -23,7 +23,7 @@ import { AnimatedAvatar, AppAvatar, LabelWithPopup, PageLayout, PrimaryButton } 
 import cloneDeep from "lodash-es/cloneDeep";
 import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
+import React, { FunctionComponent, ReactElement, useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
@@ -455,6 +455,10 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         );
     };
 
+    const onApplicationSharingCompleted = useCallback(() => {
+        getApplication(application.id);
+    }, [ getApplication, application ]);
+
     /**
      * Returns if the application is readonly or not by evaluating the `readOnly` attribute in
      * URL, the `access` attribute in application info response && the scope validation.
@@ -578,6 +582,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                     subOrganizationList={ subOrganizationList }
                     sharedOrganizationList={ sharedOrganizationList }
                     onClose={ () => setShowAppShareModal(false) }
+                    onApplicationSharingCompleted={ onApplicationSharingCompleted }
                 />
             ) }
         </PageLayout>
