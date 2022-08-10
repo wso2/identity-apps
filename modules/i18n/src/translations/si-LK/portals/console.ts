@@ -579,7 +579,7 @@ export const console: ConsoleNS = {
                             }
                         }
                     },
-                    placeholder: "යෙදුම් නාමයෙන් සොයන්න"
+                    placeholder: "යෙදුම් නාමයෙන් හෝ සේවාලාභී හැඳුනුම්පතෙන් සොයන්න"
                 },
                 confirmations: {
                     addSocialLogin: {
