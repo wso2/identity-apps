@@ -421,7 +421,7 @@
             "MagicLinkAuthenticator"
         ],
         "i18nConfigs": {
-            "showLanguageSwitcher": false,
+            "showLanguageSwitcher": true,
             "langAutoDetectEnabled":false
         },
         "isCookieConsentBannerEnabled": false,

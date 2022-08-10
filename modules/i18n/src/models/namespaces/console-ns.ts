@@ -87,6 +87,9 @@ export interface ConsoleNS {
             content: string;
             confirmButton: string;
         };
+        dateTime: {
+            humanizedDateString: string;
+        };
         header: {
             appSwitch: {
                 console: AppSwitchItemInterface;
@@ -282,7 +285,6 @@ export interface ConsoleNS {
         sidePanel: {
             privacy: string;
         };
-
     };
     develop: {
         features: {
@@ -3618,6 +3620,7 @@ export interface ConsoleNS {
                 };
             };
             sidePanel: {
+                accountManagement: string;
                 addEmailTemplate: string;
                 addEmailTemplateLocale: string;
                 approvals: string;
@@ -3645,9 +3648,15 @@ export interface ConsoleNS {
                 generalConfigurations: string;
                 groups: string;
                 localDialect: string;
+                loginAttemptsSecurity: string;
+                multiFactorAuthenticators: string;
                 organizations: string;
+                otherSettings: string;
                 overview: string;
+                passwordPolicies: string;
+                remoteFetchConfig: string
                 roles: string;
+                userOnboarding: string;
                 users: string;
                 userstoreTemplates: string;
                 userstores: string;

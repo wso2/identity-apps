@@ -74,6 +74,9 @@ export const console: ConsoleNS = {
                 "fluides et personnalisés. Pour En savoir plus sur la façon dont nous utilisons les cookies, " +
                 "reportez-vous à notre <1>Politique relative aux cookies</1>."
         },
+        dateTime: {
+            humanizedDateString: "Dernière modification {{date}} depuis"
+        },
         header: {
             appSwitch: {
                 console: {
@@ -6719,6 +6722,7 @@ export const console: ConsoleNS = {
                 }
             },
             sidePanel: {
+                accountManagement: "Gestion de compte",
                 addEmailTemplate: "Ajouter un modèle d'e-mail",
                 addEmailTemplateLocale: "Ajouter une langue de modèle d'e-mail",
                 approvals: "Approbations",
@@ -6746,9 +6750,15 @@ export const console: ConsoleNS = {
                 generalConfigurations: "Général",
                 groups: "Groupes",
                 localDialect: "Dialecte local",
+                loginAttemptsSecurity: "Sécurité des tentatives de connexion",
+                multiFactorAuthenticators: "Authentificateurs multi-facteurs",
                 organizations: "Organisations",
+                otherSettings: "Autres réglages",
                 overview: "Vue d'ensemble",
+                passwordPolicies: "Politiques de mot de passe",
+                remoteFetchConfig: "Configurations à distance",
                 roles: "Rôles",
+                userOnboarding: "Intégration des utilisateurs",
                 users: "Utilisateurs",
                 userstoreTemplates: "Modèles d'annuaires",
                 userstores: "Annuaires"

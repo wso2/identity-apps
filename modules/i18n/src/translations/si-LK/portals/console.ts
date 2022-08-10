@@ -73,6 +73,9 @@ export const console: ConsoleNS = {
                 "කුකීස් භාවිතා කරනුයේ සුමට හා පුද්ගලීකරණය කළ සේවාවන් සපයන අතරම අඛණ්ඩ අඛණ්ඩ සැසියක් පවත්වා ගන්න." +
                 "අපි කුකීස් භාවිතා කරන ආකාරය ගැන තව දැනගන්න, අපගේ <1>Cookie Policy</1> එක බලන්න."
         },
+        dateTime: {
+            humanizedDateString: "අවසන් වරට වෙනස් කරන ලද්දේ {{date}} පෙර"
+        },
         header: {
             appSwitch: {
                 console: {
@@ -6574,6 +6577,7 @@ export const console: ConsoleNS = {
                 }
             },
             sidePanel: {
+                accountManagement: "ගිණුම් කළමනාකරණය",
                 addEmailTemplate: "විද්‍යුත් තැපැල් අච්චුව එක් කරන්න",
                 addEmailTemplateLocale: "විද්‍යුත් තැපැල් ආකෘති පෙදෙසි එක් කරන්න",
                 approvals: "අනුමත කිරීම්",
@@ -6601,9 +6605,15 @@ export const console: ConsoleNS = {
                 generalConfigurations: "ජනරාල්",
                 groups: "කණ්ඩායම්",
                 localDialect: "දේශීය උපභාෂාව",
+                loginAttemptsSecurity: "පුරනය වීමේ උත්සාහයන් ආරක්ෂාව",
+                multiFactorAuthenticators: "බහු සාධක සත්‍යාපනය කරන්නන්",
                 organizations: "ආයතන",
+                otherSettings: "වෙනත් සැකසුම්",
                 overview: "දළ විශ්ලේෂණය",
+                passwordPolicies: "මුරපද ප්රතිපත්ති",
+                remoteFetchConfig: "දුරස්ථ සැකසුම්",
                 roles: "භූමිකාවන්",
+                userOnboarding: "පරිශීලක ඇතුල්වීම",
                 users: "පරිශීලකයින්",
                 userstoreTemplates: "පරිශීලක වෙළඳසැල් සැකිලි",
                 userstores: "පරිශීලක වෙළඳසැල්"

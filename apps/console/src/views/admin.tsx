@@ -31,6 +31,7 @@ import {
     SidePanel,
     TopLoadingBar
 } from "@wso2is/react-components";
+import camelCase from "lodash-es/camelCase";
 import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
@@ -108,7 +109,7 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
         location
     } = props;
 
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const { headerHeight, footerHeight } = useUIElementSizes();
 
     const dispatch = useDispatch();
@@ -203,6 +204,14 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
                         // TODO: Implement sub category handling logic here.
                     }
 
+                    console.log(i18n.language);
+                    console.log(i18n.t(`console:manage.features.sidePanel.${camelCase(category.name)}`, { lng: i18n.language }));
+                    console.log(t(`console:manage.features.sidePanel.${camelCase(category.name)}`));
+                    console.log("printed t");
+                    const categoryName = 
+                        t(`console:manage.features.sidePanel.${camelCase(category.name)}`) 
+                            ?? category.name;
+
                     filteredRoutesClone.unshift({
                         category: "console:manage.features.sidePanel.categories.configurations",
                         component: lazy(() => import("../features/server-configurations/pages/governance-connectors")),
@@ -211,7 +220,7 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
                             icon: getSidePanelIcons().connectors[category.id] ?? getSidePanelIcons().connectors.default
                         },
                         id: category.id,
-                        name: category.name,
+                        name: categoryName,
                         order:
                             category.id === ServerConfigurationsConstants.OTHER_SETTINGS_CONNECTOR_CATEGORY_ID
                                 ? filteredRoutesClone.length + governanceConnectorCategories.length
@@ -274,6 +283,7 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
         dispatch(getProfileInformation());
 
     }, [
+        i18n.language,
         allowedScopes,
         governanceConnectorCategories,
         featureConfig,

@@ -73,6 +73,9 @@ export const console: ConsoleNS = {
                 "maintain an uninterrupted continuous session while providing smooth and personalized services. To " +
                 "learn more about how we use cookies, refer our <1>Cookie Policy</1>."
         },
+        dateTime: {
+            humanizedDateString: "Last modified {{date}} ago"
+        },
         header: {
             appSwitch: {
                 console: {
@@ -8074,6 +8077,7 @@ export const console: ConsoleNS = {
                 }
             },
             sidePanel: {
+                accountManagement: "Account Management",
                 addEmailTemplate: "Add Email Template",
                 addEmailTemplateLocale: "Add Email Template Locale",
                 approvals: "Approvals",
@@ -8101,9 +8105,15 @@ export const console: ConsoleNS = {
                 generalConfigurations: "General",
                 groups: "Groups",
                 localDialect: "Attributes",
+                loginAttemptsSecurity: "Login Attempts Security",
+                multiFactorAuthenticators: "Multi Factor Authenticators",
                 organizations: "Organizations",
+                otherSettings: "Other Settings",
                 overview: "Overview",
+                passwordPolicies: "Password Policies",
+                remoteFetchConfig: "Remote Configurations",
                 roles: "Roles",
+                userOnboarding: "User Onboarding",
                 users: "Users",
                 userstoreTemplates: "User Store Templates",
                 userstores: "User Stores"
