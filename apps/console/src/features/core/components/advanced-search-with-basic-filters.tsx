@@ -99,6 +99,10 @@ export interface AdvancedSearchWithBasicFiltersPropsInterface extends TestableCo
      */
     placeholder: string;
     /**
+     * Predefined Default Search strategy. ex: "name co %search-value% or clientId co %search-value%"
+     */
+    predefinedDefaultSearchStrategy?: string;
+    /**
      * Submit button text.
      */
     submitButtonLabel?: string;
@@ -143,6 +147,7 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
         filterValuePlaceholder,
         onFilter,
         placeholder,
+        predefinedDefaultSearchStrategy,
         resetButtonLabel,
         showResetButton,
         submitButtonLabel,
@@ -212,6 +217,17 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
     };
 
     /**
+     * Handles defaultSearchStrategy value.
+     */
+    const handleDefaultSearchStrategy = (): string => {
+        if (predefinedDefaultSearchStrategy) {
+            return predefinedDefaultSearchStrategy;
+        } else {
+            return `${defaultSearchAttribute} ${defaultSearchOperator} %search-value%`;
+        }
+    }
+
+    /**
      * Default filter condition options.
      *
      * @type {({text: string; value: string})[]}
@@ -240,7 +256,7 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
             aligned="left"
             clearButtonPopupLabel={ t("console:common.advancedSearch.popups.clear") }
             clearIcon={ getAdvancedSearchIcons().clear }
-            defaultSearchStrategy={ defaultSearchAttribute + " " + defaultSearchOperator }
+            defaultSearchStrategy={ handleDefaultSearchStrategy() }
             dropdownTriggerPopupLabel={ t("console:common.advancedSearch.popups.dropdown") }
             fill={ fill }
             hintActionKeys={ t("console:common.advancedSearch.hints.querySearch.actionKeys") }
