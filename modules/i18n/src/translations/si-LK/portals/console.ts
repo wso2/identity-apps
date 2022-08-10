@@ -911,8 +911,14 @@ export const console: ConsoleNS = {
                                     message: "යෙදුම් බෙදාගැනීම අසාර්ථක විය!"
                                 },
                                 success: {
-                                    description: "අයදුම්පත සංවිධාන(ය) සමඟ සාර්ථකව බෙදා ගන්නා ලදී",
+                                    description: "යෙදුම සංවිධාන(ය) සමඟ සාර්ථකව බෙදා ගන්නා ලදී",
                                     message: "යෙදුම බෙදාගෙන ඇත!"
+                                }
+                            },
+                            getSharedOrganizations: {
+                                genericError: {
+                                    description: "බෙදාගත් සංවිධාන ලැයිස්තුව ලබා ගැනීම අසාර්ථක විය!",
+                                    message: "බෙදාගත් සංවිධාන ලැයිස්තුව ලබා ගැනීම අසාර්ථක විය!"
                                 }
                             },
                             heading: "යෙදුම බෙදාගන්න",

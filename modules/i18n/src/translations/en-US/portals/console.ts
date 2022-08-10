@@ -911,6 +911,12 @@ export const console: ConsoleNS = {
                                     message: "Application shared!"
                                 }
                             },
+                            getSharedOrganizations: {
+                                genericError: {
+                                    description: "Getting shared organization list failed!",
+                                    message: "Getting Shared Organization list failed!"
+                                }
+                            },
                             heading: "Share Application",
                             shareApplication: "Share Application",
                             stopSharingNotification: {

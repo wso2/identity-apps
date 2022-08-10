@@ -324,6 +324,35 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             false
         ).then((response) => {
             setSubOrganizationList(response.organizations);
+        }).catch((error) => {
+            if (error?.description) {
+                dispatch(
+                    addAlert({
+                        description: error.description,
+                        level: AlertLevels.ERROR,
+                        message: t(
+                            "console:manage.features.organizations.notifications." +
+                                "getOrganizationList.error.message"
+                        )
+                    })
+                );
+
+                return;
+            }
+
+            dispatch(
+                addAlert({
+                    description: t(
+                        "console:manage.features.organizations.notifications.getOrganizationList" +
+                            ".genericError.description"
+                    ),
+                    level: AlertLevels.ERROR,
+                    message: t(
+                        "console:manage.features.organizations.notifications." +
+                            "getOrganizationList.genericError.message"
+                    )
+                })
+            );
         });
 
         getSharedOrganizations(
@@ -331,7 +360,31 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             application.id
         ).then((response) => {
             setSharedOrganizationList(response.data.organizations);
-        });
+        }).catch((error) => {
+            if (error.response.data.description) {
+                dispatch(
+                    addAlert({
+                        description: error.response.data.description,
+                        level: AlertLevels.ERROR,
+                        message: t("console:develop.features.applications.edit.sections.shareApplication" +
+                                ".getSharedOrganizations.genericError.message")
+                    })
+                );
+
+                return;
+            }
+
+            dispatch(
+                addAlert({
+                    description: t("console:develop.features.applications.edit.sections.shareApplication" +
+                            ".getSharedOrganizations.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("console:develop.features.applications.edit.sections.shareApplication" +
+                            ".getSharedOrganizations.genericError.message")
+                })
+            );
+        }
+        );
     }, [ getOrganizations, showAppShareModal ]);
 
     const determineApplicationTemplate = () => {
