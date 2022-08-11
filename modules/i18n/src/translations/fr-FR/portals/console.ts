@@ -4416,8 +4416,8 @@ export const console: ConsoleNS = {
                         hint: "Veuillez saisir <1>{{ name }}</1> pour confirmer.",
                         message: "Cette action est irréversible et supprimera définitivement le certificat.",
                         primaryAction: "Confirmer",
-                        tenantContent: "Cela supprimera définitivement le certificat d'organisation. Une fois" +
-                            " supprimé, à moins que vous n'importiez un nouveau certificat d'organisation, vous ne" +
+                        tenantContent: "Cela supprimera définitivement le certificat d'locataire. Une fois" +
+                            " supprimé, à moins que vous n'importiez un nouveau certificat d'locataire, vous ne" +
                             " pourrez pas accéder aux applications du portail.Pour continuer la suppression, entrez" +
                             " l'alias du certificat et cliquez sur supprimer."
                     },

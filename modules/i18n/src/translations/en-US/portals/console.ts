@@ -5648,8 +5648,8 @@ export const console: ConsoleNS = {
                         hint: "Please type <1>{{id}}</1> to confirm.",
                         message: "This action is irreversible and will permanently delete the certificate.",
                         primaryAction: "Confirm",
-                        tenantContent: "This will delete the organization certificate permanently."
-                            + "Once deleted, unless you import a new organization certificate,"
+                        tenantContent: "This will delete the tenant certificate permanently."
+                            + "Once deleted, unless you import a new tenant certificate,"
                             + "you won't be able to access the portal applications."
                             + "To continue deleting, enter the alias of the certificate and click delete."
                     },
