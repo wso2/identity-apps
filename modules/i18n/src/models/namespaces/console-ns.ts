@@ -716,6 +716,13 @@ export interface ConsoleNS {
                                 };
                             };
                         };
+                        shareApplication: {
+                            heading: string;
+                            shareApplication: string;
+                            addSharingNotification: Notification;
+                            stopSharingNotification: Notification
+                            getSharedOrganizations: Notification;
+                        }
                     };
                 };
                 forms: {
@@ -996,6 +1003,9 @@ export interface ConsoleNS {
                         predefined: string;
                         custom: string;
                     };
+                    labels: {
+                        fragment: string;
+                    }
                 };
                 myaccount: {
                     title: string;

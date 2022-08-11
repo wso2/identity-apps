@@ -904,6 +904,36 @@ export const console: ConsoleNS = {
                             },
                             tabName: "ප්‍රතිපාදන"
                         },
+                        shareApplication: {
+                            addSharingNotification: {
+                                genericError: {
+                                    description: "යෙදුම බෙදාගැනීම අසාර්ථක විය. කරුණාකර නැවත උත්සාහ කරන්න",
+                                    message: "යෙදුම් බෙදාගැනීම අසාර්ථක විය!"
+                                },
+                                success: {
+                                    description: "යෙදුම සංවිධාන(ය) සමඟ සාර්ථකව බෙදා ගන්නා ලදී",
+                                    message: "යෙදුම බෙදාගෙන ඇත!"
+                                }
+                            },
+                            getSharedOrganizations: {
+                                genericError: {
+                                    description: "බෙදාගත් සංවිධාන ලැයිස්තුව ලබා ගැනීම අසාර්ථක විය!",
+                                    message: "බෙදාගත් සංවිධාන ලැයිස්තුව ලබා ගැනීම අසාර්ථක විය!"
+                                }
+                            },
+                            heading: "යෙදුම බෙදාගන්න",
+                            shareApplication: "යෙදුම බෙදාගන්න",
+                            stopSharingNotification: {
+                                genericError: {
+                                    description: "{{organization}} සඳහා යෙදුම බෙදාගැනීම නැවැත්වීම අසාර්ථක විය",
+                                    message: "යෙදුම බෙදාගැනීම නැවැත්වීම අසාර්ථක විය!"
+                                },
+                                success: {
+                                    description: "යෙදුම බෙදාගැනීම {{organization}} සමඟ සාර්ථක විය",
+                                    message: "යෙදුම බෙදාගැනීම සාර්ථක විය!"
+                                }
+                            }
+                        },
                         signOnMethod: {
                             sections: {
                                 authenticationFlow: {
@@ -2285,6 +2315,9 @@ export const console: ConsoleNS = {
                     columns: {
                         actions: "ක්‍රියා",
                         name: "නම"
+                    },
+                    labels: {
+                        fragment: "ඛණ්ඩක යෙදුම"
                     }
                 },
                 myaccount: {
