@@ -102,7 +102,7 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
     }, []);
 
     /**
-     * Set the default language as moment locale
+     * Set the initial locale in moment
      */
     useEffect(() => {
         moment.locale("en");
