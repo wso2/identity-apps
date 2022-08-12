@@ -38,9 +38,10 @@ import {
 } from "@wso2is/react-components";
 import has from "lodash-es/has";
 import isEmpty from "lodash-es/isEmpty";
+import * as moment from "moment";
 import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
-import { Trans, useTranslation } from "react-i18next";
+import { Trans } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, Router, Switch } from "react-router-dom";
 import { commonConfig } from "./extensions";
@@ -53,9 +54,11 @@ import {
     ConfigReducerStateInterface,
     DocumentationLinksInterface,
     FeatureConfigInterface,
-    ServiceResourceEndpointsInterface,
+    ServiceResourceEndpointsInterface
 } from "./features/core/models";
 import { AppState } from "./features/core/store";
+import "moment/locale/si";
+import "moment/locale/fr";
 
 
 /**
@@ -65,7 +68,6 @@ import { AppState } from "./features/core/store";
  */
 export const App: FunctionComponent<Record<string, never>> = (): ReactElement => {
     const dispatch = useDispatch();
-    const { t } = useTranslation();
 
     const userName: string = useSelector((state: AppState) => state.auth.username);
     const loginInit: boolean = useSelector((state: AppState) => state.auth.loginInit);
@@ -97,6 +99,13 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
      */
     useEffect(() => {
         sessionStorageDisabled();
+    }, []);
+
+    /**
+     * Set the default language as moment locale
+     */
+    useEffect(() => {
+        moment.locale("en");
     }, []);
 
     /**
@@ -162,13 +171,13 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
                 .then((idToken: DecodedIDTokenPayload) => {
 
                     if(has(idToken, "associated_tenants") || isPrivilegedUser) {
-                        // If there is an assocation, the user is likely unauthorized by other criteria.
+                        // If there is an association, the user is likely unauthorized by other criteria.
                         history.push({
                             pathname: AppConstants.getPaths().get("UNAUTHORIZED"),
                             search: "?error=" + AppConstants.LOGIN_ERRORS.get("ACCESS_DENIED")
                         });
                     } else {
-                        // If there is no assocation, the user should be redirected to creation flow.
+                        // If there is no association, the user should be redirected to creation flow.
                         history.push({
                             pathname: AppConstants.getPaths().get("CREATE_TENANT")
                         });

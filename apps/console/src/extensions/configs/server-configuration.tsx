@@ -35,6 +35,7 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
         connector: GovernanceConnectorInterface,
         connectorForm: ReactElement,
         connectorIllustration: string,
+        connectorTitle: ReactNode,
         connectorSubHeading: ReactNode,
         message: ReactNode
     ): ReactElement => {
@@ -52,7 +53,7 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
                                         } }
                                     >
                                         <Header>
-                                            { connector?.friendlyName }
+                                            { connectorTitle }
                                             <Header.Subheader>
                                                 { connectorSubHeading }
                                             </Header.Subheader>

@@ -19,6 +19,7 @@
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { I18n } from "@wso2is/i18n";
 import { Hint, PrimaryButton, RenderInput, RenderToggle } from "@wso2is/react-components";
+import camelCase from "lodash-es/camelCase";
 import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -27,7 +28,7 @@ import { Divider, Form, Grid } from "semantic-ui-react";
 import { serverConfigurationConfig } from "../../../../extensions";
 import { AppState, FeatureConfigInterface } from "../../../core";
 import { ServerConfigurationsConstants } from "../../constants";
-import { ConnectorPropertyInterface } from "../../models";
+import { ConnectorPropertyInterface, GovernanceConnectorInterface } from "../../models";
 import { GovernanceConnectorUtils } from "../../utils";
 
 /**
@@ -70,6 +71,7 @@ interface DynamicConnectorFormPropsInterface {
     props?: any;
     form: string;
     change: any;
+    connector: GovernanceConnectorInterface;
 }
 
 /**
@@ -79,7 +81,7 @@ interface DynamicConnectorFormPropsInterface {
  * @constructor
  */
 const DynamicConnectorForm = (props: DynamicConnectorFormPropsInterface) => {
-    const { isSubmitting, handleSubmit, [ "data-testid" ]: testId } = props;
+    const { connector, isSubmitting, handleSubmit, [ "data-testid" ]: testId } = props;
     const properties: ConnectorPropertyInterface[] = props.props.properties;
 
     const formValues = useSelector((state: AppState) => state.form[ props.form ].values);
@@ -98,6 +100,11 @@ const DynamicConnectorForm = (props: DynamicConnectorFormPropsInterface) => {
         <Form onSubmit={ handleSubmit }>
             { <Grid padded={ true }>
                 { properties?.map((property, index) => {
+                    // eslint-disable-next-line max-len
+                    const fieldLabel = t(`console:manage.features.governanceConnectors.connectorCategories.${camelCase(connector?.category)}.connectors.${camelCase(connector?.name)}.properties.${camelCase(property?.name)}.label`);
+                    // eslint-disable-next-line max-len
+                    const fieldHint = t(`console:manage.features.governanceConnectors.connectorCategories.${camelCase(connector?.category)}.connectors.${camelCase(connector?.name)}.properties.${camelCase(property?.name)}.hint`);
+
                     return (
                         <Grid.Row
                             columns={ 2 }
@@ -119,16 +126,19 @@ const DynamicConnectorForm = (props: DynamicConnectorFormPropsInterface) => {
                                         width={ 12 }
                                         placeholder={ property.value }
                                         data-testid={ `${ testId }-${ property.name }` }
-                                        label={ property.displayName }
+                                        label={ fieldLabel ?? property?.displayName }
                                         validate={ [
                                             required
                                         ] }
                                         readOnly={ isReadOnly }
                                     />
                                 ) : (
-                                    <label>{ property.displayName }</label>
+                                    <label>{ fieldLabel }</label>
                                 ) }
-                                { property.description !== "" && <Hint>{ property.description }</Hint> }
+                                { 
+                                    (property.description) !== "" 
+                                        && <Hint>{ fieldHint }</Hint> 
+                                }
                             </Grid.Column>
                             <Grid.Column
                                 mobile={ 4 }
@@ -244,21 +254,21 @@ const validate = (values) => {
 
     }
 
-     if (
-         !(ServerConfigurationsConstants.MULTI_ATTRIBUTE_CLAIM_LIST_REGEX_PATTERN.test(
+    if (
+        !(ServerConfigurationsConstants.MULTI_ATTRIBUTE_CLAIM_LIST_REGEX_PATTERN.test(
             values[
                 GovernanceConnectorUtils.encodeConnectorPropertyName(
                     ServerConfigurationsConstants.MULTI_ATTRIBUTE_CLAIM_LIST
                 )
             ]
-         ))
-     ) {
+        ))
+    ) {
         errors[
             GovernanceConnectorUtils.encodeConnectorPropertyName(
                 ServerConfigurationsConstants.MULTI_ATTRIBUTE_CLAIM_LIST
             )
         ] = I18n.instance.t("console:manage.features.governanceConnectors.form.errors.format");
-     }
+    }
 
     return errors;
 };

@@ -19,6 +19,7 @@
 import { AlertLevels, IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Message, Text } from "@wso2is/react-components";
+import camelCase from "lodash-es/camelCase";
 import get from "lodash-es/get";
 import kebabCase from "lodash-es/kebabCase";
 import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
@@ -183,6 +184,7 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
     const connectorForm: ReactElement = (
         <DynamicConnectorForm
             onSubmit={ handleSubmit }
+            connector={ connector }
             props={ {
                 properties: connector.properties.filter(
                     (property => serverConfigurationConfig.connectorPropertiesToShow.includes(property.name)
@@ -195,6 +197,28 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
             isSubmitting={ isSubmitting }
         />
     );
+
+    /**
+     * Resolve connector title.
+     *
+     * @param {GovernanceConnectorInterface} connector - Connector object.
+     * @returns {ReactNode}
+     */
+    const resolveConnectorTitle = (connector: GovernanceConnectorInterface): ReactNode => {
+
+        if (!connector) {
+            return null;
+        }
+
+        let connectorName: string = connector.friendlyName;
+    
+        if (connectorName.includes(ServerConfigurationsConstants.DEPRECATION_MATCHER)) {
+            connectorName = connectorName.replace(ServerConfigurationsConstants.DEPRECATION_MATCHER, "");
+        }
+
+        // eslint-disable-next-line max-len
+        return t(`console:manage.features.governanceConnectors.connectorCategories.${camelCase(connector?.category)}.connectors.${camelCase(connector?.name)}.friendlyName`);
+    };
 
     /**
      * Resolve connector description.
@@ -240,14 +264,14 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
                 >
                     <Icon name="warning sign" />
                     {
-                        t("console:manage.features.governanceConnectors.connectors.analytics-engine." +
-                            "messages.deprecation.heading")
+                        t("console:manage.features.governanceConnectors.connectorCategories." +
+                            "otherSettings.connectors.analyticsEngine.messages.deprecation.heading")
                     }
                     <Text spaced="top">
                         <Trans
                             i18nKey={
-                                "console:manage.features.governanceConnectors.connectors.analytics-engine." +
-                                "messages.deprecation.description"
+                                "console:manage.features.governanceConnectors.connectorCategories." +
+                                "otherSettings.connectors.analyticsEngine.messages.deprecation.description"
                             }
                         >
                             WSO2 Identity Server Analytics is now deprecated. Use <Text
@@ -269,6 +293,7 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
         connector,
         connectorForm,
         connectorIllustration,
+        resolveConnectorTitle(connector),
         resolveConnectorDescription(connector),
         resolveConnectorMessage(connector)
     );

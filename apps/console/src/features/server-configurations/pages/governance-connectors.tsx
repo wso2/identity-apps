@@ -21,6 +21,7 @@ import { AlertLevels, ReferableComponentInterface, TestableComponentInterface } 
 import { addAlert } from "@wso2is/core/store";
 import { CommonUtils } from "@wso2is/core/utils";
 import { EmphasizedSegment, PageLayout } from "@wso2is/react-components";
+import camelCase from "lodash-es/camelCase";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -57,7 +58,7 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
     const dispatch = useDispatch();
     const pageContextRef = useRef(null);
 
-    const { t } = useTranslation();
+    const { i18n, t } = useTranslation();
     const { headerHeight, footerHeight } = useUIElementSizes();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
@@ -134,7 +135,9 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
 
     return (
         <PageLayout
-            title={ serverConfigurationConfig.showPageHeading && connectorCategory?.name }
+            title={ (serverConfigurationConfig.showPageHeading && connectorCategory?.name) && 
+                // eslint-disable-next-line max-len
+                t(`console:manage.features.governanceConnectors.connectorCategories.${camelCase(connectorCategory?.name)}.name`) }
             pageTitle={ serverConfigurationConfig.showPageHeading && connectorCategory?.name }
             description={
                 serverConfigurationConfig.showPageHeading && (connectorCategory?.description
