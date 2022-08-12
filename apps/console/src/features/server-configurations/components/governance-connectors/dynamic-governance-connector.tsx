@@ -210,12 +210,6 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
             return null;
         }
 
-        let connectorName: string = connector.friendlyName;
-    
-        if (connectorName.includes(ServerConfigurationsConstants.DEPRECATION_MATCHER)) {
-            connectorName = connectorName.replace(ServerConfigurationsConstants.DEPRECATION_MATCHER, "");
-        }
-
         // eslint-disable-next-line max-len
         return t(`console:manage.features.governanceConnectors.connectorCategories.${camelCase(connector?.category)}.connectors.${camelCase(connector?.name)}.friendlyName`);
     };

@@ -58,7 +58,7 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
     const dispatch = useDispatch();
     const pageContextRef = useRef(null);
 
-    const { i18n, t } = useTranslation();
+    const { t } = useTranslation();
     const { headerHeight, footerHeight } = useUIElementSizes();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
