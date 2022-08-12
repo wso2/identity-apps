@@ -5467,7 +5467,7 @@ export const console: ConsoleNS = {
                                     passwordHistoryCount: {
                                         hint: "Restreindre l'utilisation de ce nombre de derniers mots de passe utilisés pendant la mise à jour du mot de passe.",
                                         label: "Compte de validation de l'historique des mots de passe"
-                                    },
+                                    }
                                 }
                             },
                             passwordPolicy: {

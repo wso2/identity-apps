@@ -5341,7 +5341,7 @@ export const console: ConsoleNS = {
                                     passwordHistoryCount: {
                                         hint: "මුරපද යාවත්කාලීනය අතරතුර මෙම අවසන් වරට භාවිතා කළ මුරපද ගණන භාවිතා කිරීම සීමා කරන්න.",
                                         label: "මුරපද ඉතිහාස වලංගු කිරීමේ ගණන"
-                                    },
+                                    }
                                 }
                             },
                             passwordPolicy: {
