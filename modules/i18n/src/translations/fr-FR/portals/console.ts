@@ -907,6 +907,36 @@ export const console: ConsoleNS = {
                             },
                             tabName: "Provisionnement"
                         },
+                        shareApplication: {
+                            addSharingNotification: {
+                                genericError: {
+                                    description: "Le partage d'application a échoué. Veuillez réessayer",
+                                    message: "Le partage d'application a échoué!"
+                                },
+                                success: {
+                                    description: "Application partagée avec succès avec l'organisation ou les organisations",
+                                    message: "Application partagée!"
+                                }
+                            },
+                            getSharedOrganizations: {
+                                genericError: {
+                                    description: "Échec de l'obtention de la liste des organisations partagées!",
+                                    message: "Échec de l'obtention de la liste des organisations partagées!"
+                                }
+                            },
+                            heading: "Partager l'application",
+                            shareApplication: "Partager l'application",
+                            stopSharingNotification: {
+                                genericError: {
+                                    description: "Échec de l'arrêt du partage d'application pour {{organization}}",
+                                    message: "Échec de l'arrêt du partage d'application!"
+                                },
+                                success: {
+                                    description: "Le partage d'application s'est arrêté avec succès avec l'{{organisation}}",
+                                    message: "L'application partagée s'est arrêtée avec succès!"
+                                }
+                            }
+                        },
                         signOnMethod: {
                             sections: {
                                 authenticationFlow: {
@@ -2345,6 +2375,9 @@ export const console: ConsoleNS = {
                     columns: {
                         actions: "Actions",
                         name: "Nom"
+                    },
+                    labels: {
+                        fragment: "Fragmenter App"
                     }
                 },
                 myaccount: {
@@ -4416,8 +4449,8 @@ export const console: ConsoleNS = {
                         hint: "Veuillez saisir <1>{{ name }}</1> pour confirmer.",
                         message: "Cette action est irréversible et supprimera définitivement le certificat.",
                         primaryAction: "Confirmer",
-                        tenantContent: "Cela supprimera définitivement le certificat d'organisation. Une fois" +
-                            " supprimé, à moins que vous n'importiez un nouveau certificat d'organisation, vous ne" +
+                        tenantContent: "Cela supprimera définitivement le certificat d'locataire. Une fois" +
+                            " supprimé, à moins que vous n'importiez un nouveau certificat d'locataire, vous ne" +
                             " pourrez pas accéder aux applications du portail.Pour continuer la suppression, entrez" +
                             " l'alias du certificat et cliquez sur supprimer."
                     },

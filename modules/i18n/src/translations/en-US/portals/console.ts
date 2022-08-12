@@ -900,6 +900,36 @@ export const console: ConsoleNS = {
                             },
                             tabName: "Provisioning"
                         },
+                        shareApplication: {
+                            addSharingNotification: {
+                                genericError: {
+                                    description: "Application sharing failed. Please try again",
+                                    message: "Application sharing failed!"
+                                },
+                                success: {
+                                    description: "Application Shared with the organization(s) successfully",
+                                    message: "Application shared!"
+                                }
+                            },
+                            getSharedOrganizations: {
+                                genericError: {
+                                    description: "Getting shared organization list failed!",
+                                    message: "Getting Shared Organization list failed!"
+                                }
+                            },
+                            heading: "Share Application",
+                            shareApplication: "Share Application",
+                            stopSharingNotification: {
+                                genericError: {
+                                    description: "Application sharing stop failed for {{organization}}",
+                                    message: "Application sharing stop failed!"
+                                },
+                                success: {
+                                    description: "Application Sharing stopped with the {{organization}} successfully",
+                                    message: "Application shared stopped successfully!"
+                                }
+                            }
+                        },
                         signOnMethod: {
                             sections: {
                                 authenticationFlow: {
@@ -2301,6 +2331,9 @@ export const console: ConsoleNS = {
                     columns: {
                         actions: "Actions",
                         name: "Name"
+                    },
+                    labels: {
+                        fragment: "Fragment App"
                     }
                 },
                 myaccount: {
@@ -5648,8 +5681,8 @@ export const console: ConsoleNS = {
                         hint: "Please type <1>{{id}}</1> to confirm.",
                         message: "This action is irreversible and will permanently delete the certificate.",
                         primaryAction: "Confirm",
-                        tenantContent: "This will delete the organization certificate permanently."
-                            + "Once deleted, unless you import a new organization certificate,"
+                        tenantContent: "This will delete the tenant certificate permanently."
+                            + "Once deleted, unless you import a new tenant certificate,"
                             + "you won't be able to access the portal applications."
                             + "To continue deleting, enter the alias of the certificate and click delete."
                     },

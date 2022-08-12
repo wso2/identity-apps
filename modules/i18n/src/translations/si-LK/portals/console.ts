@@ -904,6 +904,36 @@ export const console: ConsoleNS = {
                             },
                             tabName: "ප්‍රතිපාදන"
                         },
+                        shareApplication: {
+                            addSharingNotification: {
+                                genericError: {
+                                    description: "යෙදුම බෙදාගැනීම අසාර්ථක විය. කරුණාකර නැවත උත්සාහ කරන්න",
+                                    message: "යෙදුම් බෙදාගැනීම අසාර්ථක විය!"
+                                },
+                                success: {
+                                    description: "යෙදුම සංවිධාන(ය) සමඟ සාර්ථකව බෙදා ගන්නා ලදී",
+                                    message: "යෙදුම බෙදාගෙන ඇත!"
+                                }
+                            },
+                            getSharedOrganizations: {
+                                genericError: {
+                                    description: "බෙදාගත් සංවිධාන ලැයිස්තුව ලබා ගැනීම අසාර්ථක විය!",
+                                    message: "බෙදාගත් සංවිධාන ලැයිස්තුව ලබා ගැනීම අසාර්ථක විය!"
+                                }
+                            },
+                            heading: "යෙදුම බෙදාගන්න",
+                            shareApplication: "යෙදුම බෙදාගන්න",
+                            stopSharingNotification: {
+                                genericError: {
+                                    description: "{{organization}} සඳහා යෙදුම බෙදාගැනීම නැවැත්වීම අසාර්ථක විය",
+                                    message: "යෙදුම බෙදාගැනීම නැවැත්වීම අසාර්ථක විය!"
+                                },
+                                success: {
+                                    description: "යෙදුම බෙදාගැනීම {{organization}} සමඟ සාර්ථක විය",
+                                    message: "යෙදුම බෙදාගැනීම සාර්ථක විය!"
+                                }
+                            }
+                        },
                         signOnMethod: {
                             sections: {
                                 authenticationFlow: {
@@ -2285,6 +2315,9 @@ export const console: ConsoleNS = {
                     columns: {
                         actions: "ක්‍රියා",
                         name: "නම"
+                    },
+                    labels: {
+                        fragment: "ඛණ්ඩක යෙදුම"
                     }
                 },
                 myaccount: {
@@ -4308,7 +4341,7 @@ export const console: ConsoleNS = {
                         hint: "තහවුරු කිරීමට කරුණාකර <1>{{id}}</1> ඇතුලත් කරන්න.",
                         message: "මෙම ක්‍රියාව ආපසු හැරවිය නොහැකි අතර සහතිකය ස්ථිරවම මකා දමනු ඇත.",
                         primaryAction: "තහවුරු කරන්න",
-                        tenantContent: "මමෙය සංවිධාන සහතිකය ස්ථිරවම මකා දමනු ඇත. මකා දැමූ පසු, ඔබ නව සංවිධාන" +
+                        tenantContent: "මමෙය කුලී නිවැසි සහතිකය ස්ථිරවම මකා දමනු ඇත. මකා දැමූ පසු, ඔබ නව කුලී නිවැසි" +
                             " සහතිකයක් ආනයනය නොකරන්නේ නම්, ඔබට ද්වාර යෙදුම් වෙත ප්‍රවේශ විය නොහැක. මකාදැමීම දිගටම" +
                             " කරගෙන යාමට, සහතිකයේ අන්වර්ථය ඇතුළත් කර මකන්න ක්ලික් කරන්න."
                     },

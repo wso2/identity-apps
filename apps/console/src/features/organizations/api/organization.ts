@@ -255,16 +255,17 @@ export const deleteOrganization = (id: string): Promise<string> => {
  * Creates a new application.
  *
  * @return {Promise<any>}
+ * @param {string} currentOrganizationId - Current Organization Id
  * @param {string} applicationId - ID of the application to be shared
- * @param {string} organizationId - ID of the organization which the app needs to be shared with
+ * @param {string[]} organizationIds - ID of the organization which the app needs to be shared with
  */
 export const shareApplication = (
     currentOrganizationId: string,
     applicationId: string,
-    organizationId: Array<string>
+    organizationIds: Array<string>
 ): Promise<any> => {
     const requestConfig = {
-        data: organizationId,
+        data: organizationIds,
         headers: {
             "Accept": "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -279,6 +280,67 @@ export const shareApplication = (
         .then((response) => {
             if ((response.status !== 200)) {
                 return Promise.reject(new Error("Failed to share the application."));
+            }
+
+            return Promise.resolve(response);
+        }).catch((error) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * Delete / Stop sharing an application to an organization by providing its ID
+ */
+export const stopSharingApplication = (
+    currentOrganizationId: string,
+    applicationId: string,
+    sharedOrganizationId: string
+) => {
+    const requestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.DELETE,
+        url: `${store.getState().config.endpoints.organizations}/organizations/${currentOrganizationId}/applications/` +
+            `${applicationId}/share/${sharedOrganizationId}`
+    };
+
+    return httpClient(requestConfig)
+        .then((response) => {
+            if ((response.status !== 204)) {
+                return Promise.reject(new Error("Failed to remove the application sharing."));
+            }
+
+            return Promise.resolve(response);
+        }).catch((error) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * Get the list of organizations given app is shared with.
+ */
+export const getSharedOrganizations = (
+    currentOrganizationId: string,
+    applicationId: string
+): Promise<any> => {
+    const requestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: `${store.getState().config.endpoints.organizations}/organizations/${currentOrganizationId}/applications/` +
+            `${applicationId}/share`
+    };
+
+    return httpClient(requestConfig)
+        .then((response) => {
+            if ((response.status !== 200)) {
+                return Promise.reject(new Error("Failed to get the list of shared organizations of this application."));
             }
 
             return Promise.resolve(response);
