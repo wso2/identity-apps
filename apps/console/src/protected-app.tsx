@@ -55,6 +55,7 @@ import {
     isLanguageSupported
 } from "@wso2is/i18n";
 import axios, { AxiosResponse } from "axios";
+import camelCase from "lodash-es/camelCase";
 import has from "lodash-es/has";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, lazy, useCallback, useEffect, useRef, useState } from "react";
@@ -560,6 +561,10 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                         // TODO: Implement sub category handling logic here.
                     }
 
+                    const categoryName = 
+                        t(`console:manage.features.sidePanel.${camelCase(category.name)}`) 
+                            ?? category.name;
+
                     const route = {
                         category: "console:manage.features.sidePanel.categories.configurations",
                         component: lazy(() => import("./features/server-configurations/pages/governance-connectors")),
@@ -569,7 +574,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                                 ?? getSidePanelIcons().connectors.default
                         },
                         id: category.id,
-                        name: category.name,
+                        name: categoryName,
                         order:
                             category.id === ServerConfigurationsConstants.OTHER_SETTINGS_CONNECTOR_CATEGORY_ID
                                 ? manageRoutes.length + governanceConnectorCategories.length
