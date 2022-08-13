@@ -73,6 +73,9 @@ export const console: ConsoleNS = {
                 "කුකීස් භාවිතා කරනුයේ සුමට හා පුද්ගලීකරණය කළ සේවාවන් සපයන අතරම අඛණ්ඩ අඛණ්ඩ සැසියක් පවත්වා ගන්න." +
                 "අපි කුකීස් භාවිතා කරන ආකාරය ගැන තව දැනගන්න, අපගේ <1>Cookie Policy</1> එක බලන්න."
         },
+        dateTime: {
+            humanizedDateString: "අවසන් වරට වෙනස් කරන ලද්දේ {{date}} පෙර"
+        },
         header: {
             appSwitch: {
                 console: {
@@ -903,6 +906,36 @@ export const console: ConsoleNS = {
                                     "සැපයුම්කරුවෙකු වින්‍යාස කරන්න."
                             },
                             tabName: "ප්‍රතිපාදන"
+                        },
+                        shareApplication: {
+                            addSharingNotification: {
+                                genericError: {
+                                    description: "යෙදුම බෙදාගැනීම අසාර්ථක විය. කරුණාකර නැවත උත්සාහ කරන්න",
+                                    message: "යෙදුම් බෙදාගැනීම අසාර්ථක විය!"
+                                },
+                                success: {
+                                    description: "යෙදුම සංවිධාන(ය) සමඟ සාර්ථකව බෙදා ගන්නා ලදී",
+                                    message: "යෙදුම බෙදාගෙන ඇත!"
+                                }
+                            },
+                            getSharedOrganizations: {
+                                genericError: {
+                                    description: "බෙදාගත් සංවිධාන ලැයිස්තුව ලබා ගැනීම අසාර්ථක විය!",
+                                    message: "බෙදාගත් සංවිධාන ලැයිස්තුව ලබා ගැනීම අසාර්ථක විය!"
+                                }
+                            },
+                            heading: "යෙදුම බෙදාගන්න",
+                            shareApplication: "යෙදුම බෙදාගන්න",
+                            stopSharingNotification: {
+                                genericError: {
+                                    description: "{{organization}} සඳහා යෙදුම බෙදාගැනීම නැවැත්වීම අසාර්ථක විය",
+                                    message: "යෙදුම බෙදාගැනීම නැවැත්වීම අසාර්ථක විය!"
+                                },
+                                success: {
+                                    description: "යෙදුම බෙදාගැනීම {{organization}} සමඟ සාර්ථක විය",
+                                    message: "යෙදුම බෙදාගැනීම සාර්ථක විය!"
+                                }
+                            }
                         },
                         signOnMethod: {
                             sections: {
@@ -2285,6 +2318,9 @@ export const console: ConsoleNS = {
                     columns: {
                         actions: "ක්‍රියා",
                         name: "නම"
+                    },
+                    labels: {
+                        fragment: "ඛණ්ඩක යෙදුම"
                     }
                 },
                 myaccount: {
@@ -4308,7 +4344,7 @@ export const console: ConsoleNS = {
                         hint: "තහවුරු කිරීමට කරුණාකර <1>{{id}}</1> ඇතුලත් කරන්න.",
                         message: "මෙම ක්‍රියාව ආපසු හැරවිය නොහැකි අතර සහතිකය ස්ථිරවම මකා දමනු ඇත.",
                         primaryAction: "තහවුරු කරන්න",
-                        tenantContent: "මමෙය සංවිධාන සහතිකය ස්ථිරවම මකා දමනු ඇත. මකා දැමූ පසු, ඔබ නව සංවිධාන" +
+                        tenantContent: "මමෙය කුලී නිවැසි සහතිකය ස්ථිරවම මකා දමනු ඇත. මකා දැමූ පසු, ඔබ නව කුලී නිවැසි" +
                             " සහතිකයක් ආනයනය නොකරන්නේ නම්, ඔබට ද්වාර යෙදුම් වෙත ප්‍රවේශ විය නොහැක. මකාදැමීම දිගටම" +
                             " කරගෙන යාමට, සහතිකයේ අන්වර්ථය ඇතුළත් කර මකන්න ක්ලික් කරන්න."
                     },
@@ -6591,6 +6627,7 @@ export const console: ConsoleNS = {
                 }
             },
             sidePanel: {
+                accountManagement: "ගිණුම් කළමනාකරණය",
                 addEmailTemplate: "විද්‍යුත් තැපැල් අච්චුව එක් කරන්න",
                 addEmailTemplateLocale: "විද්‍යුත් තැපැල් ආකෘති පෙදෙසි එක් කරන්න",
                 approvals: "අනුමත කිරීම්",
@@ -6618,9 +6655,15 @@ export const console: ConsoleNS = {
                 generalConfigurations: "ජනරාල්",
                 groups: "කණ්ඩායම්",
                 localDialect: "දේශීය උපභාෂාව",
+                loginAttemptsSecurity: "පුරනය වීමේ උත්සාහයන් ආරක්ෂාව",
+                multiFactorAuthenticators: "බහු සාධක සත්‍යාපනය කරන්නන්",
                 organizations: "ආයතන",
+                otherSettings: "වෙනත් සැකසුම්",
                 overview: "දළ විශ්ලේෂණය",
+                passwordPolicies: "මුරපද ප්රතිපත්ති",
+                remoteFetchConfig: "දුරස්ථ සැකසුම්",
                 roles: "භූමිකාවන්",
+                userOnboarding: "පරිශීලක ඇතුල්වීම",
                 users: "පරිශීලකයින්",
                 userstoreTemplates: "පරිශීලක වෙළඳසැල් සැකිලි",
                 userstores: "පරිශීලක වෙළඳසැල්"

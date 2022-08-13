@@ -73,6 +73,9 @@ export const console: ConsoleNS = {
                 "maintain an uninterrupted continuous session while providing smooth and personalized services. To " +
                 "learn more about how we use cookies, refer our <1>Cookie Policy</1>."
         },
+        dateTime: {
+            humanizedDateString: "Last modified {{date}} ago"
+        },
         header: {
             appSwitch: {
                 console: {
@@ -899,6 +902,36 @@ export const console: ConsoleNS = {
                                     "application."
                             },
                             tabName: "Provisioning"
+                        },
+                        shareApplication: {
+                            addSharingNotification: {
+                                genericError: {
+                                    description: "Application sharing failed. Please try again",
+                                    message: "Application sharing failed!"
+                                },
+                                success: {
+                                    description: "Application Shared with the organization(s) successfully",
+                                    message: "Application shared!"
+                                }
+                            },
+                            getSharedOrganizations: {
+                                genericError: {
+                                    description: "Getting shared organization list failed!",
+                                    message: "Getting Shared Organization list failed!"
+                                }
+                            },
+                            heading: "Share Application",
+                            shareApplication: "Share Application",
+                            stopSharingNotification: {
+                                genericError: {
+                                    description: "Application sharing stop failed for {{organization}}",
+                                    message: "Application sharing stop failed!"
+                                },
+                                success: {
+                                    description: "Application Sharing stopped with the {{organization}} successfully",
+                                    message: "Application shared stopped successfully!"
+                                }
+                            }
                         },
                         signOnMethod: {
                             sections: {
@@ -2301,6 +2334,9 @@ export const console: ConsoleNS = {
                     columns: {
                         actions: "Actions",
                         name: "Name"
+                    },
+                    labels: {
+                        fragment: "Fragment App"
                     }
                 },
                 myaccount: {
@@ -5648,8 +5684,8 @@ export const console: ConsoleNS = {
                         hint: "Please type <1>{{id}}</1> to confirm.",
                         message: "This action is irreversible and will permanently delete the certificate.",
                         primaryAction: "Confirm",
-                        tenantContent: "This will delete the organization certificate permanently."
-                            + "Once deleted, unless you import a new organization certificate,"
+                        tenantContent: "This will delete the tenant certificate permanently."
+                            + "Once deleted, unless you import a new tenant certificate,"
                             + "you won't be able to access the portal applications."
                             + "To continue deleting, enter the alias of the certificate and click delete."
                     },
@@ -8091,6 +8127,7 @@ export const console: ConsoleNS = {
                 }
             },
             sidePanel: {
+                accountManagement: "Account Management",
                 addEmailTemplate: "Add Email Template",
                 addEmailTemplateLocale: "Add Email Template Locale",
                 approvals: "Approvals",
@@ -8118,9 +8155,15 @@ export const console: ConsoleNS = {
                 generalConfigurations: "General",
                 groups: "Groups",
                 localDialect: "Attributes",
+                loginAttemptsSecurity: "Login Attempts Security",
+                multiFactorAuthenticators: "Multi Factor Authenticators",
                 organizations: "Organizations",
+                otherSettings: "Other Settings",
                 overview: "Overview",
+                passwordPolicies: "Password Policies",
+                remoteFetchConfig: "Remote Configurations",
                 roles: "Roles",
+                userOnboarding: "User Onboarding",
                 users: "Users",
                 userstoreTemplates: "User Store Templates",
                 userstores: "User Stores"

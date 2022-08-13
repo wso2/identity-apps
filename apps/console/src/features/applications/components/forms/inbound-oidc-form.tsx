@@ -1201,8 +1201,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 </Grid.Column>
             </Grid.Row>
             {
-                !isSPAApplication && selectedGrantTypes?.includes("authorization_code") &&
-                (
+                !isSPAApplication
+                && (
+                    selectedGrantTypes?.includes(ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT)
+                    || selectedGrantTypes?.includes(ApplicationManagementConstants.DEVICE_GRANT)
+                ) && (
                     <>
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>

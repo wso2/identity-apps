@@ -74,6 +74,9 @@ export const console: ConsoleNS = {
                 "fluides et personnalisés. Pour En savoir plus sur la façon dont nous utilisons les cookies, " +
                 "reportez-vous à notre <1>Politique relative aux cookies</1>."
         },
+        dateTime: {
+            humanizedDateString: "Dernière modification {{date}} depuis"
+        },
         header: {
             appSwitch: {
                 console: {
@@ -906,6 +909,36 @@ export const console: ConsoleNS = {
                                     "sortant des utilisateurs de cette application."
                             },
                             tabName: "Provisionnement"
+                        },
+                        shareApplication: {
+                            addSharingNotification: {
+                                genericError: {
+                                    description: "Le partage d'application a échoué. Veuillez réessayer",
+                                    message: "Le partage d'application a échoué!"
+                                },
+                                success: {
+                                    description: "Application partagée avec succès avec l'organisation ou les organisations",
+                                    message: "Application partagée!"
+                                }
+                            },
+                            getSharedOrganizations: {
+                                genericError: {
+                                    description: "Échec de l'obtention de la liste des organisations partagées!",
+                                    message: "Échec de l'obtention de la liste des organisations partagées!"
+                                }
+                            },
+                            heading: "Partager l'application",
+                            shareApplication: "Partager l'application",
+                            stopSharingNotification: {
+                                genericError: {
+                                    description: "Échec de l'arrêt du partage d'application pour {{organization}}",
+                                    message: "Échec de l'arrêt du partage d'application!"
+                                },
+                                success: {
+                                    description: "Le partage d'application s'est arrêté avec succès avec l'{{organisation}}",
+                                    message: "L'application partagée s'est arrêtée avec succès!"
+                                }
+                            }
                         },
                         signOnMethod: {
                             sections: {
@@ -2345,6 +2378,9 @@ export const console: ConsoleNS = {
                     columns: {
                         actions: "Actions",
                         name: "Nom"
+                    },
+                    labels: {
+                        fragment: "Fragmenter App"
                     }
                 },
                 myaccount: {
@@ -4416,8 +4452,8 @@ export const console: ConsoleNS = {
                         hint: "Veuillez saisir <1>{{ name }}</1> pour confirmer.",
                         message: "Cette action est irréversible et supprimera définitivement le certificat.",
                         primaryAction: "Confirmer",
-                        tenantContent: "Cela supprimera définitivement le certificat d'organisation. Une fois" +
-                            " supprimé, à moins que vous n'importiez un nouveau certificat d'organisation, vous ne" +
+                        tenantContent: "Cela supprimera définitivement le certificat d'locataire. Une fois" +
+                            " supprimé, à moins que vous n'importiez un nouveau certificat d'locataire, vous ne" +
                             " pourrez pas accéder aux applications du portail.Pour continuer la suppression, entrez" +
                             " l'alias du certificat et cliquez sur supprimer."
                     },
@@ -6737,6 +6773,7 @@ export const console: ConsoleNS = {
                 }
             },
             sidePanel: {
+                accountManagement: "Gestion de compte",
                 addEmailTemplate: "Ajouter un modèle d'e-mail",
                 addEmailTemplateLocale: "Ajouter une langue de modèle d'e-mail",
                 approvals: "Approbations",
@@ -6764,9 +6801,15 @@ export const console: ConsoleNS = {
                 generalConfigurations: "Général",
                 groups: "Groupes",
                 localDialect: "Dialecte local",
+                loginAttemptsSecurity: "Sécurité des tentatives de connexion",
+                multiFactorAuthenticators: "Authentificateurs multi-facteurs",
                 organizations: "Organisations",
+                otherSettings: "Autres réglages",
                 overview: "Vue d'ensemble",
+                passwordPolicies: "Politiques de mot de passe",
+                remoteFetchConfig: "Configurations à distance",
                 roles: "Rôles",
+                userOnboarding: "Intégration des utilisateurs",
                 users: "Utilisateurs",
                 userstoreTemplates: "Modèles d'annuaires",
                 userstores: "Annuaires"
