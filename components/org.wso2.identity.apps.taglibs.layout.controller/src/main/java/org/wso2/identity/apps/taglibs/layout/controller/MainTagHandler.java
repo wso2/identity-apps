@@ -93,7 +93,9 @@ public class MainTagHandler extends TagSupport {
         try {
             if (compile) {
                 String rawLayoutFilePath = layoutFileRelativePath.replaceFirst(".ser", ".html");
-                engine.execute(layoutName, pageContext.getServletContext().getResource(rawLayoutFilePath), data,
+                engine.execute(layoutName,
+                        layoutFileRelativePath.startsWith("http") ? new URL(rawLayoutFilePath) :
+                                pageContext.getServletContext().getResource(rawLayoutFilePath), data,
                         new PrintWriter(pageContext.getOut()));
             } else {
                 engine.executeWithoutCompile(layoutName,
@@ -123,7 +125,9 @@ public class MainTagHandler extends TagSupport {
         try {
             if (compile) {
                 String rawLayoutFilePath = layoutFileRelativePath.replaceFirst(".ser", ".html");
-                engine.execute(layoutName, pageContext.getServletContext().getResource(rawLayoutFilePath), data,
+                engine.execute(layoutName,
+                        layoutFileRelativePath.startsWith("http") ? new URL(rawLayoutFilePath) :
+                                pageContext.getServletContext().getResource(rawLayoutFilePath), data,
                         new PrintWriter(pageContext.getOut()));
             } else {
                 engine.executeWithoutCompile(layoutName,
