@@ -49,7 +49,6 @@
         <copy todir="../../apps/authentication-portal/src/main/webapp/includes/layouts/" overwrite="true">
             <fileset dir="target/layouts/">
                 <include name="default/**"/>
-                <exclude name="**/body.html"/>
             </fileset>
         </copy>
     </target>
@@ -83,7 +82,6 @@
         <copy todir="../../apps/authentication-portal/src/main/webapp/extensions/layouts/" overwrite="true">
             <fileset dir="target/layouts/">
                 <exclude name="default/**"/>
-                <exclude name="**/body.html"/>
             </fileset>
         </copy>
     </target>
@@ -118,7 +116,6 @@
         <copy todir="../../apps/recovery-portal/src/main/webapp/includes/layouts/" overwrite="true">
             <fileset dir="target/layouts/">
                 <include name="default/**"/>
-                <exclude name="**/body.html"/>
             </fileset>
         </copy>
     </target>
@@ -152,7 +149,6 @@
         <copy todir="../../apps/recovery-portal/src/main/webapp/extensions/layouts/" overwrite="true">
             <fileset dir="target/layouts/">
                 <exclude name="default/**"/>
-                <exclude name="**/body.html"/>
             </fileset>
         </copy>
     </target>
@@ -187,7 +183,6 @@
         <copy todir="../../apps/x509-certificate-authentication-portal/src/main/webapp/includes/layouts/" overwrite="true">
             <fileset dir="target/layouts/">
                 <include name="default/**"/>
-                <exclude name="**/body.html"/>
             </fileset>
         </copy>
     </target>
@@ -221,7 +216,6 @@
         <copy todir="../../apps/x509-certificate-authentication-portal/src/main/webapp/extensions/layouts/" overwrite="true">
             <fileset dir="target/layouts/">
                 <exclude name="default/**"/>
-                <exclude name="**/body.html"/>
             </fileset>
         </copy>
     </target>
