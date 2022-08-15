@@ -43,7 +43,7 @@ import {
     getSidePanelIcons,
     history
 } from "../../../core";
-import { getOrganizations } from "../../api";
+import { getOrganizations, getUserSuperOrganization } from "../../api";
 import { OrganizationManagementConstants } from "../../constants";
 import {
     OrganizationInterface,
@@ -104,20 +104,36 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
         feature.organizations
     ]);
 
-    const getOrganizationList = useCallback((filter: string, after: string, before: string) => {
+    const getOrganizationList = useCallback(async (filter: string, after: string, before: string) => {
+        let superOrg: OrganizationInterface;
+
+        try {
+            const superOrgId: string = await getUserSuperOrganization();
+
+            if (currentOrganization.id !== superOrgId) {
+                superOrg = {
+                    id: superOrgId,
+                    name: "Super",
+                    ref: ""
+                };
+            }
+        } catch(error) {
+            superOrg = { ...OrganizationManagementConstants.ROOT_ORGANIZATION };
+        }
+
         getOrganizations(filter, 5, after, before, false, false).then((response: OrganizationListInterface) => {
             if (!response || !response.organizations) {
-                setAssociatedOrganizations([ OrganizationManagementConstants.ROOT_ORGANIZATION ]);
+                setAssociatedOrganizations([ superOrg ]);
                 setPaginationData(response.links);
             } else {
-                const organizations = [ OrganizationManagementConstants.ROOT_ORGANIZATION, ...response?.organizations ];
+                const organizations = [ superOrg, ...response?.organizations ];
 
                 setAssociatedOrganizations(organizations);
 
                 setPaginationData(response.links);
             }
         }).catch((error) => {
-            setAssociatedOrganizations([ OrganizationManagementConstants.ROOT_ORGANIZATION ]);
+            setAssociatedOrganizations([ superOrg ]);
 
             if (error?.description) {
                 dispatch(
@@ -148,7 +164,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                 })
             );
         });
-    }, []);
+    }, [ ]);
 
     const setPaginationData = (links: OrganizationLinkInterface[]) => {
         setAfterCursor(undefined);
