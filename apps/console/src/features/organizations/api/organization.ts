@@ -361,7 +361,7 @@ export const getUserSuperOrganization = (): Promise<string> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: store.getState().config.endpoints.usersSuperOOrganization
+        url: store.getState().config.endpoints.usersSuperOrganization
     };
 
     return httpClient(requestConfig).then((response: HttpResponse<string>)=> {
