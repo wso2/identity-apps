@@ -21,32 +21,24 @@
 <%@taglib prefix="e" uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" %>
 <jsp:directive.include file="../includes/init-url.jsp"/>
 
-<div>
-    <h2 class="wr-title uppercase blue-bg padding-double white boarder-bottom-blue margin-none">
-        Welcome <c:out value='${requestScope.data["username"]}'/>
-    </h2>
-</div>
-
-<div class="boarder-all ">
-    <div class="clearfix"></div>
-    <div class="padding-double login-form">
-        
-        <form action="<%=commonauthURL%>" method="POST">
-    
-            <c:forEach var="input" items='${requestScope.data["inputs"]}'>
-                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group required">
-                    <label for="<e:forHtmlAttribute value="${input.id}" />" class="control-label"><e:forHtml value="${input.label}" /></label>
-                    <input type="text" id="<e:forHtmlAttribute value="${input.id}" />" name="<e:forHtmlAttribute value="${input.id}" />" class="form-control">
-                </div>
-            </c:forEach>
-            <input type="hidden" id="promptResp" name="promptResp" value="true">
-            <input type="hidden" id="promptId" name="promptId" value="${requestScope.promptId}">
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group required">
-                <input type="submit" class="wr-btn grey-bg col-xs-12 col-md-12 col-lg-12 uppercase font-extra-large" value="Submit">
-            </div>
-        </form>
-        
-        <div class="clearfix"></div>
+<div style="text-align: left !important;">
+    <div>
+        <h3 class="ui header">
+            Welcome <c:out value='${requestScope.data["username"]}'/>
+        </h3>
     </div>
+    <form class="ui large form" action="<%=commonauthURL%>" method="POST">
+        <div class="field">
+            <label for="<e:forHtmlAttribute value="${input.id}" />"><e:forHtml value="First Name" /></label>
+            <input type="text" id="<e:forHtmlAttribute value="${input.id}" />" name="<e:forHtmlAttribute value="${input.id}" />">
+        </div>
+        <div class="field">
+            <label for="<e:forHtmlAttribute value="${input.id}" />"><e:forHtml value="Last Name" /></label>
+            <input type="text" id="<e:forHtmlAttribute value="${input.id}" />" name="<e:forHtmlAttribute value="${input.id}" />">
+        </div>
+        <input type="hidden" id="promptResp" name="promptResp" value="true">
+        <input type="hidden" id="promptId" name="promptId" value="${requestScope.promptId}">
+        <input type="submit" class="ui primary medium button" value="Submit">
+    </form>
 </div>
 <!-- /content -->
