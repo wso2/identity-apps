@@ -179,6 +179,8 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     const appList = useMemo(() => {
         const links = [];
 
+        // Show MyAccount link only if the user is in the Root Organization (This is a temporary hide since as of now
+        // Org management APIs are not available for MyAccount)
         if (OrganizationUtils.isCurrentOrganizationRoot()) {
             links.push({
                 "data-testid": "app-switch-myaccount",
@@ -250,6 +252,8 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                                 window.open(consoleAppURL, "_self");
                             }
                         },
+                        // Show MyAccount link only if the user is in the Root Organization (This is a temporary hide
+                        // since as of now Org management APIs are not available for MyAccount)
                         OrganizationUtils.isCurrentOrganizationRoot() && {
                             "data-testid": "app-switch-myaccount",
                             description: t("console:common.header.appSwitch.myAccount.description"),
