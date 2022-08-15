@@ -18,7 +18,7 @@
 
 package org.wso2.identity.apps.taglibs.layout.controller;
 
-import org.wso2.identity.apps.taglibs.layout.controller.core.LocalTemplateEngineWithCache;
+import org.wso2.identity.apps.taglibs.layout.controller.core.LocalTemplateEngine;
 
 import java.io.PrintWriter;
 import java.net.MalformedURLException;
@@ -39,7 +39,7 @@ public class MainTagHandler extends TagSupport {
     private String layoutFileRelativePath = "";
     private Map<String, Object> data = new HashMap<>();
     private boolean compile = false;
-    private LocalTemplateEngineWithCache engine = null;
+    private LocalTemplateEngine engine = null;
 
     /**
      * Set the name of the layout.
@@ -89,7 +89,7 @@ public class MainTagHandler extends TagSupport {
      */
     public int doStartTag() throws JspException {
 
-        engine = new LocalTemplateEngineWithCache();
+        engine = new LocalTemplateEngine();
         try {
             if (compile) {
                 String rawLayoutFilePath = layoutFileRelativePath.replaceFirst(".ser", ".html");

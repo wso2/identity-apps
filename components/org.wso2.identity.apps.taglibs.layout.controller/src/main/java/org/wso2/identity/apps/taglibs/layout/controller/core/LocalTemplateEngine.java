@@ -32,7 +32,7 @@ import java.util.Map;
 /**
  * Caching implementation of the TemplateEngine interface with more controls using local compiler.
  */
-public class LocalTemplateEngineWithCache implements TemplateEngine {
+public class LocalTemplateEngine implements TemplateEngine {
 
     private static final long serialVersionUID = 8574215169965654726L;
     private ExecutableIdentifier compiledObject = null;
