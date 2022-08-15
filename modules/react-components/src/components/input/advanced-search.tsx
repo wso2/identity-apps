@@ -304,7 +304,7 @@ export const AdvancedSearch: FunctionComponent<PropsWithChildren<AdvancedSearchP
                 if (advancedSearch) {
                     query = internalSearchQuery;
                 } else {
-                    query = defaultSearchStrategy.replace(/%search-value%/g,internalSearchQuery);
+                    query = defaultSearchStrategy.replace(/%search-value%/g, internalSearchQuery);
                 }
             }
             onSearchQuerySubmit(false, query);
