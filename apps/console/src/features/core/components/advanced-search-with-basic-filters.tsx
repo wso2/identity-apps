@@ -99,7 +99,7 @@ export interface AdvancedSearchWithBasicFiltersPropsInterface extends TestableCo
      */
     placeholder: string;
     /**
-     * Predefined Default Search strategy. ex: "name co %search-value% or clientId co %search-value%"
+     * Predefined Default Search strategy. ex: "name co %search-value% or clientId co %search-value%".
      */
     predefinedDefaultSearchStrategy?: string;
     /**
