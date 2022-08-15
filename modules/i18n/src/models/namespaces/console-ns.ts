@@ -1248,7 +1248,10 @@ export interface ConsoleNS {
                                 placeholder: string;
                                 validations: {
                                     invalid: string;
-                                    range: string;
+                                    range: {
+                                        digits: string;
+                                        characters: string;
+                                    };
                                     required: string;
                                 };
                                 unit: {

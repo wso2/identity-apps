@@ -3068,8 +3068,8 @@ export const console: ConsoleNS = {
                         },
                         smsOTP: {
                             expiryTime: {
-                                hint: "Please pick a value between <1>1 minutes</1> & <3> 1440 minutes(1 day)</3>.",
-                                label: "SMS OTP Expiry Time",
+                                hint: "Please pick a value between <1>1 minute</1> & <3> 1440 minutes(1 day)</3>.",
+                                label: "SMS OTP expiry time",
                                 placeholder: "Enter SMS OTP expiry time.",
                                 unit: "minutes",
                                 validations: {
@@ -3081,11 +3081,14 @@ export const console: ConsoleNS = {
                             tokenLength: {
                                 hint: "The number of allowed characters in the OTP. Please, " +
                                     "pick a value between <1>4-10</1>.",
-                                label: "SMS OTP Length",
+                                label: "SMS OTP length",
                                 placeholder: "Enter SMS OTP length.",
                                 validations: {
                                     invalid: "SMS OTP length should be an integer.",
-                                    range: "SMS OTP length should be between 4 & 10 characters.",
+                                    range: {
+                                        digits: "SMS OTP length should be between 4 & 10 digits.",
+                                        characters: "SMS OTP length should be between 4 & 10 characters."
+                                    },
                                     required: "SMS OTP length is a required field."
                                 },
                                 unit: {
@@ -3094,15 +3097,14 @@ export const console: ConsoleNS = {
                                 }
                             },
                             useNumericChars: {
-                                hint: "Only numeric characters (<1>0-9</1>) are used for the OTP token. " +
-                                    "Please clear this checkbox to enable alphanumeric characters.",
-                                label: "Use only numeric characters for OTP token",
+                                hint: "Please clear this checkbox to enable alphanumeric characters.",
+                                label: "Use only numeric characters for OTP",
                                 validations: {
                                     required: "Use only numeric characters for OTP token is a required field."
                                 }
                             },
                             allowFirstLoginMobileNoConfiguration: {
-                                hint: "If there was no configured mobile number, prompt user to enter the mobile number.",
+                                hint: "Prompt user to enter the mobile number if there was no mobile number configured.",
                                 label: "Allow users to configure mobile number on the first login",
                                 validations: {
                                     required: "Allow users to configure mobile number on the first login is a required field",

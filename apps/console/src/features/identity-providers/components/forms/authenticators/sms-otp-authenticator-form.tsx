@@ -82,7 +82,7 @@ interface SMSOTPAuthenticatorFormInitialValuesInterface {
     /**
      * SMS OTP expiry time in seconds.
      */
-    SmsOTP_ExpiryTime: string;
+    SmsOTP_ExpiryTime: number;
     /**
      * Number of characters in the OTP token.
      */
@@ -189,29 +189,39 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
 
             const moderatedName: string = value.name.replace(/\./g, "_");
 
-            resolvedFormFields = {
-                ...resolvedFormFields,
-                [ moderatedName ]: {
-                    meta,
-                    value: (value.value === "true" || value.value === "false")
+            // Converting expiry time from seconds to minutes
+            if (moderatedName === IdentityProviderManagementConstants.AUTHENTICATOR_INIT_VALUES_SMS_OTP_EXPIRY_TIME_KEY){
+                const expiryTimeInMinutes = Math.round(parseInt(value.value,10) / 60);
+                resolvedInitialValues = {
+                    ...resolvedInitialValues,
+                    [moderatedName]: expiryTimeInMinutes
+                };
+                resolvedFormFields = {
+                    ...resolvedFormFields,
+                    [moderatedName]: {
+                        meta,
+                        value: expiryTimeInMinutes.toString()
+                    }
+                }
+            } else {
+                resolvedFormFields = {
+                    ...resolvedFormFields,
+                    [moderatedName]: {
+                        meta,
+                        value: (value.value === "true" || value.value === "false")
+                            ? JSON.parse(value.value)
+                            : value.value
+                    }
+                };
+
+                resolvedInitialValues = {
+                    ...resolvedInitialValues,
+                    [moderatedName]: (value.value === "true" || value.value === "false")
                         ? JSON.parse(value.value)
                         : value.value
-                }
-            };
-
-            resolvedInitialValues = {
-                ...resolvedInitialValues,
-                [ moderatedName ]: (value.value === "true" || value.value === "false")
-                    ? JSON.parse(value.value)
-                    : value.value
-            };
+                };
+            }
         });
-        // TODO: Remove setting this value once the data is available from the backend
-        resolvedFormFields.SmsOTP_OtpRegex_AllowFirstLoginMobileNoConfiguration = {
-            meta: undefined,
-            value: JSON.parse("false"),
-        }
-        resolvedInitialValues.SmsOTP_OtpRegex_AllowFirstLoginMobileNoConfiguration = false;
 
         setIsOTPANumber(resolvedInitialValues.SmsOTP_OtpRegex_UseNumericChars)
         setFormFields(resolvedFormFields);
@@ -232,8 +242,16 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
 
         for (const [ name, value ] of Object.entries(values)) {
             if (name !== undefined) {
-
                 const moderatedName: string = name.replace(/_/g, ".");
+
+                if (name === IdentityProviderManagementConstants.AUTHENTICATOR_INIT_VALUES_SMS_OTP_EXPIRY_TIME_KEY){
+                    const timeInSeconds = value * 60;
+                    properties.push({
+                        name: moderatedName,
+                        value: timeInSeconds.toString()
+                    });
+                    continue;
+                }
 
                 properties.push({
                     name: moderatedName,
@@ -273,9 +291,9 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
             // Check for invalid input.
             errors.SmsOTP_ExpiryTime = t("console:develop.features.authenticationProvider.forms" +
                 ".authenticatorSettings.smsOTP.expiryTime.validations.invalid");
-        } else if ((parseInt(values.SmsOTP_ExpiryTime, 10) < IdentityProviderManagementConstants
+        } else if ((values.SmsOTP_ExpiryTime < IdentityProviderManagementConstants
             .SMS_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.EXPIRY_TIME_MIN_VALUE)
-        || (parseInt(values.SmsOTP_ExpiryTime, 10) > IdentityProviderManagementConstants
+        || (values.SmsOTP_ExpiryTime > IdentityProviderManagementConstants
                 .SMS_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.EXPIRY_TIME_MAX_VALUE)) {
             // Check for invalid range.
             errors.SmsOTP_ExpiryTime = t("console:develop.features.authenticationProvider.forms" +
@@ -296,7 +314,7 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
                 .SMS_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.OTP_LENGTH_MAX_VALUE)) {
             // Check for invalid range.
             errors.SmsOTP_OTPLength = t("console:develop.features.authenticationProvider.forms" +
-                ".authenticatorSettings.smsOTP.tokenLength.validations.range");
+                `.authenticatorSettings.smsOTP.tokenLength.validations.range.${isOTPANumber ? "digits" : "characters"}`);
         }
 
         return errors;
@@ -331,8 +349,7 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
                             ".smsOTP.expiryTime.hint"
                         }
                     >
-                        The generated passcode will be expired after this defined time period. Please pick a
-                        value between <Code>1 second</Code> & <Code>86400 seconds(1 day)</Code>.
+                        Please pick a value between <Code>1 minute</Code> & <Code>1440 minutes(1 day)</Code>.
                     </Trans>
                 }
                 required={ true }
@@ -349,7 +366,7 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
                     IdentityProviderManagementConstants
                         .SMS_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.EXPIRY_TIME_MIN_LENGTH
                 }
-                width={ 16 }
+                width={ 12 }
                 data-testid={ `${ testId }-sms-otp-expiry-time` }
             >
                 <input />
@@ -367,17 +384,16 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
                     t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                         ".smsOTP.useNumericChars.label")
                 }
-                // hint={
-                //     <Trans
-                //         i18nKey={
-                //             "console:develop.features.authenticationProvider.forms.authenticatorSettings" +
-                //             ".smsOTP.useNumericChars.hint"
-                //         }
-                //     >
-                //         Only numeric characters (<Code>0-9</Code>) are used for the OTP token.
-                //         Please clear this checkbox to enable alphanumeric characters.
-                //     </Trans>
-                // }
+                hint={
+                    <Trans
+                        i18nKey={
+                            "console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                            ".smsOTP.useNumericChars.hint"
+                        }
+                    >
+                        Please clear this checkbox to enable alphanumeric characters.
+                    </Trans>
+                }
                 readOnly={ readOnly }
                 width={ 16 }
                 data-testid={ `${ testId }-sms-otp-regex-use-numeric` }
@@ -417,7 +433,7 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
                     IdentityProviderManagementConstants
                         .SMS_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.OTP_LENGTH_MIN_LENGTH
                 }
-                width={ 16 }
+                width={ 12 }
                 data-testid={ `${ testId }-sms-otp-token-length` }
             >
                 <input />
@@ -428,27 +444,6 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
                     }
                 </Label>
             </Field.Input>
-            <Field.Checkbox
-                ariaLabel="Allow users to configure mobile number on the first login"
-                name="SmsOTP_OtpRegex_AllowFirstLoginMobileNoConfiguration"
-                label={
-                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
-                        ".smsOTP.allowFirstLoginMobileNoConfiguration.label")
-                }
-                hint={
-                    <Trans
-                        i18nKey={
-                            "console:develop.features.authenticationProvider.forms.authenticatorSettings" +
-                            ".smsOTP.allowFirstLoginMobileNoConfiguration.hint"
-                        }
-                    >
-                        If there was no configured mobile number, prompt user to enter the mobile number.
-                    </Trans>
-                }
-                readOnly={ readOnly }
-                width={ 16 }
-                data-testid={ `${ testId }-sms-otp-regex-allow-first-login-mobile-no` }
-            />
             <Field.Button
                 size="small"
                 buttonType="primary_btn"

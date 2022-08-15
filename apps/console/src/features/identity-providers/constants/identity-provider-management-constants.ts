@@ -156,8 +156,8 @@ export class IdentityProviderManagementConstants {
         OTP_LENGTH_MIN_VALUE: number;
     } = {
 
-        EXPIRY_TIME_MAX_LENGTH: 10000,
-        EXPIRY_TIME_MAX_VALUE: 86400,
+        EXPIRY_TIME_MAX_LENGTH: 4,
+        EXPIRY_TIME_MAX_VALUE: 1440,
         EXPIRY_TIME_MIN_LENGTH: 1,
         EXPIRY_TIME_MIN_VALUE: 1,
         OTP_LENGTH_MAX_LENGTH: 2,
@@ -378,6 +378,9 @@ export class IdentityProviderManagementConstants {
     public static readonly GOOGLE_OIDC_AUTHENTICATOR_DISPLAY_NAME: string = "Google";
     public static readonly FACEBOOK_AUTHENTICATOR_DISPLAY_NAME: string = "Facebook";
     public static readonly GITHUB_AUTHENTICATOR_DISPLAY_NAME: string = "GitHub";
+
+    // Keys for the initial values of SMS OTP Authenticator
+    public static readonly AUTHENTICATOR_INIT_VALUES_SMS_OTP_EXPIRY_TIME_KEY = "SmsOTP_ExpiryTime";
 
     /**
      * Identity provider create limit reached error.
