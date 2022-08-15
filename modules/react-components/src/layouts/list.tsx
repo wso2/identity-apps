@@ -26,8 +26,7 @@ import {
     DropdownProps,
     Grid,
     Icon,
-    PaginationProps,
-    Popup
+    PaginationProps
 } from "semantic-ui-react";
 import { Pagination, PaginationPropsInterface } from "../components";
 
@@ -217,32 +216,29 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
                                                             data-componentid={ `${ componentId }-sort` }
                                                             data-testid={ `${ testId }-sort` }
                                                         />
-                                                        <Popup
-                                                            trigger={ (
-                                                                <Button
-                                                                    icon
-                                                                    onClick={ () => {
-                                                                        setIsAscending(!isAscending);
-                                                                        onSortOrderChange(!isAscending);
-                                                                    } }
-                                                                    className="left-aligned-action"
-                                                                >
-                                                                    <Icon
-                                                                        name={
-                                                                            isAscending
-                                                                                ? "sort amount down"
-                                                                                : "sort amount up"
-                                                                        }
-                                                                    />
-                                                                </Button>
-                                                            ) }
-                                                            content={
-                                                                isAscending
-                                                                    ? "Sort in the descending order"
-                                                                    : "Sort in the ascending order"
+                                                        <Button
+                                                            data-tooltip={ 
+                                                                isAscending 
+                                                                    ? "Sort in the descending order" 
+                                                                    : "Sort in the ascending order" 
                                                             }
-                                                            inverted
-                                                        />
+                                                            data-position="top right"
+                                                            data-inverted=""
+                                                            icon
+                                                            onClick={ () => {
+                                                                setIsAscending(!isAscending);
+                                                                onSortOrderChange(!isAscending);
+                                                            } }
+                                                            className="left-aligned-action"
+                                                        >
+                                                            <Icon
+                                                                name={
+                                                                    isAscending
+                                                                        ? "sort amount down"
+                                                                        : "sort amount up"
+                                                                }
+                                                            />
+                                                        </Button>
                                                     </div>
                                                 )
                                             }
