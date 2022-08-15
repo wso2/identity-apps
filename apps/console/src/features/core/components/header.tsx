@@ -31,7 +31,7 @@ import {
 import compact from "lodash-es/compact";
 import isEmpty from "lodash-es/isEmpty";
 import sortBy from "lodash-es/sortBy";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Container, Menu } from "semantic-ui-react";
@@ -40,6 +40,7 @@ import { getApplicationList } from "../../applications/api";
 import { ApplicationListInterface } from "../../applications/models";
 import OrganizationSwitchDropdown
     from "../../organizations/components/organization-switch/organization-switch-dropdown";
+import { OrganizationUtils } from "../../organizations/utils";
 import { AppSwitcherIcons, getAppHeaderIcons } from "../configs";
 import { AppConstants } from "../constants";
 import { history } from "../helpers";
@@ -111,6 +112,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     const privilegedUserAccountURL: string = useSelector((state: AppState) =>
         state.config.deployment.accountApp.tenantQualifiedPath);
     const isPrivilegedUser: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
+    const currentOrganization = useSelector((state: AppState) => state.organization.organization);
 
     const isDevelopAllowed: boolean =
         useSelector((state: AppState) => state.accessControl.isDevelopAllowed);
@@ -174,6 +176,34 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             CommonUtils.getSeenAnnouncements()));
     }, [ config ]);
 
+    const appList = useMemo(() => {
+        const links = [];
+
+        if (OrganizationUtils.isCurrentOrganizationRoot()) {
+            links.push({
+                "data-testid": "app-switch-myaccount",
+                icon: AppSwitcherIcons().myAccount,
+                name: t("console:manage.features.header.links.userPortalNav"),
+                onClick: () => {
+                    eventPublisher.publish("console-click-visit-my-account");
+                    window.open((isPrivilegedUser ? privilegedUserAccountURL: accountAppURL),
+                        "_blank", "noopener");
+                }
+            });
+        }
+        
+
+        if (commonConfig?.header?.renderAppSwitcherAsDropdown && links.length === 0) {
+            return null;
+        }
+
+        return {
+            category: "APPS",
+            categoryLabel: t("common:apps"),
+            links
+        };
+    }, [ commonConfig?.header?.renderAppSwitcherAsDropdown, currentOrganization ]);
+
     /**
      * Handles announcement dismiss callback.
      */
@@ -220,7 +250,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                                 window.open(consoleAppURL, "_self");
                             }
                         },
-                        {
+                        OrganizationUtils.isCurrentOrganizationRoot() && {
                             "data-testid": "app-switch-myaccount",
                             description: t("console:common.header.appSwitch.myAccount.description"),
                             enabled: true,
@@ -399,22 +429,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             isProfileInfoLoading={ isProfileInfoLoading }
             userDropdownLinks={
                 compact([
-                    !commonConfig?.header?.renderAppSwitcherAsDropdown && {
-                        category: "APPS",
-                        categoryLabel: t("common:apps"),
-                        links: [
-                            {
-                                "data-testid": "app-switch-myaccount",
-                                icon: AppSwitcherIcons().myAccount,
-                                name: t("console:manage.features.header.links.userPortalNav"),
-                                onClick: () => {
-                                    eventPublisher.publish("console-click-visit-my-account");
-                                    window.open((isPrivilegedUser ? privilegedUserAccountURL: accountAppURL),
-                                        "_blank", "noopener");
-                                }
-                            }
-                        ]
-                    },
+                    appList,
                     ...commonConfig?.header?.getUserDropdownLinkExtensions(tenantDomain, associatedTenants),
                     {
                         category: "GENERAL",
