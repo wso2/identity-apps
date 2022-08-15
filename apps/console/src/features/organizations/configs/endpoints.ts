@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { store } from "../../core";
 import { OrganizationResourceEndpointsInterface } from "../models";
 
 /**
@@ -32,6 +31,6 @@ export const getOrganizationsResourceEndpoints = (
     return {
         organizations: `${ serverHostWithOrgPath }/api/server/v1`,
         rootOrganization: `${ serverHost }/api/server/v1`,
-        usersSuperOrganization: `${ serverHost }/api/users/v1/me/organizations`
+        usersSuperOrganization: `${ serverHostWithOrgPath }/api/users/v1/me/organizations`
     };
 };
