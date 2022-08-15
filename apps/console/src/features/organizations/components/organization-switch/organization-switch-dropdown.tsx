@@ -123,17 +123,19 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
 
         getOrganizations(filter, 5, after, before, false, false).then((response: OrganizationListInterface) => {
             if (!response || !response.organizations) {
-                setAssociatedOrganizations([ superOrg ]);
+                superOrg && setAssociatedOrganizations([ superOrg ]);
                 setPaginationData(response.links);
             } else {
-                const organizations = [ superOrg, ...response?.organizations ];
+                const organizations = superOrg
+                    ? [ superOrg, ...response?.organizations ]
+                    : [ ...response?.organizations ];
 
                 setAssociatedOrganizations(organizations);
 
                 setPaginationData(response.links);
             }
         }).catch((error) => {
-            setAssociatedOrganizations([ superOrg ]);
+            superOrg && setAssociatedOrganizations([ superOrg ]);
 
             if (error?.description) {
                 dispatch(
