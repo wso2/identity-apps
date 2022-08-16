@@ -37,7 +37,7 @@
         <dependency>
             <groupId>org.wso2.identity.apps</groupId>
             <artifactId>org.wso2.identity.apps.taglibs.layout.controller</artifactId>
-            <version>${layout-taglib.version}</version>
+            <version>1.4.34</version>
         </dependency>
     </dependencies>
 
@@ -119,9 +119,5 @@
             </plugin>
         </plugins>
     </build>
-
-    <properties>
-        <layout-taglib.version>1.4.34</layout-taglib.version>
-    </properties>
 
 </project>
