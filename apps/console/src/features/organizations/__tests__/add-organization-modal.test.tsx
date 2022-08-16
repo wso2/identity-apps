@@ -33,7 +33,8 @@ const addComponentModalProps: AddOrganizationModalPropsInterface = {
     parent: {
         id: "1",
         name: "Parent Organization",
-        ref: "ref"
+        ref: "ref",
+        status: "ACTIVE"
     }
 };
 
