@@ -100,10 +100,12 @@ const DynamicConnectorForm = (props: DynamicConnectorFormPropsInterface) => {
         <Form onSubmit={ handleSubmit }>
             { <Grid padded={ true }>
                 { properties?.map((property, index) => {
-                    // eslint-disable-next-line max-len
-                    const fieldLabel = t(`console:manage.features.governanceConnectors.connectorCategories.${camelCase(connector?.category)}.connectors.${camelCase(connector?.name)}.properties.${camelCase(property?.name)}.label`);
-                    // eslint-disable-next-line max-len
-                    const fieldHint = t(`console:manage.features.governanceConnectors.connectorCategories.${camelCase(connector?.category)}.connectors.${camelCase(connector?.name)}.properties.${camelCase(property?.name)}.hint`);
+                    const fieldLabel = t("console:manage.features.governanceConnectors.connectorCategories." + 
+                        camelCase(connector?.category) + ".connectors."+camelCase(connector?.name) + 
+                        ".properties."+camelCase(property?.name)+".label");
+                    const fieldHint = t("console:manage.features.governanceConnectors.connectorCategories." + 
+                        camelCase(connector?.category)+".connectors."+camelCase(connector?.name) + 
+                        ".properties."+camelCase(property?.name)+".hint");
 
                     return (
                         <Grid.Row

@@ -210,8 +210,8 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
             return null;
         }
 
-        // eslint-disable-next-line max-len
-        return t(`console:manage.features.governanceConnectors.connectorCategories.${camelCase(connector?.category)}.connectors.${camelCase(connector?.name)}.friendlyName`);
+        return t("console:manage.features.governanceConnectors.connectorCategories." +
+            camelCase(connector?.category) + ".connectors." + camelCase(connector?.name) + ".friendlyName");
     };
 
     /**
