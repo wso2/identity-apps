@@ -172,7 +172,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
 
             if (window[ "AppUtils" ].getConfig().organizationName) {
                 // We are actually getting the orgId here rather than orgName
-                const orgId = window["AppUtils"].getConfig().organizationName;
+                const orgId = window[ "AppUtils" ].getConfig().organizationName;
 
                 // Setting a dummy object until real data comes from the API
                 dispatch(setOrganization({

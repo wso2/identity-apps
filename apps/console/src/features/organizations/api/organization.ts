@@ -68,8 +68,8 @@ export const getOrganizations = (
             limit,
             recursive
         },
-        url: `${ isRoot 
-            ? store.getState().config.endpoints.rootOrganization 
+        url: `${ isRoot
+            ? store.getState().config.endpoints.rootOrganization
             : store.getState().config.endpoints.organizations }/organizations`
     };
 
@@ -347,4 +347,30 @@ export const getSharedOrganizations = (
         }).catch((error) => {
             return Promise.reject(error);
         });
+};
+
+/**
+ * Gets the super organization id of the current user.
+ *
+ * @returns {Promise<string>} The super organization id of teh user.
+ */
+export const getUserSuperOrganization = (): Promise<string> => {
+    const requestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: store.getState().config.endpoints.usersSuperOrganization
+    };
+
+    return httpClient(requestConfig).then((response: HttpResponse<string>)=> {
+        if (response.status !== 200) {
+            return Promise.reject(new Error("Failed to get the user's super organization."));
+        }
+
+        return Promise.resolve(response?.data);
+    }).catch((error: HttpError) => {
+        return Promise.reject(error?.response?.data);
+    });
 };
