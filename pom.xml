@@ -547,7 +547,7 @@
             <dependency>
                 <groupId>org.wso2.identity.apps</groupId>
                 <artifactId>org.wso2.identity.apps.taglibs.layout.controller</artifactId>
-                <version>${layout-taglib.version}</version>
+                <version>${project.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
