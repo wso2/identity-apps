@@ -8,7 +8,7 @@
  */
 
 import { AsgardeoSPAClient } from "@asgardeo/auth-react";
-import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import useSWR, { SWRConfiguration, SWRResponse } from "swr";
 
 const httpClient = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
@@ -78,6 +78,7 @@ export interface SWRConfig<Data = unknown, Error = unknown>
         SWRConfiguration<AxiosResponse<Data>, AxiosError<Error>>,
         "fallbackData"
     > {
+    attachToken?: boolean,
     fallbackData?: Data
 }
 
@@ -85,7 +86,7 @@ const globalConfig: SWRConfiguration = {};
 
 export default function useRequest<Data = unknown, Error = unknown>(
     request: GetRequest,
-    { fallbackData, ...config }: SWRConfig<Data, Error> = {}
+    { attachToken, fallbackData, ...config }: SWRConfig<Data, Error> = {}
 ): RequestResultInterface<Data, Error> {
 
     const _config = {
@@ -104,8 +105,9 @@ export default function useRequest<Data = unknown, Error = unknown>(
          * NOTE: Typescript thinks `request` can be `null` here, but the fetcher
          * function is actually only called by `useSWR` when it isn't.
          */
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        () => httpClient(request!),
+        () => 
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            attachToken === undefined ? httpClient(request!) : ( attachToken ? httpClient(request!) : axios(request!) ),
         {
             // Revalidates data on document focus.
             // Sends unnecessary request so disabling globally.

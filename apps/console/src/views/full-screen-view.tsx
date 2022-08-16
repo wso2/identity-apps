@@ -27,7 +27,6 @@ import {
 } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
-    ErrorInfo,
     FunctionComponent,
     ReactElement,
     ReactNode,
@@ -91,7 +90,7 @@ export const FullScreenView: FunctionComponent<FullScreenViewPropsInterface> = (
             return;
         }
 
-        const routes: RouteInterface[] = CommonRouteUtils.filterEnabledRoutes<FeatureConfigInterface>(
+        const [ routes, _sanitizedRoutes ] = CommonRouteUtils.filterEnabledRoutes<FeatureConfigInterface>(
             getFullScreenViewRoutes(),
             featureConfig,
             allowedScopes);

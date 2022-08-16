@@ -24,7 +24,7 @@
     <groupId>org.wso2.identity.apps</groupId>
     <artifactId>identity-apps</artifactId>
     <packaging>pom</packaging>
-    <version>1.3.35-SNAPSHOT</version>
+    <version>1.4.34-SNAPSHOT</version>
     <name>WSO2 Identity Server Apps - Parent</name>
     <description>WSO2 Identity Server Web Apps</description>
 
@@ -198,6 +198,17 @@
                 <groupId>org.wso2.carbon.extension.identity.authenticator.outbound.totp</groupId>
                 <artifactId>org.wso2.carbon.extension.identity.authenticator.totp.connector</artifactId>
                 <version>${totp.authenticator.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.identity.organization.management</groupId>
+                <artifactId>org.wso2.carbon.identity.organization.management.service</artifactId>
+                <version>${identity.organization.management.service.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.wso2.carbon.identity.auth.rest</groupId>
+                        <artifactId>org.wso2.carbon.identity.authz.service</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
 
             <dependency>
@@ -536,17 +547,7 @@
             <dependency>
                 <groupId>org.wso2.identity.apps</groupId>
                 <artifactId>org.wso2.identity.apps.taglibs.layout.controller</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>javax.cache</groupId>
-                <artifactId>cache-api</artifactId>
-                <version>${javax.cache-api.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.ehcache</groupId>
-                <artifactId>ehcache</artifactId>
-                <version>${ehcache.version}</version>
+                <version>${layout-taglib.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -669,7 +670,7 @@
         <commons-logging.imp.pkg.version.range>[1.2, 2.0)</commons-logging.imp.pkg.version.range>
 
         <carbon.identity.version>5.0.7</carbon.identity.version>
-        <carbon.kernel.version>4.7.0-beta9</carbon.kernel.version>
+        <carbon.kernel.version>4.7.0</carbon.kernel.version>
         <carbon.kernel.imp.pkg.version.range>[4.5.0, 5.0.0)</carbon.kernel.imp.pkg.version.range>
         <carbon.kernel.registry.imp.pkg.version.range>[1.0.1, 2.0.0)</carbon.kernel.registry.imp.pkg.version.range>
         <carbon.user.api.imp.pkg.version.range>[1.0.1, 2.0.0)</carbon.user.api.imp.pkg.version.range>
@@ -685,6 +686,8 @@
         <identity.extension.utils>1.0.8</identity.extension.utils>
         <carbon.identity.framework.version>5.21.30</carbon.identity.framework.version>
         <carbon.identity.framework.imp.pkg.version.range>[5.0.0, 6.0.0)</carbon.identity.framework.imp.pkg.version.range>
+        <identity.organization.management.service.version>1.0.65</identity.organization.management.service.version>
+        <identity.org.mgt.version.range>[1.0.65, 2.0.0)</identity.org.mgt.version.range>
         <carbon.identity.oauth.version>6.7.130</carbon.identity.oauth.version>
         <carbon.identity.oauth.imp.pkg.version.range>[6.1.0, 7.0.0)</carbon.identity.oauth.imp.pkg.version.range>
         <identity.governance.version>1.5.48</identity.governance.version>
@@ -711,8 +714,8 @@
         <json.wso2.version>3.0.0.wso2v1</json.wso2.version>
         <taglibs-standard-impl.version>1.2.5</taglibs-standard-impl.version>
         <apache.tomcat-catalina.version>9.0.11</apache.tomcat-catalina.version>
-        <javax.cache-api.version>1.1.0</javax.cache-api.version>
-        <ehcache.version>3.10.0</ehcache.version>
+        <layout-taglib.version>1.4.33</layout-taglib.version>
+        
 
         <lint.exec.skip>true</lint.exec.skip>
         <bootstrap.exec.skip>false</bootstrap.exec.skip>

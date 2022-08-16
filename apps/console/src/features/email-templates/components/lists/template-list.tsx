@@ -271,7 +271,7 @@ export const EmailTemplateList: FunctionComponent<EmailTemplateListPropsInterfac
                 showTemplateDeleteConfirmation && (
                     <ConfirmationModal
                         onClose={ (): void => setShowTemplateDeleteConfirmation(false) }
-                        type="warning"
+                        type="negative"
                         open={ showTemplateDeleteConfirmation }
                         assertion={ currentDeletingTemplate.id }
                         assertionHint={ (
@@ -303,7 +303,7 @@ export const EmailTemplateList: FunctionComponent<EmailTemplateListPropsInterfac
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message
                             attached
-                            warning
+                            negative
                             data-testid={ `${ testId }-delete-confirmation-modal-message` }
                         >
                             { t("console:manage.features.emailTemplates.confirmations.deleteTemplate.message") }

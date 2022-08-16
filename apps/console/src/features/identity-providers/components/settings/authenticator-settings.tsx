@@ -45,7 +45,7 @@ import {
 } from "../../api";
 import { getIdPIcons } from "../../configs/ui";
 import { IdentityProviderManagementConstants } from "../../constants";
-import ExpertModeIdpTemplate from "../../data/identity-provider-templates/templates/expert-mode/expert-mode.json"
+import ExpertModeIdpTemplate from "../../data/identity-provider-templates/templates/expert-mode/expert-mode.json";
 import {
     AuthenticatorSettingsFormModes,
     CommonPluggableComponentMetaPropertyInterface,
@@ -306,6 +306,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
             ));
         const search = (object): boolean => object.key === AUTHORIZED_REDIRECT_URL;
         const index: number = authenticator?.data?.properties.findIndex(search);
+
         if (index >= 0) {
             values.properties.push(authenticator.data.properties[index]);
         }
@@ -316,7 +317,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
             dispatch(addAlert({
                 description: t("console:develop.features.authenticationProvider.notifications." +
                     "getFederatedAuthenticator.error.description",
-                    { description: error.response.data.description }),
+                { description: error.response.data.description }),
                 level: AlertLevels.ERROR,
                 message: t("console:develop.features.authenticationProvider." +
                     "notifications.getFederatedAuthenticator.error.message")
@@ -367,9 +368,11 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
      */
     async function fetchAuthenticators() {
         const authenticators: FederatedAuthenticatorWithMetaInterface[] = [];
+
         for (const authenticator of identityProvider.federatedAuthenticators.authenticators) {
             authenticators.push(await fetchAuthenticator(authenticator.authenticatorId));
         }
+
         return authenticators;
     }
 
@@ -417,6 +420,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
     const handleDefaultAuthenticatorChange = (e: FormEvent<HTMLInputElement>, data: CheckboxProps, id: string):
         void => {
         const authenticator = availableAuthenticators.find(authenticator => (authenticator.id === id)).data;
+
         authenticator.isDefault = data.checked;
         handleAuthenticatorConfigFormSubmit(authenticator);
     };
@@ -430,6 +434,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
      */
     const handleAuthenticatorEnableToggle = (e: FormEvent<HTMLInputElement>, data: CheckboxProps, id: string): void => {
         const authenticator = availableAuthenticators.find(authenticator => (authenticator.id === id)).data;
+
         // Validation
         if (authenticator.isDefault && !data.checked) {
             dispatch(addAlert({
@@ -529,6 +534,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                     "deleteDefaultAuthenticator" +
                     ".error.message")
             }));
+
             return;
         }
 
@@ -549,18 +555,18 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
     const filterTemplates = (): void => {
 
         // Filter out already added authenticators and templates with federated authenticators.
-        const availableAuthenticatorIDs = availableAuthenticators.map((a) => {
+        const availableAuthenticatorIDs = availableAuthenticators?.map((a) => {
             return a.id;
         });
 
-        const filteredTemplates = identityProviderTemplates.filter((template) =>
-            (template.idp?.federatedAuthenticators.defaultAuthenticatorId &&
-                !availableAuthenticatorIDs.includes(
-                    template.idp?.federatedAuthenticators?.defaultAuthenticatorId))
+        const filteredTemplates = identityProviderTemplates?.filter((template) =>
+            (template?.idp?.federatedAuthenticators?.defaultAuthenticatorId &&
+                !availableAuthenticatorIDs?.includes(
+                    template?.idp?.federatedAuthenticators?.defaultAuthenticatorId))
         );
 
         // sort templateList based on display Order
-        filteredTemplates.sort((a, b) => (a.displayOrder > b.displayOrder) ? 1 : -1);
+        filteredTemplates?.sort((a, b) => (a?.displayOrder > b?.displayOrder) ? 1 : -1);
         
         const flattenedConnectorMetadata: ({ [ key: string ]: FederatedAuthenticatorMetaDataInterface }) = keyBy(
             getConnectorMetadata(), "authenticatorId"
@@ -569,15 +575,15 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
             availableFederatedAuthenticators as FederatedAuthenticatorMetaDataInterface[]
         );
 
-        moderatedManualModeOptions = moderatedManualModeOptions.map((option) => {
+        moderatedManualModeOptions = moderatedManualModeOptions?.map((option) => {
             return {
                 ...option,
-                ...flattenedConnectorMetadata[ option.authenticatorId ]
+                ...flattenedConnectorMetadata[ option?.authenticatorId ]
             };
         });
 
-        moderatedManualModeOptions = moderatedManualModeOptions.filter(a =>
-            !availableAuthenticatorIDs.includes(a.authenticatorId));
+        moderatedManualModeOptions = moderatedManualModeOptions?.filter(a =>
+            !availableAuthenticatorIDs.includes(a?.authenticatorId));
 
         setAvailableManualModeOptions(moderatedManualModeOptions);
         setAvailableTemplates(filteredTemplates);
@@ -590,9 +596,11 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
      */
     async function fetchIDPTemplates(templatesList: IdentityProviderTemplateListItemInterface[]) {
         const templates: IdentityProviderTemplateInterface[] = [];
+
         for (const template of templatesList) {
             templates.push(await fetchIDPTemplate(template.id));
         }
+
         return templates;
     }
 
@@ -674,6 +682,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
             return p.key === key;
         });
         const dataIndex = properties.indexOf(elementToRemove);
+
         if (dataIndex >= 0) {
             properties.splice(dataIndex, 1);
         }
@@ -905,6 +914,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                 const logoutUrlData = {
                     key: "OIDCLogoutEPUrl"
                 };
+
                 authenticator.data.properties.push(logoutUrlData);
                 const logoutUrlMeta: CommonPluggableComponentMetaPropertyInterface = {
                     description: `The URL of the identity provider to which ${ config.ui.productName } will send session
@@ -918,6 +928,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                     subProperties: [],
                     type: "URL"
                 };
+
                 authenticator.meta.properties.push(logoutUrlMeta);
             }
 
@@ -994,7 +1005,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                 deletingAuthenticator && (
                     <ConfirmationModal
                         onClose={ (): void => setShowDeleteConfirmationModal(false) }
-                        type="warning"
+                        type="negative"
                         open={ showDeleteConfirmationModal }
                         assertion={ deletingAuthenticator?.name }
                         assertionHint={ (
@@ -1025,7 +1036,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message
                             attached
-                            warning
+                            negative
                             data-testid={ `${ testId }-authenticator-delete-confirmation` }>
                             { t("console:develop.features.authenticationProvider.confirmations." +
                                 "deleteAuthenticator.message") }

@@ -17,6 +17,7 @@
  */
 
 import isEmpty from "lodash-es/isEmpty";
+import { AppConstants } from "../../../features/core";
 import { getPermissionList, searchRoleList } from "../api";
 import { generatePermissionTree } from "../components/role-utils";
 import { PermissionObject, SearchRoleInterface, TreeNode } from "../models";
@@ -57,27 +58,12 @@ export class RoleManagementUtils {
     };
 
     /**
-     * Util function to join split permision string for given array location.
-     * 
-     * @param permissionString permission string
-     * @param joinLocation location to join the string
-     */
-    public static permissionJoining = (permissionString: string , joinLocation: number): string[] => {
-        let permissionStringList = permissionString.split("/");
-        const first = permissionStringList.splice(0, joinLocation);
-
-        permissionStringList = [ first.join("/"), ...permissionString ];
-
-        return permissionStringList;
-    };
-
-    /**
      * Retrieve all permissions from backend.
      *
      * @param {string[]} permissionsToSkip - Array of permissions to filter out.
      * @return {Promise<TreeNode[]>}
      */
-    public static getAllPermissions = (permissionsToSkip?: string[]): Promise<TreeNode[]> => {
+    public static getAllPermissions = (permissionsToSkip?: string[], tenantDomain?: string): Promise<TreeNode[]> => {
         return getPermissionList().then((response) => {
             if (response.status === 200 && response.data && response.data instanceof Array) {
 
@@ -87,32 +73,24 @@ export class RoleManagementUtils {
                     : response.data;
 
                 let permissionTree: TreeNode[] = [];
-                let isStartingWithTwoNodes: boolean = false;
 
-                permissionTree = permissionStringArray.reduce((arr, path, index) => {
+                permissionTree = permissionStringArray.reduce((arr, path) => {
 
                     let nodes: TreeNode[] = [];
 
-                    if(index === 0 && path.resourcePath.replace(/^\/|\/$/g, "").split("/").length == 2) {
-                        isStartingWithTwoNodes = true;
-                    }
-                    if (isStartingWithTwoNodes) {
-                        nodes = generatePermissionTree(
-                            path, 
-                            RoleManagementUtils.permissionJoining(path.resourcePath.replace(/^\/|\/$/g, ""), 2),
-                            arr
-                        );
-                    } else {
-                        nodes = generatePermissionTree(
-                            path, 
-                            path.resourcePath.replace(/^\/|\/$/g, "").split("/"),
-                            arr
-                        );
-                    }
+                    nodes = generatePermissionTree(
+                        path,
+                        path.resourcePath.replace(/^\/|\/$/g, "").split("/"),
+                        arr
+                    );
                     
                     return nodes;
                 },[]);
 
+                if (permissionTree[0]?.title !== AppConstants.PERMISSIONS_ROOT_NODE) {
+                    return permissionTree[0]?.children;
+                }
+ 
                 return permissionTree;
             }
         });

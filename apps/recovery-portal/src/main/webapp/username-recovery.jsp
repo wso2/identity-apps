@@ -185,10 +185,10 @@
                             <label><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "name")%></label>
                             <div class="two fields">
                                 <% if (isFirstNameInClaims) { %>
-                                <div class="field">
-                                    <input id="first-name" type="text" name="http://wso2.org/claims/givenname"
+                                <div class="required field">
+                                    <input id="first-name" type="text" required name="http://wso2.org/claims/givenname"
                                         placeholder="<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                                            "First.name")%>" />
+                                            "First.name")%>*" />
                                 </div>
                                 <% } %>
                                 <% if (isLastNameInClaims) { %>
@@ -233,11 +233,11 @@
                             <input id="tenant-domain" type="hidden" name="tenantDomain" value="<%=Encode.forHtmlAttribute(tenantDomain)%>"/>
                         </div>
                         <% } else { %>
-                        <div class="field">
+                        <div class="required field">
                             <label class="control-label">
                                 <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Tenant.domain")%>
                             </label>
-                            <input id="tenant-domain" type="text" name="tenantDomain" class="form-control">
+                            <input id="tenant-domain" type="text" required name="tenantDomain" class="form-control">
                         </div>
                         <% } %>
 
@@ -264,13 +264,15 @@
                                 }
                             }
                         %>
-
                         <%
                             if (reCaptchaEnabled) {
                                 String reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
                         %>
                         <div class="field">
                             <div class="g-recaptcha"
+                                    data-size="invisible"
+                                    data-callback="onCompleted"
+                                    data-action="usernameRecovery"
                                     data-sitekey=
                                             "<%=Encode.forHtmlContent(reCaptchaKey)%>">
                             </div>
@@ -286,9 +288,9 @@
                                 <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Cancel")%>
                             </a>
                             <button id="recoverySubmit"
-                                    class="ui primary large button"
-                                    type="submit"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                                    "Submit")%>
+                                    class="ui primary button"
+                                    type="submit">
+                                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Submit")%>
                             </button>
                         </div>
                     </form>
@@ -323,9 +325,25 @@
             window.history.back();
         }
 
+        function onCompleted() {
+            $("#recoverDetailsForm").submit();
+        }
+
         $(document).ready(function () {
 
             $("#recoverDetailsForm").submit(function (e) {
+                <%
+                    if (reCaptchaEnabled) {
+                %>
+                if (!grecaptcha.getResponse()) {
+                    e.preventDefault();
+                    grecaptcha.execute();
+
+                    return true;
+                }
+                <%
+                    }
+                %>
 
                 // Prevent clicking multiple times, and notify the user something
                 // is happening in the background.
@@ -340,18 +358,6 @@
 
                     if (firstName === "") {
                         errorMessage.text("Please fill the first name.");
-                        errorMessage.show();
-                        $("html, body").animate({scrollTop: errorMessage.offset().top}, "slow");
-                        submitButton.removeClass("loading").attr("disabled", false);
-                        return false;
-                    }
-                <% } %>
-
-                <% if (reCaptchaEnabled) { %>
-                    const reCaptchaResponse = $("[name='g-recaptcha-response']")[0].value;
-
-                    if (reCaptchaResponse.trim() === "") {
-                        errorMessage.text("Please select reCaptcha.");
                         errorMessage.show();
                         $("html, body").animate({scrollTop: errorMessage.offset().top}, "slow");
                         submitButton.removeClass("loading").attr("disabled", false);

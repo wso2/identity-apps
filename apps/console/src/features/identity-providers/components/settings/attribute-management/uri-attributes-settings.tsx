@@ -46,6 +46,10 @@ interface AdvanceAttributeSettingsPropsInterface extends TestableComponentInterf
      * Specifies if the component should only be read-only.
      */
     isReadOnly: boolean;
+    /**
+     * Is the IdP type SAML
+     */
+    isSaml: boolean;
 }
 
 export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPropsInterface> = (
@@ -63,6 +67,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
         subjectError,
         isReadOnly,
         isMappingEmpty,
+        isSaml,
         [ "data-testid" ]: testId
     } = props;
 
@@ -119,17 +124,32 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                         />
                     </Form>
                     <Hint>
-                        <Trans
-                            i18nKey={
-                                "console:console:develop.features.authenticationProvider.forms.uriAttributeSettings" +
-                                ".subject.hint"
-                            }
-                        >
-                            The attribute that identifies the user at the enterprise identity provider. 
-                            When attributes are configured based on the authentication response of this IdP connection, 
-                            you can use one of them as the subject. Otherwise, the 
-                            default <Code>saml2:Subject</Code> in the SAML response is used as the subject attribute.
-                        </Trans>
+                        { isSaml 
+                            ? (
+                                <Trans
+                                    i18nKey={
+                                        "console:console:develop.features.authenticationProvider.forms" +
+                                        ".uriAttributeSettings.subject.hint"
+                                    }
+                                >
+                                The attribute that identifies the user at the enterprise identity provider. 
+                                When attributes are configured based on the authentication response of this 
+                                IdP connection, you can use one of them as the subject. Otherwise, the 
+                                default <Code>saml2:Subject</Code> in the SAML response is used as the 
+                                subject attribute.
+                                </Trans>
+                            )
+                            : (
+                                <Trans
+                                    i18nKey={
+                                        "console:console:develop.features.idp.forms.uriAttributeSettings" +
+                                        ".subject.hint"
+                                    }
+                                >
+                                Specifies the attribute that identifies the user at the identity provider.
+                                </Trans>
+                            )
+                        }
                     </Hint>
                 </Grid.Column>
             </Grid.Row>

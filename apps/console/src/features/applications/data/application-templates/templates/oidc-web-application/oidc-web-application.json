@@ -39,17 +39,6 @@
                 ],
                 "publicClient": false
             }
-        },
-        "claimConfiguration": {
-            "dialect": "LOCAL",
-            "requestedClaims": [
-                {
-                    "claim": {
-                        "uri": "http://wso2.org/claims/username"
-                    },
-                    "mandatory": true
-                }
-            ]
         }
     }
 }
