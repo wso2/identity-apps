@@ -29,6 +29,7 @@ export interface ServerConfigurationConfig {
         connector: GovernanceConnectorInterface,
         connectorForm: ReactElement,
         connectorIllustration: string,
+        connectorTitle: ReactNode,
         connectorSubHeading: ReactNode,
         message: ReactNode
     ) => ReactElement;
