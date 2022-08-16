@@ -16,6 +16,7 @@
 * under the License.
 */
 import { OrganizationManagementConstants } from "../constants";
+import { OrganizationListInterface } from "../models";
 
 export const addOrganizationMockResponse = {
     attributes: [],
@@ -80,7 +81,7 @@ export const getOrganizationsEmptyMockResponse = {
     organizations: []
 };
 
-export const getOrganizationsPageOneMockResponse = {
+export const getOrganizationsPageOneMockResponse: OrganizationListInterface = {
     links: [ {
         href: "org.url?after=organization-two",
         rel: "next"
