@@ -24,6 +24,7 @@ import {
     ExtendedExternalClaimInterface,
     SelectedDialectInterface
 } from "../../features/applications/components/settings";
+import { ApplicationInterface } from "../../features/applications";
 
 export const applicationConfig: ApplicationConfig = {
     advancedConfigurations: {
@@ -33,7 +34,7 @@ export const applicationConfig: ApplicationConfig = {
         showSaaS: true
     },
     generalSettings: {
-        getFieldReadOnlyStatus: (applicationName: string, fieldName: string): boolean => {
+        getFieldReadOnlyStatus: (application: ApplicationInterface, fieldName: string): boolean => {
             return false;
         }
     },
@@ -90,13 +91,13 @@ export const applicationConfig: ApplicationConfig = {
             return null;
         },
         showProvisioningSettings: true,
-        showDangerZone: (applicationName: string): boolean => {
+        showDangerZone: (application: ApplicationInterface): boolean => {
             return true;
         },
-        showDeleteButton: (applicationName: string): boolean => {
+        showDeleteButton: (application: ApplicationInterface): boolean => {
             return true;
         },
-        getTabPanelReadOnlyStatus: (tabPanelName: string, applicationName: string): boolean => {
+        getTabPanelReadOnlyStatus: (tabPanelName: string, applicationName: ApplicationInterface): boolean => {
             return false;
         },
         showApplicationShare: true
@@ -104,7 +105,9 @@ export const applicationConfig: ApplicationConfig = {
     excludeIdentityClaims: false,
     excludeSubjectClaim: false,
     inboundOIDCForm: {
-        disabledGrantTypes: [],
+        disabledGrantTypes: {
+            "custom-application": []
+        },
         shouldValidateCertificate: true,
         showBackChannelLogout: true,
         showCertificates: true,

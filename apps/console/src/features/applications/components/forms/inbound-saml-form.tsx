@@ -200,7 +200,6 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
         if (certificate?.type){
             setSelectedCertType(certificate?.type);
         }
-
     },[ certificate ]);
 
     const updateConfiguration = (values) => {
@@ -476,6 +475,9 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             setAssertionConsumerUrlError(true);
                             scrollToInValidField("consumerURL");
                         } else {
+                            if (selectedCertType === CertificateTypeInterface.NONE) {
+                                setFinalCertValue("");
+                            } 
                             onSubmit(updateConfiguration(values));
                         }
                     } }
@@ -1775,6 +1777,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     application={ application }
                                     updateCertFinalValue={ setFinalCertValue }
                                     updateCertType={ setSelectedCertType }
+                                    canDiscardCertificate = { (): boolean => !isRequestSignatureValidationEnabled }
                                     certificate={ certificate }
                                     readOnly={ readOnly }
                                     hidden={ false }

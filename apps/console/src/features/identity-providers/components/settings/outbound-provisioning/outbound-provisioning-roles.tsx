@@ -26,8 +26,12 @@ import isEmpty from "lodash-es/isEmpty";
 import isEqual from "lodash-es/isEqual";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Button, DropdownItemProps, Form, Grid, Icon, Label, Popup } from "semantic-ui-react";
+import { AppState } from "../../../../core";
+import { getOrganizationRoles } from "../../../../organizations/api";
+import { OrganizationResponseInterface } from "../../../../organizations/models";
+import { OrganizationUtils } from "../../../../organizations/utils";
 import { updateIDPRoleMappings } from "../../../api";
 import { IdentityProviderRolesInterface } from "../../../models";
 import { handleGetRoleListError, handleUpdateIDPRoleMappingsError } from "../../utils";
@@ -78,11 +82,15 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
     };
 
     useEffect(() => {
+        if (!OrganizationUtils.isCurrentOrganizationRoot()) {
+            return;
+        }
+
         getRolesList(null)
             .then((response) => {
                 if (response.status === 200) {
                     const allRole: RoleListInterface = response.data;
-                    
+
                     setRoleList(allRole?.Resources?.filter((role) => {
                         return !(role.displayName
                             .includes("Application/") || role.displayName.includes("Internal/"));

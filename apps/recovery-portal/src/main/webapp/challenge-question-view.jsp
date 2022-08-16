@@ -108,23 +108,28 @@
                             <input type="hidden" name="step"
                                    value="<%=Encode.forHtmlAttribute(request.getParameter("step"))%>"/>
                         </div>
+                        <div class="ui divider hidden"></div>
                         <%
                             if (reCaptchaEnabled) {
                                 String reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
                         %>
                         <div class="field">
                             <div class="g-recaptcha"
-                                 data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>">
+                                    data-size="invisible"
+                                    data-callback="onCompleted"
+                                    data-action="usernameRecovery"
+                                    data-sitekey=
+                                            "<%=Encode.forHtmlContent(reCaptchaKey)%>">
                             </div>
                         </div>
                         <%
                             }
                         %>
-                        <div class="ui divider hidden"></div>
                         <div class="align-right buttons">
                             <button id="answerSubmit"
                                     class="ui primary button"
-                                    type="submit"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Submit")%>
+                                    type="submit">
+                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Submit")%>
                             </button>
                         </div>
                     </form>
@@ -143,7 +148,7 @@
             <% } %>
         </layout:component>
     </layout:main>
-    
+
     <!-- footer -->
     <%
         File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
@@ -155,28 +160,24 @@
     <% } %>
 
     <script type="text/javascript">
+        function onCompleted() {
+            $('#securityQuestionForm').submit();
+        }
         $(document).ready(function () {
-
             $("#securityQuestionForm").submit(function (e) {
-                $("#server-error-msg").hide();
-                var errorMessage = $("#error-msg");
-                errorMessage.hide();
+               <%
+                   if (reCaptchaEnabled) {
+               %>
+               if (!grecaptcha.getResponse()) {
+                   e.preventDefault();
+                   grecaptcha.execute();
 
-                // Validate reCaptcha
-                <% if (reCaptchaEnabled) { %>
-
-                var reCaptchaResponse = $("[name='g-recaptcha-response']")[0].value;
-
-                if (reCaptchaResponse.trim() == '') {
-                    errorMessage.text("Please select reCaptcha.");
-                    errorMessage.show();
-
-                    return false;
-                }
-
-                <% } %>
-
-                return true;
+                   return true;
+               }
+               <%
+                   }
+               %>
+               return true;
             });
         });
 

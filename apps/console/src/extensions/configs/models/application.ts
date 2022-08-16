@@ -24,6 +24,7 @@ import {
     SelectedDialectInterface
 } from "../../../features/applications/components/settings";
 import { ApplicationTabTypes } from "../../../features/applications/models";
+import { ApplicationInterface } from "../../../features/applications";
 
 export interface ApplicationConfig {
     advancedConfigurations: {
@@ -33,7 +34,7 @@ export interface ApplicationConfig {
         showReturnAuthenticatedIdPs: boolean;
     };
     generalSettings: {
-        getFieldReadOnlyStatus: (applicationName: string, fieldName: string) => boolean ;
+        getFieldReadOnlyStatus: (application: ApplicationInterface, fieldName: string) => boolean ;
     };
     attributeSettings: {
         advancedAttributeSettings: {
@@ -58,9 +59,9 @@ export interface ApplicationConfig {
         extendTabs: boolean; //should be true for cloud
         showProvisioningSettings: boolean;
         renderHelpPanelItems: () => ReactNode;
-        showDangerZone: (applicationName: string) => boolean;
-        showDeleteButton: (applicationName: string) => boolean;
-        getTabPanelReadOnlyStatus: (tabPanelName: string, applicationName: string) => boolean;
+        showDangerZone: (application: ApplicationInterface) => boolean;
+        showDeleteButton: (application: ApplicationInterface) => boolean;
+        getTabPanelReadOnlyStatus: (tabPanelName: string, application: ApplicationInterface) => boolean;
         isTabEnabledForApp: (clientId: string, tabType: ApplicationTabTypes, tenantDomain: string) => boolean;
         getActions: (
             clientId: string,
@@ -94,7 +95,9 @@ export interface ApplicationConfig {
         showRequestObjectSignatureValidation: boolean;
         showCertificates: boolean;
         showReturnAuthenticatedIdPList: boolean;
-        disabledGrantTypes: string[];
+        disabledGrantTypes: {
+            "custom-application": string[]
+        };
     };
     inboundSAMLForm: {
         showApplicationQualifier: boolean;

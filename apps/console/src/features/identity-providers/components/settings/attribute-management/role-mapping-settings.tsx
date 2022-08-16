@@ -20,8 +20,14 @@ import { RoleListInterface, RolesInterface, TestableComponentInterface } from "@
 import { DynamicField, Heading, Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
-import { getGroupList } from "../../../../groups/api";
+import { AppState } from "../../../../core";
+import { getOrganizationRoles } from "../../../../organizations/api";
+import { OrganizationRoleListItemInterface } from "../../../../organizations/models";
+import { OrganizationUtils } from "../../../../organizations/utils";
+import { getRolesList } from "../../../../roles";
+import { IdentityProviderConstants } from "../../../constants";
 import { IdentityProviderRoleMappingInterface } from "../../../models";
 import { handleGetRoleListError } from "../../utils";
 
@@ -60,7 +66,8 @@ export const RoleMappingSettings: FunctionComponent<RoleMappingSettingsPropsInte
     props: RoleMappingSettingsPropsInterface
 ): ReactElement => {
 
-    const [roleList, setRoleList] = useState<RolesInterface[]>();
+    const currentOrganization = useSelector((state: AppState) => state.organization.organization);
+    const [ roleList, setRoleList ] = useState<RolesInterface[] | OrganizationRoleListItemInterface[]>();
 
     const {
         onSubmit,
@@ -76,7 +83,7 @@ export const RoleMappingSettings: FunctionComponent<RoleMappingSettingsPropsInte
      * Filter out Application related and Internal roles
      */
     const getFilteredRoles = () => {
-        const filterRole: RolesInterface[] = roleList.filter(
+        const filterRole: RolesInterface[] | OrganizationRoleListItemInterface[] = roleList.filter(
             (role) => {
                 return !(role.displayName.includes("Application/") || role.displayName.includes("Internal/"));
             });
@@ -90,17 +97,60 @@ export const RoleMappingSettings: FunctionComponent<RoleMappingSettingsPropsInte
     };
 
     useEffect(() => {
-        getGroupList(null)
-            .then((response) => {
-                if (response.status === 200) {
-                    const allRole: RoleListInterface = response.data;
-                    setRoleList(allRole.Resources);
-                }
-            })
-            .catch((error) => {
-                handleGetRoleListError(error);
-            });
-    }, [initialRoleMappings]);
+        if (OrganizationUtils.isCurrentOrganizationRoot()) {
+            getRolesList(null)
+                .then((response) => {
+                    if (response.status === 200) {
+                        const allRole: RoleListInterface = response.data;
+
+                        setRoleList(allRole.Resources);
+                    }
+                })
+                .catch((error) => {
+                    handleGetRoleListError(error);
+                });
+        } else {
+            getOrganizationRoles(currentOrganization.id, null, null, null)
+                .then((response) => {
+                    setRoleList(response.Resources);
+                });
+        }
+    }, [ initialRoleMappings ]);
+
+
+    /**
+     * Prepends `Internal/` to the role name if it does not have a domain prepended already.
+     *
+     * @param {string} role The role name as received from the API response.
+     *
+     * @returns {string}
+     */
+    const resolveRoleName = (role: string): string => {
+        if (role.split("/").length === 1) {
+            return `${ IdentityProviderConstants.INTERNAL_DOMAIN }${ role }`;
+        }
+
+        return role;
+    };
+
+    /**
+     * Removes `Internal/` part from the role name if it is present.
+     *
+     * @param {string} role The role name as received from the API response.
+     *
+     * @returns {string}
+     */
+    const resolveRoleDisplayName = (role: string): string => {
+        const roleParts: string[] = role.split("/");
+
+        if (roleParts.length > 1) {
+            if (roleParts[ 0 ] === IdentityProviderConstants.INTERNAL_DOMAIN.slice(0, -1)) {
+                return roleParts[ 1 ];
+            }
+        }
+
+        return role;
+    };
 
     return (
         <>
@@ -115,7 +165,7 @@ export const RoleMappingSettings: FunctionComponent<RoleMappingSettingsPropsInte
                             initialRoleMappings ?
                                 initialRoleMappings.map(mapping => {
                                     return {
-                                        key: mapping.localRole,
+                                        key: resolveRoleDisplayName(mapping.localRole),
                                         value: mapping.idpRole
                                     };
                                 }) : []
@@ -131,14 +181,15 @@ export const RoleMappingSettings: FunctionComponent<RoleMappingSettingsPropsInte
                         duplicateKeyErrorMsg={ t("console:develop.features.authenticationProvider.forms.roleMapping." +
                             "validation.duplicateKeyErrorMsg") }
                         submit={ triggerSubmit }
-                        update={ (data) => {
+                        listen={ (data) => {
                             if (data.length > 0) {
                                 const finalData: IdentityProviderRoleMappingInterface[] = data.map(mapping => {
                                     return {
                                         idpRole: mapping.value,
-                                        localRole: mapping.key
+                                        localRole: resolveRoleName(mapping.key)
                                     };
                                 });
+
                                 onSubmit(finalData);
                             } else {
                                 onSubmit([]);

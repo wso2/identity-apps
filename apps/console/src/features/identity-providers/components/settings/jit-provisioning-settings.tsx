@@ -25,6 +25,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { SimpleUserStoreListItemInterface } from "../../../applications";
 import { store } from "../../../core";
+import { OrganizationUtils } from "../../../organizations/utils";
 import { updateJITProvisioningConfigs } from "../../api";
 import { JITProvisioningResponseInterface } from "../../models";
 import { JITProvisioningConfigurationsForm } from "../forms";
@@ -122,12 +123,17 @@ export const JITProvisioningSettings: FunctionComponent<JITProvisioningSettingsI
             id: "PRIMARY",
             name: "PRIMARY"
         });
-        getUserStoreList(store.getState().config.endpoints.userStores).then((response) => {
-            userstore.push(...response.data);
+
+        if (OrganizationUtils.isCurrentOrganizationRoot()) {
+            getUserStoreList(store.getState().config.endpoints.userStores).then((response) => {
+                userstore.push(...response.data);
+                setUserStore(userstore);
+            }).catch(() => {
+                setUserStore(userstore);
+            });
+        } else {
             setUserStore(userstore);
-        }).catch(() => {
-            setUserStore(userstore);
-        });
+        }
     }, []);
 
     return (
