@@ -417,9 +417,7 @@
         "gravatarConfig": {
             "fallback": "404"
         },
-        "hiddenAuthenticators": [
-            "MagicLinkAuthenticator"
-        ],
+        "hiddenAuthenticators": [],
         "i18nConfigs": {
             "showLanguageSwitcher": true,
             "langAutoDetectEnabled":false
