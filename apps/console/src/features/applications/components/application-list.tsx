@@ -64,7 +64,6 @@ import {
     ApplicationTemplateListItemInterface
 } from "../models";
 import { ApplicationTemplateManagementUtils } from "../utils";
-import { OAuthProtocolTemplateItem, PassiveStsProtocolTemplateItem, SAMLProtocolTemplateItem } from "./meta";
 
 /**
  *
