@@ -19,8 +19,10 @@
 import { AsgardeoSPAClient, HttpError, HttpRequestConfig, HttpResponse } from "@asgardeo/auth-react";
 import { HttpMethods } from "@wso2is/core/src/models";
 import { store } from "../../core";
+import useRequest, { RequestResultInterface } from "../../core/hooks/use-request";
 import {
     AddOrganizationInterface,
+    OrganizationInterface,
     OrganizationListInterface,
     OrganizationPatchData,
     OrganizationResponseInterface,
@@ -295,7 +297,7 @@ export const stopSharingApplication = (
     currentOrganizationId: string,
     applicationId: string,
     sharedOrganizationId: string
-) => {
+): Promise<any> => {
     const requestConfig = {
         headers: {
             "Accept": "application/json",
@@ -354,7 +356,7 @@ export const getSharedOrganizations = (
  *
  * @returns {Promise<string>} The super organization id of teh user.
  */
-export const getUserSuperOrganization = (): Promise<string> => {
+export const useGetUserSuperOrganization = (): RequestResultInterface<OrganizationInterface, Error> => {
     const requestConfig = {
         headers: {
             "Accept": "application/json",
@@ -364,13 +366,5 @@ export const getUserSuperOrganization = (): Promise<string> => {
         url: store.getState().config.endpoints.usersSuperOrganization
     };
 
-    return httpClient(requestConfig).then((response: HttpResponse<string>)=> {
-        if (response.status !== 200) {
-            return Promise.reject(new Error("Failed to get the user's super organization."));
-        }
-
-        return Promise.resolve(response?.data);
-    }).catch((error: HttpError) => {
-        return Promise.reject(error?.response?.data);
-    });
+    return useRequest<OrganizationInterface, Error>(requestConfig);
 };

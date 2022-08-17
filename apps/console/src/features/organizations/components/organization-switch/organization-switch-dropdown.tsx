@@ -43,7 +43,7 @@ import {
     getSidePanelIcons,
     history
 } from "../../../core";
-import { getOrganizations, getUserSuperOrganization } from "../../api";
+import { getOrganizations, useGetUserSuperOrganization } from "../../api";
 import { OrganizationManagementConstants } from "../../constants";
 import {
     OrganizationInterface,
@@ -79,6 +79,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
     const [ beforeCursor, setBeforeCursor ] = useState<string>();
     const [ isDropDownOpen, setIsDropDownOpen ] = useState<boolean>(false);
     const [ search, setSearch ] = useState<string>("");
+    const { data } = useGetUserSuperOrganization();
 
     /**
      * Show the organization switching dropdown only if
@@ -108,12 +109,12 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
         let superOrg: OrganizationInterface;
 
         try {
-            const superOrgId: string = await getUserSuperOrganization();
+            const superOrgId: string = data?.id;
 
             if (currentOrganization.id !== superOrgId) {
                 superOrg = {
                     id: superOrgId,
-                    name: "Super",
+                    name: data?.name,
                     ref: ""
                 };
             }
@@ -166,7 +167,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                 })
             );
         });
-    }, [ ]);
+    }, [ data ]);
 
     const setPaginationData = (links: OrganizationLinkInterface[]) => {
         setAfterCursor(undefined);
