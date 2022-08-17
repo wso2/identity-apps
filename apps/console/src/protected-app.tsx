@@ -173,7 +173,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
 
             if (window[ "AppUtils" ].getConfig().organizationName) {
                 // We are actually getting the orgId here rather than orgName
-                const orgId = window["AppUtils"].getConfig().organizationName;
+                const orgId = window[ "AppUtils" ].getConfig().organizationName;
 
                 // Setting a dummy object until real data comes from the API
                 dispatch(setOrganization({
@@ -527,6 +527,13 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
 
         if (sanitizedDevRoutes.length < 1) {
             dispatch(setDeveloperVisibility(false));
+        }
+
+        if (sanitizedDevRoutes.length < 1 && sanitizedManageRoutes.length < 1) {
+            history.push({
+                pathname: AppConstants.getPaths().get("UNAUTHORIZED"),
+                search: "?error=" + AppConstants.LOGIN_ERRORS.get("ACCESS_DENIED")
+            });
         }
     }, [ allowedScopes, dispatch, featureConfig ]);
 
