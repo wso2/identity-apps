@@ -306,7 +306,7 @@ export class IdentityProviderManagementUtils {
      */
     public static getAuthenticatorLabels(authenticator: GenericAuthenticatorInterface): string[] {
 
-        return AuthenticatorMeta.getAuthenticatorLabels(authenticator.defaultAuthenticator.authenticatorId)
+        return AuthenticatorMeta.getAuthenticatorLabels(authenticator?.defaultAuthenticator?.authenticatorId)
             ? AuthenticatorMeta.getAuthenticatorLabels(authenticator.defaultAuthenticator.authenticatorId)
             : [];
     }

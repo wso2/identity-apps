@@ -369,4 +369,12 @@ export class AppConstants {
     public static readonly ORGANIZATION_ONLY_ROUTES: string[] = [
         "organization-roles"
     ]
+
+    /**
+     * Name of the root node
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly PERMISSIONS_ROOT_NODE: string = "All Permissions";
 }

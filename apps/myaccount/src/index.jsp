@@ -20,6 +20,7 @@
 <%= htmlWebpackPlugin.options.importUtil %>
 <%= htmlWebpackPlugin.options.importSuperTenantConstant %>
 <%= htmlWebpackPlugin.options.importOwaspEncode %>
+<%= htmlWebpackPlugin.options.getOrganizationManagementAvailability %>
 
 <jsp:scriptlet>
     <%= htmlWebpackPlugin.options.requestForwardSnippet %>
@@ -43,12 +44,14 @@
     <body>
         <script>
             var serverOrigin = "<%= htmlWebpackPlugin.options.serverUrl %>";
-            var authorizationCode = "<%= htmlWebpackPlugin.options.authorizationCode %>" != "null" 
-                                        ? "<%= htmlWebpackPlugin.options.authorizationCode %>" 
+            var authorizationCode = "<%= htmlWebpackPlugin.options.authorizationCode %>" != "null"
+                                        ? "<%= htmlWebpackPlugin.options.authorizationCode %>"
                                         : null;
-            var authSessionState = "<%= htmlWebpackPlugin.options.sessionState %>" != "null" 
-                                        ? "<%= htmlWebpackPlugin.options.sessionState %>" 
+            var authSessionState = "<%= htmlWebpackPlugin.options.sessionState %>" != "null"
+                                        ? "<%= htmlWebpackPlugin.options.sessionState %>"
                                         : null;
+            var isOrganizationManagementEnabled = JSON.parse("<%= htmlWebpackPlugin.options.isOrganizationManagementEnabled %>");
+
 
             if(!authorizationCode) {
                 function getApiPath(path) {
@@ -70,6 +73,12 @@
                     scope: ["openid SYSTEM"],
                     storage: "webWorker",
                     enablePKCE: true
+                }
+
+                if(isOrganizationManagementEnabled) {
+                    authConfig.endpoints = {
+                        authorizationEndpoint: getApiPath("/t/carbon.super/oauth2/authorize?ut=")
+                    }
                 }
 
                 auth.initialize(authConfig);

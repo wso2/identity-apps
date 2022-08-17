@@ -86,4 +86,18 @@ export class AppConstants {
      * @default
      */
     public static readonly FULL_UI_SCOPE: string = "console:full";
+
+    /**
+     * Set of Browsers that do not properly support Web Worker APIs.
+     * TODO: Remove `Safari` from here when https://github.com/wso2/product-is/issues/14652 is fixed.
+     * @constant
+     * @type {string[]}
+     * @default
+     */
+    public static readonly WEB_WORKER_UNSUPPORTED_AGENTS: string[] = [
+        "IE",
+        "Safari",
+        "[Mobile] Safari",
+        "Mobile Safari"
+    ];
 }

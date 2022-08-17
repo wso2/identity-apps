@@ -18,12 +18,13 @@
 
 package org.wso2.identity.apps.taglibs.layout.controller.core;
 
-import org.wso2.identity.apps.taglibs.layout.controller.cache.LayoutCache;
 import org.wso2.identity.apps.taglibs.layout.controller.compiler.executors.DefaultExecutor;
 import org.wso2.identity.apps.taglibs.layout.controller.compiler.identifiers.ExecutableIdentifier;
 import org.wso2.identity.apps.taglibs.layout.controller.compiler.parsers.DefaultParser;
 import org.wso2.identity.apps.taglibs.layout.controller.compiler.parsers.Parser;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Writer;
 import java.net.URL;
 import java.util.Map;
@@ -31,7 +32,7 @@ import java.util.Map;
 /**
  * Caching implementation of the TemplateEngine interface with more controls using local compiler.
  */
-public class LocalTemplateEngineWithCache implements TemplateEngine {
+public class LocalTemplateEngine implements TemplateEngine {
 
     private static final long serialVersionUID = 8574215169965654726L;
     private ExecutableIdentifier compiledObject = null;
@@ -44,20 +45,35 @@ public class LocalTemplateEngineWithCache implements TemplateEngine {
      * @param layoutFile Layout file path as a URL object.
      * @param data       Data required to execute the layout file.
      * @param out        Output object as a writer.
-     * @param cache      Whether we want to cache the layout file.
      */
     @Override
-    public void execute(String layoutName, URL layoutFile, Map<String, Object> data, Writer out, boolean cache) {
+    public void execute(String layoutName, URL layoutFile, Map<String, Object> data, Writer out) {
 
         if (executor == null && compiledObject == null) {
-            if (!cache) {
-                Parser parser = new DefaultParser();
-                compiledObject = parser.compile(layoutFile);
-            } else {
-                LayoutCache layoutCache = LayoutCache.getInstance();
-                compiledObject = layoutCache.getLayout(layoutName, layoutFile);
-            }
+            Parser parser = new DefaultParser();
+            compiledObject = parser.compile(layoutFile);
             executor = new DefaultExecutor(data);
+        }
+        compiledObject.accept(executor, out);
+    }
+
+    /**
+     * Execute the compiled layout with given data and generate the complete page.
+     *
+     * @param layoutName Name of the layout.
+     * @param layoutFile Compiled layout file path as a URL object.
+     * @param data       Data required to execute the layout file.
+     * @param out        Output object as a writer.
+     */
+    public void executeWithoutCompile(String layoutName, URL layoutFile, Map<String, Object> data, Writer out) {
+
+        if (executor == null && compiledObject == null) {
+            try (ObjectInputStream objectReader = new ObjectInputStream(layoutFile.openStream())) {
+                compiledObject = (ExecutableIdentifier) objectReader.readObject();
+                executor = new DefaultExecutor(data);
+            } catch (IOException | ClassNotFoundException exception) {
+                throw new RuntimeException("Can't read the layout file: " + layoutName, exception);
+            }
         }
         compiledObject.accept(executor, out);
     }

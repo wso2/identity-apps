@@ -21,6 +21,7 @@ import { AlertLevels, ReferableComponentInterface, TestableComponentInterface } 
 import { addAlert } from "@wso2is/core/store";
 import { CommonUtils } from "@wso2is/core/utils";
 import { EmphasizedSegment, PageLayout } from "@wso2is/react-components";
+import camelCase from "lodash-es/camelCase";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -134,7 +135,9 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
 
     return (
         <PageLayout
-            title={ serverConfigurationConfig.showPageHeading && connectorCategory?.name }
+            title={ (serverConfigurationConfig.showPageHeading && connectorCategory?.name) && 
+                t("console:manage.features.governanceConnectors.connectorCategories." 
+                    + camelCase(connectorCategory?.name) + ".name") }
             pageTitle={ serverConfigurationConfig.showPageHeading && connectorCategory?.name }
             description={
                 serverConfigurationConfig.showPageHeading && (connectorCategory?.description

@@ -90,6 +90,9 @@
         {% endif %}
     },
     "extensions": {
+        {% if webappscommon.layout_store_url is defined %}
+            "layoutStoreURL": "{{ webappscommon.layout_store_url }}",
+        {% endif %}
         {% if console.extensions is defined %}
         {% for key, value in console.extensions.items() %}
         {% if value is number %}

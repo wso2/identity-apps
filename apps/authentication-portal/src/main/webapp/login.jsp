@@ -303,7 +303,7 @@
                     </div>
                     <% } %>
                     <div class="field">
-                        <div class="ui vertical ui center aligned segment form" style="max-width: 300px; margin: 0 auto;">
+                        <div class="ui vertical ui center aligned segment form">
                             <%
                                 int iconId = 0;
                                 if (idpAuthenticatorMapping != null) {
@@ -353,7 +353,7 @@
                                     <div class="external-login blurring external-login-dimmer">
                                         <div class="field">
                                             <button
-                                                class="ui icon button fluid"
+                                                class="ui button fluid"
                                                 onclick="handleNoDomain(this,
                                                     '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpName))%>',
                                                     '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpEntry.getValue()))%>')"

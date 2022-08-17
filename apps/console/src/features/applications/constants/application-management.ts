@@ -195,12 +195,14 @@ export class ApplicationManagementConstants {
     public static readonly AUTHORIZATION_CODE_GRANT: string = "authorization_code";
     public static readonly CLIENT_CREDENTIALS_GRANT: string = "client_credentials";
     public static readonly REFRESH_TOKEN_GRANT: string = "refresh_token";
+    public static readonly ORGANIZATION_SWITCH_GRANT: string = "organization_switch";
     public static readonly IMPLICIT_GRANT: string = "implicit";
     public static readonly PASSWORD: string = "password";
     public static readonly SAML2_BEARER: string = "urn:ietf:params:oauth:grant-type:saml2-bearer";
     public static readonly JWT_BEARER: string = "urn:ietf:params:oauth:grant-type:jwt-bearer";
     public static readonly IWA_NTLM: string = "iwa:ntlm";
     public static readonly UMA_TICKET: string = "urn:ietf:params:oauth:grant-type:uma-ticket";
+    public static readonly DEVICE_GRANT: string = "urn:ietf:params:oauth:grant-type:device_code";
 
     /**
      * Currently refresh grant type is recommended to use at least one of below.
@@ -238,7 +240,9 @@ export class ApplicationManagementConstants {
             ApplicationManagementConstants.IMPLICIT_GRANT,
             ApplicationManagementConstants.PASSWORD,
             ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT,
-            ApplicationManagementConstants.REFRESH_TOKEN_GRANT
+            ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
+            ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT,
+            ApplicationManagementConstants.DEVICE_GRANT
         ]
     };
 
@@ -419,6 +423,8 @@ export class ApplicationManagementConstants {
     public static readonly CUSTOM_APPLICATION_SAML = "custom-application-saml";
 
     public static readonly CUSTOM_APPLICATION_PASSIVE_STS = "custom-application-passive-sts";
+
+    public static readonly CUSTOM_APPLICATION = "custom-application";
 
     public static readonly CUSTOM_APPLICATION_PROTOCOL_ORDER: Map<string, number> =
         new Map<string, number>([

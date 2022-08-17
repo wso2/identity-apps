@@ -22,22 +22,79 @@
     <parent>
         <groupId>org.wso2.identity.apps</groupId>
         <artifactId>identity-apps</artifactId>
-        <version>1.4.9-SNAPSHOT</version>
+        <version>1.4.37-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>login-portal-layouts</artifactId>
-    <packaging>pom</packaging>
+    <packaging>jar</packaging>
     <name>WSO2 Identity Server Apps - Login Portal Layouts</name>
     <url>http://wso2.org</url>
     <description>Layouts for the login portal pages</description>
 
     <dependencies>
+        <dependency>
+            <groupId>org.wso2.identity.apps</groupId>
+            <artifactId>org.wso2.identity.apps.taglibs.layout.controller</artifactId>
+            <version>1.4.34</version>
+        </dependency>
     </dependencies>
 
     <build>
         <plugins>
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.0.2</version>
+                <inherited>false</inherited>
+                <executions>
+                    <execution>
+                        <id>copy layouts into target directory</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/target/layouts</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>layouts</directory>
+                                    <includes>
+                                        <include>**/*</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.6.0</version>
+                <inherited>false</inherited>
+                <configuration>
+                    <mainClass>org.wso2.identity.apps.login.portal.layout.LayoutCompiler</mainClass>
+                    <arguments>
+                        <argument>target/layouts</argument>
+                    </arguments>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>execute the layout compiler</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>mvn</executable>
+                            <arguments>
+                                <argument>exec:java</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <version>3.0.0</version>
@@ -46,7 +103,7 @@
                     <!-- Move layout files into identity apps -->
                     <execution>
                         <id>Move layout files</id>
-                        <phase>initialize</phase>
+                        <phase>package</phase>
                         <configuration>
                             <target>
                                 <ant antfile="layout-distribution.xml">
