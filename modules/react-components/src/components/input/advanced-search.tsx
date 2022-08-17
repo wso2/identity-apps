@@ -55,7 +55,7 @@ export interface AdvancedSearchPropsInterface extends IdentifiableComponentInter
      */
     clearIcon?: any;
     /**
-     * Search strategy ex: name sw.
+     * Search strategy ex: name co %search-value%.
      */
     defaultSearchStrategy: string;
     /**
@@ -304,7 +304,7 @@ export const AdvancedSearch: FunctionComponent<PropsWithChildren<AdvancedSearchP
                 if (advancedSearch) {
                     query = internalSearchQuery;
                 } else {
-                    query = `${ defaultSearchStrategy } ${ internalSearchQuery }`;
+                    query = defaultSearchStrategy.replace(/%search-value%/g, internalSearchQuery);
                 }
             }
             onSearchQuerySubmit(false, query);
