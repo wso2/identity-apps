@@ -479,21 +479,26 @@
     <input type="hidden" name="sessionDataKey" value='<%=Encode.forHtmlAttribute
             (request.getParameter("sessionDataKey"))%>'/>
 
-    <div class="ui divider hidden"></div>
-
-    <div class="cookie-policy-message" data-testid="login-page-policy-messages">
-        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.cookies.short.description")%>
-        <a href="cookie_policy.do" target="policy-pane" data-testid="login-page-cookie-policy-link">
-            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.cookies")%>
-        </a>
-        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.for.more.details")%>
-        <br><br>
-        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.privacy.short.description")%>
-        <a href="privacy_policy.do" target="policy-pane" data-testid="login-page-privacy-policy-link">
-            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.general")%>
-        </a>
-    </div>
-    <div class="ui divider hidden"></div>
+    <% if (StringUtils.isNotBlank(privacyPolicyURL) || StringUtils.isNotBlank(cookiePolicyURL)) { %>
+        <div class="ui divider hidden"></div>
+        <div class="cookie-policy-message" data-testid="login-page-policy-messages">
+            <% if (StringUtils.isNotBlank(cookiePolicyURL)) { %>
+                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.cookies.short.description")%>
+                <a href="<%=cookiePolicyURL%>" target="policy-pane" data-testid="login-page-cookie-policy-link">
+                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.cookies")%>
+                </a>
+                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.for.more.details")%>
+                <br><br>
+            <% } %>
+            <% if (StringUtils.isNotBlank(privacyPolicyURL)) { %>
+                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.privacy.short.description")%>
+                <a href="<%=privacyPolicyURL%>" target="policy-pane" data-testid="login-page-privacy-policy-link">
+                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.general")%>
+                </a>
+            <% } %>
+        </div>
+        <div class="ui divider hidden"></div>
+    <% } %>
 
     <div class="mt-0">
         <div class="column buttons">
