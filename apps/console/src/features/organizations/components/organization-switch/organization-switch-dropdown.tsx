@@ -127,7 +127,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                 superOrg && setAssociatedOrganizations([ superOrg ]);
                 setPaginationData(response.links);
             } else {
-                const organizations = superOrg
+                const organizations: OrganizationInterface[] = superOrg
                     ? [ superOrg, ...response?.organizations ]
                     : [ ...response?.organizations ];
 
