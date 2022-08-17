@@ -22,8 +22,12 @@ import { addAlert } from "@wso2is/core/store";
 import { DynamicField, Heading, KeyValue } from "@wso2is/react-components";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
+import { AppState } from "../../../../core";
+import { getOrganizationRoles } from "../../../../organizations/api";
+import { OrganizationRoleListItemInterface } from "../../../../organizations/models";
+import { OrganizationUtils } from "../../../../organizations/utils";
 import { RoleMappingInterface } from "../../../models";
 
 interface RoleMappingPropsInterface extends TestableComponentInterface {
@@ -73,13 +77,14 @@ export const RoleMapping: FunctionComponent<RoleMappingPropsInterface> = (
 
     const dispatch = useDispatch();
 
-    const [ roleList, setRoleList ] = useState<RolesInterface[]>();
+    const currentOrganization = useSelector((state: AppState) => state.organization.organization);
+    const [ roleList, setRoleList ] = useState<RolesInterface[] | OrganizationRoleListItemInterface[]>();
 
     /**
      * Filter out Application related and Internal roles
      */
     const getFilteredRoles = () => {
-        const filterRole: RolesInterface[] = roleList.filter(
+        const filterRole: RolesInterface[] | OrganizationRoleListItemInterface[] = roleList.filter(
             (role) => {
                 return !(role.displayName.includes("Application/") || role.displayName.includes("Internal/"));
             });
@@ -93,22 +98,30 @@ export const RoleMapping: FunctionComponent<RoleMappingPropsInterface> = (
     };
 
     useEffect(() => {
-        getRolesList(null)
-            .then((response) => {
-                if (response.status === 200) {
-                    const allRole: RoleListInterface = response.data;
+        if (OrganizationUtils.isCurrentOrganizationRoot()) {
+            getRolesList(null)
+                .then((response) => {
+                    if (response.status === 200) {
+                        const allRole: RoleListInterface = response.data;
 
-                    setRoleList(allRole.Resources);
-                }
-            })
-            .catch(() => {
-                dispatch(addAlert({
-                    description: t("console:manage.features.roles.notifications.fetchRoles.genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("console:manage.features.roles.notifications.fetchRoles.genericError.message")
-                }));
-            });
-    }, [ initialMappings ]);
+                        setRoleList(allRole.Resources);
+                    }
+                })
+                .catch(() => {
+                    dispatch(addAlert({
+                        description: t("console:manage.features.roles.notifications" +
+                            ".fetchRoles.genericError.description"),
+                        level: AlertLevels.ERROR,
+                        message: t("console:manage.features.roles.notifications.fetchRoles.genericError.message")
+                    }));
+                });
+        } else {
+            getOrganizationRoles(currentOrganization.id, null, null, null)
+                .then((response) => {
+                    setRoleList(response.Resources);
+                });
+        }
+    }, [ initialMappings, currentOrganization.id ]);
 
     return (
         <>
