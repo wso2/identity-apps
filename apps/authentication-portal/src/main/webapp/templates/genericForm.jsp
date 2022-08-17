@@ -21,7 +21,7 @@
 <%@taglib prefix="e" uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" %>
 <jsp:directive.include file="../includes/init-url.jsp"/>
 
-<div style="text-align: left !important;">
+<div class="text-left">
     <div>
         <h3 class="ui header">
             Welcome <c:out value='${requestScope.data["username"]}'/>
