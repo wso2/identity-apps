@@ -39,7 +39,7 @@ import { AdvanceAttributeSettings } from "./advance-attribute-settings";
 import { AttributeSelection } from "./attribute-selection";
 import { RoleMapping } from "./role-mapping";
 import { applicationConfig } from "../../../../../extensions";
-import { AppState, EventPublisher, FeatureConfigInterface } from "../../../../core";
+import { AppState, Config, EventPublisher, FeatureConfigInterface } from "../../../../core";
 import { SubjectAttributeListItem } from "../../../../identity-providers/components/settings";
 import { updateClaimConfiguration } from "../../../api/";
 import {
@@ -117,7 +117,7 @@ export const getLocalDialectURI = (): string => {
 
     let localDialect = "http://wso2.org/claims";
 
-    getAllLocalClaims(null)
+    getAllLocalClaims(null, Config.getServiceResourceEndpoints().localClaims)
         .then((response) => {
             // setClaims(response.slice(0, 10));
             const retrieved = response.slice(0, 1)[0].dialectURI;
@@ -231,7 +231,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
             sort: null
         };
 
-        getAllLocalClaims(params)
+        getAllLocalClaims(params, Config.getServiceResourceEndpoints().localClaims)
             .then((response) => {
                 setClaims(response);
             })
@@ -249,7 +249,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
     };
 
     const getAllDialects = () => {
-        getDialects(null)
+        getDialects(null, Config.getServiceResourceEndpoints().claims)
             .then((response) => {
                 setDialect(response);
             })
@@ -266,7 +266,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
 
     const getMappedClaims = (newClaimId) => {
         if (newClaimId !== null) {
-            getAllExternalClaims(newClaimId, null)
+            getAllExternalClaims(newClaimId, null, Config.getServiceResourceEndpoints().externalClaims)
                 .then((response) => {
                     setIsClaimRequestLoading(true);
                     setExternalClaims(response);
