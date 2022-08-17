@@ -495,9 +495,11 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             featureConfig,
             allowedScopes,
             commonConfig.checkForUIResourceScopes,
-            OrganizationUtils.isCurrentOrganizationRoot()
-                ? [ ...AppUtils.getHiddenRoutes(), ...AppConstants.ORGANIZATION_ONLY_ROUTES ]
-                : AppUtils.getHiddenRoutes(),
+            isOrganizationManagementEnabled
+                ? OrganizationUtils.isCurrentOrganizationRoot()
+                    ? [ ...AppUtils.getHiddenRoutes(), ...AppConstants.ORGANIZATION_ONLY_ROUTES ]
+                    : AppUtils.getHiddenRoutes()
+                : [ ...AppUtils.getHiddenRoutes(), ...AppConstants.ORGANIZATION_ROUTES ],
             !OrganizationUtils.isCurrentOrganizationRoot() && AppConstants.ORGANIZATION_ENABLED_ROUTES,
             (route: RouteInterface) => {
                 if (route.id === "organization-roles") {
