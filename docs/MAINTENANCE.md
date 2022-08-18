@@ -20,4 +20,4 @@ Before merging `dependabot` PRs, they need to be tested and verified that they d
 
 5. If it's a **transitive dependency**, we can check whether we can bump the parent dependency. In case if the parent dependency doesn't have the fixed version of the transitive dependency, we can create an issue in the respective project and merge the `package.lock.json` as a temporary fix.
 
-5. If there are breaking changes, send a PR to fix those breaking changes introduced from the newer dependency version. If it is not possible to fix the breaking changes or requires a significant effort, create a git issue and link it to the Dependabot PR to track these changes.
+6. If there are breaking changes, send a PR to fix those breaking changes introduced from the newer dependency version. If it is not possible to fix the breaking changes or requires a significant effort, create a git issue and link it to the Dependabot PR to track these changes.
