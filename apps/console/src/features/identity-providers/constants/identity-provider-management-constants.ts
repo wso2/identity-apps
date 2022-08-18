@@ -154,6 +154,10 @@ export class IdentityProviderManagementConstants {
         OTP_LENGTH_MAX_VALUE: number;
         OTP_LENGTH_MIN_LENGTH: number;
         OTP_LENGTH_MIN_VALUE: number;
+        ALLOWED_RESEND_ATTEMPT_COUNT_MIN_LENGTH: number;
+        ALLOWED_RESEND_ATTEMPT_COUNT_MAX_LENGTH: number;
+        ALLOWED_RESEND_ATTEMPT_COUNT_MIN_VALUE: number;
+        ALLOWED_RESEND_ATTEMPT_COUNT_MAX_VALUE: number;
     } = {
 
         EXPIRY_TIME_MAX_LENGTH: 4,
@@ -163,7 +167,11 @@ export class IdentityProviderManagementConstants {
         OTP_LENGTH_MAX_LENGTH: 2,
         OTP_LENGTH_MAX_VALUE: 10,
         OTP_LENGTH_MIN_LENGTH: 1,
-        OTP_LENGTH_MIN_VALUE: 4
+        OTP_LENGTH_MIN_VALUE: 4,
+        ALLOWED_RESEND_ATTEMPT_COUNT_MIN_LENGTH: 1,
+        ALLOWED_RESEND_ATTEMPT_COUNT_MAX_LENGTH: 10000,
+        ALLOWED_RESEND_ATTEMPT_COUNT_MIN_VALUE: 0,
+        ALLOWED_RESEND_ATTEMPT_COUNT_MAX_VALUE: 100
     };
 
     /**

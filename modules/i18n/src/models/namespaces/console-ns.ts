@@ -1266,11 +1266,14 @@ export interface ConsoleNS {
                                     required: string;
                                 };
                             };
-                            allowFirstLoginMobileNoConfiguration: {
+                            allowedResendAttemptCount: {
                                 hint: string;
                                 label: string;
+                                placeholder: string;
                                 validations: {
                                     required: string;
+                                    invalid: string;
+                                    range: string;
                                 };
                             };
                         }

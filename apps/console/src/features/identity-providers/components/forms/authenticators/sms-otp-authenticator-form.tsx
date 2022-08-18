@@ -92,9 +92,9 @@ interface SMSOTPAuthenticatorFormInitialValuesInterface {
      */
     SmsOTP_OtpRegex_UseNumericChars: boolean;
     /**
-     * Allow users to configure the mobile number on the first login
+     * Number of SMS OTP resend attempts
      */
-    SmsOTP_OtpRegex_AllowFirstLoginMobileNoConfiguration: boolean;
+    SmsOTP_ResendAttemptsCount: number;
 }
 
 /**
@@ -114,9 +114,9 @@ interface SMSOTPAuthenticatorFormFieldsInterface {
      */
     SmsOTP_OtpRegex_UseNumericChars: CommonAuthenticatorFormFieldInterface;
     /**
-     * Allow users to configure the mobile number on the first login
+     * Number of SMS OTP resend attempts
      */
-    SmsOTP_OtpRegex_AllowFirstLoginMobileNoConfiguration: CommonAuthenticatorFormFieldInterface;
+    SmsOTP_ResendAttemptsCount: CommonAuthenticatorFormFieldInterface;
 }
 
 /**
@@ -136,9 +136,9 @@ export interface SMSOTPAuthenticatorFormErrorValidationsInterface {
      */
     SmsOTP_OtpRegex_UseNumericChars: string;
     /**
-     * Allow users to configure the mobile number on the first login
+     * Number of SMS OTP resend attempts
      */
-    SMSOTP_OtpRegex_AllowFirstLoginMobileNoConfiguration: string
+    SmsOTP_ResendAttemptsCount: string;
 }
 
 /**
@@ -183,7 +183,7 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
         let resolvedFormFields: SMSOTPAuthenticatorFormFieldsInterface = null;
         let resolvedInitialValues: SMSOTPAuthenticatorFormInitialValuesInterface = null;
 
-        originalInitialValues.properties.map((value: CommonAuthenticatorFormPropertyInterface) => {
+        originalInitialValues.properties.forEach((value: CommonAuthenticatorFormPropertyInterface) => {
             const meta: CommonAuthenticatorFormFieldMetaInterface = metadata?.properties
                 .find((meta) => meta.key === value.key);
 
@@ -280,7 +280,7 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
             SmsOTP_ExpiryTime: undefined,
             SmsOTP_OTPLength: undefined,
             SmsOTP_OtpRegex_UseNumericChars: undefined,
-            SMSOTP_OtpRegex_AllowFirstLoginMobileNoConfiguration: undefined
+            SmsOTP_ResendAttemptsCount: undefined
         };
 
         if (!values.SmsOTP_ExpiryTime) {
@@ -317,6 +317,22 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
                 `.authenticatorSettings.smsOTP.tokenLength.validations.range.${isOTPANumber ? "digits" : "characters"}`);
         }
 
+        if (!values.SmsOTP_ResendAttemptsCount) {
+            // Check for required error.
+            errors.SmsOTP_ResendAttemptsCount = t("console:develop.features.authenticationProvider.forms" +
+                ".authenticatorSettings.smsOTP.allowedResendAttemptCount.validations.required");
+        } else if (!FormValidation.isInteger(values.SmsOTP_ResendAttemptsCount as unknown as number)) {
+            // Check for invalid input.
+            errors.SmsOTP_ResendAttemptsCount = t("console:develop.features.authenticationProvider.forms" +
+                ".authenticatorSettings.smsOTP.allowedResendAttemptCount.validations.invalid");
+        } else if (values.SmsOTP_ResendAttemptsCount < IdentityProviderManagementConstants
+                .SMS_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.ALLOWED_RESEND_ATTEMPT_COUNT_MIN_VALUE
+            || (values.SmsOTP_ResendAttemptsCount > IdentityProviderManagementConstants
+                .SMS_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.ALLOWED_RESEND_ATTEMPT_COUNT_MAX_VALUE)) {
+            // Check for invalid range.
+            errors.SmsOTP_ResendAttemptsCount = t("console:develop.features.authenticationProvider.forms" +
+                ".authenticatorSettings.smsOTP.allowedResendAttemptCount.validations.range");
+        }
         return errors;
     };
 
@@ -443,6 +459,43 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
                             `.smsOTP.tokenLength.unit.${isOTPANumber? "digits" : "characters"}`)
                     }
                 </Label>
+            </Field.Input>
+            <Field.Input
+                ariaLabel="Allowed Resend Attempts"
+                inputType="number"
+                name="SmsOTP_ResendAttemptsCount"
+                label={
+                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                        ".smsOTP.allowedResendAttemptCount.label")
+                }
+                placeholder={
+                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                        ".smsOTP.allowedResendAttemptCount.placeholder")
+                }
+                hint={
+                    <Trans
+                        i18nKey={
+                            "console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                            ".smsOTP.allowedResendAttemptCount.hint"
+                        }
+                    >
+                        Users will be limited to the specified resend attempt count when trying to resend the SMS OTP code.
+                    </Trans>
+                }
+                required={ true }
+                readOnly={ readOnly }
+                maxLength={
+                    IdentityProviderManagementConstants
+                        .SMS_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.ALLOWED_RESEND_ATTEMPT_COUNT_MAX_LENGTH
+                }
+                minLength={
+                    IdentityProviderManagementConstants
+                        .SMS_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.ALLOWED_RESEND_ATTEMPT_COUNT_MIN_LENGTH
+                }
+                width={ 12 }
+                data-testid={ `${ testId }-allowed-resend-attempt-count` }
+            >
+                <input />
             </Field.Input>
             <Field.Button
                 size="small"
