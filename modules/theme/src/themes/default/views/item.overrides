@@ -58,6 +58,12 @@
             margin-top: 5px;
             margin-left: 5px;
 
+            &.application-text {
+                margin-top: 0;
+                display: flex;
+                align-items: center;
+                min-height: 50px;
+            }
             .item-header {
                 line-height: initial;
                 color: @applicationListItemHeaderColor;
