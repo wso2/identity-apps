@@ -29,6 +29,7 @@ import { useDispatch } from "react-redux";
 import { Button, Divider, Grid } from "semantic-ui-react";
 import { AttributeSelection, RoleMappingSettings, UriAttributesSettings } from "./attribute-management";
 import { AttributesSelectionV2 } from "./attribute-management/attribute-selection-v2";
+import { Config } from "../../../core";
 import {
     IdentityProviderClaimInterface,
     IdentityProviderClaimMappingInterface,
@@ -171,7 +172,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
     const [ isSubmissionLoading, setIsSubmissionLoading ] = useState<boolean>(false);
 
     // Trigger role mapping field to submission.
-    const [triggerSubmission, setTriggerSubmission] = useTrigger();
+    const [ triggerSubmission, setTriggerSubmission ] = useTrigger();
 
     /**
      * When IdP loads, this component is responsible for fetching the
@@ -183,7 +184,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
 
     useEffect(() => {
         setIsLocalClaimsLoading(true);
-        getAllLocalClaims(null)
+        getAllLocalClaims(null, Config.getServiceResourceEndpoints().localClaims)
             .then((response: Claim[]) => {
                 setAvailableLocalClaims(response?.map(claim => {
                     return {

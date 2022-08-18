@@ -191,7 +191,7 @@ export const SessionManagementProvider: FunctionComponent<PropsWithChildren<
                 if (JSON.parse(timeout) && type === SessionTimeoutModalTypes.COUNTER) {
                     startTimer(idleTimeout - idleWarningTimeout);
                 }
-                setSessionTimedOut(true);
+                setSessionTimedOut && setSessionTimedOut(true);
                 setShowSessionTimeoutModal(JSON.parse(timeout));
             };
 
@@ -223,7 +223,7 @@ export const SessionManagementProvider: FunctionComponent<PropsWithChildren<
 
             performCleanupTasks();
             setShowSessionTimeoutModal(false);
-            setSessionTimedOut(false);
+            setSessionTimedOut && setSessionTimedOut(false);
         };
 
         /**
@@ -232,7 +232,7 @@ export const SessionManagementProvider: FunctionComponent<PropsWithChildren<
         const handleSessionLogout = (): void => {
             performCleanupTasks();
             setShowSessionTimeoutModal(false);
-            setSessionTimedOut(false);
+            setSessionTimedOut && setSessionTimedOut(false);
             onSessionLogout();
         };
 
@@ -242,7 +242,7 @@ export const SessionManagementProvider: FunctionComponent<PropsWithChildren<
         const handleLoginAgain = (): void => {
             performCleanupTasks();
             setShowSessionTimeoutModal(false);
-            setSessionTimedOut(false);
+            setSessionTimedOut && setSessionTimedOut(false);
             onLoginAgain();
         };
 
@@ -254,14 +254,14 @@ export const SessionManagementProvider: FunctionComponent<PropsWithChildren<
             // If the counter runs out or if the type of the modal is default, try the login again option.
             if (sessionTimedOut || type === SessionTimeoutModalTypes.DEFAULT) {
                 handleLoginAgain();
-                setSessionTimedOut(false);
+                setSessionTimedOut && setSessionTimedOut(false);
 
                 return;
             }
 
             // If the counter hasn't run out, and the type of modal is other than `default` abort the termination.
             handleSessionTimeoutAbort();
-            setSessionTimedOut(false);
+            setSessionTimedOut && setSessionTimedOut(false);
         };
 
         /**
@@ -294,7 +294,7 @@ export const SessionManagementProvider: FunctionComponent<PropsWithChildren<
                     );
 
                     if (--timer < 0) {
-                        setSessionTimedOut(true);
+                        setSessionTimedOut && setSessionTimedOut(true);
                         performCleanupTasks();
                     }
                 }, 1000);

@@ -55,6 +55,7 @@ import {
     isLanguageSupported
 } from "@wso2is/i18n";
 import axios, { AxiosResponse } from "axios";
+import camelCase from "lodash-es/camelCase";
 import has from "lodash-es/has";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, lazy, useCallback, useEffect, useRef, useState } from "react";
@@ -172,7 +173,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
 
             if (window[ "AppUtils" ].getConfig().organizationName) {
                 // We are actually getting the orgId here rather than orgName
-                const orgId = window["AppUtils"].getConfig().organizationName;
+                const orgId = window[ "AppUtils" ].getConfig().organizationName;
 
                 // Setting a dummy object until real data comes from the API
                 dispatch(setOrganization({
@@ -494,9 +495,11 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             featureConfig,
             allowedScopes,
             commonConfig.checkForUIResourceScopes,
-            OrganizationUtils.isCurrentOrganizationRoot()
-                ? [ ...AppUtils.getHiddenRoutes(), ...AppConstants.ORGANIZATION_ONLY_ROUTES ]
-                : AppUtils.getHiddenRoutes(),
+            isOrganizationManagementEnabled
+                ? OrganizationUtils.isCurrentOrganizationRoot()
+                    ? [ ...AppUtils.getHiddenRoutes(), ...AppConstants.ORGANIZATION_ONLY_ROUTES ]
+                    : AppUtils.getHiddenRoutes()
+                : [ ...AppUtils.getHiddenRoutes(), ...AppConstants.ORGANIZATION_ROUTES ],
             !OrganizationUtils.isCurrentOrganizationRoot() && AppConstants.ORGANIZATION_ENABLED_ROUTES,
             (route: RouteInterface) => {
                 if (route.id === "organization-roles") {
@@ -524,6 +527,13 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
 
         if (sanitizedDevRoutes.length < 1) {
             dispatch(setDeveloperVisibility(false));
+        }
+
+        if (sanitizedDevRoutes.length < 1 && sanitizedManageRoutes.length < 1) {
+            history.push({
+                pathname: AppConstants.getPaths().get("UNAUTHORIZED"),
+                search: "?error=" + AppConstants.LOGIN_ERRORS.get("ACCESS_DENIED")
+            });
         }
     }, [ allowedScopes, dispatch, featureConfig ]);
 
@@ -560,6 +570,10 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                         // TODO: Implement sub category handling logic here.
                     }
 
+                    const categoryName = 
+                        t(`console:manage.features.sidePanel.${camelCase(category.name)}`) 
+                            ?? category.name;
+
                     const route = {
                         category: "console:manage.features.sidePanel.categories.configurations",
                         component: lazy(() => import("./features/server-configurations/pages/governance-connectors")),
@@ -569,7 +583,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                                 ?? getSidePanelIcons().connectors.default
                         },
                         id: category.id,
-                        name: category.name,
+                        name: categoryName,
                         order:
                             category.id === ServerConfigurationsConstants.OTHER_SETTINGS_CONNECTOR_CATEGORY_ID
                                 ? manageRoutes.length + governanceConnectorCategories.length

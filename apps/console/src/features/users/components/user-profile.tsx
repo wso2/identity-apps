@@ -17,7 +17,7 @@
  */
 
 import { ProfileConstants } from "@wso2is/core/constants";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
+import { hasRequiredScopes, resolveUserEmails } from "@wso2is/core/helpers";
 import {
     AlertInterface,
     AlertLevels,
@@ -840,15 +840,15 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             ? (
                                 attributeValue
                                     ? t("console:manage.features.user.profile.notifications.lockUserAccount." +
-                                        "success.message", { name: user.userName })
+                                        "success.message", { name: user.emails && user.emails !== undefined ? resolveUserEmails(user?.emails) : user.userName })
                                     : t("console:manage.features.user.profile.notifications.unlockUserAccount." +
-                                        "success.message", { name: user.userName })
+                                        "success.message", { name: user.emails && user.emails !== undefined ? resolveUserEmails(user?.emails) : user.userName })
                             ) : (
                                 attributeValue
                                     ? t("console:manage.features.user.profile.notifications.disableUserAccount." +
-                                        "success.message", { name: user.userName })
+                                        "success.message", { name: user.emails && user.emails !== undefined ? resolveUserEmails(user?.emails) : user.userName })
                                     : t("console:manage.features.user.profile.notifications.enableUserAccount." +
-                                        "success.message", { name: user.userName })
+                                        "success.message", { name: user.emails && user.emails !== undefined ? resolveUserEmails(user?.emails) : user.userName })
                             )
                 });
                 setShowLockDisableConfirmationModal(false);

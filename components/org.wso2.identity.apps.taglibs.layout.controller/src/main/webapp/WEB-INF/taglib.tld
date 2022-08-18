@@ -63,9 +63,9 @@
         </attribute>
         <attribute>
             <description>
-                Cache should be enabled or not
+                Whether compilation should be enabled or not
             </description>
-            <name>cache</name>
+            <name>compile</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
