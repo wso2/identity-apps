@@ -280,8 +280,11 @@
                         %>
                         <div class="field">
                             <div class="g-recaptcha"
-                                 data-sitekey=
-                                         "<%=Encode.forHtmlContent(reCaptchaKey)%>">
+                                    data-size="invisible"
+                                    data-callback="onCompleted"
+                                    data-action="passwordRecovery"
+                                    data-sitekey=
+                                            "<%=Encode.forHtmlContent(reCaptchaKey)%>">
                             </div>
                         </div>
                         <%
@@ -314,7 +317,7 @@
             <% } %>
         </layout:component>
     </layout:main>
-    
+
     <!-- footer -->
     <%
         File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
@@ -330,9 +333,26 @@
             window.history.back();
         }
 
+        function onCompleted() {
+            $("#recoverDetailsForm").submit();
+        }
+
         $(document).ready(function () {
 
             $("#recoverDetailsForm").submit(function (e) {
+
+                <%
+                    if (reCaptchaEnabled) {
+                %>
+                if (!grecaptcha.getResponse()) {
+                    e.preventDefault();
+                    grecaptcha.execute();
+
+                    return true;
+                }
+                <%
+                    }
+                %>
 
                 // Prevent clicking multiple times, and notify the user something
                 // is happening in the background.
@@ -355,21 +375,6 @@
                     submitButton.removeClass("loading").attr("disabled", false);
                     return false;
                 }
-
-                // Validate reCaptcha
-                <% if (reCaptchaEnabled) { %>
-
-                const reCaptchaResponse = $("[name='g-recaptcha-response']")[0].value;
-
-                if (reCaptchaResponse.trim() === "") {
-                    errorMessage.text("Please select reCaptcha.");
-                    errorMessage.show();
-                    $("html, body").animate({scrollTop: errorMessage.offset().top}, "slow");
-                    submitButton.removeClass("loading").attr("disabled", false);
-                    return false;
-                }
-
-                <% } %>
 
                 return true;
             });

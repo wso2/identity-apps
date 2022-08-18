@@ -16,8 +16,11 @@
  * under the License.
  */
 
+/**
+ * Temporarily Commenting out Portuguese and Tamil imports, until translations are properly added
+ */
 export * from "./en-US";
 export * from "./fr-FR";
-export * from "./pt-BR";
+// export * from "./pt-BR";
 export * from "./si-LK";
-export * from "./ta-IN";
+// export * from "./ta-IN";

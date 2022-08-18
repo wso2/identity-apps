@@ -110,6 +110,7 @@ const UserStores: FunctionComponent<UserStoresPageInterface> = (
             offset: offset || null,
             sort: sort || null
         };
+
         setIsLoading(true);
         getUserStores(params).then(response => {
             setUserStores(response);
@@ -234,12 +235,13 @@ const UserStores: FunctionComponent<UserStoresPageInterface> = (
             }
             isLoading={ isLoading }
             title={ t("console:manage.features.userstores.pageLayout.list.title") }
+            pageTitle={ t("console:manage.features.userstores.pageLayout.list.title") }
             description={ t("console:manage.features.userstores.pageLayout.list.description") }
             data-testid={ `${ testId }-page-layout` }
         >
             <ListLayout
                 advancedSearch={
-                    <AdvancedSearchWithBasicFilters
+                    (<AdvancedSearchWithBasicFilters
                         onFilter={ handleUserstoreFilter }
                         filterAttributeOptions={ [
                             {
@@ -272,7 +274,7 @@ const UserStores: FunctionComponent<UserStoresPageInterface> = (
                         defaultSearchOperator="co"
                         triggerClearQuery={ triggerClearQuery }
                         data-testid={ `${ testId }-advanced-search` }
-                    />
+                    />)
                 }
                 currentListSize={ listItemLimit }
                 listItemLimit={ listItemLimit }
@@ -292,7 +294,7 @@ const UserStores: FunctionComponent<UserStoresPageInterface> = (
             >
                 <UserStoresList
                     advancedSearch={
-                        <AdvancedSearchWithBasicFilters
+                        (<AdvancedSearchWithBasicFilters
                             onFilter={ handleUserstoreFilter }
                             filterAttributeOptions={ [
                                 {
@@ -325,7 +327,7 @@ const UserStores: FunctionComponent<UserStoresPageInterface> = (
                             defaultSearchOperator="co"
                             triggerClearQuery={ triggerClearQuery }
                             data-testid={ `${ testId }-advanced-search` }
-                        />
+                        />)
                     }
                     isLoading={ isLoading }
                     list={ paginate(filteredUserStores, listItemLimit, offset) }

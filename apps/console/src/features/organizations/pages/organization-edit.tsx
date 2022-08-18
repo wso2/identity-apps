@@ -102,6 +102,7 @@ const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface
         <PageLayout
             isLoading={ false }
             title={ organization?.name ?? t("console:manage.features.organizations.title") }
+            pageTitle={ organization?.name ?? t("console:manage.features.organizations.title") }
             description={ t("console:manage.features.organizations.edit.description") }
             image={ (
                 <GenericIcon

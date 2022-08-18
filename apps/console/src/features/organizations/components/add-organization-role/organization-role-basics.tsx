@@ -16,20 +16,19 @@
  * under the License.
  */
 
-import { getUserStoreList } from "@wso2is/core/api";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Forms, Validation } from "@wso2is/forms";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Grid, GridColumn, GridRow } from "semantic-ui-react";
-import {AppState, SharedUserStoreConstants, SharedUserStoreUtils} from "../../../core";
+import { AppState, SharedUserStoreConstants, SharedUserStoreUtils } from "../../../core";
 import { CreateRoleFormData } from "../../../roles";
+import { getOrganizationRoles } from "../../api";
 import {
     PRIMARY_DOMAIN
 } from "../../constants";
-import {getOrganizationRoles} from "../../api";
-import {useSelector} from "react-redux";
-import {OrganizationResponseInterface} from "../../models";
+import { OrganizationResponseInterface } from "../../models";
 
 /**
  * Interface to capture role basics props.
@@ -55,24 +54,18 @@ export const OrganizationRoleBasics: FunctionComponent<OrganizationRoleBasicProp
         onSubmit,
         triggerSubmit,
         initialValues,
-        isAddGroup,
         [ "data-testid" ]: testId
     } = props;
 
     const { t } = useTranslation();
 
     const [ isRoleNamePatternValid, setIsRoleNamePatternValid ] = useState<boolean>(true);
-    const [ , setUserStoresList ] = useState([]);
     const [ userStore ] = useState<string>(SharedUserStoreConstants.PRIMARY_USER_STORE);
     const [ isRegExLoading, setRegExLoading ] = useState<boolean>(false);
 
     const currentOrganization: OrganizationResponseInterface = useSelector(
         (state: AppState) => state.organization.organization
     );
-
-    useEffect(() => {
-        getUserStores();
-    }, [ isAddGroup ]);
 
     /**
      * The following function validates role name against the user store regEx.
@@ -93,43 +86,6 @@ export const OrganizationRoleBasics: FunctionComponent<OrganizationRoleBasicProp
             userStoreRegEx = SharedUserStoreConstants.PRIMARY_USERSTORE_PROPERTY_VALUES.RolenameJavaScriptRegEx;
         }
         setIsRoleNamePatternValid(SharedUserStoreUtils.validateInputAgainstRegEx(roleName, userStoreRegEx));
-    };
-
-    /**
-     * The following function fetch the user store list and set it to the state.
-     */
-    const getUserStores = () => {
-        const storeOptions = [
-            {
-                key: -1,
-                text: "Primary",
-                value: "primary"
-            }
-        ];
-        let storeOption = {
-            key: null,
-            text: "",
-            value: ""
-        };
-
-        getUserStoreList()
-            .then((response) => {
-                if (storeOptions === []) {
-                    storeOptions.push(storeOption);
-                }
-                response.data.map((store, index) => {
-                    storeOption = {
-                        key: index,
-                        text: store.name,
-                        value: store.name
-                    };
-                    storeOptions.push(storeOption);
-                }
-                );
-                setUserStoresList(storeOptions);
-            });
-
-        setUserStoresList(storeOptions);
     };
 
     /**

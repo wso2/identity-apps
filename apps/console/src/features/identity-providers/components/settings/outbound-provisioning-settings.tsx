@@ -34,6 +34,7 @@ import { useDispatch } from "react-redux";
 import { AccordionTitleProps, CheckboxProps, Divider, Grid, Icon, Segment } from "semantic-ui-react";
 import { OutboundProvisioningRoles } from "./outbound-provisioning";
 import { AuthenticatorAccordion, getEmptyPlaceholderIllustrations } from "../../../core";
+import { RootOnlyComponent } from "../../../organizations/components";
 import {
     getOutboundProvisioningConnector,
     getOutboundProvisioningConnectorMetadata,
@@ -341,7 +342,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
         if (!data) {
             return;
         }
-        
+
         const newIndexes: number[] = [ ...accordionActiveIndexes ];
 
         if (newIndexes.includes(data.accordionIndex)) {
@@ -412,7 +413,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                                                                                 }
                                                                                 metadata={ connector.meta }
                                                                                 initialValues={ connector.data }
-                                                                                onSubmit={ 
+                                                                                onSubmit={
                                                                                     handleConnectorConfigFormSubmit }
                                                                                 type={ connector.meta?.name }
                                                                                 data-testid={ `${testId}-${
@@ -483,7 +484,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                 deletingConnector && (
                     <ConfirmationModal
                         onClose={ (): void => setShowDeleteConfirmationModal(false) }
-                        type="warning"
+                        type="negative"
                         open={ showDeleteConfirmationModal }
                         assertion={ deletingConnector?.meta.name }
                         assertionHint={ (
@@ -513,7 +514,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message
                             attached
-                            warning
+                            negative
                             data-testid={ `${ testId }-authenticator-delete-confirmation` }>
                             { t("console:develop.features.authenticationProvider.confirmations." +
                                 "deleteConnector.message") }
@@ -540,13 +541,15 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
             {
                 (identityProvider?.roles && !isLoading)
                     ? (
-                        <OutboundProvisioningRoles
-                            idpRoles={ identityProvider?.roles }
-                            idpId={ identityProvider?.id }
-                            data-testid={ `${ testId }-roles` }
-                            isReadOnly={ isReadOnly }
-                            onUpdate={ onUpdate }
-                        />
+                        <RootOnlyComponent>
+                            <OutboundProvisioningRoles
+                                idpRoles={ identityProvider?.roles }
+                                idpId={ identityProvider?.id }
+                                data-testid={ `${ testId }-roles` }
+                                isReadOnly={ isReadOnly }
+                                onUpdate={ onUpdate }
+                            />
+                        </RootOnlyComponent>
                     )
                     : <ContentLoader/>
             }

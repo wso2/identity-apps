@@ -466,7 +466,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                 showDeleteErrorDueToConnectedAppsModal && (
                     <ConfirmationModal
                         onClose={ (): void => setShowDeleteErrorDueToConnectedAppsModal(false) }
-                        type="warning"
+                        type="negative"
                         open={ showDeleteErrorDueToConnectedAppsModal }
                         secondaryAction={ t("common:close") }
                         onSecondaryActionClick={ (): void => setShowDeleteErrorDueToConnectedAppsModal(false) }
@@ -478,7 +478,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message
                             attached
-                            warning
+                            negative
                             data-testid={ `${ testId }-delete-idp-confirmation` }
                         >
                             { t("console:develop.features.idp.confirmations.deleteIDPWithConnectedApps.message") }

@@ -617,7 +617,7 @@ export const myAccount: MyAccountNS = {
                             "authenticator app. Your previous setup won't work anymore."
                     },
                     toolTip: "Don't have an authenticator app? Download an authenticator app like " +
-                        "Google Authenticator from <3>App Store</3> or <3>Google Play</3>",
+                        "Google Authenticator from <1>App Store</1> or <3>Google Play</3>",
                     verify: {
                         error: "Verification failed. Please try again.",
                         heading: "Enter the generated code for verification",
@@ -993,7 +993,7 @@ export const myAccount: MyAccountNS = {
                         " collection, and information about the retention of your personal information.",
                     para2:
                         "Please note that this policy is for reference only, and is applicable for the software " +
-                        "as a product. WSO2 Inc. and its developers have no access to the information held within " +
+                        "as a product. WSO2 LLC. and its developers have no access to the information held within " +
                         "WSO2 IS. Please see the <1>disclaimer</1> section for more information.",
                     para3:
                         "Entities, organizations or individuals controlling the use and administration of WSO2 IS " +

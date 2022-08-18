@@ -617,7 +617,7 @@ export const myAccount: MyAccountNS = {
                             "aplicativo autenticador. Sua configuração anterior não funcionará mais."
                     },
                     toolTip: "Não tem um aplicativo? Baixe um aplicativo autenticador como o " +
-                        "Google Authenticator na <3> App Store </3> ou <3> Google Play </3>",
+                        "Google Authenticator na <1>App Store</1> ou <3>Google Play</3>",
                     verify: {
                         error: "Falha na verificação. Por favor, tente novamente.",
                         heading: "Insira o código gerado para verificação",
@@ -993,7 +993,7 @@ export const myAccount: MyAccountNS = {
                     para1: "Esta política descreve como o WSO2 IS captura suas informações pessoais, os propósitos " +
                         "de coleta e informações sobre a retenção de suas informações pessoais.",
                     para2: "Observe que esta política é apenas para referência e é aplicável ao software como um " +
-                        "roduto. A WSO2 Inc. e seus desenvolvedores não têm acesso às informações mantidas no " +
+                        "roduto. A WSO2 LLC. e seus desenvolvedores não têm acesso às informações mantidas no " +
                         "WSO2 IS. Consulte a seção <1> isenção de responsabilidade </1> para obter mais informações.",
                     para3: "Entidades, organizações ou indivíduos que controlam o uso e a administração do WSO2 IS " +
                         "devem criar suas próprias políticas de privacidade, definindo a maneira pela qual os dados " +

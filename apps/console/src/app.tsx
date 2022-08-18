@@ -19,13 +19,10 @@
 import { DecodedIDTokenPayload, useAuthContext } from "@asgardeo/auth-react";
 import { AccessControlProvider } from "@wso2is/access-control";
 import { CommonHelpers, isPortalAccessGranted } from "@wso2is/core/helpers";
-import { AlertLevels, RouteInterface, emptyIdentityAppsSettings } from "@wso2is/core/models";
+import { RouteInterface, emptyIdentityAppsSettings } from "@wso2is/core/models";
 import {
-    addAlert,
-    setDeploymentConfigs,
     setI18nConfigs,
-    setServiceResourceEndpoints,
-    setUIConfigs
+    setServiceResourceEndpoints
 } from "@wso2is/core/store";
 import { LocalStorageUtils } from "@wso2is/core/utils";
 import {
@@ -41,9 +38,10 @@ import {
 } from "@wso2is/react-components";
 import has from "lodash-es/has";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, Suspense, useEffect, useRef, useState } from "react";
+import * as moment from "moment";
+import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
-import { Trans, useTranslation } from "react-i18next";
+import { Trans } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, Router, Switch } from "react-router-dom";
 import { commonConfig } from "./extensions";
@@ -54,15 +52,14 @@ import { AppConstants } from "./features/core/constants";
 import { history } from "./features/core/helpers";
 import {
     ConfigReducerStateInterface,
-    DeploymentConfigInterface,
     DocumentationLinksInterface,
     FeatureConfigInterface,
-    ServiceResourceEndpointsInterface,
-    UIConfigInterface
+    ServiceResourceEndpointsInterface
 } from "./features/core/models";
-import { AppState, setGetOrganizationLoading, setOrganization } from "./features/core/store";
-import { getOrganizations } from "./features/organizations/api";
-import { OrganizationListInterface } from "./features/organizations/models";
+import { AppState } from "./features/core/store";
+import "moment/locale/si";
+import "moment/locale/fr";
+
 
 /**
  * Main App component.
@@ -71,7 +68,6 @@ import { OrganizationListInterface } from "./features/organizations/models";
  */
 export const App: FunctionComponent<Record<string, never>> = (): ReactElement => {
     const dispatch = useDispatch();
-    const { t } = useTranslation();
 
     const userName: string = useSelector((state: AppState) => state.auth.username);
     const loginInit: boolean = useSelector((state: AppState) => state.auth.loginInit);
@@ -106,13 +102,18 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
     }, []);
 
     /**
+     * Set the initial locale in moment
+     */
+    useEffect(() => {
+        moment.locale("en");
+    }, []);
+
+    /**
      * Set the deployment configs in redux state.
      */
     useEffect(() => {
-        dispatch(setDeploymentConfigs<DeploymentConfigInterface>(Config.getDeploymentConfig()));
         dispatch(setServiceResourceEndpoints<ServiceResourceEndpointsInterface>(Config.getServiceResourceEndpoints()));
         dispatch(setI18nConfigs<I18nModuleOptionsInterface>(Config.getI18nConfig()));
-        dispatch(setUIConfigs<UIConfigInterface>(Config.getUIConfig()));
     }, [ AppConstants.getTenantQualifiedAppBasename() ]);
 
     /**
@@ -170,13 +171,13 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
                 .then((idToken: DecodedIDTokenPayload) => {
 
                     if(has(idToken, "associated_tenants") || isPrivilegedUser) {
-                        // If there is an assocation, the user is likely unauthorized by other criteria.
+                        // If there is an association, the user is likely unauthorized by other criteria.
                         history.push({
                             pathname: AppConstants.getPaths().get("UNAUTHORIZED"),
                             search: "?error=" + AppConstants.LOGIN_ERRORS.get("ACCESS_DENIED")
                         });
                     } else {
-                        // If there is no assocation, the user should be redirected to creation flow.
+                        // If there is no association, the user should be redirected to creation flow.
                         history.push({
                             pathname: AppConstants.getPaths().get("CREATE_TENANT")
                         });

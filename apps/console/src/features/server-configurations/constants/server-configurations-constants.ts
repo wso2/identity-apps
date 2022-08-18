@@ -26,14 +26,21 @@ export class ServerConfigurationsConstants {
     /* eslint-disable @typescript-eslint/no-empty-function */
     private constructor() { }
 
-	/**
+    /**
 	 * UUID of the identity governance account management policies category.
-	 *
 	 * @constant
 	 * @type {string}
 	 */
 	public static readonly IDENTITY_GOVERNANCE_ACCOUNT_MANAGEMENT_POLICIES_ID: string =
-		"QWNjb3VudCBNYW5hZ2VtZW50IFBvbGljaWVz";
+    "QWNjb3VudCBNYW5hZ2VtZW50IFBvbGljaWVz";
+
+	/**
+	 * Regex matcher to identify if the connector is deprecated.
+	 *
+	 * @constant
+	 * @type {string}
+	 */
+	public static readonly DEPRECATION_MATCHER: string = "[Deprecated]";
 
 	/**
 	 * UUID of the identity governance self sign up connector.
@@ -201,6 +208,11 @@ export class ServerConfigurationsConstants {
 	 * UUID of the Multi-Factor Authenticators governance connector category.
 	 */
 	public static readonly MFA_CONNECTOR_CATEGORY_ID: string = "TXVsdGkgRmFjdG9yIEF1dGhlbnRpY2F0b3Jz";
+
+    /**
+     * UUID of the WSO2 Analytics Engine governance connector category.
+     */
+    public static readonly WSO2_ANALYTICS_ENGINE_CONNECTOR_CATEGORY_ID: string = "YW5hbHl0aWNzLWVuZ2luZQ";
 
     /**
      * User email verification API Keyword constants.

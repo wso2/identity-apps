@@ -79,6 +79,7 @@ export const createIdentityProvider = (identityProvider: object): Promise<any> =
             if ((response.status !== 201)) {
                 return Promise.reject(new Error("Failed to create the application."));
             }
+
             return Promise.resolve(response);
         }).catch((error) => {
             return Promise.reject(error);
@@ -124,6 +125,7 @@ export const getIdentityProviderList = (
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to get IdP list from: "));
             }
+
             return Promise.resolve(response.data as IdentityProviderListResponseInterface);
         }).catch((error) => {
             return Promise.reject(error);
@@ -195,6 +197,7 @@ export const getIdentityProviderDetail = (id: string): Promise<any> => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to get idp details from: "));
             }
+
             return Promise.resolve(response.data as IdentityProviderResponseInterface);
         }).catch((error) => {
             return Promise.reject(error);
@@ -230,6 +233,7 @@ export const getAllIdentityProvidersDetail = (
                     response,
                     response.config);
             }
+
             return Promise.resolve(response.data as IdentityProviderResponseInterface[]);
         }).catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
@@ -265,6 +269,7 @@ export const deleteIdentityProvider = (id: string): Promise<any> => {
             if (response.status !== 204) {
                 return Promise.reject(new Error("Failed to delete the identity provider."));
             }
+
             return Promise.resolve(response);
         }).catch((error) => {
             return Promise.reject(error);
@@ -309,6 +314,7 @@ export const updateIdentityProviderDetails = (idp: IdentityProviderInterface): P
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to update identity provider: " + id));
             }
+
             return Promise.resolve(response.data as IdentityProviderInterface);
         }).catch((error) => {
             return Promise.reject(error);
@@ -346,6 +352,7 @@ export const updateFederatedAuthenticator = (
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to update identity provider: " + idpId));
             }
+
             return Promise.resolve(response.data as IdentityProviderInterface);
         }).catch((error) => {
             return Promise.reject(error);
@@ -379,6 +386,7 @@ export const getFederatedAuthenticatorDetails = (idpId: string, authenticatorId:
                     new Error("Failed to get federated authenticator details for: " + authenticatorId)
                 );
             }
+
             return Promise.resolve(response.data as FederatedAuthenticatorListItemInterface);
         }).catch((error) => {
             return Promise.reject(error);
@@ -408,6 +416,7 @@ export const getFederatedAuthenticatorMeta = (id: string): Promise<any> => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to get federated authenticator meta details for: " + id));
             }
+
             return Promise.resolve(response.data as FederatedAuthenticatorMetaInterface);
         }).catch((error) => {
             return Promise.reject(error);
@@ -436,6 +445,7 @@ export const getFederatedAuthenticatorsList = (): Promise<any> => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to get federated authenticators list"));
             }
+
             return Promise.resolve(response.data as FederatedAuthenticatorMetaInterface);
         }).catch((error) => {
             return Promise.reject(error);
@@ -571,6 +581,7 @@ export const updateOutboundProvisioningConnector = (
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to update identity provider: " + idpId));
             }
+
             return Promise.resolve(response.data as IdentityProviderInterface);
         }).catch((error) => {
             return Promise.reject(error);
@@ -606,6 +617,7 @@ export const updateJITProvisioningConfigs = (
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to update jit configuration: " + idpId));
             }
+
             return Promise.resolve(response.data as IdentityProviderInterface);
         }).catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
@@ -638,6 +650,7 @@ export const getJITProvisioningConfigs = (
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to get jit configuration: " + idpId));
             }
+
             return Promise.resolve(response.data as IdentityProviderInterface);
         }).catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
@@ -680,6 +693,7 @@ export const updateClaimsConfigs = (
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to update identity provider: " + idpId));
             }
+
             return Promise.resolve(response.data as IdentityProviderInterface);
         }).catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
@@ -702,7 +716,7 @@ export const updateClaimsConfigs = (
  * @return {Promise<IdentityProviderTemplateListResponseInterface>} A promise containing the response.
  */
 export const getIdentityProviderTemplateList = (limit?: number, offset?: number,
-                                           filter?: string): Promise<IdentityProviderTemplateListResponseInterface> => {
+    filter?: string): Promise<IdentityProviderTemplateListResponseInterface> => {
     const requestConfig = {
         headers: {
             "Accept": "application/json",
@@ -813,6 +827,7 @@ export const updateIDPRoleMappings = (
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to update identity provider: " + idpId));
             }
+
             return Promise.resolve(response.data as IdentityProviderInterface);
         }).catch((error) => {
             return Promise.reject(error);
@@ -1121,6 +1136,7 @@ export const getOutboundProvisioningConnectorsList = (): Promise<OutboundProvisi
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to fetch outbound provisioning connectors"));
             }
+
             return Promise.resolve(response.data as OutboundProvisioningConnectorListItemInterface[]);
         }).catch((error) => {
             return Promise.reject(error);
@@ -1155,6 +1171,7 @@ export const updateIDPCertificate = (
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to update identity provider: " + idpId));
             }
+
             return Promise.resolve(response.data as IdentityProviderInterface);
         }).catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
@@ -1195,6 +1212,7 @@ export const updateOutboundProvisioningConnectors = (
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to update identity provider: " + idpId));
             }
+
             return Promise.resolve(response.data as IdentityProviderInterface);
         }).catch((error) => {
             return Promise.reject(error);
@@ -1229,6 +1247,7 @@ export const updateFederatedAuthenticators = (
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to update identity provider: " + idpId));
             }
+
             return Promise.resolve(response.data as IdentityProviderInterface);
         }).catch((error) => {
             return Promise.reject(error);
@@ -1260,6 +1279,7 @@ export const getIDPConnectedApps = (idpId: string): Promise<any> => {
                     new Error("Failed to get connected apps for the IDP: " + idpId)
                 );
             }
+
             return Promise.resolve(response.data as ConnectedAppsInterface);
         }).catch((error) => {
             return Promise.reject(error);

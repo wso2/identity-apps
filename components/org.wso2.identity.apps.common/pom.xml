@@ -22,7 +22,7 @@
     <parent>
         <groupId>org.wso2.identity.apps</groupId>
         <artifactId>identity-apps</artifactId>
-        <version>1.3.33-SNAPSHOT</version>
+        <version>1.4.43-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
@@ -72,6 +72,10 @@
             <artifactId>org.wso2.carbon.tenant.common</artifactId>
             <version>${carbon.commons.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.wso2.carbon.identity.organization.management</groupId>
+            <artifactId>org.wso2.carbon.identity.organization.management.service</artifactId>
+        </dependency>
         <!-- To fix travis build -->
         <dependency>
             <groupId>xalan</groupId>
@@ -110,7 +114,8 @@
             org.wso2.carbon.identity.core.*; version="${carbon.identity.framework.imp.pkg.version.range}",
             org.wso2.carbon.identity.core.util.*; version="${carbon.identity.framework.imp.pkg.version.range}",
             org.wso2.carbon.identity.application.mgt.*; version="${carbon.identity.framework.imp.pkg.version.range}",
-            org.wso2.carbon.identity.application.common.*; version="${carbon.identity.framework.imp.pkg.version.range}"
+            org.wso2.carbon.identity.application.common.*; version="${carbon.identity.framework.imp.pkg.version.range}",
+            org.wso2.carbon.identity.organization.management.service.*; version="${identity.org.mgt.version.range}"
         </import.package>
         <dsannotations>*</dsannotations>
     </properties>

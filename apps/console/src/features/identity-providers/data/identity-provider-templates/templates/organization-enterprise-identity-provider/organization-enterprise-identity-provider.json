@@ -28,7 +28,7 @@
             ]
         }
     },
-    "image": "organization",
+    "image": "organizationSSO",
     "services": [],
     "disabled": false,
     "type": "ENTERPRISE"

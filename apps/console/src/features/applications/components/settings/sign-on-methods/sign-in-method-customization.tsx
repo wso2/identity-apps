@@ -27,7 +27,7 @@ import {
     LinkButton,
     Message,
     PrimaryButton,
-    useDocumentation,
+    useDocumentation
 } from "@wso2is/react-components";
 import kebabCase from "lodash-es/kebabCase";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -146,7 +146,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
         const FEDERATED_CONNECTIONS = 1;
 
         const result = SignInMethodUtils.isConnectionsJITUPConflictWithMFA({
-            federatedAuthenticators: authenticators[FEDERATED_CONNECTIONS],
+            federatedAuthenticators: authenticators && authenticators[FEDERATED_CONNECTIONS],
             steps: updatedSteps,
             subjectStepId: authenticationSequence?.subjectStepId
         });
@@ -402,8 +402,8 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
             });
 
             eventPublisher.publish("application-sign-in-method-click-update-button", {
-                type: eventPublisherProperties,
-                "client-id": clientId
+                "client-id": clientId,
+                type: eventPublisherProperties
             });
         });
 
@@ -566,6 +566,9 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                             <LinkButton
                                 className="pr-0"
                                 onClick={ () => {
+                                    eventPublisher.publish("application-revert-sign-in-method-default", {
+                                        "client-id": clientId
+                                    });
                                     handleSequenceUpdate(null, true);
                                     onReset();
                                 } }
@@ -597,7 +600,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                     <Message
                         type="warning"
                         content={
-                            <>
+                            (<>
                                 <Trans
                                     i18nKey={
                                         t("console:develop.features.applications.edit.sections" +
@@ -615,7 +618,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                                 >
                                     { t("common:learnMore") }
                                 </DocumentationLink>
-                            </>
+                            </>)
                         }
                     />
                 )
@@ -660,10 +663,10 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                 : null
             }
             <Divider className="x2"/>
-            { 
+            {
                 isAdaptiveAuthenticationAvailable
                 && (
-                    <ScriptBasedFlow 
+                    <ScriptBasedFlow
                         authenticationSequence={ sequence }
                         isLoading={ isLoading }
                         onTemplateSelect={ handleLoadingDataFromTemplate }
