@@ -127,7 +127,7 @@ export const getOrganizationsPageOneMockResponse: OrganizationListInterface = {
             id: "organization-seven",
             name: "Organization Seven",
             ref: "organizations-seven",
-            status: "ACTIVE"
+            status: "DISABLED"
         }
     ]
 };
