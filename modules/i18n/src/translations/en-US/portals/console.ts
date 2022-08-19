@@ -2337,8 +2337,9 @@ export const console: ConsoleNS = {
                         predefined: "Use Predefined"
                     },
                     columns: {
-                        actions: "Actions",
-                        name: "Name"
+                        actions: "",
+                        name: "Name",
+                        templateId: "Type"
                     },
                     labels: {
                         fragment: "Fragment App"

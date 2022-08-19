@@ -64,6 +64,7 @@ import {
     ApplicationTemplateListItemInterface
 } from "../models";
 import { ApplicationTemplateManagementUtils } from "../utils";
+import { applicationListConfig } from "../../../extensions/configs/application-list";
 
 /**
  *
@@ -400,7 +401,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                         );
                     }
                 },
-                title: t("console:develop.features.applications.list.columns.name")
+                title: t("console:develop.features.applications.list.columns.templateId")
             },
             {
                 allowToggleVisibility: false,
@@ -547,7 +548,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                 } }
                 placeholders={ showPlaceholders() }
                 selectable={ selection }
-                showHeader={ false }
+                showHeader={ applicationListConfig.enableTableHeaders }
                 transparent={ !(isLoading || isApplicationTemplateRequestLoading) && (showPlaceholders() !== null) }
                 data-testid={ testId }
             />

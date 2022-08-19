@@ -1003,6 +1003,7 @@ export interface ConsoleNS {
                     columns: {
                         actions: string;
                         name: string;
+                        templateId: string;
                     };
                     actions: {
                         add: string;
