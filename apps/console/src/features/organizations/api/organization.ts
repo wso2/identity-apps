@@ -352,9 +352,9 @@ export const getSharedOrganizations = (
 };
 
 /**
- * Gets the super organization id of the current user.
+ * Gets the super organization of the current user.
  *
- * @returns {Promise<string>} The super organization id of teh user.
+ * @returns {RequestResultInterface<OrganizationInterface, Error>} The super organization of the user.
  */
 export const useGetUserSuperOrganization = (): RequestResultInterface<OrganizationInterface, Error> => {
     const requestConfig = {
