@@ -43,7 +43,7 @@ import {
     getSidePanelIcons,
     history
 } from "../../../core";
-import { getOrganizations } from "../../api";
+import { getOrganizations, useGetUserSuperOrganization } from "../../api";
 import { OrganizationManagementConstants } from "../../constants";
 import {
     OrganizationInterface,
@@ -71,6 +71,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
     );
     const feature: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const scopes = useSelector((state: AppState) => state.auth.allowedScopes);
+    const tenantDomain: string = useSelector((state: AppState) => state?.auth?.tenantDomain);
 
     const [ associatedOrganizations, setAssociatedOrganizations ] = useState<OrganizationInterface[]>([]);
     const [ listFilter, setListFilter ] = useState("");
@@ -78,29 +79,64 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
     const [ beforeCursor, setBeforeCursor ] = useState<string>();
     const [ isDropDownOpen, setIsDropDownOpen ] = useState<boolean>(false);
     const [ search, setSearch ] = useState<string>("");
+    const { data } = useGetUserSuperOrganization();
 
+    /**
+     * Show the organization switching dropdown only if
+     *  - the extensions config enables this
+     *  - the requires scopes are there
+     *  - the organization management feature is enabled by the backend
+     *  - the user is logged in to a non-super-tenant account
+     */
     const isOrgSwitcherEnabled = useMemo(() => {
-        return isOrganizationManagementEnabled &&
-        hasRequiredScopes(feature?.organizations, feature?.organizations?.scopes?.read, scopes) &&
-        organizationConfigs.showOrganizationDropdown;
+        return (
+            isOrganizationManagementEnabled &&
+            // The `tenantDomain` takes the organization id when you log in to a sub-organization.
+            // So, we cannot use `tenantDomain` to check
+            // if the user is logged in to a non-super-tenant account reliably.
+            // So, we check if the organization id is there in the URL to see if the user is in a sub-organization.
+            (tenantDomain === AppConstants.getSuperTenant() || window[ "AppUtils" ].getConfig().organizationName) &&
+            hasRequiredScopes(feature?.organizations, feature?.organizations?.scopes?.read, scopes) &&
+            organizationConfigs.showOrganizationDropdown
+        );
     }, [
-        organizationConfigs.showOrganizationDropdown
+        organizationConfigs.showOrganizationDropdown,
+        tenantDomain,
+        feature.organizations
     ]);
 
-    const getOrganizationList = useCallback((filter: string, after: string, before: string) => {
+    const getOrganizationList = useCallback(async (filter: string, after: string, before: string) => {
+        let superOrg: OrganizationInterface;
+
+        try {
+            const superOrgId: string = data?.id;
+
+            if (currentOrganization.id !== superOrgId) {
+                superOrg = {
+                    id: superOrgId,
+                    name: data?.name,
+                    ref: ""
+                };
+            }
+        } catch(error) {
+            superOrg = { ...OrganizationManagementConstants.ROOT_ORGANIZATION };
+        }
+
         getOrganizations(filter, 5, after, before, false, false).then((response: OrganizationListInterface) => {
             if (!response || !response.organizations) {
-                setAssociatedOrganizations([ OrganizationManagementConstants.ROOT_ORGANIZATION ]);
+                superOrg && setAssociatedOrganizations([ superOrg ]);
                 setPaginationData(response.links);
             } else {
-                const organizations = [ OrganizationManagementConstants.ROOT_ORGANIZATION, ...response?.organizations ];
+                const organizations: OrganizationInterface[] = superOrg
+                    ? [ superOrg, ...response?.organizations ]
+                    : [ ...response?.organizations ];
 
                 setAssociatedOrganizations(organizations);
 
                 setPaginationData(response.links);
             }
         }).catch((error) => {
-            setAssociatedOrganizations([ OrganizationManagementConstants.ROOT_ORGANIZATION ]);
+            superOrg && setAssociatedOrganizations([ superOrg ]);
 
             if (error?.description) {
                 dispatch(
@@ -131,7 +167,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                 })
             );
         });
-    }, []);
+    }, [ data ]);
 
     const setPaginationData = (links: OrganizationLinkInterface[]) => {
         setAfterCursor(undefined);

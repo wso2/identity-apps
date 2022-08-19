@@ -82,6 +82,10 @@ export interface AuthenticatorAccordionItemInterface {
      */
     hidden?: boolean;
     /**
+     * Hides the chevron icon.
+     */
+    hideChevron?: SegmentedAccordionTitlePropsInterface["hideChevron"];
+    /**
      * Title of the authenticator.
      */
     title: string;
@@ -133,7 +137,7 @@ export const AuthenticatorAccordion: FunctionComponent<AuthenticatorAccordionPro
                                             data-testid={ `${ testId }-${ authenticator.id }-title` }
                                             active={ accordionActiveIndexes?.includes(accordionIndex) || false }
                                             accordionIndex={ accordionIndex }
-                                            onClick={ handleAccordionOnClick }
+                                            onClick={ !authenticator.hideChevron && handleAccordionOnClick }
                                             content={ (
                                                 <>
                                                     <GenericIcon
@@ -152,7 +156,7 @@ export const AuthenticatorAccordion: FunctionComponent<AuthenticatorAccordionPro
                                                     ? [ ...authenticator?.actions, ...globalActions ]
                                                     : authenticator.actions || globalActions
                                             }
-                                            hideChevron={ hideChevron }
+                                            hideChevron={ hideChevron || authenticator.hideChevron }
                                         />
                                         <SegmentedAccordion.Content
                                             active={ accordionActiveIndexes?.includes(accordionIndex) || false }

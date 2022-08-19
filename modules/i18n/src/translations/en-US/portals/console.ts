@@ -18,6 +18,12 @@
 
 import { ConsoleNS } from "../../../models";
 
+/**
+ * NOTES: No need to care about the max-len for this file since it's easier to
+ * translate the strings to other languages easily with editor translation tools.
+ */
+/* eslint-disable max-len */
+/* eslint-disable sort-keys */
 export const console: ConsoleNS = {
     common: {
         advancedSearch: {
@@ -67,6 +73,9 @@ export const console: ConsoleNS = {
             content: "We use cookies to ensure that you get the best overall experience. These cookies are used to " +
                 "maintain an uninterrupted continuous session while providing smooth and personalized services. To " +
                 "learn more about how we use cookies, refer our <1>Cookie Policy</1>."
+        },
+        dateTime: {
+            humanizedDateString: "Last modified {{date}} ago"
         },
         header: {
             appSwitch: {
@@ -267,7 +276,7 @@ export const console: ConsoleNS = {
                     para1: "This policy describes how WSO2 IS captures your personal information, the " +
                         "purposes of collection, and information about the retention of your personal information.",
                     para2: "Please note that this policy is for reference only, and is applicable for " +
-                        "the software as a product. WSO2 Inc. and its developers have no access to the " +
+                        "the software as a product. WSO2 LLC. and its developers have no access to the " +
                         "information held within WSO2 IS. Please see the <1>disclaimer</1> section for " +
                         "more information.",
                     para3: "Entities, organizations or individuals controlling the use and administration " +
@@ -568,7 +577,7 @@ export const console: ConsoleNS = {
                             }
                         }
                     },
-                    placeholder: "Search by application name"
+                    placeholder: "Search by application name or clientId"
                 },
                 confirmations: {
                     addSocialLogin: {
@@ -895,6 +904,36 @@ export const console: ConsoleNS = {
                             },
                             tabName: "Provisioning"
                         },
+                        shareApplication: {
+                            addSharingNotification: {
+                                genericError: {
+                                    description: "Application sharing failed. Please try again",
+                                    message: "Application sharing failed!"
+                                },
+                                success: {
+                                    description: "Application Shared with the organization(s) successfully",
+                                    message: "Application shared!"
+                                }
+                            },
+                            getSharedOrganizations: {
+                                genericError: {
+                                    description: "Getting shared organization list failed!",
+                                    message: "Getting Shared Organization list failed!"
+                                }
+                            },
+                            heading: "Share Application",
+                            shareApplication: "Share Application",
+                            stopSharingNotification: {
+                                genericError: {
+                                    description: "Application sharing stop failed for {{organization}}",
+                                    message: "Application sharing stop failed!"
+                                },
+                                success: {
+                                    description: "Application Sharing stopped with the {{organization}} successfully",
+                                    message: "Application shared stopped successfully!"
+                                }
+                            }
+                        },
                         signOnMethod: {
                             sections: {
                                 authenticationFlow: {
@@ -1140,8 +1179,8 @@ export const console: ConsoleNS = {
                                                 heading: "Add TOTP as a second factor"
                                             },
                                             usernameless: {
-                                                description: "Enable users to log in using a FIDO2 security key "
-                                                    + "or biometrics.",
+                                                description: "Enable users to log in using a FIDO2 security key, "
+                                                    + "biometrics or passkeys.",
                                                 heading: "Add Security Key/Biometrics login",
                                                 info: "To sign in with passwordless login, your users "
                                                     + "should have their FIDO2 security keys or biometrics "
@@ -1347,6 +1386,12 @@ export const console: ConsoleNS = {
                                     customSaml: "This certificate is used to validate the signatures of the " +
                                         "signed requests and to encrypt the SAML assertions returned after " +
                                         "authentication."
+                                },
+                                invalidOperationModal: {
+                                    header: "Operation Invalid",
+                                    message: "You should disable the request signature validation to remove "+
+                                        "the certificate. If request or response signing is enabled, "+
+                                        "it is essential to have a valid certificate to verify the signature."
                                 }
                             }
                         }
@@ -2294,6 +2339,9 @@ export const console: ConsoleNS = {
                     columns: {
                         actions: "Actions",
                         name: "Name"
+                    },
+                    labels: {
+                        fragment: "Fragment App"
                     }
                 },
                 myaccount: {
@@ -4129,6 +4177,22 @@ export const console: ConsoleNS = {
                             name: "Please enter a valid name"
                         }
                     },
+                    expert: {
+                        wizardHelp: {
+                            description: {
+                                connectionDescription: "Provide a unique name for the connection.",
+                                heading: "Name",
+                                idpDescription: "Provide a unique name for the identity provider."
+                            },
+                            heading: "Help",
+                            name: {
+                                connectionDescription: "Provide a description for the connection to explain more about it.",
+                                heading: "Description",
+                                idpDescription: "Provide a description for the identity provider to explain more about it."
+                            },
+                            subHeading: "Use the guide below"
+                        }
+                    },
                     facebook: {
                         wizardHelp: {
                             clientId: {
@@ -4241,6 +4305,15 @@ export const console: ConsoleNS = {
                                     title: "Quick Setup"
                                 },
                                 title: "Authenticator Selection"
+                            },
+                            authenticatorSettings: {
+                                emptyPlaceholder: {
+                                    subtitles: [
+                                        "This authenticator does not have any settings available to be",
+                                        "configured at this level. Simply click on <1>Finish</1>."
+                                    ],
+                                    title: "No Settings available for this Authenticator."
+                                }
                             },
                             summary: {
                                 title: "Summary"
@@ -5669,8 +5742,8 @@ export const console: ConsoleNS = {
                         hint: "Please type <1>{{id}}</1> to confirm.",
                         message: "This action is irreversible and will permanently delete the certificate.",
                         primaryAction: "Confirm",
-                        tenantContent: "This will delete the organization certificate permanently."
-                            + "Once deleted, unless you import a new organization certificate,"
+                        tenantContent: "This will delete the tenant certificate permanently."
+                            + "Once deleted, unless you import a new tenant certificate,"
                             + "you won't be able to access the portal applications."
                             + "To continue deleting, enter the alias of the certificate and click delete."
                     },
@@ -6688,6 +6761,571 @@ export const console: ConsoleNS = {
             governanceConnectors: {
                 categories: "Categories",
                 connectorSubHeading: "Configure {{ name }} settings.",
+                connectorCategories: {
+                    passwordPolicies : {
+                        name: "Password Policies",
+                        connectors: {
+                            passwordHistory: {
+                                friendlyName: "Password History",
+                                properties: {
+                                    passwordHistoryEnable: {
+                                        hint: "User will not be allowed to use previously used passwords.",
+                                        label: "Validate password history"
+                                    },
+                                    passwordHistoryCount: {
+                                        hint: "Restrict using this number of last used passwords during password update.",
+                                        label: "Password history validation count"
+                                    }
+                                }
+                            },
+                            passwordPolicy: {
+                                friendlyName: "Password Patterns",
+                                properties: {
+                                    passwordPolicyEnable: {
+                                        hint: "Validate user passwords against a policy",
+                                        label: "Validate passwords based on a policy pattern"
+                                    },
+                                    passwordPolicyMinLength: {
+                                        hint: "Minimum number of characters in the password.",
+                                        label: "Minimum number of characters"
+                                    },
+                                    passwordPolicyMaxLength: {
+                                        hint: "Maximum number of characters in the password.",
+                                        label: "Maximum number of characters"
+                                    },
+                                    passwordPolicyPattern: {
+                                        hint: "The regular expression pattern to validate the password.",
+                                        label: "Password pattern regex"
+                                    },
+                                    passwordPolicyErrorMsg: {
+                                        hint: "This error message will be displayed when a pattern violation is detected.",
+                                        label: "Error message on pattern violation"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    userOnboarding : {
+                        name: "User Onboarding",
+                        connectors: {
+                            selfSignUp: {
+                                friendlyName: "Self Registration",
+                                properties: {
+                                    selfRegistrationEnable: {
+                                        hint: "Allow user's to self register to the system.",
+                                        label: "User self registration"
+                                    },
+                                    selfRegistrationLockOnCreation: {
+                                        hint: "Lock self registered user account until e-mail verification.",
+                                        label: "Lock user account on creation"
+                                    },
+                                    selfRegistrationSendConfirmationOnCreation: {
+                                        hint: "Enable user account confirmation when the user account is not locked on creation",
+                                        label: "Enable Account Confirmation On Creation"
+                                    },
+                                    selfRegistrationNotificationInternallyManage: {
+                                        hint: "Disable if the client application handles notification sending",
+                                        label: "Manage notifications sending internally"
+                                    },
+                                    selfRegistrationReCaptcha: {
+                                        hint: "Enable reCaptcha verification during self registration.",
+                                        label: "Prompt reCaptcha"
+                                    },
+                                    selfRegistrationVerificationCodeExpiryTime: {
+                                        hint: "Specify the expiry time in minutes for the verification link.",
+                                        label: "User self registration verification link expiry time"
+                                    },
+                                    selfRegistrationVerificationCodeSmsotpExpiryTime: {
+                                        hint: "Specify the expiry time in minutes for the SMS OTP.",
+                                        label: "User self registration SMS OTP expiry time"
+                                    },
+                                    selfRegistrationSmsotpRegex: {
+                                        hint: "Regex for SMS OTP in format [allowed characters]{length}. Supported character ranges are a-z, A-Z, 0-9. Minimum OTP length is 4",
+                                        label: "User self registration SMS OTP regex"
+                                    },
+                                    selfRegistrationCallbackRegex: {
+                                        hint: "This prefix will be used to validate the callback URL.",
+                                        label: "User self registration callback URL regex"
+                                    },
+                                    urlListPurposeSelfSignUp: {
+                                        hint: "Click here to manage Self-Sign-Up purposes",
+                                        label: "Manage Self-Sign-Up purposes"
+                                    },
+                                    selfRegistrationNotifyAccountConfirmation: {
+                                        hint: "Enable sending notification for self sign up confirmation.",
+                                        label: "Send sign up confirmation email"
+                                    },
+                                    selfRegistrationResendConfirmationReCaptcha: {
+                                        hint: "Prompt reCaptcha verification for resend confirmation",
+                                        label: "Prompt reCaptcha on re-send confirmation"
+                                    },
+                                    selfRegistrationAutoLoginEnable: {
+                                        hint: "User will be logged in automatically after completing the Account Confirmation",
+                                        label: "Enable Auto Login After Account Confirmation"
+                                    },
+                                    selfRegistrationAutoLoginAliasName: {
+                                        hint: "Alias of the key used to sign to cookie. The public key has to be imported to the keystore.",
+                                        label: "Alias of the key used to sign to cookie"
+                                    }
+                                }
+                            },
+                            liteUserSignUp: {
+                                friendlyName: "Lite User Registration",
+                                properties: {
+                                    liteRegistrationEnable: {
+                                        hint: "Allow user's to self register to the system without a password.",
+                                        label: "Lite user registration"
+                                    },
+                                    liteRegistrationLockOnCreation: {
+                                        hint: "Lock self registered user account until e-mail verification.",
+                                        label: "Lock user account on creation"
+                                    },
+                                    liteRegistrationNotificationInternallyManage: {
+                                        hint: "Disable if the client application handles notification sending",
+                                        label: "Manage notifications sending internally"
+                                    },
+                                    liteRegistrationReCaptcha: {
+                                        hint: "Enable reCaptcha verification during self registration.",
+                                        label: "Prompt reCaptcha"
+                                    },
+                                    liteRegistrationVerificationCodeExpiryTime: {
+                                        hint: "Specify the expiry time in minutes for the verification link.",
+                                        label: "Lite user registration verification link expiry time"
+                                    },
+                                    liteRegistrationVerificationCodeSmsotpExpiryTime: {
+                                        hint: "Specify the expiry time in minutes for the SMS OTP.",
+                                        label: "Lite user registration SMS OTP expiry time"
+                                    },
+                                    liteRegistrationSmsotpRegex: {
+                                        hint: "Regex for SMS OTP in format [allowed characters]{length}. Supported character ranges are a-z, A-Z, 0-9. Minimum OTP length is 4",
+                                        label: "Lite user registration SMS OTP regex"
+                                    },
+                                    liteRegistrationCallbackRegex: {
+                                        hint: "This prefix will be used to validate the callback URL.",
+                                        label: "Lite user registration callback URL regex"
+                                    },
+                                    urlListPurposeLiteUserSignUp: {
+                                        hint: "Click here to manage Lite-Sign-Up purposes",
+                                        label: "Manage Lite-Sign-Up purposes"
+                                    }
+                                }
+                            },
+                            userEmailVerification: {
+                                friendlyName: "Ask Password",
+                                properties: {
+                                    emailVerificationEnable: {
+                                        hint: "A verification notification will be triggered during user creation.",
+                                        label: "Enable user email verification"
+                                    },
+                                    emailVerificationLockOnCreation: {
+                                        hint: "The user account will be locked during user creation.",
+                                        label: "Enable account lock on creation"
+                                    },
+                                    emailVerificationNotificationInternallyManage: {
+                                        hint: "Disable if the client application handles notification sending.",
+                                        label: "Manage notifications sending internally"
+                                    },
+                                    emailVerificationExpiryTime: {
+                                        hint: "Set the time span that the verification e-mail would be valid, in minutes. (For infinite validity period, set -1)",
+                                        label: "Email verification code expiry time"
+                                    },
+                                    emailVerificationAskPasswordExpiryTime: {
+                                        hint: "Set the time span that the ask password e-mail would be valid, in minutes. (For infinite validity period, set -1)",
+                                        label: "Ask password code expiry time"
+                                    },
+                                    emailVerificationAskPasswordPasswordGenerator: {
+                                        hint: "Temporary password generation extension point in ask password feature.",
+                                        label: "Temporary password generation extension class"
+                                    },
+                                    urlListPurposeJitProvisioning: {
+                                        hint: "Click here to manage just in time provisioning purposes.",
+                                        label: "Manage JIT provisioning purposes"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    loginAttemptsSecurity : {
+                        name: "Login Attempts Security",
+                        connectors: {
+                            accountLockHandler: {
+                                friendlyName: "Account Lock",
+                                properties: {
+                                    accountLockHandlerLockOnMaxFailedAttemptsEnable: {
+                                        hint: "Lock user accounts on failed login attempts",
+                                        label: "Lock user accounts on maximum failed attempts"
+                                    },
+                                    accountLockHandlerOnFailureMaxAttempts: {
+                                        hint: "Number of failed login attempts allowed until account lock.",
+                                        label: "Maximum failed login attempts"
+                                    },
+                                    accountLockHandlerTime: {
+                                        hint: "Initial account lock time period in minutes. Account will be automatically unlocked after this time period.",
+                                        label: "Initial account lock duration"
+                                    },
+                                    accountLockHandlerLoginFailTimeoutRatio: {
+                                        hint: "Account lock duration will be increased by this factor. Ex: Initial duration: 5m; Increment factor: 2; Next lock duration: 5 x 2 = 10m",
+                                        label: "Account lock duration increment factor"
+                                    },
+                                    accountLockHandlerNotificationManageInternally: {
+                                        hint: "Disable if the client application handles notification sending",
+                                        label: "Manage notification sending internally"
+                                    },
+                                    accountLockHandlerNotificationNotifyOnLockIncrement: {
+                                        hint: "Notify user when the account lock duration is increased due to continuous failed login attempts.",
+                                        label: "Notify user when lock time is increased"
+                                    }
+                                }
+                            },
+                            ssoLoginRecaptcha: {
+                                friendlyName: "reCaptcha for SSO Login",
+                                properties: {
+                                    ssoLoginRecaptchaEnableAlways: {
+                                        hint: "Always prompt reCaptcha verification during SSO login flow.",
+                                        label: "Always prompt reCaptcha"
+                                    },
+                                    ssoLoginRecaptchaEnable: {
+                                        hint: "Prompt reCaptcha verification during SSO login flow only after the max failed attempts exceeded.",
+                                        label: "Prompt reCaptcha after max failed attempts"
+                                    },
+                                    ssoLoginRecaptchaOnMaxFailedAttempts: {
+                                        hint: "Number of failed attempts allowed without prompting reCaptcha verification.",
+                                        label: "Max failed attempts for reCaptcha"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    accountManagement : {
+                        name: "Account Management",
+                        connectors: {
+                            suspensionNotification: {
+                                friendlyName: "Idle Account Suspend",
+                                properties: {
+                                    suspensionNotificationEnable: {
+                                        hint: "Lock user account after a given idle period.",
+                                        label: "Suspend idle user accounts"
+                                    },
+                                    suspensionNotificationAccountDisableDelay: {
+                                        hint: "Time period in days before locking the user account.",
+                                        label: "Allowed idle time span in days"
+                                    },
+                                    suspensionNotificationDelays: {
+                                        hint: "Send warning alerts to users before locking the account, after each period. Comma separated multiple values accepted.",
+                                        label: "Alert sending time periods in days"
+                                    }
+                                }
+                            },
+                            accountDisableHandler: {
+                                friendlyName: "Account Disable",
+                                properties: {
+                                    accountDisableHandlerEnable: {
+                                        hint: "Allow an administrative user to disable user accounts",
+                                        label: "Enable account disabling"
+                                    },
+                                    accountDisableHandlerNotificationManageInternally: {
+                                        hint: "Disable, if the client application handles notification sending",
+                                        label: "Manage notification sending internally"
+                                    }
+                                }
+                            },
+                            multiattributeLoginHandler: {
+                                friendlyName: "Multi Attribute Login",
+                                properties: {
+                                    accountMultiattributeloginHandlerEnable: {
+                                        hint: "Enable using multiple attributes as login identifier",
+                                        label: "Enable Multi Attribute Login"
+                                    },
+                                    accountMultiattributeloginHandlerAllowedattributes: {
+                                        hint: "Allowed claim list separated by commas",
+                                        label: "Allowed Attribute Claim List"
+                                    }
+                                }
+                            },
+                            accountRecovery: {
+                                friendlyName: "Account Management",
+                                properties: {
+                                    recoveryNotificationPasswordEnable: {
+                                        label: "Notification based password recovery"
+                                    },
+                                    recoveryReCaptchaPasswordEnable: {
+                                        label: "Enable reCaptcha for password recovery"
+                                    },
+                                    recoveryQuestionPasswordEnable: {
+                                        label: "Security question based password recovery"
+                                    },
+                                    recoveryQuestionPasswordMinAnswers: {
+                                        label: "Number of questions required for password recovery"
+                                    },
+                                    recoveryQuestionAnswerRegex: {
+                                        hint: "Security question answer regex",
+                                        label: "Security question answer regex"
+                                    },
+                                    recoveryQuestionAnswerUniqueness: {
+                                        hint: "Enforce security question answer uniqueness",
+                                        label: "Enforce security question answer uniqueness"
+                                    },
+                                    recoveryQuestionPasswordReCaptchaEnable: {
+                                        hint: "Prompt reCaptcha for security question based password recovery",
+                                        label: "Enable reCaptcha for security questions based password recovery"
+                                    },
+                                    recoveryQuestionPasswordReCaptchaMaxFailedAttempts: {
+                                        label: "Max failed attempts for reCaptcha"
+                                    },
+                                    recoveryNotificationUsernameEnable: {
+                                        label: "Username recovery"
+                                    },
+                                    recoveryReCaptchaUsernameEnable: {
+                                        label: "Enable reCaptcha for username recovery"
+                                    },
+                                    recoveryNotificationInternallyManage: {
+                                        hint: "Disable if the client application handles notification sending",
+                                        label: "Manage notifications sending internally"
+                                    },
+                                    recoveryNotifySuccess: {
+                                        label: "Notify when recovery success"
+                                    },
+                                    recoveryQuestionPasswordNotifyStart: {
+                                        label: "Notify when security questions based recovery starts"
+                                    },
+                                    recoveryExpiryTime: {
+                                        label: "Recovery link expiry time in minutes"
+                                    },
+                                    recoveryNotificationPasswordExpiryTimeSmsOtp: {
+                                        hint: "Expiration time of the SMS OTP code for password recovery",
+                                        label: "SMS OTP expiry time"
+                                    },
+                                    recoveryNotificationPasswordSmsOtpRegex: {
+                                        hint: "Regex for SMS OTP in format [allowed characters]{length}. Supported character ranges are a-z, A-Z, 0-9. Minimum OTP length is 4",
+                                        label: "SMS OTP regex"
+                                    },
+                                    recoveryQuestionPasswordForcedEnable: {
+                                        hint: "Force users to provide answers to security questions during sign in",
+                                        label: "Enable forced security questions"
+                                    },
+                                    recoveryQuestionMinQuestionsToAnswer: {
+                                        hint: "Force users to provide answers to security questions during sign in if user has answered lesser than this value",
+                                        label: "Minimum number of forced security questions to be answered"
+                                    },
+                                    recoveryCallbackRegex: {
+                                        hint: "Recovery callback URL regex",
+                                        label: "Recovery callback URL regex"
+                                    },
+                                    recoveryAutoLoginEnable: {
+                                        hint: "User will be logged in automatically after completing the Password Reset wizard",
+                                        label: "Enable Auto Login After Password Reset"
+                                    }
+                                }
+                            },
+                            adminForcedPasswordReset: {
+                                friendlyName: "Password Reset",
+                                properties: {
+                                    recoveryAdminPasswordResetRecoveryLink: {
+                                        hint: "User gets notified with a link to reset password",
+                                        label: "Enable password reset via recovery e-mail"
+                                    },
+                                    recoveryAdminPasswordResetOtp: {
+                                        hint: "User gets notified with a one time password to try with SSO login",
+                                        label: "Enable password reset via OTP"
+                                    },
+                                    recoveryAdminPasswordResetOffline: {
+                                        hint: "An OTP generated and stored in users claims",
+                                        label: "Enable password reset offline"
+                                    },
+                                    recoveryAdminPasswordResetExpiryTime: {
+                                        hint: "Validity time of the admin forced password reset code in minutes",
+                                        label: "Admin forced password reset code expiry time"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    otherSettings : {
+                        name: "Other Settings",
+                        connectors: {
+                            piiController: {
+                                friendlyName: "Consent Information Controller",
+                                properties: {
+                                    piiController: {
+                                        hint: "Name of the first Controller who collects the data",
+                                        label: "Controller Name"
+                                    },
+                                    contact: {
+                                        hint: "Contact name of the Controller",
+                                        label: "Contact Name"
+                                    },
+                                    email: {
+                                        hint: "Contact email address of the Controller",
+                                        label: "Email Address"
+                                    },
+                                    phone: {
+                                        hint: "Contact phone number of the Controller",
+                                        label: "Phone Number"
+                                    },
+                                    onBehalf: {
+                                        hint: "A user information (PII) Processor acting on behalf of a Controller or PII Processor",
+                                        label: "On Behalf"
+                                    },
+                                    piiControllerUrl: {
+                                        hint: "A URL for contacting the Controller",
+                                        label: "Url"
+                                    },
+                                    addressCountry: {
+                                        hint: "Country of the Controller",
+                                        label: "Country"
+                                    },
+                                    addressLocality: {
+                                        hint: "Locality of the Controller",
+                                        label: "Locality"
+                                    },
+                                    addressRegion: {
+                                        hint: "Region of the Controller",
+                                        label: "Region"
+                                    },
+                                    postOfficeBoxNumber: {
+                                        hint: "Post Office Box Number of the Controller",
+                                        label: "Post Office Box Number"
+                                    },
+                                    postalCode: {
+                                        hint: "Postal Code of the Controller",
+                                        label: "Postal Code"
+                                    },
+                                    streetAddress: {
+                                        hint: "Street Address of the Controller",
+                                        label: "Street Address"
+                                    }
+                                }
+                            },
+                            analyticsEngine: {
+                                friendlyName: "[Deprecated] Identity Server Analytics",
+                                messages: {
+                                    deprecation: {
+                                        description: "WSO2 Identity Server Analytics is now deprecated. Use <1>ELK Analytics</1> instead.",
+                                        heading: "Deprecated"
+                                    }
+                                },
+                                properties: {
+                                    adaptiveAuthenticationAnalyticsReceiver: {
+                                        hint: "Target Host",
+                                        label: "Target Host"
+                                    },
+                                    adaptiveAuthenticationAnalyticsBasicAuthEnabled: {
+                                        hint: "Enable Basic Authentication",
+                                        label: "Enable Basic Authentication"
+                                    },
+                                    adaptiveAuthenticationAnalyticsBasicAuthUsername: {
+                                        hint: "Target Host Secured User ID",
+                                        label: "User ID"
+                                    },
+                                    secretAdaptiveAuthenticationAnalyticsBasicAuthPassword: {
+                                        hint: "Target Host Secured Secret",
+                                        label: "Secret"
+                                    },
+                                    adaptiveAuthenticationAnalyticsHttpConnectionTimeout: {
+                                        hint: "HTTP Connection Timeout in milliseconds",
+                                        label: "HTTP Connection Timeout"
+                                    },
+                                    adaptiveAuthenticationAnalyticsHttpReadTimeout: {
+                                        hint: "HTTP Read Timeout in milliseconds",
+                                        label: "HTTP Read Timeout"
+                                    },
+                                    adaptiveAuthenticationAnalyticsHttpConnectionRequestTimeout: {
+                                        hint: "HTTP Connection Request Timeout in milliseconds",
+                                        label: "HTTP Connection Request Timeout"
+                                    },
+                                    adaptiveAuthenticationAnalyticsHostnameVerfier: {
+                                        hint: "Hostname verification. (STRICT, ALLOW_ALL)",
+                                        label: "Hostname verification"
+                                    }
+                                }
+                            },
+                            elasticAnalyticsEngine: {
+                                friendlyName: "ELK Analytics",
+                                properties: {
+                                    adaptiveAuthenticationElasticReceiver: {
+                                        hint: "Elasticsearch Host",
+                                        label: "Elasticsearch Host"
+                                    },
+                                    adaptiveAuthenticationElasticBasicAuthEnabled: {
+                                        hint: "Enable Basic Authentication",
+                                        label: "Enable Basic Authentication"
+                                    },
+                                    adaptiveAuthenticationElasticBasicAuthUsername: {
+                                        hint: "Elasticsearch Username",
+                                        label: "Elasticsearch Username"
+                                    },
+                                    secretAdaptiveAuthenticationElasticBasicAuthPassword: {
+                                        hint: "Elasticsearch User's Password",
+                                        label: "Elasticsearch Password"
+                                    },
+                                    adaptiveAuthenticationElasticHttpConnectionTimeout: {
+                                        hint: "HTTP Connection Timeout in milliseconds",
+                                        label: "HTTP Connection Timeout"
+                                    },
+                                    adaptiveAuthenticationElasticHttpReadTimeout: {
+                                        hint: "HTTP Read Timeout in milliseconds",
+                                        label: "HTTP Read Timeout"
+                                    },
+                                    adaptiveAuthenticationElasticHttpConnectionRequestTimeout: {
+                                        hint: "HTTP Connection Request Timeout in milliseconds",
+                                        label: "HTTP Connection Request Timeout"
+                                    },
+                                    adaptiveAuthenticationElasticHostnameVerfier: {
+                                        hint: "Hostname verification. (STRICT, ALLOW_ALL)",
+                                        label: "Hostname verification"
+                                    }
+                                }
+                            },
+                            userClaimUpdate: {
+                                friendlyName: "User Claim Update",
+                                properties: {
+                                    userClaimUpdateEmailEnableVerification: {
+                                        hint: "Trigger a verification notification when user's email address is updated.",
+                                        label: "Enable user email verification on update"
+                                    },
+                                    userClaimUpdateEmailVerificationCodeExpiryTime: {
+                                        hint: "Validity time of the email confirmation link in minutes.",
+                                        label: "Email verification on update link expiry time"
+                                    },
+                                    userClaimUpdateEmailEnableNotification: {
+                                        hint: "Trigger a notification to the existing email address when the user attempts to update the existing email address.",
+                                        label: "Enable user email notification on update"
+                                    },
+                                    userClaimUpdateMobileNumberEnableVerification: {
+                                        hint: "Trigger a verification SMS OTP when user's mobile number is updated.",
+                                        label: "Enable user mobile number verification on update"
+                                    },
+                                    userClaimUpdateMobileNumberVerificationCodeExpiryTime: {
+                                        hint: "Validity time of the mobile number confirmation OTP in minutes.",
+                                        label: "Mobile number verification on update SMS OTP expiry time"
+                                    },
+                                    userClaimUpdateMobileNumberEnableVerificationByPrivilegedUser: {
+                                        hint: "Allow privileged users to initiate mobile number verification on update.",
+                                        label: "Enable mobile number verification by privileged users"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    multiFactorAuthenticators : {
+                        name: "Multi Factor Authenticators",
+                        connectors: {
+                            backupCodeAuthenticator: {
+                                friendlyName: "Backup Code Authenticator",
+                                properties: {
+                                    backupCodeBackupCodeLength: {
+                                        hint: "Length of a backup code",
+                                        label: "Backup code length"
+                                    },
+                                    backupCodeBackupCodeSize: {
+                                        hint: "Maximum number of backup codes",
+                                        label: "Backup code size"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
                 disabled: "Disabled",
                 enabled: "Enabled",
                 form: {
@@ -7506,7 +8144,8 @@ export const console: ConsoleNS = {
                         subtitles: {
                             0: "There are no organizations at the moment.",
                             1: "You can add a new organization easily by",
-                            2: "clicking on the button below."
+                            2: "clicking on the button below.",
+                            3: "There are no organizations under {{parent}} at the moment."
                         },
                         title: "Add a new Organization"
                     }
@@ -8101,6 +8740,7 @@ export const console: ConsoleNS = {
                 }
             },
             sidePanel: {
+                accountManagement: "Account Management",
                 addEmailTemplate: "Add Email Template",
                 addEmailTemplateLocale: "Add Email Template Locale",
                 approvals: "Approvals",
@@ -8128,9 +8768,15 @@ export const console: ConsoleNS = {
                 generalConfigurations: "General",
                 groups: "Groups",
                 localDialect: "Attributes",
+                loginAttemptsSecurity: "Login Attempts Security",
+                multiFactorAuthenticators: "Multi Factor Authenticators",
                 organizations: "Organizations",
+                otherSettings: "Other Settings",
                 overview: "Overview",
+                passwordPolicies: "Password Policies",
+                remoteFetchConfig: "Remote Configurations",
                 roles: "Roles",
+                userOnboarding: "User Onboarding",
                 users: "Users",
                 userstoreTemplates: "User Store Templates",
                 userstores: "User Stores"
@@ -9095,7 +9741,7 @@ export const console: ConsoleNS = {
                     content: "If you delete this user store, the user data in this user store will also be deleted. "
                         + "Please proceed with caution.",
                     header: "Are you sure?",
-                    hint: "Please type confirm your action.",
+                    hint: "Please confirm your action.",
                     message: "This action is irreversible and will permanently delete the"
                         + " selected user store and the data in it."
                 },

@@ -22,7 +22,7 @@ import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Grid, Responsive, Segment } from "semantic-ui-react";
-import { AppState, ConfigReducerStateInterface, FeatureConfigInterface, EventPublisher } from "../../../../core";
+import { AppState, ConfigReducerStateInterface, EventPublisher, FeatureConfigInterface } from "../../../../core";
 import { IdentityProviderManagementConstants } from "../../../../identity-providers";
 import { getAuthenticatorIcons } from "../../../configs";
 import { LoginFlowTypes } from "../../../models";
@@ -63,7 +63,7 @@ interface SignInMethodLandingPropsInterface extends SBACInterface<FeatureConfigI
 export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInterface> = (
     props: SignInMethodLandingPropsInterface
 ): ReactElement => {
-    const { isLoading, onLoginFlowSelect, hiddenOptions, ["data-testid"]: testId, clientId } = props;
+    const { isLoading, onLoginFlowSelect, hiddenOptions, [ "data-testid" ]: testId, clientId } = props;
 
     const { t } = useTranslation();
 
@@ -72,52 +72,52 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
     const eventPublisher = EventPublisher.getInstance();
 
     return (
-        <Segment basic loading={isLoading} data-testid={testId} className="sign-in-method-landing">
+        <Segment basic loading={ isLoading } data-testid={ testId } className="sign-in-method-landing">
             <Grid>
                 <Grid.Row>
-                    <Grid.Column width={16}>
+                    <Grid.Column width={ 16 }>
                         <Heading
                             as="h2"
-                            textAlign={window.innerWidth <= Responsive.onlyTablet.maxWidth ? "center" : "left"}
+                            textAlign={ window.innerWidth <= Responsive.onlyTablet.maxWidth ? "center" : "left" }
                         >
-                            {t(
+                            { t(
                                 "console:develop.features.applications.edit.sections.signOnMethod.sections." +
                                 "landing.flowBuilder.heading"
-                            )}
+                            ) }
                         </Heading>
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row>
-                    <Grid.Column computer={8} tablet={16} mobile={16} className="flow-options-column">
+                    <Grid.Column computer={ 8 } tablet={ 16 } mobile={ 16 } className="flow-options-column">
                         <div className="pr-5 pl-5">
-                            {!hiddenOptions.includes(LoginFlowTypes.DEFAULT) && (
+                            { !hiddenOptions.includes(LoginFlowTypes.DEFAULT) && (
                                 <>
                                     <Heading as="h4">
-                                        {t(
+                                        { t(
                                             "console:develop.features.applications.edit." +
                                             "sections.signOnMethod.sections." +
                                             "landing.flowBuilder.headings.default"
-                                        )}
+                                        ) }
                                     </Heading>
                                     <InfoCard
                                         fluid
                                         data-testid="basic-configuration-flow-card"
-                                        image={getAuthenticatorIcons().basic}
+                                        image={ getAuthenticatorIcons().basic }
                                         imageSize="mini"
-                                        header={t(
+                                        header={ t(
                                             "console:develop.features.applications.edit.sections.signOnMethod." +
                                             "sections.landing.flowBuilder.types.defaultConfig.heading"
-                                        )}
-                                        description={t(
+                                        ) }
+                                        description={ t(
                                             "console:develop.features.applications.edit.sections.signOnMethod." +
                                             "sections.landing.flowBuilder.types.defaultConfig.description"
-                                        )}
-                                        onClick={() => {
+                                        ) }
+                                        onClick={ () => {
                                             eventPublisher.publish("application-begin-sign-in-default-configuration", {
                                                 "client-id": clientId
                                             });
-                                            onLoginFlowSelect(LoginFlowTypes.DEFAULT)
-                                        }}
+                                            onLoginFlowSelect(LoginFlowTypes.DEFAULT);
+                                        } }
                                     />
                                 </>
                             )}
@@ -174,58 +174,58 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                             )}
                         </div>
                     </Grid.Column>
-                    <Grid.Column computer={8} tablet={16} mobile={16} className="flow-options-column">
+                    <Grid.Column computer={ 8 } tablet={ 16 } mobile={ 16 } className="flow-options-column">
                         <div className="pr-5 pl-5">
                             <Heading as="h4">
                                 {t(
                                     "console:develop.features.applications.edit." +
                                     "sections.signOnMethod.sections." +
                                     "landing.flowBuilder.headings.passwordlessLogin"
-                                )}
+                                ) }
                             </Heading>
-                            {!hiddenOptions?.includes(LoginFlowTypes.FIDO_LOGIN) &&
+                            { !hiddenOptions?.includes(LoginFlowTypes.FIDO_LOGIN) &&
                                 !config.ui?.hiddenAuthenticators.includes(
                                     IdentityProviderManagementConstants.FIDO_AUTHENTICATOR
                                 ) && (
-                                    <InfoCard
-                                        fluid
-                                        data-testid="usernameless-flow-card"
-                                        image={getAuthenticatorIcons().fido}
-                                        imageSize="mini"
-                                        header={t(
-                                            "console:develop.features.applications.edit.sections" +
+                                <InfoCard
+                                    fluid
+                                    data-testid="usernameless-flow-card"
+                                    image={ getAuthenticatorIcons().fido }
+                                    imageSize="mini"
+                                    header={ t(
+                                        "console:develop.features.applications.edit.sections" +
                                             ".signOnMethod.sections.landing.flowBuilder." +
                                             "types.usernameless.heading"
-                                        )}
-                                        description={t(
-                                            "console:develop.features.applications.edit.sections" +
+                                    ) }
+                                    description={ t(
+                                        "console:develop.features.applications.edit.sections" +
                                             ".signOnMethod.sections.landing.flowBuilder." +
                                             "types.usernameless.description"
-                                        )}
-                                        onClick={() => {
-                                            eventPublisher.publish("application-begin-sign-in-biometrics-password-less", {
-                                                "client-id": clientId
-                                            });
-                                            onLoginFlowSelect(LoginFlowTypes.FIDO_LOGIN)
-                                        }}
-                                    />
-                                )}
-                            {!hiddenOptions?.includes(LoginFlowTypes.MAGIC_LINK) &&
+                                    ) }
+                                    onClick={ () => {
+                                        eventPublisher.publish("application-begin-sign-in-biometrics-password-less", {
+                                            "client-id": clientId
+                                        });
+                                        onLoginFlowSelect(LoginFlowTypes.FIDO_LOGIN);
+                                    } }
+                                />
+                            ) }
+                            { !hiddenOptions?.includes(LoginFlowTypes.MAGIC_LINK) &&
                                 !config.ui?.hiddenAuthenticators.includes(
                                     IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR
                                 ) && (
-                                    <InfoCard
-                                        fluid
-                                        data-testid="magic-link-flow-card"
-                                        image={getAuthenticatorIcons().magicLink}
-                                        imageSize="mini"
-                                        header={t(
-                                            "console:develop.features.applications.edit.sections" +
+                                <InfoCard
+                                    fluid
+                                    data-testid="magic-link-flow-card"
+                                    image={ getAuthenticatorIcons().magicLink }
+                                    imageSize="mini"
+                                    header={ t(
+                                        "console:develop.features.applications.edit.sections" +
                                             ".signOnMethod.sections.landing.flowBuilder." +
                                             "types.magicLink.heading"
-                                        )}
-                                        description={t(
-                                            "console:develop.features.applications.edit.sections" +
+                                    ) }
+                                    description={ t(
+                                        "console:develop.features.applications.edit.sections" +
                                             ".signOnMethod.sections.landing.flowBuilder." +
                                             "types.magicLink.description"
                                         )}
@@ -324,5 +324,5 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
  */
 SignInMethodLanding.defaultProps = {
     "data-testid": "sign-in-method-landing",
-    hiddenOptions: [LoginFlowTypes.FACEBOOK_LOGIN, LoginFlowTypes.GITHUB_LOGIN]
+    hiddenOptions: [ LoginFlowTypes.FACEBOOK_LOGIN, LoginFlowTypes.GITHUB_LOGIN ]
 };

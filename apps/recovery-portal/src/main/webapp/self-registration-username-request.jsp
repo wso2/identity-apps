@@ -104,7 +104,7 @@
         <layout:component componentName="MainSection" >
             <div class="ui segment">
                 <h3 class="ui header">
-                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Start.signing.up")%>
+                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Initiate.sign.up")%>
                 </h3>
 
                 <div class="ui negative message" id="error-msg" hidden="hidden"></div>
@@ -142,7 +142,10 @@
                         <% Map<String, String[]> requestMap = request.getParameterMap();
                             for (Map.Entry<String, String[]> entry : requestMap.entrySet()) {
                                 String key = Encode.forHtmlAttribute(entry.getKey());
-                                String value = Encode.forHtmlAttribute(entry.getValue()[0]); %>
+                                String value = Encode.forHtmlAttribute(entry.getValue()[0]);
+                                if (StringUtils.equalsIgnoreCase("reCaptcha", key)) {
+                                    continue;
+                                } %>
                         <div class="field">
                             <input id="<%= key%>" name="<%= key%>" type="hidden"
                                    value="<%=value%>" class="form-control">

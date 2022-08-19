@@ -26,6 +26,7 @@ import { Divider } from "semantic-ui-react";
 import { AppState, UIConfigInterface } from "../../../core";
 import { ApplicationManagementConstants } from "../../constants";
 import { applicationConfig } from "../../../../extensions";
+import {ApplicationInterface} from "../../models";
 
 /**
  * Proptypes for the applications general details form component.
@@ -79,6 +80,10 @@ interface GeneralDetailsFormPopsInterface extends TestableComponentInterface {
      * Specifies whether having edit-permissions
      */
     hasRequiredScope?: boolean;
+    /**
+     * Application
+     */
+    application?: ApplicationInterface;
 }
 
 /**
@@ -115,6 +120,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
         hasRequiredScope,
         isSubmitting,
         isManagementApp,
+        application,
         [ "data-testid" ]: testId
     } = props;
 
@@ -359,7 +365,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                 }
                 value={ accessUrl }
                 readOnly={ !hasRequiredScope || ( readOnly && applicationConfig.generalSettings.getFieldReadOnlyStatus(
-                     name, "ACCESS_URL"))}
+                     application, "ACCESS_URL"))}
                 maxLength={ 200 }
                 minLength={ 3 }
                 data-testid={ `${ testId }-application-access-url-input` }
@@ -376,7 +382,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                 loading={ isSubmitting }
                 label={ t("common:update") }
                 hidden={ !hasRequiredScope || ( readOnly && applicationConfig.generalSettings.getFieldReadOnlyStatus(
-                    name, "ACCESS_URL"))}
+                    application, "ACCESS_URL"))}
             />
         </Form>
     );

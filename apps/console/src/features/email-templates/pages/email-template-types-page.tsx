@@ -146,6 +146,7 @@ const EmailTemplateTypesPage: FunctionComponent<EmailTemplateTypesPagePropsInter
      */
     const handlePaginationChange = (event: MouseEvent<HTMLAnchorElement>, data: PaginationProps): void => {
         const offsetValue = (data.activePage as number - 1) * listItemLimit;
+
         setListOffset(offsetValue);
     };
 
@@ -273,6 +274,7 @@ const EmailTemplateTypesPage: FunctionComponent<EmailTemplateTypesPagePropsInter
             }
             isLoading={ isTemplateTypesFetchRequestLoading }
             title={ t("console:manage.pages.emailTemplateTypes.title") }
+            pageTitle={ t("console:manage.pages.emailTemplateTypes.title") }
             description={ t("console:manage.pages.emailTemplateTypes.subTitle") }
             data-testid={ `${ testId }-page-layout` }
         >

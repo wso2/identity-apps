@@ -44,17 +44,27 @@ export class RouteUtils {
      * @param {T} featureConfig - Feature config.
      * @param {string} allowedScopes - Set of allowed scopes.
      * @param {boolean} checkForUIResourceScopes - Sets if UI Resource Scopes should be considered for filtering.
+     * @param {string[]} hiddenRoutes - Routes to be hidden.
+     * @param {string[]} allowedRoutes - Routes to be shown.
+     * @param {(route: RouteInterface) => void} - Custom logic to perform on route object.
      *
      * @return {RouteInterface[]} Filtered routes.
      */
     public static filterEnabledRoutes<T>(routes: RouteInterface[],
-                                         featureConfig: T,
-                                         allowedScopes: string,
-                                         checkForUIResourceScopes?: boolean): RouteInterface[] {
+        featureConfig: T,
+        allowedScopes: string,
+        checkForUIResourceScopes?: boolean,
+        hiddenRoutes?: string[],
+        allowedRoutes?: string[],
+        customLogic?: (route: RouteInterface) => void): [ RouteInterface[], RouteInterface[] ] {
+
+        const filteredRoutes: RouteInterface[] = [];
+        const sanitizedRoutes: RouteInterface[] = [];
 
         // Filters features based on scope requirements.
-        const filter = (routeArr: RouteInterface[] | ChildRouteInterface[], allowedScopes: string) => {
-            return routeArr.filter((route: RouteInterface | ChildRouteInterface) => {
+        // `allow` enables child routes of allowed routes to be added to the `filteredRoutes` array.
+        const filter = (routeArr: RouteInterface[] | ChildRouteInterface[], allowedScopes: string, allow?: boolean) => {
+            routeArr.forEach((route: RouteInterface | ChildRouteInterface) => {
                 let feature: FeatureAccessConfigInterface = null;
 
                 for (const [ key, value ] of Object.entries(featureConfig)) {
@@ -65,42 +75,57 @@ export class RouteUtils {
                     }
                 }
 
-                const handleRouteEnabled = (): boolean => {
+                const handleRouteEnabled = () => {
+                    const isRouteAllowed: boolean = (!allowedRoutes || allowedRoutes.includes(route.id));
+
                     if (route.children) {
-                        route.children = filter(route.children, allowedScopes);
+                        filter(route.children, allowedScopes, isRouteAllowed);
                     }
 
-                    return true;
+                    if (!hiddenRoutes?.includes(route.id) && (isRouteAllowed || allow)) {
+                        filteredRoutes.push(route);
+
+                        if (route.showOnSidePanel) {
+                            const sanitizedRoute = { ...route };
+
+                            sanitizedRoute.children = [];
+                            sanitizedRoutes.push(sanitizedRoute);
+                        }
+                    }
                 };
 
+                customLogic && customLogic(route);
+
                 if (!feature) {
-                    return handleRouteEnabled();
+                    handleRouteEnabled();
                 }
 
                 if (!feature?.enabled) {
-                    return false;
+                    return;
                 }
 
                 if (
                     checkForUIResourceScopes &&
                     !(
-                        hasRequiredScopes(feature, feature?.scopes?.feature, allowedScopes) ||
-                        hasRequiredScopes(feature, [ AppConstants.FULL_UI_SCOPE ], allowedScopes)
+                        hasRequiredScopes(feature, [ AppConstants.FULL_UI_SCOPE ], allowedScopes) ||
+                        hasRequiredScopes(feature, feature?.scopes?.feature, allowedScopes)
                     )
                 ) {
-                    return false;
+                    return;
                 }
 
                 // Ideally, the read scope should be available if the UI resource scope is available.
                 if (hasRequiredScopes(feature, feature?.scopes?.read, allowedScopes)) {
-                    return handleRouteEnabled();
+                    handleRouteEnabled();
                 }
 
-                return false;
+                return;
             });
         };
 
-        return filter(routes, allowedScopes);
+        filter(routes, allowedScopes);
+
+        return [ filteredRoutes, sanitizedRoutes ];
     }
 
     /**
@@ -179,37 +204,25 @@ export class RouteUtils {
      * @return {RouteInterface | ChildRouteInterface} Initially active route.
      */
     public static getInitialActiveRoute(pathname: string,
-                                        routes: RouteInterface[]): RouteInterface | ChildRouteInterface {
+        routes: RouteInterface[]): RouteInterface | ChildRouteInterface {
 
-        let found = false;
         let activeRoute: RouteInterface | ChildRouteInterface = null;
 
-        const recurse = (routesArr: RouteInterface[] | ChildRouteInterface[]): void => {
-            for (const route of routesArr) {
-                // Terminate the evaluation if the route is
-                // not supposed to be displayed on the side panel.
-                if (!route.showOnSidePanel) {
-                    continue;
-                }
-
-                activeRoute = route;
-
-                if (this.isActiveRoute(pathname, route)) {
-                    found = true;
-                    break;
-                } else {
-                    if (route.children && route.children.length && route.children.length > 0) {
-                        recurse(route.children);
-                        if (found) {
-                            break;
-                        }
-                    }
-                }
-                activeRoute = null;
+        for (const route of routes) {
+            // Terminate the evaluation if the route is
+            // not supposed to be displayed on the side panel.
+            if (!route.showOnSidePanel) {
+                continue;
             }
-        };
 
-        recurse(routes);
+            activeRoute = route;
+
+            if (this.isActiveRoute(pathname, route)) {
+                break;
+            }
+            activeRoute = null;
+        }
+
 
         return activeRoute;
     }

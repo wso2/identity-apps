@@ -21,6 +21,7 @@ import React, { FunctionComponent, ReactElement } from "react";
 import { identityProviderConfig } from "../../../../../extensions/configs/identity-provider";
 import { IdentityProviderManagementConstants } from "../../../constants";
 import {
+    AuthenticatorSettingsFormModes,
     FederatedAuthenticatorListItemInterface,
     FederatedAuthenticatorMetaInterface,
     FederatedAuthenticatorWithMetaInterface
@@ -39,6 +40,12 @@ import { SamlAuthenticatorSettingsForm } from "../authenticators/saml-authentica
  * Proptypes for the authenticator form factory component.
  */
 interface AuthenticatorFormFactoryInterface extends TestableComponentInterface {
+    /**
+     * The intended mode of the authenticator form.
+     * If the mode is "EDIT", the form will be used in the edit view and will rely on metadata for readonly states, etc.
+     * If the mode is "CREATE", the form will be used in the add wizards and will all the fields will be editable.
+     */
+    mode: AuthenticatorSettingsFormModes;
     metadata?: FederatedAuthenticatorMetaInterface;
     initialValues: FederatedAuthenticatorListItemInterface;
     onSubmit: (values: FederatedAuthenticatorListItemInterface) => void;
@@ -77,6 +84,7 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
     const {
         authenticator,
         metadata,
+        mode,
         initialValues,
         onSubmit,
         type,
@@ -114,6 +122,7 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
         case IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID:
             return (
                 <GoogleAuthenticatorForm
+                    mode={ mode }
                     initialValues={ initialValues }
                     metadata={ metadata }
                     onSubmit={ onSubmit }
@@ -128,6 +137,7 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
         case IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_ID:
             return (
                 <FacebookAuthenticatorForm
+                    mode={ mode }
                     initialValues={ initialValues }
                     metadata={ metadata }
                     onSubmit={ onSubmit }
@@ -142,6 +152,7 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
         case IdentityProviderManagementConstants.GITHUB_AUTHENTICATOR_ID:
             return (
                 <GithubAuthenticatorForm
+                    mode={ mode }
                     initialValues={ initialValues }
                     metadata={ metadata }
                     onSubmit={ onSubmit }
@@ -156,6 +167,7 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
         case IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID:
             return (
                 <EmailOTPAuthenticatorForm
+                    mode={ mode }
                     initialValues={ initialValues }
                     metadata={ metadata }
                     onSubmit={ onSubmit }
@@ -183,6 +195,7 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
         case IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID:
             return (
                 <SamlAuthenticatorSettingsForm
+                    mode={ mode }
                     onSubmit={ onSubmit }
                     authenticator={ authenticator }
                     readOnly={ isReadOnly }
@@ -192,6 +205,7 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
         default:
             return (
                 <CommonAuthenticatorForm
+                    mode={ mode }
                     initialValues={ initialValues }
                     metadata={ metadata }
                     onSubmit={ onSubmit }

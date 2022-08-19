@@ -65,6 +65,8 @@ export class AuthenticatorMeta {
                 "Enterprise SAML connections.",
             [ IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID ]: "Two-factor authentication using " +
                 "one-time passcode sent via email.",
+            [ IdentityProviderManagementConstants.LEGACY_EMAIL_OTP_AUTHENTICATOR_ID ]: "Two-factor authentication " +
+                "using one-time passcode sent via email.",
             [ IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID ]: "Two-factor authentication using " +
                 "SMS one-time passcode.",
             [ IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID ]: "Email users a magic link to " +

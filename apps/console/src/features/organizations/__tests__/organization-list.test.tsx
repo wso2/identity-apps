@@ -35,6 +35,7 @@ const organizationListProps: OrganizationListPropsInterface = {
     onListItemClick: onListItemClickMock,
     onOrganizationDelete: onOrganizationDeleteMock,
     onSearchQueryClear: clearSearchQueryMock,
+    parentOrganization: undefined,
     searchQuery: ""
 };
 
