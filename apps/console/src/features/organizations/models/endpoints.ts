@@ -19,4 +19,5 @@
 export interface OrganizationResourceEndpointsInterface {
     organizations: string;
     rootOrganization: string;
+    usersSuperOrganization: string;
 }

@@ -19,8 +19,10 @@
 import { AsgardeoSPAClient, HttpError, HttpRequestConfig, HttpResponse } from "@asgardeo/auth-react";
 import { HttpMethods } from "@wso2is/core/src/models";
 import { store } from "../../core";
+import useRequest, { RequestResultInterface } from "../../core/hooks/use-request";
 import {
     AddOrganizationInterface,
+    OrganizationInterface,
     OrganizationListInterface,
     OrganizationPatchData,
     OrganizationResponseInterface,
@@ -68,8 +70,8 @@ export const getOrganizations = (
             limit,
             recursive
         },
-        url: `${ isRoot 
-            ? store.getState().config.endpoints.rootOrganization 
+        url: `${ isRoot
+            ? store.getState().config.endpoints.rootOrganization
             : store.getState().config.endpoints.organizations }/organizations`
     };
 
@@ -295,7 +297,7 @@ export const stopSharingApplication = (
     currentOrganizationId: string,
     applicationId: string,
     sharedOrganizationId: string
-) => {
+): Promise<any> => {
     const requestConfig = {
         headers: {
             "Accept": "application/json",
@@ -347,4 +349,22 @@ export const getSharedOrganizations = (
         }).catch((error) => {
             return Promise.reject(error);
         });
+};
+
+/**
+ * Gets the super organization id of the current user.
+ *
+ * @returns {Promise<string>} The super organization id of teh user.
+ */
+export const useGetUserSuperOrganization = (): RequestResultInterface<OrganizationInterface, Error> => {
+    const requestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: store.getState().config.endpoints.usersSuperOrganization
+    };
+
+    return useRequest<OrganizationInterface, Error>(requestConfig);
 };

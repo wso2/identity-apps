@@ -575,7 +575,7 @@ export const console: ConsoleNS = {
                             }
                         }
                     },
-                    placeholder: "Chercher par nom d'application"
+                    placeholder: "Chercher par nom d'application ou clientId"
                 },
                 confirmations: {
                     addSocialLogin: {
@@ -1214,7 +1214,7 @@ export const console: ConsoleNS = {
                                             usernameless: {
                                                 description: "Permettre aux utilisateurs de se connecter à " +
                                                     "l'aidAjouter une connexion sans nom d'utilisateuré " +
-                                                    "FIDO2 ou de la biométrie.",
+                                                    "FIDO2, de la biométrie ou de clés d'accès.",
                                                 heading: "Ajouter une clé de sécurité/connexion biométrique",
                                                 info: "Pour vous connecter avec une authentification sans mot " +
                                                     "de passe, vos utilisateurs doivent avoir leurs clés de " +

@@ -43,7 +43,7 @@ import {
     getSidePanelIcons,
     history
 } from "../../../core";
-import { getOrganizations } from "../../api";
+import { getOrganizations, useGetUserSuperOrganization } from "../../api";
 import { OrganizationManagementConstants } from "../../constants";
 import {
     OrganizationInterface,
@@ -79,6 +79,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
     const [ beforeCursor, setBeforeCursor ] = useState<string>();
     const [ isDropDownOpen, setIsDropDownOpen ] = useState<boolean>(false);
     const [ search, setSearch ] = useState<string>("");
+    const { data } = useGetUserSuperOrganization();
 
     /**
      * Show the organization switching dropdown only if
@@ -104,26 +105,41 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
         feature.organizations
     ]);
 
-    const getOrganizationList = useCallback((filter: string, after: string, before: string) => {
+    const getOrganizationList = useCallback(async (filter: string, after: string, before: string) => {
+        let superOrg: OrganizationInterface;
         const filterStrWithDisableFilter = `status eq ACTIVE and ${filter}`;
+
+        try {
+            const superOrgId: string = data?.id;
+
+            if (currentOrganization.id !== superOrgId) {
+                superOrg = {
+                    id: superOrgId,
+                    name: data?.name,
+                    ref: "",
+                    status: "ACTIVE"
+                };
+            }
+        } catch(error) {
+            superOrg = { ...OrganizationManagementConstants.ROOT_ORGANIZATION };
+        }
 
         getOrganizations(filterStrWithDisableFilter, 5, after, before, false, false)
             .then((response: OrganizationListInterface) => {
                 if (!response || !response.organizations) {
-                    setAssociatedOrganizations([ OrganizationManagementConstants.ROOT_ORGANIZATION ]);
+                    superOrg && setAssociatedOrganizations([ superOrg ]);
                     setPaginationData(response.links);
                 } else {
-                    const organizations = [
-                        OrganizationManagementConstants.ROOT_ORGANIZATION,
-                        ...response?.organizations
-                    ];
+                    const organizations: OrganizationInterface[] = superOrg
+                        ? [ superOrg, ...response?.organizations ]
+                        : [ ...response?.organizations ];
 
                     setAssociatedOrganizations(organizations);
 
                     setPaginationData(response.links);
                 }
             }).catch((error) => {
-                setAssociatedOrganizations([ OrganizationManagementConstants.ROOT_ORGANIZATION ]);
+                superOrg && setAssociatedOrganizations([ superOrg ]);
 
                 if (error?.description) {
                     dispatch(
@@ -154,7 +170,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                     })
                 );
             });
-    }, []);
+    }, [ data ]);
 
     const setPaginationData = (links: OrganizationLinkInterface[]) => {
         setAfterCursor(undefined);

@@ -577,7 +577,7 @@ export const console: ConsoleNS = {
                             }
                         }
                     },
-                    placeholder: "Search by application name"
+                    placeholder: "Search by application name or clientId"
                 },
                 confirmations: {
                     addSocialLogin: {
@@ -1179,8 +1179,8 @@ export const console: ConsoleNS = {
                                                 heading: "Add TOTP as a second factor"
                                             },
                                             usernameless: {
-                                                description: "Enable users to log in using a FIDO2 security key "
-                                                    + "or biometrics.",
+                                                description: "Enable users to log in using a FIDO2 security key, "
+                                                    + "biometrics or passkeys.",
                                                 heading: "Add Security Key/Biometrics login",
                                                 info: "To sign in with passwordless login, your users "
                                                     + "should have their FIDO2 security keys or biometrics "
