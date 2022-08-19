@@ -7909,6 +7909,12 @@ export const console: ConsoleNS = {
                     },
                     back: "Back",
                     dangerZone: {
+                        disableOrganization: {
+                            disableActionTitle: "Disable Organization",
+                            enableActionTitle: "Enable Organization",
+                            subheader: "Disabling an organization can make you lose access to the " +
+                                "organization relates. Proceed with caution."
+                        },
                         subHeader: "Are you sure you want to delete this organization?",
                         title: "Delete Organization"
                     },
@@ -8028,6 +8034,36 @@ export const console: ConsoleNS = {
                     },
                     deleteOrganizationWithSubOrganizationError: "Organization {{ organizationName }} cannot be " +
                         "deleted since it has one or more sub organizations.",
+                    disableOrganization: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error while disabling the organization"
+                        },
+                        genericError: {
+                            description: "An error occurred while disabling the organization",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Successfully disabled the organization",
+                            message: "Organization disabled successfully"
+                        }
+                    },
+                    disableOrganizationWithSubOrganizationError: "Organization {{ organizationName }} cannot be " +
+                        "disabled since it has one or more sub organizations.",
+                    enableOrganization: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error while enabling the organization"
+                        },
+                        genericError: {
+                            description: "An error occurred while enabling the organization",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Successfully enabled the organization",
+                            message: "Organization enabled successfully"
+                        }
+                    },
                     fetchOrganization: {
                         error: {
                             description: "{{description}}",

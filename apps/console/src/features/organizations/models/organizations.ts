@@ -23,6 +23,7 @@ export interface OrganizationInterface {
     id: string;
     name: string;
     ref: string;
+    status: "ACTIVE" | "DISABLED"
 }
 
 export interface OrganizationLinkInterface {

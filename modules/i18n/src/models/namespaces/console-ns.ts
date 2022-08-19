@@ -2326,6 +2326,9 @@ export interface ConsoleNS {
                     fetchOrganization: Notification;
                     deleteOrganization: Notification;
                     deleteOrganizationWithSubOrganizationError: string;
+                    disableOrganization: Notification;
+                    disableOrganizationWithSubOrganizationError: string;
+                    enableOrganization: Notification;
                     updateOrganization: Notification;
                     updateOrganizationAttributes: Notification;
                     addOrganization: Notification;
@@ -2361,6 +2364,11 @@ export interface ConsoleNS {
                     dangerZone: {
                         title: string;
                         subHeader: string;
+                        disableOrganization: {
+                            enableActionTitle: string;
+                            disableActionTitle: string;
+                            subheader: string;
+                        }
                     },
                     attributes: {
                         hint: string;

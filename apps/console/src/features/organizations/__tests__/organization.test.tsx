@@ -48,6 +48,8 @@ describe("UTC-1.0 - [Organization Management Feature] - Organization Page", () =
             return Promise.resolve(getOrganizationsTwoMockResponse);
         } else if (filter === "parentId eq organization-three") {
             return Promise.resolve(getOrganizationsEmptyMockResponse);
+        } else if (filter === "parentId eq organization-seven") {
+            return Promise.resolve(getOrganizationsEmptyMockResponse);
         }
 
         return Promise.resolve(getOrganizationsPageOneMockResponse);
@@ -272,5 +274,23 @@ describe("UTC-1.0 - [Organization Management Feature] - Organization Page", () =
         fireEvent.click(await screen.findByTestId("organizations-list-layout-add-button"));
 
         expect(await screen.findByTestId("organization-create-wizard-modal")).toBeInTheDocument();
+    });
+
+    test("UTC-1.11 - Test if it is add organization button is disabled for disabled parent", async () => {
+        render(
+            <AccessControlProvider
+                allowedScopes={ ReduxStoreStateMock.auth.scope }
+                featureConfig={ ReduxStoreStateMock.config.ui }
+            >
+                <OrganizationsPage />
+            </AccessControlProvider>
+        );
+
+        // Navigate to Organization seven which is a disabled organization
+        fireEvent.click(await screen.findByText("Organization Seven"));
+
+        expect(await within(await screen.findByTestId("organization-list-empty-placeholder-action-container"))
+            .findByRole("button"))
+            .toHaveClass("disabled");
     });
 });
