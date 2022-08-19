@@ -116,58 +116,60 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                 superOrg = {
                     id: superOrgId,
                     name: data?.name,
-                    ref: ""
+                    ref: "",
+                    status: "ACTIVE"
                 };
             }
         } catch(error) {
             superOrg = { ...OrganizationManagementConstants.ROOT_ORGANIZATION };
         }
 
-        getOrganizations(filterStrWithDisableFilter, 5, after, before, false, false).then((response: OrganizationListInterface) => {
-            if (!response || !response.organizations) {
+        getOrganizations(filterStrWithDisableFilter, 5, after, before, false, false)
+            .then((response: OrganizationListInterface) => {
+                if (!response || !response.organizations) {
+                    superOrg && setAssociatedOrganizations([ superOrg ]);
+                    setPaginationData(response.links);
+                } else {
+                    const organizations: OrganizationInterface[] = superOrg
+                        ? [ superOrg, ...response?.organizations ]
+                        : [ ...response?.organizations ];
+
+                    setAssociatedOrganizations(organizations);
+
+                    setPaginationData(response.links);
+                }
+            }).catch((error) => {
                 superOrg && setAssociatedOrganizations([ superOrg ]);
-                setPaginationData(response.links);
-            } else {
-                const organizations: OrganizationInterface[] = superOrg
-                    ? [ superOrg, ...response?.organizations ]
-                    : [ ...response?.organizations ];
 
-                setAssociatedOrganizations(organizations);
+                if (error?.description) {
+                    dispatch(
+                        addAlert({
+                            description: error.description,
+                            level: AlertLevels.ERROR,
+                            message: t(
+                                "console:manage.features.organizations.notifications." +
+                                    "getOrganizationList.error.message"
+                            )
+                        })
+                    );
 
-                setPaginationData(response.links);
-            }
-        }).catch((error) => {
-            superOrg && setAssociatedOrganizations([ superOrg ]);
+                    return;
+                }
 
-            if (error?.description) {
                 dispatch(
                     addAlert({
-                        description: error.description,
+                        description: t(
+                            "console:manage.features.organizations.notifications.getOrganizationList" +
+                                ".genericError.description"
+                        ),
                         level: AlertLevels.ERROR,
                         message: t(
                             "console:manage.features.organizations.notifications." +
-                                    "getOrganizationList.error.message"
+                                "getOrganizationList.genericError.message"
                         )
                     })
                 );
-
-                return;
-            }
-
-            dispatch(
-                addAlert({
-                    description: t(
-                        "console:manage.features.organizations.notifications.getOrganizationList" +
-                                ".genericError.description"
-                    ),
-                    level: AlertLevels.ERROR,
-                    message: t(
-                        "console:manage.features.organizations.notifications." +
-                                "getOrganizationList.genericError.message"
-                    )
-                })
-            );
-        });
+            });
     }, [ data ]);
 
     const setPaginationData = (links: OrganizationLinkInterface[]) => {
