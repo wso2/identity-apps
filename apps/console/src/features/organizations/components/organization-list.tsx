@@ -283,6 +283,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                                 <Popup
                                     trigger={
                                         (<Icon
+                                            data-componentid={ `${ componentId }-org-status-icon` }
                                             className="mr-2 ml-0 vertical-aligned-baseline"
                                             size="small"
                                             name="circle"
