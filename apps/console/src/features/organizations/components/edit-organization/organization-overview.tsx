@@ -469,7 +469,12 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                             : "console:manage.features.organizations.edit.dangerZone.disableOrganization" +
                                     ".enableActionTitle")
                         }
-                        header={ t("common:dangerZone") }
+                        header={ t(organization.status === "ACTIVE"
+                            ? "console:manage.features.organizations.edit.dangerZone.disableOrganization" +
+                            ".disableActionTitle"
+                            : "console:manage.features.organizations.edit.dangerZone.disableOrganization" +
+                            ".enableActionTitle")
+                        }
                         subheader={ t("console:manage.features.organizations.edit.dangerZone" +
                                     ".disableOrganization.subheader") }
                         onActionClick={ undefined }
@@ -487,7 +492,8 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                                         ".dangerZone.title")
                                 }
                                 header={
-                                    t("common:dangerZone")
+                                    t("console:manage.features.organizations.edit" +
+                                        ".dangerZone.title")
                                 }
                                 subheader={
                                     t("console:manage.features.organizations.edit" +
