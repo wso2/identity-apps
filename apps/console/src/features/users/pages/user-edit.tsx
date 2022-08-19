@@ -29,6 +29,7 @@ import { EditAvatarModal, PageLayout, UserAvatar } from "@wso2is/react-component
 import React, { MouseEvent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Icon, Popup } from "semantic-ui-react";
 import { getProfileInformation } from "../../authentication/store";
 import { AppConstants, AppState, FeatureConfigInterface, SharedUserStoreUtils, history } from "../../core";
 import { OrganizationUtils } from "../../organizations/utils";
@@ -230,7 +231,48 @@ const UserEditPage = (): ReactElement => {
     return (
         <PageLayout
             isLoading={ isUserDetailsRequestLoading }
-            title={ resolveUserDisplayName(user, null, "Administrator") }
+            title={ 
+                <>
+                    {
+                        user?.active !== undefined
+                        ? (
+                            <>
+                                {
+                                    user?.active
+                                        ? <Popup
+                                            trigger={
+                                                <Icon
+                                                    className="mr-2 ml-0 vertical-aligned-baseline"
+                                                    size="small"
+                                                    name="circle"
+                                                    color="green"
+                                                />
+                                            }
+                                            content={ t("common:enabled") }
+                                            inverted
+                                        />
+                                        : <Popup
+                                            trigger={
+                                                <Icon
+                                                    className="mr-2 ml-0 vertical-aligned-baseline"
+                                                    size="small"
+                                                    name="circle"
+                                                    color="orange"
+                                                />
+                                            }
+                                            content={ t("common:disabled") }
+                                            inverted
+                                        />
+                                }
+                                <>{ resolveUserDisplayName(user, null, "Administrator") } </>
+                            </>
+                        )
+                        : (
+                           <>{ resolveUserDisplayName(user, null, "Administrator") } </>
+                        )
+                    }
+                </> 
+            }
             pageTitle="Edit User"
             description={ t("" + user.emails && user.emails !== undefined ? resolvePrimaryEmail(user?.emails) :
                 user.userName) }
