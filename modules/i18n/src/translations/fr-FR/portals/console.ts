@@ -2381,8 +2381,9 @@ export const console: ConsoleNS = {
                         predefined: "Utiliser prédéfini"
                     },
                     columns: {
-                        actions: "Actions",
-                        name: "Nom"
+                        actions: "",
+                        name: "Nom",
+                        templateId: "taper"
                     },
                     labels: {
                         fragment: "Fragmenter App"

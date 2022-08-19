@@ -2322,7 +2322,8 @@ export const console: ConsoleNS = {
                     },
                     columns: {
                         actions: "ක්‍රියා",
-                        name: "නම"
+                        name: "නම",
+                        templateId: "වර්ගය"
                     },
                     labels: {
                         fragment: "ඛණ්ඩක යෙදුම"
