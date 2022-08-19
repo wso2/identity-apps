@@ -613,6 +613,7 @@ export const myAccount: MyAccountNS = {
                         heading: "Leia este QR Code usando um aplicativo Authenticator",
                         messageBody: "Você pode encontrar uma lista de aplicativos autenticadores disponíveis aqui.",
                         messageHeading: "Não tem um aplicativo autenticador instalado?",
+                        regenerateConfirmLabel: "Confirme a regeneração de um novo código QR",
                         regenerateWarning: {
                             extended: "Quando você regenera um novo código QR, você deve digitalizá-lo e recriar o aplicativo Authenticator.Você não poderá mais fazer login com o código QR anterior.",
                             generic: "Quando você regenera um novo código QR, você deve digitalizá-lo e recriar o aplicativo Authenticator.Sua configuração anterior não funcionará mais."

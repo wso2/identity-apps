@@ -630,6 +630,7 @@ export const myAccount: MyAccountNS = {
                         messageBody: "Vous pouvez utiliser une application d'authentification compatible dans " +
                             "cette liste :",
                         messageHeading: "Vous n'avez pas d'application d'authentification ?",
+                        regenerateConfirmLabel: "Confirmez la régénération d'un nouveau code QR",
                         regenerateWarning: {
                             extended: "Lorsque vous régénérez un nouveau code QR, vous devez le scanner et réinstaller votre application Authenticatrice.Vous ne pourrez plus vous connecter avec le code QR précédent.",
                             generic: "Lorsque vous régénérez un nouveau code QR, vous devez le scanner et réinstaller votre application Authenticatrice.Votre configuration précédente ne fonctionnera plus."

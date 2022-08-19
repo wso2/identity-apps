@@ -375,6 +375,7 @@ export interface MyAccountNS {
                             extended: string;
                             generic: string;
                         };
+                        regenerateConfirmLabel: string;
                     };
                     verify: {
                         heading: string;

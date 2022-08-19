@@ -19,7 +19,7 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { GenericIcon } from "@wso2is/react-components";
 import QRCode from "qrcode.react";
-import React, { PropsWithChildren, SyntheticEvent, useEffect, useRef, useState } from "react";
+import React, { FormEvent, PropsWithChildren, SyntheticEvent, useEffect, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import {
@@ -688,7 +688,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     /**
      * Handle confirm QR code regeneration checkbox event
      */
-    const handleConfirmRegenerateQRCode = (_: React.FormEvent<HTMLInputElement>, data: CheckboxProps): void => {
+    const handleConfirmRegenerateQRCode = (_: FormEvent<HTMLInputElement>, data: CheckboxProps): void => {
         setIsConfirmRegenerate(data.checked ?? false);
     };
 
@@ -746,7 +746,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                                     ? (
                                         <Checkbox
                                             className="mb-2"
-                                            label={ "Confirm regenerating a new QR code" }
+                                            label={ t(translateKey + "modals.scan.regenerateConfirmLabel") }
                                             checked={ isConfirmRegenerate }
                                             onChange={ handleConfirmRegenerateQRCode }
                                             data-componentid={ `${ testId }-regenerate-assertion-checkbox` }
