@@ -146,7 +146,7 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                         eventPublisher.publish("application-begin-sign-in-totp-mfa", {
                                             "client-id": clientId
                                         });
-                                        onLoginFlowSelect(LoginFlowTypes.SECOND_FACTOR_TOTP)
+                                        onLoginFlowSelect(LoginFlowTypes.SECOND_FACTOR_TOTP);
                                     }}
                                 />
                             )}
@@ -168,7 +168,7 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                         eventPublisher.publish("application-begin-sign-in-sms-otp-mfa", {
                                             "client-id": clientId
                                         });
-                                        onLoginFlowSelect(LoginFlowTypes.SECOND_FACTOR_SMS_OTP)
+                                        onLoginFlowSelect(LoginFlowTypes.SECOND_FACTOR_SMS_OTP);
                                     }}
                                 />
                             )}
@@ -233,7 +233,7 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                             eventPublisher.publish("application-begin-sign-in-magiclink-password-less", {
                                                 "client-id": clientId
                                             });
-                                            onLoginFlowSelect(LoginFlowTypes.MAGIC_LINK)
+                                            onLoginFlowSelect(LoginFlowTypes.MAGIC_LINK);
                                         }}
                                     />
                                 )}
@@ -267,7 +267,7 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                                 eventPublisher.publish("application-begin-sign-in-google-social-login", {
                                                     type: clientId
                                                 });
-                                                onLoginFlowSelect(LoginFlowTypes.GOOGLE_LOGIN)
+                                                onLoginFlowSelect(LoginFlowTypes.GOOGLE_LOGIN);
                                             }}
                                         />
                                     )}
