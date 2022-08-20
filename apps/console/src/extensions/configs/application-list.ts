@@ -10,5 +10,5 @@
 import { ApplicationListConfig } from "./models/application-list";
 
 export const applicationListConfig: ApplicationListConfig = {
-    enableTableHeaders: true
+    enableTableHeaders: false
 };
