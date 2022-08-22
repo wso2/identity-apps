@@ -7797,7 +7797,7 @@ export const console: ConsoleNS = {
                             message: "Something went wrong"
                         },
                         success: {
-                            description: "Successfully updated the OIDC scope.",
+                            description: "Successfully updated the OIDC scope {{ scope }}.",
                             message: "Update successful"
                         }
                     }

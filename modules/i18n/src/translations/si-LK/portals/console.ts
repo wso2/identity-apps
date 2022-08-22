@@ -6316,7 +6316,7 @@ export const console: ConsoleNS = {
                             message: "යාවත්කාලීන දෝෂයකි"
                         },
                         genericError: {
-                            description: "OIDC විෂය පථය යාවත්කාලීන කිරීමේදී දෝෂයක් ඇතිවිය.",
+                            description: "{{ scope }} OIDC විෂය පථය යාවත්කාලීන කිරීමේදී දෝෂයක් ඇතිවිය.",
                             message: "යම් දෝෂයක් ඇති වී ඇත"
                         },
                         success: {

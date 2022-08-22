@@ -153,7 +153,10 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
                 dispatch(
                     addAlert({
                         description: t(
-                            "console:manage.features.oidcScopes.notifications.updateOIDCScope.success" + ".description"
+                            "console:manage.features.oidcScopes.notifications.updateOIDCScope.success"
+                            + ".description", {
+                                scope: scope.name
+                            }
                         ),
                         level: AlertLevels.SUCCESS,
                         message: t(
@@ -205,6 +208,7 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
                 setAvailableExternalClaims={ () => null }
                 setInitialSelectedExternalClaims={ (response: ExternalClaim[]) => {
                     const claimURIs: string[] = response?.map((claim: ExternalClaim) => claim.claimURI);
+
                     updateOIDCScope(claimURIs);
                 } }
                 setSelectedExternalClaims={ () => null }
@@ -291,7 +295,7 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
                 subtitle={ [ t("console:manage.features.oidcScopes.editScope." +
                     "claimList.emptyPlaceholder.subtitles.0") ] }
                 action={
-                    <Show when={ AccessControlConstants.SCOPE_WRITE }>
+                    (<Show when={ AccessControlConstants.SCOPE_WRITE }>
                         <PrimaryButton
                             data-testid="user-mgt-roles-list-add-button"
                             size="medium"
@@ -304,7 +308,7 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
                             <Icon name="add" />
                             { t("console:manage.features.oidcScopes.editScope.claimList.addClaim") }
                         </PrimaryButton>
-                    </Show>
+                    </Show>)
                 }
                 image={ getEmptyPlaceholderIllustrations().newList }
                 imageSize="tiny"
@@ -318,9 +322,9 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
                     t("console:manage.features.oidcScopes.editScope.claimList.emptySearch.subtitles.1")
                 ] }
                 action={
-                    <LinkButton onClick={ clearSearchedAttributes }>
+                    (<LinkButton onClick={ clearSearchedAttributes }>
                         { t("console:manage.features.oidcScopes.editScope.claimList.emptySearch.action") }
-                    </LinkButton>
+                    </LinkButton>)
                 }
                 image={ getEmptyPlaceholderIllustrations().emptySearch }
                 imageSize="tiny"

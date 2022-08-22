@@ -6447,7 +6447,7 @@ export const console: ConsoleNS = {
                             message: "Erreur de mise à jour"
                         },
                         genericError: {
-                            description: "Une erreur s'est produite lors de la mise à jour du scope OIDC.",
+                            description: "Une erreur s'est produite lors de la mise à jour du scope OIDC {{ scope }}.",
                             message: "Quelque chose s'est mal passé"
                         },
                         success: {
