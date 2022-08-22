@@ -3252,6 +3252,11 @@ export const console: ConsoleNS = {
                                     required: "Client secret is a required field."
                                 }
                             },
+                            enableGoogleOneTap: {
+                                hint: "Enabling Google One Tap as a sign in option",
+                                label: "Google One Tap",
+                                placeholder: "Google one tap as a sign in option"
+                            },
                             scopes: {
                                 heading: "Scopes",
                                 hint: "The type of access provided for the connected apps to access data " +

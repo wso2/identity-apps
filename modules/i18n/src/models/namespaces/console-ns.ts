@@ -1306,6 +1306,7 @@ export interface ConsoleNS {
                             callbackUrl: FormAttributes;
                             clientId: FormAttributes;
                             clientSecret: FormAttributes;
+                            enableGoogleOneTap: FormAttributes;
                             AdditionalQueryParameters: FormAttributes;
                             scopes: {
                                 heading: string;
