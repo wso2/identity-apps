@@ -1010,15 +1010,18 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                         text: "Select your country" as string,
                         value: "" as string
                     } ].concat(
-                        countryList ? countryList.map(list => {
-                            return {
-                                "data-testid": `${ testId }-profile-form-country-dropdown-` +  list.value as string,
-                                flag: list.flag,
-                                key: list.key as string,
-                                text: list.text as string,
-                                value: list.value as string
-                            };
-                        }) : [] ) }
+                        countryList 
+                            ? countryList.map(list => {
+                                return {
+                                    "data-testid": `${ testId }-profile-form-country-dropdown-` +  list.value as string,
+                                    flag: list.flag,
+                                    key: list.key as string,
+                                    text: list.text as string,
+                                    value: list.value as string
+                                };
+                            }) 
+                            : [] 
+                     ) }
                     key={ key }
                     disabled={ false }
                     readOnly={ isReadOnly || schema.mutability === ProfileConstants.READONLY_SCHEMA }
