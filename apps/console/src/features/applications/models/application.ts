@@ -36,6 +36,7 @@ export interface ApplicationBasicInterface {
     accessUrl?: string;
     templateId?: string;
     isManagementApp?: boolean;
+    advancedConfigurations?: AdvancedConfigurationsInterface;
 }
 
 export enum ApplicationAccessTypes {
@@ -207,6 +208,15 @@ export interface AdvancedConfigurationsInterface {
     returnAuthenticatedIdpList?: boolean;
     enableAuthorization?: boolean;
     fragment?: boolean;
+    additionalSpProperties?: additionalSpProperty[]
+}
+/**
+ * Interface for the additional sp properties.
+ */
+export interface additionalSpProperty {
+    name: string;
+    value: string;
+    displayName?: string;
 }
 
 export enum AuthenticationSequenceType {

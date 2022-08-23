@@ -133,11 +133,12 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
                 if (!shallowUpdate) {
                     setApprovals(response);
                     setTempApprovals(response);
+
                     return;
                 }
 
-                const approvalsFromState = [...approvals];
-                const approvalsFromResponse = [...response];
+                const approvalsFromState = [ ...approvals ];
+                const approvalsFromResponse = [ ...response ];
                 const filteredApprovals = [];
 
                 // Compare the approvals list in the state with the new response
@@ -195,7 +196,7 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
      * @return {ApprovalTaskListItemInterface[]} Paginated list.
      */
     const paginate = (list: ApprovalTaskListItemInterface[], limit: number,
-                      offset: number): ApprovalTaskListItemInterface[] => {
+        offset: number): ApprovalTaskListItemInterface[] => {
 
         return list?.slice(offset, offset + limit);
     };
@@ -312,9 +313,11 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
      */
     const searchApprovalList = (event) => {
         const changeValue = event.target.value;
+
         if (changeValue.length > 0) {
             const searchResult = approvals.filter((item) =>
                 item.name.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1);
+
             setTempApprovals(searchResult);
 
             if (searchResult.length === 0) {
@@ -328,6 +331,7 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
     return (
         <PageLayout
             title={ t("console:manage.pages.approvalsPage.title") }
+            pageTitle={ t("console:manage.pages.approvalsPage.title") }
             description={ t("console:manage.pages.approvalsPage.subTitle") }
             data-testid={ `${ testId }-page-layout` }
         >
@@ -342,16 +346,16 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
                 totalListSize={ approvals.length }
                 data-testid={ `${ testId }-list-layout` }
                 rightActionPanel={
-                    <Dropdown
+                    (<Dropdown
                         data-testid={ `${ testId }-status-filter-dropdown` }
                         selection
                         options={ APPROVAL_OPTIONS && APPROVAL_OPTIONS }
                         onChange={ handleFilterStatusChange }
                         defaultValue={ ApprovalStatus.ALL }
-                    />
+                    />)
                 }
                 leftActionPanel={
-                    <div className="advanced-search-wrapper aligned-left fill-default">
+                    (<div className="advanced-search-wrapper aligned-left fill-default">
                         <Input
                             className="advanced-search with-add-on"
                             data-testid={ `${ testId }-list-search-input` }
@@ -362,7 +366,7 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
                             floated="right"
                             size="small"
                         />
-                    </div>
+                    </div>)
                 }
             >
                 <ApprovalsList

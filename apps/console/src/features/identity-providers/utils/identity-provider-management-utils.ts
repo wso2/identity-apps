@@ -128,6 +128,7 @@ export class IdentityProviderManagementUtils {
 
             const getIdPs = ():Promise<IdentityProviderListResponseInterface> => {
                 const attrs = "federatedAuthenticators,provisioning";
+
                 return getIdentityProviderList(limit, offset, "isEnabled eq \"true\"", attrs)
                     .then((response) => {
                         if (!isEmpty(idp)) {
@@ -145,6 +146,7 @@ export class IdentityProviderManagementUtils {
                         // If there is a links section and that has a link to the next set of results, fetch again..
                         if (!isEmpty(response.links) && response.links[0].rel && response.links[0].rel === "next") {
                             offset = offset + limit;
+
                             return getIdPs();
                         } else {
                             return Promise.resolve(idp);
@@ -178,7 +180,7 @@ export class IdentityProviderManagementUtils {
 
         return axios.all(getPromises())
             .then(axios.spread((local: LocalAuthenticatorInterface[],
-                                          federated: IdentityProviderListResponseInterface) => {
+                federated: IdentityProviderListResponseInterface) => {
 
                 const localAuthenticators: GenericAuthenticatorInterface[] = [];
 
@@ -205,8 +207,7 @@ export class IdentityProviderManagementUtils {
                             name: authenticator.name
                         },
                         description: AuthenticatorMeta.getAuthenticatorDescription(authenticator.id),
-                        displayName: AuthenticatorMeta.getAuthenticatorDisplayName(authenticator.id)
-                            ?? authenticator.displayName,
+                        displayName: authenticator.displayName,
                         id: authenticator.id,
                         idp: IdentityProviderManagementConstants.LOCAL_IDP_IDENTIFIER,
                         image: AuthenticatorMeta.getAuthenticatorIcon(authenticator.id),
@@ -306,7 +307,7 @@ export class IdentityProviderManagementUtils {
      */
     public static getAuthenticatorLabels(authenticator: GenericAuthenticatorInterface): string[] {
 
-        return AuthenticatorMeta.getAuthenticatorLabels(authenticator.defaultAuthenticator.authenticatorId)
+        return AuthenticatorMeta.getAuthenticatorLabels(authenticator?.defaultAuthenticator?.authenticatorId)
             ? AuthenticatorMeta.getAuthenticatorLabels(authenticator.defaultAuthenticator.authenticatorId)
             : [];
     }

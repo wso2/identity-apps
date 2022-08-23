@@ -71,6 +71,15 @@
         <param-value>https://localhost:9443/dashboard/index.jag</param-value>
     </context-param-->
 
+    <!-- *************** Layout Store URL Configuration ********************** -->
+    {% if webappscommon.layout_store_url is defined %}
+    <context-param>
+        <param-name>LayoutStoreURL</param-name>
+        <param-value>{{ webappscommon.layout_store_url }}</param-value>
+    </context-param>
+    {% endif %}
+    <!-- *************** End of Layout Store URL Configuration ********************** -->
+
     <listener>
         <listener-class>org.wso2.carbon.identity.mgt.endpoint.util.listener.IdentityManagementEndpointContextListener</listener-class>
     </listener>

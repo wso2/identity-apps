@@ -18,6 +18,7 @@ package org.wso2.identity.apps.common.internal;
 
 import org.wso2.carbon.identity.application.mgt.ApplicationManagementService;
 import org.wso2.carbon.identity.oauth.OAuthAdminServiceImpl;
+import org.wso2.carbon.identity.organization.management.service.OrganizationManagementInitialize;
 import org.wso2.carbon.registry.core.service.RegistryService;
 
 import java.util.HashSet;
@@ -39,6 +40,8 @@ public class AppsCommonDataHolder {
     private Set<String> systemAppConsumerKeys = new HashSet<>();
 
     private Set<String> systemApplications = new HashSet<>();
+
+    private boolean isOrganizationManagementEnable;
 
     private AppsCommonDataHolder() {
 
@@ -110,6 +113,29 @@ public class AppsCommonDataHolder {
 
         if (systemApplications != null && !systemApplications.isEmpty()) {
             this.systemApplications.addAll(systemApplications);
+        }
+    }
+
+    /**
+     * Get is organization management enabled.
+     *
+     * @return True if organization management is enabled.
+     */
+    public boolean isOrganizationManagementEnabled() {
+
+        return isOrganizationManagementEnable;
+    }
+
+    /**
+     * Set organization management enable/disable state.
+     *
+     * @param organizationManagementInitializeService OrganizationManagementInitializeInstance.
+     */
+    public void setOrganizationManagementEnable(
+            OrganizationManagementInitialize organizationManagementInitializeService) {
+
+        if (organizationManagementInitializeService != null) {
+            isOrganizationManagementEnable = organizationManagementInitializeService.isOrganizationManagementEnabled();
         }
     }
 }

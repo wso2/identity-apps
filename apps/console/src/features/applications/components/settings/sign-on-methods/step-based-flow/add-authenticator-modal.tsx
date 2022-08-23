@@ -314,16 +314,14 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                 return isFiltersMatched(authenticator);
             }
 
-            const name: string = (AuthenticatorMeta.getAuthenticatorDisplayName(
-                authenticator.defaultAuthenticator.authenticatorId)
-                || authenticator.displayName).toLocaleLowerCase();
+            const name: string = authenticator?.displayName?.toLocaleLowerCase();
 
             if (name.includes(query)
                 || IdentityProviderManagementUtils.getAuthenticatorLabels(authenticator)
-                    .some((tag) => tag.toLocaleLowerCase().includes(query)
-                        || startCase(tag).toLocaleLowerCase().includes(query))
-                || authenticator.category.toLocaleLowerCase().includes(query)
-                || authenticator.categoryDisplayName.toLocaleLowerCase().includes(query)) {
+                    .some((tag) => tag?.toLocaleLowerCase()?.includes(query)
+                        || startCase(tag)?.toLocaleLowerCase()?.includes(query))
+                || authenticator.category?.toLocaleLowerCase()?.includes(query)
+                || authenticator.categoryDisplayName?.toLocaleLowerCase()?.includes(query)) {
 
                 return isFiltersMatched(authenticator);
             }

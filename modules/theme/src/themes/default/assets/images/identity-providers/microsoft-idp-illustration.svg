@@ -18,6 +18,7 @@
  * under the License.
 -->
 
+<!-- TODO: Rename this to microsoft.svg whenever a major refactroring takes place since the static link is used in already added IdPs. -->
 <svg version="1.1" id="microsoft-logo" class="icon" width="14" height="14" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 23 23">
     <path fill="#f3f3f3" d="M0 0h23v23H0z" />
     <path fill="#f35325" d="M1 1h10v10H1z" />

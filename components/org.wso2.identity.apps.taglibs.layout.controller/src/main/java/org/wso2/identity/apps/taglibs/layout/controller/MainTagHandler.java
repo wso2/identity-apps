@@ -18,10 +18,11 @@
 
 package org.wso2.identity.apps.taglibs.layout.controller;
 
-import org.wso2.identity.apps.taglibs.layout.controller.core.LocalTemplateEngineWithCache;
+import org.wso2.identity.apps.taglibs.layout.controller.core.LocalTemplateEngine;
 
 import java.io.PrintWriter;
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.jsp.JspException;
@@ -33,11 +34,11 @@ import javax.servlet.jsp.tagext.TagSupport;
 public class MainTagHandler extends TagSupport {
 
     private static final long serialVersionUID = -7314788638114472678L;
-    private String layoutName;
-    private String layoutFileRelativePath;
+    private String layoutName = "";
+    private String layoutFileRelativePath = "";
     private Map<String, Object> data = new HashMap<>();
-    private boolean cache = true;
-    private LocalTemplateEngineWithCache engine = null;
+    private boolean compile = false;
+    private LocalTemplateEngine engine = null;
 
     /**
      * Set the name of the layout.
@@ -70,13 +71,13 @@ public class MainTagHandler extends TagSupport {
     }
 
     /**
-     * Set the cache.
+     * Set whether to compile the layout or not.
      *
-     * @param cache Whether the cache is enabled or not.
+     * @param compile Whether the compilation is enabled or not.
      */
-    public void setCache(boolean cache) {
+    public void setCompile(boolean compile) {
 
-        this.cache = cache;
+        this.compile = compile;
     }
 
     /**
@@ -87,10 +88,20 @@ public class MainTagHandler extends TagSupport {
      */
     public int doStartTag() throws JspException {
 
-        engine = new LocalTemplateEngineWithCache();
+        engine = new LocalTemplateEngine();
         try {
-            engine.execute(layoutName, pageContext.getServletContext().getResource(layoutFileRelativePath), data,
-                    new PrintWriter(pageContext.getOut()), cache);
+            if (compile) {
+                String rawLayoutFilePath = layoutFileRelativePath.replaceFirst(".ser", ".html");
+                engine.execute(layoutName,
+                        layoutFileRelativePath.startsWith("http") ? new URL(rawLayoutFilePath) :
+                                pageContext.getServletContext().getResource(rawLayoutFilePath), data,
+                        new PrintWriter(pageContext.getOut()));
+            } else {
+                engine.executeWithoutCompile(layoutName,
+                        layoutFileRelativePath.startsWith("http") ? new URL(layoutFileRelativePath) :
+                                pageContext.getServletContext().getResource(layoutFileRelativePath), data,
+                        new PrintWriter(pageContext.getOut()));
+            }
         } catch (MalformedURLException e) {
             throw new JspException("Can't create a URL to the given relative path", e);
         }
@@ -111,8 +122,18 @@ public class MainTagHandler extends TagSupport {
     public int doAfterBody() throws JspException {
 
         try {
-            engine.execute(layoutName, pageContext.getServletContext().getResource(layoutFileRelativePath), data,
-                    new PrintWriter(pageContext.getOut()), cache);
+            if (compile) {
+                String rawLayoutFilePath = layoutFileRelativePath.replaceFirst(".ser", ".html");
+                engine.execute(layoutName,
+                        layoutFileRelativePath.startsWith("http") ? new URL(rawLayoutFilePath) :
+                                pageContext.getServletContext().getResource(rawLayoutFilePath), data,
+                        new PrintWriter(pageContext.getOut()));
+            } else {
+                engine.executeWithoutCompile(layoutName,
+                        layoutFileRelativePath.startsWith("http") ? new URL(layoutFileRelativePath) :
+                                pageContext.getServletContext().getResource(layoutFileRelativePath), data,
+                        new PrintWriter(pageContext.getOut()));
+            }
         } catch (MalformedURLException e) {
             throw new JspException("Can't create a URL to the given relative path", e);
         }

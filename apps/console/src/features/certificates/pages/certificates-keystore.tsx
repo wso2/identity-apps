@@ -241,12 +241,13 @@ const CertificatesKeystore: FunctionComponent<CertificatesKeystorePageInterface>
                 }
                 isLoading={ isLoading }
                 title={ t("console:manage.features.certificates.keystore.pageLayout.title") }
+                pageTitle={ t("console:manage.features.certificates.keystore.pageLayout.title") }
                 description={ t("console:manage.features.certificates.keystore.pageLayout.description") }
                 data-testid={ `${ testId }-page-layout` }
             >
                 <ListLayout
                     advancedSearch={
-                        <AdvancedSearchWithBasicFilters
+                        (<AdvancedSearchWithBasicFilters
                             onFilter={ handleKeystoreFilter }
                             filterAttributeOptions={ [
                                 {
@@ -274,7 +275,7 @@ const CertificatesKeystore: FunctionComponent<CertificatesKeystorePageInterface>
                             defaultSearchOperator="co"
                             triggerClearQuery={ triggerClearQuery }
                             data-testid={ `${ testId }-advanced-search` }
-                        />
+                        />)
                     }
                     currentListSize={ listItemLimit }
                     listItemLimit={ listItemLimit }
@@ -294,7 +295,7 @@ const CertificatesKeystore: FunctionComponent<CertificatesKeystorePageInterface>
                 >
                     <CertificatesList
                         advancedSearch={
-                            <AdvancedSearchWithBasicFilters
+                            (<AdvancedSearchWithBasicFilters
                                 onFilter={ handleKeystoreFilter }
                                 filterAttributeOptions={ [
                                     {
@@ -322,7 +323,7 @@ const CertificatesKeystore: FunctionComponent<CertificatesKeystorePageInterface>
                                 defaultSearchOperator="co"
                                 triggerClearQuery={ triggerClearQuery }
                                 data-testid={ `${ testId }-advanced-search` }
-                            />
+                            />)
                         }
                         isLoading={ isLoading }
                         list={ paginate(filteredCertificatesKeystore, listItemLimit, offset) }

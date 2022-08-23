@@ -32,14 +32,13 @@ import {
     LinkButton,
     PrimaryButton,
     TableActionsInterface,
-    TableColumnInterface,
-    useConfirmationModalAlert
+    TableColumnInterface
 } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
+import { Header, Icon, Label, Popup, SemanticICONS } from "semantic-ui-react";
 import {
     AppConstants,
     AppState,
@@ -98,6 +97,10 @@ export interface OrganizationListPropsInterface
      */
     showListItemActions?: boolean;
     /**
+     * Current parent organization.
+     */
+    parentOrganization: OrganizationInterface;
+    /**
      * Show sign on methods condition
      */
     isSetStrongerAuth?: boolean;
@@ -128,6 +131,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
         searchQuery,
         selection,
         showListItemActions,
+        parentOrganization,
         isSetStrongerAuth,
         isRenderedOnPortal,
         [ "data-componentid" ]: componentId
@@ -276,6 +280,25 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                                </Header.Content>)
                             }
                             <Header.Content>
+                                <Popup
+                                    trigger={
+                                        (<Icon
+                                            data-componentid={ `${ componentId }-org-status-icon` }
+                                            className="mr-2 ml-0 vertical-aligned-baseline"
+                                            size="small"
+                                            name="circle"
+                                            color={ organization.status === "ACTIVE" ? "green" : "orange" }
+                                        />)
+                                    }
+                                    content={
+                                        organization.status === "ACTIVE"
+                                            ? t("console:common.status.active")
+                                            : t("console:common.status.disabled")
+                                    }
+                                    inverted
+                                />
+                            </Header.Content>
+                            <Header.Content>
                                 { organization.name }
                                 <Header.Subheader
                                     className="truncate ellipsis"
@@ -409,6 +432,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                         onEmptyListPlaceholderActionClick && (
                             <Show when={ AccessControlConstants.ORGANIZATION_WRITE }>
                                 <PrimaryButton
+                                    disabled={ parentOrganization?.status === "DISABLED" }
                                     onClick={ () => {
                                         eventPublisher.publish(componentId + "-click-new-organization-button");
                                         onEmptyListPlaceholderActionClick();
@@ -422,7 +446,12 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                     }
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
-                    subtitle={ [ t("console:manage.features.organizations.placeholders.emptyList.subtitles.0") ] }
+                    subtitle={ [
+                        parentOrganization
+                            ? t("console:manage.features.organizations.placeholders.emptyList.subtitles.3",
+                                { parent: parentOrganization.name })
+                            : t("console:manage.features.organizations.placeholders.emptyList.subtitles.0")
+                    ] }
                     data-componentid={ `${ componentId }-empty-placeholder` }
                 />
             );

@@ -30,6 +30,7 @@ import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Divider } from "semantic-ui-react";
+import { applicationConfig } from "../../../../extensions";
 import { AppState, FeatureConfigInterface, UIConfigInterface } from "../../../core";
 import { deleteApplication, updateApplicationDetails } from "../../api";
 import {
@@ -37,7 +38,6 @@ import {
     ApplicationTemplateListItemInterface
 } from "../../models";
 import { GeneralDetailsForm } from "../forms";
-import { applicationConfig } from "../../../../extensions";
 
 /**
  * Proptypes for the applications general details component.
@@ -97,6 +97,10 @@ interface GeneralApplicationSettingsInterface extends SBACInterface<FeatureConfi
      * Specifies a Management Application
      */
     isManagementApp?: boolean;
+    /**
+     * Application.
+     */
+    application?: ApplicationInterface
 }
 
 /**
@@ -124,6 +128,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
         onUpdate,
         readOnly,
         isManagementApp,
+        application,
         [ "data-testid" ]: testId
     } = props;
 
@@ -238,7 +243,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
             return null;
         }
 
-        if (!applicationConfig.editApplication.showDangerZone(name)) {
+        if (!applicationConfig.editApplication.showDangerZone(application)) {
             return null;
         }
 
@@ -282,6 +287,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                         <GeneralDetailsForm
                             name={ name }
                             appId={ appId }
+                            application={ application }
                             description={ description }
                             discoverability={ discoverability }
                             onSubmit={ handleFormSubmit }
@@ -307,7 +313,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                     { resolveDangerActions() }
                     <ConfirmationModal
                         onClose={ (): void => setShowDeleteConfirmationModal(false) }
-                        type="warning"
+                        type="negative"
                         open={ showDeleteConfirmationModal }
                         assertionHint={ t("console:develop.features.applications.confirmations.deleteApplication." +
                             "assertionHint") }
@@ -327,7 +333,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message
                             attached
-                            warning
+                            negative
                             data-testid={ `${ testId }-application-delete-confirmation-modal-message` }
                         >
                             { t("console:develop.features.applications.confirmations.deleteApplication.message") }

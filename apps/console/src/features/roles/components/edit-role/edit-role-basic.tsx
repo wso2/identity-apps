@@ -410,7 +410,7 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                 showRoleDeleteConfirmation && (
                     <ConfirmationModal
                         onClose={ (): void => setShowDeleteConfirmationModal(false) }
-                        type="warning"
+                        type="negative"
                         open={ showRoleDeleteConfirmation }
                         assertionHint={ t("console:manage.features.roles.edit.basics.confirmation.assertionHint") }
                         assertionType="checkbox"
@@ -428,13 +428,13 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                         <ConfirmationModal.Header>
                             { t("console:manage.features.roles.edit.basics.confirmation.header") }
                         </ConfirmationModal.Header>
-                        <ConfirmationModal.Message attached warning>
+                        <ConfirmationModal.Message attached negative>
                             { t("console:manage.features.roles.edit.basics.confirmation.message",
                                 { type: isGroup ? "group." : "role." }) }
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content>
                             { t("console:manage.features.roles.edit.basics.confirmation.content",
-                                { type: isGroup ? "group." : "role." }) }
+                                { type: isGroup ? "group" : "role" }) }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
                 )

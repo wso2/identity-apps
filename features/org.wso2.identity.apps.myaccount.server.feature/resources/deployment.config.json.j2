@@ -38,6 +38,48 @@
         {% for key, value in myaccount.extensions.items() %}
         {% if value is number %}
             "{{ key }}": {{ value }}{{ "," if not loop.last }}
+        {% elif value is mapping %}
+            "{{ key }}": {
+                {% for level_1_key, level_1_value in value.items() %}
+                    {% if level_1_value is mapping %}
+                        "{{ level_1_key }}": {
+                            {% for level_2_key, level_2_value in level_1_value.items() %}
+                                {% if level_2_value is iterable %}
+                                    "{{ level_2_key }}": [
+                                        {% for level_2_value_item in level_2_value %}
+                                            "{{ level_2_value_item }}"{{ "," if not loop.last }}
+                                        {% endfor %}
+                                    ]{{ "," if not loop.last }}
+                                {% else %}
+                                    "{{ level_2_key }}": "{{ level_2_value }}"{{ "," if not loop.last }}
+                                {% endif %}
+                            {% endfor %}
+                        }{{ "," if not loop.last }}
+                    {% else %}
+                        "{{ level_1_key }}": "{{ level_1_value }}"{{ "," if not loop.last }}
+                    {% endif %}
+                {% endfor %}
+            }{{ "," if not loop.last }}
+        {% elif value is iterable %}
+            "{{ key }}": [
+                {% for item in value %}
+                    {% if item is mapping %}
+                        {
+                            {% for array_obj_key, array_obj_value in item.items() %}
+                                {% if array_obj_value is number %}
+                                    "{{ array_obj_key }}": {{ array_obj_value }}{{ "," if not loop.last }}
+                                {% elif array_obj_value is boolean %}
+                                    "{{ array_obj_key }}": {{ array_obj_value }}{{ "," if not loop.last }}
+                                {% else %}
+                                    "{{ array_obj_key }}": "{{ array_obj_value }}"{{ "," if not loop.last }}
+                                {% endif %}
+                            {% endfor %}
+                        }{{ "," if not loop.last }}
+                    {% else %}
+                        "{{ level_1_key }}": "{{ level_1_value }}"{{ "," if not loop.last }}
+                    {% endif %}
+                {% endfor %}
+            ]{{ "," if not loop.last }}
         {% else %}
             "{{ key }}": "{{ value }}"{{ "," if not loop.last }}
         {% endif %}

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { ReactElement } from "react";
+import { ReactElement, ReactNode } from "react";
 import { GovernanceConnectorInterface } from "../../../features/server-configurations";
 
 export interface ServerConfigurationConfig {
@@ -29,7 +29,9 @@ export interface ServerConfigurationConfig {
         connector: GovernanceConnectorInterface,
         connectorForm: ReactElement,
         connectorIllustration: string,
-        connectorSubHeading: string
+        connectorTitle: ReactNode,
+        connectorSubHeading: ReactNode,
+        message: ReactNode
     ) => ReactElement;
     renderConnectorWithinEmphasizedSegment: boolean;
     showConnectorsOnTheSidePanel: boolean;

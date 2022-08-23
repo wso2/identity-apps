@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,14 +16,6 @@
  * under the License.
  */
 
-import { I18n } from "@wso2is/i18n";
-import * as moment from "moment";
+import { createContext } from "react";
 
-/**
- * Sets the moment JS locale.
- *
- * @param {string} localeCode - Locale code.
- */
-export const setMomentJSLocale = (localeCode = I18n.instance.language): void => {
-    moment.locale(localeCode);
-};
+export const SessionTimedOutContext = createContext(false);
