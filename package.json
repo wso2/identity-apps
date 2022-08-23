@@ -10,6 +10,12 @@
         "WSO2 Identity Apps"
     ],
     "repository": "https://github.com/wso2/identity-apps.git",
+    "workspaces": [
+        "apps/*",
+        "components/theme",
+        "modules/*",
+        "tests"
+    ],
     "scripts": {
         "bootstrap": "npm install --legacy-peer-deps && npx lerna bootstrap",
         "bootstrap:hoist": "npm install && npx lerna bootstrap --hoist --no-ci",
