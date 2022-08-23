@@ -153,7 +153,7 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                             {!hiddenOptions.includes(LoginFlowTypes.SECOND_FACTOR_EMAIL_OTP) && (
                                 <InfoCard
                                     fluid
-                                    data-testid="sms-otp-mfa-flow-card"
+                                    data-testid="email-otp-mfa-flow-card"
                                     image={getAuthenticatorIcons().emailOTP}
                                     imageSize="mini"
                                     header={t(

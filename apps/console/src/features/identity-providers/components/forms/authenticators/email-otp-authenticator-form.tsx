@@ -151,9 +151,8 @@ export const EmailOTPAuthenticatorForm: FunctionComponent<EmailOTPAuthenticatorF
 
     const { t } = useTranslation();
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     // This can be used when `meta` support is there.
-    const [ formFields, setFormFields ] = useState<EmailOTPAuthenticatorFormFieldsInterface>(undefined);
+    const [, setFormFields ] = useState<EmailOTPAuthenticatorFormFieldsInterface>(undefined);
     const [ initialValues, setInitialValues ] = useState<EmailOTPAuthenticatorFormInitialValuesInterface>(undefined);
 
     /**
