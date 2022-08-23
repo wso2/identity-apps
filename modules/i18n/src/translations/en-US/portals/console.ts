@@ -6395,7 +6395,8 @@ export const console: ConsoleNS = {
                             " Please proceed with caution.",
                         header: "Are you sure?",
                         message: "This action is irreversible and will permanently delete the scope claim mapping"
-                    }
+                    },
+                    saveChangesButton: "Save Changes"
                 }
             },
             emailLocale: {
