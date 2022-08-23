@@ -122,27 +122,27 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                 </>
                             )}
                             <Heading as="h4">
-                                {t(
+                                { t(
                                     "console:develop.features.applications.edit." +
                                     "sections.signOnMethod.sections." +
                                     "landing.flowBuilder.headings.multiFactorLogin"
-                                )}
+                                ) }
                             </Heading>
-                            {!hiddenOptions.includes(LoginFlowTypes.SECOND_FACTOR_TOTP) && (
+                            { !hiddenOptions.includes(LoginFlowTypes.SECOND_FACTOR_TOTP) && (
                                 <InfoCard
                                     fluid
                                     data-testid="totp-mfa-flow-card"
-                                    image={getAuthenticatorIcons().totp}
+                                    image={ getAuthenticatorIcons().totp }
                                     imageSize="mini"
-                                    header={t(
+                                    header={ t(
                                         "console:develop.features.applications.edit.sections" +
                                         ".signOnMethod.sections.landing.flowBuilder.types.totp.heading"
-                                    )}
-                                    description={t(
+                                    ) }
+                                    description={ t(
                                         "console:develop.features.applications.edit.sections" +
                                         ".signOnMethod.sections.landing.flowBuilder.types.totp.description"
-                                    )}
-                                    onClick={() => {
+                                    ) }
+                                    onClick={ () => {
                                         eventPublisher.publish("application-begin-sign-in-totp-mfa", {
                                             "client-id": clientId
                                         });
@@ -150,24 +150,24 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                     }}
                                 />
                             )}
-                            {!hiddenOptions.includes(LoginFlowTypes.SECOND_FACTOR_SMS_OTP) && (
+                            { !hiddenOptions.includes(LoginFlowTypes.SECOND_FACTOR_SMS_OTP) && (
                                 <InfoCard
                                     fluid
                                     data-testid="sms-otp-mfa-flow-card"
                                     image={getAuthenticatorIcons().smsOTP}
                                     imageSize="mini"
-                                    header={t(
+                                    header={ t(
                                         "console:develop.features.applications.edit.sections" +
                                         ".signOnMethod.sections.landing.flowBuilder.types.smsOTP.heading"
-                                    )}
-                                    description={t(
+                                    ) }
+                                    description={ t(
                                         "console:develop.features.applications.edit.sections" +
                                         ".signOnMethod.sections.landing.flowBuilder.types.smsOTP.description"
-                                    )}
-                                    onClick={() => {
+                                    ) }
+                                    onClick={ () => {
                                         eventPublisher.publish("application-begin-sign-in-sms-otp-mfa", {
                                             "client-id": clientId
-                                        });
+                                        } );
                                         onLoginFlowSelect(LoginFlowTypes.SECOND_FACTOR_SMS_OTP);
                                     }}
                                 />
@@ -237,75 +237,75 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                         }}
                                     />
                                 )}
-                            {(!hiddenOptions.includes(LoginFlowTypes.GOOGLE_LOGIN) ||
+                            { (!hiddenOptions.includes(LoginFlowTypes.GOOGLE_LOGIN) ||
                                 !hiddenOptions.includes(LoginFlowTypes.FACEBOOK_LOGIN) ||
                                 !hiddenOptions.includes(LoginFlowTypes.GITHUB_LOGIN)) && (
                                 <>
                                     <Heading as="h4">
-                                        {t(
+                                        { t(
                                             "console:develop.features.applications.edit." +
                                             "sections.signOnMethod.sections." +
                                             "landing.flowBuilder.headings.socialLogin"
-                                        )}
+                                        ) }
                                     </Heading>
-                                    {!hiddenOptions.includes(LoginFlowTypes.GOOGLE_LOGIN) && (
+                                    { !hiddenOptions.includes(LoginFlowTypes.GOOGLE_LOGIN) && (
                                         <InfoCard
                                             fluid
                                             data-testid="google-login-flow-card"
                                             imageSize="mini"
                                             image={getAuthenticatorIcons().google}
-                                            header={t(
+                                            header={ t(
                                                 "console:develop.features.applications.edit.sections" +
                                                 ".signOnMethod.sections.landing.flowBuilder.types.google.heading"
-                                            )}
-                                            description={t(
+                                            ) }
+                                            description={ t(
                                                 "console:develop.features.applications.edit.sections" +
                                                 ".signOnMethod.sections.landing.flowBuilder." +
                                                 "types.google.description"
-                                            )}
-                                            onClick={() => {
+                                            ) }
+                                            onClick={ () => {
                                                 eventPublisher.publish("application-begin-sign-in-google-social-login", {
                                                     type: clientId
                                                 });
                                                 onLoginFlowSelect(LoginFlowTypes.GOOGLE_LOGIN);
-                                            }}
+                                            } }
                                         />
                                     )}
 
-                                    {!hiddenOptions.includes(LoginFlowTypes.GITHUB_LOGIN) && (
+                                    { !hiddenOptions.includes(LoginFlowTypes.GITHUB_LOGIN) && (
                                         <InfoCard
                                             fluid
                                             data-testid="github-login-flow-card"
                                             imageSize="mini"
-                                            image={getAuthenticatorIcons().github}
-                                            header={t(
+                                            image={ getAuthenticatorIcons().github }
+                                            header={ t(
                                                 "console:develop.features.applications.edit.sections" +
                                                 ".signOnMethod.sections.landing.flowBuilder.types.github.heading"
-                                            )}
-                                            description={t(
+                                            ) }
+                                            description={ t(
                                                 "console:develop.features.applications.edit.sections" +
                                                 ".signOnMethod.sections.landing.flowBuilder." +
                                                 "types.github.description"
-                                            )}
+                                            ) }
                                             onClick={() => onLoginFlowSelect(LoginFlowTypes.GITHUB_LOGIN)}
                                         />
                                     )}
-                                    {!hiddenOptions.includes(LoginFlowTypes.FACEBOOK_LOGIN) && (
+                                    { !hiddenOptions.includes(LoginFlowTypes.FACEBOOK_LOGIN) && (
                                         <InfoCard
                                             fluid
                                             data-testid="facebook-login-flow-card"
                                             imageSize="mini"
-                                            image={getAuthenticatorIcons().facebook}
-                                            header={t(
+                                            image={ getAuthenticatorIcons().facebook }
+                                            header={ t(
                                                 "console:develop.features.applications.edit.sections" +
                                                 ".signOnMethod.sections.landing.flowBuilder.types.facebook.heading"
-                                            )}
-                                            description={t(
+                                            ) }
+                                            description={ t(
                                                 "console:develop.features.applications.edit.sections" +
                                                 ".signOnMethod.sections.landing.flowBuilder." +
                                                 "types.facebook.description"
-                                            )}
-                                            onClick={() => onLoginFlowSelect(LoginFlowTypes.FACEBOOK_LOGIN)}
+                                            ) }
+                                            onClick={ () => onLoginFlowSelect(LoginFlowTypes.FACEBOOK_LOGIN) }
                                         />
                                     )}
                                 </>
