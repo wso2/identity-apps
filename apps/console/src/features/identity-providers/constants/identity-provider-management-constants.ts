@@ -18,6 +18,7 @@
 
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { DocumentationConstants } from "./documentation-constants";
+import { authenticatorConfig } from "../../../extensions/configs/authenticator";
 import EnterpriseIdPTemplate from
     "../data/identity-provider-templates/templates/enterprise-identity-provider/enterprise-identity-provider.json";
 import ExpertModeIdPTemplate from "../data/identity-provider-templates/templates/expert-mode/expert-mode.json";
@@ -31,7 +32,6 @@ import EnterpriseOrganizationIdPTemplate from
 import EnterpriseSAMLIdPTemplate from
     "../data/identity-provider-templates/templates/saml-identity-provider/enterprise-saml-identity-provider.json";
 import { IdentityProviderTemplateLoadingStrategies } from "../models";
-import { authenticatorConfig } from "../../../extensions/configs/authenticator";
 
 /**
  * Class containing identity provider management constants.

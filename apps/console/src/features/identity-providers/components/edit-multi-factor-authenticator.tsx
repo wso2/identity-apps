@@ -283,6 +283,7 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
                 render: null
             });
         }
+
         return panes;
     };
 
