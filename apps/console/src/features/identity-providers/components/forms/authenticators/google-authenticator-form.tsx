@@ -631,3 +631,4 @@ GoogleAuthenticatorForm.defaultProps = {
     "data-testid": "google-authenticator-form",
     enableSubmitButton: true
 };
+
