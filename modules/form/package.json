@@ -15,7 +15,7 @@
         "prebuild": "npm run clean",
         "build": "npm run compile",
         "clean": "rimraf ./dist",
-        "compile": " run-script-os",
+        "compile": "run-script-os",
         "compile:win32": "..\\..\\node_modules\\.bin\\tsc -p tsconfig.json",
         "compile:default": "../../node_modules/.bin/tsc -p tsconfig.json",
         "lint": "npm run lint:all",
@@ -25,7 +25,7 @@
         "lint:targeted": "eslint --ext .js,.jsx,.ts,.tsx --resolve-plugins-relative-to .",
         "test": "npm run jest -- -- --passWithNoTests",
         "test:watch": "npm run test -- --watch",
-        "jest": " run-script-os",
+        "jest": "run-script-os",
         "jest:win32": ".\\node_modules\\.bin\\jest",
         "jest:default": "./node_modules/.bin/jest",
         "typecheck": "npm run compile"
