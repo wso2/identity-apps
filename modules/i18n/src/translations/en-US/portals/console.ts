@@ -2992,7 +2992,7 @@ export const console: ConsoleNS = {
                     },
                     smsOTP: {
                         smsProvider:{
-                            tabName: "SMS Provider <1>(Comming Soon)</1>"
+                            tabName: "SMS Provider <1>(Coming Soon)</1>"
                         }
                     }
                 },
