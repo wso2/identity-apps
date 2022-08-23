@@ -17,7 +17,7 @@
         "build:prod:default": "../../node_modules/.bin/webpack --mode production --env NODE_ENV=production",
         "clean": "rimraf build && npm run clean:themes:src",
         "clean:themes:src": "rimraf src/themes",
-        "compile": "npx run-script-os",
+        "compile": " run-script-os",
         "compile:win32": "..\\..\\node_modules\\.bin\\tsc -p tsconfig.json",
         "compile:default": "../../node_modules/.bin/tsc -p tsconfig.json",
         "copy:themes:src": "node scripts/copy-themes-to-source.js",
@@ -28,7 +28,7 @@
         "lint:targeted": "eslint --ext .js,.jsx,.ts,.tsx --resolve-plugins-relative-to .",
         "postinstall": "node scripts/post-install.js",
         "prebuild": "node scripts/pre-build.js",
-        "start": "npx run-script-os",
+        "start": " run-script-os",
         "start:win32": "..\\..\\node_modules\\.bin\\webpack serve --mode development --inline --hot --open --env NODE_ENV=development",
         "start:default": "../../node_modules/.bin/webpack serve --mode development --inline --hot --open --env NODE_ENV=development",
         "start:lite": "npm run start --env DISABLE_ESLINT_PLUGIN=true",
@@ -74,8 +74,9 @@
         "@types/jest": "^26.0.14",
         "@types/lodash-es": "^4.17.4",
         "@types/node": "^13.9.2",
+        "@types/react": "^16.9.0",
         "@types/react-dom": "^16.8.5",
-        "@types/react-notification-system": "^0.2.39",
+        "@types/react-notification-system": "0.2.39",
         "@types/react-redux": "^7.1.1",
         "@types/react-router-dom": "^5.1.3",
         "@types/redux-mock-store": "^1.0.2",
@@ -108,7 +109,6 @@
         "typescript": "^4.2.2"
     },
     "peerDependencies": {
-        "@types/react": "*",
         "react": "*"
     },
     "browserslist": [

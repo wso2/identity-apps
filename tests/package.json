@@ -10,7 +10,7 @@
         "clean": "npm run clean:node-modules && npm run clean:package-lock",
         "clean:package-lock": "rimraf ./package-lock.json",
         "clean:node-modules": "rimraf ./node_modules",
-        "cypress": "npx run-script-os",
+        "cypress": " run-script-os",
         "cypress:win32": ".\\node_modules\\.bin\\cypress",
         "cypress:default": "./node_modules/.bin/cypress",
         "cy:clean:results": "rimraf output/results",
@@ -31,9 +31,9 @@
         "test:headless": "npm run cy:headless",
         "test:headless:smoke": "npm run cy:headless:smoke",
         "test:interactive": "npm run cy:interactive",
-        "tsc": "npx run-script-os",
-        "tsc:win32": ".\\node_modules\\.bin\\tsc -p tsconfig.json",
-        "tsc:default": "./node_modules/.bin/tsc -p tsconfig.json"
+        "tsc": "run-script-os",
+        "tsc:win32": "..\\node_modules\\.bin\\tsc -p tsconfig.json",
+        "tsc:default": "../node_modules/.bin/tsc -p tsconfig.json"
     },
     "dependencies": {
         "@wso2/identity-cypress-test-base": "^0.2.3",

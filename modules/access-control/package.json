@@ -17,7 +17,7 @@
         "prebuild": "npm run clean",
         "build": "npm run compile",
         "clean": "rimraf ./dist",
-        "compile": "npx run-script-os",
+        "compile": " run-script-os",
         "compile:win32": "..\\..\\node_modules\\.bin\\tsc -p tsconfig.json",
         "compile:default": "../../node_modules/.bin/tsc -p tsconfig.json",
         "lint": "npm run lint:all -- --max-warnings=0",
@@ -26,7 +26,7 @@
         "lint:ci": "npm run lint -- --format=compact",
         "lint:targeted": "eslint --ext .js,.jsx,.ts,.tsx --resolve-plugins-relative-to .",
         "test": "npm run jest -- -- --passWithNoTests",
-        "jest": "npx run-script-os",
+        "jest": " run-script-os",
         "jest:win32": ".\\node_modules\\.bin\\jest",
         "jest:default": "./node_modules/.bin/jest",
         "typecheck": "npm run compile"
@@ -40,6 +40,7 @@
         "ts-jest": "^26.4.0"
     },
     "devDependencies": {
+        "@types/react": "^16.9.0",
         "@typescript-eslint/eslint-plugin": "^4.17.0",
         "@typescript-eslint/parser": "^4.17.0",
         "eslint": "^7.20.0",
@@ -52,7 +53,6 @@
         "typescript": "^4.2.2"
     },
     "peerDependencies": {
-        "@types/react": "*",
         "react": "*"
     }
 }
