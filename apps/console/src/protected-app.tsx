@@ -250,7 +250,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                     });
             } else {
                 dispatch(setGetOrganizationLoading(false));
-                tenantDomain = CommonAuthenticateUtils.deriveTenantDomainFromSubject(response.sub);
+                tenantDomain = response.tenantDomain;
             }
 
             // Update the app base name with the newly resolved tenant.
@@ -341,8 +341,6 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
 
             await getDecodedIDToken()
                 .then((idToken) => {
-                    const tenantDomain: string = CommonAuthenticateUtils.deriveTenantDomainFromSubject(idToken?.sub);
-
                     isPrivilegedUser = idToken?.amr?.length > 0
                         ? idToken?.amr[0] === "EnterpriseIDPAuthenticator"
                         : false;

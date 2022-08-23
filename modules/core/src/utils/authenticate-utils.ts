@@ -113,19 +113,6 @@ export class AuthenticateUtils {
         window.sessionStorage.removeItem(`auth_callback_url_${app}`);
     }
 
-   /**
-    * Tenant domain decoded from the subject claim of the ID Token.
-    *
-    * @param {string} sub - Subject claim of the ID Token.
-    * @return {string} Tenant domain.
-    */
-    public static deriveTenantDomainFromSubject(sub: string): string {
-        const subParts: string[] = sub.split("@");
-        const tenantDomain: string = subParts[ subParts.length - 1 ];
-
-        return tenantDomain;
-    }
-
     /**
     * Get sign in data of the user
     *
@@ -140,7 +127,7 @@ export class AuthenticateUtils {
             display_name: response?.displayName,
             email: response?.email,
             scope: response?.allowedScopes,
-            tenantDomain: AuthenticateUtils.deriveTenantDomainFromSubject(response?.sub) ,
+            tenantDomain: response?.tenantDomain,
             username: response?.sub
         };
     }
