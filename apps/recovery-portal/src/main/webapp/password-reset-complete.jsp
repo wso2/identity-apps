@@ -46,6 +46,7 @@
 <jsp:directive.include file="includes/localize.jsp"/>
 <jsp:directive.include file="tenant-resolve.jsp"/>
 <jsp:directive.include file="includes/layout-resolver.jsp"/>
+<jsp:directive.include file="cookie-resolve.jsp"/>
 
 <%
     String ERROR_MESSAGE = "errorMsg";
@@ -114,19 +115,12 @@
         
                 JSONObject cookieValueInJson = new JSONObject();
                 cookieValueInJson.put("content", content);
-        
                 String signature = Base64.getEncoder().encodeToString(SignatureUtil.doSignature(content));
-        
                 cookieValueInJson.put("signature", signature);
-                Cookie cookie = new Cookie(AUTO_LOGIN_COOKIE_NAME,
-                        Base64.getEncoder().encodeToString(cookieValueInJson.toString().getBytes()));
-                cookie.setPath("/");
-                cookie.setSecure(true);
-                cookie.setMaxAge(300);
-                if (StringUtils.isNotBlank(cookieDomain)) {
-                    cookie.setDomain(cookieDomain);
-                }
-                response.addCookie(cookie);
+                String cookieValue = Base64.getEncoder().encodeToString(cookieValueInJson.toString().getBytes());
+
+                setCookie(request, response, AUTO_LOGIN_COOKIE_NAME, cookieValue, 300, SameSiteCookie.NONE,
+                    "/", cookieDomain);
 
                 if (callback.contains("?")) {
                     String queryParams = callback.substring(callback.indexOf("?") + 1);
