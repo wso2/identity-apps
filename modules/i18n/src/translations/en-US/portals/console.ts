@@ -3078,14 +3078,13 @@ export const console: ConsoleNS = {
                                 }
                             },
                             expiryTime: {
-                                hint: "The generated passcode will be expired after this defined time period. " +
-                                    "Please pick a value between <1>1 second</1> & <3>86400 seconds(1 day)</3>.",
+                                hint: "Please pick a value between <1>1 minute</1> & <3>1440 minutes (1 day)</3>.",
                                 label: "Email OTP expiry time",
                                 placeholder: "Enter Email OTP expiry time.",
-                                unit: "seconds",
+                                unit: "minutes",
                                 validations: {
                                     invalid: "Email OTP expiry time should be an integer.",
-                                    range: "Email OTP expiry time should be between 1 second & 86400 seconds(1 day).",
+                                    range: "Email OTP expiry time should be between 1 minute & 1440 minutes (1 day).",
                                     required: "Email OTP expiry time is a required field."
                                 }
                             },

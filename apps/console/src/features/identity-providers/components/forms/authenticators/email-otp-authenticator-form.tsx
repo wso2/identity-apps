@@ -89,7 +89,7 @@ interface EmailOTPAuthenticatorFormInitialValuesInterface {
     /**
      * Email OTP expiry time in seconds.
      */
-    EmailOTP_ExpiryTime: string;
+    EmailOTP_ExpiryTime: number;
     /**
      * Number of characters in the OTP token.
      */
@@ -159,8 +159,11 @@ export const EmailOTPAuthenticatorForm: FunctionComponent<EmailOTPAuthenticatorF
     const { t } = useTranslation();
 
     // This can be used when `meta` support is there.
-    const [, setFormFields ] = useState<EmailOTPAuthenticatorFormFieldsInterface>(undefined);
+    const [ , setFormFields ] = useState<EmailOTPAuthenticatorFormFieldsInterface>(undefined);
     const [ initialValues, setInitialValues ] = useState<EmailOTPAuthenticatorFormInitialValuesInterface>(undefined);
+
+    // SMS OTP length unit is set to digits or characters according to the state of this variable
+    const [isOTPNumeric, setIsOTPNumeric] = useState<boolean>();
 
     /**
      * Flattens and resolved form initial values and field metadata.
@@ -180,22 +183,39 @@ export const EmailOTPAuthenticatorForm: FunctionComponent<EmailOTPAuthenticatorF
 
             const moderatedName: string = value.name.replace(/\./g, "_");
 
-            resolvedFormFields = {
-                ...resolvedFormFields,
-                [ moderatedName ]: {
-                    meta,
-                    value: (value.value === "true" || value.value === "false")
+            // Converting expiry time from seconds to minutes
+            if (moderatedName === IdentityProviderManagementConstants.AUTHENTICATOR_INIT_VALUES_EMAIL_OTP_EXPIRY_TIME_KEY) {
+                const expiryTimeInMinutes = Math.round(parseInt(value.value, 10) / 60);
+
+                resolvedInitialValues = {
+                    ...resolvedInitialValues,
+                    [moderatedName]: expiryTimeInMinutes
+                };
+                resolvedFormFields = {
+                    ...resolvedFormFields,
+                    [moderatedName]: {
+                        meta,
+                        value: expiryTimeInMinutes.toString()
+                    }
+                };
+            } else {
+                resolvedFormFields = {
+                    ...resolvedFormFields,
+                    [moderatedName]: {
+                        meta,
+                        value: ( value.value === "true" || value.value === "false" )
+                            ? JSON.parse(value.value)
+                            : value.value
+                    }
+                };
+
+                resolvedInitialValues = {
+                    ...resolvedInitialValues,
+                    [moderatedName]: ( value.value === "true" || value.value === "false" )
                         ? JSON.parse(value.value)
                         : value.value
-                }
-            };
-
-            resolvedInitialValues = {
-                ...resolvedInitialValues,
-                [ moderatedName ]: (value.value === "true" || value.value === "false")
-                    ? JSON.parse(value.value)
-                    : value.value
-            };
+                };
+            }
         });
 
         setFormFields(resolvedFormFields);
@@ -218,6 +238,17 @@ export const EmailOTPAuthenticatorForm: FunctionComponent<EmailOTPAuthenticatorF
             if (name !== undefined) {
 
                 const moderatedName: string = name.replace(/_/g, ".");
+
+               if (name === IdentityProviderManagementConstants.AUTHENTICATOR_INIT_VALUES_EMAIL_OTP_EXPIRY_TIME_KEY){
+                    const timeInSeconds = value * 60;
+
+                    properties.push({
+                        name: moderatedName,
+                        value: timeInSeconds.toString()
+                    });
+
+                    continue;
+                }
 
                 properties.push({
                     name: moderatedName,
@@ -256,10 +287,10 @@ export const EmailOTPAuthenticatorForm: FunctionComponent<EmailOTPAuthenticatorF
             // Check for invalid input.
             errors.EmailOTP_ExpiryTime = t("console:develop.features.authenticationProvider.forms" +
                 ".authenticatorSettings.emailOTP.expiryTime.validations.invalid");
-        } else if ((parseInt(values.EmailOTP_ExpiryTime, 10) < IdentityProviderManagementConstants
-            .EMAIL_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.EXPIRY_TIME_MIN_VALUE)
-        || (parseInt(values.EmailOTP_ExpiryTime, 10) > IdentityProviderManagementConstants
-                .EMAIL_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.EXPIRY_TIME_MAX_VALUE)) {
+        } else if (( values.EmailOTP_ExpiryTime < IdentityProviderManagementConstants
+                .EMAIL_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.EXPIRY_TIME_MIN_VALUE )
+            || ( values.EmailOTP_ExpiryTime > IdentityProviderManagementConstants
+                .EMAIL_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.EXPIRY_TIME_MAX_VALUE )) {
             // Check for invalid range.
             errors.EmailOTP_ExpiryTime = t("console:develop.features.authenticationProvider.forms" +
                 ".authenticatorSettings.emailOTP.expiryTime.validations.range");
