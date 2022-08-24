@@ -5179,7 +5179,8 @@ export const console: ConsoleNS = {
                         header: "Êtes-vous sûr?",
                         message: "Cette action est irréversible et supprimera définitivement le mappage " +
                             "de revendication de champ d'application"
-                    }
+                    },
+                    saveChangesButton: "Sauvegarder les modifications"
                 }
             },
             emailLocale: {
@@ -6451,7 +6452,7 @@ export const console: ConsoleNS = {
                             message: "Erreur de mise à jour"
                         },
                         genericError: {
-                            description: "Une erreur s'est produite lors de la mise à jour du scope OIDC.",
+                            description: "Une erreur s'est produite lors de la mise à jour du scope OIDC {{ scope }}.",
                             message: "Quelque chose s'est mal passé"
                         },
                         success: {

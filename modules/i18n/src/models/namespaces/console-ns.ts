@@ -3061,7 +3061,8 @@ export interface ConsoleNS {
                         content: string;
                         header: string;
                         message: string;
-                    }
+                    },
+                    saveChangesButton: string;
                 };
             };
             emailLocale: {
