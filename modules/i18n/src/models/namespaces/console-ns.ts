@@ -1226,10 +1226,17 @@ export interface ConsoleNS {
                             tokenLength: {
                                 hint: string;
                                 label: string;
+                                unit: {
+                                    digits: string;
+                                    characters: string;
+                                },
                                 placeholder: string;
                                 validations: {
                                     invalid: string;
-                                    range: string;
+                                    range: {
+                                        digits: string;
+                                        characters: string;
+                                    };
                                     required: string;
                                 };
                             };

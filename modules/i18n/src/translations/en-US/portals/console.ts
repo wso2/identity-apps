@@ -3089,22 +3089,28 @@ export const console: ConsoleNS = {
                                 }
                             },
                             tokenLength: {
-                                hint: "The number of allowed characters in the OTP token. Please, " +
+                                hint: "The number of allowed characters in the OTP. Please " +
                                     "pick a value between <1>4-10</1>.",
-                                label: "Email OTP token length",
-                                placeholder: "Enter Email OTP token length.",
+                                label: "Email OTP length",
+                                placeholder: "Enter Email OTP length.",
+                                unit: {
+                                    digits: "digits",
+                                    characters: "characters"
+                                },
                                 validations: {
-                                    invalid: "Email OTP token length should be an integer.",
-                                    range: "Email OTP token length should be between 4 & 10 characters.",
-                                    required: "Email OTP token length is a required field."
+                                    invalid: "Email OTP length should be an integer.",
+                                    range: {
+                                        characters: "Email OTP length should be between 4 & 10 characters.",
+                                        digits: "Email OTP length should be between 4 & 10 digits."
+                                    },
+                                    required: "Email OTP length is a required field."
                                 }
                             },
                             useNumericChars: {
-                                hint: "Only numeric characters (<1>0-9</1>) are used for the OTP token. " +
-                                    "Please clear this checkbox to enable alphanumeric characters.",
-                                label: "Use only numeric characters for OTP token",
+                                hint: "Please clear this checkbox to enable alphanumeric characters.",
+                                label: "Use only numeric characters for OTP",
                                 validations: {
-                                    required: "Use only numeric characters for OTP token is a required field."
+                                    required: "Use only numeric characters for OTP is a required field."
                                 }
                             }
                         },
