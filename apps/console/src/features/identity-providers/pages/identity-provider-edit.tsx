@@ -505,7 +505,8 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
             );
         }
 
-        return connector.friendlyName || connector.name;
+        return AuthenticatorMeta.getAuthenticatorDisplayName(connector.id)
+            ?? (connector.friendlyName || connector.name);
     };
 
     /**
