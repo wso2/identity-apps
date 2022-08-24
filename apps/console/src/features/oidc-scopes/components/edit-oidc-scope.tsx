@@ -150,7 +150,6 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
         setUpdatedClaimList(tempSelectedAttributes);
     }, [ tempSelectedAttributes ]);
 
-
     const updateOIDCScope = useCallback((): void => {
         const data: OIDCScopesListInterface = {
             claims: updatedClaimList.map((claim: ExternalClaim) => claim.claimURI),
