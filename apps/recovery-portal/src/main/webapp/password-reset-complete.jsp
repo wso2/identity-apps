@@ -16,6 +16,7 @@
   ~ under the License.
   --%>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
+<%@ page import="org.wso2.carbon.core.SameSiteCookie" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApiException" %>
@@ -46,7 +47,6 @@
 <jsp:directive.include file="includes/localize.jsp"/>
 <jsp:directive.include file="tenant-resolve.jsp"/>
 <jsp:directive.include file="includes/layout-resolver.jsp"/>
-<jsp:directive.include file="cookie-resolve.jsp"/>
 
 <%
     String ERROR_MESSAGE = "errorMsg";
@@ -119,8 +119,8 @@
                 cookieValueInJson.put("signature", signature);
                 String cookieValue = Base64.getEncoder().encodeToString(cookieValueInJson.toString().getBytes());
 
-                setCookie(request, response, AUTO_LOGIN_COOKIE_NAME, cookieValue, 300, SameSiteCookie.NONE,
-                    "/", cookieDomain);
+                IdentityManagementEndpointUtil.setCookie(request, response, AUTO_LOGIN_COOKIE_NAME, cookieValue,
+                    300, SameSiteCookie.NONE, "/", cookieDomain);
 
                 if (callback.contains("?")) {
                     String queryParams = callback.substring(callback.indexOf("?") + 1);

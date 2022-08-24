@@ -19,6 +19,7 @@
 
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="org.wso2.carbon.base.MultitenantConstants" %>
+<%@ page import="org.wso2.carbon.core.SameSiteCookie" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 <%@ page import="org.wso2.carbon.identity.recovery.IdentityRecoveryConstants" %>
 <%@ page import="org.wso2.carbon.identity.base.IdentityRuntimeException" %>
@@ -41,7 +42,6 @@
 
 <jsp:directive.include file="includes/localize.jsp"/>
 <jsp:directive.include file="tenant-resolve.jsp"/>
-<jsp:directive.include file="cookie-resolve.jsp"/>
 
 <%
     boolean error = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("error"));
@@ -126,8 +126,8 @@
             cookieValueInJson.put("signature", signature);
             String cookieValue = Base64.getEncoder().encodeToString(cookieValueInJson.toString().getBytes());
 
-            setCookie(request, response, AUTO_LOGIN_COOKIE_NAME, cookieValue, 300, SameSiteCookie.NONE,
-                "/", cookieDomain);
+            IdentityManagementEndpointUtil.setCookie(request, response, AUTO_LOGIN_COOKIE_NAME, cookieValue,
+                300, SameSiteCookie.NONE, "/", cookieDomain);
             request.setAttribute("isAutoLoginEnabled", true);
         }
 

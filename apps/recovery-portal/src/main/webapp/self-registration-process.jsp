@@ -19,6 +19,7 @@
 
 <%@ page import="org.apache.commons.collections.map.HashedMap" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
+<%@ page import="org.wso2.carbon.core.SameSiteCookie" %>
 <%@ page import="org.wso2.carbon.core.util.SignatureUtil" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementServiceUtil" %>
@@ -44,7 +45,6 @@
 
 <jsp:directive.include file="includes/localize.jsp"/>
 <jsp:directive.include file="tenant-resolve.jsp"/>
-<jsp:directive.include file="cookie-resolve.jsp"/>
 
 <html>
 <head>
@@ -256,8 +256,8 @@
                     cookieValueInJson.put("signature", signature);
                     String cookieValue = Base64.getEncoder().encodeToString(cookieValueInJson.toString().getBytes());
 
-                    setCookie(request, response, AUTO_LOGIN_COOKIE_NAME, cookieValue, 300, SameSiteCookie.NONE,
-                        "/", cookieDomain);
+                    IdentityManagementEndpointUtil.setCookie(request, response, AUTO_LOGIN_COOKIE_NAME, cookieValue,
+                        300, SameSiteCookie.NONE, "/", cookieDomain);
                     request.setAttribute("isAutoLoginEnabled", true);
                 }
                 request.setAttribute("callback", callback);
