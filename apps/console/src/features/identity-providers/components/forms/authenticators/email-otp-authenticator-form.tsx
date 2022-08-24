@@ -163,7 +163,7 @@ export const EmailOTPAuthenticatorForm: FunctionComponent<EmailOTPAuthenticatorF
     const [ initialValues, setInitialValues ] = useState<EmailOTPAuthenticatorFormInitialValuesInterface>(undefined);
 
     // SMS OTP length unit is set to digits or characters according to the state of this variable
-    const [isOTPNumeric, setIsOTPNumeric] = useState<boolean>();
+    const [ isOTPNumeric, setIsOTPNumeric ] = useState<boolean>();
 
     /**
      * Flattens and resolved form initial values and field metadata.
@@ -240,7 +240,7 @@ export const EmailOTPAuthenticatorForm: FunctionComponent<EmailOTPAuthenticatorF
 
                 const moderatedName: string = name.replace(/_/g, ".");
 
-               if (name === IdentityProviderManagementConstants.AUTHENTICATOR_INIT_VALUES_EMAIL_OTP_EXPIRY_TIME_KEY){
+                if (name === IdentityProviderManagementConstants.AUTHENTICATOR_INIT_VALUES_EMAIL_OTP_EXPIRY_TIME_KEY){
                     const timeInSeconds = value * 60;
 
                     properties.push({
@@ -289,7 +289,7 @@ export const EmailOTPAuthenticatorForm: FunctionComponent<EmailOTPAuthenticatorF
             errors.EmailOTP_ExpiryTime = t("console:develop.features.authenticationProvider.forms" +
                 ".authenticatorSettings.emailOTP.expiryTime.validations.invalid");
         } else if (( values.EmailOTP_ExpiryTime < IdentityProviderManagementConstants
-                .EMAIL_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.EXPIRY_TIME_MIN_VALUE )
+            .EMAIL_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.EXPIRY_TIME_MIN_VALUE )
             || ( values.EmailOTP_ExpiryTime > IdentityProviderManagementConstants
                 .EMAIL_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.EXPIRY_TIME_MAX_VALUE )) {
             // Check for invalid range.
@@ -306,7 +306,7 @@ export const EmailOTPAuthenticatorForm: FunctionComponent<EmailOTPAuthenticatorF
             errors.EmailOTP_OTPLength = t("console:develop.features.authenticationProvider.forms" +
                 ".authenticatorSettings.emailOTP.tokenLength.validations.invalid");
         } else if ((parseInt(values.EmailOTP_OTPLength, 10) < IdentityProviderManagementConstants
-                .EMAIL_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.OTP_LENGTH_MIN_VALUE)
+            .EMAIL_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.OTP_LENGTH_MIN_VALUE)
             || (parseInt(values.EmailOTP_OTPLength, 10) > IdentityProviderManagementConstants
                 .EMAIL_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.OTP_LENGTH_MAX_VALUE)) {
             // Check for invalid range.
@@ -340,14 +340,14 @@ export const EmailOTPAuthenticatorForm: FunctionComponent<EmailOTPAuthenticatorF
                         ".emailOTP.expiryTime.placeholder")
                 }
                 hint={
-                    <Trans
+                    (<Trans
                         i18nKey={
                             "console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                             ".emailOTP.expiryTime.hint"
                         }
                     >
                         Please pick a value between <Code>1 minute</Code> & <Code>1440 minutes (1 day)</Code>.
-                    </Trans>
+                    </Trans>)
                 }
                 required={ true }
                 readOnly={ readOnly }
@@ -382,14 +382,14 @@ export const EmailOTPAuthenticatorForm: FunctionComponent<EmailOTPAuthenticatorF
                         ".emailOTP.useNumericChars.label")
                 }
                 hint={
-                    <Trans
+                    (<Trans
                         i18nKey={
                             "console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                             ".emailOTP.useNumericChars.hint"
                         }
                     >
                         Please clear this checkbox to enable alphanumeric characters.
-                    </Trans>
+                    </Trans>)
                 }
                 readOnly={ readOnly }
                 width={ 12 }
@@ -410,7 +410,7 @@ export const EmailOTPAuthenticatorForm: FunctionComponent<EmailOTPAuthenticatorF
                         ".emailOTP.tokenLength.placeholder")
                 }
                 hint={
-                    <Trans
+                    (<Trans
                         i18nKey={
                             "console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                             ".emailOTP.tokenLength.hint"
@@ -418,7 +418,7 @@ export const EmailOTPAuthenticatorForm: FunctionComponent<EmailOTPAuthenticatorF
                     >
                         The number of allowed characters in the OTP. Please pick a value between
                         <Code>4-10</Code>.
-                    </Trans>
+                    </Trans>)
                 }
                 required={ true }
                 readOnly={ readOnly }
