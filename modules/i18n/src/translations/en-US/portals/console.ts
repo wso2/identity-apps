@@ -6395,7 +6395,8 @@ export const console: ConsoleNS = {
                             " Please proceed with caution.",
                         header: "Are you sure?",
                         message: "This action is irreversible and will permanently delete the scope claim mapping"
-                    }
+                    },
+                    saveChangesButton: "Save Changes"
                 }
             },
             emailLocale: {
@@ -7797,7 +7798,7 @@ export const console: ConsoleNS = {
                             message: "Something went wrong"
                         },
                         success: {
-                            description: "Successfully updated the OIDC scope.",
+                            description: "Successfully updated the OIDC scope {{ scope }}.",
                             message: "Update successful"
                         }
                     }

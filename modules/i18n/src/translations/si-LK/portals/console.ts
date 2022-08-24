@@ -5049,7 +5049,8 @@ export const console: ConsoleNS = {
                             "කරුණාකර ප්‍රවේශමෙන් ඉදිරියට යන්න.",
                         header: "ඔයාට විශ්වාස ද?",
                         message: "මෙම ක්‍රියාව ආපසු හැරවිය නොහැකි අතර විෂය පථය හිමිකම් සිතියම්ගත කිරීම ස්ථිරවම මකනු ඇත"
-                    }
+                    },
+                    saveChangesButton: "වෙනස්කම් සුරකින්න"
                 }
             },
             emailLocale: {
@@ -6316,7 +6317,7 @@ export const console: ConsoleNS = {
                             message: "යාවත්කාලීන දෝෂයකි"
                         },
                         genericError: {
-                            description: "OIDC විෂය පථය යාවත්කාලීන කිරීමේදී දෝෂයක් ඇතිවිය.",
+                            description: "{{ scope }} OIDC විෂය පථය යාවත්කාලීන කිරීමේදී දෝෂයක් ඇතිවිය.",
                             message: "යම් දෝෂයක් ඇති වී ඇත"
                         },
                         success: {
