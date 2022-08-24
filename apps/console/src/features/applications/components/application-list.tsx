@@ -313,25 +313,6 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                                         </Label>
                                     )
                                 }
-                                <Header.Subheader
-                                    className="truncate ellipsis"
-                                    data-testid={ `${ testId }-item-sub-heading` }
-                                >
-                                    {
-                                        app.description?.length > 80
-                                            ? (
-                                                <Popup
-                                                    content={ app.description }
-                                                    trigger={ (
-                                                        <span>{
-                                                            app.description
-                                                        }</span>
-                                                    ) }
-                                                />
-                                            )
-                                            : app.description
-                                    }
-                                </Header.Subheader>
                             </Header.Content>
                         </Header>
                     );
