@@ -314,7 +314,9 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                 return isFiltersMatched(authenticator);
             }
 
-            const name: string = authenticator?.displayName?.toLocaleLowerCase();
+            const name: string = (AuthenticatorMeta.getAuthenticatorDisplayName(
+                authenticator.defaultAuthenticator?.authenticatorId)
+                || authenticator.displayName)?.toLocaleLowerCase();
 
             if (name.includes(query)
                 || IdentityProviderManagementUtils.getAuthenticatorLabels(authenticator)

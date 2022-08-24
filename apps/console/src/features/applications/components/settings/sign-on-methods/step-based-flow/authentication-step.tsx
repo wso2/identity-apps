@@ -229,7 +229,10 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                                         transparent
                                     />
                                     <span data-testid={ `${ testId }-option-name` }>
-                                        { authenticator.displayName }
+                                        {
+                                            AuthenticatorMeta.getAuthenticatorDisplayName(option.authenticator)
+                                        || authenticator.displayName
+                                        }
                                     </span>
                                 </Card.Content>
                             </Card>

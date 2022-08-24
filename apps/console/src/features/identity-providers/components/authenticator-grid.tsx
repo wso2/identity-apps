@@ -389,7 +389,9 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                                     resourceName={
                                         isIdP
                                             ? authenticator.name
-                                            : (authenticator as AuthenticatorInterface).displayName
+                                            : AuthenticatorMeta.getAuthenticatorDisplayName(authenticator.id)
+                                                ? AuthenticatorMeta.getAuthenticatorDisplayName(authenticator.id)
+                                                : (authenticator as AuthenticatorInterface).displayName
                                                     || (authenticator as AuthenticatorInterface).name
                                     }
                                     resourceCategory={

@@ -613,7 +613,10 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                                         size="tiny"
                                         selected={ selectedSocialAuthenticator?.id === authenticator.id }
                                         image={ authenticator.image }
-                                        label={ authenticator.displayName }
+                                        label={
+                                            AuthenticatorMeta.getAuthenticatorDisplayName(authenticator.name)
+                                            || authenticator.displayName
+                                        }
                                         labelEllipsis={ true }
                                         data-testid={
                                             `${testId}-authenticator-${authenticator.name}`
