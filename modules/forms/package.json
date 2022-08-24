@@ -59,5 +59,11 @@
         "react": "*"
     },
     "author": "WSO2",
-    "license": "Apache-2.0"
+    "license": "Apache-2.0",
+    "overrides": {
+        "@types/react": "16.9.0"
+    },
+    "resolutions": {
+        "@types/react": "16.9.0"
+    }
 }

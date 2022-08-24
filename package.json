@@ -196,5 +196,11 @@
         "webpack-dev-server": "^3.11.2",
         "worker-loader": "^2.0.0",
         "write-file-webpack-plugin": "^4.5.1"
+    },
+    "overrides": {
+        "@types/react": "^16.9.0"
+    },
+    "resolutions": {
+        "@types/react": "^16.9.0"
     }
 }
