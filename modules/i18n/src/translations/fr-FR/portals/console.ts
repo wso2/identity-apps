@@ -1220,6 +1220,10 @@ export const console: ConsoleNS = {
                                                     "de passe, vos utilisateurs doivent avoir leurs clés de " +
                                                     "sécurité FIDO2 ou leurs données biométriques enregistrées " +
                                                     "via Mon compte."
+                                            },
+                                            emailOTP: {
+                                                description: "Activez une couche supplémentaire d'authentification avec OTP basé sur Email.",
+                                                heading: "Ajouter Email OTP comme deuxième facteur"
                                             }
                                         }
                                     }

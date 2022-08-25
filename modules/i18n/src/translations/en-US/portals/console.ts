@@ -1185,6 +1185,10 @@ export const console: ConsoleNS = {
                                                 info: "To sign in with passwordless login, your users "
                                                     + "should have their FIDO2 security keys or biometrics "
                                                     + "registered via My Account."
+                                            },
+                                            emailOTP: {
+                                                description: "Enable additional authentication layer with Email based OTP.",
+                                                heading: "Add Email OTP as a second factor"
                                             }
                                         }
                                     }
@@ -3074,34 +3078,39 @@ export const console: ConsoleNS = {
                                 }
                             },
                             expiryTime: {
-                                hint: "The generated passcode will be expired after this defined time period. " +
-                                    "Please pick a value between <1>1 second</1> & <3>86400 seconds(1 day)</3>.",
+                                hint: "Please pick a value between <1>1 minute</1> & <3>1440 minutes (1 day)</3>.",
                                 label: "Email OTP expiry time",
                                 placeholder: "Enter Email OTP expiry time.",
-                                unit: "seconds",
+                                unit: "minutes",
                                 validations: {
                                     invalid: "Email OTP expiry time should be an integer.",
-                                    range: "Email OTP expiry time should be between 1 second & 86400 seconds(1 day).",
+                                    range: "Email OTP expiry time should be between 1 minute & 1440 minutes (1 day).",
                                     required: "Email OTP expiry time is a required field."
                                 }
                             },
                             tokenLength: {
-                                hint: "The number of allowed characters in the OTP token. Please, " +
+                                hint: "The number of allowed characters in the OTP. Please " +
                                     "pick a value between <1>4-10</1>.",
-                                label: "Email OTP token length",
-                                placeholder: "Enter Email OTP token length.",
+                                label: "Email OTP length",
+                                placeholder: "Enter Email OTP length.",
+                                unit: {
+                                    digits: "digits",
+                                    characters: "characters"
+                                },
                                 validations: {
-                                    invalid: "Email OTP token length should be an integer.",
-                                    range: "Email OTP token length should be between 4 & 10 characters.",
-                                    required: "Email OTP token length is a required field."
+                                    invalid: "Email OTP length should be an integer.",
+                                    range: {
+                                        characters: "Email OTP length should be between 4 & 10 characters.",
+                                        digits: "Email OTP length should be between 4 & 10 digits."
+                                    },
+                                    required: "Email OTP length is a required field."
                                 }
                             },
                             useNumericChars: {
-                                hint: "Only numeric characters (<1>0-9</1>) are used for the OTP token. " +
-                                    "Please clear this checkbox to enable alphanumeric characters.",
-                                label: "Use only numeric characters for OTP token",
+                                hint: "Please clear this checkbox to enable alphanumeric characters.",
+                                label: "Use only numeric characters for OTP",
                                 validations: {
-                                    required: "Use only numeric characters for OTP token is a required field."
+                                    required: "Use only numeric characters for OTP is a required field."
                                 }
                             }
                         },
