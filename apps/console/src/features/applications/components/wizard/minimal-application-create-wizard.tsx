@@ -292,15 +292,18 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                 
                 application.templateId = ApplicationManagementConstants.CUSTOM_APPLICATION_SAML;
 
-                application.inboundProtocolConfiguration.saml.manualConfiguration = Object.assign(
-                    application.inboundProtocolConfiguration.saml.manualConfiguration,
-                    {
-                        attributeProfile: {
-                            "alwaysIncludeAttributesInResponse": true,
-                            "enabled": true
+                if (samlConfigureMode === SAMLConfigModes.MANUAL) {
+                    application.inboundProtocolConfiguration.saml.manualConfiguration = Object.assign(
+                        application.inboundProtocolConfiguration.saml.manualConfiguration,
+                        {
+                            attributeProfile: {
+                                "alwaysIncludeAttributesInResponse": true,
+                                "enabled": true
+                            }
                         }
-                    }
-                );
+                    );
+                }
+
             } else if (customApplicationProtocol === SupportedAuthProtocolTypes.WS_FEDERATION) {
                 application.templateId = ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS;
             }
