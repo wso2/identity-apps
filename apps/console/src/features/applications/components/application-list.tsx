@@ -306,7 +306,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                             <Header.Content>
                                 { app.name }
                                 {
-                                    app.advancedConfigurations.fragment && (
+                                    app.advancedConfigurations?.fragment && (
                                         <Label size="mini">
                                             { t("console:develop.features.applications.list.labels.fragment") }
                                         </Label>
@@ -453,7 +453,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                         featureConfig?.applications?.scopes?.delete, allowedScopes);
                     const isSuperTenant: boolean = (tenantDomain === AppConstants.getSuperTenant());
                     const isSystemApp: boolean = isSuperTenant && (UIConfig.systemAppsIdentifiers.includes(app?.name));
-                    const isFragmentApp: boolean = app.advancedConfigurations.fragment;
+                    const isFragmentApp: boolean = app.advancedConfigurations?.fragment || false;
 
                     return hasScopes ||
                             isSystemApp ||
