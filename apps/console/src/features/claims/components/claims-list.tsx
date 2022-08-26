@@ -46,15 +46,15 @@ import {
 } from "@wso2is/react-components";
 import isEqual from "lodash-es/isEqual";
 import React,{
-    Dispatch, 
-    FunctionComponent, 
-    ReactElement, 
-    ReactNode, 
-    SetStateAction, 
-    SyntheticEvent, 
-    useEffect, 
-    useRef, 
-    useState 
+    Dispatch,
+    FunctionComponent,
+    ReactElement,
+    ReactNode,
+    SetStateAction,
+    SyntheticEvent,
+    useEffect,
+    useRef,
+    useState
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -67,7 +67,8 @@ import {
     FeatureConfigInterface,
     UIConstants,
     getEmptyPlaceholderIllustrations,
-    history
+    history,
+    store
 } from "../../core";
 import { UserStoreListItem, getUserStores } from "../../userstores";
 import { deleteAClaim, deleteADialect, deleteAnExternalClaim } from "../api";
@@ -404,7 +405,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
     const fetchUpdatedSchemaList = (): void => {
         dispatch(setProfileSchemaRequestLoadingStatus(true));
 
-        getProfileSchemas()
+        getProfileSchemas(store.getState().config.endpoint?.schemas)
             .then((response: ProfileSchemaInterface[]) => {
                 dispatch(setSCIMSchemas<ProfileSchemaInterface[]>(response));
             })
@@ -506,7 +507,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
         return (
             <ConfirmationModal
                 onClose={ closeDeleteConfirm }
-                type="warning"
+                type="negative"
                 open={ deleteConfirm }
                 assertionHint={ t("console:manage.features.claims.list.confirmation.hint") }
                 assertionType="checkbox"
@@ -531,7 +532,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                 </ConfirmationModal.Header>
                 <ConfirmationModal.Message
                     attached
-                    warning
+                    negative
                     data-testid={ `${ testId }-delete-confirmation-modal-message` }
                 >
                     { t("console:manage.features.claims.list.confirmation.message", {
@@ -1045,13 +1046,13 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                 },
                 attributeConfig.externalAttributes.showDeleteIcon(dialectID, list) && {
                     hidden: (claim: ExternalClaim): boolean => {
-                        if (!hasRequiredScopes(featureConfig?.attributeDialects, 
-                            featureConfig?.attributeDialects?.scopes?.delete, allowedScopes) 
+                        if (!hasRequiredScopes(featureConfig?.attributeDialects,
+                            featureConfig?.attributeDialects?.scopes?.delete, allowedScopes)
                             || attributeConfig.externalAttributes.hideDeleteIcon(claim)) {
                             return true;
                         }
-                        
-                        if (attributeConfig.defaultScimMapping 
+
+                        if (attributeConfig.defaultScimMapping
                             && Object.keys(attributeConfig.defaultScimMapping).length > 0) {
                             const defaultSCIMClaims: Map<string, string> = attributeConfig
                                 .defaultScimMapping[claim.claimDialectURI];

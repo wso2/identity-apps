@@ -21,12 +21,14 @@ import {
     ApplicationTemplateListItemInterface,
     DefaultProtocolTemplate
 } from "../../models";
+import {ApplicationManagementConstants} from "../../constants";
 
 export const PassiveStsProtocolTemplateItem: ApplicationTemplateListItemInterface = {
     authenticationProtocol: "passive-sts",
     id: DefaultProtocolTemplate.WS_FEDERATION,
     image: "wsFed",
-    name: "Passive STS"
+    name: "Passive STS",
+    templateId: ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS
 };
 
 export const PassiveStsProtocolTemplate: ApplicationTemplateInterface = {

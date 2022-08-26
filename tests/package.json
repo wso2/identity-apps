@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/integration-tests",
-    "version": "1.2.1041",
+    "version": "1.4.34",
     "description": "Cypress integration tests for WSO2 Identity Apps.",
     "author": "WSO2",
     "license": "Apache-2.0",

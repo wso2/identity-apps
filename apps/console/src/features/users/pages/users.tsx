@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { getUserStoreList } from "@wso2is/core/api";
 import { CommonHelpers } from "@wso2is/core/helpers";
 import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
@@ -34,7 +35,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dropdown, DropdownProps, Icon, PaginationProps, Popup } from "semantic-ui-react";
 import {
     AdvancedSearchWithBasicFilters,
-    AppConstants,
     AppState,
     FeatureConfigInterface,
     SharedUserStoreUtils,
@@ -43,6 +43,8 @@ import {
     getEmptyPlaceholderIllustrations,
     store
 } from "../../core";
+import { RootOnlyComponent } from "../../organizations/components";
+import { OrganizationUtils } from "../../organizations/utils";
 import {
     GovernanceConnectorInterface,
     RealmConfigInterface,
@@ -56,11 +58,10 @@ import {
     UserStorePostData,
     UserStoreProperty
 } from "../../userstores";
-import { deleteUser, getUsersList } from "../api";
+import { getUsersList } from "../api";
 import { AddUserWizard, UsersList, UsersListOptionsComponent } from "../components";
 import { UserManagementConstants } from "../constants";
 import { UserListInterface } from "../models";
-import { Show, AccessControlConstants } from "@wso2is/access-control";
 
 /**
  * Props for the Users page.
@@ -133,8 +134,10 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
 
                     if (userStore !== CONSUMER_USERSTORE) {
                         let email: string = null;
+
                         if (resource?.emails instanceof Array) {
                             const emailElement = resource?.emails[0];
+
                             if (typeof emailElement === "string") {
                                 email = emailElement;
                             } else {
@@ -142,11 +145,12 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                             }
                         }
 
-                        resource.emails = [email];
+                        resource.emails = [ email ];
 
                         return resource;
                     } else {
                         const resources = [ ...data.Resources ];
+
                         resources.splice(resources.indexOf(resource), 1);
                         data.Resources = resources;
                     }
@@ -196,9 +200,13 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 setShowWizard(true);
             }
         }
-    }, [emailVerificationEnabled]);
+    }, [ emailVerificationEnabled ]);
 
     useEffect(() => {
+        if (!OrganizationUtils.isCurrentOrganizationRoot()) {
+            return;
+        }
+
         SharedUserStoreUtils.getReadOnlyUserStores().then((response) => {
             setReadOnlyUserStoresList(response);
         });
@@ -212,6 +220,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
 
             if (userPreferences.identityAppsSettings.userPreferences.userListColumns.length < 1) {
                 const metaColumns = UserManagementConstants.DEFAULT_USER_LIST_ATTRIBUTES;
+
                 setUserMetaColumns(metaColumns);
                 metaColumns.map((column) => {
                     if (column === "id") {
@@ -243,7 +252,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
      * @return {UserListInterface}
      */
     const moderateUsersList = (list: UserListInterface, requestedLimit: number,
-                               popCount: number = 1): UserListInterface => {
+        popCount: number = 1): UserListInterface => {
 
         const moderated: UserListInterface = list;
 
@@ -280,7 +289,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             value: ""
         };
 
-        getUserStoreList()
+        getUserStoreList(store.getState().config.endpoints.userStores)
             .then((response) => {
                 if (storeOptions === []) {
                     storeOptions.push(storeOption);
@@ -327,6 +336,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         if (!attArray.includes(UserManagementConstants.SCIM2_SCHEMA_DICTIONARY.get("USERNAME"))) {
             attArray.push(UserManagementConstants.SCIM2_SCHEMA_DICTIONARY.get("USERNAME"));
         }
+
         return attArray.toString();
     };
 
@@ -344,18 +354,24 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
      * Fetch the list of available userstores.
      */
     useEffect(() => {
+        if (!OrganizationUtils.isCurrentOrganizationRoot()) {
+            return;
+        }
+
         getUserStores();
         getAdminUser();
     }, []);
 
     useEffect(() => {
         const attributes = userListMetaContent ? generateAttributesString(userListMetaContent?.values()) : null;
+
         getList(listItemLimit, listOffset, null, attributes, userStore);
     }, [ userStore ]);
 
     useEffect(() => {
         if (userListMetaContent) {
             const attributes = generateAttributesString(userListMetaContent?.values());
+
             getList(listItemLimit, listOffset, null, attributes, userStore);
         }
     }, [ listOffset, listItemLimit ]);
@@ -365,6 +381,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             return;
         }
         const attributes = generateAttributesString(userListMetaContent?.values());
+
         getList(listItemLimit, listOffset, null, attributes, userStore);
         setListUpdated(false);
     }, [ isListUpdated ]);
@@ -424,6 +441,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const handleMetaColumnChange = (metaColumns: string[]) => {
         metaColumns.push("profileUrl");
         const tempColumns = new Map<string, string> ();
+
         setUserMetaColumns(metaColumns);
 
         metaColumns.map((column) => {
@@ -441,8 +459,10 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
      */
     const handleUserFilter = (query: string): void => {
         const attributes = generateAttributesString(userListMetaContent.values());
+
         if (query === "userName sw ") {
             getList(listItemLimit, listOffset, null, attributes, userStore);
+
             return;
         }
 
@@ -474,6 +494,12 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
      * Handles the click event of the create new user button.
      */
     const handleAddNewUserWizardClick = (): void => {
+        if (!OrganizationUtils.isCurrentOrganizationRoot()) {
+            setEmailVerificationEnabled(false);
+
+            return;
+        }
+
         getConnectorCategory(ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID)
             .then((response) => {
                 const connectors: GovernanceConnectorInterface[]  = response?.connectors;
@@ -518,6 +544,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 )
             }
             title={ t("console:manage.pages.users.title") }
+            pageTitle={ t("console:manage.pages.users.title") }
             description={ t("console:manage.pages.users.subTitle") }
             data-testid={ `${ testId }-page-layout` }
         >
@@ -570,33 +597,35 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                                 flowing
                                 basic
                                 content={
-                                    <UsersListOptionsComponent
+                                    (<UsersListOptionsComponent
                                         data-testid="user-mgt-user-list-meta-columns"
                                         handleMetaColumnChange={ handleMetaColumnChange }
                                         userListMetaContent={ userListMetaContent }
-                                    />
+                                    />)
                                 }
                                 position="bottom left"
                                 on="click"
                                 pinned
                                 trigger={
-                                    <Button
+                                    (<Button
                                         data-testid="user-mgt-user-list-meta-columns-button"
                                         className="meta-columns-button"
                                         basic
                                     >
                                         <Icon name="columns"/>
                                         { t("console:manage.features.users.buttons.metaColumnBtn") }
-                                    </Button>
+                                    </Button>)
                                 }
                             />
-                            <Dropdown
-                                data-testid="user-mgt-user-list-userstore-dropdown"
-                                selection
-                                options={ userStoreOptions && userStoreOptions }
-                                onChange={ handleDomainChange }
-                                defaultValue="all"
-                            />
+                            <RootOnlyComponent>
+                                <Dropdown
+                                    data-testid="user-mgt-user-list-userstore-dropdown"
+                                    selection
+                                    options={ userStoreOptions && userStoreOptions }
+                                    onChange={ handleDomainChange }
+                                    defaultValue="all"
+                                />
+                            </RootOnlyComponent>
                         </>
                     )
                 }
@@ -613,14 +642,14 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 } }
             >
                 { userStoreError
-                    ? <EmptyPlaceholder
+                    ? (<EmptyPlaceholder
                         subtitle={ [ t("console:manage.features.users.placeholders.userstoreError.subtitles.0"),
                             t("console:manage.features.users.placeholders.userstoreError.subtitles.1")     ] }
                         title={ t("console:manage.features.users.placeholders.userstoreError.title") }
                         image={ getEmptyPlaceholderIllustrations().genericError }
                         imageSize="tiny"
-                    />
-                    : <UsersList
+                    />)
+                    : (<UsersList
                         advancedSearch={ (
                             <AdvancedSearchWithBasicFilters
                                 onFilter={ handleUserFilter }
@@ -667,22 +696,22 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                         data-testid="user-mgt-user-list"
                         readOnlyUserStores={ readOnlyUserStoresList }
                         featureConfig={ featureConfig }
-                    />
+                    />)
                 }
                 {
                     showWizard && (
-                    <AddUserWizard
-                        data-testid="user-mgt-add-user-wizard-modal"
-                        closeWizard={ () => {
-                            setShowWizard(false);
-                            setEmailVerificationEnabled(undefined);
-                        } }
-                        listOffset={ listOffset }
-                        listItemLimit={ listItemLimit }
-                        updateList={ () => setListUpdated(true) }
-                        rolesList={ rolesList }
-                        emailVerificationEnabled={ emailVerificationEnabled }
-                    />
+                        <AddUserWizard
+                            data-testid="user-mgt-add-user-wizard-modal"
+                            closeWizard={ () => {
+                                setShowWizard(false);
+                                setEmailVerificationEnabled(undefined);
+                            } }
+                            listOffset={ listOffset }
+                            listItemLimit={ listItemLimit }
+                            updateList={ () => setListUpdated(true) }
+                            rolesList={ rolesList }
+                            emailVerificationEnabled={ emailVerificationEnabled }
+                        />
                     )
                 }
             </ListLayout>

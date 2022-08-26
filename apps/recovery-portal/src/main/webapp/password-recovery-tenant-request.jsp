@@ -21,12 +21,19 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.core.util.IdentityTenantUtil" %>
 <%@ page import="java.io.File" %>
+<%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 
 <jsp:directive.include file="includes/localize.jsp"/>
+<jsp:directive.include file="includes/layout-resolver.jsp"/>
 
 <%
     boolean error = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("error"));
     String errorMsg = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("errorMsg"));
+%>
+
+<%-- Data for the layout from the page --%>
+<%
+    layoutData.put("containerSize", "large");
 %>
 
 <html>
@@ -42,85 +49,86 @@
     <% } %>
 </head>
 <body class="login-portal layout recovery-layout">
-<!-- page content -->
-<main class="center-segment">
-    <div class="ui container large center aligned middle aligned">
-        <!-- product-title -->
-        <%
-            File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
-            if (productTitleFile.exists()) {
-        %>
-        <jsp:include page="extensions/product-title.jsp"/>
-        <% } else { %>
-        <jsp:include page="includes/product-title.jsp"/>
-        <% } %>
-        <!-- content -->
-        <div class="ui segment">
-            <h2 class="wr-title uppercase blue-bg padding-double white boarder-bottom-blue margin-none">
-                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Start.password.recovery")%>
-            </h2>
-            <% if (error) { %>
-                <div class="ui visible negative message" id="server-error-msg">
-                    <%= IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, errorMsg) %>
-                </div>
+    <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
+        <layout:component componentName="ProductHeader" >
+            <!-- product-title -->
+            <%
+                File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
+                if (productTitleFile.exists()) {
+            %>
+            <jsp:include page="extensions/product-title.jsp"/>
+            <% } else { %>
+            <jsp:include page="includes/product-title.jsp"/>
             <% } %>
-            <div class="ui negative message" id="error-msg" hidden="hidden"></div>
+        </layout:component>
+        <layout:component componentName="MainSection" >
+            <!-- content -->
+            <div class="ui segment">
+                <h2 class="wr-title uppercase blue-bg padding-double white boarder-bottom-blue margin-none">
+                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Start.password.recovery")%>
+                </h2>
+                <% if (error) { %>
+                    <div class="ui visible negative message" id="server-error-msg">
+                        <%= IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, errorMsg) %>
+                    </div>
+                <% } %>
+                <div class="ui negative message" id="error-msg" hidden="hidden"></div>
 
-            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Enter.tenant.here")%>
+                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Enter.tenant.here")%>
 
-            <div class="ui divider hidden"></div>
+                <div class="ui divider hidden"></div>
 
-            <div class="segment-form">
-                <form class="ui large form" method="post" action="password-recovery-with-claims.jsp"
-                      id="tenantBasedRecovery">
-                    <%
-                        if (!IdentityTenantUtil.isTenantQualifiedUrlsEnabled()) {
-                    %>
-                    <input id="tenant-domain" type="text" name="tenantDomain"
-                                class="form-control ">
-                    <%
-                        }
-                    %>
+                <div class="segment-form">
+                    <form class="ui large form" method="post" action="password-recovery-with-claims.jsp"
+                        id="tenantBasedRecovery">
                         <%
-                            String callback = Encode.forHtmlAttribute
-                                    (request.getParameter("callback"));
-                            if (callback != null) {
+                            if (!IdentityTenantUtil.isTenantQualifiedUrlsEnabled()) {
                         %>
-                        <div>
-                            <input type="hidden" name="callback" value="<%=callback %>"/>
-                        </div>
+                        <input id="tenant-domain" type="text" name="tenantDomain"
+                                    class="form-control ">
                         <%
                             }
                         %>
-                        <div class="ui divider hidden"></div>
+                            <%
+                                String callback = Encode.forHtmlAttribute
+                                        (request.getParameter("callback"));
+                                if (callback != null) {
+                            %>
+                            <div>
+                                <input type="hidden" name="callback" value="<%=callback %>"/>
+                            </div>
+                            <%
+                                }
+                            %>
+                            <div class="ui divider hidden"></div>
 
-                        <div class="align-right buttons">
-                            <a href="javascript:goBack()" class="ui button secondary">
-                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Cancel")%>
-                            </a>
-                            <button id="recoverSubmit"
-                                    class="ui primary large button"
-                                    type="submit">
-                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                                "Proceed.password.recovery")%>
-                            </button>
-                        </div>
-                </form>
+                            <div class="align-right buttons">
+                                <a href="javascript:goBack()" class="ui button secondary">
+                                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Cancel")%>
+                                </a>
+                                <button id="recoverSubmit"
+                                        class="ui primary large button"
+                                        type="submit">
+                                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                                    "Proceed.password.recovery")%>
+                                </button>
+                            </div>
+                    </form>
+                </div>
             </div>
-        </div>
-    </div>
-</main>
-
-
-    <!-- product-footer -->
-    <%
-        File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
-        if (productFooterFile.exists()) {
-    %>
-        <jsp:include page="extensions/product-footer.jsp"/>
-    <% } else { %>
-        <jsp:include page="includes/product-footer.jsp"/>
-    <% } %>
+        </layout:component>
+        <layout:component componentName="ProductFooter" >
+            <!-- product-footer -->
+            <%
+                File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
+                if (productFooterFile.exists()) {
+            %>
+                <jsp:include page="extensions/product-footer.jsp"/>
+            <% } else { %>
+                <jsp:include page="includes/product-footer.jsp"/>
+            <% } %>
+        </layout:component>
+    </layout:main>
 
     <!-- footer -->
     <%

@@ -34,6 +34,7 @@ import org.wso2.carbon.identity.core.util.IdentityCoreInitializedEvent;
 import org.wso2.carbon.identity.core.util.IdentityUtil;
 import org.wso2.carbon.identity.oauth.OAuthAdminServiceImpl;
 import org.wso2.carbon.identity.oauth.listener.OAuthApplicationMgtListener;
+import org.wso2.carbon.identity.organization.management.service.OrganizationManagementInitialize;
 import org.wso2.carbon.registry.core.service.RegistryService;
 import org.wso2.carbon.ui.CarbonSSOSessionManager;
 import org.wso2.identity.apps.common.listner.AppPortalApplicationMgtListener;
@@ -202,6 +203,26 @@ public class AppsCommonServiceComponent {
 
     protected void unsetCarbonSSOSessionManager(CarbonSSOSessionManager carbonSSOSessionManager) {
 
+    }
+
+    @Reference(
+            name = "organization.mgt.initialize.service",
+            service = OrganizationManagementInitialize.class,
+            cardinality = ReferenceCardinality.OPTIONAL,
+            policy = ReferencePolicy.DYNAMIC,
+            unbind = "unsetOrganizationManagementEnablingService"
+    )
+    protected void setOrganizationManagementEnablingService(
+            OrganizationManagementInitialize organizationManagementInitializeService) {
+
+        AppsCommonDataHolder.getInstance()
+                .setOrganizationManagementEnable(organizationManagementInitializeService);
+    }
+
+    protected void unsetOrganizationManagementEnablingService(
+            OrganizationManagementInitialize organizationManagementInitializeInstance) {
+
+        AppsCommonDataHolder.getInstance().setOrganizationManagementEnable(null);
     }
 
     private boolean skipPortalInitialization() {

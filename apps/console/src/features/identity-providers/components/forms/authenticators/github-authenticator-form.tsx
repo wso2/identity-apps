@@ -25,6 +25,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { Icon, SemanticICONS } from "semantic-ui-react";
 import { IdentityProviderManagementConstants } from "../../../constants";
 import {
+    AuthenticatorSettingsFormModes,
     CommonAuthenticatorFormFieldInterface,
     CommonAuthenticatorFormFieldMetaInterface,
     CommonAuthenticatorFormInitialValuesInterface,
@@ -36,6 +37,12 @@ import {
  * Interface for GitHub Authenticator Form props.
  */
 interface GithubAuthenticatorFormPropsInterface extends TestableComponentInterface {
+    /**
+     * The intended mode of the authenticator form.
+     * If the mode is "EDIT", the form will be used in the edit view and will rely on metadata for readonly states, etc.
+     * If the mode is "CREATE", the form will be used in the add wizards and will all the fields will be editable.
+     */
+    mode: AuthenticatorSettingsFormModes;
     /**
      * GitHub Authenticator metadata.
      */
@@ -155,6 +162,7 @@ export const GithubAuthenticatorForm: FunctionComponent<GithubAuthenticatorFormP
 
     const {
         metadata,
+        mode,
         initialValues: originalInitialValues,
         onSubmit,
         readOnly,
@@ -297,7 +305,13 @@ export const GithubAuthenticatorForm: FunctionComponent<GithubAuthenticatorFormP
                     </Trans>
                 }
                 required={ formFields?.ClientId?.meta?.isMandatory }
-                readOnly={ readOnly || formFields?.ClientId?.meta?.readOnly }
+                readOnly={
+                    readOnly || (
+                        mode === AuthenticatorSettingsFormModes.CREATE
+                            ? false
+                            : formFields?.ClientId?.meta?.readOnly
+                    )
+                }
                 value={ formFields?.ClientId?.value }
                 maxLength={ formFields?.ClientId?.meta?.maxLength }
                 minLength={
@@ -332,7 +346,13 @@ export const GithubAuthenticatorForm: FunctionComponent<GithubAuthenticatorFormP
                     </Trans>
                 }
                 required={ formFields?.ClientSecret?.meta?.isMandatory }
-                readOnly={ readOnly || formFields?.ClientSecret?.meta?.readOnly }
+                readOnly={
+                    readOnly || (
+                        mode === AuthenticatorSettingsFormModes.CREATE
+                            ? false
+                            : formFields?.ClientSecret?.meta?.readOnly
+                    )
+                }
                 value={ formFields?.ClientSecret?.value }
                 maxLength={ formFields?.ClientSecret?.meta?.maxLength }
                 minLength={
@@ -360,7 +380,13 @@ export const GithubAuthenticatorForm: FunctionComponent<GithubAuthenticatorFormP
                 }
                 required={ formFields?.callbackUrl?.meta?.isMandatory }
                 value={ formFields?.callbackUrl?.value }
-                readOnly={ readOnly || formFields?.callbackUrl?.meta?.readOnly }
+                readOnly={
+                    readOnly || (
+                        mode === AuthenticatorSettingsFormModes.CREATE
+                            ? false
+                            : formFields?.callbackUrl?.meta?.readOnly
+                    )
+                }
                 maxLength={ formFields?.callbackUrl?.meta?.maxLength }
                 minLength={
                     IdentityProviderManagementConstants

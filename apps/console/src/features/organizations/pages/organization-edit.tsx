@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 Inc. (http://www.wso2.com) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -102,6 +102,7 @@ const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface
         <PageLayout
             isLoading={ false }
             title={ organization?.name ?? t("console:manage.features.organizations.title") }
+            pageTitle={ organization?.name ?? t("console:manage.features.organizations.title") }
             description={ t("console:manage.features.organizations.edit.description") }
             image={ (
                 <GenericIcon

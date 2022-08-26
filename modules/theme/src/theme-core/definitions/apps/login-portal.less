@@ -102,12 +102,71 @@
                             }
                         }
 
+                        .resend-button {
+                            padding: 0 !important;
+                            background: none !important;
+                            border: none;
+                            cursor: pointer;
+                            color: #ff5000;
+                        }
+
+                        .resend-button:hover {
+                            text-decoration: underline;
+                        }
+
                         .align-center {
                             text-align: center;
                         }
 
                         .align-right {
                             text-align: right;
+                        }
+                    }
+
+                    .social-login, .external-login {
+                        &.social-dimmer, .external-login-dimmer {
+                            &.dimmable{
+                                overflow: inherit !important;
+                                z-index: 998 !important;
+                            }
+                            .ui {
+                                &.inverted {
+                                    &.dimmer {
+                                        border-radius: 5px;
+                                    }
+                                }
+                            }
+                            .content {
+                                p {
+                                    font-size: 12px;
+                                    padding: 1.5em;
+                                    color: #474747;
+                                }
+                            }
+                        }
+                        
+                        .ui.button {
+                            width: 100%;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            box-shadow: 0 0 1px 0 rgba(0,0,0,0.12), 0 1px 1px 0 rgba(0,0,0,0.24);
+                            background: @loginPortalExternalConnectionButtonBackgroundColor;
+
+                            .ui.image {
+                                height: 22px;
+                                width: 22px;
+                                margin-right: auto;
+                            }
+
+                            span {
+                                margin-right: auto;
+                                margin-left: -1em
+                            }
+
+                            &:hover {
+                                background: @loginPortalExternalConnectionButtonHoverBackgroundColor;
+                            }
                         }
                     }
                 }

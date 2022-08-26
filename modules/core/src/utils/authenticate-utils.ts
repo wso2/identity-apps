@@ -17,6 +17,7 @@
  *
  */
 
+import { AuthenticatedUserInfo, BasicUserInfo } from "@asgardeo/auth-react";
 import { TokenConstants } from "../constants";
 
 /**
@@ -123,5 +124,24 @@ export class AuthenticateUtils {
         const tenantDomain: string = subParts[ subParts.length - 1 ];
 
         return tenantDomain;
+    }
+
+    /**
+    * Get sign in data of the user
+    *
+    * @param {BasicUserInfo} response - Sign in user data response
+    * @return {AuthenticatedUserInfo} Associated user's information
+    */
+    public static getSignInState(response: BasicUserInfo): AuthenticatedUserInfo {
+    
+        return {
+            allowedScopes: response?.allowedScopes,
+            displayName: response?.displayName,
+            display_name: response?.displayName,
+            email: response?.email,
+            scope: response?.allowedScopes,
+            tenantDomain: AuthenticateUtils.deriveTenantDomainFromSubject(response?.sub) ,
+            username: response?.sub
+        };
     }
 }

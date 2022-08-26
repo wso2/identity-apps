@@ -23,7 +23,7 @@ import { ConfirmationModal, DangerZone, DangerZoneGroup } from "@wso2is/react-co
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { AppConstants, AppState, FeatureConfigInterface, UIConfigInterface, history } from "../../core";
+import { AppConstants, AppState, EventPublisher, FeatureConfigInterface, UIConfigInterface, history } from "../../core";
 import { deleteApplication } from "../api";
    
 /**
@@ -35,6 +35,10 @@ interface ApplicationDangerZonePropsInterface extends
          * Currently editing application id.
          */
         appId?: string;
+        /**
+         * Client Id of the application.
+         */
+        clientId?: string;
         /**
          * Name of the application.
          */
@@ -58,6 +62,7 @@ export const ApplicationDangerZoneComponent: FunctionComponent<ApplicationDanger
     const {
         featureConfig,
         appId,
+        clientId,
         name,
         content,
         [ "data-componentid" ]: testId
@@ -72,6 +77,7 @@ export const ApplicationDangerZoneComponent: FunctionComponent<ApplicationDanger
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ isDeletionInProgress, setIsDeletionInProgress ] = useState<boolean>(false);
  
+    const eventPublisher: EventPublisher = EventPublisher.getInstance();
     /**
      * Deletes an application.
      */
@@ -89,6 +95,10 @@ export const ApplicationDangerZoneComponent: FunctionComponent<ApplicationDanger
  
                 setShowDeleteConfirmationModal(false);
                 onDelete();
+
+                eventPublisher.publish("application-delete", {
+                    "client-id": clientId
+                });
             })
             .catch((error) => {
                 setIsDeletionInProgress(false);
@@ -110,6 +120,9 @@ export const ApplicationDangerZoneComponent: FunctionComponent<ApplicationDanger
                     message: t("console:develop.features.applications.notifications.deleteApplication.genericError" +
                          ".message")
                 }));
+                eventPublisher.publish("application-delete-error", {
+                    "client-id": clientId
+                });
             });
     };
  
@@ -174,7 +187,7 @@ export const ApplicationDangerZoneComponent: FunctionComponent<ApplicationDanger
             { resolveDangerActions() }
             <ConfirmationModal
                 onClose={ (): void => setShowDeleteConfirmationModal(false) }
-                type="warning"
+                type="negative"
                 open={ showDeleteConfirmationModal }
                 assertionHint={ t("console:develop.features.applications.confirmations.deleteApplication." +
                              "assertionHint") }
@@ -194,7 +207,7 @@ export const ApplicationDangerZoneComponent: FunctionComponent<ApplicationDanger
                 </ConfirmationModal.Header>
                 <ConfirmationModal.Message
                     attached
-                    warning
+                    negative
                     data-testid={ `${ testId }-application-delete-confirmation-modal-message` }
                 >
                     { t("console:develop.features.applications.confirmations.deleteApplication.message") }

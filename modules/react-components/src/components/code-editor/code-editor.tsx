@@ -37,6 +37,7 @@ import "codemirror/addon/hint/sql-hint";
 import "codemirror/mode/javascript/javascript";
 import "codemirror/mode/sql/sql";
 import "codemirror/mode/xml/xml";
+import "codemirror/mode/shell/shell";
 import "codemirror/mode/htmlmixed/htmlmixed";
 import "codemirror/addon/edit/closebrackets";
 import "codemirror/addon/edit/matchbrackets";
@@ -88,7 +89,7 @@ export interface CodeEditorProps extends IUnControlledCodeMirror, IdentifiableCo
     /**
      * Language the code is written in.
      */
-    language?: "javascript" | "json" | "typescript" | "htmlmixed";
+    language?: "javascript" | "json" | "typescript" | "htmlmixed" | "shell" | string;
     /**
      * Flat to enable line wrapping.
      */

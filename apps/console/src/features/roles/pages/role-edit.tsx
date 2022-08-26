@@ -78,6 +78,7 @@ const RoleEditPage: FunctionComponent<any> = (): ReactElement => {
                     roleObject?.displayName :
                     t("console:manage.pages.rolesEdit.title")
             }
+            pageTitle={ t("console:manage.pages.rolesEdit.title") }
             backButton={ {
                 onClick: handleBackButtonClick,
                 text: t("console:manage.pages.rolesEdit.backButton", { type: "roles" })

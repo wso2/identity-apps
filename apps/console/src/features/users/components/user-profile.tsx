@@ -47,6 +47,7 @@ import { Button, CheckboxProps, Divider, DropdownItemProps, Form, Grid, Icon, In
 import { ChangePasswordComponent } from "./user-change-password";
 import { commonConfig,userConfig } from "../../../extensions";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "../../core";
+import { OrganizationUtils } from "../../organizations/utils";
 import { ConnectorPropertyInterface, ServerConfigurationsConstants  } from "../../server-configurations";
 import { getUserDetails, updateUserInfo } from "../api";
 import { UserManagementConstants } from "../constants";
@@ -154,6 +155,9 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const modifiedDate = user?.meta?.lastModified;
 
     useEffect(() => {
+        if (!OrganizationUtils.isCurrentOrganizationRoot()) {
+            return;
+        }
 
         if (connectorProperties && Array.isArray(connectorProperties) && connectorProperties?.length > 0) {
 
@@ -237,7 +241,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             if (adminUserType === "internal") {
                 proSchema.forEach((schema: ProfileSchemaInterface) => {
                     const schemaNames = schema.name.split(".");
-    
+
                     if (schemaNames.length === 1) {
                         if (schemaNames[0] === "emails") {
                             const emailSchema:string = schemaNames[0];
@@ -245,7 +249,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             if(ProfileUtils.isStringArray(userInfo[emailSchema])) {
                                 const emails: any[] = userInfo[emailSchema];
                                 const primaryEmail = emails.find((subAttribute) => typeof subAttribute === "string");
-    
+
                                 // Set the primary email value.
                                 tempProfileInfo.set(schema.name, primaryEmail);
                             }
@@ -256,7 +260,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 tempProfileInfo.set(
                                     schema.name, userInfo[ProfileConstants.SCIM2_WSO2_USER_SCHEMA][schemaName]
                                 );
-    
+
                                 return;
                             }
                             tempProfileInfo.set(schema.name, userInfo[schemaName]);
@@ -266,7 +270,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             const nameSchema = schemaNames[0];
                             const givenNameSchema = schemaNames[1];
 
-                            givenNameSchema && userInfo[nameSchema] && 
+                            givenNameSchema && userInfo[nameSchema] &&
                                 userInfo[nameSchema][givenNameSchema] && (
                                 tempProfileInfo.set(schema.name, userInfo[nameSchema][givenNameSchema])
                             );
@@ -289,7 +293,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     Array.isArray(userInfo[schemaName]) &&
                                     userInfo[schemaName]
                                         .find((subAttribute) => subAttribute.type === schemaSecondaryProperty);
-                                
+
                                 if (schemaName === "addresses") {
                                     tempProfileInfo.set(
                                         schema.name,
@@ -308,7 +312,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             } else {
                 proSchema.forEach((schema: ProfileSchemaInterface) => {
                     const schemaNames = schema.name.split(".");
-    
+
                     if (schemaNames.length === 1) {
                         if (schemaNames[0] === "emails") {
                             const emailSchema:string = schemaNames[0];
@@ -316,7 +320,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             if(ProfileUtils.isStringArray(userInfo[emailSchema])) {
                                 const emails: any[] = userInfo[emailSchema];
                                 const primaryEmail = emails.find((subAttribute) => typeof subAttribute === "string");
-    
+
                                 // Set the primary email value.
                                 tempProfileInfo.set(schema.name, primaryEmail);
                             }
@@ -327,7 +331,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 tempProfileInfo.set(
                                     schema.name, userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaName]
                                 );
-    
+
                                 return;
                             }
                             tempProfileInfo.set(schema.name, userInfo[schemaName]);
@@ -359,7 +363,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     Array.isArray(userInfo[schemaName]) &&
                                     userInfo[schemaName]
                                         .find((subAttribute) => subAttribute.type === schemaSecondaryProperty);
-                                
+
                                 if (schemaName === "addresses") {
                                     tempProfileInfo.set(
                                         schema.name,
@@ -462,38 +466,38 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
         if (adminUserType === "internal") {
             profileSchema.forEach((schema: ProfileSchemaInterface) => {
-    
+
                 if (schema.mutability === ProfileConstants.READONLY_SCHEMA) {
                     return;
                 }
-    
+
                 let opValue = {};
-    
+
                 const schemaNames = schema.name.split(".");
-    
+
                 if (schema.name !== "roles.default") {
                     if (values.get(schema.name) !== undefined && values.get(schema.name).toString() !== undefined) {
-    
+
                         if (ProfileUtils.isMultiValuedSchemaAttribute(profileSchema, schemaNames[0]) ||
                             schemaNames[0] === "phoneNumbers") {
-    
+
                             const attributeValues = [];
                             const attValues: Map<string, string | string []> = new Map();
-    
+
                             if (schemaNames.length === 1 || schema.name === "phoneNumbers.mobile") {
-    
+
                                 // Extract the sub attributes from the form values.
                                 for (const value of values.keys()) {
                                     const subAttribute = value.split(".");
-    
+
                                     if (subAttribute[0] === schemaNames[0]) {
                                         attValues.set(value, values.get(value));
                                     }
                                 }
-    
+
                                 for (const [ key, value ] of attValues) {
                                     const attribute = key.split(".");
-    
+
                                     if (value && value !== "") {
                                         if (attribute.length === 1) {
                                             attributeValues.push(value);
@@ -505,7 +509,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                         }
                                     }
                                 }
-    
+
                                 opValue = {
                                     [schemaNames[0]]: attributeValues
                                 };
@@ -571,7 +575,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                         }
                     }
                 }
-    
+
                 operation = {
                     op: "replace",
                     value: opValue
@@ -586,38 +590,38 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
         } else {
             profileSchema.forEach((schema: ProfileSchemaInterface) => {
-    
+
                 if (schema.mutability === ProfileConstants.READONLY_SCHEMA) {
                     return;
                 }
-    
+
                 let opValue = {};
-    
+
                 const schemaNames = schema.name.split(".");
-    
+
                 if (schema.name !== "roles.default") {
                     if (values.get(schema.name) !== undefined && values.get(schema.name).toString() !== undefined) {
-    
+
                         if (ProfileUtils.isMultiValuedSchemaAttribute(profileSchema, schemaNames[0]) ||
                             schemaNames[0] === "phoneNumbers") {
-    
+
                             const attributeValues = [];
                             const attValues: Map<string, string | string []> = new Map();
-    
+
                             if (schemaNames.length === 1 || schema.name === "phoneNumbers.mobile") {
-    
+
                                 // Extract the sub attributes from the form values.
                                 for (const value of values.keys()) {
                                     const subAttribute = value.split(".");
-    
+
                                     if (subAttribute[0] === schemaNames[0]) {
                                         attValues.set(value, values.get(value));
                                     }
                                 }
-    
+
                                 for (const [ key, value ] of attValues) {
                                     const attribute = key.split(".");
-    
+
                                     if (value && value !== "") {
                                         if (attribute.length === 1) {
                                             attributeValues.push(value);
@@ -629,7 +633,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                         }
                                     }
                                 }
-    
+
                                 opValue = {
                                     [schemaNames[0]]: attributeValues
                                 };
@@ -695,7 +699,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                         }
                     }
                 }
-    
+
                 operation = {
                     op: "replace",
                     value: opValue
@@ -1065,7 +1069,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         const fieldName = t("console:manage.features.user.profile.fields." +
             schema.name.replace(".", "_"), { defaultValue: schema.displayName }
         );
-        
+
         const domainName = profileInfo?.get(schema.name)?.toString().split("/");
 
         return (
@@ -1114,7 +1118,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                                 type="text"
                                                 value={ domainName[1] }
                                                 key={ key }
-                                                readOnly={ isReadOnly || 
+                                                readOnly={ isReadOnly ||
                                                     schema.mutability === ProfileConstants.READONLY_SCHEMA }
                                                 maxLength={ 30 }
                                             />
@@ -1132,7 +1136,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     };
 
     return (
-        !isReadOnlyUserStoresLoading 
+        !isReadOnlyUserStoresLoading
             ? (<>
                 {
                     <Grid>
@@ -1246,7 +1250,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                                         <Input
                                                             name="createdDate"
                                                             type="text"
-                                                            value={ createdDate ? 
+                                                            value={ createdDate ?
                                                                 moment(createdDate).format("YYYY-MM-DD") : "" }
                                                             readOnly={ true }
                                                         />
@@ -1267,7 +1271,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                                         <Input
                                                             name="modifiedDate"
                                                             type="text"
-                                                            value={ modifiedDate ? 
+                                                            value={ modifiedDate ?
                                                                 moment(modifiedDate).format("YYYY-MM-DD") : "" }
                                                             readOnly={ true }
                                                         />
@@ -1375,7 +1379,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 { editingAttribute.name === ProfileConstants
                                     .SCIM2_SCHEMA_DICTIONARY.get("ACCOUNT_LOCKED")
                                     ? t("console:manage.features.user.lockUser.confirmationModal.header")
-                                    : t("console:manage.features.user.disableUser.confirmationModal.header") 
+                                    : t("console:manage.features.user.disableUser.confirmationModal.header")
                                 }
                             </ConfirmationModal.Header>
                             <ConfirmationModal.Message
@@ -1408,7 +1412,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     user={ user }
                     handleUserUpdate={ handleUserUpdate }
                 />
-            </>) 
+            </>)
             : <ContentLoader dimmer/>
     );
 };

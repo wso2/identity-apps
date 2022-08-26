@@ -19,7 +19,7 @@
 import { AsgardeoSPAClient, HttpError, HttpRequestConfig, HttpResponse } from "@asgardeo/auth-react";
 import { HttpMethods } from "@wso2is/core/models";
 import { store } from "../../core";
-import { CreateRoleInterface, PatchRoleDataInterface } from "../../roles";
+import { CreateRoleInterface } from "../../roles";
 import { OrganizationRoleListResponseInterface, PatchOrganizationRoleDataInterface } from "../models";
 
 /**
@@ -35,18 +35,16 @@ const httpClient = AsgardeoSPAClient.getInstance()
  *
  * @param {string} organizationId Identifier of the organization
  * @param {string} filter The filter query.
- * @param {number} limit The maximum number of organizations to return.
- * @param {string} after The previous range of data to be returned.
- * @param {string} before The next range of data to be returned.
+ * @param {number} count The maximum number of organizations to return.
+ * @param {string} cursor Cursor string for pagination
  *
  * @returns {Promise<OrganizationListInterface>}
  */
 export const getOrganizationRoles = (
     organizationId: string,
     filter: string,
-    limit: number,
-    after: string,
-    before: string
+    count: number,
+    cursor: string
 ): Promise<OrganizationRoleListResponseInterface> => {
     const config: HttpRequestConfig = {
         headers: {
@@ -55,10 +53,9 @@ export const getOrganizationRoles = (
         },
         method: HttpMethods.GET,
         params: {
-            after,
-            before,
-            filter,
-            limit
+            count,
+            cursor,
+            filter
         },
         url: `${ store.getState().config.endpoints.organizations }/organizations/${organizationId}/roles`
     };
@@ -209,4 +206,227 @@ export const getOrganizationRoleById = (organizationId: string, roleId: string):
         }).catch((error) => {
             return Promise.reject(error);
         });
+};
+
+/**
+ * Getter for Organization Permission List
+ * ToDo - This is hardcoded in the FE for now since we don't have the needed backend API for this as of now.
+ * Need to change this to a real API once the BE is ready
+ */
+export const getOrganizationPermissions = (): Promise<any> => {
+    return new Promise((resolve) => {
+        resolve({
+            data: [
+                {
+                    "displayName": "All Permissions",
+                    "resourcePath": "/permission"
+                },
+                {
+                    "displayName": "Admin",
+                    "resourcePath": "/permission/admin"
+                },
+                {
+                    "displayName": "Manage",
+                    "resourcePath": "/permission/admin/manage"
+                },
+                {
+                    "displayName": "Identity",
+                    "resourcePath": "/permission/admin/manage/identity"
+                },
+                {
+                    "displayName": "Authentication",
+                    "resourcePath": "/permission/admin/manage/identity/authentication"
+                },
+                {
+                    "displayName": "Claim Management",
+                    "resourcePath": "/permission/admin/manage/identity/claimmgt"
+                },
+                {
+                    "displayName": "CORS Management",
+                    "resourcePath": "/permission/admin/manage/identity/cors"
+                },
+                {
+                    "displayName": "Governance",
+                    "resourcePath": "/permission/admin/manage/identity/governance"
+                },
+                {
+                    "displayName": "Group Management",
+                    "resourcePath": "/permission/admin/manage/identity/groupmgt"
+                },
+                {
+                    "displayName": "Role Management",
+                    "resourcePath": "/permission/admin/manage/identity/rolemgt"
+                },
+                {
+                    "displayName": "Organization Management",
+                    "resourcePath": "/permission/admin/manage/identity/organizationmgt"
+                },
+                {
+                    "displayName": "User Management",
+                    "resourcePath": "/permission/admin/manage/identity/usermgt"
+                },
+                {
+                    "displayName": "Identity Providers",
+                    "resourcePath": "/permission/admin/manage/identity/idpmgt"
+                },
+                {
+                    "displayName": "Applications",
+                    "resourcePath": "/permission/admin/manage/identity/applicationmgt"
+                },
+                {
+                    "displayName": "Userstores",
+                    "resourcePath": "/permission/admin/manage/identity/userstore"
+                },
+                {
+                    "displayName": "Userstores Config",
+                    "resourcePath": "/permission/admin/manage/identity/userstore/config"
+                },
+                {
+                    "displayName": "Sessions",
+                    "resourcePath": "/permission/admin/manage/identity/authentication/session"
+                },
+                {
+                    "displayName": "CORS Origins",
+                    "resourcePath": "/permission/admin/manage/identity/cors/origins"
+                },
+                {
+                    "displayName": "Roles view",
+                    "resourcePath": "/permission/admin/manage/identity/rolemgt/view"
+                },
+                {
+                    "displayName": "Roles create",
+                    "resourcePath": "/permission/admin/manage/identity/rolemgt/create"
+                },
+                {
+                    "displayName": "Roles update",
+                    "resourcePath": "/permission/admin/manage/identity/rolemgt/update"
+                },
+                {
+                    "displayName": "Roles delete",
+                    "resourcePath": "/permission/admin/manage/identity/rolemgt/delete"
+                },
+                {
+                    "displayName": "Organizations view",
+                    "resourcePath": "/permission/admin/manage/identity/organizationmgt/view"
+                },
+                {
+                    "displayName": "Organizations create",
+                    "resourcePath": "/permission/admin/manage/identity/organizationmgt/create"
+                },
+                {
+                    "displayName": "Organizations update",
+                    "resourcePath": "/permission/admin/manage/identity/organizationmgt/update"
+                },
+                {
+                    "displayName": "Organizations delete",
+                    "resourcePath": "/permission/admin/manage/identity/organizationmgt/delete"
+                },
+                {
+                    "displayName": "Users view",
+                    "resourcePath": "/permission/admin/manage/identity/usermgt/view"
+                },
+                {
+                    "displayName": "Users list",
+                    "resourcePath": "/permission/admin/manage/identity/usermgt/list"
+                },
+                {
+                    "displayName": "Users create",
+                    "resourcePath": "/permission/admin/manage/identity/usermgt/create"
+                },
+                {
+                    "displayName": "Users update",
+                    "resourcePath": "/permission/admin/manage/identity/usermgt/update"
+                },
+                {
+                    "displayName": "Users delete",
+                    "resourcePath": "/permission/admin/manage/identity/usermgt/delete"
+                },
+                {
+                    "displayName": "Identity Providers view",
+                    "resourcePath": "/permission/admin/manage/identity/idpmgt/view"
+                },
+                {
+                    "displayName": "Identity Providers list",
+                    "resourcePath": "/permission/admin/manage/identity/idpmgt/list"
+                },
+                {
+                    "displayName": "Identity Providers create",
+                    "resourcePath": "/permission/admin/manage/identity/idpmgt/create"
+                },
+                {
+                    "displayName": "Identity Providers update",
+                    "resourcePath": "/permission/admin/manage/identity/idpmgt/update"
+                },
+                {
+                    "displayName": "Identity Providers delete",
+                    "resourcePath": "/permission/admin/manage/identity/idpmgt/delete"
+                },
+                {
+                    "displayName": "Applications view",
+                    "resourcePath": "/permission/admin/manage/identity/applicationmgt/view"
+                },
+                {
+                    "displayName": "Applications list",
+                    "resourcePath": "/permission/admin/manage/identity/applicationmgt/list"
+                },
+                {
+                    "displayName": "Applications create",
+                    "resourcePath": "/permission/admin/manage/identity/applicationmgt/create"
+                },
+                {
+                    "displayName": "Applications update",
+                    "resourcePath": "/permission/admin/manage/identity/applicationmgt/update"
+                },
+                {
+                    "displayName": "Applications delete",
+                    "resourcePath": "/permission/admin/manage/identity/applicationmgt/delete"
+                },
+                {
+                    "displayName": "Userstore view",
+                    "resourcePath": "/permission/admin/manage/identity/userstore/config/view"
+                },
+                {
+                    "displayName": "Userstore list",
+                    "resourcePath": "/permission/admin/manage/identity/userstore/config/list"
+                },
+                {
+                    "displayName": "Userstore create",
+                    "resourcePath": "/permission/admin/manage/identity/userstore/config/create"
+                },
+                {
+                    "displayName": "Userstore update",
+                    "resourcePath": "/permission/admin/manage/identity/userstore/config/update"
+                },
+                {
+                    "displayName": "Userstore delete",
+                    "resourcePath": "/permission/admin/manage/identity/userstore/config/delete"
+                },
+                {
+                    "displayName": "Group view",
+                    "resourcePath": "/permission/admin/manage/identity/groupmgt/view"
+                },
+                {
+                    "displayName": "Governance view",
+                    "resourcePath": "/permission/admin/manage/identity/governance/view"
+                },
+                {
+                    "displayName": "CORS Origins view",
+                    "resourcePath": "/permission/admin/manage/identity/cors/origins/view"
+                },
+                {
+                    "displayName": "Claim Metadata",
+                    "resourcePath": "/permission/admin/manage/identity/claimmgt/metadata"
+                },
+                {
+                    "displayName": "Claim Metadata view",
+                    "resourcePath": "/permission/admin/manage/identity/claimmgt/metadata/view"
+                },
+                {
+                    "displayName": "Session view",
+                    "resourcePath": "/permission/admin/manage/identity/authentication/session/view"
+                }
+            ],
+            status: 200
+        });
+    });
 };

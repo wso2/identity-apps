@@ -158,10 +158,6 @@ export const FacebookAuthenticationProviderCreateWizard: FunctionComponent<
         */
         const createNewIdentityProvider = (identityProvider: IdentityProviderInterface): void => {
 
-            // TODO Uncomment below once template id is supported from IDP REST API
-            // Tracked Here - https://github.com/wso2/product-is/issues/11023
-            // identityProvider.templateId = template.id;
-
             setIsSubmitting(true);
 
             createIdentityProvider(identityProvider)
@@ -281,11 +277,14 @@ export const FacebookAuthenticationProviderCreateWizard: FunctionComponent<
         *
         * @param {FacebookAuthenticationProviderCreateWizardFormValuesInterface} values - Form values.
         */
-        const onSubmitWizard = (values: FacebookAuthenticationProviderCreateWizardFormValuesInterface): void => {
+        const onSubmitWizard = async (values: FacebookAuthenticationProviderCreateWizardFormValuesInterface): Promise<void> => {
+
+            await identityProviderConfig.overrideTemplate(template);
 
             const identityProvider: IdentityProviderInterface = { ...template.idp };
 
             identityProvider.name = values.name.toString();
+            identityProvider.templateId = template.templateId;
 
             identityProvider.federatedAuthenticators.authenticators[ 0 ].properties = [
                 {

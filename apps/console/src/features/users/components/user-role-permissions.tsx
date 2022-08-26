@@ -18,11 +18,13 @@
 
 import { RolesInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { LinkButton } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Button, Grid, Modal } from "semantic-ui-react";
-import { AppConstants } from "../../core/constants";
-import { history } from "../../core/helpers";
+import { AppConstants, AppState, history } from "../../core";
+import { getOrganizationRoleById } from "../../organizations/api";
+import { OrganizationUtils } from "../../organizations/utils";
 import { PermissionList, getRoleById } from "../../roles";
 
 /**
@@ -61,6 +63,10 @@ export const UserRolePermissions: FunctionComponent<UserRolePermissionsInterface
     const [ isRoleSet, setRoleCheck ] = useState(false);
     const [ role, setRole ] = useState<RolesInterface>();
 
+    const currentOrganization = useSelector((state: AppState) => state.organization.organization);
+    const isRootOrganization = useMemo(() =>
+        OrganizationUtils.isRootOrganization(currentOrganization), [ currentOrganization ]);
+
     /**
      * The following useEffect is triggered when the passed
      * role id is changed.
@@ -71,11 +77,19 @@ export const UserRolePermissions: FunctionComponent<UserRolePermissionsInterface
         }
 
         if (roleId) {
-            getRoleById(roleId)
-                .then((response) => {
-                    setRoleCheck(false);
-                    setRole(response.data);
-                });
+            if (isRootOrganization) {
+                getRoleById(roleId)
+                    .then((response) => {
+                        setRoleCheck(false);
+                        setRole(response.data);
+                    });
+            } else {
+                getOrganizationRoleById(currentOrganization.id, roleId)
+                    .then((response) => {
+                        setRoleCheck(false);
+                        setRole(response.data);
+                    });
+            }
         }
     }, [ roleId ]);
 

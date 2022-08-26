@@ -504,18 +504,20 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                             </Grid.Column>
                         </Grid.Row>
                         {
-                            (isEmptyClaims || isEmptyServerSupportedClaims) && (
+                            ((!isLocalClaimsLoading && !serverSideClaimsLoading) 
+                                && (isEmptyServerSupportedClaims || isEmptyClaims)) 
+                            && (
                                 <Grid.Row columns={ 1 }>
                                     <Grid.Column width={ 16 } textAlign="left" verticalAlign="top">
                                         <Message
                                             visible
                                             type="warning"
                                             content={
-                                                <>
+                                                (<>
                                                     {
                                                         !isEmptyServerSupportedClaims
                                                             ? (
-                                                                <Hint warning>
+                                                                <>
                                                                     <Trans
                                                                         i18nKey={
                                                                             "console:manage.features.claims." +
@@ -533,22 +535,20 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                                                                         }
                                                                     > here
                                                                     </Link>.
-                                                                </Hint>
+                                                                </>
                                                             ) : (
-                                                                <Hint warning>
-                                                                    <Trans
-                                                                        i18nKey={
-                                                                            "console:manage.features.claims." +
+                                                                <Trans
+                                                                    i18nKey={
+                                                                        "console:manage.features.claims." +
                                                                             "external.forms.emptyMessage"
-                                                                        }
-                                                                    >
+                                                                    }
+                                                                >
                                                                         All the SCIM attributes are mapped to local
                                                                         claims.
-                                                                    </Trans>
-                                                                </Hint>
+                                                                </Trans>
                                                             )
                                                     }
-                                                </>
+                                                </>)
                                             }
                                         />
                                     </Grid.Column>

@@ -658,6 +658,12 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     return;
                 }
 
+                // Hides the organization switch grant type if the organization management feature disabled.
+                if (name === ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT
+                    && !isOrganizationManagementEnabled) {
+                    return;
+                }
+
                 // Remove un-allowed grant types.
                 if (template
                     && template.id
@@ -729,13 +735,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         }
 
         // Remove disabled grant types from the sorted list.
-        if (applicationConfig.inboundOIDCForm.disabledGrantTypes &&
-            applicationConfig.inboundOIDCForm.disabledGrantTypes.length > 0) {
-            const filteredGrantList = allowedList.filter(function( item ) {
-                return (!applicationConfig.inboundOIDCForm.disabledGrantTypes.includes(item.value));
-            });
+        if (applicationConfig.inboundOIDCForm.disabledGrantTypes
+            && applicationConfig.inboundOIDCForm.disabledGrantTypes[template.id]) {
+            const disabledGrantTypes = applicationConfig.inboundOIDCForm.disabledGrantTypes[template.id];
 
-            return filteredGrantList;
+            return allowedList.filter((grant) => !disabledGrantTypes.includes(grant.value));
         }
 
         return allowedList;
@@ -1197,8 +1201,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 </Grid.Column>
             </Grid.Row>
             {
-                !isSPAApplication && selectedGrantTypes?.includes("authorization_code") &&
-                (
+                !isSPAApplication
+                && (
+                    selectedGrantTypes?.includes(ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT)
+                    || selectedGrantTypes?.includes(ApplicationManagementConstants.DEVICE_GRANT)
+                ) && (
                     <>
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
@@ -2770,7 +2777,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                     <Message
                                                         type="info"
                                                         content={
-                                                            <Trans
+                                                            (<Trans
                                                                 i18nKey={
                                                                     "console:develop.features.applications." +
                                                                     "forms.inboundOIDC.fields.clientSecret.message"
@@ -2781,7 +2788,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                                 <Code withBackground>client_secret</Code> to native
                                                                 applications or web browser-based applications for
                                                                 the purpose of client authentication.
-                                                            </Trans>
+                                                            </Trans>)
                                                         }
                                                     />
                                                 )

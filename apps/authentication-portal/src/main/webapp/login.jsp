@@ -30,14 +30,18 @@
 <%@ page import="static org.wso2.carbon.identity.application.authentication.endpoint.util.Constants.AUTHENTICATION_MECHANISM_NOT_CONFIGURED" %>
 <%@ page import="static org.wso2.carbon.identity.application.authentication.endpoint.util.Constants.ENABLE_AUTHENTICATION_WITH_REST_API" %>
 <%@ page import="static org.wso2.carbon.identity.application.authentication.endpoint.util.Constants.ERROR_WHILE_BUILDING_THE_ACCOUNT_RECOVERY_ENDPOINT_URL" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.IdentityProviderDataRetrievalClient" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.IdentityProviderDataRetrievalClientException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.Arrays" %>
 <%@ page import="java.util.Map" %>
+<%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 
 <%@ include file="includes/localize.jsp" %>
 <jsp:directive.include file="includes/init-url.jsp"/>
+<jsp:directive.include file="includes/layout-resolver.jsp"/>
 
 <%!
     private static final String FIDO_AUTHENTICATOR = "FIDOAuthenticator";
@@ -181,6 +185,10 @@
     }
 %>
 
+<%-- Data for the layout from the page --%>
+<%
+    layoutData.put("containerSize", "medium");
+%>
 
 <!doctype html>
 <html>
@@ -198,7 +206,7 @@
     <%
         if (reCaptchaEnabled || reCaptchaResendEnabled) {
     %>
-        <script src='<%=(Encode.forJavaScriptSource(reCaptchaAPI))%>'></script>
+    <script src="<%=Encode.forHtmlContent(reCaptchaAPI)%>"></script>
     <%
         }
     %>
@@ -212,9 +220,8 @@
         <jsp:include page="util/timeout.jsp"/>
     <% } %>
 
-    <main class="center-segment">
-        <div class="ui container medium center aligned middle aligned">
-
+    <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
+        <layout:component componentName="ProductHeader" >
             <!-- product-title -->
             <%
                 File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
@@ -224,7 +231,8 @@
             <% } else { %>
                 <jsp:include page="includes/product-title.jsp"/>
             <% } %>
-
+        </layout:component>
+        <layout:component componentName="MainSection" >
             <div class="ui segment">
                 <h3 class="ui header ellipsis">
                     <% if (isIdentifierFirstLogin(inputType)) { %>
@@ -295,7 +303,7 @@
                     </div>
                     <% } %>
                     <div class="field">
-                        <div class="ui vertical ui center aligned segment form" style="max-width: 300px; margin: 0 auto;">
+                        <div class="ui vertical ui center aligned segment form">
                             <%
                                 int iconId = 0;
                                 if (idpAuthenticatorMapping != null) {
@@ -307,6 +315,16 @@
                                         if (idpName.endsWith(".hub")) {
                                             isHubIdp = true;
                                             idpName = idpName.substring(0, idpName.length() - 4);
+                                        }
+
+                                        // Uses the `IdentityProviderDataRetrievalClient` to get the IDP image.
+                                        String imageURL = "libs/themes/default/assets/images/identity-providers/enterprise-idp-illustration.svg";
+
+                                        try {
+                                            IdentityProviderDataRetrievalClient identityProviderDataRetrievalClient = new IdentityProviderDataRetrievalClient();
+                                            imageURL = identityProviderDataRetrievalClient.getIdPImage(tenantDomain, idpName);
+                                        } catch (IdentityProviderDataRetrievalClientException e) {
+                                            // Exception is ignored and the default `imageURL` value will be used as a fallback.
                                         }
                             %>
                                 <% if (isHubIdp) { %>
@@ -330,17 +348,24 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <br>
                                 <% } else { %>
-                                    <div class="field">
-                                        <button class="ui icon button fluid"
-                                            onclick="handleNoDomain(this,
-                                                '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpName))%>',
-                                                '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpEntry.getValue()))%>')"
-                                            id="icon-<%=iconId%>"
-                                            title="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> <%=Encode.forHtmlAttribute(idpName)%>">
-                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> <strong><%=Encode.forHtmlContent(idpName)%></strong>
-                                        </button>
+                                    <div class="external-login blurring external-login-dimmer">
+                                        <div class="field">
+                                            <button
+                                                class="ui button fluid"
+                                                onclick="handleNoDomain(this,
+                                                    '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpName))%>',
+                                                    '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpEntry.getValue()))%>')"
+                                                id="icon-<%=iconId%>"
+                                                title="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> <%=Encode.forHtmlAttribute(idpName)%>"
+                                            >
+                                                <img class="ui image" src="<%=Encode.forHtmlAttribute(imageURL)%>">
+                                                <span><%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> <%=Encode.forHtmlContent(idpName)%></span>
+                                            </button>
+                                        </div>
                                     </div>
+                                    <br>
                                 <% } %>
                             <% } else if (localAuthenticatorNames.size() > 0) {
                                 if (localAuthenticatorNames.contains(IWA_AUTHENTICATOR)) {
@@ -394,21 +419,21 @@
                                 }
                                 if (localAuthenticatorNames.contains(MAGIC_LINK_AUTHENTICATOR)) {
                             %>
-                            <div class="field">
-                                <button class="ui grey labeled icon button fluid"
-                                    onclick="handleNoDomain(this,
+                            <div class="social-login blurring social-dimmer">
+                                <div class="field">
+                                    <button class="ui button" onclick="handleNoDomain(this,
                                         '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpEntry.getKey()))%>',
-                                        '<%=MAGIC_LINK_AUTHENTICATOR%>')"
-                                    id="icon-<%=iconId%>"
-                                    title="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%>
-                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with" )%>">
-                                    <i class="email icon"></i>
-                                    <img src="libs/themes/default/assets/images/icons/magic-link-icon.svg" alt="Magic Link Logo" />
-                                    <span>
-                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with" )%>
-                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "magic.link" )%>
-                                    </span>
-                                </button>
+                                        '<%=MAGIC_LINK_AUTHENTICATOR%>')" id="icon-<%=iconId%>"
+                                        title="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%>
+                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "magic.link" )%>"
+                                        data-componentid="login-page-sign-in-with-magic-link">
+                                        <img class="ui image" src="libs/themes/default/assets/images/icons/magic-link-icon.svg" alt="Magic Link Logo" />
+                                        <span>
+                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with" )%>
+                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "magic.link" )%>
+                                        </span>
+                                    </button>
+                                </div>
                             </div>
                             <%
                                 }
@@ -434,18 +459,19 @@
                     <% } %>
                 </div>
             </div>
-        </div>
-    </main>
-
-    <!-- product-footer -->
-    <%
-        File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
-        if (productFooterFile.exists()) {
-    %>
-        <jsp:include page="extensions/product-footer.jsp"/>
-    <% } else { %>
-        <jsp:include page="includes/product-footer.jsp"/>
-    <% } %>
+        </layout:component>
+        <layout:component componentName="ProductFooter" >
+            <!-- product-footer -->
+            <%
+                File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
+                if (productFooterFile.exists()) {
+            %>
+                <jsp:include page="extensions/product-footer.jsp"/>
+            <% } else { %>
+                <jsp:include page="includes/product-footer.jsp"/>
+            <% } %>
+        </layout:component>
+    </layout:main>
 
     <!-- footer -->
     <%
@@ -516,25 +542,6 @@
                 $(this).hide();
                 $('.main-link').next().hide();
             });
-
-            <%
-                if(reCaptchaEnabled) {
-            %>
-                var error_msg = $("#error-msg");
-
-                $("#loginForm").submit(function (e) {
-                    var resp = $("[name='g-recaptcha-response']")[0].value;
-                    if (resp.trim() == '') {
-                        error_msg.text("<%=AuthenticationEndpointUtil.i18n(resourceBundle,"please.select.recaptcha")%>");
-                        error_msg.show();
-                        $("html, body").animate({scrollTop: error_msg.offset().top}, 'slow');
-                        return false;
-                    }
-                    return true;
-                });
-            <%
-                }
-            %>
         });
 
         function myFunction(key, value, name) {

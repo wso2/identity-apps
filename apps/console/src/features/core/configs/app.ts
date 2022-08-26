@@ -153,7 +153,8 @@ export class Config {
                 I18nConstants.COMMON_NAMESPACE,
                 I18nConstants.CONSOLE_PORTAL_NAMESPACE,
                 I18nConstants.EXTENSIONS_NAMESPACE
-            ]
+            ],
+            preload: [ "si-LK", "fr-FR" ]
         };
     }
 
@@ -185,14 +186,14 @@ export class Config {
         return {
             ...getApplicationsResourceEndpoints(this.resolveServerHost()),
             ...getApprovalsResourceEndpoints(this.getDeploymentConfig().serverHost),
-            ...getClaimResourceEndpoints(this.getDeploymentConfig().serverHost),
+            ...getClaimResourceEndpoints(this.getDeploymentConfig().serverHost, this.resolveServerHost()),
             ...getCertificatesResourceEndpoints(this.getDeploymentConfig().serverHost),
             ...getIDPResourceEndpoints(this.resolveServerHost()),
             ...getEmailTemplatesResourceEndpoints(this.getDeploymentConfig().serverHost),
-            ...getRolesResourceEndpoints(this.getDeploymentConfig().serverHost),
-            ...getServerConfigurationsResourceEndpoints(this.getDeploymentConfig().serverHost),
+            ...getRolesResourceEndpoints(this.resolveServerHost(), this.getDeploymentConfig().serverHost),
+            ...getServerConfigurationsResourceEndpoints(this.resolveServerHost()),
             ...getUsersResourceEndpoints(this.resolveServerHost()),
-            ...getUserstoreResourceEndpoints(this.getDeploymentConfig().serverHost),
+            ...getUserstoreResourceEndpoints(this.resolveServerHost()),
             ...getScopesResourceEndpoints(this.getDeploymentConfig().serverHost),
             ...getGroupsResourceEndpoints(this.resolveServerHost()),
             ...getRemoteFetchConfigResourceEndpoints(this.getDeploymentConfig().serverHost),

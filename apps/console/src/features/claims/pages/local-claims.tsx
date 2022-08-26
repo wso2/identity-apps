@@ -310,6 +310,7 @@ const LocalClaimsPage: FunctionComponent<LocalClaimsPageInterface> = (
                 }
                 isLoading={ isLoading }
                 title={ t("console:manage.features.claims.local.pageLayout.local.title") }
+                pageTitle={ t("console:manage.features.claims.local.pageLayout.local.title") }
                 description={ (
                     <>
                         { t(attributeConfig.attributes.description) }

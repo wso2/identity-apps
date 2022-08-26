@@ -23,7 +23,7 @@ import { addAlert } from "@wso2is/core/store";
 import { ResourceTab } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import isEqual from "lodash-es/isEqual";
-import React, { FunctionComponent, useEffect, useState } from "react";
+import React, { FunctionComponent, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { UserGroupsList } from "./user-groups-edit";
@@ -34,6 +34,7 @@ import { SCIMConfigs } from "../../../extensions/configs/scim";
 import { getServerConfigs } from "../../../features/server-configurations";
 import { FeatureConfigInterface } from "../../core/models";
 import { AppState, store } from "../../core/store";
+import { OrganizationUtils } from "../../organizations/utils";
 import { ConnectorPropertyInterface } from "../../server-configurations/models";
 import { UserManagementConstants } from "../constants";
 
@@ -86,18 +87,22 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
         (state: AppState) => state?.config?.ui?.isGroupAndRoleSeparationEnabled);
 
     const [ isReadOnly, setReadOnly ] = useState<boolean>(false);
-    const [ isSuperAdmin, setIsSuperAdmin ] = useState<boolean>(false); 
-    const [ isSelectedSuperAdmin, setIsSelectedSuperAdmin ] = useState<boolean>(false); 
-    const [ 
-        isSuperAdminIdentifierFetchRequestLoading, 
-        setIsSuperAdminIdentifierFetchRequestLoading 
+    const [ isSuperAdmin, setIsSuperAdmin ] = useState<boolean>(false);
+    const [ isSelectedSuperAdmin, setIsSelectedSuperAdmin ] = useState<boolean>(false);
+    const [
+        isSuperAdminIdentifierFetchRequestLoading,
+        setIsSuperAdminIdentifierFetchRequestLoading
     ] = useState<boolean>(false);
     const [ hideTermination, setHideTermination ] = useState<boolean>(false);
     const [ user, setUser ] = useState<ProfileInfoInterface>(selectedUser);
 
+    const currentOrganization = useSelector((state: AppState) => state.organization.organization);
+    const isRootOrganization = useMemo(() =>
+        OrganizationUtils.isRootOrganization(currentOrganization), [ currentOrganization ]);
+
     useEffect(() => {
-        //Since the parent component is refreshing twice we are doing a deep equals operation on the user object to 
-        //see if they are the same values. If they are the same values we do not do anything. 
+        //Since the parent component is refreshing twice we are doing a deep equals operation on the user object to
+        //see if they are the same values. If they are the same values we do not do anything.
         //This makes sure the child components or side effects depending on the user object won't re-render or re-trigger.
         if (!selectedUser || isEqual(user, selectedUser)) {
             return;
@@ -117,10 +122,14 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
         ) {
             setReadOnly(true);
         }
-        
+
     }, [ user, readOnlyUserStores ]);
 
     useEffect(() => {
+        if (!OrganizationUtils.isCurrentOrganizationRoot()) {
+            return;
+        }
+
         checkIsSuperAdmin();
     }, [ user ]);
 
@@ -210,7 +219,8 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                 </ResourceTab.Pane>
             )
         },
-        {
+        // ToDo - Enabled only for root organizations as BE doesn't have full SCIM support for organizations yet
+        isRootOrganization ? {
             menuItem: t("console:manage.features.users.editUser.tab.menuItems.2"),
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
@@ -223,16 +233,16 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                     />
                 </ResourceTab.Pane>
             )
-        },
-        {
+        } : null,
+        OrganizationUtils.isCurrentOrganizationRoot() && {
             menuItem: t("console:manage.features.users.editUser.tab.menuItems.3"),
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
-                    <UserSessions 
-                        user={ user } 
-                        showSessionTerminationButton={ (!isSuperAdminIdentifierFetchRequestLoading && !hideTermination) 
-                        && ((isSelectedSuperAdmin && isSuperAdmin) 
-                            || (!isSelectedSuperAdmin && isSuperAdmin) 
+                    <UserSessions
+                        user={ user }
+                        showSessionTerminationButton={ (!isSuperAdminIdentifierFetchRequestLoading && !hideTermination)
+                        && ((isSelectedSuperAdmin && isSuperAdmin)
+                            || (!isSelectedSuperAdmin && isSuperAdmin)
                             || (!isSelectedSuperAdmin && !isSuperAdmin))
                         } />
                 </ResourceTab.Pane>

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 Inc. (http://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (http://www.wso2.com) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,27 +16,41 @@
  * under the License.
  */
 
+import { hasRequiredScopes } from "@wso2is/core/helpers";
+import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { SessionStorageUtils } from "@wso2is/core/utils";
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { setServiceResourceEndpoints } from "@wso2is/core/src/store";
 import { GenericIcon } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, SyntheticEvent, useCallback, useEffect, useState } from "react";
+import React, {
+    FunctionComponent,
+    ReactElement,
+    SyntheticEvent,
+    useCallback,
+    useEffect,
+    useMemo,
+    useState
+} from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Divider, Dropdown, Input, Item, Menu, Placeholder, Popup } from "semantic-ui-react";
+import { Button, Divider, Dropdown, Input, Item, Label, Menu, Placeholder, Popup } from "semantic-ui-react";
+import { organizationConfigs } from "../../../../extensions";
 import { ReactComponent as CrossIcon } from "../../../../themes/default/assets/images/icons/cross-icon.svg";
 import {
     AppConstants,
     AppState,
-    Config,
+    FeatureConfigInterface,
     getMiscellaneousIcons,
     getSidePanelIcons,
-    history,
-    setOrganization
+    history
 } from "../../../core";
 import { getOrganizations } from "../../api";
 import { OrganizationManagementConstants } from "../../constants";
-import { OrganizationInterface, OrganizationLinkInterface, OrganizationListInterface } from "../../models";
+import {
+    OrganizationInterface,
+    OrganizationLinkInterface,
+    OrganizationListInterface,
+    OrganizationResponseInterface
+} from "../../models";
 import { OrganizationUtils } from "../../utils";
 
 /**
@@ -50,12 +64,14 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
     const { "data-componentid": componentId } = props;
 
     const { t } = useTranslation();
-
     const dispatch = useDispatch();
 
-    const currentOrganization: OrganizationInterface = useSelector(
+    const currentOrganization: OrganizationResponseInterface = useSelector(
         (state: AppState) => state.organization.organization
     );
+    const feature: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const scopes = useSelector((state: AppState) => state.auth.allowedScopes);
+    const tenantDomain: string = useSelector((state: AppState) => state?.auth?.tenantDomain);
 
     const [ associatedOrganizations, setAssociatedOrganizations ] = useState<OrganizationInterface[]>([]);
     const [ listFilter, setListFilter ] = useState("");
@@ -64,23 +80,74 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
     const [ isDropDownOpen, setIsDropDownOpen ] = useState<boolean>(false);
     const [ search, setSearch ] = useState<string>("");
 
+    /**
+     * Show the organization switching dropdown only if
+     *  - the extensions config enables this
+     *  - the requires scopes are there
+     *  - the organization management feature is enabled by the backend
+     *  - the user is logged in to a non-super-tenant account
+     */
+    const isOrgSwitcherEnabled = useMemo(() => {
+        return (
+            isOrganizationManagementEnabled &&
+            // The `tenantDomain` takes the organization id when you log in to a sub-organization.
+            // So, we cannot use `tenantDomain` to check
+            // if the user is logged in to a non-super-tenant account reliably.
+            // So, we check if the organization id is there in the URL to see if the user is in a sub-organization.
+            (tenantDomain === AppConstants.getSuperTenant() || window[ "AppUtils" ].getConfig().organizationName) &&
+            hasRequiredScopes(feature?.organizations, feature?.organizations?.scopes?.read, scopes) &&
+            organizationConfigs.showOrganizationDropdown
+        );
+    }, [
+        organizationConfigs.showOrganizationDropdown,
+        tenantDomain,
+        feature.organizations
+    ]);
+
     const getOrganizationList = useCallback((filter: string, after: string, before: string) => {
-        getOrganizations(filter, 5, after, before, true, true)
-            .then((response: OrganizationListInterface) => {
-                if (!response || !response.organizations) {
-                    setAssociatedOrganizations([ OrganizationManagementConstants.ROOT_ORGANIZATION ]);
-                    setPaginationData(response.links);
-                } else {
-                    const organizations = [
-                        OrganizationManagementConstants.ROOT_ORGANIZATION,
-                        ...response?.organizations
-                    ];
+        getOrganizations(filter, 5, after, before, false, false).then((response: OrganizationListInterface) => {
+            if (!response || !response.organizations) {
+                setAssociatedOrganizations([ OrganizationManagementConstants.ROOT_ORGANIZATION ]);
+                setPaginationData(response.links);
+            } else {
+                const organizations = [ OrganizationManagementConstants.ROOT_ORGANIZATION, ...response?.organizations ];
 
-                    setAssociatedOrganizations(organizations);
+                setAssociatedOrganizations(organizations);
 
-                    setPaginationData(response.links);
-                }
-            });
+                setPaginationData(response.links);
+            }
+        }).catch((error) => {
+            setAssociatedOrganizations([ OrganizationManagementConstants.ROOT_ORGANIZATION ]);
+
+            if (error?.description) {
+                dispatch(
+                    addAlert({
+                        description: error.description,
+                        level: AlertLevels.ERROR,
+                        message: t(
+                            "console:manage.features.organizations.notifications." +
+                                    "getOrganizationList.error.message"
+                        )
+                    })
+                );
+
+                return;
+            }
+
+            dispatch(
+                addAlert({
+                    description: t(
+                        "console:manage.features.organizations.notifications.getOrganizationList" +
+                                ".genericError.description"
+                    ),
+                    level: AlertLevels.ERROR,
+                    message: t(
+                        "console:manage.features.organizations.notifications." +
+                                "getOrganizationList.genericError.message"
+                    )
+                })
+            );
+        });
     }, []);
 
     const setPaginationData = (links: OrganizationLinkInterface[]) => {
@@ -139,16 +206,20 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
         </span>
     );
 
-    const handleOrganizationSwitch = (organization: OrganizationInterface): void => {
+    const handleOrganizationSwitch = (organization: OrganizationInterface | OrganizationResponseInterface): void => {
         let newOrgPath: string = "";
 
         if (OrganizationUtils.isRootOrganization(organization)) {
-            newOrgPath = `${ window[ "AppUtils" ].getConfig().tenantPathWithoutSuperTenant }/${
-                window[ "AppUtils" ].getConfig().appBase
+            newOrgPath = `${
+                window[ "AppUtils" ].getConfig().tenantPathWithoutSuperTenant
+            } /${ window[ "AppUtils" ].getConfig().appBase
             }`;
         } else {
-            newOrgPath = window[ "AppUtils" ].getConfig().tenantPathWithoutSuperTenant
-                + "/o/" + organization.id + "/" +
+            newOrgPath =
+                window[ "AppUtils" ].getConfig().tenantPathWithoutSuperTenant +
+                "/o/" +
+                organization.id +
+                "/" +
                 window[ "AppUtils" ].getConfig().appBase;
         }
 
@@ -170,14 +241,18 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
         e.stopPropagation();
     };
 
-    const getOrganizationItemGroup = (organization: OrganizationInterface) => (
+    const getOrganizationItemGroup = (organization: OrganizationInterface | OrganizationResponseInterface,
+        isClickable: boolean) => (
         <Item.Group className="tenant-item-wrapper" unstackable>
             <Item
                 className="header"
                 key={ `${ organization?.name }-organization-item` }
-                onClick={ () => {
-                    handleOrganizationSwitch(organization);
-                } }
+                onClick={ isClickable
+                    ? () => {
+                        handleOrganizationSwitch(organization);
+                    }
+                    : null
+                }
             >
                 {
                     <GenericIcon
@@ -195,30 +270,39 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                             className="name ellipsis tenant-description"
                             data-componentid={ "organization-dropdown-display-name" }
                         >
-                            { organization?.name ?? (
-                                <Placeholder>
-                                    <Placeholder.Line />
-                                </Placeholder>
-                            ) }
+                            <div>
+                                <div>
+                                    { organization?.name ?? (
+                                        <Placeholder>
+                                            <Placeholder.Line />
+                                        </Placeholder>
+                                    ) }
+                                </div>
 
-                            { !OrganizationUtils.isRootOrganization(organization) && (
-                                <GenericIcon
-                                    transparent
-                                    inline
-                                    className="manage-tenant-icon"
-                                    data-componentid="associated-component-icon"
-                                    icon={ getSidePanelIcons().serverConfigurations }
-                                    onClick={ (event: SyntheticEvent) => {
-                                        history.push({
-                                            pathname: AppConstants.getPaths()
-                                                .get("ORGANIZATION_UPDATE")
-                                                .replace(":id", organization?.id)
-                                        });
-                                        setIsDropDownOpen(false);
-                                        event.stopPropagation();
-                                    } }
-                                />
-                            ) }
+                                <Label size="mini">{ organization.id }</Label>
+                            </div>
+
+
+                            <div className="manage-icon-wrapper" >
+                                { !OrganizationUtils.isRootOrganization(organization) && (
+                                    <GenericIcon
+                                        transparent
+                                        inline
+                                        className="manage-tenant-icon"
+                                        data-componentid="associated-component-icon"
+                                        icon={ getSidePanelIcons().serverConfigurations }
+                                        onClick={ (event: SyntheticEvent) => {
+                                            history.push({
+                                                pathname: AppConstants.getPaths()
+                                                    .get("ORGANIZATION_UPDATE")
+                                                    .replace(":id", organization?.id)
+                                            });
+                                            setIsDropDownOpen(false);
+                                            event.stopPropagation();
+                                        } }
+                                    />
+                                ) }
+                            </div>
                         </div>
                     </Item.Description>
                 </Item.Content>
@@ -233,11 +317,12 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                     className="tenants-list organizations"
                     unstackable
                     data-componentid={ "associated-organizations-container" }
-
                 >
-                    { associatedOrganizations.length > 1 ? (
+                    { associatedOrganizations.length > 0 ? (
                         associatedOrganizations.map((organization, _) =>
-                            organization.id !== currentOrganization?.id ? getOrganizationItemGroup(organization) : null
+                            organization.id !== currentOrganization?.id
+                                ? getOrganizationItemGroup(organization, true)
+                                : null
                         )
                     ) : (
                         <Item className="empty-list">
@@ -317,7 +402,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                 open={ isDropDownOpen }
             >
                 <Dropdown.Menu onClick={ handleDropdownClick }>
-                    { getOrganizationItemGroup(currentOrganization) }
+                    { getOrganizationItemGroup(currentOrganization, false) }
 
                     <Divider />
 
@@ -342,9 +427,9 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                                 action={
                                     search ? (
                                         <Popup
-                                            trigger={
-                                                (<Button
-                                                    data-componentid={ `${ componentId }-clear-button` }
+                                            trigger={ (
+                                                <Button
+                                                    data-componentid={ `${componentId}-clear-button` }
                                                     basic
                                                     compact
                                                     className="input-add-on organizations"
@@ -359,8 +444,8 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                                                             searchOrganizationList("");
                                                         } }
                                                     />
-                                                </Button>)
-                                            }
+                                                </Button>
+                                            ) }
                                             position="top center"
                                             content={ t("console:common.advancedSearch.popups.clear") }
                                             inverted={ true }
@@ -381,7 +466,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
         </Menu.Item>
     );
 
-    return <>{ tenantDropdownMenu }</>;
+    return <>{ isOrgSwitcherEnabled ? tenantDropdownMenu : null }</>;
 };
 
 export default OrganizationSwitchDropdown;

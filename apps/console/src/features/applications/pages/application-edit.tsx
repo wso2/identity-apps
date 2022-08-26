@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,17 +19,11 @@
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, StorageIdentityAppsSettingsInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import {
-    AnimatedAvatar,
-    AppAvatar,
-    GenericIcon,
-    LabelWithPopup,
-    PageLayout
-} from "@wso2is/react-components";
+import { AnimatedAvatar, AppAvatar, LabelWithPopup, PageLayout, PrimaryButton } from "@wso2is/react-components";
 import cloneDeep from "lodash-es/cloneDeep";
 import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
+import React, { FunctionComponent, ReactElement, useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
@@ -45,8 +39,11 @@ import {
     setHelpPanelDocsContentURL,
     toggleHelpPanelVisibility
 } from "../../core";
+import { getOrganizations, getSharedOrganizations } from "../../organizations/api";
+import { OrganizationInterface } from "../../organizations/models";
 import { getApplicationDetails } from "../api";
 import { EditApplication, InboundProtocolDefaultFallbackTemplates } from "../components";
+import { ApplicationShareModal } from "../components/modals/application-share-modal";
 import { ApplicationManagementConstants } from "../constants";
 import CustomApplicationTemplate
     from "../data/application-templates/templates/custom-application/custom-application.json";
@@ -63,7 +60,8 @@ import { ApplicationTemplateManagementUtils } from "../utils";
 /**
  * Proptypes for the applications edit page component.
  */
-interface ApplicationEditPageInterface extends TestableComponentInterface, RouteComponentProps { }
+interface ApplicationEditPageInterface extends TestableComponentInterface, RouteComponentProps {
+}
 
 /**
  * Application Edit page component.
@@ -97,6 +95,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         (state: AppState) => state.application.templates);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const tenantDomain: string = useSelector((state: AppState) => state.auth.tenantDomain);
+    const currentOrganization = useSelector((state: AppState) => state.organization.organization);
 
     const [ application, setApplication ] = useState<ApplicationInterface>(emptyApplication);
     const [ applicationTemplate, setApplicationTemplate ] = useState<ApplicationTemplateListItemInterface>(undefined);
@@ -104,6 +103,9 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     const [ inboundProtocolList, setInboundProtocolList ] = useState<string[]>(undefined);
     const [ inboundProtocolConfigs, setInboundProtocolConfigs ] = useState<Record<string, any>>(undefined);
     const [ isDescTruncated, setIsDescTruncated ] = useState<boolean>(false);
+    const [ showAppShareModal, setShowAppShareModal ] = useState(false);
+    const [ subOrganizationList, setSubOrganizationList ] = useState<Array<OrganizationInterface>>([]);
+    const [ sharedOrganizationList, setSharedOrganizationList ] = useState<Array<OrganizationInterface>>([]);
 
     useEffect(() => {
         /**
@@ -300,9 +302,90 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         dispatch(
             setHelpPanelDocsContentURL(editApplicationDocs[
                 ApplicationManagementConstants.APPLICATION_TEMPLATE_DOC_MAPPING
-                    .get(applicationTemplate.id) ]?.[ ApplicationManagementConstants.APPLICATION_DOCS_OVERVIEW ])
+                    .get(applicationTemplate.id)]?.[ApplicationManagementConstants.APPLICATION_DOCS_OVERVIEW])
         );
     }, [ applicationTemplate, helpPanelDocStructure ]);
+
+    /**
+     * Load the list of sub organizations under the current organization & list of already shared organizations of the
+     * application for application sharing.
+     */
+    useEffect(() => {
+        if (!showAppShareModal || !isOrganizationManagementEnabled) {
+            return;
+        }
+
+        getOrganizations(
+            null,
+            null,
+            null,
+            null,
+            true,
+            false
+        ).then((response) => {
+            setSubOrganizationList(response.organizations);
+        }).catch((error) => {
+            if (error?.description) {
+                dispatch(
+                    addAlert({
+                        description: error.description,
+                        level: AlertLevels.ERROR,
+                        message: t(
+                            "console:manage.features.organizations.notifications." +
+                                "getOrganizationList.error.message"
+                        )
+                    })
+                );
+
+                return;
+            }
+
+            dispatch(
+                addAlert({
+                    description: t(
+                        "console:manage.features.organizations.notifications.getOrganizationList" +
+                            ".genericError.description"
+                    ),
+                    level: AlertLevels.ERROR,
+                    message: t(
+                        "console:manage.features.organizations.notifications." +
+                            "getOrganizationList.genericError.message"
+                    )
+                })
+            );
+        });
+
+        getSharedOrganizations(
+            currentOrganization.id,
+            application.id
+        ).then((response) => {
+            setSharedOrganizationList(response.data.organizations);
+        }).catch((error) => {
+            if (error.response.data.description) {
+                dispatch(
+                    addAlert({
+                        description: error.response.data.description,
+                        level: AlertLevels.ERROR,
+                        message: t("console:develop.features.applications.edit.sections.shareApplication" +
+                                ".getSharedOrganizations.genericError.message")
+                    })
+                );
+
+                return;
+            }
+
+            dispatch(
+                addAlert({
+                    description: t("console:develop.features.applications.edit.sections.shareApplication" +
+                            ".getSharedOrganizations.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("console:develop.features.applications.edit.sections.shareApplication" +
+                            ".getSharedOrganizations.genericError.message")
+                })
+            );
+        }
+        );
+    }, [ getOrganizations, showAppShareModal ]);
 
     const determineApplicationTemplate = () => {
 
@@ -425,6 +508,10 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         );
     };
 
+    const onApplicationSharingCompleted = useCallback(() => {
+        getApplication(application.id);
+    }, [ getApplication, application ]);
+
     /**
      * Returns if the application is readonly or not by evaluating the `readOnly` attribute in
      * URL, the `access` attribute in application info response && the scope validation.
@@ -467,7 +554,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                                 ) }
                             />
                         </div>
-                    ) 
+                    )
             ) }
             image={
                 applicationConfig.editApplication.getOverriddenImage(inboundProtocolConfigs?.oidc?.clientId,
@@ -491,7 +578,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                 )
             }
             backButton={ {
-                "data-testid": `${ testId }-page-back-button`,
+                "data-testid": `${testId}-page-back-button`,
                 onClick: handleBackButtonClick,
                 text: t("console:develop.pages.applicationsEdit.backButton")
             } }
@@ -500,10 +587,28 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             pageHeaderMaxWidth={ true }
             data-testid={ `${ testId }-page-layout` }
             truncateContent={ true }
-            action={ 
-                applicationConfig.editApplication.getActions(inboundProtocolConfigs?.oidc?.clientId,
-                    tenantDomain, testId)
-            }
+            action={ (
+                <>
+                    {
+                        applicationConfig.editApplication.getActions(inboundProtocolConfigs?.oidc?.clientId,
+                            tenantDomain, testId)
+                    }
+
+                    {
+                        (isOrganizationManagementEnabled
+                            && applicationConfig.editApplication.showApplicationShare
+                            && !application.advancedConfigurations.fragment
+                            && application.access === ApplicationAccessTypes.WRITE
+                            && hasRequiredScopes(featureConfig?.applications,
+                                featureConfig?.applications?.scopes?.update, allowedScopes)) && (
+                            <PrimaryButton onClick={ () => setShowAppShareModal(true) }>
+                                { t("console:develop.features.applications.edit.sections" +
+                                    ".shareApplication.shareApplication") }
+                            </PrimaryButton>
+                        )
+                    }
+                </>
+            ) }
         >
             <EditApplication
                 application={ application }
@@ -523,6 +628,18 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                 } }
                 readOnly={ resolveReadOnlyState() }
             />
+
+            { (showAppShareModal && application) && (
+                <ApplicationShareModal
+                    open={ showAppShareModal }
+                    applicationId={ application.id }
+                    clientId={ inboundProtocolConfigs?.oidc?.clientId }
+                    subOrganizationList={ subOrganizationList }
+                    sharedOrganizationList={ sharedOrganizationList }
+                    onClose={ () => setShowAppShareModal(false) }
+                    onApplicationSharingCompleted={ onApplicationSharingCompleted }
+                />
+            ) }
         </PageLayout>
     );
 };

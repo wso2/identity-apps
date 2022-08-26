@@ -364,7 +364,7 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
                 deletingIdp && (
                     <ConfirmationModal
                         onClose={ (): void => setShowDeleteConfirmationModal(false) }
-                        type="warning"
+                        type="negative"
                         open={ showDeleteConfirmationModal }
                         assertion={ deletingIdp?.idp }
                         assertionHint={ (
@@ -401,7 +401,7 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message
                             attached
-                            warning
+                            negative
                             data-testid={ `${ testId }-connector-delete-confirmation-modal-message` }
                         >
                             { t("console:develop.features.applications.confirmations.deleteOutboundProvisioningIDP" +

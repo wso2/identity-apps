@@ -226,9 +226,13 @@
                                 if (reCaptchaEnabled) {
                                     String reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
                             %>
-                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group">
+                            <div class="field">
                                 <div class="g-recaptcha"
-                                     data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>">
+                                        data-size="invisible"
+                                        data-callback="onCompleted"
+                                        data-action="register"
+                                        data-sitekey=
+                                                "<%=Encode.forHtmlContent(reCaptchaKey)%>">
                                 </div>
                             </div>
                             <%
@@ -282,9 +286,30 @@
     <script src="libs/bootstrap_3.4.1/js/bootstrap.min.js"></script>
     <script type="text/javascript">
 
+        function onSubmit(token) {
+           $("#register").submit();
+        }
+
+        function onCompleted() {
+            $('#register').submit();
+        }
+
         $(document).ready(function () {
 
             $("#register").submit(function (e) {
+
+                <%
+                    if (reCaptchaEnabled) {
+                %>
+                if (!grecaptcha.getResponse()) {
+                    e.preventDefault();
+                    grecaptcha.execute();
+
+                    return true;
+                }
+                <%
+                    }
+                %>
 
                 var unsafeCharPattern = /[<>`\"]/;
                 var elements = document.getElementsByTagName("input");
@@ -315,21 +340,6 @@
                     $("html, body").animate({scrollTop: error_msg.offset().top}, 'slow');
                     return false;
                 }
-
-                <%
-                if(reCaptchaEnabled) {
-                %>
-                var resp = $("[name='g-recaptcha-response']")[0].value;
-                if (resp.trim() == '') {
-                    error_msg.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                    "Please.select.reCaptcha")%>");
-                    error_msg.show();
-                    $("html, body").animate({scrollTop: error_msg.offset().top}, 'slow');
-                    return false;
-                }
-                <%
-                }
-                %>
 
                 return true;
             });
