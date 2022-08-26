@@ -20,8 +20,5 @@
 module.exports = {
     extends: [
         "../../.eslintrc.js"
-    ],
-    rules: {
-        "tsdoc/syntax": "off"
-    }
+    ]
 };
