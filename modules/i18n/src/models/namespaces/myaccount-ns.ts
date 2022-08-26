@@ -371,7 +371,11 @@ export interface MyAccountNS {
                         messageHeading: string;
                         messageBody: string;
                         authenticatorApps: string;
-                        regenerateWarning: string;
+                        regenerateWarning: {
+                            extended: string;
+                            generic: string;
+                        };
+                        regenerateConfirmLabel: string;
                     };
                     verify: {
                         heading: string;

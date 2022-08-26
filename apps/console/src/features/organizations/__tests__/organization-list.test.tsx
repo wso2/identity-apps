@@ -139,4 +139,23 @@ describe("UTC-1.0 - [Organization Management Feature] - Organization List Compon
         await waitFor(() => expect(deleteOrganizationMock).toHaveBeenCalledTimes(1));
         await waitFor(() => expect(onOrganizationDeleteMock.mock.calls.length).toBe(1));
     });
+
+    test("UTC-1.8 - Test if disabled organization's indicator shows correctly", async () => {
+        render(
+            <AccessControlProvider
+                allowedScopes={ ReduxStoreStateMock.auth.scope }
+                featureConfig={ ReduxStoreStateMock.config.ui }
+            >
+                <OrganizationList { ...organizationListProps } />
+            </AccessControlProvider>
+        );
+
+        screen.getAllByTestId("data-table-row").forEach(((orgListItem, index) => {
+            const organization = organizationListProps.list.organizations[index];
+            const isDisabled = organization.status === "DISABLED";
+
+            expect(within(orgListItem).getByTestId("organization-list-org-status-icon"))
+                .toHaveClass(isDisabled ? "orange" : "green");
+        }));
+    });
 });

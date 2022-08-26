@@ -133,7 +133,7 @@ module.exports = {
         ecmaVersion: 9,
         sourceType: "module"
     },
-    plugins: [ "import" ],
+    plugins: [ "import", "eslint-plugin-tsdoc" ],
     root: true,
     rules: {
         "array-bracket-spacing": [ 1, "always" ],
@@ -256,7 +256,8 @@ module.exports = {
                 minKeys: 2,
                 natural: false
             }
-        ]
+        ],
+        "tsdoc/syntax": "warn"
     },
     settings: {
         react: {

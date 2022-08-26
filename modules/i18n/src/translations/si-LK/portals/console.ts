@@ -583,7 +583,7 @@ export const console: ConsoleNS = {
                             }
                         }
                     },
-                    placeholder: "යෙදුම් නාමයෙන් සොයන්න"
+                    placeholder: "යෙදුම් නාමයෙන් හෝ සේවාලාභී හැඳුනුම්පතෙන් සොයන්න"
                 },
                 confirmations: {
                     addSocialLogin: {
@@ -1187,14 +1187,18 @@ export const console: ConsoleNS = {
                                                 heading: "TOTP දෙවන සාධකය ලෙස එක් කරන්න"
                                             },
                                             usernameless: {
-                                                description: "පරිශීලකයින්ට ඔවුන්ගේ FIDO2 ආරක්ෂක යතුරක් හෝ " +
-                                                    "ජෛවමිතික භාවිතයෙන් පුරනය වීමට සබල කරන්න.",
+                                                description: "පරිශීලකයින්ට ඔවුන්ගේ FIDO2 ආරක්ෂක යතුරක්, ජෛවමිතික හෝ " 
+                                                    + "මුර යතුරු භාවිතයෙන් පුරනය වීමට සබල කරන්න.",
                                                 heading: "ආරක්ෂක යතුර/Biometrics පිවිසුම එක් කරන්න",
                                                 info: "මුරපද රහිත සත්‍යාපනය සමඟින් පුරනය වීමට, " +
                                                     "ඔබේ පරිශීලකයින්ට ඔවුන්ගේ FIDO2 ආරක්ෂක " +
                                                     "යතුරු හෝ මගේ ගිණුම හරහා ජෛවමිතික ලියාපදිංචි " +
                                                     "කර තිබිය යුතුය."
 
+                                            },
+                                            emailOTP: {
+                                                description: "විද්‍යුත් තැපෑල පදනම් කරගත් OTP සමඟ අතිරේක සත්‍යාපන ස්තරය සක්‍රීය කරන්න.",
+                                                heading: "විද්‍යුත් තැපෑල දෙවන සාධකය ලෙස එක් කරන්න"
                                             }
                                         }
                                     }
@@ -5049,7 +5053,8 @@ export const console: ConsoleNS = {
                             "කරුණාකර ප්‍රවේශමෙන් ඉදිරියට යන්න.",
                         header: "ඔයාට විශ්වාස ද?",
                         message: "මෙම ක්‍රියාව ආපසු හැරවිය නොහැකි අතර විෂය පථය හිමිකම් සිතියම්ගත කිරීම ස්ථිරවම මකනු ඇත"
-                    }
+                    },
+                    saveChangesButton: "වෙනස්කම් සුරකින්න"
                 }
             },
             emailLocale: {
@@ -6316,7 +6321,7 @@ export const console: ConsoleNS = {
                             message: "යාවත්කාලීන දෝෂයකි"
                         },
                         genericError: {
-                            description: "OIDC විෂය පථය යාවත්කාලීන කිරීමේදී දෝෂයක් ඇතිවිය.",
+                            description: "{{ scope }} OIDC විෂය පථය යාවත්කාලීන කිරීමේදී දෝෂයක් ඇතිවිය.",
                             message: "යම් දෝෂයක් ඇති වී ඇත"
                         },
                         success: {
@@ -6406,6 +6411,11 @@ export const console: ConsoleNS = {
                     },
                     back: "ආපසු",
                     dangerZone: {
+                        disableOrganization: {
+                            disableActionTitle: "සංවිධානය අක්‍රීය කරන්න",
+                            enableActionTitle: "සංවිධානය සක්‍රීය කරන්න",
+                            subheader: "සංවිධානයක් අක්‍රිය කිරීමෙන් ඔබට සංවිධානයට සම්බන්ධ ප්‍රවේශය අහිමි විය හැක. කල්පනාකාරීව ඉදිරියට යන්න."
+                        },
                         subHeader: "ඔබට මෙම සංවිධානය මැකීමට අවශ්‍ය බව විශ්වාසද?",
                         title: "සංවිධානය මකන්න"
                     },
@@ -6525,6 +6535,36 @@ export const console: ConsoleNS = {
                     },
                     deleteOrganizationWithSubOrganizationError: "{{ organizationName }} සංවිධානයට උප සංවිධාන එකක් හෝ " +
                         "කිහිපයක් ඇති බැවින් එය මකා දැමිය නොහැක.",
+                    disableOrganization: {
+                        error: {
+                            description: "{{description}}",
+                            message: "සංවිධානය අක්‍රිය කිරීමේදී දෝෂයකි"
+                        },
+                        genericError: {
+                            description: "සංවිධානය අක්‍රිය කිරීමේදී දෝෂයක් ඇති විය",
+                            message: "මොකක්හරි වැරැද්දක් වෙලා"
+                        },
+                        success: {
+                            description: "සංවිධානය සාර්ථකව අක්‍රිය කර ඇත",
+                            message: "සංවිධානය සාර්ථකව අක්‍රිය කර ඇත"
+                        }
+                    },
+                    disableOrganizationWithSubOrganizationError: "Organization {{ organizationName }} cannot be " +
+                        "disabled since it has one or more sub organizations.",
+                    enableOrganization: {
+                        error: {
+                            description: "{{description}}",
+                            message: "සංවිධානය සක්‍රීය කිරීමේදී දෝෂයකි"
+                        },
+                        genericError: {
+                            description: "සංවිධානය සක්‍රීය කිරීමේදී දෝෂයක් ඇති විය",
+                            message: "මොකක්හරි වැරැද්දක් වෙලා"
+                        },
+                        success: {
+                            description: "සංවිධානය සාර්ථකව සක්‍රීය කර ඇත",
+                            message: "සංවිධානය සාර්ථකව සක්‍රීය කර ඇත"
+                        }
+                    },
                     fetchOrganization: {
                         error: {
                             description: "{{description}}",

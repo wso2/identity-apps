@@ -694,6 +694,10 @@ export interface ConsoleNS {
                                                 description: string;
                                                 heading: string;
                                                 warning: string;
+                                            },
+                                            emailOTP: {
+                                                description: string,
+                                                heading: string,
                                             }
                                         }
                                     }
@@ -1222,10 +1226,17 @@ export interface ConsoleNS {
                             tokenLength: {
                                 hint: string;
                                 label: string;
+                                unit: {
+                                    digits: string;
+                                    characters: string;
+                                },
                                 placeholder: string;
                                 validations: {
                                     invalid: string;
-                                    range: string;
+                                    range: {
+                                        digits: string;
+                                        characters: string;
+                                    };
                                     required: string;
                                 };
                             };
@@ -2326,6 +2337,9 @@ export interface ConsoleNS {
                     fetchOrganization: Notification;
                     deleteOrganization: Notification;
                     deleteOrganizationWithSubOrganizationError: string;
+                    disableOrganization: Notification;
+                    disableOrganizationWithSubOrganizationError: string;
+                    enableOrganization: Notification;
                     updateOrganization: Notification;
                     updateOrganizationAttributes: Notification;
                     addOrganization: Notification;
@@ -2361,6 +2375,11 @@ export interface ConsoleNS {
                     dangerZone: {
                         title: string;
                         subHeader: string;
+                        disableOrganization: {
+                            enableActionTitle: string;
+                            disableActionTitle: string;
+                            subheader: string;
+                        }
                     },
                     attributes: {
                         hint: string;
@@ -3042,7 +3061,8 @@ export interface ConsoleNS {
                         content: string;
                         header: string;
                         message: string;
-                    }
+                    },
+                    saveChangesButton: string;
                 };
             };
             emailLocale: {

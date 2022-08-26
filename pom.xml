@@ -24,7 +24,7 @@
     <groupId>org.wso2.identity.apps</groupId>
     <artifactId>identity-apps</artifactId>
     <packaging>pom</packaging>
-    <version>1.4.34-SNAPSHOT</version>
+    <version>1.4.65-SNAPSHOT</version>
     <name>WSO2 Identity Server Apps - Parent</name>
     <description>WSO2 Identity Server Web Apps</description>
 
@@ -547,7 +547,7 @@
             <dependency>
                 <groupId>org.wso2.identity.apps</groupId>
                 <artifactId>org.wso2.identity.apps.taglibs.layout.controller</artifactId>
-                <version>${layout-taglib.version}</version>
+                <version>${project.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -684,8 +684,8 @@
         <carbon.extension.identity.authenticator.version>3.0.0</carbon.extension.identity.authenticator.version>
         <org.wso2.carbon.identity.association.account>5.1.5</org.wso2.carbon.identity.association.account>
         <identity.extension.utils>1.0.8</identity.extension.utils>
-        <carbon.identity.framework.version>5.23.14</carbon.identity.framework.version>
-        <carbon.identity.framework.imp.pkg.version.range>[5.0.0, 7.0.0)</carbon.identity.framework.imp.pkg.version.range>
+        <carbon.identity.framework.version>5.23.25</carbon.identity.framework.version>
+        <carbon.identity.framework.imp.pkg.version.range>[5.0.0, 6.0.0)</carbon.identity.framework.imp.pkg.version.range>
         <identity.organization.management.service.version>1.0.65</identity.organization.management.service.version>
         <identity.org.mgt.version.range>[1.0.65, 2.0.0)</identity.org.mgt.version.range>
         <carbon.identity.oauth.version>6.7.130</carbon.identity.oauth.version>
@@ -714,7 +714,6 @@
         <json.wso2.version>3.0.0.wso2v1</json.wso2.version>
         <taglibs-standard-impl.version>1.2.5</taglibs-standard-impl.version>
         <apache.tomcat-catalina.version>9.0.11</apache.tomcat-catalina.version>
-        <layout-taglib.version>1.4.33</layout-taglib.version>
         
 
         <lint.exec.skip>true</lint.exec.skip>

@@ -8,4 +8,4 @@ Go though the following guides to learn about our coding style and tips on writi
 - [Formatting](./FORMATTING.md)
 - [Ensuring performance](./ENSURING_PERFORMANCE.md)
 - [Ensuring a good UX](./ENSURING_GOOD_UX.md)
-- [Styling][./STYLING.md]
+- [Styling](./STYLING.md)

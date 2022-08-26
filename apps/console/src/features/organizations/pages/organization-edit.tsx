@@ -53,11 +53,12 @@ const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface
     const [ isReadOnly, setIsReadOnly ] = useState(true);
 
     useEffect(() => {
-        setIsReadOnly(!isFeatureEnabled(
-            featureConfig?.organizations,
-            OrganizationManagementConstants.FEATURE_DICTIONARY.get("ORGANIZATION_UPDATE")
-        ));
-    }, [ featureConfig ]);
+        setIsReadOnly(
+            !isFeatureEnabled(
+                featureConfig?.organizations,
+                OrganizationManagementConstants.FEATURE_DICTIONARY.get("ORGANIZATION_UPDATE")
+            ) || organization?.status !== "ACTIVE");
+    }, [ featureConfig, organization ]);
 
 
     const getOrganizationData = useCallback((organizationId: string) => {

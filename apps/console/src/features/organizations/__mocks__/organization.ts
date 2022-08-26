@@ -16,6 +16,7 @@
 * under the License.
 */
 import { OrganizationManagementConstants } from "../constants";
+import { OrganizationListInterface } from "../models";
 
 export const addOrganizationMockResponse = {
     attributes: [],
@@ -42,7 +43,8 @@ export const getOrganizationsFilterMockResponse = {
         {
             id: "organization-one",
             name: "Organization One",
-            ref: "organizations-one"
+            ref: "organizations-one",
+            status: "ACTIVE"
         }
     ]
 };
@@ -56,7 +58,8 @@ export const getOrganizationsOneMockResponse = {
         {
             id: "organization-two",
             name: "Organization Two",
-            ref: "organizations-two"
+            ref: "organizations-two",
+            status: "ACTIVE"
         }
     ]
 };
@@ -67,7 +70,8 @@ export const getOrganizationsTwoMockResponse = {
         {
             id: "organization-three",
             name: "Organization Three",
-            ref: "organizations-three"
+            ref: "organizations-three",
+            status: "ACTIVE"
         }
     ]
 };
@@ -77,7 +81,7 @@ export const getOrganizationsEmptyMockResponse = {
     organizations: []
 };
 
-export const getOrganizationsPageOneMockResponse = {
+export const getOrganizationsPageOneMockResponse: OrganizationListInterface = {
     links: [ {
         href: "org.url?after=organization-two",
         rel: "next"
@@ -86,37 +90,44 @@ export const getOrganizationsPageOneMockResponse = {
         {
             id: "organization-one",
             name: "Organization One",
-            ref: "organizations-one"
+            ref: "organizations-one",
+            status: "ACTIVE"
         } ,
         {
             id: "organization-two",
             name: "Organization Two",
-            ref: "organizations-two"
+            ref: "organizations-two",
+            status: "ACTIVE"
         },
         {
             id: "organization-three",
             name: "Organization Three",
-            ref: "organizations-three"
+            ref: "organizations-three",
+            status: "ACTIVE"
         },
         {
             id: "organization-four",
             name: "Organization Four",
-            ref: "organizations-four"
+            ref: "organizations-four",
+            status: "ACTIVE"
         },
         {
             id: "organization-five",
             name: "Organization Five",
-            ref: "organizations-five"
+            ref: "organizations-five",
+            status: "ACTIVE"
         },
         {
             id: "organization-six",
             name: "Organization Six",
-            ref: "organizations-six"
+            ref: "organizations-six",
+            status: "ACTIVE"
         },
         {
             id: "organization-seven",
             name: "Organization Seven",
-            ref: "organizations-seven"
+            ref: "organizations-seven",
+            status: "DISABLED"
         }
     ]
 };
