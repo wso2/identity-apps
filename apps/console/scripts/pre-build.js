@@ -40,10 +40,10 @@ const log = console.log;
 log("Pre build script started.....");
 
 // Run the clean script.
-execSync("npm run clean:build");
+execSync("pnpm clean:build");
 
 // Run theme content copying to source script.
-execSync("npm run copy:themes:src");
+execSync("pnpm copy:themes:src");
 
 // Path of the build directory.
 const distDirectory = path.join(__dirname, "..", "src", "extensions", "i18n", "dist", "src");
@@ -52,7 +52,7 @@ const i18nNodeModulesDir = path.join(__dirname,"..", "node_modules", "@wso2is", 
 log("Compiling i18N extensions...");
 
 try {
-    execSync("npm run compile:i18n");
+    execSync("pnpm compile:i18n");
 } catch (e) {
     log(e);
 }
@@ -109,6 +109,6 @@ const newMetaFilePath = path.join(tmpDir, newMetaFileName);
 createFile(newMetaFilePath, JSON.stringify(meta, undefined, 4));
 
 log("Cleaning the tmp directory...");
-execSync("npm run clean:i18n:dist");
+execSync("pnpm clean:i18n:dist");
 
 log("\nFinishing up the pre build script.....");

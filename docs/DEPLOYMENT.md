@@ -15,13 +15,15 @@ Once the build is complete, execute the following commands in-order to build the
 ##### Deploy on a Java EE server (ex: Tomcat)
 
 ```bash
-npx lerna run build:external --scope @wso2is/console
+cd apps/console
+pnpm build:external
 ```
 
 ##### Deploy on a static server.
 
 ```bash
-npx lerna run build:external:static --scope @wso2is/console
+cd apps/console
+pnpm  build:external:static
 ```
 
 Once the build is completed, you can find the build artifacts inside the build folder i.e `apps/console/build`.
@@ -31,33 +33,35 @@ Once the build is completed, you can find the build artifacts inside the build f
 ##### Deploy on a Java EE server (ex: Tomcat)
 
 ```bash
-npx lerna run build:external --scope @wso2is/myaccount
+cd apps/myaccount
+pnpm build:external
 ```
 
 ##### Deploy on a static server.
 
 ```bash
-npx lerna run build:external:static --scope @wso2is/myaccount
+cd apps/myaccount
+pnpm build:external:static
 ```
 
 Once the build is completed, you can find the build artifacts inside the build folder i.e `apps/myaccount/build`.
 
-### Method 2 - Build using npm
+### Method 2 - Build using pnpm
 
-You can simply use npm to build the Console and My Account applications for external deployment by just executing the following script.
+You can simply use pnpm to build the Console and My Account applications for external deployment by just executing the following script.
 
 #### Deploy on a Java EE server (ex: Tomcat)
 
 ```bash
 # From project root
-npm run build:external
+pnpm build:external
 ```
 
 #### Deploy on a static server.
 
 ```bash
 # From project root
-npm run build:external:static
+pnpm build:external:static
 ```
 
 The respective build artifacts could be found inside the build folder. (`apps/(myaccount|console)/build`)

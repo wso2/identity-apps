@@ -601,14 +601,14 @@
                         <configuration>
                             <executable>pnpm</executable>
                             <arguments>
-                                <argument>lint:ci</argument>
+                                <argument>lint</argument>
                             </arguments>
                             <skip>${lint.exec.skip}</skip>
                             <workingDirectory>${basedir}</workingDirectory>
                         </configuration>
                     </execution>
                     <execution>
-                        <id>npm run build (compile)</id>
+                        <id>pnpm run build (compile)</id>
                         <goals>
                             <goal>exec</goal>
                         </goals>

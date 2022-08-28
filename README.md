@@ -96,8 +96,16 @@ regexp=(https://localhost:9443/myaccount|https://localhost:9443/t/(.*)/myaccount
 ### Setup Development Environment
 
 1. Install NodeJS LTS(Latest Stable Version) from [https://nodejs.org/en/download/](https://nodejs.org/en/download/).
-2. Install Maven from [https://maven.apache.org/download.cgi](https://maven.apache.org/download.cgi).
-3. Install JDK 1.8 [https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html](https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html).
+2. Instal the latest version of [pnpm](https://pnpm.io/).
+
+    ```shell
+    npm install -g pnpm@latest
+    ```
+
+    Or, follow the other [recommended installation options](https://pnpm.io/installation).
+
+3. Install Maven from [https://maven.apache.org/download.cgi](https://maven.apache.org/download.cgi).
+4. Install JDK 1.8 [https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html](https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html).
 
 ## Build & Run
 
@@ -119,7 +127,7 @@ To start the apps in development mode, execute the following commands accordingl
 ```shell
 # To start Console
 cd apps/console
-npm start
+pnpm start
 ```
 
 Once the development server is live, you can access the application via [https://localhost:9001/console](https://localhost:9001/console).
@@ -129,7 +137,7 @@ Once the development server is live, you can access the application via [https:/
 ```shell
 # To start My Account
 cd apps/myaccount
-npm start
+pnpm start
 ```
 
 Once the development server is live, you can access the application via [https://localhost:9000/myaccount](https://localhost:9000/myaccount).

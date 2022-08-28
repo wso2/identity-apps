@@ -57,7 +57,7 @@ if (!fs.existsSync(dist) || !fs.existsSync(translationsPath)) {
 // If the bundle folder exists, clean it first.
 if (fs.existsSync(outputPath)) {
     log("\nBundle already exists. Cleaning it first......");
-    execSync("npm run clean:bundle");
+    execSync("pnpm clean:bundle");
 }
 
 // Create the output directory if it doesn't exist.
@@ -139,7 +139,7 @@ log("\nSuccessfully generated the locale bundle.");
 
 log("\nRunning cleanup task......");
 
-execSync("npm run clean:translations");
+execSync("pnpm clean:translations");
 
 log("\nClean up task finished successfully......");
 
