@@ -34,12 +34,6 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: 🐳 Nx set SHAs
-        id: setup-nx-shas
-        uses: nrwl/nx-set-shas@v2.0.2
-        with:
-          main-branch-name: master
-
       - name: 🥡 Setup pnpm
         id: setup-pnpm
         uses: pnpm/action-setup@v2.1.0
@@ -88,12 +82,6 @@ jobs:
           version: latest
           run_install: true
 
-      - name: 🐳 Nx set SHAs
-        id: setup-nx-shas
-        uses: nrwl/nx-set-shas@v2.0.2
-        with:
-          main-branch-name: master
-
       - name: 👷 Build Re-usable Modules
         id: build-reusable-modules
         run: pnpm build:modules
@@ -132,12 +120,6 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
-
-      - name: 🐳 Nx set SHAs
-        id: setup-nx-shas
-        uses: nrwl/nx-set-shas@v2.0.2
-        with:
-          main-branch-name: master
 
       - name: 🥡 Setup pnpm
         uses: pnpm/action-setup@v2.1.0
