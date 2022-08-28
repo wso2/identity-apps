@@ -40,6 +40,7 @@ jobs:
         with:
           version: latest
           run_install: true
+          args: [ --no-frozen-lockfile ]
 
       - name: ⏳ Lint
         id: lint-with-eslint
@@ -79,7 +80,9 @@ jobs:
       - name: 🥡 Setup pnpm
         uses: pnpm/action-setup@v2.1.0
         with:
-          version: late
+          version: latest
+          run_install: true
+          args: [ --no-frozen-lockfile ]
 
       - name: 👷 Build Re-usable Modules
         id: build-reusable-modules
@@ -123,7 +126,9 @@ jobs:
       - name: 🥡 Setup pnpm
         uses: pnpm/action-setup@v2.1.0
         with:
-          version: late
+          version: latest
+          run_install: true
+          args: [ --no-frozen-lockfile ]
 
       - name: 👷 Build Re-usable Modules
         id: build-reusable-modules
@@ -189,7 +194,9 @@ jobs:
       - name: 🥡 Setup pnpm
         uses: pnpm/action-setup@v2.1.0
         with:
-          version: late
+          version: latest
+          run_install: true
+          args: [ --no-frozen-lockfile ]
 
       - name: 🏗️ Maven Build
         id: build-with-maven
