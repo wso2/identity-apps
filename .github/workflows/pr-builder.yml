@@ -39,7 +39,10 @@ jobs:
         uses: pnpm/action-setup@v2.1.0
         with:
           version: latest
-          run_install: true
+
+      - name: 🧩 Install Dependencies
+        id: install-dependencies
+        run: pnpm install
 
       - name: ⏳ Lint
         id: lint-with-eslint
@@ -80,7 +83,10 @@ jobs:
         uses: pnpm/action-setup@v2.1.0
         with:
           version: latest
-          run_install: true
+
+      - name: 🧩 Install Dependencies
+        id: install-dependencies
+        run: pnpm install
 
       - name: 👷 Build Re-usable Modules
         id: build-reusable-modules
@@ -125,7 +131,10 @@ jobs:
         uses: pnpm/action-setup@v2.1.0
         with:
           version: latest
-          run_install: true
+
+      - name: 🧩 Install Dependencies
+        id: install-dependencies
+        run: pnpm install
 
       - name: 👷 Build Re-usable Modules
         id: build-reusable-modules
@@ -192,7 +201,10 @@ jobs:
         uses: pnpm/action-setup@v2.1.0
         with:
           version: latest
-          run_install: true
+
+      - name: 🧩 Install Dependencies
+        id: install-dependencies
+        run: pnpm install
 
       - name: 🏗️ Maven Build
         id: build-with-maven
