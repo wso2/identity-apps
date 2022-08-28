@@ -35,26 +35,34 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: 🐳 Nx set SHAs
+        id: setup-nx-shas
         uses: nrwl/nx-set-shas@v2.0.2
         with:
           main-branch-name: master
 
       - name: 🥡 Setup pnpm
+        id: setup-pnpm
         uses: pnpm/action-setup@v2.1.0
         with:
-          version: 6.0.2
           run_install: true
 
       - name: ⏳ Lint
+        id: lint-with-eslint
         run: pnpm lint
 
+      - name: 🎈 Get pnpm store directory
+        id: get-pnpm-cache-dir
+        run: |
+          echo "::set-output name=pnpm_cache_dir::$(pnpm store path)"
+
       - name: 🔆 Cache pnpm modules
-        uses: actions/cache@v2
+        uses: actions/cache@v3
+        id: pnpm-cache
         with:
-          path: ~/.pnpm-store
-          key: ${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          path: ${{ steps.pnpm-cache.outputs.pnpm_cache_dir }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
-            ${{ runner.os }}-
+            ${{ runner.os }}-pnpm-store-
 
   typecheck:
     name: ʦ Typecheck (STATIC ANALYSIS)
@@ -76,10 +84,10 @@ jobs:
       - name: 🥡 Setup pnpm
         uses: pnpm/action-setup@v2.1.0
         with:
-          version: 6.0.2
           run_install: true
 
       - name: 🐳 Nx set SHAs
+        id: setup-nx-shas
         uses: nrwl/nx-set-shas@v2.0.2
         with:
           main-branch-name: master
@@ -91,13 +99,19 @@ jobs:
       - name: ☄️ Check Type Errors
         run: pnpm typecheck
 
+      - name: 🎈 Get pnpm store directory
+        id: get-pnpm-cache-dir
+        run: |
+          echo "::set-output name=pnpm_cache_dir::$(pnpm store path)"
+
       - name: 🔆 Cache pnpm modules
-        uses: actions/cache@v2
+        uses: actions/cache@v3
+        id: pnpm-cache
         with:
-          path: ~/.pnpm-store
-          key: ${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          path: ${{ steps.pnpm-cache.outputs.pnpm_cache_dir }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
-            ${{ runner.os }}-
+            ${{ runner.os }}-pnpm-store-
 
   test:
     name: 👾 Unit Test (TESTING)
@@ -118,6 +132,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: 🐳 Nx set SHAs
+        id: setup-nx-shas
         uses: nrwl/nx-set-shas@v2.0.2
         with:
           main-branch-name: master
@@ -125,7 +140,6 @@ jobs:
       - name: 🥡 Setup pnpm
         uses: pnpm/action-setup@v2.1.0
         with:
-          version: 6.0.2
           run_install: true
 
       - name: 👷 Build Re-usable Modules
@@ -143,13 +157,19 @@ jobs:
           pnpm nyc:text-summary-report
           pnpm nyc:text-report
 
+      - name: 🎈 Get pnpm store directory
+        id: get-pnpm-cache-dir
+        run: |
+          echo "::set-output name=pnpm_cache_dir::$(pnpm store path)"
+
       - name: 🔆 Cache pnpm modules
-        uses: actions/cache@v2
+        uses: actions/cache@v3
+        id: pnpm-cache
         with:
-          path: ~/.pnpm-store
-          key: ${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          path: ${{ steps.pnpm-cache.outputs.pnpm_cache_dir }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
-            ${{ runner.os }}-
+            ${{ runner.os }}-pnpm-store-
 
   build:
     name: 🚧 Build
@@ -186,20 +206,25 @@ jobs:
       - name: 🥡 Setup pnpm
         uses: pnpm/action-setup@v2.1.0
         with:
-          version: 6.0.2
           run_install: true
 
       - name: 🏗️ Maven Build
         id: build-with-maven
         run: mvn clean install -U -Dlint.exec.skip=true -Dbootstrap.exec.skip=true
 
+      - name: 🎈 Get pnpm store directory
+        id: get-pnpm-cache-dir
+        run: |
+          echo "::set-output name=pnpm_cache_dir::$(pnpm store path)"
+
       - name: 🔆 Cache pnpm modules
-        uses: actions/cache@v2
+        uses: actions/cache@v3
+        id: pnpm-cache
         with:
-          path: ~/.pnpm-store
-          key: ${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          path: ${{ steps.pnpm-cache.outputs.pnpm_cache_dir }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
-            ${{ runner.os }}-
+            ${{ runner.os }}-pnpm-store-
 
       - name: 💾 Cache local Maven repository
         id: cache-maven-m2
