@@ -4,11 +4,10 @@ Follow this guide to set up the source code, development tools & other software.
 
 * [Prerequisite Software](#prerequisite-software)
 * [Setting up Development Tools](#setting-up-development-tools)
+  * [NX Console](#nx-console)
   * [React Developer Tools](#react-developer-tools)
   * [Redux DevTools](#redux-devtools)
   * [ESLint IDE Plugin](#eslint-ide-plugin)
-    * [Webstorm](#webstorm)
-    * [VS Code](#vs-code)
 * [Setting up the Source Code](#setting-up-the-source-code)
 
 ## Prerequisite Software
@@ -28,6 +27,13 @@ To build and write code, make sure you have the following set of tools on your l
 * [Java Development Kit 1.8](https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html) - Development environment for building applications using the Java programming language.
 
 ## Setting up Development Tools
+
+### NX Console
+
+Editor plugin which wraps NX commands so you don't have to memorize.
+
+- [Install for VS Code](https://marketplace.visualstudio.com/items?itemName=nrwl.angular-console)
+- [Install for VS Web Storm](https://plugins.jetbrains.com/plugin/15000-nx-webstorm)
 
 ### React Developer Tools
 
