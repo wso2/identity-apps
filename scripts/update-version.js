@@ -52,7 +52,7 @@ packageJsonContent.version = getProjectVersion();
  */
 fs.writeFileSync(packageJson, JSON.stringify(packageJsonContent, null, 4) + "\n");
 
-execSync("pnpm lerna version " + getProjectVersion() + " --yes --no-git-tag-version --force-publish && pnpm install", {
+execSync("pnpm lerna version " + getProjectVersion() + " --yes --no-git-tag-version --force-publish && pnpm install --no-frozen-lockfile", {
 	cwd: path.join(__dirname, "..")
 });
 

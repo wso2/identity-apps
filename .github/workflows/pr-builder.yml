@@ -42,7 +42,7 @@ jobs:
 
       - name: 🧩 Install Dependencies
         id: install-dependencies
-        run: pnpm install
+        run: pnpm install --no-frozen-lockfile
 
       - name: ⏳ Lint
         id: lint-with-eslint
@@ -86,7 +86,7 @@ jobs:
 
       - name: 🧩 Install Dependencies
         id: install-dependencies
-        run: pnpm install
+        run: pnpm install --no-frozen-lockfile
 
       - name: 👷 Build Re-usable Modules
         id: build-reusable-modules
@@ -134,7 +134,7 @@ jobs:
 
       - name: 🧩 Install Dependencies
         id: install-dependencies
-        run: pnpm install
+        run: pnpm install --no-frozen-lockfile
 
       - name: 👷 Build Re-usable Modules
         id: build-reusable-modules
@@ -204,7 +204,7 @@ jobs:
 
       - name: 🧩 Install Dependencies
         id: install-dependencies
-        run: pnpm install
+        run: pnpm install --no-frozen-lockfile
 
       - name: 🏗️ Maven Build
         id: build-with-maven
