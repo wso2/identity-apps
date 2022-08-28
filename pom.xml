@@ -24,7 +24,7 @@
     <groupId>org.wso2.identity.apps</groupId>
     <artifactId>identity-apps</artifactId>
     <packaging>pom</packaging>
-    <version>1.4.65-SNAPSHOT</version>
+    <version>1.4.66-SNAPSHOT</version>
     <name>WSO2 Identity Server Apps - Parent</name>
     <description>WSO2 Identity Server Web Apps</description>
 
