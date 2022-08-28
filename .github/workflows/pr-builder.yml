@@ -46,7 +46,7 @@ jobs:
           run_install: true
 
       - name: ⏳ Lint
-        run: pnpm lint:ci
+        run: pnpm lint
 
       - name: 🔆 Cache pnpm modules
         uses: actions/cache@v2

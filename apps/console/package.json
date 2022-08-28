@@ -32,7 +32,7 @@
         "lint": "pnpm run lint:all",
         "lint:all": "pnpm run lint:targeted -- .",
         "lint:autofix": "pnpm run lint:all -- --fix",
-        "lint:targeted": "eslint --ext .js,.jsx,.ts,.tsx --resolve-plugins-relative-to .",
+        "lint:targeted": "eslint --ext .js,.jsx,.ts,.tsx --quiet --resolve-plugins-relative-to .",
         "postinstall": "node scripts/post-install.js",
         "prestart": "pnpm run prebuild",
         "prebuild": "node scripts/pre-build.js",

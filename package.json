@@ -38,7 +38,6 @@
         "update-version": "node scripts/update-version.js",
         "lint": "pnpm nx run-many --target=lint --all --parallel",
         "lint:autofix": "pnpm nx run-many --target=lint:autofix --all --parallel",
-        "lint:ci": "pnpm lint",
         "typecheck": "pnpm nx run-many --target=typecheck --all --parallel"
     },
     "author": "WSO2",
