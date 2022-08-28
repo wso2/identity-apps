@@ -572,7 +572,7 @@
                             <arguments>
                                 <argument>install</argument>
                                 <argument>-g</argument>
-                                <argument>pnpm@7.1.5</argument>
+                                <argument>pnpm@latest</argument>
                             </arguments>
                             <workingDirectory>${basedir}</workingDirectory>
                         </configuration>
