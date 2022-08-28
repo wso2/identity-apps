@@ -108,6 +108,14 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                 contentType: "<%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\" " +
                     "pageEncoding=\"UTF-8\" %>",
                 filename: ABSOLUTE_PATHS.homeTemplateInDistribution,
+                getAdaptiveAuthenticationAvailability: !isDeployedOnExternalTomcatServer
+                    ? "<%@ page import=\"static org.wso2.carbon.identity.application." +
+                    "authentication.framework.util.FrameworkUtils.isAdaptiveAuthenticationAvailable\"%>"
+                    : "",
+                getOrganizationManagementAvailability: !isDeployedOnExternalTomcatServer
+                    ? "<%@ page import=\"static org.wso2.carbon.identity.application." +
+                    "authentication.framework.util.FrameworkUtils.isOrganizationManagementEnabled\"%>"
+                    : "",
                 hash: true,
                 // eslint-disable-next-line max-len
                 hotjarSystemVariable: "<% String hotjar_track_code_system_var = System.getenv().getOrDefault(\"hotjar_tracking_code\", null); %>",
@@ -127,12 +135,18 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                     ? "<%@ page import=\"" +
                     "static org.wso2.carbon.identity.core.util.IdentityUtil.getServerURL\" %>"
                     : "",
+                isAdaptiveAuthenticationAvailable: !isDeployedOnExternalTomcatServer
+                    ? "<%= isAdaptiveAuthenticationAvailable() %>"
+                    : "false",
+                isOrganizationManagementEnabled: !isDeployedOnExternalTomcatServer
+                    ? "<%= isOrganizationManagementEnabled() %>"
+                    : "false",
                 minify: false,
                 publicPath: context.buildOptions?.baseHref ?? context.options.baseHref,
                 serverUrl: !isDeployedOnExternalTomcatServer
                     ? "<%=getServerURL(\"\", true, true)%>"
                     : "",
-                sessionState: "<%=request.getParameter(\"session_state\")%>",
+                sessionState: "<%=Encode.forHtml(request.getParameter(\"session_state\"))%>",
                 superTenantConstant: !isDeployedOnExternalTomcatServer
                     ? "<%=SUPER_TENANT_DOMAIN_NAME%>"
                     : "",
@@ -146,20 +160,27 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                 themeHash: getThemeConfigs().styleSheetHash,
                 vwoScriptVariable: "<%= vwo_ac_id %>",
                 // eslint-disable-next-line max-len
-                vwoSystemVariable: "<% String vwo_ac_id = System.getenv().getOrDefault(\"vwo_account_id\", null); %>"
+                vwoSystemVariable: "<% String vwo_ac_id_system_var = System.getenv().getOrDefault(\"vwo_account_id\", null); %>",
+                // eslint-disable-next-line max-len
+                vwoSystemVariableNullCheck: "<% String vwo_ac_id = StringUtils.isNotBlank(vwo_ac_id_system_var) ? vwo_ac_id_system_var : null; %>"
             }) as unknown as WebpackPluginInstance
         );
 
         config.plugins.push(
             new HtmlWebpackPlugin({
                 authenticatedIdPs: "<%=request.getParameter(\"AuthenticatedIdPs\")%>",
-                authorizationCode: "<%=request.getParameter(\"code\")%>",
+                authorizationCode: "<%=Encode.forHtml(request.getParameter(\"code\"))%>",
                 basename: DeploymentConfig.appBaseName,
                 clientID: DeploymentConfig.clientID,
                 contentType: "<%@ page language=\"java\" contentType=\"text/html; charset=ISO-8859-1\" " +
                     "pageEncoding=\"ISO-8859-1\"%>",
                 filename: ABSOLUTE_PATHS.indexTemplateInDistribution,
+                getAdaptiveAuthenticationAvailability: !isDeployedOnExternalTomcatServer
+                    ? "<%@ page import=\"static org.wso2.carbon.identity.application." +
+                    "authentication.framework.util.FrameworkUtils.isAdaptiveAuthenticationAvailable\"%>"
+                    : "",
                 hash: true,
+                importOwaspEncode: "<%@ page import=\"org.owasp.encoder.Encode\" %>",
                 importSuperTenantConstant: !isDeployedOnExternalTomcatServer
                     ? "<%@ page import=\"static org.wso2.carbon.utils.multitenancy." +
                     "MultitenantConstants.SUPER_TENANT_DOMAIN_NAME\"%>"
@@ -173,17 +194,20 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                     "static org.wso2.carbon.identity.core.util.IdentityUtil.getServerURL\" %>"
                     : "",
                 inject: false,
+                isAdaptiveAuthenticationAvailable: !isDeployedOnExternalTomcatServer
+                    ? "<%= isAdaptiveAuthenticationAvailable() %>"
+                    : "false",
                 minify: false,
                 publicPath: context.buildOptions?.baseHref ?? context.options.baseHref,
-                requestForwardSnippet : "if(request.getParameter(\"code\") != null && "+
-                    "!request.getParameter(\"code\").trim().isEmpty()) "+
-                    "{request.getRequestDispatcher(\"/authenticate?code=\"+request.getParameter(\"code\")+"+
-                    "\"&AuthenticatedIdPs=\"+request.getParameter(\"AuthenticatedIdPs\")"+
+                requestForwardSnippet: "if(request.getParameter(\"code\") != null && " +
+                    "!request.getParameter(\"code\").trim().isEmpty()) " +
+                    "{request.getRequestDispatcher(\"/authenticate?code=\"+request.getParameter(\"code\")+" +
+                    "\"&AuthenticatedIdPs=\"+request.getParameter(\"AuthenticatedIdPs\")" +
                     "+\"&session_state=\"+request.getParameter(\"session_state\")).forward(request, response);}",
                 serverUrl: !isDeployedOnExternalTomcatServer
                     ? "<%=getServerURL(\"\", true, true)%>"
                     : "",
-                sessionState: "<%=request.getParameter(\"session_state\")%>",
+                sessionState: "<%=Encode.forHtml(request.getParameter(\"session_state\"))%>",
                 superTenantConstant: !isDeployedOnExternalTomcatServer
                     ? "<%=SUPER_TENANT_DOMAIN_NAME%>"
                     : "",

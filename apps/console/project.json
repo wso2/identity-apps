@@ -61,6 +61,12 @@
                         "glob": "**/auth.jsp",
                         "input": "apps/console/src",
                         "output": "."
+                    },
+                    {
+                        "glob": "**/*",
+                        "input": "apps/console/src/login-portal-layouts",
+                        "noErrorOnMissing": true,
+                        "output": "libs/login-portal-layouts"
                     }
                 ],
                 "styles": [],

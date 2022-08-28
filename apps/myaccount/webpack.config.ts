@@ -108,7 +108,12 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                 contentType: "<%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\" " +
                     "pageEncoding=\"UTF-8\" %>",
                 filename: ABSOLUTE_PATHS.homeTemplateInDistribution,
+                getOrganizationManagementAvailability: !isDeployedOnExternalTomcatServer
+                    ? "<%@ page import=\"static org.wso2.carbon.identity.application." +
+                    "authentication.framework.util.FrameworkUtils.isOrganizationManagementEnabled\"%>"
+                    : "",
                 hash: true,
+                importStringUtils: "<%@ page import=\"org.apache.commons.lang.StringUtils\" %>",
                 importSuperTenantConstant: !isDeployedOnExternalTomcatServer
                     ? "<%@ page import=\"static org.wso2.carbon.utils.multitenancy." +
                     "MultitenantConstants.SUPER_TENANT_DOMAIN_NAME\"%>"
@@ -121,6 +126,9 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                     ? "<%@ page import=\"" +
                     "static org.wso2.carbon.identity.core.util.IdentityUtil.getServerURL\" %>"
                     : "",
+                isOrganizationManagementEnabled: !isDeployedOnExternalTomcatServer
+                    ? "<%= isOrganizationManagementEnabled() %>"
+                    : "false",
                 minify: false,
                 publicPath: context.buildOptions?.baseHref ?? context.options.baseHref,
                 serverUrl: !isDeployedOnExternalTomcatServer
@@ -130,7 +138,7 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                 superTenantConstant: !isDeployedOnExternalTomcatServer
                     ? "<%=SUPER_TENANT_DOMAIN_NAME%>"
                     : "",
-                template: ABSOLUTE_PATHS.homeTemplateInSource,
+                template: path.join(__dirname, "src", "home.jsp"),
                 tenantDelimiter: !isDeployedOnExternalTomcatServer
                     ? "\"/\"+'<%=TENANT_AWARE_URL_PREFIX%>'+\"/\""
                     : "",
@@ -140,20 +148,27 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                 themeHash: getThemeConfigs().styleSheetHash,
                 vwoScriptVariable: "<%= vwo_ac_id %>",
                 // eslint-disable-next-line max-len
-                vwoSystemVariable: "<% String vwo_ac_id = System.getenv().getOrDefault(\"vwo_account_id\", null); %>"
+                vwoSystemVariable: "<% String vwo_ac_id_system_var = System.getenv().getOrDefault(\"vwo_account_id\", null); %>",
+                // eslint-disable-next-line max-len
+                vwoSystemVariableNullCheck: "<% String vwo_ac_id = StringUtils.isNotBlank(vwo_ac_id_system_var) ? vwo_ac_id_system_var : null; %>"
             }) as unknown as WebpackPluginInstance
         );
 
         config.plugins.push(
             new HtmlWebpackPlugin({
                 authenticatedIdPs: "<%=request.getParameter(\"AuthenticatedIdPs\")%>",
-                authorizationCode: "<%=request.getParameter(\"code\")%>",
+                authorizationCode: "<%=Encode.forHtml(request.getParameter(\"code\"))%>",
                 basename: DeploymentConfig.appBaseName,
                 clientID: DeploymentConfig.clientID,
-                contentType: "<%@ page language=\"java\" contentType=\"text/html; charset=ISO-8859-1\" " +
-                    "pageEncoding=\"ISO-8859-1\"%>",
+                contentType: "<%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\" " +
+                    "pageEncoding=\"UTF-8\" %>",
                 filename: ABSOLUTE_PATHS.indexTemplateInDistribution,
+                getOrganizationManagementAvailability: !isDeployedOnExternalTomcatServer
+                    ? "<%@ page import=\"static org.wso2.carbon.identity.application." +
+                    "authentication.framework.util.FrameworkUtils.isOrganizationManagementEnabled\"%>"
+                    : "",
                 hash: true,
+                importOwaspEncode: "<%@ page import=\"org.owasp.encoder.Encode\" %>",
                 importSuperTenantConstant: !isDeployedOnExternalTomcatServer
                     ? "<%@ page import=\"static org.wso2.carbon.utils.multitenancy." +
                     "MultitenantConstants.SUPER_TENANT_DOMAIN_NAME\"%>"
@@ -167,6 +182,9 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                     "static org.wso2.carbon.identity.core.util.IdentityUtil.getServerURL\" %>"
                     : "",
                 inject: false,
+                isOrganizationManagementEnabled: !isDeployedOnExternalTomcatServer
+                    ? "<%= isOrganizationManagementEnabled() %>"
+                    : "false",
                 minify: false,
                 publicPath: context.buildOptions?.baseHref ?? context.options.baseHref,
                 requestForwardSnippet : "if(request.getParameter(\"code\") != null && "+
@@ -177,7 +195,7 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                 serverUrl: !isDeployedOnExternalTomcatServer
                     ? "<%=getServerURL(\"\", true, true)%>"
                     : "",
-                sessionState: "<%=request.getParameter(\"session_state\")%>",
+                sessionState: "<%=Encode.forHtml(request.getParameter(\"session_state\"))%>",
                 superTenantConstant: !isDeployedOnExternalTomcatServer
                     ? "<%=SUPER_TENANT_DOMAIN_NAME%>"
                     : "",
