@@ -801,12 +801,12 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
                                             </Table.Header>
                                             <Table.Body>
                                                 {
-                                                    assignedRoles?.map((group) => {
+                                                    assignedRoles?.map((group, index: number) => {
                                                         const groupRole = group.display.split("/");
 
                                                         if (groupRole.length >= 1) {
                                                             return (
-                                                                <Table.Row>
+                                                                <Table.Row key={ index }>
                                                                     {
                                                                         groupRole[ 0 ] == APPLICATION_DOMAIN ? (
                                                                             <Table.Cell>
