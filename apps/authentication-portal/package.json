@@ -7,9 +7,9 @@
     "scripts": {
         "build": "node scripts/build.js",
         "clean": "pnpm clean:lock-files && pnpm clean:maven-folders && pnpm clean:node-modules",
-        "clean:lock-files": "pnpx rimraf package-lock.json && pnpx rimraf pnpm-lock.yaml && pnpx rimraf yarn.lock",
-        "clean:maven-folders": "pnpx rimraf target",
-        "clean:node-modules": "pnpx rimraf node_modules"
+        "clean:lock-files": "pnpm rimraf package-lock.json && pnpm rimraf pnpm-lock.yaml && pnpm rimraf yarn.lock",
+        "clean:maven-folders": "pnpm rimraf target",
+        "clean:node-modules": "pnpm rimraf node_modules"
     },
     "dependencies": {
         "@wso2is/theme": "*",
