@@ -41,14 +41,6 @@ jobs:
           version: latest
           run_install: false
 
-      - name: 🧩 Install Dependencies
-        id: install-dependencies
-        run: pnpm install
-
-      - name: ⏳ Lint
-        id: lint-with-eslint
-        run: pnpm lint
-
       - name: 🎈 Get pnpm store directory
         id: get-pnpm-cache-dir
         run: |
@@ -62,6 +54,14 @@ jobs:
           key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
+
+      - name: 🧩 Install Dependencies
+        id: install-dependencies
+        run: pnpm install --no-frozen-lockfile
+
+      - name: ⏳ Lint
+        id: lint-with-eslint
+        run: pnpm lint
 
   typecheck:
     name: ʦ Typecheck (STATIC ANALYSIS)
@@ -86,9 +86,23 @@ jobs:
           version: latest
           run_install: false
 
+      - name: 🎈 Get pnpm store directory
+        id: get-pnpm-cache-dir
+        run: |
+          echo "::set-output name=pnpm_cache_dir::$(pnpm store path)"
+
+      - name: 🔆 Cache pnpm modules
+        uses: actions/cache@v3
+        id: pnpm-cache
+        with:
+          path: ${{ steps.get-pnpm-cache-dir.outputs.pnpm_cache_dir }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
       - name: 🧩 Install Dependencies
         id: install-dependencies
-        run: pnpm install
+        run: pnpm install --no-frozen-lockfile
 
       - name: 👷 Build Re-usable Modules
         id: build-reusable-modules
@@ -135,9 +149,23 @@ jobs:
           version: latest
           run_install: false
 
+      - name: 🎈 Get pnpm store directory
+        id: get-pnpm-cache-dir
+        run: |
+          echo "::set-output name=pnpm_cache_dir::$(pnpm store path)"
+
+      - name: 🔆 Cache pnpm modules
+        uses: actions/cache@v3
+        id: pnpm-cache
+        with:
+          path: ${{ steps.get-pnpm-cache-dir.outputs.pnpm_cache_dir }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
       - name: 🧩 Install Dependencies
         id: install-dependencies
-        run: pnpm install
+        run: pnpm install --no-frozen-lockfile
 
       - name: 👷 Build Re-usable Modules
         id: build-reusable-modules
@@ -206,9 +234,23 @@ jobs:
           version: latest
           run_install: false
 
+      - name: 🎈 Get pnpm store directory
+        id: get-pnpm-cache-dir
+        run: |
+          echo "::set-output name=pnpm_cache_dir::$(pnpm store path)"
+
+      - name: 🔆 Cache pnpm modules
+        uses: actions/cache@v3
+        id: pnpm-cache
+        with:
+          path: ${{ steps.get-pnpm-cache-dir.outputs.pnpm_cache_dir }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
       - name: 🧩 Install Dependencies
         id: install-dependencies
-        run: pnpm install
+        run: pnpm install --no-frozen-lockfile
 
       - name: 🏗️ Maven Build
         id: build-with-maven
