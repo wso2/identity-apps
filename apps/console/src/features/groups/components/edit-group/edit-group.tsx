@@ -19,7 +19,7 @@
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { SBACInterface } from "@wso2is/core/models";
 import { ResourceTab } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 // TODO: Move to shared components.
 import { useSelector } from "react-redux";
@@ -28,6 +28,7 @@ import { GroupRolesList } from "./edit-group-roles";
 import { GroupUsersList } from "./edit-group-users";
 import { FeatureConfigInterface } from "../../../core/models";
 import { AppState } from "../../../core/store";
+import { OrganizationUtils } from "../../../organizations/utils";
 import { getUsersList } from "../../../users/api";
 import { UserBasicInterface } from "../../../users/models";
 import { GroupConstants } from "../../constants";
@@ -78,6 +79,10 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
     const [ usersList, setUsersList ] = useState<UserBasicInterface[]>([]);
     const [ selectedUsersList, setSelectedUsersList ] = useState<UserBasicInterface[]>([]);
     const [ isReadOnly, setReadOnly ] = useState<boolean>(false);
+
+    const currentOrganization = useSelector((state: AppState) => state.organization.organization);
+    const isRootOrganization = useMemo(() =>
+        OrganizationUtils.isRootOrganization(currentOrganization), [ currentOrganization ]);
 
     useEffect(() => {
 
@@ -185,7 +190,9 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
                         />
                     </ResourceTab.Pane>
                 )
-            },{
+            },
+            // ToDo - Enabled only for root organizations as BE doesn't have full SCIM support for organizations yet
+            isRootOrganization ? {
                 menuItem: t("console:manage.features.roles.edit.menuItems.roles"),
                 render: () => (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
@@ -197,7 +204,7 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
                         />
                     </ResourceTab.Pane>
                 )
-            }
+            } : null
         ];
 
         return panes;

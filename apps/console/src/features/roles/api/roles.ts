@@ -138,7 +138,7 @@ export const searchRoleList = (searchData: SearchRoleInterface): Promise<any> =>
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: store.getState().config.endpoints.roles + "/.search"
+        url: store.getState().config.endpoints.rolesWithoutOrgPath + "/.search"
     };
 
     return httpClient(requestConfig)
@@ -290,5 +290,51 @@ export const updateRole = (roleId: string, roleData: PatchRoleDataInterface): Pr
             return Promise.resolve(response);
         }).catch((error) => {
             return Promise.reject(error);
+        });
+};
+
+/**
+ * Retrieve the list of groups that are currently in the system.
+ * Copied from core module to override the endpoint
+ *
+ * @param {string} domain - User store domain.
+ * @return {Promise<RoleListInterface | any>}
+ * @throws {IdentityAppsApiException}
+ */
+export const getRolesList = (domain: string): Promise<RoleListInterface | any> => {
+
+    const requestConfig = {
+        headers: {
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost
+        },
+        method: HttpMethods.GET,
+        params: {
+            domain
+        },
+        url: store.getState().config.endpoints.roles
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 200) {
+                throw new IdentityAppsApiException(
+                    RoleConstants.ROLES_FETCH_REQUEST_INVALID_RESPONSE_CODE_ERROR,
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config);
+            }
+
+            return Promise.resolve(response);
+        })
+        .catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                RoleConstants.ROLES_FETCH_REQUEST_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
         });
 };

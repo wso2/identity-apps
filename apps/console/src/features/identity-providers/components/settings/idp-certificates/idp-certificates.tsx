@@ -19,9 +19,11 @@
 import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
+import { URLUtils } from "@wso2is/core/utils";
 import { Field, Form } from "@wso2is/form";
 import { CertFileStrategy, Code, EmphasizedSegment, Hint, PrimaryButton, Switcher } from "@wso2is/react-components";
 import { SwitcherOptionProps } from "@wso2is/react-components";
+import { FormValidation } from "@wso2is/validation";
 import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -31,9 +33,7 @@ import { EmptyCertificatesPlaceholder } from "./empty-certificates-placeholder";
 import { IdpCertificatesList } from "./idp-cetificates-list";
 import { updateIDPCertificate } from "../../../api";
 import { IdentityProviderInterface } from "../../../models";
-import { FormValidation } from "@wso2is/validation";
-import { commonConfig } from "../../../../../extensions";
-import { URLUtils } from "@wso2is/core/utils";
+import { commonConfig } from "../../../../../extensions/configs";
 
 /**
  * Props interface of {@link IdpCertificates}
@@ -42,7 +42,14 @@ export interface IdpCertificatesV2Props extends IdentifiableComponentInterface {
     editingIDP: IdentityProviderInterface;
     onUpdate: (id: string) => void;
     isReadOnly: boolean;
-    enableJWKS?: boolean;
+    /**
+     * Is JWKS URL configuring enabled?
+     */
+    isJWKSEnabled?: boolean;
+    /**
+     * Is Cert uploading enabled?
+     */
+    isPEMEnabled?: boolean;
 }
 
 export type CertificateConfigurationMode = "jwks" | "certificates";
@@ -111,7 +118,8 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
         editingIDP,
         onUpdate,
         isReadOnly,
-        enableJWKS
+        isJWKSEnabled,
+        isPEMEnabled
     } = props;
 
     const [ selectedConfigurationMode, setSelectedConfigurationMode ] = useState<CertificateConfigurationMode>();
@@ -132,7 +140,7 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
     }, [ editingIDP ]);
 
     const setInitialModeOfConfiguration = () => {
-        if (enableJWKS) {
+        if (isJWKSEnabled) {
             if (editingIDP?.certificate?.certificates?.length > 0) {
                 setSelectedConfigurationMode("certificates");
             } else {
@@ -323,10 +331,14 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
         ));
     };
 
+    if (!isJWKSEnabled && !isPEMEnabled) {
+        return null;
+    }
+
     return (
         <EmphasizedSegment padded="very">
             <Grid>
-                { enableJWKS && (
+                { isJWKSEnabled && isPEMEnabled && (
                     <Grid.Row columns={ 1 }>
                         <Grid.Column computer={ 8 } mobile={ 16 } widescreen={ 8 } tablet={ 16 }>
                             <React.Fragment>
@@ -370,11 +382,14 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
-            <AddIdpCertificateModal
-                currentlyEditingIdP={ editingIDP }
-                refreshIdP={ onUpdate }
-                isOpen={ addCertificateModalOpen }
-                onClose={ closeAddCertificateWizard }/>
+            { isPEMEnabled && (
+                <AddIdpCertificateModal
+                    currentlyEditingIdP={ editingIDP }
+                    refreshIdP={ onUpdate }
+                    isOpen={ addCertificateModalOpen }
+                    onClose={ closeAddCertificateWizard }
+                />
+            ) }
         </EmphasizedSegment>
     );
 
@@ -385,7 +400,8 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
  */
 IdpCertificates.defaultProps = {
     "data-componentid": "idp-certificates",
-    enableJWKS: true
+    isJWKSEnabled: true,
+    isPEMEnabled: true
 };
 
 // Component constants.

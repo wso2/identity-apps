@@ -25,10 +25,28 @@ import {
     SecureApp,
     useAuthContext
 } from "@asgardeo/auth-react";
-import { AppConstants as CommonAppConstants, CommonConstants as CommonConstantsCore } from "@wso2is/core/constants";
-import { IdentifiableComponentInterface, TenantListInterface } from "@wso2is/core/models";
-import { setDeploymentConfigs, setSignIn, setSupportedI18nLanguages } from "@wso2is/core/store";
-import { AuthenticateUtils as CommonAuthenticateUtils, ContextUtils, StringUtils } from "@wso2is/core/utils";
+import { AccessControlUtils } from "@wso2is/access-control";
+import {
+    AppConstants as CommonAppConstants,
+    CommonConstants as CommonConstantsCore,
+    TokenConstants
+} from "@wso2is/core/constants";
+import { hasRequiredScopes } from "@wso2is/core/helpers";
+import { AlertLevels, IdentifiableComponentInterface, RouteInterface, TenantListInterface } from "@wso2is/core/models";
+import {
+    addAlert,
+    setDeploymentConfigs,
+    setServiceResourceEndpoints,
+    setSignIn,
+    setSupportedI18nLanguages,
+    setUIConfigs
+} from "@wso2is/core/store";
+import {
+    AuthenticateUtils as CommonAuthenticateUtils,
+    RouteUtils as CommonRouteUtils,
+    ContextUtils,
+    StringUtils
+} from "@wso2is/core/utils";
 import {
     I18n,
     I18nInstanceInitException,
@@ -37,15 +55,46 @@ import {
     isLanguageSupported
 } from "@wso2is/i18n";
 import axios, { AxiosResponse } from "axios";
+import camelCase from "lodash-es/camelCase";
 import has from "lodash-es/has";
-import React, { FunctionComponent, ReactElement, lazy, useEffect } from "react";
-import { I18nextProvider } from "react-i18next";
-import { useDispatch } from "react-redux";
-import { commonConfig } from "./extensions";
+import isEmpty from "lodash-es/isEmpty";
+import React, { FunctionComponent, ReactElement, lazy, useCallback, useEffect, useRef, useState } from "react";
+import { I18nextProvider, useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
+import { commonConfig, serverConfigurationConfig } from "./extensions";
 import { AuthenticateUtils, getProfileInformation } from "./features/authentication";
-import { Config, DeploymentConfigInterface, HttpUtils, PreLoader, store } from "./features/core";
+import {
+    AppState,
+    AppUtils,
+    Config,
+    DeploymentConfigInterface,
+    FeatureConfigInterface,
+    HttpUtils,
+    PreLoader,
+    UIConfigInterface,
+    getAdminViewRoutes,
+    getDeveloperViewRoutes,
+    getSidePanelIcons,
+    setDeveloperVisibility,
+    setFilteredDevelopRoutes,
+    setFilteredManageRoutes,
+    setGetOrganizationLoading,
+    setManageVisibility,
+    setOrganization,
+    setSanitizedDevelopRoutes,
+    setSanitizedManageRoutes,
+    store
+} from "./features/core";
 import { AppConstants, CommonConstants } from "./features/core/constants";
 import { history } from "./features/core/helpers";
+import { getOrganization } from "./features/organizations/api";
+import { OrganizationResponseInterface } from "./features/organizations/models";
+import { OrganizationUtils } from "./features/organizations/utils";
+import {
+    GovernanceConnectorCategoryInterface,
+    GovernanceConnectorUtils,
+    ServerConfigurationsConstants
+} from "./features/server-configurations";
 
 const AUTHORIZATION_ENDPOINT = "authorization_endpoint";
 const TOKEN_ENDPOINT = "token_endpoint";
@@ -68,10 +117,41 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
         getOIDCServiceEndpoints,
         updateConfig,
         signIn,
+        requestCustomGrant,
         state: { isAuthenticated }
     } = useAuthContext();
 
     const dispatch = useDispatch();
+
+    const { t } = useTranslation();
+
+    const [ renderApp, setRenderApp ] = useState<boolean>(false);
+    const [ routesFiltered, setRoutesFiltered ] = useState<boolean>(false);
+
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const governanceConnectorCategories: GovernanceConnectorCategoryInterface[] = useSelector(
+        (state: AppState) => state.governanceConnector.categories);
+    const filteredManageRoutes: RouteInterface[] = useSelector(
+        (state: AppState) => state.routes.manageRoutes.filteredRoutes
+    );
+    const sanitizedManageRoutes: RouteInterface[] = useSelector(
+        (state: AppState) => state.routes.manageRoutes.sanitizedRoutes
+    );
+
+    const governanceConnectorsLoaded = useRef(false);
+
+    useEffect(() => {
+        dispatch(setDeploymentConfigs<DeploymentConfigInterface>(Config.getDeploymentConfig()));
+        dispatch(setUIConfigs<UIConfigInterface>(Config.getUIConfig()));
+    }, []);
+
+    useEffect(() => {
+        dispatch(setFilteredDevelopRoutes(getDeveloperViewRoutes()));
+        dispatch(setFilteredManageRoutes(getAdminViewRoutes()));
+        dispatch(setSanitizedDevelopRoutes(getDeveloperViewRoutes()));
+        dispatch(setSanitizedManageRoutes(getAdminViewRoutes()));
+    }, [ dispatch ]);
 
     useEffect(() => {
         on(Hooks.HttpRequestError, HttpUtils.onHttpRequestError);
@@ -79,7 +159,8 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
         on(Hooks.HttpRequestStart, HttpUtils.onHttpRequestStart);
         on(Hooks.HttpRequestSuccess, HttpUtils.onHttpRequestSuccess);
 
-        on(Hooks.SignIn, async (response: BasicUserInfo) => {
+        on(Hooks.SignIn, async (signInResponse: BasicUserInfo) => {
+            let response: BasicUserInfo = { ...signInResponse };
             let logoutUrl;
             let logoutRedirectUrl;
             let isPrivilegedUser: boolean = false;
@@ -88,10 +169,94 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
 
             dispatchEvent(event);
 
-            const tenantDomain: string = CommonAuthenticateUtils.deriveTenantDomainFromSubject(response.sub);
+            let tenantDomain: string = "";
+
+            if (window[ "AppUtils" ].getConfig().organizationName) {
+                // We are actually getting the orgId here rather than orgName
+                const orgId = window[ "AppUtils" ].getConfig().organizationName;
+
+                // Setting a dummy object until real data comes from the API
+                dispatch(setOrganization({
+                    attributes: [],
+                    created: new Date().toString(),
+                    description: "",
+                    domain: "",
+                    id: orgId,
+                    lastModified: new Date().toString(),
+                    name: orgId,
+                    parent: {
+                        id: "",
+                        ref: ""
+                    },
+                    status: "",
+                    type: ""
+                }));
+
+                // This is to make sure the endpoints are generated with the organization path.
+                await dispatch(setServiceResourceEndpoints(Config.getServiceResourceEndpoints()));
+
+                await requestCustomGrant({
+                    attachToken: false,
+                    data: {
+                        client_id: "{{clientID}}",
+                        grant_type: "organization_switch",
+                        scope: window["AppUtils"].getConfig().idpConfigs?.scope.join(" ")
+                            ?? TokenConstants.SYSTEM_SCOPE,
+                        switching_organization: orgId,
+                        token: "{{token}}"
+                    },
+                    id: "orgSwitch",
+                    returnsSession: true,
+                    signInRequired: true
+                }, async (grantResponse: BasicUserInfo) => {
+                    response = { ...grantResponse };
+                });
+
+                dispatch(setGetOrganizationLoading(true));
+                await getOrganization(orgId)
+                    .then(async (orgResponse: OrganizationResponseInterface) => {
+                        dispatch(setOrganization(orgResponse));
+                    }).catch((error) => {
+                        if (error?.description) {
+                            dispatch(
+                                addAlert({
+                                    description: error.description,
+                                    level: AlertLevels.ERROR,
+                                    message: t(
+                                        "console:manage.features.organizations.notifications." +
+                                "fetchOrganization.error.message"
+                                    )
+                                })
+                            );
+
+                            return;
+                        }
+
+                        dispatch(
+                            addAlert({
+                                description: t(
+                                    "console:manage.features.organizations.notifications.fetchOrganization" +
+                            ".genericError.description"
+                                ),
+                                level: AlertLevels.ERROR,
+                                message: t(
+                                    "console:manage.features.organizations.notifications." +
+                            "fetchOrganization.genericError.message"
+                                )
+                            })
+                        );
+                    }).finally(() => {
+                        dispatch(setGetOrganizationLoading(false));
+                    });
+            } else {
+                dispatch(setGetOrganizationLoading(false));
+                tenantDomain = CommonAuthenticateUtils.deriveTenantDomainFromSubject(response.sub);
+            }
 
             // Update the app base name with the newly resolved tenant.
             window[ "AppUtils" ].updateTenantQualifiedBaseName(tenantDomain);
+            // Update the endpoints with tenant path.
+            await dispatch(setServiceResourceEndpoints(Config.getServiceResourceEndpoints()));
 
             // When the tenant domain changes, we have to reset the auth callback in session storage.
             // If not, it will hang and the app will be unresponsive with in the tab.
@@ -163,7 +328,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                 .catch((error) => {
                     // In case of failure customServerHost is set to the serverHost
                     window[ "AppUtils" ].updateCustomServerHost(Config.getDeploymentConfig().serverHost);
-                    
+
                     throw error;
                 })
                 .finally(() => {
@@ -176,8 +341,8 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
 
             await getDecodedIDToken()
                 .then((idToken) => {
-                    const subParts = idToken.sub.split("@");
-                    const tenantDomain = subParts[ subParts.length - 1 ];
+                    const tenantDomain: string = CommonAuthenticateUtils.deriveTenantDomainFromSubject(idToken?.sub);
+
                     isPrivilegedUser = idToken?.amr?.length > 0
                         ? idToken?.amr[0] === "EnterpriseIDPAuthenticator"
                         : false;
@@ -186,19 +351,17 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                     const fullName = firstName ? (firstName + (lastName ? (" " + lastName) : "")) : response.email;
 
                     dispatch(
-                        setSignIn<AuthenticatedUserInfo & TenantListInterface>({
-                            allowedScopes: response.allowedScopes,
-                            associatedTenants:  isPrivilegedUser ? tenantDomain : idToken?.associated_tenants,
-                            defaultTenant: isPrivilegedUser ? tenantDomain : idToken?.default_tenant,
-                            displayName: response.displayName,
-                            display_name: response.displayName,
-                            email: response.email,
-                            tenantDomain: response.tenantDomain ?? tenantDomain,
-                            username: idToken.sub,
-                            isPrivilegedUser: isPrivilegedUser,
-                            fullName: fullName
-                        })
+                        setSignIn<AuthenticatedUserInfo & TenantListInterface>(
+                            Object.assign(CommonAuthenticateUtils.getSignInState(response), {
+                                associatedTenants:  isPrivilegedUser ? tenantDomain : idToken?.associated_tenants,
+                                defaultTenant: isPrivilegedUser ? tenantDomain : idToken?.default_tenant,
+                                fullName: fullName,
+                                isPrivilegedUser: isPrivilegedUser
+                            })
+                        )
                     );
+
+                    setRenderApp(true);
                 })
                 .catch((error) => {
                     throw error;
@@ -259,12 +422,13 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                     throw error;
                 });
 
-            await !isPrivilegedUser && dispatch(
+            await dispatch(
                 getProfileInformation(
                     Config.getServiceResourceEndpoints().me,
                     window[ "AppUtils" ].getConfig().clientOriginWithTenant
                 )
             );
+
         });
     }, []);
 
@@ -312,6 +476,157 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             history.push(location);
         }
     };
+
+    const filterRoutes = useCallback((): void => {
+        if (isEmpty(allowedScopes) || !featureConfig.applications || !featureConfig.users) {
+            return;
+        }
+
+        const [ devRoutes, sanitizedDevRoutes ] = CommonRouteUtils.filterEnabledRoutes<FeatureConfigInterface>(
+            getDeveloperViewRoutes(),
+            featureConfig,
+            allowedScopes,
+            commonConfig.checkForUIResourceScopes,
+            AppUtils.getHiddenRoutes(),
+            !OrganizationUtils.isCurrentOrganizationRoot() && AppConstants.ORGANIZATION_ENABLED_ROUTES);
+
+        const [ manageRoutes, sanitizedManageRoutes ] = CommonRouteUtils.filterEnabledRoutes<FeatureConfigInterface>(
+            getAdminViewRoutes(),
+            featureConfig,
+            allowedScopes,
+            commonConfig.checkForUIResourceScopes,
+            isOrganizationManagementEnabled
+                ? OrganizationUtils.isCurrentOrganizationRoot()
+                    ? [ ...AppUtils.getHiddenRoutes(), ...AppConstants.ORGANIZATION_ONLY_ROUTES ]
+                    : AppUtils.getHiddenRoutes()
+                : [ ...AppUtils.getHiddenRoutes(), ...AppConstants.ORGANIZATION_ROUTES ],
+            !OrganizationUtils.isCurrentOrganizationRoot() && AppConstants.ORGANIZATION_ENABLED_ROUTES,
+            (route: RouteInterface) => {
+                if (route.id === "organization-roles") {
+                    route.name = "Roles";
+                }
+            });
+
+        // TODO : Remove this logic once getting started pages are removed.
+        if (devRoutes.length === 2
+            && devRoutes.filter(route => route.id === AccessControlUtils.DEVELOP_GETTING_STARTED_ID
+                || route.id === "404").length === 2) {
+            devRoutes[0] = devRoutes[0].filter(route => route.id === "404");
+        }
+
+        dispatch(setFilteredDevelopRoutes(devRoutes));
+        dispatch(setFilteredManageRoutes(manageRoutes));
+        dispatch(setSanitizedDevelopRoutes(sanitizedDevRoutes));
+        dispatch(setSanitizedManageRoutes(sanitizedManageRoutes));
+
+        setRoutesFiltered(true);
+
+        if (sanitizedManageRoutes.length < 1) {
+            dispatch(setManageVisibility(false));
+        }
+
+        if (sanitizedDevRoutes.length < 1) {
+            dispatch(setDeveloperVisibility(false));
+        }
+
+        if (sanitizedDevRoutes.length < 1 && sanitizedManageRoutes.length < 1) {
+            history.push({
+                pathname: AppConstants.getPaths().get("UNAUTHORIZED"),
+                search: "?error=" + AppConstants.LOGIN_ERRORS.get("ACCESS_DENIED")
+            });
+        }
+    }, [ allowedScopes, dispatch, featureConfig ]);
+
+    useEffect(() => {
+        if (!isAuthenticated) {
+            return;
+        }
+
+        filterRoutes();
+    }, [ filterRoutes, isAuthenticated ]);
+
+    useEffect(() => {
+        if (!governanceConnectorCategories ||
+            governanceConnectorCategories.length === 0 ||
+            governanceConnectorsLoaded.current) {
+            return;
+        }
+
+        const manageRoutes = [ ...filteredManageRoutes ];
+        const sanitizedRoutes = [ ...sanitizedManageRoutes ];
+
+        serverConfigurationConfig.showConnectorsOnTheSidePanel &&
+                governanceConnectorCategories?.map((category: GovernanceConnectorCategoryInterface, index: number) => {
+                    let subCategoryExists = false;
+
+                    category.connectors?.map((connector) => {
+                        if (connector.subCategory !== "DEFAULT") {
+                            subCategoryExists = true;
+
+                            return;
+                        }
+                    });
+                    if (subCategoryExists) {
+                        // TODO: Implement sub category handling logic here.
+                    }
+
+                    const categoryName = 
+                        t(`console:manage.features.sidePanel.${camelCase(category.name)}`) 
+                            ?? category.name;
+
+                    const route = {
+                        category: "console:manage.features.sidePanel.categories.configurations",
+                        component: lazy(() => import("./features/server-configurations/pages/governance-connectors")),
+                        exact: true,
+                        icon: {
+                            icon: getSidePanelIcons().connectors[ category.id ]
+                                ?? getSidePanelIcons().connectors.default
+                        },
+                        id: category.id,
+                        name: categoryName,
+                        order:
+                            category.id === ServerConfigurationsConstants.OTHER_SETTINGS_CONNECTOR_CATEGORY_ID
+                                ? manageRoutes.length + governanceConnectorCategories.length
+                                : manageRoutes.length + index,
+                        path: AppConstants.getPaths()
+                            .get("GOVERNANCE_CONNECTORS")
+                            .replace(":id", category.id),
+                        protected: true,
+                        showOnSidePanel: true
+                    };
+
+                    manageRoutes.unshift(route);
+                    sanitizedRoutes.unshift(route);
+                });
+
+        dispatch(setFilteredManageRoutes(manageRoutes));
+        dispatch(setSanitizedManageRoutes(sanitizedRoutes));
+        governanceConnectorsLoaded.current = true;
+
+    }, [ governanceConnectorCategories, filteredManageRoutes, sanitizedManageRoutes ]);
+
+    useEffect(() => {
+        if (!allowedScopes) {
+            return;
+        }
+
+        if (!(governanceConnectorCategories !== undefined && governanceConnectorCategories.length > 0)) {
+            if (
+                (
+                    featureConfig?.governanceConnectors?.enabled  &&
+                    serverConfigurationConfig.showConnectorsOnTheSidePanel &&
+                    hasRequiredScopes(
+                        featureConfig.governanceConnectors,
+                        featureConfig.governanceConnectors.scopes.read,
+                        allowedScopes
+                    ) &&
+                    OrganizationUtils.isCurrentOrganizationRoot()
+                )
+            ) {
+                GovernanceConnectorUtils.getGovernanceConnectors();
+            }
+        }
+    }, [ governanceConnectorCategories, featureConfig, allowedScopes ]);
 
     useEffect(() => {
         const error = new URLSearchParams(location.search).get("error_description");
@@ -398,7 +713,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             } }
         >
             <I18nextProvider i18n={ I18n.instance }>
-                <App />
+                { renderApp && routesFiltered ? <App /> : <PreLoader /> }
             </I18nextProvider>
         </SecureApp>
     );

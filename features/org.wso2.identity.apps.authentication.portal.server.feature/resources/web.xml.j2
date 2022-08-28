@@ -86,6 +86,14 @@
         </context-param>
     {% endif %}
 
+    {% if authenticationendpoint.console_url is defined %}
+     <!-- *************** Console URL ********************** -->
+        <context-param>
+            <param-name>ConsoleURL</param-name>
+            <param-value>{{ authenticationendpoint.console_url }}</param-value>
+        </context-param>
+    {% endif %}
+
     <!-- *************** End of Account Recovery Endpoint Context URL Configuration ********************** -->
     <!-- *************** Identity Server Endpoint URL Configuration ********************** -->
     {% if authenticationendpoint.identity_server_endpoint_url is defined %}
@@ -143,6 +151,15 @@
     {% endfor %}
     {% endif %}
     <!-- *************** End of Authentication Portal Context Parameters ********************** -->
+
+    <!-- *************** Layout Store URL Configuration ********************** -->
+    {% if webappscommon.layout_store_url is defined %}
+    <context-param>
+        <param-name>LayoutStoreURL</param-name>
+        <param-value>{{ webappscommon.layout_store_url }}</param-value>
+    </context-param>
+    {% endif %}
+    <!-- *************** End of Layout Store URL Configuration ********************** -->
 
     <filter>
         <filter-name>HttpHeaderSecurityFilter</filter-name>
@@ -429,6 +446,11 @@
         <servlet-name>org_name.do</servlet-name>
         <jsp-file>/org_name.jsp</jsp-file>
     </servlet>
+
+    <servlet>
+        <servlet-name>select_org.do</servlet-name>
+        <jsp-file>/select_org.jsp</jsp-file>
+    </servlet>
     
     <servlet-mapping>
         <servlet-name>totp_enroll.do</servlet-name>
@@ -488,6 +510,11 @@
     <servlet-mapping>
         <servlet-name>org_name.do</servlet-name>
         <url-pattern>/org_name.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>select_org.do</servlet-name>
+        <url-pattern>/select_org.do</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>

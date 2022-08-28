@@ -22,4 +22,5 @@
 export interface RolesResourceEndpointsInterface {
     roles: string;
     permission: string;
+    rolesWithoutOrgPath: string;
 }

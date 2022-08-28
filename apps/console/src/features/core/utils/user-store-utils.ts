@@ -50,9 +50,9 @@ export class SharedUserStoreUtils {
     public static async getUserStoreRegEx(userstore: string, regExName: string): Promise<string> {
         let usernameRegEx: UserStoreProperty = null;
 
-        return getUserStoreList()
+        return getUserStoreList(store.getState().config.endpoints.userStores)
             .then((response) => {
-                const store = response.data.find(item => item.name === userstore);
+                const store = response?.data?.find(item => item.name === userstore);
 
                 if (!isEmpty(store)) {
                     return getAUserStore(store.id)
@@ -99,7 +99,7 @@ export class SharedUserStoreUtils {
             return getIds(userstores);
         }
 
-        return getUserStoreList()
+        return getUserStoreList(store.getState().config.endpoints.userStores)
             .then((response) => {
                 return getIds(response.data);
             })
@@ -120,7 +120,7 @@ export class SharedUserStoreUtils {
                 description: I18n.instance.t("console:develop.features.userstores.notifications.fetchUserstores." +
                     "genericError.description"),
                 level: AlertLevels.INFO,
-                message: I18n.instance.t("console:develop.features.userstores.notifications.fetchUserstores." + 
+                message: I18n.instance.t("console:develop.features.userstores.notifications.fetchUserstores." +
                     "genericError.message")
             }));
         });
@@ -138,7 +138,7 @@ export class SharedUserStoreUtils {
         const readOnlyUserStores: string[] = [];
 
         // Checks if the primary user store is readonly as well.
-        if ( primaryUserStore && primaryUserStore.properties.find(property => { 
+        if ( primaryUserStore && primaryUserStore.properties.find(property => {
             return property.name === SharedUserStoreConstants.READONLY_USER_STORE; }).value === "true"
         ) {
             readOnlyUserStores.push(primaryUserStore.name.toUpperCase());

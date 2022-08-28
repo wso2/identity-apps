@@ -55,6 +55,7 @@ import {
     store
 } from "../../../core";
 import { TierLimitReachErrorModal } from "../../../core/components/tier-limit-reach-error-modal";
+import { OrganizationUtils } from "../../../organizations/utils";
 import { createApplication, getApplicationList, getApplicationTemplateData } from "../../api";
 import { getInboundProtocolLogos } from "../../configs";
 import { ApplicationManagementConstants } from "../../constants";
@@ -138,7 +139,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
     const [ protocolFormValues, setProtocolFormValues ] = useState<Record<string, any>>(undefined);
     const [
         customApplicationProtocol,
-        setCustomApplicationProtocol 
+        setCustomApplicationProtocol
     ] = useState<SupportedAuthProtocolTypes>(SupportedAuthProtocolTypes.OAUTH2_OIDC);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ generalFormValues, setGeneralFormValues ] = useState<Map<string, FormValue>>(undefined);
@@ -161,7 +162,9 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
 
     useEffect(() => {
         // Stop fetching CORS origins if the selected template is `Expert Mode`.
-        if (!selectedTemplate || selectedTemplate.id === CustomApplicationTemplate.id) {
+        if (!selectedTemplate
+            || selectedTemplate.id === CustomApplicationTemplate.id
+            || !OrganizationUtils.isCurrentOrganizationRoot()) {
             return;
         }
 
@@ -286,7 +289,21 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                     }
                 };
             } else if (customApplicationProtocol === SupportedAuthProtocolTypes.SAML) {
+                
                 application.templateId = ApplicationManagementConstants.CUSTOM_APPLICATION_SAML;
+
+                if (samlConfigureMode === SAMLConfigModes.MANUAL) {
+                    application.inboundProtocolConfiguration.saml.manualConfiguration = Object.assign(
+                        application.inboundProtocolConfiguration.saml.manualConfiguration,
+                        {
+                            attributeProfile: {
+                                "alwaysIncludeAttributesInResponse": true,
+                                "enabled": true
+                            }
+                        }
+                    );
+                }
+
             } else if (customApplicationProtocol === SupportedAuthProtocolTypes.WS_FEDERATION) {
                 application.templateId = ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS;
             }
@@ -594,7 +611,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
 
             /**
              * Enable to have SAML wizard without config mode options.
-             * 
+             *
              * @example
              * <SAMLProtocolSettingsWizardForm
              *     fields={ [ "issuer", "assertionConsumerURLs" ] }
@@ -700,6 +717,10 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
             return null;
         }
 
+        if (template.id === "mobile" || template.id === "desktop") {
+            return null;
+        }
+
         const templates: SupportedAuthProtocolTypes[] | ApplicationTemplateInterface[] = isCustom
             ? getSupportedCustomProtocols()
             : subTemplates;
@@ -740,7 +761,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                                             ? false
                                             : (subTemplate as ApplicationTemplateInterface).previewOnly;
                                         const onClick = () => {
-                                            // If `previewOnly`, avoid click actions. 
+                                            // If `previewOnly`, avoid click actions.
                                             if ((subTemplate as ApplicationTemplateInterface).previewOnly) {
                                                 return;
                                             }
@@ -910,7 +931,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                             { resolveMinimalProtocolFormFields() }
                         </Grid.Column>
                     </Grid.Row>
-                    { 
+                    {
                         // The Management App checkbox is only present in OIDC Standard-Based apps
                         (customApplicationProtocol === SupportedAuthProtocolTypes.OAUTH2_OIDC
                             && selectedTemplate?.templateId === "custom-application") && (
@@ -1025,7 +1046,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                         "tierLimitReachedError.emptyPlaceholder.subtitles"
                     ) }
                     message={ t(
-                        "console:develop.features.applications.notifications." + 
+                        "console:develop.features.applications.notifications." +
                         "tierLimitReachedError.emptyPlaceholder.title"
                     ) }
                     openModal={ openLimitReachedModal }

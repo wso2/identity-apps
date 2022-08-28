@@ -33,7 +33,8 @@ const addComponentModalProps: AddOrganizationModalPropsInterface = {
     parent: {
         id: "1",
         name: "Parent Organization",
-        ref: "ref"
+        ref: "ref",
+        status: "ACTIVE"
     }
 };
 
@@ -86,21 +87,7 @@ describe("UTC-1.0 - [Organization Management Feature] - Add Organization Modal",
         ).toBeInTheDocument();
     });
 
-    test("UTC-1.4 - Test if duplicate name validation is working", async () => {
-        render(
-            <AddOrganizationModal { ...addComponentModalProps } />
-        );
-
-        fireEvent.change(
-            within(screen.getByTestId("organization-create-wizard-organization-name-input")).getByRole("textbox"),
-            { target: { value: "Organization One" } }
-        );
-
-        fireEvent.click(screen.getByTestId("organization-create-wizard-next-button"));
-        expect(await screen.findByTestId("organization-create-wizard-duplicate-name-error")).toBeInTheDocument();
-    });
-
-    test("UTC-1.5 - Test if the form can be submitted", async () => {
+    test("UTC-1.4 - Test if the form can be submitted", async () => {
         render(
             <AddOrganizationModal { ...addComponentModalProps } />
         );

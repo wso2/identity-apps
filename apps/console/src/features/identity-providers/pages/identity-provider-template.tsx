@@ -188,6 +188,10 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                             return;
                         }
 
+                        if (template?.id === "organization-enterprise-idp" && !isOrganizationManagementEnabled) {
+                            return;
+                        }
+
                         tags = union(tags, template.tags);
                     });
                 });
@@ -215,6 +219,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
             === IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.GOOGLE) {
 
             handleTemplateSelection(null, IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.GOOGLE);
+
             return;
         }
     }, [ urlSearchParams.get(IdentityProviderManagementConstants.IDP_CREATE_WIZARD_TRIGGER_URL_SEARCH_PARAM_KEY) ]);
@@ -410,14 +415,14 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
             contentTopMargin={ true }
             description={
                 useNewConnectionsView
-                    ?   <>
-                            { t("console:develop.pages.authenticationProviderTemplate.subTitle") }
-                            <DocumentationLink
-                                link={ getLink("develop.connections.newConnection.learnMore") }
-                            >
-                                { t("common:learnMore") }
-                            </DocumentationLink>
-                        </>
+                    ?   (<>
+                        { t("console:develop.pages.authenticationProviderTemplate.subTitle") }
+                        <DocumentationLink
+                            link={ getLink("develop.connections.newConnection.learnMore") }
+                        >
+                            { t("common:learnMore") }
+                        </DocumentationLink>
+                    </>)
                     :   t("console:develop.pages.idpTemplate.subTitle")
             }
             backButton={ {
@@ -461,28 +466,36 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                                             category.templates.map((
                                                 template: IdentityProviderTemplateInterface,
                                                 templateIndex: number
-                                            ) => (
-                                                <ResourceGrid.Card
-                                                    key={ templateIndex }
-                                                    resourceName={
-                                                        template.name === "Enterprise" ? "Standard-Based IdP" : template.name
-                                                    }
-                                                    isResourceComingSoon={ template.comingSoon }
-                                                    disabled={ template.disabled }
-                                                    comingSoonRibbonLabel={ t("common:comingSoon") }
-                                                    resourceDescription={ template.description }
-                                                    resourceImage={
-                                                        IdentityProviderManagementUtils
-                                                            .resolveTemplateImage(template.image, getIdPIcons())
-                                                    }
-                                                    tags={ template.tags }
-                                                    onClick={ (e: SyntheticEvent) => {
-                                                        handleTemplateSelection(e, template.id);
-                                                    } }
-                                                    showTooltips={ { header: false, description: true } }
-                                                    data-testid={ `${ testId }-${ template.name }` }
-                                                />
-                                            ))
+                                            ) => {
+                                                const isOrgIdp = template.templateId === "organization-enterprise-idp";
+
+                                                if (isOrgIdp && !isOrganizationManagementEnabled) {
+                                                    return null;
+                                                }
+
+                                                return (
+                                                    <ResourceGrid.Card
+                                                        key={ templateIndex }
+                                                        resourceName={
+                                                            template.name === "Enterprise" ? "Standard-Based IdP" : template.name
+                                                        }
+                                                        isResourceComingSoon={ template.comingSoon }
+                                                        disabled={ template.disabled }
+                                                        comingSoonRibbonLabel={ t("common:comingSoon") }
+                                                        resourceDescription={ template.description }
+                                                        resourceImage={
+                                                            IdentityProviderManagementUtils
+                                                                .resolveTemplateImage(template.image, getIdPIcons())
+                                                        }
+                                                        tags={ template.tags }
+                                                        onClick={ (e: SyntheticEvent) => {
+                                                            handleTemplateSelection(e, template.id);
+                                                        } }
+                                                        showTooltips={ { header: false, description: true } }
+                                                        data-testid={ `${ testId }-${ template.name }` }
+                                                    />
+                                                );
+                                            })
                                         }
                                     </ResourceGrid>
                                 ))

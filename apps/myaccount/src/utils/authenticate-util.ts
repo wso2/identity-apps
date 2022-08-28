@@ -18,7 +18,7 @@
  */
 
 import { AuthReactConfig, Hooks, ResponseMode, Storage, useAuthContext } from "@asgardeo/auth-react";
-import { TokenConstants } from "@wso2is/core/constants";
+import { AppConstants, TokenConstants } from "@wso2is/core/constants";
 import UAParser from "ua-parser-js";
 import { store } from "../store";
 
@@ -85,18 +85,22 @@ const resolveBaseUrls = (): string[] => {
 };
 
 const resolveStorage = (): Storage => {
-    const storageFallback: Storage =
-        new UAParser().getBrowser().name === "IE" ? Storage.SessionStorage : Storage.WebWorker;
 
-    if (window["AppUtils"]?.getConfig().idpConfigs?.storage) {
+    const activeBrowser: string = new UAParser()?.getBrowser()?.name;
+
+    const storageFallback: Storage = AppConstants.WEB_WORKER_UNSUPPORTED_AGENTS.includes(activeBrowser)
+        ? Storage.SessionStorage
+        : Storage.WebWorker;
+
+    if (window["AppUtils"]?.getConfig()?.idpConfigs?.storage) {
         if (
-            window["AppUtils"]?.getConfig().idpConfigs?.storage === Storage.WebWorker &&
-            new UAParser().getBrowser().name === "IE"
+            window["AppUtils"].getConfig().idpConfigs.storage === Storage.WebWorker &&
+            storageFallback !== Storage.WebWorker
         ) {
             return Storage.SessionStorage;
         }
 
-        return window["AppUtils"]?.getConfig().idpConfigs?.storage;
+        return window["AppUtils"].getConfig().idpConfigs?.storage;
     }
 
     return storageFallback;

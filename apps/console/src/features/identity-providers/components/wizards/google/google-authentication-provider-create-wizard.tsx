@@ -121,8 +121,6 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<
         * @param identityProvider Identity provider object.
         */
         const createNewIdentityProvider = (identityProvider: IdentityProviderInterface): void => {
-        // TODO Uncomment below once BE support is available for templateId
-        // identityProvider.templateId = template.id
 
             setIsSubmitting(true);
 
@@ -279,10 +277,12 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<
         let triggerPreviousForm: () => void;
 
 
-        const onSubmitWizard = (values): void => {
+        const onSubmitWizard = async (values): Promise<void> => {
+            await identityProviderConfig.overrideTemplate(template);
             const identityProvider: IdentityProviderInterface = template.idp;
 
             identityProvider.name = values?.name.toString();
+            identityProvider.templateId = template.templateId;
             identityProvider.federatedAuthenticators.authenticators[ 0 ].properties = [
                 {
                     "key": "ClientId",

@@ -46,7 +46,8 @@ export class OrganizationManagementConstants {
     public static readonly ROOT_ORGANIZATION: OrganizationInterface = {
         id: this.ROOT_ORGANIZATION_ID,
         name: "Super",
-        ref: ""
+        ref: "",
+        status: "ACTIVE"
     };
 }
 
@@ -70,9 +71,16 @@ export class OrganizationRoleManagementConstants {
         .set("ORGANIZATION_ROLE_DELETE", "organization-roles.delete")
         .set("ORGANIZATION_ROLE_READ", "organization-roles.read");
 
+    public static readonly SUPER_ADMIN_PERMISSION_KEY = "/permission/protected";
+    public static readonly ORG_CREATOR_ROLE_NAME = "org-creator";
 }
 
 export const APPLICATION_DOMAIN = "Application/";
 export const INTERNAL_DOMAIN = "Internal";
 export const PRIMARY_DOMAIN = "Primary";
 export const ROLE_VIEW_PATH = "/organization-roles/";
+
+export const ORGANIZATION_NAME_MIN_LENGTH = 3;
+export const ORGANIZATION_NAME_MAX_LENGTH = 32;
+export const ORGANIZATION_DESCRIPTION_MIN_LENGTH = 3;
+export const ORGANIZATION_DESCRIPTION_MAX_LENGTH = 300;

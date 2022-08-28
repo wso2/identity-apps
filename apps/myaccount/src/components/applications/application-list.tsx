@@ -139,7 +139,7 @@ export const ApplicationList: FunctionComponent<ApplicationListProps> = (
                                         content={ (
                                             <Grid.Row>
                                                 <Grid.Column>
-                                                    <Text>
+                                                    <Text className="mb-1 mt-1">
                                                         {
                                                             app.name?.length > 55
                                                                 ? truncateAppName(app.name)
@@ -147,11 +147,16 @@ export const ApplicationList: FunctionComponent<ApplicationListProps> = (
                                                         }
                                                     </Text>
                                                 </Grid.Column>
-                                                <Grid.Column>
-                                                    <Text className="hint-description">
-                                                        { app.description }
-                                                    </Text>
-                                                </Grid.Column>
+                                                { app.description
+                                                    ? (
+                                                        <Grid.Column>
+                                                            <Text className="hint-description mb-1 mt-1">
+                                                                { app.description }
+                                                            </Text>
+                                                        </Grid.Column>
+                                                    )
+                                                    : null
+                                                }
                                             </Grid.Row>
                                         ) }
                                     />

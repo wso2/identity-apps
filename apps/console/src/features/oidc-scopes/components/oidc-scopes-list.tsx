@@ -393,7 +393,7 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
                 deletingScope && (
                     <ConfirmationModal
                         onClose={ (): void => setShowDeleteConfirmationModal(false) }
-                        type="warning"
+                        type="negative"
                         open={ showDeleteConfirmationModal }
                         assertion={ deletingScope.name }
                         assertionHint={ t("console:manage.features.oidcScopes.confirmationModals.deleteScope" +
@@ -413,7 +413,7 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message
                             attached
-                            warning
+                            negative
                             data-testid={ `${ testId }-delete-confirmation-modal-message` }
                         >
                             { t("console:manage.features.oidcScopes.confirmationModals.deleteScope.message") }

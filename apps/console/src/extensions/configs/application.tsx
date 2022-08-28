@@ -23,7 +23,7 @@ import {
     ExtendedExternalClaimInterface,
     SelectedDialectInterface
 } from "../../features/applications/components/settings";
-import { ApplicationTabTypes } from "../../features/applications/models";
+import { ApplicationInterface, ApplicationTabTypes } from "../../features/applications/models";
 
 export const applicationConfig: ApplicationConfig = {
     advancedConfigurations: {
@@ -33,7 +33,7 @@ export const applicationConfig: ApplicationConfig = {
         showSaaS: true
     },
     generalSettings: {
-        getFieldReadOnlyStatus: (applicationName: string, fieldName: string): boolean => {
+        getFieldReadOnlyStatus: (application: ApplicationInterface, fieldName: string): boolean => {
             return false;
         }
     },
@@ -73,7 +73,7 @@ export const applicationConfig: ApplicationConfig = {
             return null;
         },
         // TODO: Move the default to the usage
-        getOveriddenTab: (_clientId: string, _tabName: ApplicationTabTypes, 
+        getOveriddenTab: (_clientId: string, _tabName: ApplicationTabTypes,
             defaultComponent: ReactElement, _appName: string, _appId: string, _tenantDomain: string) => {
             return defaultComponent;
         },
@@ -90,20 +90,23 @@ export const applicationConfig: ApplicationConfig = {
             return null;
         },
         showProvisioningSettings: true,
-        showDangerZone: (applicationName: string): boolean => {
+        showDangerZone: (application: ApplicationInterface): boolean => {
             return true;
         },
-        showDeleteButton: (applicationName: string): boolean => {
+        showDeleteButton: (application: ApplicationInterface): boolean => {
             return true;
         },
-        getTabPanelReadOnlyStatus: (tabPanelName: string, applicationName: string): boolean => {
+        getTabPanelReadOnlyStatus: (tabPanelName: string, applicationName: ApplicationInterface): boolean => {
             return false;
-        }
+        },
+        showApplicationShare: true
     },
     excludeIdentityClaims: false,
     excludeSubjectClaim: false,
     inboundOIDCForm: {
-        disabledGrantTypes: [],
+        disabledGrantTypes: {
+            "custom-application": []
+        },
         shouldValidateCertificate: true,
         showBackChannelLogout: true,
         showCertificates: true,

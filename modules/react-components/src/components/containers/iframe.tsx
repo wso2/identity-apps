@@ -20,6 +20,7 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
+    CSSProperties,
     FunctionComponent,
     IframeHTMLAttributes,
     MutableRefObject,
@@ -75,6 +76,10 @@ export interface IframeProps extends IframeHTMLAttributes<HTMLIFrameElement>, Id
      * The zoom percentage. By default will be 100%.
      */
     zoom?: number;
+    /**
+     * These styles will be applied to the warpper of the iframe when the responsive is true.
+     */
+    wrapperStyle?: CSSProperties;
 }
 
 /**
@@ -101,6 +106,7 @@ export const Iframe: FunctionComponent<PropsWithChildren<IframeProps>> = (
         stylesheets,
         ["data-componentid"]: componentId,
         zoom,
+        wrapperStyle,
         ...rest
     } = props;
 
@@ -127,7 +133,7 @@ export const Iframe: FunctionComponent<PropsWithChildren<IframeProps>> = (
      * Clones the parent node's stylesheets to the iframe.
      */
     useEffect(() => {
-
+        
         // Check if main body node is loaded before proceeding.
         if (!iFrameBodyNode) {
             return;
@@ -327,7 +333,7 @@ export const Iframe: FunctionComponent<PropsWithChildren<IframeProps>> = (
                 className={ !isWrapped && classes }
                 ref={ contentRef }
                 data-componentid={ componentId }
-                { ...rest }
+                { ...rest as any }
             >
                 { iFrameBodyNode && createPortal(children, iFrameBodyNode) }
             </iframe>
@@ -340,7 +346,7 @@ export const Iframe: FunctionComponent<PropsWithChildren<IframeProps>> = (
     }
 
     return (
-        <div className={ classes } data-componentid={ `${ componentId }-wrapper` }>
+        <div className={ classes } data-componentid={ `${ componentId }-wrapper` } style={ wrapperStyle } >
             { _iframe() }
         </div>
     );

@@ -16,6 +16,7 @@
   ~ under the License.
   --%>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
+<%@ page import="org.wso2.carbon.core.SameSiteCookie" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApiException" %>
@@ -41,9 +42,11 @@
 <%@ page import="java.net.URI" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.User" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClient" %>
+<%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 
 <jsp:directive.include file="includes/localize.jsp"/>
 <jsp:directive.include file="tenant-resolve.jsp"/>
+<jsp:directive.include file="includes/layout-resolver.jsp"/>
 
 <%
     String ERROR_MESSAGE = "errorMsg";
@@ -112,19 +115,12 @@
         
                 JSONObject cookieValueInJson = new JSONObject();
                 cookieValueInJson.put("content", content);
-        
                 String signature = Base64.getEncoder().encodeToString(SignatureUtil.doSignature(content));
-        
                 cookieValueInJson.put("signature", signature);
-                Cookie cookie = new Cookie(AUTO_LOGIN_COOKIE_NAME,
-                        Base64.getEncoder().encodeToString(cookieValueInJson.toString().getBytes()));
-                cookie.setPath("/");
-                cookie.setSecure(true);
-                cookie.setMaxAge(300);
-                if (StringUtils.isNotBlank(cookieDomain)) {
-                    cookie.setDomain(cookieDomain);
-                }
-                response.addCookie(cookie);
+                String cookieValue = Base64.getEncoder().encodeToString(cookieValueInJson.toString().getBytes());
+
+                IdentityManagementEndpointUtil.setCookie(request, response, AUTO_LOGIN_COOKIE_NAME, cookieValue,
+                    300, SameSiteCookie.NONE, "/", cookieDomain);
 
                 if (callback.contains("?")) {
                     String queryParams = callback.substring(callback.indexOf("?") + 1);
@@ -177,6 +173,11 @@
 %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
+<%-- Data for the layout from the page --%>
+<%
+    layoutData.put("containerSize", "medium");
+%>
+
 <!doctype html>
 <html>
 <head>
@@ -190,17 +191,28 @@
     <% } %>
 </head>
 <body>
+    <div>
+        <form id="callbackForm" name="callbackForm" method="post" action="/commonauth">
+            <div>
+                <input type="hidden" name="username" value="<%=Encode.forHtmlAttribute(username)%>"/>
+            </div>
+            <div>
+                <input type="hidden" name="sessionDataKey" value="<%=Encode.forHtmlAttribute(sessionDataKey)%>"/>
+            </div>
+        </form>
+    </div>
 
-<div>
-    <form id="callbackForm" name="callbackForm" method="post" action="/commonauth">
-        <div>
-            <input type="hidden" name="username" value="<%=Encode.forHtmlAttribute(username)%>"/>
-        </div>
-        <div>
-            <input type="hidden" name="sessionDataKey" value="<%=Encode.forHtmlAttribute(sessionDataKey)%>"/>
-        </div>
-    </form>
-</div>
+    <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
+        <layout:component componentName="ProductHeader" >
+
+        </layout:component>
+        <layout:component componentName="MainSection" >
+
+        </layout:component>
+        <layout:component componentName="ProductFooter" >
+
+        </layout:component>
+    </layout:main>
 
     <!-- footer -->
     <%

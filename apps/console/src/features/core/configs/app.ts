@@ -153,7 +153,8 @@ export class Config {
                 I18nConstants.COMMON_NAMESPACE,
                 I18nConstants.CONSOLE_PORTAL_NAMESPACE,
                 I18nConstants.EXTENSIONS_NAMESPACE
-            ]
+            ],
+            preload: [ "si-LK", "fr-FR" ]
         };
     }
 
@@ -185,21 +186,23 @@ export class Config {
         return {
             ...getApplicationsResourceEndpoints(this.resolveServerHost()),
             ...getApprovalsResourceEndpoints(this.getDeploymentConfig()?.serverHost),
-            ...getClaimResourceEndpoints(this.getDeploymentConfig()?.serverHost),
+            ...getClaimResourceEndpoints(this.getDeploymentConfig()?.serverHost, this.resolveServerHost()),
             ...getCertificatesResourceEndpoints(this.getDeploymentConfig()?.serverHost),
             ...getIDPResourceEndpoints(this.resolveServerHost()),
             ...getEmailTemplatesResourceEndpoints(this.getDeploymentConfig()?.serverHost),
-            ...getRolesResourceEndpoints(this.getDeploymentConfig()?.serverHost),
-            ...getServerConfigurationsResourceEndpoints(this.getDeploymentConfig()?.serverHost),
+            ...getRolesResourceEndpoints(this.resolveServerHost(), this.getDeploymentConfig().serverHost),
+            ...getServerConfigurationsResourceEndpoints(this.resolveServerHost()),
             ...getUsersResourceEndpoints(this.resolveServerHost()),
-            ...getUserstoreResourceEndpoints(this.getDeploymentConfig()?.serverHost),
+            ...getUserstoreResourceEndpoints(this.resolveServerHost()),
             ...getScopesResourceEndpoints(this.getDeploymentConfig()?.serverHost),
             ...getGroupsResourceEndpoints(this.resolveServerHost()),
             ...getRemoteFetchConfigResourceEndpoints(this.getDeploymentConfig()?.serverHost),
             ...getSecretsManagementEndpoints(this.getDeploymentConfig()?.serverHost),
             ...getExtendedFeatureResourceEndpoints(this.getDeploymentConfig()?.serverHost),
-            ...getOrganizationsResourceEndpoints(this.resolveServerHost(), this.getDeploymentConfig()?.serverHost),
+            ...getOrganizationsResourceEndpoints(this.resolveServerHost(), this.getDeploymentConfig().serverHost),
             CORSOrigins: `${ this.getDeploymentConfig()?.serverHost }/api/server/v1/cors/origins`,
+            // TODO: Remove this endpoint and use ID token to get the details
+            me: `${ this.getDeploymentConfig()?.serverHost }/scim2/Me`,
             saml2Meta: `${ this.getDeploymentConfig()?.serverHost }/identity/metadata/saml2`,
             wellKnown: `${ this.getDeploymentConfig()?.serverHost }/oauth2/token/.well-known/openid-configuration`
         };

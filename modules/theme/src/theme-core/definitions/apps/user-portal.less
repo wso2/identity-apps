@@ -45,7 +45,8 @@
 
 .overview-page {
     .widget {
-        margin-bottom: 3em;
+        padding-bottom: 3em;
+        height: 100%;
 
         &.account-status {
             .status-shield-container {
@@ -99,6 +100,10 @@
             .header-section {
                 min-height: @overviewPageWidgetHeaderMinHeight;
             }
+        }
+
+        .settings-card {
+            height: 100%;
         }
     }
 }
@@ -173,6 +178,19 @@
     &.warning {
         background-color: rgba(255, 80, 0, 0.28);
     }
+}
+
+.backup-code-column {
+    padding: 8px 40px !important;
+
+    div {
+        background-color: rgba(0, 0, 0, .1);
+        padding: 4px 0;
+    }
+}
+
+.backup-code-description {
+    font-size: 1rem !important;
 }
 
 /*****************************************

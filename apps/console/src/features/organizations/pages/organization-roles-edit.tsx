@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "../../core";
 import { getOrganizationRoleById } from "../api";
 import { EditOrganizationRole } from "../components/edit-organization-role";
-import { OrganizationInterface, OrganizationRoleInterface } from "../models";
+import { OrganizationResponseInterface, OrganizationRoleInterface } from "../models";
 
 const OrganizationRolesEdit: FunctionComponent = (
 ): ReactElement => {
@@ -17,7 +17,7 @@ const OrganizationRolesEdit: FunctionComponent = (
     const [ roleId, setRoleId ] = useState<string>(undefined);
     const [ roleObject, setRoleObject ] = useState<OrganizationRoleInterface>();
     const [ isRoleDetailsRequestLoading, setIsRoleDetailsRequestLoading ] = useState<boolean>(false);
-    const currentOrganization: OrganizationInterface = useSelector(
+    const currentOrganization: OrganizationResponseInterface = useSelector(
         (state: AppState) => state.organization.organization
     );
 
@@ -59,11 +59,12 @@ const OrganizationRolesEdit: FunctionComponent = (
     return (
         <PageLayout
             isLoading={ isRoleDetailsRequestLoading }
-            title={
+            pageTitle={
                 roleObject && roleObject?.displayName ?
                     roleObject?.displayName :
                     t("console:manage.pages.rolesEdit.title")
             }
+            title="Edit Organization Role"
             backButton={ {
                 onClick: handleBackButtonClick,
                 text: t("console:manage.pages.rolesEdit.backButton", { type: "roles" })

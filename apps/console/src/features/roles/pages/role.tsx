@@ -25,7 +25,7 @@ import React, { ReactElement, SyntheticEvent, useEffect, useState } from "react"
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
-import { AdvancedSearchWithBasicFilters, UIConstants } from "../../core";
+import { AdvancedSearchWithBasicFilters, UIConstants, store } from "../../core";
 import { CreateRoleWizard, RoleList } from "../../roles";
 import { getRolesList } from "../../roles/api";
 import { getUserStoreList } from "../../userstores/api";
@@ -156,7 +156,7 @@ const RolesPage = (): ReactElement => {
             value: ""
         };
 
-        getUserStoreList()
+        getUserStoreList(store.getState().config.endpoints.userStores)
             .then((response) => {
                 if (storeOptions === []) {
                     storeOptions.push(storeOption);
@@ -327,6 +327,7 @@ const RolesPage = (): ReactElement => {
                 )
             }
             title={ t("console:manage.pages.roles.title") }
+            pageTitle={ t("console:manage.pages.roles.title") }
             description={ t("console:manage.pages.roles.subTitle") }
         >
             {

@@ -50,7 +50,7 @@ export interface AccessControlShowInterface {
 /**
  * Show component which will render child elements based on the permissions received.
  *
- * @param props props required for permissions based rendering.
+ * @param props - props required for permissions based rendering.
  * @returns permission matched child elements
  */
 export const Show: FunctionComponent<PropsWithChildren<AccessControlShowInterface>> = (

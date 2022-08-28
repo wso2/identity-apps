@@ -34,7 +34,7 @@ export interface AccessControlContextInterface {
  * Component which will initialize the permission context
  * according to the scopes received from the backend.
  *
- * @param props
+ * @param props - component props
  * @returns
  */
 export const AccessControlContext: FunctionComponent<PropsWithChildren<AccessControlContextInterface>> = (

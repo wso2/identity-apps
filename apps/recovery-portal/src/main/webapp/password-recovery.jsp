@@ -32,9 +32,11 @@
 <%@ page import="org.wso2.carbon.identity.core.util.IdentityTenantUtil" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.*" %>
+<%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 
 <jsp:directive.include file="includes/localize.jsp"/>
 <jsp:directive.include file="tenant-resolve.jsp"/>
+<jsp:directive.include file="includes/layout-resolver.jsp"/>
 
 <%
     boolean error = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("error"));
@@ -110,6 +112,11 @@
     }
 %>
 
+<%-- Data for the layout from the page --%>
+<%
+    layoutData.put("containerSize", "medium");
+%>
+
 <!doctype html>
 <html>
 <head>
@@ -132,8 +139,8 @@
     %>
 </head>
 <body class="login-portal layout recovery-layout">
-    <main class="center-segment">
-        <div class="ui container medium center aligned middle aligned">
+    <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
+        <layout:component componentName="ProductHeader" >
             <!-- product-title -->
             <%
                 File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
@@ -143,6 +150,8 @@
             <% } else { %>
             <jsp:include page="includes/product-title.jsp"/>
             <% } %>
+        </layout:component>
+        <layout:component componentName="MainSection" >
             <div class="ui segment">
                 <!-- page content -->
                 <h3 class="ui header">
@@ -271,8 +280,11 @@
                         %>
                         <div class="field">
                             <div class="g-recaptcha"
-                                 data-sitekey=
-                                         "<%=Encode.forHtmlContent(reCaptchaKey)%>">
+                                    data-size="invisible"
+                                    data-callback="onCompleted"
+                                    data-action="passwordRecovery"
+                                    data-sitekey=
+                                            "<%=Encode.forHtmlContent(reCaptchaKey)%>">
                             </div>
                         </div>
                         <%
@@ -292,18 +304,20 @@
                     </form>
                 </div>
             </div>
-        </div>
-    </main>
-    <!-- /content/body -->
-    <!-- product-footer -->
-    <%
-        File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
-        if (productFooterFile.exists()) {
-    %>
-    <jsp:include page="extensions/product-footer.jsp"/>
-    <% } else { %>
-    <jsp:include page="includes/product-footer.jsp"/>
-    <% } %>
+        </layout:component>
+        <layout:component componentName="ProductFooter" >
+            <!-- product-footer -->
+            <%
+                File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
+                if (productFooterFile.exists()) {
+            %>
+            <jsp:include page="extensions/product-footer.jsp"/>
+            <% } else { %>
+            <jsp:include page="includes/product-footer.jsp"/>
+            <% } %>
+        </layout:component>
+    </layout:main>
+
     <!-- footer -->
     <%
         File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
@@ -319,9 +333,26 @@
             window.history.back();
         }
 
+        function onCompleted() {
+            $("#recoverDetailsForm").submit();
+        }
+
         $(document).ready(function () {
 
             $("#recoverDetailsForm").submit(function (e) {
+
+                <%
+                    if (reCaptchaEnabled) {
+                %>
+                if (!grecaptcha.getResponse()) {
+                    e.preventDefault();
+                    grecaptcha.execute();
+
+                    return true;
+                }
+                <%
+                    }
+                %>
 
                 // Prevent clicking multiple times, and notify the user something
                 // is happening in the background.
@@ -344,21 +375,6 @@
                     submitButton.removeClass("loading").attr("disabled", false);
                     return false;
                 }
-
-                // Validate reCaptcha
-                <% if (reCaptchaEnabled) { %>
-
-                const reCaptchaResponse = $("[name='g-recaptcha-response']")[0].value;
-
-                if (reCaptchaResponse.trim() === "") {
-                    errorMessage.text("Please select reCaptcha.");
-                    errorMessage.show();
-                    $("html, body").animate({scrollTop: errorMessage.offset().top}, "slow");
-                    submitButton.removeClass("loading").attr("disabled", false);
-                    return false;
-                }
-
-                <% } %>
 
                 return true;
             });

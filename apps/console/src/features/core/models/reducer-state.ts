@@ -21,7 +21,8 @@ import {
     AlertInterface,
     CommonAuthReducerStateInterface,
     CommonConfigReducerStateInterface,
-    CommonGlobalReducerStateInterface
+    CommonGlobalReducerStateInterface,
+    RouteInterface
 } from "@wso2is/core/models";
 import { I18nModuleOptionsInterface, SupportedLanguagesMeta } from "@wso2is/i18n";
 import { System } from "react-notification-system";
@@ -33,7 +34,7 @@ import {
 } from "./config";
 import { PortalDocumentationStructureInterface } from "./help-panel";
 import { AppViewTypes } from "./ui";
-import { OrganizationInterface } from "../../organizations/models";
+import { OrganizationResponseInterface } from "../../organizations/models";
 
 /**
  * Portal config reducer state interface.
@@ -75,8 +76,19 @@ export interface AccessControlReducerStateInterface {
  * Organization Reducer State Interface.
  */
 export interface OrganizationReducerStateInterface {
-    organization?: OrganizationInterface;
+    organization?: OrganizationResponseInterface;
     getOrganizationLoading: boolean;
+}
+
+export interface RoutesReducerStateInterface {
+    manageRoutes: {
+        filteredRoutes: RouteInterface[];
+        sanitizedRoutes: RouteInterface[];
+    };
+    developeRoutes: {
+        filteredRoutes: RouteInterface[];
+        sanitizedRoutes: RouteInterface[];
+    };
 }
 
 export interface AuthReducerStateInterface extends CommonAuthReducerStateInterface, AuthenticatedUserInfo { }

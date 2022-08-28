@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the License); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -36,6 +36,7 @@ export interface ApplicationBasicInterface {
     accessUrl?: string;
     templateId?: string;
     isManagementApp?: boolean;
+    advancedConfigurations?: AdvancedConfigurationsInterface;
 }
 
 export enum ApplicationAccessTypes {
@@ -206,6 +207,16 @@ export interface AdvancedConfigurationsInterface {
     skipLogoutConsent?: boolean;
     returnAuthenticatedIdpList?: boolean;
     enableAuthorization?: boolean;
+    fragment?: boolean;
+    additionalSpProperties?: additionalSpProperty[]
+}
+/**
+ * Interface for the additional sp properties.
+ */
+export interface additionalSpProperty {
+    name: string;
+    value: string;
+    displayName?: string;
 }
 
 export enum AuthenticationSequenceType {
@@ -683,6 +694,7 @@ export enum LoginFlowTypes {
     GOOGLE_LOGIN = "GOOGLE_LOGIN",
     GITHUB_LOGIN = "GITHUB_LOGIN",
     SECOND_FACTOR_TOTP = "SECOND_FACTOR_TOTP",
+    SECOND_FACTOR_EMAIL_OTP = "SECOND_FACTOR_EMAIL_OTP",
     FIDO_LOGIN = "FIDO_LOGIN",
     MAGIC_LINK = "MAGIC_LINK",
     DEFAULT = "DEFAULT"

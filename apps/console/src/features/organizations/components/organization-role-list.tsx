@@ -289,23 +289,23 @@ export const OrganizationRoleList: FunctionComponent<OrganizationRolesListPropsI
                         featureConfig?.organizationsRoles,
                         OrganizationRoleManagementConstants.FEATURE_DICTIONARY.get("ORGANIZATION_ROLE_UPDATE")
                     ),
-                icon: (): SemanticICONS => {
+                icon: (role: OrganizationRoleListItemInterface): SemanticICONS => {
                     return !hasRequiredScopes(
                         featureConfig?.organizationsRoles,
                         featureConfig?.organizationsRoles?.scopes?.update,
                         allowedScopes
-                    )
+                    ) || role.displayName === OrganizationRoleManagementConstants.ORG_CREATOR_ROLE_NAME
                         ? "eye"
                         : "pencil alternate";
                 },
                 onClick: (e: SyntheticEvent, role: OrganizationRoleListItemInterface): void =>
                     handleOrganizationEdit(role.id),
-                popupText: (): string => {
+                popupText: (role: OrganizationRoleListItemInterface): string => {
                     return !hasRequiredScopes(
                         featureConfig?.organizationsRoles,
                         featureConfig?.organizationsRoles?.scopes?.update,
                         allowedScopes
-                    )
+                    ) || role.displayName === OrganizationRoleManagementConstants.ORG_CREATOR_ROLE_NAME
                         ? t("common:view")
                         : t("common:edit");
                 },
@@ -313,12 +313,12 @@ export const OrganizationRoleList: FunctionComponent<OrganizationRolesListPropsI
             },
             {
                 "data-testid": `${testId}-item-delete-button`,
-                hidden: () => {
+                hidden: (role: OrganizationRoleListItemInterface) => {
                     return !hasRequiredScopes(
                         featureConfig?.organizationsRoles,
                         featureConfig?.organizationsRoles?.scopes?.delete,
                         allowedScopes
-                    );
+                    ) || role.displayName === OrganizationRoleManagementConstants.ORG_CREATOR_ROLE_NAME;
                 },
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (e: SyntheticEvent, role: OrganizationRoleListItemInterface): void => {
@@ -411,7 +411,7 @@ export const OrganizationRoleList: FunctionComponent<OrganizationRolesListPropsI
             { deletingOrganizationRole && (
                 <ConfirmationModal
                     onClose={ (): void => setShowDeleteConfirmationModal(false) }
-                    type="warning"
+                    type="negative"
                     open={ showDeleteConfirmationModal }
                     assertionHint={ t(
                         "console:manage.features.roles.list.confirmations.deleteItem.assertionHint"
@@ -432,7 +432,7 @@ export const OrganizationRoleList: FunctionComponent<OrganizationRolesListPropsI
                     </ConfirmationModal.Header>
                     <ConfirmationModal.Message
                         attached
-                        warning
+                        negative
                         data-testid={ `${testId}-delete-org-role-confirmation-modal-message` }
                     >
                         { t("console:manage.features.roles.list.confirmations.deleteItem.message",

@@ -358,5 +358,36 @@ export class AppConstants {
         "groups",
         "organization-roles",
         "applications"
+    ];
+
+    /**
+     * Organization-management-related route ids
+     *
+     * @constant
+     * @type {string[]}
+     * @default
+     */
+    public static readonly ORGANIZATION_ROUTES: string[] = [
+        "organizations",
+        "organization-roles",
+        "organization-edit"
+    ];
+
+    /**
+     * Route ids that are enabled in only for an organizations (Not allowed in root organization).
+     * @constant
+     * @type {string[]}
+     * @default
+     */
+    public static readonly ORGANIZATION_ONLY_ROUTES: string[] = [
+        "organization-roles"
     ]
+
+    /**
+     * Name of the root node
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly PERMISSIONS_ROOT_NODE: string = "All Permissions";
 }

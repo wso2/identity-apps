@@ -205,7 +205,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
         setAuthenticationSteps(authenticationSequence?.steps);
         setSubjectStepId(authenticationSequence?.subjectStepId);
         setAttributeStepId(authenticationSequence?.attributeStepId);
-    }, [ JSON.stringify(authenticationSequence) ]);
+    }, []);
 
     /**
      * Called when update is triggered.
@@ -424,7 +424,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
             stepIndex === 0 &&
             steps[0].options[optionIndex].authenticator ===
                 IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR &&
-            steps[1].options.find(
+            steps[1]?.options?.find(
                 (option) => option.authenticator === IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR
             )
         ) {

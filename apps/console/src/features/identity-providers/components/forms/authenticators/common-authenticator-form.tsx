@@ -33,6 +33,7 @@ export const CommonAuthenticatorForm: FunctionComponent<CommonPluggableComponent
 
     const {
         metadata,
+        mode,
         initialValues,
         onSubmit,
         triggerSubmit,
@@ -45,6 +46,7 @@ export const CommonAuthenticatorForm: FunctionComponent<CommonPluggableComponent
 
     return (
         <CommonPluggableComponentForm
+            mode={ mode }
             onSubmit={ onSubmit }
             initialValues={ initialValues }
             enableSubmitButton={ enableSubmitButton }

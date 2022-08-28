@@ -243,9 +243,13 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
      * - @param form {Form} form instance
      * - @param callback
      */
-    const handleFormSubmit = (values) => {
+    const handleFormSubmit = async (values): Promise<void> => {
 
         const FIRST_ENTRY = 0;
+
+        for (const subTemplate of template.subTemplates) {
+            await identityProviderConfig.overrideTemplate(subTemplate);
+        }
 
         /**
          * We use a grouped template to keep the sub templates of enterprise
@@ -317,6 +321,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
             }
         }
 
+        identityProvider.templateId = template.templateId;
         // Add the default description from the metadata instead from template.
         identityProvider.description = AuthenticatorMeta.getAuthenticatorDescription(
             identityProvider.federatedAuthenticators.authenticators[ FIRST_ENTRY ].authenticatorId

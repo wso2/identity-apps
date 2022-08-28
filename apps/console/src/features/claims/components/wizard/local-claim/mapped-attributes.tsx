@@ -23,7 +23,7 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
 import { attributeConfig } from "../../../../../extensions";
-import { AppState } from "../../../../core";
+import { AppState, store } from "../../../../core";
 import { UserStoreListItem } from "../../../../userstores";
 import { getUserStoreList } from "../../../../userstores/api";
 
@@ -80,7 +80,7 @@ export const MappedAttributes: FunctionComponent<MappedAttributesPropsInterface>
                 self: ""
             });
         }
-        getUserStoreList().then((response) => {
+        getUserStoreList(store.getState().config.endpoints.userStores).then((response) => {
             if (hiddenUserStores && hiddenUserStores.length > 0) {
                 response.data.map((store: UserStoreListItem) => {
                     if (hiddenUserStores.length > 0 && !hiddenUserStores.includes(store.name)) {
@@ -125,24 +125,28 @@ export const MappedAttributes: FunctionComponent<MappedAttributesPropsInterface>
                         <Grid>
                             { userStore.map((store: UserStoreListItem, index: number) => {
                                 return (
-                                    <Grid.Row columns={ 2 } key={ index }>
-                                        <Grid.Column className="centered-text" width={ 4 }>
-                                            { store.name }
-                                        </Grid.Column>
-                                        <Grid.Column width={ 12 }>
-                                            <Field
-                                                type="text"
-                                                name={ store.name }
-                                                placeholder={ t("console:manage.features.claims.local.forms." +
-                                                    "attribute.placeholder") }
-                                                required={ true }
-                                                requiredErrorMessage={ t("console:manage.features.claims.local.forms." +
-                                                    "attribute.requiredErrorMessage") }
-                                                value={ values?.get(store.name)?.toString() }
-                                                data-testid={ `${ testId }-form-store-name-input` }
-                                            />
-                                        </Grid.Column>
-                                    </Grid.Row>
+                                    <>
+                                        { store?.enabled && (
+                                            <Grid.Row columns={ 2 } key={ index }>
+                                                <Grid.Column className="centered-text" width={ 4 }>
+                                                    { store.name }
+                                                </Grid.Column>
+                                                <Grid.Column width={ 12 }>
+                                                    <Field
+                                                        type="text"
+                                                        name={ store.name }
+                                                        placeholder={ t("console:manage.features.claims.local.forms." +
+                                                            "attribute.placeholder") }
+                                                        required={ true }
+                                                        requiredErrorMessage={ t("console:manage.features.claims." +
+                                                            "local.forms.attribute.requiredErrorMessage") }
+                                                        value={ values?.get(store.name)?.toString() }
+                                                        data-testid={ `${ testId }-form-store-name-input` }
+                                                    />
+                                                </Grid.Column>
+                                            </Grid.Row>
+                                        ) }
+                                    </>
                                 );
                             }) }
                         </Grid>

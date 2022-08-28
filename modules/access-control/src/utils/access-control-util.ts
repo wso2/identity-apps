@@ -32,10 +32,10 @@ export class AccessControlUtils {
     /**
      * Util method to filter base routes based on user scopes retrieved via the token call.
      *
-     * @param routeArray Un authenticated routes array
-     * @param allowedScopes user scopes
-     * @param featureConfig feature scope configuration
-     * @param checkForUIResourceScopes Specifies if the UI resource scope should be considered
+     * @param routeArray - Un authenticated routes array
+     * @param allowedScopes - user scopes
+     * @param featureConfig - feature scope configuration
+     * @param checkForUIResourceScopes - Specifies if the UI resource scope should be considered
      *
      * @returns filtered route array based on the user scopes
      */
@@ -80,11 +80,11 @@ export class AccessControlUtils {
     /**
      * Util method to retrieve if a single tab is disabled via iterating routes based on scopes.
      *
-     * @param manageRoutes routes related to manage section
-     * @param developRoutes routes related to develop section
-     * @param allowedScopes allowed scopes
-     * @param featureConfig feature config
-     * @param checkForUIResourceScopes Specifies if the UI resource scope should be considered
+     * @param manageRoutes - routes related to manage section
+     * @param developRoutes - routes related to develop section
+     * @param allowedScopes - allowed scopes
+     * @param featureConfig - feature config
+     * @param checkForUIResourceScopes - Specifies if the UI resource scope should be considered
      *
      * @returns
      */

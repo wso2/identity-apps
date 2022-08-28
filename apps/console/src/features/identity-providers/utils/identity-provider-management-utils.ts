@@ -25,8 +25,9 @@ import { I18n } from "@wso2is/i18n";
 import axios from "axios";
 import camelCase from "lodash-es/camelCase";
 import isEmpty from "lodash-es/isEmpty";
-import { identityProviderConfig } from "../../../extensions";
+import { identityProviderConfig } from "../../../extensions/configs/identity-provider";
 import { DocPanelUICardInterface, store } from "../../core";
+import { Config } from "../../core/configs";
 import { getFederatedAuthenticatorsList, getIdentityProviderList, getLocalAuthenticators } from "../api";
 import { IdentityProviderManagementConstants } from "../constants";
 import { AuthenticatorMeta } from "../meta";
@@ -305,7 +306,7 @@ export class IdentityProviderManagementUtils {
      */
     public static getAuthenticatorLabels(authenticator: GenericAuthenticatorInterface): string[] {
 
-        return AuthenticatorMeta.getAuthenticatorLabels(authenticator.defaultAuthenticator.authenticatorId)
+        return AuthenticatorMeta.getAuthenticatorLabels(authenticator?.defaultAuthenticator?.authenticatorId)
             ? AuthenticatorMeta.getAuthenticatorLabels(authenticator.defaultAuthenticator.authenticatorId)
             : [];
     }
@@ -411,5 +412,15 @@ export class IdentityProviderManagementUtils {
             });
 
         return Array.isArray(found.tags) ? found.tags : [];
+    }
+
+    /**
+     * Resolve and get the `commonauth` Endpoint.
+     *
+     * @return {string}
+     */
+    public static getCommonAuthEndpoint(): string {
+
+        return `${ Config.getDeploymentConfig().customServerHost }/commonauth`;
     }
 }

@@ -18,6 +18,11 @@
 
 import { MyAccountNS } from "../../../models";
 
+/**
+ * NOTES: No need to care about the max-len for this file since it's easier to
+ * translate the strings to other languages easily with editor translation tools.
+ */
+/* eslint-disable max-len */
 export const myAccount: MyAccountNS = {
     components: {
         accountRecovery: {
@@ -581,18 +586,18 @@ export const myAccount: MyAccountNS = {
         },
         mfa: {
             authenticatorApp: {
-                addHint: "Configurar código QR",
+                addHint: "Configurar",
                 configuredDescription: "Você pode usar códigos TOTP de seu aplicativo " +
                     "autenticador configurado para autenticação de dois fatores. " +
                     "Se você não tiver acesso ao aplicativo, pode configurar um novo aplicativo autenticador aqui",
-                deleteHint: "Exclui o código QR",
+                deleteHint: "Remover",
                 description: "Digitalize o código QR usando um aplicativo " +
                     "Authenticator para usar senhas de uso único baseadas " +
                     "em tempo (também conhecidas como TOTP) como um segundo " +
                     "fator ao fazer login em aplicativos.",
                 enableHint: "Ativar/desativar o autenticador TOTP",
                 heading: "App autenticador",
-                hint: "Mostrar o QR Code",
+                hint: "Visão",
                 modals: {
                     delete: {
                         heading: "Confirmação",
@@ -600,7 +605,7 @@ export const myAccount: MyAccountNS = {
                     },
                     done: "Sucesso! Agora você pode usar seu aplicativo de autenticação para autenticação de dois " +
                         "fatores",
-                    heading: "Set Up An Authenticator App",
+                    heading: "Configurar um aplicativo autenticador",
                     scan: {
                         additionNote: "O código QR foi adicionado com sucesso ao seu perfil",
                         authenticatorApps: "Authenticator Apps",
@@ -608,14 +613,17 @@ export const myAccount: MyAccountNS = {
                         heading: "Leia este QR Code usando um aplicativo Authenticator",
                         messageBody: "Você pode encontrar uma lista de aplicativos autenticadores disponíveis aqui.",
                         messageHeading: "Não tem um aplicativo autenticador instalado?",
-                        regenerateWarning: "Ao gerar um novo código QR, você deve digitalizá-lo e reconfigurar seu " + 
-                            "aplicativo autenticador. Sua configuração anterior não funcionará mais."
+                        regenerateConfirmLabel: "Confirme a regeneração de um novo código QR",
+                        regenerateWarning: {
+                            extended: "Quando você regenera um novo código QR, você deve digitalizá-lo e recriar o aplicativo Authenticator.Você não poderá mais fazer login com o código QR anterior.",
+                            generic: "Quando você regenera um novo código QR, você deve digitalizá-lo e recriar o aplicativo Authenticator.Sua configuração anterior não funcionará mais."
+                        }
                     },
                     toolTip: "Não tem um aplicativo? Baixe um aplicativo autenticador como o " +
-                        "Google Authenticator na <3> App Store </3> ou <3> Google Play </3>",
+                        "Google Authenticator na <1>App Store</1> ou <3>Google Play</3>",
                     verify: {
                         error: "Falha na verificação. Por favor, tente novamente.",
-                        heading: "Digite o código de verificação no aplicativo de autenticação",
+                        heading: "Insira o código gerado para verificação",
                         label: "Código de verificação",
                         placeholder: "Digite seu código de verificação",
                         reScan: "Verificar novamente",
@@ -672,6 +680,8 @@ export const myAccount: MyAccountNS = {
                 regenerate: "Regenerado"
             },
             backupCode: {
+                description: "Você pode usar códigos de backup para fazer login se não conseguir receber um código " 
+                    + "de verificação por meio do aplicativo autenticador.",
                 download: {
                     heading: "SALVE SEUS CÓDIGOS DE BACKUP.",
                     info1: "Você só pode usar cada código de backup uma vez.",
@@ -681,11 +691,14 @@ export const myAccount: MyAccountNS = {
                 },
                 heading: "Códigos de backup",
                 modals: {
+                    actions: {
+                        copied: "Copiado",
+                        copy: "Copiar códigos",
+                        download: "Códigos de download",
+                        regenerate: "Regenerado"
+                    },
                     description: "Use os códigos de backup para fazer login quando estiver longe do telefone. " + 
                         "Você pode gerar mais quando todos são usados",
-                    download: {
-                        heading: "Códigos de download"
-                    },
                     generate: {
                         description: "Todos os seus códigos de backup são usados. " + 
                             "Permite gerar um novo conjunto de códigos de backup",
@@ -693,10 +706,14 @@ export const myAccount: MyAccountNS = {
                     },
                     heading: "Códigos de backup",
                     info: "Cada código só pode ser usado uma vez",
-                    refresh: {
-                        heading: "Atualizar"
+                    regenerate: {
+                        description: "Depois de gerar novos códigos, seus códigos antigos não funcionarão mais. " 
+                            + "Certifique-se de salvar os novos códigos assim que forem gerados.",
+                        heading: "Confirmação"
                     },
-                    subHeading: "Senhas de uso único que você pode usar para fazer login"
+                    subHeading: "Senhas de uso único que você pode usar para fazer login",
+                    warn: "Esses códigos aparecerão apenas uma vez. Certifique-se de salvá-los agora e armazená-los " 
+                        + "em algum lugar seguro, mas acessível."
                 },
                 notifications: {
                     deleteError: {
@@ -979,7 +996,7 @@ export const myAccount: MyAccountNS = {
                     para1: "Esta política descreve como o WSO2 IS captura suas informações pessoais, os propósitos " +
                         "de coleta e informações sobre a retenção de suas informações pessoais.",
                     para2: "Observe que esta política é apenas para referência e é aplicável ao software como um " +
-                        "roduto. A WSO2 Inc. e seus desenvolvedores não têm acesso às informações mantidas no " +
+                        "roduto. A WSO2 LLC. e seus desenvolvedores não têm acesso às informações mantidas no " +
                         "WSO2 IS. Consulte a seção <1> isenção de responsabilidade </1> para obter mais informações.",
                     para3: "Entidades, organizações ou indivíduos que controlam o uso e a administração do WSO2 IS " +
                         "devem criar suas próprias políticas de privacidade, definindo a maneira pela qual os dados " +

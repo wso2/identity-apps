@@ -167,7 +167,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     const deleteConfirmation = (): ReactElement => (
         <ConfirmationModal
             onClose={ (): void => setConfirmDelete(false) }
-            type="warning"
+            type="negative"
             open={ confirmDelete }
             assertionHint={ t("console:manage.features.claims.local.confirmation.hint") }
             assertionType="checkbox"
@@ -181,7 +181,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
             <ConfirmationModal.Header>
                 { t("console:manage.features.claims.local.confirmation.header") }
             </ConfirmationModal.Header>
-            <ConfirmationModal.Message attached warning>
+            <ConfirmationModal.Message attached negative>
                 { t("console:manage.features.claims.local.confirmation.message") }
             </ConfirmationModal.Message>
             <ConfirmationModal.Content>

@@ -215,7 +215,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
     const [ roleMapping, setRoleMapping ] = useState<RoleMappingInterface[]>(claimConfigurations?.role?.mappings ?? []);
 
     const [ isClaimLoading, setIsClaimLoading ] = useState<boolean>(true);
-    const [ isUserAttributesLoading, setUserAttributesLoading ] = useState<boolean>(false);
+    const [ isUserAttributesLoading, setUserAttributesLoading ] = useState<boolean>(undefined);
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
@@ -907,7 +907,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                             </Grid.Column>
                         </div>
                     </Grid>
-                    { !isUserAttributesLoading? (
+                    { isUserAttributesLoading === false ? (
                         <Grid>
                             <Grid.Row columns={ 1 }>
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>

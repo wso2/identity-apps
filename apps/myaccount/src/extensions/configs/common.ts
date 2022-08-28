@@ -36,6 +36,10 @@ export const commonConfig: CommonConfig = {
         mfa: {
             fido2: {
                 allowLegacyKeyRegistration: true
+            },
+            totp: {
+                regenerateWarning: "myAccount:components.mfa.authenticatorApp.modals.scan.regenerateWarning.extended",
+                showRegenerateConfirmation: true
             }
         }
     },

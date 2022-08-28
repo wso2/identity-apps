@@ -89,7 +89,7 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
     const deleteConfirmation = (): ReactElement => (
         <ConfirmationModal
             onClose={ (): void => setConfirmDelete(false) }
-            type="warning"
+            type="negative"
             open={ confirmDelete }
             assertion={ dialect.dialectURI }
             assertionHint={ (
@@ -110,7 +110,7 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
             <ConfirmationModal.Header data-testid={ `${ testId }-delete-confirmation-modal-header` }>
                 { t("console:manage.features.claims.dialects.confirmations.header") }
             </ConfirmationModal.Header>
-            <ConfirmationModal.Message attached warning data-testid={ `${ testId }-delete-confirmation-modal-message` }>
+            <ConfirmationModal.Message attached negative data-testid={ `${ testId }-delete-confirmation-modal-message` }>
                 { t("console:manage.features.claims.dialects.confirmations.message") }
             </ConfirmationModal.Message>
             <ConfirmationModal.Content data-testid={ `${ testId }-delete-confirmation-modal-content` }>

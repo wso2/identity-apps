@@ -1,3 +1,21 @@
+/**
+ * Copyright (c) 2022, WSO2 LLC. (http://www.wso2.com) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
 import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
@@ -9,13 +27,26 @@ import {
     EmphasizedSegment
 } from "@wso2is/react-components";
 import moment from "moment";
-import React, { FunctionComponent, ReactElement, useCallback, useRef, useState } from "react";
+import React, { FunctionComponent, ReactElement, useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Button, Divider, Grid } from "semantic-ui-react";
+import { Button, CheckboxProps, Divider, Grid } from "semantic-ui-react";
 import { FeatureConfigInterface } from "../../../core";
+import { DISABLED } from "../../../userstores";
 import { deleteOrganization, patchOrganization } from "../../api";
+import {
+    ORGANIZATION_DESCRIPTION_MAX_LENGTH,
+    ORGANIZATION_DESCRIPTION_MIN_LENGTH,
+    ORGANIZATION_NAME_MAX_LENGTH,
+    ORGANIZATION_NAME_MIN_LENGTH
+} from "../../constants";
 import { OrganizationPatchData, OrganizationResponseInterface } from "../../models";
+
+
+interface OrganizationEditFormProps {
+    name: string;
+    description?: string;
+}
 
 interface OrganizationOverviewPropsInterface extends SBACInterface<FeatureConfigInterface>,
     TestableComponentInterface {
@@ -52,7 +83,6 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
     const { t } = useTranslation();
     const dispatch = useDispatch();
 
-    const submitForm = useRef<() => void>();
     const editableFields: Array<string> = [
         "name",
         "description"
@@ -61,60 +91,58 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
     const [ isSubmitting, setIsSubmitting ] = useState(false);
     const [ showOrgDeleteConfirmation, setShowOrgDeleteConfirmationModal ] = useState(false);
 
-    const handleSubmit = useCallback(
-        async (values: OrganizationResponseInterface): Promise<void> => {
-            setIsSubmitting(true);
+    const handleSubmit = useCallback(async (values: OrganizationResponseInterface): Promise<void> => {
+        setIsSubmitting(true);
 
-            const patchData: OrganizationPatchData[] = Object.keys(values)
-                .filter((field) => editableFields.includes(field))
-                .map((field) => {
-                    return {
-                        operation: "REPLACE",
-                        path: `/${field}`,
-                        value: values[field]
-                    };
-                });
+        const patchData: OrganizationPatchData[] = Object.keys(values)
+            .filter((field) => editableFields.includes(field))
+            .map((field) => {
+                return {
+                    operation: "REPLACE",
+                    path: `/${field}`,
+                    value: values[field]
+                };
+            });
 
-            patchOrganization(organization.id, patchData)
-                .then((_response) => {
-                    dispatch(
-                        addAlert({
-                            description: t("console:manage.features.organizations.notifications.updateOrganization." +
+        patchOrganization(organization.id, patchData)
+            .then((_response) => {
+                dispatch(
+                    addAlert({
+                        description: t("console:manage.features.organizations.notifications.updateOrganization." +
                                 "success.description"),
-                            level: AlertLevels.SUCCESS,
-                            message: t("console:manage.features.organizations.notifications.updateOrganization." +
+                        level: AlertLevels.SUCCESS,
+                        message: t("console:manage.features.organizations.notifications.updateOrganization." +
                                 "success.message")
-                        })
-                    );
+                    })
+                );
 
-                    onOrganizationUpdate(organization.id);
-                }).catch((error) => {
-                    if (error.description) {
-                        dispatch(
-                            addAlert({
-                                description: error.description,
-                                level: AlertLevels.ERROR,
-                                message: t("console:manage.features.organizations.notifications.updateOrganization." +
-                                    "error.message")
-                            })
-                        );
-
-                        return;
-                    }
-
+                onOrganizationUpdate(organization.id);
+            }).catch((error) => {
+                if (error.description) {
                     dispatch(
                         addAlert({
-                            description: t("console:manage.features.organizations.notifications" +
-                                ".updateOrganization.genericError.description"),
+                            description: error.description,
                             level: AlertLevels.ERROR,
-                            message: t("console:manage.features.organizations.notifications" +
-                                ".updateOrganization.genericError.message")
+                            message: t("console:manage.features.organizations.notifications.updateOrganization." +
+                                    "error.message")
                         })
                     );
-                })
-                .finally(() => setIsSubmitting(false));
-        }, [ organization, setIsSubmitting ]
-    );
+
+                    return;
+                }
+
+                dispatch(
+                    addAlert({
+                        description: t("console:manage.features.organizations.notifications" +
+                                ".updateOrganization.genericError.description"),
+                        level: AlertLevels.ERROR,
+                        message: t("console:manage.features.organizations.notifications" +
+                                ".updateOrganization.genericError.message")
+                    })
+                );
+            })
+            .finally(() => setIsSubmitting(false));
+    }, [ organization, setIsSubmitting ]);
 
     const handleOnDeleteOrganization = useCallback((organizationId: string) => {
         deleteOrganization(organizationId)
@@ -178,7 +206,7 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                         level: AlertLevels.ERROR,
                         message: t(
                             "console:manage.features.organizations.notifications.deleteOrganization.genericError" +
-                                ".message"
+                            ".message"
                         )
                     })
                 );
@@ -186,6 +214,118 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
             .finally(() => setShowOrgDeleteConfirmationModal(false));
     }, [ organization ]
     );
+
+    const handleDisableOrganization = useCallback((event, data: CheckboxProps) => {
+        const isChecked = data.checked;
+
+        const patchData: OrganizationPatchData = {
+            operation: "REPLACE",
+            path: "/status",
+            value: isChecked ? "ACTIVE" : "DISABLED"
+        };
+
+        patchOrganization(organization.id, [ patchData ])
+            .then(() => {
+                dispatch(
+                    addAlert({
+                        description: t(
+                            organization.status === "ACTIVE"
+                                ? "console:manage.features.organizations.notifications" +
+                                ".disableOrganization.success.description"
+                                : "console:manage.features.organizations.notifications" +
+                                ".enableOrganization.success.description"
+                        ),
+                        level: AlertLevels.SUCCESS,
+                        message: t(
+                            organization.status === "ACTIVE"
+                                ? "console:manage.features.organizations.notifications" +
+                                ".disableOrganization.success.message"
+                                : "console:manage.features.organizations.notifications" +
+                                ".enableOrganization.success.message"
+                        )
+                    })
+                );
+
+                setShowOrgDeleteConfirmationModal(false);
+                onOrganizationUpdate(organization.id);
+            })
+            .catch((error) => {
+                if (error.description) {
+                    if (error.code === "ORG-60029") {
+                        dispatch(
+                            addAlert({
+                                description: t(
+                                    "console:manage.features.organizations.notifications." +
+                                    "disableOrganizationWithSubOrganizationError",
+                                    { organizationName: organization.name }
+                                ),
+                                level: AlertLevels.ERROR,
+                                message: t(
+                                    "console:manage.features.organizations.notifications.disableOrganization" +
+                                    ".genericError.message"
+                                )
+                            })
+                        );
+
+                        return;
+                    }
+
+                    dispatch(
+                        addAlert({
+                            description: error.description,
+                            level: AlertLevels.ERROR,
+                            message: t(
+                                organization.status === "ACTIVE"
+                                    ? "console:manage.features.organizations.notifications" +
+                                    ".disableOrganization.error.message"
+                                    : "console:manage.features.organizations.notifications" +
+                                    ".enableOrganization.error.message"
+                            )
+                        })
+                    );
+
+                    return;
+                }
+
+                dispatch(
+                    addAlert({
+                        description: t(
+                            organization.status === "ACTIVE"
+                                ? "console:manage.features.organizations.notifications" +
+                                ".disableOrganization.genericError.description"
+                                : "console:manage.features.organizations.notifications" +
+                                ".enableOrganization.genericError.description"
+                        ),
+                        level: AlertLevels.ERROR,
+                        message: t(
+                            organization.status === "ACTIVE"
+                                ? "console:manage.features.organizations.notifications" +
+                                ".disableOrganization.genericError.message"
+                                : "console:manage.features.organizations.notifications" +
+                                ".enableOrganization.genericError.message"
+                        )
+                    })
+                );
+            });
+    }, [ organization, dispatch, addAlert ]);
+
+    const validate = async (values: OrganizationEditFormProps): Promise<Partial<OrganizationEditFormProps>> => {
+        const error: Partial<OrganizationEditFormProps> = {};
+
+        if (values?.name && (values.name.length < ORGANIZATION_NAME_MIN_LENGTH
+            || values?.name.length > ORGANIZATION_NAME_MAX_LENGTH)) {
+            error.name = `Organization name length should be at least ${ ORGANIZATION_NAME_MIN_LENGTH } `
+                + `and at most ${ ORGANIZATION_NAME_MAX_LENGTH } characters`;
+        }
+
+        if (values?.description && (values?.description.length > ORGANIZATION_DESCRIPTION_MAX_LENGTH
+            || values?.description.length < ORGANIZATION_DESCRIPTION_MIN_LENGTH)) {
+            error.description = `Organization description length should be at least 
+            ${ ORGANIZATION_DESCRIPTION_MIN_LENGTH } and at most ${ ORGANIZATION_DESCRIPTION_MAX_LENGTH } characters`;
+        }
+
+        return error;
+    };
 
     return (
         organization ?
@@ -197,7 +337,7 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                                 data-testid={ `${testId}-form` }
                                 onSubmit={ handleSubmit }
                                 uncontrolledForm={ false }
-                                triggerSubmit={ (submit) => (submitForm.current = submit) }
+                                validate={ validate }
                             >
                                 {
                                     organization?.name && (
@@ -213,8 +353,8 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                                             placeholder={ t("console:manage.features.organizations.edit.fields." +
                                                 "name.placeholder") }
                                             inputType="name"
-                                            maxLength={ 32 }
-                                            minLength={ 3 }
+                                            maxLength={ ORGANIZATION_NAME_MAX_LENGTH }
+                                            minLength={ ORGANIZATION_NAME_MIN_LENGTH }
                                         />
                                     )
                                 }
@@ -233,8 +373,8 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                                             ariaLabel={ t("console:manage.features.organizations.edit.fields." +
                                                 "description.ariaLabel") }
                                             inputType="description"
-                                            maxLength={ 50 }
-                                            minLength={ 3 }
+                                            maxLength={ ORGANIZATION_DESCRIPTION_MAX_LENGTH }
+                                            minLength={ ORGANIZATION_DESCRIPTION_MIN_LENGTH }
                                         />
                                     )
                                 }
@@ -309,9 +449,6 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                                                     className="form-button"
                                                     loading={ isSubmitting }
                                                     disabled={ isSubmitting }
-                                                    onClick={ () => {
-                                                        submitForm?.current && submitForm?.current();
-                                                    } }
                                                 >
                                                     { t("common:update") }
                                                 </Button>
@@ -324,16 +461,39 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                     </Grid.Row>
                 </Grid>
                 <Divider hidden/>
-                {
-                    !isReadOnly && (
-                        <DangerZoneGroup sectionHeader={ t("common:dangerZone") }>
+                <DangerZoneGroup sectionHeader={ t("common:dangerZone") }>
+                    <DangerZone
+                        actionTitle={ t(organization.status === "ACTIVE"
+                            ? "console:manage.features.organizations.edit.dangerZone.disableOrganization" +
+                                    ".disableActionTitle"
+                            : "console:manage.features.organizations.edit.dangerZone.disableOrganization" +
+                                    ".enableActionTitle")
+                        }
+                        header={ t(organization.status === "ACTIVE"
+                            ? "console:manage.features.organizations.edit.dangerZone.disableOrganization" +
+                            ".disableActionTitle"
+                            : "console:manage.features.organizations.edit.dangerZone.disableOrganization" +
+                            ".enableActionTitle")
+                        }
+                        subheader={ t("console:manage.features.organizations.edit.dangerZone" +
+                                    ".disableOrganization.subheader") }
+                        onActionClick={ undefined }
+                        data-testid={ `${testId}-disable-danger-zone` }
+                        toggle={ {
+                            checked: organization.status === "ACTIVE",
+                            onChange: handleDisableOrganization
+                        } }
+                    />
+                    {
+                        !isReadOnly && (
                             <DangerZone
                                 actionTitle={
                                     t("console:manage.features.organizations.edit" +
                                         ".dangerZone.title")
                                 }
                                 header={
-                                    t("common:dangerZone")
+                                    t("console:manage.features.organizations.edit" +
+                                        ".dangerZone.title")
                                 }
                                 subheader={
                                     t("console:manage.features.organizations.edit" +
@@ -343,10 +503,9 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                                 data-testid={
                                     `${testId}-role-danger-zone`
                                 }
-                            />
-                        </DangerZoneGroup>
-                    )
-                }
+                            />)
+                    }
+                </DangerZoneGroup>
                 {
                     showOrgDeleteConfirmation && (
                         <ConfirmationModal
@@ -368,7 +527,7 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                             <ConfirmationModal.Header>
                                 { t("console:manage.features.organizations.confirmations.deleteOrganization.header") }
                             </ConfirmationModal.Header>
-                            <ConfirmationModal.Message attached warning>
+                            <ConfirmationModal.Message attached negative>
                                 { t("console:manage.features.organizations.confirmations.deleteOrganization.message") }
                             </ConfirmationModal.Message>
                             <ConfirmationModal.Content>
