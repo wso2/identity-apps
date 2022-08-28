@@ -108,7 +108,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
 
         getUserStoreList()
             .then((response) => {
-                if (storeOptions === []) {
+                if (storeOptions.length === 0) {
                     storeOptions.push(storeOption);
                 }
                 response.data.map((store, index) => {

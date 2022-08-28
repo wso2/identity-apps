@@ -192,7 +192,7 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
         if (OrganizationUtils.isCurrentOrganizationRoot()) {
             getUserStoreList()
                 .then((response) => {
-                    if (storeOptions === []) {
+                    if (storeOptions.length === 0) {
                         storeOptions.push(storeOption);
                     }
                     response.data.map((store, index) => {

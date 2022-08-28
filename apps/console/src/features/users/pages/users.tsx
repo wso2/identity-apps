@@ -291,7 +291,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
 
         getUserStoreList()
             .then((response) => {
-                if (storeOptions === []) {
+                if (storeOptions.length === 0) {
                     storeOptions.push(storeOption);
                 }
                 response.data.map((store: UserStoreListItem, index) => {

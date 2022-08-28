@@ -204,7 +204,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
         if (OrganizationUtils.isCurrentOrganizationRoot()) {
             getUserStoreList()
                 .then((response) => {
-                    if (storeOptions === []) {
+                    if (storeOptions.length === 0) {
                         storeOptions.push(storeOption);
                     }
 

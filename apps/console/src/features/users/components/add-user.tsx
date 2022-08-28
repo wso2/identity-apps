@@ -209,7 +209,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
         if (OrganizationUtils.isCurrentOrganizationRoot()) {
             getUserStoreList()
                 .then((response) => {
-                    if (storeOptions === []) {
+                    if (storeOptions.length === 0) {
                         storeOptions.push(storeOption);
                     }
                     response.data.map((store: UserStoreListItem, index) => {
