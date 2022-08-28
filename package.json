@@ -9,7 +9,15 @@
         "WSO2 Identity Server",
         "WSO2 Identity Apps"
     ],
+    "author": "WSO2",
+    "license": "Apache-2.0",
     "repository": "https://github.com/wso2/identity-apps.git",
+    "workspaces": [
+        "apps/*",
+        "modules/*",
+        "components/theme",
+        "tests"
+    ],
     "scripts": {
         "build": "pnpm nx run-many --target=build --all --with-deps",
         "build:apps": "pnpm nx run-many --target=build --projects=console,myaccount --with-deps",
@@ -40,8 +48,6 @@
         "lint:autofix": "pnpm nx run-many --target=lint:autofix --all --parallel",
         "typecheck": "pnpm nx run-many --target=typecheck --all --parallel"
     },
-    "author": "WSO2",
-    "license": "Apache-2.0",
     "dependencies": {
         "@svgr/webpack": "4.3.2",
         "await-semaphore": "^0.1.3",
@@ -211,11 +217,5 @@
         "@types/react": "16.9.0",
         "@types/react-dom": "16.8.5",
         "@types/react-notification-system": "0.2.39"
-    },
-    "workspaces": [
-        "apps/*",
-        "modules/*",
-        "components/theme",
-        "tests"
-    ]
+    }
 }

@@ -44,6 +44,7 @@ jobs:
         id: setup-pnpm
         uses: pnpm/action-setup@v2.1.0
         with:
+          version: latest
           run_install: true
 
       - name: ⏳ Lint
@@ -84,6 +85,7 @@ jobs:
       - name: 🥡 Setup pnpm
         uses: pnpm/action-setup@v2.1.0
         with:
+          version: latest
           run_install: true
 
       - name: 🐳 Nx set SHAs
@@ -140,6 +142,7 @@ jobs:
       - name: 🥡 Setup pnpm
         uses: pnpm/action-setup@v2.1.0
         with:
+          version: latest
           run_install: true
 
       - name: 👷 Build Re-usable Modules
@@ -206,6 +209,7 @@ jobs:
       - name: 🥡 Setup pnpm
         uses: pnpm/action-setup@v2.1.0
         with:
+          version: latest
           run_install: true
 
       - name: 🏗️ Maven Build
