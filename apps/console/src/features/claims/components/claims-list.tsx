@@ -405,7 +405,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
     const fetchUpdatedSchemaList = (): void => {
         dispatch(setProfileSchemaRequestLoadingStatus(true));
 
-        getProfileSchemas(store.getState().config.endpoint?.schemas)
+        getProfileSchemas()
             .then((response: ProfileSchemaInterface[]) => {
                 dispatch(setSCIMSchemas<ProfileSchemaInterface[]>(response));
             })

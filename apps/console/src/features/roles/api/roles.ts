@@ -32,52 +32,6 @@ const httpClient = AsgardeoSPAClient.getInstance()
     .bind(AsgardeoSPAClient.getInstance());
 
 /**
- * Retrieve the list of groups that are currently in the system.
- * TODO: Return `response.data` rather than `response` and stop returning any.
- *
- * @param {string} domain - User store domain.
- * @return {Promise<RoleListInterface | any>}
- * @throws {IdentityAppsApiException}
- */
-export const getRolesList = (domain: string): Promise<RoleListInterface | any> => {
-
-    const requestConfig = {
-        headers: {
-            "Content-Type": "application/json"
-        },
-        method: HttpMethods.GET,
-        params: {
-            domain
-        },
-        url: store.getState().config.endpoints.roles
-    };
-
-    return httpClient(requestConfig)
-        .then((response: AxiosResponse) => {
-            if (response.status !== 200) {
-                throw new IdentityAppsApiException(
-                    RoleConstants.ROLES_FETCH_REQUEST_INVALID_RESPONSE_CODE_ERROR,
-                    null,
-                    response.status,
-                    response.request,
-                    response,
-                    response.config);
-            }
-
-            return Promise.resolve(response);
-        })
-        .catch((error: AxiosError) => {
-            throw new IdentityAppsApiException(
-                RoleConstants.ROLES_FETCH_REQUEST_ERROR,
-                error.stack,
-                error.code,
-                error.request,
-                error.response,
-                error.config);
-        });
-};
-
-/**
  * Retrieve Role details for a give role id.
  *
  * @param roleId role id to retrieve role details
@@ -295,7 +249,7 @@ export const updateRole = (roleId: string, roleData: PatchRoleDataInterface): Pr
 
 /**
  * Retrieve the list of groups that are currently in the system.
- * Copied from core module to override the endpoint
+ * TODO: Return `response.data` rather than `response` and stop returning any.
  *
  * @param {string} domain - User store domain.
  * @return {Promise<RoleListInterface | any>}
@@ -305,7 +259,7 @@ export const getRolesList = (domain: string): Promise<RoleListInterface | any> =
 
     const requestConfig = {
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost
+            "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
         params: {

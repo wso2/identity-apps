@@ -156,7 +156,7 @@ const RolesPage = (): ReactElement => {
             value: ""
         };
 
-        getUserStoreList(store.getState().config.endpoints.userStores)
+        getUserStoreList()
             .then((response) => {
                 if (storeOptions === []) {
                     storeOptions.push(storeOption);

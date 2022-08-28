@@ -50,7 +50,7 @@ export class SharedUserStoreUtils {
     public static async getUserStoreRegEx(userstore: string, regExName: string): Promise<string> {
         let usernameRegEx: UserStoreProperty = null;
 
-        return getUserStoreList(store.getState().config.endpoints.userStores)
+        return getUserStoreList()
             .then((response) => {
                 const store = response?.data?.find(item => item.name === userstore);
 
@@ -99,7 +99,7 @@ export class SharedUserStoreUtils {
             return getIds(userstores);
         }
 
-        return getUserStoreList(store.getState().config.endpoints.userStores)
+        return getUserStoreList()
             .then((response) => {
                 return getIds(response.data);
             })

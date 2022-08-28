@@ -99,7 +99,7 @@ export const getScimSchemas = (
 
     dispatch(setProfileSchemaLoader(true));
 
-    getProfileSchemas(store.getState().config.endpoint?.schemas)
+    getProfileSchemas()
         .then((response: ProfileSchema[]) => {
             dispatch(setProfileSchemaLoader(false));
             dispatch(setScimSchemas(response));

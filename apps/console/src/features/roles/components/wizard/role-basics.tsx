@@ -106,7 +106,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
             value: ""
         };
 
-        getUserStoreList(store.getState().config.endpoints.userStores)
+        getUserStoreList()
             .then((response) => {
                 if (storeOptions === []) {
                     storeOptions.push(storeOption);

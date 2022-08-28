@@ -156,7 +156,7 @@ export const InboundProvisioningConfigurations: FunctionComponent<InboundProvisi
             name: "PRIMARY"
         });
         if (OrganizationUtils.isCurrentOrganizationRoot()) {
-            getUserStoreList(store.getState().config.endpoints.userStores).then((response) => {
+            getUserStoreList().then((response) => {
                 userstore.push(...response.data);
                 setUserStore(userstore);
             }).catch(() => {

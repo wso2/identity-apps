@@ -190,7 +190,7 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
         setUserStore(storeOptions[ 0 ].value);
 
         if (OrganizationUtils.isCurrentOrganizationRoot()) {
-            getUserStoreList(store.getState().config.endpoints.userStores)
+            getUserStoreList()
                 .then((response) => {
                     if (storeOptions === []) {
                         storeOptions.push(storeOption);

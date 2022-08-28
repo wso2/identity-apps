@@ -80,7 +80,7 @@ export const MappedAttributes: FunctionComponent<MappedAttributesPropsInterface>
                 self: ""
             });
         }
-        getUserStoreList(store.getState().config.endpoints.userStores).then((response) => {
+        getUserStoreList().then((response) => {
             if (hiddenUserStores && hiddenUserStores.length > 0) {
                 response.data.map((store: UserStoreListItem) => {
                     if (hiddenUserStores.length > 0 && !hiddenUserStores.includes(store.name)) {

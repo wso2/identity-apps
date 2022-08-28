@@ -83,7 +83,7 @@ export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttrib
             name: "PRIMARY"
         });
 
-        getUserStoreList(store.getState().config.endpoints.userStores).then((response) => {
+        getUserStoreList().then((response) => {
             userstore.push(...response.data);
             setUserStore(userstore);
         }).catch(() => {
