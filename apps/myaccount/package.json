@@ -111,7 +111,8 @@
         "thread-loader": "^2.1.3",
         "ts-jest": "^26.4.0",
         "ts-node": "^10.8.1",
-        "typescript": "^4.6.4"
+        "typescript": "^4.6.4",
+        "webpack": "^5.24.1"
     },
     "browserslist": [
         "> 0.2%"
