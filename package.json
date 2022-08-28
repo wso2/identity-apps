@@ -11,7 +11,7 @@
     ],
     "repository": "https://github.com/wso2/identity-apps.git",
     "scripts": {
-        "build": "pnpx nx run-many --target=build --all --with-deps",
+        "build": "pnpm nx run-many --target=build --all --with-deps",
         "build:apps": "pnpx nx run-many --target=build --projects=console,myaccount --with-deps",
         "build:modules": "pnpx nx run-many --target=build --projects=access-control,core,forms,form,i18n,react-components,theme,validation",
         "build:external": "pnpx nx run-many --target=build:external --projects=console,myaccount --with-deps",
