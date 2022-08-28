@@ -331,7 +331,7 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                                 if (pattern.from.match(/auth.jsp/)) {
                                     return false;
                                 }
-                                //
+
                                 if (pattern.context.match(/public/)) {
                                     return {
                                         ...pattern,
@@ -356,6 +356,21 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
             })
         );
     }
+
+    // Copy login portal layouts.
+    // ATM, nx copy assets doesn't have support for `noErrorOnMissing`.
+    config.plugins.push(
+        new CopyWebpackPlugin({
+            patterns: [
+                {
+                    context: ABSOLUTE_PATHS.appSrc,
+                    from: "login-portal-layouts",
+                    noErrorOnMissing: true,
+                    to: RELATIVE_PATHS.loginPortalLayoutsInDistribution
+                }
+            ]
+        })
+    );
 
     config.node = {
         ...config.node,
@@ -513,6 +528,7 @@ const getRelativePaths = (env: Configuration["mode"], context: NxWebpackContextI
         homeTemplate: "home.jsp",
         indexTemplate: context.buildOptions?.index ?? context.options.index,
         javaEEFolders: [ "**/WEB-INF/**/*" ],
+        loginPortalLayoutsInDistribution: path.join("libs", "login-portal-layouts"),
         source: "src",
         staticJs: path.join("static", "js"),
         staticMedia: path.join("static", "media")

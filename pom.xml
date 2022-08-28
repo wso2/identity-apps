@@ -562,7 +562,23 @@
                 <inherited>false</inherited>
                 <executions>
                     <execution>
-                        <id>npm install (initialize)</id>
+                        <id>install-pnpm</id>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <phase>initialize</phase>
+                        <configuration>
+                            <executable>npm</executable>
+                            <arguments>
+                                <argument>install</argument>
+                                <argument>-g</argument>
+                                <argument>pnpm@7.1.5</argument>
+                            </arguments>
+                            <workingDirectory>${basedir}</workingDirectory>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>install-packages</id>
                         <goals>
                             <goal>exec</goal>
                         </goals>
@@ -707,7 +723,7 @@
         <json.wso2.version>3.0.0.wso2v1</json.wso2.version>
         <taglibs-standard-impl.version>1.2.5</taglibs-standard-impl.version>
         <apache.tomcat-catalina.version>9.0.11</apache.tomcat-catalina.version>
-        
+
 
         <lint.exec.skip>true</lint.exec.skip>
         <bootstrap.exec.skip>false</bootstrap.exec.skip>
