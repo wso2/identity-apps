@@ -39,10 +39,7 @@ jobs:
         uses: pnpm/action-setup@v2.1.0
         with:
           version: latest
-
-      - name: 🧩 Install Dependencies
-        id: install-dependencies
-        run: pnpm install --no-frozen-lockfile
+          run_install: true
 
       - name: ⏳ Lint
         id: lint-with-eslint
@@ -82,11 +79,7 @@ jobs:
       - name: 🥡 Setup pnpm
         uses: pnpm/action-setup@v2.1.0
         with:
-          version: latest
-
-      - name: 🧩 Install Dependencies
-        id: install-dependencies
-        run: pnpm install --no-frozen-lockfile
+          version: late
 
       - name: 👷 Build Re-usable Modules
         id: build-reusable-modules
@@ -130,11 +123,7 @@ jobs:
       - name: 🥡 Setup pnpm
         uses: pnpm/action-setup@v2.1.0
         with:
-          version: latest
-
-      - name: 🧩 Install Dependencies
-        id: install-dependencies
-        run: pnpm install --no-frozen-lockfile
+          version: late
 
       - name: 👷 Build Re-usable Modules
         id: build-reusable-modules
@@ -200,11 +189,7 @@ jobs:
       - name: 🥡 Setup pnpm
         uses: pnpm/action-setup@v2.1.0
         with:
-          version: latest
-
-      - name: 🧩 Install Dependencies
-        id: install-dependencies
-        run: pnpm install --no-frozen-lockfile
+          version: late
 
       - name: 🏗️ Maven Build
         id: build-with-maven
