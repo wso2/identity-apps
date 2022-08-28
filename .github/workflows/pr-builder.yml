@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [ lts ]
+        node-version: [ lts/* ]
     steps:
       - name: ⬇️ Checkout
         id: checkout
@@ -70,7 +70,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [ lts ]
+        node-version: [ lts/* ]
     steps:
       - name: ⬇️ Checkout
         id: checkout
@@ -121,7 +121,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [ lts ]
+        node-version: [ lts/* ]
     steps:
       - name: ⬇️ Checkout
         id: checkout
@@ -180,7 +180,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [ lts ]
+        node-version: [ lts/* ]
         maven-version: [ 3.6.3 ]
         java-version: [ 1.8 ]
     steps:
