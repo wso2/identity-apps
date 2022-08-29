@@ -39,7 +39,7 @@
         "test:integration": "pnpm nx run-many --target=test --projects=integration-tests",
         "test:integration:smoke": "pnpm nx run-many --target= test:smoke --projects=integration-tests",
         "test:integration:interactive": "pnpm nx run-many --target= test:interactive --projects=integration-tests",
-        "test:unit": "pnpm nx run-many --target=test --all --exclude=integration-tests,form",
+        "test:unit": "pnpm nx run-many --target=test --all --exclude=integration-tests,form,forms",
         "test:unit:coverage": "pnpm run test:unit -- -- -- --coverage --collect-coverage",
         "test:unit:coverage:aggregate": "node scripts/aggregate-unit-test-coverage.js",
         "test:unit:coverage:aggregated": "pnpm run test:unit:coverage && pnpm run test:unit:coverage:aggregate",

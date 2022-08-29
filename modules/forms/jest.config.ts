@@ -20,7 +20,7 @@ module.exports = {
     displayName: "forms",
     globals: {
         "ts-jest": {
-            tsconfig: "tsconfig.json"
+            tsconfig: "<rootDir>/tsconfig.json"
         }
     },
     moduleDirectories: [
