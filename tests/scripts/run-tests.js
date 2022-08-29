@@ -54,7 +54,7 @@ const constructTestCommand = () => {
             if (suite.smokeTestPath) {
                 specs.push(suite.smokeTestPath);
             }
-            
+
             continue;
         }
 
@@ -90,17 +90,17 @@ const resolveCypressCommand = () => {
 
     if (cliArgs.includes(INTERACTIVE_MODE_ARG)) {
         log.info("Cypress is running in interactive mode.");
-        
+
         if (cliArgs.includes(SMOKE_ONLY_MODE_ARG)) {
             log.info("Smoke only mode is only supported when the tests are running in headless mode. " +
                 "Hence, Ignoring......");
         }
 
-        return "npm run cypress open";
+        return "pnpm cypress open";
     }
 
     log.info("Cypress is running in headless mode.");
-    return "npm run cypress run --headless";
+    return "pnpm cypress run --headless";
 };
 
 // Simple `execSync(constructTestCommand())` seems to hang the test runner for some reason.

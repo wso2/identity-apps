@@ -23,8 +23,7 @@ import {
     ExtendedExternalClaimInterface,
     SelectedDialectInterface
 } from "../../../features/applications/components/settings";
-import { ApplicationTabTypes } from "../../../features/applications/models";
-import { ApplicationInterface } from "../../../features/applications";
+import { ApplicationInterface, ApplicationTabTypes } from "../../../features/applications/models";
 
 export interface ApplicationConfig {
     advancedConfigurations: {

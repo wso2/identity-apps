@@ -16,7 +16,12 @@
  * under the License.
  */
 
-import { AlertInterface, AlertLevels, ProfileInfoInterface, RolesInterface } from "@wso2is/core/models";
+import {
+    AlertInterface,
+    AlertLevels,
+    ProfileInfoInterface,
+    RolesInterface
+} from "@wso2is/core/models";
 import {
     ContentLoader,
     EmphasizedSegment,
@@ -40,7 +45,8 @@ import { RolePermissions } from "./wizard";
 import { AppState, getEmptyPlaceholderIllustrations, updateResources } from "../../core";
 import { getOrganizationRoles } from "../../organizations/api";
 import { OrganizationUtils } from "../../organizations/utils";
-import { APPLICATION_DOMAIN, INTERNAL_DOMAIN, getRolesList } from "../../roles";
+import { getRolesList } from "../../roles/api";
+import { APPLICATION_DOMAIN, INTERNAL_DOMAIN } from "../../roles/constants";
 
 interface UserRolesPropsInterface {
     /**
@@ -793,12 +799,12 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                             </Table.Header>
                                             <Table.Body>
                                                 {
-                                                    assignedRoles?.map((group) => {
+                                                    assignedRoles?.map((group, index: number) => {
                                                         const userRole = group?.display?.split("/");
 
                                                         if (userRole?.length >= 1 && group?.value) {
                                                             return (
-                                                                <Table.Row>
+                                                                <Table.Row key={ index }>
                                                                     { showDomain && (
                                                                         userRole[ 0 ] == "Application" ? (
                                                                             <Table.Cell>

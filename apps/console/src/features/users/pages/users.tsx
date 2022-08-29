@@ -17,7 +17,6 @@
  */
 
 import { AccessControlConstants, Show } from "@wso2is/access-control";
-import { getUserStoreList } from "@wso2is/core/api";
 import { CommonHelpers } from "@wso2is/core/helpers";
 import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -58,6 +57,7 @@ import {
     UserStorePostData,
     UserStoreProperty
 } from "../../userstores";
+import { getUserStoreList } from "../../userstores/api";
 import { getUsersList } from "../api";
 import { AddUserWizard, UsersList, UsersListOptionsComponent } from "../components";
 import { UserManagementConstants } from "../constants";
@@ -289,9 +289,9 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             value: ""
         };
 
-        getUserStoreList(store.getState().config.endpoints.userStores)
+        getUserStoreList()
             .then((response) => {
-                if (storeOptions === []) {
+                if (storeOptions.length === 0) {
                     storeOptions.push(storeOption);
                 }
                 response.data.map((store: UserStoreListItem, index) => {

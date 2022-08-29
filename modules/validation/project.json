@@ -1,0 +1,37 @@
+{
+    "projectType": "library",
+    "generators": {},
+    "root": "modules/validation",
+    "sourceRoot": "modules/validation/src",
+    "prefix": "@wso2is",
+    "targets": {
+        "build": {
+            "executor": "@nrwl/workspace:run-commands",
+            "outputs": [
+                "{options.outputPath}"
+            ],
+            "options": {
+                "outputPath": "modules/validation/dist",
+                "tsconfig": "modules/validation/tsconfig.json",
+                "command": "pnpm build",
+                "cwd": "modules/validation"
+            }
+        },
+        "lint": {
+            "executor": "@nrwl/workspace:run-commands",
+            "options": {
+                "command": "pnpm lint",
+                "cwd": "modules/validation",
+                "parallel": false
+            }
+        },
+        "test": {
+            "executor": "@nrwl/workspace:run-commands",
+            "options": {
+                "command": "pnpm test",
+                "cwd": "modules/validation",
+                "parallel": false
+            }
+        }
+    }
+}

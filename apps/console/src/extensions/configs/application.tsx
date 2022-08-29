@@ -18,13 +18,12 @@
 
 import { ReactElement, ReactNode } from "react";
 import { ApplicationConfig } from "./models";
-import { ApplicationTabTypes } from "../../features/applications";
 import {
     ExtendedClaimInterface,
     ExtendedExternalClaimInterface,
     SelectedDialectInterface
 } from "../../features/applications/components/settings";
-import { ApplicationInterface } from "../../features/applications";
+import { ApplicationInterface, ApplicationTabTypes } from "../../features/applications/models";
 
 export const applicationConfig: ApplicationConfig = {
     advancedConfigurations: {
@@ -74,7 +73,7 @@ export const applicationConfig: ApplicationConfig = {
             return null;
         },
         // TODO: Move the default to the usage
-        getOveriddenTab: (_clientId: string, _tabName: ApplicationTabTypes, 
+        getOveriddenTab: (_clientId: string, _tabName: ApplicationTabTypes,
             defaultComponent: ReactElement, _appName: string, _appId: string, _tenantDomain: string) => {
             return defaultComponent;
         },

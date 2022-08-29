@@ -19,7 +19,7 @@
 import { resolveAppLogoFilePath } from "@wso2is/core/helpers";
 import { AlertLevels, AnnouncementBannerInterface, LinkedAccountInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { CommonUtils as ReusableCommonUtils } from "@wso2is/core/utils";
+import { CommonUtils as ReusableCommonUtils, StringUtils } from "@wso2is/core/utils";
 import {
     Announcement,
     AppSwitcher,
@@ -299,7 +299,15 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                             image={
                                 resolveAppLogoFilePath(window[ "AppUtils" ].getConfig().ui.appLogoPath,
                                     `${ window[ "AppUtils" ].getConfig().clientOrigin }/` +
-                                    `${ window[ "AppUtils" ].getConfig().appBase }/libs/themes/` +
+                                    `${
+                                        StringUtils.removeSlashesFromPath(
+                                            window[ "AppUtils" ].getConfig().appBase
+                                        ) !== ""
+                                            ? StringUtils.removeSlashesFromPath(
+                                                window[ "AppUtils" ].getConfig().appBase
+                                            ) + "/"
+                                            : ""
+                                    }libs/themes/` +
                                     config.ui.theme.name)
                             }
                         />

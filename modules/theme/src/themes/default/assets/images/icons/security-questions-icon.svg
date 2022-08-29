@@ -1,5 +1,3 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-
 <!--
  * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
@@ -18,8 +16,7 @@
  * under the License.
 -->
 
-<svg xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" id="security-questions-icon" height="14" width="14" 
-     xml:space="preserve" viewBox="0 0 420 420" y="0px" x="0px" version="1.1" class="icon">
+<svg xmlns="http://www.w3.org/2000/svg" id="security-questions-icon" height="14" width="14" viewBox="0 0 420 420" y="0px" x="0px" version="1.1" class="icon">
 	<path class="path fill secondary" d="m 131.57034,172.98739 c -42.251166,0 -76.624668,30.90947 -76.624668,68.16809 v 109.53254 c 0,37.58816 34.743941,
 		68.16808 76.624668,68.16808 h 155.25349 c 41.88073,0 76.16336,-30.58497 76.62467,-67.93037 v -0.11867 -109.6514 c 0,-37.58817 -34.74394,-68.16809 
 		-76.62467,-68.16809 z m 0,36.49103 h 155.25349 c 19.68622,0 35.60674,13.88446 35.60674,31.67706 v 109.35423 c -0.22232,18.03542 -15.92052,31.85535 

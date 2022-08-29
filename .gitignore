@@ -57,8 +57,9 @@ build/Release
 node_modules/
 jspm_packages/
 
-# TypeScript v1 declaration files
+# TypeScript
 typings/
+tsconfig.tsbuildinfo
 
 # Optional npm cache directory
 .npm
@@ -88,6 +89,7 @@ typings/
 .next
 
 # project build folders & files
+dist
 target/
 npm/
 modules/*/dist
@@ -96,6 +98,7 @@ modules/theme/src/semantic-ui-core/definitions
 modules/theme/src/themes/sample
 modules/react-components/storybook-static
 modules/react-components/.cache
+modules/react-components/public/themes
 apps/*/build/
 apps/*/dist/
 apps/*/src/main/webapp/libs/themes

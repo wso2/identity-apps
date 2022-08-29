@@ -27,7 +27,7 @@ const authenticateInitialState: AuthStateInterface = {
     emails: "",
     initialized: false,
     isAuth: false,
-    location: window["AppUtils"].getConfig().routes.home,
+    location: window["AppUtils"]?.getConfig()?.routes.home,
     loginInit: false,
     logoutInit: false,
     profileInfo: createEmptyProfile(),

@@ -17,10 +17,4 @@
  *
  */
 
-export * from "./claims";
-export * from "./common";
-export * from "./config";
-export * from "./documentation";
 export * from "./profile";
-export * from "./roles";
-export * from "./userstores";

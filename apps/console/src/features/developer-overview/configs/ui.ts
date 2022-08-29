@@ -16,12 +16,22 @@
  * under the License.
  */
 
+import {  FunctionComponent, SVGProps } from "react";
 import { ReactComponent as AppIcon } from "../../../themes/dark/assets/images/icons/app-icon.svg";
 import { ReactComponent as BuildingIcon } from "../../../themes/default/assets/images/icons/building-icon.svg";
 import { ReactComponent as CodeForkIcon } from "../../../themes/default/assets/images/icons/code-fork.svg";
 import BannerSprites from "../../../themes/default/assets/images/misc/banner-sprites.svg";
 
-export const getOverviewPageImages = () => {
+export const getOverviewPageImages = (): {
+    jumbotron: {
+        background: string;
+    },
+    quickLinks: {
+        applications: FunctionComponent<SVGProps<SVGSVGElement>>;
+        idp: FunctionComponent<SVGProps<SVGSVGElement>>;
+        remoteFetch: FunctionComponent<SVGProps<SVGSVGElement>>;
+    }
+} => {
 
     return {
         jumbotron: {

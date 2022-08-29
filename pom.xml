@@ -562,7 +562,7 @@
                 <inherited>false</inherited>
                 <executions>
                     <execution>
-                        <id>npm install (initialize)</id>
+                        <id>install-pnpm</id>
                         <goals>
                             <goal>exec</goal>
                         </goals>
@@ -570,8 +570,23 @@
                         <configuration>
                             <executable>npm</executable>
                             <arguments>
-                                <argument>run</argument>
-                                <argument>bootstrap</argument>
+                                <argument>install</argument>
+                                <argument>-g</argument>
+                                <argument>pnpm@latest</argument>
+                            </arguments>
+                            <workingDirectory>${basedir}</workingDirectory>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>install-packages</id>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <phase>initialize</phase>
+                        <configuration>
+                            <executable>pnpm</executable>
+                            <arguments>
+                                <argument>install</argument>
                             </arguments>
                             <skip>${bootstrap.exec.skip}</skip>
                             <workingDirectory>${basedir}</workingDirectory>
@@ -584,25 +599,23 @@
                         </goals>
                         <phase>process-resources</phase>
                         <configuration>
-                            <executable>npm</executable>
+                            <executable>pnpm</executable>
                             <arguments>
-                                <argument>run</argument>
-                                <argument>lint:ci</argument>
+                                <argument>lint</argument>
                             </arguments>
                             <skip>${lint.exec.skip}</skip>
                             <workingDirectory>${basedir}</workingDirectory>
                         </configuration>
                     </execution>
                     <execution>
-                        <id>npm run build (compile)</id>
+                        <id>pnpm run build (compile)</id>
                         <goals>
                             <goal>exec</goal>
                         </goals>
                         <phase>compile</phase>
                         <configuration>
-                            <executable>npm</executable>
+                            <executable>pnpm</executable>
                             <arguments>
-                                <argument>run</argument>
                                 <argument>build</argument>
                             </arguments>
                             <workingDirectory>${basedir}</workingDirectory>
@@ -710,7 +723,7 @@
         <json.wso2.version>3.0.0.wso2v1</json.wso2.version>
         <taglibs-standard-impl.version>1.2.5</taglibs-standard-impl.version>
         <apache.tomcat-catalina.version>9.0.11</apache.tomcat-catalina.version>
-        
+
 
         <lint.exec.skip>true</lint.exec.skip>
         <bootstrap.exec.skip>false</bootstrap.exec.skip>

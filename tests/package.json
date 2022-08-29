@@ -6,11 +6,11 @@
     "license": "Apache-2.0",
     "main": "index.js",
     "scripts": {
-        "build": "npm run tsc",
-        "clean": "npm run clean:node-modules && npm run clean:package-lock",
+        "build": "pnpm precypressbuild && pnpm tsc",
+        "clean": "pnpm clean:node-modules && pnpm clean:package-lock",
         "clean:package-lock": "rimraf ./package-lock.json",
         "clean:node-modules": "rimraf ./node_modules",
-        "cypress": "npx run-script-os",
+        "cypress": "pnpm precypress:run && run-script-os",
         "cypress:win32": ".\\node_modules\\.bin\\cypress",
         "cypress:default": "./node_modules/.bin/cypress",
         "cy:clean:results": "rimraf output/results",
@@ -19,21 +19,20 @@
         "cy:headless:smoke": "node scripts/run-tests.js -- --headless --smoke",
         "cy:interactive": "node scripts/run-tests.js -- --interactive",
         "cy:report": "generate-mochawesome-report",
-        "lint": "npm run lint:all",
-        "lint:all": "npm run lint:targeted -- .",
-        "lint:autofix": "npm run lint:all -- --fix",
-        "lint:ci": "npm run lint -- -- --format=compact",
+        "lint": "pnpm lint:all",
+        "lint:all": "pnpm lint:targeted -- .",
+        "lint:autofix": "pnpm lint:all -- --fix",
         "lint:targeted": "eslint --ext .js,.jsx,.ts,.tsx --resolve-plugins-relative-to .",
-        "precypress:run": "npm run cy:clean:results && npm run cy:clean:screenshots",
+        "precypress:run": "pnpm cy:clean:results && pnpm cy:clean:screenshots",
         "precypressbuild": "node scripts/pre-build.js",
-        "test": "npm run test:headless",
-        "test:smoke": "npm run test:headless:smoke",
-        "test:headless": "npm run cy:headless",
-        "test:headless:smoke": "npm run cy:headless:smoke",
-        "test:interactive": "npm run cy:interactive",
-        "tsc": "npx run-script-os",
-        "tsc:win32": ".\\node_modules\\.bin\\tsc -p tsconfig.json",
-        "tsc:default": "./node_modules/.bin/tsc -p tsconfig.json"
+        "test": "pnpm test:headless",
+        "test:smoke": "pnpm test:headless:smoke",
+        "test:headless": "pnpm cy:headless",
+        "test:headless:smoke": "pnpm cy:headless:smoke",
+        "test:interactive": "pnpm cy:interactive",
+        "tsc": "run-script-os",
+        "tsc:win32": ".\\node_modules\\.bin\\tsc -p tsconfig.json --incremental",
+        "tsc:default": "./node_modules/.bin/tsc -p tsconfig.json --incremental"
     },
     "dependencies": {
         "@wso2/identity-cypress-test-base": "^0.2.3",
@@ -59,6 +58,6 @@
         "eslint-plugin-react-hooks": "^4.0.0",
         "rimraf": "^3.0.2",
         "run-script-os": "^1.0.7",
-        "typescript": "^4.2.2"
+        "typescript": "^4.6.4"
     }
 }

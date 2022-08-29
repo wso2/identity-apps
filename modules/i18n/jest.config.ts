@@ -17,6 +17,7 @@
  */
 
 module.exports = {
+    displayName: "i18n",
     globals: {
         "ts-jest": {
             tsconfig: "tsconfig.json"

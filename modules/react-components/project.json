@@ -1,0 +1,89 @@
+{
+    "sourceRoot": "modules/react-components/src",
+    "projectType": "library",
+    "tags": [],
+    "targets": {
+        "build": {
+            "executor": "@nrwl/web:rollup",
+            "outputs": [
+                "{options.outputPath}"
+            ],
+            "options": {
+                "outputPath": "modules/react-components/dist",
+                "tsConfig": "modules/react-components/tsconfig.lib.json",
+                "project": "modules/react-components/package.json",
+                "entryFile": "modules/react-components/src/index.ts",
+                "external": [
+                    "react/jsx-runtime"
+                ],
+                "format": [
+                    "esm",
+                    "cjs"
+                ],
+                "rollupConfig": "modules/react-components/rollup.config.cjs",
+                "compiler": "babel",
+                "assets": [
+                    {
+                        "glob": "modules/react-components/README.md",
+                        "input": ".",
+                        "output": "."
+                    }
+                ]
+            }
+        },
+        "lint": {
+            "executor": "@nrwl/workspace:run-commands",
+            "options": {
+                "command": "pnpm lint",
+                "cwd": "modules/react-components",
+                "parallel": false
+            }
+        },
+        "test": {
+            "executor": "@nrwl/workspace:run-commands",
+            "options": {
+                "command": "pnpm test",
+                "cwd": "modules/react-components",
+                "parallel": false
+            }
+        },
+        "storybook": {
+            "executor": "@nrwl/storybook:storybook",
+            "options": {
+                "uiFramework": "@storybook/react",
+                "port": 6006,
+                "config": {
+                    "configFolder": "modules/react-components/.storybook",
+                    "pluginPath": "modules/react-components/.storybook/plugins.js",
+                    "configPath": "modules/react-components/.storybook/preview.js",
+                    "srcRoot": "modules/react-components/src"
+                },
+                "docsMode": true,
+                "quiet": false
+            },
+            "configurations": {
+                "ci": {
+                    "quiet": true
+                }
+            }
+        },
+        "build-storybook": {
+            "executor": "@nrwl/storybook:build",
+            "outputs": [
+                "{options.outputPath}"
+            ],
+            "options": {
+                "uiFramework": "@storybook/react",
+                "outputPath": "modules/react-components/dist/storybook",
+                "config": {
+                    "configFolder": "modules/react-components/.storybook"
+                }
+            },
+            "configurations": {
+                "ci": {
+                    "quiet": true
+                }
+            }
+        }
+    }
+}
