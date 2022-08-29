@@ -2,8 +2,7 @@
 
 End-user apps in WSO2 Identity Server
 
-===============================
-
+---
 |  Branch | Build Status | Travis CI Status |
 | :------------ |:------------- |:-------------
 | master      | [![Build Status](https://wso2.org/jenkins/view/Dashboard/job/platform-builds/job/identity-apps/badge/icon)](https://wso2.org/jenkins/view/Dashboard/job/platform-builds/job/identity-apps/) | [![Build Status](https://travis-ci.org/wso2/identity-apps.svg?branch=master)](https://travis-ci.org/wso2/identity-apps) |
@@ -13,7 +12,23 @@ End-user apps in WSO2 Identity Server
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/wso2/product-is/blob/master/LICENSE)
 [![Twitter](https://img.shields.io/twitter/follow/wso2.svg?style=social&label=Follow)](https://twitter.com/intent/follow?screen_name=wso2)
 
+---
+
 ## Prerequisite
+
+### Setup Development Environment
+
+1. Install NodeJS LTS(Latest Stable Version) from [https://nodejs.org/en/download/](https://nodejs.org/en/download/).
+2. Instal the latest version of [pnpm](https://pnpm.io/).
+
+    ```shell
+    npm install -g pnpm@latest
+    ```
+
+    Or, follow the other [recommended installation options](https://pnpm.io/installation).
+
+3. Install Maven from [https://maven.apache.org/download.cgi](https://maven.apache.org/download.cgi).
+4. Install JDK 1.8 [https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html](https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html).
 
 ### Download WSO2 Identity Server
 
@@ -92,20 +107,6 @@ regexp=(https://localhost:9443/console|https://localhost:9443/t/(.*)/console|htt
 ```shell
 regexp=(https://localhost:9443/myaccount|https://localhost:9443/t/(.*)/myaccount|https://localhost:9443/myaccount/login|https://localhost:9443/t/(.*)/myaccount/login|https://localhost:9000/myaccount|https://localhost:9000/t/(.*)/myaccount|https://localhost:9000/myaccount/login|https://localhost:9000/t/(.*)/myaccount/login)
 ```
-
-### Setup Development Environment
-
-1. Install NodeJS LTS(Latest Stable Version) from [https://nodejs.org/en/download/](https://nodejs.org/en/download/).
-2. Instal the latest version of [pnpm](https://pnpm.io/).
-
-    ```shell
-    npm install -g pnpm@latest
-    ```
-
-    Or, follow the other [recommended installation options](https://pnpm.io/installation).
-
-3. Install Maven from [https://maven.apache.org/download.cgi](https://maven.apache.org/download.cgi).
-4. Install JDK 1.8 [https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html](https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html).
 
 ## Build & Run
 
