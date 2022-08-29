@@ -9,6 +9,8 @@
         "WSO2 Identity Apps",
         "form"
     ],
+    "author": "WSO2",
+    "license": "Apache-2.0",
     "scripts": {
         "build": "pnpm nx run forms:build",
         "clean": "pnpm clean:lock-files && pnpm clean:build && pnpm clean:node-modules",
@@ -39,6 +41,7 @@
         "@testing-library/react": "^11.0.4",
         "@types/jest": "^26.0.14",
         "@types/lodash-es": "^4.17.4",
+        "@types/react": "^16.9.0",
         "@types/testing-library__jest-dom": "^5.14.3",
         "@typescript-eslint/eslint-plugin": "^4.17.0",
         "@typescript-eslint/parser": "^4.17.0",
@@ -55,9 +58,16 @@
         "typescript": "^4.6.4"
     },
     "peerDependencies": {
-        "@types/react": "*",
         "react": "*"
     },
-    "author": "WSO2",
-    "license": "Apache-2.0"
+    "resolutions": {
+        "@types/react": "16.9.0",
+        "@types/react-dom": "16.8.5",
+        "@types/react-notification-system": "0.2.39"
+    },
+    "overrides": {
+        "@types/react": "16.9.0",
+        "@types/react-dom": "16.8.5",
+        "@types/react-notification-system": "0.2.39"
+    }
 }
