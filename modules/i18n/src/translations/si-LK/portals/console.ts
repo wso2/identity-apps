@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -1187,7 +1187,7 @@ export const console: ConsoleNS = {
                                                 heading: "TOTP දෙවන සාධකය ලෙස එක් කරන්න"
                                             },
                                             usernameless: {
-                                                description: "පරිශීලකයින්ට ඔවුන්ගේ FIDO2 ආරක්ෂක යතුරක්, ජෛවමිතික හෝ " 
+                                                description: "පරිශීලකයින්ට ඔවුන්ගේ FIDO2 ආරක්ෂක යතුරක්, ජෛවමිතික හෝ "
                                                     + "මුර යතුරු භාවිතයෙන් පුරනය වීමට සබල කරන්න.",
                                                 heading: "ආරක්ෂක යතුර/Biometrics පිවිසුම එක් කරන්න",
                                                 info: "මුරපද රහිත සත්‍යාපනය සමඟින් පුරනය වීමට, " +
@@ -1397,7 +1397,7 @@ export const console: ConsoleNS = {
                                 },
                                 invalidOperationModal: {
                                     header: "මෙහෙයුම වලංගු නැත",
-                                    message: "සහතිකය ඉවත් කිරීමට ඔබ ඉල්ලීම් අත්සන වලංගු කිරීම අක්‍රිය කළ යුතුය. " + 
+                                    message: "සහතිකය ඉවත් කිරීමට ඔබ ඉල්ලීම් අත්සන වලංගු කිරීම අක්‍රිය කළ යුතුය. " +
                                         "ඉල්ලීම හෝ ප්‍රතිචාර අත්සන් කිරීම සක්‍රීය කර ඇත්නම්, අත්සන" +
                                         " සත්‍යාපනය කිරීමට වලංගු සහතිකයක් තිබීම අත්‍යවශ්‍ය වේ."
                                 }
