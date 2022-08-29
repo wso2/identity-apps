@@ -613,8 +613,11 @@ export const myAccount: MyAccountNS = {
                         heading: "Scan the QR code below using an authenticator app",
                         messageBody: "You can find a list of Authenticator Apps available here.",
                         messageHeading: "Don't have an Authenticator App installed?",
-                        regenerateWarning: "When you regenerate a new QR code, you must scan it and re-setup your " + 
-                            "authenticator app. Your previous setup won't work anymore."
+                        regenerateConfirmLabel: "Confirm regenerating a new QR code",
+                        regenerateWarning: {
+                            extended: "When you regenerate a new QR code, you must scan it and re-setup your authenticator app. You won't be able to login with the previous QR code anymore.",
+                            generic: "When you regenerate a new QR code, you must scan it and re-setup your authenticator app. Your previous setup won't work anymore."
+                        }
                     },
                     toolTip: "Don't have an authenticator app? Download an authenticator app like " +
                         "Google Authenticator from <1>App Store</1> or <3>Google Play</3>",

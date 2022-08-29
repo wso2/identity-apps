@@ -1,0 +1,20 @@
+{
+    "version": 2,
+    "projects": {
+        "access-control": "modules/access-control",
+        "authentication-portal": "apps/authentication-portal",
+        "console": "apps/console",
+        "core": "modules/core",
+        "form": "modules/form",
+        "forms": "modules/forms",
+        "i18n": "modules/i18n",
+        "myaccount": "apps/myaccount",
+        "react-components": "modules/react-components",
+        "recovery-portal": "apps/recovery-portal",
+        "tests": "tests",
+        "theme": "modules/theme",
+        "theme-component": "components/theme",
+        "validation": "modules/validation",
+        "x509-certificate-authentication-portal": "apps/x509-certificate-authentication-portal"
+    }
+}

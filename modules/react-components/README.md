@@ -5,13 +5,13 @@ A React component library for WSO2 Identity Server frontend apps implementing Se
 ![Storybook](https://cdn.jsdelivr.net/gh/storybookjs/brand@master/badge/badge-storybook.svg)
 
 ## Install
+
 Add following dependency in your package.json file.
 `"@wso2is/react-components": "<VERSION>"`
 
 ## Run Storybook
 
 Execute the following commands to run the storybook dev server.
-
 
 ```bash
 
@@ -21,7 +21,7 @@ cd modules/react-components
 
 # Start the dev server
 
-npm start
+pnpm start
 
 ```
 

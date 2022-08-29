@@ -40,7 +40,7 @@ import {
 import { AxiosError } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import moment from "moment";
-import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, ReactNode, useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, CheckboxProps, Divider, DropdownItemProps, Form, Grid, Icon, Input } from "semantic-ui-react";
@@ -226,6 +226,15 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      */
     useEffect(() => {
         setCountryList(CommonUtils.getCountryList());
+    }, []);
+
+    /**
+     * This will add role attribute to countries search input to prevent autofill suggestions.
+     */
+    const onCountryRefChange = useCallback(node => {
+        if (node !== null) { 
+            node.children[0].children[1].children[0].role = "presentation";
+        }
     }, []);
 
     /**
@@ -986,6 +995,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         } else if (schema.name === "country") {
             return (
                 <Field
+                    ref = { onCountryRefChange }
                     data-testid={ `${ testId }-profile-form-${ schema.name }-input` }
                     name={ schema.name }
                     label={ fieldName }
@@ -994,15 +1004,24 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     placeholder={ "Select your" + " " + fieldName }
                     type="dropdown"
                     value={ profileInfo.get(schema.name) }
-                    children={ countryList ? countryList.map(list => {
-                        return {
-                            "data-testid": `${ testId }-profile-form-country-dropdown-` +  list.value as string,
-                            flag: list.flag,
-                            key: list.key as string,
-                            text: list.text as string,
-                            value: list.value as string
-                        };
-                    }) : [] }
+                    children={ [ {
+                        "data-testid": `${ testId }-profile-form-country-dropdown-empty` as string,
+                        key: "empty-country" as string,
+                        text: "Select your country" as string,
+                        value: "" as string
+                    } ].concat(
+                        countryList 
+                            ? countryList.map(list => {
+                                return {
+                                    "data-testid": `${ testId }-profile-form-country-dropdown-` +  list.value as string,
+                                    flag: list.flag,
+                                    key: list.key as string,
+                                    text: list.text as string,
+                                    value: list.value as string
+                                };
+                            }) 
+                            : [] 
+                     ) }
                     key={ key }
                     disabled={ false }
                     readOnly={ isReadOnly || schema.mutability === ProfileConstants.READONLY_SCHEMA }
@@ -1197,6 +1216,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                         && profileSchema.map((schema: ProfileSchemaInterface, index: number) => {
                                             if (!(schema.name === ProfileConstants?.
                                                 SCIM2_SCHEMA_DICTIONARY.get("ROLES_DEFAULT")
+                                                || schema.name === ProfileConstants?.
+                                                    SCIM2_SCHEMA_DICTIONARY.get("ACTIVE")
                                                 || schema.name === ProfileConstants?.
                                                     SCIM2_SCHEMA_DICTIONARY.get("GROUPS")
                                                 || schema.name === ProfileConstants?.

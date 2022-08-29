@@ -1,0 +1,48 @@
+{
+    "root": "modules/form",
+    "sourceRoot": "modules/form/src",
+    "projectType": "library",
+    "tags": [],
+    "targets": {
+        "build": {
+            "executor": "@nrwl/web:rollup",
+            "outputs": ["{options.outputPath}"],
+            "options": {
+                "outputPath": "modules/form/dist",
+                "tsConfig": "modules/form/tsconfig.lib.json",
+                "project": "modules/form/package.json",
+                "entryFile": "modules/form/src/index.ts",
+                "external": ["react/jsx-runtime"],
+                "rollupConfig": "@nrwl/react/plugins/bundle-rollup",
+                "compiler": "babel",
+                "format": [
+                    "esm",
+                    "cjs"
+                ],
+                "assets": [
+                    {
+                        "glob": "modules/form/README.md",
+                        "input": ".",
+                        "output": "."
+                    }
+                ]
+            }
+        },
+        "lint": {
+            "executor": "@nrwl/workspace:run-commands",
+            "options": {
+                "command": "pnpm lint",
+                "cwd": "modules/form",
+                "parallel": false
+            }
+        },
+        "test": {
+            "executor": "@nrwl/workspace:run-commands",
+            "options": {
+                "command": "pnpm test",
+                "cwd": "modules/form",
+                "parallel": false
+            }
+        }
+    }
+}

@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/form",
-    "version": "1.4.43",
+    "version": "1.4.67",
     "description": "Form library for WSO2 Identity Server front end applications.",
     "keywords": [
         "WSO2",
@@ -9,31 +9,34 @@
         "WSO2 Identity Apps",
         "form"
     ],
-    "main": "dist/src/index.js",
-    "types": "dist/types/index.d.ts",
+    "main": "dist/index.esm.js",
+    "types": "dist/index.d.ts",
+    "author": "WSO2",
+    "license": "Apache-2.0",
     "scripts": {
-        "prebuild": "npm run clean",
-        "build": "npm run compile",
-        "clean": "rimraf ./dist",
-        "compile": "npx run-script-os",
-        "compile:win32": "..\\..\\node_modules\\.bin\\tsc -p tsconfig.json",
-        "compile:default": "../../node_modules/.bin/tsc -p tsconfig.json",
-        "lint": "npm run lint:all",
-        "lint:all": "npm run lint:targeted -- .",
-        "lint:autofix": "npm run lint:all -- --fix",
-        "lint:ci": "npm run lint -- -- --format=compact",
+        "build": "pnpm nx run form:build",
+        "clean": "pnpm clean:lock-files && pnpm clean:build && pnpm clean:node-modules",
+        "clean:build": "pnpm rimraf dist",
+        "clean:lock-files": "pnpm rimraf package-lock.json && pnpm rimraf pnpm-lock.yaml && pnpm rimraf yarn.lock",
+        "clean:node-modules": "pnpm rimraf node_modules",
+        "compile": "run-script-os",
+        "compile:win32": "..\\..\\node_modules\\.bin\\tsc -p tsconfig.json --incremental",
+        "compile:default": "../../node_modules/.bin/tsc -p tsconfig.json --incremental",
+        "lint": "pnpm lint:all",
+        "lint:all": "pnpm lint:targeted -- .",
+        "lint:autofix": "pnpm lint:all -- --fix",
         "lint:targeted": "eslint --ext .js,.jsx,.ts,.tsx --resolve-plugins-relative-to .",
-        "test": "npm run jest -- -- --passWithNoTests",
-        "test:watch": "npm run test -- --watch",
-        "jest": "npx run-script-os",
-        "jest:win32": ".\\node_modules\\.bin\\jest",
-        "jest:default": "./node_modules/.bin/jest",
-        "typecheck": "npm run compile"
+        "test": "pnpm jest",
+        "test:watch": "pnpm test -- --watch",
+        "jest": "run-script-os",
+        "jest:win32": ".\\node_modules\\.bin\\jest --passWithNoTests",
+        "jest:default": "./node_modules/.bin/jest --passWithNoTests",
+        "typecheck": "pnpm compile"
     },
     "dependencies": {
-        "@wso2is/core": "^1.4.43",
-        "@wso2is/react-components": "^1.4.43",
-        "@wso2is/validation": "^1.4.43",
+        "@wso2is/core": "*",
+        "@wso2is/react-components": "*",
+        "@wso2is/validation": "*",
         "final-form": "^4.20.2",
         "joi": "^17.4.0",
         "lodash-es": "^4.17.21",
@@ -45,6 +48,7 @@
         "@testing-library/react": "^11.2.6",
         "@types/jest": "^26.0.22",
         "@types/lodash-es": "^4.17.4",
+        "@types/react": "^16.9.0",
         "@typescript-eslint/eslint-plugin": "^4.17.0",
         "@typescript-eslint/parser": "^4.17.0",
         "eslint": "^7.20.0",
@@ -55,13 +59,14 @@
         "rimraf": "^3.0.2",
         "run-script-os": "^1.0.7",
         "ts-jest": "^26.5.4",
-        "ts-node": "^10.5.0",
-        "typescript": "^4.2.2"
+        "ts-node": "^10.8.1",
+        "typescript": "^4.6.4"
     },
     "peerDependencies": {
-        "@types/react": "*",
         "react": "*"
     },
-    "author": "WSO2",
-    "license": "Apache-2.0"
+    "resolutions": {
+        "@types/react": "16.9.0",
+        "@types/react-dom": "16.8.5"
+    }
 }

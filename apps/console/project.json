@@ -1,0 +1,194 @@
+{
+    "root": "apps/console",
+    "sourceRoot": "apps/console/src",
+    "projectType": "application",
+    "targets": {
+        "build-prepare": {
+            "executor": "@nrwl/workspace:run-commands",
+            "options": {
+                "commands": [
+                    {
+                        "command": "pnpm prebuild",
+                        "description": "Preparing the build copying necessary assets, etc."
+                    }
+                ],
+                "cwd": "apps/console",
+                "parallel": true
+            }
+        },
+        "build-base": {
+            "executor": "@nrwl/web:webpack",
+            "outputs": [
+                "{options.outputPath}"
+            ],
+            "defaultConfiguration": "production",
+            "options": {
+                "compiler": "babel",
+                "outputPath": "apps/console/build/console",
+                "index": "index.html",
+                "baseHref": "/console/",
+                "main": "apps/console/src/index.tsx",
+                "polyfills": "",
+                "tsConfig": "apps/console/tsconfig.json",
+                "assets": [
+                    {
+                        "glob": "**/*",
+                        "input": "modules/theme/dist/lib",
+                        "output": "libs",
+                        "ignore": [
+                            "**/**.js",
+                            "**/**.json",
+                            "**/**.less",
+                            "**/assets/images/!(branding|identity-providers|flags.png)/**"
+                        ]
+                    },
+                    {
+                        "glob": "**/*",
+                        "input": "apps/console/src/public",
+                        "output": "."
+                    },
+                    {
+                        "glob": "**/*",
+                        "input": "modules/i18n/dist/bundle",
+                        "output": "resources/i18n"
+                    },
+                    {
+                        "glob": "meta.*.json",
+                        "input": "apps/console/src/extensions/i18n/tmp",
+                        "output": "resources/i18n"
+                    },
+                    {
+                        "glob": "**/auth.jsp",
+                        "input": "apps/console/src",
+                        "output": "."
+                    }
+                ],
+                "styles": [],
+                "scripts": [],
+                "generateIndexHtml": false,
+                "postcssConfig": "apps/console/postcss.config.js",
+                "webpackConfig": "apps/console/webpack.config.ts"
+            },
+            "configurations": {
+                "development": {
+                    "index": "index.html",
+                    "extractLicenses": false,
+                    "optimization": false,
+                    "sourceMap": true,
+                    "vendorChunk": true
+                },
+                "production": {
+                    "index": "index.jsp",
+                    "fileReplacements": [],
+                    "optimization": true,
+                    "outputHashing": "all",
+                    "sourceMap": false,
+                    "namedChunks": false,
+                    "extractLicenses": true,
+                    "vendorChunk": false
+                }
+            }
+        },
+        "build-windup": {
+            "executor": "@nrwl/workspace:run-commands",
+            "options": {
+                "commands": [
+                    {
+                        "command": "pnpm postbuild",
+                        "description": "Clearing up the redundant files after the build."
+                    }
+                ],
+                "cwd": "apps/console",
+                "parallel": true
+            }
+        },
+        "build": {
+            "executor": "@nrwl/workspace:run-commands",
+            "options": {
+                "commands": [
+                    "pnpm nx run console:build-prepare",
+                    "pnpm nx run console:build-base",
+                    "pnpm nx run console:build-windup"
+                ],
+                "cwd": "apps/console",
+                "parallel": false
+            }
+        },
+
+        "clean": {
+            "executor": "@nrwl/workspace:run-commands",
+            "options": {
+                "commands": [
+                    {
+                        "command": "pnpm clean",
+                        "description": "Cleaning Console"
+                    }
+                ],
+                "cwd": "apps/console",
+                "parallel": false
+            }
+        },
+        "serve-prepare": {
+            "executor": "@nrwl/workspace:run-commands",
+            "options": {
+                "commands": [
+                    {
+                        "command": "pnpm prebuild",
+                        "description": "Preparing for the serve copying necessary assets, etc."
+                    }
+                ],
+                "cwd": "apps/console",
+                "parallel": true
+            }
+        },
+        "serve-base": {
+            "executor": "@nrwl/web:dev-server",
+            "defaultConfiguration": "development",
+            "options": {
+                "buildTarget": "console:build-base",
+                "port": 9001,
+                "baseHref": "/console/",
+                "open": true,
+                "hmr": true,
+                "ssl": true
+            },
+            "configurations": {
+                "development": {
+                    "buildTarget": "console:build-base:development"
+                },
+                "production": {
+                    "buildTarget": "console:build-base:production",
+                    "hmr": false
+                }
+            }
+        },
+        "serve": {
+            "executor": "@nrwl/workspace:run-commands",
+            "options": {
+                "commands": [
+                    "pnpm nx run console:serve-prepare",
+                    "pnpm nx run console:serve-base"
+                ],
+                "cwd": "apps/console",
+                "parallel": false
+            }
+        },
+        "lint": {
+            "executor": "@nrwl/workspace:run-commands",
+            "options": {
+                "command": "pnpm lint",
+                "cwd": "apps/console",
+                "parallel": false
+            }
+        },
+        "test": {
+            "executor": "@nrwl/workspace:run-commands",
+            "options": {
+                "command": "pnpm test",
+                "cwd": "apps/console",
+                "parallel": false
+            }
+        }
+    },
+    "tags": []
+}

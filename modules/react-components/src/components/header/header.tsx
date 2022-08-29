@@ -472,7 +472,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         return (
             <>
                 {
-                    extensions.map((extension: HeaderExtension) => {
+                    extensions.map((extension: HeaderExtension, index: number) => {
                         if (extension.floated !== floated || !extension.component) {
                             return;
                         }
@@ -480,6 +480,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                         if (typeof extension.component === "string") {
                             return (
                                 <div
+                                    key={ index }
                                     data-componentid={ extension[ "data-componentid" ] }
                                     data-testid={ extension[ "data-testid" ] }
                                     className="header-link"

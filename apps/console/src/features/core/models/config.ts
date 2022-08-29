@@ -24,7 +24,10 @@ import {
     FeatureAccessConfigInterface
 } from "@wso2is/core/models";
 import { I18nModuleOptionsInterface } from "@wso2is/i18n";
-import { ApplicationTemplateLoadingStrategies, ApplicationsResourceEndpointsInterface } from "../../applications";
+import {
+    ApplicationTemplateLoadingStrategies,
+    ApplicationsResourceEndpointsInterface
+} from "../../applications/models";
 import { CertificatesResourceEndpointsInterface } from "../../certificates";
 import { ClaimResourceEndpointsInterface } from "../../claims";
 import { GroupsResourceEndpointsInterface } from "../../groups";

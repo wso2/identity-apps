@@ -1,0 +1,48 @@
+{
+    "projectType": "library",
+    "root": "modules/forms",
+    "sourceRoot": "modules/forms/src",
+    "prefix": "@wso2is",
+    "targets": {
+        "build": {
+            "executor": "@nrwl/web:rollup",
+            "outputs": ["{options.outputPath}"],
+            "options": {
+                "outputPath": "modules/forms/dist",
+                "tsConfig": "modules/forms/tsconfig.lib.json",
+                "project": "modules/forms/package.json",
+                "entryFile": "modules/forms/src/index.ts",
+                "external": ["react/jsx-runtime"],
+                "rollupConfig": "@nrwl/react/plugins/bundle-rollup",
+                "compiler": "babel",
+                "format": [
+                    "esm",
+                    "cjs"
+                ],
+                "assets": [
+                    {
+                        "glob": "modules/forms/README.md",
+                        "input": ".",
+                        "output": "."
+                    }
+                ]
+            }
+        },
+        "lint": {
+            "executor": "@nrwl/workspace:run-commands",
+            "options": {
+                "command": "pnpm lint",
+                "cwd": "modules/forms",
+                "parallel": false
+            }
+        },
+        "test": {
+            "executor": "@nrwl/workspace:run-commands",
+            "options": {
+                "command": "pnpm test",
+                "cwd": "modules/forms",
+                "parallel": false
+            }
+        }
+    }
+}

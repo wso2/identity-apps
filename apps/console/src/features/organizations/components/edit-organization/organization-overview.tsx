@@ -27,11 +27,12 @@ import {
     EmphasizedSegment
 } from "@wso2is/react-components";
 import moment from "moment";
-import React, { FunctionComponent, ReactElement, useCallback, useRef, useState } from "react";
+import React, { FunctionComponent, ReactElement, useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Button, Divider, Grid } from "semantic-ui-react";
+import { Button, CheckboxProps, Divider, Grid } from "semantic-ui-react";
 import { FeatureConfigInterface } from "../../../core";
+import { DISABLED } from "../../../userstores";
 import { deleteOrganization, patchOrganization } from "../../api";
 import {
     ORGANIZATION_DESCRIPTION_MAX_LENGTH,
@@ -214,6 +215,100 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
     }, [ organization ]
     );
 
+    const handleDisableOrganization = useCallback((event, data: CheckboxProps) => {
+        const isChecked = data.checked;
+
+        const patchData: OrganizationPatchData = {
+            operation: "REPLACE",
+            path: "/status",
+            value: isChecked ? "ACTIVE" : "DISABLED"
+        };
+
+        patchOrganization(organization.id, [ patchData ])
+            .then(() => {
+                dispatch(
+                    addAlert({
+                        description: t(
+                            organization.status === "ACTIVE"
+                                ? "console:manage.features.organizations.notifications" +
+                                ".disableOrganization.success.description"
+                                : "console:manage.features.organizations.notifications" +
+                                ".enableOrganization.success.description"
+                        ),
+                        level: AlertLevels.SUCCESS,
+                        message: t(
+                            organization.status === "ACTIVE"
+                                ? "console:manage.features.organizations.notifications" +
+                                ".disableOrganization.success.message"
+                                : "console:manage.features.organizations.notifications" +
+                                ".enableOrganization.success.message"
+                        )
+                    })
+                );
+
+                setShowOrgDeleteConfirmationModal(false);
+                onOrganizationUpdate(organization.id);
+            })
+            .catch((error) => {
+                if (error.description) {
+                    if (error.code === "ORG-60029") {
+                        dispatch(
+                            addAlert({
+                                description: t(
+                                    "console:manage.features.organizations.notifications." +
+                                    "disableOrganizationWithSubOrganizationError",
+                                    { organizationName: organization.name }
+                                ),
+                                level: AlertLevels.ERROR,
+                                message: t(
+                                    "console:manage.features.organizations.notifications.disableOrganization" +
+                                    ".genericError.message"
+                                )
+                            })
+                        );
+
+                        return;
+                    }
+
+                    dispatch(
+                        addAlert({
+                            description: error.description,
+                            level: AlertLevels.ERROR,
+                            message: t(
+                                organization.status === "ACTIVE"
+                                    ? "console:manage.features.organizations.notifications" +
+                                    ".disableOrganization.error.message"
+                                    : "console:manage.features.organizations.notifications" +
+                                    ".enableOrganization.error.message"
+                            )
+                        })
+                    );
+
+                    return;
+                }
+
+                dispatch(
+                    addAlert({
+                        description: t(
+                            organization.status === "ACTIVE"
+                                ? "console:manage.features.organizations.notifications" +
+                                ".disableOrganization.genericError.description"
+                                : "console:manage.features.organizations.notifications" +
+                                ".enableOrganization.genericError.description"
+                        ),
+                        level: AlertLevels.ERROR,
+                        message: t(
+                            organization.status === "ACTIVE"
+                                ? "console:manage.features.organizations.notifications" +
+                                ".disableOrganization.genericError.message"
+                                : "console:manage.features.organizations.notifications" +
+                                ".enableOrganization.genericError.message"
+                        )
+                    })
+                );
+            });
+    }, [ organization, dispatch, addAlert ]);
+
     const validate = async (values: OrganizationEditFormProps): Promise<Partial<OrganizationEditFormProps>> => {
         const error: Partial<OrganizationEditFormProps> = {};
 
@@ -366,16 +461,39 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                     </Grid.Row>
                 </Grid>
                 <Divider hidden/>
-                {
-                    !isReadOnly && (
-                        <DangerZoneGroup sectionHeader={ t("common:dangerZone") }>
+                <DangerZoneGroup sectionHeader={ t("common:dangerZone") }>
+                    <DangerZone
+                        actionTitle={ t(organization.status === "ACTIVE"
+                            ? "console:manage.features.organizations.edit.dangerZone.disableOrganization" +
+                                    ".disableActionTitle"
+                            : "console:manage.features.organizations.edit.dangerZone.disableOrganization" +
+                                    ".enableActionTitle")
+                        }
+                        header={ t(organization.status === "ACTIVE"
+                            ? "console:manage.features.organizations.edit.dangerZone.disableOrganization" +
+                            ".disableActionTitle"
+                            : "console:manage.features.organizations.edit.dangerZone.disableOrganization" +
+                            ".enableActionTitle")
+                        }
+                        subheader={ t("console:manage.features.organizations.edit.dangerZone" +
+                                    ".disableOrganization.subheader") }
+                        onActionClick={ undefined }
+                        data-testid={ `${testId}-disable-danger-zone` }
+                        toggle={ {
+                            checked: organization.status === "ACTIVE",
+                            onChange: handleDisableOrganization
+                        } }
+                    />
+                    {
+                        !isReadOnly && (
                             <DangerZone
                                 actionTitle={
                                     t("console:manage.features.organizations.edit" +
                                         ".dangerZone.title")
                                 }
                                 header={
-                                    t("common:dangerZone")
+                                    t("console:manage.features.organizations.edit" +
+                                        ".dangerZone.title")
                                 }
                                 subheader={
                                     t("console:manage.features.organizations.edit" +
@@ -385,10 +503,9 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                                 data-testid={
                                     `${testId}-role-danger-zone`
                                 }
-                            />
-                        </DangerZoneGroup>
-                    )
-                }
+                            />)
+                    }
+                </DangerZoneGroup>
                 {
                     showOrgDeleteConfirmation && (
                         <ConfirmationModal

@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { getRolesList } from "@wso2is/core/api";
 import { resolveUserDisplayName } from "@wso2is/core/helpers";
 import { AlertLevels, ProfileInfoInterface, RolesInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -36,6 +35,7 @@ import { Divider, Grid, Icon, Responsive } from "semantic-ui-react";
 import { AppConstants, AppState, UIConstants, history } from "../../core";
 import { GroupList } from "../../groups/components";
 import { GroupsInterface } from "../../groups/models";
+import { getRolesList } from "../../roles/api";
 import { RealmConfigInterface, getServerConfigs } from "../../server-configurations";
 import { UserListInterface, UsersList, getUsersList } from "../../users";
 import { QueryParams, getUserStores } from "../../userstores";

@@ -188,6 +188,10 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                             return;
                         }
 
+                        if (template?.id === "organization-enterprise-idp" && !isOrganizationManagementEnabled) {
+                            return;
+                        }
+
                         tags = union(tags, template.tags);
                     });
                 });
@@ -215,6 +219,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
             === IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.GOOGLE) {
 
             handleTemplateSelection(null, IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.GOOGLE);
+
             return;
         }
     }, [ urlSearchParams.get(IdentityProviderManagementConstants.IDP_CREATE_WIZARD_TRIGGER_URL_SEARCH_PARAM_KEY) ]);
@@ -410,14 +415,14 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
             contentTopMargin={ true }
             description={
                 useNewConnectionsView
-                    ?   <>
-                            { t("console:develop.pages.authenticationProviderTemplate.subTitle") }
-                            <DocumentationLink
-                                link={ getLink("develop.connections.newConnection.learnMore") }
-                            >
-                                { t("common:learnMore") }
-                            </DocumentationLink>
-                        </>
+                    ?   (<>
+                        { t("console:develop.pages.authenticationProviderTemplate.subTitle") }
+                        <DocumentationLink
+                            link={ getLink("develop.connections.newConnection.learnMore") }
+                        >
+                            { t("common:learnMore") }
+                        </DocumentationLink>
+                    </>)
                     :   t("console:develop.pages.idpTemplate.subTitle")
             }
             backButton={ {

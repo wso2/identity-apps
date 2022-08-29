@@ -1,0 +1,32 @@
+{
+    "root": "apps/recovery-portal",
+    "projectType": "application",
+    "targets": {
+        "build": {
+            "executor": "@nrwl/workspace:run-commands",
+            "options": {
+                "commands": [
+                    {
+                        "command": "pnpm build",
+                        "description": "Building Recovery Portal"
+                    }
+                ],
+                "cwd": "apps/recovery-portal",
+                "parallel": false
+            }
+        },
+        "clean": {
+            "executor": "@nrwl/workspace:run-commands",
+            "options": {
+                "commands": [
+                    {
+                        "command": "pnpm clean",
+                        "description": "Cleaning Recovery Portal"
+                    }
+                ],
+                "cwd": "apps/recovery-portal",
+                "parallel": false
+            }
+        }
+    }
+}

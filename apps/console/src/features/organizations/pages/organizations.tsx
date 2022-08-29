@@ -46,7 +46,7 @@ import {
     PaginationProps
 } from "semantic-ui-react";
 import { AdvancedSearchWithBasicFilters, EventPublisher, UIConstants } from "../../core";
-import { getOrganization, getOrganizations } from "../api";
+import { getOrganization, getOrganizations, useGetUserSuperOrganization } from "../api";
 import { AddOrganizationModal, OrganizationList } from "../components";
 import { OrganizationManagementConstants } from "../constants";
 import {
@@ -105,6 +105,8 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     const [ paginationReset, triggerResetPagination ] = useTrigger();
+
+    const { data: superOrganization } = useGetUserSuperOrganization();
 
     useEffect(() => {
         let nextFound: boolean = false;
@@ -423,7 +425,8 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                                     } }
                                 >
                                     <span data-componentid={ `${ testId }-breadcrumb-home` }>
-                                        { OrganizationManagementConstants.ROOT_ORGANIZATION.name }
+                                        { superOrganization?.name
+                                            || OrganizationManagementConstants.ROOT_ORGANIZATION.name }
                                     </span>
                                 </Breadcrumb.Section>
                                 { organizations?.map((organization: OrganizationInterface, index: number) => {

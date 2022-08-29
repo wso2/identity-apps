@@ -20,7 +20,6 @@ import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso
 import classNames from "classnames";
 import kebabCase from "lodash-es/kebabCase";
 import React, { CSSProperties, FunctionComponent, ReactElement, useState } from "react";
-import { useTranslation } from "react-i18next";
 import { Card, CardProps, Dimmer } from "semantic-ui-react";
 import { GenericIcon } from "../icon";
 

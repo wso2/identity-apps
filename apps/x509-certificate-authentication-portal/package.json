@@ -1,13 +1,18 @@
 {
     "name": "@wso2is/x509-certificate-authentication-portal",
-    "version": "1.4.43",
+    "version": "1.4.67",
     "description": "WSO2 Identity Server X509 Certificate Authentication Portal",
     "author": "WSO2",
     "license": "Apache-2.0",
     "scripts": {
-        "build": "node scripts/build.js"
+        "build": "node scripts/build.js",
+        "clean": "pnpm clean:lock-files && pnpm clean:maven-folders && pnpm clean:node-modules",
+        "clean:lock-files": "pnpm rimraf package-lock.json && pnpm rimraf pnpm-lock.yaml && pnpm rimraf yarn.lock",
+        "clean:maven-folders": "pnpm rimraf target",
+        "clean:node-modules": "pnpm rimraf node_modules"
     },
     "dependencies": {
-        "@wso2is/theme": "^1.4.43"
+        "@wso2is/theme": "*",
+        "rimraf": "^3.0.2"
     }
 }

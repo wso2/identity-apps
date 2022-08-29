@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { getRolesList } from "@wso2is/core/api";
 import { AlertLevels, RoleListInterface, RolesInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { DynamicField, Heading, KeyValue } from "@wso2is/react-components";
@@ -24,6 +23,7 @@ import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Grid } from "semantic-ui-react";
+import { getRolesList } from "../../../../roles/api";
 import { RoleMappingInterface } from "../../../models";
 
 interface RoleMappingPropsInterface extends TestableComponentInterface {

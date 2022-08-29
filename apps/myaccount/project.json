@@ -1,0 +1,175 @@
+{
+    "root": "apps/myaccount",
+    "sourceRoot": "apps/myaccount/src",
+    "projectType": "application",
+    "targets": {
+        "build-prepare": {
+            "executor": "@nrwl/workspace:run-commands",
+            "options": {
+                "commands": [
+                    {
+                        "command": "pnpm prebuild",
+                        "description": "Preparing the build copying necessary assets, etc."
+                    }
+                ],
+                "cwd": "apps/myaccount",
+                "parallel": true
+            }
+        },
+        "build-base": {
+            "executor": "@nrwl/web:webpack",
+            "outputs": [
+                "{options.outputPath}"
+            ],
+            "defaultConfiguration": "production",
+            "options": {
+                "compiler": "babel",
+                "outputPath": "apps/myaccount/build/myaccount",
+                "index": "index.html",
+                "baseHref": "/myaccount/",
+                "main": "apps/myaccount/src/index.tsx",
+                "polyfills": "",
+                "tsConfig": "apps/myaccount/tsconfig.json",
+                "assets": [
+                    {
+                        "glob": "**/*",
+                        "input": "modules/theme/dist/lib",
+                        "output": "libs",
+                        "ignore": [
+                            "**/**.js",
+                            "**/**.json",
+                            "**/**.less",
+                            "**/assets/images/!(branding|identity-providers|flags.png)/**"
+                        ]
+                    },
+                    {
+                        "glob": "**/*",
+                        "input": "apps/myaccount/src/public",
+                        "output": "."
+                    },
+                    {
+                        "glob": "**/*",
+                        "input": "modules/i18n/dist/bundle",
+                        "output": "resources/i18n"
+                    },
+                    {
+                        "glob": "**/auth.jsp",
+                        "input": "apps/console/src",
+                        "output": "."
+                    }
+                ],
+                "styles": [],
+                "scripts": [],
+                "generateIndexHtml": false,
+                "postcssConfig": "apps/myaccount/postcss.config.js",
+                "webpackConfig": "apps/myaccount/webpack.config.ts"
+            },
+            "configurations": {
+                "development": {
+                    "index": "index.html",
+                    "extractLicenses": false,
+                    "optimization": false,
+                    "sourceMap": true,
+                    "vendorChunk": true
+                },
+                "production": {
+                    "index": "index.jsp",
+                    "fileReplacements": [],
+                    "optimization": true,
+                    "outputHashing": "all",
+                    "sourceMap": false,
+                    "namedChunks": false,
+                    "extractLicenses": true,
+                    "vendorChunk": false
+                }
+            }
+        },
+        "build": {
+            "executor": "@nrwl/workspace:run-commands",
+            "options": {
+                "commands": [
+                    "pnpm nx run myaccount:build-prepare",
+                    "pnpm nx run myaccount:build-base"
+                ],
+                "cwd": "apps/myaccount",
+                "parallel": false
+            }
+        },
+
+        "clean": {
+            "executor": "@nrwl/workspace:run-commands",
+            "options": {
+                "commands": [
+                    {
+                        "command": "pnpm clean",
+                        "description": "Cleaning My Account"
+                    }
+                ],
+                "cwd": "apps/myaccount",
+                "parallel": false
+            }
+        },
+        "serve-prepare": {
+            "executor": "@nrwl/workspace:run-commands",
+            "options": {
+                "commands": [
+                    {
+                        "command": "pnpm prebuild",
+                        "description": "Preparing for the serve copying necessary assets, etc."
+                    }
+                ],
+                "cwd": "apps/myaccount",
+                "parallel": true
+            }
+        },
+        "serve-base": {
+            "executor": "@nrwl/web:dev-server",
+            "defaultConfiguration": "development",
+            "options": {
+                "buildTarget": "myaccount:build-base",
+                "port": 9000,
+                "baseHref": "/myaccount/",
+                "open": true,
+                "hmr": true,
+                "ssl": true
+            },
+            "configurations": {
+                "development": {
+                    "buildTarget": "myaccount:build-base:development"
+                },
+                "production": {
+                    "buildTarget": "myaccount:build-base:production",
+                    "hmr": false
+                }
+            }
+        },
+        "serve": {
+            "executor": "@nrwl/workspace:run-commands",
+            "options": {
+                "commands": [
+                    "pnpm nx run myaccount:serve-prepare",
+                    "pnpm nx run myaccount:serve-base"
+                ],
+                "cwd": "apps/myaccount",
+                "parallel": false
+            }
+        },
+        "lint": {
+            "executor": "@nrwl/workspace:run-commands",
+            "options": {
+                "command": "pnpm lint",
+                "cwd": "apps/myaccount",
+                "parallel": false
+            }
+        },
+        "test": {
+            "executor": "@nrwl/workspace:run-commands",
+            "options": {
+                "command": "pnpm test",
+                "cwd": "apps/myaccount",
+                "parallel": false
+            }
+        }
+    },
+    "tags": []
+}

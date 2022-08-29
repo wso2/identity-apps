@@ -157,28 +157,28 @@ Following are few of the useful commands that you can use to run the existing un
 
 ```bash
 # From project root.
-npm run test
+pnpm test
 ```
 
 #### Run the full test suite in watch mode
 
 ```bash
 # From project root.
-npm run test:watch
+pnpm test:watch
 ```
 
 ### Run Tests for a specific test file
 
 ```bash
 # From console root
-npm run test ./src/features/applications/__tests__/applications-page.test.tsx
+pnpm test ./src/features/applications/__tests__/applications-page.test.tsx
 ```
 
 ### Run Tests for a specific test file in watch mode
 
 ```bash
 # From console root
-npm run test -- --watch ./src/features/applications/__tests__/applications-page.test.tsx
+pnpm test -- --watch ./src/features/applications/__tests__/applications-page.test.tsx
 ```
 
 ### Run Tests for an individual module
@@ -187,31 +187,31 @@ npm run test -- --watch ./src/features/applications/__tests__/applications-page.
 
 ```bash
 # From anywhere inside the project.
-npx lerna run test --scope @wso2is/forms
+pnpm nx run forms:test
 ```
 
 #### From the project root.
 
 ```bash
 # Run tests for modules.
-npm run test:unit:modules
+pnpm test:unit:modules
 ```
 
 ```bash
 # Run tests for apps.
-npm run test:unit:apps
+pnpm test:unit:apps
 ```
 
 ```bash
 # Run tests for specific module. (Replace <MODULE_NAME> with something like `@wso2is/core` or `@wso2is/myaccount`)
-npm run test:unit:<MODULE_NAME>
+pnpm test:unit:<MODULE_NAME>
 ```
 
 #### From inside respective module.
 
 ```bash
-# From inside component ex: apps/console. Use `npm run test:watch for watch mode.
-npm run test
+# From inside component ex: apps/console. Use `pnpm test:watch for watch mode.
+pnpm test
 ```
 
 ## Code Coverage
@@ -220,13 +220,13 @@ npm run test
 
 ```bash
 # From the root of the project.
-npm run test:unit:coverage
+pnpm test:unit:coverage
 ```
 
 ## References
 
 - Common
-    - [Common mistakes with React Testing Library][common-mistakes-with-react-testing-library] Blog by Kent C. Dodds 
+    - [Common mistakes with React Testing Library][common-mistakes-with-react-testing-library] Blog by Kent C. Dodds
     - [Fix the "not wrapped in act(...)" warning][fix-the-not-wrapped-in-act-warning] Blog by Kent C. Dodds
 - API Mocking
     - [Stop mocking fetch][stop-mocking-fetch] Blog by Kent C. Dodds

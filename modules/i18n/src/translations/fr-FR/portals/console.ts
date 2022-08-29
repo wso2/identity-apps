@@ -1214,12 +1214,16 @@ export const console: ConsoleNS = {
                                             usernameless: {
                                                 description: "Permettre aux utilisateurs de se connecter à " +
                                                     "l'aidAjouter une connexion sans nom d'utilisateuré " +
-                                                    "FIDO2 ou de la biométrie.",
+                                                    "FIDO2, de la biométrie ou de clés d'accès.",
                                                 heading: "Ajouter une clé de sécurité/connexion biométrique",
                                                 info: "Pour vous connecter avec une authentification sans mot " +
                                                     "de passe, vos utilisateurs doivent avoir leurs clés de " +
                                                     "sécurité FIDO2 ou leurs données biométriques enregistrées " +
                                                     "via Mon compte."
+                                            },
+                                            emailOTP: {
+                                                description: "Activez une couche supplémentaire d'authentification avec OTP basé sur Email.",
+                                                heading: "Ajouter Email OTP comme deuxième facteur"
                                             }
                                         }
                                     }
@@ -5175,7 +5179,8 @@ export const console: ConsoleNS = {
                         header: "Êtes-vous sûr?",
                         message: "Cette action est irréversible et supprimera définitivement le mappage " +
                             "de revendication de champ d'application"
-                    }
+                    },
+                    saveChangesButton: "Sauvegarder les modifications"
                 }
             },
             emailLocale: {
@@ -6447,7 +6452,7 @@ export const console: ConsoleNS = {
                             message: "Erreur de mise à jour"
                         },
                         genericError: {
-                            description: "Une erreur s'est produite lors de la mise à jour du scope OIDC.",
+                            description: "Une erreur s'est produite lors de la mise à jour du scope OIDC {{ scope }}.",
                             message: "Quelque chose s'est mal passé"
                         },
                         success: {
@@ -6536,6 +6541,12 @@ export const console: ConsoleNS = {
                     },
                     back: "Retour",
                     dangerZone: {
+                        disableOrganization: {
+                            disableActionTitle: "Désactiver l'organisation",
+                            enableActionTitle: "Activer l'organisation",
+                            subheader: "La désactivation d'une organisation peut vous faire perdre l'accès à" +
+                                " l'organisation associée. Procéder avec prudence."
+                        },
                         subHeader: "Voulez-vous vraiment supprimer cette organisation?",
                         title: "Supprimer l'organisation"
                     },
@@ -6655,6 +6666,36 @@ export const console: ConsoleNS = {
                     },
                     deleteOrganizationWithSubOrganizationError: "L'organisation {{ organizationName }} ne peut pas" +
                         " être supprimée car elle possède une ou plusieurs sous-organisations.",
+                    disableOrganization: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Erreur lors de la désactivation de l'organisation"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la désactivation de l'organisation",
+                            message: "Quelque chose s'est mal passé"
+                        },
+                        success: {
+                            description: "L'organisation a bien été désactivée",
+                            message: "Organisation désactivée avec succès"
+                        }
+                    },
+                    disableOrganizationWithSubOrganizationError: "L'organisation {{ organizationName }} ne peut pas" +
+                        " être désactivée car elle possède une ou plusieurs sous-organisations.",
+                    enableOrganization: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Erreur lors de l'activation de l'organisation"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de l'activation de l'organisation",
+                            message: "Quelque chose s'est mal passé"
+                        },
+                        success: {
+                            description: "L'organisation a bien été activée",
+                            message: "Organisation activée avec succès"
+                        }
+                    },
                     fetchOrganization: {
                         error: {
                             description: "{{description}}",

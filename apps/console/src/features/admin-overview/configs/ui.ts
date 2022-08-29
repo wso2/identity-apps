@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import {  FunctionComponent, SVGProps } from "react";
 import { ReactComponent as BriefcaseIcon } from "../../../themes/default/assets/images/icons/briefcase-icon.svg";
 import { ReactComponent as CertificateIcon } from "../../../themes/default/assets/images/icons/certificate-icon.svg";
 import { ReactComponent as ClaimsIcon } from "../../../themes/default/assets/images/icons/claims-icon.svg";
@@ -28,7 +29,22 @@ import {
     ReactComponent as SecurityIllustration
 } from "../../../themes/default/assets/images/illustrations/security-illustration.svg";
 
-export const getOverviewPageIllustrations = () => {
+export const getOverviewPageIllustrations = (): {
+    jumbotronIllustration: FunctionComponent<SVGProps<SVGSVGElement>>;
+    quickLinks: {
+        certificates: FunctionComponent<SVGProps<SVGSVGElement>>;
+        dialects: FunctionComponent<SVGProps<SVGSVGElement>>;
+        emailTemplates: FunctionComponent<SVGProps<SVGSVGElement>>;
+        generalConfigs: FunctionComponent<SVGProps<SVGSVGElement>>;
+        groups: FunctionComponent<SVGProps<SVGSVGElement>>;
+        roles: FunctionComponent<SVGProps<SVGSVGElement>>;
+    },
+    statsOverview: {
+        groups: FunctionComponent<SVGProps<SVGSVGElement>>;
+        users: FunctionComponent<SVGProps<SVGSVGElement>>;
+        userstores: FunctionComponent<SVGProps<SVGSVGElement>>;
+    }
+} => {
 
     return {
         jumbotronIllustration: SecurityIllustration,

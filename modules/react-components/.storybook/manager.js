@@ -17,15 +17,8 @@
  */
 
 import { addons } from "@storybook/addons";
-import { create } from "@storybook/theming";
-import { version } from "../package.json";
-
-const theme = create({
-    base: "light",
-    colorSecondary: "#ff5000",
-    brandTitle: `IDENTITY SERVER REACT ${ version }`
-});
+import { Theme } from "./theme";
 
 addons.setConfig({
-    theme
+    theme: Theme
 });

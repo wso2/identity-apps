@@ -16,19 +16,24 @@
  * under the License.
  */
 
+import {  FunctionComponent, SVGProps } from "react";
 import { ReactComponent as CodeForkIcon } from "../../../themes/default/assets/images/icons/code-fork.svg";
 import {
     default as RemoteFetchIllustration
 } from "../../../themes/default/assets/images/illustrations/remote-repository-illustration.svg";
 
-export const getEmptyPlaceholderIllustrations = () => {
+export const getEmptyPlaceholderIllustrations = (): {
+    add: FunctionComponent<SVGProps<SVGSVGElement>>;
+} => {
 
     return {
         add: CodeForkIcon
     };
 };
 
-export const getSectionIllustrations = () => {
+export const getSectionIllustrations = (): {
+    appConfigRepo: string;
+} => {
 
     return {
         appConfigRepo: RemoteFetchIllustration
