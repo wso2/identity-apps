@@ -562,22 +562,6 @@
                 <inherited>false</inherited>
                 <executions>
                     <execution>
-                        <id>install-pnpm</id>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                        <phase>initialize</phase>
-                        <configuration>
-                            <executable>npm</executable>
-                            <arguments>
-                                <argument>install</argument>
-                                <argument>-g</argument>
-                                <argument>pnpm@latest</argument>
-                            </arguments>
-                            <workingDirectory>${basedir}</workingDirectory>
-                        </configuration>
-                    </execution>
-                    <execution>
                         <id>install-packages</id>
                         <goals>
                             <goal>exec</goal>
