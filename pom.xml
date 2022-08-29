@@ -562,7 +562,7 @@
                 <inherited>false</inherited>
                 <executions>
                     <execution>
-                        <id>install-packages</id>
+                        <id>npm install (initialize)</id>
                         <goals>
                             <goal>exec</goal>
                         </goals>
@@ -592,7 +592,7 @@
                         </configuration>
                     </execution>
                     <execution>
-                        <id>pnpm run build (compile)</id>
+                        <id>npm run build (compile)</id>
                         <goals>
                             <goal>exec</goal>
                         </goals>
