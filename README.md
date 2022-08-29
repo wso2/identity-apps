@@ -28,7 +28,7 @@ End-user apps in WSO2 Identity Server
     Or, follow the other [recommended installation options](https://pnpm.io/installation).
 
 3. Install Maven from [https://maven.apache.org/download.cgi](https://maven.apache.org/download.cgi).
-4. Install JDK 1.8 [https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html](https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html).
+4. Install JDK 11 [https://www.openlogic.com/openjdk-downloads](https://www.openlogic.com/openjdk-downloads).
 
 ### Download WSO2 Identity Server
 
