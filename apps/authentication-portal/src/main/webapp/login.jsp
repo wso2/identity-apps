@@ -17,7 +17,6 @@
   --%>
 
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ page import="com.google.gson.Gson" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthContextAPIClient" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
 <%@ page import="org.wso2.carbon.identity.core.util.IdentityCoreConstants" %>
@@ -132,20 +131,9 @@
     String usernameIdentifier = null;
 
     if (isIdentifierFirstLogin(inputType)) {
-        String authAPIURL = application.getInitParameter(Constants.AUTHENTICATION_REST_ENDPOINT_URL);
-        if (StringUtils.isBlank(authAPIURL)) {
-            authAPIURL = IdentityUtil.getServerURL("/api/identity/auth/v1.1/", true, true);
-        }
-        if (!authAPIURL.endsWith("/")) {
-            authAPIURL += "/";
-        }
-        authAPIURL += "context/" + request.getParameter("sessionDataKey");
-        String contextProperties = AuthContextAPIClient.getContextProperties(authAPIURL);
-        Gson gson = new Gson();
-        Map<String, Object> parameters = gson.fromJson(contextProperties, Map.class);
-        if (parameters != null) {
-            username = (String) parameters.get("username");
-            usernameIdentifier = (String) parameters.get("username");
+        if (request.getParameter("username") != null) {
+            username = request.getParameter("username");
+            usernameIdentifier = request.getParameter("username");
         } else {
             String redirectURL = "error.do";
             response.sendRedirect(redirectURL);
