@@ -303,9 +303,6 @@
             }
         }
         &.minimal-application-create-wizard, &.identity-provider-create-wizard {
-            .notification-modal {
-                width: 100%;
-            }
             .sub-template-selection {
                 .sub-templates-label {
                     display: block;

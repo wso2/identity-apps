@@ -846,15 +846,13 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                 id="name-input"
             >
                 <Grid>
-                    <div id="notification-div" className="notification-modal">
-                        { alert && (
-                            <Grid.Row columns={ 1 }>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
-                                    { notification }
-                                </Grid.Column>
-                            </Grid.Row>
-                        ) }
-                    </div>
+                    { alert && (
+                        <Grid.Row columns={ 1 } id="notification-div">
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+                                { notification }
+                            </Grid.Column>
+                        </Grid.Row>
+                    ) }
                     <Grid.Row columns={ 1 }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
                             <Field
