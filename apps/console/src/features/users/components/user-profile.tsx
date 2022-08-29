@@ -1217,6 +1217,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                             if (!(schema.name === ProfileConstants?.
                                                 SCIM2_SCHEMA_DICTIONARY.get("ROLES_DEFAULT")
                                                 || schema.name === ProfileConstants?.
+                                                    SCIM2_SCHEMA_DICTIONARY.get("ACTIVE")
+                                                || schema.name === ProfileConstants?.
                                                     SCIM2_SCHEMA_DICTIONARY.get("GROUPS")
                                                 || schema.name === ProfileConstants?.
                                                     SCIM2_SCHEMA_DICTIONARY.get("PROFILE_URL")
