@@ -58,7 +58,7 @@ export enum EmailTemplateFormModes {
 }
 
 /**
- * Interface to capture Branding Preferences
+ * Interface to capture Branding Preferences.
  */
 export interface BrandingPreference {
     configs: {

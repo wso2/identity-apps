@@ -240,7 +240,6 @@ export const replaceLocaleTemplateContent = (
 
 /**
  * Get branding preferences of the tenant.
- *
  */
 export const getBrandingPreferences = ()
     : Promise<AxiosResponse<BrandingPreference>> => {
@@ -261,5 +260,4 @@ export const getBrandingPreferences = ()
         .catch((error) => {
             return Promise.reject(error);
         });
-
 };
