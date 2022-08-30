@@ -24,7 +24,7 @@
     <groupId>org.wso2.identity.apps</groupId>
     <artifactId>identity-apps</artifactId>
     <packaging>pom</packaging>
-    <version>1.4.67-SNAPSHOT</version>
+    <version>1.4.68-SNAPSHOT</version>
     <name>WSO2 Identity Server Apps - Parent</name>
     <description>WSO2 Identity Server Web Apps</description>
 
@@ -562,7 +562,7 @@
                 <inherited>false</inherited>
                 <executions>
                     <execution>
-                        <id>install-packages</id>
+                        <id>npm install (initialize)</id>
                         <goals>
                             <goal>exec</goal>
                         </goals>
@@ -592,7 +592,7 @@
                         </configuration>
                     </execution>
                     <execution>
-                        <id>pnpm run build (compile)</id>
+                        <id>npm run build (compile)</id>
                         <goals>
                             <goal>exec</goal>
                         </goals>

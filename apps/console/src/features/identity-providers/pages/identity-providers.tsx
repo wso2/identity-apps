@@ -259,7 +259,7 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (props: IDPP
                             authenticator.tags = [ AuthenticatorLabels.PASSWORDLESS ];
                         }
 
-                        if (filter.startsWith("tag")) {
+                        if (filter?.startsWith("tag")) {
                             // Filter out authenticators whose tags weren't in the filter query.
                             // This is done since some of the authenticators like FIDO have tags modified by code.
                             let tagFound = false;
@@ -378,12 +378,16 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (props: IDPP
     const handleConnectionGridFilter = (query: string, selectedFilters: string[]): void => {
         // Update the internal state to manage placeholders etc.
         setSearchQuery(query);
-        // Update the state of selected filters.
-        setSelectedFilterTags(selectedFilters);
-        // Filter out the templates.
-        getAllAuthenticators(IdentityProviderManagementUtils.buildAuthenticatorsFilterQuery(query, selectedFilters));
 
-        if (isEmpty(query) && isEmpty(selectedFilters)) {
+        // Update the state of selected filterTags.
+        const filterTags = selectedFilters || selectedFilterTags;
+
+        setSelectedFilterTags(filterTags);
+
+        // Filter out the templates.
+        getAllAuthenticators(IdentityProviderManagementUtils.buildAuthenticatorsFilterQuery(query, filterTags));
+
+        if (isEmpty(query) && isEmpty(filterTags)) {
             setShowFilteredList(false);
         } else {
             setShowFilteredList(true);
@@ -509,7 +513,7 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (props: IDPP
                                 (<AdvancedSearchWithBasicFilters
                                     fill="white"
                                     onFilter={ (query: string) => {
-                                        handleConnectionGridFilter(query, []);
+                                        handleConnectionGridFilter(query, null);
                                     } }
                                     filterAttributeOptions={ [
                                         {
