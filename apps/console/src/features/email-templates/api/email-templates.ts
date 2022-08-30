@@ -20,7 +20,7 @@ import { AsgardeoSPAClient } from "@asgardeo/auth-react";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosRequestConfig, AxiosResponse } from "axios";
 import { store } from "../../core";
-import { EmailTemplate, EmailTemplateDetails, EmailTemplateType, BrandingPreference } from "../models";
+import { BrandingPreference, EmailTemplate, EmailTemplateDetails, EmailTemplateType } from "../models";
 
 /**
  * Initialize an axios Http client.
