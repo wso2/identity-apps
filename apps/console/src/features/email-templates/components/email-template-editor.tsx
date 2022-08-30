@@ -21,6 +21,8 @@ import { CodeEditor, ResourceTab } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { EmailTemplateManagementConstants } from "../constants";
+import { getBrandingPreferences } from "../api";
+import { BrandingPreference } from "../models";
 
 /**
  * Interface for the email template editor props.
@@ -60,13 +62,14 @@ export const EmailTemplateEditor: FunctionComponent<EmailTemplateEditorPropsInte
     const { t } = useTranslation();
 
     const [ content, setContent ] = useState<string>("");
+    const [ brandingPreferences, setBrandingPreferences ] = useState<BrandingPreference>(null);
 
     const updatedContent = useRef<string>("");
     const iframe = useRef<HTMLIFrameElement>();
 
     useEffect(() => {
         writeToIframe();
-    }, [ updatedContent.current ]);
+    }, [ updatedContent.current, brandingPreferences ]);
 
     useEffect(() => {
         if (isAddFlow && isSignature) {
@@ -77,6 +80,18 @@ export const EmailTemplateEditor: FunctionComponent<EmailTemplateEditorPropsInte
             updatedContent.current = htmlContent;
         }
     }, [ htmlContent ]);
+
+    useEffect(() => {
+        getBrandingPreferences()
+            .then((response) => {
+                if (response.status == 200) {
+                    setBrandingPreferences(response.data["preference"]);
+                }
+            })
+            .catch((error) => {
+                // Handle Error.
+            })
+    }, [ ]);
 
     /**
      * Write content to iFrame.
@@ -96,8 +111,53 @@ export const EmailTemplateEditor: FunctionComponent<EmailTemplateEditorPropsInte
              */
             iframeDoc.open();
             iframeDoc.close();
-            iframeDoc.body.innerHTML = updatedContent.current;
+            iframeDoc.body.innerHTML = replaceBrandingPlaceholders(updatedContent.current, brandingPreferences);
         }
+    };
+
+    /**
+     * Replace branding related placeholders in email templates.
+     *
+     * @param   {string} templateContent    - template content
+     * @param   {string} brandingPreference - branding preference object
+     * @return  {string}                    - preview content
+     */
+    const replaceBrandingPlaceholders = (
+        templateContent: string,
+        brandingPreference: BrandingPreference
+    ): string => {
+
+        const isBrandingEnabled:boolean = (brandingPreference != null && brandingPreference.configs.isBrandingEnabled);
+        const theme:string = isBrandingEnabled ? brandingPreference.theme.activeTheme : "LIGHT";
+        const primaryColor:string = isBrandingEnabled ? brandingPreference.theme[theme].colors.primary : "#FF5000";
+        const backgroundColor:string = isBrandingEnabled ? brandingPreference.theme[theme].page.background.backgroundColor : "#F0F0F0";
+        const font:string = isBrandingEnabled ? brandingPreference.theme[theme].typography.font.fontFamily : "Nunito Sans";
+        const fontColor:string = isBrandingEnabled ? brandingPreference.theme[theme].page.font.color : "#333333";
+        const buttonFontColot:string = isBrandingEnabled ? brandingPreference.theme[theme].buttons.primary.base.font.color : "#FFFFFF";
+        
+        const logoUrl:string = (isBrandingEnabled && brandingPreference.theme[theme].images.logo.imgURL)
+                                ? brandingPreference.theme[theme].images.logo.imgURL
+                                : "http://cdn.wso2.com/wso2/newsletter/images/nl-2017/wso2-logo-transparent.png";
+        
+        const altText:string = (isBrandingEnabled && brandingPreference.theme[theme].images.logo.altText)
+                                ? brandingPreference.theme[theme].images.logo.altText
+                                : "";
+        
+        const copyrightText:string = (isBrandingEnabled && brandingPreference.organizationDetails.copyrightText)
+                                ? brandingPreference.organizationDetails.copyrightText
+                                : "&#169; YYYY WSO2 LLC.".replace("YYYY", new Date().getFullYear().toString());
+        
+        return templateContent
+                .replace(/\{\{organization.logo.img\}\}/g, logoUrl ? logoUrl : "http://cdn.wso2.com/wso2/newsletter/images/nl-2017/wso2-logo-transparent.png")
+                .replace(/\{\{organization.logo.altText\}\}/g, altText ? altText : "")
+                .replace(/\{\{organization.copyright.text\}\}/g, copyrightText)
+                .replace(/\{\{organization.color.primary\}\}/g, primaryColor)
+                .replace(/\{\{organization.color.background\}\}/g, backgroundColor)
+                .replace(/\{\{organization.theme.background.color\}\}/g, theme === "LIGHT" ? "#FFFFFF" : "#181818")
+                .replace(/\{\{organization.font\}\}/g, font)
+                .replace(/\{\{organization.font.color\}\}/g, fontColor)
+                .replace(/\{\{organization.button.font.color\}\}/g, buttonFontColot);
+
     };
 
     return (

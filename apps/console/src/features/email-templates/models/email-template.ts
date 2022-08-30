@@ -56,3 +56,243 @@ export enum EmailTemplateFormModes {
     ADD = "ADD",
     EDIT = "EDIT"
 }
+
+/**
+ * Interface to capture Branding Preferences
+ */
+export interface BrandingPreference {
+    configs: {
+         isBrandingEnabled: boolean,
+         removeAsgardeoBranding: boolean
+    },
+    organizationDetails: {
+        copyrightText: string,
+        siteTitle: string,
+        supportEmail: string
+    },
+    theme: {
+        activeTheme: string,
+        LIGHT: {
+            buttons: {
+                externalConnection: {
+                    base: {
+                        background: {
+                            backgroundColor: string
+                        },
+                        border: {
+                            borderRadius: string
+                        },
+                        font: {
+                            color: string
+                        }
+                    }
+                },
+                primary: {
+                    base: {
+                        border: {
+                            borderRadius: string
+                        },
+                        font: {
+                            color: string
+                        }
+                    }
+                },
+                secondary: {
+                    base: {
+                        border: {
+                            borderRadius: string
+                        },
+                        font: {
+                            color: string
+                        }
+                    }
+                }
+            },
+            colors: {
+                primary: string,
+                secondary: string
+            },
+            footer: {
+                border: {
+                    borderColor: string
+                },
+                font: {
+                    color: string
+                }
+            },
+            images: {
+                favicon: {
+                    imgURL: string
+                },
+                logo: {
+                    altText: string,
+                    imgURL: string
+                }
+            },
+            inputs: {
+                base: {
+                    background: {
+                        backgroundColor: string
+                    },
+                    border: {
+                        borderColor: string,
+                        borderRadius: string
+                    },
+                    font: {
+                        color: string
+                    },
+                    labels: {
+                        font: {
+                            color: string
+                        }
+                    }
+                }
+            },
+            loginBox: {
+                background: {
+                    backgroundColor: string
+                },
+                border: {
+                    borderColor: string,
+                    borderRadius: string,
+                    borderWidth: string
+                },
+                font: {
+                    color: string
+                }
+            },
+            page: {
+                background: {
+                    backgroundColor: string
+                },
+                font: {
+                    color: string
+                }
+            },
+            typography: {
+                font: {
+                    fontFamily: string,
+                    importURL: string
+                },
+                heading: {
+                    font: {
+                        color: string
+                    }
+                }
+            }
+        },
+        DARK: {
+            buttons: {
+                externalConnection: {
+                    base: {
+                        background: {
+                            backgroundColor: string
+                        },
+                        border: {
+                            borderRadius: string
+                        },
+                        font: {
+                            color: string
+                        }
+                    }
+                },
+                primary: {
+                    base: {
+                        border: {
+                            borderRadius: string
+                        },
+                        font: {
+                            color: string
+                        }
+                    }
+                },
+                secondary: {
+                    base: {
+                        border: {
+                            borderRadius: string
+                        },
+                        font: {
+                            color: string
+                        }
+                    }
+                }
+            },
+            colors: {
+                primary: string,
+                secondary: string
+            },
+            footer: {
+                border: {
+                    borderColor: string
+                },
+                font: {
+                    color: string
+                }
+            },
+            images: {
+                favicon: {
+                    imgURL: string
+                },
+                logo: {
+                    altText: string,
+                    imgURL: string
+                }
+            },
+            inputs: {
+                base: {
+                    background: {
+                        backgroundColor: string
+                    },
+                    border: {
+                        borderColor: string,
+                        borderRadius: string
+                    },
+                    font: {
+                        color: string
+                    },
+                    labels: {
+                        font: {
+                            color: string
+                        }
+                    }
+                }
+            },
+            loginBox: {
+                background: {
+                    backgroundColor: string
+                },
+                border: {
+                    borderColor: string,
+                    borderRadius: string,
+                    borderWidth: string
+                },
+                font: {
+                    color: string
+                }
+            },
+            page: {
+                background: {
+                    backgroundColor: string
+                },
+                font: {
+                    color: string
+                }
+            },
+            typography: {
+                font: {
+                    fontFamily: string
+                },
+                heading: {
+                    font: {
+                        color: string
+                    }
+                }
+            }
+        }
+    },
+    urls: {
+        cookiePolicyURL: string,
+        privacyPolicyURL: string,
+        termsOfUseURL: string
+    }
+}

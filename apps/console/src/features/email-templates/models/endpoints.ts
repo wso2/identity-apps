@@ -21,4 +21,5 @@
  */
 export interface EmailTemplatesResourceEndpointsInterface {
     emailTemplateType: string;
+    brandingPreferences: string;
 }

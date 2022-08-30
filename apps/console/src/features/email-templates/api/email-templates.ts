@@ -20,7 +20,7 @@ import { AsgardeoSPAClient } from "@asgardeo/auth-react";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosRequestConfig, AxiosResponse } from "axios";
 import { store } from "../../core";
-import { EmailTemplate, EmailTemplateDetails, EmailTemplateType } from "../models";
+import { EmailTemplate, EmailTemplateDetails, EmailTemplateType, BrandingPreference } from "../models";
 
 /**
  * Initialize an axios Http client.
@@ -236,4 +236,30 @@ export const replaceLocaleTemplateContent = (
         .catch((error) => {
             return Promise.reject(error);
         });
+};
+
+/**
+ * Get branding preferences of the tenant.
+ *
+ */
+export const getBrandingPreferences = ()
+    : Promise<AxiosResponse<BrandingPreference>> => {
+
+    const requestConfig: AxiosRequestConfig = {
+        headers: {
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: store.getState().config.endpoints.brandingPreferences
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse<BrandingPreference>) => {
+            return Promise.resolve(response);
+        })
+        .catch((error) => {
+            return Promise.reject(error);
+        });
+
 };
