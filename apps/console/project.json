@@ -40,7 +40,7 @@
                 "compiler": "babel",
                 "outputPath": "apps/console/build/console",
                 "index": "index.html",
-                "baseHref": "/console/",
+                "baseHref": "__IGNORE__",
                 "main": "apps/console/src/index.tsx",
                 "polyfills": "",
                 "tsConfig": "apps/console/tsconfig.json",
@@ -161,7 +161,7 @@
             "options": {
                 "buildTarget": "console:build-base",
                 "port": 9001,
-                "baseHref": "/console/",
+                "baseHref": "__IGNORE__",
                 "open": true,
                 "hmr": true,
                 "ssl": true

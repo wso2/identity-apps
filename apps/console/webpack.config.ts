@@ -142,7 +142,10 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                     ? "<%= isOrganizationManagementEnabled() %>"
                     : "false",
                 minify: false,
-                publicPath: context.buildOptions?.baseHref ?? context.options.baseHref,
+                publicPath: getBaseHref(
+                    context.buildOptions?.baseHref ?? context.options.baseHref,
+                    DeploymentConfig.appBaseName
+                ),
                 serverUrl: !isDeployedOnExternalTomcatServer
                     ? "<%=getServerURL(\"\", true, true)%>"
                     : "",
@@ -198,7 +201,10 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                     ? "<%= isAdaptiveAuthenticationAvailable() %>"
                     : "false",
                 minify: false,
-                publicPath: context.buildOptions?.baseHref ?? context.options.baseHref,
+                publicPath: getBaseHref(
+                    context.buildOptions?.baseHref ?? context.options.baseHref,
+                    DeploymentConfig.appBaseName
+                ),
                 requestForwardSnippet: "if(request.getParameter(\"code\") != null && " +
                     "!request.getParameter(\"code\").trim().isEmpty()) " +
                     "{request.getRequestDispatcher(\"/authenticate?code=\"+request.getParameter(\"code\")+" +
@@ -227,7 +233,10 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                 filename: ABSOLUTE_PATHS.indexTemplateInDistribution,
                 hash: true,
                 minify: false,
-                publicPath: context.buildOptions?.baseHref ?? context.options.baseHref,
+                publicPath: getBaseHref(
+                    context.buildOptions?.baseHref ?? context.options.baseHref,
+                    DeploymentConfig.appBaseName
+                ),
                 template: ABSOLUTE_PATHS.indexTemplateInSource,
                 themeHash: getThemeConfigs().styleSheetHash
             }) as unknown as WebpackPluginInstance
@@ -462,7 +471,10 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
             : `${ RELATIVE_PATHS.staticJs }/[name].js`,
         hotUpdateChunkFilename: "hot/[id].[fullhash].hot-update.js",
         hotUpdateMainFilename: "hot/[runtime].[fullhash].hot-update.json",
-        publicPath: context.buildOptions?.baseHref ?? context.options.baseHref
+        publicPath: getBaseHref(
+            context.buildOptions?.baseHref ?? context.options.baseHref,
+            DeploymentConfig.appBaseName
+        )
     };
 
     config.devServer = {
@@ -480,7 +492,10 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
             writeToDisk: true
         },
         host: "localhost",
-        open: context.buildOptions?.baseHref ?? context.options.baseHref,
+        open: getBaseHref(
+            context.buildOptions?.baseHref ?? context.options.baseHref,
+            DeploymentConfig.appBaseName
+        ),
         port: devServerPort
     };
 
@@ -557,4 +572,16 @@ const getAbsolutePaths = (env: Configuration["mode"], context: NxWebpackContextI
         indexTemplateInDistribution: path.resolve(__dirname, RELATIVE_PATHS.distribution, RELATIVE_PATHS.indexTemplate),
         indexTemplateInSource: path.resolve(__dirname, RELATIVE_PATHS.source, RELATIVE_PATHS.indexTemplate)
     };
+};
+
+const getBaseHref = (baseHrefFromProjectConf: string, baseHrefFromDeploymentConf: string) => {
+
+    // Need a way to override `baseHref` defined in `project.json`.
+    // TODO: Add capability to override the webpack configuration.
+    if (baseHrefFromProjectConf === "__IGNORE__") {
+        // Add leading and trailing slashes if doesn't exist.
+        return baseHrefFromDeploymentConf.replace(/^\/?([^/]+(?:\/[^/]+)*)\/?$/, "/$1/") || "/";
+    }
+
+    return baseHrefFromProjectConf;
 };

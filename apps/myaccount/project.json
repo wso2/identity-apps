@@ -39,7 +39,7 @@
                 "compiler": "babel",
                 "outputPath": "apps/myaccount/build/myaccount",
                 "index": "index.html",
-                "baseHref": "/myaccount/",
+                "baseHref": "__IGNORE__",
                 "main": "apps/myaccount/src/index.tsx",
                 "polyfills": "",
                 "tsConfig": "apps/myaccount/tsconfig.json",
@@ -141,7 +141,7 @@
             "options": {
                 "buildTarget": "myaccount:build-base",
                 "port": 9000,
-                "baseHref": "/myaccount/",
+                "baseHref": "__IGNORE__",
                 "open": true,
                 "hmr": true,
                 "ssl": true
