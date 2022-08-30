@@ -131,9 +131,9 @@
     String usernameIdentifier = null;
 
     if (isIdentifierFirstLogin(inputType)) {
-        if (request.getParameter("username") != null) {
-            username = request.getParameter("username");
-            usernameIdentifier = request.getParameter("username");
+        if (request.getParameter(Constants.USERNAME) != null) {
+            username = request.getParameter(Constants.USERNAME);
+            usernameIdentifier = request.getParameter(Constants.USERNAME);
         } else {
             String redirectURL = "error.do";
             response.sendRedirect(redirectURL);
