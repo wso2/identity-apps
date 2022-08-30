@@ -178,7 +178,6 @@ export const EmailTemplateEditor: FunctionComponent<EmailTemplateEditorPropsInte
                 .replace(/\{\{organization.font\}\}/g, font)
                 .replace(/\{\{organization.font.color\}\}/g, fontColor)
                 .replace(/\{\{organization.button.font.color\}\}/g, buttonFontColot);
-
     };
 
     return (
