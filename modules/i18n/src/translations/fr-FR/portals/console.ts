@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -7495,6 +7495,12 @@ export const console: ConsoleNS = {
                             header: "Réinitialiser le mot de passe",
                             subheader: "Une fois le mot de passe modifié, l'utilisateur ne pourra plus se connecter " +
                                 "à aucune application en utilisant le mot de passe actuel."
+                        },
+                        deleteAdminPriviledgeZone: {
+                            actionTitle: "Révoquer les privilèges",
+                            header: "Révoquer les privilèges d'administrateur",
+                            subheader: "Cette action supprimera les privilèges d'administrateur de l'utilisateur, " +
+                                "mais l'utilisateur continuera d'être dans l'organisation."
                         }
                     },
                     dateOfBirth: {
@@ -7884,6 +7890,16 @@ export const console: ConsoleNS = {
                         }
                     }
                 },
+                revokeUser: {
+                    confirmationModal: {
+                        assertionHint: "Veuillez confirmer votre action.",
+                        content: "Si vous révoquez les privilèges d'administrateur de cet utilisateur, l'utilisateur " + 
+                            "ne pourra pas se connecter à la console Asgardeo et ne pourra pas " +
+                            "effectuer d'opérations d'administration. Veuillez procéder avec prudence.",
+                        header: "Êtes-vous sûr?",
+                        message: "Cette action révoquera les privilèges d'administrateur de l'utilisateur."
+                    }
+                },
                 updateUser: {
                     groups: {
                         addGroupsModal: {
@@ -8236,6 +8252,34 @@ export const console: ConsoleNS = {
                         success: {
                             description: "Les utilisateurs ont été récupérés avec succès.",
                             message: "Récupération des utilisateurs réussie"
+                        }
+                    },
+                    getAdminRole: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Erreur lors de la récupération du rôle d'administrateur"
+                        },
+                        genericError: {
+                            description: "Impossible de récupérer les rôles d'administrateur.",
+                            message: "Quelque chose s'est mal passé"
+                        },
+                        success: {
+                            description: "Récupération réussie des rôles d'administrateur.",
+                            message: "Récupération du rôle d'administrateur réussie"
+                        }
+                    },
+                    revokeAdmin: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Erreur lors de la révocation des privilèges d'administrateur"
+                        },
+                        genericError: {
+                            description: "Impossible de révoquer les privilèges d'administrateur.",
+                            message: "Quelque chose s'est mal passé"
+                        },
+                        success: {
+                            description: "Révocation réussie des privilèges d'administrateur.",
+                            message: "Les privilèges d'administrateur ont bien été révoqués"
                         }
                     }
                 },

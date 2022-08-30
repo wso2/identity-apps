@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -7344,6 +7344,12 @@ export const console: ConsoleNS = {
                             header: "මුරපදය නැවත සකසන්න",
                             subheader: "ඔබ මුරපදය වෙනස් කළ පසු, පරිශීලකයාට දැනට පවතින මුරපදය භාවිතා කර " +
                                 "කිසිඳු යෙදුමකට ප්‍රවේශ විය නොහැක."
+                        },
+                        deleteAdminPriviledgeZone: {
+                            actionTitle: "වරප්‍රසාද අවලංගු කරන්න",
+                            header: "පරිපාලක වරප්‍රසාද අවලංගු කරන්න",
+                            subheader: "මෙම ක්‍රියාව පරිශීලකයාගේ පරිපාලක වරප්‍රසාද ඉවත් කරයි, " +
+                                "නමුත් පරිශීලකයා දිගටම සංවිධානයේ සිටිනු ඇත."
                         }
                     },
                     dateOfBirth: {
@@ -7720,6 +7726,16 @@ export const console: ConsoleNS = {
                         }
                     }
                 },
+                revokeUser: {
+                    confirmationModal: {
+                        assertionHint: "කරුණාකර ඔබගේ ක්‍රියාව තහවුරු කරන්න.",
+                        content: "ඔබ මෙම පරිශීලකයාගේ පරිපාලක වරප්‍රසාද අවලංගු කළහොත්, පරිශීලකයාට Asgardeo " +
+                            "කොන්සෝලයට ඇතුළු වීමට නොහැකි වන අතර පරිපාලක මෙහෙයුම් සිදු කිරීමට නොහැකි වනු " +
+                            "ඇත. කරුණාකර ප්‍රවේශමෙන් ඉදිරියට යන්න.",
+                        header: "ඔබට විශ්වාසද?",
+                        message: "මෙම ක්‍රියාව පරිශීලකයාගේ පරිපාලක වරප්‍රසාද අවලංගු කරයි."
+                    }
+                },
                 updateUser: {
                     groups: {
                         addGroupsModal: {
@@ -8056,6 +8072,34 @@ export const console: ConsoleNS = {
                         success: {
                             description: "පරිශීලකයින් සාර්ථකව ලබා ගන්නා ලදි.",
                             message: "පරිශීලකයින් ලබා ගැනීම සාර්ථකයි"
+                        }
+                    },
+                    getAdminRole: {
+                        error: {
+                            description: "{{description}}",
+                            message: "පරිපාලක භූමිකාව ලබා ගැනීමේ දෝෂයකි"
+                        },
+                        genericError: {
+                            description: "පරිපාලක භූමිකාවන් ලබා ගැනීමට නොහැකි විය.",
+                            message: "යම් දෝෂයක් ඇති වී ඇත"
+                        },
+                        success: {
+                            description: "පරිපාලක භූමිකාවන් සාර්ථකව ලබා ගන්නා ලදී.",
+                            message: "භූමිකාව ලබා ගැනීම සාර්ථකයි"
+                        }
+                    },
+                    revokeAdmin: {
+                        error: {
+                            description: "{{description}}",
+                            message: "පරිපාලක වරප්‍රසාද අවලංගු කිරීමේ දෝෂයකි"
+                        },
+                        genericError: {
+                            description: "පරිපාලක වරප්‍රසාද අවලංගු කිරීමට නොහැකි විය.",
+                            message: "යම් දෝෂයක් ඇති වී ඇත"
+                        },
+                        success: {
+                            description: "පරිපාලක වරප්‍රසාද සාර්ථකව අවලංගු කරන ලදී.",
+                            message: "වරප්‍රසාද සාර්ථකව අවලංගු කරන ලදී"
                         }
                     }
                 },
