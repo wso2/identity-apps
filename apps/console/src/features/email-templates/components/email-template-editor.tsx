@@ -128,32 +128,53 @@ export const EmailTemplateEditor: FunctionComponent<EmailTemplateEditorPropsInte
     ): string => {
 
         const isBrandingEnabled:boolean = (brandingPreference != null && brandingPreference.configs.isBrandingEnabled);
-        const theme:string = isBrandingEnabled ? brandingPreference.theme.activeTheme : "LIGHT";
-        const primaryColor:string = isBrandingEnabled ? brandingPreference.theme[theme].colors.primary : "#FF5000";
-        const backgroundColor:string = isBrandingEnabled ? brandingPreference.theme[theme].page.background.backgroundColor : "#F0F0F0";
-        const font:string = isBrandingEnabled ? brandingPreference.theme[theme].typography.font.fontFamily : "Nunito Sans";
-        const fontColor:string = isBrandingEnabled ? brandingPreference.theme[theme].page.font.color : "#333333";
-        const buttonFontColot:string = isBrandingEnabled ? brandingPreference.theme[theme].buttons.primary.base.font.color : "#FFFFFF";
-        
-        const logoUrl:string = (isBrandingEnabled && brandingPreference.theme[theme].images.logo.imgURL)
-                                ? brandingPreference.theme[theme].images.logo.imgURL
-                                : "http://cdn.wso2.com/wso2/newsletter/images/nl-2017/wso2-logo-transparent.png";
-        
-        const altText:string = (isBrandingEnabled && brandingPreference.theme[theme].images.logo.altText)
-                                ? brandingPreference.theme[theme].images.logo.altText
-                                : "";
-        
-        const copyrightText:string = (isBrandingEnabled && brandingPreference.organizationDetails.copyrightText)
-                                ? brandingPreference.organizationDetails.copyrightText
-                                : "&#169; YYYY WSO2 LLC.".replace("YYYY", new Date().getFullYear().toString());
-        
+
+        let theme:string;
+        let primaryColor:string;
+        let backgroundColor:string;
+        let font:string;
+        let fontColor:string;
+        let buttonFontColot:string;
+        let logoUrl:string;
+        let altText:string;
+        let copyrightText:string;
+
+        if (isBrandingEnabled) {
+            theme              = brandingPreference.theme.activeTheme;
+            primaryColor       = brandingPreference.theme[theme].colors.primary;
+            backgroundColor    = brandingPreference.theme[theme].page.background.backgroundColor;
+            font               = brandingPreference.theme[theme].typography.font.fontFamily;
+            fontColor          = brandingPreference.theme[theme].page.font.color;
+            buttonFontColot    = brandingPreference.theme[theme].buttons.primary.base.font.color;
+            logoUrl            = (brandingPreference.theme[theme].images.logo.imgURL)
+                                    ? brandingPreference.theme[theme].images.logo.imgURL
+                                    : EmailTemplateManagementConstants.DEFAULT_BRANDING_LOGO_URL;
+            altText            = (brandingPreference.theme[theme].images.logo.altText)
+                                    ? brandingPreference.theme[theme].images.logo.altText
+                                    : "";
+            copyrightText      = (brandingPreference.organizationDetails.copyrightText)
+                                    ? brandingPreference.organizationDetails.copyrightText
+                                    : EmailTemplateManagementConstants.DEFAULT_BRANDING_COPYRIGHT_TEXT.replace("YYYY", new Date().getFullYear().toString());
+            
+        } else {
+            theme               = EmailTemplateManagementConstants.DEFAULT_BRANDING_ACTIVE_THEME;
+            primaryColor        = EmailTemplateManagementConstants.DEFAULT_BRANDING_PRIMRY_COLOR;
+            backgroundColor     = EmailTemplateManagementConstants.DEFAULT_BRANDING_BACKGROUND_COLOR;
+            font                = EmailTemplateManagementConstants.DEFAULT_BRANDING_FONT;
+            fontColor           = EmailTemplateManagementConstants.DEFAULT_BRANDING_FONT_COLOR;
+            buttonFontColot     = EmailTemplateManagementConstants.DEFAULT_BRANDING_BUTTON_FONT_COLOR;
+            logoUrl             = EmailTemplateManagementConstants.DEFAULT_BRANDING_LOGO_URL;
+            altText             = "";
+            copyrightText       = EmailTemplateManagementConstants.DEFAULT_BRANDING_COPYRIGHT_TEXT.replace("YYYY", new Date().getFullYear().toString());
+        }
+
         return templateContent
                 .replace(/\{\{organization.logo.img\}\}/g, logoUrl)
                 .replace(/\{\{organization.logo.altText\}\}/g, altText)
                 .replace(/\{\{organization.copyright.text\}\}/g, copyrightText)
                 .replace(/\{\{organization.color.primary\}\}/g, primaryColor)
                 .replace(/\{\{organization.color.background\}\}/g, backgroundColor)
-                .replace(/\{\{organization.theme.background.color\}\}/g, theme === "LIGHT" ? "#FFFFFF" : "#181818")
+                .replace(/\{\{organization.theme.background.color\}\}/g, theme === EmailTemplateManagementConstants.DEFAULT_BRANDING_ACTIVE_THEME ? "#FFFFFF" : "#181818")
                 .replace(/\{\{organization.font\}\}/g, font)
                 .replace(/\{\{organization.font.color\}\}/g, fontColor)
                 .replace(/\{\{organization.button.font.color\}\}/g, buttonFontColot);

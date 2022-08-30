@@ -45,4 +45,15 @@ export class EmailTemplateManagementConstants {
                 <p>Hello {{user.claim.givenname}}!</p>
             </body>
         </html>`;
+
+    public static readonly DEFAULT_BRANDING_ACTIVE_THEME = "LIGHT";
+    public static readonly DEFAULT_BRANDING_PRIMRY_COLOR = "#FF5000";
+    public static readonly DEFAULT_BRANDING_BACKGROUND_COLOR = "#F0F0F0";
+    public static readonly DEFAULT_BRANDING_FONT = "Nunito Sans";
+    public static readonly DEFAULT_BRANDING_FONT_COLOR = "#333";
+    public static readonly DEFAULT_BRANDING_BUTTON_FONT_COLOR = "#FFFFFF";
+    public static readonly DEFAULT_BRANDING_LIGHT_THEMED_BACKGROUND_COLOR = "#FFFFFF";
+    public static readonly DEFAULT_BRANDING_DARK_THEMED_BACKGROUND_COLOR = "#181818";
+    public static readonly DEFAULT_BRANDING_LOGO_URL = "http://cdn.wso2.com/wso2/newsletter/images/nl-2017/wso2-logo-transparent.png";
+    public static readonly DEFAULT_BRANDING_COPYRIGHT_TEXT = "&#169; YYYY WSO2 LLC.";
 }
