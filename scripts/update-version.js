@@ -72,7 +72,7 @@ processArgs.map((arg) => {
 const packageFiles = [
     "package.json",
     "lerna.json",
-    "pnpm-workspace.yaml"
+    "pnpm-lock.yaml"
 ];
 
 /**
