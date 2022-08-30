@@ -1,4 +1,12 @@
 {
+    "$schema": "../../node_modules/nx/schemas/project-schema.json",
     "root": "components/theme-component",
-    "projectType": "library"
+    "sourceRoot": "components/theme-component",
+    "projectType": "library",
+    "generators": {},
+    "prefix": "@wso2is",
+    "tags": [],
+    "implicitDependencies": [
+        "theme"
+    ]
 }

@@ -1,7 +1,21 @@
 {
+    "$schema": "../../node_modules/nx/schemas/project-schema.json",
     "root": "apps/console",
     "sourceRoot": "apps/console/src",
     "projectType": "application",
+    "generators": {},
+    "prefix": "@wso2is",
+    "tags": [],
+    "implicitDependencies": [
+        "access-control",
+        "core",
+        "form",
+        "forms",
+        "i18n",
+        "react-components",
+        "theme",
+        "validation"
+    ],
     "targets": {
         "build-prepare": {
             "executor": "@nrwl/workspace:run-commands",
@@ -189,6 +203,5 @@
                 "parallel": false
             }
         }
-    },
-    "tags": []
+    }
 }
