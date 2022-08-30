@@ -4297,7 +4297,7 @@ export interface ConsoleNS {
                 deleteUser: {
                     confirmationModal: Confirmation;
                 };
-                revokeUser: {
+                revokeAdmin: {
                     confirmationModal: Confirmation;
                 };
                 disableUser: {

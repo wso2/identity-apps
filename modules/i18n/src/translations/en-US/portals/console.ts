@@ -9229,11 +9229,11 @@ export const console: ConsoleNS = {
                         }
                     }
                 },
-                revokeUser: {
+                revokeAdmin: {
                     confirmationModal: {
                         assertionHint: "Please confirm your action.",
                         content: "If you revoke the admin privileges of this user, the user will not be able " +
-                            "to log in to the Asgardeo console and " +
+                            "to log into the Asgardeo console and " +
                             "will not be able to perform admin operations. Please proceed with caution.",
                         header: "Are you sure?",
                         message: "This action will revoke the admin privileges of the user."

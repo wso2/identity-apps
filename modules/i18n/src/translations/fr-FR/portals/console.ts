@@ -7890,7 +7890,7 @@ export const console: ConsoleNS = {
                         }
                     }
                 },
-                revokeUser: {
+                revokeAdmin: {
                     confirmationModal: {
                         assertionHint: "Veuillez confirmer votre action.",
                         content: "Si vous révoquez les privilèges d'administrateur de cet utilisateur, l'utilisateur " + 

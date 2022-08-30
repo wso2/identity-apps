@@ -7726,7 +7726,7 @@ export const console: ConsoleNS = {
                         }
                     }
                 },
-                revokeUser: {
+                revokeAdmin: {
                     confirmationModal: {
                         assertionHint: "කරුණාකර ඔබගේ ක්‍රියාව තහවුරු කරන්න.",
                         content: "ඔබ මෙම පරිශීලකයාගේ පරිපාලක වරප්‍රසාද අවලංගු කළහොත්, පරිශීලකයාට Asgardeo " +
