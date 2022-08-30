@@ -138,7 +138,6 @@ export const EmailTemplateEditor: FunctionComponent<EmailTemplateEditorPropsInte
         let logoUrl:string;
         let altText:string;
         let copyrightText:string;
-        let themeBackgroundColor:string;
 
         if (isBrandingEnabled) {
             theme               = brandingPreference.theme.activeTheme;
@@ -167,9 +166,10 @@ export const EmailTemplateEditor: FunctionComponent<EmailTemplateEditorPropsInte
             altText             = "";
             copyrightText       = EmailTemplateManagementConstants.DEFAULT_BRANDING_COPYRIGHT_TEXT.replace("YYYY", new Date().getFullYear().toString());
         }
-        themeBackgroundColor    = theme === EmailTemplateManagementConstants.DEFAULT_BRANDING_ACTIVE_THEME
-                                ? EmailTemplateManagementConstants.DEFAULT_BRANDING_LIGHT_THEMED_BACKGROUND_COLOR
-                                : EmailTemplateManagementConstants.DEFAULT_BRANDING_DARK_THEMED_BACKGROUND_COLOR;
+
+        const themeBackgroundColor:string = (theme === EmailTemplateManagementConstants.DEFAULT_BRANDING_ACTIVE_THEME)
+                                            ? EmailTemplateManagementConstants.DEFAULT_BRANDING_LIGHT_THEMED_BACKGROUND_COLOR
+                                            : EmailTemplateManagementConstants.DEFAULT_BRANDING_DARK_THEMED_BACKGROUND_COLOR;
         
         return templateContent
                 .replace(/\{\{organization.logo.img\}\}/g, logoUrl)
