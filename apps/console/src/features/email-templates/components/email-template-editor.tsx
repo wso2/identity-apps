@@ -148,8 +148,8 @@ export const EmailTemplateEditor: FunctionComponent<EmailTemplateEditorPropsInte
                                 : "&#169; YYYY WSO2 LLC.".replace("YYYY", new Date().getFullYear().toString());
         
         return templateContent
-                .replace(/\{\{organization.logo.img\}\}/g, logoUrl ? logoUrl : "http://cdn.wso2.com/wso2/newsletter/images/nl-2017/wso2-logo-transparent.png")
-                .replace(/\{\{organization.logo.altText\}\}/g, altText ? altText : "")
+                .replace(/\{\{organization.logo.img\}\}/g, logoUrl)
+                .replace(/\{\{organization.logo.altText\}\}/g, altText)
                 .replace(/\{\{organization.copyright.text\}\}/g, copyrightText)
                 .replace(/\{\{organization.color.primary\}\}/g, primaryColor)
                 .replace(/\{\{organization.color.background\}\}/g, backgroundColor)
