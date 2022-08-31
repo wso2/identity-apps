@@ -6,17 +6,21 @@ on:
   pull_request:
     branches: [ master ]
     paths-ignore:
-      - "docs/**"
-      - "CONTRIBUTING.md"
-      - "CREDITS.md"
+      - "**.md"
       - "LICENSE"
-      - "pull_request_template.md"
-      - "README.md"
-      - "**/README.md"
-      - "SECURITY.md"
   workflow_dispatch:
 
 jobs:
+  exp:
+    name: ⬣ ESLint (STATIC ANALYSIS)
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [ lts/* ]
+    steps:
+      - name: ⏳ Lint
+        id: lint-with-eslint
+        run: gh pr diff --name-only
   lint:
     name: ⬣ ESLint (STATIC ANALYSIS)
     runs-on: ubuntu-latest
