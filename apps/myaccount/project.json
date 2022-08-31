@@ -26,7 +26,7 @@
                     }
                 ],
                 "cwd": "apps/myaccount",
-                "parallel": true
+                "parallel": false
             }
         },
         "build-base": {

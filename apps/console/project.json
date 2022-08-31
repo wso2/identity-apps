@@ -27,7 +27,7 @@
                     }
                 ],
                 "cwd": "apps/console",
-                "parallel": true
+                "parallel": false
             }
         },
         "build-base": {
@@ -113,7 +113,7 @@
                     }
                 ],
                 "cwd": "apps/console",
-                "parallel": true
+                "parallel": false
             }
         },
         "build": {
