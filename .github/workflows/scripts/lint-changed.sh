@@ -54,7 +54,7 @@ for file in "${supported_files[@]}"; do
     echo -e "   - $file"
 done
 
-echo -e "\n========================================\n"
+echo -e "\n=============================================\n"
 
 printf -v files_to_lint '%s ' "${supported_files[@]}"
 
