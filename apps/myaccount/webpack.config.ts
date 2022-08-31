@@ -570,7 +570,7 @@ const getBaseHref = (baseHrefFromProjectConf: string, baseHrefFromDeploymentConf
 const getStaticFileServePath = (baseHref: string) => {
 
     if (baseHref.length === 1) {
-        return path;
+        return baseHref;
     }
 
     return baseHref.replace(/\/$/, "");
