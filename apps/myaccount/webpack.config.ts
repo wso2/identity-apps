@@ -36,7 +36,7 @@ import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
 import DeploymentConfig from "./src/public/deployment.config.json";
 
 interface NxWebpackContextInterface {
-    buildOptions:{
+    buildOptions: {
         index: string;
         baseHref: string;
     };
@@ -53,10 +53,16 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
     // @ts-ignore
     nxReactWebpackConfig(config);
 
+    context = rewriteContext(context);
+
     const ABSOLUTE_PATHS = getAbsolutePaths(config.mode, context);
     const RELATIVE_PATHS = getRelativePaths(config.mode, context);
 
     const isProduction = config.mode === "production";
+    const baseHref = getBaseHref(
+        context.buildOptions?.baseHref ?? context.options.baseHref,
+        DeploymentConfig.appBaseName
+    );
 
     // Flag to determine if the app is intended to be deployed on an external tomcat server
     // outside of the Identity Server runtime. If true, references & usage of internally provided
@@ -130,10 +136,7 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                     ? "<%= isOrganizationManagementEnabled() %>"
                     : "false",
                 minify: false,
-                publicPath: getBaseHref(
-                    context.buildOptions?.baseHref ?? context.options.baseHref,
-                    DeploymentConfig.appBaseName
-                ),
+                publicPath: baseHref,
                 serverUrl: !isDeployedOnExternalTomcatServer
                     ? "<%=getServerURL(\"\", true, true)%>"
                     : "",
@@ -189,10 +192,7 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                     ? "<%= isOrganizationManagementEnabled() %>"
                     : "false",
                 minify: false,
-                publicPath: getBaseHref(
-                    context.buildOptions?.baseHref ?? context.options.baseHref,
-                    DeploymentConfig.appBaseName
-                ),
+                publicPath: baseHref,
                 requestForwardSnippet : "if(request.getParameter(\"code\") != null && "+
                     "!request.getParameter(\"code\").trim().isEmpty()) "+
                     "{request.getRequestDispatcher(\"/authenticate?code=\"+request.getParameter(\"code\")+"+
@@ -221,10 +221,7 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                 filename: ABSOLUTE_PATHS.indexTemplateInDistribution,
                 hash: true,
                 minify: false,
-                publicPath: getBaseHref(
-                    context.buildOptions?.baseHref ?? context.options.baseHref,
-                    DeploymentConfig.appBaseName
-                ),
+                publicPath: baseHref,
                 template: ABSOLUTE_PATHS.indexTemplateInSource,
                 themeHash: getThemeConfigs().styleSheetHash
             }) as unknown as WebpackPluginInstance
@@ -444,10 +441,7 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
             : `${ RELATIVE_PATHS.staticJs }/[name].js`,
         hotUpdateChunkFilename: "hot/[id].[fullhash].hot-update.js",
         hotUpdateMainFilename: "hot/[runtime].[fullhash].hot-update.json",
-        publicPath: getBaseHref(
-            context.buildOptions?.baseHref ?? context.options.baseHref,
-            DeploymentConfig.appBaseName
-        )
+        publicPath: baseHref
     };
 
     config.devServer = {
@@ -462,13 +456,11 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
         },
         devMiddleware: {
             ...config.devServer?.devMiddleware,
+            publicPath: getStaticFileServePath(baseHref),
             writeToDisk: true
         },
         host: "localhost",
-        open: getBaseHref(
-            context.buildOptions?.baseHref ?? context.options.baseHref,
-            DeploymentConfig.appBaseName
-        ),
+        open: baseHref,
         port: devServerPort
     };
 
@@ -546,14 +538,61 @@ const getAbsolutePaths = (env: Configuration["mode"], context: NxWebpackContextI
     };
 };
 
-const getBaseHref = (baseHrefFromProjectConf: string, baseHrefFromDeploymentConf: string) => {
+/**
+ * Try to figure out if the `baseHref` is trying to be overridden by the `deployment.config.json`.
+ * TODO: Add capability to override the webpack configuration instead.
+ *
+ * @param baseHrefFromProjectConf - `baseHref` defined in `project.json`. ex: `/console/`.
+ * @param baseHrefFromDeploymentConf - `appBaseName` defined in `deployment.config.json`. ex: `console`.
+ * @returns A resolved baseHref.
+ */
+const getBaseHref = (baseHrefFromProjectConf: string, baseHrefFromDeploymentConf: string): string => {
 
-    // Need a way to override `baseHref` defined in `project.json`.
-    // TODO: Add capability to override the webpack configuration.
-    if (baseHrefFromProjectConf === "__IGNORE__") {
-        // Add leading and trailing slashes if doesn't exist.
-        return baseHrefFromDeploymentConf.replace(/^\/?([^/]+(?:\/[^/]+)*)\/?$/, "/$1/") || "/";
+    // Try to check if they are the same value.
+    // CONTEXT: `appBaseName` doesn't have leading or trailing slashes.
+    if (baseHrefFromProjectConf.includes(baseHrefFromDeploymentConf)
+        && baseHrefFromProjectConf.length > 2
+        && baseHrefFromProjectConf.length - 2 === baseHrefFromDeploymentConf.length) {
+
+        return baseHrefFromProjectConf;
     }
 
-    return baseHrefFromProjectConf;
+    return baseHrefFromDeploymentConf.replace(/^\/?([^/]+(?:\/[^/]+)*)\/?$/, "/$1/") || "/";
+};
+
+/**
+ * Get the static file serve path.
+ * ATM, when the context is re-written, dev server static file path is not getting overridden.
+ *
+ * @param baseHref - Resolved BaseHref.
+ * @returns Static file serve path.
+ */
+const getStaticFileServePath = (baseHref: string) => {
+
+    if (baseHref.length === 1) {
+        return path;
+    }
+
+    return baseHref.replace(/\/$/, "");
+};
+
+/**
+ * Re-write the Nx Webpack build context.
+ *
+ * @param context - Nx Webpack build context.
+ * @returns Modified Nx Webpack build context.
+ */
+const rewriteContext = (context: NxWebpackContextInterface): NxWebpackContextInterface => {
+
+    // For DEV environment.
+    if (context.buildOptions?.baseHref) {
+        context.buildOptions.baseHref = getBaseHref(context.buildOptions.baseHref, DeploymentConfig.appBaseName);
+    }
+
+    // For PROD environment.
+    if (context.options?.baseHref) {
+        context.options.baseHref = getBaseHref(context.options.baseHref, DeploymentConfig.appBaseName);
+    }
+
+    return context;
 };
