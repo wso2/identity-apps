@@ -1191,7 +1191,9 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 }));
                         }
                     } }
-                    maxLength={ 30 }
+                    maxLength={ 
+                        fieldName.toLowerCase().includes("uri") || fieldName.toLowerCase().includes("url") ? -1 : 30 
+                    }
                 />
             );
         }
