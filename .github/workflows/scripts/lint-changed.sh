@@ -50,7 +50,7 @@ done
 
 echo -e "\n============ ☸️ Here's what changed in PR#$GITHUB_PR_NUMBER ☸️ ============\n"
 
-for i in "${supported_files[@]}"; do
+for i in "${!supported_files[@]}"; do
     echo -e "$i: ${supported_files[$i]}"
 done
 
