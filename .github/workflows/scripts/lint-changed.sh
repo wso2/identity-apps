@@ -38,28 +38,26 @@ command -v gh >/dev/null 2>&1 || { echo >&2 "Error: $0 script requires 'gh' to c
 
 raw_changed_files=$(gh pr diff $GITHUB_PR_NUMBER --name-only)
 changed_files=($raw_changed_files)
-sorted_files=$()
+supported_files=$()
 
 for file in "${changed_files[@]}"; do
     for ext in "${ESLINT_SUPPORTED_EXT[@]}"; do
         if [[ $file == *$ext ]]; then
-            echo "'$file' -> File format is supported by ESLint.";
-            echo "Adding it to the watch list...";
-            sorted_files+=($file)
+            supported_files+=($file)
         fi
     done
 done
 
 echo -e "\n============ ☸️ Here's what changed in PR#$GITHUB_PR_NUMBER ☸️ ============\n"
 
-for i in "${changed_files[@]}"; do
-    echo -e "$i: ${changed_files[$i]}"
+for i in "${supported_files[@]}"; do
+    echo -e "$i: ${supported_files[$i]}"
 done
 
 echo -e "\n========================================\n"
 
-printf -v formatted '%s ' "${changed_files[@]}"
+printf -v files_to_lint '%s ' "${supported_files[@]}"
 
 echo -e "🥬 Starting analyzing the changed files with ESLint.."
 
-pnpm eslint --ext .js,.jsx,.ts,.tsx --no-error-on-unmatched-pattern --max-warnings=0 --resolve-plugins-relative-to . -- ${formatted%}
+pnpm eslint --ext .js,.jsx,.ts,.tsx --no-error-on-unmatched-pattern --max-warnings=0 --resolve-plugins-relative-to . -- ${files_to_lint%}
