@@ -24,25 +24,41 @@
 # GITHUB CI - Linter Script to analyze the changed files of a PR.
 # ======================================================================================
 
+# Inputs
 GITHUB_PR_NUMBER=$1
+
+# When unsupported file formats are passed in, ESLint throws a warning which conflicts with -max-warnings=0.
+# Hence, we need to manually filter out the supported formats.
+# Tracker: https://github.com/eslint/eslint/issues/15010
+ESLINT_SUPPORTED_EXT=$("js" "jsx" "ts" "tsx")
 
 # Check relevant packages are available
 command -v pnpm >/dev/null 2>&1 || { echo >&2 "Error: $0 script requires 'pnpm' for buid.  Aborting as not found."; exit 1; }
 command -v gh >/dev/null 2>&1 || { echo >&2 "Error: $0 script requires 'gh' to call GitHub APIs.  Aborting as not found."; exit 1; }
 
 raw_changed_files=$(gh pr diff $GITHUB_PR_NUMBER --name-only)
-changed_files_arr=($raw_changed_files)
+changed_files=($raw_changed_files)
+sorted_files=$()
+
+for file in "${changed_files[@]}"; do
+    for ext in "${ESLINT_SUPPORTED_EXT[@]}"; do
+        if [[ $file == *$ext ]]; then
+            echo "'$file' -> File format is supported by ESLint.";
+            echo "Adding it to the watch list...";
+            sorted_files+=($file)
+        fi
+    done
+done
 
 echo -e "\n============ ☸️ Here's what changed in PR#$GITHUB_PR_NUMBER ☸️ ============\n"
 
-for i in "${!changed_files_arr[@]}"
-do
-echo -e "$i: ${changed_files_arr[$i]}"
+for i in "${changed_files[@]}"; do
+    echo -e "$i: ${changed_files[$i]}"
 done
 
 echo -e "\n========================================\n"
 
-printf -v formatted '%s ' "${changed_files_arr[@]}"
+printf -v formatted '%s ' "${changed_files[@]}"
 
 echo -e "🥬 Starting analyzing the changed files with ESLint.."
 
