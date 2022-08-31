@@ -23,16 +23,10 @@
 # ======================================================================================
 # GITHUB CI - Linter Script to analyze the changed files of a PR.
 # ======================================================================================
-#
-# Environment Variable Prequisites
-#
-#   GITHUB_PR_NUMBER             : GitHub PR Number.
-#
-# ======================================================================================
 
 GITHUB_PR_NUMBER=$1
 
-raw_changed_files=$(gh pr diff ${{ GITHUB_PR_NUMBER }} --name-only)
+raw_changed_files=$(gh pr diff $GITHUB_PR_NUMBER --name-only)
 changed_files_arr=($raw_changed_files)
 
 echo -e "\n============ ☸️ Here are the changed files ☸️ ============\n"
