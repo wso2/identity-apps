@@ -59,23 +59,7 @@ jobs:
       - name: 🦄 Lint Changed Files
         id: lint-changed-with-eslint
         run: |
-            raw_changed_files=$(gh pr diff ${{ github.event.pull_request.number }} --name-only)
-            changed_files_arr=($raw_changed_files)
-
-            echo -e "\n============ ☸️ Here are the changed files ☸️ ============\n"
-
-            for i in "${!changed_files_arr[@]}"
-            do
-              echo -e "$i: ${changed_files_arr[$i]}"
-            done
-
-            echo -e "\n============     END OF CHANGED FILES    ============\n"
-
-            printf -v formatted '%s ' "${changed_files_arr[@]}"
-
-            echo -e "🥬 Starting analyzing the changed files with ESLint.."
-
-            pnpm eslint --ext .js,.jsx,.ts,.tsx --no-error-on-unmatched-pattern --max-warnings=0 --resolve-plugins-relative-to . -- ${formatted%}
+            sh ./scripts/lint-dirty.sh ${{ github.event.pull_request.number }}
 
       - name: ⏳ Lint All Files
         id: lint-with-eslint
