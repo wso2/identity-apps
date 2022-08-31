@@ -58,8 +58,9 @@ jobs:
 
       - name: 🦄 Lint Changed Files
         id: lint-changed-with-eslint
+        working-directory: .github/workflows
         run: |
-            sh ./scripts/lint-dirty.sh ${{ github.event.pull_request.number }}
+            sh ./scripts/lint-changed.sh ${{ github.event.pull_request.number }}
 
       - name: ⏳ Lint All Files
         id: lint-with-eslint

@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+# -------------------------------------------------------------------------------------
 #
 # Copyright (c) 2022, WSO2 LLC. (http://www.wso2.com) All Rights Reserved.
 #
@@ -17,9 +18,10 @@
 # specific language governing permissions and limitations
 # under the License.
 #
+# --------------------------------------------------------------------------------------
 
 # ======================================================================================
-# GITHUB CI - Dirty File Linter Script.
+# GITHUB CI - Linter Script to analyze the changed files of a PR.
 # ======================================================================================
 #
 # Environment Variable Prequisites
