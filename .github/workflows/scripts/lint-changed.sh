@@ -38,7 +38,7 @@ command -v gh >/dev/null 2>&1 || { echo >&2 "Error: $0 script requires 'gh' to c
 
 raw_changed_files=$(gh pr diff $GITHUB_PR_NUMBER --name-only)
 changed_files=($raw_changed_files)
-supported_files=$()
+supported_files=()
 
 for file in "${changed_files[@]}"; do
     for ext in "${ESLINT_SUPPORTED_EXT[@]}"; do
@@ -50,8 +50,8 @@ done
 
 echo -e "\n============ ☸️ Here's what changed in PR#$GITHUB_PR_NUMBER ☸️ ============\n"
 
-for i in "${!supported_files[@]}"; do
-    echo -e "$i: ${supported_files[$i]}"
+for file in "${!supported_files[@]}"; do
+    echo -e "   - $file"
 done
 
 echo -e "\n========================================\n"
