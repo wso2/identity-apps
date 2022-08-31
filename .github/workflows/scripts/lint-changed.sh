@@ -48,13 +48,13 @@ for file in "${changed_files[@]}"; do
     done
 done
 
-echo -e "\n============ 🎈 Here's what changed in PR#$GITHUB_PR_NUMBER 🎈 ============\n"
+echo -e "\n============ 💥 Here's what changed in PR#$GITHUB_PR_NUMBER 💥 ============\n"
 
 for file in "${supported_files[@]}"; do
     echo -e "   - $file"
 done
 
-echo -e "\n============================================================\n"
+echo -e "\n=============================================================\n"
 
 printf -v files_to_lint '%s ' "${supported_files[@]}"
 
