@@ -30,7 +30,8 @@ GITHUB_PR_NUMBER=$1
 command -v pnpm >/dev/null 2>&1 || { echo >&2 "Error: $0 script requires 'pnpm' for buid.  Aborting as not found."; exit 1; }
 command -v gh >/dev/null 2>&1 || { echo >&2 "Error: $0 script requires 'gh' to call GitHub APIs.  Aborting as not found."; exit 1; }
 
-raw_changed_files=$(gh pr diff 3417 --name-only)
+raw_changed_files=$(gh pr diff $GITHUB_PR_NUMBER --name-only)
+echo "raw_changed_files: ${raw_changed_files}"
 changed_files_arr=($raw_changed_files)
 
 echo -e "\n============ ☸️ Here's what changed in PR#$GITHUB_PR_NUMBER ☸️ ============\n"
