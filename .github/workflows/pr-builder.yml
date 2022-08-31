@@ -6,15 +6,12 @@ on:
   pull_request:
     branches: [ master ]
     paths-ignore:
-      - "docs/**"
-      - "CONTRIBUTING.md"
-      - "CREDITS.md"
+      - "**.md"
       - "LICENSE"
-      - "pull_request_template.md"
-      - "README.md"
-      - "**/README.md"
-      - "SECURITY.md"
   workflow_dispatch:
+
+env:
+  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
   lint:
@@ -59,7 +56,28 @@ jobs:
         id: install-dependencies
         run: pnpm install --no-frozen-lockfile
 
-      - name: ⏳ Lint
+      - name: 🦄 Lint Changed Files
+        id: lint-changed-with-eslint
+        run: |
+            raw_changed_files=$(gh pr diff ${{ github.event.pull_request.number }} --name-only)
+            changed_files_arr=($raw_changed_files)
+
+            echo -e "\n============ ☸️ Here are the changed files ☸️ ============\n"
+
+            for i in "${!changed_files_arr[@]}"
+            do
+              echo -e "$i: ${changed_files_arr[$i]}"
+            done
+
+            echo -e "\n============     END OF CHANGED FILES    ============\n"
+
+            printf -v formatted '%s ' "${changed_files_arr[@]}"
+
+            echo -e "🥬 Starting analyzing the changed files with ESLint.."
+
+            pnpm eslint --ext .js,.jsx,.ts,.tsx --max-warnings=0 --resolve-plugins-relative-to . -- ${formatted%}
+
+      - name: ⏳ Lint All Files
         id: lint-with-eslint
         run: pnpm lint
 
