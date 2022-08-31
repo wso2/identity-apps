@@ -25,18 +25,18 @@
 # ======================================================================================
 
 GITHUB_PR_NUMBER=$1
-
+echo -e "\n============ ☸️ Here's what changed in PR#$GITHUB_PR_NUMBER ☸️ ============\n"
 raw_changed_files=$(gh pr diff $GITHUB_PR_NUMBER --name-only)
 changed_files_arr=($raw_changed_files)
 
-echo -e "\n============ ☸️ Here are the changed files ☸️ ============\n"
+echo -e "\n============ ☸️ Here's what changed in PR#$GITHUB_PR_NUMBER ☸️ ============\n"
 
 for i in "${!changed_files_arr[@]}"
 do
 echo -e "$i: ${changed_files_arr[$i]}"
 done
 
-echo -e "\n============     END OF CHANGED FILES    ============\n"
+echo -e "\n============               END OF CHANGED FILES               ============\n"
 
 printf -v formatted '%s ' "${changed_files_arr[@]}"
 
