@@ -30,7 +30,7 @@ GITHUB_PR_NUMBER=$1
 # When unsupported file formats are passed in, ESLint throws a warning which conflicts with -max-warnings=0.
 # Hence, we need to manually filter out the supported formats.
 # Tracker: https://github.com/eslint/eslint/issues/15010
-ESLINT_SUPPORTED_EXT=$("js" "jsx" "ts" "tsx")
+ESLINT_SUPPORTED_EXT=(js jsx ts tsx)
 
 # Check relevant packages are available
 command -v pnpm >/dev/null 2>&1 || { echo >&2 "Error: $0 script requires 'pnpm' for buid.  Aborting as not found."; exit 1; }
