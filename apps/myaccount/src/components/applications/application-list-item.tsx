@@ -35,7 +35,7 @@ interface ApplicationListItemProps extends TestableComponentInterface {
 /**
  * Application list item component.
  *
- * @return {JSX.Element}
+ * @returns JSX.Element
  */
 export const ApplicationListItem: FunctionComponent<ApplicationListItemProps> = (
     props: ApplicationListItemProps
