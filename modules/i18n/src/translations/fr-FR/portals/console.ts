@@ -575,7 +575,7 @@ export const console: ConsoleNS = {
                             }
                         }
                     },
-                    placeholder: "Chercher par nom d'application ou clientId"
+                    placeholder: "Chercher des applications par nom ou clientId ou émetteur"
                 },
                 confirmations: {
                     addSocialLogin: {
@@ -1426,8 +1426,8 @@ export const console: ConsoleNS = {
                                 invalidOperationModal: {
                                     header: "Opération invalide",
                                     message: "Vous devez désactiver la validation de la signature de la demande pour"+
-                                        " supprimer le certificat. Si la signature de requête ou de réponse est" + 
-                                        " activée, il est essentiel de disposer d'un certificat valide" + 
+                                        " supprimer le certificat. Si la signature de requête ou de réponse est" +
+                                        " activée, il est essentiel de disposer d'un certificat valide" +
                                         " pour vérifier la signature."
                                 }
                             }

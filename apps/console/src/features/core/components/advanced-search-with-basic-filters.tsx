@@ -19,12 +19,12 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { SearchUtils } from "@wso2is/core/utils";
 import { DropdownChild, Field, Forms } from "@wso2is/forms";
-import { 
-    AdvancedSearch, 
-    AdvancedSearchPropsInterface, 
-    LinkButton, 
-    PrimaryButton, 
-    SessionTimedOutContext 
+import {
+    AdvancedSearch,
+    AdvancedSearchPropsInterface,
+    LinkButton,
+    PrimaryButton,
+    SessionTimedOutContext
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -54,6 +54,10 @@ const FILTER_VALUES_FIELD_IDENTIFIER = "filterValues";
  * Prop types for the application search component.
  */
 export interface AdvancedSearchWithBasicFiltersPropsInterface extends TestableComponentInterface {
+    /**
+     * Custom CSS styles for main text input box.
+     */
+    customStyle?: any;
     /**
      * Default Search attribute. ex: "name"
      */
@@ -135,6 +139,7 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
 ): ReactElement => {
 
     const {
+        customStyle,
         defaultSearchAttribute,
         defaultSearchOperator,
         dropdownPosition,
@@ -256,6 +261,7 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
             aligned="left"
             clearButtonPopupLabel={ t("console:common.advancedSearch.popups.clear") }
             clearIcon={ getAdvancedSearchIcons().clear }
+            customStyle={ customStyle }
             defaultSearchStrategy={ handleDefaultSearchStrategy() }
             dropdownTriggerPopupLabel={ t("console:common.advancedSearch.popups.dropdown") }
             fill={ fill }

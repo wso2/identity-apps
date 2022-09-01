@@ -409,8 +409,13 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                                     },
                                     {
                                         key: 1,
-                                        text: "ClientId",
+                                        text: t("common:clientId"),
                                         value: "clientId"
+                                    },
+                                    {
+                                        key: 2,
+                                        text: t("common:issuer"),
+                                        value: "issuer"
                                     }
                                 ] }
                                 filterAttributePlaceholder={
@@ -426,9 +431,12 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                                     ".placeholder")
                                 }
                                 placeholder={ t("console:develop.features.applications.advancedSearch.placeholder") }
+                                customStyle={ {width: "450px"} }
                                 defaultSearchAttribute="name"
                                 defaultSearchOperator="co"
-                                predefinedDefaultSearchStrategy="name co %search-value% or clientId co %search-value%"
+                                predefinedDefaultSearchStrategy={
+                                    "name co %search-value% or clientId co %search-value% or issuer co %search-value%"
+                                }
                                 triggerClearQuery={ triggerClearQuery }
                                 data-testid={ `${ testId }-list-advanced-search` }
                             />
@@ -463,8 +471,13 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                                         },
                                         {
                                             key: 1,
-                                            text: "ClientId",
+                                            text: t("common:clientId"),
                                             value: "clientId"
+                                        },
+                                        {
+                                            key: 2,
+                                            text: t("common:issuer"),
+                                            value: "issuer"
                                         }
                                     ] }
                                     filterAttributePlaceholder={
@@ -485,7 +498,8 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                                     defaultSearchAttribute="name"
                                     defaultSearchOperator="co"
                                     predefinedDefaultSearchStrategy={
-                                        "name co %search-value% or clientId co %search-value%"
+                                        "name co %search-value% or clientId co %search-value% or " +
+                                        "issuer co %search-value%"
                                     }
                                     triggerClearQuery={ triggerClearQuery }
                                     data-testid={ `${ testId }-list-advanced-search` }

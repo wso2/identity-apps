@@ -55,6 +55,10 @@ export interface AdvancedSearchPropsInterface extends IdentifiableComponentInter
      */
     clearIcon?: any;
     /**
+     * Custom CSS styles for text input box.
+     */
+    customStyle?: any;
+    /**
      * Search strategy ex: name co %search-value%.
      */
     defaultSearchStrategy: string;
@@ -150,6 +154,7 @@ export const AdvancedSearch: FunctionComponent<PropsWithChildren<AdvancedSearchP
         className,
         children,
         clearButtonPopupLabel,
+        customStyle,
         defaultSearchStrategy,
         dropdownPosition,
         dropdownTriggerPopupLabel,
@@ -400,6 +405,7 @@ export const AdvancedSearch: FunctionComponent<PropsWithChildren<AdvancedSearchP
                     ) }
                     className={ `advanced-search with-add-on ${ searchFieldClasses }` }
                     size={ inputSize }
+                    style={ customStyle }
                     icon="search"
                     iconPosition="left"
                     placeholder={ placeholder }
