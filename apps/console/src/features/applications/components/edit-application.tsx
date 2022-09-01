@@ -46,6 +46,7 @@ import {
     getCORSOrigins,
     history
 } from "../../core";
+import { OrganizationUtils } from "../../organizations/utils";
 import { getInboundProtocolConfig } from "../api";
 import { ApplicationManagementConstants } from "../constants";
 import CustomApplicationTemplate
@@ -167,7 +168,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
-    const isFragmentApp = application.advancedConfigurations.fragment;
+    const isFragmentApp = application.advancedConfigurations?.fragment || false;
 
     /**
      * Called when an application updates.
@@ -252,33 +253,35 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     useEffect(() => {
         const allowedCORSOrigins = [];
 
-        getCORSOrigins()
-            .then((response: CORSOriginsListInterface[]) => {
-                response.map((origin) => {
-                    allowedCORSOrigins.push(origin.url);
-                });
-                setAllowedOrigins(allowedCORSOrigins);
-            })
-            .catch((error) => {
-                if (error?.response?.data?.description) {
+        if (OrganizationUtils.isCurrentOrganizationRoot()) {
+            getCORSOrigins()
+                .then((response: CORSOriginsListInterface[]) => {
+                    response.map((origin) => {
+                        allowedCORSOrigins.push(origin.url);
+                    });
+                    setAllowedOrigins(allowedCORSOrigins);
+                })
+                .catch((error) => {
+                    if (error?.response?.data?.description) {
+                        dispatch(addAlert({
+                            description: error.response.data.description,
+                            level: AlertLevels.ERROR,
+                            message: t("console:develop.features.applications.notifications.fetchAllowedCORSOrigins." +
+                                "error.message")
+                        }));
+
+                        return;
+                    }
+
                     dispatch(addAlert({
-                        description: error.response.data.description,
+                        description: t("console:develop.features.applications.notifications.fetchAllowedCORSOrigins" +
+                            ".genericError.description"),
                         level: AlertLevels.ERROR,
                         message: t("console:develop.features.applications.notifications.fetchAllowedCORSOrigins." +
-                            "error.message")
+                            "genericError.message")
                     }));
-
-                    return;
-                }
-
-                dispatch(addAlert({
-                    description: t("console:develop.features.applications.notifications.fetchAllowedCORSOrigins" +
-                        ".genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("console:develop.features.applications.notifications.fetchAllowedCORSOrigins." +
-                        "genericError.message")
-                }));
-            });
+                });
+        }
     }, [ isAllowedOriginsUpdated ]);
 
     /**
@@ -587,13 +590,14 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 hiddenFields={ [ "imageUrl" ] }
                 imageUrl={ application.imageUrl }
                 name={ application.name }
+                application = { application }
                 isLoading={ isLoading }
                 onDelete={ onDelete }
                 onUpdate={ handleApplicationUpdate }
                 featureConfig={ featureConfig }
                 template={ template }
                 readOnly={ readOnly || applicationConfig.editApplication.getTabPanelReadOnlyStatus(
-                    "APPLICATION_EDIT_GENERAL_SETTINGS", application.name) }
+                    "APPLICATION_EDIT_GENERAL_SETTINGS", application) }
                 data-testid={ `${ testId }-general-settings` }
                 isManagementApp={ application.isManagementApp }
             />
@@ -623,7 +627,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 featureConfig={ featureConfig }
                 template={ template }
                 readOnly={ readOnly || applicationConfig.editApplication.getTabPanelReadOnlyStatus(
-                    "APPLICATION_EDIT_ACCESS_CONFIG", application.name) }
+                    "APPLICATION_EDIT_ACCESS_CONFIG", application) }
                 data-testid={ `${ testId }-access-settings` }
             />
         </ResourceTab.Pane>
@@ -659,7 +663,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 application={ application }
                 appId={ application.id }
                 authenticationSequence={ application.authenticationSequence }
-                clientId={inboundProtocolConfig?.oidc?.clientId}
+                clientId={ inboundProtocolConfig?.oidc?.clientId }
                 isLoading={ isLoading }
                 onUpdate={ handleApplicationUpdate }
                 featureConfig={ featureConfig }
@@ -746,11 +750,11 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                     )) {
                     panes.push({
                         componentId: "general",
-                        menuItem: 
+                        menuItem:
                                  <Menu.Item data-tourid="general">
                                      { t("console:develop.features.applications.edit.sections.general.tabName") }
                                  </Menu.Item>,
-                        render: () => 
+                        render: () =>
                             applicationConfig.editApplication.
                                 getOveriddenTab(
                                     inboundProtocolConfig?.oidc?.clientId,
@@ -820,7 +824,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             }
             if (applicationConfig.editApplication.showProvisioningSettings
                 && isFeatureEnabled(featureConfig?.applications,
-                    ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_PROVISIONING_SETTINGS")) 
+                    ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_PROVISIONING_SETTINGS"))
                 && !isFragmentApp) {
 
                 applicationConfig.editApplication.isTabEnabledForApp(
@@ -832,7 +836,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 });
             }
             if (isFeatureEnabled(featureConfig?.applications,
-                ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ADVANCED_SETTINGS")) 
+                ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ADVANCED_SETTINGS"))
                 && !isFragmentApp) {
 
                 applicationConfig.editApplication.

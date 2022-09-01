@@ -28,7 +28,6 @@
 <jsp:directive.include file="includes/layout-resolver.jsp"/>
 
 <%
-
     String idp = request.getParameter("idp");
     String authenticator = request.getParameter("authenticator");
     String sessionDataKey = request.getParameter(Constants.SESSION_DATA_KEY);

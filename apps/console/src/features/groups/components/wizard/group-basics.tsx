@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { getUserStoreList } from "@wso2is/core/api";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
@@ -36,6 +35,7 @@ import {
     APPLICATION_DOMAIN,
     INTERNAL_DOMAIN
 } from "../../../roles/constants";
+import { getUserStoreList } from "../../../userstores/api";
 import { searchGroupList } from "../../api";
 import { CreateGroupFormData, SearchGroupInterface } from "../../models";
 
@@ -190,9 +190,9 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
         setUserStore(storeOptions[ 0 ].value);
 
         if (OrganizationUtils.isCurrentOrganizationRoot()) {
-            getUserStoreList(store.getState().config.endpoints.userStores)
+            getUserStoreList()
                 .then((response) => {
-                    if (storeOptions === []) {
+                    if (storeOptions.length === 0) {
                         storeOptions.push(storeOption);
                     }
                     response.data.map((store, index) => {

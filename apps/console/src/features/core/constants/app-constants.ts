@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -40,7 +40,7 @@ export class AppConstants {
      * @return {string}
      */
     public static getAdminViewBasePath(): string {
-        return window["AppUtils"].getConfig().adminApp.basePath;
+        return window["AppUtils"]?.getConfig()?.adminApp.basePath;
     }
 
     /**
@@ -49,7 +49,7 @@ export class AppConstants {
      * @return {string}
      */
     public static getAdminViewHomePath(): string {
-        return window["AppUtils"].getConfig().adminApp.path;
+        return window["AppUtils"]?.getConfig()?.adminApp.path;
     }
 
     /**
@@ -67,7 +67,7 @@ export class AppConstants {
      * @return {string}
      */
     public static getDeveloperViewBasePath(): string {
-        return window["AppUtils"].getConfig().developerApp.basePath;
+        return window["AppUtils"]?.getConfig()?.developerApp.basePath;
     }
 
     /**
@@ -76,7 +76,7 @@ export class AppConstants {
      * @return {string}
      */
     public static getDeveloperViewHomePath(): string {
-        return window["AppUtils"].getConfig().developerApp.path;
+        return window["AppUtils"]?.getConfig()?.developerApp.path;
     }
 
     /**
@@ -98,7 +98,7 @@ export class AppConstants {
      * @return {string}
      */
     public static getTenantQualifiedAppBasename(): string {
-        return window["AppUtils"].getConfig().appBaseWithTenant;
+        return window["AppUtils"]?.getConfig()?.appBaseWithTenant;
     }
 
     /**
@@ -116,7 +116,7 @@ export class AppConstants {
      * @return {string}
      */
     public static getAppBasename(): string {
-        return window["AppUtils"].getConfig().appBase;
+        return window["AppUtils"]?.getConfig()?.appBase;
     }
 
     /**
@@ -134,7 +134,7 @@ export class AppConstants {
      * @return {string}
      */
     public static getAppHomePath(): string {
-        return window["AppUtils"].getConfig().routes.home;
+        return window["AppUtils"]?.getConfig()?.routes.home;
     }
 
     /**
@@ -143,7 +143,7 @@ export class AppConstants {
      * @return {string}
      */
     public static getAppLoginPath(): string {
-        return window[ "AppUtils" ].getConfig().routes.login;
+        return window[ "AppUtils" ]?.getConfig()?.routes.login;
     }
 
     /**
@@ -152,7 +152,7 @@ export class AppConstants {
      * @return {string}
      */
     public static getAppLogoutPath(): string {
-        return window[ "AppUtils" ].getConfig().routes.logout;
+        return window[ "AppUtils" ]?.getConfig()?.routes.logout;
     }
 
     /**
@@ -161,7 +161,7 @@ export class AppConstants {
      * @return {string}
      */
     public static getClientID(): string {
-        return window["AppUtils"].getConfig().clientID;
+        return window["AppUtils"]?.getConfig()?.clientID;
     }
 
     /**
@@ -170,7 +170,7 @@ export class AppConstants {
      * @return {AppThemeConfigInterface}
      */
     public static getAppTheme(): AppThemeConfigInterface {
-        return window["AppUtils"].getConfig().ui?.theme;
+        return window["AppUtils"]?.getConfig()?.ui?.theme;
     }
 
     /**
@@ -180,7 +180,7 @@ export class AppConstants {
      */
     public static getMyAccountPath(): string {
 
-        return window[ "AppUtils" ].getConfig().accountApp.path;
+        return window[ "AppUtils" ]?.getConfig()?.accountApp.path;
     }
 
     /**
@@ -189,7 +189,7 @@ export class AppConstants {
      * @return {string}
      */
     public static getTenantPath(): string {
-        return window["AppUtils"].getConfig().tenantPath;
+        return window["AppUtils"]?.getConfig()?.tenantPath;
     }
 
     /**
@@ -198,7 +198,7 @@ export class AppConstants {
      * @return {string}
      */
     public static getTenant(): string {
-        return window["AppUtils"].getConfig().tenant;
+        return window["AppUtils"]?.getConfig()?.tenant;
     }
 
     /**
@@ -207,7 +207,7 @@ export class AppConstants {
      * @return {string}
      */
     public static getSuperTenant(): string {
-        return window["AppUtils"].getConfig().superTenant;
+        return window["AppUtils"]?.getConfig()?.superTenant;
     }
 
     /**
@@ -216,7 +216,7 @@ export class AppConstants {
      * @return {string}
      */
     public static getClientOrigin(): string {
-        return window["AppUtils"].getConfig().clientOrigin;
+        return window["AppUtils"]?.getConfig()?.clientOrigin;
     }
 
     /**
@@ -225,7 +225,7 @@ export class AppConstants {
      * @return {string}
      */
     public static getClientOriginWithTenant(): string {
-        return window["AppUtils"].getConfig().clientOriginWithTenant;
+        return window["AppUtils"]?.getConfig()?.clientOriginWithTenant;
     }
 
     /**
@@ -284,9 +284,9 @@ export class AppConstants {
             )
             .set("LOCAL_CLAIMS", `${ AppConstants.getAdminViewBasePath() }/attributes`)
             .set("LOCAL_CLAIMS_EDIT", `${ AppConstants.getAdminViewBasePath() }/edit-attributes/:id`)
-            .set("LOGIN",  window[ "AppUtils" ].getConfig().routes.login)
+            .set("LOGIN",  window[ "AppUtils" ]?.getConfig()?.routes.login)
             .set("SCIM_MAPPING", `${ AppConstants.getAdminViewBasePath() }/attribute-mappings/scim`)
-            .set("LOGOUT",  window[ "AppUtils" ].getConfig().routes.logout)
+            .set("LOGOUT",  window[ "AppUtils" ]?.getConfig()?.routes.logout)
             .set("OIDC_SCOPES", `${ AppConstants.getAdminViewBasePath() }/oidc-scopes`)
             .set("OIDC_SCOPES_EDIT", `${ AppConstants.getAdminViewBasePath() }/oidc-scopes/:id`)
             .set("PAGE_NOT_FOUND", `${ AppConstants.getMainViewBasePath() }/404`)
@@ -315,7 +315,8 @@ export class AppConstants {
             .set("ORGANIZATIONS", `${AppConstants.getAdminViewBasePath()}/organizations`)
             .set("ORGANIZATION_UPDATE", `${AppConstants.getAdminViewBasePath()}/organizations/:id`)
             .set("ORGANIZATION_ROLES", `${AppConstants.getAdminViewBasePath()}/organization-roles`)
-            .set("ORGANIZATION_ROLE_UPDATE", `${AppConstants.getAdminViewBasePath()}/organization-roles/:id`);
+            .set("ORGANIZATION_ROLE_UPDATE", `${AppConstants.getAdminViewBasePath()}/organization-roles/:id`)
+            .set("ADMINISTRATORS", `${AppConstants.getAdminViewBasePath()}/administrators`);
     }
 
     /**
@@ -358,7 +359,20 @@ export class AppConstants {
         "groups",
         "organization-roles",
         "applications"
-    ]
+    ];
+
+    /**
+     * Organization-management-related route ids
+     *
+     * @constant
+     * @type {string[]}
+     * @default
+     */
+    public static readonly ORGANIZATION_ROUTES: string[] = [
+        "organizations",
+        "organization-roles",
+        "organization-edit"
+    ];
 
     /**
      * Route ids that are enabled in only for an organizations (Not allowed in root organization).
@@ -369,4 +383,12 @@ export class AppConstants {
     public static readonly ORGANIZATION_ONLY_ROUTES: string[] = [
         "organization-roles"
     ]
+
+    /**
+     * Name of the root node
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly PERMISSIONS_ROOT_NODE: string = "All Permissions";
 }

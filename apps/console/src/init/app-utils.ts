@@ -436,7 +436,7 @@ export const AppUtils = (function() {
 
             _config = _default;
 
-            const userConfigFile = _config.contextPath + "/deployment.config.json";
+            const userConfigFile = _config.contextPath + "deployment.config.json";
 
             loadUserConfig(userConfigFile, function(response) {
                 const configResponse = JSON.parse(response);

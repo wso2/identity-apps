@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { getUserStoreList } from "@wso2is/core/api";
 import { UserstoreConstants } from "@wso2is/core/constants";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { PrimaryButton } from "@wso2is/react-components";
@@ -37,6 +36,7 @@ import {
     USERSTORE_REGEX_PROPERTIES,
     UserStoreListItem
 } from "../../userstores";
+import { getUserStoreList } from "../../userstores/api";
 import { getUsersList } from "../api";
 import { BasicUserDetailsInterface } from "../models";
 import { generatePassword } from "../utils";
@@ -207,9 +207,9 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
         setUserStore(storeOptions[ 0 ].value);
 
         if (OrganizationUtils.isCurrentOrganizationRoot()) {
-            getUserStoreList(store.getState().config.endpoints.userStores)
+            getUserStoreList()
                 .then((response) => {
-                    if (storeOptions === []) {
+                    if (storeOptions.length === 0) {
                         storeOptions.push(storeOption);
                     }
                     response.data.map((store: UserStoreListItem, index) => {
@@ -422,159 +422,153 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
             submitState={ triggerSubmit }
         >
             <Grid>
-                <Grid.Row columns={ 2 }>
-                    <RootOnlyComponent>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                            <Field
-                                data-testid="user-mgt-add-user-form-domain-dropdown"
-                                type="dropdown"
-                                label={ t(
-                                    "console:manage.features.user.forms.addUserForm.inputs.domain.label"
-                                ) }
-                                name="domain"
-                                children={ userStoreOptions }
-                                requiredErrorMessage={ t(
-                                    "console:manage.features.user.forms.addUserForm.inputs.domain.validations.empty"
-                                ) }
-                                required={ true }
-                                value={ initialValues?.domain ? initialValues?.domain : userStoreOptions[0]?.value }
-                                listen={ handleUserStoreChange }
-                                tabIndex={ 1 }
-                            />
-                        </Grid.Column>
-                    </RootOnlyComponent>
-
+                <RootOnlyComponent>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field
-                            data-testid="user-mgt-add-user-form-username-input"
+                            data-testid="user-mgt-add-user-form-domain-dropdown"
+                            type="dropdown"
                             label={ t(
-                                "console:manage.features.user.forms.addUserForm.inputs.username.label"
+                                "console:manage.features.user.forms.addUserForm.inputs.domain.label"
                             ) }
-                            name="userName"
-                            placeholder={ t(
-                                "console:manage.features.user.forms.addUserForm.inputs." +
-                                "username.placeholder"
+                            name="domain"
+                            children={ userStoreOptions }
+                            requiredErrorMessage={ t(
+                                "console:manage.features.user.forms.addUserForm.inputs.domain.validations.empty"
                             ) }
                             required={ true }
-                            requiredErrorMessage={ t(
-                                "console:manage.features.user.forms.addUserForm." +
+                            value={ initialValues?.domain ? initialValues?.domain : userStoreOptions[0]?.value }
+                            listen={ handleUserStoreChange }
+                            tabIndex={ 1 }
+                        />
+                    </Grid.Column>
+                </RootOnlyComponent>
+
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                    <Field
+                        data-testid="user-mgt-add-user-form-username-input"
+                        label={ t(
+                            "console:manage.features.user.forms.addUserForm.inputs.username.label"
+                        ) }
+                        name="userName"
+                        placeholder={ t(
+                            "console:manage.features.user.forms.addUserForm.inputs." +
+                                "username.placeholder"
+                        ) }
+                        required={ true }
+                        requiredErrorMessage={ t(
+                            "console:manage.features.user.forms.addUserForm." +
                                 "inputs.username.validations.empty"
-                            ) }
-                            type="text"
-                            validation={ async (value: string, validation: Validation) => {
-                                try {
-                                    if (value) {
-                                        const usersList
+                        ) }
+                        type="text"
+                        validation={ async (value: string, validation: Validation) => {
+                            try {
+                                if (value) {
+                                    const usersList
                                             = await getUsersList(null, null, "userName eq " + value, null, userStore);
 
-                                        if (usersList?.totalResults > 0) {
-                                            validation.isValid = false;
-                                            validation.errorMessages.push(USER_ALREADY_EXIST_ERROR_MESSAGE);
-                                        }
-                                    }
-                                } catch (error) {
-                                    // Some non ascii characters are not accepted by DBs with certain charsets.
-                                    // Hence, the API sends a `500` status code.
-                                    // see https://github.com/wso2/product-is/issues/10190#issuecomment-719760318
-                                    if (error?.response?.status === 500) {
+                                    if (usersList?.totalResults > 0) {
                                         validation.isValid = false;
-                                        validation.errorMessages.push(USERNAME_HAS_INVALID_CHARS_ERROR_MESSAGE);
+                                        validation.errorMessages.push(USER_ALREADY_EXIST_ERROR_MESSAGE);
                                     }
                                 }
+                            } catch (error) {
+                                // Some non ascii characters are not accepted by DBs with certain charsets.
+                                // Hence, the API sends a `500` status code.
+                                // see https://github.com/wso2/product-is/issues/10190#issuecomment-719760318
+                                if (error?.response?.status === 500) {
+                                    validation.isValid = false;
+                                    validation.errorMessages.push(USERNAME_HAS_INVALID_CHARS_ERROR_MESSAGE);
+                                }
+                            }
 
-                                if (value && !SharedUserStoreUtils.validateInputAgainstRegEx(value, usernameRegEx)) {
-                                    validation.isValid = false;
-                                    validation.errorMessages.push(USERNAME_REGEX_VIOLATION_ERROR_MESSAGE);
-                                }
-                            } }
-                            value={ initialValues && initialValues.userName }
-                            loading={ isUsernameRegExLoading }
-                            tabIndex={ 2 }
-                            maxLength={ 30 }
-                        />
-                    </Grid.Column>
-                </Grid.Row>
-                <Grid.Row columns={ 2 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                        <Field
-                            data-testid="user-mgt-add-user-form-firstName-input"
-                            label={ t(
-                                "console:manage.features.user.forms.addUserForm.inputs.firstName.label"
-                            ) }
-                            name="firstName"
-                            placeholder={ t(
-                                "console:manage.features.user.forms.addUserForm.inputs." +
+                            if (value && !SharedUserStoreUtils.validateInputAgainstRegEx(value, usernameRegEx)) {
+                                validation.isValid = false;
+                                validation.errorMessages.push(USERNAME_REGEX_VIOLATION_ERROR_MESSAGE);
+                            }
+                        } }
+                        value={ initialValues && initialValues.userName }
+                        loading={ isUsernameRegExLoading }
+                        tabIndex={ 2 }
+                        maxLength={ 30 }
+                    />
+                </Grid.Column>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                    <Field
+                        data-testid="user-mgt-add-user-form-firstName-input"
+                        label={ t(
+                            "console:manage.features.user.forms.addUserForm.inputs.firstName.label"
+                        ) }
+                        name="firstName"
+                        placeholder={ t(
+                            "console:manage.features.user.forms.addUserForm.inputs." +
                                 "firstName.placeholder"
-                            ) }
-                            required={ true }
-                            requiredErrorMessage={ t(
-                                "console:manage.features.user.forms.addUserForm." +
+                        ) }
+                        required={ true }
+                        requiredErrorMessage={ t(
+                            "console:manage.features.user.forms.addUserForm." +
                                 "inputs.firstName.validations.empty"
-                            ) }
-                            type="text"
-                            value={ initialValues && initialValues.firstName }
-                            tabIndex={ 3 }
-                            maxLength={ 30 }
-                        />
-                    </Grid.Column>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                        <Field
-                            data-testid="user-mgt-add-user-form-lastName-input"
-                            label={ t(
-                                "console:manage.features.user.forms.addUserForm.inputs.lastName.label"
-                            ) }
-                            name="lastName"
-                            placeholder={ t(
-                                "console:manage.features.user.forms.addUserForm.inputs." +
+                        ) }
+                        type="text"
+                        value={ initialValues && initialValues.firstName }
+                        tabIndex={ 3 }
+                        maxLength={ 30 }
+                    />
+                </Grid.Column>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                    <Field
+                        data-testid="user-mgt-add-user-form-lastName-input"
+                        label={ t(
+                            "console:manage.features.user.forms.addUserForm.inputs.lastName.label"
+                        ) }
+                        name="lastName"
+                        placeholder={ t(
+                            "console:manage.features.user.forms.addUserForm.inputs." +
                                 "lastName.placeholder"
-                            ) }
-                            required={ true }
-                            requiredErrorMessage={ t(
-                                "console:manage.features.user.forms.addUserForm." +
+                        ) }
+                        required={ true }
+                        requiredErrorMessage={ t(
+                            "console:manage.features.user.forms.addUserForm." +
                                 "inputs.lastName.validations.empty"
-                            ) }
-                            type="text"
-                            value={ initialValues && initialValues.lastName }
-                            tabIndex={ 4 }
-                            maxLength={ 30 }
-                        />
-                    </Grid.Column>
-                </Grid.Row>
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                        <Field
-                            data-testid="user-mgt-add-user-form-email-input"
-                            label={ t(
-                                "console:manage.features.user.forms.addUserForm.inputs.email.label"
-                            ) }
-                            name="email"
-                            placeholder={ t(
-                                "console:manage.features.user.forms.addUserForm.inputs." +
+                        ) }
+                        type="text"
+                        value={ initialValues && initialValues.lastName }
+                        tabIndex={ 4 }
+                        maxLength={ 30 }
+                    />
+                </Grid.Column>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                    <Field
+                        data-testid="user-mgt-add-user-form-email-input"
+                        label={ t(
+                            "console:manage.features.user.forms.addUserForm.inputs.email.label"
+                        ) }
+                        name="email"
+                        placeholder={ t(
+                            "console:manage.features.user.forms.addUserForm.inputs." +
                                 "email.placeholder"
-                            ) }
-                            required={ true }
-                            requiredErrorMessage={ t(
-                                "console:manage.features.user.forms.addUserForm.inputs.email.validations.empty"
-                            ) }
-                            validation={ (value: string, validation: Validation) => {
-                                if (!FormValidation.email(value)) {
-                                    validation.isValid = false;
-                                    validation.errorMessages.push(
-                                        t(
-                                            "console:manage.features.user.forms.addUserForm.inputs.email." +
+                        ) }
+                        required={ true }
+                        requiredErrorMessage={ t(
+                            "console:manage.features.user.forms.addUserForm.inputs.email.validations.empty"
+                        ) }
+                        validation={ (value: string, validation: Validation) => {
+                            if (!FormValidation.email(value)) {
+                                validation.isValid = false;
+                                validation.errorMessages.push(
+                                    t(
+                                        "console:manage.features.user.forms.addUserForm.inputs.email." +
                                             "validations.invalid"
-                                        ).toString()
-                                    );
-                                }
+                                    ).toString()
+                                );
                             }
-                            }
-                            type="email"
-                            value={ initialValues && initialValues.email }
-                            tabIndex={ 5 }
-                            maxLength={ 50 }
-                        />
-                    </Grid.Column>
-                </Grid.Row>
+                        }
+                        }
+                        type="email"
+                        value={ initialValues && initialValues.email }
+                        tabIndex={ 5 }
+                        maxLength={ 50 }
+                    />
+                </Grid.Column>
                 { emailVerificationEnabled && (
                     <Grid.Row columns={ 1 }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>

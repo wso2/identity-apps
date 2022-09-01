@@ -92,68 +92,12 @@ export class RouteUtils {
      * @private
      */
     private static isRouteAvailable(view: string, pathname: string, routes: RouteInterface[]): boolean {
-
         /**
          * If one of the passed arguments are not truthy, then the function
          * cannot do the operation and check the available routes. In this
          * case we return false saying there's no matching routes.
          */
         if (!view || !pathname || !routes?.length) return false;
-
-        const EMPTY_STRING: string = "";
-        const descendants: Set<string> = new Set<string>();
-
-        /**
-         * In this chain we go through all the available routes and filter
-         * out the top level views and map out all the nested children's path.
-         *
-         * Explanation
-         * --
-         * A top level view can be `/console/develop` or `console/manage`
-         * and in those views we have nested routes such as:-
-         *          [
-         *              `/console/develop/identity-providers`,
-         *              `/console/develop/applications`,
-         *              etc...
-         *          ]
-         * and each of those route paths will also have their own children
-         * routes. You can think of the {@code view} being the parent route
-         * of the navigation hierarchy and {@code routes} as their direct
-         * descendants.
-         *
-         * Note on default values
-         * --
-         * We need to make sure default values are initialized during the
-         * children path extraction.
-         *
-         * How it works?
-         * --
-         * -1 Filter out the paths that partially matches {@code view}
-         *    This will ensure we won't step into any unrelated child
-         *    paths.
-         * -2 Keep a reference to the descendants of this {@code view}.
-         *    This makes sure that descendants will also get a chance
-         *    to be evaluated against the {@code pathname}
-         * -3 Map out all the children paths in each of the descendants.
-         * -4 Flattens the depth of the array.
-         * -5 Map out the {@code string} path of each child route.
-         */
-        const nestedChildren = (routes ?? [])
-            .filter(({ path = EMPTY_STRING }) => path?.match(view)) // #1
-            .map((route: RouteInterface) => {
-                descendants.add(route.path); // #2
-
-                return route.children || [] as ChildRouteInterface[]; // #3
-            });
-        const allChildPaths: string[] = flatten(nestedChildren) // #4 [ [], [], [], [], [] ] => single array []
-            .map(({ path = EMPTY_STRING }) => path); // #5
-
-        /**
-         * If there's no child paths or descendants have been found in all
-         * the available routes then return {@code false} and navigate to
-         * the ordered route.
-         */
-        if (!allChildPaths?.length || !descendants.size) return false;
 
         /**
          * In this function what we do is escape all the special characters
@@ -173,23 +117,16 @@ export class RouteUtils {
          * @return {RegExp} expression like `some/path/[\w~\-\\.!*'(),]+/another`
          */
         const pathToARegex = (path: string): string => {
-            if (!path || !path.trim().length) return EMPTY_STRING;
+            if (!path || !path.trim().length) return "";
 
             return path.split("/").map((fragment: string) => {
                 if (fragment && fragment.startsWith(":")) {
                     return /[\w~\-\\.!*'(), ]+/.source;
                 }
 
-                return fragment ?? EMPTY_STRING;
+                return fragment ?? "";
             }).join("/");
         };
-
-        /**
-         * First off we will start searching by {@code descendants} and then
-         * {@code allChildPaths}. Since we match the pathname with a strict
-         * expression we don't match partial/optional fragments of the path.
-         */
-        const paths = [ ...Array.from<string>(descendants), ...allChildPaths ];
 
         /**
          * To keep track of the qualified paths that matches exactly the
@@ -204,9 +141,9 @@ export class RouteUtils {
          * certain criteria then you should remove the {@code break}
          * statement and write your aggregation logic after the loop.
          */
-        for (const path of paths) {
-            if (path) {
-                const expression = RegExp(`^${pathToARegex(path)}`);
+        for (const route of routes) {
+            if (route) {
+                const expression = RegExp(`^${ pathToARegex(route.path)}`);
                 const match = expression.exec(pathname);
 
                 if (match && match.length > 0) {

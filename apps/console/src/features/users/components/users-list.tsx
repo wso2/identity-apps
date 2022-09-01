@@ -27,7 +27,6 @@ import {
     TestableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { CommonUtils } from "@wso2is/core/utils";
 import {
     ConfirmationModal,
     DataTable,
@@ -38,6 +37,7 @@ import {
     TableColumnInterface,
     UserAvatar
 } from "@wso2is/react-components";
+import moment from "moment";
 import React, { ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -306,8 +306,14 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
             if (key === "meta.lastModified") {
                 dynamicColumn = {
                     ...dynamicColumn,
-                    render: (user: UserBasicInterface): ReactNode =>
-                        CommonUtils.humanizeDateDifference(user?.meta?.lastModified)
+                    render: (user: UserBasicInterface): ReactNode => {
+                        const now = moment(new Date());
+                        const receivedDate = moment(user?.meta?.lastModified);
+
+                        return t("console:common.dateTime.humanizedDateString", {
+                            date: moment.duration(now.diff(receivedDate)).humanize()
+                        });
+                    }
                 };
             }
 

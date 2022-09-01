@@ -17,7 +17,6 @@
 */
 
 import { AccessControlConstants, Show } from "@wso2is/access-control";
-import { getProfileSchemas } from "@wso2is/core/api";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import {
@@ -70,6 +69,7 @@ import {
     history,
     store
 } from "../../core";
+import { getProfileSchemas } from "../../users/api";
 import { UserStoreListItem, getUserStores } from "../../userstores";
 import { deleteAClaim, deleteADialect, deleteAnExternalClaim } from "../api";
 import { ClaimManagementConstants } from "../constants";
@@ -405,7 +405,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
     const fetchUpdatedSchemaList = (): void => {
         dispatch(setProfileSchemaRequestLoadingStatus(true));
 
-        getProfileSchemas(store.getState().config.endpoint?.schemas)
+        getProfileSchemas()
             .then((response: ProfileSchemaInterface[]) => {
                 dispatch(setSCIMSchemas<ProfileSchemaInterface[]>(response));
             })
@@ -507,7 +507,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
         return (
             <ConfirmationModal
                 onClose={ closeDeleteConfirm }
-                type="warning"
+                type="negative"
                 open={ deleteConfirm }
                 assertionHint={ t("console:manage.features.claims.list.confirmation.hint") }
                 assertionType="checkbox"
@@ -532,7 +532,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                 </ConfirmationModal.Header>
                 <ConfirmationModal.Message
                     attached
-                    warning
+                    negative
                     data-testid={ `${ testId }-delete-confirmation-modal-message` }
                 >
                     { t("console:manage.features.claims.list.confirmation.message", {

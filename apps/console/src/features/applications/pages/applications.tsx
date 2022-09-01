@@ -144,7 +144,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
         isLoading: isApplicationListFetchRequestLoading,
         error: applicationListFetchRequestError,
         mutate: mutateApplicationListFetchRequest
-    } = useApplicationList(listItemLimit, listOffset, searchQuery);
+    } = useApplicationList("advancedConfigurations,templateId", listItemLimit, listOffset, searchQuery);
 
     /**
      * Sets the initial spinner.
@@ -406,6 +406,11 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                                         key: 0,
                                         text: t("common:name"),
                                         value: "name"
+                                    },
+                                    {
+                                        key: 1,
+                                        text: "ClientId",
+                                        value: "clientId"
                                     }
                                 ] }
                                 filterAttributePlaceholder={
@@ -423,6 +428,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                                 placeholder={ t("console:develop.features.applications.advancedSearch.placeholder") }
                                 defaultSearchAttribute="name"
                                 defaultSearchOperator="co"
+                                predefinedDefaultSearchStrategy="name co %search-value% or clientId co %search-value%"
                                 triggerClearQuery={ triggerClearQuery }
                                 data-testid={ `${ testId }-list-advanced-search` }
                             />
@@ -454,6 +460,11 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                                             key: 0,
                                             text: t("common:name"),
                                             value: "name"
+                                        },
+                                        {
+                                            key: 1,
+                                            text: "ClientId",
+                                            value: "clientId"
                                         }
                                     ] }
                                     filterAttributePlaceholder={
@@ -473,6 +484,9 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                                     }
                                     defaultSearchAttribute="name"
                                     defaultSearchOperator="co"
+                                    predefinedDefaultSearchStrategy={
+                                        "name co %search-value% or clientId co %search-value%"
+                                    }
                                     triggerClearQuery={ triggerClearQuery }
                                     data-testid={ `${ testId }-list-advanced-search` }
                                 />

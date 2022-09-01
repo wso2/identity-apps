@@ -29,6 +29,8 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementServiceUtil" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApiException" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.api.ReCaptchaApi" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.ReCaptchaProperties" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.SelfRegistrationMgtClient" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.SelfRegistrationMgtClientException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.api.UsernameRecoveryApi" %>
@@ -116,6 +118,25 @@
     if (StringUtils.isBlank(callback)) {
         callback = IdentityManagementEndpointUtil.getUserPortalUrl(
                 application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL), tenantDomain);
+    }
+
+    ReCaptchaApi reCaptchaApi = new ReCaptchaApi();
+    try {
+        ReCaptchaProperties reCaptchaProperties = reCaptchaApi.getReCaptcha(tenantDomain, true, "ReCaptcha",
+                "self-registration");
+
+        if (reCaptchaProperties.getReCaptchaEnabled()) {
+            Map<String, List<String>> headers = new HashMap<>();
+            headers.put("reCaptcha", Arrays.asList(String.valueOf(true)));
+            headers.put("reCaptchaAPI", Arrays.asList(reCaptchaProperties.getReCaptchaAPI()));
+            headers.put("reCaptchaKey", Arrays.asList(reCaptchaProperties.getReCaptchaKey()));
+            IdentityManagementEndpointUtil.addReCaptchaHeaders(request, headers);
+        }
+    } catch (ApiException e) {
+        request.setAttribute("error", true);
+        request.setAttribute("errorMsg", e.getMessage());
+        request.getRequestDispatcher("error.jsp").forward(request, response);
+        return;
     }
 
     Integer userNameValidityStatusCode = usernameValidityResponse.getInt("code");
@@ -569,7 +590,11 @@
                                 %>
                                 <div class="field">
                                     <div class="g-recaptcha"
-                                         data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>">
+                                            data-size="invisible"
+                                            data-callback="onCompleted"
+                                            data-action="register"
+                                            data-sitekey=
+                                                    "<%=Encode.forHtmlContent(reCaptchaKey)%>">
                                     </div>
                                 </div>
                                 <%
@@ -730,6 +755,10 @@
             window.history.back();
         }
 
+        function onCompleted() {
+           $("#register").submit();
+        }
+
         $(document).ready(function () {
             <%
                 if (error){
@@ -771,7 +800,7 @@
 
             countryDropdown.dropdown('hide');
             $("> input.search", countryDropdown).attr("role", "presentation");
-            
+
             $("#date_picker").calendar({
                 type: 'date',
                 formatter: {
@@ -797,6 +826,19 @@
             $(".form-info").popup();
 
             $("#register").submit(function (e) {
+
+                <%
+                    if (reCaptchaEnabled) {
+                %>
+                if (!grecaptcha.getResponse()) {
+                    e.preventDefault();
+                    grecaptcha.execute();
+
+                    return true;
+                }
+                <%
+                    }
+                %>
                 var unsafeCharPattern = /[<>`\"]/;
                 var elements = document.getElementsByTagName("input");
                 var invalidInput = false;
@@ -865,21 +907,6 @@
                 }
 
                 <%
-                if(reCaptchaEnabled) {
-                %>
-                var resp = $("[name='g-recaptcha-response']")[0].value;
-                if (resp.trim() == '') {
-                    error_msg.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                        "Please.select.reCaptcha")%>");
-                    error_msg.show();
-                    $("html, body").animate({scrollTop: error_msg.offset().top}, 'slow');
-                    return false;
-                }
-                <%
-                }
-                %>
-
-                <%
                 if (hasPurposes) {
                 %>
                 var self = this;
@@ -922,7 +949,6 @@
 
                 return true;
             });
-
 
             function compareArrays(arr1, arr2) {
                 return $(arr1).not(arr2).length == 0 && $(arr2).not(arr1).length == 0

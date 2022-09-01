@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { getUserStoreList } from "@wso2is/core/api";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -26,6 +25,8 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { AccordionTitleProps, Divider, Grid } from "semantic-ui-react";
 import { AppState, AuthenticatorAccordion, FeatureConfigInterface, store } from "../../../../core";
+import { OrganizationUtils } from "../../../../organizations/utils";
+import { getUserStoreList } from "../../../../userstores/api";
 import { updateApplicationConfigurations } from "../../../api";
 import { ProvisioningConfigurationInterface, SimpleUserStoreListItemInterface } from "../../../models";
 import { ProvisioningConfigurationsForm } from "../../forms";
@@ -154,12 +155,16 @@ export const InboundProvisioningConfigurations: FunctionComponent<InboundProvisi
             id: "PRIMARY",
             name: "PRIMARY"
         });
-        getUserStoreList(store.getState().config.endpoints.userStores).then((response) => {
-            userstore.push(...response.data);
+        if (OrganizationUtils.isCurrentOrganizationRoot()) {
+            getUserStoreList().then((response) => {
+                userstore.push(...response.data);
+                setUserStore(userstore);
+            }).catch(() => {
+                setUserStore(userstore);
+            });
+        } else {
             setUserStore(userstore);
-        }).catch(() => {
-            setUserStore(userstore);
-        });
+        }
     }, []);
 
     return (

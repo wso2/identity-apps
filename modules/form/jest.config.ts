@@ -17,6 +17,7 @@
  */
 
 module.exports = {
+    displayName: "form",
     globals: {
         "ts-jest": {
             tsconfig: "tsconfig.json"

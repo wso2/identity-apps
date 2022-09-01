@@ -49,7 +49,23 @@ export const identityProviderConfig: IdentityProviderConfig = {
         ): ReactElement | null => {
             return null;
         },
-        isTabEnabledForIdP: (_templateId: string, _tabType: IdentityProviderTabTypes): boolean | undefined => {
+        isTabEnabledForIdP: (templateType: string, tabType: IdentityProviderTabTypes): boolean | undefined => {
+
+            const templateMapping = new Map<string, Set<string>>([
+                [
+                    IdentityProviderTabTypes.USER_ATTRIBUTES, new Set([
+                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.FACEBOOK,
+                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.GOOGLE,
+                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.GITHUB,
+                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.OIDC
+                    ])
+                ]
+            ]);
+
+            if (templateMapping.get(tabType)?.has(templateType)) {
+                return true;
+            }
+
             return true;
         },
         showAdvancedSettings: true,
@@ -94,12 +110,6 @@ export const identityProviderConfig: IdentityProviderConfig = {
     ],
     filterFidoTags:(tags: string[]): string[] => {
         return tags;
-    },
-    /**
-     * This is a temporary fix to set the provisioning userstore depending on the available userstore.
-     */
-    overrideTemplate: (): void => {
-        return;
     },
     // Handles backward compatibility with the legacy IDP view & new connections view.
     // TODO: Remove this usage once https://github.com/wso2/product-is/issues/12052 is addressed.

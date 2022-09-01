@@ -16,7 +16,6 @@
 * under the License.
 */
 
-import { getAllLocalClaims } from "@wso2is/core/api";
 import { AlertLevels, Claim, ClaimsGetParams, ExternalClaim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms, Validation, useTrigger } from "@wso2is/forms";
@@ -26,6 +25,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { DropdownItemProps, DropdownOnSearchChangeData, Grid, Label } from "semantic-ui-react";
 import { SCIMConfigs, attributeConfig } from "../../../../extensions";
+import { getAllLocalClaims } from "../../../claims/api";
 import { AppConstants, history } from "../../../core";
 import { addExternalClaim, getServerSupportedClaimsForSchema } from "../../api";
 import { ClaimManagementConstants } from "../../constants";
@@ -513,11 +513,11 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                                             visible
                                             type="warning"
                                             content={
-                                                <>
+                                                (<>
                                                     {
                                                         !isEmptyServerSupportedClaims
                                                             ? (
-                                                                <Hint warning>
+                                                                <>
                                                                     <Trans
                                                                         i18nKey={
                                                                             "console:manage.features.claims." +
@@ -535,22 +535,20 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                                                                         }
                                                                     > here
                                                                     </Link>.
-                                                                </Hint>
+                                                                </>
                                                             ) : (
-                                                                <Hint warning>
-                                                                    <Trans
-                                                                        i18nKey={
-                                                                            "console:manage.features.claims." +
+                                                                <Trans
+                                                                    i18nKey={
+                                                                        "console:manage.features.claims." +
                                                                             "external.forms.emptyMessage"
-                                                                        }
-                                                                    >
+                                                                    }
+                                                                >
                                                                         All the SCIM attributes are mapped to local
                                                                         claims.
-                                                                    </Trans>
-                                                                </Hint>
+                                                                </Trans>
                                                             )
                                                     }
-                                                </>
+                                                </>)
                                             }
                                         />
                                     </Grid.Column>

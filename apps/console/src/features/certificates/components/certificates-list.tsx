@@ -247,18 +247,19 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
     const showDeleteConfirm = (): ReactElement => {
         const isTenantCertificate: boolean = decodeCertificate(deleteCertificatePem)
             .serialNumber === tenantCertificate;
+
         return (
             <ConfirmationModal
                 onClose={ closeDeleteConfirm }
-                type="warning"
+                type="negative"
                 open={ deleteConfirm }
                 assertion={ isTenantCertificate ? deleteID : null }
                 assertionHint={
-                    <p>
+                    (<p>
                         <Trans i18nKey="console:manage.features.certificates.keystore.confirmation.hint">
                            Please type <strong>{ { id:deleteID } }</strong> to confirm.
                         </Trans>
-                    </p>
+                    </p>)
                 }
                 assertionType={ isTenantCertificate ? "input" : null }
                 primaryAction={ t("console:manage.features.certificates.keystore.confirmation.primaryAction") }
@@ -301,7 +302,7 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
                         <>
                             <ConfirmationModal.Message
                                 attached
-                                warning
+                                negative
                                 data-testid={ `${ testId }-delete-confirmation-modal-message` }
                             >
                                 { t("console:manage.features.certificates.keystore.confirmation.message") }
@@ -336,6 +337,7 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
         const hex = certificate.hex;
 
         const byteArray = new Uint8Array(hex.length / 2);
+
         for (let x = 0; x < byteArray.length; x++) {
             byteArray[ x ] = parseInt(hex.substr(x * 2, 2), 16);
         }
@@ -438,12 +440,12 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
                         />
                         <div className="certificate-alias">
                             View Certificate - {
-                            certificateDisplay?.alias
-                                ? certificateDisplay?.alias
-                                : certificateDisplay?.issuerDN && (
-                                    CertificateManagementUtils.searchIssuerDNAlias(certificateDisplay?.issuerDN)
-                            )
-                        }
+                                certificateDisplay?.alias
+                                    ? certificateDisplay?.alias
+                                    : certificateDisplay?.issuerDN && (
+                                        CertificateManagementUtils.searchIssuerDNAlias(certificateDisplay?.issuerDN)
+                                    )
+                            }
                         </div><br/>
                         <div className="certificate-serial">Serial Number: { certificateDisplay?.serialNumber }</div>
                     </div>
@@ -592,7 +594,7 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
                             ?? t("console:manage.features.certificates.keystore.notifications.getAlias." +
                                 "genericError.message")
                     }));
-            });
+                });
 
             return;
         }
@@ -695,6 +697,7 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
                     // Checks whether the alias of this certificate matches the tenant domain
                     // or the authenticated user's tenant domain.
                     const isTenant = tenantDomain === alias || authTenantDomain === alias;
+
                     return !(type === KEYSTORE && hasScopes) || isSuper || isTenant;
                 },
                 icon: (): SemanticICONS => "trash alternate",

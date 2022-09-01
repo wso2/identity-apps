@@ -69,7 +69,7 @@ const getPackageDirectories = () => {
 const createTempDir = () => {
 
     if (debug) {
-        logger.debug(`Creating a temp ${ NYC_OUTPUT_DIR_NAME } directory...`); 
+        logger.debug(`Creating a temp ${ NYC_OUTPUT_DIR_NAME } directory...`);
     }
 
     if (fs.existsSync(NYC_OUTPUT_DIR_PATH)) {
@@ -140,7 +140,7 @@ const generateReports = () => {
 const aggregateReports = () => {
 
     // Collecting the Full Report.
-    exec("npm run nyc:full-report", (_, fullReport) => {
+    exec("pnpm nyc:full-report", (_, fullReport) => {
 
         // Collecting the Report Summary
         exec("nyc:text-summary-report", (_, reportSummary) => {

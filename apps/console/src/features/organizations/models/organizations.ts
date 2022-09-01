@@ -1,6 +1,3 @@
-import { RolesInterface } from "@wso2is/core/models";
-import { ScimOperationsInterface } from "../../roles";
-
 /**
  * Copyright (c) 2022, WSO2 Inc. (http://www.wso2.com) All Rights Reserved.
  *
@@ -19,10 +16,14 @@ import { ScimOperationsInterface } from "../../roles";
  * under the License.
  */
 
+import { RolesInterface } from "@wso2is/core/models";
+import { ScimOperationsInterface } from "../../roles";
+
 export interface OrganizationInterface {
     id: string;
     name: string;
     ref: string;
+    status: "ACTIVE" | "DISABLED"
 }
 
 export interface OrganizationLinkInterface {

@@ -16,13 +16,13 @@
  * under the License.
  */
 
-import { getAllLocalClaims } from "@wso2is/core/api";
 import { AlertLevels, Claim } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
 import find from "lodash-es/find";
 import isEmpty from "lodash-es/isEmpty";
 import { handleUpdateIDPRoleMappingsError } from "./common-utils";
+import { getAllLocalClaims } from "../../../claims/api";
 import { store } from "../../../core";
 import { updateClaimsConfigs, updateIDPRoleMappings } from "../../api";
 import {
@@ -46,9 +46,11 @@ export const LocalDialectURI = "http://wso2.org/claims";
 export const getLocalDialectURI = (): string => {
 
     let localDialect = "http://wso2.org/claims";
+
     getAllLocalClaims(null)
         .then((response) => {
             const retrieved = response.slice(0, 1)[0].dialectURI;
+
             if (!isEmpty(retrieved)) {
                 localDialect = retrieved;
             }
@@ -56,6 +58,7 @@ export const getLocalDialectURI = (): string => {
         .catch((error) => {
             handleGetAllLocalClaimsError(error);
         });
+
     return localDialect;
 };
 
@@ -63,12 +66,12 @@ export const getLocalDialectURI = (): string => {
  * Given a local claim it will test whether it
  * contains `identity` in the claim attribute.
  */
-export const isLocalIdentityClaim = (claim: string) => {
+export const isLocalIdentityClaim = (claim: string): boolean => {
     return /identity/.test(claim);
 };
 
 export const createDropdownOption = (selectedClaimsWithMapping: IdentityProviderCommonClaimMappingInterface[],
-                                     availableLocalClaims: IdentityProviderClaimInterface[]):
+    availableLocalClaims: IdentityProviderClaimInterface[]):
     DropdownOptionsInterface[] => {
     return isEmpty(selectedClaimsWithMapping) ?
         availableLocalClaims.map((element: IdentityProviderClaimInterface): DropdownOptionsInterface => {
@@ -94,7 +97,7 @@ export const createDropdownOption = (selectedClaimsWithMapping: IdentityProvider
 };
 
 export const buildProvisioningClaimList = (claimMappings: IdentityProviderCommonClaimMappingInterface[],
-                                           availableLocalClaims: IdentityProviderClaimInterface[]):
+    availableLocalClaims: IdentityProviderClaimInterface[]):
     IdentityProviderClaimInterface[] => {
     return isEmpty(claimMappings) ? availableLocalClaims : claimMappings?.map(
         (claimMapping: IdentityProviderCommonClaimMappingInterface): IdentityProviderClaimInterface => {
@@ -107,12 +110,12 @@ export const buildProvisioningClaimList = (claimMappings: IdentityProviderCommon
 };
 
 export const isClaimExistsInIdPClaims = (mapping: IdentityProviderCommonClaimMappingInterface,
-                                         selectedClaimsWithMapping: IdentityProviderCommonClaimMappingInterface[]) => {
+    selectedClaimsWithMapping: IdentityProviderCommonClaimMappingInterface[]): boolean => {
     // Mapped value of the selectedClaim is non-other than IdP's claim uri.
     return find(selectedClaimsWithMapping, element => element.mappedValue === mapping.claim.uri) !== undefined;
 };
 
-export const updateAvailableLocalClaims = (setAvailableLocalClaims) => {
+export const updateAvailableLocalClaims = (setAvailableLocalClaims): void => {
     getAllLocalClaims(null)
         .then((response: Claim[]) => {
             setAvailableLocalClaims(response?.map(claim => {
@@ -140,7 +143,7 @@ export const initSelectedClaimMappings = (initialClaims, setSelectedClaimsWithMa
 };
 
 export const initSelectedProvisioningClaimsWithDefaultValues = (initialClaims,
-                                                                setSelectedProvisioningClaimsWithDefaultValue) => {
+    setSelectedProvisioningClaimsWithDefaultValue) => {
     setSelectedProvisioningClaimsWithDefaultValue(
         initialClaims?.provisioningClaims?.map((element: IdentityProviderProvisioningClaimInterface) => {
             return {
@@ -161,38 +164,38 @@ export const initSubjectAndRoleURIs = (initialClaims, setSubjectClaimUri, setRol
 };
 
 export const handleAttributeSettingsFormSubmit = (idpId: string, values: IdentityProviderClaimsInterface,
-                                                  roleMapping: IdentityProviderRoleMappingInterface[],
-                                                  onUpdate: (idpId: string) => void): Promise<void> => {
+    roleMapping: IdentityProviderRoleMappingInterface[],
+    onUpdate: (idpId: string) => void): Promise<void> => {
 
     return updateClaimsConfigs(idpId, values)
         .then(() => {
             onUpdate(idpId);
             // Update IDP Role Mappings on Successful Claim Config Update.
             updateIDPRoleMappings(idpId, {
-                        mappings: roleMapping,
-                        outboundProvisioningRoles: [""]
-                    } as IdentityProviderRolesInterface
-                ).then(() => {
-                    onUpdate(idpId);
-                    // Show single alert message when both requests are successfully completed.
-                    store.dispatch(addAlert({
-                        description: I18n.instance.t("console:develop.features.authenticationProvider." +
+                mappings: roleMapping,
+                outboundProvisioningRoles: [ "" ]
+            } as IdentityProviderRolesInterface
+            ).then(() => {
+                onUpdate(idpId);
+                // Show single alert message when both requests are successfully completed.
+                store.dispatch(addAlert({
+                    description: I18n.instance.t("console:develop.features.authenticationProvider." +
                             "notifications.updateAttributes.success.description"),
-                        level: AlertLevels.SUCCESS,
-                        message: I18n.instance.t("console:develop.features.authenticationProvider." +
+                    level: AlertLevels.SUCCESS,
+                    message: I18n.instance.t("console:develop.features.authenticationProvider." +
                             "notifications.updateAttributes." +
                             "success.message")
-                    }));
-                }).catch(error => {
-                    handleUpdateIDPRoleMappingsError(error);
-                });
+                }));
+            }).catch(error => {
+                handleUpdateIDPRoleMappingsError(error);
+            });
         })
         .catch((error) => {
             if (error.response && error.response.data && error.response.data.description) {
                 store.dispatch(addAlert({
                     description: I18n.instance.t("console:develop.features.authenticationProvider.notifications." +
                         "updateClaimsConfigs.error.description",
-                        { description: error.response.data.description }),
+                    { description: error.response.data.description }),
                     level: AlertLevels.ERROR,
                     message: I18n.instance.t("console:develop.features.authenticationProvider" +
                         ".notifications.updateClaimsConfigs." +
@@ -216,7 +219,7 @@ export const handleGetAllLocalClaimsError = (error) => {
             description: I18n.instance.t("console:develop.features.authenticationProvider" +
                 ".notifications.getAllLocalClaims." +
                 "error.description",
-                { description: error.response.data.description }),
+            { description: error.response.data.description }),
             level: AlertLevels.ERROR,
             message: I18n.instance.t("console:develop.features.authenticationProvider" +
                 ".notifications.getAllLocalClaims.error.message")

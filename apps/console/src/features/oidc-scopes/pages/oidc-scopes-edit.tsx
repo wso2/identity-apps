@@ -17,7 +17,6 @@
  */
 
 import { AccessControlConstants, Show } from "@wso2is/access-control";
-import { getAllExternalClaims, getAllLocalClaims } from "@wso2is/core/api";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, Claim, ExternalClaim, TestableComponentInterface } from "@wso2is/core/models";
@@ -41,6 +40,7 @@ import {
     Label,
     Placeholder
 } from "semantic-ui-react";
+import { getAllExternalClaims, getAllLocalClaims } from "../../claims/api";
 import { AppConstants, AppState, FeatureConfigInterface, UIConstants, history, sortList } from "../../core";
 import { getOIDCScopeDetails, updateOIDCScopeDetails } from "../api";
 import { EditOIDCScope } from "../components";
@@ -179,12 +179,14 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
             }
 
             const selected = [];
+
             scope?.claims?.map((claim) => {
                 selected.push(OIDCAttributes.find((item) => item?.claimURI == claim));
             });
 
-            const filteredSelected = selected.filter(item => !!item)
+            const filteredSelected = selected.filter(item => !!item);
             const sortedSelected = sortBy(filteredSelected, "localClaimDisplayName");
+
             setSelectedAttributes(sortedSelected);
             setTempSelectedAttributes(sortedSelected);
             setUnselectedAttributes(OIDCAttributes.filter((x) => !filteredSelected?.includes(x)));
@@ -256,6 +258,7 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
 
         const searchSelectedAttributes = (event) => {
             const changeValue = event.target.value;
+
             setAttributeSearchQuery(changeValue);
             if (changeValue.length > 0) {
                 setTempSelectedAttributes(
@@ -409,12 +412,12 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
                 title={ scope.displayName }
                 contentTopMargin={ true }
                 description={
-                    <>
+                    (<>
                         <Label className="no-margin-left">
                             <code>{ scope.name }</code>
                         </Label>
                         { " " + (scope.description || t("console:manage.pages.oidcScopesEdit.subTitle")) }
-                    </>
+                    </>)
                 }
                 image={ <AnimatedAvatar name={ scope.name } size="tiny" floated="left" /> }
                 backButton={ {
@@ -481,7 +484,7 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
                                             readOnly={ isReadOnly }
                                         />
                                         { !isReadOnly &&
-                                            <Field.Button
+                                            (<Field.Button
                                                 ariaLabel="submit"
                                                 size="small"
                                                 loading={ isSubmitting }
@@ -489,75 +492,78 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
                                                 buttonType="primary_btn"
                                                 label={ t("common:update") }
                                                 name="submit"
-                                            />
+                                            />)
                                         }
                                     </Form>
                                 ) : (
-                                        <Placeholder>
-                                            <Placeholder.Line length="medium" />
-                                            <Placeholder.Line length="short" />
-                                        </Placeholder>
-                                    ) }
+                                    <Placeholder>
+                                        <Placeholder.Line length="medium" />
+                                        <Placeholder.Line length="short" />
+                                    </Placeholder>
+                                ) }
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>
                 </EmphasizedSegment>
                 <Divider hidden />
-                <ListLayout
-                    rightActionPanel={
-                        <Show when={ AccessControlConstants.SCOPE_WRITE }>
-                            <PrimaryButton
-                                data-testid="user-mgt-roles-list-update-button"
-                                size="medium"
-                                icon={ <Icon name="add" /> }
-                                floated="right"
-                                onClick={ () => setTriggerAttributeModal() }
-                            >
-                                <Icon name="add" />
-                                { t("console:manage.features.oidcScopes.editScope." + "claimList.addClaim") }
-                            </PrimaryButton>
-                        </Show>
-                    }
-                    showTopActionPanel={ isScopeRequestLoading || !(scope.claims?.length == 0) }
-                    listItemLimit={ listItemLimit }
-                    showPagination={ false }
-                    onPageChange={ () => null }
-                    totalPages={ Math.ceil(scope.claims?.length / listItemLimit) }
-                    data-testid={ `${ testId }-list-layout` }
-                    leftActionPanel={
-                        <div className="advanced-search-wrapper aligned-left fill-default">
-                            <Input
-                                className="advanced-search with-add-on"
-                                data-testid={ `${ testId }-list-search-input` }
-                                icon="search"
-                                iconPosition="left"
-                                onChange={ searchSelectedAttributes }
-                                placeholder={ t("console:manage.features.oidcScopes.editScope."
+                <Header>Manage Attributes</Header>
+                <EmphasizedSegment className="padded">
+                    <ListLayout
+                        rightActionPanel={
+                            (<Show when={ AccessControlConstants.SCOPE_WRITE }>
+                                <PrimaryButton
+                                    data-testid="user-mgt-roles-list-update-button"
+                                    size="medium"
+                                    icon={ <Icon name="add" /> }
+                                    floated="right"
+                                    onClick={ () => setTriggerAttributeModal() }
+                                >
+                                    <Icon name="add" />
+                                    { t("console:manage.features.oidcScopes.editScope." + "claimList.addClaim") }
+                                </PrimaryButton>
+                            </Show>)
+                        }
+                        showTopActionPanel={ isScopeRequestLoading || !(scope.claims?.length == 0) }
+                        listItemLimit={ listItemLimit }
+                        showPagination={ false }
+                        onPageChange={ () => null }
+                        totalPages={ Math.ceil(scope.claims?.length / listItemLimit) }
+                        data-testid={ `${ testId }-list-layout` }
+                        leftActionPanel={
+                            (<div className="advanced-search-wrapper aligned-left fill-default">
+                                <Input
+                                    className="advanced-search with-add-on"
+                                    data-testid={ `${ testId }-list-search-input` }
+                                    icon="search"
+                                    iconPosition="left"
+                                    onChange={ searchSelectedAttributes }
+                                    placeholder={ t("console:manage.features.oidcScopes.editScope."
                                     + "claimList.searchClaims") }
-                                floated="right"
-                                size="small"
-                                value={ attributeSearchQuery }
-                            />
-                        </div>
-                    }
-                    onSortOrderChange={ handleSortOrderChange }
-                    sortOptions={ SORT_BY }
-                    sortStrategy={ sortBy }
-                    onSortStrategyChange={ handleSortStrategyChange }
-                >
-                    <EditOIDCScope
-                        scope={ scope }
-                        isLoading={ isScopeRequestLoading || isAttributeRequestLoading }
-                        onUpdate={ getScope }
-                        data-testid={ testId }
-                        selectedAttributes={ selectedAttributes }
-                        tempSelectedAttributes ={ tempSelectedAttributes }
-                        unselectedAttributes={ unselectedAttributes }
-                        isRequestLoading={ isScopeRequestLoading || isAttributeRequestLoading }
-                        triggerAddAttributeModal={ triggerAddAttributeModal }
-                        clearSearchedAttributes={ clearSearchedAttributes }
-                    />
-                </ListLayout>
+                                    floated="right"
+                                    size="small"
+                                    value={ attributeSearchQuery }
+                                />
+                            </div>)
+                        }
+                        onSortOrderChange={ handleSortOrderChange }
+                        sortOptions={ SORT_BY }
+                        sortStrategy={ sortBy }
+                        onSortStrategyChange={ handleSortStrategyChange }
+                    >
+                        <EditOIDCScope
+                            scope={ scope }
+                            isLoading={ isScopeRequestLoading || isAttributeRequestLoading }
+                            onUpdate={ getScope }
+                            data-testid={ testId }
+                            selectedAttributes={ selectedAttributes }
+                            tempSelectedAttributes ={ tempSelectedAttributes }
+                            unselectedAttributes={ unselectedAttributes }
+                            isRequestLoading={ isScopeRequestLoading || isAttributeRequestLoading }
+                            triggerAddAttributeModal={ triggerAddAttributeModal }
+                            clearSearchedAttributes={ clearSearchedAttributes }
+                        />
+                    </ListLayout>
+                </EmphasizedSegment>
             </PageLayout>
         );
     };

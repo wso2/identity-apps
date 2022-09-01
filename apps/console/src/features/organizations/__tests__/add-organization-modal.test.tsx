@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { fireEvent,render, screen, waitFor, within } from "@unit-testing";
 import React from "react";
+import { fireEvent,render, screen, waitFor, within } from "../../../../test-configs";
 import {
     addOrganizationMockResponse,
     getOrganizationsEmptyMockResponse,
@@ -33,7 +33,8 @@ const addComponentModalProps: AddOrganizationModalPropsInterface = {
     parent: {
         id: "1",
         name: "Parent Organization",
-        ref: "ref"
+        ref: "ref",
+        status: "ACTIVE"
     }
 };
 

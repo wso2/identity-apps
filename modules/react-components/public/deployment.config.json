@@ -1,0 +1,10 @@
+{
+    "theme": {
+        "name": "default",
+        "base": "light",
+        "colorSecondary": "#ff5000",
+        "brandTitle": "IDENTITY SERVER REACT ${version}",
+        "brandUrl": "https://wso2.com/identity-server/",
+        "brandTarget": "_blank"
+    }
+}

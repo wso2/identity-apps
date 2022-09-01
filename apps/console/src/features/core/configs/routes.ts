@@ -493,7 +493,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
                             icon: getSidePanelIcons().remoteFetch
                         },
                         id: "remoteFetchConfig",
-                        name: "Remote Configurations",
+                        name: "console:manage.features.sidePanel.remoteFetchConfig",
                         order: 10,
                         path: AppConstants.getPaths().get("REMOTE_REPO_CONFIG"),
                         protected: true,
@@ -510,7 +510,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
                         protected: true,
                         showOnSidePanel: false
                     },
-                    isOrganizationManagementEnabled && {
+                    {
                         category: "console:manage.features.sidePanel.categories.organizations",
                         children: [
                             {

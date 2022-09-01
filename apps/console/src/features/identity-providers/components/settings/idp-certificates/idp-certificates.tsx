@@ -22,7 +22,7 @@ import { addAlert } from "@wso2is/core/store";
 import { URLUtils } from "@wso2is/core/utils";
 import { Field, Form } from "@wso2is/form";
 import { CertFileStrategy, Code, EmphasizedSegment, Hint, PrimaryButton, Switcher } from "@wso2is/react-components";
-import { SwitcherOptionProps } from "@wso2is/react-components/";
+import { SwitcherOptionProps } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -31,9 +31,9 @@ import { Divider, Grid, Icon, Segment } from "semantic-ui-react";
 import { AddIdpCertificateModal } from "./add-idp-certificate-modal";
 import { EmptyCertificatesPlaceholder } from "./empty-certificates-placeholder";
 import { IdpCertificatesList } from "./idp-cetificates-list";
-import { commonConfig } from "../../../../../extensions";
 import { updateIDPCertificate } from "../../../api";
 import { IdentityProviderInterface } from "../../../models";
+import { commonConfig } from "../../../../../extensions/configs";
 
 /**
  * Props interface of {@link IdpCertificates}

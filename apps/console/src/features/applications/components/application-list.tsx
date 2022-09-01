@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -38,10 +38,14 @@ import {
     TableColumnInterface,
     useConfirmationModalAlert
 } from "@wso2is/react-components";
+import cloneDeep from "lodash-es/cloneDeep";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Header, Icon, Label, Popup, SemanticICONS } from "semantic-ui-react";
+import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
+import { OAuthProtocolTemplateItem, PassiveStsProtocolTemplateItem, SAMLProtocolTemplateItem } from "./meta";
+import { applicationConfig } from "../../../extensions";
+import { applicationListConfig } from "../../../extensions/configs/application-list";
 import {
     AppConstants,
     AppState,
@@ -61,7 +65,6 @@ import {
     ApplicationTemplateListItemInterface
 } from "../models";
 import { ApplicationTemplateManagementUtils } from "../utils";
-import { applicationConfig } from "../../../extensions";
 
 /**
  *
@@ -123,9 +126,9 @@ interface ApplicationListPropsInterface extends SBACInterface<FeatureConfigInter
 /**
  * Application list component.
  *
- * @param {ApplicationListPropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns React.ReactElement
  */
 export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> = (
     props: ApplicationListPropsInterface
@@ -190,8 +193,8 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
     /**
      * Redirects to the applications edit page when the edit button is clicked.
      *
-     * @param {string} appId - Application id.
-     * @param {ApplicationAccessTypes} access - Access level of the application.
+     * @param appId - Application id.
+     * @param access - Access level of the application.
      */
     const handleApplicationEdit = (appId: string, access: ApplicationAccessTypes): void => {
         if (isSetStrongerAuth) {
@@ -213,7 +216,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
     /**
      * Deletes an application when the delete application button is clicked.
      *
-     * @param {string} appId - Application id.
+     * @param appId - Application id.
      */
     const handleApplicationDelete = (appId: string): void => {
         deleteApplication(appId)
@@ -253,7 +256,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
     /**
      * Resolves data table columns.
      *
-     * @return {TableColumnInterface[]}
+     * @returns TableColumnInterface[]
      */
     const resolveTableColumns = (): TableColumnInterface[] => {
         return [
@@ -263,11 +266,6 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                 id: "name",
                 key: "name",
                 render: (app: ApplicationListItemInterface): ReactNode => {
-                    const template = applicationTemplates
-                        && applicationTemplates instanceof Array
-                        && applicationTemplates.length > 0
-                        && applicationTemplates.find((template) => template.id === app.templateId);
-
                     return (
                         <Header
                             image
@@ -303,41 +301,83 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                             }
                             <Header.Content>
                                 { app.name }
-                                <Header.Subheader
-                                    className="truncate ellipsis"
-                                    data-testid={ `${ testId }-item-sub-heading` }
-                                >
-                                    {
-                                        template && (
-                                            <Label
-                                                size="mini"
-                                                className="compact spaced-right"
-                                                data-testid={ `${ testId }-template-type` }
-                                            >
-                                                { template.name }
-                                            </Label>
-                                        )
-                                    }
-                                    {
-                                        app.description?.length > 80
-                                            ? (
-                                                <Popup
-                                                    content={ app.description }
-                                                    trigger={ (
-                                                        <span>{
-                                                            app.description
-                                                        }</span>
-                                                    ) }
-                                                />
-                                            )
-                                            : app.description
-                                    }
-                                </Header.Subheader>
+                                {
+                                    app.advancedConfigurations?.fragment && (
+                                        <Label size="mini">
+                                            { t("console:develop.features.applications.list.labels.fragment") }
+                                        </Label>
+                                    )
+                                }
                             </Header.Content>
                         </Header>
                     );
                 },
                 title: t("console:develop.features.applications.list.columns.name")
+            },
+            {
+                allowToggleVisibility: false,
+                dataIndex: "templateID",
+                id: "templateID",
+                key: "templateID",
+                render: (app: ApplicationListItemInterface): ReactNode => {
+
+                    // Note: the templateId for Standard-Based Applications in applicationTemplates is
+                    // 'custom-application'(only 1 template is available)
+                    // But backend passes 3 distinct ids for Standard Based Applications
+                    // So, a deep clone of a template with templateId === 'custom-application' should be made
+                    // And change the name according to the templateId passed from the backend
+
+                    // Create a set with custom-application Ids
+                    const customApplicationIds = new Set([
+                        ApplicationManagementConstants.CUSTOM_APPLICATION_SAML,
+                        ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC,
+                        ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS
+                    ]);
+
+                    // Checking whether the templateId from backend, is for a custom application
+                    // If so, find the single template from applicationTemplates
+                    if (customApplicationIds.has(app.templateId)) {
+                        const template = applicationTemplates
+                            && applicationTemplates instanceof Array
+                            && applicationTemplates.length > 0
+                            && applicationTemplates.find((template) => {
+                                return template.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION;
+                            });
+
+                        // Cloning the template and replacing the name with specific template name
+                        const templateClone = cloneDeep(template);
+
+                        if (templateClone) {
+                            if (app.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_SAML) {
+                                templateClone.name = SAMLProtocolTemplateItem.name;
+                            } else if (app.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC) {
+                                templateClone.name = OAuthProtocolTemplateItem.name;
+                            } else if (app.templateId
+                                === ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS) {
+                                templateClone.name = PassiveStsProtocolTemplateItem.name;
+                            }
+                        }
+
+                        return (
+                            <div>
+                                { templateClone?.name }
+                            </div>
+                        );
+                    } else {
+                        // Displaying template name if it's not a Standard-Based Application
+                        const template = applicationTemplates
+                            && applicationTemplates instanceof Array
+                            && applicationTemplates.length > 0
+                            && applicationTemplates.find((template) => template.id === app.templateId);
+
+                        return (
+                            <div>
+                                { template?.name }
+                            </div>
+                        );
+                    }
+                },
+                title: t("console:develop.features.applications.list.columns.templateId")
             },
             {
                 allowToggleVisibility: false,
@@ -353,7 +393,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
     /**
      * Resolves data table actions.
      *
-     * @return {TableActionsInterface[]}
+     * @returns TableActionsInterface[]
      */
     const resolveTableActions = (): TableActionsInterface[] => {
         if (!showListItemActions) {
@@ -388,14 +428,15 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                 hidden: (app: ApplicationListItemInterface) => {
                     const hasScopes: boolean = !hasRequiredScopes(featureConfig?.applications,
                         featureConfig?.applications?.scopes?.delete, allowedScopes);
-
                     const isSuperTenant: boolean = (tenantDomain === AppConstants.getSuperTenant());
                     const isSystemApp: boolean = isSuperTenant && (UIConfig.systemAppsIdentifiers.includes(app?.name));
+                    const isFragmentApp: boolean = app.advancedConfigurations?.fragment || false;
 
                     return hasScopes ||
                             isSystemApp ||
                             (app?.access === ApplicationAccessTypes.READ) ||
-                            !applicationConfig.editApplication.showDeleteButton(app.name);
+                            !applicationConfig.editApplication.showDeleteButton(app) ||
+                            isFragmentApp;
                 },
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (e: SyntheticEvent, app: ApplicationListItemInterface): void => {
@@ -411,7 +452,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
     /**
      * Resolve the relevant placeholder.
      *
-     * @return {React.ReactElement}
+     * @returns React.ReactElement
      */
     const showPlaceholders = (): ReactElement => {
         // When the search returns empty.
@@ -483,7 +524,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                 } }
                 placeholders={ showPlaceholders() }
                 selectable={ selection }
-                showHeader={ false }
+                showHeader={ applicationListConfig.enableTableHeaders }
                 transparent={ !(isLoading || isApplicationTemplateRequestLoading) && (showPlaceholders() !== null) }
                 data-testid={ testId }
             />
@@ -491,7 +532,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                 deletingApplication && (
                     <ConfirmationModal
                         onClose={ (): void => setShowDeleteConfirmationModal(false) }
-                        type="warning"
+                        type="negative"
                         open={ showDeleteConfirmationModal }
                         assertionHint={ t("console:develop.features.applications.confirmations.deleteApplication." +
                             "assertionHint") }
@@ -513,7 +554,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message
                             attached
-                            warning
+                            negative
                             data-testid={ `${ testId }-delete-confirmation-modal-message` }
                         >
                             { t("console:develop.features.applications.confirmations.deleteApplication.message") }

@@ -18,6 +18,8 @@
 
 import { AsgardeoSPAClient } from "@asgardeo/auth-react";
 import { ProfileConstants } from "@wso2is/core/constants";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+import { ProfileInfoInterface, ProfileSchemaInterface } from "@wso2is/core/models";
 import { CommonUtils } from "@wso2is/core/utils";
 import axios from "axios";
 import isEmpty from "lodash-es/isEmpty";
@@ -208,5 +210,93 @@ export const updateProfileInfo = (info: Record<string, unknown>): Promise<any> =
         })
         .catch((error) => {
             return Promise.reject(error?.response?.data);
+        });
+};
+
+/**
+ * Update the logged in user's profile image URL.
+ *
+ * @param {string} url - Image URL.
+ * @return {Promise<ProfileInfoInterface>} Updated profile info as a Promise.
+ * @throws {IdentityAppsApiException}
+ */
+export const updateProfileImageURL = (url: string): Promise<ProfileInfoInterface> => {
+    const data = {
+        Operations: [
+            {
+                op: "replace",
+                value: {
+                    profileUrl: url
+                }
+            }
+        ],
+        schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
+    };
+
+    return updateProfileInfo(data);
+};
+
+/**
+ * Retrieve the profile schemas of the user claims of the currently authenticated user.
+ *
+ * @return {Promise<ProfileSchemaInterface[]>} Array of profile schemas as a Promise.
+ * @throws {IdentityAppsApiException}
+ */
+export const getProfileSchemas = (): Promise<ProfileSchemaInterface[]> => {
+
+    const requestConfig = {
+        headers: {
+            "Accept": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: Config.getServiceResourceEndpoints().profileSchemas
+    };
+    const schemaAttributes: ProfileSchemaInterface[] = [];
+
+    return httpClient(requestConfig)
+        .then((response) => {
+            if (response.status !== 200) {
+                throw new IdentityAppsApiException(
+                    ProfileConstants.SCHEMA_FETCH_REQUEST_INVALID_RESPONSE_CODE_ERROR,
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config);
+            }
+
+            // Retrieve the attributes from all the available resources, and if the
+            // attribute belongs to an schema extension the boolean extended will be
+            // appended to the attribute object.
+            response.data.map((schema) => {
+                schema.attributes.map((attribute) => {
+                    if (schema.id !== ProfileConstants.SCIM2_CORE_USER_SCHEMA) {
+                        const modifiedSubAttributes = [];
+
+                        if(attribute.type === "COMPLEX") {
+                            attribute.subAttributes.map((subAttribute) => {
+                                modifiedSubAttributes.push({ ...subAttribute,  extended: true, schemaId: schema.id });
+                            }
+                            );
+                            attribute.subAttributes = modifiedSubAttributes;
+                        }
+                        schemaAttributes.push({ ...attribute, extended: true, schemaId: schema.id });
+
+                        return;
+                    }
+                    schemaAttributes.push(attribute);
+                });
+            });
+
+            return Promise.resolve(schemaAttributes as ProfileSchemaInterface[]);
+        })
+        .catch((error) => {
+            throw new IdentityAppsApiException(
+                ProfileConstants.SCHEMA_FETCH_REQUEST_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
         });
 };

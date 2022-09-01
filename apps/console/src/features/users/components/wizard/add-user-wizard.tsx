@@ -30,11 +30,12 @@ import { RolePermissions } from "./user-role-permissions";
 import { AddUserWizardSummary } from "./wizard-summary";
 // Keep statement as this to avoid cyclic dependency. Do not import from config index.
 import { SCIMConfigs } from "../../../../extensions/configs/scim";
-import { AppState } from "../../../core";
+import { AppState } from "../../../core/store";
 import { AppConstants } from "../../../core/constants";
 import { history } from "../../../core/helpers";
 import { getGroupList, updateGroupDetails } from "../../../groups/api";
 import { getOrganizationRoles } from "../../../organizations/api";
+import { OrganizationRoleManagementConstants } from "../../../organizations/constants";
 import { OrganizationRoleListItemInterface } from "../../../organizations/models";
 import { OrganizationUtils } from "../../../organizations/utils";
 import { getRolesList, updateRoleDetails } from "../../../roles/api";
@@ -157,8 +158,15 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                 // Get Roles from the Organization API
                 getOrganizationRoles(currentOrganization.id, null, 100, null)
                     .then((response) => {
-                        setRoleList(response.Resources);
-                        setInitialRoleList(response.Resources);
+                        if (!response.Resources) {
+                            return;
+                        }
+
+                        const roles = response.Resources.filter((role) =>
+                            role.displayName !== OrganizationRoleManagementConstants.ORG_CREATOR_ROLE_NAME);
+
+                        setRoleList(roles);
+                        setInitialRoleList(roles);
                     });
             }
         }
@@ -249,7 +257,9 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
 
                 break;
             case 2:
-                setSubmitRoleList();
+                OrganizationUtils.isCurrentOrganizationRoot()
+                    ? setSubmitRoleList()
+                    : setFinishSubmit();
 
                 break;
             case 3:
@@ -570,7 +580,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         });
     };
 
-    const STEPS = [
+    const ALL_STEPS = [
         {
             content: (
                 <AddUser
@@ -612,7 +622,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                     ? (<RolePermissions
                         data-testid={ `${ testId }-role-permission` }
                         handleNavigateBack={ handleViewRolePermission }
-                        handleViewNextButton = { handleViewNextButton }
+                        handleViewNextButton={ handleViewNextButton }
                         roleId={ selectedRoleId }
                     />)
                     : (<AddUserRole
@@ -649,6 +659,11 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
             title: t("console:manage.features.user.modals.addUserWizard.steps.summary")
         }
     ];
+
+    const STEPS = OrganizationUtils.isCurrentOrganizationRoot()
+        ? [ ...ALL_STEPS ]
+        : [ ...ALL_STEPS.slice(0, 2), ...ALL_STEPS.slice(3) ];
+
 
     return (
         <Modal

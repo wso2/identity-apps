@@ -21,7 +21,8 @@ import {
     AlertInterface,
     CommonAuthReducerStateInterface,
     CommonConfigReducerStateInterface,
-    CommonGlobalReducerStateInterface
+    CommonGlobalReducerStateInterface,
+    RouteInterface
 } from "@wso2is/core/models";
 import { I18nModuleOptionsInterface, SupportedLanguagesMeta } from "@wso2is/i18n";
 import { System } from "react-notification-system";
@@ -77,6 +78,17 @@ export interface AccessControlReducerStateInterface {
 export interface OrganizationReducerStateInterface {
     organization?: OrganizationResponseInterface;
     getOrganizationLoading: boolean;
+}
+
+export interface RoutesReducerStateInterface {
+    manageRoutes: {
+        filteredRoutes: RouteInterface[];
+        sanitizedRoutes: RouteInterface[];
+    };
+    developeRoutes: {
+        filteredRoutes: RouteInterface[];
+        sanitizedRoutes: RouteInterface[];
+    };
 }
 
 export interface AuthReducerStateInterface extends CommonAuthReducerStateInterface, AuthenticatedUserInfo { }

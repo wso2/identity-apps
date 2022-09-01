@@ -39,7 +39,7 @@ export const Button: FunctionComponent<DefaultButtonPropsInterface> = (
 
     const {
         [ "data-componentid" ]: componentId,
-        [ "data-testid" ]: testId,
+        [ "data-testid" ]: testId
     } = props;
 
     return (

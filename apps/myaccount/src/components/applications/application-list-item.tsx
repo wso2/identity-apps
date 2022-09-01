@@ -81,7 +81,13 @@ export const ApplicationListItem: FunctionComponent<ApplicationListItemProps> = 
                             )
                     }
                 </List.Content>
-                <Item.Content className="text-content-container">
+                <Item.Content
+                    className={
+                        app.description 
+                            ? "text-content-container" 
+                            : "text-content-container application-text" 
+                    }
+                >
                     <Item.Header as="a">
                         <div className="item-header">{ app.name }</div>
                         {
@@ -110,6 +116,7 @@ export const ApplicationListItem: FunctionComponent<ApplicationListItemProps> = 
                                                 if (index === 0) {
                                                     return <span className="tag" key={ index }>{ " " }{ tag }</span>;
                                                 }
+
                                                 return <span className="tag" key={ index }>, { tag }</span>;
                                             })
                                         }

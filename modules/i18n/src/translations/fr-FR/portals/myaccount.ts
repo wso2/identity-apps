@@ -630,12 +630,14 @@ export const myAccount: MyAccountNS = {
                         messageBody: "Vous pouvez utiliser une application d'authentification compatible dans " +
                             "cette liste :",
                         messageHeading: "Vous n'avez pas d'application d'authentification ?",
-                        regenerateWarning: "Lorsque vous régénérez un nouveau code QR, vous devez le scanner et " + 
-                            "reconfigurer votre application d'authentification. Votre configuration précédente " + 
-                            "ne fonctionnera plus."
+                        regenerateConfirmLabel: "Confirmez la régénération d'un nouveau code QR",
+                        regenerateWarning: {
+                            extended: "Lorsque vous régénérez un nouveau code QR, vous devez le scanner et réinstaller votre application Authenticatrice.Vous ne pourrez plus vous connecter avec le code QR précédent.",
+                            generic: "Lorsque vous régénérez un nouveau code QR, vous devez le scanner et réinstaller votre application Authenticatrice.Votre configuration précédente ne fonctionnera plus."
+                        }
                     },
                     toolTip: "Vous n'avez pas d'application? Téléchargez une application d'authentification " +
-                        "telle que Google Authenticator depuis <3> App Store </3> ou <3> Google Play </3>",
+                        "telle que Google Authenticator depuis <1>App Store</1> ou <3>Google Play</3>",
                     verify: {
                         error: "La vérification a échoué. Veuillez réessayer.",
                         heading: "Entrez le code généré pour vérification",
@@ -1031,7 +1033,7 @@ export const myAccount: MyAccountNS = {
                         " collection, and information about the retention of your personal information.",
                     para2:
                         "Please note that this policy is for reference only, and is applicable for the software " +
-                        "as a product. WSO2 Inc. and its developers have no access to the information held within " +
+                        "as a product. WSO2 LLC. and its developers have no access to the information held within " +
                         "WSO2 IS. Please see the <1>disclaimer</1> section for more information.",
                     para3:
                         "Entities, organizations or individuals controlling the use and administration of WSO2 IS " +

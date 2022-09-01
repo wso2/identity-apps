@@ -17,7 +17,6 @@
 */
 
 import { AccessControlConstants, Show } from "@wso2is/access-control";
-import { getUserStoreList } from "@wso2is/core/api";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, Claim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -29,6 +28,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
 import { AppState, FeatureConfigInterface, store } from "../../../../core";
 import { UserStoreListItem } from "../../../../userstores";
+import { getUserStoreList } from "../../../../userstores/api";
 import { updateAClaim } from "../../../api";
 
 /**
@@ -83,7 +83,7 @@ export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttrib
             name: "PRIMARY"
         });
 
-        getUserStoreList(store.getState().config.endpoints.userStores).then((response) => {
+        getUserStoreList().then((response) => {
             userstore.push(...response.data);
             setUserStore(userstore);
         }).catch(() => {
