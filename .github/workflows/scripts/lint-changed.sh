@@ -37,9 +37,16 @@ command -v pnpm >/dev/null 2>&1 || { echo >&2 "Error: $0 script requires 'pnpm' 
 command -v gh >/dev/null 2>&1 || { echo >&2 "Error: $0 script requires 'gh' to call GitHub APIs.  Aborting as not found."; exit 1; }
 
 raw_changed_files=$(gh pr diff "$GITHUB_PR_NUMBER" --name-only)
-changed_files=("$raw_changed_files")
+changed_files=()
 supported_files=()
+filer_pattern=""
 
+# Convert the multiline string to a single line.
+while read -r file; do
+   changed_files+=("$file")
+done <<< "$raw_changed_files"
+
+# Filter out the files with the supported extensions.
 for file in "${changed_files[@]}"; do
     for ext in "${ESLINT_SUPPORTED_EXT[@]}"; do
         if [[ $file == *$ext ]]; then
@@ -56,8 +63,15 @@ done
 
 echo -e "\n=============================================================\n"
 
-printf -v files_to_lint '%s ' "${supported_files[@]}"
-
 echo -e "🥬 Starting analyzing the changed files with ESLint.."
 
-pnpm eslint --ext .js,.jsx,.ts,.tsx --no-error-on-unmatched-pattern --max-warnings=0 --resolve-plugins-relative-to . -- "${files_to_lint%}"
+# Modify the filepattern to avoid eslint pattern mismatch errors.
+if [[ ${#supported_files[@]} -gt 1 ]]; then
+    filer_pattern="{""$(IFS=","; echo "${supported_files[*]}")""}";
+elif [[ ${#supported_files[@]} == 1 ]]; then
+    filer_pattern="$(IFS=","; echo "${supported_files[*]}")";
+else
+    filer_pattern="{}";
+fi
+
+pnpm eslint --ext .js,.jsx,.ts,.tsx --no-error-on-unmatched-pattern --max-warnings=0 --resolve-plugins-relative-to . -- "$filer_pattern"
