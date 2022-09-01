@@ -441,7 +441,12 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                         "console:manage.features.users.notifications.deleteUser.success.message"
                     )
                 });
-                history.push(AppConstants.getPaths().get("USERS"));
+
+                if (adminUserType === AdminAccountTypes.INTERNAL) {
+                    history.push(AppConstants.getPaths().get("ADMINISTRATORS"));
+                } else {
+                    history.push(AppConstants.getPaths().get("USERS"));
+                }
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
@@ -1352,7 +1357,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                             if (!(schema.name === ProfileConstants?.
                                                 SCIM2_SCHEMA_DICTIONARY.get("ROLES_DEFAULT")
                                                 || schema.name === ProfileConstants?.
-                                                SCIM2_SCHEMA_DICTIONARY.get("ACTIVE")
+                                                    SCIM2_SCHEMA_DICTIONARY.get("ACTIVE")
                                                 || schema.name === ProfileConstants?.
                                                     SCIM2_SCHEMA_DICTIONARY.get("GROUPS")
                                                 || schema.name === ProfileConstants?.
