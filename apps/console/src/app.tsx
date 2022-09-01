@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { DecodedIDTokenPayload, useAuthContext } from "@asgardeo/auth-react";
 import { AccessControlProvider } from "@wso2is/access-control";
+import { DecodedIDTokenPayload, useAuthContext } from "@asgardeo/auth-react";
 import { CommonHelpers, isPortalAccessGranted } from "@wso2is/core/helpers";
 import { RouteInterface, emptyIdentityAppsSettings } from "@wso2is/core/models";
 import {
