@@ -48,4 +48,14 @@ export class OrganizationUtils {
         return store.getState().organization?.organization?.id
             === OrganizationManagementConstants.ROOT_ORGANIZATION_ID;
     }
+
+    /**
+     * Returns if the organization management feature is enabled or not.
+     *
+     * @returns {boolean} Organization management feature config.
+     */
+     public static getOrganizationFeatureConfig(): boolean {
+        return isOrganizationManagementEnabled || 
+        window["AppUtils"]?.getConfig()?.ui?.isOrganizationManagementEnabled;
+    }
 }

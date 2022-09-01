@@ -26,6 +26,7 @@ import { EXTENSION_ROUTES, identityProviderConfig } from "../../../extensions";
 import { AppLayout, AuthLayout, DefaultLayout, ErrorLayout } from "../../../layouts";
 import { AdminView, DeveloperView, FullScreenView } from "../../../views";
 import { AppConstants } from "../constants";
+import { OrganizationUtils } from "../../organizations/utils";
 
 /**
  * Get Developer View Routes.
@@ -510,7 +511,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
                         protected: true,
                         showOnSidePanel: false
                     },
-                    isOrganizationManagementEnabled && {
+                    OrganizationUtils.getOrganizationFeatureConfig() && {
                         category: "console:manage.features.sidePanel.categories.organizations",
                         children: [
                             {

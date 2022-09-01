@@ -349,6 +349,16 @@ export class SignInMethodUtils {
 
     }
 
+    /**
+     * Returns if the adaptive authentication feature is enabled or not.
+     *
+     * @returns {boolean} Adaptive authentication feature config
+     */
+     public static getAdaptiveAuthenticationConfig(): boolean {
+        return isAdaptiveAuthenticationAvailable || 
+        window["AppUtils"]?.getConfig()?.ui?.isAdaptiveAuthenticationAvailable;
+    }
+
 }
 
 export type ConnectionsJITUPConflictWithMFAArgs = {

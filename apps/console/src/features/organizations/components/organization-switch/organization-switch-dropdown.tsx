@@ -89,7 +89,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
      */
     const isOrgSwitcherEnabled = useMemo(() => {
         return (
-            isOrganizationManagementEnabled &&
+            OrganizationUtils.getOrganizationFeatureConfig() &&
             // The `tenantDomain` takes the organization id when you log in to a sub-organization.
             // So, we cannot use `tenantDomain` to check
             // if the user is logged in to a non-super-tenant account reliably.
