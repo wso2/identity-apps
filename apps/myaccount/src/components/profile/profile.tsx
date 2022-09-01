@@ -786,7 +786,10 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                                         }
                                                     } }
                                                     value={ resolveProfileInfoSchemaValue(schema) }
-                                                    maxLength={ schema.name === "emails" ? 50 : 30 }
+                                                    maxLength={ schema.name === "emails" ? 50 
+                                                        : fieldName.toLowerCase().includes("uri") 
+                                                        || fieldName.toLowerCase().includes("url") ? -1 : 30 
+                                                    }
                                                 />
                                             )
                                             }

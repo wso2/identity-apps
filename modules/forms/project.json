@@ -1,8 +1,11 @@
 {
-    "projectType": "library",
+    "$schema": "../../node_modules/nx/schemas/project-schema.json",
     "root": "modules/forms",
     "sourceRoot": "modules/forms/src",
+    "projectType": "library",
+    "generators": {},
     "prefix": "@wso2is",
+    "tags": [],
     "targets": {
         "build": {
             "executor": "@nrwl/web:rollup",

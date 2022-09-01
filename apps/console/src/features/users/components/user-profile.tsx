@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,7 +13,7 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
- * under the License
+ * under the License.
  */
 
 import { ProfileConstants } from "@wso2is/core/constants";
@@ -48,9 +48,10 @@ import { ChangePasswordComponent } from "./user-change-password";
 import { commonConfig,userConfig } from "../../../extensions";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "../../core";
 import { OrganizationUtils } from "../../organizations/utils";
+import { SearchRoleInterface ,searchRoleList, updateRoleDetails } from "../../roles";
 import { ConnectorPropertyInterface, ServerConfigurationsConstants  } from "../../server-configurations";
 import { getUserDetails, updateUserInfo } from "../api";
-import { UserManagementConstants } from "../constants";
+import { AdminAccountTypes, UserAccountTypes, UserManagementConstants } from "../constants";
 
 /**
  * Prop types for the basic details component.
@@ -101,8 +102,8 @@ interface UserProfilePropsInterface extends TestableComponentInterface, SBACInte
 /**
  * Basic details component.
  *
- * @param {UserProfilePropsInterface} props - Props injected to the basic details component.
- * @return {ReactElement}
+ * @param props - Props injected to the basic details component.
+ * @returns The react component for the user profile.
  */
 export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     props: UserProfilePropsInterface
@@ -134,6 +135,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const [ profileInfo, setProfileInfo ] = useState(new Map<string, string>());
     const [ profileSchema, setProfileSchema ] = useState<ProfileSchemaInterface[]>();
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
+    const [ showAdminRevokeConfirmationModal, setShowAdminRevokeConfirmationModal ] = useState<boolean>(false);
     const [ deletingUser, setDeletingUser ] = useState<ProfileInfoInterface>(undefined);
     const [ editingAttribute, setEditingAttribute ] = useState(undefined);
     const [ showLockDisableConfirmationModal, setShowLockDisableConfirmationModal ] = useState<boolean>(false);
@@ -150,6 +152,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const [ alert, setAlert, alertComponent ] = useConfirmationModalAlert();
     const [ countryList, setCountryList ] = useState<DropdownItemProps[]>([]);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+    const [ adminRoleId, setAdminRoleId ] = useState<string>("");
 
     const createdDate = user?.meta?.created;
     const modifiedDate = user?.meta?.lastModified;
@@ -226,6 +229,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      */
     useEffect(() => {
         setCountryList(CommonUtils.getCountryList());
+        if (adminUserType === AdminAccountTypes.INTERNAL) {
+            // Admin role ID is only used by internal admins.
+            getAdminRoleId();
+        }        
     }, []);
 
     /**
@@ -240,8 +247,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     /**
      * The following function maps profile details to the SCIM schemas.
      *
-     * @param proSchema ProfileSchema
-     * @param userInfo BasicProfileInterface
+     * @param proSchema - ProfileSchema
+     * @param userInfo - BasicProfileInterface
      */
     const mapUserToSchema = (proSchema: ProfileSchemaInterface[], userInfo: ProfileInfoInterface): void => {
         if (!isEmpty(profileSchema) && !isEmpty(userInfo)) {
@@ -420,7 +427,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     /**
      * This function handles deletion of the user.
      *
-     * @param deletingUser
+     * @param deletingUser - user object to be deleted.
      */
     const handleUserDelete = (deletingUser: ProfileInfoInterface): void => {
         userConfig.deleteUser(deletingUser)
@@ -434,7 +441,12 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                         "console:manage.features.users.notifications.deleteUser.success.message"
                     )
                 });
-                history.push(AppConstants.getPaths().get("USERS"));
+
+                if (adminUserType === AdminAccountTypes.INTERNAL) {
+                    history.push(AppConstants.getPaths().get("ADMINISTRATORS"));
+                } else {
+                    history.push(AppConstants.getPaths().get("USERS"));
+                }
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
@@ -457,9 +469,113 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     };
 
     /**
+     * This function returns the username of the current user.
+     *
+     * @param user - user that the username will be extracted from.
+     */
+    const resolveUsername = (user: ProfileInfoInterface): string => {
+        let username = user?.userName;
+
+        if (username.split("/").length > 1) {
+            username = username.split("/")[1];
+        }
+
+        return username;
+    };
+
+    /**
+     * This function returns the ID of the administrator role.
+     *
+     */
+    const getAdminRoleId = () => {
+        const searchData: SearchRoleInterface = {
+            filter: "displayName eq " + UserAccountTypes.ADMINISTRATOR,
+            schemas: [ "urn:ietf:params:scim:api:messages:2.0:SearchRequest" ],
+            startIndex: 0
+        };
+
+        searchRoleList(searchData)
+            .then((response) => {
+                if (response?.data?.Resources.length > 0) {
+                    const adminId = response?.data?.Resources[0]?.id;
+
+                    setAdminRoleId(adminId);
+                }
+            }).catch((error) => {
+                if (error.response && error.response.data && error.response.data.description) {
+                    dispatch(addAlert({
+                        description: error.response.data.description,
+                        level: AlertLevels.ERROR,
+                        message: t("console:manage.features.users.notifications.getAdminRole.error.message")
+                    }));
+
+                    return;
+                }
+                dispatch(addAlert({
+                    description: t("console:manage.features.users.notifications.getAdminRole." +
+                        "genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("console:manage.features.users.notifications.getAdminRole.genericError" +
+                        ".message")
+                }));
+            });
+    };
+
+    /**
+     * This function handles deletion of the user.
+     *
+     * @param deletingUser - user object to be revoked their admin permissions.
+     */
+    const handleUserAdminRevoke = (deletingUser: ProfileInfoInterface): void => {
+        // Payload for the update role request.
+        const roleData = {
+            Operations: [
+                {
+                    op: "remove",
+                    path: `users[display eq ${deletingUser.userName}]`,
+                    value: {}
+                }
+            ],
+            schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
+        };
+
+        updateRoleDetails(adminRoleId, roleData)
+            .then(() => {
+                dispatch(addAlert({
+                    description: t(
+                        "console:manage.features.users.notifications.revokeAdmin.success.description"
+                    ),
+                    level: AlertLevels.SUCCESS,
+                    message: t(
+                        "console:manage.features.users.notifications.revokeAdmin.success.message"
+                    )
+                }));
+                history.push(AppConstants.getPaths().get("ADMINISTRATORS"));
+            })
+            .catch((error) => {
+                if (error.response && error.response.data && error.response.data.description) {
+                    dispatch(addAlert({
+                        description: error.response.data.description,
+                        level: AlertLevels.ERROR,
+                        message: t("console:manage.features.users.notifications.revokeAdmin.error.message")
+                    }));
+
+                    return;
+                }
+                dispatch(addAlert({
+                    description: t("console:manage.features.users.notifications.revokeAdmin." +
+                        "genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("console:manage.features.users.notifications.revokeAdmin.genericError" +
+                        ".message")
+                }));
+            });
+    };
+
+    /**
      * The following method handles the `onSubmit` event of forms.
      *
-     * @param values
+     * @param values - submit values.
      */
     const handleSubmit = (values: Map<string, string | string[]>): void => {
 
@@ -767,7 +883,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     /**
      * Handle danger zone toggle actions.
      *
-     * @param toggleData
+     * @param toggleData - danger zone toggle data.
      */
     const handleDangerZoneToggles = (toggleData: CheckboxProps) => {
         setEditingAttribute({
@@ -840,15 +956,19 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             ? (
                                 attributeValue
                                     ? t("console:manage.features.user.profile.notifications.lockUserAccount." +
-                                        "success.message", { name: user.emails && user.emails !== undefined ? resolveUserEmails(user?.emails) : user.userName })
+                                        "success.message", { name: user.emails && user.emails !== undefined ? 
+                                        resolveUserEmails(user?.emails) : resolveUsername(user) })
                                     : t("console:manage.features.user.profile.notifications.unlockUserAccount." +
-                                        "success.message", { name: user.emails && user.emails !== undefined ? resolveUserEmails(user?.emails) : user.userName })
+                                        "success.message", { name: user.emails && user.emails !== undefined ? 
+                                        resolveUserEmails(user?.emails) : resolveUsername(user) })
                             ) : (
                                 attributeValue
                                     ? t("console:manage.features.user.profile.notifications.disableUserAccount." +
-                                        "success.message", { name: user.emails && user.emails !== undefined ? resolveUserEmails(user?.emails) : user.userName })
+                                        "success.message", { name: user.emails && user.emails !== undefined ? 
+                                        resolveUserEmails(user?.emails) : resolveUsername(user) })
                                     : t("console:manage.features.user.profile.notifications.enableUserAccount." +
-                                        "success.message", { name: user.emails && user.emails !== undefined ? resolveUserEmails(user?.emails) : user.userName })
+                                        "success.message", { name: user.emails && user.emails !== undefined ? 
+                                        resolveUserEmails(user?.emails) : resolveUsername(user) })
                             )
                 });
                 setShowLockDisableConfirmationModal(false);
@@ -902,8 +1022,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                 {
                     (hasRequiredScopes(featureConfig?.users, featureConfig?.users?.scopes?.delete,
                         allowedScopes) && (!isReadOnly || allowDeleteOnly) &&
-                        !(user.userName === tenantAdmin || user.userName === "admin") &&
-                        !authenticatedUser.includes(user.userName)) && (
+                        !(resolveUsername(user) === tenantAdmin || resolveUsername(user) === "admin") &&
+                        !authenticatedUser.includes(resolveUsername(user))) && (
                         <DangerZoneGroup
                             sectionHeader={ t("console:manage.features.user.editUser.dangerZoneGroup.header") }
                         >
@@ -945,6 +1065,23 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                             checked: accountLocked,
                                             id: "accountLocked",
                                             onChange: handleDangerZoneToggles
+                                        } }
+                                    />
+                                )
+                            }
+                            {
+                                adminUserType === AdminAccountTypes.INTERNAL && (
+                                    <DangerZone
+                                        data-testid={ `${ testId }-revoke-admin-privilege-danger-zone` }
+                                        actionTitle={ t("console:manage.features.user.editUser.dangerZoneGroup." +
+                                        "deleteAdminPriviledgeZone.actionTitle") }
+                                        header={ t("console:manage.features.user.editUser.dangerZoneGroup." +
+                                        "deleteAdminPriviledgeZone.header") }
+                                        subheader={ t("console:manage.features.user.editUser.dangerZoneGroup." +
+                                        "deleteAdminPriviledgeZone.subheader") }
+                                        onActionClick={ (): void => {
+                                            setShowAdminRevokeConfirmationModal(true);
+                                            setDeletingUser(user);
                                         } }
                                     />
                                 )
@@ -1021,7 +1158,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 };
                             }) 
                             : [] 
-                     ) }
+                    ) }
                     key={ key }
                     disabled={ false }
                     readOnly={ isReadOnly || schema.mutability === ProfileConstants.READONLY_SCHEMA }
@@ -1059,7 +1196,9 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 }));
                         }
                     } }
-                    maxLength={ 30 }
+                    maxLength={ 
+                        fieldName.toLowerCase().includes("uri") || fieldName.toLowerCase().includes("url") ? -1 : 30 
+                    }
                 />
             );
         }
@@ -1070,8 +1209,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      * only be displayed in the form only if there is a value for the schema. This function validates whether the
      * filed should be displayed considering these factors.
      *
-     * @param {ProfileSchemaInterface} schema
-     * @return {boolean} whether the field for the input schema should be displayed.
+     * @param schema - The profile schema to be validated.
+     * @returns whether the field for the input schema should be displayed.
      */
     const isFieldDisplayable = (schema: ProfileSchemaInterface): boolean => {
         return (!isEmpty(profileInfo.get(schema.name)) ||
@@ -1081,8 +1220,9 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     /**
      * This function generates the user profile details form based on the input Profile Schema
      *
-     * @param {ProfileSchemaInterface} schema
-     * @param {number} key
+     * @param schema - The profile schema to be used to generate the form.
+     * @param key - The key for form field the profile schema.
+     * @returns the form field for the profile schema.
      */
     const generateProfileEditForm = (schema: ProfileSchemaInterface, key: number): JSX.Element => {
         const fieldName = t("console:manage.features.user.profile.fields." +
@@ -1164,7 +1304,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 {
                                     (hasRequiredScopes(featureConfig?.users,
                                         featureConfig?.users?.scopes?.update, allowedScopes) &&
-                                        !isReadOnly && user.userName !== "admin" &&
+                                        !isReadOnly && resolveUsername(user) !== "admin" &&
                                         adminUserType === "None") && (
                                         <Button
                                             basic
@@ -1370,6 +1510,37 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     )
                 }
                 {
+                    deletingUser && (
+                        <ConfirmationModal
+                            data-testid={ `${testId}-admin-privilege-revoke-confirmation-modal` }
+                            onClose={ (): void => setShowAdminRevokeConfirmationModal(false) }
+                            type="negative"
+                            open={ showAdminRevokeConfirmationModal }
+                            assertionHint={ t("console:manage.features.user.revokeAdmin.confirmationModal." +
+                                "assertionHint") }
+                            assertionType="checkbox"
+                            primaryAction={ t("common:confirm") }
+                            secondaryAction={ t("common:cancel") }
+                            onSecondaryActionClick={ (): void => {
+                                setShowAdminRevokeConfirmationModal(false);
+                                setAlert(null);
+                            } }
+                            onPrimaryActionClick={ (): void => handleUserAdminRevoke(deletingUser) }
+                            closeOnDimmerClick={ false }
+                        >
+                            <ConfirmationModal.Header 
+                                data-testid={ `${testId}-admin-privilege-revoke-confirmation-modal-header` }
+                            >
+                                { t("console:manage.features.user.revokeAdmin.confirmationModal.header") }
+                            </ConfirmationModal.Header>
+                            <ConfirmationModal.Content>
+                                <div className="modal-alert-wrapper"> { alert && alertComponent }</div>
+                                { t("console:manage.features.user.revokeAdmin.confirmationModal.content") }
+                            </ConfirmationModal.Content>
+                        </ConfirmationModal>
+                    )
+                }
+                {
                     editingAttribute && (
                         <ConfirmationModal
                             data-testid={ `${testId}-confirmation-modal` }
@@ -1379,7 +1550,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             } }
                             type="warning"
                             open={ showLockDisableConfirmationModal }
-                            assertion={ user.userName }
+                            assertion={ resolveUsername(user) }
                             assertionHint={ editingAttribute.name === ProfileConstants
                                 .SCIM2_SCHEMA_DICTIONARY.get("ACCOUNT_LOCKED")
                                 ? t("console:manage.features.user.lockUser.confirmationModal.assertionHint")

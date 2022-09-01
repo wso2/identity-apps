@@ -1,7 +1,16 @@
 {
+    "$schema": "../../node_modules/nx/schemas/project-schema.json",
+    "root": "modules/react-components",
     "sourceRoot": "modules/react-components/src",
     "projectType": "library",
+    "generators": {},
+    "prefix": "@wso2is",
     "tags": [],
+    "implicitDependencies": [
+        "core",
+        "forms",
+        "theme"
+    ],
     "targets": {
         "build": {
             "executor": "@nrwl/web:rollup",

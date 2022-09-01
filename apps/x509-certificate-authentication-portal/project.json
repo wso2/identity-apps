@@ -1,6 +1,14 @@
 {
+    "$schema": "../../node_modules/nx/schemas/project-schema.json",
     "root": "apps/x509-certificate-authentication-portal",
+    "sourceRoot": "apps/x509-certificate-authentication-portal/src",
     "projectType": "application",
+    "generators": {},
+    "prefix": "@wso2is",
+    "tags": [],
+    "implicitDependencies": [
+        "theme"
+    ],
     "targets": {
         "build": {
             "executor": "@nrwl/workspace:run-commands",

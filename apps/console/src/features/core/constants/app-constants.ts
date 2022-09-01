@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -315,7 +315,8 @@ export class AppConstants {
             .set("ORGANIZATIONS", `${AppConstants.getAdminViewBasePath()}/organizations`)
             .set("ORGANIZATION_UPDATE", `${AppConstants.getAdminViewBasePath()}/organizations/:id`)
             .set("ORGANIZATION_ROLES", `${AppConstants.getAdminViewBasePath()}/organization-roles`)
-            .set("ORGANIZATION_ROLE_UPDATE", `${AppConstants.getAdminViewBasePath()}/organization-roles/:id`);
+            .set("ORGANIZATION_ROLE_UPDATE", `${AppConstants.getAdminViewBasePath()}/organization-roles/:id`)
+            .set("ADMINISTRATORS", `${AppConstants.getAdminViewBasePath()}/administrators`);
     }
 
     /**

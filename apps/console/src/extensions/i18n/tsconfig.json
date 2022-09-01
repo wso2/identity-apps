@@ -1,7 +1,6 @@
 {
     "compilerOptions": {
         "experimentalDecorators": true,
-        "jsx": "react",
         "module": "commonjs",
         "rootDir": ".",
         "outDir": "dist/src"
