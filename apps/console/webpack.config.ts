@@ -486,7 +486,13 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
             publicPath: getStaticFileServePath(baseHref),
             writeToDisk: true
         },
-        historyApiFallback: true,
+        // When running the apps on root context, we need to set this to `true` to route all
+        // 404 to `index.html`. Setting to true doesn't seem to work when the apps are hosted
+        // in a sub path and the default configuration works fine in that scenario.
+        // https://webpack.js.org/configuration/dev-server/#devserverhistoryapifallback
+        historyApiFallback: baseHref !== "/"
+            ? config.devServer?.historyApiFallback
+            : true,
         host: "localhost",
         open: baseHref,
         port: devServerPort
