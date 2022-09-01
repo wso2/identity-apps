@@ -23,14 +23,18 @@ import "regenerator-runtime/runtime";
 import TimerWorker from "@wso2is/core/src/workers/timer.worker";
 // DO NOT SHORTEN THE IMPORT PATH as it could lead to circular dependencies.
 import { commonConfig } from "../extensions/configs/common";
+import { OrganizationUtils } from "../features/organizations/utils";
+import { SignInMethodUtils } from "../features/applications";
 
 
 if (!window["AppUtils"] || !window["AppUtils"]?.getConfig()) {
     AppUtils.init({
         accountAppOrigin: process.env.NODE_ENV === "production" ? undefined : "https://localhost:9000",
         contextPath: contextPathGlobal,
-        isAdaptiveAuthenticationAvailable: isAdaptiveAuthenticationAvailable,
-        isOrganizationManagementEnabled: isOrganizationManagementEnabled,
+        isAdaptiveAuthenticationAvailable: isAdaptiveAuthenticationAvailable || 
+        window["AppUtils"]?.getConfig()?.ui?.isAdaptiveAuthenticationAvailable,
+        isOrganizationManagementEnabled: isOrganizationManagementEnabled || 
+        window["AppUtils"]?.getConfig()?.ui?.isOrganizationManagementEnabled,
         serverOrigin: serverOriginGlobal,
         superTenant: superTenantGlobal,
         tenantPrefix: tenantPrefixGlobal

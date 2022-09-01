@@ -42,7 +42,7 @@ if ((window.location.pathname !== AppConstants.getAppLoginPath())
 }
 
 const getAuthParams = (): Promise<AuthParams> => {
-    if (!SPAUtils.hasAuthSearchParamsInURL() && process.env.NODE_ENV === "production") {
+    if (!SPAUtils.hasAuthSearchParamsInURL() && window[ "AppUtils" ].getConfig().idpConfigs.responseMode == "form_post") {
 
         const contextPath: string = window[ "AppUtils" ].getConfig().appBase
             ? `/${ window[ "AppUtils" ].getConfig().appBase }`

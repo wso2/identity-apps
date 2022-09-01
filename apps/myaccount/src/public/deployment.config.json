@@ -1,5 +1,5 @@
 {
-    "appBaseName": "myaccount",
+    "appBaseName": "",
     "appBaseNameForHistoryAPI": "/",
     "clientID": "MY_ACCOUNT",
     "debug": false,
