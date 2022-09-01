@@ -109,7 +109,7 @@ export const ApplicationListItem: FunctionComponent<ApplicationListItemProps> = 
                                 ) : null
                         }
                         {
-                            (app.tags && app.tags.length && app.tags.length > 0) 
+                            (app.tags && app.tags.length && app.tags.length > 0)
                                 ? (
                                     <Item.Extra>
                                         <Icon name="tag" size="small"/>
