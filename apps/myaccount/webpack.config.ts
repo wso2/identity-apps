@@ -470,7 +470,6 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
         open: baseHref,
         port: devServerPort
     };
-    console.log(config.devServer)
 
     return config;
 };
