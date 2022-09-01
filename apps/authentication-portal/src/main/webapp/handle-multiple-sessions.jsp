@@ -23,6 +23,7 @@
 <%@ page import="java.io.File" %>
 <%@ page import="org.wso2.carbon.identity.core.util.IdentityUtil" %>
 <%@ page import="java.net.URLEncoder" %>
+<%@ page import="org.wso2.carbon.context.PrivilegedCarbonContext" %>
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 
 <%@include file="includes/localize.jsp" %>
@@ -41,6 +42,19 @@
 
     if (StringUtils.isBlank(authAPIURL)) {
         authAPIURL = IdentityUtil.getServerURL("/api/identity/auth/v1.1/", true, true);
+    } else {
+        // Resolve tenant domain for the authentication API URl
+        if (authAPIURL.contains("t/${tenantDomain}")) {
+            String tmpTenantDomain = IdentityTenantUtil.getTenantDomainFromContext();
+            if (StringUtils.isBlank(tmpTenantDomain)) {
+                tmpTenantDomain = PrivilegedCarbonContext.getThreadLocalCarbonContext().getTenantDomain();
+            }
+            if (tmpTenantDomain.equals("carbon.super")) {
+                authAPIURL = authAPIURL.replace("t/${tenant}/", "");
+            } else {
+                authAPIURL = authAPIURL.replace("${tenant}", tmpTenantDomain);
+            }
+        }
     }
     if (!authAPIURL.endsWith("/")) {
         authAPIURL += "/";
