@@ -486,6 +486,7 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
             publicPath: getStaticFileServePath(baseHref),
             writeToDisk: true
         },
+        historyApiFallback: true,
         host: "localhost",
         open: baseHref,
         port: devServerPort
