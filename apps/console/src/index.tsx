@@ -28,8 +28,8 @@ import * as ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import { AuthenticateUtils } from "./features/authentication";
-import { ProtectedApp } from "./protected-app";
 import { AppConstants, Config, PreLoader, store } from "./features/core";
+import { ProtectedApp } from "./protected-app";
 
 // Set the runtime config in the context.
 ContextUtils.setRuntimeConfig(Config.getDeploymentConfig());
