@@ -431,7 +431,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                                     ".placeholder")
                                 }
                                 placeholder={ t("console:develop.features.applications.advancedSearch.placeholder") }
-                                customStyle={ {width: "450px"} }
+                                customStyle={ { width: "450px" } }
                                 defaultSearchAttribute="name"
                                 defaultSearchOperator="co"
                                 predefinedDefaultSearchStrategy={
