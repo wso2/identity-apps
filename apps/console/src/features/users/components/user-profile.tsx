@@ -441,7 +441,12 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                         "console:manage.features.users.notifications.deleteUser.success.message"
                     )
                 });
-                history.push(AppConstants.getPaths().get("USERS"));
+
+                if (adminUserType === AdminAccountTypes.INTERNAL) {
+                    history.push(AppConstants.getPaths().get("ADMINISTRATORS"));
+                } else {
+                    history.push(AppConstants.getPaths().get("USERS"));
+                }
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
@@ -1191,7 +1196,9 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 }));
                         }
                     } }
-                    maxLength={ 30 }
+                    maxLength={ 
+                        fieldName.toLowerCase().includes("uri") || fieldName.toLowerCase().includes("url") ? -1 : 30 
+                    }
                 />
             );
         }
