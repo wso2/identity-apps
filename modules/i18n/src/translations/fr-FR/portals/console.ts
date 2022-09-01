@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -1426,8 +1426,8 @@ export const console: ConsoleNS = {
                                 invalidOperationModal: {
                                     header: "Opération invalide",
                                     message: "Vous devez désactiver la validation de la signature de la demande pour"+
-                                        " supprimer le certificat. Si la signature de requête ou de réponse est" + 
-                                        " activée, il est essentiel de disposer d'un certificat valide" + 
+                                        " supprimer le certificat. Si la signature de requête ou de réponse est" +
+                                        " activée, il est essentiel de disposer d'un certificat valide" +
                                         " pour vérifier la signature."
                                 }
                             }
@@ -2381,8 +2381,9 @@ export const console: ConsoleNS = {
                         predefined: "Utiliser prédéfini"
                     },
                     columns: {
-                        actions: "Actions",
-                        name: "Nom"
+                        actions: "",
+                        name: "Nom",
+                        templateId: "taper"
                     },
                     labels: {
                         fragment: "Fragmenter App"
@@ -7893,7 +7894,7 @@ export const console: ConsoleNS = {
                 revokeAdmin: {
                     confirmationModal: {
                         assertionHint: "Veuillez confirmer votre action.",
-                        content: "Si vous révoquez les privilèges d'administrateur de cet utilisateur, l'utilisateur " + 
+                        content: "Si vous révoquez les privilèges d'administrateur de cet utilisateur, l'utilisateur " +
                             "ne pourra pas se connecter à la console Asgardeo et ne pourra pas " +
                             "effectuer d'opérations d'administration. Veuillez procéder avec prudence.",
                         header: "Êtes-vous sûr?",
