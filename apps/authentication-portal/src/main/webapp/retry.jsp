@@ -47,9 +47,9 @@
     if (stat == null || statusMessage == null) {
         String errorKey = request.getParameter(REQUEST_PARAM_ERROR_KEY);
         if (errorKey != null) {
-            if (request.getParameter(Constants.STATUS_PARAM) != null) {
-                String statusParam = request.getParameter(Constants.STATUS_PARAM);
-                String statusMessageParam = request.getParameter(Constants.STATUS_MSG_PARAM);
+            if (request.getParameter(Constants.STATUS) != null) {
+                String statusParam = request.getParameter(Constants.STATUS);
+                String statusMessageParam = request.getParameter(Constants.STATUS_MSG);
                 if (StringUtils.isNotEmpty(statusParam)) {
                     stat = AuthenticationEndpointUtil.customi18n(resourceBundle, statusParam);
                 }
