@@ -92,7 +92,7 @@
 <!doctype html>
 <html>
 <head>
-    <!-- header -->
+    <%-- header --%>
     <%
         File headerFile = new File(getServletContext().getRealPath("extensions/header.jsp"));
         if (headerFile.exists()) {
@@ -112,7 +112,7 @@
 
     <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
         <layout:component componentName="ProductHeader" >
-            <!-- product-title -->
+            <%-- product-title --%>
             <%
                 File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
                 if (productTitleFile.exists()) {
@@ -150,10 +150,10 @@
 
                     <div class="segment-form">
 
-                        <!-- Prompting for consent is only needed if we have mandatory or requested claims without any consent -->
+                        <%-- Prompting for consent is only needed if we have mandatory or requested claims without any consent --%>
                         <% if (ArrayUtils.isNotEmpty(mandatoryClaimList) || ArrayUtils.isNotEmpty(requestedClaimList)) { %>
                             <input type="hidden" name="user_claims_consent" id="user_claims_consent" value="true"/>
-                            <!-- validation -->
+                            <%-- validation --%>
                             <div class="ui secondary segment" style="text-align: left;">
                                 <h5><%=AuthenticationEndpointUtil.i18n(resourceBundle, "requested.attributes")%>:</h5>
 
@@ -346,7 +346,7 @@
             </div>
         </layout:component>
         <layout:component componentName="ProductFooter" >
-            <!-- product-footer -->
+            <%-- product-footer --%>
             <%
                 File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
                 if (productFooterFile.exists()) {
@@ -358,7 +358,7 @@
         </layout:component>
     </layout:main>
 
-    <!-- footer -->
+    <%-- footer --%>
     <%
         File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
         if (footerFile.exists()) {
