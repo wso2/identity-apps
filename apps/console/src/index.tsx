@@ -30,7 +30,7 @@ import { BrowserRouter } from "react-router-dom";
 import { AuthenticateUtils } from "./features/authentication";
 import { AppConstants, Config, PreLoader, store } from "./features/core";
 import { ProtectedApp } from "./protected-app";
-
+debugger
 // Set the runtime config in the context.
 ContextUtils.setRuntimeConfig(Config.getDeploymentConfig());
 
