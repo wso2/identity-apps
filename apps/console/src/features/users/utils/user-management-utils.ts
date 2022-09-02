@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { getUserNameWithoutDomain } from "@wso2is/core/helpers";
+
 /**
  * Utility class for user management operations.
  */
@@ -28,20 +30,6 @@ export class UserManagementUtils {
      */
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     private constructor() { }
-
-    /**
-     * Resolves the username of the given user.
-     *
-     * @param user - User object.
-     * @returns The username of the given user as a string.
-     */
-    public static resolveUsername = (username: string): string => {
-        if (username.split("/").length > 1) {
-            username = username.split("/")[1];
-        }
-
-        return username;
-    };
 
     /**
      * Check if a user is the authenticated user.
@@ -58,6 +46,6 @@ export class UserManagementUtils {
             authenticatedUsername = authenticatedUser.split("@").slice(0,2).join("@");
         }
 
-        return this.resolveUsername(username) === authenticatedUsername;
+        return getUserNameWithoutDomain(username) === authenticatedUsername;
     };
 }
