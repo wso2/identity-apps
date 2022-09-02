@@ -43,7 +43,7 @@ import { UserManagementUtils } from "../utils";
 /**
  * User Edit page.
  *
- * @return {React.ReactElement}
+ * @returns User edit page react component.
  */
 const UserEditPage = (): ReactElement => {
 
@@ -137,7 +137,7 @@ const UserEditPage = (): ReactElement => {
     const handleUserUpdate = (id: string) => {
         getUser(id);
 
-        if (UserManagementUtils.isAuthenticatedUser(profileInfo, user)) {
+        if (UserManagementUtils.isAuthenticatedUser(profileInfo?.userName, user?.userName)) {
             dispatch(getProfileInformation());
         }
     };
@@ -149,8 +149,8 @@ const UserEditPage = (): ReactElement => {
     /**
      * Handles edit avatar modal submit action.
      *
-     * @param {<HTMLButtonElement>} e - Event.
-     * @param {string} url - Selected image URL.
+     * @param e - Mouse event.
+     * @param url - Selected image URL.
      */
     const handleAvatarEditModalSubmit = (e: MouseEvent<HTMLButtonElement>, url: string): void => {
         const data = {
@@ -216,7 +216,7 @@ const UserEditPage = (): ReactElement => {
     /**
      * This function resolves the primary email of the user.
      *
-     * @param {string | MultiValueAttributeInterface)[]} emails - User emails.
+     * @param emails - User emails.
      */
     const resolvePrimaryEmail = (emails: (string | MultiValueAttributeInterface)[]): string => {
         let primaryEmail: string | MultiValueAttributeInterface = "";
@@ -231,48 +231,53 @@ const UserEditPage = (): ReactElement => {
     return (
         <PageLayout
             isLoading={ isUserDetailsRequestLoading }
-            title={ 
+            title={ (
                 <>
                     {
                         user?.active !== undefined
-                        ? (
-                            <>
-                                {
-                                    user?.active
-                                        ? <Popup
-                                            trigger={
-                                                <Icon
-                                                    className="mr-2 ml-0 vertical-aligned-baseline"
-                                                    size="small"
-                                                    name="circle"
-                                                    color="green"
+                            ? (
+                                <>
+                                    {
+                                        user?.active
+                                            ? (
+                                                <Popup
+                                                    trigger={ (
+                                                        <Icon
+                                                            className="mr-2 ml-0 vertical-aligned-baseline"
+                                                            size="small"
+                                                            name="circle"
+                                                            color="green"
+                                                        />
+                                                    ) }
+                                                    content={ t("common:enabled") }
+                                                    inverted
                                                 />
-                                            }
-                                            content={ t("common:enabled") }
-                                            inverted
-                                        />
-                                        : <Popup
-                                            trigger={
-                                                <Icon
-                                                    className="mr-2 ml-0 vertical-aligned-baseline"
-                                                    size="small"
-                                                    name="circle"
-                                                    color="orange"
+                                            ) : (
+                                                <Popup
+                                                    trigger={ (
+                                                        <Icon
+                                                            className="mr-2 ml-0 vertical-aligned-baseline"
+                                                            size="small"
+                                                            name="circle"
+                                                            color="orange"
+                                                        />
+                                                    ) }
+                                                    content={ t("common:disabled") }
+                                                    inverted
                                                 />
-                                            }
-                                            content={ t("common:disabled") }
-                                            inverted
-                                        />
-                                }
-                                <>{ resolveUserDisplayName(user, null, "Administrator") } </>
-                            </>
-                        )
-                        : (
-                           <>{ resolveUserDisplayName(user, null, "Administrator") } </>
-                        )
+                                            ) 
+                                    }
+                                    { resolveUserDisplayName(user, null, "Administrator") }
+                                    
+                                </>
+                            ) : (
+                                <>
+                                    { resolveUserDisplayName(user, null, "Administrator") }
+                                </>
+                            )
                     }
                 </> 
-            }
+            ) }
             pageTitle="Edit User"
             description={ t("" + user.emails && user.emails !== undefined ? resolvePrimaryEmail(user?.emails) :
                 user.userName) }
