@@ -575,7 +575,7 @@ export const console: ConsoleNS = {
                             }
                         }
                     },
-                    placeholder: "Chercher des applications par nom ou clientId ou émetteur"
+                    placeholder: "Chercher des applications par nom, clientId, ou émetteur"
                 },
                 confirmations: {
                     addSocialLogin: {
@@ -7893,7 +7893,7 @@ export const console: ConsoleNS = {
                 revokeAdmin: {
                     confirmationModal: {
                         assertionHint: "Veuillez confirmer votre action.",
-                        content: "Si vous révoquez les privilèges d'administrateur de cet utilisateur, l'utilisateur " + 
+                        content: "Si vous révoquez les privilèges d'administrateur de cet utilisateur, l'utilisateur " +
                             "ne pourra pas se connecter à la console Asgardeo et ne pourra pas " +
                             "effectuer d'opérations d'administration. Veuillez procéder avec prudence.",
                         header: "Êtes-vous sûr?",

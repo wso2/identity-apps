@@ -583,7 +583,7 @@ export const console: ConsoleNS = {
                             }
                         }
                     },
-                    placeholder: "යෙදුම් නාමයෙන් හෝ සේවාලාභී හැඳුනුම්පතෙන් හෝ යෙදුම් නිකුත් කරන්නාගෙන් සොයන්න"
+                    placeholder: "යෙදුම් නාමයෙන්, සේවාලාභී හැඳුනුම්පතෙන්, හෝ යෙදුම් නිකුත් කරන්නාගෙන් සොයන්න"
                 },
                 confirmations: {
                     addSocialLogin: {
