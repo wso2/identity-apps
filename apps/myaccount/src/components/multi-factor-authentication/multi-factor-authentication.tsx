@@ -65,8 +65,8 @@ export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (pro
     const [ initBackupCodeFlow, setInitBackupCodeFlow ] = useState<boolean>(false);
 
     const translateKey: string = "myAccount:components.mfa.backupCode.";
-    const totpAuthenticatorName: string = "TOTP";
-    const backupCodeAuthenticatorName = "Backup Code Authenticator";
+    const totpAuthenticatorName: string = "totp";
+    const backupCodeAuthenticatorName = "backup-code-authenticator";
 
     /**
      * Fetch enabled authenticators and set to state.

@@ -89,8 +89,8 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     const { t } = useTranslation();
 
     const translateKey = "myAccount:components.mfa.authenticatorApp.";
-    const totpAuthenticatorName = "TOTP";
-    const backupCodeAuthenticatorName = "Backup Code Authenticator";
+    const totpAuthenticatorName = "totp";
+    const backupCodeAuthenticatorName = "backup-code-authenticator";
 
     const enableMFAUserWise: boolean = useSelector((state: AppState) => state?.config?.ui?.enableMFAUserWise);
     const shouldContinueToBackupCodes: boolean = isSuperTenantLogin && isBackupCodeForced;
