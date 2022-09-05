@@ -22,14 +22,6 @@ import { getUserNameWithoutDomain } from "@wso2is/core/helpers";
  * Utility class for user management operations.
  */
 export class UserManagementUtils {
-
-    /**
-     * Remove Private constructor to extend the class
-     *
-     */
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    constructor() { }
-
     /**
      * Check if a user is the authenticated user.
      *
