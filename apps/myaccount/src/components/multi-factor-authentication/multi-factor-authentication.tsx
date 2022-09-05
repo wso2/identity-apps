@@ -115,7 +115,7 @@ export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (pro
 
     /**
      * Update state when the authenticator list is updated.
-     * @param updatedAuthenticators Enabled authenticator list after updating
+     * @param updatedAuthenticators - Enabled authenticator list after updating.
      */
     const handleEnabledAuthenticatorsUpdated = (updatedAuthenticators: Array<string>): void => {
         setEnabledAuthenticators(updatedAuthenticators);
