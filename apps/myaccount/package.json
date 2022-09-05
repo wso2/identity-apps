@@ -10,8 +10,6 @@
         "build:analyze": "run-script-os",
         "build:analyze:win32": "..\\..\\node_modules\\.bin\\webpack --mode production --env NODE_ENV=production --env ENABLE_ANALYZER=true --env ANALYZER_PORT=8888",
         "build:analyze:default": "../../node_modules/.bin/webpack --mode production --env NODE_ENV=production --env ENABLE_ANALYZER=true --env ANALYZER_PORT=8888",
-        "build:external": "pnpm run build:prod -- --env IS_DEPLOYED_ON_EXTERNAL_SERVER=true",
-        "build:external:static": "pnpm run build:prod -- --env IS_DEPLOYED_ON_EXTERNAL_SERVER=true SERVER_TYPE=static",
         "build:prod": "pnpm nx run myaccount:build",
         "clean": "pnpm clean:build && pnpm clean:cache && pnpm clean:lock-files && pnpm clean:maven-folders && pnpm clean:themes:src && pnpm clean:node-modules",
         "clean:build": "pnpm rimraf build",

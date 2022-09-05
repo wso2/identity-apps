@@ -35,13 +35,26 @@ import webpack, {
 import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
 import DeploymentConfig from "./src/public/deployment.config.json";
 
+/**
+ * Different Server Types.
+ */
+ enum ServerTypes {
+    TOMCAT = "tomcat",
+    STATIC = "static"
+}
+
+/**
+ * Interface for the NX Webpack context.
+ */
 interface NxWebpackContextInterface {
     buildOptions: {
         index: string;
+        staticIndex: string;
         baseHref: string;
     };
     options: {
         index: string;
+        staticIndex: string;
         baseHref: string;
         port: string;
     };
@@ -67,10 +80,10 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
     // Flag to determine if the app is intended to be deployed on an external tomcat server
     // outside of the Identity Server runtime. If true, references & usage of internally provided
     // jars and libs inside the JSP's will be removed.
-    const isDeployedOnExternalTomcatServer = process.env.SERVER_TYPE === "tomcat";
+    const isDeployedOnExternalTomcatServer = process.env.SERVER_TYPE === ServerTypes.TOMCAT;
     // Flag to determine if the app is deployed on an external static server.
     // With this option, all the `jsp` files and java specific folders will be dropped.
-    const isDeployedOnExternalStaticServer = process.env.SERVER_TYPE === "static";
+    const isDeployedOnExternalStaticServer = process.env.SERVER_TYPE === ServerTypes.STATIC;
 
     // Build Modes.
     const isProfilingMode = process.env.ENABLE_BUILD_PROFILER === "true";
@@ -627,6 +640,17 @@ const rewriteContext = (context: NxWebpackContextInterface): NxWebpackContextInt
     // For PROD environment.
     if (context.options?.baseHref) {
         context.options.baseHref = getBaseHref(context.options.baseHref, DeploymentConfig.appBaseName);
+    }
+
+    // Re-write the context for static server deployments.
+    if (process.env.SERVER_TYPE === ServerTypes.STATIC) {
+        if (context.buildOptions?.index) {
+            context.buildOptions.index = context.buildOptions.staticIndex;
+        }
+
+        if (context.options?.index) {
+            context.options.index = context.options.staticIndex;
+        }
     }
 
     return context;
