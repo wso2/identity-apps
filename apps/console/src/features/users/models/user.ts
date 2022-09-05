@@ -34,6 +34,7 @@ export interface UserMetaInterface {
  *  Captures the basic details of the user.
  */
 export interface UserBasicInterface {
+    displayName?: string;
     id: string;
     userName: string;
     emails?: string[] | MultiValueAttributeInterface[];
@@ -193,22 +194,22 @@ export interface UserSessionInterface {
     userAgent: string;
     /**
      * IP address of the session.
-     * @example: 172.95.192.63
+     * @example 172.95.192.63
      */
     ip: string;
     /**
      * Login time of the session.
-     * @example: 1560412617
+     * @example 1560412617
      */
     loginTime: string;
     /**
      * Last access time of the session.
-     * @example: 1560416196
+     * @example 1560416196
      */
     lastAccessTime: string;
     /**
      * ID of the session.
-     * @example: 8d9806d1-4efc-483e-a96a-a0fa77d4328b
+     * @example 8d9806d1-4efc-483e-a96a-a0fa77d4328b
      */
     id: string;
 }
@@ -219,17 +220,17 @@ export interface UserSessionInterface {
 export interface ApplicationSessionInterface {
     /**
      *  Username of the logged in user for the application.
-     *  @example: apiuser01
+     *  @example apiuser01
      */
     subject: string;
     /**
      * Name of the application.
-     * @example: sampleApp
+     * @example sampleApp
      */
     appName: string;
     /**
      * ID of the application.
-     * @example: 012
+     * @example 012
      */
     appId: string;
 }
