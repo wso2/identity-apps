@@ -24,12 +24,11 @@ import { getUserNameWithoutDomain } from "@wso2is/core/helpers";
 export class UserManagementUtils {
 
     /**
-     * Private constructor to avoid object instantiation from outside
-     * the class.
+     * Remove Private constructor to extend the class
      *
      */
     // eslint-disable-next-line @typescript-eslint/no-empty-function
-    private constructor() { }
+    constructor() { }
 
     /**
      * Check if a user is the authenticated user.
