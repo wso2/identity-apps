@@ -16,7 +16,6 @@
 * under the License.
 */
 
-import { getAllLocalClaims } from "@wso2is/core/api";
 import { AlertLevels, Claim, ClaimsGetParams, ExternalClaim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
@@ -26,6 +25,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Grid } from "semantic-ui-react";
 import { applicationConfig } from "../../../../../extensions";
+import { getAllLocalClaims } from "../../../../claims/api";
 import { sortList } from "../../../../core";
 import { getAnExternalClaim, updateAnExternalClaim } from "../../../api";
 import { ClaimManagementConstants } from "../../../constants";

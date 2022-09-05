@@ -16,11 +16,11 @@
  * under the License.
  */
 
-import TimerWorker from "@wso2is/core/src/workers/timer.worker";
-import { UAParser } from "ua-parser-js";
-import { AppUtils } from "./app-utils";
 import "core-js/stable";
 import "regenerator-runtime/runtime";
+import TimerWorker from "@wso2is/core/workers/timer.worker";
+import { UAParser } from "ua-parser-js";
+import { AppUtils } from "./app-utils";
 
 if (!window["AppUtils"] || !window["AppUtils"]?.getConfig()) {
     AppUtils.init({

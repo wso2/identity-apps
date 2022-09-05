@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -2337,8 +2337,9 @@ export const console: ConsoleNS = {
                         predefined: "Use Predefined"
                     },
                     columns: {
-                        actions: "Actions",
-                        name: "Name"
+                        actions: "",
+                        name: "Name",
+                        templateId: "Type"
                     },
                     labels: {
                         fragment: "Fragment App"
@@ -8849,6 +8850,12 @@ export const console: ConsoleNS = {
                             header: "Reset password",
                             subheader: "Once you change the password, the user will no longer be able to log in to " +
                                 "any application using the current password."
+                        },
+                        deleteAdminPriviledgeZone: {
+                            actionTitle: "Revoke Privileges",
+                            header: "Revoke admin privileges",
+                            subheader: "This action will remove the user's admin privileges, " +
+                                "but the user will continue to be in the organization."
                         }
                     },
                     dateOfBirth: {
@@ -9223,6 +9230,16 @@ export const console: ConsoleNS = {
                         }
                     }
                 },
+                revokeAdmin: {
+                    confirmationModal: {
+                        assertionHint: "Please confirm your action.",
+                        content: "If you revoke the admin privileges of this user, the user will not be able " +
+                            "to log into the Asgardeo console and " +
+                            "will not be able to perform admin operations. Please proceed with caution.",
+                        header: "Are you sure?",
+                        message: "This action will revoke the admin privileges of the user."
+                    }
+                },
                 updateUser: {
                     groups: {
                         addGroupsModal: {
@@ -9555,6 +9572,34 @@ export const console: ConsoleNS = {
                         success: {
                             description: "Successfully retrieved the users.",
                             message: "Users retrieval successful"
+                        }
+                    },
+                    getAdminRole: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error retrieving the admin role"
+                        },
+                        genericError: {
+                            description: "Couldn't retrieve the admin roles.",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Successfully retrieved the admin roles.",
+                            message: "Role retrieval successful"
+                        }
+                    },
+                    revokeAdmin: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error revoking the admin privileges"
+                        },
+                        genericError: {
+                            description: "Couldn't revoke the admin privileges.",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Successfully revoked the admin privileges.",
+                            message: "Privileges revoked successfully"
                         }
                     }
                 },

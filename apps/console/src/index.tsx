@@ -16,19 +16,20 @@
  * under the License.
  */
 
+import "core-js/stable";
+import "regenerator-runtime/runtime";
 import { AuthParams, AuthProvider, SPAUtils } from "@asgardeo/auth-react";
 import { AppConstants as CommonAppConstants } from "@wso2is/core/constants";
-import { AuthenticateUtils as CommonAuthenticateUtils, ContextUtils } from "@wso2is/core/utils";
+import { AuthenticateUtils as CommonAuthenticateUtils, ContextUtils, StringUtils } from "@wso2is/core/utils";
 import axios from "axios";
 import * as React from "react";
+import { ReactElement } from "react";
 import * as ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import { AuthenticateUtils } from "./features/authentication";
 import { AppConstants, Config, PreLoader, store } from "./features/core";
 import { ProtectedApp } from "./protected-app";
-import "core-js/stable";
-import "regenerator-runtime/runtime";
 
 // Set the runtime config in the context.
 ContextUtils.setRuntimeConfig(Config.getDeploymentConfig());
@@ -45,7 +46,7 @@ const getAuthParams = (): Promise<AuthParams> => {
     if (!SPAUtils.hasAuthSearchParamsInURL() && process.env.NODE_ENV === "production") {
 
         const contextPath: string = window[ "AppUtils" ].getConfig().appBase
-            ? `/${ window[ "AppUtils" ].getConfig().appBase }`
+            ? `/${ StringUtils.removeSlashesFromPath(window[ "AppUtils" ].getConfig().appBase) }`
             : "";
 
         return axios.get(contextPath + "/auth").then((response) => {
@@ -60,12 +61,34 @@ const getAuthParams = (): Promise<AuthParams> => {
     return;
 };
 
-ReactDOM.render(
-    (
+/**
+ * Render root compoent with configs.
+ *
+ * @returns {ReactElement}
+ */
+const RootWithConfig = (): ReactElement => {
+
+    const [ ready, setReady ] = React.useState(false);
+
+    React.useEffect(() => {
+        if (AuthenticateUtils.getInitializeConfig()?.baseUrl) {
+            setReady(true);
+
+            return;
+        }
+
+        setReady(false);
+    }, [ AuthenticateUtils.getInitializeConfig()?.baseUrl ]);
+
+    if (!ready) {
+        return <PreLoader />;
+    }
+
+    return (
         <Provider store={ store }>
             <BrowserRouter>
                 <AuthProvider
-                    config={ AuthenticateUtils.initializeConfig }
+                    config={ AuthenticateUtils.getInitializeConfig() }
                     fallback={ <PreLoader /> }
                     getAuthParams={ getAuthParams }
                 >
@@ -73,11 +96,7 @@ ReactDOM.render(
                 </AuthProvider>
             </BrowserRouter>
         </Provider>
-    ),
-    document.getElementById("root")
-);
+    );
+};
 
-// Accept HMR for updated modules
-if (import.meta.webpackHot) {
-    import.meta.webpackHot.accept();
-}
+ReactDOM.render(<RootWithConfig />, document.getElementById("root"));

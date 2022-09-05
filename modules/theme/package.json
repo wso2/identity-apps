@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/theme",
-    "version": "1.4.65",
+    "version": "1.4.86",
     "description": "Theme for web components of WSO2 Identity Server Webapps.",
     "keywords": [
         "WSO2",
@@ -11,22 +11,24 @@
     ],
     "main": "src/index.js",
     "scripts": {
-        "prebuild": "npm run clean",
-        "build": "npm run compile -- --skipSample --skipManifest",
-        "build:dev": "npm run build -- --skipHashing",
-        "clean": "rimraf ./dist && rimraf ./src/themes/sample",
+        "prebuild": "pnpm clean:build",
+        "build": "pnpm prebuild && pnpm compile -- --skipSample --skipManifest",
+        "build:dev": "pnpm build -- --skipHashing",
+        "clean": "pnpm clean:lock-files && pnpm clean:build && pnpm clean:node-modules",
+        "clean:build": "pnpm rimraf dist",
+        "clean:lock-files": "pnpm rimraf package-lock.json && pnpm rimraf pnpm-lock.yaml && pnpm rimraf yarn.lock",
+        "clean:node-modules": "pnpm rimraf node_modules",
         "compile": "node scripts/build.js",
-        "lint": "npm run lint:all -- --max-warnings=0",
-        "lint:all": "npm run lint:targeted -- .",
-        "lint:autofix": "npm run lint:all -- --fix",
-        "lint:ci": "npm run lint -- --format=compact",
-        "lint:targeted": "eslint --ext .js,.jsx,.ts,.tsx --resolve-plugins-relative-to .",
-        "jest": "npx run-script-os",
-        "jest:win32": ".\\node_modules\\.bin\\jest",
-        "jest:default": "./node_modules/.bin/jest",
-        "test": "npm run jest -- -- --passWithNoTests",
-        "test:watch": "npm run test -- --watch",
-        "watch": "watch \"npm run build\" src"
+        "lint": "pnpm lint:all",
+        "lint:all": "pnpm lint:targeted -- .",
+        "lint:autofix": "pnpm lint:all -- --fix",
+        "lint:targeted": "eslint --ext .js,.jsx,.ts,.tsx --resolve-plugins-relative-to . --max-warnings=0",
+        "test": "pnpm jest",
+        "test:watch": "pnpm test -- --watch",
+        "jest": "run-script-os",
+        "jest:win32": ".\\node_modules\\.bin\\jest --passWithNoTests",
+        "jest:default": "./node_modules/.bin/jest --passWithNoTests",
+        "watch": "watch \"pnpm build\" src"
     },
     "author": "WSO2",
     "license": "Apache-2.0",
@@ -54,6 +56,7 @@
         "semantic-ui-css": "^2.4.1",
         "semantic-ui-less": "^2.4.1",
         "ts-jest": "^26.4.0",
-        "ts-node": "^10.5.0"
+        "ts-node": "^10.8.1",
+        "watch": "^1.0.2"
     }
 }

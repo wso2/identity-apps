@@ -17,7 +17,6 @@
  */
 
 import { AccessControlConstants, Show } from "@wso2is/access-control";
-import { getAllExternalClaims, getAllLocalClaims } from "@wso2is/core/api";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, Claim, ExternalClaim, TestableComponentInterface } from "@wso2is/core/models";
@@ -41,6 +40,7 @@ import {
     Label,
     Placeholder
 } from "semantic-ui-react";
+import { getAllExternalClaims, getAllLocalClaims } from "../../claims/api";
 import { AppConstants, AppState, FeatureConfigInterface, UIConstants, history, sortList } from "../../core";
 import { getOIDCScopeDetails, updateOIDCScopeDetails } from "../api";
 import { EditOIDCScope } from "../components";

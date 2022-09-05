@@ -60,6 +60,7 @@ export class ProfileConstants {
      * @default
      */
     public static readonly SCIM2_SCHEMA_DICTIONARY: Map<string, string> = new Map<string, string>()
+        .set("ACTIVE", "active")
         .set("EMAILS", "emails")
         .set("USERNAME", "userName")
         .set("NAME", "name")

@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,10 +14,9 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
 
-import { ProfileInfoInterface } from "@wso2is/core/models";
+import { getUserNameWithoutDomain } from "@wso2is/core/helpers";
 
 /**
  * Utility class for user management operations.
@@ -28,7 +27,6 @@ export class UserManagementUtils {
      * Private constructor to avoid object instantiation from outside
      * the class.
      *
-     * @hideconstructor
      */
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     private constructor() { }
@@ -36,13 +34,18 @@ export class UserManagementUtils {
     /**
      * Check if a user is the authenticated user.
      *
-     * @param {ProfileInfoInterface} authenticatedUser - Current authenticated user.
-     * @param {ProfileInfoInterface} evaluatingUser - Profile of the evaluating user.
-     * @return {boolean} If the user is the authenticated user or not.
+     * @param authenticatedUser - Currently logged in user
+     * @param user - User object.
+     * @returns Whether the given user is the current user or not.
      */
-    public static isAuthenticatedUser(authenticatedUser: ProfileInfoInterface,
-                                      evaluatingUser: ProfileInfoInterface): boolean {
+    public static isAuthenticatedUser = (authenticatedUser: string, username: string): boolean => {
+        let authenticatedUsername: string = authenticatedUser;
 
-        return authenticatedUser?.id === evaluatingUser?.id;
-    }
+        if (authenticatedUsername.split("@").length > 2) {
+            // If the username contains 2 @ symbols, it contains the tenant domain as well.
+            authenticatedUsername = authenticatedUser.split("@").slice(0,2).join("@");
+        }
+
+        return getUserNameWithoutDomain(username) === authenticatedUsername;
+    };
 }

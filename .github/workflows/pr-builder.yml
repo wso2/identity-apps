@@ -6,15 +6,12 @@ on:
   pull_request:
     branches: [ master ]
     paths-ignore:
-      - "docs/**"
-      - "CONTRIBUTING.md"
-      - "CREDITS.md"
+      - "**.md"
       - "LICENSE"
-      - "pull_request_template.md"
-      - "README.md"
-      - "**/README.md"
-      - "SECURITY.md"
   workflow_dispatch:
+
+env:
+  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
   lint:
@@ -22,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [ 12.x ]
+        node-version: [ lts/* ]
     steps:
       - name: ⬇️ Checkout
         id: checkout
@@ -34,30 +31,47 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: 🛠️ Bootstrap Dependencies
-        id: bootstrap-npm-and-lerna-dependencies
-        run:  npm run bootstrap
-
-      - name: ⏳ Lint
-        run: npm run lint:ci
-
-      - name: 🔆 Cache NPM directory
-        id: cache-npm-modules
-        uses: actions/cache@v2
+      - name: 🥡 Setup pnpm
+        id: setup-pnpm
+        uses: pnpm/action-setup@v2.1.0
         with:
-          path: ~/.npm
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          version: latest
+          run_install: false
+
+      - name: 🎈 Get pnpm store directory
+        id: get-pnpm-cache-dir
+        run: |
+          echo "::set-output name=pnpm_cache_dir::$(pnpm store path)"
+
+      - name: 🔆 Cache pnpm modules
+        uses: actions/cache@v3
+        id: pnpm-cache
+        with:
+          path: ${{ steps.get-pnpm-cache-dir.outputs.pnpm_cache_dir }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
+            ${{ runner.os }}-pnpm-store-
+
+      - name: 🧩 Install Dependencies
+        id: install-dependencies
+        run: pnpm install --no-frozen-lockfile
+
+      - name: 🦄 Lint Changed Files
+        id: lint-changed-with-eslint
+        working-directory: .github/workflows
+        run: |
+            bash ./scripts/lint-changed.sh ${{ github.event.pull_request.number }}
+
+      - name: ⏳ Lint All Files
+        id: lint-with-eslint
+        run: pnpm lint
 
   typecheck:
     name: ʦ Typecheck (STATIC ANALYSIS)
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [ 12.x ]
+        node-version: [ lts/* ]
     steps:
       - name: ⬇️ Checkout
         id: checkout
@@ -69,23 +83,36 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: 🛠️ Bootstrap Dependencies
-        id: bootstrap-npm-and-lerna-dependencies
-        run:  npm run bootstrap
+      - name: 🥡 Setup pnpm
+        uses: pnpm/action-setup@v2.1.0
+        with:
+          version: latest
+          run_install: false
+
+      - name: 🎈 Get pnpm store directory
+        id: get-pnpm-cache-dir
+        run: |
+          echo "::set-output name=pnpm_cache_dir::$(pnpm store path)"
+
+      - name: 🔆 Cache pnpm modules
+        uses: actions/cache@v3
+        id: pnpm-cache
+        with:
+          path: ${{ steps.get-pnpm-cache-dir.outputs.pnpm_cache_dir }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: 🧩 Install Dependencies
+        id: install-dependencies
+        run: pnpm install --no-frozen-lockfile
+
+      - name: 👷 Build Re-usable Modules
+        id: build-reusable-modules
+        run: pnpm build:modules
 
       - name: ☄️ Check Type Errors
-        run: npm run typecheck
-
-      - name: 🔆 Cache NPM directory
-        id: cache-npm-modules
-        uses: actions/cache@v2
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
+        run: pnpm typecheck
 
   test:
     name: 👾 Unit Test (TESTING)
@@ -93,7 +120,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [ 12.x ]
+        node-version: [ lts/* ]
     steps:
       - name: ⬇️ Checkout
         id: checkout
@@ -105,35 +132,44 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: 🛠️ Bootstrap Dependencies
-        id: bootstrap-npm-and-lerna-dependencies
-        run:  npm run bootstrap
+      - name: 🥡 Setup pnpm
+        uses: pnpm/action-setup@v2.1.0
+        with:
+          version: latest
+          run_install: false
+
+      - name: 🎈 Get pnpm store directory
+        id: get-pnpm-cache-dir
+        run: |
+          echo "::set-output name=pnpm_cache_dir::$(pnpm store path)"
+
+      - name: 🔆 Cache pnpm modules
+        uses: actions/cache@v3
+        id: pnpm-cache
+        with:
+          path: ${{ steps.get-pnpm-cache-dir.outputs.pnpm_cache_dir }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: 🧩 Install Dependencies
+        id: install-dependencies
+        run: pnpm install --no-frozen-lockfile
 
       - name: 👷 Build Re-usable Modules
         id: build-reusable-modules
-        run:  npm run build:modules
+        run:  pnpm build:modules
 
       - name: 🃏 Run Jest & Collect Coverage
         id: run-jest-test-and-coverage
-        run: npm run test:unit:coverage
+        run: pnpm test:unit:coverage
 
       - name: 🤖 Aggregate Test Coverage
         id: aggregate-coverage-reports
         run: |
-          npm run test:unit:coverage:aggregate
-          npm run nyc:text-summary-report
-          npm run nyc:text-report
-
-      - name: 🔆 Cache NPM directory
-        id: cache-npm-modules
-        uses: actions/cache@v2
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
+          pnpm test:unit:coverage:aggregate
+          pnpm nyc:text-summary-report
+          pnpm nyc:text-report
 
   build:
     name: 🚧 Build
@@ -141,7 +177,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [ 12.x ]
+        node-version: [ lts/* ]
         maven-version: [ 3.6.3 ]
         java-version: [ 11, 17 ]
     steps:
@@ -167,24 +203,33 @@ jobs:
         with:
           maven-version: ${{ matrix.maven-version }}
 
-      - name: 🛠️ Bootstrap Dependencies
-        id: bootstrap-npm-and-lerna-dependencies
-        run:  npm run bootstrap
+      - name: 🥡 Setup pnpm
+        uses: pnpm/action-setup@v2.1.0
+        with:
+          version: latest
+          run_install: false
+
+      - name: 🎈 Get pnpm store directory
+        id: get-pnpm-cache-dir
+        run: |
+          echo "::set-output name=pnpm_cache_dir::$(pnpm store path)"
+
+      - name: 🔆 Cache pnpm modules
+        uses: actions/cache@v3
+        id: pnpm-cache
+        with:
+          path: ${{ steps.get-pnpm-cache-dir.outputs.pnpm_cache_dir }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: 🧩 Install Dependencies
+        id: install-dependencies
+        run: pnpm install --no-frozen-lockfile
 
       - name: 🏗️ Maven Build
         id: build-with-maven
         run: mvn clean install -U -Dlint.exec.skip=true -Dbootstrap.exec.skip=true
-
-      - name: 🔆 Cache NPM directory
-        id: cache-npm-modules
-        uses: actions/cache@v2
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
 
       - name: 💾 Cache local Maven repository
         id: cache-maven-m2

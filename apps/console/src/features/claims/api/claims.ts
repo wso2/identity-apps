@@ -17,8 +17,9 @@
  */
 
 import { AsgardeoSPAClient } from "@asgardeo/auth-react";
+import { ClaimConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { Claim, HttpMethods } from "@wso2is/core/models";
+import { Claim, ClaimDialect, ClaimsGetParams, ExternalClaim, HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
 import { store } from "../../core";
 import { ClaimManagementConstants } from "../constants";
@@ -507,5 +508,142 @@ export const getServerSupportedClaimsForSchema = (id: string): Promise<ServerSup
         })
         .catch((error) => {
             return Promise.reject(error?.response?.data);
+        });
+};
+
+/**
+ * Fetch all local claims.
+ *
+ * @param {ClaimsGetParams} params - limit, offset, sort, attributes, filter.
+ * @return {Promise<Claim[]>} response.
+ * @throws {IdentityAppsApiException}
+ */
+export const getAllLocalClaims = (params: ClaimsGetParams): Promise<Claim[]> => {
+
+    const requestConfig = {
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        params,
+        url: store.getState().config.endpoints.localClaims
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 200) {
+                throw new IdentityAppsApiException(
+                    ClaimConstants.ALL_LOCAL_CLAIMS_FETCH_REQUEST_INVALID_RESPONSE_CODE_ERROR,
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config);
+            }
+
+            return Promise.resolve(response.data);
+        })
+        .catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                ClaimConstants.ALL_LOCAL_CLAIMS_FETCH_REQUEST_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
+        });
+};
+
+/**
+ * Get all the claim dialects.
+ *
+ * @param {ClaimsGetParams} params - sort, filter, offset, attributes, limit.
+ * @return {Promise<ClaimDialect[]>} response.
+ * @throws {IdentityAppsApiException}
+ */
+export const getDialects = (params: ClaimsGetParams): Promise<ClaimDialect[]> => {
+
+    const requestConfig = {
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        params,
+        url: store.getState().config.endpoints.claims
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 200) {
+                throw new IdentityAppsApiException(
+                    ClaimConstants.DIALECTS_FETCH_REQUEST_INVALID_RESPONSE_CODE_ERROR,
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config);
+            }
+
+            return Promise.resolve(response.data);
+        })
+        .catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                ClaimConstants.DIALECTS_FETCH_REQUEST_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
+        });
+};
+
+/**
+ * Get all the external claims.
+ *
+ * @param {string } dialectID - Claim Dialect ID.
+ * @param {ClaimsGetParams} params - limit, offset, filter, attributes, sort.
+ * @return {Promise<ExternalClaim[]>} response.
+ * @throws {IdentityAppsApiException}
+ */
+export const getAllExternalClaims = (dialectID: string, params: ClaimsGetParams): Promise<ExternalClaim[]> => {
+
+    const requestConfig = {
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        params,
+        url: `${store.getState().config.endpoints.externalClaims.replace("{}", dialectID)}`
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 200) {
+                throw new IdentityAppsApiException(
+                    ClaimConstants.ALL_EXTERNAL_CLAIMS_FETCH_REQUEST_INVALID_RESPONSE_CODE_ERROR,
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config);
+            }
+
+            return Promise.resolve(response.data);
+        })
+        .catch((error: AxiosError) => {
+            if (error?.response?.data?.code !== ClaimManagementConstants.RESOURCE_NOT_FOUND_ERROR_CODE) {
+                throw new IdentityAppsApiException(
+                    ClaimConstants.ALL_EXTERNAL_CLAIMS_FETCH_REQUEST_ERROR,
+                    error.stack,
+                    error.code,
+                    error.request,
+                    error.response,
+                    error.config);
+            }
+
+            return Promise.resolve([]);
         });
 };

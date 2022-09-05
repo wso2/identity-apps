@@ -19,5 +19,5 @@
 <%@ include file="localize.jsp" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
 
-<!-- title -->
+<%-- title --%>
 <title><%=AuthenticationEndpointUtil.i18n(resourceBundle, "wso2.identity.server")%></title>

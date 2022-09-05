@@ -17,7 +17,6 @@
 */
 
 import { AccessControlConstants, Show } from "@wso2is/access-control";
-import { getProfileSchemas } from "@wso2is/core/api";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import {
@@ -46,7 +45,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Divider, Grid, Form as SemanticForm } from "semantic-ui-react";
 import { attributeConfig } from "../../../../../extensions";
 import { SCIMConfigs } from "../../../../../extensions/configs/scim";
-import { AppConstants, AppState, FeatureConfigInterface, history, store } from "../../../../core";
+import { AppConstants, AppState, FeatureConfigInterface, history } from "../../../../core";
+import { getProfileSchemas } from "../../../../users/api";
 import { deleteAClaim, getExternalClaims, updateAClaim } from "../../../api";
 import { ClaimManagementConstants } from "../../../constants";
 
@@ -226,7 +226,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     const fetchUpdatedSchemaList = (): void => {
         dispatch(setProfileSchemaRequestLoadingStatus(true));
 
-        getProfileSchemas(store.getState().config.endpoint?.schemas)
+        getProfileSchemas()
             .then((response: ProfileSchemaInterface[]) => {
                 dispatch(setSCIMSchemas<ProfileSchemaInterface[]>(response));
             })
