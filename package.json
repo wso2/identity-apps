@@ -22,8 +22,6 @@
         "build": "pnpm nx run-many --target=build --all --with-deps",
         "build:apps": "pnpm nx run-many --target=build --projects=console,myaccount --with-deps",
         "build:modules": "pnpm nx run-many --target=build --projects=access-control,core,forms,form,i18n,react-components,theme,validation",
-        "build:external": "pnpm nx run-many --target=build:external --projects=console,myaccount --with-deps",
-        "build:external:static": "pnpm nx run-many --target=build:external:static --projects=console,myaccount --with-deps",
         "clean": "pnpm nx run-many --target=clean --all --parallel=false && pnpm clean:root",
         "clean:root": "pnpm clean:root:cache && pnpm clean:root:lock-files && pnpm clean:root:maven-folders & pnpm clean:root:node-modules",
         "clean:root:cache": "pnpm rimraf npm",
