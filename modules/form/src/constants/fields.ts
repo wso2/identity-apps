@@ -42,5 +42,6 @@ export class FieldConstants {
     public static INVALID_CLIENT_ID_ERROR = "Please enter a valid Client ID";
     public static INVALID_DESCRIPTION_ERROR = "Please enter a valid description";
     public static INVALID_PHONE_NUMBER_ERROR = "Please enter a valid phone number";
+    public static INVALID_SCOPES_ERROR = "Please include 'openid' scope";
     public static FIELD_REQUIRED_ERROR = "This field cannot be empty";
 }

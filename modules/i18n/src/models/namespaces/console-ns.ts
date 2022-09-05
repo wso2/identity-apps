@@ -1369,6 +1369,7 @@ export interface ConsoleNS {
                         requiredErrorMessage: string;
                         invalidURLErrorMessage: string;
                         invalidQueryParamErrorMessage: string;
+                        invalidScopesErrorMessage: string;
                         customProperties: string;
                     };
                     generalDetails: {

@@ -316,6 +316,45 @@ export const getCopyInputField = (eachProp: CommonPluggableComponentPropertyInte
     );
 };
 
+export const getScopesField = (eachProp: CommonPluggableComponentPropertyInterface,
+                             propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
+                             testId?: string): ReactElement => {
+
+    return (
+        <>
+            <Field
+                name={ propertyMetadata?.key }
+                label={ propertyMetadata?.displayName }
+                required={ propertyMetadata?.isMandatory }
+                requiredErrorMessage={ I18n.instance.t("console:develop.features.authenticationProvider.forms.common." +
+                    "requiredErrorMessage") }
+                placeholder={ propertyMetadata?.defaultValue }
+                type="text"
+                value={ eachProp?.value }
+                key={ eachProp?.key }
+                disabled={ propertyMetadata?.isDisabled }
+                readOnly={ propertyMetadata?.readOnly }
+                data-testid={ `${ testId }-${ propertyMetadata?.key }` }
+                validation={ (value: string, validation: Validation) => {
+                    if (!FormValidation.scopes(value)) {
+                        validation.isValid = false;
+                        validation.errorMessages.push(I18n.instance.t("console:develop.features." +
+                            "authenticationProvider.forms.common.invalidScopesErrorMessage"));
+                    }
+                    if (propertyMetadata?.maxLength && value.length > propertyMetadata.maxLength) {
+                        validation.isValid = false;
+                        validation.errorMessages.push(propertyMetadata.displayName + " cannot have more than " +
+                            propertyMetadata.maxLength + " characters.");
+                    }
+                } }
+            />
+            { propertyMetadata?.description && (
+                <Hint disabled={ propertyMetadata?.isDisabled }>{ propertyMetadata?.description }</Hint>
+            ) }
+        </>
+    );
+};
+
 export const getQueryParamsField = (eachProp: CommonPluggableComponentPropertyInterface,
                                     propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
                                     testId?: string): ReactElement => {
@@ -484,6 +523,7 @@ export enum FieldType {
     TABLE = "Table",
     CONFIDENTIAL = "Confidential",
     URL = "URL",
+    SCOPES = "SCOPES",
     QUERY_PARAMS = "QueryParameters",
     DROP_DOWN = "DropDown",
     RADIO = "Radio",
@@ -497,6 +537,7 @@ export enum CommonConstants {
     BOOLEAN = "BOOLEAN",
     FIELD_COMPONENT_KEYWORD_URL = "URL",
     FIELD_COMPONENT_KEYWORD_QUERY_PARAMETER = "QUERYPARAM",
+    FIELD_COMPONENT_SCOPES = "Scopes",
     SCOPE_KEY = "scopes",
     RADIO = "RADIO"
 }
@@ -516,6 +557,8 @@ export const getFieldType = (
         return FieldType.CONFIDENTIAL;
     } else if (propertyMetadata?.key === CommonConstants.SCOPE_KEY) {
         return FieldType.TABLE;
+    }  else if (propertyMetadata?.key === CommonConstants.FIELD_COMPONENT_SCOPES) {
+        return FieldType.SCOPES;
     } else if (propertyMetadata?.key.toUpperCase().includes(CommonConstants.FIELD_COMPONENT_KEYWORD_URL)) {
         if (propertyMetadata?.key === AUTHORIZATION_REDIRECT_URL && mode !== AuthenticatorSettingsFormModes.CREATE) {
             return  FieldType.COPY_INPUT;
@@ -573,6 +616,9 @@ export const getPropertyField = (
         }
         case FieldType.COPY_INPUT : {
             return getCopyInputField(property, propertyMetadata, testId);
+        }
+        case FieldType.SCOPES : {
+            return getScopesField(property, propertyMetadata, testId);
         }
         case FieldType.QUERY_PARAMS : {
             return getQueryParamsField(property, propertyMetadata, testId);

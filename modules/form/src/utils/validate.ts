@@ -70,6 +70,11 @@ export const getDefaultValidation = (
                     return FieldConstants.INVALID_URL_ERROR;
                 }
                 break;
+            case "scopes":
+                if (!FormValidation.scopes(value)) {
+                    return FieldConstants.INVALID_SCOPES_ERROR;
+                }
+                break;
         }
     }
 };
