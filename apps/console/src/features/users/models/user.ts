@@ -34,12 +34,33 @@ export interface UserMetaInterface {
  *  Captures the basic details of the user.
  */
 export interface UserBasicInterface {
+    /**
+     * Display name of the user.
+     */
     displayName?: string;
+    /**
+     * ID of the user.
+     */
     id: string;
+    /**
+     * Username of the user.
+     */
     userName: string;
+    /**
+     * Emails of the user.
+     */
     emails?: string[] | MultiValueAttributeInterface[];
+    /**
+     * Name of the user.
+     */
     name: NameInterface;
+    /**
+     * Meta information of the user.
+     */
     meta: UserMetaInterface;
+    /**
+     * Profile URL of the user.
+     */
     profileUrl: string;
 }
 
