@@ -34,7 +34,6 @@
 <%@ page import="static org.wso2.carbon.identity.application.authentication.endpoint.util.Constants.SESSION_DATA_KEY" %>
 <%@ page import="static org.wso2.carbon.identity.application.authentication.endpoint.util.Constants.AUTHENTICATION_REST_ENDPOINT_URL" %>
 <%@ page import="java.io.File" %>
-<%@ page import="org.wso2.carbon.context.PrivilegedCarbonContext" %>
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 
 <%@include file="includes/localize.jsp" %>
@@ -48,18 +47,8 @@
     String authAPIURL = application.getInitParameter(AUTHENTICATION_REST_ENDPOINT_URL);
     if (StringUtils.isNotBlank(authAPIURL)) {
         // Resolve tenant domain for the authentication API URl
-        if (authAPIURL.contains("t/${tenantDomain}")) {
-            String tmpTenantDomain = IdentityTenantUtil.getTenantDomainFromContext();
-            if (StringUtils.isBlank(tmpTenantDomain)) {
-                tmpTenantDomain = PrivilegedCarbonContext.getThreadLocalCarbonContext().getTenantDomain();
-            }
-            if (tmpTenantDomain.equals("carbon.super")) {
-                authAPIURL = authAPIURL.replace("t/${tenant}/", "");
-            } else {
-                authAPIURL = authAPIURL.replace("${tenant}", tmpTenantDomain);
-            }
-        }
-        
+        authAPIURL = AuthenticationEndpointUtil.resolveTenantDomain(authAPIURL);
+
         AuthAPIServiceClient authAPIServiceClient = new AuthAPIServiceClient(authAPIURL);
         AuthenticationResponse authenticationResponse = authAPIServiceClient.authenticate(request.getParameter("username"), request.getParameter("password"));
         if (authenticationResponse instanceof AuthenticationSuccessResponse) {
