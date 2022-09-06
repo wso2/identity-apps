@@ -99,7 +99,8 @@ export class UserManagementConstants {
     public static readonly SCIM2_SCHEMA_DICTIONARY: Map<string, string> = new Map<string, string>()
         .set("EMAILS", "emails")
         .set("USERNAME", "userName")
-        .set("NAME", "name");
+        .set("NAME", "name")
+        .set("DISPLAY_NAME", "displayName");
 
     /**
      * Set of SCIM2 enterprise attributes.
