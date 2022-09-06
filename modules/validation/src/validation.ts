@@ -139,7 +139,6 @@ export const scopes: ValidationFunction = (value: string): boolean => {
         Joi.string()
             .regex(new RegExp("^.*openid.*$"))
             .validate(value).error
-
     ) {
         return false;
     }
