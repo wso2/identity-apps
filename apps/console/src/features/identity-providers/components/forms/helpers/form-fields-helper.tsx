@@ -16,9 +16,10 @@
  * under the License.
  */
 
+import { URLUtils } from "@wso2is/core/utils";
 import {
     Field,
-    FormValue, RadioChild, StrictRadioChild,
+    FormValue, StrictRadioChild,
     Validation
 } from "@wso2is/forms";
 import { I18n } from "@wso2is/i18n";
@@ -26,19 +27,18 @@ import { CopyInputField, GenericIcon, Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import React, { ReactElement } from "react";
 import { Grid } from "semantic-ui-react";
+import { commonConfig } from "../../../../../extensions";
 import {
     AuthenticatorSettingsFormModes,
     CommonPluggableComponentMetaPropertyInterface,
     CommonPluggableComponentPropertyInterface
 } from "../../../models";
-import { commonConfig } from "../../../../../extensions";
-import { URLUtils } from "@wso2is/core/utils";
 
 const AUTHORIZATION_REDIRECT_URL: string = "callbackUrl";
 
 export const getConfidentialField = (eachProp: CommonPluggableComponentPropertyInterface,
-                                     propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
-                                     testId?: string): ReactElement => {
+    propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
+    testId?: string): ReactElement => {
     return (
         <>
             <Field
@@ -71,8 +71,8 @@ export const getConfidentialField = (eachProp: CommonPluggableComponentPropertyI
 };
 
 export const getCheckboxField = (eachProp: CommonPluggableComponentPropertyInterface,
-                                 propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
-                                 testId?: string): ReactElement => {
+    propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
+    testId?: string): ReactElement => {
     return (
         <>
             <Field
@@ -80,7 +80,7 @@ export const getCheckboxField = (eachProp: CommonPluggableComponentPropertyInter
                 key={ propertyMetadata?.key }
                 type="checkbox"
                 required={ false }
-                value={ (eachProp?.value == "true") ? [eachProp?.key] : [] }
+                value={ (eachProp?.value == "true") ? [ eachProp?.key ] : [] }
                 requiredErrorMessage={ I18n.instance.t("console:develop.features.authenticationProvider.forms.common." +
                     "requiredErrorMessage") }
                 children={
@@ -103,9 +103,9 @@ export const getCheckboxField = (eachProp: CommonPluggableComponentPropertyInter
 };
 
 export const getCheckboxFieldWithListener = (eachProp: CommonPluggableComponentPropertyInterface,
-                                             propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
-                                             listen: (key: string, values: Map<string, FormValue>) => void,
-                                             testId?: string): ReactElement => {
+    propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
+    listen: (key: string, values: Map<string, FormValue>) => void,
+    testId?: string): ReactElement => {
     return (
         <>
             <Field
@@ -113,7 +113,7 @@ export const getCheckboxFieldWithListener = (eachProp: CommonPluggableComponentP
                 key={ propertyMetadata?.key }
                 type="checkbox"
                 required={ propertyMetadata?.isMandatory }
-                value={ eachProp?.value ? [eachProp?.key] : [] }
+                value={ eachProp?.value ? [ eachProp?.key ] : [] }
                 requiredErrorMessage={ I18n.instance.t("console:develop.features.authenticationProvider.forms.common." +
                     "requiredErrorMessage") }
                 children={
@@ -139,8 +139,8 @@ export const getCheckboxFieldWithListener = (eachProp: CommonPluggableComponentP
 };
 
 export const getRadioButtonField = (eachProp: CommonPluggableComponentPropertyInterface,
-                                                propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
-                                                testId?: string): ReactElement => {
+    propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
+    testId?: string): ReactElement => {
     return (
         <>
             <Field
@@ -153,11 +153,11 @@ export const getRadioButtonField = (eachProp: CommonPluggableComponentPropertyIn
                 requiredErrorMessage={ I18n.instance.t("console:develop.features.authenticationProvider.forms.common." +
                     "requiredErrorMessage") }
                 children={
-                    propertyMetadata?.subProperties?.map(function(val, index): StrictRadioChild {
+                    propertyMetadata?.subProperties?.map(function(val): StrictRadioChild {
                         return {
                             label: val.displayName,
                             value: val.defaultValue
-                        }
+                        };
                     })
                 }
                 disabled={ propertyMetadata?.isDisabled }
@@ -172,9 +172,9 @@ export const getRadioButtonField = (eachProp: CommonPluggableComponentPropertyIn
 };
 
 export const getRadioButtonFieldWithListener = (eachProp: CommonPluggableComponentPropertyInterface,
-                                             propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
-                                             listen: (key: string, values: Map<string, FormValue>) => void,
-                                             testId?: string): ReactElement => {
+    propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
+    listen: (key: string, values: Map<string, FormValue>) => void,
+    testId?: string): ReactElement => {
     return (
         <>
             <Field
@@ -188,11 +188,11 @@ export const getRadioButtonFieldWithListener = (eachProp: CommonPluggableCompone
                 requiredErrorMessage={ I18n.instance.t("console:develop.features.authenticationProvider.forms.common." +
                     "requiredErrorMessage") }
                 children={
-                    propertyMetadata?.subProperties?.map(function(val, index): StrictRadioChild {
-                       return {
+                    propertyMetadata?.subProperties?.map(function(val): StrictRadioChild {
+                        return {
                             label: val.displayName,
                             value: val.defaultValue
-                        }
+                        };
                     })
                 }
                 listen={ (values: Map<string, FormValue>) => {
@@ -210,8 +210,8 @@ export const getRadioButtonFieldWithListener = (eachProp: CommonPluggableCompone
 };
 
 export const getTextField = (eachProp: CommonPluggableComponentPropertyInterface,
-                             propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
-                             testId?: string): ReactElement => {
+    propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
+    testId?: string): ReactElement => {
     return (
         <>
             <Field
@@ -250,8 +250,8 @@ export const getTextField = (eachProp: CommonPluggableComponentPropertyInterface
 };
 
 export const getURLField = (eachProp: CommonPluggableComponentPropertyInterface,
-                            propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
-                            testId?: string): ReactElement => {
+    propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
+    testId?: string): ReactElement => {
     return (
         <>
             <Field
@@ -297,8 +297,8 @@ export const getURLField = (eachProp: CommonPluggableComponentPropertyInterface,
 };
 
 export const getCopyInputField = (eachProp: CommonPluggableComponentPropertyInterface,
-                            propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
-                            testId?: string): ReactElement => {
+    propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
+    testId?: string): ReactElement => {
     return (
         <>
             <div className={ `field ${ propertyMetadata?.isMandatory ? "required" : "" }` }>
@@ -317,8 +317,8 @@ export const getCopyInputField = (eachProp: CommonPluggableComponentPropertyInte
 };
 
 export const getScopesField = (eachProp: CommonPluggableComponentPropertyInterface,
-                             propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
-                             testId?: string): ReactElement => {
+    propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
+    testId?: string): ReactElement => {
 
     return (
         <>
@@ -356,8 +356,8 @@ export const getScopesField = (eachProp: CommonPluggableComponentPropertyInterfa
 };
 
 export const getQueryParamsField = (eachProp: CommonPluggableComponentPropertyInterface,
-                                    propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
-                                    testId?: string): ReactElement => {
+    propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
+    testId?: string): ReactElement => {
     return (
         <>
             <Field
@@ -389,8 +389,8 @@ export const getQueryParamsField = (eachProp: CommonPluggableComponentPropertyIn
 };
 
 export const getTableField = (eachProp: CommonPluggableComponentPropertyInterface,
-                              propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
-                              testId?: string): ReactElement => {
+    propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
+    testId?: string): ReactElement => {
     return (
         <>
             <div className="field read-only">
@@ -455,7 +455,7 @@ export const getTableField = (eachProp: CommonPluggableComponentPropertyInterfac
                             </div>
                         </Grid.Column>
                     </Grid.Row>
-                    )
+                )
                 ) }
             </Grid>
             { propertyMetadata?.description && (
@@ -466,8 +466,8 @@ export const getTableField = (eachProp: CommonPluggableComponentPropertyInterfac
 };
 
 export const getDropDownField = (eachProp: CommonPluggableComponentPropertyInterface,
-                                 propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
-                                 testId?: string): ReactElement => {
+    propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
+    testId?: string): ReactElement => {
     return (
         <>
             <Field
@@ -545,7 +545,7 @@ export enum CommonConstants {
 /**
  * Get interpreted field type for given property metada.
  *
- * @param propertyMetadata Property metadata of type {@link CommonPluggableComponentMetaPropertyInterface}.
+ * @param propertyMetadata - Property metadata of type {@link CommonPluggableComponentMetaPropertyInterface}.
  */
 export const getFieldType = (
     propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
@@ -575,17 +575,18 @@ export const getFieldType = (
     } else if (propertyMetadata.type?.toUpperCase() === CommonConstants.RADIO) {
         return FieldType.RADIO;
     }
+
     return FieldType.TEXT;
 };
 
 /**
  * Get corresponding {@link Field} component for the provided property.
  *
- * @param property Property of type {@link CommonPluggableComponentPropertyInterface}.
- * @param propertyMetadata Property metadata of type.
- * @param testId Test ID for the form field.
- * @param listen Listener method for the on change events of a checkbox field
- * @return Corresponding property field.
+ * @param property - Property of type {@link CommonPluggableComponentPropertyInterface}.
+ * @param propertyMetadata - Property metadata of type.
+ * @param testId - Test ID for the form field.
+ * @param listen - Listener method for the on change events of a checkbox field
+ * @returns Corresponding property field.
  */
 export const getPropertyField = (
     property: CommonPluggableComponentPropertyInterface,
@@ -600,12 +601,14 @@ export const getPropertyField = (
             if (listen) {
                 return getCheckboxFieldWithListener(property, propertyMetadata, listen, testId);
             }
+
             return getCheckboxField(property, propertyMetadata, testId);
         }
         case FieldType.RADIO : {
             if (listen) {
                 return getRadioButtonFieldWithListener(property, propertyMetadata, listen, testId);
             }
+
             return getRadioButtonField(property, propertyMetadata, testId);
         }
         case FieldType.CONFIDENTIAL : {
