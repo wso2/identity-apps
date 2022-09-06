@@ -28,41 +28,36 @@ export class UserManagementConstants {
      * Private constructor to avoid object instantiation from outside
      * the class.
      *
-     * @hideconstructor
      */
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     private constructor() { }
 
     /**
      * Default role list item limit.
-     * @constant
-     * @type {number}
-     * @default
+     * @typeparam DEFAULT_ROLE_LIST_ITEM_LIMIT - number
+     * @defaultValue
      */
     public static readonly DEFAULT_ROLE_LIST_ITEM_LIMIT = 10;
 
     /**
      * Default email template type list item limit.
-     * @constant
-     * @type {number}
-     * @default
+     * @typeparam DEFAULT_EMAIL_TEMPLATE_TYPE_ITEM_LIMIT - number
+     * @defaultValue
      */
     public static readonly DEFAULT_EMAIL_TEMPLATE_TYPE_ITEM_LIMIT = 10;
 
     /**
      * Default user list attributes.
-     * @constant
-     * @type {string[]}
-     * @default
+     * @typeparam DEFAULT_USER_LIST_ATTRIBUTES - string[]
+     * @defaultValue
      */
     public static readonly DEFAULT_USER_LIST_ATTRIBUTES = [ "name", "emails", "userName", "profileUrl",
         "meta.lastModified" ];
 
     /**
      * Set of keys used to enable/disable features.
-     * @constant
-     * @type {Map<string, string>}
-     * @default
+     * @typeparam FEATURE_DICTIONARY - `Map<string, string>`
+     * @defaultValue
      */
     public static readonly FEATURE_DICTIONARY: Map<string, string> = new Map<string, string>()
         .set("USER_CREATE", "users.create")
@@ -92,9 +87,8 @@ export class UserManagementConstants {
 
     /**
      * Set of SCIM2 schema names.apps/myaccount/src/store/actions/authenticate.ts
-     * @constant
-     * @type {Map<string, string>}
-     * @default
+     * @typeparam SCIM2_SCHEMA_DICTIONARY - `Map<string, string>`
+     * @defaultValue
      */
     public static readonly SCIM2_SCHEMA_DICTIONARY: Map<string, string> = new Map<string, string>()
         .set("EMAILS", "emails")
@@ -104,10 +98,8 @@ export class UserManagementConstants {
 
     /**
      * Set of SCIM2 enterprise attributes.
-     *
-     * @constant
-     * @type {Map<string, string>}
-     * @default
+     * @typeparam SCIM2_ATTRIBUTES_DICTIONARY - `Map<string, string>`
+     * @defaultValue
      */
     public static readonly SCIM2_ATTRIBUTES_DICTIONARY: Map<string, string> = new Map<string, string>()
         .set("ACCOUNT_LOCKED", SCIMConfigs.scimEnterpriseUserClaimUri.accountLocked)
