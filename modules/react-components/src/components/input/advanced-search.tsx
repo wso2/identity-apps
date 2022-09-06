@@ -143,7 +143,7 @@ export interface AdvancedSearchPropsInterface extends IdentifiableComponentInter
  *
  * @param props - Props injected to the component.
  *
- * @return React element.
+ * @returns React element.
  */
 export const AdvancedSearch: FunctionComponent<PropsWithChildren<AdvancedSearchPropsInterface>> = (
     props: PropsWithChildren<AdvancedSearchPropsInterface>

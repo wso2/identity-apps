@@ -17,7 +17,6 @@
  */
 
 import { AccessControlConstants, Show } from "@wso2is/access-control";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
@@ -65,7 +64,6 @@ import {
     getGeneralIcons,
     history
 } from "../../core";
-import { RemoteFetchStatus } from "../../remote-repository-configuration";
 import { useApplicationList } from "../api";
 import { ApplicationList, MinimalAppCreateWizard } from "../components";
 import { ApplicationManagementConstants } from "../constants";
@@ -121,7 +119,6 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     const dispatch = useDispatch();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ listSortingStrategy, setListSortingStrategy ] = useState<DropdownItemProps>(
@@ -207,11 +204,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
      */
     const shouldShowNextPageNavigation = (appList: ApplicationListInterface): boolean => {
 
-        if (appList?.startIndex + appList?.count === appList?.totalResults + 1) {
-            return false;
-        }
-
-        return true;
+        return appList?.startIndex + appList?.count !== appList?.totalResults + 1;
     };
 
     /**
