@@ -22,7 +22,13 @@ End-user apps in WSO2 Identity Server
 2. Instal the latest version of [pnpm](https://pnpm.io/).
 
     ```shell
-    npm install -g pnpm@latest
+    corepack enable
+    ```
+
+    This will install pnpm on your system. However, it probably would not be the latest version. Hence, to upgrade it, check the [latest pnpm version](https://github.com/pnpm/pnpm/releases/latest) and run:
+
+    ```shell
+    corepack prepare pnpm@<version> --activate
     ```
 
     Or, follow the other [recommended installation options](https://pnpm.io/installation).
