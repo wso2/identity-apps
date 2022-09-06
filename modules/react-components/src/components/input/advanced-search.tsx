@@ -96,8 +96,8 @@ export interface AdvancedSearchPropsInterface extends IdentifiableComponentInter
     onExternalSearchQueryClear?: () => void;
     /**
      * Callback for search query submit.
-     * @param {boolean} processQuery - process flag.
-     * @param {string} query - Search query.
+     * @param processQuery - process flag.
+     * @param query - Search query.
      */
     onSearchQuerySubmit: (processQuery: boolean, query: string) => void;
     /**
@@ -141,9 +141,9 @@ export interface AdvancedSearchPropsInterface extends IdentifiableComponentInter
 /**
  * Advanced search component.
  *
- * @param {React.PropsWithChildren<AdvancedSearchPropsInterface>} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @return React element.
  */
 export const AdvancedSearch: FunctionComponent<PropsWithChildren<AdvancedSearchPropsInterface>> = (
     props: PropsWithChildren<AdvancedSearchPropsInterface>
@@ -250,7 +250,7 @@ export const AdvancedSearch: FunctionComponent<PropsWithChildren<AdvancedSearchP
     /**
      * Handles the search input field `onChange` event.
      *
-     * @param {React.ChangeEvent<HTMLInputElement>} e - Input change event.
+     * @param e - Input change event.
      */
     const handleSearchQueryChange = (e: ChangeEvent<HTMLInputElement>): void => {
         const { value } = e.target;
@@ -277,7 +277,7 @@ export const AdvancedSearch: FunctionComponent<PropsWithChildren<AdvancedSearchP
     /**
      * Handles search query submit by keyboard events.
      *
-     * @param {KeyboardEvent} e - Keyboard event.
+     * @param e - Keyboard event.
      */
     const handleSearchQuerySubmit = (e: KeyboardEvent): void => {
         const { key, shiftKey } = e;

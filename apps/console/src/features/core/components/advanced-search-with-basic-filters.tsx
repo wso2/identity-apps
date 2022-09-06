@@ -34,19 +34,16 @@ import { getAdvancedSearchIcons } from "../configs";
 
 /**
  * Filter attribute field identifier.
- * @type {string}
  */
 const FILTER_ATTRIBUTE_FIELD_IDENTIFIER = "filterAttribute";
 
 /**
  * Filter condition field identifier.
- * @type {string}
  */
 const FILTER_CONDITION_FIELD_IDENTIFIER = "filterCondition";
 
 /**
  * Filter value field identifier.
- * @type {string}
  */
 const FILTER_VALUES_FIELD_IDENTIFIER = "filterValues";
 
@@ -131,8 +128,8 @@ export interface AdvancedSearchWithBasicFiltersPropsInterface extends TestableCo
 /**
  * Advanced search component with SCIM like basic filters form.
  *
- * @param {AdvancedSearchWithBasicFiltersPropsInterface} props - Props injected to the component.
- * @return {React.ReactElement}
+ * @param props - Props injected to the component.
+ * @returns React element.
  */
 export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWithBasicFiltersPropsInterface> = (
     props: AdvancedSearchWithBasicFiltersPropsInterface
@@ -170,7 +167,7 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
     /**
      * Handles the form submit.
      *
-     * @param {Map<string, string | string[]>} values - Form values.
+     * @param values - Form values.
      */
     const handleFormSubmit = (values: Map<string, string | string[]>): void => {
         const query = values.get(FILTER_ATTRIBUTE_FIELD_IDENTIFIER)
@@ -187,8 +184,8 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
     /**
      * Handles the search query submit.
      *
-     * @param {boolean} processQuery - Flag to enable query processing.
-     * @param {string} query - Search query.
+     * @param processQuery - Flag to enable query processing.
+     * @param query - Search query.
      */
     const handleSearchQuerySubmit = (processQuery: boolean, query: string): void => {
         if (!processQuery) {
@@ -234,8 +231,6 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
 
     /**
      * Default filter condition options.
-     *
-     * @type {({text: string; value: string})[]}
      */
     const defaultFilterConditionOptions = [
         {
