@@ -227,7 +227,7 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
         } else {
             return `${defaultSearchAttribute} ${defaultSearchOperator} %search-value%`;
         }
-    }
+    };
 
     /**
      * Default filter condition options.
