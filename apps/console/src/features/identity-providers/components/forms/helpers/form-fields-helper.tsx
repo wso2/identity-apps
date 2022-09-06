@@ -19,7 +19,8 @@
 import { URLUtils } from "@wso2is/core/utils";
 import {
     Field,
-    FormValue, StrictRadioChild,
+    FormValue,
+    StrictRadioChild,
     Validation
 } from "@wso2is/forms";
 import { I18n } from "@wso2is/i18n";
