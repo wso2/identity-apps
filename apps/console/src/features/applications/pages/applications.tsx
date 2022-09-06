@@ -104,8 +104,8 @@ type ApplicationsPageInterface = TestableComponentInterface;
 /**
  * Applications page.
  *
- * @param {ApplicationsPageInterface} props - Props injected to the component.
- * @return {React.ReactElement}
+ * @param props - Props injected to the component.
+ * @return React element.
  */
 const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     props: ApplicationsPageInterface
@@ -189,8 +189,8 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     /**
      * Sets the list sorting strategy.
      *
-     * @param {React.SyntheticEvent<HTMLElement>} event - The event.
-     * @param {DropdownProps} data - Dropdown data.
+     * @param event - Synthetic event.
+     * @param data - Dropdown data.
      */
     const handleListSortingStrategyOnChange = (event: SyntheticEvent<HTMLElement>,
         data: DropdownProps): void => {
@@ -200,10 +200,10 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     };
 
     /**
-     * Checks if `Next` page nav button should be shown.
+     * Checks if the `Next` page nav button should be shown.
      *
      * @param appList - List of applications.
-     * @returns {boolean} - `true` if `Next` page nav button should be shown.
+     * @returns Boolean to show if the `Next` page nav button should be shown.
      */
     const shouldShowNextPageNavigation = (appList: ApplicationListInterface): boolean => {
 
@@ -218,7 +218,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
      * Handles the `onFilter` callback action from the
      * application search component.
      *
-     * @param {string} query - Search query.
+     * @param query - Search query.
      */
     const handleApplicationFilter = (query: string): void => {
         setSearchQuery(query);
@@ -227,8 +227,8 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     /**
      * Handles the pagination change.
      *
-     * @param {React.MouseEvent<HTMLAnchorElement>} event - Mouse event.
-     * @param {PaginationProps} data - Pagination component data.
+     * @param event - Mouse event.
+     * @param data - Pagination component data.
      */
     const handlePaginationChange = (event: MouseEvent<HTMLAnchorElement>, data: PaginationProps): void => {
         setListOffset((data.activePage as number - 1) * listItemLimit);
@@ -237,8 +237,8 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     /**
      * Handles per page dropdown page.
      *
-     * @param {React.MouseEvent<HTMLAnchorElement>} event - Mouse event.
-     * @param {DropdownProps} data - Dropdown data.
+     * @param event - Mouse event.
+     * @param data - Dropdown data.
      */
     const handleItemsPerPageDropdownChange = (event: MouseEvent<HTMLAnchorElement>,
         data: DropdownProps): void => {
@@ -263,7 +263,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     /**
      * Renders the Remote Fetch status bar.
      *
-     * @return {React.ReactElement}
+     * @returns React element.
      */
     const renderRemoteFetchStatus = (): ReactElement => {
 
@@ -280,7 +280,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     /**
      * Renders the URL for the tenanted my account login.
      *
-     * @return {React.ReactElement}
+     * @returns React element
      */
     const renderTenantedMyAccountLink = (): ReactElement => {
         if (AppConstants.getTenant() === AppConstants.getSuperTenant() ||
@@ -430,7 +430,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                                     ".placeholder")
                                 }
                                 placeholder={ t("console:develop.features.applications.advancedSearch.placeholder") }
-                                customStyle={ { width: "450px" } }
+                                customStyle={ { minWidth: "500px" } }
                                 defaultSearchAttribute="name"
                                 defaultSearchOperator="co"
                                 predefinedDefaultSearchStrategy={
