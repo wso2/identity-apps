@@ -54,7 +54,7 @@ export interface AdvancedSearchWithBasicFiltersPropsInterface extends TestableCo
     /**
      * Custom CSS styles for main text input box.
      */
-    customStyle?: any;
+    style?: object;
     /**
      * Default Search attribute. ex: "name"
      */
@@ -136,7 +136,7 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
 ): ReactElement => {
 
     const {
-        customStyle,
+        style,
         defaultSearchAttribute,
         defaultSearchOperator,
         dropdownPosition,
@@ -256,7 +256,7 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
             aligned="left"
             clearButtonPopupLabel={ t("console:common.advancedSearch.popups.clear") }
             clearIcon={ getAdvancedSearchIcons().clear }
-            customStyle={ customStyle }
+            style={ style }
             defaultSearchStrategy={ handleDefaultSearchStrategy() }
             dropdownTriggerPopupLabel={ t("console:common.advancedSearch.popups.dropdown") }
             fill={ fill }
