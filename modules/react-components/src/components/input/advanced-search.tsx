@@ -20,6 +20,7 @@ import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso
 import classNames from "classnames";
 import React, {
     ChangeEvent,
+    CSSProperties,
     FunctionComponent,
     MutableRefObject,
     PropsWithChildren,
@@ -54,10 +55,6 @@ export interface AdvancedSearchPropsInterface extends IdentifiableComponentInter
      * Clear icon override.
      */
     clearIcon?: any;
-    /**
-     * Custom CSS styles for text input box.
-     */
-    style?: object;
     /**
      * Search strategy ex: name co %search-value%.
      */
@@ -117,6 +114,10 @@ export interface AdvancedSearchPropsInterface extends IdentifiableComponentInter
      */
     sessionTimedOut?: boolean;
     /**
+     * Custom CSS styles for text input box.
+     */
+    style?: CSSProperties | undefined;
+    /**
      * Is form submitted.
      */
     submitted?: boolean;
@@ -151,17 +152,18 @@ export const AdvancedSearch: FunctionComponent<PropsWithChildren<AdvancedSearchP
 
     const {
         aligned,
+        clearIcon,
         className,
         children,
         clearButtonPopupLabel,
-        style,
         defaultSearchStrategy,
         dropdownPosition,
         dropdownTriggerPopupLabel,
         enableQuerySearch,
         externalSearchQuery,
         fill,
-        clearIcon,
+        filterAttributeOptions,
+        filterConditionOptions,
         inputSize,
         onExternalSearchQueryClear,
         onSearchQuerySubmit,
@@ -169,12 +171,11 @@ export const AdvancedSearch: FunctionComponent<PropsWithChildren<AdvancedSearchP
         resetSubmittedState,
         searchOptionsHeader,
         sessionTimedOut,
+        style,
         submitted,
         [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId,
-        triggerClearQuery,
-        filterConditionOptions,
-        filterAttributeOptions
+        triggerClearQuery
     } = props;
 
     const searchInputRef: MutableRefObject<HTMLDivElement> = useRef();

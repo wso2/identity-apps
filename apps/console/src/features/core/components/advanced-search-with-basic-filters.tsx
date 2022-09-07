@@ -26,7 +26,7 @@ import {
     PrimaryButton,
     SessionTimedOutContext
 } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useState } from "react";
+import React, { CSSProperties, FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Form, Grid } from "semantic-ui-react";
 import { commonConfig } from "../../../extensions";
@@ -51,10 +51,6 @@ const FILTER_VALUES_FIELD_IDENTIFIER = "filterValues";
  * Prop types for the application search component.
  */
 export interface AdvancedSearchWithBasicFiltersPropsInterface extends TestableComponentInterface {
-    /**
-     * Custom CSS styles for main text input box.
-     */
-    style?: object;
     /**
      * Default Search attribute. ex: "name"
      */
@@ -104,6 +100,10 @@ export interface AdvancedSearchWithBasicFiltersPropsInterface extends TestableCo
      */
     predefinedDefaultSearchStrategy?: string;
     /**
+     * Custom CSS styles for main text input box.
+     */
+    style?: CSSProperties | undefined;
+    /**
      * Submit button text.
      */
     submitButtonLabel?: string;
@@ -136,7 +136,6 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
 ): ReactElement => {
 
     const {
-        style,
         defaultSearchAttribute,
         defaultSearchOperator,
         dropdownPosition,
@@ -152,6 +151,7 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
         predefinedDefaultSearchStrategy,
         resetButtonLabel,
         showResetButton,
+        style,
         submitButtonLabel,
         triggerClearQuery,
         [ "data-testid" ]: testId
