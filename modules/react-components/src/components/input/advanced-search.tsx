@@ -19,8 +19,8 @@
 import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, {
-    ChangeEvent,
     CSSProperties,
+    ChangeEvent,
     FunctionComponent,
     MutableRefObject,
     PropsWithChildren,
