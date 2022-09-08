@@ -2349,7 +2349,39 @@ export const console: ConsoleNS = {
                     description: "Self-service portal for your users.",
                     popup: "Share this link with your users to allow access to My Account" +
                     " and to manage their accounts.",
-                    title: "My Account"
+                    title: "My Account",
+                    enable: {
+                        0: "Enabled",
+                        1: "Disabled"
+                    },
+                    Confirmation: {
+                        enableConfirmation: {
+                            content: "The My Account portal is in preview mode and it is not recommended to use " +
+                                "in production recommended. Please proceed with caution.",
+                            heading: "Are you sure?",
+                            message: "Enable My Account portal."
+                        },
+                        disableConfirmation: {
+                            content: "If you disable My Account portal, Users in your organization will not be able " +
+                                "to access  self-service features in the My Account portal.",
+                            heading: "Are you sure?",
+                            message: "Disable My Account poratl."
+                        }
+                    },
+                    notifications: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Update error"
+                        },
+                        genericError: {
+                            description: "Failed to update My Account Portal status",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Successfully updated My Account Portal status",
+                            message: "Update successful"
+                        }
+                    }
                 },
                 notifications: {
                     addApplication: {

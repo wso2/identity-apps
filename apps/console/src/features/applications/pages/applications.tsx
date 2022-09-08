@@ -22,6 +22,7 @@ import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
 import {
+	ConfirmationModal,
     CopyInputField,
     DocumentationLink,
     EmphasizedSegment,
@@ -44,6 +45,8 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import {
+    Checkbox,
+    CheckboxProps,
     DropdownItemProps,
     DropdownProps,
     Grid,
@@ -66,7 +69,7 @@ import {
     history
 } from "../../core";
 import { RemoteFetchStatus } from "../../remote-repository-configuration";
-import { useApplicationList } from "../api";
+import { useApplicationList, getMyAccountStatus, updateMyAccountStatus } from "../api";
 import { ApplicationList, MinimalAppCreateWizard } from "../components";
 import { ApplicationManagementConstants } from "../constants";
 import CustomApplicationTemplate
@@ -136,6 +139,11 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     const consumerAccountURL: string = useSelector((state: AppState) =>
         state?.config?.deployment?.accountApp?.tenantQualifiedPath);
     const [ isLoadingForTheFirstTime, setIsLoadingForTheFirstTime ] = useState<boolean>(true);
+    const [ isMyAccountStatusLoading, setMyAccountStatusLoading ] = useState<boolean>(true);
+    const [ myAccountStatus, setMyAccountStatus ] = useState<boolean>(false);
+    const [ showMyAccountStatusEnableModal, setShowMyAccountStatusEnableConfirmationModal ] = useState<boolean>(false);
+    const [ showMyAccountStatusDisableModal,
+                setShowMyAccountStatusDisableConfirmationModal ] = useState<boolean>(false);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -146,15 +154,24 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
         mutate: mutateApplicationListFetchRequest
     } = useApplicationList("advancedConfigurations,templateId", listItemLimit, listOffset, searchQuery);
 
+    useEffect(() => {
+        getMyAccountStatus()
+            .then((status) => {
+                setMyAccountStatus(status);
+                setMyAccountStatusLoading(false);
+            });
+    }, [ isMyAccountStatusLoading ]);
+
     /**
      * Sets the initial spinner.
      * TODO: Remove this once the loaders are finalized.
      */
     useEffect(() => {
-        if (isApplicationListFetchRequestLoading === false && isLoadingForTheFirstTime === true) {
+        if (isApplicationListFetchRequestLoading === false && isMyAccountStatusLoading === false
+            && isLoadingForTheFirstTime === true) {
             setIsLoadingForTheFirstTime(false);
         }
-    }, [ isApplicationListFetchRequestLoading, isLoadingForTheFirstTime ]);
+    }, [ isApplicationListFetchRequestLoading, isMyAccountStatusLoading, isLoadingForTheFirstTime ]);
 
     /**
      * Handles the application list fetch request error.
@@ -279,6 +296,135 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     };
 
     /**
+     * Handles the My Account Portal status update action.
+     */
+     const handleMyAccountStatusToggle = (e: SyntheticEvent, data: CheckboxProps): void => {
+        if (data.checked) {
+            setShowMyAccountStatusEnableConfirmationModal(true);
+        } else {
+            setShowMyAccountStatusDisableConfirmationModal(true);
+        }
+    }
+
+    /**
+     * Update the My Account Portal status.
+     */
+    const handleUpdateMyAccountStatus = (status: boolean): void => {
+
+        updateMyAccountStatus(status)
+        	.then(() => {
+        		setMyAccountStatus(status);
+                dispatch(addAlert({
+                    description: t("console:develop.features.applications.myaccount.notifications.success.description"),
+                    level: AlertLevels.SUCCESS,
+                    message: t("console:develop.features.applications.myaccount.notifications.success.message")
+                }));
+
+            }).catch((error) => {
+                if (error?.response?.data?.description) {
+                    dispatch(addAlert({
+                        description: error?.response?.data?.description ?? error?.response?.data?.detail
+                            ?? t("console:develop.features.applications.myaccount.notifications.genericError.description"),
+                        level: AlertLevels.ERROR,
+                        message: error?.response?.data?.message
+                            ?? t("console:develop.features.applications.myaccount.notifications.genericError.message")
+                    }));
+                    return;
+                }
+                dispatch(addAlert({
+                    description: t("console:develop.features.applications.myaccount.notifications.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("console:develop.features.applications.myaccount.notifications.genericError.message")
+                }));
+            });
+    };
+
+
+    /**
+     * Renders a confirmation modal when the My Account Portal status is being enabled.
+     * @return {ReactElement}
+     */
+     const renderMyAccountStatusEnableWarning = (): ReactElement => {
+
+        return (
+            <ConfirmationModal
+                onClose={ (): void => setShowMyAccountStatusEnableConfirmationModal(false) }
+                type="negative"
+                open={ showMyAccountStatusEnableModal }
+                primaryAction={ t("common:confirm") }
+                secondaryAction={ t("common:cancel") }
+                onSecondaryActionClick={
+                    (): void => {
+                        setShowMyAccountStatusEnableConfirmationModal(false);
+                    }
+                }
+                onPrimaryActionClick={
+                    (): void => {
+                    	setShowMyAccountStatusEnableConfirmationModal(false);
+                        handleUpdateMyAccountStatus(true);
+                    }
+                }
+                closeOnDimmerClick={ false }
+                >
+                <ConfirmationModal.Header>
+                    { t("console:develop.features.applications.myaccount.Confirmation.enableConfirmation.heading") }
+                </ConfirmationModal.Header>
+                <ConfirmationModal.Message
+                    attached
+                    negative
+                >
+                    { t("console:develop.features.applications.myaccount.Confirmation.enableConfirmation.message") }
+                </ConfirmationModal.Message>
+                <ConfirmationModal.Content>
+                    { t("console:develop.features.applications.myaccount.Confirmation.enableConfirmation.content") }
+                </ConfirmationModal.Content>
+            </ConfirmationModal>
+        )
+    };
+
+
+    /**
+     * Renders a confirmation modal when the My Account Portal status is being disabled.
+     * @return {ReactElement}
+     */
+     const renderMyAccountStatusDisableWarning = (): ReactElement => {
+
+        return (
+            <ConfirmationModal
+                onClose={ (): void => setShowMyAccountStatusDisableConfirmationModal(false) }
+                type="warning"
+                open={ showMyAccountStatusDisableModal }
+                primaryAction={ t("common:confirm") }
+                secondaryAction={ t("common:cancel") }
+                onSecondaryActionClick={
+                    (): void => {
+                        setShowMyAccountStatusDisableConfirmationModal(false);
+                    }
+                }
+                onPrimaryActionClick={
+                    (): void => {
+                        setShowMyAccountStatusDisableConfirmationModal(false);
+                        handleUpdateMyAccountStatus(false);
+                    }
+                }
+                closeOnDimmerClick={ false }
+                >
+                <ConfirmationModal.Header>
+                    { t("console:develop.features.applications.myaccount.Confirmation.disableConfirmation.heading") }
+                </ConfirmationModal.Header>
+                <ConfirmationModal.Message
+                    attached
+                    warning
+                >
+                    { t("console:develop.features.applications.myaccount.Confirmation.disableConfirmation.message") }
+                </ConfirmationModal.Message>
+                <ConfirmationModal.Content>
+                    { t("console:develop.features.applications.myaccount.Confirmation.disableConfirmation.content") }
+                </ConfirmationModal.Content>
+            </ConfirmationModal>
+        )
+    };
+    /**
      * Renders the URL for the tenanted my account login.
      *
      * @return {React.ReactElement}
@@ -331,28 +477,43 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                                         { t("common:learnMore") }
                                     </DocumentationLink>
                                 </List.Description>
+                                <Checkbox
+                                     className="mt-3"
+                                     label={ t(myAccountStatus ?
+               								     "console:develop.features.applications.myaccount.enable.0" :
+           							      	     "console:develop.features.applications.myaccount.enable.1") }
+                                     toggle
+                                     onChange={ handleMyAccountStatusToggle }
+                                     checked={ myAccountStatus }
+                                     data-testId={ `${ testId }-myaccount-status-update-toggle` }
+                                	/>
+
                             </Grid.Column>
-                            <Popup
-                                trigger={
-                                    (<Grid.Column
-                                        floated="right"
-                                        width={ 6 }
-                                    >
-                                        <CopyInputField
-                                            value={ consumerAccountURL }
-                                            data-componentid={ "application-consumer-account-link-copy-field" }
-                                        />
-                                    </Grid.Column>)
-                                }
-                                content={ t("console:develop.features.applications.myaccount.popup") }
-                                position="top center"
-                                size="mini"
-                                hideOnScroll
-                                inverted
-                            />
+                            { myAccountStatus?(
+                                <Popup
+                                    trigger={
+                                        (<Grid.Column
+                                            floated="right"
+                                            width={ 6 }
+                                        >
+                                            <CopyInputField
+                                                value={ consumerAccountURL }
+                                                data-componentid={ "application-consumer-account-link-copy-field" }
+                                            />
+                                        </Grid.Column>)
+                                    }
+                                    content={ t("console:develop.features.applications.myaccount.popup") }
+                                    position="top center"
+                                    size="mini"
+                                    hideOnScroll
+                                    inverted
+                                /> ) : null
+		                    }
                         </Grid>
                     </List.Item>
                 </List>
+                { showMyAccountStatusEnableModal && renderMyAccountStatusEnableWarning() }
+                { showMyAccountStatusDisableModal && renderMyAccountStatusDisableWarning() }
             </EmphasizedSegment>
         );
     };
@@ -361,12 +522,13 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
         <PageLayout
             pageTitle="Applications"
             action={
-                (!isApplicationListFetchRequestLoading && !(!searchQuery && applicationList?.totalResults <= 0))
+                (!isApplicationListFetchRequestLoading && !isMyAccountStatusLoading
+                    &&!(!searchQuery && applicationList?.totalResults <= 0))
                 && (
                     <Show when={ AccessControlConstants.APPLICATION_WRITE }>
                         <PrimaryButton
-                            disabled={ isApplicationListFetchRequestLoading }
-                            loading={ isApplicationListFetchRequestLoading }
+                            disabled={ isApplicationListFetchRequestLoading || isMyAccountStatusLoading }
+                            loading={ isApplicationListFetchRequestLoading || isMyAccountStatusLoading}
                             onClick={ (): void => {
                                 eventPublisher.publish("application-click-new-application-button");
                                 history.push(AppConstants.getPaths().get("APPLICATION_TEMPLATES"));
@@ -440,7 +602,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                         onSortStrategyChange={ handleListSortingStrategyOnChange }
                         showPagination={ true }
                         showTopActionPanel={
-                            isApplicationListFetchRequestLoading
+                            isApplicationListFetchRequestLoading || isMyAccountStatusLoading
                         || !(!searchQuery && applicationList?.totalResults <= 0) }
                         sortOptions={ APPLICATIONS_LIST_SORTING_OPTIONS }
                         sortStrategy={ listSortingStrategy }
@@ -492,7 +654,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                                 />
                             ) }
                             featureConfig={ featureConfig }
-                            isLoading={ isApplicationListFetchRequestLoading }
+                            isLoading={ isApplicationListFetchRequestLoading || isMyAccountStatusLoading }
                             list={ applicationList }
                             onApplicationDelete={ handleApplicationDelete }
                             onEmptyListPlaceholderActionClick={

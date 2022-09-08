@@ -22,4 +22,5 @@
 export interface ApplicationsResourceEndpointsInterface {
     applications: string;
     requestPathAuthenticators: string;
+    configMgt: string;
 }

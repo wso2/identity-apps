@@ -984,3 +984,83 @@ export const getRequestPathAuthenticators = (): Promise<any> => {
                 error.config);
         });
 };
+
+/**
+ * Function to add/update My Account portal status.
+ *
+ * @param {boolean} status - My Account portal status.
+ *
+ * @return {Promise<any>} Promise of type any.
+ * @throws {IdentityAppsApiException}
+ */
+ export const updateMyAccountStatus = (status: boolean): Promise<any> => {
+
+    const config = `{"name": "status", "attributes": [{"key": "enable", "value": ${ status.toString() }}]}`;
+
+    const requestConfig = {
+        data: config,
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.PUT,
+        url: store.getState().config.endpoints.configMgt + "/resource/myaccount"
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 200) {
+                throw new IdentityAppsApiException(
+                    ApplicationManagementConstants.MYACCOUNT_STATUS_UPDATE_INVALID_STATUS_CODE_ERROR,
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config);
+            }
+
+            return Promise.resolve(response.data);
+        })
+        .catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                ApplicationManagementConstants.MYACCOUNT_STATUS_UPDATE_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
+        });
+};
+
+/**
+ * Function to get My Account portal status.
+ *
+ * @return {Promise<boolean>} Promise of type boolean.
+ */
+ export const getMyAccountStatus = () : Promise<boolean> => {
+
+    const requestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: store.getState().config.endpoints.configMgt + "/resource/myaccount/status/enable"
+    };
+
+    let myAccountStatus = false;
+    return httpClient(requestConfig)
+        .then((response) => {
+            if (response.status === 200) {
+                const enableProperty = response.data["value"];
+                myAccountStatus = (enableProperty ? enableProperty == "true" : true );
+            }
+            return Promise.resolve(myAccountStatus);
+        })
+        .catch((error) => {
+            console.log(error);
+            return Promise.resolve(myAccountStatus);
+        });
+    };

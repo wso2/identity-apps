@@ -2393,7 +2393,39 @@ export const console: ConsoleNS = {
                     description: "Portail libre-service pour les utilisateurs d'Asgardeo",
                     popup: "Partagez ce lien avec vos utilisateurs pour autoriser" +
                     " l'accès à Mon compte et gérer leurs comptes.",
-                    title: "Mon compte"
+                    title: "Mon compte",
+                    enable: {
+                        0: "Activé",
+                        1: "Désactivé"
+                    },
+                    Confirmation: {
+                        enableConfirmation: {
+                            content: "Le Mon compte est en mode aperçu et n'est pas recommandé en production. " +
+                            "Veuillez procéder avec prudence",
+                            heading: "Êtes-vous sûr?",
+                            message: "Activer le Mon compte."
+                        },
+                        disableConfirmation: {
+                            content: "Si vous désactivez le Mon compte, les utilisateurs de votre organisation " +
+                            "ne pourront pas accéder aux fonctionnalités en libre-service du Mon compte.",
+                            heading: "Êtes-vous sûr?",
+                            message: "Désactiver le Mon compte."
+                        }
+                    },
+                    notifications: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Erreur de mise à jour"
+                        },
+                        genericError: {
+                            description: "Mon compte Échec de mise à jour.",
+                            message: "Quelque chose s'est mal passé"
+                        },
+                        success: {
+                            description: "Mon compte mis à jour avec succès",
+                            message: "Mise à jour réussie"
+                        }
+                    }
                 },
                 notifications: {
                     addApplication: {

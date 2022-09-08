@@ -27,6 +27,7 @@ import { ApplicationsResourceEndpointsInterface } from "../models";
 export const getApplicationsResourceEndpoints = (serverHost: string): ApplicationsResourceEndpointsInterface => {
     return {
         applications: `${ serverHost }/api/server/v1/applications`,
-        requestPathAuthenticators: `${ serverHost }/api/server/v1/configs/authenticators?type=REQUEST_PATH`
+        requestPathAuthenticators: `${ serverHost }/api/server/v1/configs/authenticators?type=REQUEST_PATH`,
+        configMgt: `${ serverHost }/api/identity/config-mgt/v1.0`
     };
 };
