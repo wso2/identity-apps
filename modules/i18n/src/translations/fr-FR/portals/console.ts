@@ -1624,6 +1624,17 @@ export const console: ConsoleNS = {
                                                 "négatifs ne sont pas autorisés."
                                         }
                                     },
+                                    audience: {
+                                        hint: "Spécifiez le ou les destinataires auxquels cet <1>id_token</1> est destiné." +
+                                        " Par défaut, l'émetteur de cette application est ajouté en tant qu'audience.",
+                                        label: "Spectateurs",
+                                        placeholder: "Entrez le Spectateurs",
+                                        validations: {
+                                            duplicate: "L'audience contient des valeurs en double",
+                                            empty: "Veuillez remplir le public",
+                                            invalid: "Veuillez éviter les caractères spéciaux comme les virgules (,)"
+                                        }
+                                    },
                                     bindingType: {
                                         children: {
                                             ssoBinding: {

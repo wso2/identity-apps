@@ -74,6 +74,7 @@ export interface OAuth2PKCEConfigurationInterface {
 
 interface AccessTokenConfigurationInterface {
     type?: string;
+    audience?: string[];
     userAccessTokenExpiryInSeconds?: number;
     applicationAccessTokenExpiryInSeconds?: number;
     bindingType?: SupportedAccessTokenBindingTypes | string;

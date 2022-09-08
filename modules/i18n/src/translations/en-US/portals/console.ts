@@ -1583,6 +1583,17 @@ export const console: ConsoleNS = {
                                                 "Decimal points and negative numbers are not allowed."
                                         }
                                     },
+                                    audience: {
+                                        hint: "Specify the recipient(s) that this <1>id_token</1> is intended for." +
+                                        " By default, the Issuer of this application is added as an audience.",
+                                        label: "Audience",
+                                        placeholder: "Enter Audience",
+                                        validations: {
+                                            duplicate: "Audience contains duplicate values",
+                                            empty: "Please fill the audience",
+                                            invalid: "Please avoid special characters like commas (,)"
+                                        }
+                                    },
                                     bindingType: {
                                         children: {
                                             ssoBinding: {

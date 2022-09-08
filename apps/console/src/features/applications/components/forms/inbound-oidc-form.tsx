@@ -153,7 +153,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
     const [ isEncryptionEnabled, setEncryptionEnable ] = useState(false);
     const [ callBackUrls, setCallBackUrls ] = useState("");
-    const [ audienceUrls, setAudienceUrls ] = useState("");
+    const [ idTokenAudienceUrls, setIdTokenAudienceUrls ] = useState("");
+    const [ accessTokenAudienceUrls, setAccessTokenAudienceUrls ] = useState("");
     const [ showURLError, setShowURLError ] = useState(false);
     const [ showAudienceError, setShowAudienceError ] = useState(false);
     const [ showOriginError, setShowOriginError ] = useState(false);
@@ -809,6 +810,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 applicationAccessTokenExpiryInSeconds: values.get("applicationAccessTokenExpiryInSeconds")
                     ? Number(values.get("applicationAccessTokenExpiryInSeconds"))
                     : Number(metadata.defaultApplicationAccessTokenExpiryTime),
+                audience: accessTokenAudienceUrls !== "" ? accessTokenAudienceUrls.split(",") : [],
                 bindingType: values.get("bindingType"),
                 revokeTokensWhenIDPSessionTerminated: values.get("RevokeAccessToken")?.length > 0,
                 type: values.get("type"),
@@ -817,7 +819,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             },
             grantTypes: values.get("grant"),
             idToken: {
-                audience: audienceUrls !== "" ? audienceUrls.split(",") : [],
+                audience: idTokenAudienceUrls !== "" ? idTokenAudienceUrls.split(",") : [],
                 encryption: {
                     algorithm: isEncryptionEnabled && isCertAvailableForEncrypt ?
                         values.get("algorithm") : metadata.idTokenEncryptionAlgorithm.defaultValue,
@@ -933,6 +935,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         let inboundConfigFormValues: any = {
             accessToken: {
                 applicationAccessTokenExpiryInSeconds: Number(metadata.defaultApplicationAccessTokenExpiryTime),
+                audience: accessTokenAudienceUrls !== "" ? accessTokenAudienceUrls.split(",") : [],
                 bindingType: values.get("bindingType"),
                 revokeTokensWhenIDPSessionTerminated: getRevokeStateForSPA(values),
                 type: values.get("type"),
@@ -940,7 +943,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             },
             grantTypes: values.get("grant"),
             idToken: {
-                audience: audienceUrls !== "" ? audienceUrls.split(",") : [],
+                audience: idTokenAudienceUrls !== "" ? idTokenAudienceUrls.split(",") : [],
                 expiryInSeconds: Number(values.get("idExpiryInSeconds"))
             },
             publicClient: true,
@@ -1483,7 +1486,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 )
             }
 
-            { /* Access Token */ }
+            { /* Access Token */ }            
             <Grid.Row columns={ 2 }>
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                     <Divider />
@@ -1494,6 +1497,74 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         { t("console:develop.features.applications.forms.inboundOIDC.sections" +
                             ".accessToken.heading") }
                     </Heading>
+                    <URLInput
+                        isAllowEnabled={ false }
+                        tenantDomain={ tenantDomain }
+                        onlyOrigin={ false }
+                        labelEnabled={ false }
+                        urlState={ accessTokenAudienceUrls }
+                        setURLState={ setAccessTokenAudienceUrls }
+                        labelName={
+                            t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                                ".accessToken.fields.audience.label")
+                        }
+                        required={ false }
+                        value={
+                            initialValues?.accessToken?.audience.toString()
+                                ? ApplicationManagementUtils.buildCallBackURLWithSeparator(
+                                    initialValues?.accessToken?.audience.toString())
+                                : ""
+                        }
+                        validation={ (value: string) => !value?.includes(",") }
+                        placeholder={
+                            t("console:develop.features.applications.forms.inboundOIDC.sections.accessToken" +
+                                ".fields.audience.placeholder")
+                        }
+                        validationErrorMsg={
+                            t("console:develop.features.applications.forms.inboundOIDC.sections.accessToken" +
+                                ".fields.audience.validations.invalid")
+                        }
+                        showError={ showAudienceError }
+                        setShowError={ setShowAudienceError }
+                        hint={ (
+                            <Trans
+                                i18nKey={
+                                    "console:develop.features.applications.forms.inboundOIDC.sections.accessToken" +
+                                    ".fields.audience.hint"
+                                }
+                            >
+                                Specify the recipient(s) that this <Code withBackground>id_token</Code> is intended
+                                for. By default, the Issuer of this token is added as an audience.
+                            </Trans>
+                        ) }
+                        readOnly={ readOnly }
+                        addURLTooltip={ t("common:addURL") }
+                        duplicateURLErrorMessage={ t("common:duplicateURLError") }
+                        getSubmit={ (submitFunction: (callback: (url?: string) => void) => void) => {
+                            submitUrl = submitFunction;
+                        } }
+                        showPredictions={ false }
+                        skipInternalValidation={ true }
+                        popupHeaderPositive={ t("console:develop.features.URLInput.withLabel."
+                            + "positive.header") }
+                        popupHeaderNegative={ t("console:develop.features.URLInput.withLabel."
+                            + "negative.header") }
+                        popupContentPositive={ t("console:develop.features.URLInput.withLabel."
+                            + "positive.content", { productName: config.ui.productName }) }
+                        popupContentNegative={ t("console:develop.features.URLInput.withLabel."
+                            + "negative.content", { productName: config.ui.productName }) }
+                        popupDetailedContentPositive={ t("console:develop.features.URLInput."
+                            + "withLabel.positive.detailedContent.0") }
+                        popupDetailedContentNegative={ t("console:develop.features.URLInput."
+                            + "withLabel.negative.detailedContent.0") }
+                        insecureURLDescription={ t("console:common.validations.inSecureURL.description") }
+                        showLessContent={ t("common:showLess") }
+                        showMoreContent={ t("common:showMore") }
+                    />
+                </Grid.Column>
+            </Grid.Row>
+            <Grid.Row columns={ 1 }>                
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 } className="field">
                     <Field
                         ref={ type }
                         label={
@@ -1853,8 +1924,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         tenantDomain={ tenantDomain }
                         onlyOrigin={ false }
                         labelEnabled={ false }
-                        urlState={ audienceUrls }
-                        setURLState={ setAudienceUrls }
+                        urlState={ idTokenAudienceUrls }
+                        setURLState={ setIdTokenAudienceUrls }
                         labelName={
                             t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                 ".idToken.fields.audience.label")

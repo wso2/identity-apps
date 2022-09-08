@@ -815,6 +815,7 @@ export interface ConsoleNS {
                                 heading: string;
                                 hint: string;
                                 fields: {
+                                    audience: FormAttributes;
                                     bindingType: FormAttributes;
                                     expiry: FormAttributes;
                                     applicationTokenExpiry: FormAttributes;
