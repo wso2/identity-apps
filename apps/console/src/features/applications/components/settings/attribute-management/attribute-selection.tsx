@@ -98,9 +98,8 @@ interface AttributeSelectionPropsInterface extends TestableComponentInterface {
 /**
  * Attribute selection component.
  *
- * @param {AttributeSelectionPropsInterface} props - Props injected to the component.
- *
- * @return {React.ReactElement}
+ * @param props - Props injected to the component.
+ * @returns Attribute Selection component.
  */
 export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterface> = (
     props: AttributeSelectionPropsInterface
@@ -255,7 +254,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
     /**
      * Check whether claim is mandatory or not
      *
-     * @param uri Claim URI to be checked.
+     * @param uri - Claim URI to be checked.
      */
     const checkInitialRequestMandatory = (uri: string) => {
         let requestURI = false;
@@ -284,7 +283,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
     /**
      * Check whether claim is requested or not.
      *
-     * @param uri Claim URI to be checked.
+     * @param uri - Claim URI to be checked.
      */
     const checkInitialRequested = (uri: string): boolean => {
         if (claimConfigurations.dialect === "CUSTOM") {
@@ -334,7 +333,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
     /**
      * Handle change event of the search input.
      *
-     * @param event change event.
+     * @param event - Change event.
      */
     const handleChange = (event) => {
         const changeValue = event.target.value;
@@ -648,9 +647,10 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                     <Trans
                         i18nKey={ "console:develop.features.applications.confirmations." +
                             "removeApplicationUserAttribute.content" }
+                        i18nOptions={ { default: defaultSubjectClaim?.displayName } }
                     >
                         If you remove this, the subject attribute will be set to
-                        the <strong>{ { default: defaultSubjectClaim?.displayName } }</strong>
+                        the <strong>{ defaultSubjectClaim?.displayName }</strong>
                     </Trans>
                 </ConfirmationModal.Content>
             </ConfirmationModal>
@@ -659,7 +659,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
 
     /**
      * Check if the claim has OIDC mapping
-     * @return {boolean}
+     * @returns Is a mapping or not.
      */
     const checkMapping = (claiminput): boolean => {
         let isMapping = false;
@@ -676,7 +676,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
 
     /**
      * Resolves the documentation link when a claim is selected.
-     * @return {React.ReactElement}
+     * @returns Documentation link.
      */
     const resolveClaimDocumentationLink = (): ReactElement => { 
         let docLink: string = undefined;

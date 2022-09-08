@@ -28,6 +28,7 @@ import React, {
     FunctionComponent,
     MouseEvent,
     ReactElement,
+    ReactNode,
     SyntheticEvent,
     useCallback,
     useEffect,
@@ -59,7 +60,7 @@ import {
 const ORGANIZATIONS_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
     {
         key: 0,
-        text: I18n.instance.t("common:name"),
+        text: I18n.instance.t("common:name") as ReactNode,
         value: "name"
     }
 ];
@@ -72,9 +73,8 @@ type OrganizationsPageInterface = IdentifiableComponentInterface;
 /**
  * Organizations page.
  *
- * @param {OrganizationsPageInterface} props - Props injected to the component.
- *
- * @return {React.ReactElement}
+ * @param props - Props injected to the component.
+ * @returns Organizations page component.
  */
 const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
     props: OrganizationsPageInterface
@@ -202,12 +202,12 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
     /**
      * Retrieves the list of organizations.
      *
-     * @param {number} limit - List limit.
-     * @param {number} offset - List offset.
-     * @param {string} filter - Search query.
+     * @param limit - List limit.
+     * @param offset - List offset.
+     * @param filter - Search query.
      */
     const getOrganizationLists = useCallback(
-        (limit?: number, filter?: string, after?: string, before?: string, recursive?: boolean): void => {
+        (limit?: number, filter?: string, after?: string, before?: string, _recursive?: boolean): void => {
             setOrganizationListRequestLoading(true);
             getOrganizations(filter, limit, after, before, false)
                 .then((response: OrganizationListInterface) => {
@@ -257,8 +257,8 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
     /**
      * Sets the list sorting strategy.
      *
-     * @param {React.SyntheticEvent<HTMLElement>} event - The event.
-     * @param {DropdownProps} data - Dropdown data.
+     * @param event - The event.
+     * @param data - Dropdown data.
      */
     const handleListSortingStrategyOnChange = (event: SyntheticEvent<HTMLElement>, data: DropdownProps): void => {
         setListSortingStrategy(
@@ -272,7 +272,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
      * Handles the `onFilter` callback action from the
      * organization search component.
      *
-     * @param {string} query - Search query.
+     * @param query - Search query.
      */
     const handleOrganizationFilter = useCallback((query: string): void => {
         resetPagination();
@@ -282,8 +282,8 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
     /**
      * Handles the pagination change.
      *
-     * @param {React.MouseEvent<HTMLAnchorElement>} event - Mouse event.
-     * @param {PaginationProps} data - Pagination component data.
+     * @param event - Mouse event.
+     * @param data - Pagination component data.
      */
     const handlePaginationChange = useCallback((
         event: MouseEvent<HTMLAnchorElement>,
@@ -303,8 +303,8 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
     /**
      * Handles per page dropdown page.
      *
-     * @param {React.MouseEvent<HTMLAnchorElement>} event - Mouse event.
-     * @param {DropdownProps} data - Dropdown data.
+     * @param event - Mouse event.
+     * @param data - Dropdown data.
      */
     const handleItemsPerPageDropdownChange = useCallback((
         event: MouseEvent<HTMLAnchorElement>,

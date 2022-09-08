@@ -18,7 +18,7 @@
 
 import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import React, { CSSProperties, ReactElement } from "react";
+import React, { CSSProperties, PropsWithChildren, ReactElement } from "react";
 
 /**
  * Text component prop types.
@@ -90,16 +90,16 @@ export interface TextPropsInterface extends IdentifiableComponentInterface, Test
 /**
  * Text component.
  *
- * @param {TextPropsInterface} props - Props injected to the component.
- *
- * @return {React.ReactElement}
+ * @param props - Props injected to the component.
+ * @returns Text typography component.
  */
-export const Text: React.FunctionComponent<TextPropsInterface> = (
-    props: TextPropsInterface
+export const Text: React.FunctionComponent<PropsWithChildren<TextPropsInterface>> = (
+    props: PropsWithChildren<TextPropsInterface>
 ): ReactElement => {
 
     const {
         className,
+        children,
         compact,
         display,
         inline,
@@ -171,7 +171,9 @@ export const Text: React.FunctionComponent<TextPropsInterface> = (
             data-componentid={ componentId }
             data-testid={ testId }
             { ...rest }
-        />
+        >
+            { children }
+        </div>
     );
 };
 

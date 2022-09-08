@@ -23,7 +23,7 @@ import { MessageHeaderProps } from "semantic-ui-react/dist/commonjs/collections/
 import { SemanticShorthandContent, SemanticShorthandItem } from "semantic-ui-react/dist/commonjs/generic";
 
 /**
- * Proptypes for the messageInfo component.
+ * Prop-types for the messageInfo component.
  */
 export interface MessageInfoProps extends IdentifiableComponentInterface, TestableComponentInterface {
     /**
@@ -38,10 +38,10 @@ export interface MessageInfoProps extends IdentifiableComponentInterface, Testab
 
 /**
  * MessageInfo component.
- * @deprecated Use the new `Message` component from `@wso2is/react-components` instead.
- * @param {MessageInfoProps} props - Props injected in to the messageInfo component.
  *
- * @return {React.ReactElement}
+ * @deprecated Use the new `Message` component from `@wso2is/react-components` instead.
+ * @param props - Props injected in to the messageInfo component.
+ * @returns Message info component.
  */
 export const MessageInfo: FunctionComponent<MessageInfoProps> = (props: MessageInfoProps): ReactElement => {
 
@@ -72,8 +72,10 @@ export const MessageInfo: FunctionComponent<MessageInfoProps> = (props: MessageI
             header={ (
                 <Header as="h4">
                     <Header.Content>
-                        <Icon name="info circle"/>
-                        { (header) }
+                        <>
+                            <Icon name="info circle"/>
+                            { header }
+                        </>
                     </Header.Content>
                 </Header>
             ) }

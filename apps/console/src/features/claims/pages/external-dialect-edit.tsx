@@ -61,9 +61,8 @@ interface ExternalDialectEditPageInterface extends TestableComponentInterface {
 /**
  * This renders the edit external dialect page
  *
- * @param {ExternalDialectEditPageInterface & RouteComponentProps<RouteParams>} props - Props injected to the component
- *
- * @return {React.ReactElement}
+ * @param props - Props injected to the component
+ * @returns External dialect edit page.
  */
 const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterface> = (
     props: ExternalDialectEditPageInterface
@@ -94,8 +93,11 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
             assertion={ dialect.dialectURI }
             assertionHint={ (
                 <p>
-                    <Trans i18nKey="console:manage.features.claims.dialects.confirmations.hint">
-                        Please type <strong>{ { confirm: dialect.dialectURI } }</strong> to confirm.
+                    <Trans
+                        i18nKey="console:manage.features.claims.dialects.confirmations.hint"
+                        i18nOptions={ { confirm: dialect.dialectURI } }
+                    >
+                        Please type <strong>{ dialect.dialectURI }</strong> to confirm.
                     </Trans>
                 </p>
             ) }
@@ -110,7 +112,11 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
             <ConfirmationModal.Header data-testid={ `${ testId }-delete-confirmation-modal-header` }>
                 { t("console:manage.features.claims.dialects.confirmations.header") }
             </ConfirmationModal.Header>
-            <ConfirmationModal.Message attached negative data-testid={ `${ testId }-delete-confirmation-modal-message` }>
+            <ConfirmationModal.Message
+                attached
+                negative
+                data-testid={ `${ testId }-delete-confirmation-modal-message` }
+            >
                 { t("console:manage.features.claims.dialects.confirmations.message") }
             </ConfirmationModal.Message>
             <ConfirmationModal.Content data-testid={ `${ testId }-delete-confirmation-modal-content` }>
@@ -122,7 +128,7 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
     /**
      * Fetch the dialect.
      *
-     * @param {string} id - Dialect ID
+     * @param id - Dialect ID
      */
     const getDialect = (id?: string) => {
         getADialect(id ?? dialectId)
@@ -157,10 +163,10 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
     /**
      * Fetch external claims.
      *
-     * @param {number} limit.
-     * @param {number} offset.
-     * @param {string} sort.
-     * @param {string} filter.
+     * @param limit - List limit.
+     * @param offset - List offset.
+     * @param sort - List sort order.
+     * @param filter - List filter query.
      */
     const getExternalClaims = (limit?: number, offset?: number, sort?: string, filter?: string) => {
         dialectId && setIsLoading(true);
@@ -212,7 +218,7 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
 
     /**
      * This deletes a dialect
-     * @param {string} dialectID
+     * @param dialectID - Dialect ID.
      */
     const deleteDialect = (dialectID: string) => {
         deleteADialect(dialectID)

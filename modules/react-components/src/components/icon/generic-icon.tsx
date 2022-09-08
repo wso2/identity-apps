@@ -18,7 +18,15 @@
 
 import { IdentifiableComponentInterface, SVGRLoadedInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import React, { CSSProperties, PropsWithChildren, ReactElement, isValidElement, useEffect, useState } from "react";
+import React, {
+    CSSProperties,
+    PropsWithChildren,
+    ReactElement,
+    ReactNode,
+    isValidElement,
+    useEffect,
+    useState
+} from "react";
 import { SemanticVERTICALALIGNMENTS } from "semantic-ui-react";
 
 /**
@@ -92,7 +100,7 @@ export interface GenericIconProps extends TestableComponentInterface, Identifiab
     linkType?: "primary";
     /**
      * Icon onclick callback.
-     * @param {React.MouseEvent<HTMLDivElement>} event - Click event.
+     * @param event - Click event.
      */
     onClick?: (event: React.MouseEvent<HTMLDivElement>) => void;
     /**
@@ -171,9 +179,8 @@ export type GenericIconSizes =
 /**
  * Generic component to render icons.
  *
- * @param {GenericIconProps} props - Props injected to the component.
- *
- * @return {React.ReactElement}
+ * @param props - Props injected to the component.
+ * @returns Generic Icon component.
  */
 export const GenericIcon: React.FunctionComponent<PropsWithChildren<GenericIconProps>> = (
     props: GenericIconProps
@@ -213,7 +220,7 @@ export const GenericIcon: React.FunctionComponent<PropsWithChildren<GenericIconP
         [ "data-tourid" ]: tourId
     } = props;
     
-    const [ renderedIcon, setRenderedIcon ] = useState<HTMLElement | SVGElement | ReactElement | JSX.Element>(null);
+    const [ renderedIcon, setRenderedIcon ] = useState<HTMLElement | SVGElement | ReactNode>(null);
 
     const relaxLevel = (relaxed && relaxed === true) ? "" : relaxed;
 
@@ -252,8 +259,8 @@ export const GenericIcon: React.FunctionComponent<PropsWithChildren<GenericIconP
     }, [ Icon ]);
 
     /**
-     * A default icon if the {@code icon:Icon} null
-     * or empty. For usage {@see constructContent}
+     * A default icon if the `icon.Icon` null
+     * or empty. For usage @see {@link constructContent}
      */
     const defaultIconPlaceholder = () => {
         return <React.Fragment>{ "" }</React.Fragment>;
@@ -261,10 +268,10 @@ export const GenericIcon: React.FunctionComponent<PropsWithChildren<GenericIconP
 
     /**
      * The icon click action handler. It first checks whether the icon
-     * is disabled or not. And if disabled is {@code true} it will never
-     * fire the provided {@code onClick} handler.
+     * is disabled or not. And if disabled is `true` it will never
+     * fire the provided `onClick` handler.
      *
-     * @param event React.MouseEvent<HTMLDivElement>
+     * @param event - Click event.
      */
     const onIconClickHandler = (event: React.MouseEvent<HTMLDivElement>): void => {
         if (disabled || !onClick) {
@@ -276,13 +283,13 @@ export const GenericIcon: React.FunctionComponent<PropsWithChildren<GenericIconP
 
     /**
      * Constructs the icon. This function is a impure function which depends
-     * on {@code Icon} value above. The {@code Icon} can be one of type from below list: -
+     * on `Icon` value above. The `Icon` can be one of type from below list: -
      *
-     * 1. {@link SVGElement}
+     * 1. `SVGElement`
      * 2. ReactComponent
-     * 3. {@link React.FunctionComponent}
-     * 4. {@link React.Component}
-     * 5. {@link string} URL or BASE-64 encoded.
+     * 3. `React.FunctionComponent`
+     * 4. `React.Component`
+     * 5. `string` URL or BASE-64 encoded.
      */
     const constructContent = (): void => {
 
@@ -405,7 +412,7 @@ export const GenericIcon: React.FunctionComponent<PropsWithChildren<GenericIconP
             data-componentid={ componentId }
             data-tourid={ tourId }
         >
-            { renderedIcon }
+            { renderedIcon as ReactNode }
         </div>
     );
 };

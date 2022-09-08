@@ -24,7 +24,7 @@ import { AuthenticateUtils as CommonAuthenticateUtils, ContextUtils, StringUtils
 import axios from "axios";
 import * as React from "react";
 import { ReactElement } from "react";
-import * as ReactDOM from "react-dom";
+import ReactDOM, { Root } from "react-dom/client";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import { AuthenticateUtils } from "./features/authentication";
@@ -62,9 +62,9 @@ const getAuthParams = (): Promise<AuthParams> => {
 };
 
 /**
- * Render root compoent with configs.
+ * Render root component with configs.
  *
- * @returns {ReactElement}
+ * @returns Root element with configs.
  */
 const RootWithConfig = (): ReactElement => {
 
@@ -99,4 +99,8 @@ const RootWithConfig = (): ReactElement => {
     );
 };
 
-ReactDOM.render(<RootWithConfig />, document.getElementById("root"));
+const root: Root = ReactDOM.createRoot(
+    document.getElementById("root") as HTMLElement
+);
+
+root.render(<RootWithConfig />);

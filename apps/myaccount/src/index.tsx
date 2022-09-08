@@ -24,7 +24,7 @@ import * as React from "react";
 import "react-app-polyfill/ie11";
 import "react-app-polyfill/ie9";
 import "react-app-polyfill/stable";
-import * as ReactDOM from "react-dom";
+import ReactDOM, { Root } from "react-dom/client";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import { PreLoader } from "./components";
@@ -66,6 +66,11 @@ const getAuthParams = (): Promise<AuthParams> => {
     return;
 };
 
+/**
+ * Render root component with configs.
+ *
+ * @returns Root element with configs.
+ */
 const RootWithConfig = () => {
 
     const [ ready, setReady ] = React.useState(false);
@@ -101,4 +106,8 @@ const RootWithConfig = () => {
     );
 };
 
-ReactDOM.render(<RootWithConfig />, document.getElementById("root"));
+const root: Root = ReactDOM.createRoot(
+    document.getElementById("root") as HTMLElement
+);
+
+root.render(<RootWithConfig />);

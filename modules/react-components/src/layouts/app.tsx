@@ -20,7 +20,7 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
 
 /**
- * Proptypes for the Main App layout.
+ * Prop-types for the Main App layout.
  */
 export type AppLayoutPropsInterface = IdentifiableComponentInterface;
 
@@ -28,12 +28,11 @@ export type AppLayoutPropsInterface = IdentifiableComponentInterface;
  * Main app layout.
  * Used to render all the layouts that's being used inside the app.
  *
- * @param {React.PropsWithChildren<AppLayoutPropsInterface>} props - Props injected to the component.
- *
- * @return {React.ReactElement}
+ * @param props - Props injected to the component.
+ * @returns App layout component.
  */
-export const AppLayout: FunctionComponent<AppLayoutPropsInterface> = (
-    props: PropsWithChildren<AppLayoutPropsInterface>
+export const AppLayout: FunctionComponent<PropsWithChildren<AppLayoutPropsInterface>> = (
+    props: PropsWithChildren<PropsWithChildren<AppLayoutPropsInterface>>
 ): ReactElement => {
 
     const {

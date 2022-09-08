@@ -233,7 +233,7 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
      *
      * @returns Set of resolved routes.
      */
-    const resolveRoutes = (): RouteInterface[] => {
+    const resolveRoutes = (): RouteInterface[] | ReactNode[] => {
         const resolvedRoutes = [];
 
         filteredRoutes.forEach((route, key) => {
@@ -322,7 +322,7 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
             >
                 <Suspense fallback={ <ContentLoader dimmer={ false } /> }>
                     <Switch>
-                        { resolveRoutes() }
+                        { resolveRoutes() as ReactNode[] }
                     </Switch>
                 </Suspense>
             </ErrorBoundary>

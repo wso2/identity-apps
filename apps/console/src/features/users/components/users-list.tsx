@@ -73,12 +73,12 @@ interface UsersListProps extends SBACInterface<FeatureConfigInterface>, Loadable
     /**
      * On user delete callback.
      *
-     * @param {string} userId - ID of the deleting user.
+     * @param userId - ID of the deleting user.
      */
     onUserDelete?: () => void;
     /**
      * Callback to inform the new set of visible columns.
-     * @param {TableColumnInterface[]} columns - New columns.
+     * @param columns - New columns.
      */
     onColumnSelectionChange?: (columns: TableColumnInterface[]) => void;
     /**
@@ -130,7 +130,8 @@ interface UsersListProps extends SBACInterface<FeatureConfigInterface>, Loadable
 /**
  * Users info page.
  *
- * @return {ReactElement}
+ * @param props - Props injected to the component.
+ * @returns Users list component.
  */
 export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersListProps): ReactElement => {
     const {
@@ -210,7 +211,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
     /**
      * Resolves data table columns.
      *
-     * @return {TableColumnInterface[]}
+     * @returns Table columns.
      */
     const resolveTableColumns = (): TableColumnInterface[] => {
         const defaultColumns: TableColumnInterface[] = [
@@ -258,13 +259,13 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                                 spaced="right"
                             />
                             <Header.Content>
-                                <div className={ isNameAvailable ? "mt-2" : "" }>{ header }</div>
+                                <div className={ isNameAvailable ? "mt-2" : "" }>{ header as ReactNode }</div>
                                 {
                                     (!isNameAvailable) &&
                                     (
                                         <Header.Subheader
                                             data-testid={ `${testId}-item-sub-heading` }>
-                                            { subHeader }
+                                            { subHeader as ReactNode }
                                         </Header.Subheader>
                                     )
                                 }
@@ -329,7 +330,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
     /**
      * Resolves data table actions.
      *
-     * @return {TableActionsInterface[]}
+     * @returns Table actions.
      */
     const resolveTableActions = (): TableActionsInterface[] => {
         if (!showListItemActions) {
@@ -338,6 +339,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
 
         const actions: TableActionsInterface[] = [
             {
+                "data-testid": "users-list-item-edit-button",
                 hidden: (): boolean => !isFeatureEnabled(featureConfig?.users,
                     UserManagementConstants.FEATURE_DICTIONARY.get("USER_READ")),
                 icon: (user: UserBasicInterface): SemanticICONS => {
@@ -352,7 +354,6 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                         ? "eye"
                         : "pencil alternate";
                 },
-                "data-testid": "users-list-item-edit-button",
                 onClick: (e: SyntheticEvent, user: UserBasicInterface): void =>
                     handleUserEdit(user?.id),
                 popupText: (user: UserBasicInterface): string => {
@@ -372,6 +373,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
         ];
 
         actions.push({
+            "data-testid": "users-list-item-delete-button",
             hidden: (user: UserBasicInterface): boolean => {
                 const userStore = user?.userName?.split("/").length > 1
                     ? user?.userName?.split("/")[0]
@@ -384,7 +386,6 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                     || user.userName === realmConfigs?.adminUser;
             },
             icon: (): SemanticICONS => "trash alternate",
-            "data-testid": "users-list-item-delete-button",
             onClick: (e: SyntheticEvent, user: UserBasicInterface): void => {
                 setShowDeleteConfirmationModal(true);
                 setDeletingUser(user);
@@ -399,7 +400,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
     /**
      * Shows list placeholders.
      *
-     * @return {React.ReactElement}
+     * @returns Placeholders.
      */
     const showPlaceholders = (): ReactElement => {
         // When the search returns empty.

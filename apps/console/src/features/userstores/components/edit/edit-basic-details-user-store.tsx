@@ -31,7 +31,7 @@ import { userstoresConfig } from "../../../../extensions";
 import { AppConstants, history } from "../../../core";
 import { deleteUserStore, patchUserStore } from "../../api";
 import { CONSUMER_USERSTORE, CONSUMER_USERSTORE_ID, DISABLED } from "../../constants";
-import { RequiredBinary, TypeProperty, UserStore } from "../../models";
+import { PropertyAttribute, RequiredBinary, TypeProperty, UserStore } from "../../models";
 
 /**
  * Prop types of `EditBasicDetailsUserStore` component
@@ -58,9 +58,8 @@ interface EditBasicDetailsUserStorePropsInterface extends TestableComponentInter
 /**
  * This renders the edit basic details pane.
  *
- * @param {EditBasicDetailsUserStorePropsInterface} props - Props injected to the component.
- *
- * @return {React.ReactElement}
+ * @param props - Props injected to the component.
+ * @returns Userstore details editing component.
  */
 export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserStorePropsInterface> = (
     props: EditBasicDetailsUserStorePropsInterface
@@ -116,10 +115,13 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
             assertion={ userStore?.name }
             assertionHint={
                 (<p>
-                    <Trans i18nKey="console:manage.features.userstores.confirmation.hint">
+                    <Trans
+                        i18nKey="console:manage.features.userstores.confirmation.hint"
+                        i18nOptions={ { name: userStore?.name } }
+                    >
                         Please type
                         <strong data-testid={ `${ testId }-delete-confirmation-modal-assertion` }>
-                            { { name: userStore?.name } }
+                            { userStore?.name }
                         </strong > to confirm.
                     </Trans>
                 </p>)
@@ -306,8 +308,8 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
     /**
      * Handles userstore disabled toggle.
      *
-     * @param {any} event - The emitted event.
-     * @param {CheckboxProps} data - The checkbox data.
+     * @param event - The emitted event.
+     * @param data - The checkbox data.
      */
     const handleUserstoreDisable = (event: any, data: CheckboxProps): void => {
         const name = properties?.required?.find(
@@ -489,7 +491,9 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                                                                     })
                                                                 }
                                                                 toggle
-                                                                data-testid={ `${ testId }-form-toggle-${ property.name }` }
+                                                                data-testid={
+                                                                    `${ testId }-form-toggle-${ property.name }`
+                                                                }
                                                             />
                                                         ) :
                                                         (
@@ -555,9 +559,13 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
 
                                                     const name = property.description.split("#")[ 0 ];
                                                     const isPassword = property.attributes
-                                                        .find(attribute => attribute.name === "type").value === "password";
+                                                        .find((attribute: PropertyAttribute) => {
+                                                            return attribute.name === "type";
+                                                        }).value === "password";
                                                     const toggle = property.attributes
-                                                        .find(attribute => attribute.name === "type")?.value === "boolean";
+                                                        .find((attribute: PropertyAttribute) => {
+                                                            return attribute.name === "type";
+                                                        })?.value === "boolean";
 
                                                     return (
                                                         isPassword
@@ -594,23 +602,23 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                                                                 ? (
                                                                     <Field
                                                                         name={ property.name }
-                                                                        value={ property.value ?? property.defaultValue }
+                                                                        value={
+                                                                            property.value ?? property.defaultValue
+                                                                        }
                                                                         type="toggle"
                                                                         key={ index }
                                                                         required={ false }
                                                                         label={ property.description.split("#")[ 0 ] }
                                                                         requiredErrorMessage={
-                                                                            t("console:manage.features.userstores.forms." +
-                                                                            "custom.requiredErrorMessage",
-                                                                            {
+                                                                            t("console:manage.features.userstores." +
+                                                                            "forms.custom.requiredErrorMessage", {
                                                                                 name: property.description
                                                                                     .split("#")[ 0 ]
                                                                             })
                                                                         }
                                                                         placeholder={
-                                                                            t("console:manage.features.userstores.forms." +
-                                                                            "custom.placeholder",
-                                                                            {
+                                                                            t("console:manage.features.userstores." +
+                                                                            "forms.custom.placeholder", {
                                                                                 name: property.description
                                                                                     .split("#")[ 0 ]
                                                                             })
@@ -625,23 +633,23 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                                                                 : (
                                                                     <Field
                                                                         name={ property.name }
-                                                                        value={ property.value ?? property.defaultValue }
+                                                                        value={
+                                                                            property.value ?? property.defaultValue
+                                                                        }
                                                                         type="text"
                                                                         key={ index }
                                                                         required={ false }
                                                                         label={ property.description.split("#")[ 0 ] }
                                                                         requiredErrorMessage={
-                                                                            t("console:manage.features.userstores.forms." +
-                                                                            "custom.requiredErrorMessage",
-                                                                            {
+                                                                            t("console:manage.features.userstores." +
+                                                                            "forms.custom.requiredErrorMessage", {
                                                                                 name: property.description
                                                                                     .split("#")[ 0 ]
                                                                             })
                                                                         }
                                                                         placeholder={
-                                                                            t("console:manage.features.userstores.forms." +
-                                                                            "custom.placeholder",
-                                                                            {
+                                                                            t("console:manage.features.userstores." +
+                                                                            "forms.custom.placeholder", {
                                                                                 name: property.description
                                                                                     .split("#")[ 0 ]
                                                                             })

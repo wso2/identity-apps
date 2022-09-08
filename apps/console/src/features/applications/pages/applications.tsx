@@ -36,6 +36,7 @@ import React, {
     FunctionComponent,
     MouseEvent,
     ReactElement,
+    ReactNode,
     SyntheticEvent,
     useEffect,
     useState
@@ -74,22 +75,22 @@ import { ApplicationListInterface } from "../models";
 const APPLICATIONS_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
     {
         key: 1,
-        text: I18n.instance.t("common:name"),
+        text: I18n.instance.t("common:name") as ReactNode,
         value: "name"
     },
     {
         key: 2,
-        text: I18n.instance.t("common:type"),
+        text: I18n.instance.t("common:type") as ReactNode,
         value: "type"
     },
     {
         key: 3,
-        text: I18n.instance.t("common:createdOn"),
+        text: I18n.instance.t("common:createdOn") as ReactNode,
         value: "createdDate"
     },
     {
         key: 4,
-        text: I18n.instance.t("common:lastUpdatedOn"),
+        text: I18n.instance.t("common:lastUpdatedOn") as ReactNode,
         value: "lastUpdated"
     }
 ];
@@ -103,7 +104,7 @@ type ApplicationsPageInterface = TestableComponentInterface;
  * Applications page.
  *
  * @param props - Props injected to the component.
- * @returns React element.
+ * @returns Applications listing page.
  */
 const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     props: ApplicationsPageInterface
@@ -186,7 +187,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     /**
      * Sets the list sorting strategy.
      *
-     * @param event - Synthetic event.
+     * @param event - The event.
      * @param data - Dropdown data.
      */
     const handleListSortingStrategyOnChange = (event: SyntheticEvent<HTMLElement>,
@@ -200,7 +201,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
      * Checks if the `Next` page nav button should be shown.
      *
      * @param appList - List of applications.
-     * @returns Boolean to show if the `Next` page nav button should be shown.
+     * @returns `true` if `Next` page nav button should be shown.
      */
     const shouldShowNextPageNavigation = (appList: ApplicationListInterface): boolean => {
 
@@ -256,7 +257,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     /**
      * Renders the URL for the tenanted my account login.
      *
-     * @returns React element
+     * @returns My Account link.
      */
     const renderTenantedMyAccountLink = (): ReactElement => {
         if (AppConstants.getTenant() === AppConstants.getSuperTenant() ||
@@ -371,7 +372,6 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
             { !isLoadingForTheFirstTime ? (
                 <>
                     { renderTenantedMyAccountLink() }
-                    { /* renderRemoteFetchStatus() */ }
                     <ListLayout
                         advancedSearch={ (
                             <AdvancedSearchWithBasicFilters

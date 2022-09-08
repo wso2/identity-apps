@@ -60,9 +60,8 @@ export interface MessagePropsInterface extends MessageProps, IdentifiableCompone
 /**
  * Message with icon component.
  *
- * @param {MessagePropsInterface} props - Props injected in to the message with icon component.
- *
- * @return {React.ReactElement}
+ * @param props - Props injected in to the message with icon component.
+ * @returns Message with icon component.
  */
 export const Message: FunctionComponent<MessagePropsInterface> = (props: MessagePropsInterface): ReactElement => {
 
@@ -106,12 +105,14 @@ export const Message: FunctionComponent<MessagePropsInterface> = (props: Message
                     ? (
                         <Header as="h5" className={ !props?.icon ? "mb-3" : null }>
                             <Header.Content>
-                                {
-                                    !props?.icon
-                                        ? resolveMessageIcon()
-                                        : null
-                                }
-                                { (header) }
+                                <>
+                                    {
+                                        !props?.icon
+                                            ? resolveMessageIcon()
+                                            : null
+                                    }
+                                    { header }
+                                </>
                             </Header.Content>
                         </Header>
                     ) : undefined

@@ -236,7 +236,7 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
      *
      * @returns Set of resolved routes.
      */
-    const resolveRoutes = useCallback((): RouteInterface[] => {
+    const resolveRoutes = useCallback((): RouteInterface[] | ReactNode[] => {
         const resolvedRoutes = [];
 
         filteredRoutes.forEach((route, key) => {
@@ -333,7 +333,7 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
             >
                 <Suspense fallback={ <ContentLoader dimmer={ false } /> }>
                     <Switch>
-                        { resolveRoutes() }
+                        { resolveRoutes() as ReactNode[] }
                     </Switch>
                 </Suspense>
             </ErrorBoundary>

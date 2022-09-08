@@ -18,10 +18,10 @@
 
 import { I18n } from "@wso2is/i18n";
 import { ContentLoader, EmptyPlaceholder, ErrorBoundary } from "@wso2is/react-components";
-import React, { ErrorInfo, Suspense, lazy } from "react";
+import React, { ReactNode, Suspense, lazy } from "react";
 import { Container } from "semantic-ui-react";
 import { ExtensionsManager } from "./extensions-manager";
-import { AppUtils, EventPublisher, getEmptyPlaceholderIllustrations } from "../features/core";
+import { AppUtils, getEmptyPlaceholderIllustrations } from "../features/core";
 
 interface ComponentExtensionInterface {
     component?: string;
@@ -38,7 +38,7 @@ interface ComponentExtensionInterface {
  * Current Support : Tab Extensions
  * TODO : Support for other types of components
  *
- * @param {ComponentExtensionInterface} args - Extensions.
+ * @param args - Extensions.
  */
 export const ComponentExtensionPlaceholder = (args: ComponentExtensionInterface): any[] => {
 
@@ -48,8 +48,6 @@ export const ComponentExtensionPlaceholder = (args: ComponentExtensionInterface)
         subComponent,
         type
     } = args;
-
-    const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     if (type === "tab") {
         const componentExtensionConfig: any[] = ExtensionsManager.getConfig().componentExtensions;
@@ -78,8 +76,12 @@ export const ComponentExtensionPlaceholder = (args: ComponentExtensionInterface)
                                     image={ getEmptyPlaceholderIllustrations().genericError }
                                     imageSize="tiny"
                                     subtitle={ [
-                                        I18n.instance.t("console:common.placeholders.genericError.subtitles.0"),
-                                        I18n.instance.t("console:common.placeholders.genericError.subtitles.1")
+                                        I18n.instance.t(
+                                            "console:common.placeholders.genericError.subtitles.0"
+                                        ) as ReactNode,
+                                        I18n.instance.t(
+                                            "console:common.placeholders.genericError.subtitles.1"
+                                        ) as ReactNode
                                     ] }
                                     title={ I18n.instance.t("console:common.placeholders.genericError.title") }
                                 />

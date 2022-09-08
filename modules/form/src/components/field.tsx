@@ -18,7 +18,7 @@
 
 import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import React, { FC, ReactElement, cloneElement } from "react";
+import React, { FC, PropsWithChildren, ReactElement, cloneElement } from "react";
 import { FieldProps } from "react-final-form";
 import { FieldButton } from "./field-button";
 import { FieldCheckbox } from "./field-checkbox";
@@ -61,9 +61,10 @@ type FieldType = FC<FormFieldPropsInterface> & {
 
 /**
  * Implementation of the Form Field component.
- * @param props
+ * @param props - Props injected to the component.
+ * @returns Field component.
  */
-export const Field: FieldType = (props: FormFieldPropsInterface): ReactElement => {
+export const Field: FieldType = (props: PropsWithChildren<FormFieldPropsInterface>): ReactElement => {
     const {
         children,
         className,

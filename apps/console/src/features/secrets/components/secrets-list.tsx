@@ -56,22 +56,22 @@ import { formatDateString, humanizeDateString } from "../utils/secrets.date.util
 const SECRETS_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
     {
         key: 1,
-        text: I18n.instance.t("common:name"),
+        text: I18n.instance.t("common:name") as ReactNode,
         value: "name"
     },
     {
         key: 2,
-        text: I18n.instance.t("common:type"),
+        text: I18n.instance.t("common:type") as ReactNode,
         value: "type"
     },
     {
         key: 3,
-        text: I18n.instance.t("common:createdOn"),
+        text: I18n.instance.t("common:createdOn") as ReactNode,
         value: "createdDate"
     },
     {
         key: 4,
-        text: I18n.instance.t("common:lastUpdatedOn"),
+        text: I18n.instance.t("common:lastUpdatedOn") as ReactNode,
         value: "lastUpdated"
     }
 ];
@@ -93,9 +93,10 @@ export type SecretsListProps = {
 } & IdentifiableComponentInterface;
 
 /**
- * @param props {SecretsListProps}
- * @constructor
- * @return {ReactElement}
+ * Component to showcase the secrets list.
+ *
+ * @param props - Props injected to the component.
+ * @returns Secrets list component.
  */
 const SecretsList: FC<SecretsListProps> = (props: SecretsListProps): ReactElement => {
 
@@ -147,7 +148,7 @@ const SecretsList: FC<SecretsListProps> = (props: SecretsListProps): ReactElemen
 
     /**
      * This will be only called when user gives their consent.
-     * @see {@code SecretDeleteConfirmationModal}
+     * @see {@link SecretDeleteConfirmationModal}
      */
     const onSecretDeleteClick = async (): Promise<void> => {
         if (deletingSecret && hasRequiredScopes(
@@ -320,7 +321,7 @@ const SecretsList: FC<SecretsListProps> = (props: SecretsListProps): ReactElemen
     /**
      * Resolve the relevant placeholder.
      *
-     * @return {React.ReactElement}
+     * @returns Placeholders.
      */
     const showPlaceholders = (): ReactElement => {
         // When the search returns empty.
@@ -350,7 +351,7 @@ const SecretsList: FC<SecretsListProps> = (props: SecretsListProps): ReactElemen
     /**
      * Handles the `onFilter` callback action from the secrets search component.
      *
-     * @param {string} query - Search query.
+     * @param query - Search query.
      */
     const handleSecretsFilter = (query: string) => {
 
@@ -392,8 +393,8 @@ const SecretsList: FC<SecretsListProps> = (props: SecretsListProps): ReactElemen
     /**
      * Sets the list sorting strategy.
      *
-     * @param {React.SyntheticEvent<HTMLElement>} event - The event.
-     * @param {DropdownProps} data - Dropdown data.
+     * @param event - The event.
+     * @param data - Dropdown data.
      */
     const handleListSortingStrategyOnChange = (
         event: SyntheticEvent<HTMLElement>,

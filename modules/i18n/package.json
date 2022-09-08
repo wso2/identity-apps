@@ -44,11 +44,11 @@
         "@types/jest": "^26.0.14",
         "@wso2is/core": "^1.4.102",
         "babel-jest": "^26.3.0",
-        "i18next": "^17.0.11",
+        "i18next": "^21.9.1",
         "i18next-browser-languagedetector": "^3.0.3",
         "i18next-xhr-backend": "^3.2.2",
         "lodash-es": "^4.17.21",
-        "react-i18next": "^10.11.5"
+        "react-i18next": "^11.18.5"
     },
     "devDependencies": {
         "@types/i18next": "8.4.3",

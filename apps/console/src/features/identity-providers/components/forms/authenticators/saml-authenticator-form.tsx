@@ -98,8 +98,8 @@ export interface SamlPropertiesInterface {
 /**
  * SAML Authenticator settings form.
  *
- * @param props
- * @constructor
+ * @param props - Props injected to the component.
+ * @returns SAML authenticator settings form component.
  */
 export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPropsInterface> = (
     props: SamlSettingsFormPropsInterface
@@ -146,7 +146,20 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
         return {
             AuthRedirectUrl: findPropVal<string>({ defaultValue: authorizedRedirectURL, key: "AuthRedirectUrl" }),
             DigestAlgorithm: findPropVal<string>({ defaultValue: "SHA1", key: "DigestAlgorithm" }),
+            ISAuthnReqSigned: findPropVal<boolean>({ defaultValue: false, key: "ISAuthnReqSigned" }),
             IdPEntityId: findPropVal<string>({ defaultValue: "", key: "IdPEntityId" }),
+            IncludeProtocolBinding: findPropVal<boolean>({ defaultValue: false, key: "IncludeProtocolBinding" }),
+            /**
+             * `IsAuthnRespSigned` is by default set to true when creating the SAML IdP so,
+             * always the value will be true. Keeping this here to indicate for the user and
+             * to enable this if requirements gets changed.
+             */
+            IsAuthnRespSigned: findPropVal<boolean>({ defaultValue: false, key: "IsAuthnRespSigned" }),
+            IsLogoutEnabled: findPropVal<boolean>({ defaultValue: false, key: "IsLogoutEnabled" }),
+            IsLogoutReqSigned: findPropVal<boolean>({ defaultValue: false, key: "IsLogoutReqSigned" }),
+            IsSLORequestAccepted: findPropVal<boolean>({ defaultValue: false, key: "IsSLORequestAccepted" }),
+            IsUserIdInClaims: findPropVal<boolean>({ defaultValue: false, key: "IsUserIdInClaims" }),
+            LogoutReqUrl: findPropVal<string>({ defaultValue: "", key: "LogoutReqUrl" }),
             NameIDType: findPropVal<string>({
                 defaultValue: findMeta({ key: "NameIDType" })?.defaultValue ?? DEFAULT_NAME_ID_FORMAT,
                 key: "NameIDType"
@@ -158,20 +171,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
             SPEntityId: findPropVal<string>({ defaultValue: "", key: "SPEntityId" }),
             SSOUrl: findPropVal<string>({ defaultValue: "", key: "SSOUrl" }),
             SignatureAlgorithm: findPropVal<string>({ defaultValue: "RSA with SHA1", key: "SignatureAlgorithm" }),
-            commonAuthQueryParams: findPropVal<string>({ defaultValue: "", key: "commonAuthQueryParams" }),
-            LogoutReqUrl: findPropVal<string>({ defaultValue: "", key: "LogoutReqUrl" }),
-            IncludeProtocolBinding: findPropVal<boolean>({ defaultValue: false, key: "IncludeProtocolBinding" }),
-            ISAuthnReqSigned: findPropVal<boolean>({ defaultValue: false, key: "ISAuthnReqSigned" }),
-            /**
-             * `IsAuthnRespSigned` is by default set to true when creating the SAML IdP so,
-             * always the value will be true. Keeping this here to indicate for the user and
-             * to enable this if requirements gets changed.
-             */
-            IsAuthnRespSigned: findPropVal<boolean>({ defaultValue: false, key: "IsAuthnRespSigned" }),
-            IsLogoutEnabled: findPropVal<boolean>({ defaultValue: false, key: "IsLogoutEnabled" }),
-            IsLogoutReqSigned: findPropVal<boolean>({ defaultValue: false, key: "IsLogoutReqSigned" }),
-            IsSLORequestAccepted: findPropVal<boolean>({ defaultValue: false, key: "IsSLORequestAccepted" }),
-            IsUserIdInClaims: findPropVal<boolean>({ defaultValue: false, key: "IsUserIdInClaims" })
+            commonAuthQueryParams: findPropVal<string>({ defaultValue: "", key: "commonAuthQueryParams" })
         } as SamlPropertiesInterface;
 
     }, []);
@@ -613,7 +613,7 @@ SamlAuthenticatorSettingsForm.defaultProps = {
     "data-testid": "saml-authenticator-settings-form"
 };
 
-const SectionRow: FunctionComponent<{ width?: SemanticWIDTHS }> = (
+const SectionRow: FunctionComponent<PropsWithChildren<{ width?: SemanticWIDTHS }>> = (
     { width = 16, children }: PropsWithChildren<{ width?: SemanticWIDTHS }>
 ): ReactElement => {
     return (

@@ -18,7 +18,7 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { PrimaryButton } from "@wso2is/react-components";
-import React, { MouseEvent, ReactElement } from "react";
+import React, { MouseEvent, ReactElement, ReactNode } from "react";
 import { Button, Icon, Modal, ModalProps } from "semantic-ui-react";
 
 /**
@@ -149,11 +149,11 @@ export const ModalComponent = (props: ModalComponentProps): ReactElement => {
             { iconName() }
             <Modal.Content>
                 <h3 className="modal-heading">
-                    { header }
+                    { header as ReactNode }
                 </h3>
             </Modal.Content>
             <p className="modal-description">
-                { content }
+                { content as ReactNode }
             </p>
             { children }
             <Modal.Actions>
