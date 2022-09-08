@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (http://www.wso2.com) All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,9 +19,9 @@
 import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
+import { Helmet } from "react-helmet";
 import { Divider } from "semantic-ui-react";
 import { PageHeader, PageHeaderPropsInterface } from "../components";
-import { Helmet } from "react-helmet"
 
 /**
  * Page layout component Prop types.
@@ -62,9 +62,9 @@ export interface PageLayoutPropsInterface extends PageHeaderPropsInterface, Test
 /**
  * Page layout.
  *
- * @param {React.PropsWithChildren<PageLayoutPropsInterface>} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns Page Layout
  */
 export const PageLayout: FunctionComponent<PropsWithChildren<PageLayoutPropsInterface>> = (
     props: PropsWithChildren<PageLayoutPropsInterface>
@@ -101,17 +101,17 @@ export const PageLayout: FunctionComponent<PropsWithChildren<PageLayoutPropsInte
             <Helmet>
                 <title>{ pageTitle }</title>
             </Helmet>
-            <div className={layoutClasses} data-testid={testId} data-componentid={componentId}>
-                <div className={layoutContentClasses}>
+            <div className={ layoutClasses } data-testid={ testId } data-componentid={ componentId }>
+                <div className={ layoutContentClasses }>
                     { componentAbovePageHeader && componentAbovePageHeader }
                     <PageHeader
-                        action={action}
-                        data-testid={`${testId}-page-header`}
-                        data-componentid={`${componentId}-page-header`}
-                        {...rest}
+                        action={ action }
+                        data-testid={ `${testId}-page-header` }
+                        data-componentid={ `${componentId}-page-header` }
+                        { ...rest }
                     />
-                    {contentTopMargin && <Divider hidden />}
-                    {children}
+                    { contentTopMargin && <Divider hidden /> }
+                    { children }
                 </div>
             </div>
         </>
