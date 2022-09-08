@@ -84,7 +84,7 @@ do
 
     if [[ ${#supported_files[@]} -gt MAX_FILE_THRESHOLD_FOR_LINTER ]]; then
         echo -e "\nLinting the changed files as batches..."
-        echo -e "Here's the result of the batch ${i+1}... \n"
+        echo -e "Here's the result of the batch ${i}... \n"
     fi
 
     pnpm eslint --ext .js,.jsx,.ts,.tsx --no-error-on-unmatched-pattern --max-warnings=0 --resolve-plugins-relative-to . -- "$filter_pattern"
