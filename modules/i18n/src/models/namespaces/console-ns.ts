@@ -961,6 +961,10 @@ export interface ConsoleNS {
                             };
                             certificates: {
                                 disabledPopup: string;
+                                certificateRemoveConfirmation: {
+                                    header: string;
+                                    content: string;
+                                }
                             }
                         };
                     };
