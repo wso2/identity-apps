@@ -232,7 +232,7 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
     /**
      * Shows the delete confirmation modal.
      *
-     * @return The delete confirmation modal.
+     * @returns The delete confirmation modal.
      */
     const showDeleteConfirm = (): ReactElement => {
         const isTenantCertificate: boolean = decodeCertificate(deleteCertificatePem)

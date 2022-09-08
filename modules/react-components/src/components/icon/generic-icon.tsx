@@ -30,7 +30,7 @@ import React, {
 import { SemanticVERTICALALIGNMENTS } from "semantic-ui-react";
 
 /**
- * Proptypes for the Generic Icon component.
+ * Prop-types for the Generic Icon component.
  */
 export interface GenericIconProps extends TestableComponentInterface, IdentifiableComponentInterface {
     /**
@@ -396,8 +396,8 @@ export const GenericIcon: React.FunctionComponent<PropsWithChildren<GenericIconP
     /**
      * Renders the default icon element.
      *
-     * @param {string} icon - Data URL.
-     * @return {React.ReactElement}
+     * @param icon - Data URL.
+     * @returns Default icon.
      */
     const renderDefaultIcon = (icon: string): ReactElement => (
         <img src={ icon } className="icon" alt="icon"/>

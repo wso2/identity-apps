@@ -110,7 +110,7 @@ export const Form: ForwardRefExoticComponent<PropsWithChildren<FormPropsInterfac
 
                 const { form, handleSubmit, pristine, submitting, values, initialValues } = formRenderProps;
 
-                const parentFormProps = { form, handleSubmit, pristine, submitting, values, initialValues };
+                const parentFormProps = { form, handleSubmit, initialValues, pristine, submitting, values };
                 const childFieldProps = child.props;
                 const childProps: any = { childFieldProps, parentFormProps };
 
