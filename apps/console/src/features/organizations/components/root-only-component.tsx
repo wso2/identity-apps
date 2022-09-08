@@ -25,7 +25,7 @@ import { OrganizationUtils } from "../utils";
  * @param props - Children passed as props.
  * @returns Root Only Component.
  */
-export const RootOnlyComponent = (props: PropsWithChildren<Record<string, never>>): ReactElement => {
+export const RootOnlyComponent = (props: PropsWithChildren<Record<string, unknown>>): ReactElement => {
 
     const { children } = props;
 
