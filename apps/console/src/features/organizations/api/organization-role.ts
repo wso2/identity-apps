@@ -246,6 +246,10 @@ export const getOrganizationPermissions = (): Promise<any> => {
                     "resourcePath": "/permission/admin/manage/identity/cors"
                 },
                 {
+                    "displayName": "Email Management",
+                    "resourcePath": "/permission/admin/manage/identity/emailmgt"
+                },
+                {
                     "displayName": "Governance",
                     "resourcePath": "/permission/admin/manage/identity/governance"
                 },
@@ -288,6 +292,14 @@ export const getOrganizationPermissions = (): Promise<any> => {
                 {
                     "displayName": "CORS Origins",
                     "resourcePath": "/permission/admin/manage/identity/cors/origins"
+                },
+                {
+                    "displayName": "View",
+                    "resourcePath": "/permission/admin/manage/identity/emailmgt/view"
+                },
+                {
+                    "displayName": "Update",
+                    "resourcePath": "/permission/admin/manage/identity/emailmgt/update"
                 },
                 {
                     "displayName": "Roles view",
