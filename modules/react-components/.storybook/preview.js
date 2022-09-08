@@ -16,8 +16,9 @@
  * under the License.
  */
 
-import { MediaContextProvider } from "../src/components";
+import React from "react";
 import { Theme } from "./theme";
+import { MediaContextProvider } from "../src/components";
 
 export const parameters = {
     docs: {
@@ -35,7 +36,7 @@ export const parameters = {
 const withProviders = (Story, context) => {
     return (
         <MediaContextProvider>
-            <Story {...context} />
+            <Story { ...context } />
         </MediaContextProvider>
     );
 };
