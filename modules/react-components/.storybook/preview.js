@@ -41,4 +41,4 @@ const withProviders = (Story, context) => {
     );
 };
 
-export const decorators = [withProviders];
+export const decorators = [ withProviders ];
