@@ -63,7 +63,7 @@ for file in "${supported_files[@]}"; do
     echo -e "   - $file"
 done
 
-echo -e "🔢 Total number of changed files: ${#supported_files[@]}"
+echo -e "\n 🔢 Total number of changed files: ${#supported_files[@]}"
 
 echo -e "\n=============================================================\n"
 
@@ -83,8 +83,7 @@ do
     fi
 
     if [[ ${#supported_files[@]} -gt MAX_FILE_THRESHOLD_FOR_LINTER ]]; then
-        echo -e "\nLinting the changed files as batches..."
-        echo -e "Here's the result of the batch ${i}... \n"
+        echo -e "\n 🔥 Linting the changed files as batches..Here are the results... \n"
     fi
 
     pnpm eslint --ext .js,.jsx,.ts,.tsx --no-error-on-unmatched-pattern --max-warnings=0 --resolve-plugins-relative-to . -- "$filter_pattern"
