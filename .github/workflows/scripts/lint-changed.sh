@@ -61,17 +61,29 @@ for file in "${supported_files[@]}"; do
     echo -e "   - $file"
 done
 
+echo -e "🔢 Total number of changed files: ${#supported_files[@]}"
+
 echo -e "\n=============================================================\n"
 
-echo -e "🥬 Starting analyzing the changed files with ESLint.."
+echo -e "\n 🥬 Starting analyzing the changed files with ESLint.. \n"
 
-# Modify the filepattern to avoid eslint pattern mismatch errors.
-if [[ ${#supported_files[@]} -gt 1 ]]; then
-    filer_pattern="{""$(IFS=","; echo "${supported_files[*]}")""}";
-elif [[ ${#supported_files[@]} == 1 ]]; then
-    filer_pattern="$(IFS=","; echo "${supported_files[*]}")";
-else
-    filer_pattern="{}";
-fi
+for ((i=0; i < ${#supported_files[@]}; i+=MAX_FILE_THRESHOLD_FOR_LINTER))
+do
+    chunk=( "${supported_files[@]:i:MAX_FILE_THRESHOLD_FOR_LINTER}" )
 
-pnpx eslint --ext .js,.jsx,.ts,.tsx --no-error-on-unmatched-pattern --max-warnings=0 --resolve-plugins-relative-to . -- "$filer_pattern"
+    # Modify the filepattern to avoid eslint pattern mismatch errors.
+    if [[ ${#chunk[@]} -gt 1 ]]; then
+        filter_pattern="{""$(IFS=","; echo "${chunk[*]}")""}";
+    elif [[ ${#chunk[@]} == 1 ]]; then
+        filter_pattern="$(IFS=","; echo "${chunk[*]}")";
+    else
+        filter_pattern="{}";
+    fi
+
+    if [[ ${#supported_files[@]} -gt MAX_FILE_THRESHOLD_FOR_LINTER ]]; then
+        echo -e "\nLinting the changed files as batches..."
+        echo -e "Here's the result of the batch ${i+1}... \n"
+    fi
+
+    pnpm eslint --ext .js,.jsx,.ts,.tsx --no-error-on-unmatched-pattern --max-warnings=0 --resolve-plugins-relative-to . -- "$filter_pattern"
+done
