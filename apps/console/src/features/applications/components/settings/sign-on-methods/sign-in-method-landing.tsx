@@ -17,18 +17,18 @@
  */
 
 import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
-import { Heading, InfoCard } from "@wso2is/react-components";
+import { Heading, InfoCard, useMediaContext } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Grid, Responsive, Segment } from "semantic-ui-react";
+import { Grid, Segment } from "semantic-ui-react";
 import { AppState, ConfigReducerStateInterface, EventPublisher, FeatureConfigInterface } from "../../../../core";
 import { IdentityProviderManagementConstants } from "../../../../identity-providers";
 import { getAuthenticatorIcons } from "../../../configs";
 import { LoginFlowTypes } from "../../../models";
 
 /**
- * Proptypes for the sign in methods landing component.
+ * Prop-types for the sign in methods landing component.
  */
 interface SignInMethodLandingPropsInterface extends SBACInterface<FeatureConfigInterface>, TestableComponentInterface {
     /**
@@ -56,9 +56,9 @@ interface SignInMethodLandingPropsInterface extends SBACInterface<FeatureConfigI
 /**
  * Landing component for Application Sign-in method configurations.
  *
- * @param {SignInMethodLandingPropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns Sign In Methods Landing component.
  */
 export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInterface> = (
     props: SignInMethodLandingPropsInterface
@@ -66,6 +66,7 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
     const { isLoading, onLoginFlowSelect, hiddenOptions, [ "data-testid" ]: testId, clientId } = props;
 
     const { t } = useTranslation();
+    const { isMobileViewport } = useMediaContext();
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
@@ -76,10 +77,7 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
             <Grid>
                 <Grid.Row>
                     <Grid.Column width={ 16 }>
-                        <Heading
-                            as="h2"
-                            textAlign={ window.innerWidth <= Responsive.onlyTablet.maxWidth ? "center" : "left" }
-                        >
+                        <Heading as="h2" textAlign={ isMobileViewport ? "center" : "left" }>
                             { t(
                                 "console:develop.features.applications.edit.sections.signOnMethod.sections." +
                                 "landing.flowBuilder.heading"
@@ -264,9 +262,11 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                                 "types.google.description"
                                             ) }
                                             onClick={ () => {
-                                                eventPublisher.publish("application-begin-sign-in-google-social-login", {
-                                                    type: clientId
-                                                });
+                                                eventPublisher.publish(
+                                                    "application-begin-sign-in-google-social-login", {
+                                                        type: clientId
+                                                    }
+                                                );
                                                 onLoginFlowSelect(LoginFlowTypes.GOOGLE_LOGIN);
                                             } }
                                         />

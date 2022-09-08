@@ -35,11 +35,11 @@ import {
     Icon,
     Item,
     Menu,
-    Placeholder,
-    Responsive
+    Placeholder
 } from "semantic-ui-react";
 import { UserAvatar } from "../avatar";
 import { GenericIcon } from "../icon";
+import { Media } from "../media";
 
 /**
  * Header component prop types.
@@ -150,7 +150,6 @@ export interface StrictHeaderLinkInterface extends IdentifiableComponentInterfac
     name: ReactNode;
     /**
      * Called on dropdown item click.
-     *
      * @param event - React's original SyntheticEvent.
      * @param data - All props.
      */
@@ -161,8 +160,7 @@ export interface StrictHeaderLinkInterface extends IdentifiableComponentInterfac
  * Header component.
  *
  * @param props - Props injected to the component.
- *
- * @returns header component.
+ * @returns Header Component.
  */
 export const Header: FunctionComponent<HeaderPropsInterface> = (
     props: HeaderPropsInterface
@@ -211,7 +209,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
 
     /**
      * Renders the User dropdown trigger.
-     * @returns user dropdown trigger button.
+     * @returns User Dropdown rigger component.
      */
     const renderUserDropdownTrigger = (): ReactElement => {
 
@@ -236,8 +234,8 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             >
                 {
                     showUserDropdownTriggerLabel && (
-                        <Responsive
-                            minWidth={ 767 }
+                        <Media
+                            greaterThan="mobile"
                             className="username"
                             data-componentid={ `${ componentId }-user-display-name` }
                             data-testid={ `${ testId }-user-display-name` }
@@ -254,7 +252,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                                     )
                                     : resolveUserDisplayName(profileInfo, basicProfileInfo)
                             }
-                        </Responsive>
+                        </Media>
                     )
                 }
                 {
@@ -282,7 +280,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
      *
      * @param e - Click event.
      */
-    const handleUserDropdownClick = (e: SyntheticEvent<HTMLElement>) => {
+    const handleUserDropdownClick = (e: SyntheticEvent<HTMLElement>): void => {
         e.stopPropagation();
     };
 
@@ -291,7 +289,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
      *
      * @param account - Target account.
      */
-    const handleLinkedAccountSwitch = (account: LinkedAccountInterface) => {
+    const handleLinkedAccountSwitch = (account: LinkedAccountInterface): void => {
         onLinkedAccountSwitch(account);
     };
 
@@ -317,8 +315,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
      * Renders the list of linked accounts.
      *
      * @param accounts - Linked accounts.
-     *
-     * @returns list of linked accounts.
+     * @returns Link Accounts list.
      */
     const renderLinkedAccounts = (accounts: LinkedAccountInterface[]): ReactElement => {
 
@@ -379,7 +376,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     /**
      * Renders the links in the dropdown.
      *
-     * @returns list of links in the user dropdown.
+     * @returns User Dropdown links.
      */
     const renderUserDropdownLinks = (): ReactElement[] => {
 
@@ -472,8 +469,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
      * Renders the header extensions.
      *
      * @param floated - Floated direction.
-     *
-     * @returns the header extensions.
+     * @returns Header Extension links.
      */
     const renderHeaderExtensionLinks = (floated: HeaderExtension[ "floated" ]): ReactElement => {
 
@@ -524,32 +520,48 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                 {
                     showSidePanelToggle
                         ? (
-                            <Responsive as={ Menu.Item } maxWidth={ 767 }>
-                                <Icon
-                                    name="bars"
-                                    size="large"
-                                    onClick={ onSidePanelToggleClick }
-                                    data-componentid={ `${ componentId }-hamburger-icon` }
-                                    data-testid={ `${ testId }-hamburger-icon` }
-                                    link
-                                />
-                            </Responsive>
+                            <Media lessThan="tablet">
+                                { (className: string, renderChildren: boolean) => (
+                                    <span className={ className }>
+                                        { renderChildren && (
+                                            <Menu.Item className="bars-container">
+                                                <Icon
+                                                    name="bars"
+                                                    size="large"
+                                                    onClick={ onSidePanelToggleClick }
+                                                    data-componentid={ `${ componentId }-hamburger-icon` }
+                                                    data-testid={ `${ testId }-hamburger-icon` }
+                                                    link
+                                                />
+                                            </Menu.Item>
+                                        ) }
+                                    </span>
+                                ) }
+                            </Media>
                         )
                         : null
                 }
                 {
                     brand && (
-                        <Responsive className="p-0" as={ Menu.Item } minWidth={ 767 }>
-                            <Menu.Item
-                                as={ Link }
-                                to={ brandLink }
-                                header
-                                data-componentid={ `${ componentId }-brand-container` }
-                                data-testid={ `${ testId }-brand-container` }
-                            >
-                                { brand }
-                            </Menu.Item>
-                        </Responsive>
+                        <Media greaterThan="mobile">
+                            { (className: string, renderChildren: boolean) => (
+                                <span className={ className }>
+                                    { renderChildren && (
+                                        <Menu.Item className="brand-container">
+                                            <Menu.Item
+                                                as={ Link }
+                                                to={ brandLink }
+                                                header
+                                                data-componentid={ `${ componentId }-brand-container` }
+                                                data-testid={ `${ testId }-brand-container` }
+                                            >
+                                                { brand }
+                                            </Menu.Item>
+                                        </Menu.Item>
+                                    ) }
+                                </span>
+                            ) }
+                        </Media>
 
                     )
                 }

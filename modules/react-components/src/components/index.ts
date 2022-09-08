@@ -44,6 +44,7 @@ export * from "./language-switcher";
 export * from "./links";
 export * from "./list";
 export * from "./loader";
+export * from "./media";
 export * from "./message";
 export * from "./modal";
 export * from "./page-header";

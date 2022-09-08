@@ -84,7 +84,6 @@
         "redux": "^4.0.4",
         "redux-thunk": "^2.3.0",
         "regenerator-runtime": "0.13.7",
-        "semantic-ui-react": "^0.87.3",
         "tslib": "^2.3.0",
         "ua-parser-js": "0.7.28"
     },

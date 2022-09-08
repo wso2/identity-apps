@@ -16,14 +16,16 @@
  * under the License.
  */
 
+import { Media } from "@wso2is/react-components";
 import * as React from "react";
-import { Container, Grid, Responsive } from "semantic-ui-react";
+import { Container, Grid } from "semantic-ui-react";
 import { SidePanel } from "./side-panel";
 import { SidePanelMobile } from "./side-panel-mobile";
 import * as UIConstants from "../../constants/ui-constants";
 
 /**
  * Side panel wrapper component Prop types.
+ * @deprecated Use the `SidePanelProps` from {@link @wso2is/react-components#SidePanelProps}.
  */
 interface SidePanelWrapperProps {
     headerHeight: number;
@@ -36,8 +38,9 @@ interface SidePanelWrapperProps {
 /**
  * Side panel wrapper component.
  *
- * @param {SidePanelWrapperProps} props - Props injected to the side panel wrapper component.
- * @return {JSX.Element}
+ * @deprecated Use the `SidePanel` from {@link @wso2is/react-components#SidePanel}.
+ * @param props - Props injected to the side panel wrapper component.
+ * @returns Side Panel Wrapper component.
  */
 export const SidePanelWrapper: React.FunctionComponent<SidePanelWrapperProps> = (
     props: SidePanelWrapperProps
@@ -61,7 +64,7 @@ export const SidePanelWrapper: React.FunctionComponent<SidePanelWrapperProps> = 
 
     return (
         <>
-            <Responsive { ...Responsive.onlyMobile }>
+            <Media lessThan="tablet">
                 <SidePanelMobile
                     headerHeight={ headerHeight }
                     onPusherClick={ onSidePanelPusherClick }
@@ -70,8 +73,8 @@ export const SidePanelWrapper: React.FunctionComponent<SidePanelWrapperProps> = 
                 >
                     <Container style={ mobileContentStyle }>{ children }</Container>
                 </SidePanelMobile>
-            </Responsive>
-            <Responsive as={ Container } minWidth={ Responsive.onlyTablet.minWidth }>
+            </Media>
+            <Container as={ Media } greaterThanOrEqual="tablet">
                 <Grid style={ desktopContentStyle }>
                     <Grid.Row className="layout-wrapper-row" columns={ 2 }>
                         <Grid.Column tablet={ 4 } computer={ 3 }>
@@ -82,7 +85,7 @@ export const SidePanelWrapper: React.FunctionComponent<SidePanelWrapperProps> = 
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
-            </Responsive>
+            </Container>
         </>
     );
 };

@@ -16,10 +16,28 @@
  * under the License.
  */
 
+import { MediaContextProvider } from "../src/components";
 import { Theme } from "./theme";
 
 export const parameters = {
     docs: {
-        theme: Theme,
+        theme: Theme
     }
 };
+
+/**
+ * Wrapper for all the required providers.
+ *
+ * @param Story - Story component.
+ * @param context - Story context.
+ * @returns Stroy wrapped in providers.
+ */
+const withProviders = (Story, context) => {
+    return (
+        <MediaContextProvider>
+            <Story {...context} />
+        </MediaContextProvider>
+    );
+};
+
+export const decorators = [withProviders];

@@ -41,7 +41,7 @@
         "joi": "^17.4.0",
         "lodash-es": "^4.17.21",
         "react-final-form": "^6.5.3",
-        "semantic-ui-react": "^2.0.3"
+        "semantic-ui-react": "^2.1.3"
     },
     "devDependencies": {
         "@testing-library/jest-dom": "^5.11.10",

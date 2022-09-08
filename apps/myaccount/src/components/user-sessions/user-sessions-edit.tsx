@@ -17,15 +17,16 @@
  */
 
 import { IBrowser, IDevice, IOS, TestableComponentInterface } from "@wso2is/core/models";
+import { Media } from "@wso2is/react-components";
 import moment from "moment";
 import React, { FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
-import { Divider, Grid, Icon, List, Responsive, SemanticICONS, Table } from "semantic-ui-react";
+import { Divider, Grid, Icon, List, SemanticICONS, Table } from "semantic-ui-react";
 import { UserSession } from "../../models";
 import { DangerZone, DangerZoneGroup, EditSection } from "../shared";
 
 /**
- * Proptypes for the user sessions edit component.
+ * Prop-types for the user sessions edit component.
  * Also see {@link UserSessionsEdit.defaultProps}
  */
 interface UserSessionsEditProps extends TestableComponentInterface {
@@ -40,8 +41,7 @@ interface UserSessionsEditProps extends TestableComponentInterface {
      * Since the username is mostly common across the applications
      * we hide this by default.
      *
-     * @description sub has tenant attached (zzz@yyy.com)
-     * @type {boolean}
+     * sub has tenant attached (zzz\@yyy.com)
      */
     showUsernameInApplicationUsingSub?: boolean;
 }
@@ -49,8 +49,8 @@ interface UserSessionsEditProps extends TestableComponentInterface {
 /**
  * User sessions edit component.
  *
- * @param {UserSessionsEditProps} props - Props injected to the user sessions edit component.
- * @return {JSX.Element}
+ * @param props - Props injected to the user sessions edit component.
+ * @returns User Sessions component.
  */
 export const UserSessionsEdit: FunctionComponent<UserSessionsEditProps> = (
     props: UserSessionsEditProps
@@ -62,16 +62,16 @@ export const UserSessionsEdit: FunctionComponent<UserSessionsEditProps> = (
         os,
         onTerminateUserSessionClick,
         userSession,
-        showUsernameInApplicationUsingSub,
         ["data-testid"]: testId
     } = props;
+
     const { t } = useTranslation();
 
     /**
      * Resolves an icon for the operating system type extracted from the user agent string.
      *
-     * @param {string} type - Operating system type.
-     * @return {SemanticICONS}
+     * @param type - Operating system type.
+     * @returns OS icon.
      */
     const resolveOSIcon = (type: string): SemanticICONS => {
         const osType = {
@@ -108,8 +108,8 @@ export const UserSessionsEdit: FunctionComponent<UserSessionsEditProps> = (
     /**
      * Resolves an icon for the browser type extracted from the user agent string.
      *
-     * @param {string} type - Browser type.
-     * @return {SemanticICONS}
+     * @param type - Browser type.
+     * @returns Browser Icon.
      */
     const resolveBrowserIcon = (type: string): SemanticICONS => {
         const browserType = {
@@ -212,26 +212,10 @@ export const UserSessionsEdit: FunctionComponent<UserSessionsEditProps> = (
                                             </Grid.Column>
                                             <Grid.Column mobile={ 16 } computer={ 11 }>
                                                 <List.Description>
-                                                    <Responsive
-                                                        maxWidth={ Responsive.onlyComputer.minWidth }
-                                                        as={ Divider }
-                                                        hidden
-                                                    />
+                                                    <Media lessThan="tablet">
+                                                        <Divider hidden />
+                                                    </Media>
                                                     <Table celled compact className="session-table opaque">
-                                                        { /* Temporarily removed table headers as currently one column
-                                                         is displayed. */ }
-                                                        { /*<Table.Header>*/ }
-                                                        { /*    <Table.Row>*/ }
-                                                        { /*        <Table.HeaderCell>*/ }
-                                                        { /*            { t("common:applicationName") }*/ }
-                                                        { /*        </Table.HeaderCell>*/ }
-                                                        { /*        { showUsernameInApplicationUsingSub && (*/ }
-                                                        { /*            <Table.HeaderCell>*/ }
-                                                        { /*                { t("common:user") }*/ }
-                                                        { /*            </Table.HeaderCell>*/ }
-                                                        { /*        ) }*/ }
-                                                        { /*    </Table.Row>*/ }
-                                                        { /*</Table.Header>*/ }
                                                         <Table.Body>
                                                             {
                                                                 userSession.applications.map(

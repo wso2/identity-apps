@@ -17,17 +17,17 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { GenericIcon } from "@wso2is/react-components";
+import { GenericIcon, Media } from "@wso2is/react-components";
 import React, { FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, Grid, Icon, List, Responsive } from "semantic-ui-react";
+import { Button, Grid, Icon, List } from "semantic-ui-react";
+import { AppConsentEdit } from "./consent-edit";
 import { ConsentedAppIcon } from "../../configs";
 import { ConsentInterface, ConsentState, PIICategoryClaimToggleItem } from "../../models";
 import { toSentenceCase } from "../../utils";
-import { AppConsentEdit } from "./consent-edit";
 
 /**
- * Proptypes for the application consents list component.
+ * Prop-types for the application consents list component.
  * Also see {@link AppConsentList.defaultProps}
  */
 interface ConsentsListProps extends TestableComponentInterface {
@@ -44,8 +44,8 @@ interface ConsentsListProps extends TestableComponentInterface {
 /**
  * Application consents list component.
  *
- * @param {UserSessionsEditProps} props - Props injected to the application consent list component.
- * @return {JSX.Element}
+ * @param props - Props injected to the application consent list component.
+ * @returns App Consents List component.
  */
 export const AppConsentList: FunctionComponent<ConsentsListProps> = (
     props: ConsentsListProps
@@ -66,13 +66,14 @@ export const AppConsentList: FunctionComponent<ConsentsListProps> = (
 
     /**
      * Resolves the classname for the active label based on the consent state.
-     * @param {ConsentState} state - state of the consent.
-     * @return {string}
+     * @param state - state of the consent.
+     * @returns Resolved classname,
      */
     const resolveStateClassname = (state: ConsentState): string => {
         if (state === ConsentState.ACTIVE) {
             return "positive";
         }
+
         return "";
     };
 
@@ -102,10 +103,10 @@ export const AppConsentList: FunctionComponent<ConsentsListProps> = (
                                                     <List.Header>{ consent.spDisplayName }</List.Header>
                                                     <List.Description>
                                                         <p className="small-text">
-                                                    <span
-                                                        className={ `active-label ${ resolveStateClassname(
-                                                            consent.state) }` }
-                                                    />
+                                                            <span
+                                                                className={ `active-label ${ resolveStateClassname(
+                                                                    consent.state) }` }
+                                                            />
                                                             { toSentenceCase(consent.state) }
                                                         </p>
                                                     </List.Description>
@@ -116,60 +117,62 @@ export const AppConsentList: FunctionComponent<ConsentsListProps> = (
                                                     ? (
                                                         <Grid.Column width={ 5 } className="last-column">
                                                             <List.Content floated="right">
-                                                                <Responsive
-                                                                    as={ Button }
-                                                                    maxWidth={ Responsive.onlyTablet.maxWidth }
-                                                                    className="borderless-button"
-                                                                    basic={ true }
-                                                                    onClick={
-                                                                        () => onConsentDetailClick(
-                                                                            index, consent.consentReceiptID
-                                                                        )
-                                                                    }
-                                                                >
-                                                                    <Icon
-                                                                        name={
-                                                                            consentListActiveIndexes.includes(index)
-                                                                                ? "angle up"
-                                                                                : "angle down"
+                                                                <Media lessThan="computer">
+                                                                    <Button
+                                                                        className="borderless-button"
+                                                                        basic={ true }
+                                                                        onClick={
+                                                                            () => onConsentDetailClick(
+                                                                                index, consent.consentReceiptID
+                                                                            )
                                                                         }
-                                                                    />
-                                                                </Responsive>
-                                                                <Responsive
-                                                                    as={ Button }
-                                                                    minWidth={ Responsive.onlyTablet.maxWidth }
-                                                                    icon
-                                                                    basic
-                                                                    labelPosition="right"
-                                                                    size="mini"
-                                                                    data-testid={ `${ testId }-` +
-                                                                        `${ consent.spDisplayName }` +
-                                                                        `-app-consent-detail-button` }
-                                                                    onClick={
-                                                                        () => onConsentDetailClick(
-                                                                            index, consent.consentReceiptID
-                                                                        )
-                                                                    }
-                                                                >
-                                                                    {
-                                                                        consentListActiveIndexes.includes(index)
-                                                                            ? (
-                                                                                <>
-                                                                                    { t("common:showLess") }
-                                                                                    <Icon
-                                                                                        name="arrow down"
-                                                                                        flipped="vertically"
-                                                                                    />
-                                                                                </>
+                                                                    >
+                                                                        <Icon
+                                                                            name={
+                                                                                consentListActiveIndexes.includes(index)
+                                                                                    ? "angle up"
+                                                                                    : "angle down"
+                                                                            }
+                                                                        />
+                                                                    </Button>
+                                                                </Media>
+                                                                <Media greaterThanOrEqual="computer">
+                                                                    <Button
+                                                                        icon
+                                                                        basic
+                                                                        labelPosition="right"
+                                                                        size="mini"
+                                                                        data-testid={
+                                                                            `${ testId }-` +
+                                                                            `${ consent.spDisplayName }` +
+                                                                            "-app-consent-detail-button"
+                                                                        }
+                                                                        onClick={
+                                                                            () => onConsentDetailClick(
+                                                                                index, consent.consentReceiptID
                                                                             )
-                                                                            : (
-                                                                                <>
-                                                                                    { t("common:showMore") }
-                                                                                    <Icon name="arrow down"/>
-                                                                                </>
-                                                                            )
-                                                                    }
-                                                                </Responsive>
+                                                                        }
+                                                                    >
+                                                                        {
+                                                                            consentListActiveIndexes.includes(index)
+                                                                                ? (
+                                                                                    <>
+                                                                                        { t("common:showLess") }
+                                                                                        <Icon
+                                                                                            name="arrow down"
+                                                                                            flipped="vertically"
+                                                                                        />
+                                                                                    </>
+                                                                                )
+                                                                                : (
+                                                                                    <>
+                                                                                        { t("common:showMore") }
+                                                                                        <Icon name="arrow down"/>
+                                                                                    </>
+                                                                                )
+                                                                        }
+                                                                    </Button>
+                                                                </Media>
                                                             </List.Content>
                                                         </Grid.Column>
                                                     ) : null

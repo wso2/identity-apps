@@ -142,7 +142,6 @@ importers:
       regenerator-runtime: 0.13.7
       rimraf: ^3.0.2
       run-script-os: ^1.0.7
-      semantic-ui-react: ^0.87.3
       simple-git: ^1.129.0
       source-map-loader: ^0.2.4
       style-loader: ^0.23.1
@@ -200,7 +199,6 @@ importers:
       redux: 4.2.0
       redux-thunk: 2.4.1_redux@4.2.0
       regenerator-runtime: 0.13.7
-      semantic-ui-react: 0.87.3_wcqkhtmu7mswc6yz4uyexck3ty
       tslib: 2.4.0
       ua-parser-js: 0.7.28
     devDependencies:
@@ -413,7 +411,7 @@ importers:
       regenerator-runtime: ^0.13.9
       rimraf: ^3.0.2
       run-script-os: ^1.0.7
-      semantic-ui-react: ^0.87.3
+      semantic-ui-react: ^2.1.3
       slashes: ^2.0.2
       style-loader: ^0.23.1
       styled-components: ^4.4.1
@@ -465,7 +463,7 @@ importers:
       redux-mock-store: 1.5.4
       redux-thunk: 2.4.1_redux@4.2.0
       regenerator-runtime: 0.13.9
-      semantic-ui-react: 0.87.3_wcqkhtmu7mswc6yz4uyexck3ty
+      semantic-ui-react: 2.1.3_wcqkhtmu7mswc6yz4uyexck3ty
       slashes: 2.0.2
       styled-components: 4.4.1_wcqkhtmu7mswc6yz4uyexck3ty
       swr: 1.3.0_react@16.14.0
@@ -586,7 +584,7 @@ importers:
       regenerator-runtime: ^0.13.9
       rimraf: ^3.0.2
       run-script-os: ^1.0.7
-      semantic-ui-react: ^0.87.3
+      semantic-ui-react: ^2.1.3
       style-loader: ^0.23.1
       thread-loader: ^2.1.3
       ts-jest: ^26.4.0
@@ -624,7 +622,7 @@ importers:
       redux: 4.2.0
       redux-thunk: 2.4.1_redux@4.2.0
       regenerator-runtime: 0.13.9
-      semantic-ui-react: 0.87.3_wcqkhtmu7mswc6yz4uyexck3ty
+      semantic-ui-react: 2.1.3_wcqkhtmu7mswc6yz4uyexck3ty
       ua-parser-js: 0.7.28
     devDependencies:
       '@testing-library/jest-dom': 5.16.5
@@ -815,7 +813,7 @@ importers:
       react-final-form: ^6.5.3
       rimraf: ^3.0.2
       run-script-os: ^1.0.7
-      semantic-ui-react: ^2.0.3
+      semantic-ui-react: ^2.1.3
       ts-jest: ^26.5.4
       ts-node: ^10.8.1
       typescript: ^4.6.4
@@ -867,14 +865,14 @@ importers:
       lodash-es: ^4.17.21
       rimraf: ^3.0.2
       run-script-os: ^1.0.7
-      semantic-ui-react: ^0.87.3
+      semantic-ui-react: ^2.1.3
       ts-jest: ^26.4.0
       ts-node: ^10.8.1
       typescript: ^4.6.4
     dependencies:
       classnames: 2.3.1
       lodash-es: 4.17.21
-      semantic-ui-react: 0.87.3
+      semantic-ui-react: 2.1.3
     devDependencies:
       '@testing-library/jest-dom': 5.16.5
       '@testing-library/react': 11.2.7
@@ -951,6 +949,7 @@ importers:
 
   modules/react-components:
     specifiers:
+      '@artsy/fresnel': ^6.1.0
       '@babel/core': ^7.11.4
       '@rollup/plugin-url': ^7.0.0
       '@storybook/addon-essentials': ^6.5.9
@@ -1006,7 +1005,7 @@ importers:
       react-transition-group: ^4.4.1
       rimraf: ^3.0.2
       run-script-os: ^1.0.7
-      semantic-ui-react: ^0.87.3
+      semantic-ui-react: ^2.1.3
       storybook: ^6.5.9
       tinycolor: 0.0.1
       tinycolor2: ^1.4.2
@@ -1015,6 +1014,7 @@ importers:
       tsconfig-paths-webpack-plugin: ^3.5.2
       typescript: ^4.6.4
     dependencies:
+      '@artsy/fresnel': 6.1.0
       '@storybook/addon-essentials': 6.5.10_w2eknpvvthkicl6sssmrdad6qq
       '@storybook/addons': 6.5.10_react-dom@16.14.0
       '@storybook/builder-webpack5': 6.5.10_xtupfxbgfidscdp3drmjafrl4u
@@ -1041,7 +1041,7 @@ importers:
       react-router-dom: 4.3.1
       react-top-loading-bar: 1.2.0_react-dom@16.14.0
       react-transition-group: 4.4.5_react-dom@16.14.0
-      semantic-ui-react: 0.87.3_react-dom@16.14.0
+      semantic-ui-react: 2.1.3_react-dom@16.14.0
       storybook: 6.5.10_xtupfxbgfidscdp3drmjafrl4u
       tinycolor: 0.0.1
       tinycolor2: 1.4.2
@@ -1232,6 +1232,13 @@ packages:
     dependencies:
       '@jridgewell/gen-mapping': 0.1.1
       '@jridgewell/trace-mapping': 0.3.15
+
+  /@artsy/fresnel/6.1.0:
+    resolution: {integrity: sha512-PexfFmf3Un3C752SFpryYROgahfdSsHhNETSZlJcO0W3MJ14hyw/MbLQl3DnNdQGIJZE6y1MbnH7ntEt8PWB0Q==}
+    engines: {node: '>=12.20.2', yarn: 1.x.x}
+    peerDependencies:
+      react: '>=16.3.0'
+    dev: false
 
   /@asgardeo/auth-js/2.0.14:
     resolution: {integrity: sha512-Wl+JzGF+xy7yesscJh57jXYMqMKd9X13n9Xuxhlhi1n+wb/jcVsYua5Fw6UvOA/+eCwh6f7F93frfzZdVHpqmg==}
@@ -3060,6 +3067,27 @@ packages:
       '@babel/runtime': 7.18.9
     dev: false
 
+  /@fluentui/react-component-event-listener/0.63.1_react-dom@16.14.0:
+    resolution: {integrity: sha512-gSMdOh6tI3IJKZFqxfQwbTpskpME0CvxdxGM2tdglmf6ZPVDi0L4+KKIm+2dN8nzb8Ya1A8ZT+Ddq0KmZtwVQg==}
+    peerDependencies:
+      react: ^16.8.0 || ^17 || ^18
+      react-dom: ^16.8.0 || ^17 || ^18
+    dependencies:
+      '@babel/runtime': 7.18.9
+      react-dom: 16.14.0
+    dev: false
+
+  /@fluentui/react-component-event-listener/0.63.1_wcqkhtmu7mswc6yz4uyexck3ty:
+    resolution: {integrity: sha512-gSMdOh6tI3IJKZFqxfQwbTpskpME0CvxdxGM2tdglmf6ZPVDi0L4+KKIm+2dN8nzb8Ya1A8ZT+Ddq0KmZtwVQg==}
+    peerDependencies:
+      react: ^16.8.0 || ^17 || ^18
+      react-dom: ^16.8.0 || ^17 || ^18
+    dependencies:
+      '@babel/runtime': 7.18.9
+      react: 16.14.0
+      react-dom: 16.14.0_react@16.14.0
+    dev: false
+
   /@fluentui/react-component-ref/0.63.1:
     resolution: {integrity: sha512-8MkXX4+R3i80msdbD4rFpEB4WWq2UDvGwG386g3ckIWbekdvN9z2kWAd9OXhRGqB7QeOsoAGWocp6gAMCivRlw==}
     peerDependencies:
@@ -3067,6 +3095,29 @@ packages:
       react-dom: ^16.8.0 || ^17 || ^18
     dependencies:
       '@babel/runtime': 7.18.9
+      react-is: 16.13.1
+    dev: false
+
+  /@fluentui/react-component-ref/0.63.1_react-dom@16.14.0:
+    resolution: {integrity: sha512-8MkXX4+R3i80msdbD4rFpEB4WWq2UDvGwG386g3ckIWbekdvN9z2kWAd9OXhRGqB7QeOsoAGWocp6gAMCivRlw==}
+    peerDependencies:
+      react: ^16.8.0 || ^17 || ^18
+      react-dom: ^16.8.0 || ^17 || ^18
+    dependencies:
+      '@babel/runtime': 7.18.9
+      react-dom: 16.14.0
+      react-is: 16.13.1
+    dev: false
+
+  /@fluentui/react-component-ref/0.63.1_wcqkhtmu7mswc6yz4uyexck3ty:
+    resolution: {integrity: sha512-8MkXX4+R3i80msdbD4rFpEB4WWq2UDvGwG386g3ckIWbekdvN9z2kWAd9OXhRGqB7QeOsoAGWocp6gAMCivRlw==}
+    peerDependencies:
+      react: ^16.8.0 || ^17 || ^18
+      react-dom: ^16.8.0 || ^17 || ^18
+    dependencies:
+      '@babel/runtime': 7.18.9
+      react: 16.14.0
+      react-dom: 16.14.0_react@16.14.0
       react-is: 16.13.1
     dev: false
 
@@ -3104,29 +3155,6 @@ packages:
     resolution: {integrity: sha512-H9XAx3hc0BQHY6l+IFSWHDySypcXsvsuLhgYLUGywmJ5pswRVQJUHpOsobnLYp2ZUaUlKiKDrgWWhosOwAEM8Q==}
     engines: {node: '>=6.9.0'}
     dev: true
-
-  /@hypnosphi/create-react-context/0.3.1_4vyaxm4rsh2mpfdenvlqy7kmya:
-    resolution: {integrity: sha512-V1klUed202XahrWJLLOT3EXNeCpFHCcJntdFGI15ntCwau+jfT386w7OFTMaCqOgXUH1fa0w/I1oZs+i/Rfr0A==}
-    peerDependencies:
-      prop-types: ^15.0.0
-      react: '>=0.14.0'
-    dependencies:
-      gud: 1.0.0
-      prop-types: 15.8.1
-      react: 16.14.0
-      warning: 4.0.3
-    dev: false
-
-  /@hypnosphi/create-react-context/0.3.1_prop-types@15.8.1:
-    resolution: {integrity: sha512-V1klUed202XahrWJLLOT3EXNeCpFHCcJntdFGI15ntCwau+jfT386w7OFTMaCqOgXUH1fa0w/I1oZs+i/Rfr0A==}
-    peerDependencies:
-      prop-types: ^15.0.0
-      react: '>=0.14.0'
-    dependencies:
-      gud: 1.0.0
-      prop-types: 15.8.1
-      warning: 4.0.3
-    dev: false
 
   /@icons/material/0.2.4:
     resolution: {integrity: sha512-QPcGmICAPbGLGb6F/yNf/KzKqvFx8z5qx3D1yFqVAjoFmXK35EgyW+cJ57Te3CNsmzblwtzakLGFqHPqrfb4Tw==}
@@ -16229,10 +16257,6 @@ packages:
     resolution: {integrity: sha512-+xGQY0YyAWCnqy7Cd++hc2JqMYzlm0dG30Jd0beaA64sROr8C4nt8Yc9V5Ro3avlSUDTN0ulqP/VBKi1/lLygw==}
     optional: true
 
-  /gud/1.0.0:
-    resolution: {integrity: sha512-zGEOVKFM5sVPPrYs7J5/hYEw2Pof8KCyOwyhG8sAF26mCAeUFAcYPu1mwB7hhpIP29zOIBaDqwuHdLp0jvZXjw==}
-    dev: false
-
   /gzip-size/6.0.0:
     resolution: {integrity: sha512-ax7ZYomf6jqPTQ4+XCpUGyXKHk5WweS+e05MBO4/y3WJ5RkmPXNKvX+bx1behVILVwr6JSQvZAku021CHPXG3Q==}
     engines: {node: '>=10'}
@@ -23534,35 +23558,6 @@ packages:
       react-popper: 2.3.0_ahsyp7paedy7ttpixxrzktxjdi
     dev: true
 
-  /react-popper/1.3.11:
-    resolution: {integrity: sha512-VSA/bS+pSndSF2fiasHK/PTEEAyOpX60+H5EPAjoArr8JGm+oihu4UbrqcEBpQibJxBVCpYyjAX7abJ+7DoYVg==}
-    peerDependencies:
-      react: 0.14.x || ^15.0.0 || ^16.0.0 || ^17.0.0
-    dependencies:
-      '@babel/runtime': 7.18.9
-      '@hypnosphi/create-react-context': 0.3.1_prop-types@15.8.1
-      deep-equal: 1.1.1
-      popper.js: 1.16.1
-      prop-types: 15.8.1
-      typed-styles: 0.0.7
-      warning: 4.0.3
-    dev: false
-
-  /react-popper/1.3.11_react@16.14.0:
-    resolution: {integrity: sha512-VSA/bS+pSndSF2fiasHK/PTEEAyOpX60+H5EPAjoArr8JGm+oihu4UbrqcEBpQibJxBVCpYyjAX7abJ+7DoYVg==}
-    peerDependencies:
-      react: 0.14.x || ^15.0.0 || ^16.0.0 || ^17.0.0
-    dependencies:
-      '@babel/runtime': 7.18.9
-      '@hypnosphi/create-react-context': 0.3.1_4vyaxm4rsh2mpfdenvlqy7kmya
-      deep-equal: 1.1.1
-      popper.js: 1.16.1
-      prop-types: 15.8.1
-      react: 16.14.0
-      typed-styles: 0.0.7
-      warning: 4.0.3
-    dev: false
-
   /react-popper/2.3.0_@popperjs+core@2.11.6:
     resolution: {integrity: sha512-e1hj8lL3uM+sgSR4Lxzn5h1GxBlpa4CQz0XLF8kx4MDrDRWY0Ena4c97PUeSX9i5W3UAfDP0z0FXCTQkoXUl3Q==}
     peerDependencies:
@@ -23587,7 +23582,19 @@ packages:
       react-dom: 16.14.0_react@16.14.0
       react-fast-compare: 3.2.0
       warning: 4.0.3
-    dev: true
+
+  /react-popper/2.3.0_nszzmpieuvtlx2lm2kcscokfnu:
+    resolution: {integrity: sha512-e1hj8lL3uM+sgSR4Lxzn5h1GxBlpa4CQz0XLF8kx4MDrDRWY0Ena4c97PUeSX9i5W3UAfDP0z0FXCTQkoXUl3Q==}
+    peerDependencies:
+      '@popperjs/core': ^2.0.0
+      react: ^16.8.0 || ^17 || ^18
+      react-dom: ^16.8.0 || ^17 || ^18
+    dependencies:
+      '@popperjs/core': 2.11.6
+      react-dom: 16.14.0
+      react-fast-compare: 3.2.0
+      warning: 4.0.3
+    dev: false
 
   /react-property/2.0.0:
     resolution: {integrity: sha512-kzmNjIgU32mO4mmH5+iUyrqlpFQhF8K2k7eZ4fdLSOPFrD1XgEuSBv9LDEgxRXTMBqMd8ppT0x6TIzqE5pdGdw==}
@@ -24815,60 +24822,6 @@ packages:
       jquery: 3.6.1
     dev: true
 
-  /semantic-ui-react/0.87.3:
-    resolution: {integrity: sha512-YJgFYEheeFBMm/epZpIpWKF9glgSShdLPiY8zoUi+KJ0IKtLtbI8RbMD/ELbZkY+SO/IWbK/f/86pWt3PVvMVA==}
-    peerDependencies:
-      react: ^16.3.0
-      react-dom: ^16.3.0
-    dependencies:
-      '@babel/runtime': 7.18.9
-      '@semantic-ui-react/event-stack': 3.1.3
-      classnames: 2.3.1
-      keyboard-key: 1.1.0
-      lodash: 4.17.21
-      prop-types: 15.8.1
-      react-is: 16.13.1
-      react-popper: 1.3.11
-      shallowequal: 1.1.0
-    dev: false
-
-  /semantic-ui-react/0.87.3_react-dom@16.14.0:
-    resolution: {integrity: sha512-YJgFYEheeFBMm/epZpIpWKF9glgSShdLPiY8zoUi+KJ0IKtLtbI8RbMD/ELbZkY+SO/IWbK/f/86pWt3PVvMVA==}
-    peerDependencies:
-      react: ^16.3.0
-      react-dom: ^16.3.0
-    dependencies:
-      '@babel/runtime': 7.18.9
-      '@semantic-ui-react/event-stack': 3.1.3_react-dom@16.14.0
-      classnames: 2.3.1
-      keyboard-key: 1.1.0
-      lodash: 4.17.21
-      prop-types: 15.8.1
-      react-dom: 16.14.0
-      react-is: 16.13.1
-      react-popper: 1.3.11
-      shallowequal: 1.1.0
-    dev: false
-
-  /semantic-ui-react/0.87.3_wcqkhtmu7mswc6yz4uyexck3ty:
-    resolution: {integrity: sha512-YJgFYEheeFBMm/epZpIpWKF9glgSShdLPiY8zoUi+KJ0IKtLtbI8RbMD/ELbZkY+SO/IWbK/f/86pWt3PVvMVA==}
-    peerDependencies:
-      react: ^16.3.0
-      react-dom: ^16.3.0
-    dependencies:
-      '@babel/runtime': 7.18.9
-      '@semantic-ui-react/event-stack': 3.1.3_wcqkhtmu7mswc6yz4uyexck3ty
-      classnames: 2.3.1
-      keyboard-key: 1.1.0
-      lodash: 4.17.21
-      prop-types: 15.8.1
-      react: 16.14.0
-      react-dom: 16.14.0_react@16.14.0
-      react-is: 16.13.1
-      react-popper: 1.3.11_react@16.14.0
-      shallowequal: 1.1.0
-    dev: false
-
   /semantic-ui-react/2.1.3:
     resolution: {integrity: sha512-dd2pqalMk0ycJoHf7hn4mYd0xohg0NMk7ohlpPVOigCfMLrKk2e3NZdRk0yBetvD+qJXPqZ04jA43bDwqOM5OA==}
     peerDependencies:
@@ -24887,6 +24840,51 @@ packages:
       prop-types: 15.8.1
       react-is: 18.2.0
       react-popper: 2.3.0_@popperjs+core@2.11.6
+      shallowequal: 1.1.0
+    dev: false
+
+  /semantic-ui-react/2.1.3_react-dom@16.14.0:
+    resolution: {integrity: sha512-dd2pqalMk0ycJoHf7hn4mYd0xohg0NMk7ohlpPVOigCfMLrKk2e3NZdRk0yBetvD+qJXPqZ04jA43bDwqOM5OA==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      '@babel/runtime': 7.18.9
+      '@fluentui/react-component-event-listener': 0.63.1_react-dom@16.14.0
+      '@fluentui/react-component-ref': 0.63.1_react-dom@16.14.0
+      '@popperjs/core': 2.11.6
+      '@semantic-ui-react/event-stack': 3.1.3_react-dom@16.14.0
+      clsx: 1.2.1
+      keyboard-key: 1.1.0
+      lodash: 4.17.21
+      lodash-es: 4.17.21
+      prop-types: 15.8.1
+      react-dom: 16.14.0
+      react-is: 18.2.0
+      react-popper: 2.3.0_nszzmpieuvtlx2lm2kcscokfnu
+      shallowequal: 1.1.0
+    dev: false
+
+  /semantic-ui-react/2.1.3_wcqkhtmu7mswc6yz4uyexck3ty:
+    resolution: {integrity: sha512-dd2pqalMk0ycJoHf7hn4mYd0xohg0NMk7ohlpPVOigCfMLrKk2e3NZdRk0yBetvD+qJXPqZ04jA43bDwqOM5OA==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      '@babel/runtime': 7.18.9
+      '@fluentui/react-component-event-listener': 0.63.1_wcqkhtmu7mswc6yz4uyexck3ty
+      '@fluentui/react-component-ref': 0.63.1_wcqkhtmu7mswc6yz4uyexck3ty
+      '@popperjs/core': 2.11.6
+      '@semantic-ui-react/event-stack': 3.1.3_wcqkhtmu7mswc6yz4uyexck3ty
+      clsx: 1.2.1
+      keyboard-key: 1.1.0
+      lodash: 4.17.21
+      lodash-es: 4.17.21
+      prop-types: 15.8.1
+      react: 16.14.0
+      react-dom: 16.14.0_react@16.14.0
+      react-is: 18.2.0
+      react-popper: 2.3.0_ahsyp7paedy7ttpixxrzktxjdi
       shallowequal: 1.1.0
     dev: false
 
@@ -26818,10 +26816,6 @@ packages:
   /typed-assert/1.0.9:
     resolution: {integrity: sha512-KNNZtayBCtmnNmbo5mG47p1XsCyrx6iVqomjcZnec/1Y5GGARaxPs6r49RnSPeUP3YjNYiU9sQHAtY4BBvnZwg==}
     dev: true
-
-  /typed-styles/0.0.7:
-    resolution: {integrity: sha512-pzP0PWoZUhsECYjABgCGQlRGL1n7tOHsgwYv3oIiEpJwGhFTuty/YNeduxQYzXXa3Ge5BdT6sHYIQYpl4uJ+5Q==}
-    dev: false
 
   /typedarray-to-buffer/3.1.5:
     resolution: {integrity: sha512-zdu8XMNEDepKKR+XYOXAVPtWui0ly0NtohUscw+UmaHiAWT8hrV1rr//H6V+0DvJ3OQ19S979M0laLfX8rm82Q==}

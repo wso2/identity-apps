@@ -18,10 +18,10 @@
 
 import { resolveAppLogoFilePath } from "@wso2is/core/helpers";
 import { StringUtils } from "@wso2is/core/utils";
-import { Logo, ProductBrand } from "@wso2is/react-components";
+import { Logo, Media, ProductBrand } from "@wso2is/react-components";
 import React from "react";
 import { useSelector } from "react-redux";
-import { Container, Divider, Responsive, Sidebar } from "semantic-ui-react";
+import { Container, Divider, Sidebar } from "semantic-ui-react";
 import { SidePanelProps } from "./side-panel";
 import { SidePanelItems } from "./side-panel-items";
 import { ConfigReducerStateInterface } from "../../models";
@@ -30,6 +30,7 @@ import { AppFooter } from "../footer";
 
 /**
  * Mobile side panel component Prop types.
+ * @deprecated Use the `SidePanelProps` from {@link @wso2is/react-components#SidePanelProps}.
  */
 interface SidePanelMobileProps extends SidePanelProps {
     children?: React.ReactNode;
@@ -40,8 +41,9 @@ interface SidePanelMobileProps extends SidePanelProps {
 /**
  * Mobile side panel component.
  *
- * @param {SidePanelMobileProps} props - Props injected to the mobile side panel component.
- * @return {JSX.Element}
+ * @deprecated Use the `SidePanel` from {@link @wso2is/react-components#SidePanel}.
+ * @param props - Props injected to the mobile side panel component.
+ * @returns Mobile Side Panel component.
  */
 export const SidePanelMobile: React.FunctionComponent<SidePanelMobileProps> = (
     props: SidePanelMobileProps
@@ -103,9 +105,9 @@ export const SidePanelMobile: React.FunctionComponent<SidePanelMobileProps> = (
                     onSidePanelItemClick={ onSidePanelItemClick }
                     headerHeight={ headerHeight }
                 />
-                <Responsive maxWidth={ 767 } >
+                <Media lessThan="mobile">
                     <AppFooter/>
-                </Responsive>
+                </Media>
             </Sidebar>
             <Sidebar.Pusher
                 onClick={ onPusherClick }

@@ -22,20 +22,19 @@ import {
     Alert,
     ContentLoader,
     DefaultLayout as DefaultLayoutSkeleton,
-    TopLoadingBar
+    TopLoadingBar,
+    useMediaContext
 } from "@wso2is/react-components";
 import React, {
     FunctionComponent,
     ReactElement,
     Suspense,
-    SyntheticEvent,
     useEffect,
     useState
 } from "react";
 import { System } from "react-notification-system";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, Switch } from "react-router-dom";
-import { Responsive } from "semantic-ui-react";
 import {
     AppConstants,
     AppState,
@@ -60,9 +59,9 @@ export interface DefaultLayoutPropsInterface {
 /**
  * Default page layout.
  *
- * @param {DefaultLayoutPropsInterface} props - Props injected to the default page layout component.
+ * @param props - Props injected to the default page layout component.
  *
- * @return {React.ReactElement}
+ * @returns Dashboard Layout.
  */
 export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = (
     props: DefaultLayoutPropsInterface
@@ -71,6 +70,7 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = (
     const { fluid } = props;
 
     const dispatch = useDispatch();
+    const { isMobileViewport } = useMediaContext();
     const { headerHeight, footerHeight } = useUIElementSizes();
 
     const alert: AlertInterface = useSelector((state: AppState) => state.global.alert);
@@ -78,7 +78,6 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = (
     const isAJAXTopLoaderVisible: boolean = useSelector((state: AppState) => state.global.isAJAXTopLoaderVisible);
 
     const [ defaultLayoutRoutes, setDefaultLayoutRoutes ] = useState<RouteInterface[]>(getDefaultLayoutRoutes());
-    const [ isMobileViewport, setIsMobileViewport ] = useState<boolean>(false);
 
     /**
      * Listen for base name changes and updated the layout routes.
@@ -86,25 +85,6 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = (
     useEffect(() => {
         setDefaultLayoutRoutes(getDefaultLayoutRoutes());
     }, [ AppConstants.getTenantQualifiedAppBasename() ]);
-
-    /**
-     * Handles the layout on change event.
-     *
-     * @param {React.SyntheticEvent<HTMLElement>} event - On change event.
-     * @param {any} width - Width of the browser window.
-     */
-    const handleLayoutOnUpdate = (event: SyntheticEvent<HTMLElement>, { width }): void => {
-        if (width < Responsive.onlyTablet.minWidth) {
-            setIsMobileViewport(true);
-            return;
-        }
-
-        if (!isMobileViewport) {
-            return;
-        }
-
-        setIsMobileViewport(false);
-    };
 
     const handleAlertSystemInitialize = (system) => {
         dispatch(initializeAlertSystem(system));
@@ -132,7 +112,6 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = (
             footerHeight={ footerHeight }
             headerHeight={ headerHeight }
             desktopContentTopSpacing={ UIConstants.DASHBOARD_LAYOUT_DESKTOP_CONTENT_TOP_SPACING }
-            onLayoutOnUpdate={ handleLayoutOnUpdate }
             header={ (
                 <Header
                     fluid={ !isMobileViewport ? fluid : false }
@@ -152,26 +131,26 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = (
                             route.redirectTo
                                 ? <Redirect to={ route.redirectTo }/>
                                 : route.protected
-                                ? (
-                                    <ProtectedRoute
-                                        component={ route.component ? route.component : null }
-                                        path={ route.path }
-                                        key={ index }
-                                        exact={ route.exact }
-                                    />
-                                )
-                                : (
-                                    <Route
-                                        path={ route.path }
-                                        render={ (renderProps) =>
-                                            route.component
-                                                ? <route.component { ...renderProps } />
-                                                : null
-                                        }
-                                        key={ index }
-                                        exact={ route.exact }
-                                    />
-                                )
+                                    ? (
+                                        <ProtectedRoute
+                                            component={ route.component ? route.component : null }
+                                            path={ route.path }
+                                            key={ index }
+                                            exact={ route.exact }
+                                        />
+                                    )
+                                    : (
+                                        <Route
+                                            path={ route.path }
+                                            render={ (renderProps) =>
+                                                route.component
+                                                    ? <route.component { ...renderProps } />
+                                                    : null
+                                            }
+                                            key={ index }
+                                            exact={ route.exact }
+                                        />
+                                    )
                         ))
                     }
                 </Switch>

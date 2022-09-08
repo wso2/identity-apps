@@ -19,13 +19,14 @@
 import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import kebabCase from "lodash-es/kebabCase";
 import React, { FunctionComponent, ReactElement } from "react";
-import { Divider, Grid, GridColumn, HeaderProps, Responsive, SemanticWIDTHS } from "semantic-ui-react";
+import { Divider, Grid, GridColumn, HeaderProps, SemanticWIDTHS } from "semantic-ui-react";
 import { StatCountCard, StatCountCardPropsInterface } from "../card";
+import { Media } from "../media";
 import { Heading } from "../typography";
 
 /**
  *
- * Proptypes for the statistics overview widget.
+ * Prop-types for the statistics overview widget.
  */
 interface StatsOverviewWidgetPropsInterface extends IdentifiableComponentInterface, TestableComponentInterface {
     /**
@@ -57,9 +58,9 @@ interface StatsOverviewWidgetPropsInterface extends IdentifiableComponentInterfa
 /**
  * Statistics overview widget.
  *
- * @param {StatsOverviewWidgetPropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns Stats Overview Widget.
  */
 export const StatsOverviewWidget: FunctionComponent<StatsOverviewWidgetPropsInterface> = (
     props: StatsOverviewWidgetPropsInterface
@@ -153,23 +154,23 @@ export const StatsOverviewWidget: FunctionComponent<StatsOverviewWidgetPropsInte
                                 {
                                     stats.map((stat, index) => (
                                         <>
-                                            <Responsive
+                                            <GridColumn
                                                 key={ index }
-                                                as={ GridColumn }
+                                                as={ Media }
                                                 width={ 16 }
                                                 className="with-bottom-gutters"
-                                                maxWidth={ Responsive.onlyTablet.maxWidth }
+                                                lessThan="tablet"
                                             >
                                                 { resolveStatCountCard(stat) }
-                                            </Responsive>
+                                            </GridColumn>
 
-                                            <Responsive
+                                            <GridColumn
                                                 key={ index }
-                                                as={ GridColumn }
-                                                minWidth={ Responsive.onlyTablet.maxWidth }
+                                                as={ Media }
+                                                greaterThan="tablet"
                                             >
                                                 { resolveStatCountCard(stat) }
-                                            </Responsive>
+                                            </GridColumn>
                                         </>
                                     ))
                                 }

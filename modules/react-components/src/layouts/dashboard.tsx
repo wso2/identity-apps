@@ -21,10 +21,8 @@ import React, {
     FunctionComponent,
     PropsWithChildren,
     ReactElement,
-    ReactNode,
-    SyntheticEvent
+    ReactNode
 } from "react";
-import { Responsive } from "semantic-ui-react";
 import { BaseLayout, BaseLayoutInterface } from "./base";
 
 /**
@@ -40,12 +38,6 @@ export interface DashboardLayoutPropsInterface extends BaseLayoutInterface {
      */
     fluid?: boolean;
     /**
-     * Fired on layout update to handle responsiveness.
-     * @param {React.SyntheticEvent<HTMLElement>} event - Event.
-     * @param {ResponsiveOnUpdateData} data - Metadata.
-     */
-    onLayoutOnUpdate?: (event: SyntheticEvent<HTMLElement>, data: any) => void;
-    /**
      * App header component.
      */
     header?: ReactNode;
@@ -58,9 +50,8 @@ export interface DashboardLayoutPropsInterface extends BaseLayoutInterface {
 /**
  * Dashboard layout.
  *
- * @param {React.PropsWithChildren<DashboardLayoutPropsInterface>} props - Props injected to the component.
- *
- * @return {React.ReactElement}
+ * @param props - Props injected to the component.
+ * @returns Dashboard Layout component.
  */
 export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayoutPropsInterface>> = (
     props: PropsWithChildren<DashboardLayoutPropsInterface>
@@ -72,7 +63,6 @@ export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayou
         className,
         footer,
         fluid,
-        onLayoutOnUpdate,
         header,
         sidePanel,
         topLoadingBar
@@ -92,15 +82,11 @@ export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayou
             alert={ alert }
             topLoadingBar={ topLoadingBar }
         >
-            <Responsive
-                className={ classes }
-                fireOnMount
-                onUpdate={ onLayoutOnUpdate }
-            >
+            <div className={ classes }>
                 { header }
                 { React.cloneElement(sidePanel, { children: children }) }
                 { footer }
-            </Responsive>
+            </div>
         </BaseLayout>
     );
 };

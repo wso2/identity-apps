@@ -27,7 +27,8 @@ import {
     ErrorBoundary,
     LinkButton,
     SidePanel,
-    TopLoadingBar
+    TopLoadingBar,
+    useMediaContext
 } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
@@ -35,7 +36,6 @@ import React, {
     ReactElement,
     ReactNode,
     Suspense,
-    SyntheticEvent,
     useCallback,
     useEffect,
     useRef,
@@ -45,7 +45,6 @@ import { useTranslation } from "react-i18next";
 import { System } from "react-notification-system";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
-import { Responsive } from "semantic-ui-react";
 import { commonConfig } from "../extensions";
 import { getProfileInformation } from "../features/authentication/store";
 import {
@@ -54,7 +53,6 @@ import {
     AppUtils,
     AppViewTypes,
     ConfigReducerStateInterface,
-    EventPublisher,
     Footer,
     Header,
     ProtectedRoute,
@@ -82,9 +80,9 @@ interface DeveloperViewPropsInterface {
 /**
  * Parent component for Developer features inherited from Dashboard layout skeleton.
  *
- * @param {DeveloperViewPropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns Developer View Wrapper
  */
 export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
     props: DeveloperViewPropsInterface & RouteComponentProps
@@ -95,10 +93,10 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
         location
     } = props;
 
-    const { t } = useTranslation();
-    const { headerHeight, footerHeight } = useUIElementSizes();
-
     const dispatch = useDispatch();
+    const { t } = useTranslation();
+    const { isMobileViewport } = useMediaContext();
+    const { headerHeight, footerHeight } = useUIElementSizes();
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const profileInfo: ProfileInfoInterface = useSelector((state: AppState) => state.profile.profileInfo);
@@ -119,9 +117,6 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
         setSelectedRoute
     ] = useState<RouteInterface | ChildRouteInterface>(getDeveloperViewRoutes()[0]);
     const [ mobileSidePanelVisibility, setMobileSidePanelVisibility ] = useState<boolean>(false);
-    const [ isMobileViewport, setIsMobileViewport ] = useState<boolean>(false);
-
-    const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     const organizationLoading: boolean
             = useSelector((state: AppState) => state?.organization?.getOrganizationLoading);
@@ -186,7 +181,7 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
     /**
      * Handles side panel item click event.
      *
-     * @param { RouteInterface | ChildRouteInterface } route - Clicked on route.
+     * @param route - Clicked on route.
      */
     const handleSidePanelItemClick = (route: RouteInterface | ChildRouteInterface): void => {
         if (route.path) {
@@ -200,33 +195,13 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
     };
 
     /**
-     * Handles the layout on change event.
-     *
-     * @param {React.SyntheticEvent<HTMLElement>} event - On change event.
-     * @param {any} width - Width of the browser window.
-     */
-    const handleLayoutOnUpdate = (event: SyntheticEvent<HTMLElement>, { width }): void => {
-        if (width < Responsive.onlyTablet.minWidth) {
-            setIsMobileViewport(true);
-
-            return;
-        }
-
-        if (!isMobileViewport) {
-            return;
-        }
-
-        setIsMobileViewport(false);
-    };
-
-    /**
      * Conditionally renders a route. If a route has defined a Redirect to
      * URL, it will be directed to the specified one. If the route is stated
      * as protected, It'll be rendered using the `ProtectedRoute`.
      *
      * @param route - Route to be rendered.
      * @param key - Index of the route.
-     * @return {React.ReactNode} Resolved route to be rendered.
+     * @returns Resolved route to be rendered.
      */
     const renderRoute = (route, key): ReactNode => (
         route.redirectTo
@@ -259,7 +234,7 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
      * This function recursively adds any child routes
      * defined.
      *
-     * @return {RouteInterface[]} Set of resolved routes.
+     * @returns Set of resolved routes.
      */
     const resolveRoutes = useCallback((): RouteInterface[] => {
         const resolvedRoutes = [];
@@ -299,7 +274,6 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
                     visibility={ isAJAXTopLoaderVisible }
                 />
             ) }
-            onLayoutOnUpdate={ handleLayoutOnUpdate }
             header={ (
                 <Header
                     activeView={ StrictAppViewTypes.DEVELOP }

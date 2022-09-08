@@ -18,7 +18,8 @@
 
 import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, SyntheticEvent } from "react";
-import { Button, Checkbox, CheckboxProps, Header, Popup, Responsive, Segment } from "semantic-ui-react";
+import { Button, Checkbox, CheckboxProps, Header, Popup, Segment } from "semantic-ui-react";
+import { useMediaContext } from "../media";
 
 /**
  * Danger zone component Prop types.
@@ -42,7 +43,7 @@ export interface DangerZoneProps extends TestableComponentInterface, Identifiabl
     toggle?: DangerZoneToggleProps;
     /**
      * OnClick callback for the danger zone action.
-     * @param {React.SyntheticEvent<HTMLButtonElement>} e - Click event.
+     * @param e - Click event.
      */
     onActionClick: (e: SyntheticEvent<HTMLButtonElement>) => void;
     /**
@@ -66,7 +67,7 @@ export interface DangerZoneToggleProps {
     /**
      * Toggle onchange callback.
      * @param event - Toggle event.
-     * @param {CheckboxProps} data - Checkbox data.
+     * @param data - Checkbox data.
      */
     onChange: (event, data: CheckboxProps) => void;
     /**
@@ -78,13 +79,15 @@ export interface DangerZoneToggleProps {
 /**
  * Danger zone component.
  *
- * @param {DangerZoneProps} props - Props injected to the danger zone component.
+ * @param props - Props injected to the danger zone component.
  *
- * @return {React.ReactElement}
+ * @returns Danger Zone component.
  */
 export const DangerZone: FunctionComponent<DangerZoneProps> = (
     props: DangerZoneProps
 ): ReactElement => {
+
+
 
     const {
         actionTitle,
@@ -97,6 +100,8 @@ export const DangerZone: FunctionComponent<DangerZoneProps> = (
         [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId
     } = props;
+
+    const { isMobileViewport } = useMediaContext();
 
     return (
         <Segment data-testid={ testId } data-componentid={ componentId } className="danger-zone" padded clearing>
@@ -134,7 +139,7 @@ export const DangerZone: FunctionComponent<DangerZoneProps> = (
                             trigger={ (
                                 <div
                                     className={
-                                        (window.innerWidth <= Responsive.onlyTablet.maxWidth)
+                                        isMobileViewport
                                             ? "mb-1x mt-1x inline-button button-width"
                                             : "inline-button"
                                     }
@@ -142,7 +147,7 @@ export const DangerZone: FunctionComponent<DangerZoneProps> = (
                                     <Button
                                         data-componentid={ componentId + "-delete-button" }
                                         data-testid={ testId + "-delete-button" }
-                                        fluid={ window.innerWidth <= Responsive.onlyTablet.maxWidth }
+                                        fluid={ isMobileViewport }
                                         negative
                                         onClick={ onActionClick }
                                         disabled={ isButtonDisabled }
@@ -152,11 +157,7 @@ export const DangerZone: FunctionComponent<DangerZoneProps> = (
                                 </div>
                             ) }
                             content={ buttonDisableHint }
-                            position={
-                                (window.innerWidth <= Responsive.onlyTablet.maxWidth)
-                                    ? "top center"
-                                    : "top right"
-                            }
+                            position={ isMobileViewport ? "top center" : "top right" }
                             size="mini"
                             wide
                             disabled={ !isButtonDisabled || !buttonDisableHint }

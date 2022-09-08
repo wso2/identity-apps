@@ -17,8 +17,8 @@
  */
 
 import classNames from "classnames";
-import React, { FunctionComponent, PropsWithChildren, ReactElement, ReactNode, SyntheticEvent } from "react";
-import { Container, Responsive } from "semantic-ui-react";
+import React, { FunctionComponent, PropsWithChildren, ReactElement, ReactNode } from "react";
+import { Container } from "semantic-ui-react";
 import { BaseLayout, BaseLayoutInterface } from "./base";
 
 /**
@@ -53,20 +53,13 @@ export interface DefaultLayoutPropsInterface extends BaseLayoutInterface {
      * Height of the header.
      */
     headerHeight: number;
-    /**
-     * Fired on layout update to handle responsiveness.
-     * @param {React.SyntheticEvent<HTMLElement>} event - Event.
-     * @param {ResponsiveOnUpdateData} data - Metadata.
-     */
-    onLayoutOnUpdate?: (event: SyntheticEvent<HTMLElement>, data: any) => void;
 }
 
 /**
  * Default layout.
  *
- * @param {React.PropsWithChildren<DefaultLayoutPropsInterface>} props - Props injected to the component.
- *
- * @return {React.ReactElement}
+ * @param props - Props injected to the component.
+ * @returns Default Layout component.
  */
 export const DefaultLayout: FunctionComponent<PropsWithChildren<DefaultLayoutPropsInterface>> = (
     props: PropsWithChildren<DefaultLayoutPropsInterface>
@@ -82,7 +75,6 @@ export const DefaultLayout: FunctionComponent<PropsWithChildren<DefaultLayoutPro
         fluid,
         header,
         headerHeight,
-        onLayoutOnUpdate,
         topLoadingBar
     } = props;
 
@@ -110,12 +102,9 @@ export const DefaultLayout: FunctionComponent<PropsWithChildren<DefaultLayoutPro
             alert={ alert }
             topLoadingBar={ topLoadingBar }
         >
-            <Responsive
-                as={ Container }
+            <Container
                 fluid={ fluid }
                 className={ classes }
-                fireOnMount
-                onUpdate={ onLayoutOnUpdate }
             >
                 { header }
                 <div style={ mainLayoutStyles } className="layout-content-wrapper">
@@ -124,7 +113,7 @@ export const DefaultLayout: FunctionComponent<PropsWithChildren<DefaultLayoutPro
                     </div>
                 </div>
                 { footer }
-            </Responsive>
+            </Container>
         </BaseLayout>
     );
 };

@@ -17,11 +17,10 @@
  */
 
 import { CommonUtils } from "@wso2is/core/utils";
-import { CookieConsentBanner, ErrorBoundary, LinkButton, PageLayout } from "@wso2is/react-components";
+import { CookieConsentBanner, ErrorBoundary, LinkButton, Media, PageLayout } from "@wso2is/react-components";
 import React, { ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Responsive } from "semantic-ui-react";
 import {
     Alert,
     AppFooter,
@@ -46,15 +45,14 @@ interface InnerPageLayoutProps {
 
 /**
  * Default header height to be used in state initialisations
- * @type {string}
  */
-const DEFAULT_HEADER_HEIGHT = 59;
+const DEFAULT_HEADER_HEIGHT: number = 59;
 
 /**
  * Inner page layout.
  *
- * @param {InnerPageLayoutProps} props - Props injected to the inner page layout
- * @return {React.ReactElement}
+ * @param props - Props injected to the inner page layout
+ * @returns Inner Page Layout component.
  */
 export const InnerPageLayout: React.FunctionComponent<InnerPageLayoutProps> = (
     props: InnerPageLayoutProps
@@ -121,7 +119,6 @@ export const InnerPageLayout: React.FunctionComponent<InnerPageLayoutProps> = (
                             />
                         ) }
                     >
-                        
                         <PageLayout
                             description={ pageDescription }
                             pageHeaderMaxWidth={ false }
@@ -135,9 +132,9 @@ export const InnerPageLayout: React.FunctionComponent<InnerPageLayoutProps> = (
                 </SidePanelWrapper>
             </div>
             <Alert dismissInterval={ 5 } alertsPosition="br" />
-            <Responsive minWidth={ 767 }>
+            <Media greaterThan="mobile">
                 <AppFooter/>
-            </Responsive>
+            </Media>
             {
                 isCookieConsentBannerEnabled && (
                     <CookieConsentBanner
@@ -152,13 +149,13 @@ export const InnerPageLayout: React.FunctionComponent<InnerPageLayoutProps> = (
                                     These cookies are used to maintain an uninterrupted continuous
                                     session whilst providing smooth and personalized services.
                                     To learn more about how we use cookies, refer our <a
-                                    href="https://wso2.com/cookie-policy"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    data-testid="login-page-cookie-policy-link"
-                                >
+                                        href="https://wso2.com/cookie-policy"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        data-testid="login-page-cookie-policy-link"
+                                    >
                                     Cookie Policy
-                                </a>.
+                                    </a>.
                                 </Trans>
                             </div>
                         ) }
