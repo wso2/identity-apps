@@ -42,7 +42,7 @@ export interface PageLayoutPropsInterface extends PageHeaderPropsInterface, Test
      */
     padded?: boolean;
     /**
-     * Page name to display in the browser tab
+     * Page name to display in the browser tab.
      */
     pageTitle?: string;
     /**
