@@ -130,7 +130,7 @@ export interface ListLayoutPropsInterface extends PaginationProps, IdentifiableC
  *
  * @param props - Props injected to the component.
  *
- * @return React element.
+ * @returns React element.
  */
 export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInterface>> = (
     props: PropsWithChildren<ListLayoutPropsInterface>
