@@ -22,7 +22,7 @@ import React, { PropsWithChildren } from "react";
 import { Segment } from "semantic-ui-react";
 
 /**
- * Proptypes for the edit section component.
+ * Prop-types for the edit section component.
  */
 interface EditSectionProps extends TestableComponentInterface {
     /**
@@ -38,10 +38,10 @@ interface EditSectionProps extends TestableComponentInterface {
 /**
  * Edit section component.
  *
- * @param {React.PropsWithChildren<any>} props
- * @return {JSX.Element}
+ * @param props - Props injected to the component.
+ * @returns Edit section component.
  */
-export const EditSection: React.FunctionComponent<EditSectionProps> = (
+export const EditSection: React.FunctionComponent<PropsWithChildren<EditSectionProps>> = (
     props: PropsWithChildren<EditSectionProps>
 ): JSX.Element => {
 

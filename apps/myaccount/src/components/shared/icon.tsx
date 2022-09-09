@@ -17,10 +17,10 @@
  */
 
 import classNames from "classnames";
-import React, { ReactElement } from "react";
+import React, { ReactElement, ReactNode } from "react";
 
 /**
- * Proptypes for the Icon component.
+ * Prop-types for the Icon component.
  */
 interface ThemeIconProps {
     bordered?: boolean;
@@ -56,8 +56,8 @@ export type ThemeIconSizes =
 /**
  * Generic component to render icons.
  *
- * @param {React.PropsWithChildren<any>} props
- * @return {any}
+ * @param props - Props injected to the component.
+ * @returns Icon component.
  */
 export const ThemeIcon: React.FunctionComponent<ThemeIconProps> = (props): JSX.Element => {
     const {
@@ -135,7 +135,7 @@ export const ThemeIcon: React.FunctionComponent<ThemeIconProps> = (props): JSX.E
 
     return (
         <div className={ `theme-icon ${classes}` } style={ style }>
-            { constructContent() }
+            { constructContent() as ReactNode }
         </div>
     );
 };

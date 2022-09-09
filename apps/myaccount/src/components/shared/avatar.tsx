@@ -33,7 +33,7 @@ export interface AvatarProps extends TestableComponentInterface {
     bordered?: boolean;
     className?: string;
     floated?: "left" | "right";
-    image?: React.ReactNode;
+    image?: React.ReactNode | Promise<string>;
     inline?: boolean;
     isLoading?: boolean;
     label?: string;
@@ -56,8 +56,8 @@ export type AvatarSizes = SemanticSIZES | "little";
 /**
  * Avatar component.
  *
- * @param {React.PropsWithChildren<AvatarProps>} props - Props passed in to the Avatar component.
- * @return {JSX.Element}
+ * @param props - Props passed in to the Avatar component.
+ * @returns Avatar component.
  */
 export const Avatar: React.FunctionComponent<AvatarProps> = (props: AvatarProps): JSX.Element => {
     const {
@@ -122,7 +122,7 @@ export const Avatar: React.FunctionComponent<AvatarProps> = (props: AvatarProps)
      * If the name only has one word, then only a single initial
      * will be generated. i.e For "Brion", "B" will be generated.
      *
-     * @return {string}
+     * @returns Generated initials.
      */
     const generateInitials = (): string => {
         // App avatar only requires one letter.
