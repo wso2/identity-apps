@@ -468,7 +468,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
      *
      * @param certType - Certificate type
      */
-    const onCertTypeChanged = (certType: CertificateTypeInterface) => {
+    const onCertTypeChanged = (certType: CertificateTypeInterface): void => {
         // Open up a modal to inform the user that, by changing certificate type to NONE will remove the current
         // certificate from the system.
         if (certType === CertificateTypeInterface.NONE && certificate) {
