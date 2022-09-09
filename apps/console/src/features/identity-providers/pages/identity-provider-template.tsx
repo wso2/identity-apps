@@ -405,7 +405,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
 
     return (
         <PageLayout
-            pageTitle="Create New Connection"
+            pageTitle={ "Create New Connection" }
             isLoading={ useNewConnectionsView === undefined }
             title={
                 useNewConnectionsView
