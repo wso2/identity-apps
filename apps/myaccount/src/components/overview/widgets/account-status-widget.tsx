@@ -23,14 +23,15 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider, Grid, Header, Icon, Popup, Progress } from "semantic-ui-react";
 import { getAccountStatusShields } from "../../../configs";
-import * as UIConstants from "../../../constants/ui-constants";
+import { UIConstants } from "../../../constants";
 import { ProfileCompletion, ProfileCompletionStatus } from "../../../models";
 import { AppState } from "../../../store";
 
 /**
  * Account status widget.
  *
- * @return {React.ReactElement}
+ * @param props - Props injected to the component.
+ * @returns Account status widget.
  */
 export const AccountStatusWidget: FunctionComponent<TestableComponentInterface> = (
     props: TestableComponentInterface
@@ -45,7 +46,7 @@ export const AccountStatusWidget: FunctionComponent<TestableComponentInterface> 
     /**
      * Return the profile completion percentage.
      *
-     * @return {number}
+     * @returns Profile completion percentage.
      */
     const getProfileCompletionPercentage = (): number => {
         return profileCompletion && profileCompletion.percentage ? profileCompletion.percentage : 0;
@@ -54,7 +55,7 @@ export const AccountStatusWidget: FunctionComponent<TestableComponentInterface> 
     /**
      * Get the profile status based on the profile completion percentage.
      *
-     * @return {ProfileCompletionStatus}
+     * @returns Profile status.
      */
     const getProfileStatus = (): ProfileCompletionStatus => {
 
@@ -78,8 +79,8 @@ export const AccountStatusWidget: FunctionComponent<TestableComponentInterface> 
      * used to distinguish if the field we're calculating the status for is optional.
      *
      * @param field - Field to check.
-     * @param {boolean} isOptional - Flag to check if the calculation is for the optional field.
-     * @return {ProfileCompletionStatus}
+     * @param isOptional - Flag to check if the calculation is for the optional field.
+     * @returns Profile completion status.
      */
     const getFieldCompletionStatus = (field: any, isOptional: boolean): ProfileCompletionStatus => {
 
@@ -97,7 +98,7 @@ export const AccountStatusWidget: FunctionComponent<TestableComponentInterface> 
     /**
      * Resolved the type of account status shield based on the completion status.
      *
-     * @return {any}
+     * @returns Status shield component.
      */
     const resolveStatusShield = () => {
         const status = getProfileStatus();
@@ -117,7 +118,7 @@ export const AccountStatusWidget: FunctionComponent<TestableComponentInterface> 
      * Generates the more info popup.
      *
      * @param attributes - Relevant attributes.
-     * @return {JSX.Element}
+     * @returns Info popup.
      */
     const generatePopup = (attributes: any): JSX.Element => (
         ((attributes.completedAttributes
@@ -152,12 +153,16 @@ export const AccountStatusWidget: FunctionComponent<TestableComponentInterface> 
                                                         .map((attr, index) => (
                                                             <li key={ index }>
                                                                 { attr.name === "profileUrl"
-                                                                    ? t("myAccount:components.profile.fields."
+                                                                    ? t(
+                                                                        "myAccount:components.profile.fields."
                                                                         + "profileImage",
-                                                                        { defaultValue: attr.displayName })
-                                                                    : t("myAccount:components.profile.fields."
+                                                                        { defaultValue: attr.displayName }
+                                                                    )
+                                                                    : t(
+                                                                        "myAccount:components.profile.fields."
                                                                         + attr.name.replace(".", "_"),
-                                                                        { defaultValue: attr.displayName })
+                                                                        { defaultValue: attr.displayName }
+                                                                    )
                                                                 }
                                                             </li>
                                                         ))
@@ -185,12 +190,16 @@ export const AccountStatusWidget: FunctionComponent<TestableComponentInterface> 
                                                         .map((attr, index) => (
                                                             <li key={ index }>
                                                                 { attr.name === "profileUrl"
-                                                                    ? t("myAccount:components.profile.fields."
+                                                                    ? t(
+                                                                        "myAccount:components.profile.fields."
                                                                         + "profileImage",
-                                                                        { defaultValue: attr.displayName })
-                                                                    : t("myAccount:components.profile.fields."
+                                                                        { defaultValue: attr.displayName }
+                                                                    )
+                                                                    : t(
+                                                                        "myAccount:components.profile.fields."
                                                                         + attr.name.replace(".", "_"),
-                                                                        { defaultValue: attr.displayName })
+                                                                        { defaultValue: attr.displayName }
+                                                                    )
                                                                 }
                                                             </li>
                                                         ))
@@ -210,7 +219,7 @@ export const AccountStatusWidget: FunctionComponent<TestableComponentInterface> 
 
     /**
      * Generates the profile completion pre=ogress bar and steps.
-     * @return {JSX.Element}
+     * @returns Completion progress.
      */
     const generateCompletionProgress = (): JSX.Element => (
         <ul className="vertical-step-progress">
@@ -225,11 +234,10 @@ export const AccountStatusWidget: FunctionComponent<TestableComponentInterface> 
                         >
                             {
                                 t("myAccount:components.overview.widgets.accountStatus" +
-                                    ".mandatoryFieldsCompletion",
-                                    {
-                                        completed: profileCompletion.required.completedCount,
-                                        total: profileCompletion.required.totalCount
-                                    })
+                                    ".mandatoryFieldsCompletion", {
+                                    completed: profileCompletion.required.completedCount,
+                                    total: profileCompletion.required.totalCount
+                                })
                             }
                             { " " }
                             { generatePopup(profileCompletion.required) }
@@ -248,11 +256,10 @@ export const AccountStatusWidget: FunctionComponent<TestableComponentInterface> 
                         >
                             {
                                 t("myAccount:components.overview.widgets.accountStatus" +
-                                    ".optionalFieldsCompletion",
-                                    {
-                                        completed: profileCompletion.optional.completedCount,
-                                        total: profileCompletion.optional.totalCount
-                                    })
+                                    ".optionalFieldsCompletion", {
+                                    completed: profileCompletion.optional.completedCount,
+                                    total: profileCompletion.optional.totalCount
+                                })
                             }
                             { " " }
                             { generatePopup(profileCompletion.optional) }

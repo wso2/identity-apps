@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -29,16 +29,18 @@ import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState }
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Redirect, Route, Switch } from "react-router-dom";
-import { AppState, AppUtils, PreLoader } from "../features/core";
-import { ProtectedRoute } from "../features/core/components";
-import { getAppLayoutRoutes, getEmptyPlaceholderIllustrations } from "../features/core/configs";
-import { AppConstants } from "../features/core/constants";
+import { PreLoader, ProtectedRoute } from "../components";
+import { getAppLayoutRoutes } from "../configs/routes";
+import { getEmptyPlaceholderIllustrations } from "../configs/ui";
+import { AppConstants } from "../constants";
+import { AppState } from "../store";
+import { AppUtils } from "../utils";
 
 /**
  * Implementation of the Main app layout skeleton.
  * Used to render all the layouts that's being used inside the app.
  *
- * @returns App Layout.
+ * @returns App Layout template.
  */
 export const AppLayout: FunctionComponent<Record<string, unknown>> = (): ReactElement => {
 
@@ -50,7 +52,7 @@ export const AppLayout: FunctionComponent<Record<string, unknown>> = (): ReactEl
     });
 
     /**
-     * Listen for base name changes and updated the layout routes.
+     * Listen for base name changes and updated the routes.
      */
     useEffect(() => {
         setAppRoutes(getAppLayoutRoutes());
@@ -64,16 +66,16 @@ export const AppLayout: FunctionComponent<Record<string, unknown>> = (): ReactEl
                     <EmptyPlaceholder
                         action={ (
                             <LinkButton onClick={ () => CommonUtils.refreshPage() }>
-                                { t("console:common.placeholders.brokenPage.action") }
+                                { t("myAccount:placeholders.genericError.action") }
                             </LinkButton>
                         ) }
-                        image={ getEmptyPlaceholderIllustrations().brokenPage }
+                        image={ getEmptyPlaceholderIllustrations().genericError }
                         imageSize="tiny"
                         subtitle={ [
-                            t("console:common.placeholders.brokenPage.subtitles.0"),
-                            t("console:common.placeholders.brokenPage.subtitles.1")
+                            t("myAccount:placeholders.genericError.subtitles.0"),
+                            t("myAccount:placeholders.genericError.subtitles.1")
                         ] }
-                        title={ t("console:common.placeholders.brokenPage.title") }
+                        title={ t("myAccount:placeholders.genericError.title") }
                     />
                 ) }
             >
@@ -116,7 +118,7 @@ export const AppLayout: FunctionComponent<Record<string, unknown>> = (): ReactEl
                             title={ (
                                 <div className="title" data-testid="cookie-consent-banner-content-title">
                                     <Trans
-                                        i18nKey={ t("console:common.cookieConsent.content") }
+                                        i18nKey={ t("myAccount:components.cookieConsent.content") }
                                     >
                                         We use cookies to ensure that you get the best overall experience.
                                         These cookies are used to maintain an uninterrupted continuous
@@ -132,7 +134,7 @@ export const AppLayout: FunctionComponent<Record<string, unknown>> = (): ReactEl
                                     </Trans>
                                 </div>
                             ) }
-                            confirmButtonText={ t("console:common.cookieConsent.confirmButton") }
+                            confirmButtonText={ t("myAccount:components.cookieConsent.confirmButton") }
                         />
                     )
                 }

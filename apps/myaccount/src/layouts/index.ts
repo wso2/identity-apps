@@ -16,6 +16,8 @@
  * under the License.
  */
 
+export * from "./app";
+export * from "./auth";
+export * from "./dashboard";
 export * from "./default";
 export * from "./error";
-export * from "./inner";

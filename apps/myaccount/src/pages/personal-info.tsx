@@ -19,16 +19,15 @@
 import { ProfileConstants } from "@wso2is/core/constants";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Message } from "@wso2is/react-components";
+import { Message, PageLayout } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Divider, Grid } from "semantic-ui-react";
+import { Grid } from "semantic-ui-react";
 import { FederatedAssociations, LinkedAccounts, Profile, ProfileExport } from "../components";
 import { AppConstants } from "../constants";
 import { commonConfig } from "../extensions";
 import { SCIMConfigs } from "../extensions/configs/scim";
-import { InnerPageLayout } from "../layouts";
 import { AlertInterface, AuthStateInterface, FeatureConfigInterface } from "../models";
 import { AppState } from "../store";
 import { addAlert } from "../store/actions";
@@ -45,16 +44,20 @@ interface PersonalInfoPagePropsInterface extends TestableComponentInterface {
 /**
  * Personal Info page.
  *
- * @return {React.ReactElement}
+ * @param props - Props injected to the component.
+ * @returns Profile info page component.
  */
 const PersonalInfoPage:  FunctionComponent<PersonalInfoPagePropsInterface> = (
     props: PersonalInfoPagePropsInterface
 ): ReactElement => {
+
     const {
         enableNonLocalCredentialUserView
     } = props;
+
     const { t } = useTranslation();
     const dispatch = useDispatch();
+
     const accessConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
     const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
     const [ isNonLocalCredentialUser, setIsNonLocalCredentialUser ] = useState<boolean>(false);
@@ -63,9 +66,9 @@ const PersonalInfoPage:  FunctionComponent<PersonalInfoPagePropsInterface> = (
 
     /**
      * Dispatches the alert object to the redux store.
-     * @param {AlertInterface} alert - Alert object.
+     * @param alert - Alert object.
      */
-    const handleAlerts = (alert: AlertInterface) => {
+    const handleAlerts = (alert: AlertInterface): void => {
         dispatch(addAlert(alert));
     };
 
@@ -88,22 +91,27 @@ const PersonalInfoPage:  FunctionComponent<PersonalInfoPagePropsInterface> = (
 
 
     return (
-        <InnerPageLayout
-            pageTitle={ t("myAccount:pages.personalInfo.title") }
-            pageDescription={ 
-                isFeatureEnabled(accessConfig?.personalInfo,
-                    AppConstants.FEATURE_DICTIONARY.get("PROFILEINFO_LINKED_ACCOUNTS")) 
+        <PageLayout
+            pageTitle="Personal Info"
+            title={ t("myAccount:pages.personalInfo.title") }
+            description={
+                isFeatureEnabled(
+                    accessConfig?.personalInfo,
+                    AppConstants.FEATURE_DICTIONARY.get("PROFILEINFO_LINKED_ACCOUNTS")
+                )
                     ? t("myAccount:pages.personalInfo.subTitle")
-                    : isFeatureEnabled(accessConfig?.personalInfo,
-                    AppConstants.FEATURE_DICTIONARY.get("PROFILEINFO_EXPORT_PROFILE")) 
+                    : isFeatureEnabled(
+                        accessConfig?.personalInfo,
+                        AppConstants.FEATURE_DICTIONARY.get("PROFILEINFO_EXPORT_PROFILE")
+                    )
                         ? t("myAccount:pages.personalInfoWithoutLinkedAccounts.subTitle")
-                        : t("myAccount:pages.personalInfoWithoutExportProfile.subTitle") 
+                        : t("myAccount:pages.personalInfoWithoutExportProfile.subTitle")
             }
         >
             {
                 CommonUtils.isProfileReadOnly(isReadOnlyUser) && (
-                    <Message 
-                        type="info" 
+                    <Message
+                        type="info"
                         content={ t("myAccount:pages.readOnlyProfileBanner") }
                     />
                 )
@@ -169,7 +177,7 @@ const PersonalInfoPage:  FunctionComponent<PersonalInfoPagePropsInterface> = (
                     )
                 }
             </Grid>
-        </InnerPageLayout>
+        </PageLayout>
     );
 };
 

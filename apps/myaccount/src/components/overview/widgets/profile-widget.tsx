@@ -22,8 +22,7 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Progress } from "semantic-ui-react";
 import { getWidgetIcons } from "../../../configs";
-import { AppConstants, CommonConstants } from "../../../constants";
-import * as UIConstants from "../../../constants";
+import { AppConstants, CommonConstants, UIConstants } from "../../../constants";
 import { history } from "../../../helpers";
 import { ConfigReducerStateInterface, ProfileCompletion, ProfileCompletionStatus, UserSession } from "../../../models";
 import { AppState } from "../../../store";
@@ -31,7 +30,7 @@ import { CommonUtils } from "../../../utils";
 import { SettingsSection } from "../../shared";
 
 /**
- * Proptypes for the user sessions edit component.
+ * Prop-types for the user sessions edit component.
  * Also see {@link UserSessionsEdit.defaultProps}
  */
 interface ProfileWidgetPropsInterface extends TestableComponentInterface {
@@ -42,10 +41,11 @@ interface ProfileWidgetPropsInterface extends TestableComponentInterface {
  * Profile widget.
  * Also see {@link ProfileWidget.defaultProps}
  *
- * @return {ReactElement}
+ * @param props - Props injected to the component.
+ * @returns Profile widget component.
  */
 export const ProfileWidget: FunctionComponent<ProfileWidgetPropsInterface> = (
-    props
+    props: ProfileWidgetPropsInterface
 ): ReactElement => {
 
     const {
@@ -68,7 +68,7 @@ export const ProfileWidget: FunctionComponent<ProfileWidgetPropsInterface> = (
     /**
      * Return the profile completion percentage.
      *
-     * @return {number}
+     * @returns Profile completion percentage.
      */
     const getProfileCompletionPercentage = (): number => {
         return profileCompletion && profileCompletion.percentage ? profileCompletion.percentage : 0;
@@ -77,7 +77,7 @@ export const ProfileWidget: FunctionComponent<ProfileWidgetPropsInterface> = (
     /**
      * Get the profile status based on the profile completion percentage.
      *
-     * @return {ProfileCompletionStatus}
+     * @returns Profile status.
      */
     const getProfileStatus = (): ProfileCompletionStatus => {
 
@@ -94,7 +94,8 @@ export const ProfileWidget: FunctionComponent<ProfileWidgetPropsInterface> = (
 
     /**
      * Generates the profile completion progress bar .
-     * @return {ReactElement}
+     *
+     * @returns Completion progress.
      */
     const generateCompletionProgress = (): ReactElement => (
         <Progress
@@ -134,25 +135,25 @@ export const ProfileWidget: FunctionComponent<ProfileWidgetPropsInterface> = (
                                 <div
                                     className="overview-page-header"
                                 >
-                                    {  
+                                    {
                                         t("myAccount:components.overview.widgets.profileStatus.userSourceText" ,
-                                            { source: userSource }) 
+                                            { source: userSource })
                                     }
                                 </div>
                             )
                         }
-                        { 
-                            !CommonUtils.isProfileReadOnly(isReadOnlyUser) 
-                            ? generateCompletionProgress() 
-                            : t("myAccount:components.overview.widgets.profileStatus.profileText")
+                        {
+                            !CommonUtils.isProfileReadOnly(isReadOnlyUser)
+                                ? generateCompletionProgress()
+                                : t("myAccount:components.overview.widgets.profileStatus.profileText")
                         }
                     </>)
                 }
-                primaryAction={ 
-                        !CommonUtils.isProfileReadOnly(isReadOnlyUser) 
+                primaryAction={
+                    !CommonUtils.isProfileReadOnly(isReadOnlyUser)
                         ? t("myAccount:components.overview.widgets.profileStatus.description")
                         : t("myAccount:components.overview.widgets.profileStatus.readOnlyDescription")
-                    }
+                }
                 onPrimaryActionClick={ navigate }
                 icon={ getWidgetIcons().profile }
                 iconMini={ getWidgetIcons().profile }

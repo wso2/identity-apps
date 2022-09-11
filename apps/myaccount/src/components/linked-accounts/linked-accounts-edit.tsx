@@ -18,11 +18,11 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms } from "@wso2is/forms";
-import React, { FunctionComponent, useState } from "react";
+import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Form, Grid, Input, InputOnChangeData } from "semantic-ui-react";
-import * as UIConstants from "../../constants/ui-constants";
+import { UIConstants } from "../../constants";
 import { AppState } from "../../store";
 import { EditSection } from "../shared";
 
@@ -35,7 +35,7 @@ interface UserAccountInterface {
 }
 
 /**
- * Proptypes for the linked accounts edit component.
+ * Prop-types for the linked accounts edit component.
  * Also see {@link LinkedAccountsEdit.defaultProps}
  */
 interface LinkedAccountsEditProps extends TestableComponentInterface {
@@ -46,37 +46,39 @@ interface LinkedAccountsEditProps extends TestableComponentInterface {
 /**
  * Linked accounts edit component.
  *
- * @param {LinkedAccountsEditProps} props - Props injected to the linked accounts edit component.
- * @return {JSX.Element}
+ * @param props - Props injected to the linked accounts edit component.
+ * @returns Linked Accounts Edit component.
  */
 export const LinkedAccountsEdit: FunctionComponent<LinkedAccountsEditProps> = (
     props: LinkedAccountsEditProps
-): JSX.Element => {
+): ReactElement => {
 
     const {
         onFormEditViewHide,
         onFormSubmit,
         ["data-testid"]: testId
     } = props;
+
     const { t } = useTranslation();
 
     const tenantDomain: string = useSelector((state: AppState) => state.authenticationInformation.tenantDomain);
+
     const [ userName, setUserName ] = useState<string>(undefined);
 
     /**
      *
-     * @param {React.ChangeEvent<HTMLInputElement>} event - Username change event.
-     * @param {InputOnChangeData} data - Input field data.
+     * @param event - Username change event.
+     * @param data - Input field data.
      */
-    const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>, data: InputOnChangeData) => {
+    const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>, data: InputOnChangeData): void => {
         setUserName(data.value);
     };
 
     /**
      * Get the values of the form on submit.
-     * @param {Map<string, FormValue>} values - Form values
+     * @param values - Form values.
      */
-    const getFormValues = (values: Map<string, FormValue>) => {
+    const getFormValues = (values: Map<string, FormValue>): void => {
         const formValues = {
             password: values.get("password").toString(),
             username: userName
@@ -99,10 +101,10 @@ export const LinkedAccountsEdit: FunctionComponent<LinkedAccountsEditProps> = (
                         >
                             <Form.Field required data-testid={ `${testId}-editing-section-form-field-username` }>
                                 <label>
-                                    { t(
-                                    "myAccount:components.linkedAccounts.forms.addAccountForm" +
-                                    ".inputs.username.label"
-                                    ) }
+                                    {
+                                        t("myAccount:components.linkedAccounts.forms.addAccountForm" +
+                                        ".inputs.username.label")
+                                    }
                                 </label>
                                 <Input
                                     autoFocus={ true }

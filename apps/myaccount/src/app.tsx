@@ -37,7 +37,7 @@ import { Trans } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Redirect, Route, Router, Switch } from "react-router-dom";
 import { PreLoader, ProtectedRoute } from "./components";
-import { getAppRoutes } from "./configs";
+import { getBaseRoutes } from "./configs";
 import { AppConstants } from "./constants";
 import { history } from "./helpers";
 import {
@@ -62,7 +62,7 @@ export const App = (): ReactElement => {
     const uuid: string = useSelector((state: AppState) => state.authenticationInformation.profileInfo.id);
     const theme: string = useSelector((state: AppState) => state?.config?.ui?.theme?.name);
 
-    const [ appRoutes, setAppRoutes ] = useState<RouteInterface[]>(getAppRoutes());
+    const [ baseRoutes, setBaseRoutes ] = useState<RouteInterface[]>(getBaseRoutes());
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -86,7 +86,7 @@ export const App = (): ReactElement => {
      * Listen for base name changes and updated the routes.
      */
     useEffect(() => {
-        setAppRoutes(getAppRoutes());
+        setBaseRoutes(getBaseRoutes());
     }, [ AppConstants.getTenantQualifiedAppBasename() ]);
 
     /**
@@ -345,7 +345,7 @@ export const App = (): ReactElement => {
                                     <Redirect exact from="/" to={ AppConstants.getAppHomePath() } />
                                     {
                                         config
-                                            ? filterRoutes(appRoutes, config)
+                                            ? filterRoutes(baseRoutes, config)
                                                 .map((route, index) => {
                                                     return (
                                                         route.redirectTo

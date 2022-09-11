@@ -24,8 +24,7 @@ import { Divider, Grid } from "semantic-ui-react";
 import { AllApplications } from "./all-applications";
 import { RecentApplications } from "./recent-applications";
 import { fetchApplications } from "../../api";
-import { AppConstants } from "../../constants";
-import * as UIConstants from "../../constants/ui-constants";
+import { AppConstants, UIConstants } from "../../constants";
 import {
     AlertInterface,
     AlertLevels,
@@ -38,7 +37,7 @@ import { getValueFromLocalStorage, setValueInLocalStorage } from "../../utils";
 import { AdvancedSearchWithBasicFilters } from "../shared";
 
 /**
- * Proptypes for the applications component.
+ * Prop-types for the applications component.
  * Also see {@link Applications.defaultProps}
  */
 interface ApplicationsProps extends TestableComponentInterface {
@@ -47,9 +46,9 @@ interface ApplicationsProps extends TestableComponentInterface {
 
 /**
  * Applications component.
- * 
- * @param {ApplicationsProps} props - Props injected to the component.
- * @return {React.ReactElement}
+ *
+ * @param props - Props injected to the component.
+ * @returns Application component.
  */
 export const Applications: FunctionComponent<ApplicationsProps> = (
     props: ApplicationsProps
@@ -69,9 +68,9 @@ export const Applications: FunctionComponent<ApplicationsProps> = (
     /**
      * Fetches the list of applications from the API.
      *
-     * @param {number} limit - Results limit.
-     * @param {number} offset - Results offset.
-     * @param {string} filter - Filter query.
+     * @param limit - Results limit.
+     * @param offset - Results offset.
+     * @param filter - Filter query.
      */
     const getApplications = (limit: number, offset: number, filter: string): void => {
         setIsRequestLoading(true);
@@ -153,12 +152,12 @@ export const Applications: FunctionComponent<ApplicationsProps> = (
      */
     useEffect(() => {
         populateRecentApplications();
-    }, [applications]);
+    }, [ applications ]);
 
     /**
      * Updates the recent applications list.
      *
-     * @param {string} id - Id of the accessed application.
+     * @param id - Id of the accessed application.
      */
     const updateRecentApplications = (id: string): void => {
         let applicationSettings: StorageApplicationSettingsInterface = JSON.parse(
@@ -215,7 +214,7 @@ export const Applications: FunctionComponent<ApplicationsProps> = (
      * Handles the `onFilter` callback action from the
      * application search component.
      *
-     * @param {string} query - Search query.
+     * @param query - Search query.
      */
     const handleApplicationFilter = (query: string): void => {
         setSearchQuery(query);
@@ -248,13 +247,14 @@ export const Applications: FunctionComponent<ApplicationsProps> = (
      * attribute was used.
      * @see {@link https://searchenginelaws.com/seo/what-is-rel-noopener-noreferrer-tag/}
      *
-     * @param {string} id - ID of the application.
-     * @param {string} url - App access url.
+     * @param id - ID of the application.
+     * @param url - App access url.
      */
     const handleAppNavigation = (id: string, url: string): void => {
         updateRecentApplications(id);
 
         const a = document.createElement("a");
+
         a.href = url;
         a.target = "_blank";
         a.rel = "noopener";

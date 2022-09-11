@@ -26,7 +26,6 @@ export * from "./multi-factor-authentication";
 export * from "./overview";
 export * from "./profile";
 export * from "./shared";
-export * from "./side-panel";
 export * from "./user-sessions";
 export * from "./federated-associations";
 export * from "./login-verify-data";

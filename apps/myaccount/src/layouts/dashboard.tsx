@@ -16,27 +16,46 @@
  * under the License.
  */
 
-import { CommonUtils } from "@wso2is/core/utils";
-import { CookieConsentBanner, ErrorBoundary, LinkButton, Media, PageLayout } from "@wso2is/react-components";
-import React, { FunctionComponent, PropsWithChildren, ReactElement, useEffect, useState } from "react";
-import { Trans, useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
+import { AlertInterface, ChildRouteInterface, RouteInterface } from "@wso2is/core/models";
+import { initializeAlertSystem } from "@wso2is/core/store";
+import { RouteUtils as CommonRouteUtils, CommonUtils, RouteUtils } from "@wso2is/core/utils";
 import {
     Alert,
-    AppFooter,
+    DashboardLayout as DashboardLayoutSkeleton,
     EmptyPlaceholder,
-    GlobalLoader,
+    ErrorBoundary,
+    LinkButton,
+    Media,
+    SidePanel,
+    TopLoadingBar,
+    useMediaContext,
+    useUIElementSizes
+} from "@wso2is/react-components";
+import isEmpty from "lodash-es/isEmpty";
+import React, { FunctionComponent, PropsWithChildren, ReactElement, Suspense, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { System } from "react-notification-system";
+import { useDispatch, useSelector } from "react-redux";
+import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
+import { fetchApplications } from "../api";
+import {
+    Footer,
     Header,
-    SidePanelWrapper
+    PreLoader,
+    ProtectedRoute
 } from "../components";
-import { getEmptyPlaceholderIllustrations } from "../configs";
+import { getDashboardLayoutRoutes, getEmptyPlaceholderIllustrations } from "../configs";
+import { AppConstants, UIConstants } from "../constants";
+import { history } from "../helpers";
+import { ConfigReducerStateInterface } from "../models";
 import { AppState } from "../store";
-import { AppUtils } from "../utils";
+import { toggleApplicationsPageVisibility } from "../store/actions";
+import { AppUtils, filterRoutes } from "../utils";
 
 /**
- * Default page layout component Prop types.
+ * Dashboard page layout component Prop types.
  */
-export interface DefaultLayoutPropsInterface {
+export interface DashboardLayoutPropsInterface {
     /**
      * Is layout fluid.
      */
@@ -44,95 +63,240 @@ export interface DefaultLayoutPropsInterface {
 }
 
 /**
- * Inner page layout.
+ * Dashboard layout.
  *
- * @param props - Props injected to the inner page layout
- * @returns Inner Page Layout component.
+ * @param props - Props injected to the component.
+ * @returns Dashboard Layout component.
  */
-export const DashboardLayout: FunctionComponent<PropsWithChildren<DefaultLayoutPropsInterface>> = (
-    props: PropsWithChildren<DefaultLayoutPropsInterface>
+export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayoutPropsInterface>> = (
+    props: PropsWithChildren<DashboardLayoutPropsInterface & RouteComponentProps>
 ): ReactElement => {
 
-    const { fluid } = props;
+    const { location } = props;
 
     const { t } = useTranslation();
-
-    const [ mobileSidePanelVisibility, setMobileSidePanelVisibility ] = useState(false);
-    const { headerHeight, footerHeight } = useUIElementSizes();
-
-    useEffect(() => {
-        if (headerHeight === document.getElementById("app-header").offsetHeight) {
-            return;
-        }
-        setHeaderHeight(document.getElementById("app-header").offsetHeight);
+    const dispatch = useDispatch();
+    const { isMobileViewport } = useMediaContext();
+    const { headerHeight, footerHeight } = useUIElementSizes({
+        footerHeight: UIConstants.DEFAULT_FOOTER_HEIGHT,
+        headerHeight: UIConstants.DEFAULT_HEADER_HEIGHT,
+        topLoadingBarHeight: UIConstants.AJAX_TOP_LOADING_BAR_HEIGHT
     });
 
+    const alert: AlertInterface = useSelector((state: AppState) => state.global.alert);
+    const alertSystem: System = useSelector((state: AppState) => state.global.alertSystem);
+    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+    const isAJAXTopLoaderVisible: boolean = useSelector((state: AppState) => state.global.isGlobalLoaderVisible);
+    const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
+    const isApplicationsPageVisible = useSelector((state: AppState) => state.global.isApplicationsPageVisible);
+
+    const [
+        selectedRoute,
+        setSelectedRoute
+    ] = useState<RouteInterface | ChildRouteInterface>(getDashboardLayoutRoutes()[ 0 ]);
+    const [ mobileSidePanelVisibility, setMobileSidePanelVisibility ] = useState(false);
+    const [ dashboardLayoutRoutes, setDashboardLayoutRoutes ] = useState<RouteInterface[]>(getDashboardLayoutRoutes());
+
+    /**
+     * Performs pre-requisites for the side panel items visibility.
+     */
+    useEffect(() => {
+        if (isApplicationsPageVisible !== undefined) {
+            return;
+        }
+
+        // Fetches the list of applications to see if the list is empty.
+        // If it is empty, hides the side panel item.
+        fetchApplications(null, null, null)
+            .then((response) => {
+                if (isEmpty(response.applications)) {
+                    dispatch(toggleApplicationsPageVisibility(false));
+
+                    return;
+                }
+
+                dispatch(toggleApplicationsPageVisibility(true));
+            })
+            .catch(() => {
+                dispatch(toggleApplicationsPageVisibility(false));
+            });
+    }, [ dispatch, isApplicationsPageVisible ]);
+
+    /**
+     * Listen for base name changes and updated the layout routes.
+     */
+    useEffect(() => {
+        if (isApplicationsPageVisible === undefined || !config) {
+            return;
+        }
+
+        const routes: RouteInterface[] = getDashboardLayoutRoutes()
+            .filter((route: RouteInterface) => {
+                if (route.path === AppConstants.getPaths().get("APPLICATIONS") && !isApplicationsPageVisible) {
+                    return false;
+                }
+
+                return route;
+            });
+
+        setDashboardLayoutRoutes(filterRoutes(routes, config.ui?.features));
+    }, [ AppConstants.getTenantQualifiedAppBasename(), config, isApplicationsPageVisible ]);
+
+    /**
+     * On location change, update the selected route.
+     */
+    useEffect(() => {
+        if (!location?.pathname) {
+            return;
+        }
+
+        setSelectedRoute(CommonRouteUtils.getInitialActiveRoute(location.pathname, dashboardLayoutRoutes));
+    }, [ location.pathname, dashboardLayoutRoutes ]);
+
+    /**
+     * Callback for side panel hamburger click.
+     */
     const handleSidePanelToggleClick = (): void => {
         setMobileSidePanelVisibility(!mobileSidePanelVisibility);
     };
 
+    /**
+     * Callback for side panel pusher click.
+     */
     const handleSidePanelPusherClick = (): void => {
         setMobileSidePanelVisibility(false);
     };
 
-    const handleSidePanelItemClick = (): void => {
-        setMobileSidePanelVisibility(false);
+    /**
+     * Handles side panel item click event.
+     *
+     * @param route - Clicked on route.
+     */
+    const handleSidePanelItemClick = (route: RouteInterface | ChildRouteInterface): void => {
+        if (!route.path) {
+            return;
+        }
+
+        setSelectedRoute(route);
+        history.push(route.path);
+
+        if (isMobileViewport) {
+            setMobileSidePanelVisibility(false);
+        }
+    };
+
+    /**
+     * Handles alert system initialize action.
+     *
+     * @param system - Alert system instance.
+     */
+    const handleAlertSystemInitialize = (system: System) => {
+        dispatch(initializeAlertSystem(system));
     };
 
     return (
-        <>
-            <GlobalLoader height={ 3 }/>
-            <Header
-                onSidePanelToggleClick={ handleSidePanelToggleClick }
-            />
-            <div style={ { paddingTop: `${ headerHeight }px` } } className="layout-content">
-                <SidePanelWrapper
+        <DashboardLayoutSkeleton
+            alert={ (
+                <Alert
+                    dismissInterval={ UIConstants.ALERT_DISMISS_INTERVAL }
+                    alertsPosition="br"
+                    alertSystem={ alertSystem }
+                    alert={ alert }
+                    onAlertSystemInitialize={ handleAlertSystemInitialize }
+                    withIcon={ true }
+                />
+            ) }
+            topLoadingBar={ (
+                <TopLoadingBar
+                    height={ UIConstants.AJAX_TOP_LOADING_BAR_HEIGHT }
+                    visibility={ isAJAXTopLoaderVisible }
+                />
+            ) }
+            header={ (
+                <Header
+                    fluid={ false }
+                    onSidePanelToggleClick={ handleSidePanelToggleClick }
+                />
+            ) }
+            sidePanel={ (
+                <SidePanel
+                    desktopContentTopSpacing={ UIConstants.DASHBOARD_LAYOUT_DESKTOP_CONTENT_TOP_SPACING }
+                    fluid={ false }
+                    footerHeight={ footerHeight }
                     headerHeight={ headerHeight }
+                    hoverType="background"
                     mobileSidePanelVisibility={ mobileSidePanelVisibility }
                     onSidePanelItemClick={ handleSidePanelItemClick }
                     onSidePanelPusherClick={ handleSidePanelPusherClick }
-                >
-                    <ErrorBoundary
-                        onChunkLoadError={ AppUtils.onChunkLoadError }
-                        fallback={ (
-                            <EmptyPlaceholder
-                                action={ (
-                                    <LinkButton onClick={ () => CommonUtils.refreshPage() }>
-                                        { t("myAccount:placeholders.genericError.action") }
-                                    </LinkButton>
-                                ) }
-                                image={ getEmptyPlaceholderIllustrations().genericError }
-                                imageSize="tiny"
-                                subtitle={ [
-                                    t("myAccount:placeholders.genericError.subtitles.0"),
-                                    t("myAccount:placeholders.genericError.subtitles.1")
-                                ] }
-                                title={ t("myAccount:placeholders.genericError.title") }
-                            />
+                    routes={ RouteUtils.sanitizeForUI(dashboardLayoutRoutes, []) }
+                    selected={ selectedRoute }
+                    translationHook={ t }
+                    allowedScopes={ allowedScopes }
+                />
+            ) }
+            footer={ (
+                <Media greaterThan="mobile">
+                    <Footer fluid={ false } />
+                </Media>
+            ) }
+        >
+            <ErrorBoundary
+                onChunkLoadError={ AppUtils.onChunkLoadError }
+                fallback={ (
+                    <EmptyPlaceholder
+                        action={ (
+                            <LinkButton onClick={ () => CommonUtils.refreshPage() }>
+                                { t("myAccount:placeholders.genericError.action") }
+                            </LinkButton>
                         ) }
-                    >
-                        <PageLayout
-                            description={ pageDescription }
-                            pageHeaderMaxWidth={ false }
-                            title={ pageTitle }
-                            titleTextAlign={ pageTitleTextAlign }
-                            truncateContent={ false }
-                        >
-                            { children }
-                        </PageLayout>
-                    </ErrorBoundary>
-                </SidePanelWrapper>
-            </div>
-            <Alert dismissInterval={ 5 } alertsPosition="br" />
-            <Media greaterThan="mobile">
-                <AppFooter/>
-            </Media>
-        </>
+                        image={ getEmptyPlaceholderIllustrations().genericError }
+                        imageSize="tiny"
+                        subtitle={ [
+                            t("myAccount:placeholders.genericError.subtitles.0"),
+                            t("myAccount:placeholders.genericError.subtitles.1")
+                        ] }
+                        title={ t("myAccount:placeholders.genericError.title") }
+                    />
+                ) }
+            >
+                <Suspense fallback={ <PreLoader /> }>
+                    <Switch>
+                        {
+                            dashboardLayoutRoutes.map((route, index) => (
+                                route.redirectTo
+                                    ? <Redirect to={ route.redirectTo } />
+                                    : route.protected
+                                        ? (
+                                            <ProtectedRoute
+                                                component={ route.component ? route.component : null }
+                                                path={ route.path }
+                                                key={ index }
+                                                exact={ route.exact }
+                                            />
+                                        )
+                                        : (
+                                            <Route
+                                                path={ route.path }
+                                                render={ (renderProps) =>
+                                                    route.component
+                                                        ? <route.component { ...renderProps } />
+                                                        : null
+                                                }
+                                                key={ index }
+                                                exact={ route.exact }
+                                            />
+                                        )
+                            ))
+                        }
+                    </Switch>
+                </Suspense>
+            </ErrorBoundary>
+        </DashboardLayoutSkeleton>
     );
 };
 
 /**
- * Default props for the Admin View.
+ * Default props for the component.
  */
 DashboardLayout.defaultProps = {
     fluid: true

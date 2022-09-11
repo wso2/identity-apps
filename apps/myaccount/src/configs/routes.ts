@@ -17,74 +17,42 @@
  */
 
 import { RouteInterface } from "@wso2is/core/models";
-import { AppLayout } from "@wso2is/react-components";
-import { lazy } from "react";
+import { FunctionComponent, lazy } from "react";
 import { AppConstants } from "../constants";
+import { AppLayout, AuthLayout, DashboardLayout, DefaultLayout, ErrorLayout } from "../layouts";
 
 /**
- * Get app layout routes.
+ * Get default page layout routes.
  *
- * @return {RouteInterface[]}
+ * @returns Default Layout routes.
  */
-export const getAppRoutes = (): RouteInterface[] => {
+export const getDefaultLayoutRoutes = (): RouteInterface[] => {
 
     return [
         {
-            component: lazy(() => import("../components/authentication/sign-out")),
-            icon: null,
-            id: "authLayoutLogout",
-            name: "Logout",
-            path: AppConstants.getPaths().get("LOGOUT"),
-            protected: false,
-            showOnSidePanel: false
-        },
-        {
-            component: lazy(() => import("../pages/overview")),
-            icon: "overview",
-            id: "overview",
-            name: "common:overview",
-            path: AppConstants.getPaths().get("OVERVIEW"),
-            protected: true,
-            showOnSidePanel: true
-        },
-        {
-            component: lazy(() => import("../pages/applications")),
-            icon: "apps",
-            id: "applications",
-            name: "common:applications",
-            path: AppConstants.getPaths().get("APPLICATIONS"),
-            protected: true,
-            showOnSidePanel: true
-        },
-        {
-            component: lazy(() => import("../pages/personal-info")),
-            icon: "personal",
-            id: "personalInfo",
-            name: "common:personalInfo",
-            path: AppConstants.getPaths().get("PERSONAL_INFO"),
-            protected: true,
-            showOnSidePanel: true
-        },
-        {
-            component: lazy(() => import("../pages/account-security")),
-            icon: "security",
-            id: "security",
-            name: "common:security",
-            path: AppConstants.getPaths().get("SECURITY"),
-            protected: true,
-            showOnSidePanel: true
-        },
-        {
             component: lazy(() => import("../pages/privacy")),
-            icon: "security",
+            exact: true,
+            icon: null,
             id: "privacy",
             name: "common:privacy",
             path: AppConstants.getPaths().get("PRIVACY"),
             protected: true,
             showOnSidePanel: false
-        },
+        }
+    ];
+};
+
+/**
+ * Get error page layout routes.
+ *
+ * @returns Error Layout routes.
+ */
+export const getErrorLayoutRoutes = (): RouteInterface[] => {
+
+    return [
         {
             component: lazy(() => import("../pages/errors/access-denied-error")),
+            exact: true,
             id: "accessDeniedError",
             name: "Access denied error",
             path: AppConstants.getPaths().get("ACCESS_DENIED_ERROR"),
@@ -93,6 +61,7 @@ export const getAppRoutes = (): RouteInterface[] => {
         },
         {
             component: lazy(() => import("../pages/errors/login-error")),
+            exact: true,
             id: "loginError",
             name: "Login error",
             path: AppConstants.getPaths().get("LOGIN_ERROR"),
@@ -101,6 +70,7 @@ export const getAppRoutes = (): RouteInterface[] => {
         },
         {
             component: lazy(() => import("../pages/errors/storage-disabled")),
+            exact: true,
             icon: null,
             id: "storingDataDisabled",
             name: "storingDataDisabled",
@@ -110,10 +80,116 @@ export const getAppRoutes = (): RouteInterface[] => {
         },
         {
             component: lazy(() => import("../pages/errors/404")),
+            exact: true,
             id: "appRoute404",
             name: "Page Not Found",
             path: AppConstants.getPaths().get("PAGE_NOT_FOUND"),
             protected: true,
+            showOnSidePanel: false
+        }
+    ];
+};
+
+/**
+ * Get auth page layout routes.
+ *
+ * @returns Auth Layout routes.
+ */
+export const getAuthLayoutRoutes = (): RouteInterface[] => {
+
+    return [
+        {
+            component: lazy(() => import("../components/authentication/sign-out")),
+            exact: true,
+            icon: null,
+            id: "authLayoutLogout",
+            name: "Logout",
+            path: AppConstants.getPaths().get("LOGOUT"),
+            protected: false,
+            showOnSidePanel: false
+        }
+    ];
+};
+
+/**
+ * Get the dashboard layout routes.
+ *
+ * @returns Dashboard Layout routes.
+ */
+export const getDashboardLayoutRoutes = (): RouteInterface[] => {
+
+    return [
+        {
+            component: lazy(() => import("../pages/overview")),
+            exact: true,
+            icon: "overview",
+            id: "overview",
+            name: "common:overview",
+            path: AppConstants.getPaths().get("OVERVIEW"),
+            protected: true,
+            showOnSidePanel: true
+        },
+        {
+            component: lazy(() => import("../pages/applications")),
+            exact: true,
+            icon: "apps",
+            id: "applications",
+            name: "common:applications",
+            path: AppConstants.getPaths().get("APPLICATIONS"),
+            protected: true,
+            showOnSidePanel: true
+        },
+        {
+            component: lazy(() => import("../pages/personal-info")),
+            exact: true,
+            icon: "personal",
+            id: "personalInfo",
+            name: "common:personalInfo",
+            path: AppConstants.getPaths().get("PERSONAL_INFO"),
+            protected: true,
+            showOnSidePanel: true
+        },
+        {
+            component: lazy(() => import("../pages/account-security")),
+            exact: true,
+            icon: "security",
+            id: "security",
+            name: "common:security",
+            path: AppConstants.getPaths().get("SECURITY"),
+            protected: true,
+            showOnSidePanel: true
+        },
+        {
+            component: null,
+            exact: true,
+            id: "index",
+            name: "Index",
+            path: "/",
+            protected: true,
+            redirectTo: AppConstants.getPaths().get("OVERVIEW"),
+            showOnSidePanel: false
+        }
+    ];
+};
+
+/**
+ * Get all the app layout routes.
+ *
+ * @returns App Layout routes.
+ */
+export const getAppLayoutRoutes = (): RouteInterface[] => {
+
+    return [
+        ...getLayoutAssignedToRoutes(getAuthLayoutRoutes(), AuthLayout),
+        ...getLayoutAssignedToRoutes(getDefaultLayoutRoutes(), DefaultLayout),
+        ...getLayoutAssignedToRoutes(getErrorLayoutRoutes(), ErrorLayout),
+        {
+            component: DashboardLayout,
+            icon: null,
+            id: "dashboardLayout",
+            name: "Dashboard Layout",
+            path: "/",
+            protected: false,
             showOnSidePanel: false
         },
         {
@@ -131,7 +207,7 @@ export const getAppRoutes = (): RouteInterface[] => {
 /**
  * Get base layout routes.
  *
- * @return {RouteInterface[]}
+ * @returns Base routes.
  */
 export const getBaseRoutes = (): RouteInterface[] => {
 
@@ -146,4 +222,40 @@ export const getBaseRoutes = (): RouteInterface[] => {
             showOnSidePanel: false
         }
     ];
+};
+
+/**
+ * If a layout doesn't use a sub base path i.e `console`, `manage`, then all the routes in that layout
+ * has to be registered in the root layout path (`getAppLayoutRoutes`). This function will help inject the
+ * proper layout by reusing the defined routes rather than duplicating.
+ *
+ * @example
+ *     Without this, we'll have to manually let the app know to use the `AuthLayout` if someone hits `/login`.
+ *     `{`
+ *          component: AuthLayout,
+ *          icon: null,
+ *          id: "appRouteLogin",
+ *          name: "Login",
+ *          path: AppConstants.getPaths().get("LOGIN"),
+ *          protected: false,
+ *          showOnSidePanel: false
+ *    `}`,
+ *
+ * @param routes - Set of routes in the layout.
+ * @param layout - Layout to be used.
+ *
+ * @returns Route config with the layout assigned.
+ */
+const getLayoutAssignedToRoutes = (routes: RouteInterface[], layout: FunctionComponent) => {
+
+    let modifiedRoutes: RouteInterface[] = [ ...routes ];
+
+    modifiedRoutes = modifiedRoutes.map((route: RouteInterface) => {
+        return {
+            ...route,
+            component: layout
+        };
+    });
+
+    return modifiedRoutes;
 };

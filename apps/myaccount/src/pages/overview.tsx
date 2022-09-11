@@ -18,16 +18,16 @@
 
 import { ProfileConstants } from "@wso2is/core/constants";
 import { TestableComponentInterface } from "@wso2is/core/models";
+import { PageLayout } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Overview } from "../components";
 import { commonConfig } from "../extensions";
+import { SCIMConfigs } from "../extensions/configs/scim";
 import { resolveUserProfileName, resolveUserstore } from "../helpers";
-import { InnerPageLayout } from "../layouts";
 import { AuthStateInterface } from "../models";
 import { AppState } from "../store";
-import { SCIMConfigs } from "../extensions/configs/scim";
 
 /**
  * Prop types for the overview page.
@@ -40,7 +40,8 @@ interface OverviewPagePropsInterface extends TestableComponentInterface {
 /**
  * Overview page.
  *
- * @return {React.ReactElement}
+ * @param props - Props injected to the component.
+ * @returns Overview page component.
  */
 const OverviewPage: FunctionComponent<OverviewPagePropsInterface> = (
     props: OverviewPagePropsInterface
@@ -50,14 +51,20 @@ const OverviewPage: FunctionComponent<OverviewPagePropsInterface> = (
         enableNonLocalCredentialUserView,
         enableAlternateWidgetLayout
     } = props;
+
     const { t } = useTranslation();
+
     const isProfileInfoLoading: boolean = useSelector( (state: AppState) => state.loaders.isProfileInfoLoading);
     const profileDetails: AuthStateInterface = useSelector((state: AppState) => state.authenticationInformation);
+
     const [ userProfileName, setUserProfileName ] = useState<string>(null);
     const [ isNonLocalCredentialUser, setIsNonLocalCredentialUser ] = useState<boolean>(false);
     const [ userSource, setUserSource ] = useState<string>(null);
     const [ userStore, setUserstore ] = useState<string> (null);
 
+    /**
+     * Set user's name.
+     */
     useEffect(() => {
         if (isProfileInfoLoading === undefined) {
             return;
@@ -72,9 +79,10 @@ const OverviewPage: FunctionComponent<OverviewPagePropsInterface> = (
     useEffect(() => {
         if (profileDetails?.profileInfo?.userName) {
             const userstore: string = resolveUserstore(profileDetails.profileInfo.userName);
+
             setUserstore(userstore);
         }
-    }, [profileDetails?.profileInfo]);
+    }, [ profileDetails?.profileInfo ]);
 
     /**
      * Verifies whether a user is a federated user (user without local credentials).
@@ -90,7 +98,7 @@ const OverviewPage: FunctionComponent<OverviewPagePropsInterface> = (
         if (localCredentialExist && localCredentialExist == "false") {
             setIsNonLocalCredentialUser(true);
         }
-    }, [profileDetails?.profileInfo]);
+    }, [ profileDetails?.profileInfo ]);
 
     /**
      * Sets the source of the user.
@@ -103,34 +111,36 @@ const OverviewPage: FunctionComponent<OverviewPagePropsInterface> = (
         if (isNonLocalCredentialUser && userSource) {
             setUserSource(userSource);
         }
-    }, [profileDetails?.profileInfo, isNonLocalCredentialUser]);
+    }, [ profileDetails?.profileInfo, isNonLocalCredentialUser ]);
 
     return (
-        <InnerPageLayout
-            pageTitle={ userProfileName ? (
-                <div>
-                    {
-                        t(
-                            "myAccount:pages:overview.title",
-                            { firstName: userProfileName }
-                        )
-                    }
-                </div>
+        <PageLayout
+            pageTitle="Overview"
+            title={
+                userProfileName ? (
+                    <div>
+                        {
+                            t(
+                                "myAccount:pages:overview.title",
+                                { firstName: userProfileName }
+                            )
+                        }
+                    </div>
 
-            ) : null }
-            pageDescription={ t("myAccount:pages:overview.subTitle") }
-            pageTitleTextAlign="left"
+                ) : null
+            }
+            description={ t("myAccount:pages:overview.subTitle") }
         >
             { /* Loads overview component only when user info is loaded.
                 Loads overview component based on user credential type (local/non-local).*/ }
-            { isProfileInfoLoading == false &&
-            <Overview
-                userSource={ userSource }
-                enableAlternateWidgetLayout={ enableAlternateWidgetLayout }
-                userStore={userStore}
-            />
-            }
-        </InnerPageLayout>
+            { isProfileInfoLoading == false && (
+                <Overview
+                    userSource={ userSource }
+                    enableAlternateWidgetLayout={ enableAlternateWidgetLayout }
+                    userStore={ userStore }
+                />
+            ) }
+        </PageLayout>
     );
 };
 
@@ -139,8 +149,8 @@ const OverviewPage: FunctionComponent<OverviewPagePropsInterface> = (
  * See type definitions in {@link OverviewPage}
  */
 OverviewPage.defaultProps = {
-    enableNonLocalCredentialUserView: commonConfig.nonLocalCredentialUser.enableNonLocalCredentialUserView,
-    enableAlternateWidgetLayout: commonConfig.overviewPage.enableAlternateWidgetLayout
+    enableAlternateWidgetLayout: commonConfig.overviewPage.enableAlternateWidgetLayout,
+    enableNonLocalCredentialUserView: commonConfig.nonLocalCredentialUser.enableNonLocalCredentialUserView
 };
 
 /**

@@ -18,9 +18,13 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { I18n, LanguageChangeException, SupportedLanguagesMeta } from "@wso2is/i18n";
-import { Footer, FooterLinkInterface } from "@wso2is/react-components";
+import {
+    FooterLinkInterface,
+    Footer as ReusableFooter,
+    FooterPropsInterface as ReusableFooterPropsInterface
+} from "@wso2is/react-components";
 import * as moment from "moment";
-import React, { ReactElement } from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { AppConstants } from "../../constants";
@@ -29,21 +33,28 @@ import { AppState } from "../../store";
 
 /**
  * Footer component prop types.
- * Also see {@link AppFooter.defaultProps}
+ * Also see {@link Footer.defaultProps}
  */
-interface AppFooterProps extends TestableComponentInterface {
+interface FooterProps extends ReusableFooterPropsInterface, TestableComponentInterface {
+    /**
+     * Is layout fluid.
+     */
     fluid?: boolean;
 }
 
 /**
  * Footer component.
  *
- * @param {AppFooterProps} props - Props supplied to the footer component.
- * @return {ReactElement}
+ * @param props - Props supplied to the footer component.
+ * @returns App Footer.
  */
-export const AppFooter: React.FunctionComponent<AppFooterProps> = (props: AppFooterProps): ReactElement => {
+export const Footer: FunctionComponent<FooterProps> = (props: FooterProps): ReactElement => {
 
-    const { ["data-testid"]: testId } = props;
+    const {
+        ["data-testid"]: testId,
+        ...rest
+    } = props;
+
     const { t } = useTranslation();
 
     const supportedI18nLanguages: SupportedLanguagesMeta = useSelector(
@@ -52,7 +63,7 @@ export const AppFooter: React.FunctionComponent<AppFooterProps> = (props: AppFoo
 
     /**
      * Handles language switch action.
-     * @param {string} language - Selected language.
+     * @param language - Selected language.
      */
     const handleLanguageSwitch = (language: string): void => {
         moment.locale(language ?? "en");
@@ -65,7 +76,7 @@ export const AppFooter: React.FunctionComponent<AppFooterProps> = (props: AppFoo
     /**
      * Generates the links to be displayed on the footer.
      *
-     * @return {FooterLinkInterface[]}
+     * @returns Footer links.
      */
     const generateFooterLinks = (): FooterLinkInterface[] => {
 
@@ -82,7 +93,7 @@ export const AppFooter: React.FunctionComponent<AppFooterProps> = (props: AppFoo
     };
 
     return (
-        <Footer
+        <ReusableFooter
             data-testid={ testId }
             showLanguageSwitcher={ config.ui.i18nConfigs?.showLanguageSwitcher ?? true }
             currentLanguage={ I18n.instance?.language }
@@ -95,15 +106,16 @@ export const AppFooter: React.FunctionComponent<AppFooterProps> = (props: AppFoo
             }
             fixed="bottom"
             links={ generateFooterLinks() }
+            { ...rest }
         />
     );
 };
 
 /**
- * Default proptypes for the {@link AppFooter} component.
- * See type definitions in {@link AppFooterProps}
+ * Default prop-types for the {@link Footer} component.
+ * See type definitions in {@link FooterProps}
  */
-AppFooter.defaultProps = {
+Footer.defaultProps = {
     "data-testid": "app-footer",
     fluid: true
 };

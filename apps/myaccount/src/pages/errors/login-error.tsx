@@ -16,43 +16,42 @@
  * under the License.
  */
 
+import { EmptyPlaceholder } from "@wso2is/react-components";
 import React, { ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { Button } from "semantic-ui-react";
-import { EmptyPlaceholder } from "../../components/shared";
 import { getEmptyPlaceholderIllustrations } from "../../configs";
 import { AppConstants } from "../../constants";
-import { ErrorPageLayout } from "../../layouts";
 
 /**
  * Login error page.
  *
- * @return {React.ReactElement}
+ * @returns Generic login error page.
  */
 const LoginErrorPage = (): ReactElement => {
+
     const { t } = useTranslation();
+
     return (
-        <ErrorPageLayout>
-            <EmptyPlaceholder
-                action={ (
-                    <Button
-                        className="link-button"
-                        as={ Link }
-                        to={ AppConstants.getAppLogoutPath() }
-                    >
-                        { t("myAccount:placeholders.loginError.action") }
-                    </Button>
-                ) }
-                image={ getEmptyPlaceholderIllustrations().loginError }
-                imageSize="tiny"
-                subtitle={ [
-                    t("myAccount:placeholders.loginError.subtitles.0"),
-                    t("myAccount:placeholders.loginError.subtitles.1")
-                ] }
-                title={ t("myAccount:placeholders.loginError.title") }
-            />
-        </ErrorPageLayout>
+        <EmptyPlaceholder
+            action={ (
+                <Button
+                    className="link-button"
+                    as={ Link }
+                    to={ AppConstants.getAppLogoutPath() }
+                >
+                    { t("myAccount:placeholders.loginError.action") }
+                </Button>
+            ) }
+            image={ getEmptyPlaceholderIllustrations().loginError }
+            imageSize="tiny"
+            subtitle={ [
+                t("myAccount:placeholders.loginError.subtitles.0"),
+                t("myAccount:placeholders.loginError.subtitles.1")
+            ] }
+            title={ t("myAccount:placeholders.loginError.title") }
+        />
     );
 };
 

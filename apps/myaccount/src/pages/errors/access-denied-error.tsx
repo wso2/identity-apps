@@ -23,38 +23,35 @@ import { Link } from "react-router-dom";
 import { Button } from "semantic-ui-react";
 import { getEmptyPlaceholderIllustrations } from "../../configs";
 import { AppConstants } from "../../constants";
-import { ErrorPageLayout } from "../../layouts";
 
 /**
  * Access denied error page.
  *
- * @return {React.ReactElement}
+ * @returns Access denied error page.
  */
 const AccessDeniedErrorPage = (): ReactElement => {
 
     const { t } = useTranslation();
 
     return (
-        <ErrorPageLayout>
-            <EmptyPlaceholder
-                action={ (
-                    <Button
-                        className="link-button"
-                        as={ Link }
-                        to={ AppConstants.getAppHomePath() }
-                    >
-                        { t("myAccount:placeholders.accessDeniedError.action") }
-                    </Button>
-                ) }
-                image={ getEmptyPlaceholderIllustrations().accessDeniedError }
-                imageSize="tiny"
-                subtitle={ [
-                    t("myAccount:placeholders.accessDeniedError.subtitles.0"),
-                    t("myAccount:placeholders.accessDeniedError.subtitles.1")
-                ] }
-                title={ t("myAccount:placeholders.accessDeniedError.title") }
-            />
-        </ErrorPageLayout>
+        <EmptyPlaceholder
+            action={ (
+                <Button
+                    className="link-button"
+                    as={ Link }
+                    to={ AppConstants.getAppHomePath() }
+                >
+                    { t("myAccount:placeholders.accessDeniedError.action") }
+                </Button>
+            ) }
+            image={ getEmptyPlaceholderIllustrations().accessDeniedError }
+            imageSize="tiny"
+            subtitle={ [
+                t("myAccount:placeholders.accessDeniedError.subtitles.0"),
+                t("myAccount:placeholders.accessDeniedError.subtitles.1")
+            ] }
+            title={ t("myAccount:placeholders.accessDeniedError.title") }
+        />
     );
 };
 

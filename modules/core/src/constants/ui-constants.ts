@@ -22,39 +22,22 @@
 export class UIConstants {
 
     /**
-     * Private constructor to avoid object instantiation from outside
-     * the class.
-     *
-     * @hideconstructor
-     */
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    private constructor() { }
-
-    /**
      * `Gravatar` website URL.
-     * @constant
-     * @type {string}
      */
     public static readonly GRAVATAR_URL: string = "https://www.gravatar.com";
 
     /**
      * Constant to handle the default dashboard layout's desktop content top spacing.
-     * @constant
-     * @type {number}
      */
     public static readonly DEFAULT_DASHBOARD_LAYOUT_DESKTOP_CONTENT_TOP_SPACING: number = 0;
 
     /**
      * Constant to handle the default side panel item height.
-     * @constant
-     * @type {number}
      */
     public static readonly DEFAULT_SIDE_PANEL_ITEM_HEIGHT: number = 75;
 
     /**
      * Error message to be shown in the alerting component on API retrieval errors.
-     * @constant
-     * @type {string}
      */
     public static readonly API_RETRIEVAL_ERROR_ALERT_MESSAGE: string = "Retrieval Error";
 }

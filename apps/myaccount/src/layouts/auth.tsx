@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,17 +17,17 @@
  */
 
 import { RouteInterface } from "@wso2is/core/models";
-import { ContentLoader, ErrorLayout as ErrorLayoutSkeleton } from "@wso2is/react-components";
-import React, { FunctionComponent, PropsWithChildren, ReactElement, Suspense, useEffect, useState } from "react";
+import { AuthLayout as AuthLayoutSkeleton } from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
-import { ProtectedRoute } from "../components";
-import { getErrorLayoutRoutes } from "../configs";
+import { PreLoader, ProtectedRoute } from "../components";
+import { getAuthLayoutRoutes } from "../configs";
 import { AppConstants } from "../constants";
 
 /**
- * Error layout Prop types.
+ * Auth layout props interface.
  */
-export interface ErrorLayoutPropsInterface {
+interface AuthLayoutPropsInterface {
     /**
      * Is layout fluid.
      */
@@ -35,64 +35,67 @@ export interface ErrorLayoutPropsInterface {
 }
 
 /**
- * Implementation of the error layout skeleton.
- * Used to render error pages.
+ * Implementation of the Auth layout skeleton.
+ * Used to render the authentication related components.
  *
  * @param props - Props injected to the component.
- *
- * @returns Error page layout.
+ * @returns Auth Layout component.
  */
-export const ErrorLayout: FunctionComponent<PropsWithChildren<ErrorLayoutPropsInterface>> = (
-    props: PropsWithChildren<ErrorLayoutPropsInterface>
+export const AuthLayout: FunctionComponent<AuthLayoutPropsInterface> = (
+    props: AuthLayoutPropsInterface
 ): ReactElement => {
 
     const { fluid } = props;
 
-    const [ errorLayoutRoutes, setErrorLayoutRoutes ] = useState<RouteInterface[]>(getErrorLayoutRoutes());
+    const [ authLayoutRoutes, setAuthLayoutRoutes ] = useState<RouteInterface[]>(getAuthLayoutRoutes());
 
     /**
-     * Listen for base name changes and updates the layout routes.
+     * Listen for base name changes and updated the layout routes.
      */
     useEffect(() => {
-        setErrorLayoutRoutes(getErrorLayoutRoutes());
+        setAuthLayoutRoutes(getAuthLayoutRoutes());
     }, [ AppConstants.getTenantQualifiedAppBasename() ]);
 
     return (
-        <ErrorLayoutSkeleton fluid={ fluid }>
-            <Suspense fallback={ <ContentLoader dimmer/> }>
+        <AuthLayoutSkeleton fluid={ fluid }>
+            <Suspense fallback={ <PreLoader /> }>
                 <Switch>
                     {
-                        errorLayoutRoutes.map((route, index) => (
+                        authLayoutRoutes.map((route, index) => (
                             route.redirectTo
                                 ? <Redirect to={ route.redirectTo } />
                                 : route.protected
                                     ? (
                                         <ProtectedRoute
-                                            component={ route.component }
+                                            component={ route.component ? route.component : null }
                                             path={ route.path }
                                             key={ index }
+                                            exact={ route.exact }
                                         />
                                     )
                                     : (
                                         <Route
                                             path={ route.path }
                                             render={ (renderProps) =>
-                                                (<route.component { ...renderProps } />)
+                                                route.component
+                                                    ? <route.component { ...renderProps } />
+                                                    : null
                                             }
                                             key={ index }
+                                            exact={ route.exact }
                                         />
                                     )
                         ))
                     }
                 </Switch>
             </Suspense>
-        </ErrorLayoutSkeleton>
+        </AuthLayoutSkeleton>
     );
 };
 
 /**
- * Default props for the component.
+ * Default props for the auth layout.
  */
-ErrorLayout.defaultProps = {
+AuthLayout.defaultProps = {
     fluid: true
 };

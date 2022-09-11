@@ -16,43 +16,42 @@
  * under the License.
  */
 
-import React, { ReactElement } from "react";
+import { EmptyPlaceholder } from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { Button } from "semantic-ui-react";
-import { EmptyPlaceholder } from "../../components/shared";
 import { getEmptyPlaceholderIllustrations } from "../../configs";
 import { AppConstants } from "../../constants";
-import { ErrorPageLayout } from "../../layouts";
 
 /**
  * 404 error page.
  *
- * @return {React.ReactElement}
+ * @returns 404 Component.
  */
-const PageNotFound = (): ReactElement => {
+const PageNotFound: FunctionComponent<Record<string, unknown>> = (): ReactElement => {
+
     const { t } = useTranslation();
+
     return (
-        <ErrorPageLayout>
-            <EmptyPlaceholder
-                action={ (
-                    <Button
-                        className="link-button"
-                        as={ Link }
-                        to={ AppConstants.getAppHomePath() }
-                    >
-                        { t("myAccount:placeholders.404.action") }
-                    </Button>
-                ) }
-                image={ getEmptyPlaceholderIllustrations().pageNotFound }
-                imageSize="tiny"
-                subtitle={ [
-                    t("myAccount:placeholders.404.subtitles.0"),
-                    t("myAccount:placeholders.404.subtitles.1")
-                ] }
-                title={ t("myAccount:placeholders.404.title") }
-            />
-        </ErrorPageLayout>
+        <EmptyPlaceholder
+            action={ (
+                <Button
+                    className="link-button"
+                    as={ Link }
+                    to={ AppConstants.getAppHomePath() }
+                >
+                    { t("myAccount:placeholders.404.action") }
+                </Button>
+            ) }
+            image={ getEmptyPlaceholderIllustrations().pageNotFound }
+            imageSize="tiny"
+            subtitle={ [
+                t("myAccount:placeholders.404.subtitles.0"),
+                t("myAccount:placeholders.404.subtitles.1")
+            ] }
+            title={ t("myAccount:placeholders.404.title") }
+        />
     );
 };
 
