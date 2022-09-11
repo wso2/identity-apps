@@ -18,7 +18,7 @@
 
 import { CommonUtils } from "@wso2is/core/utils";
 import { CookieConsentBanner, ErrorBoundary, LinkButton, Media, PageLayout } from "@wso2is/react-components";
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, PropsWithChildren, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import {
@@ -34,19 +34,14 @@ import { AppState } from "../store";
 import { AppUtils } from "../utils";
 
 /**
- * Inner page layout component Prop types.
+ * Default page layout component Prop types.
  */
-interface InnerPageLayoutProps {
-    children?: React.ReactNode;
-    pageTitle: React.ReactNode;
-    pageDescription?: string;
-    pageTitleTextAlign?: "left" | "center" | "right" | "justified";
+export interface DefaultLayoutPropsInterface {
+    /**
+     * Is layout fluid.
+     */
+    fluid?: boolean;
 }
-
-/**
- * Default header height to be used in state initialisations
- */
-const DEFAULT_HEADER_HEIGHT: number = 59;
 
 /**
  * Inner page layout.
@@ -54,19 +49,16 @@ const DEFAULT_HEADER_HEIGHT: number = 59;
  * @param props - Props injected to the inner page layout
  * @returns Inner Page Layout component.
  */
-export const InnerPageLayout: React.FunctionComponent<InnerPageLayoutProps> = (
-    props: InnerPageLayoutProps
+export const DashboardLayout: FunctionComponent<PropsWithChildren<DefaultLayoutPropsInterface>> = (
+    props: PropsWithChildren<DefaultLayoutPropsInterface>
 ): ReactElement => {
 
-    const { children, pageTitle, pageDescription, pageTitleTextAlign } = props;
+    const { fluid } = props;
 
     const { t } = useTranslation();
 
-    const isCookieConsentBannerEnabled: boolean = useSelector((state: AppState) =>
-        state.config.ui.isCookieConsentBannerEnabled);
-
     const [ mobileSidePanelVisibility, setMobileSidePanelVisibility ] = useState(false);
-    const [ headerHeight, setHeaderHeight ] = useState(DEFAULT_HEADER_HEIGHT);
+    const { headerHeight, footerHeight } = useUIElementSizes();
 
     useEffect(() => {
         if (headerHeight === document.getElementById("app-header").offsetHeight) {
@@ -135,34 +127,13 @@ export const InnerPageLayout: React.FunctionComponent<InnerPageLayoutProps> = (
             <Media greaterThan="mobile">
                 <AppFooter/>
             </Media>
-            {
-                isCookieConsentBannerEnabled && (
-                    <CookieConsentBanner
-                        inverted
-                        domainCookie
-                        title={ (
-                            <div className="title" data-testid="cookie-consent-banner-content-title">
-                                <Trans
-                                    i18nKey={ t("myAccount:components.cookieConsent.content") }
-                                >
-                                    We use cookies to ensure that you get the best overall experience.
-                                    These cookies are used to maintain an uninterrupted continuous
-                                    session whilst providing smooth and personalized services.
-                                    To learn more about how we use cookies, refer our <a
-                                        href="https://wso2.com/cookie-policy"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        data-testid="login-page-cookie-policy-link"
-                                    >
-                                    Cookie Policy
-                                    </a>.
-                                </Trans>
-                            </div>
-                        ) }
-                        confirmButtonText={ t("myAccount:components.cookieConsent.confirmButton") }
-                    />
-                )
-            }
         </>
     );
+};
+
+/**
+ * Default props for the Admin View.
+ */
+DashboardLayout.defaultProps = {
+    fluid: true
 };
