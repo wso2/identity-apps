@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,32 +16,56 @@
  * under the License.
  */
 
+import { useEffect, useState } from "react";
+
 /**
- * Interface to store UI Element size.
+ * UI element sizes hook args types.
  */
-interface ElementSizesForUIPropsInterface {
+export interface UIElementSizesHookArgsInterface {
     /**
      * Height of footer.
      */
-    footerHeight: number,
+    footerHeight: number;
     /**
      * Height of header.
      */
-    headerHeight: number,
+    headerHeight: number;
+    /**
+     * Heigh of the top loader bar.
+     */
+    topLoadingBarHeight: number;
 }
 
-import { useEffect, useState } from "react";
-import { UIConstants } from "../constants";
+/**
+ * UI element sizes hook return value types.
+ */
+export interface UIElementSizesHookReturnValuesInterface {
+    /**
+     * Height of footer.
+     */
+    footerHeight: number;
+    /**
+     * Height of header.
+     */
+    headerHeight: number;
+}
 
 /**
  * Hook to get specifics ui elements sizes.
  *
- * @return {object} - headerHeight, footerHeight
+ * @param props - Default values for the header and footer.
+ * @returns App Header Height & Footer Height.
  */
-export const useUIElementSizes = (): ElementSizesForUIPropsInterface => {
+export const useUIElementSizes = (props: UIElementSizesHookArgsInterface): UIElementSizesHookReturnValuesInterface => {
 
-    const [ headerHeight, setHeaderHeight ] = useState<number>(UIConstants.DEFAULT_HEADER_HEIGHT);
-    const [ footerHeight, setFooterHeight ] = useState<number>(UIConstants.DEFAULT_FOOTER_HEIGHT);
+    const {
+        footerHeight: _footerHeight,
+        headerHeight: _headerHeight,
+        topLoadingBarHeight
+    } = props;
+
+    const [ headerHeight, setHeaderHeight ] = useState<number>(_headerHeight);
+    const [ footerHeight, setFooterHeight ] = useState<number>(_footerHeight);
 
     const appHeader = document.getElementById("app-header");
     const appFooter = document.getElementById("app-footer");
@@ -50,7 +74,7 @@ export const useUIElementSizes = (): ElementSizesForUIPropsInterface => {
         if (headerHeight === appHeader?.offsetHeight) {
             return;
         }
-        setHeaderHeight(appHeader?.offsetHeight - UIConstants.AJAX_TOP_LOADING_BAR_HEIGHT);
+        setHeaderHeight(appHeader?.offsetHeight - topLoadingBarHeight);
     });
 
     useEffect(() => {
@@ -63,5 +87,8 @@ export const useUIElementSizes = (): ElementSizesForUIPropsInterface => {
     // This method has to tracked in both identity apps and extensions to fix the eslint issues,
     // hence it can be fixed later.
     // Tracked here: https://github.com/wso2/product-is/issues/12726#issuecomment-954835957
-    return { headerHeight, footerHeight };
+    return {
+        headerHeight,
+        footerHeight
+    };
 };

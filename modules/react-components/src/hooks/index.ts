@@ -16,4 +16,5 @@
  * under the License.
  */
 
+export * from "./use-ui-element-sizes";
 export * from "./use-window-dimensions";

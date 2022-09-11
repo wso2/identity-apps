@@ -28,7 +28,8 @@ import {
     LinkButton,
     SidePanel,
     TopLoadingBar,
-    useMediaContext
+    useMediaContext,
+    useUIElementSizes
 } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
@@ -62,8 +63,7 @@ import {
     getDeveloperViewRoutes,
     getEmptyPlaceholderIllustrations,
     getSidePanelMiscIcons,
-    history,
-    useUIElementSizes
+    history
 } from "../features/core";
 import { setActiveView } from "../features/core/store/actions";
 
@@ -96,7 +96,11 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
     const dispatch = useDispatch();
     const { t } = useTranslation();
     const { isMobileViewport } = useMediaContext();
-    const { headerHeight, footerHeight } = useUIElementSizes();
+    const { headerHeight, footerHeight } = useUIElementSizes({
+        footerHeight: UIConstants.DEFAULT_FOOTER_HEIGHT,
+        headerHeight: UIConstants.DEFAULT_HEADER_HEIGHT,
+        topLoadingBarHeight: UIConstants.AJAX_TOP_LOADING_BAR_HEIGHT
+    });
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const profileInfo: ProfileInfoInterface = useSelector((state: AppState) => state.profile.profileInfo);

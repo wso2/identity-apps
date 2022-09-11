@@ -23,7 +23,8 @@ import {
     ContentLoader,
     DefaultLayout as DefaultLayoutSkeleton,
     TopLoadingBar,
-    useMediaContext
+    useMediaContext,
+    useUIElementSizes
 } from "@wso2is/react-components";
 import React, {
     FunctionComponent,
@@ -42,8 +43,7 @@ import {
     Header,
     ProtectedRoute,
     UIConstants,
-    getDefaultLayoutRoutes,
-    useUIElementSizes
+    getDefaultLayoutRoutes
 } from "../features/core";
 
 /**
@@ -71,7 +71,11 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = (
 
     const dispatch = useDispatch();
     const { isMobileViewport } = useMediaContext();
-    const { headerHeight, footerHeight } = useUIElementSizes();
+    const { headerHeight, footerHeight } = useUIElementSizes({
+        footerHeight: UIConstants.DEFAULT_FOOTER_HEIGHT,
+        headerHeight: UIConstants.DEFAULT_HEADER_HEIGHT,
+        topLoadingBarHeight: UIConstants.AJAX_TOP_LOADING_BAR_HEIGHT
+    });
 
     const alert: AlertInterface = useSelector((state: AppState) => state.global.alert);
     const alertSystem: System = useSelector((state: AppState) => state.global.alertSystem);

@@ -20,14 +20,14 @@ import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, ReferableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { CommonUtils } from "@wso2is/core/utils";
-import { EmphasizedSegment, PageLayout } from "@wso2is/react-components";
+import { EmphasizedSegment, PageLayout, useUIElementSizes } from "@wso2is/react-components";
 import camelCase from "lodash-es/camelCase";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Grid, Menu, Rail, Ref, Sticky } from "semantic-ui-react";
 import { serverConfigurationConfig } from "../../../extensions";
-import { AppState, FeatureConfigInterface, UIConstants, history, useUIElementSizes } from "../../core";
+import { AppState, FeatureConfigInterface, UIConstants, history } from "../../core";
 import { getConnectorCategory } from "../api";
 import { DynamicGovernanceConnector } from "../components";
 import { ServerConfigurationsConstants } from "../constants";
@@ -59,7 +59,11 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
     const pageContextRef = useRef(null);
 
     const { t } = useTranslation();
-    const { headerHeight, footerHeight } = useUIElementSizes();
+    const { headerHeight, footerHeight } = useUIElementSizes({
+        footerHeight: UIConstants.DEFAULT_FOOTER_HEIGHT,
+        headerHeight: UIConstants.DEFAULT_HEADER_HEIGHT,
+        topLoadingBarHeight: UIConstants.AJAX_TOP_LOADING_BAR_HEIGHT
+    });
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
