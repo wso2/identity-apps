@@ -137,7 +137,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
     const [ connectedApps, setConnectedApps ] = useState<string[]>(undefined);
     const [ showDeleteErrorDueToConnectedAppsModal, setShowDeleteErrorDueToConnectedAppsModal ] =
         useState<boolean>(false);
-        const [ loading, setLoading ] = useState(false);
+    const [ loading, setLoading ] = useState(false);
     const [ isAppsLoading, setIsAppsLoading ] = useState(true);
 
     const { t } = useTranslation();
