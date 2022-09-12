@@ -23,74 +23,57 @@ export class UIConstants {
 
     /**
      * Private constructor to avoid object instantiation from outside the class.
-     *
-     * @hideconstructor
      */
     /* eslint-disable @typescript-eslint/no-empty-function */
     private constructor() { }
 
     /**
      * Default header height to be used in state initializations.
-     * @constant
-     * @type {number}
      */
-    public static readonly DEFAULT_HEADER_HEIGHT = 59;
+    public static readonly DEFAULT_HEADER_HEIGHT = 121;
 
     /**
      * Default footer height to be used in state initializations.
-     * @constant
-     * @type {number}
      */
-    public static readonly DEFAULT_FOOTER_HEIGHT = 60;
+    public static readonly DEFAULT_FOOTER_HEIGHT = 50;
 
     /**
      * Constant to handle dashboard layout's desktop content top spacing.
-     * @constant
-     * @type {number}
      */
     public static readonly DASHBOARD_LAYOUT_DESKTOP_CONTENT_TOP_SPACING: number = 0;
 
     /**
      * Interval to dismiss the alerts.
-     * @constant
-     * @type {number}
      */
     public static readonly ALERT_DISMISS_INTERVAL: number = 15;
 
     /**
      * AJAX top loading bar height.
-     * @constant
-     * @type {number}
      */
     public static readonly AJAX_TOP_LOADING_BAR_HEIGHT: number = 3;
 
     /**
      * Default list item size for resources such as applications, IdPs etc.
-     * @type {number}
      */
     public static readonly DEFAULT_RESOURCE_LIST_ITEM_LIMIT: number = 10;
 
     /**
      * Default list item size for resources such as applications, IdPs etc.
-     * @type {number}
      */
     public static readonly DEFAULT_RESOURCE_GRID_ITEM_LIMIT: number = 18;
 
     /**
      * Default overview statistics insights list item limit.
-     * @type {number}
      */
     public static readonly DEFAULT_STATS_LIST_ITEM_LIMIT: number = 5;
 
     /**
      * Default theme of the portal.
-     * @type {string}
      */
     public static readonly DEFAULT_THEME: string = "default";
 
     /**
      * Product Documentation URLs.
-     * @type {Map<string, string>}
      */
     public static readonly IS_DOC_URLS: Map<string, string> = new Map<string, string>()
         .set("5.11.0", "https://is.docs.wso2.com/en/5.11.0/");
@@ -98,8 +81,6 @@ export class UIConstants {
     /**
      * Additional top offset padding for page scrolling placement.
      * This will use along with the header height (appHeaderHeight + thisValues).
-     * @constant
-     * @type {number}
      */
     public static readonly PAGE_SCROLL_TOP_PADDING = 20;
 }

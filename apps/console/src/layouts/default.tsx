@@ -23,7 +23,6 @@ import {
     ContentLoader,
     DefaultLayout as DefaultLayoutSkeleton,
     TopLoadingBar,
-    useMediaContext,
     useUIElementSizes
 } from "@wso2is/react-components";
 import React, {
@@ -70,7 +69,6 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = (
     const { fluid } = props;
 
     const dispatch = useDispatch();
-    const { isMobileViewport } = useMediaContext();
     const { headerHeight, footerHeight } = useUIElementSizes({
         footerHeight: UIConstants.DEFAULT_FOOTER_HEIGHT,
         headerHeight: UIConstants.DEFAULT_HEADER_HEIGHT,
@@ -118,13 +116,13 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = (
             desktopContentTopSpacing={ UIConstants.DASHBOARD_LAYOUT_DESKTOP_CONTENT_TOP_SPACING }
             header={ (
                 <Header
-                    fluid={ !isMobileViewport ? fluid : false }
+                    fluid={ fluid }
                     showSidePanelToggle={ false }
                 />
             ) }
             footer={ (
                 <Footer
-                    fluid={ !isMobileViewport ? fluid : false }
+                    fluid={ fluid }
                 />
             ) }
         >

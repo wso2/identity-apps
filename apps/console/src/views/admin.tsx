@@ -272,7 +272,7 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
             header={ (
                 <Header
                     activeView={ StrictAppViewTypes.MANAGE }
-                    fluid={ !isMobileViewport ? fluid : false }
+                    fluid={ fluid }
                     onSidePanelToggleClick={ handleSidePanelToggleClick }
                 />
             ) }
@@ -286,7 +286,7 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
                     }
                     caretIcon={ getSidePanelMiscIcons().caretRight }
                     desktopContentTopSpacing={ UIConstants.DASHBOARD_LAYOUT_DESKTOP_CONTENT_TOP_SPACING }
-                    fluid={ !isMobileViewport ? fluid : false }
+                    fluid={ fluid }
                     footerHeight={ footerHeight }
                     headerHeight={ headerHeight }
                     hoverType="background"
@@ -301,7 +301,7 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
             ) }
             footer={ (
                 <Footer
-                    fluid={ !isMobileViewport ? fluid : false }
+                    fluid={ fluid }
                 />
             ) }
         >

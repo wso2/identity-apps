@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { FunctionComponent } from "react";
+import { FunctionComponent, ReactNode } from "react";
 import { ReactComponent as AlertIcon } from "../../../themes/default/assets/images/icons/alert-icon.svg";
 import { ReactComponent as ArrowRight } from "../../../themes/default/assets/images/icons/arrow-right-icon.svg";
 import {
@@ -141,26 +141,26 @@ import { ServerConfigurationsConstants } from "../../server-configurations/const
  * Typed interface of {@link getTechnologyLogos}
  */
 interface GetTechnologyLogosInterface {
-    android: FunctionComponent,
-    angular: FunctionComponent,
-    apple: FunctionComponent,
-    cSharp: FunctionComponent,
-    cordova: FunctionComponent,
-    dotNet: FunctionComponent,
-    html: FunctionComponent,
-    ios: FunctionComponent,
-    java: FunctionComponent,
-    javascript: FunctionComponent,
+    android: FunctionComponent | ReactNode,
+    angular: FunctionComponent | ReactNode,
+    apple: FunctionComponent | ReactNode,
+    cSharp: FunctionComponent | ReactNode,
+    cordova: FunctionComponent | ReactNode,
+    dotNet: FunctionComponent | ReactNode,
+    html: FunctionComponent | ReactNode,
+    ios: FunctionComponent | ReactNode,
+    java: FunctionComponent | ReactNode,
+    javascript: FunctionComponent | ReactNode,
     macos: string,
-    nodejs: FunctionComponent,
+    nodejs: FunctionComponent | ReactNode,
     oidc: string,
     openidconnect: string,
-    python: FunctionComponent,
-    react: FunctionComponent,
+    python: FunctionComponent | ReactNode,
+    react: FunctionComponent | ReactNode,
     saml: string,
     scim: string,
-    vue: FunctionComponent,
-    windows: FunctionComponent
+    vue: FunctionComponent | ReactNode,
+    windows: FunctionComponent | ReactNode
 }
 
 /**
@@ -198,26 +198,26 @@ export const getTechnologyLogos = (): GetTechnologyLogosInterface => {
  * Typed interface of {@link getSidePanelIcons}
  */
 export type GetSidePanelIconsInterface = {
-    appLogs: FunctionComponent,
-    applications: FunctionComponent,
-    approvals: FunctionComponent,
-    certificate: FunctionComponent,
-    childIcon: FunctionComponent,
-    claims: FunctionComponent,
-    connections: FunctionComponent,
-    connectors: Record<string, FunctionComponent>,
-    emailTemplates: FunctionComponent,
-    groups: FunctionComponent,
-    identityProviders: FunctionComponent,
-    organization: FunctionComponent,
-    overview: FunctionComponent,
-    remoteFetch: FunctionComponent,
-    roles: FunctionComponent,
-    scopes: FunctionComponent,
-    secrets: FunctionComponent,
-    serverConfigurations: FunctionComponent,
-    userStore: FunctionComponent,
-    users: FunctionComponent
+    appLogs: FunctionComponent | ReactNode,
+    applications: FunctionComponent | ReactNode,
+    approvals: FunctionComponent | ReactNode,
+    certificate: FunctionComponent | ReactNode,
+    childIcon: FunctionComponent | ReactNode,
+    claims: FunctionComponent | ReactNode,
+    connections: FunctionComponent | ReactNode,
+    connectors: Record<string, FunctionComponent | ReactNode>,
+    emailTemplates: FunctionComponent | ReactNode,
+    groups: FunctionComponent | ReactNode,
+    identityProviders: FunctionComponent | ReactNode,
+    organization: FunctionComponent | ReactNode,
+    overview: FunctionComponent | ReactNode,
+    remoteFetch: FunctionComponent | ReactNode,
+    roles: FunctionComponent | ReactNode,
+    scopes: FunctionComponent | ReactNode,
+    secrets: FunctionComponent | ReactNode,
+    serverConfigurations: FunctionComponent | ReactNode,
+    userStore: FunctionComponent | ReactNode,
+    users: FunctionComponent | ReactNode
 };
 
 /**
@@ -264,7 +264,7 @@ export const getSidePanelIcons = (): GetSidePanelIconsInterface => {
  * Typed interface of {@link getSidePanelMiscIcons}
  */
 export type GetSidePanelMiscIconsInterface = {
-    caretRight: FunctionComponent,
+    caretRight: FunctionComponent | ReactNode,
 };
 
 /**
@@ -283,7 +283,7 @@ export const getSidePanelMiscIcons = (): GetSidePanelMiscIconsInterface => {
  * Typed interface of {@link getAdvancedSearchIcons}
  */
 export type GetAdvancedSearchIconsInterface = {
-    clear: FunctionComponent,
+    clear: FunctionComponent | ReactNode,
 };
 
 /**
@@ -302,17 +302,17 @@ export const getAdvancedSearchIcons = (): GetAdvancedSearchIconsInterface  => {
  * Typed interface of {@link getEmptyPlaceholderIllustrations}
  */
 export type GetEmptyPlaceholderIllustrationsInterface = {
-    alert: FunctionComponent,
-    brokenPage: FunctionComponent,
-    createError: FunctionComponent,
-    emptyList: FunctionComponent,
-    emptySearch: FunctionComponent,
-    fileUpload: FunctionComponent,
-    genericError: FunctionComponent,
-    loginError: FunctionComponent,
-    newList: FunctionComponent,
-    pageNotFound: FunctionComponent,
-    search: FunctionComponent
+    alert: FunctionComponent | ReactNode,
+    brokenPage: FunctionComponent | ReactNode,
+    createError: FunctionComponent | ReactNode,
+    emptyList: FunctionComponent | ReactNode,
+    emptySearch: FunctionComponent | ReactNode,
+    fileUpload: FunctionComponent | ReactNode,
+    genericError: FunctionComponent | ReactNode,
+    loginError: FunctionComponent | ReactNode,
+    newList: FunctionComponent | ReactNode,
+    pageNotFound: FunctionComponent | ReactNode,
+    search: FunctionComponent | ReactNode
 };
 
 /**
@@ -341,13 +341,13 @@ export const getEmptyPlaceholderIllustrations = (): GetEmptyPlaceholderIllustrat
  * Typed interface of {@link getOperationIcons}
  */
 export type GetOperationIconsInterface = {
-    darkMode: FunctionComponent,
-    drag: FunctionComponent,
-    keyIcon: FunctionComponent,
-    lightMode: FunctionComponent,
-    maximize: FunctionComponent,
-    minimize: FunctionComponent,
-    openBookIcon: FunctionComponent
+    darkMode: FunctionComponent | ReactNode,
+    drag: FunctionComponent | ReactNode,
+    keyIcon: FunctionComponent | ReactNode,
+    lightMode: FunctionComponent | ReactNode,
+    maximize: FunctionComponent | ReactNode,
+    minimize: FunctionComponent | ReactNode,
+    openBookIcon: FunctionComponent | ReactNode
 };
 
 /**
@@ -372,11 +372,11 @@ export const getOperationIcons = (): GetOperationIconsInterface => {
  * Typed interface of {@link getHelpPanelActionIcons}
  */
 export type GetHelpPanelActionIconsInterface = {
-    caretLeft: FunctionComponent,
-    caretRight: FunctionComponent,
-    close: FunctionComponent,
-    pin: FunctionComponent,
-    unpin: FunctionComponent
+    caretLeft: FunctionComponent | ReactNode,
+    caretRight: FunctionComponent | ReactNode,
+    close: FunctionComponent | ReactNode,
+    pin: FunctionComponent | ReactNode,
+    unpin: FunctionComponent | ReactNode
 };
 
 /**
@@ -399,11 +399,11 @@ export const getHelpPanelActionIcons = (): GetHelpPanelActionIconsInterface => {
  * Typed interface of {@link getCertificateIllustrations}
  */
 export type GetCertificateIllustrationsInterface = {
-    avatar: FunctionComponent,
-    badge: FunctionComponent,
-    file: FunctionComponent,
-    ribbon: FunctionComponent,
-    uploadPlaceholder: FunctionComponent
+    avatar: FunctionComponent | ReactNode,
+    badge: FunctionComponent | ReactNode,
+    file: FunctionComponent | ReactNode,
+    ribbon: FunctionComponent | ReactNode,
+    uploadPlaceholder: FunctionComponent | ReactNode
 };
 
 /**
@@ -426,7 +426,7 @@ export const getCertificateIllustrations = (): GetCertificateIllustrationsInterf
  * Typed interface of {@link getSecretManagementIllustrations}
  */
 export type GetSecretManagementIllustrationsInterface = {
-    editingSecretIcon: FunctionComponent
+    editingSecretIcon: FunctionComponent | ReactNode
 };
 
 /**
@@ -444,7 +444,7 @@ export const getSecretManagementIllustrations = (): GetSecretManagementIllustrat
  * Typed interface of {@link getMiscellaneousIcons}
  */
 export type GetMiscellaneousIconsInterface = {
-    tenantIcon: FunctionComponent
+    tenantIcon: FunctionComponent | ReactNode
 };
 
 /**
@@ -484,8 +484,8 @@ export const AppSwitcherIcons = (): GetAppSwitcherIconsInterface => {
  * Typed interface of {@link getGeneralIcons}
  */
 export type GetGeneralIconsInterface = {
-    crossIcon: FunctionComponent,
-    myAccountSolidIcon: FunctionComponent
+    crossIcon: FunctionComponent | ReactNode,
+    myAccountSolidIcon: FunctionComponent | ReactNode
 };
 
 /**
@@ -505,7 +505,7 @@ export const getGeneralIcons = (): GetGeneralIconsInterface => {
  * Typed interface of {@link getAppHeaderIcons}
  */
 export type GetAppHeaderIconsInterface = {
-    homeIcon: FunctionComponent,
+    homeIcon: FunctionComponent | ReactNode,
 };
 
 /**

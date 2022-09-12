@@ -281,7 +281,7 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
             header={ (
                 <Header
                     activeView={ StrictAppViewTypes.DEVELOP }
-                    fluid={ !isMobileViewport ? fluid : false }
+                    fluid={ fluid }
                     onSidePanelToggleClick={ handleSidePanelToggleClick }
                 />
             ) }
@@ -296,7 +296,7 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
                     }
                     caretIcon={ getSidePanelMiscIcons().caretRight }
                     desktopContentTopSpacing={ UIConstants.DASHBOARD_LAYOUT_DESKTOP_CONTENT_TOP_SPACING }
-                    fluid={ !isMobileViewport ? fluid : false }
+                    fluid={ fluid }
                     footerHeight={ footerHeight }
                     headerHeight={ headerHeight }
                     hoverType="background"
@@ -312,7 +312,7 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
             ) }
             footer={ (
                 <Footer
-                    fluid={ !isMobileViewport ? fluid : false }
+                    fluid={ fluid }
                 />
             ) }
         >
