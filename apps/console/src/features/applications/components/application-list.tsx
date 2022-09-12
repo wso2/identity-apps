@@ -165,6 +165,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingApplication, setDeletingApplication ] = useState<ApplicationListItemInterface>(undefined);
+    const [ loading, setLoading ] = useState(false);
     const [
         isApplicationTemplateRequestLoading,
         setApplicationTemplateRequestLoadingStatus
@@ -218,8 +219,8 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
      *
      * @param appId - Application id.
      */
-    const handleApplicationDelete = (appId: string): void => {
-        deleteApplication(appId)
+    const handleApplicationDelete = (appId: string): Promise<void> => {
+        return deleteApplication(appId)
             .then(() => {
                 dispatch(addAlert({
                     description: t("console:develop.features.applications.notifications.deleteApplication.success" +
@@ -531,6 +532,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
             {
                 deletingApplication && (
                     <ConfirmationModal
+                        primaryActionLoading={ loading }
                         onClose={ (): void => setShowDeleteConfirmationModal(false) }
                         type="negative"
                         open={ showDeleteConfirmationModal }
@@ -543,7 +545,12 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                             setShowDeleteConfirmationModal(false);
                             setAlert(null);
                         } }
-                        onPrimaryActionClick={ (): void => handleApplicationDelete(deletingApplication.id) }
+                        onPrimaryActionClick={ (): void => {
+                            setLoading(true);
+                            handleApplicationDelete(deletingApplication.id).finally(() => {
+                                setLoading(false);
+                            });
+                        } }
                         data-testid={ `${ testId }-delete-confirmation-modal` }
                         closeOnDimmerClick={ false }
                     >

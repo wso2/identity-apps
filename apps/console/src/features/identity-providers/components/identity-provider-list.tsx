@@ -137,6 +137,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
     const [ connectedApps, setConnectedApps ] = useState<string[]>(undefined);
     const [ showDeleteErrorDueToConnectedAppsModal, setShowDeleteErrorDueToConnectedAppsModal ] =
         useState<boolean>(false);
+        const [ loading, setLoading ] = useState(false);
     const [ isAppsLoading, setIsAppsLoading ] = useState(true);
 
     const { t } = useTranslation();
@@ -209,8 +210,8 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
      *
      * @param {string} idpId Identity provider id.
      */
-    const handleIdentityProviderDelete = (idpId: string): void => {
-        deleteIdentityProvider(idpId)
+    const handleIdentityProviderDelete = (idpId: string): Promise<void> => {
+        return deleteIdentityProvider(idpId)
             .then(() => {
                 dispatch(addAlert({
                     description: t("console:develop.features.idp.notifications.deleteIDP.success.description"),
@@ -430,6 +431,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
             {
                 deletingIDP && (
                     <ConfirmationModal
+                        primaryActionLoading={ loading }
                         onClose={ (): void => setShowDeleteConfirmationModal(false) }
                         type="negative"
                         open={ showDeleteConfirmationModal }
@@ -440,9 +442,12 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                         primaryAction={ t("common:confirm") }
                         secondaryAction={ t("common:cancel") }
                         onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
-                        onPrimaryActionClick={
-                            (): void => handleIdentityProviderDelete(deletingIDP.id)
-                        }
+                        onPrimaryActionClick={ (): void => {
+                            setLoading(true);
+                            handleIdentityProviderDelete(deletingIDP.id).finally(() => {
+                                setLoading(false);
+                            });
+                        } }
                         data-testid={ `${ testId }-delete-confirmation-modal` }
                         closeOnDimmerClick={ false }
                     >

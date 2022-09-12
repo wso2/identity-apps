@@ -392,9 +392,9 @@ export const ConfirmationModal: FunctionComponent<ConfirmationModalPropsInterfac
                                         data-testid={ testId + "-confirm-button" }
                                         className={ `${ type } ${ primaryActionFluid ? "fluid" : "" }` }
                                         disabled={
-                                            primaryActionLoading || !skipAssertion
+                                            primaryActionLoading || (!skipAssertion
                                                 ? !(!assertionType || confirmed)
-                                                : false
+                                                : false)
                                         }
                                         onClick={ handlePrimaryActionClick }
                                         fluid={ primaryActionFluid }
