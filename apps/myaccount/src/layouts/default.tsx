@@ -24,7 +24,6 @@ import {
     DefaultLayout as DefaultLayoutSkeleton,
     Media,
     TopLoadingBar,
-    useMediaContext,
     useUIElementSizes
 } from "@wso2is/react-components";
 import React, {
@@ -66,7 +65,6 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = (
     const { fluid } = props;
 
     const dispatch = useDispatch();
-    const { isMobileViewport } = useMediaContext();
     const { headerHeight, footerHeight } = useUIElementSizes({
         footerHeight: UIConstants.DEFAULT_FOOTER_HEIGHT,
         headerHeight: UIConstants.DEFAULT_HEADER_HEIGHT,
