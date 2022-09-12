@@ -28,6 +28,10 @@ export interface useMediaContextInterface {
      */
      isMobileViewport?: boolean;
     /**
+     * Is the viewport tablet.
+     */
+     isTabletViewport?: boolean;
+    /**
      * Finds the breakpoint that matches the given width.
      */
      findBreakpointAtWidth?: CreateMediaResults<BreakpointKey, unknown>[ "findBreakpointAtWidth" ];
@@ -56,9 +60,14 @@ export const useMediaContext = (): useMediaContextInterface => {
         return findBreakpointAtWidth(width) === "mobile" || findBreakpointAtWidth(width) === undefined;
     }, [ width ]);
 
+    const isTabletViewport = useMemo(() => {
+        return findBreakpointAtWidth(width) === "tablet";
+    }, [ width ]);
+
     return {
         findBreakpointAtWidth,
         findBreakpointsForWidths,
-        isMobileViewport
+        isMobileViewport,
+        isTabletViewport
     };
 };
