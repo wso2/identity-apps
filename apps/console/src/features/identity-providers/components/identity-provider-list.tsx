@@ -232,7 +232,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
     /**
      * Resolve the relevant placeholder.
      *
-     * @returs Placeholder.
+     * @returns Placeholder.
      */
     const showPlaceholders = (): ReactElement => {
         // When the search returns empty.
@@ -365,7 +365,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
     /**
      * Resolves data table actions.
      *
-     * @return Data Table Actions.
+     * @returns Data Table Actions.
      */
     const resolveTableActions = (): TableActionsInterface[] => {
         if (!showListItemActions) {
