@@ -83,8 +83,8 @@ interface IdentityProviderListPropsInterface extends LoadableComponentInterface,
     onIdentityProviderDelete?: () => void;
     /**
      * On list item select callback.
-     * @param {React.SyntheticEvent} event - Click event.
-     * @param {IdentityProviderInterface} idp - Selected IDP
+     * @param event - Click event.
+     * @param idp - Selected IDP
      */
     onListItemClick?: (event: SyntheticEvent, idp: IdentityProviderInterface) => void;
     /**
@@ -108,8 +108,8 @@ interface IdentityProviderListPropsInterface extends LoadableComponentInterface,
 /**
  * Identity provider list component.
  *
- * @param {IdentityProviderListPropsInterface} props Props injected to the component.
- * @return {React.ReactElement}
+ * @param props - Props injected to the component.
+ * @returns Identity Provider List component.
  */
 export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsInterface> = (
     props: IdentityProviderListPropsInterface
@@ -148,7 +148,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
     /**
      * Redirects to the identity provider edit page when the edit button is clicked.
      *
-     * @param {string} idpId Identity provider id.
+     * @param idpId - Identity provider id.
      */
     const handleIdentityProviderEdit = (idpId: string): void => {
         history.push(AppConstants.getPaths().get("IDP_EDIT").replace(":id", idpId));
@@ -157,7 +157,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
     /**
      * Deletes an identity provider when the delete identity provider button is clicked.
      *
-     * @param {string} idpId Identity provider id.
+     * @param idpId - Identity provider id.
      */
     const handleIdentityProviderDeleteAction = (idpId: string): void => {
 
@@ -208,7 +208,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
     /**
      * Deletes an identity provider when the delete identity provider button is clicked.
      *
-     * @param {string} idpId Identity provider id.
+     * @param idpId - Identity provider id.
      */
     const handleIdentityProviderDelete = (idpId: string): Promise<void> => {
         return deleteIdentityProvider(idpId)
@@ -232,7 +232,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
     /**
      * Resolve the relevant placeholder.
      *
-     * @return {React.ReactElement}
+     * @returs Placeholder.
      */
     const showPlaceholders = (): ReactElement => {
         // When the search returns empty.
@@ -285,7 +285,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
     /**
      * Resolves data table columns.
      *
-     * @return {TableColumnInterface[]}
+     * @returns Data Table Columns.
      */
     const resolveTableColumns = (): TableColumnInterface[] => {
         return [
@@ -365,7 +365,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
     /**
      * Resolves data table actions.
      *
-     * @return {TableActionsInterface[]}
+     * @return Data Table Actions.
      */
     const resolveTableActions = (): TableActionsInterface[] => {
         if (!showListItemActions) {

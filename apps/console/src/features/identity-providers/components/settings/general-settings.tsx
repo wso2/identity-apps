@@ -105,8 +105,8 @@ interface GeneralSettingsInterface extends TestableComponentInterface {
 /**
  * Component to edit general details of the identity provider.
  *
- * @param {GeneralSettingsInterface} props - Props injected to the component.
- * @return {ReactElement}
+ * @param props - Props injected to the component.
+ * @returns General Settings component.
  */
 export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
     props: GeneralSettingsInterface
@@ -235,7 +235,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
     /**
      * Handles form submit action.
      *
-     * @param {IdentityProviderInterface} updatedDetails - Form values.
+     * @param updatedDetails - Form values.
      */
     const handleFormSubmit = (updatedDetails: IdentityProviderInterface): void => {
         setIsSubmitting(true);
