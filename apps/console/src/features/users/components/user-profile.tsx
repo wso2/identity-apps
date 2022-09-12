@@ -131,6 +131,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const profileSchemas: ProfileSchemaInterface[] = useSelector((state: AppState) => state.profile.profileSchemas);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const authenticatedUser: string = useSelector((state: AppState) => state?.auth?.username);
+    const isPrivilegedUser: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
 
     const [ profileInfo, setProfileInfo ] = useState(new Map<string, string>());
     const [ profileSchema, setProfileSchema ] = useState<ProfileSchemaInterface[]>();
@@ -1070,7 +1071,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 )
                             }
                             {
-                                adminUserType === AdminAccountTypes.INTERNAL && (
+                                !isPrivilegedUser && adminUserType === AdminAccountTypes.INTERNAL && (
                                     <DangerZone
                                         data-testid={ `${ testId }-revoke-admin-privilege-danger-zone` }
                                         actionTitle={ t("console:manage.features.user.editUser.dangerZoneGroup." +

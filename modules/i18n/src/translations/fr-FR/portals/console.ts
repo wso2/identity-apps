@@ -1993,7 +1993,12 @@ export const console: ConsoleNS = {
                             },
                             certificates: {
                                 disabledPopup: "Assurez-vous que la validation de la signature de la " +
-                                    "demande et le chiffrement des assertions sont désactivés pour continuer."
+                                    "demande et le chiffrement des assertions sont désactivés pour continuer.",
+                                certificateRemoveConfirmation: {
+                                    header: "Supprimer le certificat actuel?",
+                                    content: "Définir le type de certificat sur aucun supprimera le certificat " +
+                                        "actuel fourni pour cette application. Procéder avec prudence."
+                                }
                             },
                             encryption: {
                                 fields: {
