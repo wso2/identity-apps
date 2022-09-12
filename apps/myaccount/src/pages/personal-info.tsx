@@ -87,7 +87,7 @@ const PersonalInfoPage:  FunctionComponent<PersonalInfoPagePropsInterface> = (
             setIsNonLocalCredentialUser(true);
         }
 
-    }, [profileDetails?.profileInfo]);
+    }, [ profileDetails?.profileInfo ]);
 
 
     return (

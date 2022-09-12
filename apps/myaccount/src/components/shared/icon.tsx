@@ -34,7 +34,7 @@ interface ThemeIconProps {
     rounded?: boolean;
     size?: ThemeIconSizes;
     spaced?: "left" | "right";
-    style?: object;
+    style?: Record<string, unknown>;
     square?: boolean;
     transparent?: boolean;
     twoTone?: boolean;

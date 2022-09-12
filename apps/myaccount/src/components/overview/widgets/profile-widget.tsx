@@ -24,7 +24,7 @@ import { Progress } from "semantic-ui-react";
 import { getWidgetIcons } from "../../../configs";
 import { AppConstants, CommonConstants, UIConstants } from "../../../constants";
 import { history } from "../../../helpers";
-import { ConfigReducerStateInterface, ProfileCompletion, ProfileCompletionStatus, UserSession } from "../../../models";
+import { ConfigReducerStateInterface, ProfileCompletion, ProfileCompletionStatus } from "../../../models";
 import { AppState } from "../../../store";
 import { CommonUtils } from "../../../utils";
 import { SettingsSection } from "../../shared";

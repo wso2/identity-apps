@@ -89,6 +89,7 @@ export const useUIElementSizes = (props: UIElementSizesHookArgsInterface): UIEle
     // Tracked here: https://github.com/wso2/product-is/issues/12726#issuecomment-954835957
     return {
         headerHeight,
+        // eslint-disable-next-line sort-keys
         footerHeight
     };
 };

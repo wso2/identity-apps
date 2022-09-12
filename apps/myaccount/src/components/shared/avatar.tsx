@@ -44,7 +44,7 @@ export interface AvatarProps extends TestableComponentInterface {
     showTopLabel?: boolean;
     size?: AvatarSizes;
     spaced?: "left" | "right";
-    style?: object;
+    style?: Record<string, unknown>;
     transparent?: boolean;
 }
 

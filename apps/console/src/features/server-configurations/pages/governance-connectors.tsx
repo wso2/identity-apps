@@ -46,9 +46,8 @@ type GovernanceConnectorWithRef = GovernanceConnectorInterface & ReferableCompon
 /**
  * Governance connectors page.
  *
- * @param {GovernanceConnectorsPageInterface} props - Props injected to the component.
- *
- * @return {React.ReactElement}
+ * @param props - Props injected to the component.
+ * @returns Governance connectors page.
  */
 export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPageInterface> = (
     props: GovernanceConnectorsPageInterface
