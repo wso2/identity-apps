@@ -19,6 +19,7 @@
 import { AppThemeConfigInterface } from "@wso2is/core/models";
 import { StringUtils } from "@wso2is/core/utils";
 import { identityProviderConfig } from "../../../extensions/configs";
+import { GovernanceConnectorUtils } from "../../server-configurations";
 
 /**
  * Class containing app constants.
@@ -319,6 +320,30 @@ export class AppConstants {
             .set("ADMINISTRATORS", `${AppConstants.getAdminViewBasePath()}/administrators`);
     }
 
+     /**
+     * Filter governance connectors for the side panel for a sub organization.
+     * @param {Object[]} governanceConnectorCategories - List of governance connector categories to evaluate.
+     * 
+     * @return {Object[]} Filtered governance connector categories.
+     */
+    public static filterGoverananceConnectors(governanceConnectorCategories: any[]) {
+        const showGovernanceConnectorsIdOfSuborgs = [];
+
+        GovernanceConnectorUtils.SHOW_GOVERNANCE_CONNECTORS_FOR_SUBORGS
+            .forEach(connector => {
+                showGovernanceConnectorsIdOfSuborgs.push(connector.id);
+            });
+
+        for (let i = governanceConnectorCategories.length-1; i >=0 ; i--) {
+            const connector = governanceConnectorCategories[i];
+            if(!showGovernanceConnectorsIdOfSuborgs.includes(connector.id)) {
+                governanceConnectorCategories.splice(i,1);
+            }
+        }
+
+        return governanceConnectorCategories;
+    }
+
     /**
      * Name of the app config file for the admin portal.
      * @constant
@@ -358,7 +383,9 @@ export class AppConstants {
         "organizations",
         "groups",
         "organization-roles",
-        "applications"
+        "applications",
+        "emailTemplates",
+        "governanceConnectors"
     ];
 
     /**

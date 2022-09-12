@@ -40,7 +40,7 @@ export class OrganizationUtils {
     }
 
     /**
-     * Returns true if the current organization is teh root organization.
+     * Returns true if the current organization is the root organization.
      *
      * @returns {boolean}
      */

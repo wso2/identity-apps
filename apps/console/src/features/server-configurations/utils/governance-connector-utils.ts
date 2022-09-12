@@ -60,8 +60,8 @@ export class GovernanceConnectorUtils {
                 if (error.response && error.response.data && error.response.data.detail) {
                     store.dispatch(addAlert({
                         description: I18n.instance.t("console:manage.features.governanceConnectors.notifications." +
-                            "getConnectorCategories.error.description", 
-                        { description: error.response.data.description }),
+                            "getConnectorCategories.error.description",
+                            { description: error.response.data.description }),
                         level: AlertLevels.ERROR,
                         message: I18n.instance.t("console:manage.features.governanceConnectors.notifications." +
                             "getConfigurations.error.message")
@@ -86,4 +86,21 @@ export class GovernanceConnectorUtils {
     public static decodeConnectorPropertyName(name: string): string {
         return name.split("-").join(".");
     }
+
+    /**
+     * Governance connectors and their sub categories that will be visible in a sub organization
+     */
+    public static readonly SHOW_GOVERNANCE_CONNECTORS_FOR_SUBORGS = [
+        {
+            connectors: [
+                {
+                    friendlyName: "Account Recovery",
+                    id: "YWNjb3VudC1yZWNvdmVyeQ",
+                    name: "account-recovery"
+                }
+            ],
+            id: "QWNjb3VudCBNYW5hZ2VtZW50",
+            name: "Account Management"
+        }
+    ]
 }

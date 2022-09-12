@@ -130,7 +130,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const governanceConnectorCategories: GovernanceConnectorCategoryInterface[] = useSelector(
+    let governanceConnectorCategories: GovernanceConnectorCategoryInterface[] = useSelector(
         (state: AppState) => state.governanceConnector.categories);
     const filteredManageRoutes: RouteInterface[] = useSelector(
         (state: AppState) => state.routes.manageRoutes.filteredRoutes
@@ -555,6 +555,10 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
         const manageRoutes = [ ...filteredManageRoutes ];
         const sanitizedRoutes = [ ...sanitizedManageRoutes ];
 
+        if(!OrganizationUtils.isCurrentOrganizationRoot()){
+            governanceConnectorCategories = AppConstants.filterGoverananceConnectors(governanceConnectorCategories);
+        }
+
         serverConfigurationConfig.showConnectorsOnTheSidePanel &&
                 governanceConnectorCategories?.map((category: GovernanceConnectorCategoryInterface, index: number) => {
                     let subCategoryExists = false;
@@ -619,8 +623,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                         featureConfig.governanceConnectors,
                         featureConfig.governanceConnectors.scopes.read,
                         allowedScopes
-                    ) &&
-                    OrganizationUtils.isCurrentOrganizationRoot()
+                    ) 
                 )
             ) {
                 GovernanceConnectorUtils.getGovernanceConnectors();
