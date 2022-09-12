@@ -18,14 +18,22 @@
 
 import { createMedia } from "@artsy/fresnel";
 
+export const BREAKPOINTS: {
+    computer: number;
+    largeScreen: number;
+    mobile: number;
+    tablet: number;
+    widescreen: number;
+} = {
+    computer: 992,
+    largeScreen: 1200,
+    mobile: 320,
+    tablet: 768,
+    widescreen: 1920
+};
+
 export const AppMedia: any = createMedia({
-    breakpoints: {
-        computer: 992,
-        largeScreen: 1200,
-        mobile: 320,
-        tablet: 768,
-        widescreen: 1920
-    }
+    breakpoints: BREAKPOINTS
 });
 
 export const mediaStyle = AppMedia.createMediaStyle();
