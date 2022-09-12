@@ -122,7 +122,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
 
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ listSortingStrategy, setListSortingStrategy ] = useState<DropdownItemProps>(
-        APPLICATIONS_LIST_SORTING_OPTIONS[ 0 ]
+        APPLICATIONS_LIST_SORTING_OPTIONS[0]
     );
     const [ listOffset, setListOffset ] = useState<number>(0);
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
@@ -140,7 +140,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
         isLoading: isApplicationListFetchRequestLoading,
         error: applicationListFetchRequestError,
         mutate: mutateApplicationListFetchRequest
-    } = useApplicationList("advancedConfigurations,templateId", listItemLimit, listOffset, searchQuery);
+    } = useApplicationList("advancedConfigurations,templateId,clientId,issuer", listItemLimit, listOffset, searchQuery);
 
     /**
      * Sets the initial spinner.
@@ -348,7 +348,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                             } }
                             data-testid={ `${ testId }-list-layout-add-button` }
                         >
-                            <Icon name="add"/>
+                            <Icon name="add" />
                             { t("console:develop.features.applications.list.actions.add") }
                         </PrimaryButton>
                     </Show>
@@ -368,7 +368,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
             contentTopMargin={ (AppConstants.getTenant() === AppConstants.getSuperTenant()) }
             data-testid={ `${ testId }-page-layout` }
         >
-            { !isLoadingForTheFirstTime? (
+            { !isLoadingForTheFirstTime ? (
                 <>
                     { renderTenantedMyAccountLink() }
                     { /* renderRemoteFetchStatus() */ }
@@ -403,10 +403,10 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                                 }
                                 filterValuePlaceholder={
                                     t("console:develop.features.applications.advancedSearch.form.inputs.filterValue" +
-                                    ".placeholder")
+                                        ".placeholder")
                                 }
                                 placeholder={ t("console:develop.features.applications.advancedSearch.placeholder") }
-                                style={ { minWidth: "430px" } }
+                                style={ { minWidth: "425px" } }
                                 defaultSearchAttribute="name"
                                 defaultSearchOperator="co"
                                 predefinedDefaultSearchStrategy={
@@ -424,11 +424,11 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                         showPagination={ true }
                         showTopActionPanel={
                             isApplicationListFetchRequestLoading
-                        || !(!searchQuery && applicationList?.totalResults <= 0) }
+                            || !(!searchQuery && applicationList?.totalResults <= 0) }
                         sortOptions={ APPLICATIONS_LIST_SORTING_OPTIONS }
                         sortStrategy={ listSortingStrategy }
                         totalPages={ Math.ceil(applicationList?.totalResults / listItemLimit) }
-                        totalListSize={ applicationList?.totalResults  }
+                        totalListSize={ applicationList?.totalResults }
                         paginationOptions={ {
                             disableNextButton: !shouldShowNextPageNavigation(applicationList)
                         } }
@@ -457,20 +457,20 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                                     ] }
                                     filterAttributePlaceholder={
                                         t("console:develop.features.applications.advancedSearch." +
-                                        "form.inputs.filterAttribute.placeholder")
+                                            "form.inputs.filterAttribute.placeholder")
                                     }
                                     filterConditionsPlaceholder={
                                         t("console:develop.features.applications.advancedSearch." +
-                                        "form.inputs.filterCondition.placeholder")
+                                            "form.inputs.filterCondition.placeholder")
                                     }
                                     filterValuePlaceholder={
                                         t("console:develop.features.applications.advancedSearch." +
-                                        "form.inputs.filterValue.placeholder")
+                                            "form.inputs.filterValue.placeholder")
                                     }
                                     placeholder={
                                         t("console:develop.features.applications.advancedSearch.placeholder")
                                     }
-                                    style={ { minWidth: "430px" } }
+                                    style={ { minWidth: "425px" } }
                                     defaultSearchAttribute="name"
                                     defaultSearchOperator="co"
                                     predefinedDefaultSearchStrategy={
@@ -508,7 +508,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                             addProtocol={ false }
                             templateLoadingStrategy={
                                 config.ui.applicationTemplateLoadingStrategy
-                            ?? ApplicationManagementConstants.DEFAULT_APP_TEMPLATE_LOADING_STRATEGY
+                                ?? ApplicationManagementConstants.DEFAULT_APP_TEMPLATE_LOADING_STRATEGY
                             }
                         />
                     ) }

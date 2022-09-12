@@ -34,6 +34,8 @@ export interface ApplicationBasicInterface {
     name: string;
     description?: string;
     accessUrl?: string;
+    clientId?: string;
+    issuer?: string;
     templateId?: string;
     isManagementApp?: boolean;
     advancedConfigurations?: AdvancedConfigurationsInterface;

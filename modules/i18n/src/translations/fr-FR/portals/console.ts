@@ -2388,7 +2388,7 @@ export const console: ConsoleNS = {
                     columns: {
                         actions: "",
                         name: "Nom",
-                        templateId: "taper"
+                        inboundKey: "Clé entrante"
                     },
                     labels: {
                         fragment: "Fragmenter App"

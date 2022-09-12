@@ -1007,7 +1007,7 @@ export interface ConsoleNS {
                     columns: {
                         actions: string;
                         name: string;
-                        templateId: string;
+                        inboundKey: string;
                     };
                     actions: {
                         add: string;
