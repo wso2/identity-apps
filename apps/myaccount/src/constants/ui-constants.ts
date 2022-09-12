@@ -79,5 +79,5 @@ export class UIConstants extends CommonUIConstants {
     /**
      * Constant to handle dashboard layout's desktop content top spacing.
      */
-    public static readonly DASHBOARD_LAYOUT_DESKTOP_CONTENT_TOP_SPACING: number = 0;
+    public static readonly DASHBOARD_LAYOUT_DESKTOP_CONTENT_TOP_SPACING: number = 50;
 }
