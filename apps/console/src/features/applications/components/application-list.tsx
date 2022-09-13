@@ -274,13 +274,13 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                      */
 
                     // Create a set with custom-application Ids.
-                    const customApplicationIds = new Set([
+                    const customApplicationIds: Set<string> = new Set([
                         ApplicationManagementConstants.CUSTOM_APPLICATION_SAML,
                         ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC,
                         ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS
                     ]);
 
-                    let templateDisplayName = "";
+                    let templateDisplayName: string = "";
 
                     // Checking whether the templateId from backend, is for a custom application.
                     if (customApplicationIds.has(app.templateId)) {
@@ -291,7 +291,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                                 return template.id === ApplicationManagementConstants.CUSTOM_APPLICATION;
                             }).name;
                     } else {
-                        const templateGroupId = applicationTemplates
+                        const templateGroupId: string = applicationTemplates
                             && applicationTemplates instanceof Array
                             && applicationTemplates.length > 0
                             && applicationTemplates.find((template) => {
@@ -365,8 +365,8 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                 id: "inboundKey",
                 key: "inboundKey",
                 render: (app: ApplicationListItemInterface): ReactNode => {
-                    let inboundAuthKey = "";
-                    let inboundAuthType = "";
+                    let inboundAuthKey: string = "";
+                    let inboundAuthType: string = "";
 
                     if (app.clientId) {
                         inboundAuthKey = app.clientId;
