@@ -98,18 +98,9 @@ export class GovernanceConnectorUtils {
                     id: "YWNjb3VudC1yZWNvdmVyeQ",
                     name: "account-recovery",
                     properties: [
-                        {
-                            displayName: "Notification based password recovery",
-                            name: "Recovery.Notification.Password.Enable"
-                        },
-                        {
-                            displayName: "Username recovery",
-                            name: "Recovery.Notification.Username.Enable"
-                        },
-                        {
-                            displayName: "Manage notifications sending internally",
-                            name: "Recovery.Notification.InternallyManage"
-                        }
+                        "Recovery.Notification.Password.Enable", // Notification based password recovery
+                        "Recovery.Notification.Username.Enable", // Username recovery
+                        "Recovery.Notification.InternallyManage" // Manage notifications sending internally
                     ]
                 }
             ],
@@ -143,15 +134,52 @@ export class GovernanceConnectorUtils {
         });
 
         for (let i = governanceConnectors.length - 1; i >= 0; i--) {
-            const connector = governanceConnectors[i];
-            if (!showGovernanceConnectorsIdOfSuborgs.includes(connector.id)) {
+            if (!showGovernanceConnectorsIdOfSuborgs.includes(governanceConnectors[i].id)) {
                 governanceConnectors.splice(i, 1);
+            } else {
+                const showProperties = this.getGovernanceConnectorsProperties(governanceCategoryId,
+                    governanceConnectors[i].id);
+
+                for (let j = governanceConnectors[i].properties.length - 1; j >= 0; j--) {
+                    if (!showProperties.includes(governanceConnectors[i].properties[j].name)) {
+                        governanceConnectors[i].properties.splice(j, 1);
+                    }
+                }
             }
         }
 
-        console.log(governanceConnectors);
-
         return governanceConnectors;
+
+    }
+
+     /**
+     * Get governance connector properties for a given connector.
+     * @param {string} governanceCategoryId - Category id of the governance connector.
+     * @param {string} governanceConnectorId - Connector id.
+     * 
+     * @return {sttring[]} governance connector properties.
+     */
+    private static getGovernanceConnectorsProperties
+        (governanceCategoryId: string, governanceConnectorId: string) {
+        let showGovernanceConnectors = [];
+
+        for (let i = 0; i < this.SHOW_GOVERNANCE_CONNECTORS_FOR_SUBORGS.length; i++) {
+            if (governanceCategoryId === this.SHOW_GOVERNANCE_CONNECTORS_FOR_SUBORGS[i].id) {
+                showGovernanceConnectors = this.SHOW_GOVERNANCE_CONNECTORS_FOR_SUBORGS[i].connectors;
+                break;
+            }
+        }
+
+        let showProperties = [];
+
+        for (let i = 0; i < showGovernanceConnectors.length; i++) {
+            if (governanceConnectorId === showGovernanceConnectors[i].id) {
+                showProperties = showGovernanceConnectors[i].properties;
+                break;
+            }
+        }
+
+        return showProperties;
 
     }
 }
