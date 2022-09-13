@@ -210,8 +210,10 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
      *
      * @param idpId - Identity provider id.
      */
-    const handleIdentityProviderDelete = (idpId: string): Promise<void> => {
-        return deleteIdentityProvider(idpId)
+    const handleIdentityProviderDelete = (idpId: string): void => {
+
+        setLoading(true);
+        deleteIdentityProvider(idpId)
             .then(() => {
                 dispatch(addAlert({
                     description: t("console:develop.features.idp.notifications.deleteIDP.success.description"),
@@ -223,6 +225,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                 handleIDPDeleteError(error);
             })
             .finally(() => {
+                setLoading(false);
                 setShowDeleteConfirmationModal(false);
                 setDeletingIDP(undefined);
                 onIdentityProviderDelete();
@@ -442,12 +445,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                         primaryAction={ t("common:confirm") }
                         secondaryAction={ t("common:cancel") }
                         onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
-                        onPrimaryActionClick={ (): void => {
-                            setLoading(true);
-                            handleIdentityProviderDelete(deletingIDP.id).finally(() => {
-                                setLoading(false);
-                            });
-                        } }
+                        onPrimaryActionClick={ (): void => handleIdentityProviderDelete(deletingIDP.id) }
                         data-testid={ `${ testId }-delete-confirmation-modal` }
                         closeOnDimmerClick={ false }
                     >

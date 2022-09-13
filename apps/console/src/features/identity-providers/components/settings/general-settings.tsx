@@ -213,8 +213,10 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
     /**
      * Deletes an identity provider.
      */
-    const handleIdentityProviderDelete = (): Promise<void> => {
-        return deleteIdentityProvider(editingIDP.id)
+    const handleIdentityProviderDelete = (): void => {
+
+        setLoading(true);
+        deleteIdentityProvider(editingIDP.id)
             .then(() => {
                 dispatch(addAlert({
                     description: t("console:develop.features.authenticationProvider.notifications.deleteIDP." +
@@ -229,6 +231,9 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
             })
             .catch((error) => {
                 handleIDPDeleteError(error);
+            })
+            .finally(() => {
+                setLoading(false);
             });
     };
 
@@ -364,12 +369,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                                 primaryAction={ t("common:confirm") }
                                 secondaryAction={ t("common:cancel") }
                                 onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
-                                onPrimaryActionClick={ (): void => {
-                                    setLoading(true);
-                                    handleIdentityProviderDelete().finally(() => {
-                                        setLoading(false);
-                                    });
-                                } }
+                                onPrimaryActionClick={ (): void => handleIdentityProviderDelete() }
                                 data-testid={ `${ testId }-delete-idp-confirmation` }
                                 closeOnDimmerClick={ false }
                             >

@@ -219,8 +219,10 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
      *
      * @param appId - Application id.
      */
-    const handleApplicationDelete = (appId: string): Promise<void> => {
-        return deleteApplication(appId)
+    const handleApplicationDelete = (appId: string): void => {
+
+        setLoading(true);
+        deleteApplication(appId)
             .then(() => {
                 dispatch(addAlert({
                     description: t("console:develop.features.applications.notifications.deleteApplication.success" +
@@ -251,6 +253,9 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                     message: t("console:develop.features.applications.notifications.deleteApplication.genericError" +
                         ".message")
                 }));
+            })
+            .finally(() => {
+                setLoading(false);
             });
     };
 
@@ -545,12 +550,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                             setShowDeleteConfirmationModal(false);
                             setAlert(null);
                         } }
-                        onPrimaryActionClick={ (): void => {
-                            setLoading(true);
-                            handleApplicationDelete(deletingApplication.id).finally(() => {
-                                setLoading(false);
-                            });
-                        } }
+                        onPrimaryActionClick={ (): void => handleApplicationDelete(deletingApplication.id) }
                         data-testid={ `${ testId }-delete-confirmation-modal` }
                         closeOnDimmerClick={ false }
                     >
