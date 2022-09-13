@@ -44,7 +44,7 @@ export const useEndUserSession = (): () => Promise<boolean> => {
 /**
  * Checks if the logged in user has login scope.
  *
- * @return {boolean}
+ * @returns boolean
  */
 export const hasLoginPermission = (): boolean => {
     const scopes = store.getState().authenticate.scope.split(" ");
@@ -55,7 +55,7 @@ export const hasLoginPermission = (): boolean => {
 /**
  * Checks if the logged in user has a specific scope.
  *
- * @return {boolean}
+ * @returns boolean
  */
 export const hasScope = (scope: string): boolean => {
     const scopes = store.getState().authenticationInformation.scope;
@@ -68,7 +68,7 @@ export const hasScope = (scope: string): boolean => {
  * So, an attacker can't obtain the token by sending a request to their endpoint. This is mandatory
  * when the storage is set to Web Worker.
  *
- * @return {string[]}
+ * @returns string[]
  */
 const resolveBaseUrls = (): string[] => {
     let baseUrls = window["AppUtils"]?.getConfig().idpConfigs?.baseUrls;
@@ -108,7 +108,7 @@ const resolveStorage = (): Storage => {
 /**
  * Generates the initialize config.
  *
- * @returns {AuthSPAClientConfig} Initialize Config.
+ * @returns AuthSPAClientConfig Initialize Config.
  */
 export const getAuthInitializeConfig = (): AuthReactConfig => {
     const responseModeFallback: ResponseMode =

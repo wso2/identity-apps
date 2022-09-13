@@ -34,7 +34,6 @@ export class AuthenticateUtils {
      * Private constructor to avoid object instantiation from outside
      * the class.
      *
-     * @hideconstructor
      */
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     private constructor() {}
@@ -74,7 +73,7 @@ export class AuthenticateUtils {
     /**
      * Determines what storage type should be used to store session information.
      *
-     * @returns {Storage}
+     * @returns Storage
      */
     public static resolveStorage(): Storage {
 
@@ -100,7 +99,7 @@ export class AuthenticateUtils {
      * So, an attacker can't obtain the token by sending a request to their endpoint. This is mandatory
      * when the storage is set to Web Worker.
      *
-     * @return {string[]}
+     * @returns string[]
      */
     public static resolveBaseUrls(): string[] {
         let baseUrls = window["AppUtils"]?.getConfig()?.idpConfigs?.baseUrls;
@@ -121,9 +120,9 @@ export class AuthenticateUtils {
     /**
      * Resolves IDP URLs when the tenant resolves. Returns
      *
-     * @param {string} originalURL - Original URL.
-     * @param {string} overriddenURL - Overridden URL from config.
-     * @return {string}
+     * @param originalURL - Original URL.
+     * @param overriddenURL - Overridden URL from config.
+     * @returns string
      */
     public static resolveIdpURLSAfterTenantResolves(originalURL: string, overriddenURL: string): string {
         const parsedOriginalURL: URL = new URL(originalURL);
