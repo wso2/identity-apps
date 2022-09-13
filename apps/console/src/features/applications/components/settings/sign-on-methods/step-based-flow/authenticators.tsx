@@ -320,9 +320,6 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                             imageSize="micro"
                             className={ authenticatorCardClasses }
                             header={
-                                AuthenticatorMeta.getAuthenticatorDisplayName(
-                                    authenticator.defaultAuthenticator.authenticatorId
-                                ) ||
                                 authenticator.displayName ||
                                 defaultName
                             }
