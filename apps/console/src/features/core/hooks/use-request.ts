@@ -10,6 +10,7 @@
 import { AsgardeoSPAClient } from "@asgardeo/auth-react";
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import useSWR, { SWRConfiguration, SWRResponse } from "swr";
+import { store } from "../store";
 
 const httpClient = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
 
@@ -121,7 +122,13 @@ export default function useRequest<Data = unknown, Error = unknown>(
                 headers: {},
                 status: 200,
                 statusText: "InitialData"
-            }
+            },
+            shouldRetryOnError: (error) => {
+                // Skip request id for retrieving My Account portal status and retrying if the API is returning 404:
+                if ( request.url.includes(store.getState().config.endpoints.myAccountConfigMgt)
+                    && error.response.status === 404 ) return false
+                return true
+              }
         }
     );
 

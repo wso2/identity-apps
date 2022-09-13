@@ -83,7 +83,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             accountLocking: "",
             accountRecovery: "",
             applications: "",
-            configMgt: "",
+            myAccountConfigMgt: "",
             authenticatorTags: "",
             authenticators: "",
             bulk: "",

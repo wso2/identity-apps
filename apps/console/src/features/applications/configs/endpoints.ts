@@ -28,6 +28,6 @@ export const getApplicationsResourceEndpoints = (serverHost: string): Applicatio
     return {
         applications: `${ serverHost }/api/server/v1/applications`,
         requestPathAuthenticators: `${ serverHost }/api/server/v1/configs/authenticators?type=REQUEST_PATH`,
-        configMgt: `${ serverHost }/api/identity/config-mgt/v1.0`
+        myAccountConfigMgt: `${ serverHost }/api/identity/config-mgt/v1.0/resource/myaccount`
     };
 };

@@ -19,8 +19,8 @@
 import { AsgardeoSPAClient } from "@asgardeo/auth-react";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
-import { AxiosError, AxiosResponse } from "axios";
-import useRequest, { RequestErrorInterface, RequestResultInterface } from "../../core/hooks/use-request";
+import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+import useRequest, { RequestConfigInterface, RequestErrorInterface, RequestResultInterface } from "../../core/hooks/use-request";
 import { store } from "../../core/store";
 import { ApplicationManagementConstants } from "../constants";
 import {
@@ -988,16 +988,16 @@ export const getRequestPathAuthenticators = (): Promise<any> => {
 /**
  * Function to add/update My Account portal status.
  *
- * @param {boolean} status - My Account portal status.
+ * @param status - My Account portal status.
  *
- * @return {Promise<any>} Promise of type any.
- * @throws {IdentityAppsApiException}
+ * @returns Promise of response of the My Account status update request.
+ * @throws IdentityAppsApiException
  */
  export const updateMyAccountStatus = (status: boolean): Promise<any> => {
 
-    const config = `{"name": "status", "attributes": [{"key": "enable", "value": ${ status.toString() }}]}`;
+    const config = `{"name": "status", "attributes": [{"key": "enable", "value": ${ status }}]}`;
 
-    const requestConfig = {
+    const requestConfig: AxiosRequestConfig = {
         data: config,
         headers: {
             "Accept": "application/json",
@@ -1005,7 +1005,7 @@ export const getRequestPathAuthenticators = (): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.PUT,
-        url: store.getState().config.endpoints.configMgt + "/resource/myaccount"
+        url: store.getState().config.endpoints.myAccountConfigMgt
     };
 
     return httpClient(requestConfig)
@@ -1034,33 +1034,30 @@ export const getRequestPathAuthenticators = (): Promise<any> => {
 };
 
 /**
- * Function to get My Account portal status.
+ * Hook to get the status of the My Account Portal.
  *
- * @return {Promise<boolean>} Promise of type boolean.
+ * @returns Reponse of the My Account status retrieval request.
  */
- export const getMyAccountStatus = () : Promise<boolean> => {
+export const getMyAccountStatus = <Data = Object, Error = RequestErrorInterface>(
+): RequestResultInterface<Data, Error> => {
 
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: store.getState().config.endpoints.configMgt + "/resource/myaccount/status/enable"
+        params: {},
+        url: store.getState().config.endpoints.myAccountConfigMgt + "/status/enable"
     };
 
-    let myAccountStatus = false;
-    return httpClient(requestConfig)
-        .then((response) => {
-            if (response.status === 200) {
-                const enableProperty = response.data["value"];
-                myAccountStatus = (enableProperty ? enableProperty == "true" : true );
-            }
-            return Promise.resolve(myAccountStatus);
-        })
-        .catch((error) => {
-            console.log(error);
-            return Promise.resolve(myAccountStatus);
-        });
+    const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig);
+
+    return {
+        data,
+        error: error,
+        isLoading: !data && !error,
+        isValidating,
+        mutate
     };
+};

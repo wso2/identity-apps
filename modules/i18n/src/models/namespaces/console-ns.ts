@@ -1048,6 +1048,16 @@ export interface ConsoleNS {
                             message: string;
                         };
                     };
+                    fetchMyAccountStatus: {
+                        error: {
+                            description: string;
+                            message: string;
+                        },
+                        genericError: {
+                            description: string;
+                            message: string;
+                        },
+                    }
                 };
                 notifications: {
                     addApplication: Notification;

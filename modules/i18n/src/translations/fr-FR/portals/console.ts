@@ -2400,16 +2400,17 @@ export const console: ConsoleNS = {
                     },
                     Confirmation: {
                         enableConfirmation: {
-                            content: "Le Mon compte est en mode aperçu et n'est pas recommandé en production. " +
-                            "Veuillez procéder avec prudence",
+                            content: "Il n'est pas recommandé d'utiliser le portail Mon compte en production car il " +
+                                "est en mode aperçu.",
                             heading: "Êtes-vous sûr?",
-                            message: "Activer le Mon compte."
+                            message: "Activer le portail Mon compte."
                         },
                         disableConfirmation: {
-                            content: "Si vous désactivez le Mon compte, les utilisateurs de votre organisation " +
-                            "ne pourront pas accéder aux fonctionnalités en libre-service du Mon compte.",
+                            content: "Si vous désactivez le portail Mon compte, les utilisateurs de votre " +
+                                "organisation ne pourront pas accéder aux fonctionnalités en libre-service fournies " +
+                                "via le portail Mon compte.",
                             heading: "Êtes-vous sûr?",
-                            message: "Désactiver le Mon compte."
+                            message: "Désactiver le portail Mon compte."
                         }
                     },
                     notifications: {
@@ -2418,13 +2419,23 @@ export const console: ConsoleNS = {
                             message: "Erreur de mise à jour"
                         },
                         genericError: {
-                            description: "Mon compte Échec de mise à jour.",
+                            description: "Échec de la mise à jour de l'état du portail Mon compte.",
                             message: "Quelque chose s'est mal passé"
                         },
                         success: {
-                            description: "Mon compte mis à jour avec succès",
+                            description: "Le statut du portail Mon compte a été mis à jour avec succès",
                             message: "Mise à jour réussie"
                         }
+                    },
+                    fetchMyAccountStatus: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Erreur de récupération"
+                        },
+                        genericError: {
+                            description: "Impossible de récupérer l'état du portail Mon compte.",
+                            message: "Quelque chose s'est mal passé"
+                        },
                     }
                 },
                 notifications: {

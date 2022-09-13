@@ -22,7 +22,7 @@ import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
 import {
-	ConfirmationModal,
+    ConfirmationModal,
     CopyInputField,
     DocumentationLink,
     EmphasizedSegment,
@@ -139,8 +139,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     const consumerAccountURL: string = useSelector((state: AppState) =>
         state?.config?.deployment?.accountApp?.tenantQualifiedPath);
     const [ isLoadingForTheFirstTime, setIsLoadingForTheFirstTime ] = useState<boolean>(true);
-    const [ isMyAccountStatusLoading, setMyAccountStatusLoading ] = useState<boolean>(true);
-    const [ myAccountStatus, setMyAccountStatus ] = useState<boolean>(false);
+    const [ isMyAccountEnabled, setMyAccountStatus ] = useState<boolean>(false);
     const [ showMyAccountStatusEnableModal, setShowMyAccountStatusEnableConfirmationModal ] = useState<boolean>(false);
     const [ showMyAccountStatusDisableModal,
                 setShowMyAccountStatusDisableConfirmationModal ] = useState<boolean>(false);
@@ -154,13 +153,12 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
         mutate: mutateApplicationListFetchRequest
     } = useApplicationList("advancedConfigurations,templateId", listItemLimit, listOffset, searchQuery);
 
-    useEffect(() => {
-        getMyAccountStatus()
-            .then((status) => {
-                setMyAccountStatus(status);
-                setMyAccountStatusLoading(false);
-            });
-    }, [ isMyAccountStatusLoading ]);
+    const {
+        data: myAccountStatus,
+        isLoading: isMyAccountStatusLoading,
+        error: myAccountStatusFetchRequestError,
+        mutate: mutateMyAccountStatusFetchRequest
+    } = getMyAccountStatus();
 
     /**
      * Sets the initial spinner.
@@ -169,6 +167,12 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     useEffect(() => {
         if (isApplicationListFetchRequestLoading === false && isMyAccountStatusLoading === false
             && isLoadingForTheFirstTime === true) {
+            let status: boolean = false;
+            if ( myAccountStatus ) {
+                const enableProperty = myAccountStatus["value"];
+                status = ( enableProperty ? enableProperty == "true" : true );  
+            }
+            setMyAccountStatus(status);
             setIsLoadingForTheFirstTime(false);
         }
     }, [ isApplicationListFetchRequestLoading, isMyAccountStatusLoading, isLoadingForTheFirstTime ]);
@@ -203,6 +207,39 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                 "fetchApplications.genericError.message")
         }));
     }, [ applicationListFetchRequestError ]);
+
+    /**
+     * Handles the application list fetch request error.
+     */
+     useEffect(() => {
+
+        if (!myAccountStatusFetchRequestError) {
+            return;
+        }
+
+        if (myAccountStatusFetchRequestError.response
+            && myAccountStatusFetchRequestError.response.data
+            && myAccountStatusFetchRequestError.response.data.description) {
+            if (myAccountStatusFetchRequestError.response.status === 404) {
+                return;
+            }
+            dispatch(addAlert({
+                description: myAccountStatusFetchRequestError.response.data.description ??
+                    t("console:develop.features.applications.myaccount.fetchMyAccountStatus.error.description"),
+                level: AlertLevels.ERROR,
+                message: t("console:develop.features.applications.myaccount.fetchMyAccountStatus.error.message")
+            }));
+            return;
+        }
+
+        dispatch(addAlert({
+            description: t("console:develop.features.applications.myaccount.fetchMyAccountStatus" +
+                ".genericError.description"),
+            level: AlertLevels.ERROR,
+            message: t("console:develop.features.applications.myaccount.fetchMyAccountStatus" +
+                ".genericError.message")
+        }));
+    }, [ myAccountStatusFetchRequestError ]);
 
     /**
      * Sets the list sorting strategy.
@@ -298,7 +335,8 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     /**
      * Handles the My Account Portal status update action.
      */
-     const handleMyAccountStatusToggle = (e: SyntheticEvent, data: CheckboxProps): void => {
+     const handleMyAccountStatusToggle = (e: SyntheticEvent, data: CheckboxProps) => {
+
         if (data.checked) {
             setShowMyAccountStatusEnableConfirmationModal(true);
         } else {
@@ -309,11 +347,12 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     /**
      * Update the My Account Portal status.
      */
-    const handleUpdateMyAccountStatus = (status: boolean): void => {
+    const handleUpdateMyAccountStatus = (status: boolean) => {
 
         updateMyAccountStatus(status)
         	.then(() => {
-        		setMyAccountStatus(status);
+        	    setMyAccountStatus(status);
+        	    mutateMyAccountStatusFetchRequest();
                 dispatch(addAlert({
                     description: t("console:develop.features.applications.myaccount.notifications.success.description"),
                     level: AlertLevels.SUCCESS,
@@ -324,10 +363,10 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                 if (error?.response?.data?.description) {
                     dispatch(addAlert({
                         description: error?.response?.data?.description ?? error?.response?.data?.detail
-                            ?? t("console:develop.features.applications.myaccount.notifications.genericError.description"),
+                            ?? t("console:develop.features.applications.myaccount.notifications.error.description"),
                         level: AlertLevels.ERROR,
                         message: error?.response?.data?.message
-                            ?? t("console:develop.features.applications.myaccount.notifications.genericError.message")
+                            ?? t("console:develop.features.applications.myaccount.notifications.error.message")
                     }));
                     return;
                 }
@@ -424,6 +463,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
             </ConfirmationModal>
         )
     };
+
     /**
      * Renders the URL for the tenanted my account login.
      *
@@ -478,18 +518,17 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                                     </DocumentationLink>
                                 </List.Description>
                                 <Checkbox
-                                     className="mt-3"
-                                     label={ t(myAccountStatus ?
-               								     "console:develop.features.applications.myaccount.enable.0" :
-           							      	     "console:develop.features.applications.myaccount.enable.1") }
-                                     toggle
-                                     onChange={ handleMyAccountStatusToggle }
-                                     checked={ myAccountStatus }
-                                     data-testId={ `${ testId }-myaccount-status-update-toggle` }
-                                	/>
-
+                                    className="mt-3"
+                                    label={ t( isMyAccountEnabled ?
+                                        "console:develop.features.applications.myaccount.enable.0" :
+                                        "console:develop.features.applications.myaccount.enable.1") }
+                                    toggle
+                                    onChange={ handleMyAccountStatusToggle }
+                                    checked={ isMyAccountEnabled }
+                                    data-testId={ `${ testId }-myaccount-status-update-toggle` }
+                                />
                             </Grid.Column>
-                            { myAccountStatus?(
+                            { isMyAccountEnabled? (
                                 <Popup
                                     trigger={
                                         (<Grid.Column
@@ -602,8 +641,8 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                         onSortStrategyChange={ handleListSortingStrategyOnChange }
                         showPagination={ true }
                         showTopActionPanel={
-                            isApplicationListFetchRequestLoading || isMyAccountStatusLoading
-                        || !(!searchQuery && applicationList?.totalResults <= 0) }
+                            isApplicationListFetchRequestLoading 
+                            || !(!searchQuery && applicationList?.totalResults <= 0) }
                         sortOptions={ APPLICATIONS_LIST_SORTING_OPTIONS }
                         sortStrategy={ listSortingStrategy }
                         totalPages={ Math.ceil(applicationList?.totalResults / listItemLimit) }
