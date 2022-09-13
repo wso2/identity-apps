@@ -28,10 +28,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { Grid, Menu, Rail, Ref, Sticky } from "semantic-ui-react";
 import { serverConfigurationConfig } from "../../../extensions";
 import { AppState, FeatureConfigInterface, UIConstants, history, useUIElementSizes } from "../../core";
+import { OrganizationUtils } from "../../organizations/utils";
 import { getConnectorCategory } from "../api";
 import { DynamicGovernanceConnector } from "../components";
 import { ServerConfigurationsConstants } from "../constants";
 import { GovernanceConnectorCategoryInterface, GovernanceConnectorInterface } from "../models";
+import { GovernanceConnectorUtils } from "../utils";
 
 /**
  * Props for the Server Configurations page.
@@ -88,6 +90,17 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
 
         getConnectorCategory(categoryId)
             .then((response: GovernanceConnectorCategoryInterface) => {
+
+                if(!OrganizationUtils.isCurrentOrganizationRoot()) {
+                    response.connectors = 
+                        GovernanceConnectorUtils
+                            .filterGovernanceConnectorCategories(categoryId, response.connectors);
+
+                    // need to throw a proper error here if the response.connetors is null
+                    if (response.connectors.length==0) {
+                        throw Error();
+                    }
+                }
 
                 response.connectors.map((connector: GovernanceConnectorWithRef) => {
                     connector.categoryId = categoryId;

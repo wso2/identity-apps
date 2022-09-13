@@ -103,4 +103,39 @@ export class GovernanceConnectorUtils {
             name: "Account Management"
         }
     ]
+
+    /**
+     * Filter governance categories of a connector for a sub organization.
+     * @param {Object[]} governanceConnectors - List of categories to evaluate.
+     * @param {string} governanceCategoryId - Category id of the governance connector.
+     * 
+     * @return {Object[]} Filtered categories.
+     */
+    public static filterGovernanceConnectorCategories
+        (governanceCategoryId: string, governanceConnectors: any[]) {
+        let showGovernanceConnectors = [];
+
+        for (let i = 0; i < this.SHOW_GOVERNANCE_CONNECTORS_FOR_SUBORGS.length; i++) {
+            if (governanceCategoryId === this.SHOW_GOVERNANCE_CONNECTORS_FOR_SUBORGS[i].id) {
+                showGovernanceConnectors = this.SHOW_GOVERNANCE_CONNECTORS_FOR_SUBORGS[i].connectors;
+                break;
+            }
+        }
+
+        const showGovernanceConnectorsIdOfSuborgs = [];
+
+        showGovernanceConnectors.forEach(connector => {
+            showGovernanceConnectorsIdOfSuborgs.push(connector.id);
+        });
+
+        for (let i = governanceConnectors.length-1; i >=0 ; i--) {
+            const connector = governanceConnectors[i];
+            if(!showGovernanceConnectorsIdOfSuborgs.includes(connector.id)) {
+                governanceConnectors.splice(i,1);
+            }
+        }
+
+        return governanceConnectors;
+
+    }
 }
