@@ -487,7 +487,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                         t("console:develop.placeholders.emptySearchResult.subtitles.0", { query: searchQuery }),
                         t("console:develop.placeholders.emptySearchResult.subtitles.1")
                     ] }
-                    data-testid={ `${ testId }-empty-search-placeholder` }
+                    data-testid={ `${ testId }-empty-search-placeholder-icon` }
                 />
             );
         }
