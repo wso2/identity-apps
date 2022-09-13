@@ -46,7 +46,7 @@
         "typecheck": "pnpm run compile"
     },
     "dependencies": {
-        "@asgardeo/auth-react": "^1.1.2",
+        "@asgardeo/auth-react": "^1.1.18",
         "@wso2is/access-control": "^1.4.96",
         "@wso2is/core": "^1.4.96",
         "@wso2is/form": "^1.4.96",

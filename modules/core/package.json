@@ -88,7 +88,7 @@
     "author": "WSO2",
     "license": "Apache-2.0",
     "dependencies": {
-        "@asgardeo/auth-react": "^1.1.2",
+        "@asgardeo/auth-react": "^1.1.18",
         "@braintree/sanitize-url": "^5.0.0",
         "@types/jest": "^26.0.14",
         "axios": "^0.21.1",
