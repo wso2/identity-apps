@@ -96,7 +96,21 @@ export class GovernanceConnectorUtils {
                 {
                     friendlyName: "Account Recovery",
                     id: "YWNjb3VudC1yZWNvdmVyeQ",
-                    name: "account-recovery"
+                    name: "account-recovery",
+                    properties: [
+                        {
+                            displayName: "Notification based password recovery",
+                            name: "Recovery.Notification.Password.Enable"
+                        },
+                        {
+                            displayName: "Username recovery",
+                            name: "Recovery.Notification.Username.Enable"
+                        },
+                        {
+                            displayName: "Manage notifications sending internally",
+                            name: "Recovery.Notification.InternallyManage"
+                        }
+                    ]
                 }
             ],
             id: "QWNjb3VudCBNYW5hZ2VtZW50",
@@ -128,12 +142,14 @@ export class GovernanceConnectorUtils {
             showGovernanceConnectorsIdOfSuborgs.push(connector.id);
         });
 
-        for (let i = governanceConnectors.length-1; i >=0 ; i--) {
+        for (let i = governanceConnectors.length - 1; i >= 0; i--) {
             const connector = governanceConnectors[i];
-            if(!showGovernanceConnectorsIdOfSuborgs.includes(connector.id)) {
-                governanceConnectors.splice(i,1);
+            if (!showGovernanceConnectorsIdOfSuborgs.includes(connector.id)) {
+                governanceConnectors.splice(i, 1);
             }
         }
+
+        console.log(governanceConnectors);
 
         return governanceConnectors;
 
