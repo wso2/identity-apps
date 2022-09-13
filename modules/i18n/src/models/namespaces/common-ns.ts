@@ -41,7 +41,6 @@ export interface CommonNS {
     back: string;
     browser: string;
     cancel: string;
-    close: string;
     challengeQuestionNumber: string;
     change: string;
     chunkLoadErrorMessage: {
@@ -51,6 +50,8 @@ export interface CommonNS {
     }
     claim: string;
     clear: string;
+    clientId: string;
+    close: string;
     comingSoon: string;
     completed: string;
     configure: string;
@@ -89,6 +90,7 @@ export interface CommonNS {
     import: string;
     initiator: string;
     ipAddress: string;
+    issuer: string;
     lastAccessed: string;
     lastModified: string;
     lastSeen: string;

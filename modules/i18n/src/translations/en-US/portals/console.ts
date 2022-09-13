@@ -577,7 +577,7 @@ export const console: ConsoleNS = {
                             }
                         }
                     },
-                    placeholder: "Search by application name or clientId"
+                    placeholder: "Search applications by name, clientId, or issuer"
                 },
                 confirmations: {
                     addSocialLogin: {
@@ -1940,7 +1940,12 @@ export const console: ConsoleNS = {
                             },
                             certificates: {
                                 disabledPopup: "Make sure request signature validation and" +
-                                    " assertion encryption are disabled to proceed."
+                                    " assertion encryption are disabled to proceed.",
+                                certificateRemoveConfirmation: {
+                                    header: "Remove current certificate?",
+                                    content: "Setting the certificate type to none will remove the current " +
+                                        "certificate provided for this application. Proceed with caution."
+                                }
                             },
                             encryption: {
                                 fields: {

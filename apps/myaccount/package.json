@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/myaccount",
-    "version": "1.4.80",
+    "version": "1.4.96",
     "description": "WSO2 Identity Server My Account",
     "author": "WSO2",
     "license": "Apache-2.0",
@@ -10,8 +10,6 @@
         "build:analyze": "run-script-os",
         "build:analyze:win32": "..\\..\\node_modules\\.bin\\webpack --mode production --env NODE_ENV=production --env ENABLE_ANALYZER=true --env ANALYZER_PORT=8888",
         "build:analyze:default": "../../node_modules/.bin/webpack --mode production --env NODE_ENV=production --env ENABLE_ANALYZER=true --env ANALYZER_PORT=8888",
-        "build:external": "pnpm run build:prod -- --env IS_DEPLOYED_ON_EXTERNAL_SERVER=true",
-        "build:external:static": "pnpm run build:prod -- --env IS_DEPLOYED_ON_EXTERNAL_SERVER=true SERVER_TYPE=static",
         "build:prod": "pnpm nx run myaccount:build",
         "clean": "pnpm clean:build && pnpm clean:cache && pnpm clean:lock-files && pnpm clean:maven-folders && pnpm clean:themes:src && pnpm clean:node-modules",
         "clean:build": "pnpm rimraf build",
@@ -42,13 +40,13 @@
     "dependencies": {
         "@asgardeo/auth-react": "^1.1.2",
         "@babel/polyfill": "^7.0.0",
-        "@wso2is/access-control": "^1.4.80",
-        "@wso2is/core": "^1.4.80",
-        "@wso2is/forms": "^1.4.80",
-        "@wso2is/i18n": "^1.4.80",
-        "@wso2is/react-components": "^1.4.80",
-        "@wso2is/theme": "^1.4.80",
-        "@wso2is/validation": "^1.4.80",
+        "@wso2is/access-control": "^1.4.96",
+        "@wso2is/core": "^1.4.96",
+        "@wso2is/forms": "^1.4.96",
+        "@wso2is/i18n": "^1.4.96",
+        "@wso2is/react-components": "^1.4.96",
+        "@wso2is/theme": "^1.4.96",
+        "@wso2is/validation": "^1.4.96",
         "axios": "^0.19.2",
         "history": "^4.9.0",
         "i18next": "^17.0.11",
@@ -117,8 +115,13 @@
         "> 0.2%"
     ],
     "resolutions": {
-        "@types/react": "16.9.0",
-        "@types/react-dom": "16.8.5",
+        "@types/react": "^16.9.0",
+        "@types/react-dom": "^16.8.5",
+        "@types/react-notification-system": "0.2.39"
+    },
+    "overrides": {
+        "@types/react": "^16.9.0",
+        "@types/react-dom": "^16.8.5",
         "@types/react-notification-system": "0.2.39"
     }
 }

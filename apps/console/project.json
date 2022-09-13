@@ -86,6 +86,7 @@
             "configurations": {
                 "development": {
                     "index": "index.html",
+                    "staticIndex": "index.html",
                     "extractLicenses": false,
                     "optimization": false,
                     "sourceMap": true,
@@ -93,12 +94,13 @@
                 },
                 "production": {
                     "index": "index.jsp",
+                    "staticIndex": "index.html",
                     "fileReplacements": [],
                     "optimization": true,
                     "outputHashing": "all",
                     "sourceMap": false,
                     "namedChunks": false,
-                    "extractLicenses": true,
+                    "extractLicenses": false,
                     "vendorChunk": false
                 }
             }

@@ -583,7 +583,7 @@ export const console: ConsoleNS = {
                             }
                         }
                     },
-                    placeholder: "යෙදුම් නාමයෙන් හෝ සේවාලාභී හැඳුනුම්පතෙන් සොයන්න"
+                    placeholder: "යෙදුම් නාමයෙන්, සේවාලාභී හැඳුනුම්පතෙන්, හෝ යෙදුම් නිකුත් කරන්නාගෙන් සොයන්න"
                 },
                 confirmations: {
                     addSocialLogin: {
@@ -1939,7 +1939,12 @@ export const console: ConsoleNS = {
                             },
                             certificates: {
                                 disabledPopup: "ඉදිරියට යාමට ඉල්ලීම් අත්සන් වලංගුකරණය සහ තහවුරු කිරීමේ " +
-                                    "සංකේතනය අබල කර ඇති බවට වග බලා ගන්න."
+                                    "සංකේතනය අබල කර ඇති බවට වග බලා ගන්න.",
+                                certificateRemoveConfirmation: {
+                                    header: "වත්මන් සහතිකය ඉවත් කරන්නද?",
+                                    content: "සහතික වර්ගය කිසිවක් නැත ලෙස සැකසීම මෙම යෙදුම සඳහා සපයා ඇති වත්මන් සහතිකය ඉවත් " +
+                                        "කරයි. කල්පනාකාරීව ඉදිරියට යන්න."
+                                }
                             },
                             encryption: {
                                 fields: {

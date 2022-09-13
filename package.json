@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@wso2is/webapps",
-    "version": "1.4.80",
+    "version": "1.4.96",
     "description": "WSO2 Identity Server Web Applications",
     "keywords": [
         "WSO2",
@@ -22,8 +22,6 @@
         "build": "pnpm nx run-many --target=build --all --with-deps",
         "build:apps": "pnpm nx run-many --target=build --projects=console,myaccount --with-deps",
         "build:modules": "pnpm nx run-many --target=build --projects=access-control,core,forms,form,i18n,react-components,theme,validation",
-        "build:external": "pnpm nx run-many --target=build:external --projects=console,myaccount --with-deps",
-        "build:external:static": "pnpm nx run-many --target=build:external:static --projects=console,myaccount --with-deps",
         "clean": "pnpm nx run-many --target=clean --all --parallel=false && pnpm clean:root",
         "clean:root": "pnpm clean:root:cache && pnpm clean:root:lock-files && pnpm clean:root:maven-folders & pnpm clean:root:node-modules",
         "clean:root:cache": "pnpm rimraf npm",
@@ -208,13 +206,20 @@
         "write-file-webpack-plugin": "^4.5.1"
     },
     "resolutions": {
-        "@types/react": "16.9.0",
-        "@types/react-dom": "16.8.5",
+        "@types/react": "^16.9.0",
+        "@types/react-dom": "^16.8.5",
         "@types/react-notification-system": "0.2.39"
     },
     "overrides": {
-        "@types/react": "16.9.0",
-        "@types/react-dom": "16.8.5",
+        "@types/react": "^16.9.0",
+        "@types/react-dom": "^16.8.5",
         "@types/react-notification-system": "0.2.39"
+    },
+    "pnpm": {
+        "overrides": {
+            "@types/react": "^16.9.0",
+            "@types/react-dom": "^16.8.5",
+            "@types/react-notification-system": "0.2.39"
+        }
     }
 }

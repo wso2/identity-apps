@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/forms",
-    "version": "1.4.80",
+    "version": "1.4.96",
     "description": "Forms module for WSO2 Identity Server web-apps.",
     "keywords": [
         "WSO2",
@@ -61,13 +61,13 @@
         "react": "*"
     },
     "resolutions": {
-        "@types/react": "16.9.0",
-        "@types/react-dom": "16.8.5",
+        "@types/react": "^16.9.0",
+        "@types/react-dom": "^16.8.5",
         "@types/react-notification-system": "0.2.39"
     },
     "overrides": {
-        "@types/react": "16.9.0",
-        "@types/react-dom": "16.8.5",
+        "@types/react": "^16.9.0",
+        "@types/react-dom": "^16.8.5",
         "@types/react-notification-system": "0.2.39"
     }
 }

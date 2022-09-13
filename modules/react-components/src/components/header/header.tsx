@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -62,6 +62,7 @@ export interface HeaderPropsInterface extends IdentifiableComponentInterface, Te
     fixed?: "left" | "right" | "bottom" | "top";
     fluid?: boolean;
     isProfileInfoLoading?: boolean;
+    isPrivilegedUser?: boolean;
     linkedAccounts?: LinkedAccountInterface[];
     // TODO: Add proper type interface.
     profileInfo: any;
@@ -150,8 +151,8 @@ export interface StrictHeaderLinkInterface extends IdentifiableComponentInterfac
     /**
      * Called on dropdown item click.
      *
-     * @param {SyntheticEvent} event - React's original SyntheticEvent.
-     * @param {object} data - All props.
+     * @param event - React's original SyntheticEvent.
+     * @param data - All props.
      */
     onClick?: (event: React.MouseEvent<HTMLDivElement>, data: DropdownItemProps) => void;
 }
@@ -159,9 +160,9 @@ export interface StrictHeaderLinkInterface extends IdentifiableComponentInterfac
 /**
  * Header component.
  *
- * @param {HeaderPropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns header component.
  */
 export const Header: FunctionComponent<HeaderPropsInterface> = (
     props: HeaderPropsInterface
@@ -178,6 +179,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         fixed,
         fluid,
         isProfileInfoLoading,
+        isPrivilegedUser,
         linkedAccounts,
         profileInfo,
         userDropdownInfoAction,
@@ -209,7 +211,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
 
     /**
      * Renders the User dropdown trigger.
-     * @return {React.ReactElement}
+     * @returns user dropdown trigger button.
      */
     const renderUserDropdownTrigger = (): ReactElement => {
 
@@ -278,7 +280,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     /**
      * Stops the dropdown from closing on click.
      *
-     * @param { React.SyntheticEvent<HTMLElement> } e - Click event.
+     * @param e - Click event.
      */
     const handleUserDropdownClick = (e: SyntheticEvent<HTMLElement>) => {
         e.stopPropagation();
@@ -287,7 +289,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     /**
      * Handles the account switch click event.
      *
-     * @param { LinkedAccountInterface } account - Target account.
+     * @param account - Target account.
      */
     const handleLinkedAccountSwitch = (account: LinkedAccountInterface) => {
         onLinkedAccountSwitch(account);
@@ -314,9 +316,9 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     /**
      * Renders the list of linked accounts.
      *
-     * @param {LinkedAccountInterface[]} accounts - Linked accounts.
+     * @param accounts - Linked accounts.
      *
-     * @return {React.ReactElement}
+     * @returns list of linked accounts.
      */
     const renderLinkedAccounts = (accounts: LinkedAccountInterface[]): ReactElement => {
 
@@ -377,7 +379,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     /**
      * Renders the links in the dropdown.
      *
-     * @return {React.ReactElement[]}
+     * @returns list of links in the user dropdown.
      */
     const renderUserDropdownLinks = (): ReactElement[] => {
 
@@ -388,6 +390,12 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         const adjustedUserDropdownLinks: HeaderLinkCategoryInterface[] = userDropdownLinks
             .reduce((previous: HeaderLinkCategoryInterface[], current: HeaderLinkCategoryInterface) => {
                 const { category, categoryLabel, links } : Partial<HeaderLinkCategoryInterface> = current;
+
+                if (isPrivilegedUser && category === "APPS") {
+                    // Remove my account app from privileged users.
+                    return previous;
+                }
+
                 const findObj : Partial<HeaderLinkCategoryInterface> = [ ...previous ]
                     .find((obj) => obj.category === category);
 
@@ -463,9 +471,9 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     /**
      * Renders the header extensions.
      *
-     * @param {HeaderExtension["floated"]} floated - Floated direction.
+     * @param floated - Floated direction.
      *
-     * @return {React.ReactElement}
+     * @returns the header extensions.
      */
     const renderHeaderExtensionLinks = (floated: HeaderExtension[ "floated" ]): ReactElement => {
 
@@ -700,6 +708,7 @@ Header.defaultProps = {
     "data-testid": "app-header",
     fixed: "top",
     fluid: false,
+    isPrivilegedUser: false,
     onLinkedAccountSwitch: () => null,
     onSidePanelToggleClick: () => null,
     showSidePanelToggle: true,
