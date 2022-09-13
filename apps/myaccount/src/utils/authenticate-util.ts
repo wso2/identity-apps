@@ -48,6 +48,7 @@ export const useEndUserSession = (): () => Promise<boolean> => {
  */
 export const hasLoginPermission = (): boolean => {
     const scopes = store.getState().authenticate.scope.split(" ");
+
     return scopes.includes(TokenConstants.LOGIN_SCOPE);
 };
 
@@ -58,6 +59,7 @@ export const hasLoginPermission = (): boolean => {
  */
 export const hasScope = (scope: string): boolean => {
     const scopes = store.getState().authenticationInformation.scope;
+
     return scopes.includes(scope);
 };
 
@@ -75,13 +77,13 @@ const resolveBaseUrls = (): string[] => {
     if (baseUrls) {
         // If the server origin is not specified in the overridden config, append it.
         if (!baseUrls.includes(serverOrigin)) {
-            baseUrls = [...baseUrls, serverOrigin];
+            baseUrls = [ ...baseUrls, serverOrigin ];
         }
 
         return baseUrls;
     }
 
-    return [serverOrigin];
+    return [ serverOrigin ];
 };
 
 const resolveStorage = (): Storage => {
@@ -133,7 +135,7 @@ export const getAuthInitializeConfig = (): AuthReactConfig => {
         },
         resourceServerURLs: resolveBaseUrls(),
         responseMode: window["AppUtils"]?.getConfig().idpConfigs?.responseMode ?? responseModeFallback,
-        scope: window["AppUtils"]?.getConfig().idpConfigs?.scope ?? [TokenConstants.SYSTEM_SCOPE],
+        scope: window["AppUtils"]?.getConfig().idpConfigs?.scope ?? [ TokenConstants.SYSTEM_SCOPE ],
         sendCookiesInRequests: true,
         sessionRefreshInterval: window["AppUtils"]?.getConfig()?.session?.sessionRefreshTimeOut,
         signInRedirectURL: window["AppUtils"]?.getConfig().loginCallbackURL,
