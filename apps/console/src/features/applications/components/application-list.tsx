@@ -58,6 +58,7 @@ import { deleteApplication } from "../api";
 import { ApplicationManagementConstants } from "../constants";
 import {
     ApplicationAccessTypes,
+    ApplicationInboundTypes,
     ApplicationListInterface,
     ApplicationListItemInterface,
     ApplicationTemplateListItemInterface
@@ -366,14 +367,14 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                 key: "inboundKey",
                 render: (app: ApplicationListItemInterface): ReactNode => {
                     let inboundAuthKey: string = "";
-                    let inboundAuthType: string = "";
+                    let inboundAuthType: ApplicationInboundTypes;
 
                     if (app.clientId) {
                         inboundAuthKey = app.clientId;
-                        inboundAuthType = "Client ID";
+                        inboundAuthType = ApplicationInboundTypes.CLIENTID;
                     } else if (app.issuer) {
                         inboundAuthKey = app.issuer;
-                        inboundAuthType = "Issuer";
+                        inboundAuthType = ApplicationInboundTypes.ISSUER;
                     }
 
                     return (

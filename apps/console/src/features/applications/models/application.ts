@@ -46,6 +46,11 @@ export enum ApplicationAccessTypes {
     WRITE = "WRITE"
 }
 
+export enum ApplicationInboundTypes {
+    CLIENTID = "Client ID",
+    ISSUER = "Issuer"
+}
+
 /**
  *  Application list item model.
  */
