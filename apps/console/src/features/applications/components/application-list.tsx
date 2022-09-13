@@ -165,6 +165,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingApplication, setDeletingApplication ] = useState<ApplicationListItemInterface>(undefined);
+    const [ loading, setLoading ] = useState(false);
     const [
         isApplicationTemplateRequestLoading,
         setApplicationTemplateRequestLoadingStatus
@@ -219,6 +220,8 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
      * @param appId - Application id.
      */
     const handleApplicationDelete = (appId: string): void => {
+
+        setLoading(true);
         deleteApplication(appId)
             .then(() => {
                 dispatch(addAlert({
@@ -250,6 +253,9 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                     message: t("console:develop.features.applications.notifications.deleteApplication.genericError" +
                         ".message")
                 }));
+            })
+            .finally(() => {
+                setLoading(false);
             });
     };
 
@@ -531,6 +537,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
             {
                 deletingApplication && (
                     <ConfirmationModal
+                        primaryActionLoading={ loading }
                         onClose={ (): void => setShowDeleteConfirmationModal(false) }
                         type="negative"
                         open={ showDeleteConfirmationModal }
