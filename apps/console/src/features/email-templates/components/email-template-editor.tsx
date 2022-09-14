@@ -87,6 +87,10 @@ export const EmailTemplateEditor: FunctionComponent<EmailTemplateEditorPropsInte
                 if (response.status == 200) {
                     setBrandingPreferences(response.data["preference"]);
                 }
+            })
+            .catch(() => {
+                // Do nothing.
+                // Default branding preferences will be used.
             });
     }, [ ]);
 
