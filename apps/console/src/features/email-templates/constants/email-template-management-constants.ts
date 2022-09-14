@@ -25,16 +25,12 @@ export class EmailTemplateManagementConstants {
      * Private constructor to avoid object instantiation from outside
      * the class.
      *
-     * @hideconstructor
      */
     /* eslint-disable @typescript-eslint/no-empty-function */
     private constructor() { }
 
     /**
      * A Boilerplate template to start email template editing.
-     * @constant
-     * @type {string}
-     * @default
      */
     public static readonly EMAIL_STARTER_TEMPLATE: string = `<!DOCTYPE html>
         <html>

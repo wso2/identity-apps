@@ -50,7 +50,6 @@ export interface EmailTemplate {
  * Enum for the email template edit form modes..
  *
  * @readonly
- * @enum {string}
  */
 export enum EmailTemplateFormModes {
     ADD = "ADD",
