@@ -57,7 +57,6 @@ interface SignInMethodLandingPropsInterface extends SBACInterface<FeatureConfigI
  * Landing component for Application Sign-in method configurations.
  *
  * @param props - Props injected to the component.
- *
  * @returns Sign In Methods Landing component.
  */
 export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInterface> = (

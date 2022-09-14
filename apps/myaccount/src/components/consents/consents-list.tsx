@@ -66,8 +66,9 @@ export const AppConsentList: FunctionComponent<ConsentsListProps> = (
 
     /**
      * Resolves the classname for the active label based on the consent state.
+     *
      * @param state - state of the consent.
-     * @returns Resolved classname,
+     * @returns Resolved classname.
      */
     const resolveStateClassname = (state: ConsentState): string => {
         if (state === ConsentState.ACTIVE) {

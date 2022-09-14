@@ -255,8 +255,9 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
      * Check whether claim is mandatory or not
      *
      * @param uri - Claim URI to be checked.
+     * @returns If initially requested as mandatory.
      */
-    const checkInitialRequestMandatory = (uri: string) => {
+    const checkInitialRequestMandatory = (uri: string): boolean => {
         let requestURI = false;
 
         // If custom mapping there then retrieve the relevant uri and check for requested section.
@@ -284,6 +285,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
      * Check whether claim is requested or not.
      *
      * @param uri - Claim URI to be checked.
+     * @returns If initially requested or not.
      */
     const checkInitialRequested = (uri: string): boolean => {
         if (claimConfigurations.dialect === "CUSTOM") {
@@ -324,7 +326,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                 item.claimURI.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1);
 
             setFilterSelectedExternalClaims(sortBy(
-                union(displayNameFilterClaims, uriFilterClaims), 
+                union(displayNameFilterClaims, uriFilterClaims),
                 "localClaimDisplayName"
             ));
         }
@@ -459,10 +461,10 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                         };
 
                         if (!initialSelectedClaims.find(
-                            (selectedExternalClaim) => selectedExternalClaim?.mappedLocalClaimURI 
+                            (selectedExternalClaim) => selectedExternalClaim?.mappedLocalClaimURI
                             === claimMapping.localClaim.uri)){
                             initialSelectedClaims.push(option);
-                        }                          
+                        }
                     }
                 });
             });
@@ -658,27 +660,29 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
     };
 
     /**
-     * Check if the claim has OIDC mapping
+     * Check if the claim has OIDC mapping.
+     *
+     * @param claiminput - Input claim.
      * @returns Is a mapping or not.
      */
-    const checkMapping = (claiminput): boolean => {
+    const checkMapping = (claiminput: ExtendedExternalClaimInterface): boolean => {
         let isMapping = false;
 
         openIDConnectClaims?.map((claim) => {
-            if (claim.mappedLocalClaimURI === claiminput.mappedLocalClaimURI || 
+            if (claim.mappedLocalClaimURI === claiminput.mappedLocalClaimURI ||
                 claiminput.mappedLocalClaimURI  === defaultSubjectAttribute){
                 isMapping = true;
             }
         });
 
-        return isMapping;   
+        return isMapping;
     };
 
     /**
      * Resolves the documentation link when a claim is selected.
      * @returns Documentation link.
      */
-    const resolveClaimDocumentationLink = (): ReactElement => { 
+    const resolveClaimDocumentationLink = (): ReactElement => {
         let docLink: string = undefined;
 
         if (selectedDialect.localDialect) {
@@ -688,7 +692,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
             docLink = getLink("develop.applications.editApplication.oidcApplication.attributes" +
                 ".learnMore");
         }
-        
+
         return (
             <DocumentationLink
                 link={ docLink }
