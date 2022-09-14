@@ -83,7 +83,7 @@ export const isCheckBoxField = (toBeDetermined: FormField): toBeDetermined is Ch
  * Type guard to check if an input element is of the type Scopes
  * @param toBeDetermined
  */
- export const isScopesField = (toBeDetermined: FormField): toBeDetermined is ScopesField => {
+export const isScopesField = (toBeDetermined: FormField): toBeDetermined is ScopesField => {
     return (toBeDetermined as ScopesField).type === "scopes";
 };
 

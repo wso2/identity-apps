@@ -51,7 +51,7 @@ export const Scopes: FunctionComponent<ScopesPropsInterface> = (
     /**
       * Build scope object from the given string form.
       *
-      * @param scope Scope in the string form.
+      * @param scope - Scope in the string form.
       */
     const buildScope = (scope: string): Scope => {
         return {
@@ -73,8 +73,8 @@ export const Scopes: FunctionComponent<ScopesPropsInterface> = (
     /**
       * Trigger provided onChange handler with provided scopes.
       * 
-      * @param scopes Scopes.
-      * @param onChange onChange handler. 
+      * @param scopes - Scopes.
+      * @param onChange - onChange handler. 
       */
     const fireOnChangeEvent = (scopes: Scope[], onChange: (event: React.ChangeEvent<HTMLInputElement>) 
          => void) => {
@@ -91,7 +91,7 @@ export const Scopes: FunctionComponent<ScopesPropsInterface> = (
     /**
       * Update input field values for scope.
       * 
-      * @param scope Scope.
+      * @param scope - Scope.
       */
     const updateScopeInputFields = (scope: Scope) => {
         setScopeValue(scope?.value);
@@ -127,7 +127,7 @@ export const Scopes: FunctionComponent<ScopesPropsInterface> = (
  
     /**
       * Enter button option.
-      * @param e keypress event.
+      * @param e - keypress event.
       */
     const keyPressed = (e) => {
         const key = e.which || e.charCode || e.keyCode;

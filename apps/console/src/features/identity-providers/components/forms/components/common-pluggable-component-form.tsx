@@ -35,8 +35,8 @@ import { CommonConstants, FieldType, getFieldType, getPropertyField } from "../h
 /**
  * Common pluggable connector configurations form.
  *
- * @param {CommonPluggableComponentFormPropsInterface} props
- * @return { ReactElement }
+ * @param props - CommonPluggableComponentFormPropsInterface
+ * @returns ReactElement 
  */
 export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComponentFormPropsInterface> = (
     props: CommonPluggableComponentFormPropsInterface
@@ -79,7 +79,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
      * Prepares form values for submit.
      *
      * @param values - Form values.
-     * @return {any} Sanitized form values.
+     * @returns Sanitized form values.
      */
     const getUpdatedConfigurations = (values: Map<string, FormValue>): any => {
 
@@ -128,7 +128,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
     /**
      * Check whether provided property is a checkbox and contain sub-properties.
      *
-     * @param propertyMetadata Metadata of the property.
+     * @param propertyMetadata - Metadata of the property.
      */
     const isCheckboxWithSubProperties = (propertyMetadata: CommonPluggableComponentMetaPropertyInterface): boolean => {
         return propertyMetadata?.subProperties?.length > 0
@@ -138,7 +138,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
     /**
      * Check whether provided property is a radiobutton and contain sub-properties.
      *
-     * @param propertyMetadata Metadata of the property.
+     * @param propertyMetadata - Metadata of the property.
      */
     const isRadioButtonWithSubProperties = (propertyMetadata
         : CommonPluggableComponentMetaPropertyInterface): boolean => {
