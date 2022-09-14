@@ -54,7 +54,7 @@ export const common: CommonNS = {
     },
     claim: "Claim",
     clear: "Clear",
-    clientId: "Client Id",
+    clientId: "Client ID",
     close: "Close",
     comingSoon: "Coming soon",
     completed: "Completed",

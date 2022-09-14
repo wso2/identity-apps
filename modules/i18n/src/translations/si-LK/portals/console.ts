@@ -2328,7 +2328,7 @@ export const console: ConsoleNS = {
                     columns: {
                         actions: "ක්‍රියා",
                         name: "නම",
-                        templateId: "වර්ගය"
+                        inboundKey: "අභ්යන්තර යොමුගත යතුර"
                     },
                     labels: {
                         fragment: "ඛණ්ඩක යෙදුම"

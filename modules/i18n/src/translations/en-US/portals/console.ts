@@ -577,7 +577,7 @@ export const console: ConsoleNS = {
                             }
                         }
                     },
-                    placeholder: "Search applications by name, clientId, or issuer"
+                    placeholder: "Search applications by name, clientID, or issuer"
                 },
                 confirmations: {
                     addSocialLogin: {
@@ -2344,7 +2344,7 @@ export const console: ConsoleNS = {
                     columns: {
                         actions: "",
                         name: "Name",
-                        templateId: "Type"
+                        inboundKey: "Inbound Key"
                     },
                     labels: {
                         fragment: "Fragment App"
