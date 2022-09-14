@@ -270,8 +270,8 @@ export const App = (): ReactElement => {
                                                         ? (
                                                             <link
                                                                 href={
-                                                                    // eslint-disable-next-line max-len
-                                                                    `${window?.origin}${window?.publicPath}/libs/themes/${theme}/theme.${window?.themeHash}.min.css`
+                                                                    `${window?.origin}${window?.publicPath}/libs/themes/
+                                                                    ${theme}/theme.${window?.themeHash}.min.css`
                                                                 }
                                                                 rel="stylesheet"
                                                                 type="text/css"
