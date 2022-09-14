@@ -24,9 +24,9 @@ const log = console.log;
 log("Pre build script started.....");
 
 // Run the clean script.
-execSync("npm run clean");
+execSync("pnpm clean:build");
 
 // Run theme content copying to source script.
-execSync("npm run copy:themes:src");
+execSync("pnpm copy:themes:src");
 
 log("\nFinishing up the pre build script.....");

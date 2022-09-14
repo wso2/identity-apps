@@ -32,7 +32,7 @@ export interface AccessControlProviderInterface {
  * This will wrap all children passed to it with access control provider
  * with context generated using the scopes recieved.
  * 
- * @param props 
+ * @param props - component props
  * @returns 
  */
 export const AccessControlProvider: FunctionComponent<PropsWithChildren<AccessControlProviderInterface>> = (

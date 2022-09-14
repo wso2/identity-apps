@@ -17,9 +17,10 @@
  */
 
 module.exports = {
+    displayName: "core",
     globals: {
         "ts-jest": {
-            tsconfig: "tsconfig.json"
+            tsconfig: "<rootDir>/tsconfig.json"
         }
     },
     moduleDirectories: [

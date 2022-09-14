@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -575,7 +575,7 @@ export const console: ConsoleNS = {
                             }
                         }
                     },
-                    placeholder: "Chercher par nom d'application ou clientId"
+                    placeholder: "Chercher des applications par nom, clientId, ou émetteur"
                 },
                 confirmations: {
                     addSocialLogin: {
@@ -1214,12 +1214,16 @@ export const console: ConsoleNS = {
                                             usernameless: {
                                                 description: "Permettre aux utilisateurs de se connecter à " +
                                                     "l'aidAjouter une connexion sans nom d'utilisateuré " +
-                                                    "FIDO2 ou de la biométrie.",
+                                                    "FIDO2, de la biométrie ou de clés d'accès.",
                                                 heading: "Ajouter une clé de sécurité/connexion biométrique",
                                                 info: "Pour vous connecter avec une authentification sans mot " +
                                                     "de passe, vos utilisateurs doivent avoir leurs clés de " +
                                                     "sécurité FIDO2 ou leurs données biométriques enregistrées " +
                                                     "via Mon compte."
+                                            },
+                                            emailOTP: {
+                                                description: "Activez une couche supplémentaire d'authentification avec OTP basé sur Email.",
+                                                heading: "Ajouter Email OTP comme deuxième facteur"
                                             }
                                         }
                                     }
@@ -1422,8 +1426,8 @@ export const console: ConsoleNS = {
                                 invalidOperationModal: {
                                     header: "Opération invalide",
                                     message: "Vous devez désactiver la validation de la signature de la demande pour"+
-                                        " supprimer le certificat. Si la signature de requête ou de réponse est" + 
-                                        " activée, il est essentiel de disposer d'un certificat valide" + 
+                                        " supprimer le certificat. Si la signature de requête ou de réponse est" +
+                                        " activée, il est essentiel de disposer d'un certificat valide" +
                                         " pour vérifier la signature."
                                 }
                             }
@@ -1989,7 +1993,12 @@ export const console: ConsoleNS = {
                             },
                             certificates: {
                                 disabledPopup: "Assurez-vous que la validation de la signature de la " +
-                                    "demande et le chiffrement des assertions sont désactivés pour continuer."
+                                    "demande et le chiffrement des assertions sont désactivés pour continuer.",
+                                certificateRemoveConfirmation: {
+                                    header: "Supprimer le certificat actuel?",
+                                    content: "Définir le type de certificat sur aucun supprimera le certificat " +
+                                        "actuel fourni pour cette application. Procéder avec prudence."
+                                }
                             },
                             encryption: {
                                 fields: {
@@ -2377,8 +2386,9 @@ export const console: ConsoleNS = {
                         predefined: "Utiliser prédéfini"
                     },
                     columns: {
-                        actions: "Actions",
-                        name: "Nom"
+                        actions: "",
+                        name: "Nom",
+                        templateId: "taper"
                     },
                     labels: {
                         fragment: "Fragmenter App"
@@ -5175,7 +5185,8 @@ export const console: ConsoleNS = {
                         header: "Êtes-vous sûr?",
                         message: "Cette action est irréversible et supprimera définitivement le mappage " +
                             "de revendication de champ d'application"
-                    }
+                    },
+                    saveChangesButton: "Sauvegarder les modifications"
                 }
             },
             emailLocale: {
@@ -6447,7 +6458,7 @@ export const console: ConsoleNS = {
                             message: "Erreur de mise à jour"
                         },
                         genericError: {
-                            description: "Une erreur s'est produite lors de la mise à jour du scope OIDC.",
+                            description: "Une erreur s'est produite lors de la mise à jour du scope OIDC {{ scope }}.",
                             message: "Quelque chose s'est mal passé"
                         },
                         success: {
@@ -6536,6 +6547,12 @@ export const console: ConsoleNS = {
                     },
                     back: "Retour",
                     dangerZone: {
+                        disableOrganization: {
+                            disableActionTitle: "Désactiver l'organisation",
+                            enableActionTitle: "Activer l'organisation",
+                            subheader: "La désactivation d'une organisation peut vous faire perdre l'accès à" +
+                                " l'organisation associée. Procéder avec prudence."
+                        },
                         subHeader: "Voulez-vous vraiment supprimer cette organisation?",
                         title: "Supprimer l'organisation"
                     },
@@ -6655,6 +6672,36 @@ export const console: ConsoleNS = {
                     },
                     deleteOrganizationWithSubOrganizationError: "L'organisation {{ organizationName }} ne peut pas" +
                         " être supprimée car elle possède une ou plusieurs sous-organisations.",
+                    disableOrganization: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Erreur lors de la désactivation de l'organisation"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la désactivation de l'organisation",
+                            message: "Quelque chose s'est mal passé"
+                        },
+                        success: {
+                            description: "L'organisation a bien été désactivée",
+                            message: "Organisation désactivée avec succès"
+                        }
+                    },
+                    disableOrganizationWithSubOrganizationError: "L'organisation {{ organizationName }} ne peut pas" +
+                        " être désactivée car elle possède une ou plusieurs sous-organisations.",
+                    enableOrganization: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Erreur lors de l'activation de l'organisation"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de l'activation de l'organisation",
+                            message: "Quelque chose s'est mal passé"
+                        },
+                        success: {
+                            description: "L'organisation a bien été activée",
+                            message: "Organisation activée avec succès"
+                        }
+                    },
                     fetchOrganization: {
                         error: {
                             description: "{{description}}",
@@ -7454,6 +7501,12 @@ export const console: ConsoleNS = {
                             header: "Réinitialiser le mot de passe",
                             subheader: "Une fois le mot de passe modifié, l'utilisateur ne pourra plus se connecter " +
                                 "à aucune application en utilisant le mot de passe actuel."
+                        },
+                        deleteAdminPriviledgeZone: {
+                            actionTitle: "Révoquer les privilèges",
+                            header: "Révoquer les privilèges d'administrateur",
+                            subheader: "Cette action supprimera les privilèges d'administrateur de l'utilisateur, " +
+                                "mais l'utilisateur continuera d'être dans l'organisation."
                         }
                     },
                     dateOfBirth: {
@@ -7843,6 +7896,16 @@ export const console: ConsoleNS = {
                         }
                     }
                 },
+                revokeAdmin: {
+                    confirmationModal: {
+                        assertionHint: "Veuillez confirmer votre action.",
+                        content: "Si vous révoquez les privilèges d'administrateur de cet utilisateur, l'utilisateur " +
+                            "ne pourra pas se connecter à la console Asgardeo et ne pourra pas " +
+                            "effectuer d'opérations d'administration. Veuillez procéder avec prudence.",
+                        header: "Êtes-vous sûr?",
+                        message: "Cette action révoquera les privilèges d'administrateur de l'utilisateur."
+                    }
+                },
                 updateUser: {
                     groups: {
                         addGroupsModal: {
@@ -8195,6 +8258,34 @@ export const console: ConsoleNS = {
                         success: {
                             description: "Les utilisateurs ont été récupérés avec succès.",
                             message: "Récupération des utilisateurs réussie"
+                        }
+                    },
+                    getAdminRole: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Erreur lors de la récupération du rôle d'administrateur"
+                        },
+                        genericError: {
+                            description: "Impossible de récupérer les rôles d'administrateur.",
+                            message: "Quelque chose s'est mal passé"
+                        },
+                        success: {
+                            description: "Récupération réussie des rôles d'administrateur.",
+                            message: "Récupération du rôle d'administrateur réussie"
+                        }
+                    },
+                    revokeAdmin: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Erreur lors de la révocation des privilèges d'administrateur"
+                        },
+                        genericError: {
+                            description: "Impossible de révoquer les privilèges d'administrateur.",
+                            message: "Quelque chose s'est mal passé"
+                        },
+                        success: {
+                            description: "Révocation réussie des privilèges d'administrateur.",
+                            message: "Les privilèges d'administrateur ont bien été révoqués"
                         }
                     }
                 },

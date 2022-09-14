@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -694,6 +694,10 @@ export interface ConsoleNS {
                                                 description: string;
                                                 heading: string;
                                                 warning: string;
+                                            },
+                                            emailOTP: {
+                                                description: string,
+                                                heading: string,
                                             }
                                         }
                                     }
@@ -957,6 +961,10 @@ export interface ConsoleNS {
                             };
                             certificates: {
                                 disabledPopup: string;
+                                certificateRemoveConfirmation: {
+                                    header: string;
+                                    content: string;
+                                }
                             }
                         };
                     };
@@ -999,6 +1007,7 @@ export interface ConsoleNS {
                     columns: {
                         actions: string;
                         name: string;
+                        templateId: string;
                     };
                     actions: {
                         add: string;
@@ -1222,10 +1231,17 @@ export interface ConsoleNS {
                             tokenLength: {
                                 hint: string;
                                 label: string;
+                                unit: {
+                                    digits: string;
+                                    characters: string;
+                                },
                                 placeholder: string;
                                 validations: {
                                     invalid: string;
-                                    range: string;
+                                    range: {
+                                        digits: string;
+                                        characters: string;
+                                    };
                                     required: string;
                                 };
                             };
@@ -2326,6 +2342,9 @@ export interface ConsoleNS {
                     fetchOrganization: Notification;
                     deleteOrganization: Notification;
                     deleteOrganizationWithSubOrganizationError: string;
+                    disableOrganization: Notification;
+                    disableOrganizationWithSubOrganizationError: string;
+                    enableOrganization: Notification;
                     updateOrganization: Notification;
                     updateOrganizationAttributes: Notification;
                     addOrganization: Notification;
@@ -2361,6 +2380,11 @@ export interface ConsoleNS {
                     dangerZone: {
                         title: string;
                         subHeader: string;
+                        disableOrganization: {
+                            enableActionTitle: string;
+                            disableActionTitle: string;
+                            subheader: string;
+                        }
                     },
                     attributes: {
                         hint: string;
@@ -2523,6 +2547,8 @@ export interface ConsoleNS {
                     addUser: Notification;
                     deleteUser: Notification;
                     fetchUsers: Notification;
+                    getAdminRole: Notification;
+                    revokeAdmin: Notification;
                 };
                 placeholders: {
                     emptyList: Placeholder;
@@ -3042,7 +3068,8 @@ export interface ConsoleNS {
                         content: string;
                         header: string;
                         message: string;
-                    }
+                    },
+                    saveChangesButton: string;
                 };
             };
             emailLocale: {
@@ -4275,6 +4302,9 @@ export interface ConsoleNS {
                 deleteUser: {
                     confirmationModal: Confirmation;
                 };
+                revokeAdmin: {
+                    confirmationModal: Confirmation;
+                };
                 disableUser: {
                     confirmationModal: Confirmation;
                 };
@@ -4285,6 +4315,7 @@ export interface ConsoleNS {
                         disableUserZone: DangerZone;
                         lockUserZone: DangerZone;
                         passwordResetZone: DangerZone;
+                        deleteAdminPriviledgeZone: DangerZone;
                     };
                     dateOfBirth: {
                         placeholder: {

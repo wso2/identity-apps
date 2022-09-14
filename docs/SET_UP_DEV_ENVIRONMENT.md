@@ -4,11 +4,10 @@ Follow this guide to set up the source code, development tools & other software.
 
 * [Prerequisite Software](#prerequisite-software)
 * [Setting up Development Tools](#setting-up-development-tools)
+  * [NX Console](#nx-console)
   * [React Developer Tools](#react-developer-tools)
   * [Redux DevTools](#redux-devtools)
   * [ESLint IDE Plugin](#eslint-ide-plugin)
-    * [Webstorm](#webstorm)
-    * [VS Code](#vs-code)
 * [Setting up the Source Code](#setting-up-the-source-code)
 
 ## Prerequisite Software
@@ -16,18 +15,19 @@ Follow this guide to set up the source code, development tools & other software.
 To build and write code, make sure you have the following set of tools on your local environment:
 
 * [Git](https://git-scm.com/downloads) - Open source distributed version control system. For install instructions, refer [this](https://www.atlassian.com/git/tutorials/install-git).
-
 * [Node.js](https://nodejs.org/en/download/) - JavaScript runtime with node package manager ([npm](https://www.npmjs.com/)).
-
-    > 💡`npm` 7 has some breaking changes to peer dependencies. Hence, go with a `npm` version lower than `7`.  We are working on to fix this issue. Tracker https://github.com/wso2/product-is/issues/10186.
-
+* [pnpm](https://pnpm.io/) - Alternate npm client for faster package installs.
 * [Maven](https://maven.apache.org/download.cgi) - Build automation tool for Java projects.
-  
-    > 💡 For Maven 3.8 and up, please check the [Troubleshooting Guide](./TROUBLESHOOTING.md#build-failures).
-
 * [Java Development Kit 1.8](https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html) - Development environment for building applications using the Java programming language.
 
 ## Setting up Development Tools
+
+### NX Console
+
+Editor plugin which wraps NX commands so you don't have to memorize.
+
+- [Install for VS Code](https://marketplace.visualstudio.com/items?itemName=nrwl.angular-console)
+- [Install for VS Web Storm](https://plugins.jetbrains.com/plugin/15000-nx-webstorm)
 
 ### React Developer Tools
 

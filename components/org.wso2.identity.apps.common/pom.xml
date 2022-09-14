@@ -22,7 +22,7 @@
     <parent>
         <groupId>org.wso2.identity.apps</groupId>
         <artifactId>identity-apps</artifactId>
-        <version>1.4.43-SNAPSHOT</version>
+        <version>1.4.98-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
@@ -73,7 +73,7 @@
             <version>${carbon.commons.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.wso2.carbon.identity.organization.management</groupId>
+            <groupId>org.wso2.carbon.identity.organization.management.core</groupId>
             <artifactId>org.wso2.carbon.identity.organization.management.service</artifactId>
         </dependency>
         <!-- To fix travis build -->
@@ -115,7 +115,7 @@
             org.wso2.carbon.identity.core.util.*; version="${carbon.identity.framework.imp.pkg.version.range}",
             org.wso2.carbon.identity.application.mgt.*; version="${carbon.identity.framework.imp.pkg.version.range}",
             org.wso2.carbon.identity.application.common.*; version="${carbon.identity.framework.imp.pkg.version.range}",
-            org.wso2.carbon.identity.organization.management.service.*; version="${identity.org.mgt.version.range}"
+            org.wso2.carbon.identity.organization.management.service; version="${identity.org.mgt.core.version.range}"
         </import.package>
         <dsannotations>*</dsannotations>
     </properties>

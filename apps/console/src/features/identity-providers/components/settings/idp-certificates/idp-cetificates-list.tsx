@@ -105,6 +105,7 @@ export const IdpCertificatesList: FC<IdpCertificatesListProps> = (
     const bindCertificatesToState = (): void => {
         if (currentlyEditingIdP?.certificate?.certificates?.length > 0) {
             const certificatesList: DisplayCertificate[] = [];
+
             currentlyEditingIdP?.certificate?.certificates?.map((certificate) => {
                 if (CertificateManagementUtils.canSafelyParseCertificate(certificate)) {
                     certificatesList?.push(CertificateManagementUtils.displayCertificate(null, certificate));
@@ -156,6 +157,7 @@ export const IdpCertificatesList: FC<IdpCertificatesListProps> = (
                         ".notifications.deleteCertificate.error.message")
                 }));
                 setIsLoading(false);
+
                 return;
             }
             dispatch(addAlert({
@@ -203,11 +205,13 @@ export const IdpCertificatesList: FC<IdpCertificatesListProps> = (
             case CertificateValidity.VALID: {
                 icon = "check circle";
                 iconColor = "green";
+
                 break;
             }
             case CertificateValidity.WILL_EXPIRE_SOON: {
                 icon = "exclamation circle";
                 iconColor = "yellow";
+
                 break;
             }
             default: {
@@ -242,10 +246,10 @@ export const IdpCertificatesList: FC<IdpCertificatesListProps> = (
                 Unable to visualize the certificate details&nbsp;
                 <Popup
                     trigger={
-                        <Icon
+                        (<Icon
                             onClick={ () => handleViewCertificate(certificate) }
                             name={ "info circle" }
-                            color={ "grey" }/> }
+                            color={ "grey" }/>) }
                     content={ "Click for more info" }
                     inverted
                     position="top left"
@@ -326,7 +330,7 @@ export const IdpCertificatesList: FC<IdpCertificatesListProps> = (
                             className="application-list"
                             isLoading={ isLoading }
                             loadingStateOptions={ {
-                                count: UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
+                                count: 2,
                                 imageType: "circular"
                             } }
                             readOnly={ isReadOnly }>

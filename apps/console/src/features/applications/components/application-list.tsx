@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -42,9 +42,10 @@ import cloneDeep from "lodash-es/cloneDeep";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Header, Icon, Label, Popup, SemanticICONS } from "semantic-ui-react";
+import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
 import { OAuthProtocolTemplateItem, PassiveStsProtocolTemplateItem, SAMLProtocolTemplateItem } from "./meta";
 import { applicationConfig } from "../../../extensions";
+import { applicationListConfig } from "../../../extensions/configs/application-list";
 import {
     AppConstants,
     AppState,
@@ -125,9 +126,9 @@ interface ApplicationListPropsInterface extends SBACInterface<FeatureConfigInter
 /**
  * Application list component.
  *
- * @param {ApplicationListPropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns React.ReactElement
  */
 export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> = (
     props: ApplicationListPropsInterface
@@ -164,6 +165,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingApplication, setDeletingApplication ] = useState<ApplicationListItemInterface>(undefined);
+    const [ loading, setLoading ] = useState(false);
     const [
         isApplicationTemplateRequestLoading,
         setApplicationTemplateRequestLoadingStatus
@@ -192,8 +194,8 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
     /**
      * Redirects to the applications edit page when the edit button is clicked.
      *
-     * @param {string} appId - Application id.
-     * @param {ApplicationAccessTypes} access - Access level of the application.
+     * @param appId - Application id.
+     * @param access - Access level of the application.
      */
     const handleApplicationEdit = (appId: string, access: ApplicationAccessTypes): void => {
         if (isSetStrongerAuth) {
@@ -215,9 +217,11 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
     /**
      * Deletes an application when the delete application button is clicked.
      *
-     * @param {string} appId - Application id.
+     * @param appId - Application id.
      */
     const handleApplicationDelete = (appId: string): void => {
+
+        setLoading(true);
         deleteApplication(appId)
             .then(() => {
                 dispatch(addAlert({
@@ -249,13 +253,16 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                     message: t("console:develop.features.applications.notifications.deleteApplication.genericError" +
                         ".message")
                 }));
+            })
+            .finally(() => {
+                setLoading(false);
             });
     };
 
     /**
      * Resolves data table columns.
      *
-     * @return {TableColumnInterface[]}
+     * @returns TableColumnInterface[]
      */
     const resolveTableColumns = (): TableColumnInterface[] => {
         return [
@@ -265,11 +272,6 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                 id: "name",
                 key: "name",
                 render: (app: ApplicationListItemInterface): ReactNode => {
-                    const template = applicationTemplates
-                        && applicationTemplates instanceof Array
-                        && applicationTemplates.length > 0
-                        && applicationTemplates.find((template) => template.id === app.templateId);
-
                     return (
                         <Header
                             image
@@ -306,31 +308,12 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                             <Header.Content>
                                 { app.name }
                                 {
-                                    app.advancedConfigurations.fragment && (
+                                    app.advancedConfigurations?.fragment && (
                                         <Label size="mini">
                                             { t("console:develop.features.applications.list.labels.fragment") }
                                         </Label>
                                     )
                                 }
-                                <Header.Subheader
-                                    className="truncate ellipsis"
-                                    data-testid={ `${ testId }-item-sub-heading` }
-                                >
-                                    {
-                                        app.description?.length > 80
-                                            ? (
-                                                <Popup
-                                                    content={ app.description }
-                                                    trigger={ (
-                                                        <span>{
-                                                            app.description
-                                                        }</span>
-                                                    ) }
-                                                />
-                                            )
-                                            : app.description
-                                    }
-                                </Header.Subheader>
                             </Header.Content>
                         </Header>
                     );
@@ -400,7 +383,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                         );
                     }
                 },
-                title: t("console:develop.features.applications.list.columns.name")
+                title: t("console:develop.features.applications.list.columns.templateId")
             },
             {
                 allowToggleVisibility: false,
@@ -416,7 +399,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
     /**
      * Resolves data table actions.
      *
-     * @return {TableActionsInterface[]}
+     * @returns TableActionsInterface[]
      */
     const resolveTableActions = (): TableActionsInterface[] => {
         if (!showListItemActions) {
@@ -453,7 +436,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                         featureConfig?.applications?.scopes?.delete, allowedScopes);
                     const isSuperTenant: boolean = (tenantDomain === AppConstants.getSuperTenant());
                     const isSystemApp: boolean = isSuperTenant && (UIConfig.systemAppsIdentifiers.includes(app?.name));
-                    const isFragmentApp: boolean = app.advancedConfigurations.fragment;
+                    const isFragmentApp: boolean = app.advancedConfigurations?.fragment || false;
 
                     return hasScopes ||
                             isSystemApp ||
@@ -475,7 +458,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
     /**
      * Resolve the relevant placeholder.
      *
-     * @return {React.ReactElement}
+     * @returns React.ReactElement
      */
     const showPlaceholders = (): ReactElement => {
         // When the search returns empty.
@@ -547,13 +530,14 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                 } }
                 placeholders={ showPlaceholders() }
                 selectable={ selection }
-                showHeader={ false }
+                showHeader={ applicationListConfig.enableTableHeaders }
                 transparent={ !(isLoading || isApplicationTemplateRequestLoading) && (showPlaceholders() !== null) }
                 data-testid={ testId }
             />
             {
                 deletingApplication && (
                     <ConfirmationModal
+                        primaryActionLoading={ loading }
                         onClose={ (): void => setShowDeleteConfirmationModal(false) }
                         type="negative"
                         open={ showDeleteConfirmationModal }

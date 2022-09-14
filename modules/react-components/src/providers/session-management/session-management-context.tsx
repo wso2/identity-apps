@@ -16,6 +16,6 @@
  * under the License.
  */
 
-import { createContext } from "react";
+import { Context, createContext } from "react";
 
-export const SessionTimedOutContext = createContext(false);
+export const SessionTimedOutContext: Context<boolean> = createContext(false);

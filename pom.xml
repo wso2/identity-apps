@@ -24,7 +24,7 @@
     <groupId>org.wso2.identity.apps</groupId>
     <artifactId>identity-apps</artifactId>
     <packaging>pom</packaging>
-    <version>1.4.43-SNAPSHOT</version>
+    <version>1.4.98-SNAPSHOT</version>
     <name>WSO2 Identity Server Apps - Parent</name>
     <description>WSO2 Identity Server Web Apps</description>
 
@@ -200,15 +200,9 @@
                 <version>${totp.authenticator.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.wso2.carbon.identity.organization.management</groupId>
+                <groupId>org.wso2.carbon.identity.organization.management.core</groupId>
                 <artifactId>org.wso2.carbon.identity.organization.management.service</artifactId>
-                <version>${identity.organization.management.service.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>org.wso2.carbon.identity.auth.rest</groupId>
-                        <artifactId>org.wso2.carbon.identity.authz.service</artifactId>
-                    </exclusion>
-                </exclusions>
+                <version>${identity.organization.management.core.service.version}</version>
             </dependency>
 
             <dependency>
@@ -568,10 +562,9 @@
                         </goals>
                         <phase>initialize</phase>
                         <configuration>
-                            <executable>npm</executable>
+                            <executable>pnpm</executable>
                             <arguments>
-                                <argument>run</argument>
-                                <argument>bootstrap</argument>
+                                <argument>install</argument>
                             </arguments>
                             <skip>${bootstrap.exec.skip}</skip>
                             <workingDirectory>${basedir}</workingDirectory>
@@ -584,10 +577,9 @@
                         </goals>
                         <phase>process-resources</phase>
                         <configuration>
-                            <executable>npm</executable>
+                            <executable>pnpm</executable>
                             <arguments>
-                                <argument>run</argument>
-                                <argument>lint:ci</argument>
+                                <argument>lint</argument>
                             </arguments>
                             <skip>${lint.exec.skip}</skip>
                             <workingDirectory>${basedir}</workingDirectory>
@@ -600,9 +592,8 @@
                         </goals>
                         <phase>compile</phase>
                         <configuration>
-                            <executable>npm</executable>
+                            <executable>pnpm</executable>
                             <arguments>
-                                <argument>run</argument>
                                 <argument>build</argument>
                             </arguments>
                             <workingDirectory>${basedir}</workingDirectory>
@@ -680,10 +671,11 @@
         <carbon.extension.identity.authenticator.version>3.0.0</carbon.extension.identity.authenticator.version>
         <org.wso2.carbon.identity.association.account>5.1.5</org.wso2.carbon.identity.association.account>
         <identity.extension.utils>1.0.8</identity.extension.utils>
-        <carbon.identity.framework.version>5.21.30</carbon.identity.framework.version>
+        <carbon.identity.framework.version>5.23.25</carbon.identity.framework.version>
         <carbon.identity.framework.imp.pkg.version.range>[5.0.0, 6.0.0)</carbon.identity.framework.imp.pkg.version.range>
-        <identity.organization.management.service.version>1.0.65</identity.organization.management.service.version>
-        <identity.org.mgt.version.range>[1.0.65, 2.0.0)</identity.org.mgt.version.range>
+        <identity.organization.management.core.service.version>1.0.0
+        </identity.organization.management.core.service.version>
+        <identity.org.mgt.core.version.range>[1.0.0, 2.0.0)</identity.org.mgt.core.version.range>
         <carbon.identity.oauth.version>6.7.130</carbon.identity.oauth.version>
         <carbon.identity.oauth.imp.pkg.version.range>[6.1.0, 7.0.0)</carbon.identity.oauth.imp.pkg.version.range>
         <identity.governance.version>1.5.48</identity.governance.version>
@@ -695,7 +687,7 @@
         <javax.jsp-api.version>2.0</javax.jsp-api.version>
         <jersey-version>1.19.1</jersey-version>
         <com.fasterxml.jackson.version>2.10.5</com.fasterxml.jackson.version>
-        <com.fasterxml.jackson.annotation.version>2.10.5</com.fasterxml.jackson.annotation.version>
+        <com.fasterxml.jackson.annotation.version>2.13.2</com.fasterxml.jackson.annotation.version>
         <com.fasterxml.jackson.jaxrs-json-provider-version>2.10.5</com.fasterxml.jackson.jaxrs-json-provider-version>
         <com.google.code.gson.version>2.9.0</com.google.code.gson.version>
         <commons-codec.wso2.version>1.14.0.wso2v1</commons-codec.wso2.version>
@@ -710,7 +702,7 @@
         <json.wso2.version>3.0.0.wso2v1</json.wso2.version>
         <taglibs-standard-impl.version>1.2.5</taglibs-standard-impl.version>
         <apache.tomcat-catalina.version>9.0.11</apache.tomcat-catalina.version>
-        
+
 
         <lint.exec.skip>true</lint.exec.skip>
         <bootstrap.exec.skip>false</bootstrap.exec.skip>

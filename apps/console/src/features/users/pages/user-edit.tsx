@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -29,6 +29,7 @@ import { EditAvatarModal, PageLayout, UserAvatar } from "@wso2is/react-component
 import React, { MouseEvent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Icon, Popup } from "semantic-ui-react";
 import { getProfileInformation } from "../../authentication/store";
 import { AppConstants, AppState, FeatureConfigInterface, SharedUserStoreUtils, history } from "../../core";
 import { OrganizationUtils } from "../../organizations/utils";
@@ -42,7 +43,7 @@ import { UserManagementUtils } from "../utils";
 /**
  * User Edit page.
  *
- * @return {React.ReactElement}
+ * @returns User edit page react component.
  */
 const UserEditPage = (): ReactElement => {
 
@@ -136,7 +137,7 @@ const UserEditPage = (): ReactElement => {
     const handleUserUpdate = (id: string) => {
         getUser(id);
 
-        if (UserManagementUtils.isAuthenticatedUser(profileInfo, user)) {
+        if (UserManagementUtils.isAuthenticatedUser(profileInfo?.userName, user?.userName)) {
             dispatch(getProfileInformation());
         }
     };
@@ -148,8 +149,8 @@ const UserEditPage = (): ReactElement => {
     /**
      * Handles edit avatar modal submit action.
      *
-     * @param {<HTMLButtonElement>} e - Event.
-     * @param {string} url - Selected image URL.
+     * @param e - Mouse event.
+     * @param url - Selected image URL.
      */
     const handleAvatarEditModalSubmit = (e: MouseEvent<HTMLButtonElement>, url: string): void => {
         const data = {
@@ -215,7 +216,7 @@ const UserEditPage = (): ReactElement => {
     /**
      * This function resolves the primary email of the user.
      *
-     * @param {string | MultiValueAttributeInterface)[]} emails - User emails.
+     * @param emails - User emails.
      */
     const resolvePrimaryEmail = (emails: (string | MultiValueAttributeInterface)[]): string => {
         let primaryEmail: string | MultiValueAttributeInterface = "";
@@ -230,7 +231,53 @@ const UserEditPage = (): ReactElement => {
     return (
         <PageLayout
             isLoading={ isUserDetailsRequestLoading }
-            title={ resolveUserDisplayName(user, null, "Administrator") }
+            title={ (
+                <>
+                    {
+                        user?.active !== undefined
+                            ? (
+                                <>
+                                    {
+                                        user?.active
+                                            ? (
+                                                <Popup
+                                                    trigger={ (
+                                                        <Icon
+                                                            className="mr-2 ml-0 vertical-aligned-baseline"
+                                                            size="small"
+                                                            name="circle"
+                                                            color="green"
+                                                        />
+                                                    ) }
+                                                    content={ t("common:enabled") }
+                                                    inverted
+                                                />
+                                            ) : (
+                                                <Popup
+                                                    trigger={ (
+                                                        <Icon
+                                                            className="mr-2 ml-0 vertical-aligned-baseline"
+                                                            size="small"
+                                                            name="circle"
+                                                            color="orange"
+                                                        />
+                                                    ) }
+                                                    content={ t("common:disabled") }
+                                                    inverted
+                                                />
+                                            ) 
+                                    }
+                                    { resolveUserDisplayName(user, null, "Administrator") }
+                                    
+                                </>
+                            ) : (
+                                <>
+                                    { resolveUserDisplayName(user, null, "Administrator") }
+                                </>
+                            )
+                    }
+                </> 
+            ) }
             pageTitle="Edit User"
             description={ t("" + user.emails && user.emails !== undefined ? resolvePrimaryEmail(user?.emails) :
                 user.userName) }

@@ -55,7 +55,7 @@ import { AppState, getEmptyPlaceholderIllustrations, updateResources } from "../
 import { getOrganizationRoles } from "../../../organizations/api";
 import { OrganizationUtils } from "../../../organizations/utils";
 import { APPLICATION_DOMAIN, INTERNAL_DOMAIN, getRolesList } from "../../../roles";
-import { RolePermissions } from "../../../users";
+import { RolePermissions } from "../../../users/components";
 import { UserRolePermissions } from "../../../users/components/user-role-permissions";
 import { GroupsInterface } from "../../models";
 
@@ -801,12 +801,12 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
                                             </Table.Header>
                                             <Table.Body>
                                                 {
-                                                    assignedRoles?.map((group) => {
+                                                    assignedRoles?.map((group, index: number) => {
                                                         const groupRole = group.display.split("/");
 
                                                         if (groupRole.length >= 1) {
                                                             return (
-                                                                <Table.Row>
+                                                                <Table.Row key={ index }>
                                                                     {
                                                                         groupRole[ 0 ] == APPLICATION_DOMAIN ? (
                                                                             <Table.Cell>

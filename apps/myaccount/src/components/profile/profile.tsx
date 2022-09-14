@@ -16,7 +16,6 @@
  * under the License
  */
 
-import { updateProfileImageURL } from "@wso2is/core/api";
 import { ProfileConstants } from "@wso2is/core/constants";
 import {
     getUserNameWithoutDomain,
@@ -36,7 +35,7 @@ import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { DropdownItemProps, Form, Grid, Icon, List, Placeholder, Popup, Responsive } from "semantic-ui-react";
-import { updateProfileInfo } from "../../api";
+import { updateProfileImageURL, updateProfileInfo } from "../../api";
 import { AppConstants, CommonConstants } from "../../constants";
 import * as UIConstants from "../../constants/ui-constants";
 import { commonConfig, profileConfig } from "../../extensions";
@@ -787,7 +786,10 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                                         }
                                                     } }
                                                     value={ resolveProfileInfoSchemaValue(schema) }
-                                                    maxLength={ schema.name === "emails" ? 50 : 30 }
+                                                    maxLength={ schema.name === "emails" ? 50 
+                                                        : fieldName.toLowerCase().includes("uri") 
+                                                        || fieldName.toLowerCase().includes("url") ? -1 : 30 
+                                                    }
                                                 />
                                             )
                                             }
@@ -1200,6 +1202,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 {
                     profileSchema && profileSchema.map((schema: ProfileSchema, index: number) => {
                         if (!(schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("ROLES_DEFAULT")
+                            || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("ACTIVE")
                             || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("GROUPS")
                             || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("PROFILE_URL")
                             || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("ACCOUNT_LOCKED")

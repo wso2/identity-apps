@@ -8,7 +8,7 @@ These tests are written using [Cypress Testing Framework](https://www.cypress.io
 This package currently covers the following test suites.
 
 |  Suite Name | Path |
-| :------------ |:------------- 
+| :------------ |:-------------
 | Applications[WIP]      | integration/applications |
 | Email Templates      | integration/email-templates |
 | Groups[WIP]     | integration/groups |
@@ -46,17 +46,17 @@ Use the following commands to run the test suites form inside the root of the `t
 #### Headless mode
 
 ```bash
-npm run test or npm run test:headless
+pnpm test or pnpm test:headless
 ```
 
 #### Interactive mode
 
 ```bash
-npm run test:interactive
+pnpm test:interactive
 ```
 
 #### Smoke tests only
 
 ```bash
-npm run test:smoke
+pnpm test:smoke
 ```

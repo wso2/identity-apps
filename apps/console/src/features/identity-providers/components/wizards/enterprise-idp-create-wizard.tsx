@@ -243,13 +243,9 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
      * - @param form {Form} form instance
      * - @param callback
      */
-    const handleFormSubmit = async (values): Promise<void> => {
+    const handleFormSubmit = (values) => {
 
         const FIRST_ENTRY = 0;
-
-        for (const subTemplate of template.subTemplates) {
-            await identityProviderConfig.overrideTemplate(subTemplate);
-        }
 
         /**
          * We use a grouped template to keep the sub templates of enterprise

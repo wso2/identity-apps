@@ -249,7 +249,7 @@ export const updateRole = (roleId: string, roleData: PatchRoleDataInterface): Pr
 
 /**
  * Retrieve the list of groups that are currently in the system.
- * Copied from core module to override the endpoint
+ * TODO: Return `response.data` rather than `response` and stop returning any.
  *
  * @param {string} domain - User store domain.
  * @return {Promise<RoleListInterface | any>}
@@ -259,7 +259,7 @@ export const getRolesList = (domain: string): Promise<RoleListInterface | any> =
 
     const requestConfig = {
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost
+            "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
         params: {

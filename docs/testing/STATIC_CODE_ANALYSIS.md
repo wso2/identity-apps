@@ -18,7 +18,7 @@ Execute the following commands based on the requirement to analyze the code with
 
 ```bash
 # Run this from the root.
-npm run lint
+pnpm lint
 ```
 
 #### For a specific module/app.
@@ -27,28 +27,28 @@ npm run lint
 
 ```bash
 cd apps/console
-npm run lint
+pnpm lint
 ```
 
 or
 
 ```bash
 # From anywhere in the project.
-npx lerna run lint --scope @wso2is/console --stream
+pnpm nx run console:lint
 ```
 
 ##### Example: To run linter on React Components
 
 ```bash
 cd modules/react-components
-npm run lint
+pnpm lint
 ```
 
 or
 
 ```bash
 # From anywhere in the project.
-npx lerna run lint --scope @wso2is/react-components --stream
+pnpm nx run react-components:lint
 ```
 
 #### For a specific folder or a file.
@@ -59,14 +59,14 @@ The script `lint:targeted` is meant to be used if you need to run the linter on 
 
 ```bash
 cd apps/console
-npm run lint:targeted -- src/features/applications
+pnpm lint:targeted -- src/features/applications
 ```
 
 ##### Example: To run linter on `basic-application.spec.ts` test file inside the integration test suite.
 
 ```bash
 cd tests
-npm run lint:targeted -- integration/applications/basic-application.spec.ts
+pnpm lint:targeted -- integration/applications/basic-application.spec.ts
 ```
 
 ### Auto-fixing Issues
@@ -81,7 +81,7 @@ Execute the following commands to auto-fix possible issues using the **CLI**.
 
 ```bash
 # Run this from the root.
-npm run lint:autofix
+pnpm lint:autofix
 ```
 
 #### Auto-fix issues in a specific module/app.
@@ -90,14 +90,7 @@ npm run lint:autofix
 
 ```bash
 cd modules/core
-npm run lint:autofix
-```
-
-or
-
-```bash
-# From anywhere in the project.
-npx lerna run lint:autofix --scope @wso2is/core --stream
+pnpm lint:autofix
 ```
 
 #### Auto-fix issues in a specific folder or a file.
@@ -106,12 +99,12 @@ npx lerna run lint:autofix --scope @wso2is/core --stream
 
 ```bash
 cd apps/myaccount
-npm run lint:targeted -- src/api --fix
+pnpm lint:targeted -- src/api --fix
 ```
 
 ##### Example: To fix issues in `url-utils.ts` file inside the Core module.
 
 ```bash
 cd modules/core
-npm run lint:targeted -- src/utils/url-utils.ts --fix
+pnpm lint:targeted -- src/utils/url-utils.ts --fix
 ```

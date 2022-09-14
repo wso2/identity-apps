@@ -65,9 +65,9 @@ type IdentityProviderTemplateSelectPagePropsInterface = TestableComponentInterfa
 /**
  * Choose the application template from this page.
  *
- * @param {IdentityProviderTemplateSelectPagePropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns React.Element
  */
 const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemplateSelectPagePropsInterface> = (
     props: IdentityProviderTemplateSelectPagePropsInterface
@@ -152,7 +152,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
             IdentityProviderTemplateLoadingStrategies.REMOTE);
 
         /**
-         * With {@link skipGrouping} being {@code false} we say
+         * With {@link skipGrouping} being false we say
          * we need to group the existing templates based on their
          * template-group.
          */
@@ -188,6 +188,10 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                             return;
                         }
 
+                        if (template?.id === "organization-enterprise-idp" && !isOrganizationManagementEnabled) {
+                            return;
+                        }
+
                         tags = union(tags, template.tags);
                     });
                 });
@@ -215,6 +219,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
             === IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.GOOGLE) {
 
             handleTemplateSelection(null, IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.GOOGLE);
+
             return;
         }
     }, [ urlSearchParams.get(IdentityProviderManagementConstants.IDP_CREATE_WIZARD_TRIGGER_URL_SEARCH_PARAM_KEY) ]);
@@ -234,8 +239,8 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
     /**
      * Handles template selection.
      *
-     * @param {React.SyntheticEvent} e - Click event.
-     * @param {string} id - Id of the template.
+     * @param e - Click event of type React.SyntheticEvent.
+     * @param id - Id of the template.
      */
     const handleTemplateSelection = (e: SyntheticEvent, id: string): void => {
 
@@ -258,7 +263,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
     /**
      * On successful IDP creation, navigates to the IDP views.
      *
-     * @param {string} id - ID of the created IDP.
+     * @param id - ID of the created IDP.
      */
     const handleSuccessfulIDPCreation = (id: string): void => {
 
@@ -279,17 +284,17 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
     /**
      * Get search results.
      *
-     * @param {string} query - Search query.
-     * @param {string[]} filterLabels - Filter labels.
+     * @param query - Search query.
+     * @param filterLabels - Array of filter labels.
      *
-     * @return {IdentityProviderTemplateCategoryInterface[]}
+     * @returns IdentityProviderTemplateCategoryInterface[]
      */
     const getSearchResults = (query: string, filterLabels: string[]): IdentityProviderTemplateCategoryInterface[] => {
 
         /**
          * Checks if any of the filters are matching.
-         * @param {IdentityProviderTemplateInterface} template - Template object.
-         * @return {boolean}
+         * @param template - Template object.
+         * @returns boolean
          */
         const isFiltersMatched = (template: IdentityProviderTemplateInterface): boolean => {
 
@@ -327,8 +332,8 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
     /**
      * Handles the Connection Type Search input onchange.
      *
-     * @param {string} query - Search query.
-     * @param {string[]} selectedFilters - Selected filters.
+     * @param query - Search query.
+     * @param selectedFilters - Array of selected filters.
      */
     const handleConnectionTypeSearch = (query: string, selectedFilters: string[]): void => {
 
@@ -341,8 +346,8 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
     /**
      * Handles Connection Type filter.
      *
-     * @param {string} query - Search query.
-     * @param {string[]} selectedFilters - Selected filters.
+     * @param query - Search query.
+     * @param selectedFilters - Array of the selected filters.
      */
     const handleConnectionTypeFilter = (query: string, selectedFilters: string[]): void => {
 
@@ -355,7 +360,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
     /**
      * Resolve the relevant placeholder.
      *
-     * @return {React.ReactElement}
+     * @returns React.ReactElement
      */
     const showPlaceholders = (list: any[]): ReactElement => {
 
@@ -400,7 +405,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
 
     return (
         <PageLayout
-            pageTitle="Create New Connection"
+            pageTitle={ "Create New Connection" }
             isLoading={ useNewConnectionsView === undefined }
             title={
                 useNewConnectionsView
@@ -410,14 +415,14 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
             contentTopMargin={ true }
             description={
                 useNewConnectionsView
-                    ?   <>
-                            { t("console:develop.pages.authenticationProviderTemplate.subTitle") }
-                            <DocumentationLink
-                                link={ getLink("develop.connections.newConnection.learnMore") }
-                            >
-                                { t("common:learnMore") }
-                            </DocumentationLink>
-                        </>
+                    ?   (<>
+                        { t("console:develop.pages.authenticationProviderTemplate.subTitle") }
+                        <DocumentationLink
+                            link={ getLink("develop.connections.newConnection.learnMore") }
+                        >
+                            { t("common:learnMore") }
+                        </DocumentationLink>
+                    </>)
                     :   t("console:develop.pages.idpTemplate.subTitle")
             }
             backButton={ {
@@ -472,7 +477,8 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                                                     <ResourceGrid.Card
                                                         key={ templateIndex }
                                                         resourceName={
-                                                            template.name === "Enterprise" ? "Standard-Based IdP" : template.name
+                                                            template.name === "Enterprise" ? "Standard-Based IdP" 
+                                                                : template.name
                                                         }
                                                         isResourceComingSoon={ template.comingSoon }
                                                         disabled={ template.disabled }
@@ -486,7 +492,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                                                         onClick={ (e: SyntheticEvent) => {
                                                             handleTemplateSelection(e, template.id);
                                                         } }
-                                                        showTooltips={ { header: false, description: true } }
+                                                        showTooltips={ { description: true, header: false } }
                                                         data-testid={ `${ testId }-${ template.name }` }
                                                     />
                                                 );

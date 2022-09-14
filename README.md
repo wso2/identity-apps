@@ -2,153 +2,152 @@
 
 End-user apps in WSO2 Identity Server
 
+---
 |  Branch | Build Status | Travis CI Status |
 | :------------ |:------------- |:-------------
 | master      | [![Build Status](https://wso2.org/jenkins/view/Dashboard/job/platform-builds/job/identity-apps/badge/icon)](https://wso2.org/jenkins/view/Dashboard/job/platform-builds/job/identity-apps/) | [![Build Status](https://travis-ci.org/wso2/identity-apps.svg?branch=master)](https://travis-ci.org/wso2/identity-apps) |
 
-## Setup build environment
+[![Stackoverflow](https://img.shields.io/badge/Ask%20for%20help%20on-Stackoverflow-orange)](https://stackoverflow.com/questions/tagged/wso2is)
+[![Slack](https://img.shields.io/badge/Join%20us%20on-Slack-%23e01563.svg)](https://join.slack.com/t/wso2is/shared_invite/zt-19lsbfvhc-T6t0p_J4tXcMvnuHX8605w)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/wso2/product-is/blob/master/LICENSE)
+[![Twitter](https://img.shields.io/twitter/follow/wso2.svg?style=social&label=Follow)](https://twitter.com/intent/follow?screen_name=wso2)
 
-1. Install NodeJS from [https://nodejs.org/en/download/](https://nodejs.org/en/download/).
+---
 
-    > 💡`npm` 7 has some breaking changes to peer dependencies. Hence, go with a `npm` version lower than `7`.
-2. Install Maven from [https://maven.apache.org/download.cgi](https://maven.apache.org/download.cgi). * For Maven 3.8 and up, please check the Troubleshoot section.
-3. Install JDK 1.8 [https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html](https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html).
+## Prerequisite
+
+### Setup Development Environment
+
+1. Install NodeJS LTS(Latest Stable Version) from [https://nodejs.org/en/download/](https://nodejs.org/en/download/).
+2. Instal the latest version of [pnpm](https://pnpm.io/).
+
+    ```shell
+    corepack enable
+    ```
+
+    This will install pnpm on your system. However, it probably would not be the latest version. Hence, to upgrade it, check the [latest pnpm version](https://github.com/pnpm/pnpm/releases/latest) and run:
+
+    ```shell
+    corepack prepare pnpm@<version> --activate
+    ```
+
+    Or, follow the other [recommended installation options](https://pnpm.io/installation).
+
+3. Install Maven from [https://maven.apache.org/download.cgi](https://maven.apache.org/download.cgi).
+4. Install JDK 11 [https://www.openlogic.com/openjdk-downloads](https://www.openlogic.com/openjdk-downloads).
+
+### Download WSO2 Identity Server
+
+In order to setup this repository locally, you need to have [WSO2 Identity Server](https://wso2.com/identity-server/) installed on your local environment.
+
+We recommend you to download the [latest release](https://github.com/wso2/product-is/releases) or build the [product-is](https://github.com/wso2/product-is) from [source](https://github.com/wso2/product-is#building-the-distribution-from-source).
+
+### Setup WSO2 Identity Server
+
+#### Allow CORS Origins
+
+Add the following code to `repository/conf/deployment.toml` in `WSO2 Identity Server` distribution pack to allow CORS.
+
+```toml
+[cors]
+allowed_origins = [
+    "https://localhost:9000",
+    "https://localhost:9001"
+]
+supported_methods = [
+    "GET",
+    "POST",
+    "HEAD",
+    "OPTIONS",
+    "PUT",
+    "PATCH",
+    "HEAD",
+    "DELETE",
+    "PATCH"
+]
+exposed_headers = [ "Location" ]
+```
+
+#### Configure FIDO2 origins
+
+Add your hostname and port as a trusted FIDO2 origin to the `deployment.toml` file as given below.
+
+```toml
+[fido.trusted]
+origins=["https://localhost:9000"]
+```
+
+#### Make Applications Editable
+
+Currently, `Console` & `My Account` are considered as system applications hence they are readonly by default. In order configure them, you need to add the following config to the `deployment.toml` file to override the default behavior.
+
+```toml
+[system_applications]
+read_only_apps = []
+```
+
+#### Start the Identity Server
+
+Now you can go ahead and start the Identity Server that was downloaded in the [Prerequisites](#prerequisite) step.
+
+For instructions on startup, [read the docs](https://is.docs.wso2.com/en/latest/deploy/get-started/run-the-product/).
+
+#### Go to Management Console
+
+Navigate to the Management Console i.e `https://localhost:9443/carbon/` from the browser, and login to the system by entering an admin password.
+
+> 💡 You can find out the default password details here: [https://docs.wso2.com/display/ADMIN44x/Configuring+the+System+Administrator](https://docs.wso2.com/display/ADMIN44x/Configuring+the+System+Administrator)
+
+#### Configure Callback URLs
+
+In the Management Console, navigate to `Service Providers -> List` from left side panel. And then go to `Edit` option in the application that you want to configure in dev mode (ex: `MY_ACCOUNT`). Then click on `Inbound Authentication Configuration -> OAuth/OpenID Connect Configuration -> Edit`. And then update the `Callback Url` field with below corresponding values.
+
+##### Console
+
+```shell
+regexp=(https://localhost:9443/console|https://localhost:9443/t/(.*)/console|https://localhost:9443/console/login|https://localhost:9443/t/(.*)/console/login|https://localhost:9001/console|https://localhost:9001/t/(.*)/console|https://localhost:9001/console/login|https://localhost:9001/t/(.*)/console/login)
+```
+
+##### My Account
+
+```shell
+regexp=(https://localhost:9443/myaccount|https://localhost:9443/t/(.*)/myaccount|https://localhost:9443/myaccount/login|https://localhost:9443/t/(.*)/myaccount/login|https://localhost:9000/myaccount|https://localhost:9000/t/(.*)/myaccount|https://localhost:9000/myaccount/login|https://localhost:9000/t/(.*)/myaccount/login)
+```
 
 ## Build & Run
 
-#### Build
+### Build
 
-1. Download or clone the project source code from [https://github.com/wso2/identity-apps](https://github.com/wso2/identity-apps)
-2. Run `mvn clean install` from the command line in the project root directory (where the root `pom.xml` is located).
+Clone or download the Identity Apps repository and run the following commands from the command line in the project root directory (where the `package.json` is located) to build all the packages with dependencies.
 
-If you are building [product-is](https://github.com/wso2/product-is), the built identity apps dependencies will install to your local `.m2` repository during the build above.
-
-3. Then you just need to build [WSO2 Identity Server](https://github.com/wso2/product-is) after. _(Follow the guide there)_
-
-#### Run
-
-4. Execute `wso2server.sh` (For unix environment) or `wso2server.bat` (For windows environment) file from the `bin` directory to run the WSO2 Identity Server.
-5. Navigate to `https://localhost:9443/myaccount` or `https://localhost:9443/console` from the browser. (Add certificate exception if required)
-
-## Run in dev mode
-
-1. **Do only if you skip WSO2 Identity Server build step above:** Download the built distribution of WSO2 Identity Server from [https://wso2.com/identity-and-access-management/](https://wso2.com/identity-and-access-management/).
-
-2. Add the following code to `repository/conf/deployment.toml` in `WSO2 Identity Server` distribution pack to allow CORS.
-
-    ```toml
-    [cors]
-    allowed_origins = [
-       "https://localhost:9000",
-       "https://localhost:9001"
-    ]
-    supported_methods = [
-       "GET",
-       "POST",
-       "HEAD",
-       "OPTIONS",
-       "PUT",
-       "PATCH",
-       "HEAD",
-       "DELETE",
-       "PATCH"
-    ]
-    exposed_headers = [ "Location" ]
-    ```
-3. Add your hostname and port as a trusted FIDO2 origin to the `deployment.toml` file as given below.
-
-    ```toml
-     [fido.trusted]
-     origins=["https://localhost:9000"]
-    ```
-4. Currently, `Console` & `My Account` are considered as system applications hence they are readonly by default. So in order to configure the  `Callback Urls` as specified in **step 7**, you need to add the following config to the `deployment.toml` file to override the default behaviour.
-
-    ```toml
-    [system_applications]
-    read_only_apps = []
-    ```
-5. Execute `wso2server.sh` (For unix environment) or `wso2server.bat` (For windows environment) file from the `bin` directory to run WSO2 Identity Server.
-6. Navigate to `https://localhost:9443/carbon/` from the browser, and login to the system by entering an admin password.
-> **Hint!** Can find out the default password details here: [https://docs.wso2.com/display/ADMIN44x/Configuring+the+System+Administrator](https://docs.wso2.com/display/ADMIN44x/Configuring+the+System+Administrator)
-7. In the system, navigate to `Service Providers -> List` from left side panel. And then go to `Edit` option in the application that you want to configure in dev mode (ex: `MY_ACCOUNT`). Then click on `Inbound Authentication Configuration -> OAuth/OpenID Connect Configuration -> Edit`. And then update the `Callback Url` field with below corresponding values.
-
-    **Console**
-
-    ```
-    regexp=(https://localhost:9443/console|https://localhost:9443/t/(.*)/console|https://localhost:9443/console/login|https://localhost:9443/t/(.*)/console/login|https://localhost:9001/console|https://localhost:9001/t/(.*)/console|https://localhost:9001/console/login|https://localhost:9001/t/(.*)/console/login)
-    ```
-
-    **My Account**
-
-    ```
-    regexp=(https://localhost:9443/myaccount|https://localhost:9443/t/(.*)/myaccount|https://localhost:9443/myaccount/login|https://localhost:9443/t/(.*)/myaccount/login|https://localhost:9000/myaccount|https://localhost:9000/t/(.*)/myaccount|https://localhost:9000/myaccount/login|https://localhost:9000/t/(.*)/myaccount/login)
-    ```
-
-8. Open cloned or downloaded Identity Apps repo and run the following commands from the command line in the project root directory (where the `package.json` is located) to build all the packages with dependencies. _(Note:- Not necessary if you have already done above identity apps build steps)_
-
-    ```bash
-    # `npm run bootstrap` will install npm dependencies and bootstrap lerna modules.
-    npm run bootstrap && npm run build
-    ```
-
-    or
-    
-    ```bash
-    # This will run `npm run bootstrap && npm run build` in the background.
-    npm run build:dev
-    ```
-
-   > **_Note:-_** 
-   >  
-   > To build a single package/app, you can use this command: `npx lerna bootstrap --scope <package-name> && npx lerna run --scope <package-name> build`.   
-   >
-   > E.g. `npx lerna bootstrap --scope @wso2is/myaccount && npx lerna run --scope @wso2is/myaccount build`
-
-9. Start the apps in development mode, Execute `cd apps/<app> && npm start` command. E.g. `cd apps/myaccount && npm start`.
-10. Once the app is successfully started, you can access the via the URLs `https://localhost:9000/myaccount` or `https://localhost:9001/console`.
-
-## Running Tests
-
-### Unit Tests
-
-Product Unit tests have been implemented using [Jest](https://jestjs.io/) along with [React Testing Library](https://testing-library.com/docs/react-testing-library/intro)
-and you can run the unit test suites using the following commands.
-
-#### Run Tests for all modules
-
-```bash
-npm run test
+```shell
+# From project root.
+mvn clean install
 ```
 
-#### Run Tests for individual module
+### Run
 
-```bash
-npx lerna run test --scope @wso2is/forms
+To start the apps in development mode, execute the following commands accordingly.
+
+#### Console
+
+```shell
+# To start Console
+cd apps/console
+pnpm start
 ```
 
-### Integration Tests
+Once the development server is live, you can access the application via [https://localhost:9001/console](https://localhost:9001/console).
 
-Product integration tests have been written using [Cypress Testing Framework](https://www.cypress.io/) and you can run the test suites using the following command.
+#### My Account
 
-#### Headless mode
-
-```bash
-npm run test:integration
+```shell
+# To start My Account
+cd apps/myaccount
+pnpm start
 ```
 
-#### Interactive mode
-
-```bash
-npm run test:integration:interactive
-```
-
-#### Only Smoke Tests
-
-```bash
-npm run test:integration:smoke
-```
-
-For more information regarding the test module, checkout the [README](./tests/README.md) in the `tests` module.
+Once the development server is live, you can access the application via [https://localhost:9000/myaccount](https://localhost:9000/myaccount).
 
 ## Configuration
 
@@ -157,67 +156,7 @@ Read through our [configurations guidelines](./docs/CONFIGURATION.md) to learn a
 
 ## Deployment
 
-#### Deploying the apps on an external server
-
-It is possible to deploy the Console and My Account applications on an external server. To do so, the following steps has to be followed in order to build the applications.
-
-##### Method 1 - Build using Maven
-
-Follow the steps in listed [here](#build) in-order to build the project with maven.
-
-Once the build is complete, execute the following commands in-order to build the Console & My Account applications for external deployment.
-
-**Console**
-
-###### Deploy on a Java EE server (ex: Tomcat)
-
-```bash
-npx lerna run build:external --scope @wso2is/console
-```
-
-###### Deploy on a static server.
-
-```bash
-npx lerna run build:external:static --scope @wso2is/console
-```
-
-Once the build is completed, you can find the build artifacts inside the build folder i.e `apps/console/build`.
-
-**My Account**
-
-###### Deploy on a Java EE server (ex: Tomcat)
-
-```bash
-npx lerna run build:external --scope @wso2is/myaccount
-```
-
-###### Deploy on a static server.
-
-```bash
-npx lerna run build:external:static --scope @wso2is/myaccount
-```
-
-Once the build is completed, you can find the build artifacts inside the build folder i.e `apps/myaccount/build`.
-
-##### Method 2 - Build using npm
-
-You can simply use npm to build the Console and My Account applications for external deployment by just executing the following script.
-
-###### Deploy on a Java EE server (ex: Tomcat)
-
-```bash
-# From project root
-npm run build:external
-```
-
-###### Deploy on a static server.
-
-```bash
-# From project root
-npm run build:external:static
-```
-
-The respective build artifacts could be found inside the build folder. (`apps/(myaccount|console)/build`)
+Go through our [deployment guide](./docs/DEPLOYMENT.md) to learn the different supported app deployment options.
 
 ## Connectors
 
@@ -225,7 +164,9 @@ Go through our [connectors guide](./docs/CONNECTORS.md) to learn how to handle c
 
 ## Troubleshoot
 
-- If you face any out of memory build failures, make sure that you have set maven options to `set MAVEN_OPTS=-Xmx384M`
+Go through our [troubleshooting guide](./docs/TROUBLESHOOTING.md) to clarify and issues you encounter.
+
+If the issue you are facing is not on the existing guide, consider reaching out to us on slack, stackoverflow threads or by creating an issue as described in [Reporting Issues](#reporting-issues).
 
 ## Contributing
 
@@ -240,3 +181,6 @@ We encourage you to report issues, improvements and feature requests regarding t
 ## License
 
 Licenses this source under the Apache License, Version 2.0 ([LICENSE](LICENSE)), You may not use this file except in compliance with the License.
+
+---------------------------------------------------------------------------
+(c) Copyright 2022 WSO2 LLC.

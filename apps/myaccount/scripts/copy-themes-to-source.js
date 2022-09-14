@@ -47,7 +47,8 @@ log("\nStarted copying the theme images from @wso2is/theme to the portal source.
 
 // Check if the `@wso2is/theme` module is installed, if not terminate the script.
 if (!fs.existsSync(themeModule)) {
-    log("\nCouldn't find @wso2is/theme module." + "Please install dependencies with npm/yarn and try again.");
+    log("\nCouldn't find @wso2is/theme module."
+        + "Please bootstrap dependencies again by executing `pnpm install` from root.");
     // Terminate the script.
     process.exit();
 }
@@ -55,7 +56,7 @@ if (!fs.existsSync(themeModule)) {
 // If the themes folder already exists, clean it.
 if (fs.existsSync(target)) {
     log("\nThemes folder already exists. Cleaning it first......");
-    execSync("npm run clean:themes:src");
+    execSync("pnpm clean:themes:src");
 }
 
 log("\nStarted copying themes to the source......");

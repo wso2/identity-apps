@@ -17,7 +17,7 @@
  */
 
 import { AsgardeoSPAClient, HttpError, HttpRequestConfig, HttpResponse } from "@asgardeo/auth-react";
-import { HttpMethods } from "@wso2is/core/src/models";
+import { HttpMethods } from "@wso2is/core/models";
 import { store } from "../../core";
 import useRequest, { RequestResultInterface } from "../../core/hooks/use-request";
 import {
@@ -352,9 +352,9 @@ export const getSharedOrganizations = (
 };
 
 /**
- * Gets the super organization id of the current user.
+ * Gets the super organization of the current user.
  *
- * @returns {Promise<string>} The super organization id of teh user.
+ * @returns {RequestResultInterface<OrganizationInterface, Error>} The super organization of the user.
  */
 export const useGetUserSuperOrganization = (): RequestResultInterface<OrganizationInterface, Error> => {
     const requestConfig = {

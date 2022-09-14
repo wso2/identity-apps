@@ -289,7 +289,21 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                     }
                 };
             } else if (customApplicationProtocol === SupportedAuthProtocolTypes.SAML) {
+                
                 application.templateId = ApplicationManagementConstants.CUSTOM_APPLICATION_SAML;
+
+                if (samlConfigureMode === SAMLConfigModes.MANUAL) {
+                    application.inboundProtocolConfiguration.saml.manualConfiguration = Object.assign(
+                        application.inboundProtocolConfiguration.saml.manualConfiguration,
+                        {
+                            attributeProfile: {
+                                "alwaysIncludeAttributesInResponse": true,
+                                "enabled": true
+                            }
+                        }
+                    );
+                }
+
             } else if (customApplicationProtocol === SupportedAuthProtocolTypes.WS_FEDERATION) {
                 application.templateId = ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS;
             }
@@ -832,15 +846,13 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                 id="name-input"
             >
                 <Grid>
-                    <div id="notification-div">
-                        { alert && (
-                            <Grid.Row columns={ 1 }>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
-                                    { notification }
-                                </Grid.Column>
-                            </Grid.Row>
-                        ) }
-                    </div>
+                    { alert && (
+                        <Grid.Row columns={ 1 } id="notification-div">
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+                                { notification }
+                            </Grid.Column>
+                        </Grid.Row>
+                    ) }
                     <Grid.Row columns={ 1 }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
                             <Field

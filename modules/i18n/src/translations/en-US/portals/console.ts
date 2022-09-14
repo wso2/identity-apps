@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -577,7 +577,7 @@ export const console: ConsoleNS = {
                             }
                         }
                     },
-                    placeholder: "Search by application name or clientId"
+                    placeholder: "Search applications by name, clientId, or issuer"
                 },
                 confirmations: {
                     addSocialLogin: {
@@ -1179,12 +1179,16 @@ export const console: ConsoleNS = {
                                                 heading: "Add TOTP as a second factor"
                                             },
                                             usernameless: {
-                                                description: "Enable users to log in using a FIDO2 security key "
-                                                    + "or biometrics.",
+                                                description: "Enable users to log in using a FIDO2 security key, "
+                                                    + "biometrics or passkeys.",
                                                 heading: "Add Security Key/Biometrics login",
                                                 info: "To sign in with passwordless login, your users "
                                                     + "should have their FIDO2 security keys or biometrics "
                                                     + "registered via My Account."
+                                            },
+                                            emailOTP: {
+                                                description: "Enable additional authentication layer with Email based OTP.",
+                                                heading: "Add Email OTP as a second factor"
                                             }
                                         }
                                     }
@@ -1936,7 +1940,12 @@ export const console: ConsoleNS = {
                             },
                             certificates: {
                                 disabledPopup: "Make sure request signature validation and" +
-                                    " assertion encryption are disabled to proceed."
+                                    " assertion encryption are disabled to proceed.",
+                                certificateRemoveConfirmation: {
+                                    header: "Remove current certificate?",
+                                    content: "Setting the certificate type to none will remove the current " +
+                                        "certificate provided for this application. Proceed with caution."
+                                }
                             },
                             encryption: {
                                 fields: {
@@ -2333,8 +2342,9 @@ export const console: ConsoleNS = {
                         predefined: "Use Predefined"
                     },
                     columns: {
-                        actions: "Actions",
-                        name: "Name"
+                        actions: "",
+                        name: "Name",
+                        templateId: "Type"
                     },
                     labels: {
                         fragment: "Fragment App"
@@ -3074,34 +3084,39 @@ export const console: ConsoleNS = {
                                 }
                             },
                             expiryTime: {
-                                hint: "The generated passcode will be expired after this defined time period. " +
-                                    "Please pick a value between <1>1 second</1> & <3>86400 seconds(1 day)</3>.",
+                                hint: "Please pick a value between <1>1 minute</1> & <3>1440 minutes (1 day)</3>.",
                                 label: "Email OTP expiry time",
                                 placeholder: "Enter Email OTP expiry time.",
-                                unit: "seconds",
+                                unit: "minutes",
                                 validations: {
                                     invalid: "Email OTP expiry time should be an integer.",
-                                    range: "Email OTP expiry time should be between 1 second & 86400 seconds(1 day).",
+                                    range: "Email OTP expiry time should be between 1 minute & 1440 minutes (1 day).",
                                     required: "Email OTP expiry time is a required field."
                                 }
                             },
                             tokenLength: {
-                                hint: "The number of allowed characters in the OTP token. Please, " +
+                                hint: "The number of allowed characters in the OTP. Please " +
                                     "pick a value between <1>4-10</1>.",
-                                label: "Email OTP token length",
-                                placeholder: "Enter Email OTP token length.",
+                                label: "Email OTP length",
+                                placeholder: "Enter Email OTP length.",
+                                unit: {
+                                    digits: "digits",
+                                    characters: "characters"
+                                },
                                 validations: {
-                                    invalid: "Email OTP token length should be an integer.",
-                                    range: "Email OTP token length should be between 4 & 10 characters.",
-                                    required: "Email OTP token length is a required field."
+                                    invalid: "Email OTP length should be an integer.",
+                                    range: {
+                                        characters: "Email OTP length should be between 4 & 10 characters.",
+                                        digits: "Email OTP length should be between 4 & 10 digits."
+                                    },
+                                    required: "Email OTP length is a required field."
                                 }
                             },
                             useNumericChars: {
-                                hint: "Only numeric characters (<1>0-9</1>) are used for the OTP token. " +
-                                    "Please clear this checkbox to enable alphanumeric characters.",
-                                label: "Use only numeric characters for OTP token",
+                                hint: "Please clear this checkbox to enable alphanumeric characters.",
+                                label: "Use only numeric characters for OTP",
                                 validations: {
-                                    required: "Use only numeric characters for OTP token is a required field."
+                                    required: "Use only numeric characters for OTP is a required field."
                                 }
                             }
                         },
@@ -6395,7 +6410,8 @@ export const console: ConsoleNS = {
                             " Please proceed with caution.",
                         header: "Are you sure?",
                         message: "This action is irreversible and will permanently delete the scope claim mapping"
-                    }
+                    },
+                    saveChangesButton: "Save Changes"
                 }
             },
             emailLocale: {
@@ -7797,7 +7813,7 @@ export const console: ConsoleNS = {
                             message: "Something went wrong"
                         },
                         success: {
-                            description: "Successfully updated the OIDC scope.",
+                            description: "Successfully updated the OIDC scope {{ scope }}.",
                             message: "Update successful"
                         }
                     }
@@ -7909,6 +7925,12 @@ export const console: ConsoleNS = {
                     },
                     back: "Back",
                     dangerZone: {
+                        disableOrganization: {
+                            disableActionTitle: "Disable Organization",
+                            enableActionTitle: "Enable Organization",
+                            subheader: "Disabling an organization can make you lose access to the " +
+                                "organization relates. Proceed with caution."
+                        },
                         subHeader: "Are you sure you want to delete this organization?",
                         title: "Delete Organization"
                     },
@@ -8028,6 +8050,36 @@ export const console: ConsoleNS = {
                     },
                     deleteOrganizationWithSubOrganizationError: "Organization {{ organizationName }} cannot be " +
                         "deleted since it has one or more sub organizations.",
+                    disableOrganization: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error while disabling the organization"
+                        },
+                        genericError: {
+                            description: "An error occurred while disabling the organization",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Successfully disabled the organization",
+                            message: "Organization disabled successfully"
+                        }
+                    },
+                    disableOrganizationWithSubOrganizationError: "Organization {{ organizationName }} cannot be " +
+                        "disabled since it has one or more sub organizations.",
+                    enableOrganization: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error while enabling the organization"
+                        },
+                        genericError: {
+                            description: "An error occurred while enabling the organization",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Successfully enabled the organization",
+                            message: "Organization enabled successfully"
+                        }
+                    },
                     fetchOrganization: {
                         error: {
                             description: "{{description}}",
@@ -8803,6 +8855,12 @@ export const console: ConsoleNS = {
                             header: "Reset password",
                             subheader: "Once you change the password, the user will no longer be able to log in to " +
                                 "any application using the current password."
+                        },
+                        deleteAdminPriviledgeZone: {
+                            actionTitle: "Revoke Privileges",
+                            header: "Revoke admin privileges",
+                            subheader: "This action will remove the user's admin privileges, " +
+                                "but the user will continue to be in the organization."
                         }
                     },
                     dateOfBirth: {
@@ -9177,6 +9235,16 @@ export const console: ConsoleNS = {
                         }
                     }
                 },
+                revokeAdmin: {
+                    confirmationModal: {
+                        assertionHint: "Please confirm your action.",
+                        content: "If you revoke the admin privileges of this user, the user will not be able " +
+                            "to log into the Asgardeo console and " +
+                            "will not be able to perform admin operations. Please proceed with caution.",
+                        header: "Are you sure?",
+                        message: "This action will revoke the admin privileges of the user."
+                    }
+                },
                 updateUser: {
                     groups: {
                         addGroupsModal: {
@@ -9509,6 +9577,34 @@ export const console: ConsoleNS = {
                         success: {
                             description: "Successfully retrieved the users.",
                             message: "Users retrieval successful"
+                        }
+                    },
+                    getAdminRole: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error retrieving the admin role"
+                        },
+                        genericError: {
+                            description: "Couldn't retrieve the admin roles.",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Successfully retrieved the admin roles.",
+                            message: "Role retrieval successful"
+                        }
+                    },
+                    revokeAdmin: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error revoking the admin privileges"
+                        },
+                        genericError: {
+                            description: "Couldn't revoke the admin privileges.",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Successfully revoked the admin privileges.",
+                            message: "Privileges revoked successfully"
                         }
                     }
                 },

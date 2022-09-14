@@ -83,8 +83,8 @@ interface IdentityProviderListPropsInterface extends LoadableComponentInterface,
     onIdentityProviderDelete?: () => void;
     /**
      * On list item select callback.
-     * @param {React.SyntheticEvent} event - Click event.
-     * @param {IdentityProviderInterface} idp - Selected IDP
+     * @param event - Click event.
+     * @param idp - Selected IDP
      */
     onListItemClick?: (event: SyntheticEvent, idp: IdentityProviderInterface) => void;
     /**
@@ -108,8 +108,8 @@ interface IdentityProviderListPropsInterface extends LoadableComponentInterface,
 /**
  * Identity provider list component.
  *
- * @param {IdentityProviderListPropsInterface} props Props injected to the component.
- * @return {React.ReactElement}
+ * @param props - Props injected to the component.
+ * @returns Identity Provider List component.
  */
 export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsInterface> = (
     props: IdentityProviderListPropsInterface
@@ -137,6 +137,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
     const [ connectedApps, setConnectedApps ] = useState<string[]>(undefined);
     const [ showDeleteErrorDueToConnectedAppsModal, setShowDeleteErrorDueToConnectedAppsModal ] =
         useState<boolean>(false);
+    const [ loading, setLoading ] = useState(false);
     const [ isAppsLoading, setIsAppsLoading ] = useState(true);
 
     const { t } = useTranslation();
@@ -147,7 +148,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
     /**
      * Redirects to the identity provider edit page when the edit button is clicked.
      *
-     * @param {string} idpId Identity provider id.
+     * @param idpId - Identity provider id.
      */
     const handleIdentityProviderEdit = (idpId: string): void => {
         history.push(AppConstants.getPaths().get("IDP_EDIT").replace(":id", idpId));
@@ -156,7 +157,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
     /**
      * Deletes an identity provider when the delete identity provider button is clicked.
      *
-     * @param {string} idpId Identity provider id.
+     * @param idpId - Identity provider id.
      */
     const handleIdentityProviderDeleteAction = (idpId: string): void => {
 
@@ -207,9 +208,11 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
     /**
      * Deletes an identity provider when the delete identity provider button is clicked.
      *
-     * @param {string} idpId Identity provider id.
+     * @param idpId - Identity provider id.
      */
     const handleIdentityProviderDelete = (idpId: string): void => {
+
+        setLoading(true);
         deleteIdentityProvider(idpId)
             .then(() => {
                 dispatch(addAlert({
@@ -222,6 +225,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                 handleIDPDeleteError(error);
             })
             .finally(() => {
+                setLoading(false);
                 setShowDeleteConfirmationModal(false);
                 setDeletingIDP(undefined);
                 onIdentityProviderDelete();
@@ -231,7 +235,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
     /**
      * Resolve the relevant placeholder.
      *
-     * @return {React.ReactElement}
+     * @returns Placeholder.
      */
     const showPlaceholders = (): ReactElement => {
         // When the search returns empty.
@@ -284,7 +288,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
     /**
      * Resolves data table columns.
      *
-     * @return {TableColumnInterface[]}
+     * @returns Data Table Columns.
      */
     const resolveTableColumns = (): TableColumnInterface[] => {
         return [
@@ -364,7 +368,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
     /**
      * Resolves data table actions.
      *
-     * @return {TableActionsInterface[]}
+     * @returns Data Table Actions.
      */
     const resolveTableActions = (): TableActionsInterface[] => {
         if (!showListItemActions) {
@@ -430,6 +434,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
             {
                 deletingIDP && (
                     <ConfirmationModal
+                        primaryActionLoading={ loading }
                         onClose={ (): void => setShowDeleteConfirmationModal(false) }
                         type="negative"
                         open={ showDeleteConfirmationModal }
@@ -440,9 +445,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                         primaryAction={ t("common:confirm") }
                         secondaryAction={ t("common:cancel") }
                         onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
-                        onPrimaryActionClick={
-                            (): void => handleIdentityProviderDelete(deletingIDP.id)
-                        }
+                        onPrimaryActionClick={ (): void => handleIdentityProviderDelete(deletingIDP.id) }
                         data-testid={ `${ testId }-delete-confirmation-modal` }
                         closeOnDimmerClick={ false }
                     >
