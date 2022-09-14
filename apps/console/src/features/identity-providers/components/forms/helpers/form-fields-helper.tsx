@@ -329,10 +329,13 @@ export const getScopesField = (eachProp: CommonPluggableComponentPropertyInterfa
                 required={ propertyMetadata?.isMandatory }
                 requiredErrorMessage={ I18n.instance.t("console:develop.features.authenticationProvider.forms.common." +
                     "requiredErrorMessage") }
-                placeholder={ propertyMetadata?.defaultValue }
-                type="text"
+                type="scopes"
                 value={ eachProp?.value }
                 key={ eachProp?.key }
+                defaultValue={ propertyMetadata?.defaultValue }
+                isQueryParamScopesDefined={ propertyMetadata?.
+                    properties?.find(( property: CommonPluggableComponentPropertyInterface ) => 
+                        property.key === "isQueryParamScopesDefined")?.value }
                 disabled={ propertyMetadata?.isDisabled }
                 readOnly={ propertyMetadata?.readOnly }
                 data-testid={ `${ testId }-${ propertyMetadata?.key }` }

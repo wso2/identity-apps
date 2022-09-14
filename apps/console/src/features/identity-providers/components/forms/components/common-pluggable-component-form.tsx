@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -145,6 +145,19 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
         return propertyMetadata?.subProperties?.length > 0 && getFieldType(propertyMetadata, mode) === FieldType.RADIO;
     };
 
+    /**
+     * Check whether additional query paramters has scopes defined.
+     *
+     * @param  propertyMetadata - Metadata of the property.
+     */
+    const isScopesDefined = (propertyMetadata
+        : CommonPluggableComponentMetaPropertyInterface): boolean => {
+        if (propertyMetadata?.key === CommonConstants.FIELD_COMPONENT_SCOPES) {
+            return dynamicValues?.properties?.find(
+                queryParam => queryParam.key === "commonAuthQueryParams")?.value.toLowerCase().includes("scope=");
+        }
+    };
+
     const getField = (property: CommonPluggableComponentPropertyInterface,
         eachPropertyMeta: CommonPluggableComponentMetaPropertyInterface,
         isSub?: boolean,
@@ -212,7 +225,18 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
                 let field: ReactElement;
 
                 if (!isCheckboxWithSubProperties(metaProperty)) {
-                    field = getField(property, metaProperty, isSub, `${ testId }-form`, handleParentPropertyChange);
+                    if (isScopesDefined(metaProperty)) {
+                        
+                        const updatedProperty: CommonPluggableComponentMetaPropertyInterface = {
+                            ...metaProperty,
+                            properties: [ { key:"isQueryParamScopesDefined", value:true } ]
+                        };
+
+                        field = getField(property, updatedProperty, isSub,
+                            `${ testId }-form`, handleParentPropertyChange);
+                    } else {
+                        field = getField(property, metaProperty, isSub, `${ testId }-form`, handleParentPropertyChange);
+                    }                  
                 } else if (isRadioButtonWithSubProperties(metaProperty)) {
                     field =
                         (<React.Fragment key={ metaProperty?.key }>

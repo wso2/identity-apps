@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -21,6 +21,7 @@ import React, { ReactElement } from "react";
 import { Button, Divider, Form, Icon, Popup, Radio } from "semantic-ui-react";
 import { Password } from "./password";
 import { QueryParameters } from "./query-parameters";
+import { Scopes } from "./scopes";
 import {
     isButtonField,
     isCheckBoxField,
@@ -31,6 +32,7 @@ import {
     isQueryParamsField,
     isRadioField,
     isResetField,
+    isScopesField,
     isSubmitField,
     isTextField,
     isToggleField
@@ -381,6 +383,27 @@ export const InnerField = React.forwardRef((props: InnerFieldPropsInterface, ref
                             return field;
                         }
                     }) }
+                </Form.Group>
+            );
+        } else if (isScopesField(inputField)) {
+            return (
+                <Form.Group grouped={ true }>
+                    <label>
+                        { inputField.label }
+                        {
+                            inputField.label && inputField.required
+                                ? <span className="ui text color red">*</span>
+                                : null
+                        }
+                    </label>
+                    <Scopes
+                        value={ inputField.value }
+                        defaultValue={ inputField.defaultValue }
+                        isQueryParamScopesDefined={ inputField.isQueryParamScopesDefined }
+                        onChange={ (event: React.ChangeEvent<HTMLInputElement>) => {
+                            handleChange(event.target.value, inputField.name);
+                        } }
+                    />
                 </Form.Group>
             );
         } else if (isQueryParamsField(inputField)) {

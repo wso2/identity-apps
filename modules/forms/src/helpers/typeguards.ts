@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -28,6 +28,7 @@ import {
     QueryParamsField,
     RadioField,
     Reset,
+    ScopesField,
     TextField,
     ToggleField
 } from "../../src";
@@ -76,6 +77,14 @@ export const isDropdownField = (toBeDetermined: FormField): toBeDetermined is Dr
  */
 export const isCheckBoxField = (toBeDetermined: FormField): toBeDetermined is CheckboxField => {
     return (toBeDetermined as CheckboxField).type === "checkbox";
+};
+
+/**
+ * Type guard to check if an input element is of the type Scopes
+ * @param toBeDetermined
+ */
+ export const isScopesField = (toBeDetermined: FormField): toBeDetermined is ScopesField => {
+    return (toBeDetermined as ScopesField).type === "scopes";
 };
 
 /**
@@ -148,6 +157,7 @@ export const isInputField = (
         isRadioField(toBeDetermined) ||
         isPasswordField(toBeDetermined) ||
         isToggleField(toBeDetermined) ||
-        isQueryParamsField(toBeDetermined)
+        isQueryParamsField(toBeDetermined) ||
+        isScopesField(toBeDetermined)
     );
 };
