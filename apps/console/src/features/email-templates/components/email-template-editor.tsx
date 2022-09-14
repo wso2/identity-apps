@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -41,8 +41,8 @@ interface EmailTemplateEditorPropsInterface extends TestableComponentInterface {
  * Util component to handle email template editing functionality and
  * rendering the html content on an Iframe.
  *
- * @param {EmailTemplateEditorPropsInterface} props - props required to edit email template.
- * @return {React.ReactElement}
+ * @param props - props required to edit email template.
+ * @returns EmailTemplateEditor ReactElement
  */
 export const EmailTemplateEditor: FunctionComponent<EmailTemplateEditorPropsInterface> = (
     props: EmailTemplateEditorPropsInterface
@@ -87,9 +87,6 @@ export const EmailTemplateEditor: FunctionComponent<EmailTemplateEditorPropsInte
                 if (response.status == 200) {
                     setBrandingPreferences(response.data["preference"]);
                 }
-            })
-            .catch((error) => {
-                // Handle Error.
             });
     }, [ ]);
 
@@ -98,6 +95,7 @@ export const EmailTemplateEditor: FunctionComponent<EmailTemplateEditorPropsInte
      */
     const writeToIframe = (): void => {
         const iframeDoc = iframe?.current?.contentDocument || iframe?.current?.contentWindow?.document;
+
         if (iframeDoc) {
             /*
              * Trigger a page load in order to update the content
@@ -118,9 +116,9 @@ export const EmailTemplateEditor: FunctionComponent<EmailTemplateEditorPropsInte
     /**
      * Replace branding related placeholders in email templates.
      *
-     * @param   {string} templateContent    - template content
-     * @param   {string} brandingPreference - branding preference object
-     * @return  {string}                    - preview content
+     * @param   templateContent    - template content
+     * @param   brandingPreference - branding preference object
+     * @returns preview content
      */
     const replaceBrandingPlaceholders = (
         templateContent: string,
@@ -140,21 +138,22 @@ export const EmailTemplateEditor: FunctionComponent<EmailTemplateEditorPropsInte
         let copyrightText:string;
 
         if (isBrandingEnabled) {
-            theme               = brandingPreference.theme.activeTheme;
-            primaryColor        = brandingPreference.theme[theme].colors.primary;
-            backgroundColor     = brandingPreference.theme[theme].page.background.backgroundColor;
-            font                = brandingPreference.theme[theme].typography.font.fontFamily;
-            fontColor           = brandingPreference.theme[theme].page.font.color;
-            buttonFontColot     = brandingPreference.theme[theme].buttons.primary.base.font.color;
-            logoUrl             = (brandingPreference.theme[theme].images.logo.imgURL)
-                                ? brandingPreference.theme[theme].images.logo.imgURL
-                                : EmailTemplateManagementConstants.DEFAULT_BRANDING_LOGO_URL;
-            altText             = (brandingPreference.theme[theme].images.logo.altText)
-                                ? brandingPreference.theme[theme].images.logo.altText
-                                : "";
-            copyrightText       = (brandingPreference.organizationDetails.copyrightText)
-                                ? brandingPreference.organizationDetails.copyrightText
-                                : EmailTemplateManagementConstants.DEFAULT_BRANDING_COPYRIGHT_TEXT.replace("YYYY", new Date().getFullYear().toString());
+            theme = brandingPreference.theme.activeTheme;
+            primaryColor = brandingPreference.theme[theme].colors.primary;
+            backgroundColor = brandingPreference.theme[theme].page.background.backgroundColor;
+            font = brandingPreference.theme[theme].typography.font.fontFamily;
+            fontColor = brandingPreference.theme[theme].page.font.color;
+            buttonFontColot = brandingPreference.theme[theme].buttons.primary.base.font.color;
+            logoUrl = (brandingPreference.theme[theme].images.logo.imgURL) 
+                ? brandingPreference.theme[theme].images.logo.imgURL 
+                : EmailTemplateManagementConstants.DEFAULT_BRANDING_LOGO_URL;
+            altText = (brandingPreference.theme[theme].images.logo.altText)
+                ? brandingPreference.theme[theme].images.logo.altText
+                : "";
+            copyrightText = (brandingPreference.organizationDetails.copyrightText)
+                ? brandingPreference.organizationDetails.copyrightText
+                : EmailTemplateManagementConstants.DEFAULT_BRANDING_COPYRIGHT_TEXT
+                    .replace("YYYY", new Date().getFullYear().toString());
         } else {
             theme               = EmailTemplateManagementConstants.DEFAULT_BRANDING_ACTIVE_THEME;
             primaryColor        = EmailTemplateManagementConstants.DEFAULT_BRANDING_PRIMRY_COLOR;
@@ -164,23 +163,24 @@ export const EmailTemplateEditor: FunctionComponent<EmailTemplateEditorPropsInte
             buttonFontColot     = EmailTemplateManagementConstants.DEFAULT_BRANDING_BUTTON_FONT_COLOR;
             logoUrl             = EmailTemplateManagementConstants.DEFAULT_BRANDING_LOGO_URL;
             altText             = "";
-            copyrightText       = EmailTemplateManagementConstants.DEFAULT_BRANDING_COPYRIGHT_TEXT.replace("YYYY", new Date().getFullYear().toString());
+            copyrightText       = EmailTemplateManagementConstants.DEFAULT_BRANDING_COPYRIGHT_TEXT
+                .replace("YYYY", new Date().getFullYear().toString());
         }
 
         const themeBackgroundColor:string = (theme === EmailTemplateManagementConstants.DEFAULT_BRANDING_ACTIVE_THEME)
-                                            ? EmailTemplateManagementConstants.DEFAULT_BRANDING_LIGHT_THEMED_BACKGROUND_COLOR
-                                            : EmailTemplateManagementConstants.DEFAULT_BRANDING_DARK_THEMED_BACKGROUND_COLOR;
+            ? EmailTemplateManagementConstants.DEFAULT_BRANDING_LIGHT_THEMED_BACKGROUND_COLOR
+            : EmailTemplateManagementConstants.DEFAULT_BRANDING_DARK_THEMED_BACKGROUND_COLOR;
         
         return templateContent
-                .replace(/\{\{organization.logo.img\}\}/g, logoUrl)
-                .replace(/\{\{organization.logo.altText\}\}/g, altText)
-                .replace(/\{\{organization.copyright.text\}\}/g, copyrightText)
-                .replace(/\{\{organization.color.primary\}\}/g, primaryColor)
-                .replace(/\{\{organization.color.background\}\}/g, backgroundColor)
-                .replace(/\{\{organization.theme.background.color\}\}/g, themeBackgroundColor)
-                .replace(/\{\{organization.font\}\}/g, font)
-                .replace(/\{\{organization.font.color\}\}/g, fontColor)
-                .replace(/\{\{organization.button.font.color\}\}/g, buttonFontColot);
+            .replace(/\{\{organization.logo.img\}\}/g, logoUrl)
+            .replace(/\{\{organization.logo.altText\}\}/g, altText)
+            .replace(/\{\{organization.copyright.text\}\}/g, copyrightText)
+            .replace(/\{\{organization.color.primary\}\}/g, primaryColor)
+            .replace(/\{\{organization.color.background\}\}/g, backgroundColor)
+            .replace(/\{\{organization.theme.background.color\}\}/g, themeBackgroundColor)
+            .replace(/\{\{organization.font\}\}/g, font)
+            .replace(/\{\{organization.font.color\}\}/g, fontColor)
+            .replace(/\{\{organization.button.font.color\}\}/g, buttonFontColot);
     };
 
     return (

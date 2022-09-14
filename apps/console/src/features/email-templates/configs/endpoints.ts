@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -21,12 +21,12 @@ import { EmailTemplatesResourceEndpointsInterface } from "../models";
 /**
  * Get the resource endpoints for the Email Template Management feature.
  *
- * @param {string} serverHost - Server Host.
- * @return {EmailTemplatesResourceEndpointsInterface}
+ * @param serverHost - Server Host.
+ * @returns EmailTemplatesResourceEndpointsInterface
  */
 export const getEmailTemplatesResourceEndpoints = (serverHost: string): EmailTemplatesResourceEndpointsInterface => {
     return {
-        emailTemplateType: `${ serverHost }/api/server/v1/email/template-types`,
-        brandingPreferences: `${ serverHost }/api/server/v1/branding-preference`
+        brandingPreferences: `${ serverHost }/api/server/v1/branding-preference`,
+        emailTemplateType: `${ serverHost }/api/server/v1/email/template-types`
     };
 };
