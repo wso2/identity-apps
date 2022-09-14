@@ -1,7 +1,7 @@
 /**
-* Copyright (c) 2022, WSO2 Inc. (http://www.wso2.com) All Rights Reserved.
+* Copyright (c) 2022, WSO2 LLC. (http://www.wso2.com) All Rights Reserved.
 *
-* WSO2 Inc. licenses this file to you under the Apache License,
+* WSO2 LLC. licenses this file to you under the Apache License,
 * Version 2.0 (the "License"); you may not use this file except
 * in compliance with the License.
 * You may obtain a copy of the License at
@@ -23,17 +23,15 @@ import { OrganizationInterface, OrganizationResponseInterface } from "../models"
 export class OrganizationUtils {
     /**
      * Private constructor to prevent object instantiation.
-     *
-     * @hideconstructor
      */
     private constructor() { }
 
     /**
      * Checks if the selected organization is the Super organization.
      *
-     * @param {OrganizationInterface} organization Organization object.
+     * @param organization - Organization object.
      *
-     * @returns {boolean}
+     * @returns if selected organization is the Super organization
      */
     public static isRootOrganization(organization: OrganizationResponseInterface | OrganizationInterface): boolean {
         return !organization || organization.id === OrganizationManagementConstants.ROOT_ORGANIZATION_ID;
@@ -42,7 +40,7 @@ export class OrganizationUtils {
     /**
      * Returns true if the current organization is the root organization.
      *
-     * @returns {boolean}
+     * @returns if the current organization is the root organization.
      */
     public static isCurrentOrganizationRoot(): boolean {
         return store.getState().organization?.organization?.id

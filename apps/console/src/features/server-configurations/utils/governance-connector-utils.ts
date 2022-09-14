@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (http://www.wso2.com) All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -33,7 +33,6 @@ export class GovernanceConnectorUtils {
      * Private constructor to avoid object instantiation from outside
      * the class.
      *
-     * @hideconstructor
      */
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     private constructor() { }
@@ -60,8 +59,8 @@ export class GovernanceConnectorUtils {
                 if (error.response && error.response.data && error.response.data.detail) {
                     store.dispatch(addAlert({
                         description: I18n.instance.t("console:manage.features.governanceConnectors.notifications." +
-                            "getConnectorCategories.error.description",
-                            { description: error.response.data.description }),
+                            "getConnectorCategories.error.description", 
+                        { description: error.response.data.description }),
                         level: AlertLevels.ERROR,
                         message: I18n.instance.t("console:manage.features.governanceConnectors.notifications." +
                             "getConfigurations.error.message")
@@ -111,18 +110,20 @@ export class GovernanceConnectorUtils {
 
     /**
      * Filter governance categories of a connector for a sub organization.
-     * @param {Object[]} governanceConnectors - List of categories to evaluate.
-     * @param {string} governanceCategoryId - Category id of the governance connector.
+     * @param governanceConnectors - List of categories to evaluate.
+     * @param governanceCategoryId - Category id of the governance connector.
      * 
-     * @return {Object[]} Filtered categories.
+     * @returns Filtered categories as a list.
      */
     public static filterGovernanceConnectorCategories
-        (governanceCategoryId: string, governanceConnectors: any[]) {
+    (governanceCategoryId: string, governanceConnectors: any[]): any[] {
         let showGovernanceConnectors = [];
 
         for (let i = 0; i < this.SHOW_GOVERNANCE_CONNECTORS_FOR_SUBORGS.length; i++) {
             if (governanceCategoryId === this.SHOW_GOVERNANCE_CONNECTORS_FOR_SUBORGS[i].id) {
+
                 showGovernanceConnectors = this.SHOW_GOVERNANCE_CONNECTORS_FOR_SUBORGS[i].connectors;
+
                 break;
             }
         }
@@ -152,20 +153,22 @@ export class GovernanceConnectorUtils {
 
     }
 
-     /**
+    /**
      * Get governance connector properties for a given connector.
-     * @param {string} governanceCategoryId - Category id of the governance connector.
-     * @param {string} governanceConnectorId - Connector id.
+     * @param governanceCategoryId - Category id of the governance connector.
+     * @param governanceConnectorId - Connector id.
      * 
-     * @return {sttring[]} governance connector properties.
+     * @returns governance connector properties as a list.
      */
     private static getGovernanceConnectorsProperties
-        (governanceCategoryId: string, governanceConnectorId: string) {
+    (governanceCategoryId: string, governanceConnectorId: string) {
         let showGovernanceConnectors = [];
 
         for (let i = 0; i < this.SHOW_GOVERNANCE_CONNECTORS_FOR_SUBORGS.length; i++) {
             if (governanceCategoryId === this.SHOW_GOVERNANCE_CONNECTORS_FOR_SUBORGS[i].id) {
+
                 showGovernanceConnectors = this.SHOW_GOVERNANCE_CONNECTORS_FOR_SUBORGS[i].connectors;
+
                 break;
             }
         }
@@ -174,7 +177,9 @@ export class GovernanceConnectorUtils {
 
         for (let i = 0; i < showGovernanceConnectors.length; i++) {
             if (governanceConnectorId === showGovernanceConnectors[i].id) {
+
                 showProperties = showGovernanceConnectors[i].properties;
+
                 break;
             }
         }

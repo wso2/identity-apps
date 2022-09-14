@@ -108,7 +108,7 @@ type AppPropsInterface = IdentifiableComponentInterface;
 /**
  * This component warps the `App` component with the `SecureApp` component to provide automatic authentication.
  *
- * @returns {ReactElement} ProtectedApp component
+ * @returns ProtectedApp component (React Element)
  */
 export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactElement => {
     const {

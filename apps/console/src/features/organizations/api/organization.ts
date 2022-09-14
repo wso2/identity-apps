@@ -1,7 +1,7 @@
 /**
  * Copyright (c) 2022, WSO2 LLC. (http://www.wso2.com) All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -40,14 +40,14 @@ const httpClient = AsgardeoSPAClient.getInstance()
 /**
  * Get a list of organizations.
  *
- * @param {string} filter The filter query.
- * @param {number} limit The maximum number of organizations to return.
- * @param {string} after The previous range of data to be returned.
- * @param {string} before The next range of data to be returned.
- * @param {boolean} recursive Whether we need to do a recursive search
- * @param isRoot
+ * @param filter - The filter query.
+ * @param limit - The maximum number of organizations to return.
+ * @param after - The previous range of data to be returned.
+ * @param before - The next range of data to be returned.
+ * @param recursive - Whether we need to do a recursive search
+ * @param isRoot - Whether the organization is the root
  *
- * @returns {Promise<OrganizationListInterface>}
+ * @returns a promise containing the response
  */
 export const getOrganizations = (
     filter: string,
@@ -91,9 +91,9 @@ export const getOrganizations = (
 /**
  * Create an organization.
  *
- * @param {AddOrganizationInterface} organization The organization to be added.
+ * @param organization - The organization to be added.
  *
- * @returns {Promise<AddOrganizationResponseInterface>}
+ * @returns a promise containing the response
  */
 export const addOrganization = (organization: AddOrganizationInterface): Promise<OrganizationResponseInterface> => {
     const config: HttpRequestConfig = {
@@ -122,10 +122,10 @@ export const addOrganization = (organization: AddOrganizationInterface): Promise
 /**
  * Get the organization with the given id.
  *
- * @param {string} id The organization id.
- * @param {boolean} showChildren Specifies if the child organizations should be returned.
+ * @param id - The organization id.
+ * @param showChildren - Specifies if the child organizations should be returned.
  *
- * @returns {Promise<OrganizationResponseInterface>}
+ * @returns a promise containing the response
  */
 export const getOrganization = (id: string, showChildren?: boolean): Promise<OrganizationResponseInterface> => {
     const config: HttpRequestConfig = {
@@ -156,10 +156,10 @@ export const getOrganization = (id: string, showChildren?: boolean): Promise<Org
 /**
  * Update an organization.
  *
- * @param {string} organizationId Identifier of the organization needs to be updated.
- * @param {UpdateOrganizationInterface} organization The organization object to update the organization with.
+ * @param organizationId - Identifier of the organization needs to be updated.
+ * @param organization - The organization object to update the organization with.
  *
- * @returns {OrganizationResponseInterface}
+ * @returns OrganizationResponseInterface
  */
 export const updateOrganization = (
     organizationId: string,
@@ -191,10 +191,10 @@ export const updateOrganization = (
 /**
  * Patch update an organization
  *
- * @param { string } organizationId - Organization ID which needs to be updated
- * @param { OrganizationPatchData[] } patchData - Data to be updated in the PatchData format
+ * @param organizationId - Organization ID which needs to be updated
+ * @param patchData - Data to be updated in the PatchData format
  *
- * @returns { OrganizationResponseInterface }
+ * @returns OrganizationResponseInterface
  */
 export const patchOrganization = (
     organizationId: string,
@@ -226,9 +226,9 @@ export const patchOrganization = (
 /**
  * Delete an organization.
  *
- * @param {string} id The organization id.
+ * @param id - The organization id.
  *
- * @returns {Promise<string>}
+ * @returns a promise containing the response
  */
 export const deleteOrganization = (id: string): Promise<string> => {
     const config: HttpRequestConfig = {
@@ -256,10 +256,11 @@ export const deleteOrganization = (id: string): Promise<string> => {
 /**
  * Creates a new application.
  *
- * @return {Promise<any>}
- * @param {string} currentOrganizationId - Current Organization Id
- * @param {string} applicationId - ID of the application to be shared
- * @param {string[]} organizationIds - ID of the organization which the app needs to be shared with
+ * @param currentOrganizationId - Current Organization Id
+ * @param applicationId - ID of the application to be shared
+ * @param organizationIds - ID of the organization which the app needs to be shared with
+ * 
+ * @returns a promise containing the response
  */
 export const shareApplication = (
     currentOrganizationId: string,
@@ -354,7 +355,7 @@ export const getSharedOrganizations = (
 /**
  * Gets the super organization of the current user.
  *
- * @returns {RequestResultInterface<OrganizationInterface, Error>} The super organization of the user.
+ * @returns The super organization of the user.
  */
 export const useGetUserSuperOrganization = (): RequestResultInterface<OrganizationInterface, Error> => {
     const requestConfig = {
