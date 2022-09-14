@@ -15,12 +15,13 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
 import { Heading, LinkButton, Message, PrimaryButton } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useRef, useState } from "react";
+import React, { FunctionComponent, MutableRefObject, ReactElement, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
@@ -75,7 +76,7 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ error, setError ] = useState<string>("");
 
-    const submitForm: any = useRef<() => void>();
+    const submitForm: MutableRefObject<HTMLFormElement> = useRef<HTMLFormElement>();
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
     const currentOrganization: OrganizationResponseInterface = useSelector((state: AppState) => 
@@ -118,7 +119,7 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
                     onUpdate();
                 }
             })
-            .catch((error: any) => {
+            .catch((error: AxiosError) => {
                 if (error?.description) {
                     if (error.code === OrganizationManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorCode()) {
                         setOpenLimitReachedModal(true);
