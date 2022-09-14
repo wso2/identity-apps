@@ -154,7 +154,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
         : CommonPluggableComponentMetaPropertyInterface): boolean => {
         if (propertyMetadata?.key === CommonConstants.FIELD_COMPONENT_SCOPES) {
             return dynamicValues?.properties?.find(
-                queryParam => queryParam.key === "commonAuthQueryParams")?.value.toLowerCase().includes("scope=");
+                queryParam => queryParam.key === "commonAuthQueryParams")?.value?.toLowerCase().includes("scope=");
         }
     };
 
