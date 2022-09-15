@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,7 +14,6 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
 
 import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
@@ -30,7 +29,6 @@ import {
     Icon,
     Placeholder,
     Popup,
-    Responsive,
     SemanticICONS,
     SemanticWIDTHS,
     Table,
@@ -47,6 +45,7 @@ import { DataTableHeaderCell } from "./data-table-header-cell";
 import { DataTableRow } from "./data-table-row";
 import { Avatar } from "../../avatar";
 import { GenericIconProps } from "../../icon";
+import { Media } from "../../media";
 
 /**
  * Interface for the Data Table sub components.
@@ -120,7 +119,7 @@ export interface DataTablePropsInterface<T = Record<string, any>> extends Omit<T
     loadingStateOptions?: TableLoadingStateOptionsInterface;
     /**
      * Callback to inform the new set of visible columns.
-     * @param {TableColumnInterface[]} columns - New columns.
+     * @param columns - New columns.
      */
     onColumnSelectionChange?: (columns: TableColumnInterface[]) => void;
     /**
@@ -225,7 +224,7 @@ export interface StrictColumnPropsInterface {
     id: string;
     /**
      * Get the new sort order.
-     * @param {DataTableSortOrder} sortOrder - New sort order.
+     * @param sortOrder - New sort order.
      */
     getSortOrder?: (sortOrder: DataTableSortOrder, column: TableColumnInterface) => void;
     /**
@@ -347,8 +346,8 @@ export interface TableExtensionInterface {
 /**
  * Data Driven Table Component.
  *
- * @param {DataTablePropsInterface} props - Props injected to the component.
- * @return {React.ReactElement}
+ * @param props - Props injected to the component.
+ * @returns Data Driven Table Component.
  */
 
 export const DataTable = <T extends Record<string, any> = Record<string, any>>(
@@ -424,7 +423,7 @@ export const DataTable = <T extends Record<string, any> = Record<string, any>>(
     /**
      * Evaluate column props.
      *
-     * @param {TableColumnInterface[]} columns - Columns.
+     * @param columns - Columns.
      */
     const evaluateColumnProps = (columns: TableColumnInterface[]) => {
         if (!isColumnsValid(columns)) {
@@ -671,7 +670,7 @@ export const DataTable = <T extends Record<string, any> = Record<string, any>>(
     /**
      * Shows the loading state placeholder rows.
      *
-     * @return {React.ReactElement[]}
+     * @returns Loading Placeholders.
      */
     const showLoadingPlaceholders = (): ReactElement[] => {
 
@@ -785,9 +784,9 @@ export const DataTable = <T extends Record<string, any> = Record<string, any>>(
                                                                 )
                                                             }
                                                         </Grid.Column>
-                                                        <Responsive
-                                                            as={ Grid.Column }
-                                                            minWidth={ Responsive.onlyMobile.maxWidth }
+                                                        <Grid.Column
+                                                            as={ Media }
+                                                            greaterThanOrEqual="mobile"
                                                             mobile={ 16 }
                                                             tablet={ 8 }
                                                             computer={ 8 }
@@ -810,10 +809,10 @@ export const DataTable = <T extends Record<string, any> = Record<string, any>>(
                                                                     />
                                                                 )
                                                             }
-                                                        </Responsive>
-                                                        <Responsive
-                                                            as={ Grid.Column }
-                                                            maxWidth={ Responsive.onlyMobile.maxWidth }
+                                                        </Grid.Column>
+                                                        <Grid.Column
+                                                            as={ Media }
+                                                            lessThan="mobile"
                                                             mobile={ 16 }
                                                             tablet={ 8 }
                                                             computer={ 8 }
@@ -836,7 +835,7 @@ export const DataTable = <T extends Record<string, any> = Record<string, any>>(
                                                                     />
                                                                 )
                                                             }
-                                                        </Responsive>
+                                                        </Grid.Column>
                                                     </Grid.Row>
                                                 </Grid>
                                             </DataTable.HeaderCell>

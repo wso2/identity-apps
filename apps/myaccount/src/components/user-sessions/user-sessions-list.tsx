@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -18,22 +18,34 @@
 
 import { UserAgentParser } from "@wso2is/core/helpers";
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { GenericIcon, Text } from "@wso2is/react-components";
+import { GenericIcon, Media, Text } from "@wso2is/react-components";
 import moment from "moment";
 import React, { FunctionComponent, MouseEvent } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, Grid, Icon, List, Responsive, SemanticICONS } from "semantic-ui-react";
+import { Button, ButtonProps, Grid, Icon, List, SemanticICONS } from "semantic-ui-react";
 import { UserSessionsEdit } from "./user-sessions-edit";
 import { UserSession } from "../../models";
 
 /**
- * Proptypes for the user sessions list component.
+ * Prop-types for the user sessions list component.
  * Also see {@link UserSessionsList.defaultProps}
  */
 interface UserSessionsListProps extends TestableComponentInterface {
+    /**
+     * Callback for user session termination click event.
+     */
     onTerminateUserSessionClick?: (userSession: UserSession) => void;
-    onUserSessionDetailClick?: (e: MouseEvent<HTMLButtonElement>, element: HTMLButtonElement) => void;
+    /**
+     * Callback for user session details click event.
+     */
+    onUserSessionDetailClick?: (e: MouseEvent<HTMLButtonElement>, data: ButtonProps) => void;
+    /**
+     * User sessions list.
+     */
     userSessions: UserSession[];
+    /**
+     * Set of active indexes for the sessions list.
+     */
     userSessionsListActiveIndexes?: number[];
 }
 
@@ -42,7 +54,7 @@ const userAgentParser = new UserAgentParser();
 /**
  * User sessions list component.
  *
- * @return {JSX.Element}
+ * @returns User Sessions List component.
  */
 export const UserSessionsList: FunctionComponent<UserSessionsListProps> = (
     props: UserSessionsListProps
@@ -60,8 +72,8 @@ export const UserSessionsList: FunctionComponent<UserSessionsListProps> = (
     /**
      * Resolves an icon for the device type extracted from the user agent string.
      *
-     * @param {string} type - Device type.
-     * @return {SemanticICONS}
+     * @param type - Device type.
+     * @returns Device Icon.
      */
     const resolveDeviceType = (type: string): SemanticICONS => {
         const deviceType = {
@@ -98,9 +110,13 @@ export const UserSessionsList: FunctionComponent<UserSessionsListProps> = (
                 && userSessions.length > 0
                     ? userSessions.map((userSession, index) => {
                         userAgentParser.uaString = userSession.userAgent;
+
                         return (
-                            <List.Item className="inner-list-item" key={ userSession.id }
-                                       data-testid={ `${testId}-item` }>
+                            <List.Item
+                                className="inner-list-item"
+                                key={ userSession.id }
+                                data-testid={ `${testId}-item` }
+                            >
                                 <Grid padded>
                                     <Grid.Row columns={ 2 }>
                                         <Grid.Column
@@ -152,51 +168,52 @@ export const UserSessionsList: FunctionComponent<UserSessionsListProps> = (
                                                 ? (
                                                     <Grid.Column width={ 5 } className="last-column">
                                                         <List.Content floated="right">
-                                                            <Responsive
-                                                                as={ Button }
-                                                                maxWidth={ Responsive.onlyTablet.maxWidth }
-                                                                className="borderless-button"
-                                                                basic={ true }
-                                                                id={ index }
-                                                                onClick={ onUserSessionDetailClick }
-                                                            >
-                                                                <Icon
-                                                                    name={
+                                                            <Media lessThan="computer">
+                                                                <Button
+                                                                    className="borderless-button"
+                                                                    basic={ true }
+                                                                    id={ index }
+                                                                    onClick={ onUserSessionDetailClick }
+                                                                >
+                                                                    <Icon
+                                                                        name={
+                                                                            userSessionsListActiveIndexes
+                                                                                .includes(index)
+                                                                                ? "angle up"
+                                                                                : "angle down"
+                                                                        }
+                                                                    />
+                                                                </Button>
+                                                            </Media>
+                                                            <Media greaterThanOrEqual="computer">
+                                                                <Button
+                                                                    icon
+                                                                    basic
+                                                                    id={ index }
+                                                                    labelPosition="right"
+                                                                    size="mini"
+                                                                    onClick={ onUserSessionDetailClick }
+                                                                >
+                                                                    {
                                                                         userSessionsListActiveIndexes.includes(index)
-                                                                            ? "angle up"
-                                                                            : "angle down"
+                                                                            ? (
+                                                                                <>
+                                                                                    { t("common:showLess") }
+                                                                                    <Icon
+                                                                                        name="arrow down"
+                                                                                        flipped="vertically"
+                                                                                    />
+                                                                                </>
+                                                                            )
+                                                                            : (
+                                                                                <>
+                                                                                    { t("common:showMore") }
+                                                                                    <Icon name="arrow down"/>
+                                                                                </>
+                                                                            )
                                                                     }
-                                                                />
-                                                            </Responsive>
-                                                            <Responsive
-                                                                as={ Button }
-                                                                minWidth={ Responsive.onlyTablet.maxWidth }
-                                                                icon
-                                                                basic
-                                                                id={ index }
-                                                                labelPosition="right"
-                                                                size="mini"
-                                                                onClick={ onUserSessionDetailClick }
-                                                            >
-                                                                {
-                                                                    userSessionsListActiveIndexes.includes(index)
-                                                                        ? (
-                                                                            <>
-                                                                                { t("common:showLess") }
-                                                                                <Icon
-                                                                                    name="arrow down"
-                                                                                    flipped="vertically"
-                                                                                />
-                                                                            </>
-                                                                        )
-                                                                        : (
-                                                                            <>
-                                                                                { t("common:showMore") }
-                                                                                <Icon name="arrow down"/>
-                                                                            </>
-                                                                        )
-                                                                }
-                                                            </Responsive>
+                                                                </Button>
+                                                            </Media>
                                                         </List.Content>
                                                     </Grid.Column>
                                                 ) : null
@@ -226,7 +243,7 @@ export const UserSessionsList: FunctionComponent<UserSessionsListProps> = (
 };
 
 /**
- * Default proptypes for the user sessions list component.
+ * Default prop-types for the user sessions list component.
  * See type definitions in {@link UserSessionsListProps}
  */
 UserSessionsList.defaultProps = {

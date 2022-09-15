@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -28,8 +28,7 @@ import {
     removeLinkedAccount
 } from "../../api";
 import { getSettingsSectionIcons } from "../../configs";
-import { CommonConstants } from "../../constants";
-import * as UIConstants from "../../constants/ui-constants";
+import { CommonConstants, UIConstants } from "../../constants";
 import {
     AlertInterface,
     AlertLevels,
@@ -51,19 +50,26 @@ interface LinkedAccountsProps extends TestableComponentInterface {
 /**
  * Linked accounts component.
  *
- * @param {LinkedAccountsProps} props - Props injected to the component.
- * @return {JSX.Element}
+ * @param props - Props injected to the component.
+ * @returns Linked Accounts.
  */
 export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: LinkedAccountsProps): JSX.Element => {
 
-    const { onAlertFired, ["data-testid"]: testId } = props;
-    const linkedAccounts: LinkedAccountInterface[] = useSelector((state: AppState) => state.profile.linkedAccounts);
-    const activeForm: string = useSelector((state: AppState) => state.global.activeForm);
-    const tenantDomain: string = useSelector((state: AppState) => state?.authenticationInformation?.tenantDomain);
+    const {
+        onAlertFired,
+        ["data-testid"]: testId
+    } = props;
 
     const { t } = useTranslation();
     const dispatch = useDispatch();
 
+    const linkedAccounts: LinkedAccountInterface[] = useSelector((state: AppState) => state.profile.linkedAccounts);
+    const activeForm: string = useSelector((state: AppState) => state.global.activeForm);
+    const tenantDomain: string = useSelector((state: AppState) => state?.authenticationInformation?.tenantDomain);
+
+    /**
+     * Set the linked accounts.
+     */
     useEffect(() => {
         if (isEmpty(linkedAccounts)) {
             dispatch(getProfileLinkedAccounts());
@@ -73,7 +79,7 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
     /**
      * The following method handles the `onSubmit` event of forms.
      *
-     * @param {Map<string, string | string[]>} values - Form values.
+     * @param values - Form values.
      */
     const handleSubmit = (values: any): void => {
         const username = values.username;
@@ -130,9 +136,9 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
     /**
      * Handles the account switch click event.
      *
-     * @param {LinkedAccountInterface} account - Target account.
+     * @param account - Target account.
      */
-    const handleLinkedAccountSwitch = (account: LinkedAccountInterface) => {
+    const handleLinkedAccountSwitch = (account: LinkedAccountInterface): void => {
         try {
             dispatch(handleAccountSwitching(account));
             refreshPage();
@@ -167,8 +173,10 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
 
     /**
      * Handles linked account remove action.
+     *
+     * @param id - User id.
      */
-    const handleLinkedAccountRemove = (id: string) => {
+    const handleLinkedAccountRemove = (id: string): void => {
         removeLinkedAccount(id)
             .then(() => {
                 onAlertFired({
@@ -233,10 +241,14 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
         >
             {
                 activeForm === CommonConstants.PERSONAL_INFO+UIConstants.ADD_LOCAL_LINKED_ACCOUNT_FORM_IDENTIFIER
-                    ? <LinkedAccountsEdit onFormEditViewHide={ () => {
-                        dispatch(setActiveForm(null));
-                    } } onFormSubmit={ handleSubmit }/>
-                    : (
+                    ? (
+                        <LinkedAccountsEdit
+                            onFormEditViewHide={ () => {
+                                dispatch(setActiveForm(null));
+                            } }
+                            onFormSubmit={ handleSubmit }
+                        />
+                    ) : (
                         <LinkedAccountsList
                             data-testid={ `${testId}-list` }
                             linkedAccounts={ linkedAccounts }

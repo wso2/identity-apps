@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -41,7 +41,6 @@ import {
     AppConstants,
     AppState,
     AppUtils,
-    EventPublisher,
     FeatureConfigInterface,
     ProtectedRoute,
     RouteUtils,
@@ -62,9 +61,8 @@ interface FullScreenViewPropsInterface {
 /**
  * Parent component for Ful Screen features inherited from App layout skeleton.
  *
- * @param {FullScreenViewPropsInterface} props - Props injected to the component.
- *
- * @return {React.ReactElement}
+ * @param props - Props injected to the component.
+ * @returns Full screen view layout component.
  */
 export const FullScreenView: FunctionComponent<FullScreenViewPropsInterface> = (
     props: FullScreenViewPropsInterface & RouteComponentProps
@@ -80,8 +78,6 @@ export const FullScreenView: FunctionComponent<FullScreenViewPropsInterface> = (
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     const [ filteredRoutes, setFilteredRoutes ] = useState<RouteInterface[]>(getFullScreenViewRoutes());
-
-    const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     useEffect(() => {
 
@@ -109,7 +105,7 @@ export const FullScreenView: FunctionComponent<FullScreenViewPropsInterface> = (
      *
      * @param route - Route to be rendered.
      * @param key - Index of the route.
-     * @return {React.ReactNode} Resolved route to be rendered.
+     * @returns Resolved route to be rendered.
      */
     const renderRoute = (route, key): ReactNode => (
         route.redirectTo
@@ -142,9 +138,9 @@ export const FullScreenView: FunctionComponent<FullScreenViewPropsInterface> = (
      * This function recursively adds any child routes
      * defined.
      *
-     * @return {RouteInterface[]} Set of resolved routes.
+     * @returns Set of resolved routes.
      */
-    const resolveRoutes = (): RouteInterface[] => {
+    const resolveRoutes = (): RouteInterface[] | ReactNode[]=> {
         const resolvedRoutes = [];
 
         const recurse = (routesArr): void => {
@@ -187,7 +183,7 @@ export const FullScreenView: FunctionComponent<FullScreenViewPropsInterface> = (
             >
                 <Suspense fallback={ <ContentLoader dimmer={ false } /> }>
                     <Switch>
-                        { resolveRoutes() }
+                        { resolveRoutes() as ReactNode[] }
                     </Switch>
                 </Suspense>
             </ErrorBoundary>
