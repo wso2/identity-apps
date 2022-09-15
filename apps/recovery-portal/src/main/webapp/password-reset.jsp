@@ -33,6 +33,7 @@
     String callback = (String) request.getAttribute(IdentityManagementEndpointConstants.CALLBACK);
     String username = request.getParameter("username");
     String userStoreDomain = request.getParameter("userstoredomain");
+    String type = request.getParameter("type");
     String tenantDomain = (String) request.getAttribute(IdentityManagementEndpointConstants.TENANT_DOMAIN);
     if (tenantDomain == null) {
         tenantDomain = (String) session.getAttribute(IdentityManagementEndpointConstants.TENANT_DOMAIN);
@@ -150,6 +151,17 @@
                             <%
                                 }
                             %>
+
+                            <%
+                                if (type != null) {
+                            %>
+                            <div>
+                                <input type="hidden" name="type" value="<%=Encode.forHtmlAttribute(type) %>"/>
+                            </div>
+                            <%
+                                }
+                            %>
+
                            <div class="field">
                                 <label>
                                     <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Confirm.password")%>
