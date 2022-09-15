@@ -148,14 +148,10 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
     /**
      * Check whether additional query paramters has scopes defined.
      *
-     * @param  propertyMetadata - Metadata of the property.
      */
-    const isScopesDefined = (propertyMetadata
-        : CommonPluggableComponentMetaPropertyInterface): boolean => {
-        if (propertyMetadata?.key === CommonConstants.FIELD_COMPONENT_SCOPES) {
-            return dynamicValues?.properties?.find(
-                queryParam => queryParam.key === "commonAuthQueryParams")?.value?.toLowerCase().includes("scope=");
-        }
+    const isScopesDefined = (): boolean => {
+        return !!(initialValues?.properties?.find(
+            queryParam => queryParam.key === "commonAuthQueryParams")?.value?.toLowerCase().includes("scope="));
     };
 
     const getField = (property: CommonPluggableComponentPropertyInterface,
@@ -225,11 +221,10 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
                 let field: ReactElement;
 
                 if (!isCheckboxWithSubProperties(metaProperty)) {
-                    if (isScopesDefined(metaProperty)) {
-                        
+                    if (metaProperty?.key === CommonConstants.FIELD_COMPONENT_SCOPES) {
                         const updatedProperty: CommonPluggableComponentMetaPropertyInterface = {
                             ...metaProperty,
-                            properties: [ { key:"isQueryParamScopesDefined", value:true } ]
+                            properties: [ { key:"isQueryParamScopesDefined", value: isScopesDefined() } ]
                         };
 
                         field = getField(property, updatedProperty, isSub,
