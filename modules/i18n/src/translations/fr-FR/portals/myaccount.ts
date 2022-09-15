@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -690,7 +690,7 @@ export const myAccount: MyAccountNS = {
                             message: "Quelque chose s'est mal passé"
                         },
                         genericError: {
-                            description: "Une erreur s'est produite lors de la tentative de mise " + 
+                            description: "Une erreur s'est produite lors de la tentative de mise " +
                                 "à jour de la liste des authentificateurs activés",
                             message: "Quelque chose s'est mal passé"
                         }
@@ -699,14 +699,14 @@ export const myAccount: MyAccountNS = {
                 regenerate: "Régénérer"
             },
             backupCode: {
-                description: "Vous pouvez utiliser des codes de secours pour vous connecter si vous " 
+                description: "Vous pouvez utiliser des codes de secours pour vous connecter si vous "
                     + "ne pouvez pas recevoir de code de vérification via l'application d'authentification.",
                 download: {
                     heading: "ENREGISTREZ VOS CODES DE SECOURS.",
                     info1: "Vous ne pouvez utiliser chaque code de secours qu'une seule fois.",
                     info2: "Ces codes ont été générés sur ",
-                    subHeading: "Vous pouvez utiliser ces codes de secours pour vous connecter à " + 
-                        "Asgardeo lorsque vous êtes loin de votre téléphone. Conservez ces codes " + 
+                    subHeading: "Vous pouvez utiliser ces codes de secours pour vous connecter à " +
+                        "Asgardeo lorsque vous êtes loin de votre téléphone. Conservez ces codes " +
                         "de sauvegarde dans un endroit sûr mais accessible."
                 },
                 heading: "Codes de sauvegarde",
@@ -717,22 +717,22 @@ export const myAccount: MyAccountNS = {
                         download: "Codes de téléchargement",
                         regenerate: "Régénérer"
                     },
-                    description: "Utilisez les codes de secours pour vous connecter lorsque vous êtes " + 
+                    description: "Utilisez les codes de secours pour vous connecter lorsque vous êtes " +
                         "loin de votre téléphone. Vous pouvez en générer plus lorsqu'ils sont tous utilisés",
                     generate: {
-                        description: "Tous vos codes de secours sont utilisés. " + 
+                        description: "Tous vos codes de secours sont utilisés. " +
                             "Permet de générer un nouvel ensemble de codes de secours",
-                        heading: "Générer"  
+                        heading: "Générer"
                     },
                     heading: "Codes de sauvegarde",
                     info: "Chaque code ne peut être utilisé qu'une seule fois",
                     regenerate: {
-                        description: "Après avoir généré de nouveaux codes, vos anciens codes ne fonctionneront plus. " 
+                        description: "Après avoir généré de nouveaux codes, vos anciens codes ne fonctionneront plus. "
                             + "Assurez-vous de sauvegarder les nouveaux codes une fois qu'ils sont générés.",
                         heading: "Confirmation"
                     },
                     subHeading: "Codes d'accès à usage unique que vous pouvez utiliser pour vous connecter",
-                    warn: "Ces codes n'apparaîtront qu'une seule fois. Assurez-vous de les enregistrer " 
+                    warn: "Ces codes n'apparaîtront qu'une seule fois. Assurez-vous de les enregistrer "
                         + "maintenant et de les stocker dans un endroit sûr mais accessible."
                 },
                 notifications: {
@@ -752,7 +752,7 @@ export const myAccount: MyAccountNS = {
                             message: "Quelque chose s'est mal passé"
                         },
                         genericError: {
-                            description: "Une erreur s'est produite lors de la tentative de " + 
+                            description: "Une erreur s'est produite lors de la tentative de " +
                                 "téléchargement des codes de secours",
                             message: "Quelque chose s'est mal passé"
                         }
@@ -773,7 +773,7 @@ export const myAccount: MyAccountNS = {
                             message: "Quelque chose s'est mal passé"
                         },
                         genericError: {
-                            description: "Une erreur s'est produite lors de la tentative de " + 
+                            description: "Une erreur s'est produite lors de la tentative de " +
                                 "génération de nouveaux codes de secours",
                             message: "Quelque chose s'est mal passé"
                         }
@@ -784,7 +784,7 @@ export const myAccount: MyAccountNS = {
                             message: "Quelque chose s'est mal passé"
                         },
                         genericError: {
-                            description: "Une erreur s'est produite lors de la tentative d'obtention " + 
+                            description: "Une erreur s'est produite lors de la tentative d'obtention " +
                                 "de la liste des authentificateurs activés",
                             message: "Quelque chose s'est mal passé"
                         }
@@ -805,7 +805,7 @@ export const myAccount: MyAccountNS = {
                             message: "Quelque chose s'est mal passé"
                         },
                         genericError: {
-                            description: "Une erreur s'est produite lors de la tentative de mise " + 
+                            description: "Une erreur s'est produite lors de la tentative de mise " +
                                 "à jour de la liste des authentificateurs activés",
                             message: "Quelque chose s'est mal passé"
                         }
@@ -1252,7 +1252,7 @@ export const myAccount: MyAccountNS = {
                     inputs: {
                         date: {
                             validations: {
-                                futureDateError: "La date que vous avez saisie pour le champ {{field}} " + 
+                                futureDateError: "La date que vous avez saisie pour le champ {{field}} " +
                                 "n'est pas valide.",
                                 invalidFormat: "Veuillez saisir un test valide au format YYYY-MM-DD."
                             }
