@@ -42,7 +42,7 @@ export class EmailTemplateManagementConstants {
         </html>`;
 
     /**
-     * Email template types that are enables for organization domain
+     * Email template types that are enabled for organization domain
      */
     public static readonly EMAIL_TEMPLATE_TYPES_FOR_ORGS = [
         "UGFzc3dvcmRSZXNldA", // PasswordReset
