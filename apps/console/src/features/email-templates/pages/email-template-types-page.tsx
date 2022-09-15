@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (http://www.wso2.com) All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -26,9 +26,11 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { AdvancedSearchWithBasicFilters, UIConstants, filterList, sortList } from "../../core";
+import { OrganizationUtils } from "../../organizations/utils";
 import { deleteEmailTemplateType, getEmailTemplateTypes } from "../api";
 import { AddEmailTemplateTypeWizard, EmailTemplateTypeList } from "../components";
 import { EmailTemplateType } from "../models";
+import { EmailTemplateUtils } from "../utils/email-template-utils";
 
 /**
  * Props for the Email Templates Types page.
@@ -38,9 +40,9 @@ type EmailTemplateTypesPagePropsInterface = TestableComponentInterface;
 /**
  * Component to list available email template types.
  *
- * @param {EmailTemplateTypesPagePropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns React element
  */
 const EmailTemplateTypesPage: FunctionComponent<EmailTemplateTypesPagePropsInterface> = (
     props: EmailTemplateTypesPagePropsInterface
@@ -90,14 +92,19 @@ const EmailTemplateTypesPage: FunctionComponent<EmailTemplateTypesPagePropsInter
     /**
      * Fetch the list of template types.
      *
-     * @param {number} limit - Pagination limit.
-     * @param {number} offset - Pagination offset.
+     * @param limit - Pagination limit.
+     * @param offset - Pagination offset.
      */
     const getTemplateTypes = (): void => {
         setIsTemplateTypesFetchRequestLoading(true);
 
         getEmailTemplateTypes()
             .then((response: AxiosResponse<EmailTemplateType[]>) => {
+
+                if(!OrganizationUtils.isCurrentOrganizationRoot()){
+                    response.data = EmailTemplateUtils.filterEmailTemplateTypesForOrganization(response.data);
+                }
+
                 if (response.status === 200) {
                     setEmailTemplateTypes(response.data);
                     setFilteredEmailTemplateTypes(response.data);
@@ -141,8 +148,8 @@ const EmailTemplateTypesPage: FunctionComponent<EmailTemplateTypesPagePropsInter
     /**
      * Handler for pagination page change.
      *
-     * @param event pagination page change event
-     * @param data pagination page change data
+     * @param event - pagination page change event
+     * @param data - pagination page change data
      */
     const handlePaginationChange = (event: MouseEvent<HTMLAnchorElement>, data: PaginationProps): void => {
         const offsetValue = (data.activePage as number - 1) * listItemLimit;
@@ -153,8 +160,8 @@ const EmailTemplateTypesPage: FunctionComponent<EmailTemplateTypesPagePropsInter
     /**
      * Handler for Items per page dropdown change.
      *
-     * @param event drop down event
-     * @param data drop down data
+     * @param event - drop down event
+     * @param data - drop down data
      */
     const handleItemsPerPageDropdownChange = (event: MouseEvent<HTMLAnchorElement>, data: DropdownProps): void => {
         setListItemLimit(data.value as number);
@@ -163,9 +170,9 @@ const EmailTemplateTypesPage: FunctionComponent<EmailTemplateTypesPagePropsInter
     /**
      * Util method to paginate retrieved email template type list.
      *
-     * @param {EmailTemplateType[]} list - Email template types.
-     * @param {number} offset - Pagination offset value.
-     * @param {number} limit - Pagination item limit.
+     * @param list - Email template types.
+     * @param offset - Pagination offset value.
+     * @param limit - Pagination item limit.
      */
     const paginate = (list: EmailTemplateType[], offset: number, limit: number): EmailTemplateType[] => {
         return list.slice(offset, limit + offset);
@@ -191,8 +198,8 @@ const EmailTemplateTypesPage: FunctionComponent<EmailTemplateTypesPagePropsInter
     /**
      * Handle sort strategy change.
      *
-     * @param {React.SyntheticEvent<HTMLElement>} event.
-     * @param {DropdownProps} data.
+     * @param event - React.SyntheticEvent<HTMLElement>.
+     * @param data - DropdownProps.
      */
     const handleSortStrategyChange = (event: React.SyntheticEvent<HTMLElement>, data: DropdownProps): void => {
         setSortBy(SORT_BY.filter(option => option.value === data.value)[ 0 ]);
@@ -201,7 +208,7 @@ const EmailTemplateTypesPage: FunctionComponent<EmailTemplateTypesPagePropsInter
     /**
      * Handles sort order change.
      *
-     * @param {boolean} isAscending.
+     * @param isAscending - boolean value.
      */
     const handleSortOrderChange = (isAscending: boolean) => {
         setSortOrder(isAscending);
@@ -210,7 +217,7 @@ const EmailTemplateTypesPage: FunctionComponent<EmailTemplateTypesPagePropsInter
     /**
      * Function to perform the template type deletion.
      *
-     * @param {string} templateTypeId - Deleting template type ID.
+     * @param templateTypeId - Deleting template type ID.
      */
     const deleteTemplateType = (templateTypeId: string): void => {
         deleteEmailTemplateType(templateTypeId)

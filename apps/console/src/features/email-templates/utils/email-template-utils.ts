@@ -16,36 +16,38 @@
  * under the License.
  */
 
+import { EmailTemplateManagementConstants } from "../constants";
+
 /**
- * Class containing Email template related constants.
+ * Utility class for Email template.
  */
-export class EmailTemplateManagementConstants {
+export class EmailTemplateUtils {
 
     /**
      * Private constructor to avoid object instantiation from outside
      * the class.
+     *
      */
-    /* eslint-disable @typescript-eslint/no-empty-function */
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     private constructor() { }
 
     /**
-     * A Boilerplate template to start email template editing.
+     * Filter governance categories of a connector for a sub organization.
+     * @param emailTemplateData - List of email template data that recieved to the console.
+     * 
+     * @returns Filtered templates as a list.
      */
-    public static readonly EMAIL_STARTER_TEMPLATE: string = `<!DOCTYPE html>
-        <html>
-            <head>
-                <title>HTML Email Template</title>
-            </head>
-            <body>
-                <p>Hello {{user.claim.givenname}}!</p>
-            </body>
-        </html>`;
+    public static filterEmailTemplateTypesForOrganization
+    (emailTemplateData: any[]): any[] {
 
-    /**
-     * Email template types that are enables for organization domain
-     */
-    public static readonly EMAIL_TEMPLATE_TYPES_FOR_ORGS = [
-        "UGFzc3dvcmRSZXNldA", // PasswordReset
-        "QWNjb3VudElkUmVjb3Zlcnk" //AccountIdRecovery
-    ]
+        for (let i = emailTemplateData.length - 1; i >= 0; i--) {
+            if (!EmailTemplateManagementConstants.EMAIL_TEMPLATE_TYPES_FOR_ORGS.includes(emailTemplateData[i].id)) {
+                emailTemplateData.splice(i, 1);
+            }
+        }
+
+        return emailTemplateData;
+
+    }
+
 }
