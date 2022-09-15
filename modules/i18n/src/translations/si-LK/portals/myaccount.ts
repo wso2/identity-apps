@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -679,13 +679,13 @@ export const myAccount: MyAccountNS = {
                 regenerate: "නැවත උත්පාදනය කරන්න"
             },
             backupCode: {
-                description: "ඔබට සත්‍යාපන යෙදුම හරහා සත්‍යාපන කේතයක් ලබා ගත නොහැකි නම් පුරනය වීමට " 
+                description: "ඔබට සත්‍යාපන යෙදුම හරහා සත්‍යාපන කේතයක් ලබා ගත නොහැකි නම් පුරනය වීමට "
                     + "ඔබට උපස්ථ කේත භාවිතා කළ හැක.",
                 download: {
                     heading: "ඔබගේ උපස්ථ කේත සුරකින්න.",
                     info1: "ඔබට එක් එක් උපස්ථ කේතය භාවිතා කළ හැක්කේ එක් වරක් පමණි.",
                     info2: "මෙම කේත ජනනය කරන ලදී ",
-                    subHeading: "ඔබ ඔබගේ දුරකථනයෙන් බැහැරව සිටින විට Asgardeo වෙත පුරනය වීමට ඔබට මෙම උපස්ථ " + 
+                    subHeading: "ඔබ ඔබගේ දුරකථනයෙන් බැහැරව සිටින විට Asgardeo වෙත පුරනය වීමට ඔබට මෙම උපස්ථ " +
                         "කේත භාවිතා කළ හැක. මෙම උපස්ථ කේත ආරක්ෂිත නමුත් ප්‍රවේශ විය හැකි ස්ථානයක තබා ගන්න."
                 },
                 heading: "උපස්ථ කේත",
@@ -696,7 +696,7 @@ export const myAccount: MyAccountNS = {
                         download: "කේත බාගන්න",
                         regenerate: "නැවත උත්පාදනය කරන්න"
                     },
-                    description: "ඔබ ඔබගේ දුරකථනයෙන් බැහැරව සිටින විට පුරනය වීමට උපස්ථ කේත භාවිතා කරන්න. " + 
+                    description: "ඔබ ඔබගේ දුරකථනයෙන් බැහැරව සිටින විට පුරනය වීමට උපස්ථ කේත භාවිතා කරන්න. " +
                         "ඒවා සියල්ලම භාවිතා කරන විට ඔබට තවත් උත්පාදනය කළ හැකිය",
                     generate: {
                         description: "ඔබගේ උපස්ථ කේත සියල්ලම භාවිතා වේ. නව උපස්ථ කේත කට්ටලයක් ජනනය කරමු",
@@ -705,12 +705,12 @@ export const myAccount: MyAccountNS = {
                     heading: "උපස්ථ කේත",
                     info: "සෑම කේතයක්ම භාවිතා කළ හැක්කේ එක් වරක් පමණි",
                     regenerate: {
-                        description: "ඔබ නව කේත ජනනය කිරීමෙන් පසු, ඔබේ පැරණි කේත තවදුරටත් ක්‍රියා නොකරනු ඇත. " 
+                        description: "ඔබ නව කේත ජනනය කිරීමෙන් පසු, ඔබේ පැරණි කේත තවදුරටත් ක්‍රියා නොකරනු ඇත. "
                             + "නව කේත උත්පාදනය වූ පසු ඒවා සුරැකීමට වග බලා ගන්න.",
                         heading: "තහවුරු කිරීම"
                     },
                     subHeading: "ඔබට පුරනය වීමට භාවිතා කළ හැකි එක් වරක් මුරකේත",
-                    warn: "මෙම කේත දිස්වන්නේ එක් වරක් පමණි. ඒවා දැන් සුරැකීමට සහ ආරක්ෂිත නමුත් ප්‍රවේශ විය හැකි " 
+                    warn: "මෙම කේත දිස්වන්නේ එක් වරක් පමණි. ඒවා දැන් සුරැකීමට සහ ආරක්ෂිත නමුත් ප්‍රවේශ විය හැකි "
                         + "ස්ථානයක ගබඩා කිරීමට වග බලා ගන්න."
                 },
                 notifications: {
