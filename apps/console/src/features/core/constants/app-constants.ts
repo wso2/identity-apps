@@ -320,6 +320,7 @@ export class AppConstants {
 
     /**
      * Filter governance connectors for the side panel for a sub organization.
+
      * @param governanceConnectorCategories - List of governance connector categories to evaluate.
      * 
      * @returns Filtered governance connector categories.
