@@ -39,6 +39,7 @@
 <%@ page import="org.json.simple.JSONObject" %>
 <%@ page import="javax.servlet.http.Cookie" %>
 <%@ page import="java.util.Base64" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClientException" %>
 
 <jsp:directive.include file="includes/localize.jsp"/>
 <jsp:directive.include file="tenant-resolve.jsp"/>
@@ -64,9 +65,20 @@
         return;
     }
 
+    Boolean validCallBackURL;
     try {
-        if (StringUtils.isNotBlank(callback) && !Utils.validateCallbackURL(callback, tenantDomain,
-            IdentityRecoveryConstants.ConnectorConfig.SELF_REGISTRATION_CALLBACK_REGEX)) {
+        validCallBackURL = preferenceRetrievalClient.checkIfSelfRegCallbackURLValid(tenantDomain,callback);
+    } catch (PreferenceRetrievalClientException e) {
+        request.setAttribute("error", true);
+        request.setAttribute("errorMsg", IdentityManagementEndpointUtil
+            .i18n(recoveryResourceBundle, "something.went.wrong.contact.admin"));
+        IdentityManagementEndpointUtil.addErrorInformation(request, e);
+        request.getRequestDispatcher("error.jsp").forward(request, response);
+        return;
+    }
+
+    try {
+        if (StringUtils.isNotBlank(callback) && !validCallBackURL) {
             request.setAttribute("error", true);
             request.setAttribute("errorMsg", IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                 "Callback.url.format.invalid"));

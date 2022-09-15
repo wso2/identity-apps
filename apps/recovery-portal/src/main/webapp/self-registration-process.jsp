@@ -42,6 +42,7 @@
 <%@ page import="java.util.Base64" %>
 <%@ page import="org.wso2.carbon.identity.core.util.IdentityUtil" %>
 <%@ page import="javax.servlet.http.Cookie" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClientException" %>
 
 <jsp:directive.include file="includes/localize.jsp"/>
 <jsp:directive.include file="tenant-resolve.jsp"/>
@@ -97,7 +98,7 @@
             PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
             Boolean isAutoLoginEnable = preferenceRetrievalClient.checkAutoLoginAfterSelfRegistrationEnabled(tenantDomain);
             Boolean isSelfRegistrationWithVerificationEnabled = preferenceRetrievalClient.checkSelfRegistrationLockOnCreation(tenantDomain);
-    
+
             boolean isSelfRegistrationWithVerification =
                     Boolean.parseBoolean(request.getParameter("isSelfRegistrationWithVerification"));
 
@@ -110,9 +111,20 @@
             String policyURL = IdentityManagementServiceUtil.getInstance().getServiceContextURL().replace("/services",
                     "/authenticationendpoint/privacy_policy.do");
 
+            Boolean validCallBackURL;
             try {
-                if (StringUtils.isNotBlank(callback) && !Utils.validateCallbackURL(callback, tenantDomain,
-                    IdentityRecoveryConstants.ConnectorConfig.SELF_REGISTRATION_CALLBACK_REGEX)) {
+                validCallBackURL = preferenceRetrievalClient.checkIfSelfRegCallbackURLValid(tenantDomain,callback);
+            } catch (PreferenceRetrievalClientException e) {
+                request.setAttribute("error", true);
+                request.setAttribute("errorMsg", IdentityManagementEndpointUtil
+                    .i18n(recoveryResourceBundle, "something.went.wrong.contact.admin"));
+                IdentityManagementEndpointUtil.addErrorInformation(request, e);
+                request.getRequestDispatcher("error.jsp").forward(request, response);
+                return;
+            }
+
+            try {
+                if (StringUtils.isNotBlank(callback) && !validCallBackURL) {
                     request.setAttribute("error", true);
                     request.setAttribute("errorMsg", IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                         "Callback.url.format.invalid"));
@@ -249,7 +261,7 @@
                         contentValueInJson.put("domain", cookieDomain);
                     }
                     String content = contentValueInJson.toString();
-        
+
                     JSONObject cookieValueInJson = new JSONObject();
                     cookieValueInJson.put("content", content);
                     String signature = Base64.getEncoder().encodeToString(SignatureUtil.doSignature(content));

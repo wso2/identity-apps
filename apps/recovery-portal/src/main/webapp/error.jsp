@@ -26,6 +26,8 @@
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.net.URISyntaxException" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClient" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClientException" %>
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 <jsp:directive.include file="includes/localize.jsp"/>
 <jsp:directive.include file="includes/layout-resolver.jsp"/>
@@ -44,13 +46,22 @@
         } else if (StringUtils.isNotBlank(request.getParameter("tenantDomain"))){
             tenantDomain = request.getParameter("tenantDomain").trim();
         }
+
+        Boolean validCallBackURL;
         try {
-            if (StringUtils.isNotBlank(callback) && !Utils.validateCallbackURL
-                (callback, tenantDomain, IdentityRecoveryConstants.ConnectorConfig.RECOVERY_CALLBACK_REGEX)) {
+            PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
+            validCallBackURL = preferenceRetrievalClient.checkIfRecoveryCallbackURLValid(tenantDomain, callback);
+        } catch (PreferenceRetrievalClientException e) {
+            request.setAttribute("error", true);
+            request.setAttribute("errorMsg", IdentityManagementEndpointUtil
+                .i18n(recoveryResourceBundle, "something.went.wrong.contact.admin"));
+            IdentityManagementEndpointUtil.addErrorInformation(request, e);
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            return;
+        }
+
+        if (StringUtils.isNotBlank(callback) && !validCallBackURL) {
                     isValidCallback = false;
-                }
-        } catch (IdentityEventException e) {
-            isValidCallback = false;
         }
     }
 
@@ -170,7 +181,7 @@
 
                 return;
             }
-    
+
             window.history.back();
         }
         <% } %>

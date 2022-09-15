@@ -34,6 +34,8 @@
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.List" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClientException" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClient" %>
 
 <jsp:directive.include file="includes/localize.jsp"/>
 <jsp:directive.include file="tenant-resolve.jsp"/>
@@ -45,9 +47,22 @@
     String confirmationKey = request.getParameter("confirmation");
     String callback = request.getParameter("callback");
 
+    Boolean validCallBackURL;
     try {
-        if (StringUtils.isNotBlank(callback) && !Utils.validateCallbackURL(callback, tenantDomain,
-            IdentityRecoveryConstants.ConnectorConfig.LITE_REGISTRATION_CALLBACK_REGEX)) {
+        PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
+        validCallBackURL = preferenceRetrievalClient.checkIfLiteRegCallbackURLValid(tenantDomain,callback);
+    } catch (PreferenceRetrievalClientException e) {
+        request.setAttribute("error", true);
+        request.setAttribute("errorMsg", IdentityManagementEndpointUtil
+            .i18n(recoveryResourceBundle, "something.went.wrong.contact.admin"));
+        IdentityManagementEndpointUtil.addErrorInformation(request, e);
+        request.getRequestDispatcher("error.jsp").forward(request, response);
+        return;
+    }
+
+
+    try {
+        if (StringUtils.isNotBlank(callback) && !validCallBackURL) {
             request.setAttribute("error", true);
             request.setAttribute("errorMsg", IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                 "Callback.url.format.invalid"));
@@ -60,7 +75,7 @@
         request.getRequestDispatcher("error.jsp").forward(request, response);
         return;
     }
-    
+
     if (StringUtils.isBlank(callback)) {
         callback = IdentityManagementEndpointUtil.getUserPortalUrl(
                 application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL), tenantDomain);
