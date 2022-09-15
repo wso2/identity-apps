@@ -138,7 +138,7 @@ export class GovernanceConnectorUtils {
             if (!showGovernanceConnectorsIdOfSuborgs.includes(governanceConnectors[i].id)) {
                 governanceConnectors.splice(i, 1);
             } else {
-                const showProperties = this.getGovernanceConnectorsProperties(governanceCategoryId,
+                const showProperties = this.getGovernanceConnectorsProperties(showGovernanceConnectors,
                     governanceConnectors[i].id);
 
                 for (let j = governanceConnectors[i].properties.length - 1; j >= 0; j--) {
@@ -155,36 +155,21 @@ export class GovernanceConnectorUtils {
 
     /**
      * Get governance connector properties for a given connector.
-     * @param governanceCategoryId - Category id of the governance connector.
+     * @param showGovernanceConnectors - Category id of the governance connector.
      * @param governanceConnectorId - Connector id.
      * 
      * @returns governance connector properties as a list.
      */
     private static getGovernanceConnectorsProperties
-    (governanceCategoryId: string, governanceConnectorId: string) {
-        let showGovernanceConnectors = [];
-
-        for (let i = 0; i < this.SHOW_GOVERNANCE_CONNECTORS_FOR_SUBORGS.length; i++) {
-            if (governanceCategoryId === this.SHOW_GOVERNANCE_CONNECTORS_FOR_SUBORGS[i].id) {
-
-                showGovernanceConnectors = this.SHOW_GOVERNANCE_CONNECTORS_FOR_SUBORGS[i].connectors;
-
-                break;
-            }
-        }
-
-        let showProperties = [];
+    (showGovernanceConnectors: any[], governanceConnectorId: string) {
 
         for (let i = 0; i < showGovernanceConnectors.length; i++) {
             if (governanceConnectorId === showGovernanceConnectors[i].id) {
 
-                showProperties = showGovernanceConnectors[i].properties;
+                return showGovernanceConnectors[i].properties;
 
-                break;
             }
         }
-
-        return showProperties;
 
     }
 }
