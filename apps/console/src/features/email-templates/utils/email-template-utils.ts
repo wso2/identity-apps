@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (http://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,6 +17,7 @@
  */
 
 import { EmailTemplateManagementConstants } from "../constants";
+import { EmailTemplateType } from "../models";
 
 /**
  * Utility class for Email template.
@@ -38,15 +39,13 @@ export class EmailTemplateUtils {
      * @returns Filtered templates as a list.
      */
     public static filterEmailTemplateTypesForOrganization
-    (emailTemplateData: any[]): any[] {
+    (emailTemplateData: EmailTemplateType[]): any[] {
 
-        for (let i = emailTemplateData.length - 1; i >= 0; i--) {
-            if (!EmailTemplateManagementConstants.EMAIL_TEMPLATE_TYPES_FOR_ORGS.includes(emailTemplateData[i].id)) {
-                emailTemplateData.splice(i, 1);
+        return emailTemplateData.filter(data=>{
+            if (EmailTemplateManagementConstants.EMAIL_TEMPLATE_TYPES_FOR_ORGS.includes(data.id)) {
+                return data;
             }
-        }
-
-        return emailTemplateData;
+        });
 
     }
 

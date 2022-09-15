@@ -19,7 +19,7 @@
 import { AppThemeConfigInterface } from "@wso2is/core/models";
 import { StringUtils } from "@wso2is/core/utils";
 import { identityProviderConfig } from "../../../extensions/configs";
-import { GovernanceConnectorUtils } from "../../server-configurations";
+import { GovernanceConnectorCategoryInterface, GovernanceConnectorUtils } from "../../server-configurations";
 
 /**
  * Class containing app constants.
@@ -325,7 +325,8 @@ export class AppConstants {
      * 
      * @returns Filtered governance connector categories.
      */
-    public static filterGoverananceConnectors(governanceConnectorCategories: any[]): any[] {
+    public static filterGoverananceConnectors(governanceConnectorCategories: GovernanceConnectorCategoryInterface[])
+    : GovernanceConnectorCategoryInterface[] {
         const showGovernanceConnectorsIdOfSuborgs = [];
 
         GovernanceConnectorUtils.SHOW_GOVERNANCE_CONNECTORS_FOR_SUBORGS
@@ -365,7 +366,7 @@ export class AppConstants {
 
     /**
      * Route ids that are enabled in an organization.
-     * */
+     */
     public static readonly ORGANIZATION_ENABLED_ROUTES: string[] = [
         "identityProviders",
         "users",

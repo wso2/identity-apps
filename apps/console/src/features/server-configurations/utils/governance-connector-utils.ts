@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (http://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,8 @@ import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
 import { store } from "../../core";
 import { getConnectorCategories } from "../api";
-import { GovernanceConnectorsInterface } from "../models";
+import { GovernanceCategoryForOrgsInterface, GovernanceConnectorForOrgsInterface, GovernanceConnectorInterface, 
+    GovernanceConnectorsInterface } from "../models";
 import { SetGovernanceConnectorCategory } from "../store/actions";
 
 /**
@@ -89,7 +90,7 @@ export class GovernanceConnectorUtils {
     /**
      * Governance connectors and their sub categories that will be visible in a sub organization
      */
-    public static readonly SHOW_GOVERNANCE_CONNECTORS_FOR_SUBORGS = [
+    public static readonly SHOW_GOVERNANCE_CONNECTORS_FOR_SUBORGS: GovernanceCategoryForOrgsInterface[] = [
         {
             connectors: [
                 {
@@ -116,7 +117,8 @@ export class GovernanceConnectorUtils {
      * @returns Filtered categories as a list.
      */
     public static filterGovernanceConnectorCategories
-    (governanceCategoryId: string, governanceConnectors: any[]): any[] {
+    (governanceCategoryId: string, governanceConnectors: GovernanceConnectorInterface[])
+    : GovernanceConnectorInterface[] {
         let showGovernanceConnectors = [];
 
         for (let i = 0; i < this.SHOW_GOVERNANCE_CONNECTORS_FOR_SUBORGS.length; i++) {
@@ -134,23 +136,20 @@ export class GovernanceConnectorUtils {
             showGovernanceConnectorsIdOfSuborgs.push(connector.id);
         });
 
-        for (let i = governanceConnectors.length - 1; i >= 0; i--) {
-            if (!showGovernanceConnectorsIdOfSuborgs.includes(governanceConnectors[i].id)) {
-                governanceConnectors.splice(i, 1);
-            } else {
+        return governanceConnectors.filter(connector => {
+            if (showGovernanceConnectorsIdOfSuborgs.includes(connector.id)) {
                 const showProperties = this.getGovernanceConnectorsProperties(showGovernanceConnectors,
-                    governanceConnectors[i].id);
-
-                for (let j = governanceConnectors[i].properties.length - 1; j >= 0; j--) {
-                    if (!showProperties.includes(governanceConnectors[i].properties[j].name)) {
-                        governanceConnectors[i].properties.splice(j, 1);
+                    connector.id);
+                
+                connector.properties = connector.properties.filter(property => {
+                    if (showProperties.includes(property.name)) {
+                        return property;
                     }
-                }
+                });
+
+                return connector;
             }
-        }
-
-        return governanceConnectors;
-
+        });
     }
 
     /**
@@ -161,7 +160,7 @@ export class GovernanceConnectorUtils {
      * @returns governance connector properties as a list.
      */
     private static getGovernanceConnectorsProperties
-    (showGovernanceConnectors: any[], governanceConnectorId: string) {
+    (showGovernanceConnectors: GovernanceConnectorForOrgsInterface[], governanceConnectorId: string) {
 
         for (let i = 0; i < showGovernanceConnectors.length; i++) {
             if (governanceConnectorId === showGovernanceConnectors[i].id) {

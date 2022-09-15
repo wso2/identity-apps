@@ -96,9 +96,9 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
                         GovernanceConnectorUtils
                             .filterGovernanceConnectorCategories(categoryId, response.connectors);
 
-                    // need to throw a proper error here if the response.connetors is null
+                    // If the given connector is not available for an organization domain
                     if (response.connectors.length==0) {
-                        throw Error();
+                        throw RangeError();
                     }
                 }
 

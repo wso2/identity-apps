@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (http://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -44,7 +44,7 @@ export class EmailTemplateManagementConstants {
     /**
      * Email template types that are enabled for organization domain
      */
-    public static readonly EMAIL_TEMPLATE_TYPES_FOR_ORGS = [
+    public static readonly EMAIL_TEMPLATE_TYPES_FOR_ORGS: string[] = [
         "UGFzc3dvcmRSZXNldA", // PasswordReset
         "QWNjb3VudElkUmVjb3Zlcnk" //AccountIdRecovery
     ]
