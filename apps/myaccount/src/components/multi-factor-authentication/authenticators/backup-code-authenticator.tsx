@@ -54,6 +54,11 @@ interface BackupCodeProps extends IdentifiableComponentInterface {
     onAlertFired: (alert: AlertInterface) => void;
     initBackupCodeFlow: boolean;
     onBackupFlowCompleted: () => void;
+    /**
+     * This callback function handles the visibility of the
+     * session termination modal.
+     */
+     handleSessionTerminationModalVisibility: (visibility: boolean) => void;
 }
 
 export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
@@ -64,6 +69,7 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
         onAlertFired,
         initBackupCodeFlow,
         onBackupFlowCompleted,
+        handleSessionTerminationModalVisibility,
         ["data-componentid"]: componentid 
     } = props;
 
@@ -329,6 +335,7 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
                             onBackupFlowCompleted();
                             getRemainingCount();
                             setIsModalOpen(false);
+                            handleSessionTerminationModalVisibility(true);
                         } }
                         data-componentid={ `${componentid}-modal-actions-done-button` }
                     >

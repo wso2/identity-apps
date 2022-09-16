@@ -65,6 +65,11 @@ interface TOTPProps extends TestableComponentInterface {
     enabledAuthenticators: Array<string>;
     onEnabledAuthenticatorsUpdated: (updatedAuthenticators: Array<string>) => void;
     triggerBackupCodesFlow: () => void;
+    /**
+     * This callback function handles the visibility of the
+     * session termination modal.
+     */
+     handleSessionTerminationModalVisibility: (visibility: boolean) => void;
 }
 
 /**
@@ -83,6 +88,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
         onEnabledAuthenticatorsUpdated,
         onAlertFired,
         triggerBackupCodesFlow,
+        handleSessionTerminationModalVisibility,
         ["data-testid"]: testId
     } = props;
 
@@ -625,6 +631,8 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                     if (shouldContinueToBackupCodes) {
                         triggerBackupCodesFlow();
                     }
+
+                    handleSessionTerminationModalVisibility(true);
                 } }
             >
                 { shouldContinueToBackupCodes ? t("common:continue") : t("common:done") }
@@ -870,6 +878,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                     setIsConfirmRegenerate(false);
                     setIsViewTOTPModalOpen(false);
                     setViewTOTPModalCurrentStep(0);
+                    handleSessionTerminationModalVisibility(true);
                 } }
             >
                 { t("common:done") }
@@ -921,6 +930,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                                 level: AlertLevels.SUCCESS,
                                 message: t(translateKey + "notifications.deleteSuccess.genericMessage")
                             });
+                            handleSessionTerminationModalVisibility(true);
                         })
                         .catch((errorMessage) => {
                             onAlertFired({
@@ -937,6 +947,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                         level: AlertLevels.SUCCESS,
                         message: t(translateKey + "notifications.deleteSuccess.genericMessage")
                     });
+                    handleSessionTerminationModalVisibility(true);
                 }
             })
             .catch((errorMessage) => {

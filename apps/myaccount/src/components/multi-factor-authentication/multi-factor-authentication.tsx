@@ -35,6 +35,7 @@ import { AppState } from "../../store";
 import { getProfileInformation } from "../../store/actions";
 import { CommonUtils } from "../../utils";
 import { SettingsSection } from "../shared";
+import { UserSessionTerminationModal } from "../user-sessions";
 
 /**
  * Prop types for the basic details component.
@@ -63,6 +64,7 @@ export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (pro
     const [ isTOTPEnabled, setIsTOTPEnabled ] = useState<boolean>(false);
     const [ isBackupCodesConfigured, setIsBackupCodesConfigured ] = useState<boolean>(false);
     const [ initBackupCodeFlow, setInitBackupCodeFlow ] = useState<boolean>(false);
+    const [ showSessionTerminationModal, setShowSessionTerminationModal ] = useState<boolean>(false);
 
     const translateKey: string = "myAccount:components.mfa.backupCode.";
     const totpAuthenticatorName: string = "totp";
@@ -144,6 +146,9 @@ export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (pro
                             <SMSOTPAuthenticator
                                 featureConfig={ featureConfig }
                                 onAlertFired={ onAlertFired }
+                                handleSessionTerminationModalVisibility={ 
+                                    () => setShowSessionTerminationModal(true) 
+                                }
                             />
                         </List.Item>
                     ) : null }
@@ -154,7 +159,12 @@ export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (pro
                         AppConstants.FEATURE_DICTIONARY.get("SECURITY_MFA_FIDO")
                     ) ? (
                         <List.Item className="inner-list-item">
-                            <FIDOAuthenticator onAlertFired={ onAlertFired } />
+                            <FIDOAuthenticator 
+                                onAlertFired={ onAlertFired } 
+                                handleSessionTerminationModalVisibility={ 
+                                    () => setShowSessionTerminationModal(true) 
+                                }
+                            />
                         </List.Item>
                     ) : null }
 
@@ -171,6 +181,9 @@ export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (pro
                                 isSuperTenantLogin={ isSuperTenantLogin() }
                                 onEnabledAuthenticatorsUpdated={ handleEnabledAuthenticatorsUpdated }
                                 triggerBackupCodesFlow={ () => setInitBackupCodeFlow(true) }
+                                handleSessionTerminationModalVisibility={ 
+                                    () => setShowSessionTerminationModal(true) 
+                                }
                             />
                             { isSuperTenantLogin() && isTOTPEnabled && isBackupCodesConfigured
                                 ? (
@@ -178,12 +191,19 @@ export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (pro
                                         onAlertFired={ onAlertFired }
                                         initBackupCodeFlow={ initBackupCodeFlow }
                                         onBackupFlowCompleted={ handleBackupCodeFlowCompleted }
+                                        handleSessionTerminationModalVisibility={ 
+                                            () => setShowSessionTerminationModal(true) 
+                                        }
                                     />
                                 ) : null
                             }
                         </List.Item>
                     ) : null }
             </List>
+            <UserSessionTerminationModal 
+                isModalOpen={ showSessionTerminationModal } 
+                handleModalClose={ () => setShowSessionTerminationModal(false) }
+            />
         </SettingsSection>
     );
 };

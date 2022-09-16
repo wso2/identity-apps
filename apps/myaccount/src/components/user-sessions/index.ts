@@ -19,3 +19,4 @@
 export * from "./user-sessions";
 export * from "./user-sessions-edit";
 export * from "./user-sessions-list";
+export * from "./user-sessions-terminate-modal";
