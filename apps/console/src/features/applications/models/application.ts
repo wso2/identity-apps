@@ -34,8 +34,6 @@ export interface ApplicationBasicInterface {
     name: string;
     description?: string;
     accessUrl?: string;
-    clientId?: string;
-    issuer?: string;
     templateId?: string;
     isManagementApp?: boolean;
     advancedConfigurations?: AdvancedConfigurationsInterface;
@@ -44,11 +42,6 @@ export interface ApplicationBasicInterface {
 export enum ApplicationAccessTypes {
     READ = "READ",
     WRITE = "WRITE"
-}
-
-export enum ApplicationInboundTypes {
-    CLIENTID = "Client ID",
-    ISSUER = "Issuer"
 }
 
 /**
@@ -413,6 +406,7 @@ export interface ApplicationTemplateInterface extends ApplicationTemplateListIte
  * Enum for supported application template categories.
  *
  * @readonly
+ * @enum {string}
  */
 export enum SupportedApplicationTemplateCategories {
     QUICK_START = "quick_start"
@@ -422,16 +416,19 @@ export enum SupportedApplicationTemplateCategories {
  * Enum for application template categories.
  *
  * @readonly
+ * @enum {string}
  */
 export enum ApplicationTemplateCategories {
     /**
      * Templates supported by default.
      * ex: Web Application, SPA etc.
+     * @type {string}
      */
     DEFAULT = "DEFAULT",
     /**
      * Vendor templates.
      * ex: Zoom, Salesforce etc.
+     * @type {string}
      */
     VENDOR = "VENDOR",
 }
@@ -440,14 +437,17 @@ export enum ApplicationTemplateCategories {
  * Enum for application template loading strategies.
  *
  * @readonly
+ * @enum {string}
  */
 export enum ApplicationTemplateLoadingStrategies {
     /**
      * App will resort to in app templates.
+     * @type {string}
      */
     LOCAL = "LOCAL",
     /**
      * App will fetch templates from the template management REST API.
+     * @type {string}
      */
     REMOTE = "REMOTE"
 }
@@ -458,6 +458,7 @@ export enum ApplicationTemplateLoadingStrategies {
 export interface ApplicationTemplateTechnology {
     name: string;
     displayName: string;
+    /* eslint-disable @typescript-eslint/no-explicit-any */
     logo: any;
 }
 
@@ -649,6 +650,7 @@ export const emptySAMLAppConfiguration = (): SAMLApplicationConfigurationInterfa
  * Enum for adaptive auth template types.
  *
  * @readonly
+ * @enum {string}
  */
 export enum AdaptiveAuthTemplateTypes {
     GROUP_BASED = "Group-Based",
@@ -661,6 +663,7 @@ export enum AdaptiveAuthTemplateTypes {
  * Enum for application template types.
  *
  * @readonly
+ * @enum {string}
  */
 export enum ApplicationTemplateIdTypes {
     SPA = "single-page-application",
@@ -672,6 +675,7 @@ export enum ApplicationTemplateIdTypes {
  * Enum for default application template group ids.
  *
  * @readonly
+ * @enum {string}
  */
 export enum DefaultTemplateGroupIds {
     WEB_APPLICATION = "web-application",
@@ -683,6 +687,7 @@ export enum DefaultTemplateGroupIds {
  * Enum for sign-in method login flow options.
  *
  * @readonly
+ * @enum {string}
  */
 export enum LoginFlowTypes {
     FACEBOOK_LOGIN = "FACEBOOK_LOGIN",
@@ -699,6 +704,7 @@ export enum LoginFlowTypes {
  * Enum for URL fragment types used in the edit application.
  *
  * @readonly
+ * @enum {string}
  */
 export enum URLFragmentTypes {
     TAB_INDEX = "tab=",

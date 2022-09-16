@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
- * WSO2 LLC. licenses this file to you under the Apache License,
+ * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -91,8 +91,8 @@ interface AuthenticatorGridPropsInterface extends LoadableComponentInterface, Te
     onIdentityProviderDelete?: () => void;
     /**
      * On item select callback.
-     * @param event - Click event.
-     * @param idp - Selected IDP.
+     * @param {React.SyntheticEvent} event - Click event.
+     * @param {IdentityProviderInterface} idp - Selected IDP
      */
     onItemClick?: (event: SyntheticEvent, idp: IdentityProviderInterface) => void;
     /**
@@ -120,9 +120,9 @@ interface AuthenticatorGridPropsInterface extends LoadableComponentInterface, Te
 /**
  * Authenticators Grid component.
  *
- * @param props - Props injected to the component.
+ * @param {AuthenticatorGridPropsInterface} props - Props injected to the component.
  *
- * @returns React element.
+ * @return {React.ReactElement}
  */
 export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterface> = (
     props: AuthenticatorGridPropsInterface
@@ -162,7 +162,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
     /**
      * Redirects to the authenticator edit page when the edit button is clicked.
      *
-     * @param id - Authenticator ID.
+     * @param {string} id - Authenticator ID.
      */
     const handleAuthenticatorEdit = (id: string): void => {
 
@@ -172,7 +172,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
     /**
      * Initiates the deletes of an authenticator. This will check for connected apps.
      *
-     * @param idpId - Identity provider id.
+     * @param {string} idpId - Identity provider id.
      */
     const handleAuthenticatorDeleteInitiation = (idpId: string): void => {
 
@@ -227,7 +227,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
      * Deletes an authenticator via the API.
      * @remarks ATM, IDP delete is only supported.
      *
-     * @param id - Authenticator ID.
+     * @param {string} id - Authenticator ID.
      */
     const handleAuthenticatorDelete = (id: string): void => {
 
@@ -255,7 +255,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
     /**
      * Resolve the relevant placeholder.
      *
-     * @returns React element.
+     * @return {React.ReactElement}
      */
     const showPlaceholders = (): ReactElement => {
 
@@ -314,8 +314,8 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
     /**
      * Handles Grid Item click callback.
      *
-     * @param e - Click event.
-     * @param authenticator - Clicked authenticator.
+     * @param {React.SyntheticEvent} e - Click event.
+     * @param {IdentityProviderInterface | AuthenticatorInterface} authenticator - Clicked authenticator.
      */
     const handleGridItemOnClick = (e: SyntheticEvent, authenticator: IdentityProviderInterface
         | AuthenticatorInterface): void => {
@@ -389,7 +389,9 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                                     resourceName={
                                         isIdP
                                             ? authenticator.name
-                                            : (authenticator as AuthenticatorInterface).displayName
+                                            : AuthenticatorMeta.getAuthenticatorDisplayName(authenticator.id)
+                                                ? AuthenticatorMeta.getAuthenticatorDisplayName(authenticator.id)
+                                                : (authenticator as AuthenticatorInterface).displayName
                                                     || (authenticator as AuthenticatorInterface).name
                                     }
                                     resourceCategory={

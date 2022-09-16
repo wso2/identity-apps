@@ -38,10 +38,12 @@ import {
     TableColumnInterface,
     useConfirmationModalAlert
 } from "@wso2is/react-components";
+import cloneDeep from "lodash-es/cloneDeep";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
+import { OAuthProtocolTemplateItem, PassiveStsProtocolTemplateItem, SAMLProtocolTemplateItem } from "./meta";
 import { applicationConfig } from "../../../extensions";
 import { applicationListConfig } from "../../../extensions/configs/application-list";
 import {
@@ -58,7 +60,6 @@ import { deleteApplication } from "../api";
 import { ApplicationManagementConstants } from "../constants";
 import {
     ApplicationAccessTypes,
-    ApplicationInboundTypes,
     ApplicationListInterface,
     ApplicationListItemInterface,
     ApplicationTemplateListItemInterface
@@ -127,7 +128,7 @@ interface ApplicationListPropsInterface extends SBACInterface<FeatureConfigInter
  *
  * @param props - Props injected to the component.
  *
- * @returns React element.
+ * @returns React.ReactElement
  */
 export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> = (
     props: ApplicationListPropsInterface
@@ -158,8 +159,6 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
 
     const applicationTemplates: ApplicationTemplateListItemInterface[] = useSelector(
         (state: AppState) => state.application.templates);
-    const groupedApplicationTemplates: ApplicationTemplateListItemInterface[] = useSelector(
-        (state: AppState) => state?.application?.groupedTemplates);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const UIConfig: UIConfigInterface = useSelector((state: AppState) => state?.config?.ui);
     const tenantDomain: string = useSelector((state: AppState) => state?.auth?.tenantDomain);
@@ -190,7 +189,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
             .finally(() => {
                 setApplicationTemplateRequestLoadingStatus(false);
             });
-    }, [ applicationTemplates, groupedApplicationTemplates ]);
+    }, [ applicationTemplates ]);
 
     /**
      * Redirects to the applications edit page when the edit button is clicked.
@@ -273,46 +272,6 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                 id: "name",
                 key: "name",
                 render: (app: ApplicationListItemInterface): ReactNode => {
-
-                    /**
-                     * Note: the templateId for Standard-Based Applications in applicationTemplates is
-                     * 'custom-application'(only 1 template is available).
-                     * But backend passes 3 distinct ids for Standard Based Applications.
-                     */
-
-                    // Create a set with custom-application Ids.
-                    const customApplicationIds: Set<string> = new Set([
-                        ApplicationManagementConstants.CUSTOM_APPLICATION_SAML,
-                        ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC,
-                        ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS
-                    ]);
-
-                    let templateDisplayName: string = "";
-
-                    // Checking whether the templateId from backend, is for a custom application.
-                    if (customApplicationIds.has(app.templateId)) {
-                        templateDisplayName = applicationTemplates
-                            && applicationTemplates instanceof Array
-                            && applicationTemplates.length > 0
-                            && applicationTemplates.find((template) => {
-                                return template.id === ApplicationManagementConstants.CUSTOM_APPLICATION;
-                            }).name;
-                    } else {
-                        const templateGroupId: string = applicationTemplates
-                            && applicationTemplates instanceof Array
-                            && applicationTemplates.length > 0
-                            && applicationTemplates.find((template) => {
-                                return template.id === app.templateId;
-                            }).templateGroup;
-
-                        templateDisplayName = groupedApplicationTemplates
-                            && groupedApplicationTemplates instanceof Array
-                            && groupedApplicationTemplates.length > 0
-                            && groupedApplicationTemplates.find((group) => {
-                                return (group.id === templateGroupId || group.templateGroup === templateGroupId);
-                            }).name;
-                    }
-
                     return (
                         <Header
                             image
@@ -355,11 +314,6 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                                         </Label>
                                     )
                                 }
-                                <div>
-                                    { templateDisplayName && (
-                                        <Label className="no-margin-left" size="tiny">{ templateDisplayName }</Label>
-                                    ) }
-                                </div>
                             </Header.Content>
                         </Header>
                     );
@@ -368,39 +322,68 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
             },
             {
                 allowToggleVisibility: false,
-                dataIndex: "inboundKey",
-                id: "inboundKey",
-                key: "inboundKey",
+                dataIndex: "templateID",
+                id: "templateID",
+                key: "templateID",
                 render: (app: ApplicationListItemInterface): ReactNode => {
-                    let inboundAuthKey: string = "";
-                    let inboundAuthType: ApplicationInboundTypes;
 
-                    if (app.clientId) {
-                        inboundAuthKey = app.clientId;
-                        inboundAuthType = ApplicationInboundTypes.CLIENTID;
-                    } else if (app.issuer) {
-                        inboundAuthKey = app.issuer;
-                        inboundAuthType = ApplicationInboundTypes.ISSUER;
+                    // Note: the templateId for Standard-Based Applications in applicationTemplates is
+                    // 'custom-application'(only 1 template is available)
+                    // But backend passes 3 distinct ids for Standard Based Applications
+                    // So, a deep clone of a template with templateId === 'custom-application' should be made
+                    // And change the name according to the templateId passed from the backend
+
+                    // Create a set with custom-application Ids
+                    const customApplicationIds = new Set([
+                        ApplicationManagementConstants.CUSTOM_APPLICATION_SAML,
+                        ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC,
+                        ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS
+                    ]);
+
+                    // Checking whether the templateId from backend, is for a custom application
+                    // If so, find the single template from applicationTemplates
+                    if (customApplicationIds.has(app.templateId)) {
+                        const template = applicationTemplates
+                            && applicationTemplates instanceof Array
+                            && applicationTemplates.length > 0
+                            && applicationTemplates.find((template) => {
+                                return template.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION;
+                            });
+
+                        // Cloning the template and replacing the name with specific template name
+                        const templateClone = cloneDeep(template);
+
+                        if (templateClone) {
+                            if (app.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_SAML) {
+                                templateClone.name = SAMLProtocolTemplateItem.name;
+                            } else if (app.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC) {
+                                templateClone.name = OAuthProtocolTemplateItem.name;
+                            } else if (app.templateId
+                                === ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS) {
+                                templateClone.name = PassiveStsProtocolTemplateItem.name;
+                            }
+                        }
+
+                        return (
+                            <div>
+                                { templateClone?.name }
+                            </div>
+                        );
+                    } else {
+                        // Displaying template name if it's not a Standard-Based Application
+                        const template = applicationTemplates
+                            && applicationTemplates instanceof Array
+                            && applicationTemplates.length > 0
+                            && applicationTemplates.find((template) => template.id === app.templateId);
+
+                        return (
+                            <div>
+                                { template?.name }
+                            </div>
+                        );
                     }
-
-                    return (
-                        <Header as="h6" data-testid={ `${ testId }-col-2-item-heading` }>
-                            <Header.Content>
-                                {
-                                    inboundAuthType && (
-                                        <Label className="no-margin-left" pointing="right" size="mini">
-                                            { inboundAuthType } :
-                                        </Label>
-                                    )
-                                }
-                                <Header.Subheader data-testid={ `${ testId }-col-2-item-sub-heading` }>
-                                    { inboundAuthKey }
-                                </Header.Subheader>
-                            </Header.Content>
-                        </Header>
-                    );
                 },
-                title: t("console:develop.features.applications.list.columns.inboundKey")
+                title: t("console:develop.features.applications.list.columns.templateId")
             },
             {
                 allowToggleVisibility: false,
@@ -456,10 +439,10 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                     const isFragmentApp: boolean = app.advancedConfigurations?.fragment || false;
 
                     return hasScopes ||
-                        isSystemApp ||
-                        (app?.access === ApplicationAccessTypes.READ) ||
-                        !applicationConfig.editApplication.showDeleteButton(app) ||
-                        isFragmentApp;
+                            isSystemApp ||
+                            (app?.access === ApplicationAccessTypes.READ) ||
+                            !applicationConfig.editApplication.showDeleteButton(app) ||
+                            isFragmentApp;
                 },
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (e: SyntheticEvent, app: ApplicationListItemInterface): void => {
@@ -475,7 +458,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
     /**
      * Resolve the relevant placeholder.
      *
-     * @returns React element.
+     * @returns React.ReactElement
      */
     const showPlaceholders = (): ReactElement => {
         // When the search returns empty.
@@ -494,7 +477,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                         t("console:develop.placeholders.emptySearchResult.subtitles.0", { query: searchQuery }),
                         t("console:develop.placeholders.emptySearchResult.subtitles.1")
                     ] }
-                    data-testid={ `${ testId }-empty-search-placeholder-icon` }
+                    data-testid={ `${ testId }-empty-search-placeholder` }
                 />
             );
         }
@@ -510,7 +493,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                                     eventPublisher.publish(componentId + "-click-new-application-button");
                                     onEmptyListPlaceholderActionClick();
                                 } }>
-                                <Icon name="add" />
+                                <Icon name="add"/>
                                 { t("console:develop.features.applications.placeholders.emptyList.action") }
                             </PrimaryButton>
                         </Show>

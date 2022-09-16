@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
- * WSO2 LLC. licenses this file to you under the Apache License,
+ * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -37,6 +37,7 @@ import UsernamelessSequenceTemplate from "./templates/usernameless-login-sequenc
 import { AppConstants, EventPublisher, FeatureConfigInterface, history } from "../../../../core";
 import {
     AuthenticatorCreateWizardFactory,
+    AuthenticatorMeta,
     GenericAuthenticatorInterface,
     IdentityProviderManagementConstants,
     IdentityProviderManagementUtils,
@@ -89,15 +90,16 @@ interface SignOnMethodsPropsInterface extends SBACInterface<FeatureConfigInterfa
 /**
  * Closure to broadcast the IDP create success to the child component.
  * If this is placed inside the component, it will not initialize properly.
+ * @type {null}
  */
 let broadcastIDPCreateSuccessMessage: () => void = null;
 
 /**
  * Configure the different sign on strategies for an application.
  *
- * @param props - Props injected to the component.
+ * @param {SignOnMethodsPropsInterface} props - Props injected to the component.
  *
- * @returns React element.
+ * @return {React.ReactElement}
  */
 export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
     props: SignOnMethodsPropsInterface
@@ -183,7 +185,8 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
     /**
      * Fetches the list of Authenticators and categorize them.
      *
-     * @param onSuccess - On Success callback.
+     * @param {(all: GenericAuthenticatorInterface[][],
+     *     google: GenericAuthenticatorInterface[]) => void} onSuccess - On Success callback.
      */
     const fetchAndCategorizeAuthenticators = (onSuccess?: (all: GenericAuthenticatorInterface[][],
         google: GenericAuthenticatorInterface[],
@@ -236,7 +239,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
      * If only on step is configured with BasicAuthenticator and the script is default,
      * this function will identify the sequence as a default flow.
      *
-     * @returns Sequence is default or not.
+     * @return {boolean}
      */
     const isDefaultFlowConfiguration = (): boolean => {
 
@@ -255,10 +258,10 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
     /**
      * Handles the login flow select action.
      *
-     * @param loginFlow - Selected login flow.
-     * @param googleAuthenticators - Set of configured Google Authenticators.
-     * @param gitHubAuthenticators - Set of configured GutHub Authenticators.
-     * @param facebookAuthenticators - Set of configured Facebook Authenticators.
+     * @param {LoginFlowTypes} loginFlow - Selected login flow.
+     * @param {GenericAuthenticatorInterface[]} googleAuthenticators -  Set of configured Google Authenticators.
+     * @param {GenericAuthenticatorInterface[]} gitHubAuthenticators -  Set of configured GutHub Authenticators.
+     * @param {GenericAuthenticatorInterface[]} facebookAuthenticators -  Set of configured Facebook Authenticators.
      */
     const handleLoginFlowSelect = (loginFlow: LoginFlowTypes,
         googleAuthenticators: GenericAuthenticatorInterface[],
@@ -409,7 +412,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
      * Updates the predefined google login sequence with the desired IDP name.
      * i.e. Replaces the `<GOOGLE_IDP>`, `<FACEBOOK_IDP>` etc. in the JSON with a properly configured IDP.
      *
-     * @returns AuthenticationSequenceInterface.
+     * @return {AuthenticationSequenceInterface}
      */
     const updateSocialLoginSequenceWithIDPName = (idp: string,
         loginType: LoginFlowTypes): AuthenticationSequenceInterface => {
@@ -440,7 +443,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
     /**
      * Shows the missing google authenticator modal.
      *
-     * @returns React element.
+     * @return {ReactElement}
      */
     const renderMissingSocialAuthenticatorModal = (): ReactElement => {
 
@@ -526,7 +529,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
      * Shows a modal to select the IDP when multiple IDP's have the selected
      * social authenticator configured as default.
      *
-     * @returns React element.
+     * @return {ReactElement}
      */
     const renderDuplicateSocialAuthenticatorSelectionModal = (): ReactElement => {
 
@@ -619,7 +622,10 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                                         size="tiny"
                                         selected={ selectedSocialAuthenticator?.id === authenticator.id }
                                         image={ authenticator.image }
-                                        label={ authenticator.displayName }
+                                        label={
+                                            AuthenticatorMeta.getAuthenticatorDisplayName(authenticator.name)
+                                            || authenticator.displayName
+                                        }
                                         labelEllipsis={ true }
                                         data-testid={
                                             `${testId}-authenticator-${authenticator.name}`
@@ -652,7 +658,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
     /**
      * Renders the IDP create wizard.
      *
-     * @returns React element.
+     * @return {React.ReactElement}
      */
     const renderIDPCreateWizard = (): ReactElement => {
 

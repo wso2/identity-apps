@@ -20,7 +20,6 @@ import { useAuthContext } from "@asgardeo/auth-react";
 import { CommonHelpers, isPortalAccessGranted } from "@wso2is/core/helpers";
 import { RouteInterface, emptyIdentityAppsSettings } from "@wso2is/core/models";
 import { LocalStorageUtils } from "@wso2is/core/utils";
-import { I18n } from "@wso2is/i18n";
 import {
     ChunkErrorModal,
     Code,
@@ -29,7 +28,6 @@ import {
     SessionTimeoutModalTypes
 } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
-import * as moment from "moment";
 import React, { ReactElement, Suspense, useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { Trans } from "react-i18next";
@@ -49,7 +47,7 @@ import { EventPublisher, filterRoutes } from "./utils";
 /**
  * Main App component.
  *
- * @returns Main App component
+ * @return {React.Element}
  */
 export const App = (): ReactElement => {
 
@@ -73,13 +71,6 @@ export const App = (): ReactElement => {
     useEffect(() => {
         sessionStorageDisabled();
     }, []);
-
-    /**
-     * Set the locale for moment library
-     */
-    useEffect(() => {
-        moment.locale(I18n.instance.language);
-    }, [ I18n.instance.language ]);
 
     /**
      * Listen for base name changes and updated the routes.
@@ -145,7 +136,7 @@ export const App = (): ReactElement => {
     /**
      * Handles session timeout abort.
      *
-     * @param url - Current URL.
+     * @param {URL} url - Current URL.
      */
     const handleSessionTimeoutAbort = (url: URL): void => {
         history.push({
@@ -270,13 +261,12 @@ export const App = (): ReactElement => {
                                                         ? (
                                                             <link
                                                                 href={
-                                                                    `${window?.origin}${window?.publicPath}/libs/themes/
-                                                                    ${theme}/theme.${window?.themeHash}.min.css`
+                                                                    `${window?.origin}${window?.publicPath}/libs/themes/${theme}/theme.${window?.themeHash}.min.css`
                                                                 }
                                                                 rel="stylesheet"
                                                                 type="text/css"
                                                             />
-                                                        )
+                                                        ) 
                                                         : null
                                                 }
                                             </Helmet>

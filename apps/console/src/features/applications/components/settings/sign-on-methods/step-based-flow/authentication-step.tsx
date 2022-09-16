@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
- * WSO2 LLC. licenses this file to you under the Apache License,
+ * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -24,6 +24,7 @@ import { useTranslation } from "react-i18next";
 import { Card, Checkbox, Form, Icon, Label, Popup, Radio } from "semantic-ui-react";
 import { getGeneralIcons } from "../../../../../core";
 import {
+    AuthenticatorMeta,
     FederatedAuthenticatorInterface,
     GenericAuthenticatorInterface,
     IdentityProviderManagementConstants
@@ -52,9 +53,9 @@ interface AuthenticationStepPropsInterface extends TestableComponentInterface {
     onStepDelete: (stepIndex: number) => void;
     /**
      * Callback for step option authenticator change.
-     * @param stepIndex - Step index.
-     * @param optionIndex - Option Index.
-     * @param authenticator - Selected authenticator.
+     * @param {number} stepIndex - Step index.
+     * @param {number} optionIndex - Option Index.
+     * @param {FederatedAuthenticatorInterface} authenticator - Selected authenticator.
      */
     onStepOptionAuthenticatorChange: (
         stepIndex: number,
@@ -105,9 +106,9 @@ interface AuthenticationStepPropsInterface extends TestableComponentInterface {
 /**
  * Component to render the authentication step.
  *
- * @param props - Props injected to the component.
+ * @param {AuthenticationStepPropsInterface} props - Props injected to the component.
  *
- * @returns React element.
+ * @return {React.ReactElement}
  */
 export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterface> = (
     props: AuthenticationStepPropsInterface
@@ -155,11 +156,11 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
     /**
      * Resolves the authenticator step option.
      *
-     * @param option - Authenticator step option.
-     * @param stepIndex - Index of the step.
-     * @param optionIndex - Index of the option.
+     * @param {AuthenticatorInterface} option - Authenticator step option.
+     * @param {number} stepIndex - Index of the step.
+     * @param {number} optionIndex - Index of the option.
      *
-     * @returns React element.
+     * @return {ReactElement}
      */
     const resolveStepOption = (option: AuthenticatorInterface, stepIndex: number,
         optionIndex: number): ReactElement => {
@@ -228,7 +229,10 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                                         transparent
                                     />
                                     <span data-testid={ `${ testId }-option-name` }>
-                                        { authenticator.displayName }
+                                        {
+                                            AuthenticatorMeta.getAuthenticatorDisplayName(option.authenticator)
+                                        || authenticator.displayName
+                                        }
                                     </span>
                                 </Card.Content>
                             </Card>

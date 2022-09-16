@@ -77,7 +77,6 @@ importers:
       eslint: ^7.20.0
       eslint-config-prettier: 8.1.0
       eslint-plugin-cypress: ^2.10.3
-      eslint-plugin-header: ^3.1.1
       eslint-plugin-import: ^2.20.2
       eslint-plugin-jsx-a11y: 6.5.1
       eslint-plugin-react: ^7.18.3
@@ -264,7 +263,6 @@ importers:
       eslint: 7.32.0
       eslint-config-prettier: 8.1.0_eslint@7.32.0
       eslint-plugin-cypress: 2.12.1_eslint@7.32.0
-      eslint-plugin-header: 3.1.1_eslint@7.32.0
       eslint-plugin-import: 2.26.0_ffi3uiz42rv3jyhs6cr7p7qqry
       eslint-plugin-jsx-a11y: 6.5.1_eslint@7.32.0
       eslint-plugin-react: 7.31.1_eslint@7.32.0
@@ -320,7 +318,7 @@ importers:
 
   apps/authentication-portal:
     specifiers:
-      '@wso2is/theme': ^1.4.102
+      '@wso2is/theme': ^1.4.98
       rimraf: ^3.0.2
     dependencies:
       '@wso2is/theme': link:../../modules/theme
@@ -354,14 +352,14 @@ importers:
       '@types/webpack-env': ^1.16.0
       '@typescript-eslint/eslint-plugin': ^4.17.0
       '@typescript-eslint/parser': ^4.17.0
-      '@wso2is/access-control': ^1.4.102
-      '@wso2is/core': ^1.4.102
-      '@wso2is/form': ^1.4.102
-      '@wso2is/forms': ^1.4.102
-      '@wso2is/i18n': ^1.4.102
-      '@wso2is/react-components': ^1.4.102
-      '@wso2is/theme': ^1.4.102
-      '@wso2is/validation': ^1.4.102
+      '@wso2is/access-control': ^1.4.98
+      '@wso2is/core': ^1.4.98
+      '@wso2is/form': ^1.4.98
+      '@wso2is/forms': ^1.4.98
+      '@wso2is/i18n': ^1.4.98
+      '@wso2is/react-components': ^1.4.98
+      '@wso2is/theme': ^1.4.98
+      '@wso2is/validation': ^1.4.98
       axios: ^0.19.2
       codemirror: ^5.52.0
       country-language: ^0.1.7
@@ -540,13 +538,13 @@ importers:
       '@types/webpack-env': ^1.16.0
       '@typescript-eslint/eslint-plugin': ^4.17.0
       '@typescript-eslint/parser': ^4.17.0
-      '@wso2is/access-control': ^1.4.102
-      '@wso2is/core': ^1.4.102
-      '@wso2is/forms': ^1.4.102
-      '@wso2is/i18n': ^1.4.102
-      '@wso2is/react-components': ^1.4.102
-      '@wso2is/theme': ^1.4.102
-      '@wso2is/validation': ^1.4.102
+      '@wso2is/access-control': ^1.4.98
+      '@wso2is/core': ^1.4.98
+      '@wso2is/forms': ^1.4.98
+      '@wso2is/i18n': ^1.4.98
+      '@wso2is/react-components': ^1.4.98
+      '@wso2is/theme': ^1.4.98
+      '@wso2is/validation': ^1.4.98
       axios: ^0.19.2
       css-loader: ^1.0.0
       eslint: ^7.20.0
@@ -668,7 +666,7 @@ importers:
 
   apps/recovery-portal:
     specifiers:
-      '@wso2is/theme': ^1.4.102
+      '@wso2is/theme': ^1.4.98
       rimraf: ^3.0.2
     dependencies:
       '@wso2is/theme': link:../../modules/theme
@@ -676,7 +674,7 @@ importers:
 
   apps/x509-certificate-authentication-portal:
     specifiers:
-      '@wso2is/theme': ^1.4.102
+      '@wso2is/theme': ^1.4.98
       rimraf: ^3.0.2
     dependencies:
       '@wso2is/theme': link:../../modules/theme
@@ -684,7 +682,7 @@ importers:
 
   components/theme:
     specifiers:
-      '@wso2is/theme': ^1.4.102
+      '@wso2is/theme': ^1.4.98
     dependencies:
       '@wso2is/theme': link:../../modules/theme
 
@@ -693,7 +691,7 @@ importers:
       '@types/react': ^16.9.0
       '@typescript-eslint/eslint-plugin': ^4.17.0
       '@typescript-eslint/parser': ^4.17.0
-      '@wso2is/core': ^1.4.102
+      '@wso2is/core': ^1.4.98
       eslint: ^7.20.0
       eslint-plugin-import: ^2.20.2
       eslint-plugin-react: ^7.18.3
@@ -801,9 +799,9 @@ importers:
       '@types/react': ^16.9.0
       '@typescript-eslint/eslint-plugin': ^4.17.0
       '@typescript-eslint/parser': ^4.17.0
-      '@wso2is/core': ^1.4.102
-      '@wso2is/react-components': ^1.4.102
-      '@wso2is/validation': ^1.4.102
+      '@wso2is/core': ^1.4.98
+      '@wso2is/react-components': ^1.4.98
+      '@wso2is/validation': ^1.4.98
       eslint: ^7.20.0
       eslint-plugin-import: ^2.20.2
       eslint-plugin-react: ^7.18.3
@@ -905,7 +903,7 @@ importers:
       '@types/node': ^13.9.2
       '@typescript-eslint/eslint-plugin': ^4.17.0
       '@typescript-eslint/parser': ^4.17.0
-      '@wso2is/core': ^1.4.102
+      '@wso2is/core': ^1.4.98
       babel-jest: ^26.3.0
       eslint: ^7.20.0
       eslint-plugin-import: ^2.20.2
@@ -974,9 +972,9 @@ importers:
       '@types/react-router-dom': ^5.1.3
       '@typescript-eslint/eslint-plugin': ^4.17.0
       '@typescript-eslint/parser': ^4.17.0
-      '@wso2is/core': ^1.4.102
-      '@wso2is/forms': ^1.4.102
-      '@wso2is/theme': ^1.4.102
+      '@wso2is/core': ^1.4.98
+      '@wso2is/forms': ^1.4.98
+      '@wso2is/theme': ^1.4.98
       babel-loader: ^8.1.0
       babel-plugin-rename-jsx-attribute: ^0.2.4
       classnames: ^2.2.6
@@ -14435,14 +14433,6 @@ packages:
     dependencies:
       eslint: 7.32.0
       globals: 11.12.0
-    dev: true
-
-  /eslint-plugin-header/3.1.1_eslint@7.32.0:
-    resolution: {integrity: sha512-9vlKxuJ4qf793CmeeSrZUvVClw6amtpghq3CuWcB5cUNnWHQhgcqy5eF8oVKFk1G3Y/CbchGfEaw3wiIJaNmVg==}
-    peerDependencies:
-      eslint: '>=7.7.0'
-    dependencies:
-      eslint: 7.32.0
     dev: true
 
   /eslint-plugin-import/2.26.0_ffi3uiz42rv3jyhs6cr7p7qqry:
