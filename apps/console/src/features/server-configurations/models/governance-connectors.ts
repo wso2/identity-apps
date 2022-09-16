@@ -46,6 +46,7 @@ export interface GovernanceConnectorInterface {
 	order: string;
 	subCategory: string;
 	properties: ConnectorPropertyInterface[];
+	displayName: string;
 }
 
 export interface GovernanceConnectorCategoryInterface {
