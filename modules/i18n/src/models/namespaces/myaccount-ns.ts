@@ -835,6 +835,12 @@ export interface MyAccountNS {
             };
             lastAccessed: string;
             modals: {
+                terminateActiveUserSessionModal: {
+                    heading: string;
+                    message: string;
+                    primaryAction: string;
+                    secondaryAction: string;
+                }
                 terminateAllUserSessionsModal: {
                     heading: string;
                     message: string;

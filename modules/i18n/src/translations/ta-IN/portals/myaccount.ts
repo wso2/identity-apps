@@ -1436,6 +1436,15 @@ export const myAccount: MyAccountNS = {
             },
             lastAccessed: "இறுதியாக அணுகியது {{date}}",
             modals: {
+                terminateActiveUserSessionModal: {
+                    heading: "தற்போதைய செயலில் உள்ள அமர்வுகளை நிறுத்தவும்",
+                    message:
+                        "இரண்டாவது காரணி அங்கீகாரம் (2FA) விருப்ப மாற்றங்கள் உங்கள் செயலில் உள்ள அமர்வுகளுக்குப் பயன்படுத்தப்படாது. " +
+                        "அவற்றை நிறுத்துமாறு பரிந்துரைக்கிறோம்.",
+                    primaryAction: "அனைத்தையும் நிறுத்து",
+                    secondaryAction: "மதிப்பாய்வு செய்து முடிக்கவும்"    
+
+                },
                 terminateAllUserSessionsModal: {
                     heading: "உறுதிப்பாடு",
                     message:

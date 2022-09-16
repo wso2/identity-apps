@@ -1439,6 +1439,15 @@ export const myAccount: MyAccountNS = {
             },
             lastAccessed: "Dernier accès il y a {{date}}",
             modals: {
+                terminateActiveUserSessionModal: {
+                    heading: "Terminer les sessions actives en cours",
+                    message:
+                        "Les modifications de l'option d'authentification à deux facteurs (2FA) ne seront pas appliquées à vos sessions actives. Nous vous " +
+                        "recommandons de les résilier.",
+                    primaryAction: "Terminer tout",
+                    secondaryAction: "Réviser et résilier"    
+
+                },
                 terminateAllUserSessionsModal: {
                     heading: "Confirmation",
                     message:
