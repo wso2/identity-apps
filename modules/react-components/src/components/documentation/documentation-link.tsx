@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -31,12 +31,12 @@ interface DocumentationLinkPropsInterface extends IdentifiableComponentInterface
      */
     link: string;
     /**
-     * Documentation URL target property. Opens in a new window by default.
-     */
-    /**
      * Is provided link a reference to link.
      */
     isLinkRef?: boolean;
+    /**
+     * Documentation URL target property. Opens in a new window by default.
+     */
     target?: string;
     /**
      * Additional CSS classes.
@@ -51,9 +51,9 @@ interface DocumentationLinkPropsInterface extends IdentifiableComponentInterface
 /**
  * Documentation link anchor tag component.
  *
- * @param {React.PropsWithChildren<DocumentationLinkPropsInterface>} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns DocumentationLink Component.
  */
 export const DocumentationLink: FunctionComponent<PropsWithChildren<DocumentationLinkPropsInterface>> = (
     props: PropsWithChildren<DocumentationLinkPropsInterface>
@@ -69,12 +69,13 @@ export const DocumentationLink: FunctionComponent<PropsWithChildren<Documentatio
         [ "data-componentid" ]: componentId
     } = props;
 
+    const { getLink } = useDocumentation();
+    
     if (link === undefined) {
         return null;
     }
 
     const classes = classNames("documentation-link ml-1 link external no-wrap", className);
-    const { getLink } = useDocumentation();
     const url = isLinkRef? getLink(link): link;
 
     return (
