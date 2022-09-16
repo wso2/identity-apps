@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,6 +19,7 @@
 import { ProfileConstants } from "@wso2is/core/constants";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { TestableComponentInterface } from "@wso2is/core/models";
+import { PageLayout } from "@wso2is/react-components";
 import React, {
     FunctionComponent,
     ReactElement,
@@ -42,7 +43,6 @@ import { AppConstants, CommonConstants } from "../constants";
 import { commonConfig } from "../extensions";
 import { SCIMConfigs } from "../extensions/configs/scim";
 import { resolveUserstore } from "../helpers";
-import { InnerPageLayout } from "../layouts";
 import { AlertInterface, AuthStateInterface, FeatureConfigInterface } from "../models";
 import { AppState } from "../store";
 import { addAlert } from "../store/actions";
@@ -58,7 +58,8 @@ interface AccountSecurityPagePropsInterface extends TestableComponentInterface, 
 /**
  * Account security page.
  *
- * @return {React.ReactElement}
+ * @param props - Props injected to the component.
+ * @returns Account security page.
  */
 const AccountSecurityPage: FunctionComponent<AccountSecurityPagePropsInterface>= (
     props: AccountSecurityPagePropsInterface
@@ -70,12 +71,18 @@ const AccountSecurityPage: FunctionComponent<AccountSecurityPagePropsInterface>=
 
     const { t } = useTranslation();
     const dispatch = useDispatch();
+
     const profileDetails: AuthStateInterface = useSelector((state: AppState) => state.authenticationInformation);
     const accessConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
-    const disableMFAforSuperTenantUser: boolean = useSelector((state: AppState) => state?.config?.ui?.disableMFAforSuperTenantUser);
-    const disableMFAForFederatedUsers: boolean = useSelector((state: AppState) => state?.config?.ui?.disableMFAForFederatedUsers);
+    const disableMFAforSuperTenantUser: boolean = useSelector((state: AppState) => {
+        return state?.config?.ui?.disableMFAforSuperTenantUser;
+    });
+    const disableMFAForFederatedUsers: boolean = useSelector((state: AppState) => {
+        return state?.config?.ui?.disableMFAForFederatedUsers;
+    });
     const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
     const isReadOnlyUser = useSelector((state: AppState) => state.authenticationInformation.profileInfo.isReadOnly);
+
     const [ isNonLocalCredentialUser, setIsNonLocalCredentialUser ] = useState<boolean>(false);
     const [ userstore, setUserstore ] = useState<string>(null);
 
@@ -91,18 +98,21 @@ const AccountSecurityPage: FunctionComponent<AccountSecurityPagePropsInterface>=
                         behavior: "smooth",
                         block: "center"
                     });
+
                     break;
                 case `#${ CommonConstants.ACCOUNT_ACTIVITY }`:
                     accountActivity.current.scrollIntoView({
                         behavior: "smooth",
                         block: "center"
                     });
+
                     break;
                 case `#${ CommonConstants.ACCOUNT_SECURITY }`:
                     accountSecurity.current.scrollIntoView({
                         behavior: "smooth",
                         block: "center"
                     });
+
                     break;
             }
         }, 100);
@@ -125,7 +135,7 @@ const AccountSecurityPage: FunctionComponent<AccountSecurityPagePropsInterface>=
             setIsNonLocalCredentialUser(true);
         }
 
-    }, [profileDetails?.profileInfo]);
+    }, [ profileDetails?.profileInfo ]);
 
     /**
      * Sets userstore of the user.
@@ -133,31 +143,33 @@ const AccountSecurityPage: FunctionComponent<AccountSecurityPagePropsInterface>=
     useEffect(() => {
         if (profileDetails?.profileInfo?.userName) {
             const userstore: string = resolveUserstore(profileDetails.profileInfo.userName);
+
             setUserstore(userstore);
         }
-    }, [profileDetails?.profileInfo]);
+    }, [ profileDetails?.profileInfo ]);
 
     /**
      * Dispatches the alert object to the redux store.
-     * @param {AlertInterface} alert - Alert object.
+     * @param alert - Alert object.
      */
-    const handleAlerts = (alert: AlertInterface) => {
+    const handleAlerts = (alert: AlertInterface): void => {
         dispatch(addAlert(alert));
     };
 
     /**
      * Check if the login tenant is super tenant or not?
-     * 
+     *
      * @returns True if login tenant is super tenant.
      */
     const isSuperTenantLogin = (): boolean => {
         return AppConstants.getTenant() === AppConstants.getSuperTenant();
     };
-    
+
     return (
-        <InnerPageLayout
-            pageTitle={ t("myAccount:pages.security.title") }
-            pageDescription={
+        <PageLayout
+            pageTitle="Security"
+            title={ t("myAccount:pages.security.title") }
+            description={
                 (!isNonLocalCredentialUser
                     ?
                     t("myAccount:pages.security.subTitle")
@@ -167,8 +179,8 @@ const AccountSecurityPage: FunctionComponent<AccountSecurityPagePropsInterface>=
             }
         >
             <Grid>
-                { !CommonUtils.isProfileReadOnly(isReadOnlyUser) && !isNonLocalCredentialUser 
-                    && hasRequiredScopes(accessConfig?.security, accessConfig?.security?.scopes?.read, allowedScopes) 
+                { !CommonUtils.isProfileReadOnly(isReadOnlyUser) && !isNonLocalCredentialUser
+                    && hasRequiredScopes(accessConfig?.security, accessConfig?.security?.scopes?.read, allowedScopes)
                     && isFeatureEnabled(
                         accessConfig?.security,
                         AppConstants.FEATURE_DICTIONARY.get("SECURITY_CHANGE_PASSWORD")
@@ -180,19 +192,6 @@ const AccountSecurityPage: FunctionComponent<AccountSecurityPagePropsInterface>=
                         </Grid.Row>
                     ) : null }
 
-                { /* Create password section temporarily commented until feature is planned. */ }
-                { /*{ !isReadOnlyUser && isNonLocalCredentialUser &&*/ }
-                { /*    hasRequiredScopes(accessConfig?.security, accessConfig?.security?.scopes?.read, allowedScopes) &&*/ }
-                { /*    isFeatureEnabled(*/ }
-                { /*        accessConfig?.security,*/ }
-                { /*        AppConstants.FEATURE_DICTIONARY.get("SECURITY_CREATE_PASSWORD")*/ }
-                { /*    ) ? (*/ }
-                { /*        <Grid.Row>*/ }
-                { /*            <Grid.Column width={ 16 }>*/ }
-                { /*                <CreatePassword onAlertFired={ handleAlerts } />*/ }
-                { /*            </Grid.Column>*/ }
-                { /*        </Grid.Row>*/ }
-                { /*    ) : null }*/ }
                 { !CommonUtils.isProfileReadOnly(isReadOnlyUser) && !isNonLocalCredentialUser
                     && hasRequiredScopes(accessConfig?.security, accessConfig?.security?.scopes?.read, allowedScopes) &&
                     isFeatureEnabled(
@@ -211,8 +210,8 @@ const AccountSecurityPage: FunctionComponent<AccountSecurityPagePropsInterface>=
                         </Grid.Row>
                     ) : null }
 
-                { hasRequiredScopes(accessConfig?.security, accessConfig?.security?.scopes?.read, allowedScopes) && 
-                  ((isNonLocalCredentialUser && (!disableMFAForFederatedUsers || !isSuperTenantLogin())) || 
+                { hasRequiredScopes(accessConfig?.security, accessConfig?.security?.scopes?.read, allowedScopes) &&
+                  ((isNonLocalCredentialUser && (!disableMFAForFederatedUsers || !isSuperTenantLogin())) ||
                     !isNonLocalCredentialUser) &&
                   isFeatureEnabled(
                       accessConfig?.security,
@@ -275,7 +274,7 @@ const AccountSecurityPage: FunctionComponent<AccountSecurityPagePropsInterface>=
                         </Grid.Row>
                     ) : null }
             </Grid>
-        </InnerPageLayout>
+        </PageLayout>
     );
 };
 
