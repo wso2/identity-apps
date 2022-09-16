@@ -17,6 +17,7 @@
  */
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { useDocumentation } from "@wso2is/react-components";
 import classNames from "classnames";
 import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
 import { Icon } from "semantic-ui-react";
@@ -32,6 +33,10 @@ interface DocumentationLinkPropsInterface extends IdentifiableComponentInterface
     /**
      * Documentation URL target property. Opens in a new window by default.
      */
+    /**
+     * Is provided link a reference to link.
+     */
+    isLinkRef?: boolean;
     target?: string;
     /**
      * Additional CSS classes.
@@ -58,6 +63,7 @@ export const DocumentationLink: FunctionComponent<PropsWithChildren<Documentatio
         children,
         className,
         link,
+        isLinkRef,
         target,
         showEmptyLink,
         [ "data-componentid" ]: componentId
@@ -68,11 +74,13 @@ export const DocumentationLink: FunctionComponent<PropsWithChildren<Documentatio
     }
 
     const classes = classNames("documentation-link ml-1 link external no-wrap", className);
+    const { getLink } = useDocumentation();
+    const url = isLinkRef? getLink(link): link;
 
     return (
-        !(!showEmptyLink && (!link || link === "#")) &&
+        !(!showEmptyLink && (!url || url === "#")) &&
         (<a
-            href={ link }
+            href={ url }
             target={ target }
             rel="noopener noreferrer"
             className={ classes }
