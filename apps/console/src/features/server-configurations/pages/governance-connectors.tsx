@@ -27,8 +27,8 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Grid, Menu, Rail, Ref, Sticky } from "semantic-ui-react";
 import { serverConfigurationConfig } from "../../../extensions";
-import { OrganizationUtils } from "../../organizations/utils";
 import { AppState, FeatureConfigInterface, UIConstants, history } from "../../core";
+import { OrganizationUtils } from "../../organizations/utils";
 import { getConnectorCategory } from "../api";
 import { DynamicGovernanceConnector } from "../components";
 import { ServerConfigurationsConstants } from "../constants";
@@ -99,9 +99,24 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
                         GovernanceConnectorUtils
                             .filterGovernanceConnectorCategories(categoryId, response.connectors);
 
-                    // If the given connector is not available for an organization domain
+                    // If the given connector is not available for an organization domains
                     if (response.connectors.length==0) {
-                        throw RangeError();
+                        dispatch(
+                            addAlert({
+                                description: t(
+                                    "console:manage.features.governanceConnectors.notifications." +
+                                    "getConnector.genericError.description"
+                                ),
+                                level: AlertLevels.ERROR,
+                                message: t(
+                                    "console:manage.features.governanceConnectors.notifications." +
+                                    "getConnector.genericError.message"
+                                )
+                            })
+                        );
+
+                        return;
+                        
                     }
                 }
 

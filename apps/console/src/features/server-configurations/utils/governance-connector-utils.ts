@@ -121,14 +121,8 @@ export class GovernanceConnectorUtils {
     : GovernanceConnectorInterface[] {
         let showGovernanceConnectors = [];
 
-        for (let i = 0; i < this.SHOW_GOVERNANCE_CONNECTORS_FOR_SUBORGS.length; i++) {
-            if (governanceCategoryId === this.SHOW_GOVERNANCE_CONNECTORS_FOR_SUBORGS[i].id) {
-
-                showGovernanceConnectors = this.SHOW_GOVERNANCE_CONNECTORS_FOR_SUBORGS[i].connectors;
-
-                break;
-            }
-        }
+        showGovernanceConnectors  = this.SHOW_GOVERNANCE_CONNECTORS_FOR_SUBORGS.filter(
+            category => category.id === governanceCategoryId)[0].connectors;
 
         const showGovernanceConnectorsIdOfSuborgs = [];
 
@@ -162,13 +156,7 @@ export class GovernanceConnectorUtils {
     private static getGovernanceConnectorsProperties
     (showGovernanceConnectors: GovernanceConnectorForOrgsInterface[], governanceConnectorId: string) {
 
-        for (let i = 0; i < showGovernanceConnectors.length; i++) {
-            if (governanceConnectorId === showGovernanceConnectors[i].id) {
-
-                return showGovernanceConnectors[i].properties;
-
-            }
-        }
+        return showGovernanceConnectors.filter(connector=>connector.id===governanceConnectorId)[0].properties;
 
     }
 }
