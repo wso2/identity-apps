@@ -176,10 +176,10 @@ export interface SubjectConfigInterface {
  */
 export interface ClaimConfigurationInterface {
     dialect: string;
-    claimMappings: ClaimMappingInterface[];
+    claimMappings?: ClaimMappingInterface[];
     requestedClaims: RequestedClaimConfigurationInterface[];
-    subject: SubjectConfigInterface;
-    role: RoleConfigInterface;
+    subject?: SubjectConfigInterface;
+    role?: RoleConfigInterface;
 }
 
 /**
@@ -238,7 +238,7 @@ export interface AuthenticationStepInterface {
  * Authentication Sequence model.
  */
 export interface AuthenticationSequenceInterface  {
-    type?: AuthenticationSequenceType;
+    type?: AuthenticationSequenceType | string;
     steps?: AuthenticationStepInterface[];
     requestPathAuthenticators?: string[];
     script?: string;
