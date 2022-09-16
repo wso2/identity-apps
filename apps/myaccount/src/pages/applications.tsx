@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,36 +16,38 @@
  * under the License.
  */
 
+import { PageLayout } from "@wso2is/react-components";
 import React, { ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Grid } from "semantic-ui-react";
 import { Applications } from "../components";
-import { InnerPageLayout } from "../layouts";
 import { AlertInterface } from "../models";
 import { addAlert } from "../store/actions";
 
 /**
  * Applications page.
  *
- * @return {React.ReactElement}
+ * @returns Applications listing page.
  */
 const ApplicationsPage = (): ReactElement => {
+
     const { t } = useTranslation();
     const dispatch = useDispatch();
 
     /**
      * Dispatches the alert object to the redux store.
-     * @param {AlertInterface} alert - Alert object.
+     * @param alert - Alert object.
      */
-    const handleAlerts = (alert: AlertInterface) => {
+    const handleAlerts = (alert: AlertInterface): void => {
         dispatch(addAlert(alert));
     };
 
     return (
-        <InnerPageLayout
-            pageTitle={ t("myAccount:pages.applications.title") }
-            pageDescription={ t("myAccount:pages.applications.subTitle") }
+        <PageLayout
+            pageTitle="Applications"
+            title={ t("myAccount:pages.applications.title") }
+            description={ t("myAccount:pages.applications.subTitle") }
         >
             <Grid>
                 <Grid.Row columns={ 1 }>
@@ -54,7 +56,7 @@ const ApplicationsPage = (): ReactElement => {
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
-        </InnerPageLayout>
+        </PageLayout>
     );
 };
 

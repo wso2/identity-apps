@@ -1,8 +1,8 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
- * Version 2.0 (the 'License'); you may not use this file except
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
  *
@@ -10,7 +10,7 @@
  *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
- * 'AS IS' BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
@@ -61,20 +61,19 @@ interface ExternalDialectEditPageInterface extends TestableComponentInterface {
 /**
  * This renders the edit external dialect page
  *
- * @param {ExternalDialectEditPageInterface & RouteComponentProps<RouteParams>} props - Props injected to the component
- *
- * @return {React.ReactElement}
+ * @param props - Props injected to the component
+ * @returns External dialect edit page.
  */
 const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterface> = (
     props: ExternalDialectEditPageInterface
 ): ReactElement => {
-    const { 
-        attributeType, 
-        attributeUri, 
-        mappedLocalClaims, 
-        updateMappedClaims, 
-        [ "data-testid" ]: testId, 
-        id: dialectId 
+    const {
+        attributeType,
+        attributeUri,
+        mappedLocalClaims,
+        updateMappedClaims,
+        [ "data-testid" ]: testId,
+        id: dialectId
     } = props;
 
     const [ dialect, setDialect ] = useState<ClaimDialect>(null);
@@ -94,8 +93,11 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
             assertion={ dialect.dialectURI }
             assertionHint={ (
                 <p>
-                    <Trans i18nKey="console:manage.features.claims.dialects.confirmations.hint">
-                        Please type <strong>{ { confirm: dialect.dialectURI } }</strong> to confirm.
+                    <Trans
+                        i18nKey="console:manage.features.claims.dialects.confirmations.hint"
+                        i18nOptions={ { confirm: dialect.dialectURI } }
+                    >
+                        Please type <strong>{ dialect.dialectURI }</strong> to confirm.
                     </Trans>
                 </p>
             ) }
@@ -110,7 +112,11 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
             <ConfirmationModal.Header data-testid={ `${ testId }-delete-confirmation-modal-header` }>
                 { t("console:manage.features.claims.dialects.confirmations.header") }
             </ConfirmationModal.Header>
-            <ConfirmationModal.Message attached negative data-testid={ `${ testId }-delete-confirmation-modal-message` }>
+            <ConfirmationModal.Message
+                attached
+                negative
+                data-testid={ `${ testId }-delete-confirmation-modal-message` }
+            >
                 { t("console:manage.features.claims.dialects.confirmations.message") }
             </ConfirmationModal.Message>
             <ConfirmationModal.Content data-testid={ `${ testId }-delete-confirmation-modal-content` }>
@@ -122,7 +128,7 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
     /**
      * Fetch the dialect.
      *
-     * @param {string} id - Dialect ID
+     * @param id - Dialect ID
      */
     const getDialect = (id?: string) => {
         getADialect(id ?? dialectId)
@@ -157,10 +163,10 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
     /**
      * Fetch external claims.
      *
-     * @param {number} limit.
-     * @param {number} offset.
-     * @param {string} sort.
-     * @param {string} filter.
+     * @param limit - List limit.
+     * @param offset - List offset.
+     * @param sort - List sort order.
+     * @param filter - List filter query.
      */
     const getExternalClaims = (limit?: number, offset?: number, sort?: string, filter?: string) => {
         dialectId && setIsLoading(true);
@@ -212,7 +218,7 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
 
     /**
      * This deletes a dialect
-     * @param {string} dialectID
+     * @param dialectID - Dialect ID.
      */
     const deleteDialect = (dialectID: string) => {
         deleteADialect(dialectID)

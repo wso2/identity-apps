@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,11 +19,12 @@
 import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { Fragment, FunctionComponent, MouseEvent, PropsWithChildren, ReactElement } from "react";
-import { Card, Grid, Header, Icon, List, Menu, Message, Responsive, SemanticICONS } from "semantic-ui-react";
+import { Card, Grid, Header, Icon, List, Menu, Message, SemanticICONS } from "semantic-ui-react";
 import { GenericIcon, GenericIconSizes } from "../icon";
+import { Media } from "../media";
 
 /**
- * Proptypes for the section component.
+ * Prop-types for the section component.
  */
 export interface SectionProps extends IdentifiableComponentInterface, TestableComponentInterface {
     /**
@@ -64,12 +65,12 @@ export interface SectionProps extends IdentifiableComponentInterface, TestableCo
     iconSize?: GenericIconSizes;
     /**
      * Primary action onclick callback.
-     * @param {React.MouseEvent<HTMLElement>} e - Click event.
+     * @param e - Click event.
      */
     onPrimaryActionClick?: (e: MouseEvent<HTMLElement>) => void;
     /**
      * Secondary action onclick callback.
-     * @param {React.MouseEvent<HTMLElement>} e - Click event.
+     * @param e - Click event.
      */
     onSecondaryActionClick?: (e: MouseEvent<HTMLElement>) => void;
     /**
@@ -117,9 +118,8 @@ export interface SectionProps extends IdentifiableComponentInterface, TestableCo
 /**
  * Section component.
  *
- * @param {PropsWithChildren<SectionProps>} props - Props injected to the section component.
- *
- * @return {React.ReactElement}
+ * @param props - Props injected to the section component.
+ * @returns Section component.
  */
 export const Section: FunctionComponent<PropsWithChildren<SectionProps>> = (
     props: PropsWithChildren<SectionProps>
@@ -160,11 +160,11 @@ export const Section: FunctionComponent<PropsWithChildren<SectionProps>> = (
      * Construct the action element.
      *
      * @param action - action which is passed in.
-     * @param {SemanticICONS} actionIcon - Icon for the action.
-     * @param {boolean} actionDisabled - Flag to determine if the action should be disabled.
+     * @param actionIcon - Icon for the action.
+     * @param actionDisabled - Flag to determine if the action should be disabled.
      * @param actionOnClick - On Click handler of the action.
-     * @param {"primary" | "secondary"} actionType - Type of the action.
-     * @return Constructed element.
+     * @param actionType - Type of the action.
+     * @returns Constructed element.
      */
     const constructAction = (
         action: any,
@@ -240,7 +240,7 @@ export const Section: FunctionComponent<PropsWithChildren<SectionProps>> = (
                         {
                             icon || iconMini ? (
                                 <Grid.Column width={ 6 } className="no-padding">
-                                    <Responsive as={ Fragment } { ...Responsive.onlyComputer }>
+                                    <Media greaterThanOrEqual="tablet">
                                         {
                                             icon
                                                 ? (
@@ -258,8 +258,8 @@ export const Section: FunctionComponent<PropsWithChildren<SectionProps>> = (
                                                 )
                                                 : null
                                         }
-                                    </Responsive>
-                                    <Responsive as={ Fragment } maxWidth={ Responsive.onlyTablet.maxWidth }>
+                                    </Media>
+                                    <Media lessThan="tablet">
                                         {
                                             iconMini
                                                 ? (
@@ -277,7 +277,7 @@ export const Section: FunctionComponent<PropsWithChildren<SectionProps>> = (
                                                 )
                                                 : null
                                         }
-                                    </Responsive>
+                                    </Media>
                                 </Grid.Column>
                             )
                                 : null
@@ -373,7 +373,7 @@ export const Section: FunctionComponent<PropsWithChildren<SectionProps>> = (
 };
 
 /**
- * Default proptypes for the section component.
+ * Default prop-types for the section component.
  */
 Section.defaultProps = {
     className: "",

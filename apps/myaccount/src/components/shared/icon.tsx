@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,10 +17,10 @@
  */
 
 import classNames from "classnames";
-import React, { ReactElement } from "react";
+import React, { ReactElement, ReactNode } from "react";
 
 /**
- * Proptypes for the Icon component.
+ * Prop-types for the Icon component.
  */
 interface ThemeIconProps {
     bordered?: boolean;
@@ -34,7 +34,7 @@ interface ThemeIconProps {
     rounded?: boolean;
     size?: ThemeIconSizes;
     spaced?: "left" | "right";
-    style?: object;
+    style?: Record<string, unknown>;
     square?: boolean;
     transparent?: boolean;
     twoTone?: boolean;
@@ -56,8 +56,8 @@ export type ThemeIconSizes =
 /**
  * Generic component to render icons.
  *
- * @param {React.PropsWithChildren<any>} props
- * @return {any}
+ * @param props - Props injected to the component.
+ * @returns Icon component.
  */
 export const ThemeIcon: React.FunctionComponent<ThemeIconProps> = (props): JSX.Element => {
     const {
@@ -135,7 +135,7 @@ export const ThemeIcon: React.FunctionComponent<ThemeIconProps> = (props): JSX.E
 
     return (
         <div className={ `theme-icon ${classes}` } style={ style }>
-            { constructContent() }
+            { constructContent() as ReactNode }
         </div>
     );
 };

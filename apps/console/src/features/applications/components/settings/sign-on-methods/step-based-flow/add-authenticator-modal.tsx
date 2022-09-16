@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -68,7 +68,7 @@ import { getGeneralIcons } from "../../../../configs";
 import { AuthenticationStepInterface } from "../../../../models";
 
 /**
- * Proptypes for the Add authenticator modal component.
+ * Prop-types for the Add authenticator modal component.
  */
 interface AddAuthenticatorModalPropsInterface extends TestableComponentInterface, ModalProps {
     /**
@@ -133,8 +133,7 @@ const CARDS_PER_ROW: SemanticWIDTHS = 3;
  * Authenticator side panel component.
  *
  * @param props - Props injected to the component.
- *
- * @returns React element.
+ * @returns AddAuthenticator Modal component.
  */
 export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalPropsInterface> = (
     props: AddAuthenticatorModalPropsInterface
@@ -224,7 +223,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
     /**
      * Generates the options for the step selector dropdown.
      *
-     * @returns Drop down item props.
+     * @returns Selector options.
      */
     const generateStepSelectorOptions = (): DropdownItemProps[] => {
 
@@ -286,15 +285,14 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
      *
      * @param query - Search query.
      * @param filterLabels - Filter labels.
-     *
-     * @returns GenericAuthenticatorInterface list.
+     * @returns Get search results.
      */
     const getSearchResults = (query: string, filterLabels: string[]): GenericAuthenticatorInterface[] => {
 
         /**
          * Checks if any of the filters are matching.
          * @param authenticator - Authenticator object.
-         * @returns Whether the filter matching.
+         * @returns Is matched or not.
          */
         const isFiltersMatched = (authenticator: GenericAuthenticatorInterface): boolean => {
 
@@ -348,7 +346,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
 
     /**
      * Renders add new authenticator content inside modal.
-     * @returns React element.
+     * @returns Authenticator content.
      */
     const renderAddNewAuthenticatorContent = (): ReactElement => {
 
@@ -438,7 +436,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
 
     /**
      * Render Authenticator selection content inside modal.
-     * @returns React element.
+     * @returns Authenticator selection content.
      */
     const renderAuthenticatorSelectionContent = (): ReactElement => (
 
@@ -605,7 +603,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                 open={ isModalOpen }
                 { ...rest }
             >
-                <Modal.Header>{ header }</Modal.Header>
+                <Modal.Header>{ header as ReactNode }</Modal.Header>
                 { showStepSelector && (
                     <Modal.Content className="step-selection-dropdown-container">
                         <>
