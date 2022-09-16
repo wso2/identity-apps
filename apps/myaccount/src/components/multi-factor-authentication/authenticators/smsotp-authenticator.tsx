@@ -52,6 +52,11 @@ const SMS = "sms";
  */
 interface SMSOTPProps extends SBACInterface<FeatureConfigInterface>, TestableComponentInterface {
     onAlertFired: (alert: AlertInterface) => void;
+    /**
+     * This callback function handles the visibility of the
+     * session termination modal.
+     */
+    handleSessionTerminationModalVisibility: (visibility: boolean) => void;
 }
 
 /**
@@ -64,7 +69,8 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
     const {
         onAlertFired,
         featureConfig,
-        ["data-testid"]: testId
+        ["data-testid"]: testId,
+        handleSessionTerminationModalVisibility
     } = props;
 
     const [mobile, setMobile] = useState("");
@@ -130,6 +136,7 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
 
                 dispatch(getProfileInformation());
                 dispatch(setActiveForm(null));
+                handleSessionTerminationModalVisibility(true);
             })
             .catch((error) => {
                 if (error?.response?.data && error?.response?.detail) {

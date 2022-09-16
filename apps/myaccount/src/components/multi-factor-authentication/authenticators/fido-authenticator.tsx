@@ -58,6 +58,11 @@ const FIDO = "fido-";
  */
 interface FIDOAuthenticatorProps extends TestableComponentInterface {
     onAlertFired: (alert: AlertInterface) => void;
+    /**
+     * This callback function handles the visibility of the
+     * session termination modal.
+     */
+     handleSessionTerminationModalVisibility: (visibility: boolean) => void;
 }
 
 /**
@@ -68,7 +73,7 @@ interface FIDOAuthenticatorProps extends TestableComponentInterface {
 export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> = (
     props: FIDOAuthenticatorProps
 ): JSX.Element => {
-    const { onAlertFired, [ "data-testid" ]: testId } = props;
+    const { onAlertFired, handleSessionTerminationModalVisibility, [ "data-testid" ]: testId } = props;
     const { t } = useTranslation();
     const [ deviceList, setDeviceList ] = useState<FIDODevice[]>([]);
     const [ isDeviceErrorModalVisible, setDeviceErrorModalVisibility ] = useState(false);
@@ -288,6 +293,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                 getFidoMetaData();
                 setDeleteKey("");
                 fireDeletionSuccessNotification();
+                handleSessionTerminationModalVisibility(true);
             })
             .catch((error) => {
                 fireDeletionFailureNotification(error);
@@ -317,6 +323,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                     handleDeviceSuccessModalClose();
                     cancelEdit(id);
                     fireDeviceNameUpdateSuccessNotification();
+                    handleSessionTerminationModalVisibility(true);
                 })
                 .catch((error) => {
                     fireDeviceNameUpdateFailureNotification(error);
