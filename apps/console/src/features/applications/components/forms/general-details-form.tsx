@@ -18,15 +18,16 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
-import { DocumentationLink, Message, useDocumentation } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useState } from "react";
+import { ContentLoader, DocumentationLink, EmphasizedSegment, Message, useDocumentation } from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider } from "semantic-ui-react";
-import { AppState, UIConfigInterface } from "../../../core";
+import { AppConstants, AppState, UIConfigInterface } from "../../../core";
 import { ApplicationManagementConstants } from "../../constants";
 import { applicationConfig } from "../../../../extensions";
 import {ApplicationInterface} from "../../models";
+import { getMyAccountStatus } from "../../api";
 
 /**
  * Proptypes for the applications general details form component.
@@ -132,6 +133,8 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
 
     const [ isDiscoverable, setDiscoverability ] = useState<boolean>(discoverability);
 
+    const [ isMyAccountEnabled, setMyAccountStatus ] = useState<boolean>(AppConstants.DEFAULT_MY_ACCOUNT_STATUS);
+
     /**
      * Prepare form values for submitting.
      *
@@ -207,7 +210,32 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
         }
     };
 
+    const {
+        data: myAccountStatus,
+        isLoading: isMyAccountStatusLoading,
+        error: myAccountStatusFetchRequestError,
+        mutate: mutateMyAccountStatusFetchRequest
+    } = getMyAccountStatus();
+
+    /**
+     * Sets the initial spinner.
+     * TODO: Remove this once the loaders are finalized.
+     */
+    useEffect(() => {
+        let status: boolean = AppConstants.DEFAULT_MY_ACCOUNT_STATUS;
+        if ( myAccountStatus ) {
+            const enableProperty = myAccountStatus["value"];
+            if ( enableProperty && enableProperty == "false" ) {
+                status = false
+            }
+        }
+        console.log(status);
+        setMyAccountStatus(status);
+    }, [ isMyAccountStatusLoading ]);
+
     return (
+        !isMyAccountStatusLoading
+            ? (
         <Form
             uncontrolledForm={ false }
             onSubmit={ (values) => {
@@ -310,47 +338,49 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     hidden={ hiddenFields?.includes("imageUrl") }
                 />
             }
-            <Field.Checkbox
-                ariaLabel="Make application discoverable by end users"
-                name="discoverableByEndUsers"
-                required={ false }
-                label={ t("console:develop.features.applications.forms.generalDetails.fields" +
-                            ".discoverable.label") }
-                initialValue={ isDiscoverable }
-                readOnly={ readOnly }
-                data-testid={ `${ testId }-application-discoverable-checkbox` }
-                listen={ (value) => setDiscoverability(value) }
-                hint={ (
-                    <Trans
-                        i18nKey={
-                            "console:develop.features.applications.forms.generalDetails.fields." +
-                            "discoverable.hint"
-                        }
-                        tOptions={ { myAccount: "My Account" } }
-                    >
-                        { " " }
-                        { getLink("develop.applications.managementApplication.selfServicePortal") === undefined
-                            ? (
-                                <strong data-testid="application-name-assertion">
-                                    My Account
-                                </strong>
-                            )
-                            : (
-                                <strong 
-                                    className="link pointing"
-                                    data-testid="application-name-assertion" 
-                                    onClick={ 
-                                        () => window.open(getLink("develop.applications.managementApplication"+
-                                                        ".selfServicePortal"), "_blank") 
-                                    }>
-                                    My Account
-                                </strong>
-                            )
-                        }
-                    </Trans>
-                ) }
-                width={ 16 }
-            />
+            { isMyAccountEnabled? (
+                <Field.Checkbox
+                    ariaLabel="Make application discoverable by end users"
+                    name="discoverableByEndUsers"
+                    required={ false }
+                    label={ t("console:develop.features.applications.forms.generalDetails.fields" +
+                                ".discoverable.label") }
+                    initialValue={ isDiscoverable }
+                    readOnly={ readOnly }
+                    data-testid={ `${ testId }-application-discoverable-checkbox` }
+                    listen={ (value) => setDiscoverability(value) }
+                    hint={ (
+                        <Trans
+                            i18nKey={
+                                "console:develop.features.applications.forms.generalDetails.fields." +
+                                "discoverable.hint"
+                            }
+                            tOptions={ { myAccount: "My Account" } }
+                        >
+                            { " " }
+                            { getLink("develop.applications.managementApplication.selfServicePortal") === undefined
+                                ? (
+                                    <strong data-testid="application-name-assertion">
+                                        My Account
+                                    </strong>
+                                )
+                                : (
+                                    <strong
+                                        className="link pointing"
+                                        data-testid="application-name-assertion"
+                                        onClick={
+                                            () => window.open(getLink("develop.applications.managementApplication"+
+                                                            ".selfServicePortal"), "_blank")
+                                        }>
+                                        My Account
+                                    </strong>
+                                )
+                            }
+                        </Trans>
+                    ) }
+                    width={ 16 }
+                 /> ) : null
+            }
             <Field.Input
                 ariaLabel="Application access URL"
                 inputType="url"
@@ -384,7 +414,12 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                 hidden={ !hasRequiredScope || ( readOnly && applicationConfig.generalSettings.getFieldReadOnlyStatus(
                     application, "ACCESS_URL"))}
             />
-        </Form>
+        </Form>) :
+           (
+               <EmphasizedSegment padded="very">
+                   <ContentLoader inline="centered" active/>
+               </EmphasizedSegment>
+           )
     );
 };
 

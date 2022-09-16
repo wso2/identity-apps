@@ -139,7 +139,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     const consumerAccountURL: string = useSelector((state: AppState) =>
         state?.config?.deployment?.accountApp?.tenantQualifiedPath);
     const [ isLoadingForTheFirstTime, setIsLoadingForTheFirstTime ] = useState<boolean>(true);
-    const [ isMyAccountEnabled, setMyAccountStatus ] = useState<boolean>(false);
+    const [ isMyAccountEnabled, setMyAccountStatus ] = useState<boolean>(AppConstants.DEFAULT_MY_ACCOUNT_STATUS);
     const [ showMyAccountStatusEnableModal, setShowMyAccountStatusEnableConfirmationModal ] = useState<boolean>(false);
     const [ showMyAccountStatusDisableModal,
                 setShowMyAccountStatusDisableConfirmationModal ] = useState<boolean>(false);
@@ -167,10 +167,12 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     useEffect(() => {
         if (isApplicationListFetchRequestLoading === false && isMyAccountStatusLoading === false
             && isLoadingForTheFirstTime === true) {
-            let status: boolean = false;
+            let status: boolean = AppConstants.DEFAULT_MY_ACCOUNT_STATUS;
             if ( myAccountStatus ) {
                 const enableProperty = myAccountStatus["value"];
-                status = ( enableProperty ? enableProperty == "true" : true );  
+                if ( enableProperty && enableProperty == "false" ) {
+                    status = false
+                }
             }
             setMyAccountStatus(status);
             setIsLoadingForTheFirstTime(false);
@@ -388,7 +390,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
         return (
             <ConfirmationModal
                 onClose={ (): void => setShowMyAccountStatusEnableConfirmationModal(false) }
-                type="negative"
+                type="warning"
                 open={ showMyAccountStatusEnableModal }
                 primaryAction={ t("common:confirm") }
                 secondaryAction={ t("common:cancel") }
@@ -410,7 +412,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                 </ConfirmationModal.Header>
                 <ConfirmationModal.Message
                     attached
-                    negative
+                    warning
                 >
                     { t("console:develop.features.applications.myaccount.Confirmation.enableConfirmation.message") }
                 </ConfirmationModal.Message>
@@ -485,7 +487,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                         <Grid verticalAlign="middle">
                             <Grid.Column
                                 floated="left"
-                                width={ 10 }
+                                mobile={ 16 } computer={ 5 }
                             >
                                 <GenericIcon
                                     icon={ getGeneralIcons().myAccountSolidIcon }
@@ -517,23 +519,12 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                                         { t("common:learnMore") }
                                     </DocumentationLink>
                                 </List.Description>
-                                <Checkbox
-                                    className="mt-3"
-                                    label={ t( isMyAccountEnabled ?
-                                        "console:develop.features.applications.myaccount.enable.0" :
-                                        "console:develop.features.applications.myaccount.enable.1") }
-                                    toggle
-                                    onChange={ handleMyAccountStatusToggle }
-                                    checked={ isMyAccountEnabled }
-                                    data-testId={ `${ testId }-myaccount-status-update-toggle` }
-                                />
                             </Grid.Column>
                             { isMyAccountEnabled? (
                                 <Popup
                                     trigger={
                                         (<Grid.Column
-                                            floated="right"
-                                            width={ 6 }
+                                            mobile={ 16 } computer={ 6 }
                                         >
                                             <CopyInputField
                                                 value={ consumerAccountURL }
@@ -548,6 +539,20 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                                     inverted
                                 /> ) : null
 		                    }
+                                <Grid.Column 
+                                    mobile={ 16 } computer={ 5 }
+                                >
+                                    <Checkbox
+                                        className="right floated mr-3"
+                                        label={ t( isMyAccountEnabled ?
+                                            "console:develop.features.applications.myaccount.enable.0" :
+                                            "console:develop.features.applications.myaccount.enable.1") }
+                                        toggle
+                                        onChange={ handleMyAccountStatusToggle }
+                                        checked={ isMyAccountEnabled }
+                                        data-testId={ `${ testId }-myaccount-status-update-toggle` }
+                                    />
+                                </Grid.Column>
                         </Grid>
                     </List.Item>
                 </List>

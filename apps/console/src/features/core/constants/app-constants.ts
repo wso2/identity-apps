@@ -391,4 +391,12 @@ export class AppConstants {
      * @default
      */
     public static readonly PERMISSIONS_ROOT_NODE: string = "All Permissions";
+
+    /**
+     * Default status of the My Account portal.
+     * @constant
+     * @type {boolean}
+     * @default
+     */
+    public static readonly DEFAULT_MY_ACCOUNT_STATUS: boolean = true;
 }
