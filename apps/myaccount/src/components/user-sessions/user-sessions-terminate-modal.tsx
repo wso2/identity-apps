@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,14 +20,14 @@ import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models
 import { addAlert } from "@wso2is/core/store";
 import { LinkButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
-import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
 import { Button, Modal } from "semantic-ui-react";
 import { terminateAllUserSessions } from "../../api";
 import { AppConstants, CommonConstants } from "../../constants";
 import { history } from "../../helpers";
 
- /**
+/**
  * Proptypes for the user session termination modal component.
  */
 interface UserSessionTerminationModalPropsInterface extends IdentifiableComponentInterface {
@@ -44,11 +44,9 @@ interface UserSessionTerminationModalPropsInterface extends IdentifiableComponen
 /**
  * User session termination modal component.
  *
- * @param {UserSessionTerminationModalInterface} props - Props injected to the component.
- *
- * @return {React.ReactElement}
+ * @param UserSessionTerminationModalInterface - Props injected to the component.
  */
- export const UserSessionTerminationModal: FunctionComponent<UserSessionTerminationModalPropsInterface> = (
+export const UserSessionTerminationModal: FunctionComponent<UserSessionTerminationModalPropsInterface> = (
     props: UserSessionTerminationModalPropsInterface
 ): ReactElement => {
 
@@ -67,12 +65,12 @@ interface UserSessionTerminationModalPropsInterface extends IdentifiableComponen
     const handleNavigatingToSessionList = () => {
         history.push(AppConstants.getPaths().get("SECURITY") + "#" + CommonConstants.ACCOUNT_ACTIVITY);
         handleModalClose();
-    }
+    };
 
     /**
      * Terminates all the active user sessions.
      */
-     const handleTerminateAllUserSessions = () => {
+    const handleTerminateAllUserSessions = () => {
         terminateAllUserSessions()
             .then(() => {
                 history.push(AppConstants.getPaths().get("LOGOUT"));
@@ -132,24 +130,35 @@ interface UserSessionTerminationModalPropsInterface extends IdentifiableComponen
                 { t("myAccount:components.userSessions.modals.terminateActiveUserSessionModal.message") }
             </Modal.Content>
             <Modal.Actions data-componentid={ `${ componentId }-actions` }>
-                <LinkButton data-componentid={ `${ componentId }-cancel-btn` } onClick={ handleModalClose } floated="left">
+                <LinkButton 
+                    data-componentid={ `${ componentId }-cancel-btn` } 
+                    onClick={ handleModalClose } 
+                    floated="left"
+                >
                     { t("common:cancel") }
                 </LinkButton>
-                <Button data-componentid={ `${ componentId }-review-sessions-btn` } onClick={ handleNavigatingToSessionList }>
+                <Button 
+                    data-componentid={ `${ componentId }-review-sessions-btn` } 
+                    onClick={ handleNavigatingToSessionList }
+                >
                     { t("myAccount:components.userSessions.modals.terminateActiveUserSessionModal.secondaryAction") }
                 </Button>
-                <Button data-componentid={ `${ componentId }-terminate-all-btn` } onClick={ handleTerminateAllUserSessions } color="red">
+                <Button 
+                    data-componentid={ `${ componentId }-terminate-all-btn` } 
+                    onClick={ handleTerminateAllUserSessions } 
+                    color="red"
+                >
                     { t("myAccount:components.userSessions.modals.terminateActiveUserSessionModal.primaryAction") }
                 </Button>
             </Modal.Actions>
         </Modal>
     );
-}
+};
 
 /**
  * Default properties of {@link UserSessionTerminationModal}
  * See type definitions in {@link UserSessionTerminationModalPropsInterface}
  */
- UserSessionTerminationModal.defaultProps = {
+UserSessionTerminationModal.defaultProps = {
     "data-componentid": "user-active-sessions-terminate-modal"
 };

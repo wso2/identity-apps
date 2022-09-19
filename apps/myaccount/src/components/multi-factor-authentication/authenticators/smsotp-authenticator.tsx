@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -39,10 +39,6 @@ import { MobileUpdateWizard } from "../../shared/mobile-update-wizard";
 
 /**
  * SMS key.
- *
- * @constant
- * @default
- * @type {string}
  */
 const SMS = "sms";
 
@@ -61,8 +57,6 @@ interface SMSOTPProps extends SBACInterface<FeatureConfigInterface>, TestableCom
 
 /**
  * SMS OTP section.
- *
- * @return {JSX.Element}
  */
 export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props: SMSOTPProps): JSX.Element => {
 
@@ -73,7 +67,7 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
         handleSessionTerminationModalVisibility
     } = props;
 
-    const [mobile, setMobile] = useState("");
+    const [ mobile, setMobile ] = useState("");
     const { t } = useTranslation();
     const dispatch = useDispatch();
     const profileInfo: BasicProfileInterface = useSelector(
@@ -90,9 +84,11 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
 
     const setMobileNo = (response) => {
         let mobileNumber = "";
+
         response.phoneNumbers.map((mobileNo) => {
             mobileNumber = mobileNo.value;
         });
+
         setMobile(mobileNumber);
     };
 
@@ -100,7 +96,7 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
         if (!isEmpty(profileInfo)) {
             setMobileNo(profileInfo);
         }
-    }, [profileInfo]);
+    }, [ profileInfo ]);
 
     const handleUpdate = (mobileNumber) => {
         const data = {
@@ -110,7 +106,7 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
                     value: {}
                 }
             ],
-            schemas: ["urn:ietf:params:scim:api:messages:2.0:PatchOp"]
+            schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
         };
 
         data.Operations[0].value = {
@@ -168,8 +164,6 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
 
     /**
      * This function generates the mobile number edit section when mobile verification is enabled.
-     * @param {Profile Schema} schema.
-     * @param {string} fieldName - Mobile number filed name.
      */
     const generateUpdateFormForMobileVerification = (): JSX.Element => {
         return (
@@ -312,89 +306,93 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
                 </Grid>
             );
         }
+
         return (
             isFeatureEnabled(
                 featureConfig?.personalInfo,
                 AppConstants.FEATURE_DICTIONARY.get("PROFILEINFO_MOBILE_VERIFICATION")
             )
-            ? generateUpdateFormForMobileVerification() :
-            <EditSection data-testid={ `${testId}-edit-section` }>
-                <Grid>
-                    <Grid.Row>
-                        <Grid.Column>
-                            <List>
-                                <List.Item>
-                                    <List.Content>
-                                        <Forms
-                                            onSubmit={ (values: Map<string, string>) => {
-                                                handleUpdate(values.get("mobileNumber"));
-                                            } }
-                                        >
-                                            <Field
-                                                autoFocus={ true }
-                                                label={ t(
-                                                    "myAccount:components.profile.forms.mobileChangeForm.inputs" +
-                                                    ".mobile.label"
-                                                ) }
-                                                name="mobileNumber"
-                                                placeholder={ t(
-                                                    "myAccount:components.profile.forms.mobileChangeForm" +
-                                                    ".inputs.mobile.placeholder"
-                                                ) }
-                                                required={ true }
-                                                requiredErrorMessage={ t(
-                                                    "myAccount:components.profile.forms." +
-                                                    "mobileChangeForm.inputs.mobile.validations.empty"
-                                                ) }
-                                                type="text"
-                                                validation={ (value: string, validation: Validation) => {
-                                                    if (!FormValidation.mobileNumber(value)) {
-                                                        validation.isValid = false;
-                                                        validation.errorMessages.push(t(
-                                                            profileConfig?.attributes?.
-                                                                getRegExpValidationError(ProfileConstants.SCIM2_SCHEMA_DICTIONARY
-                                                                    .get("PHONE_NUMBERS")), 
-                                                            {
-                                                                fieldName: "Mobile"
+                ? generateUpdateFormForMobileVerification() 
+                : (
+                    <EditSection data-testid={ `${testId}-edit-section` }>
+                        <Grid>
+                            <Grid.Row>
+                                <Grid.Column>
+                                    <List>
+                                        <List.Item>
+                                            <List.Content>
+                                                <Forms
+                                                    onSubmit={ (values: Map<string, string>) => {
+                                                        handleUpdate(values.get("mobileNumber"));
+                                                    } }
+                                                >
+                                                    <Field
+                                                        autoFocus={ true }
+                                                        label={ t(
+                                                            "myAccount:components.profile.forms.mobileChangeForm" +
+                                                            ".inputs.mobile.label"
+                                                        ) }
+                                                        name="mobileNumber"
+                                                        placeholder={ t(
+                                                            "myAccount:components.profile.forms.mobileChangeForm" +
+                                                            ".inputs.mobile.placeholder"
+                                                        ) }
+                                                        required={ true }
+                                                        requiredErrorMessage={ t(
+                                                            "myAccount:components.profile.forms." +
+                                                            "mobileChangeForm.inputs.mobile.validations.empty"
+                                                        ) }
+                                                        type="text"
+                                                        validation={ (value: string, validation: Validation) => {
+                                                            if (!FormValidation.mobileNumber(value)) {
+                                                                validation.isValid = false;
+                                                                validation.errorMessages.push(t(
+                                                                    profileConfig?.attributes?.
+                                                                        getRegExpValidationError(
+                                                                            ProfileConstants.SCIM2_SCHEMA_DICTIONARY
+                                                                                .get("PHONE_NUMBERS")), 
+                                                                    {
+                                                                        fieldName: "Mobile"
+                                                                    }
+                                                                ));
                                                             }
-                                                        ));
-                                                    }
-                                                } }
-                                                value={ mobile }
-                                            />
-                                            <p style={ { fontSize: "12px" } }>
-                                                <Icon color="grey" floated="left" name="info circle" />
-                                                { t(
-                                                    "myAccount:components.profile.forms.mobileChangeForm" +
-                                                    ".inputs.mobile.note"
-                                                ) }
-                                            </p>
-                                            <Field
-                                                hidden={ true }
-                                                type="divider"
-                                            />
-                                            <Form.Group>
-                                                <Field
-                                                    size="small"
-                                                    type="submit"
-                                                    value={ t("common:update").toString() }
-                                                />
-                                                <Field
-                                                    className="link-button"
-                                                    onClick={ handleCancel }
-                                                    size="small"
-                                                    type="button"
-                                                    value={ t("common:cancel").toString() }
-                                                />
-                                            </Form.Group>
-                                        </Forms>
-                                    </List.Content>
-                                </List.Item>
-                            </List>
-                        </Grid.Column>
-                    </Grid.Row>
-                </Grid>
-            </EditSection>
+                                                        } }
+                                                        value={ mobile }
+                                                    />
+                                                    <p style={ { fontSize: "12px" } }>
+                                                        <Icon color="grey" floated="left" name="info circle" />
+                                                        { t(
+                                                            "myAccount:components.profile.forms.mobileChangeForm" +
+                                                            ".inputs.mobile.note"
+                                                        ) }
+                                                    </p>
+                                                    <Field
+                                                        hidden={ true }
+                                                        type="divider"
+                                                    />
+                                                    <Form.Group>
+                                                        <Field
+                                                            size="small"
+                                                            type="submit"
+                                                            value={ t("common:update").toString() }
+                                                        />
+                                                        <Field
+                                                            className="link-button"
+                                                            onClick={ handleCancel }
+                                                            size="small"
+                                                            type="button"
+                                                            value={ t("common:cancel").toString() }
+                                                        />
+                                                    </Form.Group>
+                                                </Forms>
+                                            </List.Content>
+                                        </List.Item>
+                                    </List>
+                                </Grid.Column>
+                            </Grid.Row>
+                        </Grid>
+                    </EditSection>
+                )
         );
     };
 
