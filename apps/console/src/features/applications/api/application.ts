@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -20,7 +20,11 @@ import { AsgardeoSPAClient } from "@asgardeo/auth-react";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
-import useRequest, { RequestConfigInterface, RequestErrorInterface, RequestResultInterface } from "../../core/hooks/use-request";
+import useRequest, { 
+    RequestConfigInterface,
+    RequestErrorInterface,
+    RequestResultInterface
+} from "../../core/hooks/use-request";
 import { store } from "../../core/store";
 import { ApplicationManagementConstants } from "../constants";
 import {
@@ -59,9 +63,9 @@ const httpClientAll = AsgardeoSPAClient.getInstance()
 /**
  * Gets the basic information about the application.
  *
- * @param id ID of the application.
+ * @param id - ID of the application.
  *
- * @return {Promise<any>} A promise containing the response.
+ * @returns A promise containing the response.
  */
 export const getApplicationDetails = (id: string): Promise<any> => {
     const requestConfig = {
@@ -89,8 +93,8 @@ export const getApplicationDetails = (id: string): Promise<any> => {
 /**
  * Deletes an application when the relevant id is passed in.
  *
- * @param id ID of the application.
- * @return {Promise<any>} A promise containing the response.
+ * @param id - ID of the application.
+ * @returns A promise containing the response.
  */
 export const deleteApplication = (id: string): Promise<any> => {
     const requestConfig = {
@@ -118,9 +122,9 @@ export const deleteApplication = (id: string): Promise<any> => {
 /**
  * Updates the application with basic details.
  *
- * @param app Basic info about the application.
+ * @param app - Basic info about the application.
  *
- * @return {Promise<any>} A promise containing the response.
+ * @returns A promise containing the response.
  */
 export const updateApplicationDetails = (app: ApplicationInterface): Promise<any> => {
 
@@ -152,11 +156,11 @@ export const updateApplicationDetails = (app: ApplicationInterface): Promise<any
 /**
  * Gets the application list with limit and offset.
  *
- * @param {number} limit - Maximum Limit of the application List.
- * @param {number} offset - Offset for get to start.
- * @param {string} filter - Search filter.
+ * @param limit - Maximum Limit of the application List.
+ * @param offset - Offset for get to start.
+ * @param filter - Search filter.
  *
- * @return {Promise<ApplicationListInterface>} A promise containing the response.
+ * @returns A promise containing the response.
  */
 export const getApplicationList = (limit: number, offset: number,
     filter: string): Promise<ApplicationListInterface> => {
@@ -190,10 +194,10 @@ export const getApplicationList = (limit: number, offset: number,
 /**
  * Hook to get the applications list with limit and offset.
  *
- * @param {number} limit - Maximum Limit of the application List.
- * @param {number} offset - Offset for get to start.
- * @param {string} filter - Search filter.
- * @returns {RequestResultInterface<Data, Error>}
+ * @param limit - Maximum Limit of the application List.
+ * @param offset - Offset for get to start.
+ * @param filter - Search filter.
+ * @returns Response as a promise.
  */
 export const useApplicationList = <Data = ApplicationListInterface, Error = RequestErrorInterface>(
     attributes?: string,
@@ -268,7 +272,7 @@ export const getApplicationsByIds = async (
 /**
  * Gets the available inbound protocols.
  *
- * @param customOnly If true only returns custom protocols.
+ * @param customOnly - If true only returns custom protocols.
  */
 export const getAvailableInboundProtocols = (customOnly: boolean): Promise<AuthProtocolMetaListItemInterface[]> => {
     const requestConfig = {
@@ -296,9 +300,9 @@ export const getAvailableInboundProtocols = (customOnly: boolean): Promise<AuthP
 /**
  * Get all the metadata related to the passed in auth protocol.
  *
- * @param {string} protocol - The protocol to get the meta.
- * @return {Promise<T>} Promise of type T.
- * @throws {IdentityAppsApiException}
+ * @param protocol - The protocol to get the meta.
+ * @returns Response as a promise.
+ * @throws IdentityAppsApiException
  */
 export const getAuthProtocolMetadata = <T>(protocol: string): Promise<T> => {
     const requestConfig = {
@@ -338,7 +342,7 @@ export const getAuthProtocolMetadata = <T>(protocol: string): Promise<T> => {
 /**
  * Gets the application's OIDC data.
  *
- * @param id Application ID
+ * @param id - Application ID
  */
 export const getOIDCData = (id: string): Promise<any> => {
     const requestConfig = {
@@ -368,9 +372,9 @@ export const getOIDCData = (id: string): Promise<any> => {
  * when the path provided in the `self` attribute of the application
  * response is passed in.
  *
- * @param {string} applicationId - ID of the application.
- * @param {string} inboundProtocolId - Protocol ID.
- * @return {Promise<OIDCDataInterface>}
+ * @param applicationId - ID of the application.
+ * @param inboundProtocolId - Protocol ID.
+ * @returns Response as a promise.
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export const getInboundProtocolConfig = (applicationId: string, inboundProtocolId: string): Promise<any> => {
@@ -401,9 +405,10 @@ export const getInboundProtocolConfig = (applicationId: string, inboundProtocolI
  * Updates the OIDC configuration.
  * TODO: Migrate to `updateAuthProtocolConfig` generic function.
  *
- * @param {string} id - Application ID
- * @param {Record<string, unknown>} OIDC - OIDC configuration data.
- * @return {Promise<any>}
+ * @param id - Application ID
+ * @param OIDC - OIDC configuration data.
+ * 
+ * @returns Response as a promise.
  */
 export const updateOIDCData = (id: string, OIDC: Record<string, unknown>): Promise<any> => {
     const requestConfig = {
@@ -432,11 +437,12 @@ export const updateOIDCData = (id: string, OIDC: Record<string, unknown>): Promi
 /**
  * Generic function to update the authentication protocol config of an application.
  *
- * @param {string} id - Application ID.
- * @param {T} config - Protocol config.
- * @param {string} protocol - The protocol to be updated.
- * @return {Promise<T>} Promise of type T.
- * @throws {IdentityAppsApiException}
+ * @param id - Application ID.
+ * @param config - Protocol config.
+ * @param protocol - The protocol to be updated.
+ * 
+ * @returns Response as a promise.
+ * @throws IdentityAppsApiException
  */
 export const updateAuthProtocolConfig = <T>(id: string, config: T,
     protocol: string): Promise<T> => {
@@ -489,11 +495,11 @@ export const updateAuthProtocolConfig = <T>(id: string, config: T,
 /**
  * Generic function to delete the authentication protocol config of an application.
  *
- * @param {string} id - Application ID.
- * @param {string} protocol - The protocol to be deleted.
+ * @param id - Application ID.
+ * @param protocol - The protocol to be deleted.
  *
- * @return {Promise<T>} Promise of type T.
- * @throws {IdentityAppsApiException}
+ * @returns Response as a promise.
+ * @throws IdentityAppsApiException
  */
 export const deleteProtocol = <T>(id: string, protocol: string): Promise<T> => {
     const requestConfig = {
@@ -533,9 +539,9 @@ export const deleteProtocol = <T>(id: string, protocol: string): Promise<T> => {
 /**
  * Updates the application configuration.
  *
- * @param {string} id - Application ID
- * @param {Record<string, unknown>} configs - Application configurations.
- * @return {Promise<any>}
+ * @param id - Application ID
+ * @param configs - Application configurations.
+ * @returns Response as a promise.
  */
 export const updateApplicationConfigurations = (id: string, configs: Record<string, unknown>): Promise<any> => {
     const requestConfig = {
@@ -564,8 +570,8 @@ export const updateApplicationConfigurations = (id: string, configs: Record<stri
 /**
  * Creates a new application.
  *
- * @param {MainApplicationInterface} application - Application settings data.
- * @return {Promise<any>}
+ * @param application - Application settings data.
+ * @returns Response as a promise.
  */
 export const createApplication = (application: MainApplicationInterface): Promise<any> => {
     const requestConfig = {
@@ -593,9 +599,9 @@ export const createApplication = (application: MainApplicationInterface): Promis
 
 /**
  * Updates Authentication sequence of the application.
- * @param {string} id - ID of the application
- * @param {Record<string, unknown>} data - Authentication configurations of the application.
- * @return {Promise<any>}
+ * @param id - ID of the application
+ * @param Authentication - Configurations of the application.
+ * @returns Response as a promise.
  */
 export const updateAuthenticationSequence = (id: string, data: Record<string, unknown>): Promise<any> => {
     const requestConfig = {
@@ -624,9 +630,9 @@ export const updateAuthenticationSequence = (id: string, data: Record<string, un
 /**
  * Updates Authentication sequence of the application.
  *
- * @param {string} id - ID of the application.
- * @param {Record<string, unknown>} data - Claim configurations of the application.
- * @return {Promise<any>}
+ * @param id - ID of the application.
+ * @param Claim - Configurations of the application.
+ * @returns Response as a promise.
  */
 export const updateClaimConfiguration = (id: string, data: Record<string, unknown>): Promise<any> => {
     const requestConfig = {
@@ -656,8 +662,8 @@ export const updateClaimConfiguration = (id: string, data: Record<string, unknow
  * Regenerates the client secret.
  * Used only in OIDC flow.
  *
- * @param {string} appId - application Id.
- * @return {Promise<any>}
+ * @param appId - Application Id.
+ * @returns Response as a promise.
  */
 export const regenerateClientSecret = (appId: string): Promise<any> => {
     const requestConfig = {
@@ -687,8 +693,8 @@ export const regenerateClientSecret = (appId: string): Promise<any> => {
  * Revoke the client secret of application
  * Used only in OIDC flow.
  *
- * @param {string} appId - application ID.
- * @return {Promise<any>}
+ * @param appId - Application ID.
+ * @returns Response as a promise.
  */
 export const revokeClientSecret = (appId: string): Promise<any> => {
     const requestConfig = {
@@ -716,8 +722,8 @@ export const revokeClientSecret = (appId: string): Promise<any> => {
 /**
  * Get all the sample adaptive authentication templates.
  *
- * @return {Promise<AdaptiveAuthTemplatesListInterface>} Response as a promise.
- * @throws {IdentityAppsApiException}
+ * @returns Response as a promise.
+ * @throws IdentityAppsApiException
  */
 export const getAdaptiveAuthTemplates = (): Promise<AdaptiveAuthTemplatesListInterface> => {
     const requestConfig = {
@@ -759,10 +765,10 @@ export const getAdaptiveAuthTemplates = (): Promise<AdaptiveAuthTemplatesListInt
 /**
  * Get Application Template data.
  *
- * @param templateId Template Id of the application.
+ * @param templateId - Template Id of the application.
  *
- * @return {Promise<ApplicationTemplateInterface>} A promise containing the response.
- * @throws {IdentityAppsApiException}
+ * @returns A promise containing the response.
+ * @throws IdentityAppsApiException
  */
 export const getApplicationTemplateData = (templateId: string): Promise<ApplicationTemplateInterface> => {
     const requestConfig = {
@@ -802,12 +808,12 @@ export const getApplicationTemplateData = (templateId: string): Promise<Applicat
 /**
  * Gets the application template list with limit and offset.
  *
- * @param {number} limit - Maximum Limit of the application template List.
- * @param {number} offset - Offset for get to start.
- * @param {string} filter - Search filter.
+ * @param limit - Maximum Limit of the application template List.
+ * @param offset - Offset for get to start.
+ * @param filter - Search filter.
  *
- * @return {Promise<ApplicationTemplateListInterface>} A promise containing the response.
- * @throws {IdentityAppsApiException}
+ * @returns A promise containing the response.
+ * @throws IdentityAppsApiException
  */
 export const getApplicationTemplateList = (limit?: number, offset?: number,
     filter?: string): Promise<ApplicationTemplateListInterface> => {
@@ -853,8 +859,8 @@ export const getApplicationTemplateList = (limit?: number, offset?: number,
 /**
  * Gets the OIDC application configurations.
  *
- * @return {Promise<OIDCApplicationConfigurationInterface>} A promise containing the oidc configurations.
- * @throws {IdentityAppsApiException}
+ * @returns A promise containing the oidc configurations.
+ * @throws IdentityAppsApiException
  */
 export const getOIDCApplicationConfigurations = (): Promise<OIDCApplicationConfigurationInterface> => {
     const requestConfig = {
@@ -905,8 +911,8 @@ export const getOIDCApplicationConfigurations = (): Promise<OIDCApplicationConfi
 /**
  * Gets the SAML application configurations.
  *
- * @return {Promise<SAMLApplicationConfigurationInterface>} A promise containing the meta data.
- * @throws {IdentityAppsApiException}
+ * @returns A promise containing the meta data.
+ * @throws IdentityAppsApiException
  */
 export const getSAMLApplicationConfigurations = (): Promise<SAMLApplicationConfigurationInterface> => {
     const requestConfig = {
@@ -946,8 +952,8 @@ export const getSAMLApplicationConfigurations = (): Promise<SAMLApplicationConfi
 /**
  * Retrieve available request path authenticators.
  *
- * @returns {Promise<any>} a promise containing the response.
- * @throws {IdentityAppsApiException}
+ * @returns A promise containing the response.
+ * @throws IdentityAppsApiException
  */
 export const getRequestPathAuthenticators = (): Promise<any> => {
 
@@ -994,14 +1000,17 @@ export const getRequestPathAuthenticators = (): Promise<any> => {
  * @returns Promise of response of the My Account status update request.
  * @throws IdentityAppsApiException
  */
- export const updateMyAccountStatus = (status: boolean): Promise<any> => {
+export const updateMyAccountStatus = (status: boolean): Promise<any> => {
 
     const config = {
-            name: "status", 
-            attributes: [{
+        attributes: [
+            {
                 key: "enable", 
                 value: status
-            }]};
+            } 
+        ],
+        name: "status"
+    };
 
     const requestConfig: AxiosRequestConfig = {
         data: config,

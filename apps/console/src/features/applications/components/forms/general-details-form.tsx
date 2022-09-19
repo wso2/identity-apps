@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -18,16 +18,22 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
-import { ContentLoader, DocumentationLink, EmphasizedSegment, Message, useDocumentation } from "@wso2is/react-components";
+import {
+    ContentLoader,
+    DocumentationLink,
+    EmphasizedSegment,
+    Message,
+    useDocumentation } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider } from "semantic-ui-react";
-import { AppConstants, AppState, UIConfigInterface } from "../../../core";
-import { ApplicationManagementConstants } from "../../constants";
 import { applicationConfig } from "../../../../extensions";
-import {ApplicationInterface} from "../../models";
+import { AppConstants, AppState, UIConfigInterface } from "../../../core";
 import { useMyAccountStatus } from "../../api";
+import { ApplicationManagementConstants } from "../../constants";
+import { ApplicationInterface } from "../../models";
+
 
 /**
  * Proptypes for the applications general details form component.
@@ -100,9 +106,8 @@ export interface GeneralDetailsFormErrorValidationsInterface {
 /**
  * Form to edit general details of the application.
  *
- * @param {GeneralDetailsFormPopsInterface} props - Props injected to the component.
- *
- * @return {React.ReactElement}
+ * @param props - Props injected to the component.
+ * @returns Form to edit general details of the application.
  */
 export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterface> = (
     props: GeneralDetailsFormPopsInterface
@@ -139,7 +144,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
      * Prepare form values for submitting.
      *
      * @param values - Form values.
-     * @return {any} Sanitized form values.
+     * @returns Sanitized form values.
      */
     const updateConfigurations = (values) => {
         onSubmit({
@@ -159,7 +164,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
      *
      * @param values - Form Values.
      *
-     * @return {GeneralDetailsFormErrorValidationsInterface}
+     * @returns GeneralDetailsFormErrorValidationsInterface
      */
     const validateForm = (values):
         GeneralDetailsFormErrorValidationsInterface => {
@@ -179,8 +184,8 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
     /**
      * Application Name validation.
      *
-     * @param {string} name - Application Name.
-     * @return {string | void}
+     * @param name - Application Name.
+     * @returns Application Description validation.
      */
     const validateName = (name: string): string | void => {
 
@@ -196,8 +201,8 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
     /**
      * Application Description validation.
      *
-     * @param {string} description - Application Description.
-     * @return {string | void}
+     * @param description - Application Description.
+     * @returns Application Description validation
      */
     const validateDescription = (description: string): string | void => {
 
@@ -212,9 +217,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
 
     const {
         data: myAccountStatus,
-        isLoading: isMyAccountStatusLoading,
-        error: myAccountStatusFetchRequestError,
-        mutate: mutateMyAccountStatusFetchRequest
+        isLoading: isMyAccountStatusLoading
     } = useMyAccountStatus();
 
     /**
@@ -223,10 +226,13 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
      */
     useEffect(() => {
         let status: boolean = AppConstants.DEFAULT_MY_ACCOUNT_STATUS;
+
         if (myAccountStatus) {
             const enableProperty = myAccountStatus["value"];
+            
             if ( enableProperty && enableProperty === "false" ) {
-                status = false
+
+                status = false;
             }
         }
         setMyAccountStatus(status);
@@ -261,7 +267,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                 <Message
                     type="info"
                     content={
-                        <>
+                        ( <>
                             { t("console:develop.features.applications.forms.generalDetails.managementAppBanner") }
                             <DocumentationLink
                                 link={ getLink("develop.applications.managementApplication.learnMore") }>
@@ -269,7 +275,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                     t("common:learnMore")
                                 }
                             </DocumentationLink>
-                        </>
+                        </> )
                     }
                 />
             ) }
@@ -384,7 +390,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                         </Trans>
                     ) }
                     width={ 16 }
-                 /> ) : null
+                /> ) : null
             }
             <Field.Input
                 ariaLabel="Application access URL"
@@ -400,7 +406,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                 }
                 value={ accessUrl }
                 readOnly={ !hasRequiredScope || ( readOnly && applicationConfig.generalSettings.getFieldReadOnlyStatus(
-                     application, "ACCESS_URL"))}
+                    application, "ACCESS_URL")) }
                 maxLength={ 200 }
                 minLength={ 3 }
                 data-testid={ `${ testId }-application-access-url-input` }
@@ -417,7 +423,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                 loading={ isSubmitting }
                 label={ t("common:update") }
                 hidden={ !hasRequiredScope || ( readOnly && applicationConfig.generalSettings.getFieldReadOnlyStatus(
-                    application, "ACCESS_URL"))}
+                    application, "ACCESS_URL")) }
             />
         </Form>
     );

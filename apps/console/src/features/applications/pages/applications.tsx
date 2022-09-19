@@ -68,8 +68,7 @@ import {
     getGeneralIcons,
     history
 } from "../../core";
-import { RemoteFetchStatus } from "../../remote-repository-configuration";
-import { useApplicationList, useMyAccountStatus, updateMyAccountStatus } from "../api";
+import { updateMyAccountStatus, useApplicationList, useMyAccountStatus } from "../api";
 import { ApplicationList, MinimalAppCreateWizard } from "../components";
 import { ApplicationManagementConstants } from "../constants";
 import CustomApplicationTemplate
@@ -140,7 +139,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     const [ isMyAccountEnabled, setMyAccountStatus ] = useState<boolean>(AppConstants.DEFAULT_MY_ACCOUNT_STATUS);
     const [ showMyAccountStatusEnableModal, setShowMyAccountStatusEnableConfirmationModal ] = useState<boolean>(false);
     const [ showMyAccountStatusDisableModal,
-                setShowMyAccountStatusDisableConfirmationModal ] = useState<boolean>(false);
+        setShowMyAccountStatusDisableConfirmationModal ] = useState<boolean>(false);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -166,10 +165,12 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
         if (isApplicationListFetchRequestLoading === false && isMyAccountStatusLoading === false
             && isLoadingForTheFirstTime === true) {
             let status: boolean = AppConstants.DEFAULT_MY_ACCOUNT_STATUS;
+
             if (myAccountStatus) {
                 const enableProperty = myAccountStatus["value"];
+
                 if (enableProperty && enableProperty === "false") {
-                    status = false
+                    status = false;
                 }
             }
             setMyAccountStatus(status);
@@ -211,7 +212,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     /**
      * Handles the application list fetch request error.
      */
-     useEffect(() => {
+    useEffect(() => {
 
         if (!myAccountStatusFetchRequestError) {
             return;
@@ -229,6 +230,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                 level: AlertLevels.ERROR,
                 message: t("console:develop.features.applications.myaccount.fetchMyAccountStatus.error.message")
             }));
+
             return;
         }
 
@@ -314,22 +316,22 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     /**
      * Handles the My Account Portal status update action.
      *
-     * @param e     SyntheticEvent of My Account toggle.
-     * @param data  CheckboxProps of My Account toggle.
+     * @param e - SyntheticEvent of My Account toggle.
+     * @param data - CheckboxProps of My Account toggle.
      */
-     const handleMyAccountStatusToggle = (e: SyntheticEvent, data: CheckboxProps): void => {
+    const handleMyAccountStatusToggle = (e: SyntheticEvent, data: CheckboxProps): void => {
 
         if (data.checked) {
             setShowMyAccountStatusEnableConfirmationModal(true);
         } else {
             setShowMyAccountStatusDisableConfirmationModal(true);
         }
-    }
+    };
 
     /**
      * Update the My Account Portal status.
      *
-     * @param status    New status of the My Account portal.
+     * @param status - New status of the My Account portal.
      */
     const handleUpdateMyAccountStatus = (status: boolean): void => {
 
@@ -352,10 +354,12 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                         message: error?.response?.data?.message
                             ?? t("console:develop.features.applications.myaccount.notifications.error.message")
                     }));
+
                     return;
                 }
                 dispatch(addAlert({
-                    description: t("console:develop.features.applications.myaccount.notifications.genericError.description"),
+                    description: t(
+                        "console:develop.features.applications.myaccount.notifications.genericError.description"),
                     level: AlertLevels.ERROR,
                     message: t("console:develop.features.applications.myaccount.notifications.genericError.message")
                 }));
@@ -367,7 +371,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
      * Renders a confirmation modal when the My Account Portal status is being enabled.
      * @returns My Account status enabling warning modal.
      */
-     const renderMyAccountStatusEnableWarning = (): ReactElement => {
+    const renderMyAccountStatusEnableWarning = (): ReactElement => {
 
         return (
             <ConfirmationModal
@@ -388,7 +392,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                     }
                 }
                 closeOnDimmerClick={ false }
-                >
+            >
                 <ConfirmationModal.Header>
                     { t("console:develop.features.applications.myaccount.Confirmation.enableConfirmation.heading") }
                 </ConfirmationModal.Header>
@@ -402,15 +406,15 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                     { t("console:develop.features.applications.myaccount.Confirmation.enableConfirmation.content") }
                 </ConfirmationModal.Content>
             </ConfirmationModal>
-        )
+        );
     };
 
 
     /**
      * Renders a confirmation modal when the My Account Portal status is being disabled.
-     * @return {ReactElement}
+     * @returns My Account status disabling warning modal.
      */
-     const renderMyAccountStatusDisableWarning = (): ReactElement => {
+    const renderMyAccountStatusDisableWarning = (): ReactElement => {
 
         return (
             <ConfirmationModal
@@ -431,7 +435,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                     }
                 }
                 closeOnDimmerClick={ false }
-                >
+            >
                 <ConfirmationModal.Header>
                     { t("console:develop.features.applications.myaccount.Confirmation.disableConfirmation.heading") }
                 </ConfirmationModal.Header>
@@ -445,7 +449,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                     { t("console:develop.features.applications.myaccount.Confirmation.disableConfirmation.content") }
                 </ConfirmationModal.Content>
             </ConfirmationModal>
-        )
+        );
     };
 
     /**
@@ -469,7 +473,8 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                         <Grid verticalAlign="middle">
                             <Grid.Column
                                 floated="left"
-                                mobile={ 16 } computer={ 5 }
+                                mobile={ 16 }
+                                computer={ 5 }
                             >
                                 <GenericIcon
                                     icon={ getGeneralIcons().myAccountSolidIcon }
@@ -506,7 +511,8 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                                 <Popup
                                     trigger={
                                         (<Grid.Column
-                                            mobile={ 16 } computer={ 6 }
+                                            mobile={ 16 }
+                                            computer={ 6 }
                                         >
                                             <CopyInputField
                                                 value={ consumerAccountURL }
@@ -521,20 +527,21 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                                     inverted
                                 /> ) : null
                             }
-                                <Grid.Column 
-                                    mobile={ 16 } computer={ 5 }
-                                >
-                                    <Checkbox
-                                        className="right floated mr-3"
-                                        label={ t( isMyAccountEnabled ?
-                                            "console:develop.features.applications.myaccount.enable.0" :
-                                            "console:develop.features.applications.myaccount.enable.1") }
-                                        toggle
-                                        onChange={ handleMyAccountStatusToggle }
-                                        checked={ isMyAccountEnabled }
-                                        data-testId={ `${ testId }-myaccount-status-update-toggle` }
-                                    />
-                                </Grid.Column>
+                            <Grid.Column
+                                mobile={ 16 }
+                                computer={ 5 }
+                            >
+                                <Checkbox
+                                    className="right floated mr-3"
+                                    label={ t( isMyAccountEnabled ?
+                                        "console:develop.features.applications.myaccount.enable.0" :
+                                        "console:develop.features.applications.myaccount.enable.1") }
+                                    toggle
+                                    onChange={ handleMyAccountStatusToggle }
+                                    checked={ isMyAccountEnabled }
+                                    data-testId={ `${ testId }-myaccount-status-update-toggle` }
+                                />
+                            </Grid.Column>
                         </Grid>
                     </List.Item>
                 </List>
@@ -554,7 +561,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                     <Show when={ AccessControlConstants.APPLICATION_WRITE }>
                         <PrimaryButton
                             disabled={ isApplicationListFetchRequestLoading || isMyAccountStatusLoading }
-                            loading={ isApplicationListFetchRequestLoading || isMyAccountStatusLoading}
+                            loading={ isApplicationListFetchRequestLoading || isMyAccountStatusLoading }
                             onClick={ (): void => {
                                 eventPublisher.publish("application-click-new-application-button");
                                 history.push(AppConstants.getPaths().get("APPLICATION_TEMPLATES"));

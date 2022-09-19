@@ -2396,7 +2396,7 @@ export const console: ConsoleNS = {
                         genericError: {
                             description: "Couldn't retrieve My Account portal status.",
                             message: "Something went wrong"
-                        },
+                        }
                     }
                 },
                 notifications: {

@@ -2440,7 +2440,7 @@ export const console: ConsoleNS = {
                         genericError: {
                             description: "Impossible de récupérer l'état du portail Mon compte.",
                             message: "Quelque chose s'est mal passé"
-                        },
+                        }
                     }
                 },
                 notifications: {

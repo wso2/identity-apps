@@ -2380,7 +2380,7 @@ export const console: ConsoleNS = {
                         genericError: {
                             description: "මගේ ගිණුම් ද්වාර තත්ත්වය ලබා ගැනීමට නොහැකි විය.",
                             message: "යම් දෝෂයක් ඇති වී ඇත"
-                        },
+                        }
                     }
                 },
                 notifications: {
