@@ -76,7 +76,7 @@ export const DocumentationLink: FunctionComponent<PropsWithChildren<Documentatio
     }
 
     const classes = classNames("documentation-link ml-1 link external no-wrap", className);
-    const url = isLinkRef? getLink(link): link;
+    const url = isLinkRef ? getLink(link) : link;
 
     return (
         !(!showEmptyLink && (!url || url === "#")) &&
