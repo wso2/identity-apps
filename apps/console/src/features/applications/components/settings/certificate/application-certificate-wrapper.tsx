@@ -372,7 +372,6 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
                                 showCertificateRemovalWarning && (
                                     <Message
                                         data-componentid="application-certificate-removal-warning-message"
-                                        data-testid="application-certificate-removal-warning-message"
                                         type="warning"
                                         // Semantic hides warning messages inside <form> by default
                                         // Overriding the behaviour here to make sure it renders properly.
