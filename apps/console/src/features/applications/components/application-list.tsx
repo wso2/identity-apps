@@ -298,19 +298,24 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                                 return template.id === ApplicationManagementConstants.CUSTOM_APPLICATION;
                             }).name;
                     } else {
-                        const templateGroupId: string = applicationTemplates
+                        const relevantApplicationTemplate: ApplicationTemplateListItemInterface | undefined = 
+                            applicationTemplates
                             && applicationTemplates instanceof Array
                             && applicationTemplates.length > 0
                             && applicationTemplates.find((template) => {
                                 return template.id === app.templateId;
-                            }).templateGroup;
+                            });
 
-                        templateDisplayName = groupedApplicationTemplates
-                            && groupedApplicationTemplates instanceof Array
-                            && groupedApplicationTemplates.length > 0
-                            && groupedApplicationTemplates.find((group) => {
-                                return (group.id === templateGroupId || group.templateGroup === templateGroupId);
-                            }).name;
+                        if (relevantApplicationTemplate) {
+                            const templateGroupId: string = relevantApplicationTemplate.templateGroup;
+
+                            templateDisplayName = groupedApplicationTemplates
+                                && groupedApplicationTemplates instanceof Array
+                                && groupedApplicationTemplates.length > 0
+                                && groupedApplicationTemplates.find((group) => {
+                                    return (group.id === templateGroupId || group.templateGroup === templateGroupId);
+                                }).name;
+                        }
                     }
 
                     return (
