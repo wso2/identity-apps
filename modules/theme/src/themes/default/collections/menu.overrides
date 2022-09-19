@@ -44,6 +44,15 @@
             }
             display: flex;
             justify-content: space-between;
+
+            .bars-container {
+                height: 100%;
+            }
+
+            .brand-container {
+                padding: 0;
+                height: 100%;
+            }
         }
         &.has-announcement {
             display: block;

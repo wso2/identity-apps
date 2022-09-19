@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -36,6 +36,7 @@ import React, {
     FunctionComponent,
     MouseEvent,
     ReactElement,
+    ReactNode,
     SyntheticEvent,
     useEffect,
     useState
@@ -74,22 +75,22 @@ import { ApplicationListInterface } from "../models";
 const APPLICATIONS_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
     {
         key: 1,
-        text: I18n.instance.t("common:name"),
+        text: I18n.instance.t("common:name") as ReactNode,
         value: "name"
     },
     {
         key: 2,
-        text: I18n.instance.t("common:type"),
+        text: I18n.instance.t("common:type") as ReactNode,
         value: "type"
     },
     {
         key: 3,
-        text: I18n.instance.t("common:createdOn"),
+        text: I18n.instance.t("common:createdOn") as ReactNode,
         value: "createdDate"
     },
     {
         key: 4,
-        text: I18n.instance.t("common:lastUpdatedOn"),
+        text: I18n.instance.t("common:lastUpdatedOn") as ReactNode,
         value: "lastUpdated"
     }
 ];
@@ -103,7 +104,7 @@ type ApplicationsPageInterface = TestableComponentInterface;
  * Applications page.
  *
  * @param props - Props injected to the component.
- * @returns React element.
+ * @returns Applications listing page.
  */
 const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     props: ApplicationsPageInterface
@@ -122,7 +123,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
 
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ listSortingStrategy, setListSortingStrategy ] = useState<DropdownItemProps>(
-        APPLICATIONS_LIST_SORTING_OPTIONS[ 0 ]
+        APPLICATIONS_LIST_SORTING_OPTIONS[0]
     );
     const [ listOffset, setListOffset ] = useState<number>(0);
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
@@ -140,7 +141,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
         isLoading: isApplicationListFetchRequestLoading,
         error: applicationListFetchRequestError,
         mutate: mutateApplicationListFetchRequest
-    } = useApplicationList("advancedConfigurations,templateId", listItemLimit, listOffset, searchQuery);
+    } = useApplicationList("advancedConfigurations,templateId,clientId,issuer", listItemLimit, listOffset, searchQuery);
 
     /**
      * Sets the initial spinner.
@@ -186,7 +187,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     /**
      * Sets the list sorting strategy.
      *
-     * @param event - Synthetic event.
+     * @param event - The event.
      * @param data - Dropdown data.
      */
     const handleListSortingStrategyOnChange = (event: SyntheticEvent<HTMLElement>,
@@ -200,7 +201,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
      * Checks if the `Next` page nav button should be shown.
      *
      * @param appList - List of applications.
-     * @returns Boolean to show if the `Next` page nav button should be shown.
+     * @returns `true` if `Next` page nav button should be shown.
      */
     const shouldShowNextPageNavigation = (appList: ApplicationListInterface): boolean => {
 
@@ -256,7 +257,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     /**
      * Renders the URL for the tenanted my account login.
      *
-     * @returns React element
+     * @returns My Account link.
      */
     const renderTenantedMyAccountLink = (): ReactElement => {
         if (AppConstants.getTenant() === AppConstants.getSuperTenant() ||
@@ -348,7 +349,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                             } }
                             data-testid={ `${ testId }-list-layout-add-button` }
                         >
-                            <Icon name="add"/>
+                            <Icon name="add" />
                             { t("console:develop.features.applications.list.actions.add") }
                         </PrimaryButton>
                     </Show>
@@ -368,10 +369,9 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
             contentTopMargin={ (AppConstants.getTenant() === AppConstants.getSuperTenant()) }
             data-testid={ `${ testId }-page-layout` }
         >
-            { !isLoadingForTheFirstTime? (
+            { !isLoadingForTheFirstTime ? (
                 <>
                     { renderTenantedMyAccountLink() }
-                    { /* renderRemoteFetchStatus() */ }
                     <ListLayout
                         advancedSearch={ (
                             <AdvancedSearchWithBasicFilters
@@ -403,10 +403,10 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                                 }
                                 filterValuePlaceholder={
                                     t("console:develop.features.applications.advancedSearch.form.inputs.filterValue" +
-                                    ".placeholder")
+                                        ".placeholder")
                                 }
                                 placeholder={ t("console:develop.features.applications.advancedSearch.placeholder") }
-                                style={ { minWidth: "430px" } }
+                                style={ { minWidth: "425px" } }
                                 defaultSearchAttribute="name"
                                 defaultSearchOperator="co"
                                 predefinedDefaultSearchStrategy={
@@ -424,11 +424,11 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                         showPagination={ true }
                         showTopActionPanel={
                             isApplicationListFetchRequestLoading
-                        || !(!searchQuery && applicationList?.totalResults <= 0) }
+                            || !(!searchQuery && applicationList?.totalResults <= 0) }
                         sortOptions={ APPLICATIONS_LIST_SORTING_OPTIONS }
                         sortStrategy={ listSortingStrategy }
                         totalPages={ Math.ceil(applicationList?.totalResults / listItemLimit) }
-                        totalListSize={ applicationList?.totalResults  }
+                        totalListSize={ applicationList?.totalResults }
                         paginationOptions={ {
                             disableNextButton: !shouldShowNextPageNavigation(applicationList)
                         } }
@@ -457,20 +457,20 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                                     ] }
                                     filterAttributePlaceholder={
                                         t("console:develop.features.applications.advancedSearch." +
-                                        "form.inputs.filterAttribute.placeholder")
+                                            "form.inputs.filterAttribute.placeholder")
                                     }
                                     filterConditionsPlaceholder={
                                         t("console:develop.features.applications.advancedSearch." +
-                                        "form.inputs.filterCondition.placeholder")
+                                            "form.inputs.filterCondition.placeholder")
                                     }
                                     filterValuePlaceholder={
                                         t("console:develop.features.applications.advancedSearch." +
-                                        "form.inputs.filterValue.placeholder")
+                                            "form.inputs.filterValue.placeholder")
                                     }
                                     placeholder={
                                         t("console:develop.features.applications.advancedSearch.placeholder")
                                     }
-                                    style={ { minWidth: "430px" } }
+                                    style={ { minWidth: "425px" } }
                                     defaultSearchAttribute="name"
                                     defaultSearchOperator="co"
                                     predefinedDefaultSearchStrategy={
@@ -508,7 +508,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                             addProtocol={ false }
                             templateLoadingStrategy={
                                 config.ui.applicationTemplateLoadingStrategy
-                            ?? ApplicationManagementConstants.DEFAULT_APP_TEMPLATE_LOADING_STRATEGY
+                                ?? ApplicationManagementConstants.DEFAULT_APP_TEMPLATE_LOADING_STRATEGY
                             }
                         />
                     ) }

@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -60,9 +60,8 @@ export interface MessagePropsInterface extends MessageProps, IdentifiableCompone
 /**
  * Message with icon component.
  *
- * @param {MessagePropsInterface} props - Props injected in to the message with icon component.
- *
- * @return {React.ReactElement}
+ * @param props - Props injected in to the message with icon component.
+ * @returns Message with icon component.
  */
 export const Message: FunctionComponent<MessagePropsInterface> = (props: MessagePropsInterface): ReactElement => {
 
@@ -106,12 +105,14 @@ export const Message: FunctionComponent<MessagePropsInterface> = (props: Message
                     ? (
                         <Header as="h5" className={ !props?.icon ? "mb-3" : null }>
                             <Header.Content>
-                                {
-                                    !props?.icon
-                                        ? resolveMessageIcon()
-                                        : null
-                                }
-                                { (header) }
+                                <>
+                                    {
+                                        !props?.icon
+                                            ? resolveMessageIcon()
+                                            : null
+                                    }
+                                    { header }
+                                </>
                             </Header.Content>
                         </Header>
                     ) : undefined

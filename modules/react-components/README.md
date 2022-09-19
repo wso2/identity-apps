@@ -11,17 +11,11 @@ Add following dependency in your package.json file.
 
 ## Run Storybook
 
-Execute the following commands to run the storybook dev server.
+Execute the following command from the project root directory to run the Storybook dev server.
 
 ```bash
 
-# Make sure you are inside the `react-components` folder.
-
-cd modules/react-components
-
-# Start the dev server
-
-pnpm start
+pnpm nx run react-components:storybook
 
 ```
 

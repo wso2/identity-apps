@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -23,7 +23,7 @@ import { MessageHeaderProps } from "semantic-ui-react/dist/commonjs/collections/
 import { SemanticShorthandContent, SemanticShorthandItem } from "semantic-ui-react/dist/commonjs/generic";
 
 /**
- * Proptypes for the messageInfo component.
+ * Prop-types for the messageInfo component.
  */
 export interface MessageInfoProps extends IdentifiableComponentInterface, TestableComponentInterface {
     /**
@@ -38,10 +38,10 @@ export interface MessageInfoProps extends IdentifiableComponentInterface, Testab
 
 /**
  * MessageInfo component.
- * @deprecated Use the new `Message` component from `@wso2is/react-components` instead.
- * @param {MessageInfoProps} props - Props injected in to the messageInfo component.
  *
- * @return {React.ReactElement}
+ * @deprecated Use the new `Message` component from `@wso2is/react-components` instead.
+ * @param props - Props injected in to the messageInfo component.
+ * @returns Message info component.
  */
 export const MessageInfo: FunctionComponent<MessageInfoProps> = (props: MessageInfoProps): ReactElement => {
 
@@ -72,8 +72,10 @@ export const MessageInfo: FunctionComponent<MessageInfoProps> = (props: MessageI
             header={ (
                 <Header as="h4">
                     <Header.Content>
-                        <Icon name="info circle"/>
-                        { (header) }
+                        <>
+                            <Icon name="info circle"/>
+                            { header }
+                        </>
                     </Header.Content>
                 </Header>
             ) }

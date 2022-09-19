@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -18,7 +18,7 @@
 
 import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import React, { CSSProperties, ReactElement } from "react";
+import React, { CSSProperties, PropsWithChildren, ReactElement } from "react";
 
 /**
  * Text component prop types.
@@ -90,16 +90,16 @@ export interface TextPropsInterface extends IdentifiableComponentInterface, Test
 /**
  * Text component.
  *
- * @param {TextPropsInterface} props - Props injected to the component.
- *
- * @return {React.ReactElement}
+ * @param props - Props injected to the component.
+ * @returns Text typography component.
  */
-export const Text: React.FunctionComponent<TextPropsInterface> = (
-    props: TextPropsInterface
+export const Text: React.FunctionComponent<PropsWithChildren<TextPropsInterface>> = (
+    props: PropsWithChildren<TextPropsInterface>
 ): ReactElement => {
 
     const {
         className,
+        children,
         compact,
         display,
         inline,
@@ -150,7 +150,7 @@ export const Text: React.FunctionComponent<TextPropsInterface> = (
                 width: width
             };
         }
-        
+
         if (size) {
             modified = {
                 ...modified,
@@ -171,7 +171,9 @@ export const Text: React.FunctionComponent<TextPropsInterface> = (
             data-componentid={ componentId }
             data-testid={ testId }
             { ...rest }
-        />
+        >
+            { children }
+        </div>
     );
 };
 
