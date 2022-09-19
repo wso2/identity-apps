@@ -147,6 +147,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingIDP, setDeletingIDP ] = useState<StrictIdentityProviderInterface>(undefined);
+    const [ isDeletionloading, setIsDeletionLoading ] = useState(false);
     const [ connectedApps, setConnectedApps ] = useState<string[]>(undefined);
     const [
         showDeleteErrorDueToConnectedAppsModal,
@@ -231,6 +232,8 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
      */
     const handleAuthenticatorDelete = (id: string): void => {
 
+        setIsDeletionLoading(true);
+
         deleteIdentityProvider(id)
             .then(() => {
                 onUpdate();
@@ -246,6 +249,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                 handleIDPDeleteError(error);
             })
             .finally(() => {
+                setIsDeletionLoading(false);
                 setShowDeleteConfirmationModal(false);
                 setDeletingIDP(undefined);
                 onIdentityProviderDelete();
@@ -426,6 +430,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
             {
                 deletingIDP && (
                     <ConfirmationModal
+                        primaryActionLoading ={ isDeletionloading }
                         onClose={ (): void => setShowDeleteConfirmationModal(false) }
                         type="negative"
                         open={ showDeleteConfirmationModal }
