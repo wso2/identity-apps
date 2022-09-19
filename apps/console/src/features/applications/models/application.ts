@@ -629,7 +629,7 @@ export interface SAMLApplicationConfigurationInterface {
 /**
  * Status of the My Account portal.
  */
-export interface myAccountPortalStatusInterface {
+export interface MyAccountPortalStatusInterface {
     attribute?: string;
     value?: string;
 }

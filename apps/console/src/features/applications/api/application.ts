@@ -36,7 +36,7 @@ import {
     ApplicationTemplateListInterface,
     AuthProtocolMetaListItemInterface,
     MainApplicationInterface,
-    myAccountPortalStatusInterface,
+    MyAccountPortalStatusInterface,
     OIDCApplicationConfigurationInterface,
     OIDCDataInterface,
     SAMLApplicationConfigurationInterface,
@@ -1000,7 +1000,7 @@ export const getRequestPathAuthenticators = (): Promise<any> => {
  * @returns Promise of response of the My Account status update request.
  * @throws IdentityAppsApiException
  */
-export const updateMyAccountStatus = (status: boolean): Promise<any> => {
+export const updateMyAccountStatus = (status: boolean): Promise<MyAccountPortalStatusInterface> => {
 
     const config = {
         attributes: [
@@ -1035,7 +1035,7 @@ export const updateMyAccountStatus = (status: boolean): Promise<any> => {
                     response.config);
             }
 
-            return Promise.resolve(response.data);
+            return Promise.resolve(response.data as MyAccountPortalStatusInterface);
         })
         .catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
@@ -1053,7 +1053,7 @@ export const updateMyAccountStatus = (status: boolean): Promise<any> => {
  *
  * @returns Reponse of the My Account status retrieval request.
  */
-export const useMyAccountStatus = <Data = myAccountPortalStatusInterface, Error = RequestErrorInterface>(
+export const useMyAccountStatus = <Data = MyAccountPortalStatusInterface, Error = RequestErrorInterface>(
 ): RequestResultInterface<Data, Error> => {
 
     const requestConfig: RequestConfigInterface = {
@@ -1066,7 +1066,9 @@ export const useMyAccountStatus = <Data = myAccountPortalStatusInterface, Error 
         url: store.getState().config.endpoints.myAccountConfigMgt + "/status/enable"
     };
 
-    const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig);
+    const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig, {
+        shouldRetryOnError: false
+    });
 
     return {
         data,

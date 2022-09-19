@@ -1,25 +1,15 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022, WSO2 Inc. (http://www.wso2.com). All Rights Reserved.
  *
- * WSO2 LLC. licenses this file to you under the Apache License,
- * Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * This software is the property of WSO2 Inc. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content."
  */
 
 import { AsgardeoSPAClient } from "@asgardeo/auth-react";
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import useSWR, { SWRConfiguration, SWRResponse } from "swr";
-import { store } from "../store";
 
 const httpClient = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
 
@@ -115,7 +105,7 @@ export default function useRequest<Data = unknown, Error = unknown>(
          * NOTE: Typescript thinks `request` can be `null` here, but the fetcher
          * function is actually only called by `useSWR` when it isn't.
          */
-        () => 
+        () =>
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             attachToken === undefined ? httpClient(request!) : ( attachToken ? httpClient(request!) : axios(request!) ),
         {
@@ -131,13 +121,6 @@ export default function useRequest<Data = unknown, Error = unknown>(
                 headers: {},
                 status: 200,
                 statusText: "InitialData"
-            },
-            shouldRetryOnError: (error) => {
-                // Skip request id for retrieving My Account portal status and retrying if the API is returning 404:
-                if ( request.url.includes(store.getState().config.endpoints.myAccountConfigMgt)
-                    && error.response.status === 404 ) return false;
-                
-                return true;
             }
         }
     );
