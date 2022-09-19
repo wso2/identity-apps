@@ -72,122 +72,120 @@ export const OidcAuthenticationWizardFrom = (props: OidcAuthenticationWizardFrom
     };
 
     return (
-        <>
-            <Wizard
-                id={ FORM_ID }
-                initialValues={ { name: template?.idp?.name } }
-                onSubmit={ (values)=>onSubmit(values) }
-                triggerSubmit={ (submitFunction) => triggerSubmission(submitFunction) }
-                triggerPrevious= { (previousFunction) => triggerPrevious(previousFunction) }
-                changePage= { (step:number)=> changePageNumber(step) }
-                setTotalPage= { (step:number)=> setTotalPage(step) }
-                data-testid={ testId }
+        <Wizard
+            id={ FORM_ID }
+            initialValues={ { name: template?.idp?.name } }
+            onSubmit={ (values)=>onSubmit(values) }
+            triggerSubmit={ (submitFunction) => triggerSubmission(submitFunction) }
+            triggerPrevious= { (previousFunction) => triggerPrevious(previousFunction) }
+            changePage= { (step:number)=> changePageNumber(step) }
+            setTotalPage= { (step:number)=> setTotalPage(step) }
+            data-testid={ testId }
+        >
+            <WizardPage
+                // TODO: Need to refactor once wizard can handle validation properly.
+                validate={ (values): any => {
+
+                    const errors: any = {};
+
+                    if (!values.name) {
+                        errors.name = "This is a required field.";
+                    }
+                    if (!values.clientId) {
+                        errors.clientId = "This is a required field.";
+                    }
+                    if (!values.clientSecret) {
+                        errors.clientSecret = "This is a required field.";
+                    }
+                    if (!values.authorizationEndpointUrl) {
+                        errors.authorizationEndpointUrl = "This is a required field.";
+                    }
+                    if (!values.tokenEndpointUrl) {
+                        errors.tokenEndpointUrl = "This is a required field.";
+                    }
+
+                    return errors;
+                } }
             >
-                <WizardPage
-                    // TODO: Need to refactor once wizard can handle validation properly.
-                    validate={ (values): any => {
-
-                        const errors: any = {};
-
-                        if (!values.name) {
-                            errors.name = "This is a required field.";
-                        }
-                        if (!values.clientId) {
-                            errors.clientId = "This is a required field.";
-                        }
-                        if (!values.clientSecret) {
-                            errors.clientSecret = "This is a required field.";
-                        }
-                        if (!values.authorizationEndpointUrl) {
-                            errors.authorizationEndpointUrl = "This is a required field.";
-                        }
-                        if (!values.tokenEndpointUrl) {
-                            errors.tokenEndpointUrl = "This is a required field.";
-                        }
-
-                        return errors;
-                    } }
-                >
-                    <Field.Input
-                        ariaLabel= "name"
-                        inputType= "name"
-                        name="name"
-                        label={ t("console:develop.features.authenticationProvider.forms." +
-                            "generalDetails.name.label") }
-                        required={ true }
-                        maxLength={ 50 }
-                        minLength={ 3 }
-                        // TODO: checkon key press usecase
-                        // onKeyDown={ keyPressed }
-                        data-testid={ `${ testId }-idp-name` }
-                        width={ 13 }
-                    />
-                    <Field.Input
-                        ariaLabel= "clientId"
-                        inputType= "identifier"
-                        name="clientId"
-                        label={ "Client ID" }
-                        required={ true }
-                        autoComplete={ "" + Math.random() }
-                        maxLength={ CLIENT_ID_MAX_LENGTH }
-                        minLength={ 3 }
-                        validation ={ (value)=>clientIdRegexValidation(value) }
-                        // TODO: checkon key press usecase
-                        // onKeyDown={ keyPressed }
-                        data-testid={ `${ testId }-idp-client-id` }
-                        width={ 13 }
-                    />
-                    <Field.Input
-                        ariaLabel= "clientSecret"
-                        inputType="password"
-                        className="addon-field-wrapper"
-                        name="clientSecret"
-                        label={ "Client secret" }
-                        required={ true }
-                        hidePassword={ t("common:hide") }
-                        showPassword={ t("common:show") }
-                        autoComplete={ "" + Math.random() }
-                        maxLength={ CLIENT_SECRET_MAX_LENGTH }
-                        minLength={ 3 }
-                        type="password"
-                        // TODO: checkon key press usecase
-                        // onKeyDown={ keyPressed }
-                        data-testid={ `${ testId }-idp-client-secret` }
-                        width={ 13 }
-                    />
-                    <Field.Input
-                        ariaLabel= "authorizationEndpointUrl"
-                        inputType="url"
-                        name="authorizationEndpointUrl"
-                        label={ "Authorization endpoint URL" }
-                        required={ true }
-                        placeholder={ "https://ENTERPRISE_DOMAIN/authorize" }
-                        autoComplete={ "" + Math.random() }
-                        maxLength={ URL_MAX_LENGTH }
-                        minLength={ 3 }
-                        // TODO: checkon key press usecase
-                        // onKeyDown={ keyPressed }
-                        data-testid={ `${ testId }-idp-authorization-endpoint-url` }
-                        width={ 13 }
-                    />
-                    <Field.Input
-                        ariaLabel= "tokenEndpointUrl"
-                        inputType="url"
-                        name="tokenEndpointUrl"
-                        label={ "Token endpoint URL" }
-                        required={ true }
-                        placeholder={ "https://ENTERPRISE_DOMAIN/token" }
-                        autoComplete={ "" + Math.random() }
-                        maxLength={ URL_MAX_LENGTH }
-                        minLength={ 3 }
-                        // TODO: checkon key press usecase
-                        // onKeyDown={ keyPressed }
-                        data-testid={ `${ testId }-idp-token-endpoint-url` }
-                        width={ 13 }
-                    />
-                </WizardPage>
-            </Wizard>
-        </>
+                <Field.Input
+                    ariaLabel= "name"
+                    inputType= "name"
+                    name="name"
+                    label={ t("console:develop.features.authenticationProvider.forms." +
+                        "generalDetails.name.label") }
+                    required={ true }
+                    maxLength={ 50 }
+                    minLength={ 3 }
+                    // TODO: checkon key press usecase
+                    // onKeyDown={ keyPressed }
+                    data-testid={ `${ testId }-idp-name` }
+                    width={ 13 }
+                />
+                <Field.Input
+                    ariaLabel= "clientId"
+                    inputType= "identifier"
+                    name="clientId"
+                    label={ "Client ID" }
+                    required={ true }
+                    autoComplete={ "" + Math.random() }
+                    maxLength={ CLIENT_ID_MAX_LENGTH }
+                    minLength={ 3 }
+                    validation ={ (value)=>clientIdRegexValidation(value) }
+                    // TODO: checkon key press usecase
+                    // onKeyDown={ keyPressed }
+                    data-testid={ `${ testId }-idp-client-id` }
+                    width={ 13 }
+                />
+                <Field.Input
+                    ariaLabel= "clientSecret"
+                    inputType="password"
+                    className="addon-field-wrapper"
+                    name="clientSecret"
+                    label={ "Client secret" }
+                    required={ true }
+                    hidePassword={ t("common:hide") }
+                    showPassword={ t("common:show") }
+                    autoComplete={ "" + Math.random() }
+                    maxLength={ CLIENT_SECRET_MAX_LENGTH }
+                    minLength={ 3 }
+                    type="password"
+                    // TODO: checkon key press usecase
+                    // onKeyDown={ keyPressed }
+                    data-testid={ `${ testId }-idp-client-secret` }
+                    width={ 13 }
+                />
+                <Field.Input
+                    ariaLabel= "authorizationEndpointUrl"
+                    inputType="url"
+                    name="authorizationEndpointUrl"
+                    label={ "Authorization endpoint URL" }
+                    required={ true }
+                    placeholder={ "https://ENTERPRISE_DOMAIN/authorize" }
+                    autoComplete={ "" + Math.random() }
+                    maxLength={ URL_MAX_LENGTH }
+                    minLength={ 3 }
+                    // TODO: checkon key press usecase
+                    // onKeyDown={ keyPressed }
+                    data-testid={ `${ testId }-idp-authorization-endpoint-url` }
+                    width={ 13 }
+                />
+                <Field.Input
+                    ariaLabel= "tokenEndpointUrl"
+                    inputType="url"
+                    name="tokenEndpointUrl"
+                    label={ "Token endpoint URL" }
+                    required={ true }
+                    placeholder={ "https://ENTERPRISE_DOMAIN/token" }
+                    autoComplete={ "" + Math.random() }
+                    maxLength={ URL_MAX_LENGTH }
+                    minLength={ 3 }
+                    // TODO: checkon key press usecase
+                    // onKeyDown={ keyPressed }
+                    data-testid={ `${ testId }-idp-token-endpoint-url` }
+                    width={ 13 }
+                />
+            </WizardPage>
+        </Wizard>
     );
 };
 

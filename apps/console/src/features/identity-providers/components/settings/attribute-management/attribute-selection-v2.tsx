@@ -37,7 +37,7 @@ export interface AttributesSelectionV2Props extends TestableComponentInterface {
     isReadOnly: boolean;
 }
 
-const FORM_ID: string = "idp=attribute-selection-v2-form";
+const FORM_ID: string = "idp-attribute-selection-v2-form";
 
 /**
  * New implementation of attributes selection for IdPs. It has a similar
