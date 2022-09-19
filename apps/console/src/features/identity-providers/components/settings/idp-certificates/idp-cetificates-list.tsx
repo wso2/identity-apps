@@ -239,7 +239,9 @@ export const IdpCertificatesList: FC<IdpCertificatesListProps> = (
     /**
      * Creates a dummy label telling that we're unable to visualize
      * this certificate.
-     * @param certificate {DisplayCertificate}
+     *
+     * @param certificate - Certificate.
+     * @returns Dummy validity label.
      */
     const createDummyValidityLabel = (certificate: DisplayCertificate): ReactNode => {
         return (
@@ -282,9 +284,9 @@ export const IdpCertificatesList: FC<IdpCertificatesListProps> = (
     const createCertificateActions = (certificate: DisplayCertificate, index: number) => {
         return [
             {
-                hidden: certificate?.infoUnavailable,
-                disabled: certificate?.infoUnavailable,
                 "data-componentid": `${ testId }-edit-cert-${ index }-button`,
+                disabled: certificate?.infoUnavailable,
+                hidden: certificate?.infoUnavailable,
                 icon: "eye",
                 onClick: () => handleViewCertificate(certificate),
                 popupText: "Preview",
