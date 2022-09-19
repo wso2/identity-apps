@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -575,7 +575,7 @@ export const console: ConsoleNS = {
                             }
                         }
                     },
-                    placeholder: "Chercher par nom d'application ou clientId"
+                    placeholder: "Chercher des applications par nom, clientId, ou émetteur"
                 },
                 confirmations: {
                     addSocialLogin: {
@@ -1993,7 +1993,12 @@ export const console: ConsoleNS = {
                             },
                             certificates: {
                                 disabledPopup: "Assurez-vous que la validation de la signature de la " +
-                                    "demande et le chiffrement des assertions sont désactivés pour continuer."
+                                    "demande et le chiffrement des assertions sont désactivés pour continuer.",
+                                certificateRemoveConfirmation: {
+                                    header: "Supprimer le certificat actuel?",
+                                    content: "Définir le type de certificat sur aucun supprimera le certificat " +
+                                        "actuel fourni pour cette application. Procéder avec prudence."
+                                }
                             },
                             encryption: {
                                 fields: {
@@ -2383,7 +2388,7 @@ export const console: ConsoleNS = {
                     columns: {
                         actions: "",
                         name: "Nom",
-                        templateId: "taper"
+                        inboundKey: "Clé entrante"
                     },
                     labels: {
                         fragment: "Fragmenter App"

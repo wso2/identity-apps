@@ -1,8 +1,8 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
- * Version 2.0 (the License); you may not use this file except
+ * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
  *
@@ -10,7 +10,7 @@
  *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
- * AS IS BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
@@ -34,6 +34,8 @@ export interface ApplicationBasicInterface {
     name: string;
     description?: string;
     accessUrl?: string;
+    clientId?: string;
+    issuer?: string;
     templateId?: string;
     isManagementApp?: boolean;
     advancedConfigurations?: AdvancedConfigurationsInterface;
@@ -42,6 +44,11 @@ export interface ApplicationBasicInterface {
 export enum ApplicationAccessTypes {
     READ = "READ",
     WRITE = "WRITE"
+}
+
+export enum ApplicationInboundTypes {
+    CLIENTID = "Client ID",
+    ISSUER = "Issuer"
 }
 
 /**
@@ -176,10 +183,10 @@ export interface SubjectConfigInterface {
  */
 export interface ClaimConfigurationInterface {
     dialect: string;
-    claimMappings: ClaimMappingInterface[];
+    claimMappings?: ClaimMappingInterface[];
     requestedClaims: RequestedClaimConfigurationInterface[];
-    subject: SubjectConfigInterface;
-    role: RoleConfigInterface;
+    subject?: SubjectConfigInterface;
+    role?: RoleConfigInterface;
 }
 
 /**
@@ -238,7 +245,7 @@ export interface AuthenticationStepInterface {
  * Authentication Sequence model.
  */
 export interface AuthenticationSequenceInterface  {
-    type?: AuthenticationSequenceType;
+    type?: AuthenticationSequenceType | string;
     steps?: AuthenticationStepInterface[];
     requestPathAuthenticators?: string[];
     script?: string;
@@ -406,7 +413,6 @@ export interface ApplicationTemplateInterface extends ApplicationTemplateListIte
  * Enum for supported application template categories.
  *
  * @readonly
- * @enum {string}
  */
 export enum SupportedApplicationTemplateCategories {
     QUICK_START = "quick_start"
@@ -416,19 +422,16 @@ export enum SupportedApplicationTemplateCategories {
  * Enum for application template categories.
  *
  * @readonly
- * @enum {string}
  */
 export enum ApplicationTemplateCategories {
     /**
      * Templates supported by default.
      * ex: Web Application, SPA etc.
-     * @type {string}
      */
     DEFAULT = "DEFAULT",
     /**
      * Vendor templates.
      * ex: Zoom, Salesforce etc.
-     * @type {string}
      */
     VENDOR = "VENDOR",
 }
@@ -437,17 +440,14 @@ export enum ApplicationTemplateCategories {
  * Enum for application template loading strategies.
  *
  * @readonly
- * @enum {string}
  */
 export enum ApplicationTemplateLoadingStrategies {
     /**
      * App will resort to in app templates.
-     * @type {string}
      */
     LOCAL = "LOCAL",
     /**
      * App will fetch templates from the template management REST API.
-     * @type {string}
      */
     REMOTE = "REMOTE"
 }
@@ -458,7 +458,6 @@ export enum ApplicationTemplateLoadingStrategies {
 export interface ApplicationTemplateTechnology {
     name: string;
     displayName: string;
-    /* eslint-disable @typescript-eslint/no-explicit-any */
     logo: any;
 }
 
@@ -658,7 +657,6 @@ export const emptySAMLAppConfiguration = (): SAMLApplicationConfigurationInterfa
  * Enum for adaptive auth template types.
  *
  * @readonly
- * @enum {string}
  */
 export enum AdaptiveAuthTemplateTypes {
     GROUP_BASED = "Group-Based",
@@ -671,7 +669,6 @@ export enum AdaptiveAuthTemplateTypes {
  * Enum for application template types.
  *
  * @readonly
- * @enum {string}
  */
 export enum ApplicationTemplateIdTypes {
     SPA = "single-page-application",
@@ -683,7 +680,6 @@ export enum ApplicationTemplateIdTypes {
  * Enum for default application template group ids.
  *
  * @readonly
- * @enum {string}
  */
 export enum DefaultTemplateGroupIds {
     WEB_APPLICATION = "web-application",
@@ -695,7 +691,6 @@ export enum DefaultTemplateGroupIds {
  * Enum for sign-in method login flow options.
  *
  * @readonly
- * @enum {string}
  */
 export enum LoginFlowTypes {
     FACEBOOK_LOGIN = "FACEBOOK_LOGIN",
@@ -712,7 +707,6 @@ export enum LoginFlowTypes {
  * Enum for URL fragment types used in the edit application.
  *
  * @readonly
- * @enum {string}
  */
 export enum URLFragmentTypes {
     TAB_INDEX = "tab=",

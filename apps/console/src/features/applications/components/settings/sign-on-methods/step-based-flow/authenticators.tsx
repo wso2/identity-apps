@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -85,8 +85,8 @@ interface AuthenticatorsPropsInterface extends TestableComponentInterface {
 /**
  * Component to render the list of authenticators.
  *
- * @param {AuthenticatorsPropsInterface} props - Props injected to the component.
- * @return {React.ReactElement}
+ * @param props - Props injected to the component.
+ * @returns React element.
  */
 export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
     props: AuthenticatorsPropsInterface
@@ -154,9 +154,9 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
     /**
      * Resolve popup content.
      *
-     * @param {GenericAuthenticatorInterface} authenticator - Authenticator.
+     * @param authenticator - Authenticator.
      *
-     * @return {React.ReactElement}
+     * @returns React element.
      */
     const resolvePopupContent = (authenticator: GenericAuthenticatorInterface): ReactElement => {
         const InfoLabel = (
@@ -258,7 +258,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
     /**
      * Handles authenticator select.
      *
-     * @param {GenericAuthenticatorInterface} selectedAuthenticator - Selected Authenticator.
+     * @param selectedAuthenticator - Selected Authenticator.
      */
     const handleAuthenticatorSelect = (selectedAuthenticator: GenericAuthenticatorInterface): void => {
         if (!selectedAuthenticator.isEnabled) {
@@ -283,9 +283,9 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
     /**
      * Resolve Authenticator labels.
      *
-     * @param {FederatedAuthenticatorInterface} authenticator - Authenticator.
+     * @param authenticator - Authenticator.
      *
-     * @return {any[] | string[]}
+     * @returns Authenticator labels.
      */
     const resolveAuthenticatorLabels = (authenticator: FederatedAuthenticatorInterface): string[] => {
         if (!authenticator) {
@@ -320,9 +320,6 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                             imageSize="micro"
                             className={ authenticatorCardClasses }
                             header={
-                                AuthenticatorMeta.getAuthenticatorDisplayName(
-                                    authenticator.defaultAuthenticator.authenticatorId
-                                ) ||
                                 authenticator.displayName ||
                                 defaultName
                             }

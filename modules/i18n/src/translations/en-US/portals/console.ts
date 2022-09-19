@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -577,7 +577,7 @@ export const console: ConsoleNS = {
                             }
                         }
                     },
-                    placeholder: "Search by application name or clientId"
+                    placeholder: "Search applications by name, clientID, or issuer"
                 },
                 confirmations: {
                     addSocialLogin: {
@@ -1940,7 +1940,12 @@ export const console: ConsoleNS = {
                             },
                             certificates: {
                                 disabledPopup: "Make sure request signature validation and" +
-                                    " assertion encryption are disabled to proceed."
+                                    " assertion encryption are disabled to proceed.",
+                                certificateRemoveConfirmation: {
+                                    header: "Remove current certificate?",
+                                    content: "Setting the certificate type to none will remove the current " +
+                                        "certificate provided for this application. Proceed with caution."
+                                }
                             },
                             encryption: {
                                 fields: {
@@ -2339,7 +2344,7 @@ export const console: ConsoleNS = {
                     columns: {
                         actions: "",
                         name: "Name",
-                        templateId: "Type"
+                        inboundKey: "Inbound Key"
                     },
                     labels: {
                         fragment: "Fragment App"

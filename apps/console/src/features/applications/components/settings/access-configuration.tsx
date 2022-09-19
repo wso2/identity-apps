@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -66,7 +66,7 @@ import { InboundFormFactory } from "../forms";
 import { ApplicationCreateWizard } from "../wizard";
 
 /**
- * Proptypes for the applications settings component.
+ * Prop-types for the applications settings component.
  */
 interface AccessConfigurationPropsInterface extends SBACInterface<FeatureConfigInterface>, TestableComponentInterface {
     /**
@@ -145,9 +145,8 @@ interface AccessConfigurationPropsInterface extends SBACInterface<FeatureConfigI
 /**
  *  Inbound protocols and advance settings component.
  *
- * @param {AccessConfigurationPropsInterface} props - Props injected to the component.
- *
- * @return {React.ReactElement}
+ * @param props - Props injected to the component.
+ * @returns Access Configuration component.
  */
 export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInterface> = (
     props: AccessConfigurationPropsInterface
@@ -201,7 +200,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
     /**
      * Handles the inbound config delete action.
      *
-     * @param {SupportedAuthProtocolTypes} protocol - The protocol to be deleted.
+     * @param protocol - The protocol to be deleted.
      */
     const handleInboundConfigDelete = (protocol: string): void => {
         deleteProtocol(appId, protocol)
@@ -241,7 +240,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
     /**
      * Handles the inbound config delete action.
      *
-     * @param {SupportedAuthProtocolTypes} protocol - The protocol to be deleted.
+     * @param protocol - The protocol to be deleted.
      */
     const handleInboundConfigSwitch = (protocol: string): void => {
         setRequestLoading(true);
@@ -278,7 +277,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
      * Handles the inbound config form submit action.
      *
      * @param values - Form values.
-     * @param {SupportedAuthProtocolTypes} protocol - The protocol to be updated.
+     * @param protocol - The protocol to be updated.
      */
     const handleInboundConfigFormSubmit = async (values: any, protocol: string): Promise<void> => {
         let updateError: boolean = false;
@@ -531,7 +530,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
 
     /**
      * Resolves the corresponding protocol config form when a protocol is selected.
-     * @return {React.ReactElement}
+     * @returns Protocol settings form.
      */
     const resolveInboundProtocolSettingsForm = (): ReactElement => {
 
@@ -543,7 +542,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
          * Renders the link to documentation for integrating login.
          * @remarks Currently, the logic is added only for standard based applications (custom).
          * And shown when the link is defined.
-         * @return {React.ReactElement}
+         * @returns Protocol integration help message.
          */
         const renderProtocolIntegrationHelpMessage = (): ReactElement => {
 
@@ -807,7 +806,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
 
     /**
      * Resolves the corresponding protocol description and documentation link when a protocol is selected.
-     * @return {React.ReactElement}
+     * @returns Protocol description.
      */
     const resolveProtocolDescription =(): ReactElement => {
 
@@ -943,141 +942,143 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                 )
                 : (
                     <Grid>
-                        { loadSupportedProtocols() }
-                        <Grid.Row>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                { resolveInboundProtocolSettingsForm() }
-                            </Grid.Column>
-                        </Grid.Row>
-                        {
-                            showWizard && (
-                                <ApplicationCreateWizard
-                                    title={
-                                        t("console:develop.features.applications.edit.sections" +
-                                            ".access.addProtocolWizard.heading")
-                                    }
-                                    subTitle={
-                                        t("console:develop.features.applications.edit.sections" +
-                                            ".access.addProtocolWizard.subHeading",
-                                        { appName: appName })
-                                    }
-                                    closeWizard={ (): void => setShowWizard(false) }
-                                    addProtocol={ true }
-                                    selectedProtocols={ inboundProtocols }
-                                    onUpdate={ onUpdate }
-                                    appId={ appId }
-                                    data-testid={ `${ testId }-protocol-add-wizard` }
-                                />
-                            )
-                        }
-                        {
-                            showDeleteConfirmationModal && (
-                                <ConfirmationModal
-                                    onClose={ (): void => setShowDeleteConfirmationModal(false) }
-                                    type="negative"
-                                    open={ showDeleteConfirmationModal }
-                                    assertion={ protocolToDelete }
-                                    assertionHint={ (
-                                        <p>
-                                            <Trans
-                                                i18nKey={
-                                                    "console:develop.features.applications.confirmations" +
-                                                    ".deleteProtocol.assertionHint"
-                                                }
-                                                tOptions={ { name: protocolToDelete } }
-                                            >
-                                            Please type <strong>{ protocolToDelete }</strong> to confirm.
-                                            </Trans>
-                                        </p>
-                                    ) }
-                                    assertionType="input"
-                                    primaryAction={ t("common:confirm") }
-                                    secondaryAction={ t("common:cancel") }
-                                    onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
-                                    onPrimaryActionClick={
-                                        (): void => {
-                                            handleInboundConfigDelete(protocolToDelete);
-                                            setShowDeleteConfirmationModal(false);
+                        <>
+                            { loadSupportedProtocols() }
+                            <Grid.Row>
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                    { resolveInboundProtocolSettingsForm() }
+                                </Grid.Column>
+                            </Grid.Row>
+                            {
+                                showWizard && (
+                                    <ApplicationCreateWizard
+                                        title={
+                                            t("console:develop.features.applications.edit.sections" +
+                                                ".access.addProtocolWizard.heading")
                                         }
-                                    }
-                                    data-testid={ `${ testId }-protocol-delete-confirmation-modal` }
-                                    closeOnDimmerClick={ false }
-                                >
-                                    <ConfirmationModal.Header
-                                        data-testid={ `${ testId }-protocol-delete-confirmation-modal-header` }
-                                    >
-                                        {
-                                            t("console:develop.features.applications.confirmations" +
-                                                ".deleteProtocol.header")
+                                        subTitle={
+                                            t("console:develop.features.applications.edit.sections" +
+                                                ".access.addProtocolWizard.subHeading",
+                                            { appName: appName })
                                         }
-                                    </ConfirmationModal.Header>
-                                    <ConfirmationModal.Message
-                                        attached
-                                        negative
-                                        data-testid={ `${ testId }-protocol-delete-confirmation-modal-message` }
-                                    >
-                                        {
-                                            t("console:develop.features.applications.confirmations" +
-                                                ".deleteProtocol.message")
+                                        closeWizard={ (): void => setShowWizard(false) }
+                                        addProtocol={ true }
+                                        selectedProtocols={ inboundProtocols }
+                                        onUpdate={ onUpdate }
+                                        appId={ appId }
+                                        data-testid={ `${ testId }-protocol-add-wizard` }
+                                    />
+                                )
+                            }
+                            {
+                                showDeleteConfirmationModal && (
+                                    <ConfirmationModal
+                                        onClose={ (): void => setShowDeleteConfirmationModal(false) }
+                                        type="negative"
+                                        open={ showDeleteConfirmationModal }
+                                        assertion={ protocolToDelete }
+                                        assertionHint={ (
+                                            <p>
+                                                <Trans
+                                                    i18nKey={
+                                                        "console:develop.features.applications.confirmations" +
+                                                        ".deleteProtocol.assertionHint"
+                                                    }
+                                                    tOptions={ { name: protocolToDelete } }
+                                                >
+                                                Please type <strong>{ protocolToDelete }</strong> to confirm.
+                                                </Trans>
+                                            </p>
+                                        ) }
+                                        assertionType="input"
+                                        primaryAction={ t("common:confirm") }
+                                        secondaryAction={ t("common:cancel") }
+                                        onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
+                                        onPrimaryActionClick={
+                                            (): void => {
+                                                handleInboundConfigDelete(protocolToDelete);
+                                                setShowDeleteConfirmationModal(false);
+                                            }
                                         }
-                                    </ConfirmationModal.Message>
-                                    <ConfirmationModal.Content
-                                        data-testid={ `${ testId }-protocol-delete-confirmation-modal-content` }
+                                        data-testid={ `${ testId }-protocol-delete-confirmation-modal` }
+                                        closeOnDimmerClick={ false }
                                     >
-                                        {
-                                            t("console:develop.features.applications.confirmations" +
-                                                ".deleteProtocol.content")
+                                        <ConfirmationModal.Header
+                                            data-testid={ `${ testId }-protocol-delete-confirmation-modal-header` }
+                                        >
+                                            {
+                                                t("console:develop.features.applications.confirmations" +
+                                                    ".deleteProtocol.header")
+                                            }
+                                        </ConfirmationModal.Header>
+                                        <ConfirmationModal.Message
+                                            attached
+                                            negative
+                                            data-testid={ `${ testId }-protocol-delete-confirmation-modal-message` }
+                                        >
+                                            {
+                                                t("console:develop.features.applications.confirmations" +
+                                                    ".deleteProtocol.message")
+                                            }
+                                        </ConfirmationModal.Message>
+                                        <ConfirmationModal.Content
+                                            data-testid={ `${ testId }-protocol-delete-confirmation-modal-content` }
+                                        >
+                                            {
+                                                t("console:develop.features.applications.confirmations" +
+                                                    ".deleteProtocol.content")
+                                            }
+                                        </ConfirmationModal.Content>
+                                    </ConfirmationModal>
+                                )
+                            }
+                            {
+                                showProtocolSwitchModal && (
+                                    <ConfirmationModal
+                                        onClose={ (): void => setShowDeleteConfirmationModal(false) }
+                                        type="negative"
+                                        open={ showProtocolSwitchModal }
+                                        primaryAction={ t("common:confirm") }
+                                        secondaryAction={ t("common:cancel") }
+                                        onSecondaryActionClick={
+                                            (): void => {
+                                                setShowProtocolSwitchModal(false);
+                                            }
                                         }
-                                    </ConfirmationModal.Content>
-                                </ConfirmationModal>
-                            )
-                        }
-                        {
-                            showProtocolSwitchModal && (
-                                <ConfirmationModal
-                                    onClose={ (): void => setShowDeleteConfirmationModal(false) }
-                                    type="negative"
-                                    open={ showProtocolSwitchModal }
-                                    primaryAction={ t("common:confirm") }
-                                    secondaryAction={ t("common:cancel") }
-                                    onSecondaryActionClick={
-                                        (): void => {
-                                            setShowProtocolSwitchModal(false);
+                                        onPrimaryActionClick={
+                                            (): void => {
+                                                handleInboundConfigSwitch(selectedProtocol);
+                                                setShowProtocolSwitchModal(false);
+                                            }
                                         }
-                                    }
-                                    onPrimaryActionClick={
-                                        (): void => {
-                                            handleInboundConfigSwitch(selectedProtocol);
-                                            setShowProtocolSwitchModal(false);
-                                        }
-                                    }
-                                    data-testid={ `${ testId }-protocol-delete-confirmation-modal` }
-                                    closeOnDimmerClick={ false }
-                                >
-                                    <ConfirmationModal.Header
-                                        data-testid={ `${ testId }-protocol-delete-confirmation-modal-header` }
+                                        data-testid={ `${ testId }-protocol-delete-confirmation-modal` }
+                                        closeOnDimmerClick={ false }
                                     >
-                                        { t("console:develop.features.applications.confirmations." +
-                                        "changeProtocol.header") }
-                                    </ConfirmationModal.Header>
-                                    <ConfirmationModal.Message
-                                        attached
-                                        negative
-                                        data-testid={ `${ testId }-protocol-delete-confirmation-modal-message` }
-                                    >
-                                        { t("console:develop.features.applications.confirmations" +
-                                        ".changeProtocol.message",
-                                        { name: selectedProtocol }) }
-                                    </ConfirmationModal.Message>
-                                    <ConfirmationModal.Content
-                                        data-testid={ `${ testId }-protocol-delete-confirmation-modal-content` }
-                                    >
-                                        { t("console:develop.features.applications.confirmations." +
-                                        "changeProtocol.content") }
-                                    </ConfirmationModal.Content>
-                                </ConfirmationModal>
-                            )
-                        }
+                                        <ConfirmationModal.Header
+                                            data-testid={ `${ testId }-protocol-delete-confirmation-modal-header` }
+                                        >
+                                            { t("console:develop.features.applications.confirmations." +
+                                            "changeProtocol.header") }
+                                        </ConfirmationModal.Header>
+                                        <ConfirmationModal.Message
+                                            attached
+                                            negative
+                                            data-testid={ `${ testId }-protocol-delete-confirmation-modal-message` }
+                                        >
+                                            { t("console:develop.features.applications.confirmations" +
+                                            ".changeProtocol.message",
+                                            { name: selectedProtocol }) }
+                                        </ConfirmationModal.Message>
+                                        <ConfirmationModal.Content
+                                            data-testid={ `${ testId }-protocol-delete-confirmation-modal-content` }
+                                        >
+                                            { t("console:develop.features.applications.confirmations." +
+                                            "changeProtocol.content") }
+                                        </ConfirmationModal.Content>
+                                    </ConfirmationModal>
+                                )
+                            }
+                        </>
                     </Grid>
                 ) :
             (

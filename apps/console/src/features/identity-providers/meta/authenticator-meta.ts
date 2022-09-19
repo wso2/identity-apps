@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -29,16 +29,15 @@ export class AuthenticatorMeta {
      * Private constructor to avoid object instantiation from outside
      * the class.
      *
-     * @hideconstructor
      */
     private constructor() { }
 
     /**
      * Get the Authenticator description.
      *
-     * @param {string} authenticatorId - Authenticator ID.
+     * @param authenticatorId - Authenticator ID.
      *
-     * @return {string}
+     * @returns Authenticator description.
      */
     public static getAuthenticatorDescription(authenticatorId: string): string {
 
@@ -77,9 +76,9 @@ export class AuthenticatorMeta {
     /**
      * Get Authenticator Labels.
      *
-     * @param {string} authenticatorId - Authenticator ID.
+     * @param authenticatorId - Authenticator ID.
      *
-     * @return {string[]}
+     * @returns Authenticator labels.
      */
     public static getAuthenticatorLabels(authenticatorId: string): string[] {
 
@@ -119,9 +118,9 @@ export class AuthenticatorMeta {
     /**
      * Get Authenticator Type display name.
      *
-     * @param {AuthenticatorCategories} type - Type.
+     * @param type - Type.
      *
-     * @return {string}
+     * @returns Authenticator type display name.
      */
     public static getAuthenticatorTypeDisplayName(type: AuthenticatorCategories): string {
 
@@ -142,32 +141,11 @@ export class AuthenticatorMeta {
     }
 
     /**
-     * Get Authenticator display name.
-     *
-     * @param {string} authenticatorId - Authenticator ID.
-     *
-     * @return {string}
-     */
-    public static getAuthenticatorDisplayName(authenticatorId: string): string {
-
-        return get({
-            [ IdentityProviderManagementConstants.BASIC_AUTHENTICATOR ]: "Username & Password",
-            [ IdentityProviderManagementConstants.BASIC_AUTHENTICATOR_ID ]: "Username & Password",
-            [ IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID ]: "Security Key/Biometrics",
-            [ IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID ]: "TOTP",
-            [ IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID ]: "Email OTP",
-            [ IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID ]: "Identifier First",
-            [ IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID ]: "SMS OTP",
-            [ IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID ]: "Magic Link"
-        }, authenticatorId);
-    }
-
-    /**
      * Get Authenticator Icon.
      *
-     * @param {string} authenticatorId - Authenticator ID.
+     * @param authenticatorId - Authenticator ID.
      *
-     * @return {string}
+     * @returns Authenticator Icon.
      */
     public static getAuthenticatorIcon(authenticatorId: string): any {
 
@@ -194,9 +172,9 @@ export class AuthenticatorMeta {
     /**
      * Get Authenticator Type display name.
      *
-     * @param {string} authenticatorId - Authenticator ID.
+     * @param authenticatorId - Authenticator ID.
      *
-     * @return {string}
+     * @returns Authenticator type display name.
      */
     public static getAuthenticatorCategory(authenticatorId: string): string {
 
@@ -222,7 +200,7 @@ export class AuthenticatorMeta {
      * `/authenticators/meta/tags` API gives out all the tags which includes `Request-Path` etc.
      * Hence moderation has to be made.
      *
-     * @return {string[]}
+     * @returns List of allowed filter tags.
      */
     public static getAllowedFilterTags(): string[] {
 
@@ -238,9 +216,9 @@ export class AuthenticatorMeta {
     /**
      * Get Authenticator template name.
      *
-     * @param {string} authenticatorId - Authenticator ID.
+     * @param authenticatorId - Authenticator ID.
      *
-     * @return {string}
+     * @returns Authenticator template name.
      */
     public static getAuthenticatorTemplateName(authenticatorId: string): string {
 

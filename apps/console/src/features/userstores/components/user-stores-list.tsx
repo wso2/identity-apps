@@ -1,7 +1,7 @@
 /**
-* Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+* Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
 *
-* WSO2 Inc. licenses this file to you under the Apache License,
+* WSO2 LLC. licenses this file to you under the Apache License,
 * Version 2.0 (the 'License'); you may not use this file except
 * in compliance with the License.
 * You may obtain a copy of the License at
@@ -36,9 +36,10 @@ import {
     TableColumnInterface
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
-import { Trans, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Header, Icon, Popup, SemanticICONS } from "semantic-ui-react";
+import { userstoresConfig } from "../../../extensions";
 import {
     AppConstants,
     AppState,
@@ -51,8 +52,6 @@ import { deleteUserStore } from "../api";
 import { getTableIcons } from "../configs";
 import { CONSUMER_USERSTORE, CONSUMER_USERSTORE_ID } from "../constants";
 import { UserStoreListItem } from "../models";
-import { userstoresConfig } from "../../../extensions";
-import isEmpty from "lodash-es/isEmpty";
 
 /**
  * Prop types of the `UserStoresList` component
@@ -101,9 +100,9 @@ interface UserStoresListPropsInterface extends SBACInterface<FeatureConfigInterf
 /**
  * This component renders the Userstore List.
  *
- * @param {UserStoresListPropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns user store list component.
  */
 export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
     props: UserStoresListPropsInterface
@@ -129,6 +128,7 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
     const [ deleteName, setDeleteName ] = useState<string>("");
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+    const isPrivilegedUser: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
 
     const dispatch = useDispatch();
 
@@ -137,8 +137,8 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
     /**
      * Delete a userstore.
      *
-     * @param {string} id userstore id.
-     * @param {string} name userstore name.
+     * @param id -  userstore id.
+     * @param name - userstore name.
      */
     const initDelete = (id: string, name: string) => {
         setDeleteID(id);
@@ -157,7 +157,7 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
 
     /**
      * Shows the delete confirmation modal
-     * @return {ReactElement}
+     * @returns delete confirmation modal component
      */
     const showDeleteConfirm = (): ReactElement => (
         <ConfirmationModal
@@ -232,7 +232,7 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
     /**
      * Shows list placeholders.
      *
-     * @return {React.ReactElement}
+     * @returns placeholders for the list component when list is empty.
      */
     const showPlaceholders = (): ReactElement => {
         // When the search returns empty.
@@ -295,7 +295,7 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
     /**
      * Resolves data table columns.
      *
-     * @return {TableColumnInterface[]}
+     * @returns data table columns.
      */
     const resolveTableColumns = (): TableColumnInterface[] => {
         return [
@@ -324,37 +324,40 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
                         <Header.Content>
                             {
                                 userstore.enabled
-                                    ? <Popup
-                                        trigger={
-                                            <Icon
-                                                className="mr-2 ml-0 vertical-aligned-baseline"
-                                                size="small"
-                                                name="circle"
-                                                color="green"
-                                            />
-                                        }
-                                        content={ t("common:enabled") }
-                                        inverted
-                                    />
-                                    : <Popup
-                                        trigger={
-                                            <Icon
-                                                className="mr-2 ml-0 vertical-aligned-baseline"
-                                                size="small"
-                                                name="circle"
-                                                color="orange"
-                                            />
-                                        }
-                                        content={ t("common:disabled") }
-                                        inverted
-                                    />
+                                    ? (
+                                        <Popup
+                                            trigger={ (
+                                                <Icon
+                                                    className="mr-2 ml-0 vertical-aligned-baseline"
+                                                    size="small"
+                                                    name="circle"
+                                                    color="green"
+                                                />
+                                            ) }
+                                            content={ t("common:enabled") }
+                                            inverted
+                                        />
+                                    ) : (
+                                        <Popup
+                                            trigger={ (
+                                                <Icon
+                                                    className="mr-2 ml-0 vertical-aligned-baseline"
+                                                    size="small"
+                                                    name="circle"
+                                                    color="orange"
+                                                />
+                                            ) }
+                                            content={ t("common:disabled") }
+                                            inverted
+                                        />
+                                    ) 
                             }
                         </Header.Content>
                         <Header.Content>
                             {
                                 userstore?.name === CONSUMER_USERSTORE
-                                ? UserstoreConstants.CUSTOMER_USER_STORE_MAPPING
-                                : userstore?.name
+                                    ? UserstoreConstants.CUSTOMER_USER_STORE_MAPPING
+                                    : userstore?.name
                             }
                             <Header.Subheader>
                                 { userstore.description }
@@ -378,7 +381,7 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
     /**
      * Resolves data table actions.
      *
-     * @return {TableActionsInterface[]}
+     * @returns data table actions.
      */
     const resolveTableActions = (): TableActionsInterface[] => {
         if (!showListItemActions) {
@@ -395,7 +398,7 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
             {
                 hidden: (userstore: UserStoreListItem): boolean => {
                     return !hasRequiredScopes(featureConfig?.userStores, featureConfig?.userStores?.scopes?.delete,
-                        allowedScopes) || userstore.id == CONSUMER_USERSTORE_ID;
+                        allowedScopes) || userstore.id == CONSUMER_USERSTORE_ID || isPrivilegedUser;
                 },
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (e: SyntheticEvent, userstore: UserStoreListItem): void =>
