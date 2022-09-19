@@ -141,12 +141,13 @@ interface ScopeMetaInterface {
     icon: SemanticICONS
 }
 
+const FORM_ID: string = "google-authenticator-form";
+
 /**
  * Google Authenticator Form.
  *
  * @param props - Props injected to the component.
- *
- * @returns GoogleAuthenticatorForm component
+ * @returns Functional component.
  */
 export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormPropsInterface> = (
     props: GoogleAuthenticatorFormPropsInterface
@@ -310,6 +311,7 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
 
     return (
         <Form
+            id={ FORM_ID }
             uncontrolledForm={ false }
             onSubmit={ (values) => onSubmit(getUpdatedConfigurations(values as any)) }
             initialValues={ initialValues }
@@ -537,6 +539,7 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
                 )
             }
             <Field.Button
+                form={ FORM_ID }
                 size="small"
                 buttonType="primary_btn"
                 ariaLabel="Google authenticator update button"

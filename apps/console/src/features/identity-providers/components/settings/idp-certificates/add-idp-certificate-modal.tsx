@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -29,7 +29,6 @@ import {
     PrimaryButton,
     useWizardAlert
 } from "@wso2is/react-components";
-import isEmpty from "lodash-es/isEmpty";
 import React, { FC, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -48,13 +47,15 @@ export interface AddIdPCertificateModalV2Props extends IdentifiableComponentInte
     onClose: () => void;
 }
 
+const FORM_ID: string = "idp-certificate-add-modal-form";
+
 /**
  * This component is responsible for adding certificates to a given
  * IdP {@link IdentityProviderInterface}. It can take user input in PEM
  * and Certificate file formats.
  *
- * @param props {AddIdPCertificateModalV2Props}
- * @constructor
+ * @param props - Props injected to the component.
+ * @returns Functional component.
  */
 export const AddIdpCertificateModal: FC<AddIdPCertificateModalV2Props> = (props): ReactElement => {
 
@@ -75,7 +76,9 @@ export const AddIdpCertificateModal: FC<AddIdPCertificateModalV2Props> = (props)
     const [ requestInProgress, setRequestInProgress ] = useState<boolean>(false);
 
     /**
-     * @param result {@link PickerResult<string | File>}
+     * Callback for on certificate change.
+     *
+     * @param result - Picker results.
      */
     const onCertificateChange = (result: PickerResult<string | File>): void => {
         try {
@@ -112,6 +115,7 @@ export const AddIdpCertificateModal: FC<AddIdPCertificateModalV2Props> = (props)
             }));
             setRequestInProgress(false);
             onClose();
+
             return;
         }
 
@@ -151,6 +155,7 @@ export const AddIdpCertificateModal: FC<AddIdPCertificateModalV2Props> = (props)
                         ".updateIDPCertificate.error.message")
                 });
                 setRequestInProgress(false);
+
                 return;
             }
             setAlert({
@@ -189,7 +194,11 @@ export const AddIdpCertificateModal: FC<AddIdPCertificateModalV2Props> = (props)
 
             <Modal.Content className="content-container">
                 { alert && alertComponent }
-                <Form onSubmit={ () => ({ /*No Operations*/ }) } uncontrolledForm={ true }>
+                <Form
+                    id={ FORM_ID }
+                    onSubmit={ () => ({ /*No Operations*/ }) }
+                    uncontrolledForm={ true }
+                >
                     <FilePicker
                         key={ 1 }
                         fileStrategy={ new CertFileStrategy() }

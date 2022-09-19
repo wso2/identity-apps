@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -33,7 +33,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Grid, Icon, Popup, SemanticCOLORS, SemanticICONS } from "semantic-ui-react";
 import { ShowCertificateModal } from "./show-certificate-modal";
-import { UIConstants } from "../../../../core";
 import { updateIDPCertificate } from "../../../api";
 import { IdentityProviderInterface } from "../../../models";
 
@@ -46,11 +45,13 @@ export interface IdpCertificatesListProps extends IdentifiableComponentInterface
     isReadOnly: boolean;
 }
 
+const FORM_ID: string = "idp-certificates-list-form";
+
 /**
  * List of added certificates.
  *
- * @param props {IdpCertificatesListProps}
- * @constructor
+ * @param props - Props injected to the component.
+ * @returns Functional component.
  */
 export const IdpCertificatesList: FC<IdpCertificatesListProps> = (
     props: PropsWithChildren<IdpCertificatesListProps>
@@ -67,7 +68,7 @@ export const IdpCertificatesList: FC<IdpCertificatesListProps> = (
     const dispatch = useDispatch();
 
     /**
-     * {@see deleteCertificate} function's doc comment. Enforcing this in components
+     * @see {@link deleteCertificate} function's doc comment. Enforcing this in components
      * state to ensure developers to not to make mistakes.
      *
      * {@link https://www.typescriptlang.org/docs/handbook/2/objects.html#the-readonlyarray-type}
@@ -97,7 +98,7 @@ export const IdpCertificatesList: FC<IdpCertificatesListProps> = (
      * Why call this in two places?
      *
      * 1) First, this func checks whether this IdP has certificates and
-     *    re-binds the new state to the component as {@link DisplayCertificate[]}.
+     *    re-binds the new state to the component as @see DisplayCertificate[].
      *
      * 2) Initially, when the component renders and when user adds a new certificate
      *    we need to refresh the state.
@@ -121,10 +122,10 @@ export const IdpCertificatesList: FC<IdpCertificatesListProps> = (
      * Remove the certificate from the certificated list.
      * The path attribute of the patch request requires the certificate index.
      * At the moment, the index of the certificate to be deleted is obtained from the indexes of
-     * {@see certificates} array. This may cause unexpected behaviours if the certificates array is manipulated
+     * @see certificates array. This may cause unexpected behaviours if the certificates array is manipulated
      * for some reason.
      *
-     * @param certificateIndex {number}
+     * @param certificateIndex - Cert index.
      */
     const deleteCertificate = async (certificateIndex: number) => {
 
@@ -184,9 +185,9 @@ export const IdpCertificatesList: FC<IdpCertificatesListProps> = (
     /**
      * Creates the resource item header.
      *
-     * @param validFrom {Date}
-     * @param validTill {Date}
-     * @param issuer {string}
+     * @param validFrom - Validate from date.
+     * @param validTill - Validate till date.
+     * @param issuer - Issuer.
      */
     const createValidityLabel = (validFrom: Date, validTill: Date, issuer: string): ReactElement => {
 
@@ -262,8 +263,8 @@ export const IdpCertificatesList: FC<IdpCertificatesListProps> = (
     /**
      * Creates the resource item description.
      *
-     * @param validFrom {Date}
-     * @param validTill {Date}
+     * @param validFrom - Validate from date.
+     * @param validTill - Validate till date.
      */
     const createDescription = (validFrom: Date, validTill: Date): string => {
         return CertificateManagementUtils.getValidityPeriodInHumanReadableFormat(
@@ -275,8 +276,8 @@ export const IdpCertificatesList: FC<IdpCertificatesListProps> = (
     /**
      * Creates the certificate actions.
      *
-     * @param certificate {DisplayCertificate}
-     * @param index {number}
+     * @param certificate - Certificate.
+     * @param index - Cert index.
      */
     const createCertificateActions = (certificate: DisplayCertificate, index: number) => {
         return [
@@ -301,7 +302,8 @@ export const IdpCertificatesList: FC<IdpCertificatesListProps> = (
 
     /**
      * Creates what to show as the resource list item avatar.
-     * @param certificate {DisplayCertificate}
+     *
+     * @param certificate - Certificate.
      */
     const createCertificateResourceAvatar = (certificate: DisplayCertificate): ReactElement => {
         return (
@@ -319,8 +321,10 @@ export const IdpCertificatesList: FC<IdpCertificatesListProps> = (
 
     return (
         <Form
+            id={ FORM_ID }
             onSubmit={ CertificateManagementConstants.NO_OPERATIONS }
-            uncontrolledForm={ true }>
+            uncontrolledForm={ true }
+        >
             <Grid>
                 <Grid.Row>
                     <Grid.Column>

@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (http://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -32,7 +32,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Button, CheckboxProps, Divider, Grid } from "semantic-ui-react";
 import { FeatureConfigInterface } from "../../../core";
-import { DISABLED } from "../../../userstores";
 import { deleteOrganization, patchOrganization } from "../../api";
 import {
     ORGANIZATION_DESCRIPTION_MAX_LENGTH,
@@ -68,6 +67,14 @@ interface OrganizationOverviewPropsInterface extends SBACInterface<FeatureConfig
     onOrganizationDelete: (organizationId: string) => void;
 }
 
+const FORM_ID: string = "organization-overview-form";
+
+/**
+ * Organization overview component.
+ *
+ * @param props - Props injected to the component.
+ * @returns Functional component.
+ */
 export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsInterface> = (
     props: OrganizationOverviewPropsInterface
 ): ReactElement => {
@@ -320,7 +327,7 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
 
         if (values?.description && (values?.description.length > ORGANIZATION_DESCRIPTION_MAX_LENGTH
             || values?.description.length < ORGANIZATION_DESCRIPTION_MIN_LENGTH)) {
-            error.description = `Organization description length should be at least 
+            error.description = `Organization description length should be at least
             ${ ORGANIZATION_DESCRIPTION_MIN_LENGTH } and at most ${ ORGANIZATION_DESCRIPTION_MAX_LENGTH } characters`;
         }
 
@@ -334,6 +341,7 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                     <Grid.Row columns={ 1 }>
                         <Grid.Column width={ 8 }>
                             <Form
+                                id={ FORM_ID }
                                 data-testid={ `${testId}-form` }
                                 onSubmit={ handleSubmit }
                                 uncontrolledForm={ false }

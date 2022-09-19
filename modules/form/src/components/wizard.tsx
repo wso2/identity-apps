@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import React, { ReactElement, cloneElement, useState, useEffect } from "react";
+import React, { ReactElement, useState } from "react";
 import { FormProps } from "react-final-form";
 import { Form } from ".";
 import { WizardPage } from "./wizardPage";
@@ -25,7 +25,13 @@ import { WizardPage } from "./wizardPage";
 /**
  * Interface for the wizard steps.
  */
- interface WizardFormInterface extends FormProps { 
+ interface WizardFormInterface extends FormProps {
+    /**
+     * Unique id for the form.
+     * Required for event propagation.
+     * @see {@link https://github.com/final-form/react-final-form/issues/878}
+     */
+    id: string;
     /**
      * Function to change to previous step.
      */
@@ -46,23 +52,25 @@ import { WizardPage } from "./wizardPage";
 
 /**
  * Implementation of wizard component.
- * @param props Wizard form based on react froms
- * @returns 
+ *
+ * @param props - Wizard form based on react froms
+ * @returns Functional component.
  */
 export const Wizard= (props: WizardFormInterface ): ReactElement => {
 
-    const { 
-        children, 
-        onSubmit, 
-        triggerPrevious, 
+    const {
+        id,
+        children,
+        onSubmit,
+        triggerPrevious,
         changePage,
-        setTotalPage, 
-        ...rest 
+        setTotalPage,
+        ...rest
     } = props;
 
 
-    const [page, setPage] = useState<number>(0);
-    const [values, setValues] = useState<any>({});
+    const [ page, setPage ] = useState<number>(0);
+    const [ values, setValues ] = useState<any>({});
 
 
     /**
@@ -73,7 +81,7 @@ export const Wizard= (props: WizardFormInterface ): ReactElement => {
             setTotalPage(React.Children.count(children));
         }
     }, []);
- 
+
     const handlNext = (values): void => {
         setPage(Math.min(page + 1,children.length-1));
         setValues(values);
@@ -81,23 +89,19 @@ export const Wizard= (props: WizardFormInterface ): ReactElement => {
     };
 
     const handlPrevious = () => {
-      setPage(Math.max(page - 1,0));
-      changePage(Math.max(page - 1,0));
-
-    }
-
-    const passPageNumber =():number =>{
-        return page;
-    }
+        setPage(Math.max(page - 1,0));
+        changePage(Math.max(page - 1,0));
+    };
 
     const handleSubmit = (values,form )=> {
-        const isLastPage = page === React.Children.count(children) - 1
+        const isLastPage = page === React.Children.count(children) - 1;
+
         if (isLastPage) {
-          return onSubmit(values,form)
+            return onSubmit(values,form);
         } else {
-            handlNext(values)
+            handlNext(values);
         }
-    }
+    };
 
     if (triggerPrevious && typeof triggerPrevious === "function") {
         triggerPrevious(handlPrevious);
@@ -105,25 +109,26 @@ export const Wizard= (props: WizardFormInterface ): ReactElement => {
 
     const  validate = values => {
         const activePage:any = React.Children.toArray(children)[page];
-        return activePage.props.validate ? activePage.props.validate(values) : {}
-    }
+
+        return activePage.props.validate ? activePage.props.validate(values) : {};
+    };
 
     const activePage = React.Children.toArray(children)[page];
-    const isLastPage = page === React.Children.count(children) - 1;
 
     return (
         <Form
-            initialValues={values}
-            validate={validate}
-            onSubmit={handleSubmit}
+            id={ id }
+            initialValues={ values }
+            validate={ validate }
+            onSubmit={ handleSubmit }
             keepDirtyOnReinitialize={ true }
-            uncontrolledForm={true}
+            uncontrolledForm={ true }
             { ...rest }
         >
-            {activePage}
+            { activePage }
         </Form>
-    )
-   
-}
+    );
+
+};
 
 Wizard.Page= WizardPage;

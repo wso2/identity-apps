@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,7 +16,7 @@
  * under the License.
  */
 
- import { TestableComponentInterface } from "@wso2is/core/models";
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Wizard, WizardPage } from "@wso2is/form";
 import React, { ReactElement } from "react";
 import { useTranslation } from "react-i18next";
@@ -37,6 +37,15 @@ const URL_MAX_LENGTH: number = 2048;
     setTotalPage: (number) => void;
     onSubmit: (values)=> void;
 }
+
+const FORM_ID: string = "oidc-authenticator-wizard-form";
+
+/**
+ * OIDC Authenticator wizard form.
+ *
+ * @param props - Props injected to the component.
+ * @returns Functional component.
+ */
 export const OidcAuthenticationWizardFrom = (props: OidcAuthenticationWizardFromPropsInterface): ReactElement => {
 
     const {
@@ -56,6 +65,7 @@ export const OidcAuthenticationWizardFrom = (props: OidcAuthenticationWizardFrom
      */
     const clientIdRegexValidation= (value) => {
         const regex = new RegExp(".*");
+
         if (!regex.test(value)) {
             return "Please enter a valid input.";
         }
@@ -63,40 +73,42 @@ export const OidcAuthenticationWizardFrom = (props: OidcAuthenticationWizardFrom
 
     return (
         <>
-        <Wizard
-            initialValues={ { name: template?.idp?.name } }
-            onSubmit={ (values)=>onSubmit(values) }
-            triggerSubmit={ (submitFunction) => triggerSubmission(submitFunction) }
-            triggerPrevious= { (previousFunction) => triggerPrevious(previousFunction) }
-            changePage= { (step:number)=> changePageNumber(step) }
-            setTotalPage= { (step:number)=> setTotalPage(step) }
-            data-testid={ testId }
-        >
-            <WizardPage
-                // TODO: Need to refactor once wizard can handle validation properly.
-                validate={ (values): any => {
-
-                    const errors: any = {};
-
-                    if (!values.name) {
-                        errors.name = "This is a required field.";
-                    }
-                    if (!values.clientId) {
-                        errors.clientId = "This is a required field.";
-                    }
-                    if (!values.clientSecret) {
-                        errors.clientSecret = "This is a required field.";
-                    }
-                    if (!values.authorizationEndpointUrl) {
-                        errors.authorizationEndpointUrl = "This is a required field.";
-                    }
-                    if (!values.tokenEndpointUrl) {
-                        errors.tokenEndpointUrl = "This is a required field.";
-                    }
-                    return errors;
-                } }
+            <Wizard
+                id={ FORM_ID }
+                initialValues={ { name: template?.idp?.name } }
+                onSubmit={ (values)=>onSubmit(values) }
+                triggerSubmit={ (submitFunction) => triggerSubmission(submitFunction) }
+                triggerPrevious= { (previousFunction) => triggerPrevious(previousFunction) }
+                changePage= { (step:number)=> changePageNumber(step) }
+                setTotalPage= { (step:number)=> setTotalPage(step) }
+                data-testid={ testId }
             >
-            <Field.Input
+                <WizardPage
+                    // TODO: Need to refactor once wizard can handle validation properly.
+                    validate={ (values): any => {
+
+                        const errors: any = {};
+
+                        if (!values.name) {
+                            errors.name = "This is a required field.";
+                        }
+                        if (!values.clientId) {
+                            errors.clientId = "This is a required field.";
+                        }
+                        if (!values.clientSecret) {
+                            errors.clientSecret = "This is a required field.";
+                        }
+                        if (!values.authorizationEndpointUrl) {
+                            errors.authorizationEndpointUrl = "This is a required field.";
+                        }
+                        if (!values.tokenEndpointUrl) {
+                            errors.tokenEndpointUrl = "This is a required field.";
+                        }
+
+                        return errors;
+                    } }
+                >
+                    <Field.Input
                         ariaLabel= "name"
                         inputType= "name"
                         name="name"
@@ -175,13 +187,13 @@ export const OidcAuthenticationWizardFrom = (props: OidcAuthenticationWizardFrom
                     />
                 </WizardPage>
             </Wizard>
-            </>
+        </>
     );
 };
 
 /**
  * Default props for the oidc creation wizard.
  */
- OidcAuthenticationWizardFrom.defaultProps = {
+OidcAuthenticationWizardFrom.defaultProps = {
     "data-testid": "idp-edit-idp-create-wizard"
 };

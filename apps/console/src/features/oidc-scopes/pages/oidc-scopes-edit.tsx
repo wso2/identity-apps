@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -59,12 +59,13 @@ interface OIDCScopesEditPagePathParams {
  */
 type OIDCScopesEditPageInterface = TestableComponentInterface;
 
+const FORM_ID: string = "oidc-scope-form";
+
 /**
  * OIDC Scopes Edit page component.
  *
- * @param {OIDCScopesEditPageInterface} props - Props injected to the component.
- *
- * @return {React.ReactElement}
+ * @param props - Props injected to the component.
+ * @returns Functional component.
  */
 const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPagePathParams> &
     OIDCScopesEditPageInterface> = (
@@ -101,7 +102,7 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
         const [ claims, setClaims ] = useState<Claim[]>([]);
         const [ isScopeRequestLoading, setScopeRequestLoading ] = useState<boolean>(true);
         const [ isAttributeRequestLoading, setIsAttributeRequestLoading ] = useState<boolean>(true);
-        const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
+        const [ listItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
         const [ OIDCAttributes, setOIDCAttributes ] = useState<ExternalClaim[]>(undefined);
         const [ selectedAttributes, setSelectedAttributes ] = useState<ExternalClaim[]>([]);
         const [ tempSelectedAttributes, setTempSelectedAttributes ] = useState<ExternalClaim[]>([]);
@@ -330,7 +331,7 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
         /**
         * Handles sort order change.
         *
-        * @param {boolean} isAscending.
+        * @param isAscending - Is ascending or not.
         */
         const handleSortOrderChange = (isAscending: boolean) => {
             setSortOrder(isAscending);
@@ -339,8 +340,8 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
         /**
         * Handle sort strategy change.
         *
-        * @param {React.SyntheticEvent<HTMLElement>} event.
-        * @param {DropdownProps} data.
+        * @param event - Sort event..
+        * @param data - Dropdown data.
         */
         const handleSortStrategyChange = (event: React.SyntheticEvent<HTMLElement>, data: DropdownProps) => {
             setSortByStrategy(SORT_BY.filter(option => option.value === data.value)[ 0 ]);
@@ -435,6 +436,7 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
                             <Grid.Column width={ 6 }>
                                 { !isScopeRequestLoading && !isAttributeRequestLoading ? (
                                     <Form
+                                        id={ FORM_ID }
                                         uncontrolledForm={ false }
                                         onSubmit={ (values): void => {
                                             onSubmit(values);
@@ -483,8 +485,9 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
                                             minLength={ 3 }
                                             readOnly={ isReadOnly }
                                         />
-                                        { !isReadOnly &&
-                                            (<Field.Button
+                                        { !isReadOnly && (
+                                            <Field.Button
+                                                form={ FORM_ID }
                                                 ariaLabel="submit"
                                                 size="small"
                                                 loading={ isSubmitting }
@@ -492,8 +495,8 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
                                                 buttonType="primary_btn"
                                                 label={ t("common:update") }
                                                 name="submit"
-                                            />)
-                                        }
+                                            />
+                                        ) }
                                     </Form>
                                 ) : (
                                     <Placeholder>
