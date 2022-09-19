@@ -32,6 +32,7 @@ import {
     ApplicationTemplateListInterface,
     AuthProtocolMetaListItemInterface,
     MainApplicationInterface,
+    myAccountPortalStatusInterface,
     OIDCApplicationConfigurationInterface,
     OIDCDataInterface,
     SAMLApplicationConfigurationInterface,
@@ -995,7 +996,12 @@ export const getRequestPathAuthenticators = (): Promise<any> => {
  */
  export const updateMyAccountStatus = (status: boolean): Promise<any> => {
 
-    const config = `{"name": "status", "attributes": [{"key": "enable", "value": ${ status }}]}`;
+    const config = {
+            name: "status", 
+            attributes: [{
+                key: "enable", 
+                value: status
+            }]};
 
     const requestConfig: AxiosRequestConfig = {
         data: config,
@@ -1038,7 +1044,7 @@ export const getRequestPathAuthenticators = (): Promise<any> => {
  *
  * @returns Reponse of the My Account status retrieval request.
  */
-export const getMyAccountStatus = <Data = Object, Error = RequestErrorInterface>(
+export const useMyAccountStatus = <Data = myAccountPortalStatusInterface, Error = RequestErrorInterface>(
 ): RequestResultInterface<Data, Error> => {
 
     const requestConfig: RequestConfigInterface = {

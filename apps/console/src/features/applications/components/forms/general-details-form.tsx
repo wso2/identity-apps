@@ -27,7 +27,7 @@ import { AppConstants, AppState, UIConfigInterface } from "../../../core";
 import { ApplicationManagementConstants } from "../../constants";
 import { applicationConfig } from "../../../../extensions";
 import {ApplicationInterface} from "../../models";
-import { getMyAccountStatus } from "../../api";
+import { useMyAccountStatus } from "../../api";
 
 /**
  * Proptypes for the applications general details form component.
@@ -215,7 +215,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
         isLoading: isMyAccountStatusLoading,
         error: myAccountStatusFetchRequestError,
         mutate: mutateMyAccountStatusFetchRequest
-    } = getMyAccountStatus();
+    } = useMyAccountStatus();
 
     /**
      * Sets the initial spinner.
@@ -223,19 +223,24 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
      */
     useEffect(() => {
         let status: boolean = AppConstants.DEFAULT_MY_ACCOUNT_STATUS;
-        if ( myAccountStatus ) {
+        if (myAccountStatus) {
             const enableProperty = myAccountStatus["value"];
-            if ( enableProperty && enableProperty == "false" ) {
+            if ( enableProperty && enableProperty === "false" ) {
                 status = false
             }
         }
-        console.log(status);
         setMyAccountStatus(status);
     }, [ isMyAccountStatusLoading ]);
-
+ 
+    if (isMyAccountStatusLoading) {
+        return (
+            <EmphasizedSegment padded="very">
+                <ContentLoader inline="centered" active/>
+            </EmphasizedSegment>
+        );
+    }
+    
     return (
-        !isMyAccountStatusLoading
-            ? (
         <Form
             uncontrolledForm={ false }
             onSubmit={ (values) => {
@@ -414,12 +419,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                 hidden={ !hasRequiredScope || ( readOnly && applicationConfig.generalSettings.getFieldReadOnlyStatus(
                     application, "ACCESS_URL"))}
             />
-        </Form>) :
-           (
-               <EmphasizedSegment padded="very">
-                   <ContentLoader inline="centered" active/>
-               </EmphasizedSegment>
-           )
+        </Form>
     );
 };
 

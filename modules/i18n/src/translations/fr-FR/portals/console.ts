@@ -2400,15 +2400,15 @@ export const console: ConsoleNS = {
                     },
                     Confirmation: {
                         enableConfirmation: {
-                            content: "Il n'est pas recommandé d'utiliser le portail Mon compte en production car il " +
-                                "est en mode aperçu.",
+                            content: "Le portail Mon compte est en mode aperçu et il est recommandé de le désactiver " +
+                                "lorsque votre organisation passe en production.",
                             heading: "Êtes-vous sûr?",
                             message: "Activer le portail Mon compte."
                         },
                         disableConfirmation: {
-                            content: "Si vous désactivez le portail Mon compte, les utilisateurs de votre " +
-                                "organisation ne pourront pas accéder aux fonctionnalités en libre-service fournies " +
-                                "via le portail Mon compte.",
+                            content: "Le portail Mon compte est en mode aperçu et il est recommandé de le désactiver " +
+                                "lorsque votre organisation passe en production. Lorsque le portail Mon compte est " +
+                                "désactivé, les utilisateurs de votre organisation ne pourront pas y accéder.",
                             heading: "Êtes-vous sûr?",
                             message: "Désactiver le portail Mon compte."
                         }

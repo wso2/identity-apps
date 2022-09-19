@@ -69,7 +69,7 @@ import {
     history
 } from "../../core";
 import { RemoteFetchStatus } from "../../remote-repository-configuration";
-import { useApplicationList, getMyAccountStatus, updateMyAccountStatus } from "../api";
+import { useApplicationList, useMyAccountStatus, updateMyAccountStatus } from "../api";
 import { ApplicationList, MinimalAppCreateWizard } from "../components";
 import { ApplicationManagementConstants } from "../constants";
 import CustomApplicationTemplate
@@ -158,7 +158,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
         isLoading: isMyAccountStatusLoading,
         error: myAccountStatusFetchRequestError,
         mutate: mutateMyAccountStatusFetchRequest
-    } = getMyAccountStatus();
+    } = useMyAccountStatus();
 
     /**
      * Sets the initial spinner.
@@ -168,9 +168,9 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
         if (isApplicationListFetchRequestLoading === false && isMyAccountStatusLoading === false
             && isLoadingForTheFirstTime === true) {
             let status: boolean = AppConstants.DEFAULT_MY_ACCOUNT_STATUS;
-            if ( myAccountStatus ) {
+            if (myAccountStatus) {
                 const enableProperty = myAccountStatus["value"];
-                if ( enableProperty && enableProperty == "false" ) {
+                if (enableProperty && enableProperty === "false") {
                     status = false
                 }
             }
@@ -336,8 +336,11 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
 
     /**
      * Handles the My Account Portal status update action.
+     *
+     * @param e     SyntheticEvent of My Account toggle.
+     * @param data  CheckboxProps of My Account toggle.
      */
-     const handleMyAccountStatusToggle = (e: SyntheticEvent, data: CheckboxProps) => {
+     const handleMyAccountStatusToggle = (e: SyntheticEvent, data: CheckboxProps): void => {
 
         if (data.checked) {
             setShowMyAccountStatusEnableConfirmationModal(true);
@@ -348,8 +351,10 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
 
     /**
      * Update the My Account Portal status.
+     *
+     * @param status    New status of the My Account portal.
      */
-    const handleUpdateMyAccountStatus = (status: boolean) => {
+    const handleUpdateMyAccountStatus = (status: boolean): void => {
 
         updateMyAccountStatus(status)
         	.then(() => {
@@ -383,7 +388,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
 
     /**
      * Renders a confirmation modal when the My Account Portal status is being enabled.
-     * @return {ReactElement}
+     * @returns My Account status enabling warning modal.
      */
      const renderMyAccountStatusEnableWarning = (): ReactElement => {
 

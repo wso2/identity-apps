@@ -2356,14 +2356,15 @@ export const console: ConsoleNS = {
                     },
                     Confirmation: {
                         enableConfirmation: {
-                            content: "The My Account portal is not recommended to use in production as " +
-                                "it is in preview mode.",
+                            content: "The My Account portal is in preview mode and it is recommended to disable it " + 
+                                "when your organization goes into production.",
                             heading: "Are you sure?",
                             message: "Enable My Account portal."
                         },
                         disableConfirmation: {
-                            content: "If you disable the My Account portal, users in your organization will not be " +
-                                "able to access self-service features provided via the My Account portal.",
+                            content: "The My Account portal is in preview mode and it is recommended to disable it " + 
+                                "when your organization goes into production. When My Account portal is disabled, " + 
+                                "users of your organization will not be able to access it.",
                             heading: "Are you sure?",
                             message: "Disable My Account portal."
                         }
