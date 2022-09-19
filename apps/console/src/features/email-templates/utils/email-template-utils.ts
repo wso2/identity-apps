@@ -41,7 +41,7 @@ export class EmailTemplateUtils {
     public static filterEmailTemplateTypesForOrganization
     (emailTemplateData: EmailTemplateType[]): any[] {
 
-        return emailTemplateData.filter(data=>{
+        return emailTemplateData.filter(data => {
             if (EmailTemplateManagementConstants.EMAIL_TEMPLATE_TYPES_FOR_ORGS.includes(data.id)) {
                 return data;
             }
