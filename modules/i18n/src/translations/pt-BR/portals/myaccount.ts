@@ -1383,6 +1383,15 @@ export const myAccount: MyAccountNS = {
             },
             lastAccessed: "Último acesso {{date}}",
             modals: {
+                terminateActiveUserSessionModal: {
+                    heading: "Encerrar sessões ativas atuais",
+                    message:
+                        "As alterações da opção de autenticação de segundo fator (2FA) não serão aplicadas às suas sessões ativas. " +
+                        "Recomendamos que você os encerre.",
+                    primaryAction: "Terminar tudo",
+                    secondaryAction: "Revisar e encerrar"    
+
+                },
                 terminateAllUserSessionsModal: {
                     heading: "Confirmação",
                     message: "A ação o desconectará desta sessão e de todas as outras sessões em todos os " +

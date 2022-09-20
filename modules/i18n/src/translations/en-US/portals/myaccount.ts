@@ -1395,6 +1395,15 @@ export const myAccount: MyAccountNS = {
             },
             lastAccessed: "Last accessed {{date}}",
             modals: {
+                terminateActiveUserSessionModal: {
+                    heading: "Terminate Current Active Sessions",
+                    message:
+                        "The second-factor authentication (2FA) option changes will not be applied to your active sessions. We recommend " +
+                        "that you terminate them.",
+                    primaryAction: "Terminate all",
+                    secondaryAction: "Review and terminate"    
+
+                },
                 terminateAllUserSessionsModal: {
                     heading: "Confirmation",
                     message:
