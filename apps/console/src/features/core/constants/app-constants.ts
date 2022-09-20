@@ -325,7 +325,10 @@ export class AppConstants {
      * 
      * @returns Filtered governance connector categories.
      */
-    public static filterGoverananceConnectors(governanceConnectorCategories: GovernanceConnectorCategoryInterface[])
+    public static filterGoverananceConnectors(
+        governanceConnectorCategories: GovernanceConnectorCategoryInterface[]
+    ) : GovernanceConnectorCategoryInterface[] {
+    }
     : GovernanceConnectorCategoryInterface[] {
         const showGovernanceConnectorsIdOfSuborgs = [];
 
