@@ -555,7 +555,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
         const manageRoutes = [ ...filteredManageRoutes ];
         const sanitizedRoutes = [ ...sanitizedManageRoutes ];
 
-        if(!OrganizationUtils.isCurrentOrganizationRoot()){
+        if (!OrganizationUtils.isCurrentOrganizationRoot()) {
             governanceConnectorCategories = AppConstants.filterGoverananceConnectors(governanceConnectorCategories);
         }
 
