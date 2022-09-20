@@ -132,9 +132,9 @@ export const resolveUserstore= (username: string): string => {
 /**
  * Checks if the display name attribute is enabled or not
  *
- * @returns boolean
  * @param profileSchema - The schema
  * @param displayName - displayName
+ * @returns boolean
  */
 const isDisplayNameEnabled = (profileSchema: ProfileSchemaInterface[], displayName?: string): boolean => {
     if (!displayName) {
