@@ -94,7 +94,7 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
         getConnectorCategory(categoryId)
             .then((response: GovernanceConnectorCategoryInterface) => {
 
-                if(!OrganizationUtils.isCurrentOrganizationRoot()) {
+                if (!OrganizationUtils.isCurrentOrganizationRoot()) {
                     response.connectors = 
                         GovernanceConnectorUtils
                             .filterGovernanceConnectorCategories(categoryId, response.connectors);
