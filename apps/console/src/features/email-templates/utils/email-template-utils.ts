@@ -38,7 +38,9 @@ export class EmailTemplateUtils {
      * 
      * @returns Filtered templates as a list.
      */
-    public static filterEmailTemplateTypesForOrganization
+    public static filterEmailTemplateTypesForOrganization(
+        emailTemplateData: EmailTemplateType[]
+    ) : any[] {
     (emailTemplateData: EmailTemplateType[]): any[] {
 
         return emailTemplateData.filter(data => {
