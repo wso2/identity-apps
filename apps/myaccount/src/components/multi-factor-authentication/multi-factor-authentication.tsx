@@ -65,6 +65,7 @@ export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (pro
     const [ isBackupCodesConfigured, setIsBackupCodesConfigured ] = useState<boolean>(false);
     const [ initBackupCodeFlow, setInitBackupCodeFlow ] = useState<boolean>(false);
     const [ showSessionTerminationModal, setShowSessionTerminationModal ] = useState<boolean>(false);
+    const [ showModal, setShowModal ] = useState<boolean>(false);
 
     const translateKey: string = "myAccount:components.mfa.backupCode.";
     const totpAuthenticatorName: string = "totp";
@@ -98,6 +99,19 @@ export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (pro
         setIsTOTPEnabled(enabledAuthenticators?.includes(totpAuthenticatorName) ?? false);
         setIsBackupCodesConfigured(enabledAuthenticators?.includes(backupCodeAuthenticatorName) ?? false);
     }, [ enabledAuthenticators ]);
+
+    /**
+     * Delay the session termination modal.
+     */
+    useEffect(() => {
+        if (showSessionTerminationModal) {
+            setTimeout(() => {
+                setShowModal(showSessionTerminationModal);
+            }, 1500);
+        } else {
+            setShowModal(showSessionTerminationModal);
+        }
+    }, [ showSessionTerminationModal ]);
 
     /**
      * Reset init backup code state, when the backup code setup flow is completed.
@@ -201,7 +215,7 @@ export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (pro
                     ) : null }
             </List>
             <UserSessionTerminationModal 
-                isModalOpen={ showSessionTerminationModal } 
+                isModalOpen={ showModal } 
                 handleModalClose={ () => setShowSessionTerminationModal(false) }
             />
         </SettingsSection>
