@@ -1022,6 +1022,46 @@ export interface ConsoleNS {
                     title: string;
                     description: string;
                     popup: string;
+                    enable: {
+                        0: string;
+                        1: string;
+                    };
+                    Confirmation: {
+                        enableConfirmation: {
+                            content: string;
+                            heading: string;
+                            message: string;
+                        };
+                        disableConfirmation: {
+                            content: string;
+                            heading: string;
+                            message: string;
+                        };
+                    };
+                    notifications: {
+                        error: {
+                            description: string;
+                            message: string;
+                        };
+                        genericError: {
+                            description: string;
+                            message: string;
+                        };
+                        success: {
+                            description: string;
+                            message: string;
+                        };
+                    };
+                    fetchMyAccountStatus: {
+                        error: {
+                            description: string;
+                            message: string;
+                        },
+                        genericError: {
+                            description: string;
+                            message: string;
+                        },
+                    }
                 };
                 notifications: {
                     addApplication: Notification;

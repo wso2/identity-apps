@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -28,8 +28,6 @@ export class AppConstants {
     /**
      * Private constructor to avoid object instantiation from outside
      * the class.
-     *
-     * @hideconstructor
      */
     /* eslint-disable @typescript-eslint/no-empty-function */
     private constructor() { }
@@ -37,7 +35,7 @@ export class AppConstants {
     /**
      * Get the admin view base path.
      *
-     * @return {string}
+     * @returns The admin view base path.
      */
     public static getAdminViewBasePath(): string {
         return window["AppUtils"]?.getConfig()?.adminApp.basePath;
@@ -46,7 +44,7 @@ export class AppConstants {
     /**
      * Get the admin view home path.
      *
-     * @return {string}
+     * @returns The admin view home path.
      */
     public static getAdminViewHomePath(): string {
         return window["AppUtils"]?.getConfig()?.adminApp.path;
@@ -55,7 +53,7 @@ export class AppConstants {
     /**
      * Get the full screen view base path.
      *
-     * @return {string}
+     * @returns The full screen view base path.
      */
     public static getFullScreenViewBasePath(): string {
         return this.getMainViewBasePath() + "/fullscreen";
@@ -64,7 +62,7 @@ export class AppConstants {
     /**
      * Get the developer view base path.
      *
-     * @return {string}
+     * @returns The developer view base path.
      */
     public static getDeveloperViewBasePath(): string {
         return window["AppUtils"]?.getConfig()?.developerApp.basePath;
@@ -73,7 +71,7 @@ export class AppConstants {
     /**
      * Get the developer view home path.
      *
-     * @return {string}
+     * @returns The developer view home path.
      */
     public static getDeveloperViewHomePath(): string {
         return window["AppUtils"]?.getConfig()?.developerApp.path;
@@ -84,7 +82,7 @@ export class AppConstants {
      * If `this.getTenantQualifiedAppBasePath()` returns with just "/",
      * return empty string.
      *
-     * @return {string}
+     * @returns The main view base path.
      */
     public static getMainViewBasePath(): string {
         return this.getTenantQualifiedAppBasePath() !== "/"
@@ -95,7 +93,7 @@ export class AppConstants {
     /**
      * Get tenant qualified app base name. ex: `t/<BASENAME>`
      *
-     * @return {string}
+     * @returns The tenant qualified app base name.
      */
     public static getTenantQualifiedAppBasename(): string {
         return window["AppUtils"]?.getConfig()?.appBaseWithTenant;
@@ -104,7 +102,7 @@ export class AppConstants {
     /**
      * Get tenant qualified app base path. ex: `/t/<BASENAME>`
      *
-     * @return {string}
+     * @returns The tenant qualified app base path.
      */
     public static getTenantQualifiedAppBasePath(): string {
         return "/" + StringUtils.removeSlashesFromPath(this.getTenantQualifiedAppBasename());
@@ -113,7 +111,7 @@ export class AppConstants {
     /**
      * Get app base name. ex: `<BASENAME>`
      *
-     * @return {string}
+     * @returns The app base name.
      */
     public static getAppBasename(): string {
         return window["AppUtils"]?.getConfig()?.appBase;
@@ -122,7 +120,7 @@ export class AppConstants {
     /**
      * Get tenant qualified app base path. ex: `/<BASENAME>`
      *
-     * @return {string}
+     * @returns The tenant qualified app base path.
      */
     public static getAppBasePath(): string {
         return "/" + StringUtils.removeSlashesFromPath(this.getAppBasename());
@@ -131,7 +129,7 @@ export class AppConstants {
     /**
      * Get the app home path.
      *
-     * @return {string}
+     * @returns The app home path.
      */
     public static getAppHomePath(): string {
         return window["AppUtils"]?.getConfig()?.routes.home;
@@ -140,7 +138,7 @@ export class AppConstants {
     /**
      * Get the app login path.
      *
-     * @return {string}
+     * @returns The app login path.
      */
     public static getAppLoginPath(): string {
         return window[ "AppUtils" ]?.getConfig()?.routes.login;
@@ -149,7 +147,7 @@ export class AppConstants {
     /**
      * Get the app login path.
      *
-     * @return {string}
+     * @returns The app login path.
      */
     public static getAppLogoutPath(): string {
         return window[ "AppUtils" ]?.getConfig()?.routes.logout;
@@ -158,7 +156,7 @@ export class AppConstants {
     /**
      * Get the app Client ID.
      *
-     * @return {string}
+     * @returns The app Client ID.
      */
     public static getClientID(): string {
         return window["AppUtils"]?.getConfig()?.clientID;
@@ -167,7 +165,7 @@ export class AppConstants {
     /**
      * Get app theme configs.
      *
-     * @return {AppThemeConfigInterface}
+     * @returns App theme configs.
      */
     public static getAppTheme(): AppThemeConfigInterface {
         return window["AppUtils"]?.getConfig()?.ui?.theme;
@@ -176,7 +174,7 @@ export class AppConstants {
     /**
      * Get the My Account path.
      *
-     * @return {string}
+     * @returns The My Account path.
      */
     public static getMyAccountPath(): string {
 
@@ -186,7 +184,7 @@ export class AppConstants {
     /**
      * Get the tenant path. ex: `/t/wso2.com`.
      *
-     * @return {string}
+     * @returns The tenant path.
      */
     public static getTenantPath(): string {
         return window["AppUtils"]?.getConfig()?.tenantPath;
@@ -195,7 +193,7 @@ export class AppConstants {
     /**
      * Get the tenant. ex: `abc.com`.
      *
-     * @return {string}
+     * @returns The tenant domain
      */
     public static getTenant(): string {
         return window["AppUtils"]?.getConfig()?.tenant;
@@ -204,7 +202,7 @@ export class AppConstants {
     /**
      * Get the super tenant. ex: `carbon.super`.
      *
-     * @return {string}
+     * @returns The super tenant domain.
      */
     public static getSuperTenant(): string {
         return window["AppUtils"]?.getConfig()?.superTenant;
@@ -213,7 +211,7 @@ export class AppConstants {
     /**
      * Get the client origin. ex: `https://localhost:9443`.
      *
-     * @return {string}
+     * @returns The client origin.
      */
     public static getClientOrigin(): string {
         return window["AppUtils"]?.getConfig()?.clientOrigin;
@@ -222,7 +220,7 @@ export class AppConstants {
     /**
      * Get the client origin with tenant. ex: `https://localhost:9443/t/wso2.comn`.
      *
-     * @return {string}
+     * @returns The client origin with tenant.
      */
     public static getClientOriginWithTenant(): string {
         return window["AppUtils"]?.getConfig()?.clientOriginWithTenant;
@@ -231,14 +229,13 @@ export class AppConstants {
     /**
      * URL param for email template add state.
      * NOTE: Not needed if the same component is not used for edit and add,
-     * @type {string}
      */
     public static readonly EMAIL_TEMPLATE_ADD_URL_PARAM: string = "add-template";
 
     /**
      * Get all the app paths as a map.
      *
-     * @return {Map<string, string>}
+     * @returns All the app paths as a map.
      */
     public static getPaths(): Map<string, string> {
 
@@ -321,25 +318,16 @@ export class AppConstants {
 
     /**
      * Name of the app config file for the admin portal.
-     * @constant
-     * @type {string}
-     * @default
      */
     public static readonly APP_CONFIG_FILE_NAME: string = "app.config.json";
 
     /**
      * Error given by server when the user has denied consent.
-     * @constant
-     * @type {string}
-     * @default
      */
     public static readonly USER_DENIED_CONSENT_SERVER_ERROR = "User denied the consent";
 
     /**
      * Set of login errors to be used as search params to toggle unauthorized page appearance.
-     * @constant
-     * @type {Map<string, string>}
-     * @default
      */
     public static readonly LOGIN_ERRORS: Map<string, string> = new Map<string, string>()
         .set("NO_LOGIN_PERMISSION", "no_login_permission")
@@ -348,9 +336,6 @@ export class AppConstants {
 
     /**
      * Route ids that are enabled in an organization.
-     * @constant
-     * @type {string[]}
-     * @default
      * */
     public static readonly ORGANIZATION_ENABLED_ROUTES: string[] = [
         "identityProviders",
@@ -363,10 +348,6 @@ export class AppConstants {
 
     /**
      * Organization-management-related route ids
-     *
-     * @constant
-     * @type {string[]}
-     * @default
      */
     public static readonly ORGANIZATION_ROUTES: string[] = [
         "organizations",
@@ -376,9 +357,6 @@ export class AppConstants {
 
     /**
      * Route ids that are enabled in only for an organizations (Not allowed in root organization).
-     * @constant
-     * @type {string[]}
-     * @default
      */
     public static readonly ORGANIZATION_ONLY_ROUTES: string[] = [
         "organization-roles"
@@ -386,9 +364,11 @@ export class AppConstants {
 
     /**
      * Name of the root node
-     * @constant
-     * @type {string}
-     * @default
      */
     public static readonly PERMISSIONS_ROOT_NODE: string = "All Permissions";
+
+    /**
+     * Default status of the My Account portal.
+     */
+    public static readonly DEFAULT_MY_ACCOUNT_STATUS: boolean = true;
 }

@@ -626,6 +626,14 @@ export interface SAMLApplicationConfigurationInterface {
     metadata: string;
 }
 
+/**
+ * Status of the My Account portal.
+ */
+export interface MyAccountPortalStatusInterface {
+    attribute?: string;
+    value?: string;
+}
+
 export const emptyOIDCAppConfiguration = (): OIDCApplicationConfigurationInterface => ({
     authorizeEndpoint: "",
     endSessionEndpoint: "",
