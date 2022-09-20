@@ -34,7 +34,6 @@ import { useMyAccountStatus } from "../../api";
 import { ApplicationManagementConstants } from "../../constants";
 import { ApplicationInterface } from "../../models";
 
-
 /**
  * Proptypes for the applications general details form component.
  */
@@ -103,11 +102,13 @@ export interface GeneralDetailsFormErrorValidationsInterface {
     accessUrl?: string;
 }
 
+const FORM_ID: string = "application-general-details";
+
 /**
  * Form to edit general details of the application.
  *
  * @param props - Props injected to the component.
- * @returns Form to edit general details of the application.
+ * @returns Functional component.
  */
 export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterface> = (
     props: GeneralDetailsFormPopsInterface
@@ -163,8 +164,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
      * Validates the Form.
      *
      * @param values - Form Values.
-     *
-     * @returns GeneralDetailsFormErrorValidationsInterface
+     * @returns Form validation.
      */
     const validateForm = (values):
         GeneralDetailsFormErrorValidationsInterface => {
@@ -185,7 +185,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
      * Application Name validation.
      *
      * @param name - Application Name.
-     * @returns Application Description validation.
+     * @returns Name validation.
      */
     const validateName = (name: string): string | void => {
 
@@ -202,7 +202,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
      * Application Description validation.
      *
      * @param description - Application Description.
-     * @returns Application Description validation
+     * @returns Description validation.
      */
     const validateDescription = (description: string): string | void => {
 
@@ -248,6 +248,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
     
     return (
         <Form
+            id={ FORM_ID }
             uncontrolledForm={ false }
             onSubmit={ (values) => {
                 updateConfigurations(values);
@@ -266,8 +267,8 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
             { isManagementApp && (
                 <Message
                     type="info"
-                    content={
-                        ( <>
+                    content={ (
+                        <>
                             { t("console:develop.features.applications.forms.generalDetails.managementAppBanner") }
                             <DocumentationLink
                                 link={ getLink("develop.applications.managementApplication.learnMore") }>
@@ -275,8 +276,8 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                     t("common:learnMore")
                                 }
                             </DocumentationLink>
-                        </> )
-                    }
+                        </>
+                    ) }
                 />
             ) }
             { !UIConfig.systemAppsIdentifiers.includes(name) && (
@@ -382,7 +383,8 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                         onClick={
                                             () => window.open(getLink("develop.applications.managementApplication"+
                                                             ".selfServicePortal"), "_blank")
-                                        }>
+                                        }
+                                    >
                                         My Account
                                     </strong>
                                 )
@@ -405,8 +407,14 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                         ".placeholder")
                 }
                 value={ accessUrl }
-                readOnly={ !hasRequiredScope || ( readOnly && applicationConfig.generalSettings.getFieldReadOnlyStatus(
-                    application, "ACCESS_URL")) }
+                readOnly={
+                    !hasRequiredScope || (
+                        readOnly
+                        && applicationConfig.generalSettings.getFieldReadOnlyStatus(
+                            application, "ACCESS_URL"
+                        )
+                    )
+                }
                 maxLength={ 200 }
                 minLength={ 3 }
                 data-testid={ `${ testId }-application-access-url-input` }
@@ -414,6 +422,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                 width={ 16 }
             />
             <Field.Button
+                form={ FORM_ID }
                 size="small"
                 buttonType="primary_btn"
                 ariaLabel="Update button"
@@ -422,8 +431,14 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                 disabled={ isSubmitting }
                 loading={ isSubmitting }
                 label={ t("common:update") }
-                hidden={ !hasRequiredScope || ( readOnly && applicationConfig.generalSettings.getFieldReadOnlyStatus(
-                    application, "ACCESS_URL")) }
+                hidden={
+                    !hasRequiredScope || (
+                        readOnly
+                        && applicationConfig.generalSettings.getFieldReadOnlyStatus(
+                            application, "ACCESS_URL"
+                        )
+                    )
+                }
             />
         </Form>
     );

@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -53,7 +53,7 @@ interface FacebookAuthenticatorFormPropsInterface extends TestableComponentInter
     initialValues: CommonAuthenticatorFormInitialValuesInterface;
     /**
      * Callback for form submit.
-     * @param {CommonAuthenticatorFormInitialValuesInterface} values - Resolved Form Values.
+     * @param values - Resolved Form Values.
      */
     onSubmit: (values: CommonAuthenticatorFormInitialValuesInterface) => void;
     /**
@@ -145,12 +145,13 @@ interface ScopeMetaInterface {
     icon: SemanticICONS;
 }
 
+const FORM_ID: string = "facebook-authenticator-form";
+
 /**
  * Facebook Authenticator Form.
  *
- * @param {FacebookAuthenticatorFormPropsInterface} props - Props injected to the component.
- *
- * @return {React.ReactElement}
+ * @param props - Props injected to the component.
+ * @returns Functional component.
  */
 export const FacebookAuthenticatorForm: FunctionComponent<FacebookAuthenticatorFormPropsInterface> = (
     props: FacebookAuthenticatorFormPropsInterface
@@ -209,8 +210,7 @@ export const FacebookAuthenticatorForm: FunctionComponent<FacebookAuthenticatorF
      * Prepare form values for submitting.
      *
      * @param values - Form values.
-     *
-     * @return {CommonAuthenticatorFormInitialValuesInterface} Sanitized form values.
+     * @returns Sanitized form values.
      */
     const getUpdatedConfigurations = (values: FacebookAuthenticatorFormInitialValuesInterface)
         : CommonAuthenticatorFormInitialValuesInterface => {
@@ -235,9 +235,8 @@ export const FacebookAuthenticatorForm: FunctionComponent<FacebookAuthenticatorF
     /**
      * Resolve metadata for UI rendering of scopes.
      *
-     * @param {string} scope - Input scope.
-     *
-     * @return {ScopeMetaInterface}
+     * @param scope - Input scope.
+     * @returns Scope metadata.
      */
     const resolveScopeMetadata = (scope: string): ScopeMetaInterface => {
 
@@ -276,6 +275,7 @@ export const FacebookAuthenticatorForm: FunctionComponent<FacebookAuthenticatorF
 
     return (
         <Form
+            id={ FORM_ID }
             uncontrolledForm={ false }
             onSubmit={ (values) => onSubmit(getUpdatedConfigurations(values as any)) }
             initialValues={ initialValues }
@@ -327,7 +327,7 @@ export const FacebookAuthenticatorForm: FunctionComponent<FacebookAuthenticatorF
                     t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                         ".facebook.clientSecret.placeholder")
                 }
-                hint={
+                hint={ (
                     <Trans
                         i18nKey={
                             "console:develop.features.authenticationProvider.forms.authenticatorSettings" +
@@ -336,7 +336,7 @@ export const FacebookAuthenticatorForm: FunctionComponent<FacebookAuthenticatorF
                     >
                         The <Code>App secret</Code> value of the Facebook application.
                     </Trans>
-                }
+                ) }
                 required={ formFields?.ClientSecret?.meta?.isMandatory }
                 readOnly={
                     readOnly || (
@@ -447,16 +447,17 @@ export const FacebookAuthenticatorForm: FunctionComponent<FacebookAuthenticatorF
                             >
                                 Permissions provide a way for connected apps to access data from Facebook.
                                 Click <a
-                                href="https://developers.facebook.com/docs/permissions/reference"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >here</a> to learn more.
+                                    href="https://developers.facebook.com/docs/permissions/reference"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >here</a> to learn more.
                             </Trans>
                         </Hint>
                     </FormSection>
                 )
             }
             <Field.Button
+                form={ FORM_ID }
                 size="small"
                 buttonType="primary_btn"
                 ariaLabel="Facebook authenticator update button"

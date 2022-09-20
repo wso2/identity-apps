@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -298,19 +298,24 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                                 return template.id === ApplicationManagementConstants.CUSTOM_APPLICATION;
                             }).name;
                     } else {
-                        const templateGroupId: string = applicationTemplates
+                        const relevantApplicationTemplate: ApplicationTemplateListItemInterface | undefined = 
+                            applicationTemplates
                             && applicationTemplates instanceof Array
                             && applicationTemplates.length > 0
                             && applicationTemplates.find((template) => {
                                 return template.id === app.templateId;
-                            }).templateGroup;
+                            });
 
-                        templateDisplayName = groupedApplicationTemplates
-                            && groupedApplicationTemplates instanceof Array
-                            && groupedApplicationTemplates.length > 0
-                            && groupedApplicationTemplates.find((group) => {
-                                return (group.id === templateGroupId || group.templateGroup === templateGroupId);
-                            }).name;
+                        if (relevantApplicationTemplate?.templateGroup) {
+                            const templateGroupId: string = relevantApplicationTemplate.templateGroup;
+
+                            templateDisplayName = groupedApplicationTemplates
+                                && groupedApplicationTemplates instanceof Array
+                                && groupedApplicationTemplates.length > 0
+                                && groupedApplicationTemplates.find((group) => {
+                                    return (group.id === templateGroupId || group.templateGroup === templateGroupId);
+                                }).name;
+                        }
                     }
 
                     return (

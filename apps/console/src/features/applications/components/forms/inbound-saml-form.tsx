@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,7 +19,7 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { URLUtils } from "@wso2is/core/utils";
 import { Field, Forms, Validation, useTrigger } from "@wso2is/forms";
-import { Code, ConfirmationModal, CopyInputField, Heading, Hint, URLInput } from "@wso2is/react-components";
+import { Code, CopyInputField, Heading, Hint, URLInput } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import isEmpty from "lodash-es/isEmpty";
 import union from "lodash-es/union";
@@ -146,7 +146,6 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
         initialValues?.singleLogoutProfile.logoutMethod?
             initialValues?.singleLogoutProfile.logoutMethod
             : LogoutMethods.BACK_CHANNEL);
-    const [ showCertificateRemoveConfirmationModal, setShowCertificateRemoveConfirmationModal ] = useState(false);
 
     const [ triggerCertSubmit, setTriggerCertSubmit ] = useTrigger();
 
@@ -462,54 +461,6 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
             setCertAvailableForEncrypt(true);
         }
     },[ finalCertValue, selectedCertType ]);
-
-    /**
-     * Handles Certification type change event
-     *
-     * @param certType - Certificate type
-     */
-    const onCertTypeChanged = (certType: CertificateTypeInterface): void => {
-        // Open up a modal to inform the user that, by changing certificate type to NONE will remove the current
-        // certificate from the system.
-        if (certType === CertificateTypeInterface.NONE && certificate) {
-            setShowCertificateRemoveConfirmationModal(true);
-
-            return;
-        }
-
-        setSelectedCertType(certType);
-    };
-
-    const renderCertificateRemovalConfirmationModal = (): ReactElement => (
-        <ConfirmationModal
-            onClose={ (): void => setShowCertificateRemoveConfirmationModal(false) }
-            type="warning"
-            open={ showCertificateRemoveConfirmationModal }
-            primaryAction={ t("common:okay") }
-            onPrimaryActionClick={ (): void => {
-                setSelectedCertType(CertificateTypeInterface.NONE);
-                setShowCertificateRemoveConfirmationModal(false);
-            } }
-            closeOnDimmerClick={ false }
-        >
-            <ConfirmationModal.Header
-                data-testid={ `${ testId }-certificate-removal-confirmation-modal-header` }
-            >
-                {
-                    t("console:develop.features.applications.forms.inboundSAML.sections.certificates." +
-                        "certificateRemoveConfirmation.header")
-                }
-            </ConfirmationModal.Header>
-            <ConfirmationModal.Content
-                data-testid={ `${ testId }-certificate-removal-confirmation-modal-content` }
-            >
-                {
-                    t("console:develop.features.applications.forms.inboundSAML.sections.certificates." +
-                        "certificateRemoveConfirmation.content")
-                }
-            </ConfirmationModal.Content>
-        </ConfirmationModal>
-    );
 
     return (
         metadata ?
@@ -1825,7 +1776,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     onUpdate={ onUpdate }
                                     application={ application }
                                     updateCertFinalValue={ setFinalCertValue }
-                                    updateCertType={ onCertTypeChanged }
+                                    updateCertType={ setSelectedCertType }
                                     canDiscardCertificate = { (): boolean => !isRequestSignatureValidationEnabled }
                                     certificate={ certificate }
                                     readOnly={ readOnly }
@@ -1856,7 +1807,6 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             )
                         }
                     </Grid>
-                    { showCertificateRemoveConfirmationModal && renderCertificateRemovalConfirmationModal() }
                 </Forms>
             )
             : null
