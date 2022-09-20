@@ -48,7 +48,6 @@ export class EmailTemplateUtils {
                 return data;
             }
         });
-
     }
 
 }
