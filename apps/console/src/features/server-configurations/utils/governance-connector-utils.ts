@@ -21,7 +21,12 @@ import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
 import { store } from "../../core";
 import { getConnectorCategories } from "../api";
-import { GovernanceCategoryForOrgsInterface, GovernanceConnectorForOrgsInterface, GovernanceConnectorInterface, 
+import { 
+    GovernanceCategoryForOrgsInterface, 
+    GovernanceConnectorForOrgsInterface, 
+    GovernanceConnectorInterface, 
+    GovernanceConnectorsInterface 
+} from "../models";
     GovernanceConnectorsInterface } from "../models";
 import { SetGovernanceConnectorCategory } from "../store/actions";
 
