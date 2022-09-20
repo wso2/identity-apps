@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -18,15 +18,21 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
-import { DocumentationLink, Message, useDocumentation } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useState } from "react";
+import {
+    ContentLoader,
+    DocumentationLink,
+    EmphasizedSegment,
+    Message,
+    useDocumentation } from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider } from "semantic-ui-react";
-import { AppState, UIConfigInterface } from "../../../core";
-import { ApplicationManagementConstants } from "../../constants";
 import { applicationConfig } from "../../../../extensions";
-import {ApplicationInterface} from "../../models";
+import { AppConstants, AppState, UIConfigInterface } from "../../../core";
+import { useMyAccountStatus } from "../../api";
+import { ApplicationManagementConstants } from "../../constants";
+import { ApplicationInterface } from "../../models";
 
 /**
  * Proptypes for the applications general details form component.
@@ -96,12 +102,13 @@ export interface GeneralDetailsFormErrorValidationsInterface {
     accessUrl?: string;
 }
 
+const FORM_ID: string = "application-general-details";
+
 /**
  * Form to edit general details of the application.
  *
- * @param {GeneralDetailsFormPopsInterface} props - Props injected to the component.
- *
- * @return {React.ReactElement}
+ * @param props - Props injected to the component.
+ * @returns Functional component.
  */
 export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterface> = (
     props: GeneralDetailsFormPopsInterface
@@ -132,11 +139,13 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
 
     const [ isDiscoverable, setDiscoverability ] = useState<boolean>(discoverability);
 
+    const [ isMyAccountEnabled, setMyAccountStatus ] = useState<boolean>(AppConstants.DEFAULT_MY_ACCOUNT_STATUS);
+
     /**
      * Prepare form values for submitting.
      *
      * @param values - Form values.
-     * @return {any} Sanitized form values.
+     * @returns Sanitized form values.
      */
     const updateConfigurations = (values) => {
         onSubmit({
@@ -155,8 +164,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
      * Validates the Form.
      *
      * @param values - Form Values.
-     *
-     * @return {GeneralDetailsFormErrorValidationsInterface}
+     * @returns Form validation.
      */
     const validateForm = (values):
         GeneralDetailsFormErrorValidationsInterface => {
@@ -176,8 +184,8 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
     /**
      * Application Name validation.
      *
-     * @param {string} name - Application Name.
-     * @return {string | void}
+     * @param name - Application Name.
+     * @returns Name validation.
      */
     const validateName = (name: string): string | void => {
 
@@ -193,8 +201,8 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
     /**
      * Application Description validation.
      *
-     * @param {string} description - Application Description.
-     * @return {string | void}
+     * @param description - Application Description.
+     * @returns Description validation.
      */
     const validateDescription = (description: string): string | void => {
 
@@ -207,8 +215,40 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
         }
     };
 
+    const {
+        data: myAccountStatus,
+        isLoading: isMyAccountStatusLoading
+    } = useMyAccountStatus();
+
+    /**
+     * Sets the initial spinner.
+     * TODO: Remove this once the loaders are finalized.
+     */
+    useEffect(() => {
+        let status: boolean = AppConstants.DEFAULT_MY_ACCOUNT_STATUS;
+
+        if (myAccountStatus) {
+            const enableProperty = myAccountStatus["value"];
+            
+            if ( enableProperty && enableProperty === "false" ) {
+
+                status = false;
+            }
+        }
+        setMyAccountStatus(status);
+    }, [ isMyAccountStatusLoading ]);
+ 
+    if (isMyAccountStatusLoading) {
+        return (
+            <EmphasizedSegment padded="very">
+                <ContentLoader inline="centered" active/>
+            </EmphasizedSegment>
+        );
+    }
+    
     return (
         <Form
+            id={ FORM_ID }
             uncontrolledForm={ false }
             onSubmit={ (values) => {
                 updateConfigurations(values);
@@ -227,7 +267,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
             { isManagementApp && (
                 <Message
                     type="info"
-                    content={
+                    content={ (
                         <>
                             { t("console:develop.features.applications.forms.generalDetails.managementAppBanner") }
                             <DocumentationLink
@@ -237,7 +277,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                 }
                             </DocumentationLink>
                         </>
-                    }
+                    ) }
                 />
             ) }
             { !UIConfig.systemAppsIdentifiers.includes(name) && (
@@ -310,47 +350,50 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     hidden={ hiddenFields?.includes("imageUrl") }
                 />
             }
-            <Field.Checkbox
-                ariaLabel="Make application discoverable by end users"
-                name="discoverableByEndUsers"
-                required={ false }
-                label={ t("console:develop.features.applications.forms.generalDetails.fields" +
-                            ".discoverable.label") }
-                initialValue={ isDiscoverable }
-                readOnly={ readOnly }
-                data-testid={ `${ testId }-application-discoverable-checkbox` }
-                listen={ (value) => setDiscoverability(value) }
-                hint={ (
-                    <Trans
-                        i18nKey={
-                            "console:develop.features.applications.forms.generalDetails.fields." +
-                            "discoverable.hint"
-                        }
-                        tOptions={ { myAccount: "My Account" } }
-                    >
-                        { " " }
-                        { getLink("develop.applications.managementApplication.selfServicePortal") === undefined
-                            ? (
-                                <strong data-testid="application-name-assertion">
-                                    My Account
-                                </strong>
-                            )
-                            : (
-                                <strong 
-                                    className="link pointing"
-                                    data-testid="application-name-assertion" 
-                                    onClick={ 
-                                        () => window.open(getLink("develop.applications.managementApplication"+
-                                                        ".selfServicePortal"), "_blank") 
-                                    }>
-                                    My Account
-                                </strong>
-                            )
-                        }
-                    </Trans>
-                ) }
-                width={ 16 }
-            />
+            { isMyAccountEnabled? (
+                <Field.Checkbox
+                    ariaLabel="Make application discoverable by end users"
+                    name="discoverableByEndUsers"
+                    required={ false }
+                    label={ t("console:develop.features.applications.forms.generalDetails.fields" +
+                                ".discoverable.label") }
+                    initialValue={ isDiscoverable }
+                    readOnly={ readOnly }
+                    data-testid={ `${ testId }-application-discoverable-checkbox` }
+                    listen={ (value) => setDiscoverability(value) }
+                    hint={ (
+                        <Trans
+                            i18nKey={
+                                "console:develop.features.applications.forms.generalDetails.fields." +
+                                "discoverable.hint"
+                            }
+                            tOptions={ { myAccount: "My Account" } }
+                        >
+                            { " " }
+                            { getLink("develop.applications.managementApplication.selfServicePortal") === undefined
+                                ? (
+                                    <strong data-testid="application-name-assertion">
+                                        My Account
+                                    </strong>
+                                )
+                                : (
+                                    <strong
+                                        className="link pointing"
+                                        data-testid="application-name-assertion"
+                                        onClick={
+                                            () => window.open(getLink("develop.applications.managementApplication"+
+                                                            ".selfServicePortal"), "_blank")
+                                        }
+                                    >
+                                        My Account
+                                    </strong>
+                                )
+                            }
+                        </Trans>
+                    ) }
+                    width={ 16 }
+                /> ) : null
+            }
             <Field.Input
                 ariaLabel="Application access URL"
                 inputType="url"
@@ -364,8 +407,14 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                         ".placeholder")
                 }
                 value={ accessUrl }
-                readOnly={ !hasRequiredScope || ( readOnly && applicationConfig.generalSettings.getFieldReadOnlyStatus(
-                     application, "ACCESS_URL"))}
+                readOnly={
+                    !hasRequiredScope || (
+                        readOnly
+                        && applicationConfig.generalSettings.getFieldReadOnlyStatus(
+                            application, "ACCESS_URL"
+                        )
+                    )
+                }
                 maxLength={ 200 }
                 minLength={ 3 }
                 data-testid={ `${ testId }-application-access-url-input` }
@@ -373,6 +422,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                 width={ 16 }
             />
             <Field.Button
+                form={ FORM_ID }
                 size="small"
                 buttonType="primary_btn"
                 ariaLabel="Update button"
@@ -381,8 +431,14 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                 disabled={ isSubmitting }
                 loading={ isSubmitting }
                 label={ t("common:update") }
-                hidden={ !hasRequiredScope || ( readOnly && applicationConfig.generalSettings.getFieldReadOnlyStatus(
-                    application, "ACCESS_URL"))}
+                hidden={
+                    !hasRequiredScope || (
+                        readOnly
+                        && applicationConfig.generalSettings.getFieldReadOnlyStatus(
+                            application, "ACCESS_URL"
+                        )
+                    )
+                }
             />
         </Form>
     );

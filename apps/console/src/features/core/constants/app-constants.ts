@@ -29,7 +29,6 @@ export class AppConstants {
     /**
      * Private constructor to avoid object instantiation from outside
      * the class.
-     *
      */
     /* eslint-disable @typescript-eslint/no-empty-function */
     private constructor() { }
@@ -37,7 +36,7 @@ export class AppConstants {
     /**
      * Get the admin view base path.
      *
-     * @returns string
+     * @returns The admin view base path.
      */
     public static getAdminViewBasePath(): string {
         return window["AppUtils"]?.getConfig()?.adminApp.basePath;
@@ -46,7 +45,7 @@ export class AppConstants {
     /**
      * Get the admin view home path.
      *
-     * @returns string
+     * @returns The admin view home path.
      */
     public static getAdminViewHomePath(): string {
         return window["AppUtils"]?.getConfig()?.adminApp.path;
@@ -55,7 +54,7 @@ export class AppConstants {
     /**
      * Get the full screen view base path.
      *
-     * @returns string
+     * @returns The full screen view base path.
      */
     public static getFullScreenViewBasePath(): string {
         return this.getMainViewBasePath() + "/fullscreen";
@@ -64,7 +63,7 @@ export class AppConstants {
     /**
      * Get the developer view base path.
      *
-     * @returns string
+     * @returns The developer view base path.
      */
     public static getDeveloperViewBasePath(): string {
         return window["AppUtils"]?.getConfig()?.developerApp.basePath;
@@ -73,7 +72,7 @@ export class AppConstants {
     /**
      * Get the developer view home path.
      *
-     * @returns string
+     * @returns The developer view home path.
      */
     public static getDeveloperViewHomePath(): string {
         return window["AppUtils"]?.getConfig()?.developerApp.path;
@@ -84,7 +83,7 @@ export class AppConstants {
      * If `this.getTenantQualifiedAppBasePath()` returns with just "/",
      * return empty string.
      *
-     * @returns string
+     * @returns The main view base path.
      */
     public static getMainViewBasePath(): string {
         return this.getTenantQualifiedAppBasePath() !== "/"
@@ -95,7 +94,7 @@ export class AppConstants {
     /**
      * Get tenant qualified app base name. ex: `t/<BASENAME>`
      *
-     * @returns string
+     * @returns The tenant qualified app base name.
      */
     public static getTenantQualifiedAppBasename(): string {
         return window["AppUtils"]?.getConfig()?.appBaseWithTenant;
@@ -104,7 +103,7 @@ export class AppConstants {
     /**
      * Get tenant qualified app base path. ex: `/t/<BASENAME>`
      *
-     * @returns string
+     * @returns The tenant qualified app base path.
      */
     public static getTenantQualifiedAppBasePath(): string {
         return "/" + StringUtils.removeSlashesFromPath(this.getTenantQualifiedAppBasename());
@@ -113,7 +112,7 @@ export class AppConstants {
     /**
      * Get app base name. ex: `<BASENAME>`
      *
-     * @returns string
+     * @returns The app base name.
      */
     public static getAppBasename(): string {
         return window["AppUtils"]?.getConfig()?.appBase;
@@ -122,7 +121,7 @@ export class AppConstants {
     /**
      * Get tenant qualified app base path. ex: `/<BASENAME>`
      *
-     * @returns string
+     * @returns The tenant qualified app base path.
      */
     public static getAppBasePath(): string {
         return "/" + StringUtils.removeSlashesFromPath(this.getAppBasename());
@@ -131,7 +130,7 @@ export class AppConstants {
     /**
      * Get the app home path.
      *
-     * @returns string
+     * @returns The app home path.
      */
     public static getAppHomePath(): string {
         return window["AppUtils"]?.getConfig()?.routes.home;
@@ -140,7 +139,7 @@ export class AppConstants {
     /**
      * Get the app login path.
      *
-     * @returns string
+     * @returns The app login path.
      */
     public static getAppLoginPath(): string {
         return window[ "AppUtils" ]?.getConfig()?.routes.login;
@@ -149,7 +148,7 @@ export class AppConstants {
     /**
      * Get the app login path.
      *
-     * @returns string
+     * @returns The app login path.
      */
     public static getAppLogoutPath(): string {
         return window[ "AppUtils" ]?.getConfig()?.routes.logout;
@@ -158,7 +157,7 @@ export class AppConstants {
     /**
      * Get the app Client ID.
      *
-     * @returns string
+     * @returns The app Client ID.
      */
     public static getClientID(): string {
         return window["AppUtils"]?.getConfig()?.clientID;
@@ -167,7 +166,7 @@ export class AppConstants {
     /**
      * Get app theme configs.
      *
-     * @returns AppThemeConfigInterface
+     * @returns App theme configs.
      */
     public static getAppTheme(): AppThemeConfigInterface {
         return window["AppUtils"]?.getConfig()?.ui?.theme;
@@ -176,7 +175,7 @@ export class AppConstants {
     /**
      * Get the My Account path.
      *
-     * @returns string
+     * @returns The My Account path.
      */
     public static getMyAccountPath(): string {
 
@@ -186,7 +185,7 @@ export class AppConstants {
     /**
      * Get the tenant path. ex: `/t/wso2.com`.
      *
-     * @returns string
+     * @returns The tenant path.
      */
     public static getTenantPath(): string {
         return window["AppUtils"]?.getConfig()?.tenantPath;
@@ -195,7 +194,7 @@ export class AppConstants {
     /**
      * Get the tenant. ex: `abc.com`.
      *
-     * @returns string
+     * @returns The tenant domain
      */
     public static getTenant(): string {
         return window["AppUtils"]?.getConfig()?.tenant;
@@ -204,7 +203,7 @@ export class AppConstants {
     /**
      * Get the super tenant. ex: `carbon.super`.
      *
-     * @returns string
+     * @returns The super tenant domain.
      */
     public static getSuperTenant(): string {
         return window["AppUtils"]?.getConfig()?.superTenant;
@@ -213,7 +212,7 @@ export class AppConstants {
     /**
      * Get the client origin. ex: `https://localhost:9443`.
      *
-     * @returns string
+     * @returns The client origin.
      */
     public static getClientOrigin(): string {
         return window["AppUtils"]?.getConfig()?.clientOrigin;
@@ -222,7 +221,7 @@ export class AppConstants {
     /**
      * Get the client origin with tenant. ex: `https://localhost:9443/t/wso2.comn`.
      *
-     * @returns string
+     * @returns The client origin with tenant.
      */
     public static getClientOriginWithTenant(): string {
         return window["AppUtils"]?.getConfig()?.clientOriginWithTenant;
@@ -237,7 +236,7 @@ export class AppConstants {
     /**
      * Get all the app paths as a map.
      *
-     * @returns paths as a map
+     * @returns All the app paths as a map.
      */
     public static getPaths(): Map<string, string> {
 
@@ -399,4 +398,9 @@ export class AppConstants {
      * Name of the root node
      */
     public static readonly PERMISSIONS_ROOT_NODE: string = "All Permissions";
+
+    /**
+     * Default status of the My Account portal.
+     */
+    public static readonly DEFAULT_MY_ACCOUNT_STATUS: boolean = true;
 }

@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (http://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -53,10 +53,13 @@ export interface AddOrganizationModalPropsInterface extends IdentifiableComponen
     onUpdate?: () => void;
 }
 
+const FORM_ID: string = "organization-add-modal-form";
+
 /**
  * An app creation wizard with only the minimal features.
  *
- * @param {AddOrganizationModalPropsInterface} props Props to be injected into the component.
+ * @param props - Props to be injected into the component.
+ * @returns Functional component.
  */
 export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsInterface> = (
     props: AddOrganizationModalPropsInterface
@@ -68,7 +71,7 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
     const dispatch = useDispatch();
 
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
-    const [ type, setType ] = useState<ORGANIZATION_TYPE>(ORGANIZATION_TYPE.STRUCTURAL);
+    const [ type ] = useState<ORGANIZATION_TYPE>(ORGANIZATION_TYPE.STRUCTURAL);
 
     const submitForm = useRef<() => void>();
 
@@ -193,6 +196,7 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
                         <Grid.Row columns={ 1 }>
                             <Grid.Column width={ 16 }>
                                 <Form
+                                    id={ FORM_ID }
                                     uncontrolledForm={ false }
                                     onSubmit={ submitOrganization }
                                     validate={ validate }

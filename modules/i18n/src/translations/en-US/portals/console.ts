@@ -2354,7 +2354,50 @@ export const console: ConsoleNS = {
                     description: "Self-service portal for your users.",
                     popup: "Share this link with your users to allow access to My Account" +
                     " and to manage their accounts.",
-                    title: "My Account"
+                    title: "My Account",
+                    enable: {
+                        0: "Enabled",
+                        1: "Disabled"
+                    },
+                    Confirmation: {
+                        enableConfirmation: {
+                            content: "The My Account portal is in preview mode and it is recommended to disable it " + 
+                                "when your organization goes into production.",
+                            heading: "Are you sure?",
+                            message: "Enable My Account portal."
+                        },
+                        disableConfirmation: {
+                            content: "The My Account portal is in preview mode and it is recommended to disable it " + 
+                                "when your organization goes into production. When My Account portal is disabled, " + 
+                                "users of your organization will not be able to access it.",
+                            heading: "Are you sure?",
+                            message: "Disable My Account portal."
+                        }
+                    },
+                    notifications: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Update error"
+                        },
+                        genericError: {
+                            description: "Failed to update My Account portal status.",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Successfully updated My Account portal status.",
+                            message: "Update successful"
+                        }
+                    },
+                    fetchMyAccountStatus: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Retrieval error"
+                        },
+                        genericError: {
+                            description: "Couldn't retrieve My Account portal status.",
+                            message: "Something went wrong"
+                        }
+                    }
                 },
                 notifications: {
                     addApplication: {

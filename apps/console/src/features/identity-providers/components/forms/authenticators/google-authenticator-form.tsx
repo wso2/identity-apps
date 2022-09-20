@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -53,7 +53,7 @@ interface GoogleAuthenticatorFormPropsInterface extends TestableComponentInterfa
     initialValues: CommonAuthenticatorFormInitialValuesInterface;
     /**
      * Callback for form submit.
-     * @param {CommonAuthenticatorFormInitialValuesInterface} values - Resolved Form Values.
+     * @param values - Resolved Form Values.
      */
     onSubmit: (values: CommonAuthenticatorFormInitialValuesInterface) => void;
     /**
@@ -141,12 +141,13 @@ interface ScopeMetaInterface {
     icon: SemanticICONS
 }
 
+const FORM_ID: string = "google-authenticator-form";
+
 /**
  * Google Authenticator Form.
  *
- * @param {GoogleAuthenticatorFormPropsInterface} props - Props injected to the component.
- *
- * @return {React.ReactElement}
+ * @param props - Props injected to the component.
+ * @returns Functional component.
  */
 export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormPropsInterface> = (
     props: GoogleAuthenticatorFormPropsInterface
@@ -206,7 +207,7 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
      *
      * @param values - Form values.
      *
-     * @return {CommonAuthenticatorFormInitialValuesInterface} Sanitized form values.
+     * @returns Sanitized form values.
      */
     const getUpdatedConfigurations = (values: GoogleAuthenticatorFormInitialValuesInterface)
         : CommonAuthenticatorFormInitialValuesInterface => {
@@ -231,9 +232,9 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
     /**
      * Resolve metadata for UI rendering of scopes.
      *
-     * @param {string} scope - Input scope.
+     * @param scope - Input scope.
      *
-     * @return {ScopeMetaInterface}
+     * @returns resolved Scope Metadata
      */
     const resolveScopeMetadata = (scope: string): ScopeMetaInterface => {
 
@@ -289,16 +290,16 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
      * Input - "scope=openid email profile"
      * Output - [ "openid", "email", "profile" ]
      *
-     * @param {string} rawScopes - Raw String.
+     * @param rawScopes - Raw String.
      *
-     * @return {string[]}
+     * @returns list of scopes
      */
     const extractScopes = (rawScopes: string): string[] => {
 
         let scopes: string[] = [];
 
         try {
-            scopes = rawScopes.split("scope=")[1].split(" ");
+            scopes = rawScopes.trim().split("scope=")[1].split(" ");
         } catch(e) {
             // Silent any issues occurred when trying to scroll.
             // Add debug logs here one a logger is added.
@@ -310,6 +311,7 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
 
     return (
         <Form
+            id={ FORM_ID }
             uncontrolledForm={ false }
             onSubmit={ (values) => onSubmit(getUpdatedConfigurations(values as any)) }
             initialValues={ initialValues }
@@ -368,7 +370,7 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
                     t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                         ".google.clientSecret.placeholder")
                 }
-                hint={
+                hint={ (
                     <Trans
                         i18nKey={
                             "console:develop.features.authenticationProvider.forms.authenticatorSettings" +
@@ -377,7 +379,7 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
                     >
                         The <Code>App secret</Code> value of the Google application.
                     </Trans>
-                }
+                ) }
                 required={ formFields?.ClientSecret?.meta?.isMandatory }
                 readOnly={
                     readOnly || (
@@ -524,19 +526,20 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
                             >
                                 Scopes provide a way for connected apps to access data from Google.
                                 Click <a
-                                href={
-                                    "https://developers.google.com/identity/protocols/oauth2/" +
-                                    "openid-connect#scope-param"
-                                }
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >here</a> to learn more.
+                                    href={
+                                        "https://developers.google.com/identity/protocols/oauth2/" +
+                                        "openid-connect#scope-param"
+                                    }
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >here</a> to learn more.
                             </Trans>
                         </Hint>
                     </FormSection>
                 )
             }
             <Field.Button
+                form={ FORM_ID }
                 size="small"
                 buttonType="primary_btn"
                 ariaLabel="Google authenticator update button"

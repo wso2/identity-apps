@@ -95,11 +95,13 @@ export interface SamlPropertiesInterface {
     IsUserIdInClaims?: boolean;
 }
 
+const FORM_ID: string = "saml-authenticator-form";
+
 /**
  * SAML Authenticator settings form.
  *
  * @param props - Props injected to the component.
- * @returns SAML authenticator settings form component.
+ * @returns Functional component.
  */
 export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPropsInterface> = (
     props: SamlSettingsFormPropsInterface
@@ -226,10 +228,11 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
 
     return (
         <Form
+            id={ FORM_ID }
             onSubmit={ onFormSubmit }
             uncontrolledForm={ true }
-            initialValues={ formValues }>
-
+            initialValues={ formValues }
+        >
             <Field.Input
                 required={ true }
                 name="SPEntityId"
@@ -590,6 +593,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
             </FormSection>
 
             <Field.Button
+                form={ FORM_ID }
                 size="small"
                 buttonType="primary_btn"
                 ariaLabel="SAML authenticator update button"
