@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -41,8 +41,6 @@ export class EmailTemplateUtils {
     public static filterEmailTemplateTypesForOrganization(
         emailTemplateData: EmailTemplateType[]
     ) : any[] {
-    (emailTemplateData: EmailTemplateType[]): any[] {
-
         return emailTemplateData.filter(data => {
             if (EmailTemplateManagementConstants.EMAIL_TEMPLATE_TYPES_FOR_ORGS.includes(data.id)) {
                 return data;
