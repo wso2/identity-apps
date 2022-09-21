@@ -379,7 +379,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                                 </ConfirmationModal.Header>
                                 <ConfirmationModal.Message
                                     attached
-                                    warning
+                                    negative
                                     data-testid={ `${ testId }-delete-idp-confirmation` }>
                                     { t("console:develop.features.authenticationProvider." +
                                         "confirmations.deleteIDP.message") }
@@ -408,7 +408,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                                 </ConfirmationModal.Header>
                                 <ConfirmationModal.Message
                                     attached
-                                    warning
+                                    negative
                                     data-testid={ `${ testId }-delete-idp-confirmation` }>
                                     { t("console:develop.features.authenticationProvider.confirmations." +
                                         "deleteIDPWithConnectedApps.message") }
