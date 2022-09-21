@@ -190,7 +190,7 @@ export const Scopes: FunctionComponent<ScopesPropsInterface> = (
                     onBlur={ onBlur }
                     focus
                     onChange={ (event, data) => {
-                        setScopeValue(data.value);
+                        setScopeValue(data.value.trim());
                     } }
                     onKeyDown={ keyPressed }
                 />
@@ -224,6 +224,10 @@ export const Scopes: FunctionComponent<ScopesPropsInterface> = (
                                 key={ index }
                             >
                                 { scope } 
+                                <Icon
+                                    name="delete"
+                                    onClick={ () => handleLabelRemove(scope) }
+                                />
                             </Label>
                         );
                     } else {
