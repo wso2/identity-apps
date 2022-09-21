@@ -20,12 +20,14 @@ import filter from "lodash-es/filter";
 import isEmpty from "lodash-es/isEmpty";
 import isEqual from "lodash-es/isEqual";
 import React, { FunctionComponent, useEffect, useState } from "react";
-import { Button, Form, Icon, Label, Popup } from "semantic-ui-react";
+import { Button, Form, Icon, Label, Message, Popup } from "semantic-ui-react";
  
  interface ScopesPropsInterface {
      value: string;
      defaultValue: string;
      isQueryParamScopesDefined: boolean;
+     error: string;
+     onBlur: (event: React.KeyboardEvent) => void;
      onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
  }
  
@@ -40,6 +42,8 @@ export const Scopes: FunctionComponent<ScopesPropsInterface> = (
         value,
         defaultValue,
         isQueryParamScopesDefined,
+        error,
+        onBlur,
         onChange
     } = props;
  
@@ -142,7 +146,7 @@ export const Scopes: FunctionComponent<ScopesPropsInterface> = (
         if (isEmpty(scopeValue)) {
             return;
         }
- 
+             
         const output: Scope[] = [ {
             value: scopeValue
         } ];
@@ -183,6 +187,7 @@ export const Scopes: FunctionComponent<ScopesPropsInterface> = (
                 <Form.Input
                     fluid
                     value={ scopeValue }
+                    onBlur={ onBlur }
                     focus
                     onChange={ (event, data) => {
                         setScopeValue(data.value);
@@ -206,7 +211,9 @@ export const Scopes: FunctionComponent<ScopesPropsInterface> = (
                     inverted
                 />
             </Form.Group>
- 
+
+            <Message visible={ !isEmpty(error) } error content={ error } />
+
             {
                 scopes && scopes?.map((eachScope, index) => {
                     const scope = eachScope.value;
@@ -216,7 +223,7 @@ export const Scopes: FunctionComponent<ScopesPropsInterface> = (
                             <Label
                                 key={ index }
                             >
-                                { scope }
+                                { scope } 
                             </Label>
                         );
                     } else {

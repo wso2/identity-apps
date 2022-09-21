@@ -400,6 +400,14 @@ export const InnerField = React.forwardRef((props: InnerFieldPropsInterface, ref
                         value={ inputField.value }
                         defaultValue={ inputField.defaultValue }
                         isQueryParamScopesDefined={ inputField.isQueryParamScopesDefined }
+                        error={
+
+                            isError
+                                ? errorMessages[0] : ""
+                        }
+                        onBlur={ (event: React.KeyboardEvent) => {
+                            handleBlur(event, inputField.name);
+                        } }
                         onChange={ (event: React.ChangeEvent<HTMLInputElement>) => {
                             handleChange(event.target.value, inputField.name);
                         } }
