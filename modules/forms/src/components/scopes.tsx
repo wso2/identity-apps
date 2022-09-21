@@ -224,10 +224,6 @@ export const Scopes: FunctionComponent<ScopesPropsInterface> = (
                                 key={ index }
                             >
                                 { scope } 
-                                <Icon
-                                    name="delete"
-                                    onClick={ () => handleLabelRemove(scope) }
-                                />
                             </Label>
                         );
                     } else {
