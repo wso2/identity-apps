@@ -21,6 +21,7 @@ import { initializeAlertSystem } from "@wso2is/core/store";
 import { RouteUtils as CommonRouteUtils, CommonUtils, RouteUtils } from "@wso2is/core/utils";
 import {
     Alert,
+    ContentLoader,
     DashboardLayout as DashboardLayoutSkeleton,
     EmptyPlaceholder,
     ErrorBoundary,
@@ -41,7 +42,6 @@ import { fetchApplications } from "../api";
 import {
     Footer,
     Header,
-    PreLoader,
     ProtectedRoute
 } from "../components";
 import { getDashboardLayoutRoutes, getEmptyPlaceholderIllustrations } from "../configs";
@@ -259,7 +259,7 @@ export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayou
                     />
                 ) }
             >
-                <Suspense fallback={ <PreLoader /> }>
+                <Suspense fallback={ <ContentLoader /> }>
                     <Switch>
                         {
                             dashboardLayoutRoutes.map((route, index) => (
