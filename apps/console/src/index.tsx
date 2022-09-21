@@ -24,7 +24,7 @@ import { AuthenticateUtils as CommonAuthenticateUtils, ContextUtils, StringUtils
 import axios from "axios";
 import * as React from "react";
 import { ReactElement } from "react";
-import ReactDOM, { Root } from "react-dom/client";
+import * as ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import { AuthenticateUtils } from "./features/authentication";
@@ -99,8 +99,8 @@ const RootWithConfig = (): ReactElement => {
     );
 };
 
-const root: Root = ReactDOM.createRoot(
-    document.getElementById("root") as HTMLElement
-);
+const rootElement = document.getElementById("root");
 
-root.render(<RootWithConfig />);
+// Moved back to the legacy mode due to Sign On Methods section state update issue.
+// Tracked here: https://github.com/wso2/product-is/issues/14912
+ReactDOM.render(<RootWithConfig />, rootElement);
