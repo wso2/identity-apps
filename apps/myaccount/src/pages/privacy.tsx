@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,22 +16,24 @@
  * under the License.
  */
 
+import { PageLayout } from "@wso2is/react-components";
 import React, { ReactElement } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Grid, Header, List } from "semantic-ui-react";
-import { DefaultPageLayout } from "../layouts";
 
 /**
  * Privacy page.
  *
- * @return {React.ReactElement}
+ * @returns Privacy page component.
  */
 const PrivacyPage = (): ReactElement => {
+
     const { t } = useTranslation();
 
     return (
-        <DefaultPageLayout
-            pageTitle={ t("myAccount:pages.privacy.title") }
+        <PageLayout
+            pageTitle="Privacy"
+            title={ t("myAccount:pages.privacy.title") }
         >
             <Grid>
                 { /* About WSO2 Identity Server */ }
@@ -70,27 +72,27 @@ const PrivacyPage = (): ReactElement => {
                         <p>{ t("myAccount:components.privacy.privacyPolicy.whatIsPersonalInfo.description.para1") }</p>
                         <List bulleted>
                             <List.Item>
-                                { 
+                                {
                                     t("myAccount:components.privacy.privacyPolicy.whatIsPersonalInfo." +
-                                        "description.list1.0") 
+                                        "description.list1.0")
                                 }
                             </List.Item>
                             <List.Item>
-                                { 
+                                {
                                     t("myAccount:components.privacy.privacyPolicy.whatIsPersonalInfo." +
-                                    "description.list1.1") 
+                                    "description.list1.1")
                                 }
                             </List.Item>
                             <List.Item>
-                                { 
+                                {
                                     t("myAccount:components.privacy.privacyPolicy.whatIsPersonalInfo." +
-                                        "description.list1.2") 
+                                        "description.list1.2")
                                 }
                             </List.Item>
                             <List.Item>
-                                { 
+                                {
                                     t("myAccount:components.privacy.privacyPolicy.whatIsPersonalInfo." +
-                                        "description.list1.3") 
+                                        "description.list1.3")
                                 }
                             </List.Item>
                         </List>
@@ -107,27 +109,27 @@ const PrivacyPage = (): ReactElement => {
                         </p>
                         <List bulleted>
                             <List.Item>
-                                { 
+                                {
                                     t("myAccount:components.privacy.privacyPolicy.whatIsPersonalInfo." +
-                                        "description.list2.0") 
+                                        "description.list2.0")
                                 }
                             </List.Item>
                             <List.Item>
-                                { 
+                                {
                                     t("myAccount:components.privacy.privacyPolicy.whatIsPersonalInfo" +
-                                        ".description.list2.1") 
+                                        ".description.list2.1")
                                 }
                             </List.Item>
                             <List.Item>
-                                { 
+                                {
                                     t("myAccount:components.privacy.privacyPolicy.whatIsPersonalInfo." +
-                                        "description.list2.2") 
+                                        "description.list2.2")
                                 }
                             </List.Item>
                             <List.Item>
-                                { 
+                                {
                                     t("myAccount:components.privacy.privacyPolicy.whatIsPersonalInfo." +
-                                        "description.list2.3") 
+                                        "description.list2.3")
                                 }
                             </List.Item>
                         </List>
@@ -456,7 +458,7 @@ const PrivacyPage = (): ReactElement => {
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
-        </DefaultPageLayout>
+        </PageLayout>
     );
 };
 

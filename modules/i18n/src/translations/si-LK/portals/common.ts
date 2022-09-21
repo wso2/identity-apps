@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -54,6 +54,7 @@ export const common: CommonNS = {
     },
     claim: "හිමිකම",
     clear: "මකන්න",
+    clientId: "සේවාලාභී හැඳුනුම්පත",
     close: "වසන්න",
     comingSoon: "ඉක්මනින් පැමිණේවි",
     completed: "සම්පුර්ණ කරන ලද",
@@ -99,6 +100,7 @@ export const common: CommonNS = {
     import: "ආනයන",
     initiator: "ආරම්භකයා",
     ipAddress: "IP ලිපිනය",
+    issuer: "යෙදුම් නිකුත් කරන්නා",
     lastAccessed: "අවසන් ප්\u200Dරවේශය",
     lastModified: "අවසන් වෙනස් කළ දිනය",
     lastSeen: "අවසන් වරට",

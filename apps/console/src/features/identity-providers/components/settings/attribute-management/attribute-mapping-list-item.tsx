@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -45,6 +45,8 @@ export interface AttributeMappingListItemProps {
 
 const toBits = (bool: boolean): number => bool ? 1 : 0;
 
+const FORM_ID: string = "idp-attributes-mapping-list-item-form";
+
 /**
  * This is a common interface that allows the user to map one attribute
  * to another local attribute. The interface looks like this: -
@@ -59,12 +61,12 @@ const toBits = (bool: boolean): number => bool ? 1 : 0;
  *
  * This component is a <Form> internally. And the fields value submissions
  * are handled by onSubmit so, it is mandatory to have a submission
- * button. If you pass editingMode={true} it will render plus icon button
+ * button. If you pass editingMode=`true` it will render plus icon button
  * inline and hide button with text "Add Mapping Button" below it
  * and input labels.
  *
- * @param props {AttributeMappingListItemProps}
- * @constructor
+ * @param props - Props injected to the component.
+ * @returns Functional component.
  */
 export const AttributeMappingListItem: FunctionComponent<AttributeMappingListItemProps> = (
     props: AttributeMappingListItemProps
@@ -93,6 +95,7 @@ export const AttributeMappingListItem: FunctionComponent<AttributeMappingListIte
     useEffect(() => {
         if (availableAttributeList) {
             const copy = [ ...availableAttributeList ];
+
             // When you enter into editing mode the available attribute list
             // will not contain the mapping itself. We need to manually append
             // it to the attrs to make it work.
@@ -125,8 +128,8 @@ export const AttributeMappingListItem: FunctionComponent<AttributeMappingListIte
 
     /**
      * Form submission handler.
-     * @param values {Record<string, any>}
-     * @param form {FormApi<Record<string, any>>}
+     * @param values - Form values.
+     * @param form - Form.
      */
     const onFormSub = (values: Record<string, any>, form: FormApi<Record<string, any>>) => {
         // Find the claim by id and create a instance of
@@ -138,7 +141,9 @@ export const AttributeMappingListItem: FunctionComponent<AttributeMappingListIte
             ),
             mappedValue: values.mappedValue
         } as IdentityProviderCommonClaimMappingInterface;
+
         onSubmit(newMapping);
+
         if (!editingMode) {
             // Resets the form field values and its fields states.
             form.change("mappedValue", "");
@@ -152,6 +157,7 @@ export const AttributeMappingListItem: FunctionComponent<AttributeMappingListIte
 
     return (
         <Form
+            id={ FORM_ID }
             onSubmit={ onFormSub }
             uncontrolledForm={ true }
             initialValues={ mapping && {
@@ -174,6 +180,7 @@ export const AttributeMappingListItem: FunctionComponent<AttributeMappingListIte
                             validation={ (value) => {
                                 if (!value || !value.trim()) {
                                     setMappingHasError(true);
+
                                     return FieldConstants.FIELD_REQUIRED_ERROR;
                                 }
                                 /**
@@ -184,17 +191,19 @@ export const AttributeMappingListItem: FunctionComponent<AttributeMappingListIte
                                  * In the following if condition we do a bitwise AND SC operation
                                  * to either allow one of them.
                                  *
-                                 * {@see https://datatracker.ietf.org/doc/html/rfc8409#section-4.1}
+                                 * @see {@link https://datatracker.ietf.org/doc/html/rfc8409#section-4.1}
                                  */
                                 if (toBits(!FormValidation.url(value)) &
                                     toBits(!FormValidation.isValidResourceName(value))) {
                                     setMappingHasError(true);
+
                                     return FieldConstants.INVALID_RESOURCE_ERROR;
                                 }
                                 // Check whether this attribute external name is already mapped.
                                 const mappedValues = new Set(
                                     alreadyMappedAttributesList.map((a) => a.mappedValue)
                                 );
+
                                 if (mappedValues.has(value)) {
                                     // This means we have a mapping value like this...
                                     // But we need to make sure that if the current value
@@ -202,13 +211,16 @@ export const AttributeMappingListItem: FunctionComponent<AttributeMappingListIte
                                     // editing mode...
                                     if (editingMode && mapping?.mappedValue === value) {
                                         setMappingHasError(false);
+
                                         return undefined;
                                     }
                                     setMappingHasError(true);
+
                                     return "There's already a attribute mapped with this name.";
                                 }
                                 // If there's no errors.
                                 setMappingHasError(false);
+
                                 return undefined;
                             } }
                             listen={ (value: string) => setMappedInputValue(value) }
@@ -235,6 +247,7 @@ export const AttributeMappingListItem: FunctionComponent<AttributeMappingListIte
                         <React.Fragment>
                             <Grid.Column width={ 1 }>
                                 <Field.Button
+                                    form={ FORM_ID }
                                     disabled={
                                         mappingHasError ||
                                         !mappedInputValue ||
@@ -254,6 +267,7 @@ export const AttributeMappingListItem: FunctionComponent<AttributeMappingListIte
                     <Grid.Row columns={ 1 }>
                         <Grid.Column width={ 16 } textAlign="right">
                             <Field.Button
+                                form={ FORM_ID }
                                 disabled={
                                     mappingHasError ||
                                     !mappedInputValue ||
@@ -270,5 +284,4 @@ export const AttributeMappingListItem: FunctionComponent<AttributeMappingListIte
             </Grid>
         </Form>
     );
-
 };

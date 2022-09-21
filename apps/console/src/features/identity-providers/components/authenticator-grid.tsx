@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -91,8 +91,8 @@ interface AuthenticatorGridPropsInterface extends LoadableComponentInterface, Te
     onIdentityProviderDelete?: () => void;
     /**
      * On item select callback.
-     * @param {React.SyntheticEvent} event - Click event.
-     * @param {IdentityProviderInterface} idp - Selected IDP
+     * @param event - Click event.
+     * @param idp - Selected IDP.
      */
     onItemClick?: (event: SyntheticEvent, idp: IdentityProviderInterface) => void;
     /**
@@ -120,9 +120,9 @@ interface AuthenticatorGridPropsInterface extends LoadableComponentInterface, Te
 /**
  * Authenticators Grid component.
  *
- * @param {AuthenticatorGridPropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns React element.
  */
 export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterface> = (
     props: AuthenticatorGridPropsInterface
@@ -147,6 +147,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingIDP, setDeletingIDP ] = useState<StrictIdentityProviderInterface>(undefined);
+    const [ isDeletionloading, setIsDeletionLoading ] = useState(false);
     const [ connectedApps, setConnectedApps ] = useState<string[]>(undefined);
     const [
         showDeleteErrorDueToConnectedAppsModal,
@@ -162,7 +163,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
     /**
      * Redirects to the authenticator edit page when the edit button is clicked.
      *
-     * @param {string} id - Authenticator ID.
+     * @param id - Authenticator ID.
      */
     const handleAuthenticatorEdit = (id: string): void => {
 
@@ -172,7 +173,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
     /**
      * Initiates the deletes of an authenticator. This will check for connected apps.
      *
-     * @param {string} idpId - Identity provider id.
+     * @param idpId - Identity provider id.
      */
     const handleAuthenticatorDeleteInitiation = (idpId: string): void => {
 
@@ -227,9 +228,11 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
      * Deletes an authenticator via the API.
      * @remarks ATM, IDP delete is only supported.
      *
-     * @param {string} id - Authenticator ID.
+     * @param id - Authenticator ID.
      */
     const handleAuthenticatorDelete = (id: string): void => {
+
+        setIsDeletionLoading(true);
 
         deleteIdentityProvider(id)
             .then(() => {
@@ -246,6 +249,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                 handleIDPDeleteError(error);
             })
             .finally(() => {
+                setIsDeletionLoading(false);
                 setShowDeleteConfirmationModal(false);
                 setDeletingIDP(undefined);
                 onIdentityProviderDelete();
@@ -255,7 +259,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
     /**
      * Resolve the relevant placeholder.
      *
-     * @return {React.ReactElement}
+     * @returns React element.
      */
     const showPlaceholders = (): ReactElement => {
 
@@ -314,8 +318,8 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
     /**
      * Handles Grid Item click callback.
      *
-     * @param {React.SyntheticEvent} e - Click event.
-     * @param {IdentityProviderInterface | AuthenticatorInterface} authenticator - Clicked authenticator.
+     * @param e - Click event.
+     * @param authenticator - Clicked authenticator.
      */
     const handleGridItemOnClick = (e: SyntheticEvent, authenticator: IdentityProviderInterface
         | AuthenticatorInterface): void => {
@@ -389,9 +393,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                                     resourceName={
                                         isIdP
                                             ? authenticator.name
-                                            : AuthenticatorMeta.getAuthenticatorDisplayName(authenticator.id)
-                                                ? AuthenticatorMeta.getAuthenticatorDisplayName(authenticator.id)
-                                                : (authenticator as AuthenticatorInterface).displayName
+                                            : (authenticator as AuthenticatorInterface).displayName
                                                     || (authenticator as AuthenticatorInterface).name
                                     }
                                     resourceCategory={
@@ -428,6 +430,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
             {
                 deletingIDP && (
                     <ConfirmationModal
+                        primaryActionLoading ={ isDeletionloading }
                         onClose={ (): void => setShowDeleteConfirmationModal(false) }
                         type="negative"
                         open={ showDeleteConfirmationModal }

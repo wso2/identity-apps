@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -583,7 +583,7 @@ export const console: ConsoleNS = {
                             }
                         }
                     },
-                    placeholder: "යෙදුම් නාමයෙන් හෝ සේවාලාභී හැඳුනුම්පතෙන් සොයන්න"
+                    placeholder: "යෙදුම් නාමයෙන්, සේවාලාභී හැඳුනුම්පතෙන්, හෝ යෙදුම් නිකුත් කරන්නාගෙන් සොයන්න"
                 },
                 confirmations: {
                     addSocialLogin: {
@@ -1939,7 +1939,12 @@ export const console: ConsoleNS = {
                             },
                             certificates: {
                                 disabledPopup: "ඉදිරියට යාමට ඉල්ලීම් අත්සන් වලංගුකරණය සහ තහවුරු කිරීමේ " +
-                                    "සංකේතනය අබල කර ඇති බවට වග බලා ගන්න."
+                                    "සංකේතනය අබල කර ඇති බවට වග බලා ගන්න.",
+                                certificateRemoveConfirmation: {
+                                    header: "වත්මන් සහතිකය ඉවත් කරන්නද?",
+                                    content: "සහතික වර්ගය කිසිවක් නැත ලෙස සැකසීම මෙම යෙදුම සඳහා සපයා ඇති වත්මන් සහතිකය ඉවත් " +
+                                        "කරයි. කල්පනාකාරීව ඉදිරියට යන්න."
+                                }
                             },
                             encryption: {
                                 fields: {
@@ -2323,7 +2328,7 @@ export const console: ConsoleNS = {
                     columns: {
                         actions: "ක්‍රියා",
                         name: "නම",
-                        templateId: "වර්ගය"
+                        inboundKey: "අභ්යන්තර යොමුගත යතුර"
                     },
                     labels: {
                         fragment: "ඛණ්ඩක යෙදුම"
@@ -2333,7 +2338,50 @@ export const console: ConsoleNS = {
                     description: "Asgardeo භාවිතා කරන්නන් සඳහා ස්වයං සේවා ද්වාරය",
                     popup: "මගේ ගිණුමට ප්‍රවේශ වීමට සහ ඔවුන්ගේ ගිණුම් කළමනාකරණය කිරීමට" +
                     " ඔබේ පරිශීලකයන් සමඟ මෙම සබැඳිය බෙදා ගන්න.",
-                    title: "මගේ ගිණුම"
+                    title: "මගේ ගිණුම",
+                    enable: {
+                        0: "සක්‍රීය කර ඇත",
+                        1: "ආබාඅක්‍රීය කර ඇතධිතයි"
+                    },
+                    Confirmation: {
+                        enableConfirmation: {
+                            content: "මගේ ගිණුම් ද්වාරය පෙරදසුන් මාදිලියේ ඇති අතර ඔබේ ආයතනය නිෂ්පාදනයට යන විට" + 
+                                "එය අබල කිරීමට නිර්දේශ කෙරේ.",
+                            heading: "ඔබට විශ්වාසද?",
+                            message: "මගේ ගිණුම සබල කරන්න."
+                        },
+                        disableConfirmation: {
+                            content: "මගේ ගිණුම් ද්වාරය පෙරදසුන් මාදිලියේ ඇති අතර ඔබේ ආයතනය නිෂ්පාදනයට යන විට " + 
+                                "එය අබල කිරීමට නිර්දේශ කෙරේ. මගේ ගිණුම් ද්වාරය අබල කළ විට, ඔබේ සංවිධානයේ " + 
+                                "පරිශීලකයින්ට එයට ප්‍රවේශ වීමට නොහැකි වනු ඇත.",
+                            heading: "ඔබට විශ්වාසද?",
+                            message: "මගේ ගිණුම අක්‍රීය කරන්න."
+                        }
+                    },
+                    notifications: {
+                        error: {
+                            description: "{{description}}",
+                            message: "යාවත්කාලීන දෝෂයකි"
+                        },
+                        genericError: {
+                            description: "මගේ ගිණුම යාවත්කාලීන කිරීමට අපොහොසත් විය.",
+                            message: "යම් දෝෂයක් ඇති වී ඇත"
+                        },
+                        success: {
+                            description: "මගේ ගිණුම සාර්ථකව යාවත්කාලීන කරන ලදී.",
+                            message: "යාවත්කාලීන කිරීම සාර්ථකයි"
+                        }
+                    },
+                    fetchMyAccountStatus: {
+                        error: {
+                            description: "{{description}}",
+                            message: "නැවත ලබා ගැනීමේ දෝෂය"
+                        },
+                        genericError: {
+                            description: "මගේ ගිණුම් ද්වාර තත්ත්වය ලබා ගැනීමට නොහැකි විය.",
+                            message: "යම් දෝෂයක් ඇති වී ඇත"
+                        }
+                    }
                 },
                 notifications: {
                     addApplication: {

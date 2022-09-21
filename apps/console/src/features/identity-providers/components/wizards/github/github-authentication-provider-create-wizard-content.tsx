@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -35,17 +35,17 @@ import { handleGetIDPListCallError } from "../../utils";
 interface GitHubAuthenticationProviderCreateWizardContentPropsInterface extends TestableComponentInterface {
     /**
      * Trigger form submit.
-     * @param {() => void} submitFunctionCb - Callback.
+     * @param submitFunctionCb - Callback.
      */
     triggerSubmission: (submitFunctionCb: () => void) => void;
     /**
      * Trigger previous page.
-     * @param {() => void} previousFunctionCb - Callback.
+     * @param previousFunctionCb - Callback.
      */
     triggerPrevious: (previousFunctionCb: () => void) => void;
     /**
      * Callback to change the wizard page,
-     * @param {number} pageNo - Page Number.
+     * @param pageNo - Page Number.
      */
     changePageNumber: (pageNo: number) => void;
     /**
@@ -54,26 +54,28 @@ interface GitHubAuthenticationProviderCreateWizardContentPropsInterface extends 
     template: IdentityProviderTemplateInterface;
     /**
      * Total wizard page count.
-     * @param {number} pageCount - Page number.
+     * @param pageCount - Page number.
      */
     setTotalPage: (pageCount: number) => void;
     /**
      * Callback to be triggered for form submit.
-     * @param values
+     * @param values - Form values.
      */
     onSubmit: (values: GitHubAuthenticationProviderCreateWizardFormValuesInterface) => void;
 }
 
+const FORM_ID: string = "github-authenticator-wizard-form";
+
 /**
  * GitHub Authentication Provider Create Wizard content component.
  *
- * @param {GitHubAuthenticationProviderCreateWizardContentPropsInterface} props - Props injected to the component.
- *
- * @return {React.ReactElement}
+ * @param props - Props injected to the component.
+ * @returns Functional component.
  */
 export const GitHubAuthenticationProviderCreateWizardContent: FunctionComponent<
-    GitHubAuthenticationProviderCreateWizardContentPropsInterface> = (
-        props: GitHubAuthenticationProviderCreateWizardContentPropsInterface
+    GitHubAuthenticationProviderCreateWizardContentPropsInterface
+> = (
+    props: GitHubAuthenticationProviderCreateWizardContentPropsInterface
 ): ReactElement => {
 
     const {
@@ -121,8 +123,7 @@ export const GitHubAuthenticationProviderCreateWizardContent: FunctionComponent<
     /**
      * Check whether IDP name is already exist or not.
      *
-     * @param value IDP name - IDP Name.
-     *
+     * @param value - IDP name.
      * @returns error msg if name is already taken.
      */
     const idpNameValidation = (value): string => {
@@ -147,9 +148,8 @@ export const GitHubAuthenticationProviderCreateWizardContent: FunctionComponent<
     /**
      * Validates the Form.
      *
-     * @param {GitHubAuthenticationProviderCreateWizardFormValuesInterface} values - Form Values.
-     *
-     * @return {GithubAuthenticationProviderCreateWizardFormErrorValidationsInterface}
+     * @param values - Form Values.
+     * @returns Form validation.
      */
     const validateForm = (values: GitHubAuthenticationProviderCreateWizardFormValuesInterface):
         GithubAuthenticationProviderCreateWizardFormErrorValidationsInterface => {
@@ -180,6 +180,7 @@ export const GitHubAuthenticationProviderCreateWizardContent: FunctionComponent<
         (isIdPListRequestLoading !== undefined && isIdPListRequestLoading === false)
             ? (
                 <Wizard
+                    id={ FORM_ID }
                     initialValues={ { name: template?.idp?.name } }
                     onSubmit={
                         (values: GitHubAuthenticationProviderCreateWizardFormValuesInterface) => onSubmit(values)

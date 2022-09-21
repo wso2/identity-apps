@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2022, WSO2 Inc. (http://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -33,12 +33,12 @@ const httpClient = AsgardeoSPAClient.getInstance()
 /**
  * Get a list of organizations.
  *
- * @param {string} organizationId Identifier of the organization
- * @param {string} filter The filter query.
- * @param {number} count The maximum number of organizations to return.
- * @param {string} cursor Cursor string for pagination
+ * @param organizationId - Identifier of the organization
+ * @param filter - The filter query.
+ * @param count - The maximum number of organizations to return.
+ * @param cursor - Cursor string for pagination
  *
- * @returns {Promise<OrganizationListInterface>}
+ * @returns a promise containing the response.
  */
 export const getOrganizationRoles = (
     organizationId: string,
@@ -76,9 +76,9 @@ export const getOrganizationRoles = (
 /**
  * Delete an organization role.
  *
- * @param {string} id The organization role id.
+ * @param id - The organization role id.
  *
- * @returns {Promise<string>}
+ * @returns a promise containing the response
  */
 export const deleteOrganizationRole = (organizationId: string, roleId: string): Promise<string> => {
     const config: HttpRequestConfig = {
@@ -130,9 +130,9 @@ export const createOrganizationRole = (organizationId: string, data: CreateRoleI
 /**
  * Update Data of the matched ID or the role
  *
- * @param organizationId Organization id
- * @param roleId role id to update role details
- * @param roleData Data that needs to be updated.
+ * @param organizationId - Organization id
+ * @param roleId - role id to update role details
+ * @param roleData - Data that needs to be updated.
  */
 export const updateRole = (
     organizationId: string,
@@ -159,9 +159,9 @@ export const updateRole = (
 /**
  * Update Data of the matched ID or the role
  *
- * @param organizationId Organization id
- * @param roleId role id to update role details
- * @param roleData Data that needs to be updated.
+ * @param organizationId - Organization id
+ * @param roleId - role id to update role details
+ * @param roleData - Data that needs to be updated.
  */
 export const patchOrganizationRoleDetails = (
     organizationId: string,
@@ -188,8 +188,8 @@ export const patchOrganizationRoleDetails = (
 /**
  * Retrieve Organization Role details for a give role id.
  *
- * @param organizationId organization id
- * @param roleId role id to retrieve role details
+ * @param organizationId - organization id
+ * @param roleId - role id to retrieve role details
  */
 export const getOrganizationRoleById = (organizationId: string, roleId: string): Promise<any> => {
     const requestConfig = {
@@ -246,6 +246,10 @@ export const getOrganizationPermissions = (): Promise<any> => {
                     "resourcePath": "/permission/admin/manage/identity/cors"
                 },
                 {
+                    "displayName": "Email Management",
+                    "resourcePath": "/permission/admin/manage/identity/emailmgt"
+                },
+                {
                     "displayName": "Governance",
                     "resourcePath": "/permission/admin/manage/identity/governance"
                 },
@@ -288,6 +292,14 @@ export const getOrganizationPermissions = (): Promise<any> => {
                 {
                     "displayName": "CORS Origins",
                     "resourcePath": "/permission/admin/manage/identity/cors/origins"
+                },
+                {
+                    "displayName": "View",
+                    "resourcePath": "/permission/admin/manage/identity/emailmgt/view"
+                },
+                {
+                    "displayName": "Update",
+                    "resourcePath": "/permission/admin/manage/identity/emailmgt/update"
                 },
                 {
                     "displayName": "Roles view",

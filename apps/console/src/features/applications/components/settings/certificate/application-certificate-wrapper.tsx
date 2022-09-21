@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -42,7 +42,7 @@ import {
 interface ApplicationWrapperCertificatesPropsInterface extends TestableComponentInterface {
     /**
      * Application refresh call.
-     * @param id {string} application id
+     * @param id - application id
      */
     onUpdate: (id: string) => void;
     application: ApplicationInterface;
@@ -83,9 +83,9 @@ interface ApplicationWrapperCertificatesPropsInterface extends TestableComponent
 /**
  * Application certificates wrapper component.
  *
- * @param {ApplicationWrapperCertificatesPropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns React.ReactElement
  */
 export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapperCertificatesPropsInterface> = (
     props: ApplicationWrapperCertificatesPropsInterface
@@ -116,6 +116,7 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
     const [ PEMValue, setPEMValue ] = useState<string>(undefined);
     const [ JWKSValue, setJWKSValue ] = useState<string>(undefined);
     const [ showInvalidOperationModal, setShowInvalidOperationModal ] = useState<boolean>(false);
+    const [ showCertificateRemovalWarning, setShowCertificateRemovalWarning ] = useState<boolean>(false);
 
     /**
      * Set the certificate type
@@ -166,16 +167,16 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
             setJWKSValue("");
         } else if (CertificateTypeInterface.JWKS === selectedCertType) {
             setPEMValue("");
-        } 
+        }
     }, [ selectedCertType ]);
 
     /**
      * The following function handle the certificate type change.
      *
-     * @param certType
+     * @param certType - Certificate type.
      */
-    const handleCertificateTypeChange = (certType: string) => {
-        if (certType === "PEM" && !isEmpty(JWKSValue)) {
+    const handleCertificateTypeChange = (certType: CertificateTypeInterface): void => {
+        if (certType === CertificateTypeInterface.PEM && !isEmpty(JWKSValue)) {
             dispatch(addAlert({
                 description: t("console:develop.features.authenticationProvider.notifications." +
                     "changeCertType.pem.description"),
@@ -183,7 +184,7 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
                 message: t("console:develop.features.authenticationProvider.notifications." +
                     "changeCertType.pem.message")
             }));
-        } else if (certType === "JWKS" && !isEmpty(PEMValue)) {
+        } else if (certType === CertificateTypeInterface.JWKS && !isEmpty(PEMValue)) {
             dispatch(addAlert({
                 description: t("console:develop.features.authenticationProvider.notifications.changeCertType.jwks" +
                     ".description"),
@@ -191,13 +192,23 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
                 message: t("console:develop.features.authenticationProvider.notifications.changeCertType.jwks.message")
             }));
         }
+
+        // Open up a warning message to inform the user that, by changing certificate type to NONE
+        // will remove the current certificate from the system.
+        if (selectedCertType === CertificateTypeInterface.NONE && certificate) {
+            setShowCertificateRemovalWarning(true);
+        } else {
+            setShowCertificateRemovalWarning(false);
+        }
+
+        updateCertType(certType);
     };
 
     /**
      * Check the protocol type and render the correct hint for
      * the certificates field.
      *
-     * @param protocol {SupportedAuthProtocolTypes}
+     * @param protocol - Protocol type.
      */
     const resolveHintContent = (protocol: SupportedAuthProtocolTypes): ReactNode => {
         switch (protocol) {
@@ -221,7 +232,7 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
 
     /**
      * Renders the certificate operation invalid modal.
-     * @return {ReactElement}
+     * @returns ReactElement
      */
     const renderInvalidOperationModal = (): ReactElement => (
         <ConfirmationModal
@@ -255,7 +266,7 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
             ? (
                 <Forms
                     onSubmit={ () => {
-                        updateCertType(selectedCertType);
+                        handleCertificateTypeChange(selectedCertType);
                         if (selectedCertType === CertificateTypeInterface.PEM && isEmpty(PEMValue)) {
                             setCertEmpty(true);
                         }
@@ -284,7 +295,9 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
                                         setSelectedCertType(
                                     values.get("certificateType") as CertificateTypeInterface
                                         );
-                                        updateCertType(values.get("certificateType") as CertificateTypeInterface);
+                                        handleCertificateTypeChange(
+                                            values.get("certificateType") as CertificateTypeInterface
+                                        );
                                     }
                                 }
                                 onBefore={
@@ -293,10 +306,10 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
 
                                         if(CertificateTypeInterface.NONE === certType && !canDiscardCertificate()){
                                             setShowInvalidOperationModal(true);
-                                            
+
                                             return false;
                                         }
-                                        
+
                                         return true;
                                     }
                                 }
@@ -354,6 +367,29 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
                                 readOnly={ readOnly }
                                 data-testid={ `${testId}-certificate-type-radio-group` }
                             />
+
+                            {
+                                showCertificateRemovalWarning && (
+                                    <Message
+                                        data-componentid="application-certificate-removal-warning-message"
+                                        type="warning"
+                                        // Semantic hides warning messages inside <form> by default
+                                        // Overriding the behaviour here to make sure it renders properly.
+                                        header="Warning"
+                                        content={
+                                            (
+                                                <>
+                                                    {
+                                                        t("console:develop.features.applications.forms" +
+                                                            ".inboundSAML.sections.certificates" +
+                                                            ".certificateRemoveConfirmation.content")
+                                                    }
+                                                </>
+                                            )
+                                        }
+                                    />
+                                )
+                            }
                         </Grid.Column>
                     </Grid.Row>
                     <Grid.Row columns={ 1 }>
@@ -367,7 +403,7 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
                                         }
                                         onUpdate={ onUpdate }
                                         application={ application }
-                                        updatePEMValue={ (val) => { 
+                                        updatePEMValue={ (val) => {
                                             setPEMValue(val);
                                         } }
                                         applicationCertificate={ PEMValue }

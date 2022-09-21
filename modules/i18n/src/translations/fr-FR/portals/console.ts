@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -575,7 +575,7 @@ export const console: ConsoleNS = {
                             }
                         }
                     },
-                    placeholder: "Chercher par nom d'application ou clientId"
+                    placeholder: "Chercher des applications par nom, clientId, ou émetteur"
                 },
                 confirmations: {
                     addSocialLogin: {
@@ -1993,7 +1993,12 @@ export const console: ConsoleNS = {
                             },
                             certificates: {
                                 disabledPopup: "Assurez-vous que la validation de la signature de la " +
-                                    "demande et le chiffrement des assertions sont désactivés pour continuer."
+                                    "demande et le chiffrement des assertions sont désactivés pour continuer.",
+                                certificateRemoveConfirmation: {
+                                    header: "Supprimer le certificat actuel?",
+                                    content: "Définir le type de certificat sur aucun supprimera le certificat " +
+                                        "actuel fourni pour cette application. Procéder avec prudence."
+                                }
                             },
                             encryption: {
                                 fields: {
@@ -2383,7 +2388,7 @@ export const console: ConsoleNS = {
                     columns: {
                         actions: "",
                         name: "Nom",
-                        templateId: "taper"
+                        inboundKey: "Clé entrante"
                     },
                     labels: {
                         fragment: "Fragmenter App"
@@ -2393,7 +2398,50 @@ export const console: ConsoleNS = {
                     description: "Portail libre-service pour les utilisateurs d'Asgardeo",
                     popup: "Partagez ce lien avec vos utilisateurs pour autoriser" +
                     " l'accès à Mon compte et gérer leurs comptes.",
-                    title: "Mon compte"
+                    title: "Mon compte",
+                    enable: {
+                        0: "Activé",
+                        1: "Désactivé"
+                    },
+                    Confirmation: {
+                        enableConfirmation: {
+                            content: "Le portail Mon compte est en mode aperçu et il est recommandé de le désactiver " +
+                                "lorsque votre organisation passe en production.",
+                            heading: "Êtes-vous sûr?",
+                            message: "Activer le portail Mon compte."
+                        },
+                        disableConfirmation: {
+                            content: "Le portail Mon compte est en mode aperçu et il est recommandé de le désactiver " +
+                                "lorsque votre organisation passe en production. Lorsque le portail Mon compte est " +
+                                "désactivé, les utilisateurs de votre organisation ne pourront pas y accéder.",
+                            heading: "Êtes-vous sûr?",
+                            message: "Désactiver le portail Mon compte."
+                        }
+                    },
+                    notifications: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Erreur de mise à jour"
+                        },
+                        genericError: {
+                            description: "Échec de la mise à jour de l'état du portail Mon compte.",
+                            message: "Quelque chose s'est mal passé"
+                        },
+                        success: {
+                            description: "Le statut du portail Mon compte a été mis à jour avec succès",
+                            message: "Mise à jour réussie"
+                        }
+                    },
+                    fetchMyAccountStatus: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Erreur de récupération"
+                        },
+                        genericError: {
+                            description: "Impossible de récupérer l'état du portail Mon compte.",
+                            message: "Quelque chose s'est mal passé"
+                        }
+                    }
                 },
                 notifications: {
                     addApplication: {

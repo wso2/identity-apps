@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -108,7 +108,7 @@ type AppPropsInterface = IdentifiableComponentInterface;
 /**
  * This component warps the `App` component with the `SecureApp` component to provide automatic authentication.
  *
- * @returns {ReactElement} ProtectedApp component
+ * @returns ProtectedApp component (React Element)
  */
 export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactElement => {
     const {
@@ -130,7 +130,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const governanceConnectorCategories: GovernanceConnectorCategoryInterface[] = useSelector(
+    let governanceConnectorCategories: GovernanceConnectorCategoryInterface[] = useSelector(
         (state: AppState) => state.governanceConnector.categories);
     const filteredManageRoutes: RouteInterface[] = useSelector(
         (state: AppState) => state.routes.manageRoutes.filteredRoutes
@@ -555,6 +555,10 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
         const manageRoutes = [ ...filteredManageRoutes ];
         const sanitizedRoutes = [ ...sanitizedManageRoutes ];
 
+        if (!OrganizationUtils.isCurrentOrganizationRoot()) {
+            governanceConnectorCategories = AppConstants.filterGoverananceConnectors(governanceConnectorCategories);
+        }
+
         serverConfigurationConfig.showConnectorsOnTheSidePanel &&
                 governanceConnectorCategories?.map((category: GovernanceConnectorCategoryInterface, index: number) => {
                     let subCategoryExists = false;
@@ -619,8 +623,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                         featureConfig.governanceConnectors,
                         featureConfig.governanceConnectors.scopes.read,
                         allowedScopes
-                    ) &&
-                    OrganizationUtils.isCurrentOrganizationRoot()
+                    ) 
                 )
             ) {
                 GovernanceConnectorUtils.getGovernanceConnectors();

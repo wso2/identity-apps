@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -69,7 +69,7 @@ export interface AvatarPropsInterface extends IdentifiableComponentInterface, Te
     /**
      * Image to be displayed as an avatar.
      */
-    image?: React.ReactNode;
+    image?: React.ReactNode | Promise<string>;
     /**
      * If the avatar should be displayed inline.
      */
@@ -92,22 +92,22 @@ export interface AvatarPropsInterface extends IdentifiableComponentInterface, Te
     name?: string;
     /**
      * On Edit Icon click callback.
-     * @param {React.SyntheticEvent} e - Click event.
+     * @param e - Click event.
      */
     onEditIconClick?: (e: SyntheticEvent) => void;
     /**
      * On click callback.
-     * @param {React.SyntheticEvent} e - Click event.
+     * @param e - Click event.
      */
     onClick?: (e: SyntheticEvent) => void;
     /**
      * Fired on mouse out.
-     * @param {MouseEvent} e - Mouse event.
+     * @param e - Mouse event.
      */
     onMouseOut?: (e: MouseEvent) => void;
     /**
      * Fired on mouse over.
-     * @param {MouseEvent} e - Mouse event.
+     * @param e - Mouse event.
      */
     onMouseOver?: (e: MouseEvent) => void;
     /**
@@ -158,9 +158,8 @@ const AVATAR_MODULE_CSS_CLASS = "ui-avatar";
 /**
  * Avatar component.
  *
- * @param {AvatarPropsInterface} props - Props passed in to the Avatar component.
- *
- * @return {React.ReactElement}
+ * @param props - Props passed in to the Avatar component.
+ * @returns Avatar component.
  */
 export const Avatar: FunctionComponent<PropsWithChildren<AvatarPropsInterface>> = (
     props: PropsWithChildren<AvatarPropsInterface>
@@ -281,7 +280,7 @@ export const Avatar: FunctionComponent<PropsWithChildren<AvatarPropsInterface>> 
      * If the name only has one word, then only a single initial
      * will be generated. i.e For "Brion", "B" will be generated.
      *
-     * @return {string}
+     * @returns Initials based on the name.
      */
     const generateInitials = (): string => {
 
@@ -296,7 +295,8 @@ export const Avatar: FunctionComponent<PropsWithChildren<AvatarPropsInterface>> 
 
     /**
      * Renders a floating edit icon.
-     * @return {ReactElement}
+     *
+     * @returns Edit bubble component.
      */
     const renderEditBubble = (): ReactElement => (
         editable && (
@@ -317,7 +317,8 @@ export const Avatar: FunctionComponent<PropsWithChildren<AvatarPropsInterface>> 
 
     /**
      * Renders a floating custom label.
-     * @return {React.ReactElement}
+     *
+     * @returns Custom label.
      */
     const renderCustomLabel = (): ReactElement => (
         label && (

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -961,6 +961,10 @@ export interface ConsoleNS {
                             };
                             certificates: {
                                 disabledPopup: string;
+                                certificateRemoveConfirmation: {
+                                    header: string;
+                                    content: string;
+                                }
                             }
                         };
                     };
@@ -1003,7 +1007,7 @@ export interface ConsoleNS {
                     columns: {
                         actions: string;
                         name: string;
-                        templateId: string;
+                        inboundKey: string;
                     };
                     actions: {
                         add: string;
@@ -1018,6 +1022,46 @@ export interface ConsoleNS {
                     title: string;
                     description: string;
                     popup: string;
+                    enable: {
+                        0: string;
+                        1: string;
+                    };
+                    Confirmation: {
+                        enableConfirmation: {
+                            content: string;
+                            heading: string;
+                            message: string;
+                        };
+                        disableConfirmation: {
+                            content: string;
+                            heading: string;
+                            message: string;
+                        };
+                    };
+                    notifications: {
+                        error: {
+                            description: string;
+                            message: string;
+                        };
+                        genericError: {
+                            description: string;
+                            message: string;
+                        };
+                        success: {
+                            description: string;
+                            message: string;
+                        };
+                    };
+                    fetchMyAccountStatus: {
+                        error: {
+                            description: string;
+                            message: string;
+                        },
+                        genericError: {
+                            description: string;
+                            message: string;
+                        },
+                    }
                 };
                 notifications: {
                     addApplication: Notification;

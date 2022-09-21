@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -35,11 +35,11 @@ import {
     Icon,
     Item,
     Menu,
-    Placeholder,
-    Responsive
+    Placeholder
 } from "semantic-ui-react";
 import { UserAvatar } from "../avatar";
 import { GenericIcon } from "../icon";
+import { Media } from "../media";
 
 /**
  * Header component prop types.
@@ -62,6 +62,7 @@ export interface HeaderPropsInterface extends IdentifiableComponentInterface, Te
     fixed?: "left" | "right" | "bottom" | "top";
     fluid?: boolean;
     isProfileInfoLoading?: boolean;
+    isPrivilegedUser?: boolean;
     linkedAccounts?: LinkedAccountInterface[];
     // TODO: Add proper type interface.
     profileInfo: any;
@@ -149,9 +150,8 @@ export interface StrictHeaderLinkInterface extends IdentifiableComponentInterfac
     name: ReactNode;
     /**
      * Called on dropdown item click.
-     *
-     * @param {SyntheticEvent} event - React's original SyntheticEvent.
-     * @param {object} data - All props.
+     * @param event - React's original SyntheticEvent.
+     * @param data - All props.
      */
     onClick?: (event: React.MouseEvent<HTMLDivElement>, data: DropdownItemProps) => void;
 }
@@ -159,9 +159,8 @@ export interface StrictHeaderLinkInterface extends IdentifiableComponentInterfac
 /**
  * Header component.
  *
- * @param {HeaderPropsInterface} props - Props injected to the component.
- *
- * @return {React.ReactElement}
+ * @param props - Props injected to the component.
+ * @returns Header Component.
  */
 export const Header: FunctionComponent<HeaderPropsInterface> = (
     props: HeaderPropsInterface
@@ -178,6 +177,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         fixed,
         fluid,
         isProfileInfoLoading,
+        isPrivilegedUser,
         linkedAccounts,
         profileInfo,
         userDropdownInfoAction,
@@ -209,7 +209,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
 
     /**
      * Renders the User dropdown trigger.
-     * @return {React.ReactElement}
+     * @returns User Dropdown rigger component.
      */
     const renderUserDropdownTrigger = (): ReactElement => {
 
@@ -234,8 +234,8 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             >
                 {
                     showUserDropdownTriggerLabel && (
-                        <Responsive
-                            minWidth={ 767 }
+                        <Media
+                            greaterThan="mobile"
                             className="username"
                             data-componentid={ `${ componentId }-user-display-name` }
                             data-testid={ `${ testId }-user-display-name` }
@@ -252,7 +252,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                                     )
                                     : resolveUserDisplayName(profileInfo, basicProfileInfo)
                             }
-                        </Responsive>
+                        </Media>
                     )
                 }
                 {
@@ -278,18 +278,18 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     /**
      * Stops the dropdown from closing on click.
      *
-     * @param { React.SyntheticEvent<HTMLElement> } e - Click event.
+     * @param e - Click event.
      */
-    const handleUserDropdownClick = (e: SyntheticEvent<HTMLElement>) => {
+    const handleUserDropdownClick = (e: SyntheticEvent<HTMLElement>): void => {
         e.stopPropagation();
     };
 
     /**
      * Handles the account switch click event.
      *
-     * @param { LinkedAccountInterface } account - Target account.
+     * @param account - Target account.
      */
-    const handleLinkedAccountSwitch = (account: LinkedAccountInterface) => {
+    const handleLinkedAccountSwitch = (account: LinkedAccountInterface): void => {
         onLinkedAccountSwitch(account);
     };
 
@@ -314,9 +314,8 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     /**
      * Renders the list of linked accounts.
      *
-     * @param {LinkedAccountInterface[]} accounts - Linked accounts.
-     *
-     * @return {React.ReactElement}
+     * @param accounts - Linked accounts.
+     * @returns Link Accounts list.
      */
     const renderLinkedAccounts = (accounts: LinkedAccountInterface[]): ReactElement => {
 
@@ -377,7 +376,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     /**
      * Renders the links in the dropdown.
      *
-     * @return {React.ReactElement[]}
+     * @returns User Dropdown links.
      */
     const renderUserDropdownLinks = (): ReactElement[] => {
 
@@ -388,6 +387,12 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         const adjustedUserDropdownLinks: HeaderLinkCategoryInterface[] = userDropdownLinks
             .reduce((previous: HeaderLinkCategoryInterface[], current: HeaderLinkCategoryInterface) => {
                 const { category, categoryLabel, links } : Partial<HeaderLinkCategoryInterface> = current;
+
+                if (isPrivilegedUser && category === "APPS") {
+                    // Remove my account app from privileged users.
+                    return previous;
+                }
+
                 const findObj : Partial<HeaderLinkCategoryInterface> = [ ...previous ]
                     .find((obj) => obj.category === category);
 
@@ -463,9 +468,8 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     /**
      * Renders the header extensions.
      *
-     * @param {HeaderExtension["floated"]} floated - Floated direction.
-     *
-     * @return {React.ReactElement}
+     * @param floated - Floated direction.
+     * @returns Header Extension links.
      */
     const renderHeaderExtensionLinks = (floated: HeaderExtension[ "floated" ]): ReactElement => {
 
@@ -516,32 +520,48 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                 {
                     showSidePanelToggle
                         ? (
-                            <Responsive as={ Menu.Item } maxWidth={ 767 }>
-                                <Icon
-                                    name="bars"
-                                    size="large"
-                                    onClick={ onSidePanelToggleClick }
-                                    data-componentid={ `${ componentId }-hamburger-icon` }
-                                    data-testid={ `${ testId }-hamburger-icon` }
-                                    link
-                                />
-                            </Responsive>
+                            <Media lessThan="tablet">
+                                { (className: string, renderChildren: boolean) => (
+                                    <span className={ className }>
+                                        { renderChildren && (
+                                            <Menu.Item className="bars-container">
+                                                <Icon
+                                                    name="bars"
+                                                    size="large"
+                                                    onClick={ onSidePanelToggleClick }
+                                                    data-componentid={ `${ componentId }-hamburger-icon` }
+                                                    data-testid={ `${ testId }-hamburger-icon` }
+                                                    link
+                                                />
+                                            </Menu.Item>
+                                        ) }
+                                    </span>
+                                ) }
+                            </Media>
                         )
                         : null
                 }
                 {
                     brand && (
-                        <Responsive className="p-0" as={ Menu.Item } minWidth={ 767 }>
-                            <Menu.Item
-                                as={ Link }
-                                to={ brandLink }
-                                header
-                                data-componentid={ `${ componentId }-brand-container` }
-                                data-testid={ `${ testId }-brand-container` }
-                            >
-                                { brand }
-                            </Menu.Item>
-                        </Responsive>
+                        <Media greaterThan="mobile">
+                            { (className: string, renderChildren: boolean) => (
+                                <span className={ className }>
+                                    { renderChildren && (
+                                        <Menu.Item className="brand-container">
+                                            <Menu.Item
+                                                as={ Link }
+                                                to={ brandLink }
+                                                header
+                                                data-componentid={ `${ componentId }-brand-container` }
+                                                data-testid={ `${ testId }-brand-container` }
+                                            >
+                                                { brand }
+                                            </Menu.Item>
+                                        </Menu.Item>
+                                    ) }
+                                </span>
+                            ) }
+                        </Media>
 
                     )
                 }
@@ -700,6 +720,7 @@ Header.defaultProps = {
     "data-testid": "app-header",
     fixed: "top",
     fluid: false,
+    isPrivilegedUser: false,
     onLinkedAccountSwitch: () => null,
     onSidePanelToggleClick: () => null,
     showSidePanelToggle: true,
