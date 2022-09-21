@@ -216,7 +216,7 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
                 errorMessages: [],
                 isValid: true
             };
-            
+
             if (
                 (isTextField(inputField) || isDropdownField(inputField) || isScopesField(inputField))
                 && inputField.validation
@@ -224,7 +224,6 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
             ) {              
                 await inputField.validation(form.get(name) as string, validation, new Map(form));
             }
-  
             validFieldsParam.set(name, {
                 errorMessages: validation.errorMessages,
                 isValid: validation.isValid
