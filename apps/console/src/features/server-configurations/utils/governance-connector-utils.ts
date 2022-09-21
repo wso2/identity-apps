@@ -110,7 +110,28 @@ export class GovernanceConnectorUtils {
             ],
             id: "QWNjb3VudCBNYW5hZ2VtZW50",
             name: "Account Management"
-        }
+        },
+        {
+            connectors: [
+                {
+                    friendlyName: "Ask Password",
+                    id: "dXNlci1lbWFpbC12ZXJpZmljYXRpb24",
+                    name: "user-email-verification",
+                    properties: [
+                        "EmailVerification.Enable", // Enable user email verification
+                        "EmailVerification.LockOnCreation", // Enable account lock on creation
+                        "EmailVerification.Notification.InternallyManage", // Manage notifications sending internally
+                        "EmailVerification.ExpiryTime", // Email verification code expiry time
+                        "EmailVerification.AskPassword.ExpiryTime", // Username recoveryAsk password code expiry time
+                        "EmailVerification.AskPassword.PasswordGenerator", 
+                        // Temporary password generation extension class
+                        "_url_listPurposeJITProvisioning" // Manage JIT provisioning purposes
+                    ]
+                }
+            ],
+            id: "VXNlciBPbmJvYXJkaW5n",
+            name: "User Onboarding"
+        } 
     ]
 
     /**
