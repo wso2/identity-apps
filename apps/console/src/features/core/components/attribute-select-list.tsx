@@ -190,7 +190,7 @@ export const AttributeSelectList: FunctionComponent<AttributeSelectListPropsInte
                 emptyPlaceholderDefaultContent={ t("console:manage.features.transferList.list."
                             + "emptyPlaceholders.default") }
             >
-                { filterTempAvailableClaims?.map((claim, index) => {                    
+                { filterTempAvailableClaims?.map((claim, index) => {
                     return (
                         <TransferListItem
                             handleItemChange={ () => handleUnassignedItemCheckboxChange(claim) }
