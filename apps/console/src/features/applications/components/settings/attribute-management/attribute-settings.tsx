@@ -158,9 +158,9 @@ function isClaimInterface(claim: ExtendedClaimInterface | ExtendedExternalClaimI
 /**
  * Attribute settings component.
  *
- * @param {AttributeSelectionPropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns AttributeSettings component.
  */
 export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterface> = (
     props: AttributeSelectionPropsInterface
@@ -835,7 +835,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
     /**
      * Util function to handle claim mapping.
      *
-     * @param confirmation confirmation state
+     * @param confirmation - confirmation state.
      */
     const handleClaimMapping = (confirmation: boolean): void => {
         if (confirmation) {
