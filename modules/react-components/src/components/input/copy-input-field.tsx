@@ -1,20 +1,20 @@
 /**
-* Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
-*
-* WSO2 Inc. licenses this file to you under the Apache License,
-* Version 2.0 (the 'License'); you may not use this file except
-* in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing,
-* software distributed under the License is distributed on an
-* 'AS IS' BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-* KIND, either express or implied. See the License for the
-* specific language governing permissions and limitations
-* under the License.
-*/
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 
 import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { CommonUtils } from "@wso2is/core/utils";
@@ -55,9 +55,9 @@ export interface CopyInputFieldPropsInterface extends IdentifiableComponentInter
 /**
  * Copy to clipboard input field component.
  *
- * @param {CopyInputFieldPropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns React.ReactElement
  */
 export const CopyInputField: FunctionComponent<CopyInputFieldPropsInterface> = (
     props: CopyInputFieldPropsInterface
@@ -91,7 +91,7 @@ export const CopyInputField: FunctionComponent<CopyInputFieldPropsInterface> = (
     /**
      * Copies the value to the users clipboard.
      *
-     * @param event {MouseEvent<HTMLButtonElement>)}
+     * @param event - MouseEvent<HTMLButtonElement>)
      */
     const copyValueToClipboard = async (event: MouseEvent<HTMLButtonElement>) => {
         event.stopPropagation();
@@ -113,26 +113,17 @@ export const CopyInputField: FunctionComponent<CopyInputFieldPropsInterface> = (
             labelPosition="right"
             readOnly
             action={ (
-                <Popup
-                    trigger={
-                        (
-                            <Button
-                                className="copy-input-action"
-                                icon="copy"
-                                type="button"
-                                onMouseEnter={ () => {
-                                    setCopied(false);
-                                } }
-                                ref={ copyButtonRef as React.RefObject<Button> }
-                                onClick={ copyValueToClipboard }
-                            />
-                        )
-                    }
-                    openOnTriggerFocus
-                    closeOnTriggerBlur
-                    position="top center"
-                    content={ copied ? "Copied!" : "Copy to clipboard" }
-                    inverted
+                <Button
+                    data-tooltip={ copied ? "Copied!" : "Copy to clipboard" }
+                    data-inverted=""
+                    className="copy-input-action"
+                    icon="copy"
+                    type="button"
+                    onMouseEnter={ () => {
+                        setCopied(false);
+                    } }
+                    ref={ copyButtonRef as React.RefObject<Button> }
+                    onClick={ copyValueToClipboard }
                 />
             ) }
             fluid
