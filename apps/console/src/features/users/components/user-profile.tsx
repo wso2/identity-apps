@@ -216,7 +216,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     useEffect(() => {
         if (user?.id === undefined) {
             return;
-        }        
+        }
 
         const attributes = UserManagementConstants.SCIM2_ATTRIBUTES_DICTIONARY.get("ACCOUNT_LOCKED") + "," +
             UserManagementConstants.SCIM2_ATTRIBUTES_DICTIONARY.get("ACCOUNT_DISABLED") + "," +
@@ -238,7 +238,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         if (adminUserType === AdminAccountTypes.INTERNAL) {
             // Admin role ID is only used by internal admins.
             getAdminRoleId();
-        }         
+        }
     }, []);
 
     /**
