@@ -151,7 +151,17 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
      */
     const isScopesDefined = (): boolean => {
         return !!(initialValues?.properties?.find(
-            queryParam => queryParam.key === "commonAuthQueryParams")?.value?.toLowerCase().includes("scope="));
+            queryParam => queryParam.key === CommonConstants.FIELD_COMPONENT_QUERY_PARAMETERS)?.
+            value?.toLowerCase().includes("scope="));
+    };
+
+    /**
+     * Check whether Scopes field is empty.
+     *
+     */
+    const isScopesEmpty = (): boolean => {
+        return isEmpty(initialValues?.properties?.find(
+            scopes => scopes.key === CommonConstants.FIELD_COMPONENT_SCOPES)?.value);
     };
 
     const getField = (property: CommonPluggableComponentPropertyInterface,
@@ -221,13 +231,14 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
                 let field: ReactElement;
 
                 if (!isCheckboxWithSubProperties(metaProperty)) {
-                    if (metaProperty?.key === CommonConstants.FIELD_COMPONENT_SCOPES) {
-                        const updatedProperty: CommonPluggableComponentMetaPropertyInterface = {
-                            ...metaProperty,
-                            properties: [ { key:"isQueryParamScopesDefined", value: isScopesDefined() } ]
+                    if (metaProperty?.key === CommonConstants.FIELD_COMPONENT_SCOPES 
+                        && !isScopesDefined() && isScopesEmpty()) {
+                        const updatedProperty: CommonPluggableComponentPropertyInterface = {
+                            key: CommonConstants.FIELD_COMPONENT_SCOPES,
+                            value: metaProperty.defaultValue
                         };
 
-                        field = getField(property, updatedProperty, isSub,
+                        field = getField(updatedProperty, metaProperty, isSub,
                             `${ testId }-form`, handleParentPropertyChange);
                     } else {
                         field = getField(property, metaProperty, isSub, `${ testId }-form`, handleParentPropertyChange);

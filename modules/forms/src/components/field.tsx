@@ -399,7 +399,6 @@ export const InnerField = React.forwardRef((props: InnerFieldPropsInterface, ref
                     <Scopes
                         value={ inputField.value }
                         defaultValue={ inputField.defaultValue }
-                        isQueryParamScopesDefined={ inputField.isQueryParamScopesDefined }
                         error={
                             isError
                                 ? errorMessages[0] : ""

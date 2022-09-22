@@ -333,9 +333,6 @@ export const getScopesField = (eachProp: CommonPluggableComponentPropertyInterfa
                 value={ eachProp?.value }
                 key={ eachProp?.key }
                 defaultValue={ propertyMetadata?.defaultValue }
-                isQueryParamScopesDefined={ propertyMetadata?.
-                    properties?.find(( property: CommonPluggableComponentPropertyInterface ) => 
-                        property.key === "isQueryParamScopesDefined")?.value }
                 disabled={ propertyMetadata?.isDisabled }
                 readOnly={ propertyMetadata?.readOnly }
                 data-testid={ `${ testId }-${ propertyMetadata?.key }` }
@@ -542,6 +539,7 @@ export enum CommonConstants {
     FIELD_COMPONENT_KEYWORD_URL = "URL",
     FIELD_COMPONENT_KEYWORD_QUERY_PARAMETER = "QUERYPARAM",
     FIELD_COMPONENT_SCOPES = "Scopes",
+    FIELD_COMPONENT_QUERY_PARAMETERS = "commonAuthQueryParams",
     SCOPE_KEY = "scopes",
     RADIO = "RADIO"
 }

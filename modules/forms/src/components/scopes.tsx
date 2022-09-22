@@ -25,7 +25,6 @@ import { Button, Form, Icon, Label, Message, Popup } from "semantic-ui-react";
  interface ScopesPropsInterface {
      value: string;
      defaultValue: string;
-     isQueryParamScopesDefined: boolean;
      error: string;
      onBlur: (event: React.KeyboardEvent) => void;
      onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -41,7 +40,6 @@ export const Scopes: FunctionComponent<ScopesPropsInterface> = (
     const {
         value,
         defaultValue,
-        isQueryParamScopesDefined,
         error,
         onBlur,
         onChange
@@ -106,15 +104,6 @@ export const Scopes: FunctionComponent<ScopesPropsInterface> = (
       */
     useEffect(() => {
         if (isEmpty(value)) {
-
-            if (!isQueryParamScopesDefined) {
-                const output: Scope[] = [ {
-                    value: defaultValue
-                } ];
-    
-                setScopes(output);
-            }
-
             return;
         } 
  

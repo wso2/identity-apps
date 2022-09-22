@@ -177,7 +177,6 @@ export interface ScopesField extends FormRequiredFieldModel {
     type: "scopes";
     value?: string;
     defaultValue?: string;
-    isQueryParamScopesDefined?: boolean;
     validation?: (value: string, validation: Validation, allValues?: Map<string, FormValue>) => void;
 }
 
