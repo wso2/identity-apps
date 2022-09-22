@@ -151,7 +151,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
      */
     const isScopesDefined = (): boolean => {
         return !!(initialValues?.properties?.find(
-            queryParam => queryParam.key === CommonConstants.FIELD_COMPONENT_QUERY_PARAMETERS)?.
+            queryParam => queryParam.key === CommonConstants.QUERY_PARAMETERS_KEY)?.
             value?.toLowerCase().includes("scope="));
     };
 

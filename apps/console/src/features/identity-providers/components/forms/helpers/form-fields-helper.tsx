@@ -539,7 +539,7 @@ export enum CommonConstants {
     FIELD_COMPONENT_KEYWORD_URL = "URL",
     FIELD_COMPONENT_KEYWORD_QUERY_PARAMETER = "QUERYPARAM",
     FIELD_COMPONENT_SCOPES = "Scopes",
-    FIELD_COMPONENT_QUERY_PARAMETERS = "commonAuthQueryParams",
+    QUERY_PARAMETERS_KEY = "commonAuthQueryParams",
     SCOPE_KEY = "scopes",
     RADIO = "RADIO"
 }
