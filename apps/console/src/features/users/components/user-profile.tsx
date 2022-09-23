@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -74,6 +74,10 @@ interface UserProfilePropsInterface extends TestableComponentInterface, SBACInte
      */
     isReadOnly?: boolean;
     /**
+     * Is the user store readonly.
+     */
+    isReadOnlyUserStore?: boolean;
+    /**
      * Allow if the user is deletable.
      */
     allowDeleteOnly?: boolean;
@@ -118,6 +122,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         featureConfig,
         connectorProperties,
         isReadOnlyUserStoresLoading,
+        isReadOnlyUserStore,
         tenantAdmin,
         editUserDisclaimerMessage,
         adminUserType,
@@ -233,7 +238,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         if (adminUserType === AdminAccountTypes.INTERNAL) {
             // Admin role ID is only used by internal admins.
             getAdminRoleId();
-        }        
+        }
     }, []);
 
     /**
@@ -1102,6 +1107,9 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     setShowDeleteConfirmationModal(true);
                                     setDeletingUser(user);
                                 } }
+                                isButtonDisabled={ isReadOnlyUserStore }
+                                buttonDisableHint={ t("console:manage.features.user.editUser.dangerZoneGroup." +
+                                    "deleteUserZone.buttonDisableHint") }
                             />
                         </DangerZoneGroup>
                     )
@@ -1615,5 +1623,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
  */
 UserProfile.defaultProps = {
     adminUserType: "None",
-    "data-testid": "user-mgt-user-profile"
+    "data-testid": "user-mgt-user-profile",
+    isReadOnlyUserStore: false
 };

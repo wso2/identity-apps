@@ -46,6 +46,7 @@ export class EmailTemplateManagementConstants {
      */
     public static readonly EMAIL_TEMPLATE_TYPES_FOR_ORGS: string[] = [
         "UGFzc3dvcmRSZXNldA", // PasswordReset
-        "QWNjb3VudElkUmVjb3Zlcnk" //AccountIdRecovery
+        "QWNjb3VudElkUmVjb3Zlcnk", //AccountIdRecovery
+        "QXNrUGFzc3dvcmQ" // AskPassword
     ]
 }

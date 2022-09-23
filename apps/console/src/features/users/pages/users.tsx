@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -70,15 +70,14 @@ type UsersPageInterface = TestableComponentInterface;
 
 /**
  * Temporary value to append to the list limit to figure out if the next button is there.
- * @type {number}
  */
 const TEMP_RESOURCE_LIST_ITEM_LIMIT_OFFSET: number = 1;
 
 /**
  * Users info page.
  *
- * @param {UsersPageInterface} props - Props injected to the component.
- * @return {React.ReactElement}
+ * @param props - Props injected to the component.
+ * @returns React Element
  */
 const UsersPage: FunctionComponent<UsersPageInterface> = (
     props: UsersPageInterface
@@ -246,10 +245,10 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
      * TODO: Remove this function and other related variables once there is a proper fix for LDAP pagination.
      * @see {@link https://github.com/wso2/product-is/issues/7320}
      *
-     * @param {UserListInterface} list - Users list retrieved from the API.
-     * @param {number} requestedLimit - Requested item limit.
-     * @param {number} popCount - Tempt count used which will be removed after figuring out if next page is available.
-     * @return {UserListInterface}
+     * @param list - Users list retrieved from the API.
+     * @param requestedLimit - Requested item limit.
+     * @param popCount - Tempt count used which will be removed after figuring out if next page is available.
+     * @returns UserListInterface
      */
     const moderateUsersList = (list: UserListInterface, requestedLimit: number,
         popCount: number = 1): UserListInterface => {
@@ -322,7 +321,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
      * The following method accepts a Map and returns the values as a string.
      *
      * @param attributeMap - IterableIterator<string>
-     * @return string
+     * @returns string
      */
     const generateAttributesString = (attributeMap: IterableIterator<string>) => {
         const attArray = [];
@@ -426,7 +425,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     /**
      * Dispatches the alert object to the redux store.
      *
-     * @param {AlertInterface} alert - Alert object.
+     * @param alert - Alert object.
      */
     const handleAlerts = (alert: AlertInterface) => {
         dispatch(addAlert(alert));
@@ -455,7 +454,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
      * Handles the `onFilter` callback action from the
      * users search component.
      *
-     * @param {string} query - Search query.
+     * @param query - Search query.
      */
     const handleUserFilter = (query: string): void => {
         const attributes = generateAttributesString(userListMetaContent.values());
@@ -494,11 +493,6 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
      * Handles the click event of the create new user button.
      */
     const handleAddNewUserWizardClick = (): void => {
-        if (!OrganizationUtils.isCurrentOrganizationRoot()) {
-            setEmailVerificationEnabled(false);
-
-            return;
-        }
 
         getConnectorCategory(ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID)
             .then((response) => {
