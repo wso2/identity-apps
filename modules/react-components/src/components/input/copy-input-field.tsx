@@ -56,8 +56,7 @@ export interface CopyInputFieldPropsInterface extends IdentifiableComponentInter
  * Copy to clipboard input field component.
  *
  * @param props - Props injected to the component.
- *
- * @returns React.ReactElement
+ * @returns Copy Input Field Component.
  */
 export const CopyInputField: FunctionComponent<CopyInputFieldPropsInterface> = (
     props: CopyInputFieldPropsInterface
@@ -91,7 +90,7 @@ export const CopyInputField: FunctionComponent<CopyInputFieldPropsInterface> = (
     /**
      * Copies the value to the users clipboard.
      *
-     * @param event - MouseEvent<HTMLButtonElement>)
+     * @param event - MouseEvent<HTMLButtonElement>
      */
     const copyValueToClipboard = async (event: MouseEvent<HTMLButtonElement>) => {
         event.stopPropagation();
