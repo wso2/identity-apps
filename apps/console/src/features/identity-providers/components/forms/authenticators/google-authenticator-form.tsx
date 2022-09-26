@@ -22,7 +22,10 @@ import { Code, FormSection, GenericIcon, Hint } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Icon, SemanticICONS } from "semantic-ui-react";
+import { AppConstants, AppState } from "../../../../core";
+import { UIConfigInterface } from "../../../../core/models";
 import { IdentityProviderManagementConstants } from "../../../constants";
 import {
     AuthenticatorSettingsFormModes,
@@ -84,7 +87,7 @@ interface GoogleAuthenticatorFormPropsInterface extends TestableComponentInterfa
  */
 interface GoogleAuthenticatorFormInitialValuesInterface {
     /**
-     * Google Authenticator client secret field value.
+     * Google Authenticator query parameters field value.
      */
     AdditionalQueryParameters: string;
     /**
@@ -99,6 +102,10 @@ interface GoogleAuthenticatorFormInitialValuesInterface {
      * Google Authenticator client id field value.
      */
     ClientId: string;
+    /**
+    * Google Authenticator Google One Tap field value.
+    */
+    IsGoogleOneTapEnabled: boolean;
 }
 
 /**
@@ -106,7 +113,7 @@ interface GoogleAuthenticatorFormInitialValuesInterface {
  */
 interface GoogleAuthenticatorFormFieldsInterface {
     /**
-     * Google Authenticator client secret field value.
+     * Google Authenticator query parameters field value.
      */
     AdditionalQueryParameters: CommonAuthenticatorFormFieldInterface;
     /**
@@ -121,6 +128,10 @@ interface GoogleAuthenticatorFormFieldsInterface {
      * Google Authenticator client id field value.
      */
     ClientId: CommonAuthenticatorFormFieldInterface;
+    /**
+     * Google Authenticator Google One Tap field value.
+     */
+     IsGoogleOneTapEnabled: CommonAuthenticatorFormFieldInterface;
 }
 
 /**
@@ -166,6 +177,12 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
 
     const [ formFields, setFormFields ] = useState<GoogleAuthenticatorFormFieldsInterface>(undefined);
     const [ initialValues, setInitialValues ] = useState<GoogleAuthenticatorFormInitialValuesInterface>(undefined);
+    /**
+    * Importing all UI configurations.
+    */
+    const UIConfig: UIConfigInterface = useSelector((state: AppState) => {
+        return state?.config?.ui;
+    });
 
     /**
      * Flattens and resolved form initial values and field metadata.
@@ -183,23 +200,54 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
             const meta: CommonAuthenticatorFormFieldMetaInterface = metadata?.properties
                 .find((meta) => meta.key === value.key);
 
+            /**
+            * Parsing string  to boolean only for Google One Tap value
+            */
+            let localValue : any;
+
+            if (value.key === IdentityProviderManagementConstants.GOOGLE_ONE_TAP_ENABLED) {
+                if (value.value === "true") {
+                    localValue = true;
+                } else {
+                    localValue = false;
+                }
+            } else {
+                localValue = value.value;
+            }
+
             resolvedFormFields = {
                 ...resolvedFormFields,
                 [ value.key ]: {
                     meta,
-                    value: value.value
+                    value: localValue
                 }
             };
 
             resolvedInitialValues = {
                 ...resolvedInitialValues,
-                [ value.key ]: value.value
+                [ value.key ]: localValue
             };
         });
 
         setFormFields(resolvedFormFields);
         setInitialValues(resolvedInitialValues);
     }, [ originalInitialValues ]);
+
+    /**
+     * Checking the current user is a super user or not.
+     * @returns Is super user logged in.
+     */
+    const isSuperTenantLogin = (): boolean => {
+        return AppConstants.getTenant() === AppConstants.getSuperTenant();
+    };
+
+    /**
+     * Checking ability to enable Google One Tap.
+     * @returns Whether enable Google One Tap or not.
+     */
+    const isEnableGoogleOneTap = (): boolean => {
+        return !UIConfig.isGOTEnabledForSuperTenantOnly || isSuperTenantLogin();
+    };
 
     /**
      * Prepare form values for submitting.
@@ -467,6 +515,30 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
                 width={ 16 }
                 data-testid={ `${ testId }-additional-query-parameters` }
             />
+            { isEnableGoogleOneTap()
+                ? (
+                    <Field.Checkbox
+                        ariaLabel="Enable Google One Tap as a sign in option"
+                        name={ IdentityProviderManagementConstants.GOOGLE_ONE_TAP_ENABLED }
+                        required={ false }
+                        toggle
+                        label={
+                            t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                               ".google.enableGoogleOneTap.label")
+                        }
+                        placeholder={
+                            t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                               ".google.enableGoogleOneTap.placeholder")
+                        }
+                        hint={
+                            t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                               ".google.enableGoogleOneTap.hint")
+                        }
+                        readOnly={ readOnly }
+                        data-testid={ `${ testId }-google-one-tap` }
+                    />
+                ) : null
+            }
             {
                 (formFields?.AdditionalQueryParameters?.value
                     && !isEmpty(extractScopes(formFields.AdditionalQueryParameters.value))) && (
@@ -558,3 +630,5 @@ GoogleAuthenticatorForm.defaultProps = {
     "data-testid": "google-authenticator-form",
     enableSubmitButton: true
 };
+
+
