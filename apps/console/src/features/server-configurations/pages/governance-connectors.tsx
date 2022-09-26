@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -28,10 +28,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { Grid, Menu, Rail, Ref, Sticky } from "semantic-ui-react";
 import { serverConfigurationConfig } from "../../../extensions";
 import { AppState, FeatureConfigInterface, UIConstants, history } from "../../core";
+import { OrganizationUtils } from "../../organizations/utils";
 import { getConnectorCategory } from "../api";
 import { DynamicGovernanceConnector } from "../components";
 import { ServerConfigurationsConstants } from "../constants";
 import { GovernanceConnectorCategoryInterface, GovernanceConnectorInterface } from "../models";
+import { GovernanceConnectorUtils } from "../utils";
 
 /**
  * Props for the Server Configurations page.
@@ -91,6 +93,32 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
 
         getConnectorCategory(categoryId)
             .then((response: GovernanceConnectorCategoryInterface) => {
+
+                if (!OrganizationUtils.isCurrentOrganizationRoot()) {
+                    response.connectors = 
+                        GovernanceConnectorUtils
+                            .filterGovernanceConnectorCategories(categoryId, response.connectors);
+
+                    // If the given connector is not available for an organization domains
+                    if (response.connectors.length==0) {
+                        dispatch(
+                            addAlert({
+                                description: t(
+                                    "console:manage.features.governanceConnectors.notifications." +
+                                    "getConnector.genericError.description"
+                                ),
+                                level: AlertLevels.ERROR,
+                                message: t(
+                                    "console:manage.features.governanceConnectors.notifications." +
+                                    "getConnector.genericError.message"
+                                )
+                            })
+                        );
+
+                        return;
+                        
+                    }
+                }
 
                 response.connectors.map((connector: GovernanceConnectorWithRef) => {
                     connector.categoryId = categoryId;

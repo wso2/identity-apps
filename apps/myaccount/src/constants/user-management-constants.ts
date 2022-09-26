@@ -17,36 +17,26 @@
  */
 
 /**
- * Class containing Email template related constants.
+ * Class containing app constants which can be used across several applications.
  */
-export class EmailTemplateManagementConstants {
+export class UserManagementConstants {
 
     /**
      * Private constructor to avoid object instantiation from outside
      * the class.
+     *
      */
-    /* eslint-disable @typescript-eslint/no-empty-function */
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     private constructor() { }
 
     /**
-     * A Boilerplate template to start email template editing.
+     * Set of SCIM2 schema names.apps/myaccount/src/store/actions/authenticate.ts
+     * @typeparam SCIM2_SCHEMA_DICTIONARY - `Map<string, string>`
+     * @defaultValue
      */
-    public static readonly EMAIL_STARTER_TEMPLATE: string = `<!DOCTYPE html>
-        <html>
-            <head>
-                <title>HTML Email Template</title>
-            </head>
-            <body>
-                <p>Hello {{user.claim.givenname}}!</p>
-            </body>
-        </html>`;
-
-    /**
-     * Email template types that are enabled for organization domain
-     */
-    public static readonly EMAIL_TEMPLATE_TYPES_FOR_ORGS: string[] = [
-        "UGFzc3dvcmRSZXNldA", // PasswordReset
-        "QWNjb3VudElkUmVjb3Zlcnk", //AccountIdRecovery
-        "QXNrUGFzc3dvcmQ" // AskPassword
-    ]
+    public static readonly SCIM2_SCHEMA_DICTIONARY: Map<string, string> = new Map<string, string>()
+        .set("EMAILS", "emails")
+        .set("USERNAME", "userName")
+        .set("NAME", "name")
+        .set("DISPLAY_NAME", "displayName");
 }

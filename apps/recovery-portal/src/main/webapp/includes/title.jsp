@@ -19,5 +19,5 @@
 <jsp:directive.include file="localize.jsp" />
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 
-<!-- title -->
+<%-- title --%>
 <title><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Wso2.identity.server")%></title>
