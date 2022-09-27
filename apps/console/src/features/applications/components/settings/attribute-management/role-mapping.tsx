@@ -154,7 +154,7 @@ export const RoleMapping: FunctionComponent<RoleMappingPropsInterface> = (
                         readOnly={ readOnly }
                         data-testid={ `${ testId }-dynamic-field` } 
                         listen={ (data) => {
-                            if(onChange) {
+                            if (onChange) {
                                 const finalData: RoleMappingInterface[] = data?.map((mapping: KeyValue) => {
                                     return {
                                         applicationRole: mapping.value,

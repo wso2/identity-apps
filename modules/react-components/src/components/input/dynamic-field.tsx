@@ -167,7 +167,7 @@ export const DynamicField: FunctionComponent<DynamicFieldPropsInterface> = (
      * Prevent submit from being triggered during initial render
      */
     useEffect(() => {
-        if(!update) {
+        if (!update) {
             return;
         }
         if (initRender.current) {

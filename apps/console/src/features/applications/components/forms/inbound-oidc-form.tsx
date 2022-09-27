@@ -988,7 +988,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             };
         }
 
-        // Add `scope validators` only if `scope validators` are visible
+        // Add `scope validators` only if `scope validators` are visible.
         if (applicationConfig.inboundOIDCForm.showScopeValidators) {
             inboundConfigFormValues = {
                 ...inboundConfigFormValues,
