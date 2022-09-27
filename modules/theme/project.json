@@ -1,9 +1,11 @@
 {
-    "projectType": "library",
-    "generators": {},
+    "$schema": "../../node_modules/nx/schemas/project-schema.json",
     "root": "modules/theme",
     "sourceRoot": "modules/theme/src",
+    "projectType": "library",
+    "generators": {},
     "prefix": "@wso2is",
+    "tags": [],
     "targets": {
         "build": {
             "executor": "@nrwl/workspace:run-commands",

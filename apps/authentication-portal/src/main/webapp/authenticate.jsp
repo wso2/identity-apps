@@ -46,6 +46,8 @@
     String token = "";
     String authAPIURL = application.getInitParameter(AUTHENTICATION_REST_ENDPOINT_URL);
     if (StringUtils.isNotBlank(authAPIURL)) {
+        // Resolve tenant domain for the authentication API URl
+        authAPIURL = AuthenticationEndpointUtil.resolveTenantDomain(authAPIURL);
 
         AuthAPIServiceClient authAPIServiceClient = new AuthAPIServiceClient(authAPIURL);
         AuthenticationResponse authenticationResponse = authAPIServiceClient.authenticate(request.getParameter("username"), request.getParameter("password"));
@@ -113,7 +115,7 @@
 <!doctype html>
 <html>
 <head>
-    <!-- header -->
+    <%-- header --%>
     <%
         File headerFile = new File(getServletContext().getRealPath("extensions/header.jsp"));
         if (headerFile.exists()) {
@@ -126,7 +128,7 @@
 <body class="login-portal layout authentication-portal-layout">
     <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
         <layout:component componentName="ProductHeader" >
-            <!-- product-title -->
+            <%-- product-title --%>
             <%
                 File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
                 if (productTitleFile.exists()) {
@@ -149,7 +151,7 @@
             </div>
         </layout:component>
         <layout:component componentName="ProductFooter" >
-            <!-- product-footer -->
+            <%-- product-footer --%>
             <%
                 File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
                 if (productFooterFile.exists()) {
@@ -161,7 +163,7 @@
         </layout:component>
     </layout:main>
 
-    <!-- footer -->
+    <%-- footer --%>
     <%
         File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
         if (footerFile.exists()) {

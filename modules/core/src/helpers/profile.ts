@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -23,20 +23,21 @@ import { AuthReducerStateInterface, MultiValueAttributeInterface, ProfileInfoInt
 /**
  * Resolves the user's display name.
  *
- * @param {ProfileInfoInterface} profileInfo - profile information.
- * @param {AuthReducerStateInterface} authState - Contains basic profile info extracted from the ID token.
- * @param {string} fallback - Fallback value.
- * @return {string} - Resolved display name.
+ * @param profileInfo - Profile information.
+ * @param authState - Contains basic profile info extracted from the ID token.
+ * @param fallback - Fallback value.
+ * @returns Resolved display name.
  */
-export const resolveUserDisplayName = (profileInfo: ProfileInfoInterface,
-                                       authState?: AuthReducerStateInterface,
-                                       fallback: string = null): string => {
+export const resolveUserDisplayName = (
+    profileInfo: ProfileInfoInterface, 
+    authState?: AuthReducerStateInterface,
+    fallback: string = null
+): string => {
 
-    if (profileInfo["displayName"]) {
-        return profileInfo["displayName"];
-    } else if (profileInfo.name && (profileInfo.name.givenName || profileInfo.name.familyName)) {
+    if (profileInfo.name && (profileInfo.name.givenName || profileInfo.name.familyName)) {
         const givenName = isEmpty(profileInfo.name.givenName) ? "" : profileInfo.name.givenName + " ";
         const familyName = isEmpty(profileInfo.name.familyName) ? "" : profileInfo.name.familyName;
+
         return givenName + familyName;
     } else if (profileInfo.userName) {
         return getUserNameWithoutDomain(profileInfo.userName);
@@ -55,11 +56,11 @@ export const resolveUserDisplayName = (profileInfo: ProfileInfoInterface,
  * have just the username and the other user store users will have their
  * corresponding user store prefixed to their username.
  *
- * @param {string} username - Username of the user.
- * @param {string} userStoreDomain - User store domain of the user.
- * @return {string}
+ * @param username - Username of the user.
+ * @param userStoreDomain - User store domain of the user.
+ * @returns resolved username
  */
-export const resolveUsername = (username: string, userStoreDomain: string) => {
+export const resolveUsername = (username: string, userStoreDomain: string): string => {
 
     // check if the user store is `PRIMARY`.
     if (userStoreDomain === UserstoreConstants.PRIMARY_USER_STORE) {
@@ -75,10 +76,10 @@ export const resolveUsername = (username: string, userStoreDomain: string) => {
  * and the other user store users will have their corresponding
  * user store prefixed to their username.
  *
- * @param {string} username - Username of the user with user store embedded.
- * @return {string}
+ * @param username - Username of the user with user store embedded.
+ * @returns resolved user store embedded username
  */
-export const resolveUserStoreEmbeddedUsername = (username: string) => {
+export const resolveUserStoreEmbeddedUsername = (username: string): string => {
 
     const parts = username.split("/");
 
@@ -97,8 +98,8 @@ export const resolveUserStoreEmbeddedUsername = (username: string) => {
 /**
  * Get the user's emails as a string array.
  *
- * @param {(string | MultiValueAttributeInterface)[]} emails - User emails.
- * @return {string[]} Emails as a string array.
+ * @param emails - User emails.
+ * @returns Emails as a string array.
  */
 export const resolveUserEmails = (emails: (string | MultiValueAttributeInterface)[]): string[] => {
     if (!emails || !Array.isArray(emails) || emails.length < 1) {
@@ -117,25 +118,27 @@ export const resolveUserEmails = (emails: (string | MultiValueAttributeInterface
 /**
  * This function returns the username without the user store domain prefix.
  *
- * @param {string} userNameWithDomain - Username of the user with the userStore domain.
- * @return {string} User name without domain.
+ * @param userNameWithDomain - Username of the user with the userStore domain.
+ * @returns User name without domain.
  */
 export const getUserNameWithoutDomain = (userNameWithDomain: string): string => {
 
     if (userNameWithDomain.indexOf("/") > -1) {
         const fragments = userNameWithDomain.split("/");
+
         if (fragments?.length > 1) {
             return fragments[1];
         }
     }
+
     return userNameWithDomain;
 };
 
 /**
  * Get the user's userstore as a string.
  *
- * @param {string} username - Username.
- * @return {string} Userstore as a string.
+ * @param username - Username.
+ * @returns Userstore as a string.
  */
 export const resolveUserstore = (username: string): string => {
 

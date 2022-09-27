@@ -41,4 +41,4 @@
         <input type="submit" class="ui primary medium button" value="Submit">
     </form>
 </div>
-<!-- /content -->
+<%-- /content --%>

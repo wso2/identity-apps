@@ -1,7 +1,21 @@
 {
+    "$schema": "../../node_modules/nx/schemas/project-schema.json",
     "root": "apps/console",
     "sourceRoot": "apps/console/src",
     "projectType": "application",
+    "generators": {},
+    "prefix": "@wso2is",
+    "tags": [],
+    "implicitDependencies": [
+        "access-control",
+        "core",
+        "form",
+        "forms",
+        "i18n",
+        "react-components",
+        "theme",
+        "validation"
+    ],
     "targets": {
         "build-prepare": {
             "executor": "@nrwl/workspace:run-commands",
@@ -13,7 +27,7 @@
                     }
                 ],
                 "cwd": "apps/console",
-                "parallel": true
+                "parallel": false
             }
         },
         "build-base": {
@@ -72,6 +86,7 @@
             "configurations": {
                 "development": {
                     "index": "index.html",
+                    "staticIndex": "index.html",
                     "extractLicenses": false,
                     "optimization": false,
                     "sourceMap": true,
@@ -79,12 +94,13 @@
                 },
                 "production": {
                     "index": "index.jsp",
+                    "staticIndex": "index.html",
                     "fileReplacements": [],
                     "optimization": true,
                     "outputHashing": "all",
                     "sourceMap": false,
                     "namedChunks": false,
-                    "extractLicenses": true,
+                    "extractLicenses": false,
                     "vendorChunk": false
                 }
             }
@@ -99,7 +115,7 @@
                     }
                 ],
                 "cwd": "apps/console",
-                "parallel": true
+                "parallel": false
             }
         },
         "build": {
@@ -189,6 +205,5 @@
                 "parallel": false
             }
         }
-    },
-    "tags": []
+    }
 }

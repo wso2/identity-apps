@@ -21,8 +21,7 @@ import { FunctionComponent, ReactElement, ReactNode, SVGProps } from "react";
 import {
     AuthenticatorInterface,
     GenericIdentityProviderCreateWizardPropsInterface,
-    IdentityProviderTabTypes,
-    IdentityProviderTemplateInterface
+    IdentityProviderTabTypes
 } from "../../../features/identity-providers/models";
 
 export interface IdentityProviderConfig {
@@ -142,7 +141,6 @@ export interface IdentityProviderConfig {
     }
     fidoTags: string[];
     filterFidoTags: (tags: string[]) => string[];
-    overrideTemplate: (template?: IdentityProviderTemplateInterface) => void;
 }
 
 /**

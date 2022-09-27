@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -71,9 +71,9 @@ type IDPEditPagePropsInterface = TestableComponentInterface;
 /**
  * Identity Provider Edit page.
  *
- * @param {IDPEditPagePropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns React element.
  */
 const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
     props: IDPEditPagePropsInterface & RouteComponentProps
@@ -106,6 +106,7 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
         isConnectorDetailsFetchRequestLoading,
         setConnectorDetailFetchRequestLoading
     ] = useState<boolean>(undefined);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [ isExtensionsAvailable, setIsExtensionsAvailable ] = useState<boolean>(false);
     const [ useNewConnectionsView, setUseNewConnectionsView ] = useState<boolean>(undefined);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
@@ -248,7 +249,7 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
     /**
      * Retrieves idp details from the API.
      *
-     * @param {string} id - IDP id.
+     * @param id - IDP id.
      */
     const getIdentityProvider = (id: string): void => {
         setConnectorDetailFetchRequestLoading(true);
@@ -287,8 +288,8 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
     /**
      * Retrieves the local authenticator details from the API.
      *
-     * @param {string} id - Authenticator id.
-     * @param {boolean} useAuthenticatorsAPI - Use the 
+     * @param id - Authenticator id.
+     * @param useAuthenticatorsAPI - Use the 
      */
     const getMultiFactorAuthenticator = (id: string, useAuthenticatorsAPI: boolean = true): void => {
 
@@ -296,8 +297,8 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
 
         /**
          * Get authenticator details from either governance API or `authenticators` API.
-         * @param {(id: string) => Promise<T>} cb - Callback.
-         * @return {Promise<T>}
+         * @param cb - Callback.
+         * @returns Promise containing authenticator details.
          */
         const getAuthenticatorDetails = <T extends unknown>(cb: (id: string) => Promise<T>) => {
 
@@ -360,7 +361,7 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
     /**
      * Called when an idp updates.
      *
-     * @param {string} id - IDP id.
+     * @param id - IDP id.
      */
     const handleIdentityProviderUpdate = (id: string): void => {
 
@@ -370,7 +371,7 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
     /**
      * Called when an Multi-factor authenticator updates.
      *
-     * @param {string} id - Authenticator id.
+     * @param id - Authenticator id.
      */
     const handleMultiFactorAuthenticatorUpdate = (id: string): void => {
 
@@ -387,9 +388,9 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
     /**
      * Resolves the connector status label.
      *
-     * @param {IdentityProviderInterface | MultiFactorAuthenticatorInterface} connector - Evaluating connector.
+     * @param connector - Evaluating connector.
      *
-     * @return {React.ReactElement}
+     * @returns React element.
      */
     const resolveStatusLabel = (connector: IdentityProviderInterface
         | MultiFactorAuthenticatorInterface): ReactElement => {
@@ -429,9 +430,9 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
     /**
      * Resolves the connector image.
      *
-     * @param {IdentityProviderInterface | MultiFactorAuthenticatorInterface} connector - Evaluating connector.
+     * @param connector - Evaluating connector.
      *
-     * @return {React.ReactElement}
+     * @returns React element.
      */
     const resolveConnectorImage = (connector: IdentityProviderInterface
         | MultiFactorAuthenticatorInterface): ReactElement => {
@@ -481,9 +482,9 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
     /**
      * Resolves the connector name.
      *
-     * @param {IdentityProviderInterface | MultiFactorAuthenticatorInterface} connector - Evaluating connector.
+     * @param connector - Evaluating connector.
      *
-     * @return {React.ReactElement}
+     * @returns React element.
      */
     const resolveConnectorName = (connector: IdentityProviderInterface
         | MultiFactorAuthenticatorInterface): ReactNode => {
@@ -505,16 +506,15 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
             );
         }
 
-        return AuthenticatorMeta.getAuthenticatorDisplayName(connector.id)
-            ?? (connector.friendlyName || connector.name);
+        return connector.friendlyName || connector.displayName || connector.name;
     };
 
     /**
      * Resolves the connector description.
      *
-     * @param {IdentityProviderInterface | MultiFactorAuthenticatorInterface} connector - Evaluating connector.
+     * @param connector - Evaluating connector.
      *
-     * @return {React.ReactElement}
+     * @returns React element.
      */
     const resolveConnectorDescription = (connector: IdentityProviderInterface
         | MultiFactorAuthenticatorInterface): ReactNode => {

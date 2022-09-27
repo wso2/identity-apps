@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,13 +19,14 @@
 import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { CSSProperties, FunctionComponent, PropsWithChildren, ReactElement, ReactNode } from "react";
-import { HeaderProps, Responsive, Segment, SegmentProps } from "semantic-ui-react";
+import { HeaderProps, Segment, SegmentProps } from "semantic-ui-react";
 import { SemanticCOLORS } from "semantic-ui-react/dist/commonjs/generic";
 import { GenericIcon, GenericIconProps, GenericIconSizes } from "../icon";
+import { Media } from "../media";
 import { Heading } from "../typography";
 
 /**
- * Proptypes for the jumbotron component.
+ * Prop-types for the jumbotron component.
  */
 export interface JumbotronPropsInterface extends Omit<SegmentProps, "color">, IdentifiableComponentInterface,
     TestableComponentInterface {
@@ -89,11 +90,11 @@ export interface JumbotronPropsInterface extends Omit<SegmentProps, "color">, Id
 }
 
 /**
- * Component to showcase key marketing messages.
+ * Jumbotron: Component to showcase key marketing messages.
  *
- * @param {JumbotronPropsInterface} props - Props injected to the components.
+ * @param props - Props injected to the components.
  *
- * @return {React.ReactElement}
+ * @returns Jumbotron component.
  */
 export const Jumbotron: FunctionComponent<PropsWithChildren<JumbotronPropsInterface>> = (
     props: PropsWithChildren<JumbotronPropsInterface>
@@ -142,7 +143,7 @@ export const Jumbotron: FunctionComponent<PropsWithChildren<JumbotronPropsInterf
     /**
      * Resolves the custom styles.
      *
-     * @return {object} Styles object.
+     * @returns Styles object.
      */
     const getStyle = (): CSSProperties => {
 
@@ -161,7 +162,7 @@ export const Jumbotron: FunctionComponent<PropsWithChildren<JumbotronPropsInterf
     /**
      * Resolves additional properties.
      *
-     * @return {Record<string, unknown>} Additional props.
+     * @returns Additional props.
      */
     const resolveAdditionalProps = (): Record<string, unknown> => {
 
@@ -217,15 +218,15 @@ export const Jumbotron: FunctionComponent<PropsWithChildren<JumbotronPropsInterf
                 </div>
             ) }
             { icon && (
-                <Responsive
-                    as={ GenericIcon }
-                    icon={ icon }
-                    size={ iconSize }
-                    floated="right"
-                    transparent
-                    minWidth={ Responsive.onlyComputer.minWidth }
-                    { ...iconOptions }
-                />
+                <Media greaterThanOrEqual="computer">
+                    <GenericIcon
+                        icon={ icon }
+                        size={ iconSize }
+                        floated="right"
+                        transparent
+                        { ...iconOptions }
+                    />
+                </Media>
             ) }
         </Segment>
     );

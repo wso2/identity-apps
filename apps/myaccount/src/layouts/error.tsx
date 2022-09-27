@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,26 +16,83 @@
  * under the License.
  */
 
-import React, { PropsWithChildren } from "react";
-import { Container, Divider } from "semantic-ui-react";
+import { RouteInterface } from "@wso2is/core/models";
+import { ContentLoader, ErrorLayout as ErrorLayoutSkeleton } from "@wso2is/react-components";
+import React, { FunctionComponent, PropsWithChildren, ReactElement, Suspense, useEffect, useState } from "react";
+import { Redirect, Route, Switch } from "react-router-dom";
+import { ProtectedRoute } from "../components";
+import { getErrorLayoutRoutes } from "../configs";
+import { AppConstants } from "../constants";
 
 /**
- * Error page layout.
- *
- * @param {React.PropsWithChildren<{}>} props - Props injected to the error page layout component.
- * @return {JSX.Element}
- * @constructor
+ * Error layout Prop types.
  */
-export const ErrorPageLayout: React.FunctionComponent<PropsWithChildren<{}>> = (
-    props: PropsWithChildren<{}>
-): JSX.Element => {
-    const { children } = props;
+export interface ErrorLayoutPropsInterface {
+    /**
+     * Is layout fluid.
+     */
+    fluid?: boolean;
+}
+
+/**
+ * Implementation of the error layout skeleton.
+ * Used to render error pages.
+ *
+ * @param props - Props injected to the component.
+ *
+ * @returns Error page layout.
+ */
+export const ErrorLayout: FunctionComponent<PropsWithChildren<ErrorLayoutPropsInterface>> = (
+    props: PropsWithChildren<ErrorLayoutPropsInterface>
+): ReactElement => {
+
+    const { fluid } = props;
+
+    const [ errorLayoutRoutes, setErrorLayoutRoutes ] = useState<RouteInterface[]>(getErrorLayoutRoutes());
+
+    /**
+     * Listen for base name changes and updates the layout routes.
+     */
+    useEffect(() => {
+        setErrorLayoutRoutes(getErrorLayoutRoutes());
+    }, [ AppConstants.getTenantQualifiedAppBasename() ]);
 
     return (
-        <Container className="layout-content error-page-layout">
-            <Divider className="x4" hidden/>
-            { children }
-            <Divider className="x3" hidden/>
-        </Container>
+        <ErrorLayoutSkeleton fluid={ fluid }>
+            <Suspense fallback={ <ContentLoader dimmer/> }>
+                <Switch>
+                    {
+                        errorLayoutRoutes.map((route, index) => (
+                            route.redirectTo
+                                ? <Redirect to={ route.redirectTo } />
+                                : route.protected
+                                    ? (
+                                        <ProtectedRoute
+                                            component={ route.component }
+                                            path={ route.path }
+                                            key={ index }
+                                        />
+                                    )
+                                    : (
+                                        <Route
+                                            path={ route.path }
+                                            render={ (renderProps) =>
+                                                (<route.component { ...renderProps } />)
+                                            }
+                                            key={ index }
+                                        />
+                                    )
+                        ))
+                    }
+                </Switch>
+            </Suspense>
+        </ErrorLayoutSkeleton>
     );
+};
+
+/**
+ * Default props for the component.
+ */
+ErrorLayout.defaultProps = {
+    fluid: true
 };

@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -575,7 +575,7 @@ export const console: ConsoleNS = {
                             }
                         }
                     },
-                    placeholder: "Chercher par nom d'application ou clientId"
+                    placeholder: "Chercher des applications par nom, clientId, ou émetteur"
                 },
                 confirmations: {
                     addSocialLogin: {
@@ -1426,8 +1426,8 @@ export const console: ConsoleNS = {
                                 invalidOperationModal: {
                                     header: "Opération invalide",
                                     message: "Vous devez désactiver la validation de la signature de la demande pour"+
-                                        " supprimer le certificat. Si la signature de requête ou de réponse est" + 
-                                        " activée, il est essentiel de disposer d'un certificat valide" + 
+                                        " supprimer le certificat. Si la signature de requête ou de réponse est" +
+                                        " activée, il est essentiel de disposer d'un certificat valide" +
                                         " pour vérifier la signature."
                                 }
                             }
@@ -1993,7 +1993,12 @@ export const console: ConsoleNS = {
                             },
                             certificates: {
                                 disabledPopup: "Assurez-vous que la validation de la signature de la " +
-                                    "demande et le chiffrement des assertions sont désactivés pour continuer."
+                                    "demande et le chiffrement des assertions sont désactivés pour continuer.",
+                                certificateRemoveConfirmation: {
+                                    header: "Supprimer le certificat actuel?",
+                                    content: "Définir le type de certificat sur aucun supprimera le certificat " +
+                                        "actuel fourni pour cette application. Procéder avec prudence."
+                                }
                             },
                             encryption: {
                                 fields: {
@@ -2381,8 +2386,9 @@ export const console: ConsoleNS = {
                         predefined: "Utiliser prédéfini"
                     },
                     columns: {
-                        actions: "Actions",
-                        name: "Nom"
+                        actions: "",
+                        name: "Nom",
+                        inboundKey: "Clé entrante"
                     },
                     labels: {
                         fragment: "Fragmenter App"
@@ -2392,7 +2398,50 @@ export const console: ConsoleNS = {
                     description: "Portail libre-service pour les utilisateurs d'Asgardeo",
                     popup: "Partagez ce lien avec vos utilisateurs pour autoriser" +
                     " l'accès à Mon compte et gérer leurs comptes.",
-                    title: "Mon compte"
+                    title: "Mon compte",
+                    enable: {
+                        0: "Activé",
+                        1: "Désactivé"
+                    },
+                    Confirmation: {
+                        enableConfirmation: {
+                            content: "Le portail Mon compte est en mode aperçu et il est recommandé de le désactiver " +
+                                "lorsque votre organisation passe en production.",
+                            heading: "Êtes-vous sûr?",
+                            message: "Activer le portail Mon compte."
+                        },
+                        disableConfirmation: {
+                            content: "Le portail Mon compte est en mode aperçu et il est recommandé de le désactiver " +
+                                "lorsque votre organisation passe en production. Lorsque le portail Mon compte est " +
+                                "désactivé, les utilisateurs de votre organisation ne pourront pas y accéder.",
+                            heading: "Êtes-vous sûr?",
+                            message: "Désactiver le portail Mon compte."
+                        }
+                    },
+                    notifications: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Erreur de mise à jour"
+                        },
+                        genericError: {
+                            description: "Échec de la mise à jour de l'état du portail Mon compte.",
+                            message: "Quelque chose s'est mal passé"
+                        },
+                        success: {
+                            description: "Le statut du portail Mon compte a été mis à jour avec succès",
+                            message: "Mise à jour réussie"
+                        }
+                    },
+                    fetchMyAccountStatus: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Erreur de récupération"
+                        },
+                        genericError: {
+                            description: "Impossible de récupérer l'état du portail Mon compte.",
+                            message: "Quelque chose s'est mal passé"
+                        }
+                    }
                 },
                 notifications: {
                     addApplication: {
@@ -7495,6 +7544,12 @@ export const console: ConsoleNS = {
                             header: "Réinitialiser le mot de passe",
                             subheader: "Une fois le mot de passe modifié, l'utilisateur ne pourra plus se connecter " +
                                 "à aucune application en utilisant le mot de passe actuel."
+                        },
+                        deleteAdminPriviledgeZone: {
+                            actionTitle: "Révoquer les privilèges",
+                            header: "Révoquer les privilèges d'administrateur",
+                            subheader: "Cette action supprimera les privilèges d'administrateur de l'utilisateur, " +
+                                "mais l'utilisateur continuera d'être dans l'organisation."
                         }
                     },
                     dateOfBirth: {
@@ -7884,6 +7939,16 @@ export const console: ConsoleNS = {
                         }
                     }
                 },
+                revokeAdmin: {
+                    confirmationModal: {
+                        assertionHint: "Veuillez confirmer votre action.",
+                        content: "Si vous révoquez les privilèges d'administrateur de cet utilisateur, l'utilisateur " +
+                            "ne pourra pas se connecter à la console Asgardeo et ne pourra pas " +
+                            "effectuer d'opérations d'administration. Veuillez procéder avec prudence.",
+                        header: "Êtes-vous sûr?",
+                        message: "Cette action révoquera les privilèges d'administrateur de l'utilisateur."
+                    }
+                },
                 updateUser: {
                     groups: {
                         addGroupsModal: {
@@ -8236,6 +8301,34 @@ export const console: ConsoleNS = {
                         success: {
                             description: "Les utilisateurs ont été récupérés avec succès.",
                             message: "Récupération des utilisateurs réussie"
+                        }
+                    },
+                    getAdminRole: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Erreur lors de la récupération du rôle d'administrateur"
+                        },
+                        genericError: {
+                            description: "Impossible de récupérer les rôles d'administrateur.",
+                            message: "Quelque chose s'est mal passé"
+                        },
+                        success: {
+                            description: "Récupération réussie des rôles d'administrateur.",
+                            message: "Récupération du rôle d'administrateur réussie"
+                        }
+                    },
+                    revokeAdmin: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Erreur lors de la révocation des privilèges d'administrateur"
+                        },
+                        genericError: {
+                            description: "Impossible de révoquer les privilèges d'administrateur.",
+                            message: "Quelque chose s'est mal passé"
+                        },
+                        success: {
+                            description: "Révocation réussie des privilèges d'administrateur.",
+                            message: "Les privilèges d'administrateur ont bien été révoqués"
                         }
                     }
                 },

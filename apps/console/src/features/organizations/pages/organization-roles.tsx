@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2022, WSO2 Inc. (http://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -28,6 +28,7 @@ import React, {
     FunctionComponent,
     MouseEvent,
     ReactElement,
+    ReactNode,
     SyntheticEvent,
     useCallback,
     useEffect,
@@ -57,7 +58,7 @@ import {
 const ORGANIZATION_ROLES_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
     {
         key: 0,
-        text: I18n.instance.t("common:name"),
+        text: I18n.instance.t("common:name") as ReactNode,
         value: "name"
     }
 ];
@@ -110,11 +111,11 @@ const OrganizationRoles: FunctionComponent<OrganizationRolesPageInterface> = (
     /**
      * Retrieves the list of organization roles.
      *
-     * @param {number} limit - List limit.
-     * @param {number} offset - List offset.
-     * @param {string} filter - Search query.
-     * @param {string} after - After link for cursor based pagination
-     * @param {string} before - Before link for cursor based pagination
+     * @param limit - List limit.
+     * @param offset - List offset.
+     * @param filter - Search query.
+     * @param after - After link for cursor based pagination
+     * @param before - Before link for cursor based pagination
      */
     const getOrganizationRoleLists = useCallback(
         (limit?: number, filter?: string, cursor?: string): void => {
@@ -170,8 +171,8 @@ const OrganizationRoles: FunctionComponent<OrganizationRolesPageInterface> = (
     /**
      * Sets the list sorting strategy.
      *
-     * @param {React.SyntheticEvent<HTMLElement>} event - The event.
-     * @param {DropdownProps} data - Dropdown data.
+     * @param event - The event.
+     * @param data - Dropdown data.
      */
     const handleListSortingStrategyOnChange = (event: SyntheticEvent<HTMLElement>, data: DropdownProps): void => {
         setListSortingStrategy(
@@ -185,8 +186,8 @@ const OrganizationRoles: FunctionComponent<OrganizationRolesPageInterface> = (
      *
      * Sets the Next button visibility.
      *
-     * @param nextCursor
-     * @param previousCursor
+     * @param nextCursor - Next item.
+     * @param previousCursor - Previous item.
      */
     const handleCursorPagination = (nextCursor: string | undefined, previousCursor: string | undefined): void => {
         setCursor(null);
@@ -208,7 +209,7 @@ const OrganizationRoles: FunctionComponent<OrganizationRolesPageInterface> = (
      * Handles the `onFilter` callback action from the
      * organization role search component.
      *
-     * @param {string} query - Search query.
+     * @param query - Search query.
      */
     const handleOrganizationRoleFilter = (query: string): void => {
         resetPagination();
@@ -218,8 +219,8 @@ const OrganizationRoles: FunctionComponent<OrganizationRolesPageInterface> = (
     /**
      * Handles the pagination change.
      *
-     * @param {React.MouseEvent<HTMLAnchorElement>} event - Mouse event.
-     * @param {PaginationProps} data - Pagination component data.
+     * @param event - Mouse event.
+     * @param data - Pagination component data.
      */
     const handlePaginationChange = (event: MouseEvent<HTMLAnchorElement>, data: PaginationProps): void => {
         const newPage = parseInt(data?.activePage as string);
@@ -237,8 +238,8 @@ const OrganizationRoles: FunctionComponent<OrganizationRolesPageInterface> = (
     /**
      * Handles per page dropdown page.
      *
-     * @param {React.MouseEvent<HTMLAnchorElement>} event - Mouse event.
-     * @param {DropdownProps} data - Dropdown data.
+     * @param event - Mouse event.
+     * @param data - Dropdown data.
      */
     const handleItemsPerPageDropdownChange = (event: MouseEvent<HTMLAnchorElement>, data: DropdownProps): void => {
         setListItemLimit(data.value as number);

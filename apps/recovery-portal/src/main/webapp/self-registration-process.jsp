@@ -51,7 +51,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- title -->
+    <%-- title --%>
     <%
         File titleFile = new File(getServletContext().getRealPath("extensions/title.jsp"));
         if (titleFile.exists()) {
@@ -72,7 +72,7 @@
     <![endif]-->
 </head>
 <body>
-    <!-- header -->
+    <%-- header --%>
     <%
         File headerFile = new File(getServletContext().getRealPath("extensions/header.jsp"));
         if (headerFile.exists()) {
@@ -82,7 +82,7 @@
     <jsp:include page="includes/header.jsp"/>
     <% } %>
 
-    <!-- page content -->
+    <%-- page content --%>
     <div class="container-fluid body-wrapper">
 
         <%
@@ -97,7 +97,7 @@
             PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
             Boolean isAutoLoginEnable = preferenceRetrievalClient.checkAutoLoginAfterSelfRegistrationEnabled(tenantDomain);
             Boolean isSelfRegistrationWithVerificationEnabled = preferenceRetrievalClient.checkSelfRegistrationLockOnCreation(tenantDomain);
-    
+
             boolean isSelfRegistrationWithVerification =
                     Boolean.parseBoolean(request.getParameter("isSelfRegistrationWithVerification"));
 
@@ -249,7 +249,7 @@
                         contentValueInJson.put("domain", cookieDomain);
                     }
                     String content = contentValueInJson.toString();
-        
+
                     JSONObject cookieValueInJson = new JSONObject();
                     cookieValueInJson.put("content", content);
                     String signature = Base64.getEncoder().encodeToString(SignatureUtil.doSignature(content));
@@ -288,7 +288,7 @@
     </div>
 
 
-    <!-- footer -->
+    <%-- footer --%>
     <%
         File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
         if (footerFile.exists()) {

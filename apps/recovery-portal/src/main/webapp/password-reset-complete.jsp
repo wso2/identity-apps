@@ -102,7 +102,7 @@
                 if (userStoreDomain != null) {
                     username = userStoreDomain + "/" + username + "@" + tenantDomain;
                 }
-                
+
                 String cookieDomain = application.getInitParameter(AUTO_LOGIN_COOKIE_DOMAIN);
                 JSONObject contentValueInJson = new JSONObject();
                 contentValueInJson.put("username", username);
@@ -112,7 +112,7 @@
                     contentValueInJson.put("domain", cookieDomain);
                 }
                 String content = contentValueInJson.toString();
-        
+
                 JSONObject cookieValueInJson = new JSONObject();
                 cookieValueInJson.put("content", content);
                 String signature = Base64.getEncoder().encodeToString(SignatureUtil.doSignature(content));
@@ -214,7 +214,7 @@
         </layout:component>
     </layout:main>
 
-    <!-- footer -->
+    <%-- footer --%>
     <%
         File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
         if (footerFile.exists()) {

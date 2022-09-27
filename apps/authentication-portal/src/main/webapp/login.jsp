@@ -17,7 +17,6 @@
   --%>
 
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ page import="com.google.gson.Gson" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthContextAPIClient" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
 <%@ page import="org.wso2.carbon.identity.core.util.IdentityCoreConstants" %>
@@ -132,20 +131,9 @@
     String usernameIdentifier = null;
 
     if (isIdentifierFirstLogin(inputType)) {
-        String authAPIURL = application.getInitParameter(Constants.AUTHENTICATION_REST_ENDPOINT_URL);
-        if (StringUtils.isBlank(authAPIURL)) {
-            authAPIURL = IdentityUtil.getServerURL("/api/identity/auth/v1.1/", true, true);
-        }
-        if (!authAPIURL.endsWith("/")) {
-            authAPIURL += "/";
-        }
-        authAPIURL += "context/" + request.getParameter("sessionDataKey");
-        String contextProperties = AuthContextAPIClient.getContextProperties(authAPIURL);
-        Gson gson = new Gson();
-        Map<String, Object> parameters = gson.fromJson(contextProperties, Map.class);
-        if (parameters != null) {
-            username = (String) parameters.get("username");
-            usernameIdentifier = (String) parameters.get("username");
+        if (request.getParameter(Constants.USERNAME) != null) {
+            username = request.getParameter(Constants.USERNAME);
+            usernameIdentifier = request.getParameter(Constants.USERNAME);
         } else {
             String redirectURL = "error.do";
             response.sendRedirect(redirectURL);
@@ -156,8 +144,9 @@
     // Login context request url.
     String sessionDataKey = request.getParameter("sessionDataKey");
     String appName = request.getParameter("sp");
+    String authenticators = request.getParameter("authenticators");
     String loginContextRequestUrl = logincontextURL + "?sessionDataKey=" + Encode.forUriComponent(sessionDataKey) + "&application="
-            + Encode.forUriComponent(appName);
+            + Encode.forUriComponent(appName) + "&authenticators=" + Encode.forUriComponent(authenticators);
     if (!IdentityTenantUtil.isTenantQualifiedUrlsEnabled()) {
         // We need to send the tenant domain as a query param only in non tenant qualified URL mode.
         loginContextRequestUrl += "&tenantDomain=" + Encode.forUriComponent(tenantDomain);
@@ -193,7 +182,7 @@
 <!doctype html>
 <html>
 <head>
-    <!-- header -->
+    <%-- header --%>
     <%
         File headerFile = new File(getServletContext().getRealPath("extensions/header.jsp"));
         if (headerFile.exists()) {
@@ -222,7 +211,7 @@
 
     <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
         <layout:component componentName="ProductHeader" >
-            <!-- product-title -->
+            <%-- product-title --%>
             <%
                 File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
                 if (productTitleFile.exists()) {
@@ -461,7 +450,7 @@
             </div>
         </layout:component>
         <layout:component componentName="ProductFooter" >
-            <!-- product-footer -->
+            <%-- product-footer --%>
             <%
                 File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
                 if (productFooterFile.exists()) {
@@ -473,7 +462,7 @@
         </layout:component>
     </layout:main>
 
-    <!-- footer -->
+    <%-- footer --%>
     <%
         File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
         if (footerFile.exists()) {

@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -62,9 +62,9 @@ const getAuthParams = (): Promise<AuthParams> => {
 };
 
 /**
- * Render root compoent with configs.
+ * Render root component with configs.
  *
- * @returns {ReactElement}
+ * @returns Root element with configs.
  */
 const RootWithConfig = (): ReactElement => {
 
@@ -99,4 +99,8 @@ const RootWithConfig = (): ReactElement => {
     );
 };
 
-ReactDOM.render(<RootWithConfig />, document.getElementById("root"));
+const rootElement = document.getElementById("root");
+
+// Moved back to the legacy mode due to unpredictable state update issue.
+// Tracked here: https://github.com/wso2/product-is/issues/14912
+ReactDOM.render(<RootWithConfig />, rootElement);

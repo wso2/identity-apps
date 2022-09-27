@@ -69,7 +69,11 @@ processArgs.map((arg) => {
 	args[argSplit[0]] = argSplit[1];
 });
 
-const packageFiles = ["package.json", "package-lock.json", "lerna.json"];
+const packageFiles = [
+    "package.json",
+    "lerna.json",
+    "pnpm-lock.yaml"
+];
 
 /**
  * Stage changed files

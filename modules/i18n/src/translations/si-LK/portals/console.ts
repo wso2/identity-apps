@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -583,7 +583,7 @@ export const console: ConsoleNS = {
                             }
                         }
                     },
-                    placeholder: "යෙදුම් නාමයෙන් හෝ සේවාලාභී හැඳුනුම්පතෙන් සොයන්න"
+                    placeholder: "යෙදුම් නාමයෙන්, සේවාලාභී හැඳුනුම්පතෙන්, හෝ යෙදුම් නිකුත් කරන්නාගෙන් සොයන්න"
                 },
                 confirmations: {
                     addSocialLogin: {
@@ -1187,7 +1187,7 @@ export const console: ConsoleNS = {
                                                 heading: "TOTP දෙවන සාධකය ලෙස එක් කරන්න"
                                             },
                                             usernameless: {
-                                                description: "පරිශීලකයින්ට ඔවුන්ගේ FIDO2 ආරක්ෂක යතුරක්, ජෛවමිතික හෝ " 
+                                                description: "පරිශීලකයින්ට ඔවුන්ගේ FIDO2 ආරක්ෂක යතුරක්, ජෛවමිතික හෝ "
                                                     + "මුර යතුරු භාවිතයෙන් පුරනය වීමට සබල කරන්න.",
                                                 heading: "ආරක්ෂක යතුර/Biometrics පිවිසුම එක් කරන්න",
                                                 info: "මුරපද රහිත සත්‍යාපනය සමඟින් පුරනය වීමට, " +
@@ -1397,7 +1397,7 @@ export const console: ConsoleNS = {
                                 },
                                 invalidOperationModal: {
                                     header: "මෙහෙයුම වලංගු නැත",
-                                    message: "සහතිකය ඉවත් කිරීමට ඔබ ඉල්ලීම් අත්සන වලංගු කිරීම අක්‍රිය කළ යුතුය. " + 
+                                    message: "සහතිකය ඉවත් කිරීමට ඔබ ඉල්ලීම් අත්සන වලංගු කිරීම අක්‍රිය කළ යුතුය. " +
                                         "ඉල්ලීම හෝ ප්‍රතිචාර අත්සන් කිරීම සක්‍රීය කර ඇත්නම්, අත්සන" +
                                         " සත්‍යාපනය කිරීමට වලංගු සහතිකයක් තිබීම අත්‍යවශ්‍ය වේ."
                                 }
@@ -1939,7 +1939,12 @@ export const console: ConsoleNS = {
                             },
                             certificates: {
                                 disabledPopup: "ඉදිරියට යාමට ඉල්ලීම් අත්සන් වලංගුකරණය සහ තහවුරු කිරීමේ " +
-                                    "සංකේතනය අබල කර ඇති බවට වග බලා ගන්න."
+                                    "සංකේතනය අබල කර ඇති බවට වග බලා ගන්න.",
+                                certificateRemoveConfirmation: {
+                                    header: "වත්මන් සහතිකය ඉවත් කරන්නද?",
+                                    content: "සහතික වර්ගය කිසිවක් නැත ලෙස සැකසීම මෙම යෙදුම සඳහා සපයා ඇති වත්මන් සහතිකය ඉවත් " +
+                                        "කරයි. කල්පනාකාරීව ඉදිරියට යන්න."
+                                }
                             },
                             encryption: {
                                 fields: {
@@ -2322,7 +2327,8 @@ export const console: ConsoleNS = {
                     },
                     columns: {
                         actions: "ක්‍රියා",
-                        name: "නම"
+                        name: "නම",
+                        inboundKey: "අභ්යන්තර යොමුගත යතුර"
                     },
                     labels: {
                         fragment: "ඛණ්ඩක යෙදුම"
@@ -2332,7 +2338,50 @@ export const console: ConsoleNS = {
                     description: "Asgardeo භාවිතා කරන්නන් සඳහා ස්වයං සේවා ද්වාරය",
                     popup: "මගේ ගිණුමට ප්‍රවේශ වීමට සහ ඔවුන්ගේ ගිණුම් කළමනාකරණය කිරීමට" +
                     " ඔබේ පරිශීලකයන් සමඟ මෙම සබැඳිය බෙදා ගන්න.",
-                    title: "මගේ ගිණුම"
+                    title: "මගේ ගිණුම",
+                    enable: {
+                        0: "සක්‍රීය කර ඇත",
+                        1: "ආබාඅක්‍රීය කර ඇතධිතයි"
+                    },
+                    Confirmation: {
+                        enableConfirmation: {
+                            content: "මගේ ගිණුම් ද්වාරය පෙරදසුන් මාදිලියේ ඇති අතර ඔබේ ආයතනය නිෂ්පාදනයට යන විට" + 
+                                "එය අබල කිරීමට නිර්දේශ කෙරේ.",
+                            heading: "ඔබට විශ්වාසද?",
+                            message: "මගේ ගිණුම සබල කරන්න."
+                        },
+                        disableConfirmation: {
+                            content: "මගේ ගිණුම් ද්වාරය පෙරදසුන් මාදිලියේ ඇති අතර ඔබේ ආයතනය නිෂ්පාදනයට යන විට " + 
+                                "එය අබල කිරීමට නිර්දේශ කෙරේ. මගේ ගිණුම් ද්වාරය අබල කළ විට, ඔබේ සංවිධානයේ " + 
+                                "පරිශීලකයින්ට එයට ප්‍රවේශ වීමට නොහැකි වනු ඇත.",
+                            heading: "ඔබට විශ්වාසද?",
+                            message: "මගේ ගිණුම අක්‍රීය කරන්න."
+                        }
+                    },
+                    notifications: {
+                        error: {
+                            description: "{{description}}",
+                            message: "යාවත්කාලීන දෝෂයකි"
+                        },
+                        genericError: {
+                            description: "මගේ ගිණුම යාවත්කාලීන කිරීමට අපොහොසත් විය.",
+                            message: "යම් දෝෂයක් ඇති වී ඇත"
+                        },
+                        success: {
+                            description: "මගේ ගිණුම සාර්ථකව යාවත්කාලීන කරන ලදී.",
+                            message: "යාවත්කාලීන කිරීම සාර්ථකයි"
+                        }
+                    },
+                    fetchMyAccountStatus: {
+                        error: {
+                            description: "{{description}}",
+                            message: "නැවත ලබා ගැනීමේ දෝෂය"
+                        },
+                        genericError: {
+                            description: "මගේ ගිණුම් ද්වාර තත්ත්වය ලබා ගැනීමට නොහැකි විය.",
+                            message: "යම් දෝෂයක් ඇති වී ඇත"
+                        }
+                    }
                 },
                 notifications: {
                     addApplication: {
@@ -7344,6 +7393,12 @@ export const console: ConsoleNS = {
                             header: "මුරපදය නැවත සකසන්න",
                             subheader: "ඔබ මුරපදය වෙනස් කළ පසු, පරිශීලකයාට දැනට පවතින මුරපදය භාවිතා කර " +
                                 "කිසිඳු යෙදුමකට ප්‍රවේශ විය නොහැක."
+                        },
+                        deleteAdminPriviledgeZone: {
+                            actionTitle: "වරප්‍රසාද අවලංගු කරන්න",
+                            header: "පරිපාලක වරප්‍රසාද අවලංගු කරන්න",
+                            subheader: "මෙම ක්‍රියාව පරිශීලකයාගේ පරිපාලක වරප්‍රසාද ඉවත් කරයි, " +
+                                "නමුත් පරිශීලකයා දිගටම සංවිධානයේ සිටිනු ඇත."
                         }
                     },
                     dateOfBirth: {
@@ -7720,6 +7775,16 @@ export const console: ConsoleNS = {
                         }
                     }
                 },
+                revokeAdmin: {
+                    confirmationModal: {
+                        assertionHint: "කරුණාකර ඔබගේ ක්‍රියාව තහවුරු කරන්න.",
+                        content: "ඔබ මෙම පරිශීලකයාගේ පරිපාලක වරප්‍රසාද අවලංගු කළහොත්, පරිශීලකයාට Asgardeo " +
+                            "කොන්සෝලයට ඇතුළු වීමට නොහැකි වන අතර පරිපාලක මෙහෙයුම් සිදු කිරීමට නොහැකි වනු " +
+                            "ඇත. කරුණාකර ප්‍රවේශමෙන් ඉදිරියට යන්න.",
+                        header: "ඔබට විශ්වාසද?",
+                        message: "මෙම ක්‍රියාව පරිශීලකයාගේ පරිපාලක වරප්‍රසාද අවලංගු කරයි."
+                    }
+                },
                 updateUser: {
                     groups: {
                         addGroupsModal: {
@@ -8056,6 +8121,34 @@ export const console: ConsoleNS = {
                         success: {
                             description: "පරිශීලකයින් සාර්ථකව ලබා ගන්නා ලදි.",
                             message: "පරිශීලකයින් ලබා ගැනීම සාර්ථකයි"
+                        }
+                    },
+                    getAdminRole: {
+                        error: {
+                            description: "{{description}}",
+                            message: "පරිපාලක භූමිකාව ලබා ගැනීමේ දෝෂයකි"
+                        },
+                        genericError: {
+                            description: "පරිපාලක භූමිකාවන් ලබා ගැනීමට නොහැකි විය.",
+                            message: "යම් දෝෂයක් ඇති වී ඇත"
+                        },
+                        success: {
+                            description: "පරිපාලක භූමිකාවන් සාර්ථකව ලබා ගන්නා ලදී.",
+                            message: "භූමිකාව ලබා ගැනීම සාර්ථකයි"
+                        }
+                    },
+                    revokeAdmin: {
+                        error: {
+                            description: "{{description}}",
+                            message: "පරිපාලක වරප්‍රසාද අවලංගු කිරීමේ දෝෂයකි"
+                        },
+                        genericError: {
+                            description: "පරිපාලක වරප්‍රසාද අවලංගු කිරීමට නොහැකි විය.",
+                            message: "යම් දෝෂයක් ඇති වී ඇත"
+                        },
+                        success: {
+                            description: "පරිපාලක වරප්‍රසාද සාර්ථකව අවලංගු කරන ලදී.",
+                            message: "වරප්‍රසාද සාර්ථකව අවලංගු කරන ලදී"
                         }
                     }
                 },
