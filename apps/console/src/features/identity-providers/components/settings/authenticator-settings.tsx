@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -910,26 +910,30 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                 //Temporarily removed until sub attributes are available
                 removeElementFromProps(authenticator.meta.properties, "IsUserIdInClaims" );
 
-                // Inject logout url
-                const logoutUrlData = {
-                    key: "OIDCLogoutEPUrl"
-                };
+                if (!authenticator.meta.properties?.find(prop => prop.key === "OIDCLogoutEPUrl")) {
 
-                authenticator.data.properties.push(logoutUrlData);
-                const logoutUrlMeta: CommonPluggableComponentMetaPropertyInterface = {
-                    description: `The URL of the identity provider to which ${ config.ui.productName } will send session
-                        invalidation requests.`,
-                    displayName: "Logout URL",
-                    displayOrder: 7,
-                    isConfidential: false,
-                    isMandatory: false,
-                    key: "OIDCLogoutEPUrl",
-                    options: [],
-                    subProperties: [],
-                    type: "URL"
-                };
+                    // Inject logout url
+                    const logoutUrlData = {
+                        key: "OIDCLogoutEPUrl"
+                    };
 
-                authenticator.meta.properties.push(logoutUrlMeta);
+                    authenticator.data.properties.push(logoutUrlData);
+                    const logoutUrlMeta: CommonPluggableComponentMetaPropertyInterface = {
+                        description: `The URL of the identity provider to which
+                         ${ config.ui.productName } will send session
+                            invalidation requests.`,
+                        displayName: "Logout URL",
+                        displayOrder: 7,
+                        isConfidential: false,
+                        isMandatory: false,
+                        key: "OIDCLogoutEPUrl",
+                        options: [],
+                        subProperties: [],
+                        type: "URL"
+                    };
+
+                    authenticator.meta.properties.push(logoutUrlMeta);
+                }
             }
 
             return (
