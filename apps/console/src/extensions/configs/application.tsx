@@ -32,11 +32,6 @@ export const applicationConfig: ApplicationConfig = {
         showReturnAuthenticatedIdPs: true,
         showSaaS: true
     },
-    generalSettings: {
-        getFieldReadOnlyStatus: (application: ApplicationInterface, fieldName: string): boolean => {
-            return false;
-        }
-    },
     attributeSettings: {
         advancedAttributeSettings: {
             showIncludeTenantDomain: true,
@@ -83,27 +78,36 @@ export const applicationConfig: ApplicationConfig = {
         getOverriddenImage: (_clientId: string, _tenantDomain: string) => {
             return null;
         },
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        getTabPanelReadOnlyStatus: (tabPanelName: string, applicationName: ApplicationInterface): boolean => {
+            return false;
+        },
         isTabEnabledForApp: (_clientId: string, _tabType: ApplicationTabTypes, _tenantDomain: string): boolean => {
             return true;
         },
         renderHelpPanelItems: (): ReactNode => {
             return null;
         },
-        showProvisioningSettings: true,
+        showApplicationShare: true,
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         showDangerZone: (application: ApplicationInterface): boolean => {
             return true;
         },
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         showDeleteButton: (application: ApplicationInterface): boolean => {
             return true;
         },
-        getTabPanelReadOnlyStatus: (tabPanelName: string, applicationName: ApplicationInterface): boolean => {
-            return false;
-        },
-        showApplicationShare: true
+        showProvisioningSettings: true
     },
     enableMarketingConsent: false,
     excludeIdentityClaims: false,
     excludeSubjectClaim: false,
+    generalSettings: {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        getFieldReadOnlyStatus: (application: ApplicationInterface, fieldName: string): boolean => {
+            return false;
+        }
+    },
     inboundOIDCForm: {
         disabledGrantTypes: {
             "custom-application": []
