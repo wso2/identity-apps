@@ -45,7 +45,7 @@
         "@wso2is/core": "^1.4.124",
         "babel-jest": "^26.3.0",
         "i18next": "^21.9.1",
-        "i18next-browser-languagedetector": "^3.0.3",
+        "i18next-browser-languagedetector": "^6.1.5",
         "i18next-xhr-backend": "^3.2.2",
         "lodash-es": "^4.17.21",
         "react-i18next": "^11.18.5"
