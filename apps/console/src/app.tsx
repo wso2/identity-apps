@@ -19,8 +19,9 @@
 import { DecodedIDTokenPayload, useAuthContext } from "@asgardeo/auth-react";
 import { AccessControlProvider } from "@wso2is/access-control";
 import { CommonHelpers, isPortalAccessGranted } from "@wso2is/core/helpers";
-import { RouteInterface, emptyIdentityAppsSettings } from "@wso2is/core/models";
+import { AlertInterface, AlertLevels, RouteInterface, emptyIdentityAppsSettings } from "@wso2is/core/models";
 import {
+    addAlert,
     setI18nConfigs,
     setServiceResourceEndpoints
 } from "@wso2is/core/store";
@@ -42,10 +43,10 @@ import isEmpty from "lodash-es/isEmpty";
 import * as moment from "moment";
 import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
-import { Trans } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, Router, Switch } from "react-router-dom";
-import { commonConfig } from "./extensions";
+import { applicationConfig, commonConfig } from "./extensions";
 import { EventPublisher, PreLoader } from "./features/core";
 import { ProtectedRoute } from "./features/core/components";
 import { Config, DocumentationLinks, getBaseRoutes } from "./features/core/configs";
@@ -60,6 +61,13 @@ import {
 import { AppState } from "./features/core/store";
 import "moment/locale/si";
 import "moment/locale/fr";
+import { getUserConsentList } from "./features/marketing-consent/api";
+import { MarketingConsentModal } from "./features/marketing-consent/components";
+import { ConsentResponseInterface, ConsentStatus, ConsentTypes } from "./features/marketing-consent/models";
+import { 
+    getMarketingConsentStatusFromLocalStorage, 
+    setMarketingConsentStatusToLocalStorage 
+} from "./features/marketing-consent/utils";
 
 
 /**
@@ -69,6 +77,7 @@ import "moment/locale/fr";
  */
 export const App: FunctionComponent<Record<string, never>> = (): ReactElement => {
     const dispatch = useDispatch();
+    const { t } = useTranslation();
 
     const userName: string = useSelector((state: AppState) => state.auth.username);
     const loginInit: boolean = useSelector((state: AppState) => state.auth.loginInit);
@@ -78,6 +87,7 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
     const appTitle: string = useSelector((state: AppState) => state?.config?.ui?.appTitle);
     const uuid: string = useSelector((state: AppState) => state.profile.profileInfo.id);
     const theme: string = useSelector((state: AppState) => state?.config?.ui?.theme?.name);
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
 
     const [ baseRoutes, setBaseRoutes ] = useState<RouteInterface[]>(getBaseRoutes());
 
@@ -85,8 +95,8 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
 
     const { trySignInSilently, getDecodedIDToken, signOut } = useAuthContext();
 
-    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
     const [ sessionTimedOut, setSessionTimedOut ] = useState<boolean>(false);
+    const [ isMarketingConsentOpen, setIsMarketingConsentOpen ] = useState<boolean>(false);
 
     /**
      * Set the value of Session Timed Out.
@@ -108,6 +118,38 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
     useEffect(() => {
         moment.locale("en");
     }, []);
+
+    /**
+     * Fetch the marketing consent status of the user and show marketing consent modal accordingly.
+     */
+    useEffect(() => {
+        if (applicationConfig.enableMarketingConsent && uuid) {
+            const isMarketingConsentGiven = getMarketingConsentStatusFromLocalStorage(uuid);
+            
+            if (!isMarketingConsentGiven) {
+                getUserConsentList()
+                    .then((userConsentList: ConsentResponseInterface[]) => {
+                        const marketingConsent: ConsentResponseInterface = userConsentList.find(
+                            (consent) => consent.consentType === ConsentTypes.MARKETING);
+                        const marketingConsentStatus: ConsentStatus = 
+                            marketingConsent?.status ?? ConsentStatus.NOT_GIVEN;
+
+                        if (marketingConsentStatus === ConsentStatus.NOT_GIVEN) {
+                            setIsMarketingConsentOpen(true);
+                        } else {
+                            setMarketingConsentStatusToLocalStorage(uuid);
+                        }
+                    })
+                    .catch((_) => {
+                        dispatch(addAlert<AlertInterface>({
+                            description: t("console:common.marketingConsent.notifications.errors.fetch.description"),
+                            level: AlertLevels.ERROR,
+                            message: t("console:common.marketingConsent.notifications.errors.fetch.message")
+                        }));
+                    });
+            }
+        }
+    }, [ uuid ]);
 
     /**
      * Set the deployment configs in redux state.
@@ -257,6 +299,13 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
             .catch(() => {
                 history.push(AppConstants.getAppLogoutPath());
             });
+    };
+
+    /**
+     * Handles the close event of the marketing consent modal.
+     */
+    const handleMarketingConsentClosed = (): void => {
+        setIsMarketingConsentOpen(false);
     };
 
     if (isEmpty(config?.deployment) || isEmpty(config?.endpoints)) {
@@ -417,6 +466,15 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
                                                 </Trans>)
                                             }
                                         />
+                                        { 
+                                            applicationConfig.enableMarketingConsent 
+                                                && (
+                                                    <MarketingConsentModal 
+                                                        isOpen={ isMarketingConsentOpen }
+                                                        onClosed={ handleMarketingConsentClosed }
+                                                    />
+                                                ) 
+                                        }
                                         <Switch>
                                             <Redirect
                                                 exact

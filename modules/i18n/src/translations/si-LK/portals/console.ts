@@ -94,6 +94,26 @@ export const console: ConsoleNS = {
                 orgSearchPlaceholder: "සංවිධානයේ නම අනුව සොයන්න"
             }
         },
+        marketingConsent: {
+            heading: "Let's stay in touch!",
+            description: "Subscribe to our newsletter to get the latest news and product updates straight to your inbox.",
+            actions: {
+                subscribe: "Subscribe",
+                decline: "Don't show this again"
+            },
+            notifications: {
+                errors: {
+                    fetch: {
+                        message: "Something went wrong",
+                        description: "Something went wrong when updating user consent"
+                    },
+                    update: {
+                        message: "Something went wrong",
+                        description: "Something went wrong when updating user consent"
+                    }
+                }
+            }
+        },
         modals: {
             editAvatarModal: {
                 content: {

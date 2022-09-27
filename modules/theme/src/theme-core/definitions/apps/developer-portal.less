@@ -1173,3 +1173,24 @@
 .saml-config-mode-wizard-tab {
     font-size: 14px !important;
 }
+
+/*-------------------------------
+   Marketing Consent Modal
+--------------------------------*/
+
+.marketing-consent-modal {
+    position: fixed !important;
+    bottom: 40px;
+    left: 20px;
+    z-index: 3;
+    min-width: 500px;
+
+    &.hidden {
+        display: none;
+    }
+
+    .header-wrapper {
+        display: flex;
+        justify-content: space-between;
+    }
+}
