@@ -66,7 +66,7 @@
                 errorMessage = IdentityManagementEndpointUtil.i18n(resourceBundle,"error.user.account.locked");
                 String unlockTime = request.getParameter("unlockTime");
                 if (unlockTime != null) {
-                  errorMessage = String.format(IdentityManagementEndpointUtil.i18n(resourceBundle,"error.user.locked.temporarly"), unlockTime);
+                  errorMessage = String.format(IdentityManagementEndpointUtil.i18n(resourceBundle,"error.user.account.temporarly.locked"), unlockTime);
                 }
             } else if (SMSOTPUtils.useInternalErrorCodes()) {
                 String httpCode = URLDecoder.decode(errorMessage, SMSOTPConstants.CHAR_SET_UTF_8);
