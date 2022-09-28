@@ -102,9 +102,7 @@ export class GovernanceConnectorUtils {
                     id: "YWNjb3VudC1yZWNvdmVyeQ",
                     name: "account-recovery",
                     properties: [
-                        "Recovery.Notification.Password.Enable", // Notification based password recovery
-                        "Recovery.Notification.Username.Enable", // Username recovery
-                        "Recovery.Notification.InternallyManage" // Manage notifications sending internally
+                        "Recovery.Notification.Password.Enable" // Notification based password recovery
                     ]
                 }
             ],
