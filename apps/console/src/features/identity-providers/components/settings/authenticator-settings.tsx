@@ -39,7 +39,6 @@ import { AuthenticatorAccordion } from "../../../core/components";
 import {
     getFederatedAuthenticatorDetails,
     getFederatedAuthenticatorMeta,
-    getIdentityProviderTemplate,
     updateFederatedAuthenticator,
     updateFederatedAuthenticators
 } from "../../api";
@@ -56,15 +55,13 @@ import {
     IdentityProviderInterface,
     IdentityProviderTemplateInterface,
     IdentityProviderTemplateItemInterface,
-    IdentityProviderTemplateListItemInterface,
     IdentityProviderTemplateLoadingStrategies
 } from "../../models";
 import { IdentityProviderManagementUtils, IdentityProviderTemplateManagementUtils } from "../../utils";
 import { AuthenticatorFormFactory } from "../forms";
 import { getConnectorMetadata } from "../meta";
 import {
-    handleGetFederatedAuthenticatorMetadataAPICallError,
-    handleGetIDPTemplateAPICallError
+    handleGetFederatedAuthenticatorMetadataAPICallError
 } from "../utils";
 import { AuthenticatorCreateWizard } from "../wizards/authenticator-create-wizard";
 
@@ -587,38 +584,6 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
 
         setAvailableManualModeOptions(moderatedManualModeOptions);
         setAvailableTemplates(filteredTemplates);
-    };
-
-    /**
-     * Asynchronous function to loop through IDP templates list and fetch templates.
-     *
-     * @param templatesList - List of templates.
-     */
-    async function fetchIDPTemplates(templatesList: IdentityProviderTemplateListItemInterface[]) {
-        const templates: IdentityProviderTemplateInterface[] = [];
-
-        for (const template of templatesList) {
-            templates.push(await fetchIDPTemplate(template.id));
-        }
-
-        return templates;
-    }
-
-    /**
-     * Fetch IDP template corresponds to the given tempalte ID.
-     *
-     * @param templateId - ID of the authenticator.
-     */
-    const fetchIDPTemplate = (templateId: string): Promise<IdentityProviderTemplateInterface> => {
-        return new Promise(resolve => {
-            getIdentityProviderTemplate(templateId)
-                .then(response => {
-                    resolve(response);
-                })
-                .catch(error => {
-                    handleGetIDPTemplateAPICallError(error);
-                });
-        });
     };
 
     /**
