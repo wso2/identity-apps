@@ -102,7 +102,7 @@ const AUTHORIZED_REDIRECT_URL: string = "callbackUrl";
  *  Identity Provider and advance settings component.
  *
  * @param props - Props injected to the component.
- * @returns \{ReactElement\}
+ * @returns Functional component.
  */
 export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPropsInterface> = (
     props: IdentityProviderSettingsPropsInterface
@@ -296,7 +296,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
      *
      * Add callback URL to the values.
      *
-     * @param values -
+     * @param values -  Authenticators.
      */
     const addCallbackUrl = (values: FederatedAuthenticatorListItemInterface) => {
 
@@ -640,7 +640,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
      * {@link AuthenticatorAccordion}
      *
      * @see AuthenticatorAccordionItemInterface.actions
-     * @param authenticator -
+     * @param authenticator - Authenticator.
      * @returns SegmentedAccordionTitleActionInterface
      */
     const createAccordionActions = (
@@ -715,7 +715,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
     /**
      * Shows the authenticator list.
      *
-     * @returns \{ReactElement\}
+     * @returns Functional component.
      */
     const showAuthenticatorList = (): ReactElement => {
 
