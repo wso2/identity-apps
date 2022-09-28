@@ -71,7 +71,7 @@ const OverviewPage: FunctionComponent<OverviewPagePropsInterface> = (
         }
 
         setUserProfileName(resolveUserProfileName(profileDetails, isProfileInfoLoading));
-    }, [ isProfileInfoLoading ]);
+    }, [ isProfileInfoLoading, profileDetails ]);
 
     /**
      * Sets user store of the user.
