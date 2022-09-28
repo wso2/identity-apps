@@ -181,7 +181,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                 IdentityProviderTemplateLoadingStrategies.REMOTE);
 
         /**
-         * With {@link skipGrouping} being {@code false} we say
+         * With {@link skipGrouping} being `false` we say
          * we need to group the existing templates based on their
          * template-group.
          */
@@ -626,7 +626,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
      * is a default authenticator.
      *
      * @param auth - Authenticator.
-     * @returns true if {@code auth.data.isDefault} is truthy
+     * @returns true if `auth.data.isDefault` is truthy
      */
     const isDefaultAuthenticatorPredicate = (
         auth: FederatedAuthenticatorWithMetaInterface
@@ -636,7 +636,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
 
     /**
      * A helper function that generates {@link SegmentedAccordionTitleActionInterface}
-     * accordion actions foreach {@code availableAuthenticators} when rendering a
+     * accordion actions foreach `availableAuthenticators` when rendering a
      * {@link AuthenticatorAccordion}
      *
      * @see AuthenticatorAccordionItemInterface.actions
