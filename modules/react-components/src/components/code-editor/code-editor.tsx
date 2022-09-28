@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -161,9 +161,9 @@ export interface CodeEditorContentI18nInterface {
 /**
  * Code editor component.
  *
- * @param {CodeEditorProps} props - Props injected to the danger zone component.
+ * @param props - Props injected to the danger zone component.
  *
- * @return {React.ReactElement}
+ * return React element
  */
 export const CodeEditor: FunctionComponent<CodeEditorProps> = (
     props: CodeEditorProps
@@ -291,8 +291,8 @@ export const CodeEditor: FunctionComponent<CodeEditorProps> = (
     /**
      * Resolves the language mode.
      *
-     * @param {string} language - Selected language.
-     * @return {object} Resolved mode.
+     * @param  language - Selected language.
+     * return  Resolved mode.
      */
     const resolveMode = (language: string): {
         json: boolean;
@@ -316,7 +316,7 @@ export const CodeEditor: FunctionComponent<CodeEditorProps> = (
     /**
      * Resolves the editor theme.
      *
-     * @return {"material" | "default"} Resolved mode.
+     * return Resolved mode.
      */
     const resolveTheme = (): "material" | "default" => {
         if (getThemeFromEnvironment) {
@@ -333,7 +333,7 @@ export const CodeEditor: FunctionComponent<CodeEditorProps> = (
     /**
      * Beautifies the source code.
      *
-     * @return {string} Beautified source code snippet.
+     * return Beautified source code snippet.
      */
     const beautifyCode = (): string => {
         let code = sourceCode;
@@ -394,7 +394,7 @@ export const CodeEditor: FunctionComponent<CodeEditorProps> = (
     /**
      * Render inner content.
      *
-     * @return {React.ReactElement}
+     * return React Element
      */
     const renderContent = (): ReactElement => {
 
