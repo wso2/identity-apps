@@ -124,6 +124,9 @@ export const applicationConfig: ApplicationConfig = {
         showAttributeConsumingServiceIndex: true,
         showQueryRequestProfile: true
     },
+    marketingConsent: {
+        getBannerComponent: (): ReactElement => null
+    },
     signInMethod: {
         authenticatorSelection: {
             customAuthenticatorAdditionValidation: (): boolean => {
