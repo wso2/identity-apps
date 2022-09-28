@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/i18n",
-    "version": "1.6.2",
+    "version": "1.6.3",
     "description": "This module contains the configs, helpers and translations required to make an identity app available in multiple languages.",
     "keywords": [
         "WSO2",
@@ -42,7 +42,7 @@
     "license": "Apache-2.0",
     "dependencies": {
         "@types/jest": "^26.0.14",
-        "@wso2is/core": "^1.6.2",
+        "@wso2is/core": "^1.6.3",
         "babel-jest": "^26.3.0",
         "i18next": "^21.9.1",
         "i18next-browser-languagedetector": "^6.1.5",
