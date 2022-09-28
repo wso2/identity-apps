@@ -877,12 +877,12 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
 
                 if (!authenticator.meta.properties?.find(prop => prop.key === "OIDCLogoutEPUrl")) {
 
-                    // Inject logout url
-                    const logoutUrlData = {
+                    const logoutUrlData: CommonPluggableComponentPropertyInterface = {
                         key: "OIDCLogoutEPUrl"
                     };
 
                     authenticator.data.properties.push(logoutUrlData);
+
                     const logoutUrlMeta: CommonPluggableComponentMetaPropertyInterface = {
                         description: `The URL of the identity provider to which
                          ${ config.ui.productName } will send session
