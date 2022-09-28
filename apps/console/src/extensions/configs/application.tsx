@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -31,11 +31,6 @@ export const applicationConfig: ApplicationConfig = {
         showMyAccount: false,
         showReturnAuthenticatedIdPs: true,
         showSaaS: true
-    },
-    generalSettings: {
-        getFieldReadOnlyStatus: (application: ApplicationInterface, fieldName: string): boolean => {
-            return false;
-        }
     },
     attributeSettings: {
         advancedAttributeSettings: {
@@ -83,26 +78,35 @@ export const applicationConfig: ApplicationConfig = {
         getOverriddenImage: (_clientId: string, _tenantDomain: string) => {
             return null;
         },
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        getTabPanelReadOnlyStatus: (tabPanelName: string, applicationName: ApplicationInterface): boolean => {
+            return false;
+        },
         isTabEnabledForApp: (_clientId: string, _tabType: ApplicationTabTypes, _tenantDomain: string): boolean => {
             return true;
         },
         renderHelpPanelItems: (): ReactNode => {
             return null;
         },
-        showProvisioningSettings: true,
+        showApplicationShare: true,
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         showDangerZone: (application: ApplicationInterface): boolean => {
             return true;
         },
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         showDeleteButton: (application: ApplicationInterface): boolean => {
             return true;
         },
-        getTabPanelReadOnlyStatus: (tabPanelName: string, applicationName: ApplicationInterface): boolean => {
-            return false;
-        },
-        showApplicationShare: true
+        showProvisioningSettings: true
     },
     excludeIdentityClaims: false,
     excludeSubjectClaim: false,
+    generalSettings: {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        getFieldReadOnlyStatus: (application: ApplicationInterface, fieldName: string): boolean => {
+            return false;
+        }
+    },
     inboundOIDCForm: {
         disabledGrantTypes: {
             "custom-application": []
