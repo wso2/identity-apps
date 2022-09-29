@@ -19,6 +19,7 @@
 import { AppThemeConfigInterface } from "@wso2is/core/models";
 import { StringUtils } from "@wso2is/core/utils";
 import { identityProviderConfig } from "../../../extensions/configs";
+import { GovernanceConnectorCategoryInterface, GovernanceConnectorUtils } from "../../server-configurations";
 
 /**
  * Class containing app constants.
@@ -317,6 +318,35 @@ export class AppConstants {
     }
 
     /**
+     * Filter governance connectors for the side panel for a sub organization.
+
+     * @param governanceConnectorCategories - List of governance connector categories to evaluate.
+     * 
+     * @returns Filtered governance connector categories.
+     */
+    public static filterGoverananceConnectors(
+        governanceConnectorCategories: GovernanceConnectorCategoryInterface[]
+    ) : GovernanceConnectorCategoryInterface[] {
+        const showGovernanceConnectorsIdOfSuborgs = [];
+
+        GovernanceConnectorUtils.SHOW_GOVERNANCE_CONNECTORS_FOR_SUBORGS
+            .forEach(connector => {
+                showGovernanceConnectorsIdOfSuborgs.push(connector.id);
+            });
+
+        for (let i = governanceConnectorCategories.length-1; i >=0 ; i--) {
+
+            const connector = governanceConnectorCategories[i];
+
+            if(!showGovernanceConnectorsIdOfSuborgs.includes(connector.id)) {
+                governanceConnectorCategories.splice(i,1);
+            }
+        }
+
+        return governanceConnectorCategories;
+    }
+
+    /**
      * Name of the app config file for the admin portal.
      */
     public static readonly APP_CONFIG_FILE_NAME: string = "app.config.json";
@@ -336,14 +366,16 @@ export class AppConstants {
 
     /**
      * Route ids that are enabled in an organization.
-     * */
+     */
     public static readonly ORGANIZATION_ENABLED_ROUTES: string[] = [
         "identityProviders",
         "users",
         "organizations",
         "groups",
         "organization-roles",
-        "applications"
+        "applications",
+        "emailTemplates",
+        "governanceConnectors"
     ];
 
     /**

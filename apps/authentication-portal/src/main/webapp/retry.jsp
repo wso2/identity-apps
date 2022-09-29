@@ -16,7 +16,6 @@
   ~ under the License.
   --%>
 
-<%@ page import="com.google.gson.Gson" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="java.io.File" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthContextAPIClient" %>
@@ -48,20 +47,9 @@
     if (stat == null || statusMessage == null) {
         String errorKey = request.getParameter(REQUEST_PARAM_ERROR_KEY);
         if (errorKey != null) {
-            String authAPIURL = application.getInitParameter(Constants.AUTHENTICATION_REST_ENDPOINT_URL);
-            if (StringUtils.isBlank(authAPIURL)) {
-                authAPIURL = IdentityUtil.getServerURL(SERVER_AUTH_URL, true, true);
-            }
-            if (!authAPIURL.endsWith("/")) {
-                authAPIURL += "/";
-            }
-            authAPIURL += DATA_AUTH_ERROR_URL + errorKey;
-            String contextProperties = AuthContextAPIClient.getContextProperties(authAPIURL);
-            Gson gson = new Gson();
-            Map<String, Object> parameters = gson.fromJson(contextProperties, Map.class);
-            if (parameters != null) {
-                String statusParam = (String) parameters.get("status");
-                String statusMessageParam = (String) parameters.get("statusMsg");
+            if (request.getParameter(Constants.STATUS) != null) {
+                String statusParam = request.getParameter(Constants.STATUS);
+                String statusMessageParam = request.getParameter(Constants.STATUS_MSG);
                 if (StringUtils.isNotEmpty(statusParam)) {
                     stat = AuthenticationEndpointUtil.customi18n(resourceBundle, statusParam);
                 }

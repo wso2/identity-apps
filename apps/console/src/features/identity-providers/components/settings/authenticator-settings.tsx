@@ -208,7 +208,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
      *
      * @param values - Form values.
      */
-    const handleAuthenticatorConfigFormSubmit = (values: FederatedAuthenticatorListItemInterface, 
+    const handleAuthenticatorConfigFormSubmit = (values: FederatedAuthenticatorListItemInterface,
         isDefaultAuthSet: boolean = true): void => {
 
         addCallbackUrl(values);
@@ -566,7 +566,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
 
         // sort templateList based on display Order
         filteredTemplates?.sort((a, b) => (a?.displayOrder > b?.displayOrder) ? 1 : -1);
-        
+
         const flattenedConnectorMetadata: ({ [ key: string ]: FederatedAuthenticatorMetaDataInterface }) = keyBy(
             getConnectorMetadata(), "authenticatorId"
         );
@@ -861,7 +861,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
             if (!authenticator) {
                 return;
             }
-                
+
             // TODO: Need to update below values in the OIDC authenticator metadata API
             // Set additional meta data if the authenticator is OIDC
             if (authenticator.id === IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_ID) {

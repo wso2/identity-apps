@@ -89,7 +89,7 @@ importers:
       glob: ^7.1.3
       history: ^4.9.0
       html-webpack-plugin: ^5.2.0
-      i18next-browser-languagedetector: ^3.0.3
+      i18next-browser-languagedetector: ^6.1.5
       i18next-xhr-backend: ^3.2.2
       identity-obj-proxy: ^3.0.0
       jest: ^26.4.2
@@ -164,7 +164,7 @@ importers:
       crypto-js: 3.3.0
       final-form: 4.20.7
       history: 4.10.1
-      i18next-browser-languagedetector: 3.1.1
+      i18next-browser-languagedetector: 6.1.5
       i18next-xhr-backend: 3.2.2
       js-beautify: 1.14.6
       jshint: 2.13.5
@@ -304,7 +304,7 @@ importers:
 
   apps/authentication-portal:
     specifiers:
-      '@wso2is/theme': ^1.4.111
+      '@wso2is/theme': ^1.6.6
       rimraf: ^3.0.2
     dependencies:
       '@wso2is/theme': link:../../modules/theme
@@ -338,14 +338,14 @@ importers:
       '@types/webpack-env': ^1.16.0
       '@typescript-eslint/eslint-plugin': ^4.17.0
       '@typescript-eslint/parser': ^4.17.0
-      '@wso2is/access-control': ^1.4.111
-      '@wso2is/core': ^1.4.111
-      '@wso2is/form': ^1.4.111
-      '@wso2is/forms': ^1.4.111
-      '@wso2is/i18n': ^1.4.111
-      '@wso2is/react-components': ^1.4.111
-      '@wso2is/theme': ^1.4.111
-      '@wso2is/validation': ^1.4.111
+      '@wso2is/access-control': ^1.6.6
+      '@wso2is/core': ^1.6.6
+      '@wso2is/form': ^1.6.6
+      '@wso2is/forms': ^1.6.6
+      '@wso2is/i18n': ^1.6.6
+      '@wso2is/react-components': ^1.6.6
+      '@wso2is/theme': ^1.6.6
+      '@wso2is/validation': ^1.6.6
       axios: ^0.19.2
       codemirror: ^5.52.0
       country-language: ^0.1.7
@@ -362,7 +362,7 @@ importers:
       history: ^4.9.0
       html-react-parser: ^2.0.0
       i18next: ^21.9.1
-      i18next-browser-languagedetector: ^3.0.3
+      i18next-browser-languagedetector: ^6.1.5
       i18next-xhr-backend: ^3.2.2
       jest: ^26.4.2
       jest-environment-jsdom: ^26.3.0
@@ -424,7 +424,7 @@ importers:
       history: 4.10.1
       html-react-parser: 2.0.0_react@18.2.0
       i18next: 21.9.1
-      i18next-browser-languagedetector: 3.1.1
+      i18next-browser-languagedetector: 6.1.5
       i18next-xhr-backend: 3.2.2
       js-beautify: 1.14.6
       lodash-es: 4.17.21
@@ -525,13 +525,13 @@ importers:
       '@types/webpack-env': ^1.16.0
       '@typescript-eslint/eslint-plugin': ^4.17.0
       '@typescript-eslint/parser': ^4.17.0
-      '@wso2is/access-control': ^1.4.111
-      '@wso2is/core': ^1.4.111
-      '@wso2is/forms': ^1.4.111
-      '@wso2is/i18n': ^1.4.111
-      '@wso2is/react-components': ^1.4.111
-      '@wso2is/theme': ^1.4.111
-      '@wso2is/validation': ^1.4.111
+      '@wso2is/access-control': ^1.6.6
+      '@wso2is/core': ^1.6.6
+      '@wso2is/forms': ^1.6.6
+      '@wso2is/i18n': ^1.6.6
+      '@wso2is/react-components': ^1.6.6
+      '@wso2is/theme': ^1.6.6
+      '@wso2is/validation': ^1.6.6
       axios: ^0.19.2
       css-loader: ^1.0.0
       eslint: ^7.20.0
@@ -543,7 +543,7 @@ importers:
       eslint-webpack-plugin: ^3.1.1
       history: ^4.9.0
       i18next: ^21.9.1
-      i18next-browser-languagedetector: ^3.0.3
+      i18next-browser-languagedetector: ^6.1.5
       i18next-xhr-backend: ^3.2.2
       jest: ^26.4.2
       jest-environment-jsdom: ^26.3.0
@@ -591,7 +591,7 @@ importers:
       axios: 0.19.2
       history: 4.10.1
       i18next: 21.9.1
-      i18next-browser-languagedetector: 3.1.1
+      i18next-browser-languagedetector: 6.1.5
       i18next-xhr-backend: 3.2.2
       lodash-es: 4.17.21
       moment: 2.24.0
@@ -654,7 +654,7 @@ importers:
 
   apps/recovery-portal:
     specifiers:
-      '@wso2is/theme': ^1.4.111
+      '@wso2is/theme': ^1.6.6
       rimraf: ^3.0.2
     dependencies:
       '@wso2is/theme': link:../../modules/theme
@@ -662,7 +662,7 @@ importers:
 
   apps/x509-certificate-authentication-portal:
     specifiers:
-      '@wso2is/theme': ^1.4.111
+      '@wso2is/theme': ^1.6.6
       rimraf: ^3.0.2
     dependencies:
       '@wso2is/theme': link:../../modules/theme
@@ -670,7 +670,7 @@ importers:
 
   components/theme:
     specifiers:
-      '@wso2is/theme': ^1.4.111
+      '@wso2is/theme': ^1.6.6
     dependencies:
       '@wso2is/theme': link:../../modules/theme
 
@@ -679,7 +679,7 @@ importers:
       '@types/react': ^18.0.18
       '@typescript-eslint/eslint-plugin': ^4.17.0
       '@typescript-eslint/parser': ^4.17.0
-      '@wso2is/core': ^1.4.111
+      '@wso2is/core': ^1.6.6
       eslint: ^7.20.0
       eslint-plugin-import: ^2.20.2
       eslint-plugin-react: ^7.18.3
@@ -787,9 +787,9 @@ importers:
       '@types/react': ^18.0.18
       '@typescript-eslint/eslint-plugin': ^4.17.0
       '@typescript-eslint/parser': ^4.17.0
-      '@wso2is/core': ^1.4.111
-      '@wso2is/react-components': ^1.4.111
-      '@wso2is/validation': ^1.4.111
+      '@wso2is/core': ^1.6.6
+      '@wso2is/react-components': ^1.6.6
+      '@wso2is/validation': ^1.6.6
       eslint: ^7.20.0
       eslint-plugin-import: ^2.20.2
       eslint-plugin-react: ^7.18.3
@@ -891,14 +891,14 @@ importers:
       '@types/node': ^13.9.2
       '@typescript-eslint/eslint-plugin': ^4.17.0
       '@typescript-eslint/parser': ^4.17.0
-      '@wso2is/core': ^1.4.111
+      '@wso2is/core': ^1.6.6
       babel-jest: ^26.3.0
       eslint: ^7.20.0
       eslint-plugin-import: ^2.20.2
       eslint-plugin-react: ^7.18.3
       eslint-plugin-react-hooks: ^4.0.0
       i18next: ^21.9.1
-      i18next-browser-languagedetector: ^3.0.3
+      i18next-browser-languagedetector: ^6.1.5
       i18next-xhr-backend: ^3.2.2
       jest: ^26.4.2
       lodash-es: ^4.17.21
@@ -913,7 +913,7 @@ importers:
       '@wso2is/core': link:../core
       babel-jest: 26.6.3
       i18next: 21.9.1
-      i18next-browser-languagedetector: 3.1.1
+      i18next-browser-languagedetector: 6.1.5
       i18next-xhr-backend: 3.2.2
       lodash-es: 4.17.21
       react-i18next: 11.18.5_i18next@21.9.1
@@ -961,9 +961,9 @@ importers:
       '@types/react-router-dom': ^5.1.3
       '@typescript-eslint/eslint-plugin': ^4.17.0
       '@typescript-eslint/parser': ^4.17.0
-      '@wso2is/core': ^1.4.111
-      '@wso2is/forms': ^1.4.111
-      '@wso2is/theme': ^1.4.111
+      '@wso2is/core': ^1.6.6
+      '@wso2is/forms': ^1.6.6
+      '@wso2is/theme': ^1.6.6
       babel-loader: ^8.1.0
       babel-plugin-rename-jsx-attribute: ^0.2.4
       classnames: ^2.2.6
@@ -16752,8 +16752,10 @@ packages:
       ms: 2.1.3
     dev: true
 
-  /i18next-browser-languagedetector/3.1.1:
-    resolution: {integrity: sha512-JBgFWijjI1t6as4WgGvDdX4GLJPZwC/SMHzLQQ3ef7XaJsEkomlXFqXifKvOVJg09Hj2BVWe6strDdIF4J/0ng==}
+  /i18next-browser-languagedetector/6.1.5:
+    resolution: {integrity: sha512-11t7b39oKeZe4uyMxLSPnfw28BCPNLZgUk7zyufex0zKXZ+Bv+JnmJgoB+IfQLZwDt1d71PM8vwBX1NCgliY3g==}
+    dependencies:
+      '@babel/runtime': 7.18.9
     dev: false
 
   /i18next-xhr-backend/3.2.2:

@@ -41,6 +41,9 @@
 
     if (StringUtils.isBlank(authAPIURL)) {
         authAPIURL = IdentityUtil.getServerURL("/api/identity/auth/v1.1/", true, true);
+    } else {
+        // Resolve tenant domain for the authentication API URl
+        authAPIURL = AuthenticationEndpointUtil.resolveTenantDomain(authAPIURL);
     }
     if (!authAPIURL.endsWith("/")) {
         authAPIURL += "/";

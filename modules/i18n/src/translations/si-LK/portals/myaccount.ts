@@ -1389,6 +1389,15 @@ export const myAccount: MyAccountNS = {
             },
             lastAccessed: "අවසන් ප්‍රවේශය {{date}}",
             modals: {
+                terminateActiveUserSessionModal: {
+                    heading: "වත්මන් ක්‍රියාකාරී සැසි අවසන් කරන්න",
+                    message:
+                        "දෙවන-සාධක සත්‍යාපනය (2FA) විකල්ප වෙනස් කිරීම් ඔබගේ සක්‍රිය සැසි සඳහා යොදනු නොලැබේ. ඔබ ඒවා " +
+                        "අවසන් කරන ලෙස අපි නිර්දේශ කරමු.",
+                    primaryAction: "සියල්ල අවසන් කරන්න",
+                    secondaryAction: "සමාලෝචනය කර අවසන් කරන්න"    
+
+                },
                 terminateAllUserSessionsModal: {
                     heading: "තහවුරු කිරීම",
                     message:
