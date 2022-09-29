@@ -16,7 +16,6 @@
  * under the License.
  */
 
-// eslint-disable-next-line header/header
 import { TestableComponentInterface } from "@wso2is/core/models";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
