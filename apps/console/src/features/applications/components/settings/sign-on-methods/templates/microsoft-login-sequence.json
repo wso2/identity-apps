@@ -1,0 +1,13 @@
+{
+    "steps": [
+        {
+            "id": 1,
+            "options": [
+                {
+                    "authenticator": "MicrosoftAuthenticator",
+                    "idp": "<MICROSOFT_IDP>"
+                }
+            ]
+        }
+    ]
+}

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -31,6 +31,7 @@ import FacebookLoginSequenceTemplate from "./templates/facebook-login-sequence.j
 import GitHubLoginSequenceTemplate from "./templates/github-login-sequence.json";
 import GoogleLoginSequenceTemplate from "./templates/google-login-sequence.json";
 import MagicLinkSequenceTemplate from "./templates/magic-link-sequence.json";
+import MicrosoftLoginSequenceTemplate from "./templates/microsoft-login-sequence.json";
 import SecondFactorEMAILOTPSequenceTemplate from "./templates/second-factor-email-otp-sequence.json";
 import SecondFactorTOTPSequenceTemplate from "./templates/second-factor-totp-sequence.json";
 import UsernamelessSequenceTemplate from "./templates/usernameless-login-sequence.json";
@@ -121,6 +122,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
     const [ googleAuthenticators, setGoogleAuthenticators ] = useState<GenericAuthenticatorInterface[]>(undefined);
     const [ gitHubAuthenticators, setGitHubAuthenticators ] = useState<GenericAuthenticatorInterface[]>(undefined);
     const [ facebookAuthenticators, setFacebookAuthenticators ] = useState<GenericAuthenticatorInterface[]>(undefined);
+    // const [ microsoftAuthenticators, setMicrosoftAuthenticators ] = useState<GenericAuthenticatorInterface[]>(undefined);
     const [ showMissingSocialAuthenticatorModal, setShowMissingSocialAuthenticatorModal ] = useState<boolean>(false);
     const [ isAuthenticatorsFetchRequestLoading, setIsAuthenticatorsFetchRequestLoading ] = useState<boolean>(true);
     const [
@@ -189,6 +191,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
         google: GenericAuthenticatorInterface[],
         github: GenericAuthenticatorInterface[],
         facebook: GenericAuthenticatorInterface[]
+        // microsoft: GenericAuthenticatorInterface[]
     ) => void): Promise<void> => {
 
         setIsAuthenticatorsFetchRequestLoading(true);
@@ -199,6 +202,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                 const google: GenericAuthenticatorInterface[] = [];
                 const gitHub: GenericAuthenticatorInterface[] = [];
                 const facebook: GenericAuthenticatorInterface[] = [];
+                // const microsoft: GenericAuthenticatorInterface[] = [];
 
                 response[1].filter((authenticator: GenericAuthenticatorInterface) => {
                     if (authenticator.defaultAuthenticator.authenticatorId
@@ -214,11 +218,17 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
 
                         facebook.push(authenticator);
                     }
+                    // } else if (authenticator.defaultAuthenticator.authenticatorId
+                    //     === IdentityProviderManagementConstants.MICROSOFT_AUTHENTICATOR_ID) {
+
+                    //     microsoft.push(authenticator);
+                    // }
                 });
 
                 setGoogleAuthenticators(google);
                 setGitHubAuthenticators(gitHub);
                 setFacebookAuthenticators(facebook);
+                // setMicrosoftAuthenticators(microsoft);
                 setAuthenticators(response);
 
                 // Trigger the onsuccess callback and send the responses to the calller.

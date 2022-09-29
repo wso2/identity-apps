@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -24,6 +24,7 @@ import ExpertModeIdPTemplate from "../data/identity-provider-templates/templates
 import FacebookIdPTemplate from "../data/identity-provider-templates/templates/facebook/facebook.json";
 import GitHubIdPTemplate from "../data/identity-provider-templates/templates/github/github.json";
 import GoogleIdPTemplate from "../data/identity-provider-templates/templates/google/google.json";
+import MicrosoftIDPTemplate from "../data/identity-provider-templates/templates/microsoft/microsoft.json";
 import EnterpriseOIDCIdPTemplate from
     "../data/identity-provider-templates/templates/oidc-identity-provider/enterprise-oidc-identity-provider.json";
 import EnterpriseOrganizationIdPTemplate from
@@ -102,6 +103,7 @@ export class IdentityProviderManagementConstants {
         FACEBOOK: string;
         GITHUB: string;
         GOOGLE: string;
+        MICROSOFT: string;
         OIDC: string;
         ORGANIZATION_ENTERPRISE_IDP: string;
         SAML: string;
@@ -111,6 +113,7 @@ export class IdentityProviderManagementConstants {
         FACEBOOK: FacebookIdPTemplate.id,
         GITHUB: GitHubIdPTemplate.id,
         GOOGLE: GoogleIdPTemplate.id,
+        MICROSOFT: MicrosoftIDPTemplate.id,
         OIDC: EnterpriseOIDCIdPTemplate.id,
         ORGANIZATION_ENTERPRISE_IDP: EnterpriseOrganizationIdPTemplate.id,
         SAML: EnterpriseSAMLIdPTemplate.id
@@ -184,6 +187,26 @@ export class IdentityProviderManagementConstants {
         OPENID: "openid",
         PROFILE: "profile"
     };
+
+    /**
+     * Microsoft Scope mappings.
+     * @type {Record<string, string>}
+     */
+    public static readonly MICROSOFT_SCOPE_DICTIONARY: Record<string, string> = {
+        EMAIL: "email",
+        OPENID: "openid",
+        PROFILE: "profile"
+    };
+
+    /**
+     * Scopes to request from GitHub.
+     * @type {string[]}
+     */
+    public static readonly MICROSOFT_AUTHENTICATOR_REQUESTED_SCOPES: string[] = [
+        IdentityProviderManagementConstants.MICROSOFT_SCOPE_DICTIONARY.OPENID,
+        IdentityProviderManagementConstants.MICROSOFT_SCOPE_DICTIONARY.EMAIL,
+        IdentityProviderManagementConstants.MICROSOFT_SCOPE_DICTIONARY.PROFILE
+    ];
 
     /**
      * GitHub Scope mappings.
@@ -373,6 +396,7 @@ export class IdentityProviderManagementConstants {
     public static readonly OFFICE_365_AUTHENTICATOR_ID: string = "T2ZmaWNlMzY1QXV0aGVudGljYXRvcg";
     public static readonly MS_LIVE_AUTHENTICATOR_ID: string = "TWljcm9zb2Z0V2luZG93c0xpdmVBdXRoZW50aWNhdG9y";
     public static readonly IWA_KERBEROS_AUTHENTICATOR_ID: string = "SVdBS2VyYmVyb3NBdXRoZW50aWNhdG9y";
+    public static readonly MICROSOFT_AUTHENTICATOR_ID: string = "T3BlbklEQ29ubmVjdEF1dGhlbnRpY2F0b3I";
 
     // Known IS Predefined/Protocols authenticator IDs
     public static readonly PASSIVE_STS_AUTHENTICATOR_NAME: string = "PassiveSTSAuthenticator";
@@ -390,14 +414,24 @@ export class IdentityProviderManagementConstants {
     public static readonly OFFICE_365_AUTHENTICATOR_NAME: string = "Office365Authenticator";
     public static readonly MS_LIVE_AUTHENTICATOR_NAME: string = "MicrosoftWindowsLiveAuthenticator";
     public static readonly IWA_KERBEROS_AUTHENTICATOR_NAME: string = "IWAKerberosAuthenticator";
+    public static readonly MICROSOFT_AUTHENTICATOR_NAME: string = "MicrosoftAuthenticator";
 
     // Known Social authenticator display names;
     public static readonly GOOGLE_OIDC_AUTHENTICATOR_DISPLAY_NAME: string = "Google";
     public static readonly FACEBOOK_AUTHENTICATOR_DISPLAY_NAME: string = "Facebook";
     public static readonly GITHUB_AUTHENTICATOR_DISPLAY_NAME: string = "GitHub";
+    public static readonly MICROSOFT_AUTHENTICATOR_DISPLAY_NAME: string = "Microsoft";
 
     // Keys for the initial values of Email OTP Authenticator
     public static readonly AUTHENTICATOR_INIT_VALUES_EMAIL_OTP_EXPIRY_TIME_KEY = "EmailOTP_ExpiryTime";
+
+    // Authenticator Endpoints
+    public static readonly MICROSOFT_AUTHENTICATION_ENDPOINT_URL: string = 
+    "https://login.microsoftonline.com/common/oauth2/v2.0/authorize";
+
+    // Token Endpoints
+    public static readonly MICROSOFT_TOKEN_ENDPOINT_URL: string = 
+    "https://login.microsoftonline.com/common/oauth2/v2.0/token";
 
     /**
      * Identity provider create limit reached error.

@@ -196,6 +196,9 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
                 },
                 google: {
                     enabled: false
+                },
+                microsoft: {
+                    enabled: false
                 }
             },
             isClientSecretHashEnabled: undefined,
