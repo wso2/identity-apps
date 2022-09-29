@@ -96,6 +96,7 @@
         "@babel/runtime-corejs3": "^7.11.2",
         "@nrwl/cli": "14.4.2",
         "@nrwl/cypress": "14.4.2",
+        "@nrwl/devkit": "14.4.2",
         "@nrwl/eslint-plugin-nx": "14.4.2",
         "@nrwl/jest": "14.4.2",
         "@nrwl/js": "14.4.2",
