@@ -73,7 +73,6 @@ export const createIdentityProvider = (identityProvider: object): Promise<any> =
         method: HttpMethods.POST,
         url: store.getState().config.endpoints.identityProviders
     };
-    console.log(requestConfig);
     
     return httpClient(requestConfig)
         .then((response) => {
