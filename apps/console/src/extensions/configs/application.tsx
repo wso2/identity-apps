@@ -50,8 +50,7 @@ export const applicationConfig: ApplicationConfig = {
                 return claims;
             },
             showAttributePlaceholderTitle: false,
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            showShareAttributesHint: (selectedDialect: SelectedDialectInterface): boolean => {
+            showShareAttributesHint: (_selectedDialect: SelectedDialectInterface): boolean => {
                 return true;
             }
         },
@@ -78,8 +77,7 @@ export const applicationConfig: ApplicationConfig = {
         getOverriddenImage: (_clientId: string, _tenantDomain: string) => {
             return null;
         },
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        getTabPanelReadOnlyStatus: (tabPanelName: string, applicationName: ApplicationInterface): boolean => {
+        getTabPanelReadOnlyStatus: (_tabPanelName: string, _applicationName: ApplicationInterface): boolean => {
             return false;
         },
         isTabEnabledForApp: (_clientId: string, _tabType: ApplicationTabTypes, _tenantDomain: string): boolean => {
@@ -89,12 +87,10 @@ export const applicationConfig: ApplicationConfig = {
             return null;
         },
         showApplicationShare: true,
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        showDangerZone: (application: ApplicationInterface): boolean => {
+        showDangerZone: (_application: ApplicationInterface): boolean => {
             return true;
         },
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        showDeleteButton: (application: ApplicationInterface): boolean => {
+        showDeleteButton: (_application: ApplicationInterface): boolean => {
             return true;
         },
         showProvisioningSettings: true
@@ -102,8 +98,7 @@ export const applicationConfig: ApplicationConfig = {
     excludeIdentityClaims: false,
     excludeSubjectClaim: false,
     generalSettings: {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        getFieldReadOnlyStatus: (application: ApplicationInterface, fieldName: string): boolean => {
+        getFieldReadOnlyStatus: (_application: ApplicationInterface, _fieldName: string): boolean => {
             return false;
         }
     },
