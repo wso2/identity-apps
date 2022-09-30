@@ -216,15 +216,15 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
                     /**
                      * If for some reason we can't find the given template by id
                      * and the template is disabled from file level, we can assure
-                     * the {@link type} (templateId) is a grouped type.
+                     * the templateId is a grouped type.
                      */
                     if (response !== undefined && !response.disabled) {
                         setSelectedTemplate(response as IdentityProviderTemplateInterface);
                     } else {
                         /**
                          * If the {@link getIdentityProviderTemplate} method failed to
-                         * retrieve the matching template via the {@link type} (templateId)
-                         * then set the template that got passed from {@link props}. This
+                         * retrieve the matching template via the templateId
+                         * then set the template that got passed from props. This
                          * case executes when a grouped template is trying to load.
                          */
                         if (parentSelectedTemplate && !parentSelectedTemplate.disabled) {
