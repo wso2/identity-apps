@@ -146,7 +146,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
     };
 
     /**
-     * Check whether additional query paramters has scopes defined.
+     * Check whether additional query parameters has scopes defined.
      *
      */
     const isScopesDefined = (): boolean => {
