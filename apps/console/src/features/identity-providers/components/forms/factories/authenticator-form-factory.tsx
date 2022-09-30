@@ -74,8 +74,8 @@ interface AuthenticatorFormFactoryInterface extends TestableComponentInterface {
 /**
  * Authenticator form factory.
  *
- * @param {AuthenticatorFormFactoryInterface} props - Props injected to the component.
- * @return {ReactElement}
+ * @param props - \{AuthenticatorFormFactoryInterface\} Props injected to the component.
+ * @returns \{ReactElement\}
  */
 export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactoryInterface> = (
     props: AuthenticatorFormFactoryInterface

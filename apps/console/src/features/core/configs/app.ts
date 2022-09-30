@@ -48,7 +48,7 @@ export class Config {
      * Private constructor to avoid object instantiation from outside
      * the class.
      *
-     * @hideconstructor
+     * hideconstructor
      */
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     private constructor() { }
@@ -56,7 +56,7 @@ export class Config {
     /**
      * This method adds organization path to the server host if an organization is selected.
      *
-     * @returns {string}
+     * @returns \{string\}
      */
     public static resolveServerHost(): string {
         if (OrganizationUtils.isRootOrganization(store.getState().organization.organization)) {
@@ -71,7 +71,7 @@ export class Config {
     /**
      * Get the deployment config.
      *
-     * @return {DeploymentConfigInterface} Deployment config object.
+     * @returns \{DeploymentConfigInterface\} Deployment config object.
      */
     public static getDeploymentConfig(): DeploymentConfigInterface {
         return {
@@ -128,8 +128,8 @@ export class Config {
      * look for resource files in `https://localhost:9443/<PORTAL>/resources/i18n` rather than looking for the
      * files in `https://localhost:9443/t/wso2.com/<PORTAL>/resources/i18n`.
      *
-     * @param {MetaI18N} metaFile - Meta File.
-     * @return {I18nModuleInitOptions} I18n init options.
+     * @param metaFile - \{MetaI18N\}  Meta File.
+     * @returns \{I18nModuleInitOptions\} I18n init options.
      */
     public static generateModuleInitOptions(metaFile: MetaI18N): I18nModuleInitOptions {
         return {
@@ -161,9 +161,9 @@ export class Config {
     /**
      * Get i18n module config.
      *
-     * @param {MetaI18N} metaFile Meta file.
+     * @param metaFile - \{MetaI18N\} Meta file.
      *
-     * @return {I18nModuleOptionsInterface} i18n config object.
+     * @returns \{I18nModuleOptionsInterface\} i18n config object.
      */
     public static getI18nConfig(metaFile?: MetaI18N): I18nModuleOptionsInterface {
         return {
@@ -180,7 +180,7 @@ export class Config {
     /**
      * Get the the list of service resource endpoints.
      *
-     * @return {ServiceResourceEndpointsInterface} Service resource endpoints as an object.
+     * @returns \{ServiceResourceEndpointsInterface\} Service resource endpoints as an object.
      */
     public static getServiceResourceEndpoints(): ServiceResourceEndpointsInterface {
         return {
@@ -211,7 +211,7 @@ export class Config {
     /**
      * Get UI config.
      *
-     * @return {UIConfigInterface} UI config object.
+     * @returns \{UIConfigInterface\} UI config object.
      */
     public static getUIConfig(): UIConfigInterface {
         return {

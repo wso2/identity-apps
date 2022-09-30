@@ -95,8 +95,8 @@ interface EditIdentityProviderPropsInterface extends TestableComponentInterface 
 /**
  * Identity Provider edit component.
  *
- * @param {EditIdentityProviderPropsInterface} props - Props injected to the component.
- * @return {ReactElement}
+ * @param props - \{EditIdentityProviderPropsInterface\} Props injected to the component.
+ * @returns \{ReactElement\}
  */
 export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsInterface> = (
     props: EditIdentityProviderPropsInterface
@@ -307,8 +307,8 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
          * configuration level we can show the attributes section.
          * {@link identityProviderConfig} contains the configuration
          * to enable or disable this via extensions. Please refer
-         * {@link apps/console/src/extensions/} configs folder and
-         * models folder for types. {@file identity-provider.ts}
+         * {@link apps/console/src/extensions#} configs folder and
+         * models folder for types. identity-provider.ts
          */
         const attributesForSamlEnabled = isSaml && identityProviderConfig.editIdentityProvider.attributesSettings;
 
@@ -351,9 +351,9 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
     /**
      * Evaluate internally whether to show/hide `Attributes` tab.
      *
-     * @param {string} type - IDP Type.
+     * @param type - \{string\} IDP Type.
      *
-     * @return {boolean}
+     * @returns \{boolean\}
      */
     const shouldShowAttributeSettings = (type: string): boolean => {
 

@@ -34,9 +34,9 @@ type GithubIdentityProviderCreateWizardHelpPropsInterface = TestableComponentInt
 /**
  * Help content for the GitHub IDP template creation wizard.
  *
- * @param {GithubIdentityProviderCreateWizardHelpPropsInterface} props - Props injected into the component.
+ * @param props - \{GithubIdentityProviderCreateWizardHelpPropsInterface\} Props injected into the component.
  *
- * @return {React.ReactElement}
+ * @returns \{React.ReactElement\}
  */
 const GithubIdentityProviderCreateWizardHelp: FunctionComponent<
     GithubIdentityProviderCreateWizardHelpPropsInterface> = (
@@ -65,75 +65,76 @@ const GithubIdentityProviderCreateWizardHelp: FunctionComponent<
             setUseNewConnectionsView(identityProviderConfig.useNewConnectionsView);
         }, [ identityProviderConfig ]);
 
-    return (
-        <div data-testid={ testId }>
-            <Message
-                type="info"
-                header={
-                    t("console:develop.features.authenticationProvider.templates.github.wizardHelp." +
-                        "preRequisites.heading")
-                }
-                content={
-                    <>
-                        <p>
-                            <Trans
-                                i18nKey={
-                                    "console:develop.features.authenticationProvider.templates.github.wizardHelp." +
-                                    "preRequisites.getCredentials"
-                                }
-                            >
-                                Before you begin, create an <strong>OAuth application</strong> <a
-                                href="https://github.com/"
-                                target="_blank"
-                                rel="noopener noreferrer">
-                                on GitHub
-                            </a>, and obtain a <strong>client ID & secret</strong>.
-                            </Trans>
-                        </p>
-                        <p>
+        return (
+            <div data-testid={ testId }>
+                <Message
+                    type="info"
+                    header={
+                        t("console:develop.features.authenticationProvider.templates.github.wizardHelp." +
+                            "preRequisites.heading")
+                    }
+                    content={
+                        (<>
+                            <p>
+                                <Trans
+                                    i18nKey={
+                                        "console:develop.features.authenticationProvider.templates.github.wizardHelp." +
+                                        "preRequisites.getCredentials"
+                                    }
+                                >
+                                    Before you begin, create an <strong>OAuth application</strong> <a
+                                        href="https://github.com/"
+                                        target="_blank"
+                                        rel="noopener noreferrer">
+                                    on GitHub
+                                    </a>, and obtain a <strong>client ID & secret</strong>.
+                                </Trans>
+                            </p>
+                            <p>
 
-                            <Trans
-                                i18nKey={
-                                    "console:develop.features.authenticationProvider.templates.github.wizardHelp" +
-                                    ".preRequisites.configureHomePageURL"
-                                }
-                            >
-                                Use the following URL as the <strong>Homepage URL</strong>.
-                            </Trans>
+                                <Trans
+                                    i18nKey={
+                                        "console:develop.features.authenticationProvider.templates.github.wizardHelp" +
+                                        ".preRequisites.configureHomePageURL"
+                                    }
+                                >
+                                    Use the following URL as the <strong>Homepage URL</strong>.
+                                </Trans>
 
-                            <CopyInputField
-                                className="copy-input-dark spaced"
-                                value={ config?.deployment?.customServerHost }
-                            />
-                        </p>
-                        <p>
-                            <Trans
-                                i18nKey={
-                                    "console:develop.features.authenticationProvider.templates.github.wizardHelp" +
-                                    ".preRequisites.configureRedirectURL"
-                                }
-                            >
-                                Add the following URL as the <strong>Authorization callback URL</strong>.
-                            </Trans>
+                                <CopyInputField
+                                    className="copy-input-dark spaced"
+                                    value={ config?.deployment?.customServerHost }
+                                />
+                            </p>
+                            <p>
+                                <Trans
+                                    i18nKey={
+                                        "console:develop.features.authenticationProvider.templates.github.wizardHelp" +
+                                        ".preRequisites.configureRedirectURL"
+                                    }
+                                >
+                                    Add the following URL as the <strong>Authorization callback URL</strong>.
+                                </Trans>
 
-                            <CopyInputField
-                                className="copy-input-dark spaced"
-                                value={ config?.deployment?.customServerHost + "/commonauth" }
-                            />
+                                <CopyInputField
+                                    className="copy-input-dark spaced"
+                                    value={ config?.deployment?.customServerHost + "/commonauth" }
+                                />
 
-                            <a
-                                href="https://docs.github.com/en/developers/apps/building-oauth-apps/creating-an-oauth-app"
-                                target="_blank"
-                                rel="noopener noreferrer">
-                                {
-                                    t("console:develop.features.authenticationProvider.templates.github.wizardHelp." +
-                                        "preRequisites.configureOAuthApps")
-                                }
-                            </a>
-                        </p>
-                    </>
-                }
-            />
+                                <a
+                                    href={ "https://docs.github.com/en/developers/" 
+                                    +"apps/building-oauth-apps/creating-an-oauth-app" }
+                                    target="_blank"
+                                    rel="noopener noreferrer">
+                                    {
+                                        t("console:develop.features.authenticationProvider.templates.github." +
+                                            "wizardHelp.preRequisites.configureOAuthApps")
+                                    }
+                                </a>
+                            </p>
+                        </>)
+                    }
+                />
 
                 <Heading as="h5">
                     {

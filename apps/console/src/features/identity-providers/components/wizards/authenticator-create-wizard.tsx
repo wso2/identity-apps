@@ -67,7 +67,6 @@ interface AddAuthenticatorWizardPropsInterface extends TestableComponentInterfac
  * Enum for wizard.
  *
  * @readonly
- * @enum {string}
  */
 enum WizardConstants {
     AUTHENTICATOR = "authenticator"
@@ -103,8 +102,8 @@ interface WizardStepInterface {
 /**
  * Identity provider creation wizard component.
  *
- * @param {AddAuthenticatorWizardPropsInterface} props - Props injected to the component.
- * @return {React.ReactElement}
+ * @param props - Props injected to the component.
+ * @returns \{React.ReactElement\}
  */
 export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizardPropsInterface> = (
     props: AddAuthenticatorWizardPropsInterface
@@ -284,7 +283,7 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
     /**
      * Resolves the step content.
      *
-     * @return {React.ReactElement} Step content.
+     * @returns \{React.ReactElement\} Step content.
      */
     const resolveStepContent = (currentStep: number): ReactElement => {
         let step = currentStep;

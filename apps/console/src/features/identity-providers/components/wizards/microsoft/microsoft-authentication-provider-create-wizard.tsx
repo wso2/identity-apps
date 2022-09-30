@@ -106,9 +106,9 @@ export interface MicrosoftAuthenticationProviderCreateWizardFormErrorValidations
 /**
  * Microsoft Authentication Provider Create Wizard Component.
  *
- * @param {MicrosoftAuthenticationProviderCreateWizardPropsInterface} props - Props injected to the component.
+ * @param props - \{MicrosoftAuthenticationProviderCreateWizardPropsInterface\} Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns \{React.ReactElement\}
  */
 export const MicrosoftAuthenticationProviderCreateWizard: FunctionComponent<
     MicrosoftAuthenticationProviderCreateWizardPropsInterface
@@ -154,7 +154,7 @@ export const MicrosoftAuthenticationProviderCreateWizard: FunctionComponent<
         /**
         * Creates a new identity provider.
         *
-        * @param identityProvider Identity provider object.
+        * @param identityProvider - Identity provider object.
         */
         const createNewIdentityProvider = (identityProvider: IdentityProviderInterface): void => {
 
@@ -251,7 +251,6 @@ export const MicrosoftAuthenticationProviderCreateWizard: FunctionComponent<
 
             // Use description from template.
             identityProvider.description = template.description;
-            console.log(identityProvider);
             createNewIdentityProvider(identityProvider);
         };
 
@@ -275,10 +274,9 @@ export const MicrosoftAuthenticationProviderCreateWizard: FunctionComponent<
         /**
         * Callback triggered when the form is submitted.
         *
-        * @param {MicrosoftAuthenticationProviderCreateWizardFormValuesInterface} values - Form values.
+        * @param values - \{MicrosoftAuthenticationProviderCreateWizardFormValuesInterface\} Form values.
         */
         const onSubmitWizard = (values: MicrosoftAuthenticationProviderCreateWizardFormValuesInterface): void => {
-            console.log("Submit kara");
             const identityProvider: IdentityProviderInterface = { ...template.idp };
 
             identityProvider.name = values.name.toString();
@@ -334,7 +332,7 @@ export const MicrosoftAuthenticationProviderCreateWizard: FunctionComponent<
         /**
         * Resolve the step wizard actions.
         *
-        * @return {React.ReactElement}
+        * @returns \{React.ReactElement\}
         */
         const resolveStepActions = (): ReactElement => {
 
@@ -399,7 +397,7 @@ export const MicrosoftAuthenticationProviderCreateWizard: FunctionComponent<
         /**
         * Renders the help panel containing wizard help.
         *
-        * @return {React.ReactElement}
+        * @returns \{React.ReactElement\}
         */
         const renderHelpPanel = (): ReactElement => {
 
@@ -416,7 +414,8 @@ export const MicrosoftAuthenticationProviderCreateWizard: FunctionComponent<
                 <ModalWithSidePanel.SidePanel>
                     <ModalWithSidePanel.Header className="wizard-header help-panel-header muted">
                         <div className="help-panel-header-text">
-                            { t("console:develop.features.authenticationProvider.templates.microsoft.wizardHelp.heading") }
+                            { t("console:develop.features.authenticationProvider" + 
+                            ".templates.microsoft.wizardHelp.heading") }
                         </div>
                     </ModalWithSidePanel.Header>
                     <ModalWithSidePanel.Content>

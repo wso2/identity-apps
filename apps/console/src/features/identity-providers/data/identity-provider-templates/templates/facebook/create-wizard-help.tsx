@@ -34,9 +34,9 @@ type FacebookIdentityProviderCreateWizardHelpPropsInterface = TestableComponentI
 /**
  * Help content for the Facebook IDP template creation wizard.
  *
- * @param {FacebookIdentityProviderCreateWizardHelpPropsInterface} props - Props injected into the component.
+ * @param props - Props injected into the component.
  *
- * @return {React.ReactElement}
+ *  @returns \{React.ReactElement\}
  */
 const FacebookIdentityProviderCreateWizardHelp: FunctionComponent<
     FacebookIdentityProviderCreateWizardHelpPropsInterface> = (
@@ -188,7 +188,7 @@ const FacebookIdentityProviderCreateWizardHelp: FunctionComponent<
                 </p>
             </div>
         );
-};
+    };
 
 /**
  * Default props for the component

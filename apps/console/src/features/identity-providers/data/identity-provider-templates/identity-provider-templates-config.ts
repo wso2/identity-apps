@@ -46,8 +46,8 @@ import { IdentityProviderTemplateCategoryInterface, IdentityProviderTemplateGrou
  * you override the template from extensions, this will merge
  * the enterprise idp configuration with yours.
  *
- * @unused Keeping as a reference.
  */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const EnterpriseIdentityProviderTemplateExtended = {
     ...EnterpriseIdentityProviderTemplate,
     ...EnterpriseIdentityProviderTemplateExtension
@@ -175,11 +175,11 @@ export const getIdentityProviderTemplatesConfig = (): IdentityProviderTemplatesC
                         },
                         {
                             content: {
-                                wizardHelp: lazy(() => (
-                                    import("./templates/saml-identity-provider/saml-idp-wizard-help")
-                                )),
                                 fileBasedHelpPanel: lazy(() => (
                                     import("./templates/saml-identity-provider/saml-idp-wizard-file-based-help")
+                                )),
+                                wizardHelp: lazy(() => (
+                                    import("./templates/saml-identity-provider/saml-idp-wizard-help")
                                 ))
                             },
                             enabled: window["AppUtils"].getConfig()

@@ -44,11 +44,12 @@ export const attributeConfig: AttributeConfig = {
     attributesPlaceholderAddButton: (attributeType: string): boolean => {
         return true;
     },
+    defaultScimMapping: {},
     editAttributeMappings: {
         /**
          * Disables and marks the dialect add new attribute button as a
          * coming soon feature.
-         * - @param dialectID: string
+         * - @param dialectID - : string
          */
         markAddExternalAttributeButtonAsAComingSoonFeature() {
             return false;
@@ -82,6 +83,7 @@ export const attributeConfig: AttributeConfig = {
             if (editClaimID === claim?.id) {
                 return I18n.instance.t("common:cancel");
             }
+
             return I18n.instance.t("common:edit");
         },
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -127,13 +129,13 @@ export const attributeConfig: AttributeConfig = {
             showSummary: true
         },
         customDialectURI: "",
-        oidcDialectURI: "",
         getDialect: (dialectURI: string) => { return Promise.resolve(dialectURI); },
         isSCIMCustomDialectAvailable: () =>  { return Promise.resolve(""); },
         isUserStoresHidden: () =>  { return Promise.resolve([]); },
-        mapClaimToCustomDialect: false
+        mapClaimToCustomDialect: false,
+        oidcDialectURI: ""
     },
-    systemClaims: [],
-    defaultScimMapping: {},
-    showCustomDialectInSCIM: false
+    showCustomDialectInSCIM: false,
+    systemClaims: []
+    
 };

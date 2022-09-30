@@ -60,7 +60,7 @@ const httpClientAll = AsgardeoSPAClient.getInstance().httpRequestAll.bind(Asgard
 /**
  * Creates Identity Provider.
  *
- * @param identityProvider Identity provider settings data.
+ * @param identityProvider - Identity provider settings data.
  */
 export const createIdentityProvider = (identityProvider: object): Promise<any> => {
     const requestConfig = {
@@ -90,12 +90,12 @@ export const createIdentityProvider = (identityProvider: object): Promise<any> =
  * Gets the IdP list with limit and offset.
  *
  * @deprecated Use `useIdentityProviderList` hook instead.
- * @param {number} limit - Maximum Limit of the IdP List.
- * @param {number} offset - Offset for get to start.
- * @param {string} filter - Search filter.
- * @param {string} requiredAttributes - Extra attribute to be included in the list response. ex:`isFederationHub`
+ * @param limit - \{number\}  Maximum Limit of the IdP List.
+ * @param offset - \{number\} Offset for get to start.
+ * @param filter - \{number\} Search filter.
+ * @param requiredAttributes - \{number\} Extra attribute to be included in the list response. ex:`isFederationHub`
  *
- * @return {Promise<IdentityProviderListResponseInterface>} A promise containing the response.
+ * @returns \{Promise<IdentityProviderListResponseInterface>\} A promise containing the response.
  */
 export const getIdentityProviderList = (
     limit?: number,
@@ -135,12 +135,12 @@ export const getIdentityProviderList = (
 /**
  * Hook to get the IDP list with limit and offset.
  *
- * @param {number} limit - Maximum Limit of the IdP List.
- * @param {number} offset - Offset for get to start.
- * @param {string} filter - Search filter.
- * @param {string} requiredAttributes - Extra attribute to be included in the list response. ex:`isFederationHub`
+ * @param limit - \{number\} Maximum Limit of the IdP List.
+ * @param offset - \{number\} Offset for get to start.
+ * @param filter - \{string\} Search filter.
+ * @param requiredAttributes - \{string\} Extra attribute to be included in the list response. ex:`isFederationHub`
  *
- * @returns {RequestResultInterface<Data, Error>}
+ * @returns \{RequestResultInterface\<Data, Error\>\}
  */
 export const useIdentityProviderList = <Data = IdentityProviderListResponseInterface, Error = RequestErrorInterface>(
     limit?: number,
@@ -178,7 +178,7 @@ export const useIdentityProviderList = <Data = IdentityProviderListResponseInter
 /**
  * Gets detail about the Identity Provider.
  *
- * @param id Identity Provider Id.
+ * @param id - Identity Provider Id.
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export const getIdentityProviderDetail = (id: string): Promise<any> => {
@@ -250,8 +250,8 @@ export const getAllIdentityProvidersDetail = (
 /**
  * Deletes an IdP when the relevant id is passed in.
  *
- * @param id ID of the IdP.
- * @return {Promise<any>} A promise containing the response.
+ * @param id - ID of the IdP.
+ * @returns \{Promise<any>\} A promise containing the response.
  */
 export const deleteIdentityProvider = (id: string): Promise<any> => {
     const requestConfig = {
@@ -279,8 +279,8 @@ export const deleteIdentityProvider = (id: string): Promise<any> => {
 /**
  * Update identity provider details.
  *
- * @param idp Identity Provider.
- * @return {Promise<any>} A promise containing the response.
+ * @param idp - Identity Provider.
+ * @returns \{Promise<any>\} A promise containing the response.
  */
 export const updateIdentityProviderDetails = (idp: IdentityProviderInterface): Promise<any> => {
 
@@ -324,9 +324,9 @@ export const updateIdentityProviderDetails = (idp: IdentityProviderInterface): P
 /**
  * Update a federated authenticator of a specified IDP.
  *
- * @param idpId ID of the Identity Provider.
- * @param authenticator Federated Authenticator.
- * @return {Promise<any>} A promise containing the response.
+ * @param idpId - ID of the Identity Provider.
+ * @param authenticator - Federated Authenticator.
+ * @returns \{Promise<any>\} A promise containing the response.
  */
 export const updateFederatedAuthenticator = (
     idpId: string,
@@ -362,9 +362,9 @@ export const updateFederatedAuthenticator = (
 /**
  * Get federated authenticator metadata.
  *
- * @param idpId ID of the Identity Provider.
- * @param authenticatorId ID of the Federated Authenticator.
- * @return {Promise<any>} A promise containing the response.
+ * @param idpId - ID of the Identity Provider.
+ * @param authenticatorId - ID of the Federated Authenticator.
+ * @returns \{Promise<any>\} A promise containing the response.
  */
 export const getFederatedAuthenticatorDetails = (idpId: string, authenticatorId: string): Promise<any> => {
 
@@ -396,8 +396,8 @@ export const getFederatedAuthenticatorDetails = (idpId: string, authenticatorId:
 /**
  * Get federated authenticator details.
  *
- * @param id ID of the Federated Authenticator.
- * @return {Promise<any>} A promise containing the response.
+ * @param id - ID of the Federated Authenticator.
+ * @returns \{Promise<any>\} A promise containing the response.
  */
 export const getFederatedAuthenticatorMeta = (id: string): Promise<any> => {
 
@@ -426,7 +426,7 @@ export const getFederatedAuthenticatorMeta = (id: string): Promise<any> => {
 /**
  * Get federated authenticator details.
  *
- * @return {Promise<any>} A promise containing the response.
+ * @returns \{Promise<any>\} A promise containing the response.
  */
 export const getFederatedAuthenticatorsList = (): Promise<any> => {
 
@@ -455,9 +455,9 @@ export const getFederatedAuthenticatorsList = (): Promise<any> => {
 /**
  * Get federated authenticator metadata.
  *
- * @param idpId ID of the Identity Provider.
- * @param authenticatorId ID of the Federated Authenticator.
- * @return {Promise<any>} A promise containing the response.
+ * @param idpId - ID of the Identity Provider.
+ * @param authenticatorId - ID of the Federated Authenticator.
+ * @returns \{Promise<any>\} A promise containing the response.
  */
 export const getFederatedAuthenticatorMetadata = (authenticatorId: string): Promise<any> => {
 
@@ -488,8 +488,8 @@ export const getFederatedAuthenticatorMetadata = (authenticatorId: string): Prom
 /**
  * Get outbound provisioning connector metadata.
  *
- * @param connectorId ID of the outbound provisioning connector.
- * @return {Promise<any>} A promise containing the response.
+ * @param connectorId - ID of the outbound provisioning connector.
+ * @returns \{Promise<any>\} A promise containing the response.
  */
 export const getOutboundProvisioningConnectorMetadata = (connectorId: string): Promise<any> => {
 
@@ -520,9 +520,9 @@ export const getOutboundProvisioningConnectorMetadata = (connectorId: string): P
 /**
  * Get outbound provisioning connector.
  *
- * @param idpId Identity provider ID.
- * @param connectorId ID of the outbound provisioning connector.
- * @return {Promise<any>} A promise containing the response.
+ * @param idpId - Identity provider ID.
+ * @param connectorId - ID of the outbound provisioning connector.
+ * @returns \{Promise<any>\} A promise containing the response.
  */
 export const getOutboundProvisioningConnector = (idpId: string, connectorId: string): Promise<any> => {
 
@@ -553,9 +553,9 @@ export const getOutboundProvisioningConnector = (idpId: string, connectorId: str
 /**
  * Update a outbound provisioning connector of a specified IDP.
  *
- * @param idpId ID of the Identity Provider.
- * @param connector Outbound provisioning connector.
- * @return {Promise<any>} A promise containing the response.
+ * @param idpId - ID of the Identity Provider.
+ * @param connector - Outbound provisioning connector.
+ * @returns \{Promise<any>\} A promise containing the response.
  */
 export const updateOutboundProvisioningConnector = (
     idpId: string,
@@ -591,9 +591,9 @@ export const updateOutboundProvisioningConnector = (
 /**
  * Update JIT provisioning configs of a specified IDP.
  *
- * @param idpId ID of the Identity Provider.
- * @param configs JIT provisioning configs.
- * @return {Promise<IdentityProviderInterface>} A promise containing the response.
+ * @param idpId - ID of the Identity Provider.
+ * @param configs - JIT provisioning configs.
+ * @returns \{Promise<IdentityProviderInterface>\} A promise containing the response.
  */
 export const updateJITProvisioningConfigs = (
     idpId: string,
@@ -668,9 +668,9 @@ export const getJITProvisioningConfigs = (
 /**
  * Update claims of a specified IDP.
  *
- * @param idpId ID of the Identity Provider.
- * @param configs Claims configs.
- * @return {Promise<IdentityProviderInterface>} A promise containing the response.
+ * @param idpId - ID of the Identity Provider.
+ * @param configs - Claims configs.
+ * @returns \{Promise<IdentityProviderInterface>\} A promise containing the response.
  */
 export const updateClaimsConfigs = (
     idpId: string,
@@ -709,11 +709,11 @@ export const updateClaimsConfigs = (
 /**
  * Gets the identity provider template list with limit and offset.
  *
- * @param {number} limit - Maximum Limit of the identity provider template List.
- * @param {number} offset - Offset for get to start.
- * @param {string} filter - Search filter.
+ * @param limit - \{number\} Maximum Limit of the identity provider template List.
+ * @param offset - \{number\} Offset for get to start.
+ * @param filter - \{string\} Search filter.
  *
- * @return {Promise<IdentityProviderTemplateListResponseInterface>} A promise containing the response.
+ * @returns \{Promise<IdentityProviderTemplateListResponseInterface>\} A promise containing the response.
  */
 export const getIdentityProviderTemplateList = (limit?: number, offset?: number,
     filter?: string): Promise<IdentityProviderTemplateListResponseInterface> => {
@@ -760,8 +760,8 @@ export const getIdentityProviderTemplateList = (limit?: number, offset?: number,
 /**
  * Gets the identity provider template.
  *
- * @param templateId Id value of the template.
- * @return {Promise<IdentityProviderTemplateInterface>} A promise containing the response.
+ * @param templateId - Id value of the template.
+ * @returns \{Promise<IdentityProviderTemplateInterface>\} A promise containing the response.
  */
 export const getIdentityProviderTemplate = (templateId: string): Promise<IdentityProviderTemplateInterface> => {
     const requestConfig = {
@@ -802,9 +802,9 @@ export const getIdentityProviderTemplate = (templateId: string): Promise<Identit
 /**
  * Update role mappings of a specified IDP.
  *
- * @param idpId ID of the Identity Provider.
- * @param mappings IDP role mappings.
- * @return {Promise<any>} A promise containing the response.
+ * @param idpId - ID of the Identity Provider.
+ * @param mappings - IDP role mappings.
+ * @returns \{Promise<any>\} A promise containing the response.
  */
 export const updateIDPRoleMappings = (
     idpId: string,
@@ -837,8 +837,8 @@ export const updateIDPRoleMappings = (
 /**
  * Get the list of local authenticators.
  *
- * @return {Promise<LocalAuthenticatorInterface[]>} Response as a promise.
- * @throws {IdentityAppsApiException}
+ * @returns \{Promise\<LocalAuthenticatorInterface[]\>\} Response as a promise.
+ * @throws \{IdentityAppsApiException\}
  */
 export const getLocalAuthenticators = (): Promise<LocalAuthenticatorInterface[]> => {
 
@@ -879,9 +879,9 @@ export const getLocalAuthenticators = (): Promise<LocalAuthenticatorInterface[]>
 /**
  * Get Local Authenticator details from `t/<TENANT>>/api/server/v1/configs/authenticators/<AUTHENTICATOR_ID>`
  *
- * @param {string} id - Authenticator ID.
- * @return {Promise<AuthenticatorInterface>} Response as a promise.
- * @throws {IdentityAppsApiException}
+ * @param id - \{string\} Authenticator ID.
+ * @returns \{Promise<AuthenticatorInterface>\} Response as a promise.
+ * @throws \{IdentityAppsApiException\}
  */
 export const getLocalAuthenticator = (id: string): Promise<AuthenticatorInterface> => {
 
@@ -921,11 +921,11 @@ export const getLocalAuthenticator = (id: string): Promise<AuthenticatorInterfac
 /**
  * Get all authenticators in the server. i.e LOCAL & FEDERATED both.
  *
- * @param {string} filter - Search filter.
+ * @param filter - \{string\}  Search filter.
  *
- * @param {AuthenticatorTypes} type - Authenticator Type.
+ * @param type - \{AuthenticatorTypes\} Authenticator Type.
  *
- * @return {Promise<AuthenticatorInterface[]>} Response as a promise.
+ * @returns \{Promise\<AuthenticatorInterface[]\>\} Response as a promise.
  */
 export const getAuthenticators = (filter?: string, type?: AuthenticatorTypes): Promise<AuthenticatorInterface[]> => {
 
@@ -982,8 +982,8 @@ export const getAuthenticators = (filter?: string, type?: AuthenticatorTypes): P
 /**
  * Get all authenticator tags
  *
- * @return {Promise<string[]>} Response as a promise.
- * @throws {IdentityAppsApiException}
+ * @returns \{Promise\<string[]\>\} Response as a promise.
+ * @throws \{IdentityAppsApiException\}
  */
 export const getAuthenticatorTags = (): Promise<string[]> => {
 
@@ -1024,9 +1024,9 @@ export const getAuthenticatorTags = (): Promise<string[]> => {
 /**
  * Get the details of a Multi-factor authenticator using the MFA connectors in Governance APIs.
  *
- * @param {string} id - Authenticator ID.
- * @return {Promise<MultiFactorAuthenticatorInterface>} Response as a promise.
- * @throws {IdentityAppsApiException}
+ * @param id - \{string\} Authenticator ID.
+ * @returns \{Promise<MultiFactorAuthenticatorInterface>\} Response as a promise.
+ * @throws \{IdentityAppsApiException\}
  */
 export const getMultiFactorAuthenticatorDetails = (id: string): Promise<MultiFactorAuthenticatorInterface> => {
 
@@ -1067,10 +1067,10 @@ export const getMultiFactorAuthenticatorDetails = (id: string): Promise<MultiFac
 /**
  * Update a Multi-factor authenticator.
  *
- * @param {string} id - Authenticator ID.
- * @param {MultiFactorAuthenticatorInterface} payload - Request payload.
+ * @param id - \{string\} Authenticator ID.
+ * @param payload - \{MultiFactorAuthenticatorInterface\} Request payload.
  *
- * @return {Promise<MultiFactorAuthenticatorInterface>} Response as a promise.
+ * @returns \{Promise<MultiFactorAuthenticatorInterface>\} Response as a promise.
  */
 export const updateMultiFactorAuthenticatorDetails = (
     id: string,
@@ -1118,7 +1118,7 @@ export const updateMultiFactorAuthenticatorDetails = (
 /**
  * Fetch the list of outbound provisioning connectors.
  *
- * @return {Promise<any>} A promise containing the response.
+ * @returns \{Promise<any>\} A promise containing the response.
  */
 export const getOutboundProvisioningConnectorsList = (): Promise<OutboundProvisioningConnectorListItemInterface[]> => {
     const requestConfig = {
@@ -1146,9 +1146,9 @@ export const getOutboundProvisioningConnectorsList = (): Promise<OutboundProvisi
 /**
  * Update certificates of the IDP.
  *
- * @param idpId ID of the Identity Provider.
- * @param data
- * @return {Promise<IdentityProviderInterface>} A promise containing the response.
+ * @param idpId - ID of the Identity Provider.
+ * @param data - 
+ * @returns \{Promise<IdentityProviderInterface>\} A promise containing the response.
  */
 export const updateIDPCertificate = (
     idpId: string,
@@ -1187,9 +1187,9 @@ export const updateIDPCertificate = (
 /**
  * Update the outbound provisioning connectors list of a specified IDP.
  *
- * @param connectorList
- * @param idpId ID of the Identity Provider.
- * @return {Promise<OutboundProvisioningConnectorListItemInterface>} A promise containing the response.
+ * @param connectorList -
+ * @param idpId - ID of the Identity Provider.
+ * @returns \{Promise<OutboundProvisioningConnectorListItemInterface>\} A promise containing the response.
  */
 export const updateOutboundProvisioningConnectors = (
     connectorList: any,
@@ -1222,9 +1222,9 @@ export const updateOutboundProvisioningConnectors = (
 /**
  * Update a federated authenticators list of a specified IDP.
  *
- * @param authenticatorList
- * @param idpId ID of the Identity Provider.
- * @return {Promise<FederatedAuthenticatorListResponseInterface>} A promise containing the response.
+ * @param authenticatorList - 
+ * @param idpId - ID of the Identity Provider.
+ * @returns \{Promise<FederatedAuthenticatorListResponseInterface>\} A promise containing the response.
  */
 export const updateFederatedAuthenticators = (
     authenticatorList: FederatedAuthenticatorListResponseInterface,
@@ -1257,8 +1257,8 @@ export const updateFederatedAuthenticators = (
 /**
  * Get connected apps of the IDP.
  *
- * @param idpId ID of the Identity Provider.
- * @return {Promise<any>} A promise containing the response.
+ * @param idpId - ID of the Identity Provider.
+ * @returns \{Promise<any>\} A promise containing the response.
  */
 export const getIDPConnectedApps = (idpId: string): Promise<any> => {
 

@@ -17,7 +17,6 @@
  */
 
 /**
- * @fileoverview AppUtils object Mock.
  *
  * @remarks Document and place all the AppUtils mocks in this file.
  */
@@ -30,7 +29,7 @@ interface CustomWindow extends Window {
 
 /**
  * `AppUtils` Mock.
- * @remarks The `deployment.config.json file is resolved and stored in the window object under `AppUtils`.
+ * @remarks The deployment.config.json file is resolved and stored in the window object under AppUtils.
  * This has a method called `getConfig` that needs mocking.
  * IMPORTANT: Constantly keep this updated by executing `window.AppUtils.getConfig()` on the browser.
  */

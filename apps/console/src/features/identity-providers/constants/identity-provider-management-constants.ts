@@ -42,24 +42,17 @@ export class IdentityProviderManagementConstants {
 
     /**
      * Identifier for the local IDP.
-     * @constant
-     * @type {string}
-     * @default
      */
     public static readonly LOCAL_IDP_IDENTIFIER: string = "LOCAL";
 
     /**
      * Doc key for the IDP overview page.
-     * @constant
-     * @type {string}
      */
     public static readonly IDP_OVERVIEW_DOCS_KEY = `${
         DocumentationConstants.PORTAL_DOCS_KEY }["Identity Providers"]["Overview"]`;
 
     /**
      * Doc key for the IDP edit page.
-     * @constant
-     * @type {string}
      */
     public static readonly IDP_EDIT_OVERVIEW_DOCS_KEY = `${
         DocumentationConstants.PORTAL_DOCS_KEY }["Identity Providers"]["Edit Identity Provider"]["Overview"]`;
@@ -67,35 +60,27 @@ export class IdentityProviderManagementConstants {
     /**
      * Set of internal idps which are forbidden from deleting.
      * // TODO: Remove this once validating is available from the backend level.
-     * @type {string[]}
      */
     public static readonly DELETING_FORBIDDEN_IDPS: string[] = [];
 
     /**
      * Key for the URL search param for IDP state.
-     * @constant
-     * @type {string}
      */
     public static readonly IDP_STATE_URL_SEARCH_PARAM_KEY = "state";
 
     /**
      * URL Search param for newly created IDPs.
-     * @constant
-     * @type {string}
      */
     public static readonly NEW_IDP_URL_SEARCH_PARAM = `?${
         IdentityProviderManagementConstants.IDP_STATE_URL_SEARCH_PARAM_KEY }=new`;
 
     /**
      * Key for the URL search param for IDP create wizard trigger.
-     * @constant
-     * @type {string}
      */
     public static readonly IDP_CREATE_WIZARD_TRIGGER_URL_SEARCH_PARAM_KEY = "open";
 
     /**
      * Set of IDP template Ids.
-     * @type {object}
      */
     public static readonly IDP_TEMPLATE_IDS: {
         ENTERPRISE: string;
@@ -121,7 +106,6 @@ export class IdentityProviderManagementConstants {
 
     /**
      * Authenticator Settings Form element constraints.
-     * @type {Record<string, string | number>}
      */
     public static readonly AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS: Record<string, string | number> = {
         CALLBACK_URL_MIN_LENGTH: 3,
@@ -137,7 +121,6 @@ export class IdentityProviderManagementConstants {
 
     /**
      * General Form element constraints.
-     * @type {Record<string, string | number>}
      */
     public static readonly GENERAL_FORM_CONSTRAINTS: Record<string, string | number> = {
         IMAGE_URL_MAX_LENGTH: 2048,
@@ -145,8 +128,7 @@ export class IdentityProviderManagementConstants {
     };
 
     /**
-     * Email OTP Authenticator Settings Form element constraints.
-     * @type {Record<string, string | number>}
+     * Email OTP Authenticator Settings Form element constraints
      */
     public static readonly EMAIL_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS: {
         EXPIRY_TIME_MAX_LENGTH: number;
@@ -171,16 +153,14 @@ export class IdentityProviderManagementConstants {
 
     /**
      * Google Authenticator Settings Form element constraints.
-     * @type {Record<string, number>}
      */
     public static readonly GOOGLE_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS: Record<string, number> = {
-        ADDITIONAL_QUERY_PARAMS_MIN_LENGTH: 0,
-        ADDITIONAL_QUERY_PARAMS_MAX_LENGTH: 1000
+        ADDITIONAL_QUERY_PARAMS_MAX_LENGTH: 1000,
+        ADDITIONAL_QUERY_PARAMS_MIN_LENGTH: 0  
     };
 
     /**
      * Google Scope mappings.
-     * @type {Record<string, string>}
      */
     public static readonly GOOGLE_SCOPE_DICTIONARY: Record<string, string> = {
         EMAIL: "email",
@@ -190,7 +170,6 @@ export class IdentityProviderManagementConstants {
 
     /**
      * Microsoft Scope mappings.
-     * @type {Record<string, string>}
      */
     public static readonly MICROSOFT_SCOPE_DICTIONARY: Record<string, string> = {
         EMAIL: "email",
@@ -200,7 +179,6 @@ export class IdentityProviderManagementConstants {
 
     /**
      * Scopes to request from GitHub.
-     * @type {string[]}
      */
     public static readonly MICROSOFT_AUTHENTICATOR_REQUESTED_SCOPES: string[] = [
         IdentityProviderManagementConstants.MICROSOFT_SCOPE_DICTIONARY.OPENID,
@@ -210,7 +188,6 @@ export class IdentityProviderManagementConstants {
 
     /**
      * GitHub Scope mappings.
-     * @type {Record<string, string>}
      */
     public static readonly GITHUB_SCOPE_DICTIONARY: Record<string, string> = {
         USER_EMAIL: "user:email",
@@ -219,7 +196,6 @@ export class IdentityProviderManagementConstants {
 
     /**
      * Scopes to request from GitHub.
-     * @type {string[]}
      */
     public static readonly GITHUB_AUTHENTICATOR_REQUESTED_SCOPES: string[] = [
         IdentityProviderManagementConstants.GITHUB_SCOPE_DICTIONARY.USER_EMAIL,
@@ -228,7 +204,6 @@ export class IdentityProviderManagementConstants {
 
     /**
      * Facebook Scope mappings.
-     * @type {Record<string, string>}
      */
     public static readonly FACEBOOK_SCOPE_DICTIONARY: Record<string, string> = {
         EMAIL: "email",
@@ -237,8 +212,7 @@ export class IdentityProviderManagementConstants {
 
     /**
      * Facebook Scope mappings.
-     * @type {Record<string, string>}
-     */
+    **/
     public static readonly FACEBOOK_PUBLIC_PROFILE_FIELD_DICTIONARY: Record<string, string> = {
         AGE_RANGE: "age_range",
         EMAIL: "email",
@@ -252,8 +226,7 @@ export class IdentityProviderManagementConstants {
 
     /**
      * Scopes to request from Facebook.
-     * @type {string[]}
-     */
+     **/
     public static readonly FACEBOOK_AUTHENTICATOR_REQUESTED_SCOPES: string[] = [
         IdentityProviderManagementConstants.FACEBOOK_SCOPE_DICTIONARY.EMAIL,
         IdentityProviderManagementConstants.FACEBOOK_SCOPE_DICTIONARY.PUBLIC_PROFILE
@@ -261,8 +234,7 @@ export class IdentityProviderManagementConstants {
 
     /**
      * Profile fields to request from Facebook.
-     * @type {string[]}
-     */
+    **/
     public static readonly FACEBOOK_AUTHENTICATOR_REQUESTED_PROFILE_FIELDS: string[] = [
         "id",
         "name",
@@ -276,17 +248,13 @@ export class IdentityProviderManagementConstants {
 
     /**
      * Default IDP template loading strategy.
-     * @constant
-     * @type {IdentityProviderTemplateLoadingStrategies}
-     */
+    **/
     public static readonly DEFAULT_IDP_TEMPLATE_LOADING_STRATEGY: IdentityProviderTemplateLoadingStrategies =
         IdentityProviderTemplateLoadingStrategies.LOCAL;
 
     /**
      * Doc key for the IDP create page.
-     * @constant
-     * @type {string}
-     */
+    **/
     public static readonly IDP_TEMPLATES_CREATE_DOCS_KEY = `${
         DocumentationConstants.PORTAL_DOCS_KEY }["Identity Providers"]["Create New Identity Provider"]`;
 
@@ -435,10 +403,7 @@ export class IdentityProviderManagementConstants {
 
     /**
      * Identity provider create limit reached error.
-     * @constant
-     * @type IdentityAppsError
-     * @default
-     */
+    **/
     public static readonly ERROR_CREATE_LIMIT_REACHED = new IdentityAppsError(
         "IDP-60035",
         "console:develop.features.idp.notifications.apiLimitReachedError.error.description",
@@ -448,10 +413,7 @@ export class IdentityProviderManagementConstants {
 
     /**
      * AuthenticationProvider Connections create limit reached error.
-     * @constant
-     * @type IdentityAppsError
-     * @default
-     */
+    **/
      public static readonly ERROR_CREATE_LIMIT_REACHED_IDP = new IdentityAppsError(
          "IDP-60035",
          "console:develop.features.authenticationProvider.notifications.apiLimitReachedError.error.description",

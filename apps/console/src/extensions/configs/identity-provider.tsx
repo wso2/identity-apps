@@ -73,26 +73,34 @@ export const identityProviderConfig: IdentityProviderConfig = {
         showJitProvisioning: true,
         showOutboundProvisioning: true
     },
-    getIconExtensions: (): Record<string, string | FunctionComponent<SVGProps<SVGSVGElement>>> => {
-        return {};
-    },
-    jitProvisioningSettings: {
-        menuItemName: "Just-in-Time Provisioning",
-        enableJitProvisioningField: {
-            show: true
-        },
-        userstoreDomainField: {
-            show: true,
-        },
-        provisioningSchemeField: {
-            show: true
-        }
+    fidoTags: [
+        AuthenticatorLabels.SECOND_FACTOR,
+        AuthenticatorLabels.PASSWORDLESS,
+        AuthenticatorLabels.MULTI_FACTOR
+    ],
+    filterFidoTags:(tags: string[]): string[] => {
+        return tags;
     },
     generalDetailsForm: {
         showCertificate: true
     },
+    getIconExtensions: (): Record<string, string | FunctionComponent<SVGProps<SVGSVGElement>>> => {
+        return {};
+    },
     identityProviderList: {
         useLegacyListing: true
+    },
+    jitProvisioningSettings: {
+        enableJitProvisioningField: {
+            show: true
+        },
+        menuItemName: "Just-in-Time Provisioning",
+        provisioningSchemeField: {
+            show: true
+        },
+        userstoreDomainField: {
+            show: true
+        }
     },
     templates: {
         enterprise: true,
@@ -104,14 +112,6 @@ export const identityProviderConfig: IdentityProviderConfig = {
         oidc: true,
         organizationEnterprise: true,
         saml: true
-    },
-    fidoTags: [
-        AuthenticatorLabels.SECOND_FACTOR,
-        AuthenticatorLabels.PASSWORDLESS,
-        AuthenticatorLabels.MULTI_FACTOR
-    ],
-    filterFidoTags:(tags: string[]): string[] => {
-        return tags;
     },
     // Handles backward compatibility with the legacy IDP view & new connections view.
     // TODO: Remove this usage once https://github.com/wso2/product-is/issues/12052 is addressed.
@@ -127,17 +127,17 @@ export const identityProviderConfig: IdentityProviderConfig = {
          *      return identityClaimsHiddenAuthenticators.has(authenticatorId);
          *
          * @see IdentityProviderConfig
-         * - @param <ignored> authenticatorId {string}
+         * - @param authenticatorId - \{string\}
          */
         hideIdentityClaimAttributes(): boolean {
             return false;
         },
         /**
-         * This method will either show or hide logo edit field. Provide {@code true}
+         * This method will either show or hide logo edit field. Provide \{true\}
          * to render the form input field for it.
          *
          * @see IdentityProviderConfig
-         * - @param {string} <ignored> authenticatorId {string}
+         * - @param authenticatorId - \{string\}
          */
         hideLogoInputFieldInIdPGeneralSettingsForm(): boolean {
             return false;
@@ -151,7 +151,7 @@ export const identityProviderConfig: IdentityProviderConfig = {
             ].includes(name);
         },
         /**
-         * If the {-@param authenticatorId} is not in the excluded set we
+         * If the \{-\@param authenticatorId\} is not in the excluded set we
          * can say the provisioning attributes is enabled for authenticator.
          *
          * As an example:-
@@ -160,14 +160,14 @@ export const identityProviderConfig: IdentityProviderConfig = {
          *      ]);
          *      return !excludedAuthenticators.has(authenticatorId);
          *
-         * - @param <ignored> authenticatorId {string}
+         * - @param authenticatorId -\{string\}
          */
         isProvisioningAttributesEnabled(): boolean {
             return true;
         },
         /**
          * Enable or disable role mappings form elements from the UI.
-         * - @param <ignored> authenticatorId {string}
+         * - @param authenticatorId - \{string\}
          */
         isRoleMappingsEnabled(): boolean {
             return true;

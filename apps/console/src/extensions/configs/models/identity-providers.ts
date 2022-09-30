@@ -38,10 +38,10 @@ export interface IdentityProviderConfig {
     createIdentityProvider: {
         /**
          * Used to the IDP create wizard of a certain IDP template type.
-         * @param {string} templateId - The IDP Template Type.
-         * @param {
+         * @param templateId - \{string\} The IDP Template Type.
+         * @param props - \{
          *  GenericIdentityProviderCreateWizardPropsInterface & IdentifiableComponentInterface
-        *  } templateId - Props for the component.
+         *  \} Props for the component.
          */
         getOverriddenCreateWizard: (
             templateId: string,
@@ -60,15 +60,15 @@ export interface IdentityProviderConfig {
         attributesSettings: boolean;
         /**
          * Used enable/disable certain tabs for certain IDP template type.
-         * @param {string} templateId - The IDP Template Type.
-         * @param {IdentityProviderTabTypes} tabType - Tab Type.
+         * @param templateId - \{string\}  The IDP Template Type.
+         * @param tabType - \{IdentityProviderTabTypes\} Tab Type.
          */
         isTabEnabledForIdP: (templateId: string, tabType: IdentityProviderTabTypes) => boolean | undefined;
         /**
          * Used to the IDP settings form of a certain IDP template type.
-         * @param {string} type - The IDP Authenticator ID.
-         * @param {string} templateId - The IDP Template Type.
-         * @param {Record<string, any>} templateId - Props for the component.
+         * @param type - \{string\} The IDP Authenticator ID.
+         * @param templateId - \{string\} The IDP Template Type.
+         * @param templateId - \{Record\<string, any\>\} Props for the component.
          */
         getOverriddenAuthenticatorForm: (
             type: string,
@@ -108,15 +108,15 @@ export interface IdentityProviderConfig {
         hideIdentityClaimAttributes?: (authenticatorId: string) => boolean;
         hideLogoInputFieldInIdPGeneralSettingsForm?: (authenticatorId: string) => boolean;
         /**
-         * If returned {@code false} the provisioning claims section is hidden
+         * If returned \{false\} the provisioning claims section is hidden
          * entirely. Update operations will fallback to defaults.
-         * @param authenticatorId
+         * @param authenticatorId -
          */
         isProvisioningAttributesEnabled: (authenticatorId: string) => boolean;
         /**
-         * If returned {@code false} it will hide both uri mapping for role and
+         * If returned \{false\} it will hide both uri mapping for role and
          * external mappings component entirely.
-         * @param authenticatorId
+         * @param authenticatorId -
          */
         isRoleMappingsEnabled?: (authenticatorId: string) => boolean;
     };

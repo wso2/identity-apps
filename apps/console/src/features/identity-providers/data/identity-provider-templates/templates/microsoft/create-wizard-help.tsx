@@ -33,8 +33,8 @@ type MicrosoftIDPCreateWizardHelpPropsInterface = TestableComponentInterface
 /**
  * Help content for the custom IDP template creation wizard.
  *
- * @param {MicrosoftIDPCreateWizardHelpPropsInterface} props - Props injected into the component.
- * @return {React.ReactElement}
+ * @param props - Props injected into the component.
+ * @returns \{React.ReactElement\}
  */
 const MicrosoftIDPCreateWizardHelp: FunctionComponent<MicrosoftIDPCreateWizardHelpPropsInterface> = (
     props: MicrosoftIDPCreateWizardHelpPropsInterface
@@ -80,10 +80,10 @@ const MicrosoftIDPCreateWizardHelp: FunctionComponent<MicrosoftIDPCreateWizardHe
                                 }
                             >
                                 Before you begin, create an <strong>OAuth credential</strong> on the <a
-                                href="https://console.developers.microsoft.com"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            > Microsoft developer console</a>, and obtain a <strong>Client ID & secret</strong>.
+                                    href="https://console.developers.microsoft.com"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                > Microsoft developer console</a>, and obtain a <strong>Client ID & secret</strong>.
                             </Trans>
                         </p>
                         <p>
@@ -107,8 +107,8 @@ const MicrosoftIDPCreateWizardHelp: FunctionComponent<MicrosoftIDPCreateWizardHe
                                 target="_blank"
                                 rel="noopener noreferrer">
                                 {
-                                    t("console:develop.features.authenticationProvider.templates.microsoft.wizardHelp." +
-                                        "preRequisites.configureOAuthApps")
+                                    t("console:develop.features.authenticationProvider.templates.microsoft.wizardHelp" +
+                                        ".preRequisites.configureOAuthApps")
                                 }
                             </a>
                         </p>

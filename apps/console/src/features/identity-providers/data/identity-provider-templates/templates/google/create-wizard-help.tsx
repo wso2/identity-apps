@@ -33,8 +33,8 @@ type GoogleIDPCreateWizardHelpPropsInterface = TestableComponentInterface
 /**
  * Help content for the custom IDP template creation wizard.
  *
- * @param {GoogleIDPCreateWizardHelpPropsInterface} props - Props injected into the component.
- * @return {React.ReactElement}
+ * @param props - \{GoogleIDPCreateWizardHelpPropsInterface\} Props injected into the component.
+ * @returns \{React.ReactElement\}
  */
 const GoogleIDPCreateWizardHelp: FunctionComponent<GoogleIDPCreateWizardHelpPropsInterface> = (
     props: GoogleIDPCreateWizardHelpPropsInterface
@@ -71,7 +71,7 @@ const GoogleIDPCreateWizardHelp: FunctionComponent<GoogleIDPCreateWizardHelpProp
                         "preRequisites.heading")
                 }
                 content={
-                    <>
+                    (<>
                         <p>
                             <Trans
                                 i18nKey={
@@ -80,10 +80,10 @@ const GoogleIDPCreateWizardHelp: FunctionComponent<GoogleIDPCreateWizardHelpProp
                                 }
                             >
                                 Before you begin, create an <strong>OAuth credential</strong> on the <a
-                                href="https://console.developers.google.com"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            > Google developer console</a>, and obtain a <strong>Client ID & secret</strong>.
+                                    href="https://console.developers.google.com"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                > Google developer console</a>, and obtain a <strong>Client ID & secret</strong>.
                             </Trans>
                         </p>
                         <p>
@@ -112,7 +112,7 @@ const GoogleIDPCreateWizardHelp: FunctionComponent<GoogleIDPCreateWizardHelpProp
                                 }
                             </a>
                         </p>
-                    </>
+                    </>)
                 }
             />
 
