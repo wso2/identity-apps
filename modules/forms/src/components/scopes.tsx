@@ -196,7 +196,7 @@ export const Scopes: FunctionComponent<ScopesPropsInterface> = (
                         )
                     }
                     position="top center"
-                    content="Add key value pair"
+                    content="Add scope"
                     inverted
                 />
             </Form.Group>
