@@ -1150,10 +1150,9 @@ export const getOutboundProvisioningConnectorsList = (): Promise<OutboundProvisi
  * @param data - 
  * @returns \{Promise<IdentityProviderInterface>\} A promise containing the response.
  */
-export const updateIDPCertificate = (
+export const updateIDPCertificate = <T = Record<string, unknown>>(
     idpId: string,
-    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-    data: any
+    data: T
 ): Promise<IdentityProviderInterface> => {
 
     const requestConfig = {
@@ -1192,9 +1191,8 @@ export const updateIDPCertificate = (
  * @param idpId - ID of the Identity Provider.
  * @returns \{Promise<OutboundProvisioningConnectorListItemInterface>\} A promise containing the response.
  */
-export const updateOutboundProvisioningConnectors = (
-    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-    connectorList: any,
+export const updateOutboundProvisioningConnectors = <T = Record<string,unknown>>(
+    connectorList: T,
     idpId: string
 ): Promise<OutboundProvisioningConnectorListItemInterface> => {
 
