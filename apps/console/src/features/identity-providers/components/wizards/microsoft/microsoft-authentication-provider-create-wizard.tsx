@@ -296,8 +296,9 @@ export const MicrosoftAuthenticationProviderCreateWizard: FunctionComponent<
                     "value": config?.deployment?.customServerHost + "/commonauth"
                 },
                 {
-                    "key": "scope",
-                    "value": IdentityProviderManagementConstants.MICROSOFT_AUTHENTICATOR_REQUESTED_SCOPES.join(" ")
+                    "key": "AdditionalQueryParameters",
+                    "value": "scope="+
+                    IdentityProviderManagementConstants.MICROSOFT_AUTHENTICATOR_REQUESTED_SCOPES.join(" ")
                 },
                 {
                     "key": "UsePrimaryEmail",

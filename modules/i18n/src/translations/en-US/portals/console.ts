@@ -1173,6 +1173,10 @@ export const console: ConsoleNS = {
                                                     "Magic Link authenticator. Using it with any other authenticator " +
                                                     "can lead to unexpected behavior."
                                             },
+                                            microsoft: {
+                                                description: "Enable users to login with Microsoft.",
+                                                heading: "Add Microsoft login"
+                                            },
                                             totp: {
                                                 description: "Enable additional authentication layer with Time "
                                                     + "based OTP.",

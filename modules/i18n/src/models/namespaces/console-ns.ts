@@ -695,6 +695,10 @@ export interface ConsoleNS {
                                                 heading: string;
                                                 warning: string;
                                             },
+                                            microsoft: {
+                                                description: string;
+                                                heading: string;
+                                            },
                                             emailOTP: {
                                                 description: string,
                                                 heading: string,

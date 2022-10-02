@@ -4,8 +4,8 @@
             "id": 1,
             "options": [
                 {
-                    "authenticator": "MicrosoftAuthenticator",
-                    "idp": "<MICROSOFT_IDP>"
+                    "authenticator": "OpenIDConnectAuthenticator",
+                    "idp": "Microsoft"
                 }
             ]
         }
