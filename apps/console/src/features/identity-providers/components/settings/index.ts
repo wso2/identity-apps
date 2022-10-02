@@ -23,3 +23,4 @@ export * from "./outbound-provisioning-settings";
 export * from "./advance-settings";
 export * from "./attribute-settings";
 export * from "./attribute-management";
+export * from "./connected-apps";

@@ -29,6 +29,7 @@ import {
     AdvanceSettings,
     AttributeSettings,
     AuthenticatorSettings,
+    ConnectedApps,
     GeneralSettings,
     OutboundProvisioningSettings
 } from "./settings";
@@ -251,6 +252,18 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
         </ResourceTab.Pane>
     );
 
+    const ConnectedAppsTabPane = (): ReactElement => (
+        <ResourceTab.Pane controlledSegmentation>
+            <ConnectedApps
+                editingIDP={ identityProvider }
+                isReadOnly={ isReadOnly }
+                isLoading={ isLoading }
+                loader={ Loader }
+                data-testid={ `${ testId }-connected-apps-settings` }
+            />
+        </ResourceTab.Pane>
+    );
+
     useEffect(() => {
         if (tabPaneExtensions) {
             return;
@@ -344,6 +357,11 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
                 render: AdvancedSettingsTabPane
             });
         }
+
+        panes.push({
+            menuItem: "Connected Apps",
+            render: ConnectedAppsTabPane
+        });
 
         return panes;
     };
