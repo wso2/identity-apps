@@ -3119,6 +3119,18 @@ export const console: ConsoleNS = {
                         message: "මෙම අනන්‍යතා සැපයුම්කරු භාවිතා කරන යෙදුම් තිබේ."
                     }
                 },
+                connectedApps: {
+                    action: "පුරනය වීමේ ක්‍රමය වෙත යන්න",
+                    header: "{{idpName}} හා සබැඳුණු යෙදවුම්.",
+                    subHeader: "{{idpName}} හා සබැඳුණු යෙදවුම් මෙහි දක්වා ඇත.",
+                    placeholders: {
+                        search: "යෙදවුමේ නාමයෙන් සොයන්න",
+                        emptyList: "මේ අවස්ථාවේදී {{idpName}} සමඟ කිසිදු යෙදවුමක් සබැඳී නොමැත."
+                    },
+                    applicationEdit: {
+                        back: "නැවත {{idpName}} වෙත යන්න"
+                    }
+                },
                 dangerZoneGroup: {
                     deleteIDP: {
                         actionTitle: "මකන්න",
