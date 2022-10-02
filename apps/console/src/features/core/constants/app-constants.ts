@@ -247,6 +247,8 @@ export class AppConstants {
             .set("APPLICATIONS", `${ AppConstants.getDeveloperViewBasePath() }/applications`)
             .set("APPLICATION_TEMPLATES", `${ AppConstants.getDeveloperViewBasePath() }/applications/templates`)
             .set("APPLICATION_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/applications/:id`)
+            .set("APPLICATION_SIGN_IN_METHOD_EDIT", `${ AppConstants.getDeveloperViewBasePath() 
+            }/applications/:id:tabNo`)
             .set("APPROVALS", `${ AppConstants.getAdminViewBasePath() }/approvals`)
             .set("CERTIFICATES", `${ AppConstants.getAdminViewBasePath() }/certificates`)
             .set("CLAIM_DIALECTS", `${ AppConstants.getAdminViewBasePath() }/attributes-and-mappings`)
