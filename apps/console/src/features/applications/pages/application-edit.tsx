@@ -106,6 +106,9 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     const [ showAppShareModal, setShowAppShareModal ] = useState(false);
     const [ subOrganizationList, setSubOrganizationList ] = useState<Array<OrganizationInterface>>([]);
     const [ sharedOrganizationList, setSharedOrganizationList ] = useState<Array<OrganizationInterface>>([]);
+    const [ isConnectedAppsRedirect, setisConnectedAppsRedirect ] = useState(false);
+    const [ callBackIdpID, setcallBackIdpID ] = useState<string>();
+    const [ callBackIdpName, setcallBackIdpName ] = useState<string>();
 
     useEffect(() => {
         /**
@@ -196,6 +199,24 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         }
         getApplication(id);
     }, []);
+
+    /**
+    * Fetch the identity provider id & name when calling the app edit through connected apps
+    */
+     useEffect(() => {
+        if(typeof history.location.state === "object"){
+            setisConnectedAppsRedirect(true);
+            type idpInfoType = {
+                "id": string, 
+                "name": string
+            };
+            
+            const idpInfo: idpInfoType = history.location.state as idpInfoType;
+            
+            setcallBackIdpID(idpInfo.id);
+            setcallBackIdpName(idpInfo.name);
+        }
+    });
 
     /**
      * Load the template that the application is built on.
@@ -441,7 +462,11 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
      * Handles the back button click event.
      */
     const handleBackButtonClick = (): void => {
-        history.push(AppConstants.getPaths().get("APPLICATIONS"));
+        if(!isConnectedAppsRedirect){
+            history.push(AppConstants.getPaths().get("APPLICATIONS"));
+        }else{
+            history.push(AppConstants.getPaths().get("IDP_EDIT").replace(":id", callBackIdpID));
+        }
     };
 
     /**
@@ -580,7 +605,8 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             backButton={ {
                 "data-testid": `${testId}-page-back-button`,
                 onClick: handleBackButtonClick,
-                text: t("console:develop.pages.applicationsEdit.backButton")
+                text: isConnectedAppsRedirect ? t("console:develop.features.idp.connectedApps.applicationEdit.back", 
+                    { idpName: callBackIdpName }) : t("console:develop.pages.applicationsEdit.backButton")
             } }
             titleTextAlign="left"
             bottomMargin={ false }
