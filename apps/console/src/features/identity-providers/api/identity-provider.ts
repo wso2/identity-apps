@@ -62,7 +62,7 @@ const httpClientAll = AsgardeoSPAClient.getInstance().httpRequestAll.bind(Asgard
  *
  * @param identityProvider - Identity provider settings data.
  */
-export const createIdentityProvider = (identityProvider: object): Promise<any> => {
+export const createIdentityProvider = <T = Record<string, unknown>> (identityProvider: T): Promise<any> => {
     const requestConfig = {
         data: identityProvider,
         headers: {
