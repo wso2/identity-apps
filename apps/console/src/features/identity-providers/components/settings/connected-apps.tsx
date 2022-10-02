@@ -477,12 +477,9 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
                     subtitle={ [
-                        t("console:develop.features.applications.placeholders.emptyList.subtitles.0")
+                        t("console:develop.features.idp.connectedApps.placeholders.emptyList", 
+                            { idpName: editingIDP.name })
                     ] }
-                    // subtitle={ [
-                    //     t("console:develop.features.idp.connectedApps.placeholders.emptyList", 
-                    //         { idpName: editingIDP.name })
-                    // ] }
                     data-testid={ `${ testId }-empty-placeholder` }
                 />
             );
@@ -512,8 +509,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                 onClick: (e: SyntheticEvent, app: ApplicationListItemInterface): void =>
                     handleApplicationEdit(app.id, app.access, "#tab=4"),
                 popupText: (): string => {
-                    // return t("console:develop.features.idp.connectedApps.action");
-                    return "Go to Sign-in Method";
+                    return t("console:develop.features.idp.connectedApps.action");
                 },
                 renderer: "semantic-icon"
             }
@@ -555,13 +551,9 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
 
     return (
         <EmphasizedSegment padded="very">
-            {/* <Heading as="h4">{ t("console:develop.features.idp.connectedApps.header", { idpName: editingIDP.name }) }</Heading> */}
-            <Heading as="h4">{ "Connected Application of " + editingIDP.name }</Heading>
-            {/* <Heading subHeading ellipsis as="h6">
-                { t("console:develop.features.idp.connectedApps.subHeader", { idpName: editingIDP.name }) }
-            </Heading> */}
+            <Heading as="h4">{ t("console:develop.features.idp.connectedApps.header", { idpName: editingIDP.name }) }</Heading>
             <Heading subHeading ellipsis as="h6">
-                { "Applications connected to the Identity Provider are listed here." }
+                { t("console:develop.features.idp.connectedApps.subHeader", { idpName: editingIDP.name }) }
             </Heading>
             <Divider hidden />
             { connectedApps && (
@@ -569,8 +561,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                     icon={ <Icon name="search" /> }
                     iconPosition="left"
                     onChange={ handleChange }
-                    // placeholder = { t("console:develop.features.idp.connectedApps.placeholders.search") }
-                    placeholder = { "Search by Application Name" }
+                    placeholder = { t("console:develop.features.idp.connectedApps.placeholders.search") }
                     floated="left"
                     size="small"
                     style={ { width: "250px" } }
