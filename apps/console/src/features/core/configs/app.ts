@@ -54,7 +54,7 @@ export class Config {
     /**
      * This method adds organization path to the server host if an organization is selected.
      *
-     * @returns \{string\}
+     * @returns Server host.
      */
     public static resolveServerHost(): string {
         if (OrganizationUtils.isRootOrganization(store.getState().organization.organization)) {
