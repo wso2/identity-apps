@@ -20,22 +20,6 @@ import { CommonConfig } from "./models";
 import { ProfileSchema } from "../../models";
 
 export const commonConfig: CommonConfig = {
-    advancedSearchWithBasicFilters: {
-        enableQuerySearch: false
-    },
-    header: {
-        organization: "WSO2",
-        renderAppSwitcherAsDropdown: false
-    },
-    userProfilePage: {
-        showEmail: true
-    },
-    nonLocalCredentialUser: {
-        enableNonLocalCredentialUserView: false
-    },
-    overviewPage: {
-        enableAlternateWidgetLayout: false
-    },
     accountSecurityPage: {
         accountRecovery: {
             emailRecovery: {
@@ -52,26 +36,42 @@ export const commonConfig: CommonConfig = {
             }
         }
     },
+    advancedSearchWithBasicFilters: {
+        enableQuerySearch: false
+    },
+    header: {
+        organization: "WSO2",
+        renderAppSwitcherAsDropdown: false
+    },
+    nonLocalCredentialUser: {
+        enableNonLocalCredentialUserView: false
+    },
+    overviewPage: {
+        enableAlternateWidgetLayout: false
+    },
     personalInfoPage: {
         externalLogins: {
             disableExternalLoginsOnEmpty: false
         }
     },
+    userProfilePage: {
+        showEmail: true
+    },
     utils: {
-        isManageConsentAllowedForUser(): boolean {
-            return true;
-        },
-        isShowAdditionalWidgetAllowed(): boolean {
-            return false;
-        },
         isConsoleNavigationAllowed(): boolean {
             return true;
         },
         isFIDOEnabled(): boolean {
             return true;
         },
+        isManageConsentAllowedForUser(): boolean {
+            return true;
+        },
         isSchemaNameSkippableforProfileCompletion(schema: ProfileSchema): boolean {
             return schema.displayName === "Role" || schema.displayName === "Local Credential Exists" ;
+        },
+        isShowAdditionalWidgetAllowed(): boolean {
+            return false;
         }
     }
 };
