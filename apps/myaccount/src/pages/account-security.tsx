@@ -49,8 +49,8 @@ import { addAlert } from "../store/actions";
 import { CommonUtils } from "../utils";
 
 /**
-* Prop types for the Account Security page.
-*/
+ * Prop types for the Account Security page.
+ */
 interface AccountSecurityPagePropsInterface extends TestableComponentInterface, RouteProps {
     enableNonLocalCredentialUserView?: boolean;
 }
@@ -211,18 +211,19 @@ const AccountSecurityPage: FunctionComponent<AccountSecurityPagePropsInterface>=
                     ) : null }
 
                 { hasRequiredScopes(accessConfig?.security, accessConfig?.security?.scopes?.read, allowedScopes) &&
-                  ((isNonLocalCredentialUser && (!disableMFAForFederatedUsers || !isSuperTenantLogin())) ||
+                ((isNonLocalCredentialUser && (!disableMFAForFederatedUsers || !isSuperTenantLogin())) ||
                     !isNonLocalCredentialUser) &&
-                  isFeatureEnabled(
-                      accessConfig?.security,
-                      AppConstants.FEATURE_DICTIONARY.get("SECURITY_MFA")
-                  ) && !(disableMFAforSuperTenantUser && (isSuperTenantLogin())
+                isFeatureEnabled(
+                    accessConfig?.security,
+                    AppConstants.FEATURE_DICTIONARY.get("SECURITY_MFA")
+                ) && !(disableMFAforSuperTenantUser && (isSuperTenantLogin())
                 ) ? (
                         <Grid.Row>
                             <Grid.Column width={ 16 }>
                                 <MultiFactorAuthentication
                                     featureConfig={ accessConfig }
                                     onAlertFired={ handleAlerts }
+                                    userStore={ userstore }
                                 />
                             </Grid.Column>
                         </Grid.Row>
