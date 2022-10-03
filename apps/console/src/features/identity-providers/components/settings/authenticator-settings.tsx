@@ -101,8 +101,8 @@ const AUTHORIZED_REDIRECT_URL: string = "callbackUrl";
 /**
  *  Identity Provider and advance settings component.
  *
- * @param props - \{IdentityProviderSettingsPropsInterface\} Props injected to the component.
- * @returns \{ReactElement\}
+ * @param props - Props injected to the component.
+ * @returns ReactElement
  */
 export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPropsInterface> = (
     props: IdentityProviderSettingsPropsInterface
@@ -413,9 +413,9 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
     /**
      * Handles default authenticator change event.
      *
-     * @param e - \{React.FormEvent\<HTMLInputElement\>\} Event.
-     * @param data - \{CheckboxProps\} Checkbox data.
-     * @param id - \{string\} Id of the authenticator.
+     * @param e - Event.
+     * @param data - Checkbox data.
+     * @param id - Id of the authenticator.
      */
     const handleDefaultAuthenticatorChange = (e: FormEvent<HTMLInputElement>, data: CheckboxProps, id: string):
         void => {
@@ -428,9 +428,9 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
     /**
      * Handles authenticator enable toggle.
      *
-     * @param e - \{React.FormEvent<HTMLInputElement>\}  Event.
-     * @param data - \{CheckboxProps\} Checkbox data.
-     * @param id - \{string\} Id of the authenticator.
+     * @param e -  Event.
+     * @param data - Checkbox data.
+     * @param id - Id of the authenticator.
      */
     const handleAuthenticatorEnableToggle = (e: FormEvent<HTMLInputElement>, data: CheckboxProps, id: string): void => {
         const authenticator = availableAuthenticators.find(authenticator => (authenticator.id === id)).data;
@@ -454,7 +454,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
     /**
      * Handles Authenticator delete action.
      *
-     * @param id - \{string\} Id of the authenticator.
+     * @param id - Id of the authenticator.
      */
     const handleAuthenticatorDelete = (id: string): void => {
         const authenticatorsList = [];
@@ -516,8 +516,8 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
     /**
      * Handles Authenticator delete button on click action.
      *
-     * @param e - \{React.MouseEvent<HTMLDivElement>\} Click event.
-     * @param id - \{string\} Id of the authenticator.
+     * @param e - Click event.
+     * @param id - Id of the authenticator.
      */
     const handleAuthenticatorDeleteOnClick = (e: MouseEvent<HTMLDivElement>, id: string): void => {
         if (!id) {
@@ -626,7 +626,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
      * A predicate that checks whether a give federated authenticator
      * is a default authenticator.
      *
-     * @param auth - \{FederatedAuthenticatorWithMetaInterface\} Authenticator.
+     * @param auth -  Authenticator.
      * @returns true if @example auth.data.isDefault is truesy
      */
     const isDefaultAuthenticatorPredicate = (
@@ -692,8 +692,8 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
     /**
      * Handles accordion title click.
      *
-     * @param e - \{React.SyntheticEvent\} Click event.
-     * @param SegmentedAuthenticatedAccordion - \{AccordionTitleProps\} Clicked title.
+     * @param e - Click event.
+     * @param SegmentedAuthenticatedAccordion - Clicked title.
      */
     const handleAccordionOnClick = (e: MouseEvent<HTMLDivElement>,
         SegmentedAuthenticatedAccordion: AccordionTitleProps): void => {
@@ -716,7 +716,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
     /**
      * Shows the authenticator list.
      *
-     * @returns \{ReactElement\}
+     * @returns ReactElement
      */
     const showAuthenticatorList = (): ReactElement => {
 

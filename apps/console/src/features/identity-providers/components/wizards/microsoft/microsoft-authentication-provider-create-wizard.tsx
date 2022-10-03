@@ -106,9 +106,9 @@ export interface MicrosoftAuthenticationProviderCreateWizardFormErrorValidations
 /**
  * Microsoft Authentication Provider Create Wizard Component.
  *
- * @param props - \{MicrosoftAuthenticationProviderCreateWizardPropsInterface\} Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @returns \{React.ReactElement\}
+ * @returns React Element
  */
 export const MicrosoftAuthenticationProviderCreateWizard: FunctionComponent<
     MicrosoftAuthenticationProviderCreateWizardPropsInterface
@@ -274,7 +274,7 @@ export const MicrosoftAuthenticationProviderCreateWizard: FunctionComponent<
         /**
         * Callback triggered when the form is submitted.
         *
-        * @param values - \{MicrosoftAuthenticationProviderCreateWizardFormValuesInterface\} Form values.
+        * @param values - Form values.
         */
         const onSubmitWizard = (values: MicrosoftAuthenticationProviderCreateWizardFormValuesInterface): void => {
             const identityProvider: IdentityProviderInterface = { ...template.idp };
@@ -333,7 +333,7 @@ export const MicrosoftAuthenticationProviderCreateWizard: FunctionComponent<
         /**
         * Resolve the step wizard actions.
         *
-        * @returns \{React.ReactElement\}
+        * @returns React Element
         */
         const resolveStepActions = (): ReactElement => {
 
@@ -398,7 +398,7 @@ export const MicrosoftAuthenticationProviderCreateWizard: FunctionComponent<
         /**
         * Renders the help panel containing wizard help.
         *
-        * @returns \{React.ReactElement\}
+        * @returns React Element
         */
         const renderHelpPanel = (): ReactElement => {
 

@@ -95,8 +95,8 @@ interface EditIdentityProviderPropsInterface extends TestableComponentInterface 
 /**
  * Identity Provider edit component.
  *
- * @param props - \{EditIdentityProviderPropsInterface\} Props injected to the component.
- * @returns \{ReactElement\}
+ * @param props - Props injected to the component.
+ * @returns React Element
  */
 export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsInterface> = (
     props: EditIdentityProviderPropsInterface
@@ -351,9 +351,9 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
     /**
      * Evaluate internally whether to show/hide `Attributes` tab.
      *
-     * @param type - \{string\} IDP Type.
+     * @param type - IDP Type.
      *
-     * @returns \{boolean\}
+     * @returns Boolean value 
      */
     const shouldShowAttributeSettings = (type: string): boolean => {
 

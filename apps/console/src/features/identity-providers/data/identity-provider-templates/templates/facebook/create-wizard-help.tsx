@@ -36,7 +36,7 @@ type FacebookIdentityProviderCreateWizardHelpPropsInterface = TestableComponentI
  *
  * @param props - Props injected into the component.
  *
- *  @returns \{React.ReactElement\}
+ *  @returns React Element
  */
 const FacebookIdentityProviderCreateWizardHelp: FunctionComponent<
     FacebookIdentityProviderCreateWizardHelpPropsInterface> = (

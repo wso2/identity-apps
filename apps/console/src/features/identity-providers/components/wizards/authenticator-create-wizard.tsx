@@ -103,7 +103,7 @@ interface WizardStepInterface {
  * Identity provider creation wizard component.
  *
  * @param props - Props injected to the component.
- * @returns \{React.ReactElement\}
+ * @returns ReactElement
  */
 export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizardPropsInterface> = (
     props: AddAuthenticatorWizardPropsInterface
@@ -283,7 +283,7 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
     /**
      * Resolves the step content.
      *
-     * @returns \{React.ReactElement\} Step content.
+     * @returns Step content.
      */
     const resolveStepContent = (currentStep: number): ReactElement => {
         let step = currentStep;

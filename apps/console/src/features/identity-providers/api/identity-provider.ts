@@ -1258,7 +1258,7 @@ export const updateFederatedAuthenticators = (
  * Get connected apps of the IDP.
  *
  * @param idpId - ID of the Identity Provider.
- * @returns \{Promise<any>\} A promise containing the response.
+ * @returns  A promise containing the response.
  */
 export const getIDPConnectedApps = (idpId: string): Promise<any> => {
 

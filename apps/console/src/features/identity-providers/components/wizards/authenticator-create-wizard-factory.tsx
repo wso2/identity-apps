@@ -78,9 +78,9 @@ interface AuthenticatorCreateWizardFactoryInterface extends TestableComponentInt
 /**
  * Authenticator Create Wizard factory.
  *
- * @param props - \{AuthenticatorCreateWizardFactoryInterface\} Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @returns \{React.ReactElement\}
+ * @returns ReactElement
  */
 export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCreateWizardFactoryInterface> = (
     props: AuthenticatorCreateWizardFactoryInterface
@@ -241,7 +241,7 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
     /**
      * Get the possible duplicate IDPs.
      *
-     * @param idpName - \{string\} Name of the IDP.
+     * @param idpName - Name of the IDP.
      */
     const getPossibleListOfDuplicateIDPs = (idpName: string): void => {
 
