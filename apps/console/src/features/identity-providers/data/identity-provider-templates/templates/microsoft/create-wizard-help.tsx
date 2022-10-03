@@ -80,10 +80,10 @@ const MicrosoftIDPCreateWizardHelp: FunctionComponent<MicrosoftIDPCreateWizardHe
                                 }
                             >
                                 Before you begin, create an <strong>OAuth credential</strong> on the <a
-                                    href="https://console.developers.microsoft.com"
+                                    href="https://portal.azure.com"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                > Microsoft developer console</a>, and obtain a <strong>Client ID & secret</strong>.
+                                > Azure Active Directory</a>, and obtain a <strong>Client ID & secret</strong>.
                             </Trans>
                         </p>
                         <p>
@@ -103,7 +103,8 @@ const MicrosoftIDPCreateWizardHelp: FunctionComponent<MicrosoftIDPCreateWizardHe
                             />
 
                             <a
-                                href="https://support.microsoft.com/googleapi/answer/6158849"
+                                href={ "https://learn.microsoft.com/en-us/azure/active-directory/saas-apps"
+                                +"/openidoauth-tutorial?source=recommendations" }
                                 target="_blank"
                                 rel="noopener noreferrer">
                                 {

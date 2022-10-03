@@ -524,8 +524,8 @@ export const MicrosoftAuthenticatorForm: FunctionComponent<MicrosoftAuthenticato
                                 Scopes provide a way for connected apps to access data from Microsoft.
                                 Click <a
                                     href={
-                                        "https://developers.microsoft.com/identity/protocols/oauth2/" +
-                                        "openid-connect#scope-param"
+                                        "https://learn.microsoft.com/en-us/azure/active-directory/"+
+                                        "develop/v2-permissions-and-consent"
                                     }
                                     target="_blank"
                                     rel="noopener noreferrer"
