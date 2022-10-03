@@ -33,8 +33,8 @@ type GoogleIDPCreateWizardHelpPropsInterface = TestableComponentInterface
 /**
  * Help content for the custom IDP template creation wizard.
  *
- * @param props - \{GoogleIDPCreateWizardHelpPropsInterface\} Props injected into the component.
- * @returns \{React.ReactElement\}
+ * @param props - Props injected into the component.
+ * @returns React Element for Google Create Wizard
  */
 const GoogleIDPCreateWizardHelp: FunctionComponent<GoogleIDPCreateWizardHelpPropsInterface> = (
     props: GoogleIDPCreateWizardHelpPropsInterface
