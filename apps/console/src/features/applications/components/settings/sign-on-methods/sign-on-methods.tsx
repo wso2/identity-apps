@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -608,7 +608,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                         {
                             authenticators
                                 .filter((authenticator) => {
-                                    authenticator.name !== IdentityProviderManagementConstants
+                                    return authenticator.name !== IdentityProviderManagementConstants
                                         .BACKUP_CODE_AUTHENTICATOR;
                                 })
                                 .map((authenticator, index) => (
