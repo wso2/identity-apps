@@ -49,7 +49,6 @@ export const attributeConfig: AttributeConfig = {
         /**
          * Disables and marks the dialect add new attribute button as a
          * coming soon feature.
-         * - @param dialectID - : string
          */
         markAddExternalAttributeButtonAsAComingSoonFeature() {
             return false;
@@ -137,5 +136,4 @@ export const attributeConfig: AttributeConfig = {
     },
     showCustomDialectInSCIM: false,
     systemClaims: []
-    
 };
