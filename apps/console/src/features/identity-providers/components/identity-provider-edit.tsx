@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -96,8 +96,8 @@ interface EditIdentityProviderPropsInterface extends TestableComponentInterface 
 /**
  * Identity Provider edit component.
  *
- * @param {EditIdentityProviderPropsInterface} props - Props injected to the component.
- * @return {ReactElement}
+ * @param props - Props injected to the component.
+ * @returns ReactElement
  */
 export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsInterface> = (
     props: EditIdentityProviderPropsInterface
@@ -320,8 +320,8 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
          * configuration level we can show the attributes section.
          * {@link identityProviderConfig} contains the configuration
          * to enable or disable this via extensions. Please refer
-         * {@link apps/console/src/extensions/} configs folder and
-         * models folder for types. {@file identity-provider.ts}
+         * {@link apps/console/src/extensions#} configs folder and
+         * models folder for types. 'identity-provider.ts'
          */
         const attributesForSamlEnabled = isSaml && identityProviderConfig.editIdentityProvider.attributesSettings;
 
@@ -369,9 +369,9 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
     /**
      * Evaluate internally whether to show/hide `Attributes` tab.
      *
-     * @param {string} type - IDP Type.
+     * @param type - IDP Type.
      *
-     * @return {boolean}
+     * @returns boolean
      */
     const shouldShowAttributeSettings = (type: string): boolean => {
 

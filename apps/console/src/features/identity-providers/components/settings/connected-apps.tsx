@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,7 +17,6 @@
  */
 
 
-import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -30,7 +29,6 @@ import {
     EmptyPlaceholder, 
     Heading,
     ListLayout, 
-    PrimaryButton, 
     TableActionsInterface, 
     TableColumnInterface 
 } from "@wso2is/react-components";
@@ -134,8 +132,8 @@ interface ConnectedAppsPropsInterface extends TestableComponentInterface {
 /**
  *  Connected Apps settings component.
  *
- * @param {ConnectedAppsPropsInterface} props - Props injected to the component.
- * @return {ReactElement}
+ * @param props - Props injected to the component.
+ * @returns ReactElement
  */
 export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
     props: ConnectedAppsPropsInterface
@@ -247,8 +245,8 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
     /**
      * Handles per page dropdown page.
      *
-     * @param {React.MouseEvent<HTMLAnchorElement>} event - Mouse event.
-     * @param {DropdownProps} data - Dropdown data.
+     * @param event - Mouse event.
+     * @param data - Dropdown data.
      */
     const handleItemsPerPageDropdownChange = (event: MouseEvent<HTMLAnchorElement>,
         data: DropdownProps): void => {
@@ -258,8 +256,8 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
     /**
      * Handles the pagination change.
      *
-     * @param {React.MouseEvent<HTMLAnchorElement>} event - Mouse event.
-     * @param {PaginationProps} data - Pagination component data.
+     * @param event - Mouse event.
+     * @param data - Pagination component data.
      */
     const handlePaginationChange = (event: MouseEvent<HTMLAnchorElement>, data: PaginationProps): void => {
         setListOffset((data.activePage as number - 1) * listItemLimit);
@@ -268,8 +266,8 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
     /**
      * Sets the list sorting strategy.
      *
-     * @param {React.SyntheticEvent<HTMLElement>} event - The event.
-     * @param {DropdownProps} data - Dropdown data.
+     * @param event - The event.
+     * @param data - Dropdown data.
      */
     const handleListSortingStrategyOnChange = (event: SyntheticEvent<HTMLElement>,
         data: DropdownProps): void => {
@@ -282,7 +280,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
      * Checks if `Next` page nav button should be shown.
      *
      * @param appList - List of applications.
-     * @returns {boolean} - `true` if `Next` page nav button should be shown.
+     * @returns `true` if `Next` page nav button should be shown.
      */
     const shouldShowNextPageNavigation = (appList: ApplicationListInterface): boolean => {
 
@@ -420,8 +418,8 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
     /**
      * Redirects to the applications edit page when the edit button is clicked.
      *
-     * @param {string} appId - Application id.
-     * @param {ApplicationAccessTypes} access - Access level of the application.
+     * @param appId - Application id.
+     * @param access - Access level of the application.
      */
     const handleApplicationEdit = (appId: string, access: ApplicationAccessTypes, tabNo: string): void => {
         if (isSetStrongerAuth) {
@@ -451,7 +449,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
     /**
      * Resolve the relevant placeholder.
      *
-     * @return {React.ReactElement}
+     * @returns ReactElement
      */
     const showPlaceholders = (): ReactElement => {
         // When the search returns empty.
@@ -491,7 +489,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
     /**
      * Resolves data table actions.
      *
-     * @return {TableActionsInterface[]}
+     * @returns TableActionsInterface[]
      */
     const resolveTableActions = (): TableActionsInterface[] => {
         if (!showListItemActions) {
@@ -551,7 +549,8 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
 
     return (
         <EmphasizedSegment padded="very">
-            <Heading as="h4">{ t("console:develop.features.idp.connectedApps.header", { idpName: editingIDP.name }) }</Heading>
+            <Heading as="h4">{ t("console:develop.features.idp.connectedApps.header", 
+                { idpName: editingIDP.name }) }</Heading>
             <Heading subHeading ellipsis as="h6">
                 { t("console:develop.features.idp.connectedApps.subHeader", { idpName: editingIDP.name }) }
             </Heading>

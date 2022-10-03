@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -66,9 +66,9 @@ interface ApplicationEditPageInterface extends TestableComponentInterface, Route
 /**
  * Application Edit page component.
  *
- * @param {ApplicationEditPageInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns React Element
  */
 const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     props: ApplicationEditPageInterface
@@ -131,14 +131,14 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
          * What exactly happens inside this effect?
          *
          * 1st Call -
-         *  React calls this with a {@code null} value for {@link appDescElement}
+         *  React calls this with a `null` value for {@link appDescElement}
          *  (This is expected in useRef())
          *
          * 2nd Call -
          *  React updates the {@link appDescElement} with the target element.
          *  But {@link PageHeader} will immediately unmount it (because there's a request is ongoing).
-         *  When that happens, for "some reason" we always get { offsetWidth, scrollWidth
-         *  and all the related attributes } as zero or null.
+         *  When that happens, for "some reason" we always get [ offsetWidth, scrollWidth
+         *  and all the related attributes ] as zero or null.
          *
          * 3rd Call -
          *  So, whenever there's some changes to {@link isApplicationRequestLoading}
@@ -147,7 +147,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
          *  will try to render the component we actually pass down the tree)
          *
          *  For more additional context please refer comment:
-         *  {@see https://github.com/wso2/identity-apps/pull/3028#issuecomment-1123847668}
+         *  @see https://github.com/wso2/identity-apps/pull/3028#issuecomment-1123847668
          */
         if (appDescElement || isApplicationRequestLoading) {
             const nativeElement = appDescElement.current;
@@ -203,7 +203,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     /**
     * Fetch the identity provider id & name when calling the app edit through connected apps
     */
-     useEffect(() => {
+    useEffect(() => {
         if(typeof history.location.state === "object"){
             setisConnectedAppsRedirect(true);
             type idpInfoType = {
@@ -235,7 +235,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
              * /t/foo/develop/applications/:id#tab=1 this component will be
              * mounted. But you see this {@link applicationTemplates}?; it is
              * loaded elsewhere. For some reason, requesting the state from
-             * {@link useSelector} always returns {@code undefined} when
+             * {@link useSelector} always returns 'undefined' when
              * directly navigating or refreshing the page. Therefore; it hangs
              * without doing anything. It will show a overlay loader but
              * that's it. Nothing happens afterwards.
@@ -277,7 +277,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
          * template if none is present. One caveat is that, if we couldn't
          * find any template from the fallback mapping, we always assign
          * {@link ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC} to it.
-         * Additionally {@see InboundFormFactory}.
+         * Additionally @see InboundFormFactory.
          */
         if (!application?.templateId) {
             if (application.inboundProtocols?.length > 0) {
@@ -425,7 +425,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     /**
      * Retrieves application details from the API.
      *
-     * @param {string} id - Application id.
+     * @param id - Application id.
      */
     const getApplication = (id: string): void => {
         setApplicationRequestLoading(true);
@@ -479,7 +479,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     /**
      * Called when an application updates.
      *
-     * @param {string} id - Application id.
+     * @param id - Application id.
      */
     const handleApplicationUpdate = (id: string): void => {
         getApplication(id);
@@ -487,7 +487,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
 
     /**
      * Resolves the application status label.
-     * @return {ReactElement}
+     * @returns ReactElement
      */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const resolveApplicationStatusLabel = (): ReactElement => {
@@ -541,7 +541,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
      * Returns if the application is readonly or not by evaluating the `readOnly` attribute in
      * URL, the `access` attribute in application info response && the scope validation.
      *
-     * @return {boolean} If an application is Read Only or not.
+     * @returns If an application is Read Only or not.
      */
     const resolveReadOnlyState = (): boolean => {
 
