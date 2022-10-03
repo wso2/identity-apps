@@ -211,13 +211,13 @@ const AccountSecurityPage: FunctionComponent<AccountSecurityPagePropsInterface>=
                     ) : null }
 
                 { hasRequiredScopes(accessConfig?.security, accessConfig?.security?.scopes?.read, allowedScopes) &&
-                ((isNonLocalCredentialUser && (!disableMFAForFederatedUsers || !isSuperTenantLogin())) ||
-                    !isNonLocalCredentialUser) &&
-                isFeatureEnabled(
-                    accessConfig?.security,
-                    AppConstants.FEATURE_DICTIONARY.get("SECURITY_MFA")
-                ) && !(disableMFAforSuperTenantUser && (isSuperTenantLogin())
-                ) ? (
+                    ((isNonLocalCredentialUser && (!disableMFAForFederatedUsers || !isSuperTenantLogin())) ||
+                        !isNonLocalCredentialUser) &&
+                    isFeatureEnabled(
+                        accessConfig?.security,
+                        AppConstants.FEATURE_DICTIONARY.get("SECURITY_MFA")
+                    ) && !(disableMFAforSuperTenantUser && (isSuperTenantLogin())) 
+                    ? (
                         <Grid.Row>
                             <Grid.Column width={ 16 }>
                                 <MultiFactorAuthentication
