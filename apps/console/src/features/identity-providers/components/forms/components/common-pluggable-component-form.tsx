@@ -151,7 +151,8 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
      */
     const isScopesDefined = (): boolean => {
         return !!(initialValues?.properties?.find(
-            queryParam => queryParam.key === CommonConstants.QUERY_PARAMETERS_KEY)?.
+            (queryParam: CommonPluggableComponentPropertyInterface) =>
+                queryParam.key === CommonConstants.QUERY_PARAMETERS_KEY)?.
             value?.toLowerCase().includes("scope="));
     };
 
@@ -161,7 +162,8 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
      */
     const isScopesEmpty = (): boolean => {
         return isEmpty(initialValues?.properties?.find(
-            scopes => scopes.key === CommonConstants.FIELD_COMPONENT_SCOPES)?.value);
+            (scopes: CommonPluggableComponentPropertyInterface) =>
+                scopes.key === CommonConstants.FIELD_COMPONENT_SCOPES)?.value);
     };
 
     const getField = (property: CommonPluggableComponentPropertyInterface,

@@ -23,17 +23,43 @@ import React, { FunctionComponent, useEffect, useState } from "react";
 import { Button, Form, Icon, Label, Message, Popup } from "semantic-ui-react";
  
  interface ScopesPropsInterface {
+    /**
+      * Initial value of the scopes field.
+      * @example `openid profile`
+    */
      value: string;
+    /**
+      * Default OIDC scope `openid`.
+    */
      defaultValue: string;
+    /**
+      * Error message.
+    */
      error: string;
+    /**
+      * On blur event handler.
+    */
      onBlur: (event: React.KeyboardEvent) => void;
+    /**
+      * On change event handler.
+    */
      onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
  }
  
- interface Scope {
+ interface ScopeInterface {
+    /**
+      * Value of the scopes field.
+      * @example `openid profile`
+    */
      value: string;
  }
- 
+
+/**
+ * OIDC Authenticator Scopes field component.
+ *
+ * @param props - Props injected to the component.
+ * @returns Functional component.
+ */
 export const Scopes: FunctionComponent<ScopesPropsInterface> = (
     props: ScopesPropsInterface) => {
  
@@ -45,17 +71,37 @@ export const Scopes: FunctionComponent<ScopesPropsInterface> = (
         onChange
     } = props;
  
-    const SCOPE_SEPARATOR = " ";
+    const SCOPE_SEPARATOR: string = " ";
  
     const [ scopeValue, setScopeValue ] = useState<string>("");
-    const [ scopes, setScopes ] = useState<Scope[]>([]);
+    const [ scopes, setScopes ] = useState<ScopeInterface[]>([]);
+
+    /**
+      * Called when `initialValue` is changed.
+      */
+    useEffect(() => {
+        if (isEmpty(value)) {
+            return;
+        } 
+     
+        setScopes(value.split(SCOPE_SEPARATOR)?.map(buildScope));
+    }, [ value ]);
+     
+    /**
+      * Called when `scopes` is changed.
+      */
+    useEffect(() => {
+             
+        fireOnChangeEvent(scopes, onChange);
+    }, [ scopes ]);
  
     /**
       * Build scope object from the given string form.
       *
       * @param scope - Scope in the string form.
+      * @returns Scope as an object.
       */
-    const buildScope = (scope: string): Scope => {
+    const buildScope = (scope: string): ScopeInterface => {
         return {
             value: scope
         };
@@ -64,12 +110,12 @@ export const Scopes: FunctionComponent<ScopesPropsInterface> = (
     /**
       * Build scope string value, from it's object form.
       */
-    const buildScopeString = (scope: Scope) => scope.value;
+    const buildScopeString = (scope: ScopeInterface) => scope.value;
  
     /**
       * Build scopes string value, from scopes object list.
       */
-    const buildScopesString = (scopes: Scope[]): string =>
+    const buildScopesString = (scopes: ScopeInterface[]): string =>
         scopes?.map(buildScopeString)?.join(SCOPE_SEPARATOR);
  
     /**
@@ -78,7 +124,7 @@ export const Scopes: FunctionComponent<ScopesPropsInterface> = (
       * @param scopes - Scopes.
       * @param onChange - onChange handler. 
       */
-    const fireOnChangeEvent = (scopes: Scope[], onChange: (event: React.ChangeEvent<HTMLInputElement>) 
+    const fireOnChangeEvent = (scopes: ScopeInterface[], onChange: (event: React.ChangeEvent<HTMLInputElement>) 
          => void) => {
  
         onChange(
@@ -95,37 +141,17 @@ export const Scopes: FunctionComponent<ScopesPropsInterface> = (
       * 
       * @param scope - Scope.
       */
-    const updateScopeInputFields = (scope: Scope) => {
+    const updateScopeInputFields = (scope: ScopeInterface) => {
         setScopeValue(scope?.value);
     };
- 
-    /**
-      * Called when `initialValue` is changed.
-      */
-    useEffect(() => {
-        if (isEmpty(value)) {
-            return;
-        } 
- 
-        setScopes(value.split(SCOPE_SEPARATOR)?.map(buildScope));
-    }, [ value ]);
- 
-    /**
-      * Called when `scopes` is changed.
-      */
-    useEffect(() => {
-         
-        fireOnChangeEvent(scopes, onChange);
-    }, [ scopes ]);
  
     /**
       * Enter button option.
       * @param e - keypress event.
       */
-    const keyPressed = (e) => {
-        const key = e.which || e.charCode || e.keyCode;
+    const keyPressed = (e: React.KeyboardEvent<HTMLInputElement>): void => {
  
-        if (key === 13) {
+        if (e.key === "Enter" ) {
             handleScopeAdd(e);
         }
     };
@@ -136,7 +162,7 @@ export const Scopes: FunctionComponent<ScopesPropsInterface> = (
             return;
         }
              
-        const output: Scope[] = [ {
+        const output: ScopeInterface[] = [ {
             value: scopeValue
         } ];
  
@@ -202,7 +228,6 @@ export const Scopes: FunctionComponent<ScopesPropsInterface> = (
             </Form.Group>
 
             <Message visible={ !isEmpty(error) } error content={ error } />
-
             {
                 scopes && scopes?.map((eachScope, index) => {
                     const scope = eachScope.value;
