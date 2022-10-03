@@ -608,7 +608,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                         {
                             authenticators
                                 .filter((authenticator) => {
-                                    authenticator.name !== IdentityProviderManagementConstants
+                                    return authenticator.name !== IdentityProviderManagementConstants
                                         .BACKUP_CODE_AUTHENTICATOR;
                                 })
                                 .map((authenticator, index) => (
