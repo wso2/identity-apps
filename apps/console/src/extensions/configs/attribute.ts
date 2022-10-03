@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -44,11 +44,11 @@ export const attributeConfig: AttributeConfig = {
     attributesPlaceholderAddButton: (attributeType: string): boolean => {
         return true;
     },
+    defaultScimMapping: {},
     editAttributeMappings: {
         /**
          * Disables and marks the dialect add new attribute button as a
          * coming soon feature.
-         * - @param dialectID: string
          */
         markAddExternalAttributeButtonAsAComingSoonFeature() {
             return false;
@@ -82,6 +82,7 @@ export const attributeConfig: AttributeConfig = {
             if (editClaimID === claim?.id) {
                 return I18n.instance.t("common:cancel");
             }
+
             return I18n.instance.t("common:edit");
         },
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -127,13 +128,12 @@ export const attributeConfig: AttributeConfig = {
             showSummary: true
         },
         customDialectURI: "",
-        oidcDialectURI: "",
         getDialect: (dialectURI: string) => { return Promise.resolve(dialectURI); },
         isSCIMCustomDialectAvailable: () =>  { return Promise.resolve(""); },
         isUserStoresHidden: () =>  { return Promise.resolve([]); },
-        mapClaimToCustomDialect: false
+        mapClaimToCustomDialect: false,
+        oidcDialectURI: ""
     },
-    systemClaims: [],
-    defaultScimMapping: {},
-    showCustomDialectInSCIM: false
+    showCustomDialectInSCIM: false,
+    systemClaims: []
 };

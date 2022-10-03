@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -31,7 +31,8 @@ import {
     EmailOTPAuthenticatorForm,
     FacebookAuthenticatorForm,
     GithubAuthenticatorForm,
-    GoogleAuthenticatorForm
+    GoogleAuthenticatorForm,
+    MicrosoftAuthenticatorForm
 } from "../authenticators";
 import { SamlAuthenticatorSettingsForm } from "../authenticators/saml-authenticator-form";
 
@@ -73,8 +74,8 @@ interface AuthenticatorFormFactoryInterface extends TestableComponentInterface {
 /**
  * Authenticator form factory.
  *
- * @param {AuthenticatorFormFactoryInterface} props - Props injected to the component.
- * @return {ReactElement}
+ * @param props - Props injected to the component.
+ * @returns React Element
  */
 export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactoryInterface> = (
     props: AuthenticatorFormFactoryInterface
@@ -184,6 +185,21 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
                     mode={ mode }
                     onSubmit={ onSubmit }
                     authenticator={ authenticator }
+                    readOnly={ isReadOnly }
+                    isSubmitting={ isSubmitting }
+                />
+            );
+        case IdentityProviderManagementConstants.MICROSOFT_AUTHENTICATOR_ID:
+            return(
+                <MicrosoftAuthenticatorForm
+                    mode={ mode }
+                    initialValues={ initialValues }
+                    metadata={ metadata }
+                    onSubmit={ onSubmit }
+                    triggerSubmit={ triggerSubmit }
+                    enableSubmitButton={ enableSubmitButton }
+                    data-testid={ testId }
+                    showCustomProperties={ showCustomProperties }
                     readOnly={ isReadOnly }
                     isSubmitting={ isSubmitting }
                 />

@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -26,6 +26,7 @@ import { ExpertModeAuthenticationProviderCreateWizard } from "./expert-mode";
 import { FacebookAuthenticationProviderCreateWizard } from "./facebook";
 import { GitHubAuthenticationProviderCreateWizard } from "./github";
 import { GoogleAuthenticationProviderCreateWizard } from "./google";
+import { MicrosoftAuthenticationProviderCreateWizard } from "./microsoft";
 import { OidcAuthenticationProviderCreateWizard } from "./oidc-authentication-provider-create-wizard";
 import {
     OrganizationEnterpriseAuthenticationProviderCreateWizard
@@ -77,9 +78,9 @@ interface AuthenticatorCreateWizardFactoryInterface extends TestableComponentInt
 /**
  * Authenticator Create Wizard factory.
  *
- * @param {AuthenticatorCreateWizardFactoryInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns ReactElement
  */
 export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCreateWizardFactoryInterface> = (
     props: AuthenticatorCreateWizardFactoryInterface
@@ -215,15 +216,15 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
                     /**
                      * If for some reason we can't find the given template by id
                      * and the template is disabled from file level, we can assure
-                     * the {@link type} (templateId) is a grouped type.
+                     * the templateId is a grouped type.
                      */
                     if (response !== undefined && !response.disabled) {
                         setSelectedTemplate(response as IdentityProviderTemplateInterface);
                     } else {
                         /**
                          * If the {@link getIdentityProviderTemplate} method failed to
-                         * retrieve the matching template via the {@link type} (templateId)
-                         * then set the template that got passed from {@link props}. This
+                         * retrieve the matching template via the templateId
+                         * then set the template that got passed from props. This
                          * case executes when a grouped template is trying to load.
                          */
                         if (parentSelectedTemplate && !parentSelectedTemplate.disabled) {
@@ -240,7 +241,7 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
     /**
      * Get the possible duplicate IDPs.
      *
-     * @param {string} idpName - Name of the IDP.
+     * @param idpName - Name of the IDP.
      */
     const getPossibleListOfDuplicateIDPs = (idpName: string): void => {
 
@@ -256,9 +257,9 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
     /**
      * Generate the next unique name by appending 1-based index number to the provided initial value.
      *
-     * @param initialIdpName Initial value for the IdP name.
-     * @param idpList The list of available IdPs names.
-     * @return A unique name from the provided list of names.
+     * @param initialIdpName - Initial value for the IdP name.
+     * @param idpList - The list of available IdPs names.
+     * @returns A unique name from the provided list of names.
      */
     const generateUniqueIDPName = (initialIdpName: string, idpList: string[]): string => {
 
@@ -321,6 +322,24 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
             return (showWizard && !isEmpty(selectedTemplateWithUniqueName))
                 ? (
                     <GitHubAuthenticationProviderCreateWizard
+                        title={ selectedTemplateWithUniqueName?.name }
+                        subTitle={ selectedTemplateWithUniqueName?.description }
+                        onWizardClose={ () => {
+                            setSelectedTemplateWithUniqueName(undefined);
+                            setSelectedTemplate(undefined);
+                            setShowWizard(false);
+                            onWizardClose();
+                        } }
+                        template={ selectedTemplateWithUniqueName }
+                        data-componentid={ selectedTemplate?.templateId }
+                        { ...rest }
+                    />
+                )
+                : null;
+        case IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.MICROSOFT:
+            return (showWizard && !isEmpty(selectedTemplateWithUniqueName))
+                ? (
+                    <MicrosoftAuthenticationProviderCreateWizard
                         title={ selectedTemplateWithUniqueName?.name }
                         subTitle={ selectedTemplateWithUniqueName?.description }
                         onWizardClose={ () => {

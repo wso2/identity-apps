@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -57,6 +57,7 @@ export const identityProviderConfig: IdentityProviderConfig = {
                         IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.FACEBOOK,
                         IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.GOOGLE,
                         IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.GITHUB,
+                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.MICROSOFT,
                         IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.OIDC
                     ])
                 ]
@@ -72,37 +73,6 @@ export const identityProviderConfig: IdentityProviderConfig = {
         showJitProvisioning: true,
         showOutboundProvisioning: true
     },
-    getIconExtensions: (): Record<string, string | FunctionComponent<SVGProps<SVGSVGElement>>> => {
-        return {};
-    },
-    jitProvisioningSettings: {
-        menuItemName: "Just-in-Time Provisioning",
-        enableJitProvisioningField: {
-            show: true
-        },
-        userstoreDomainField: {
-            show: true,
-        },
-        provisioningSchemeField: {
-            show: true
-        }
-    },
-    generalDetailsForm: {
-        showCertificate: true
-    },
-    identityProviderList: {
-        useLegacyListing: true
-    },
-    templates: {
-        enterprise: true,
-        expertMode: true,
-        facebook: true,
-        github: true,
-        google: true,
-        oidc: true,
-        organizationEnterprise: true,
-        saml: true
-    },
     fidoTags: [
         AuthenticatorLabels.SECOND_FACTOR,
         AuthenticatorLabels.PASSWORDLESS,
@@ -110,6 +80,38 @@ export const identityProviderConfig: IdentityProviderConfig = {
     ],
     filterFidoTags:(tags: string[]): string[] => {
         return tags;
+    },
+    generalDetailsForm: {
+        showCertificate: true
+    },
+    getIconExtensions: (): Record<string, string | FunctionComponent<SVGProps<SVGSVGElement>>> => {
+        return {};
+    },
+    identityProviderList: {
+        useLegacyListing: true
+    },
+    jitProvisioningSettings: {
+        enableJitProvisioningField: {
+            show: true
+        },
+        menuItemName: "Just-in-Time Provisioning",
+        provisioningSchemeField: {
+            show: true
+        },
+        userstoreDomainField: {
+            show: true
+        }
+    },
+    templates: {
+        enterprise: true,
+        expertMode: true,
+        facebook: true,
+        github: true,
+        google: true,
+        microsoft: true,
+        oidc: true,
+        organizationEnterprise: true,
+        saml: true
     },
     // Handles backward compatibility with the legacy IDP view & new connections view.
     // TODO: Remove this usage once https://github.com/wso2/product-is/issues/12052 is addressed.
@@ -125,17 +127,15 @@ export const identityProviderConfig: IdentityProviderConfig = {
          *      return identityClaimsHiddenAuthenticators.has(authenticatorId);
          *
          * @see IdentityProviderConfig
-         * - @param <ignored> authenticatorId {string}
          */
         hideIdentityClaimAttributes(): boolean {
             return false;
         },
         /**
-         * This method will either show or hide logo edit field. Provide {@code true}
+         * This method will either show or hide logo edit field. Provide `true`
          * to render the form input field for it.
          *
          * @see IdentityProviderConfig
-         * - @param {string} <ignored> authenticatorId {string}
          */
         hideLogoInputFieldInIdPGeneralSettingsForm(): boolean {
             return false;
@@ -149,7 +149,7 @@ export const identityProviderConfig: IdentityProviderConfig = {
             ].includes(name);
         },
         /**
-         * If the {-@param authenticatorId} is not in the excluded set we
+         * If the authenticatorId param is not in the excluded set we
          * can say the provisioning attributes is enabled for authenticator.
          *
          * As an example:-
@@ -158,14 +158,12 @@ export const identityProviderConfig: IdentityProviderConfig = {
          *      ]);
          *      return !excludedAuthenticators.has(authenticatorId);
          *
-         * - @param <ignored> authenticatorId {string}
          */
         isProvisioningAttributesEnabled(): boolean {
             return true;
         },
         /**
          * Enable or disable role mappings form elements from the UI.
-         * - @param <ignored> authenticatorId {string}
          */
         isRoleMappingsEnabled(): boolean {
             return true;
