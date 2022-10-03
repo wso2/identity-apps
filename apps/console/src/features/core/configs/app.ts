@@ -69,7 +69,7 @@ export class Config {
     /**
      * Get the deployment config.
      *
-     * @returns \{DeploymentConfigInterface\} Deployment config object.
+     * @returns Deployment config object.
      */
     public static getDeploymentConfig(): DeploymentConfigInterface {
         return {
@@ -126,8 +126,8 @@ export class Config {
      * look for resource files in `https://localhost:9443/<PORTAL>/resources/i18n` rather than looking for the
      * files in `https://localhost:9443/t/wso2.com/<PORTAL>/resources/i18n`.
      *
-     * @param metaFile - \{MetaI18N\}  Meta File.
-     * @returns \{I18nModuleInitOptions\} I18n init options.
+     * @param metaFile - Meta File.
+     * @returns I18n init options.
      */
     public static generateModuleInitOptions(metaFile: MetaI18N): I18nModuleInitOptions {
         return {
@@ -159,9 +159,8 @@ export class Config {
     /**
      * Get i18n module config.
      *
-     * @param metaFile - \{MetaI18N\} Meta file.
-     *
-     * @returns \{I18nModuleOptionsInterface\} i18n config object.
+     * @param metaFile - Meta file.
+     * @returns i18n config object.
      */
     public static getI18nConfig(metaFile?: MetaI18N): I18nModuleOptionsInterface {
         return {
@@ -178,7 +177,7 @@ export class Config {
     /**
      * Get the the list of service resource endpoints.
      *
-     * @returns \{ServiceResourceEndpointsInterface\} Service resource endpoints as an object.
+     * @returns Service resource endpoints as an object.
      */
     public static getServiceResourceEndpoints(): ServiceResourceEndpointsInterface {
         return {
@@ -209,7 +208,7 @@ export class Config {
     /**
      * Get UI config.
      *
-     * @returns \{UIConfigInterface\} UI config object.
+     * @returns UI config object.
      */
     public static getUIConfig(): UIConfigInterface {
         return {
