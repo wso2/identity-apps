@@ -34,9 +34,9 @@ type GithubIdentityProviderCreateWizardHelpPropsInterface = TestableComponentInt
 /**
  * Help content for the GitHub IDP template creation wizard.
  *
- * @param props - \{GithubIdentityProviderCreateWizardHelpPropsInterface\} Props injected into the component.
+ * @param props - Props injected into the component.
  *
- * @returns \{React.ReactElement\}
+ * @returns React Element for Github IDP Create Wizard
  */
 const GithubIdentityProviderCreateWizardHelp: FunctionComponent<
     GithubIdentityProviderCreateWizardHelpPropsInterface> = (
