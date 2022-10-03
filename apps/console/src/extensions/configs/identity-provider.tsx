@@ -127,17 +127,15 @@ export const identityProviderConfig: IdentityProviderConfig = {
          *      return identityClaimsHiddenAuthenticators.has(authenticatorId);
          *
          * @see IdentityProviderConfig
-         * - @param authenticatorId - \{string\}
          */
         hideIdentityClaimAttributes(): boolean {
             return false;
         },
         /**
-         * This method will either show or hide logo edit field. Provide \{true\}
+         * This method will either show or hide logo edit field. Provide `true`
          * to render the form input field for it.
          *
          * @see IdentityProviderConfig
-         * - @param authenticatorId - \{string\}
          */
         hideLogoInputFieldInIdPGeneralSettingsForm(): boolean {
             return false;
@@ -151,7 +149,7 @@ export const identityProviderConfig: IdentityProviderConfig = {
             ].includes(name);
         },
         /**
-         * If the \{-\@param authenticatorId\} is not in the excluded set we
+         * If the authenticatorId param is not in the excluded set we
          * can say the provisioning attributes is enabled for authenticator.
          *
          * As an example:-
@@ -160,14 +158,12 @@ export const identityProviderConfig: IdentityProviderConfig = {
          *      ]);
          *      return !excludedAuthenticators.has(authenticatorId);
          *
-         * - @param authenticatorId -\{string\}
          */
         isProvisioningAttributesEnabled(): boolean {
             return true;
         },
         /**
          * Enable or disable role mappings form elements from the UI.
-         * - @param authenticatorId - \{string\}
          */
         isRoleMappingsEnabled(): boolean {
             return true;
