@@ -34,7 +34,7 @@ type MicrosoftIDPCreateWizardHelpPropsInterface = TestableComponentInterface
  * Help content for the custom IDP template creation wizard.
  *
  * @param props - Props injected into the component.
- * @returns \{React.ReactElement\}
+ * @returns - React Element for Create Wizard
  */
 const MicrosoftIDPCreateWizardHelp: FunctionComponent<MicrosoftIDPCreateWizardHelpPropsInterface> = (
     props: MicrosoftIDPCreateWizardHelpPropsInterface
