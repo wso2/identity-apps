@@ -378,6 +378,7 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (props: IDPP
     const handleConnectionGridFilter = (query: string, selectedFilters: string[]): void => {
         // Update the internal state to manage placeholders etc.
         setSearchQuery(query);
+        setListOffset(0);
 
         // Update the state of selected filterTags.
         const filterTags = selectedFilters || selectedFilterTags;

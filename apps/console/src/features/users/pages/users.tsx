@@ -466,6 +466,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         }
 
         setSearchQuery(query);
+        setListOffset(0);
         getList(listItemLimit, listOffset, query, attributes, userStore);
     };
 
