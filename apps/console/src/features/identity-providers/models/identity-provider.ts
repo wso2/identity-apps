@@ -330,6 +330,7 @@ export enum SupportedQuickStartTemplateTypes {
  * Enum for the supported authenticator types.
  *
  * @readonly
+ */
 export enum SupportedAuthenticators {
     NONE = "none",
     FACEBOOK = "FacebookAuthenticator",
