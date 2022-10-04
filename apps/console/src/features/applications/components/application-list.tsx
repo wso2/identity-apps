@@ -58,6 +58,7 @@ import { deleteApplication } from "../api";
 import { ApplicationManagementConstants } from "../constants";
 import {
     ApplicationAccessTypes,
+    ApplicationInboundTypes,
     ApplicationListInterface,
     ApplicationListItemInterface,
     ApplicationTemplateListItemInterface
@@ -377,16 +378,16 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                 key: "inboundKey",
                 render: (app: ApplicationListItemInterface): ReactNode => {
                     let inboundAuthKey: string = "";
-                    let inboundAuthType: string = "";
+                    let inboundAuthType: ApplicationInboundTypes;
                     let inboundAuthTypeLabelClass: string = "";
 
                     if (app.clientId) {
                         inboundAuthKey = app.clientId;
-                        inboundAuthType = "Client ID";
+                        inboundAuthType = ApplicationInboundTypes.CLIENTID;
                         inboundAuthTypeLabelClass = "client-id-label";
                     } else if (app.issuer) {
                         inboundAuthKey = app.issuer;
-                        inboundAuthType = "Issuer";
+                        inboundAuthType = ApplicationInboundTypes.ISSUER;
                         inboundAuthTypeLabelClass = "issuer-label";
                     }
 
@@ -400,7 +401,8 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                                             <Label
                                                 pointing="left"
                                                 size="mini"
-                                                className={ inboundAuthTypeLabelClass }>
+                                                className={ inboundAuthTypeLabelClass }
+                                            >
                                                 { inboundAuthType }
                                             </Label>
                                         )
