@@ -2343,7 +2343,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     /**
      * Renders the application secret regenerate confirmation modal.
      * 
-     * @returns Regenerate confirmation modal.
+     * @returns the modal for confirming regenerating app secret.
      */
     const renderRegenerateConfirmationModal = (): ReactElement => (
         <ConfirmationModal
