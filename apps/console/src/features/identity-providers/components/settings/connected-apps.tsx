@@ -20,7 +20,6 @@
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { I18n } from "@wso2is/i18n";
 import { 
     AnimatedAvatar, 
     AppAvatar,  
@@ -28,15 +27,12 @@ import {
     EmphasizedSegment,
     EmptyPlaceholder, 
     Heading,
-    ListLayout, 
     TableActionsInterface, 
     TableColumnInterface 
 } from "@wso2is/react-components";
-import find from "lodash-es/find";
 import React, 
 { 
-    FunctionComponent, 
-    MouseEvent, 
+    FunctionComponent,
     ReactElement, 
     ReactNode, 
     SyntheticEvent, 
@@ -47,13 +43,10 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import {  
     Divider,
-    DropdownItemProps, 
-    DropdownProps, 
     Header, 
     Icon, 
     Input, 
     Label, 
-    PaginationProps, 
     SemanticICONS
 } from "semantic-ui-react";
 import { applicationListConfig } from "../../../../extensions/configs/application-list";
@@ -62,7 +55,6 @@ import { ApplicationManagementConstants } from "../../../applications/constants"
 import { 
     ApplicationAccessTypes, 
     ApplicationBasicInterface, 
-    ApplicationListInterface, 
     ApplicationListItemInterface, 
     ApplicationTemplateListItemInterface 
 } from "../../../applications/models";
@@ -154,15 +146,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
     
     const dispatch = useDispatch();
 
-    const APPLICATIONS_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
-        {
-            key: 1,
-            text: I18n.instance.t("common:name") as ReactNode,
-            value: "name"
-        }
-    ];
     const [ connectedApps, setConnectedApps ] = useState<ConnectedAppInterface[]>();
-    const [ connectedAppIds, setConnectedAppIds ] = useState<ConnectedAppsInterface>();
     const [ filterSelectedApps, setFilterSelectedApps ] = useState<ConnectedAppInterface[]>([]);
     const [ connectedAppsCount, setconnectedAppsCount ] = useState<number>(0);
     const [ isAppsLoading, setIsAppsLoading ] = useState<boolean>(true);
@@ -176,11 +160,6 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
         isApplicationTemplateRequestLoading,
         setApplicationTemplateRequestLoadingStatus
     ] = useState<boolean>(false);
-    const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
-    const [ listOffset, setListOffset ] = useState<number>(0);
-    const [ listSortingStrategy, setListSortingStrategy ] = useState<DropdownItemProps>(
-        APPLICATIONS_LIST_SORTING_OPTIONS[ 0 ]
-    );
 
     const { t } = useTranslation();
 
@@ -188,7 +167,6 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
         setIsAppsLoading(true);
         getIDPConnectedApps(editingIDP.id)
             .then(async (response: ConnectedAppsInterface) => {
-                setConnectedAppIds(response);
                 setconnectedAppsCount(response.count);
                 
                 if (response.count > 0) {
@@ -240,57 +218,6 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                 setApplicationTemplateRequestLoadingStatus(false);
             });
     }, [ applicationTemplates, groupedApplicationTemplates ]);
-
-
-    /**
-     * Handles per page dropdown page.
-     *
-     * @param event - Mouse event.
-     * @param data - Dropdown data.
-     */
-    const handleItemsPerPageDropdownChange = (event: MouseEvent<HTMLAnchorElement>,
-        data: DropdownProps): void => {
-        setListItemLimit(data.value as number);
-    };
-
-    /**
-     * Handles the pagination change.
-     *
-     * @param event - Mouse event.
-     * @param data - Pagination component data.
-     */
-    const handlePaginationChange = (event: MouseEvent<HTMLAnchorElement>, data: PaginationProps): void => {
-        setListOffset((data.activePage as number - 1) * listItemLimit);
-    };
-
-    /**
-     * Sets the list sorting strategy.
-     *
-     * @param event - The event.
-     * @param data - Dropdown data.
-     */
-    const handleListSortingStrategyOnChange = (event: SyntheticEvent<HTMLElement>,
-        data: DropdownProps): void => {
-        setListSortingStrategy(find(APPLICATIONS_LIST_SORTING_OPTIONS, (option) => {
-            return data.value === option.value;
-        }));
-    };
-
-    /**
-     * Checks if `Next` page nav button should be shown.
-     *
-     * @param appList - List of applications.
-     * @returns `true` if `Next` page nav button should be shown.
-     */
-    const shouldShowNextPageNavigation = (appList: ApplicationListInterface): boolean => {
-
-        if (appList?.startIndex + appList?.count === appList?.totalResults + 1) {
-            return false;
-        }
-
-        return true;
-    };
-
  
     /**
      * Resolves data table columns.
@@ -502,7 +429,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                 hidden: (): boolean => !isFeatureEnabled(featureConfig?.applications,
                     ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT")),
                 icon: (): SemanticICONS => { 
-                    return "external square";
+                    return "external";
                 },
                 onClick: (e: SyntheticEvent, app: ApplicationListItemInterface): void =>
                     handleApplicationEdit(app.id, app.access, "#tab=4"),
@@ -567,45 +494,26 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                     data-testid={ `${ testId }-searched` }
                 />)
             }
-            <ListLayout
-                currentListSize={ connectedAppsCount }
-                listItemLimit={ listItemLimit }
-                onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
-                onPageChange={ handlePaginationChange }
-                onSortStrategyChange={ handleListSortingStrategyOnChange }
-                showPagination={ true }
-                showTopActionPanel={ false }
-                sortOptions={ APPLICATIONS_LIST_SORTING_OPTIONS }
-                sortStrategy={ listSortingStrategy }
-                totalPages={ Math.ceil(connectedAppsCount / listItemLimit) }
-                totalListSize={ connectedAppsCount  }
-                paginationOptions={ {
-                    disableNextButton: !shouldShowNextPageNavigation(connectedAppIds)
+            <DataTable<ConnectedAppInterface>
+                className="connected-applications-table"
+                isLoading={ isLoading || isApplicationTemplateRequestLoading }
+                loadingStateOptions={ {
+                    count: defaultListItemLimit ?? UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
+                    imageType: "square"
                 } }
-                data-testid={ `${ testId }-list-layout` }
-            > 
-                <Divider hidden />
-                <DataTable<ConnectedAppInterface>
-                    className="connected-applications-table"
-                    isLoading={ isLoading || isApplicationTemplateRequestLoading }
-                    loadingStateOptions={ {
-                        count: defaultListItemLimit ?? UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
-                        imageType: "square"
-                    } }
-                    actions={ !isSetStrongerAuth && resolveTableActions() }
-                    columns={ resolveTableColumns() }
-                    data={ filterSelectedApps }
-                    onRowClick={ (e: SyntheticEvent, app: ApplicationListItemInterface): void => {
-                        handleApplicationEdit(app.id, app.access, "#tab=4");
-                        onListItemClick && onListItemClick(e, app);
-                    } }
-                    placeholders={ showPlaceholders() }
-                    selectable={ selection }
-                    showHeader={ applicationListConfig.enableTableHeaders }
-                    transparent={ !(isLoading || isApplicationTemplateRequestLoading) && (showPlaceholders() !== null) }
-                    data-testid={ testId }
-                />
-            </ListLayout>
+                actions={ !isSetStrongerAuth && resolveTableActions() }
+                columns={ resolveTableColumns() }
+                data={ filterSelectedApps }
+                onRowClick={ (e: SyntheticEvent, app: ApplicationListItemInterface): void => {
+                    handleApplicationEdit(app.id, app.access, "#tab=4");
+                    onListItemClick && onListItemClick(e, app);
+                } }
+                placeholders={ showPlaceholders() }
+                selectable={ selection }
+                showHeader={ applicationListConfig.enableTableHeaders }
+                transparent={ !(isLoading || isApplicationTemplateRequestLoading) && (showPlaceholders() !== null) }
+                data-testid={ testId }
+            />
         </EmphasizedSegment>
     );
 };
