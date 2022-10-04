@@ -19,7 +19,7 @@
 <jsp:directive.include file="localize.jsp" />
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 
-<!-- footer -->
+<%-- footer --%>
 <footer class="footer" style="text-align: center">
     <div class="container-fluid">
         <p><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Wso2.identity.server")%> | &copy;

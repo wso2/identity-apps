@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -24,17 +24,12 @@ export class EmailTemplateManagementConstants {
     /**
      * Private constructor to avoid object instantiation from outside
      * the class.
-     *
-     * @hideconstructor
      */
     /* eslint-disable @typescript-eslint/no-empty-function */
     private constructor() { }
 
     /**
      * A Boilerplate template to start email template editing.
-     * @constant
-     * @type {string}
-     * @default
      */
     public static readonly EMAIL_STARTER_TEMPLATE: string = `<!DOCTYPE html>
         <html>
@@ -45,4 +40,13 @@ export class EmailTemplateManagementConstants {
                 <p>Hello {{user.claim.givenname}}!</p>
             </body>
         </html>`;
+
+    /**
+     * Email template types that are enabled for organization domain
+     */
+    public static readonly EMAIL_TEMPLATE_TYPES_FOR_ORGS: string[] = [
+        "UGFzc3dvcmRSZXNldA", // PasswordReset
+        "QWNjb3VudElkUmVjb3Zlcnk", //AccountIdRecovery
+        "QXNrUGFzc3dvcmQ" // AskPassword
+    ]
 }

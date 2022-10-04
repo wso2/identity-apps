@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (http://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -36,17 +36,17 @@ import { handleGetIDPListCallError } from "../../utils";
 interface ExpertModeAuthenticationProviderCreateWizardContentPropsInterface extends IdentifiableComponentInterface {
     /**
      * Trigger form submit.
-     * @param {() => void} submitFunctionCb - Callback.
+     * @param submitFunctionCb - Callback.
      */
     triggerSubmission: (submitFunctionCb: () => void) => void;
     /**
      * Trigger previous page.
-     * @param {() => void} previousFunctionCb - Callback.
+     * @param previousFunctionCb - Callback.
      */
     triggerPrevious: (previousFunctionCb: () => void) => void;
     /**
      * Callback to change the wizard page,
-     * @param {number} pageNo - Page Number.
+     * @param pageNo - Page Number.
      */
     changePageNumber: (pageNo: number) => void;
     /**
@@ -55,22 +55,23 @@ interface ExpertModeAuthenticationProviderCreateWizardContentPropsInterface exte
     template: IdentityProviderTemplateInterface;
     /**
      * Total wizard page count.
-     * @param {number} pageCount - Page number.
+     * @param pageCount - Page number.
      */
     setTotalPage: (pageCount: number) => void;
     /**
      * Callback to be triggered for form submit.
-     * @param values
+     * @param values - Form values.
      */
     onSubmit: (values: ExpertModeAuthenticationProviderCreateWizardFormValuesInterface) => void;
 }
 
+const FORM_ID: string = "expert-mode-authenticator-wizard-form";
+
 /**
  * Expert Mode Authentication Provider Create Wizard content component.
  *
- * @param {ExpertModeAuthenticationProviderCreateWizardContentPropsInterface} props - Props injected to the component.
- *
- * @return {React.ReactElement}
+ * @param props - Props injected to the component.
+ * @returns Functional component.
  */
 export const ExpertModeAuthenticationProviderCreateWizardContent: FunctionComponent<
     ExpertModeAuthenticationProviderCreateWizardContentPropsInterface
@@ -110,8 +111,7 @@ export const ExpertModeAuthenticationProviderCreateWizardContent: FunctionCompon
         /**
          * Check whether IDP name is already exist or not.
          *
-         * @param value IDP name - IDP Name.
-         *
+         * @param value - IDP name.
          * @returns error msg if name is already taken.
          */
         const idpNameValidation = (value): string => {
@@ -141,9 +141,8 @@ export const ExpertModeAuthenticationProviderCreateWizardContent: FunctionCompon
         /**
          * Validates the Form.
          *
-         * @param {ExpertModeAuthenticationProviderCreateWizardFormValuesInterface} values - Form Values.
-         *
-         * @return {ExpertModeAuthenticationProviderCreateWizardFormErrorValidationsInterface}
+         * @param values - Form Values.
+         * @returns Form validation.
          */
         const validateForm = (values: ExpertModeAuthenticationProviderCreateWizardFormValuesInterface):
         ExpertModeAuthenticationProviderCreateWizardFormErrorValidationsInterface => {
@@ -166,6 +165,7 @@ export const ExpertModeAuthenticationProviderCreateWizardContent: FunctionCompon
 
         return (
             <Wizard
+                id={ FORM_ID }
                 initialValues={ {
                     name: template?.idp?.name
                 } }

@@ -1,20 +1,20 @@
 /**
-* Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
-*
-* WSO2 Inc. licenses this file to you under the Apache License,
-* Version 2.0 (the 'License'); you may not use this file except
-* in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing,
-* software distributed under the License is distributed on an
-* 'AS IS' BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-* KIND, either express or implied. See the License for the
-* specific language governing permissions and limitations
-* under the License.
-*/
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 
 import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
@@ -64,12 +64,13 @@ interface EditBasicDetailsLocalClaimsPropsInterface extends TestableComponentInt
     update: () => void;
 }
 
+const FORM_ID: string = "local-claim-basic-details-form";
+
 /**
  * This component renders the Basic Details pane of the edit local claim screen
  *
- * @param {EditBasicDetailsLocalClaimsPropsInterface} props - Props injected to the component.
- *
- * @return {React.ReactElement}
+ * @param props - Props injected to the component.
+ * @returns Functional component.
  */
 export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLocalClaimsPropsInterface> = (
     props: EditBasicDetailsLocalClaimsPropsInterface
@@ -192,9 +193,10 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
 
     /**
      * This deletes a local claim
-     * @param {string} id
+     *
+     * @param id - Claim id.
      */
-    const deleteLocalClaim = (id: string) => {
+    const deleteLocalClaim = (id: string): void => {
         deleteAClaim(id).then(() => {
             history.push(AppConstants.getPaths().get("LOCAL_CLAIMS"));
             dispatch(addAlert(
@@ -325,6 +327,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                     </Grid.Row>
                 </Grid>
                 <Form
+                    id={ FORM_ID }
                     uncontrolledForm={ false }
                     onSubmit={ (values): void => {
                         onSubmit(values as any);
@@ -541,6 +544,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         ) && !hideSpecialClaims &&
                         (
                             <Field.Button
+                                form={ FORM_ID }
                                 ariaLabel="submit"
                                 size="small"
                                 buttonType="primary_btn"

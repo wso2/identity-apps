@@ -31,6 +31,12 @@ import { Grid, Form as SemanticForm } from "semantic-ui-react";
 export interface FormPropsInterface extends FormProps {
 
     /**
+     * Unique id for the form.
+     * Required for event propagation.
+     * @see {@link https://github.com/final-form/react-final-form/issues/878}
+     */
+    id: string;
+    /**
      * Turn on/off native form validations.
      */
     noValidate?: boolean;
@@ -51,7 +57,7 @@ export interface FormPropsInterface extends FormProps {
 export const Form: ForwardRefExoticComponent<PropsWithChildren<FormPropsInterface>> =
     forwardRef((props: PropsWithChildren<FormProps>, ref): ReactElement => {
 
-        const { noValidate, triggerSubmit, ...other } = props;
+        const { id, noValidate, triggerSubmit, ...other } = props;
         const { children, onSubmit, uncontrolledForm, ...rest } = other;
 
         const formRef = useRef(null);
@@ -180,6 +186,7 @@ export const Form: ForwardRefExoticComponent<PropsWithChildren<FormPropsInterfac
 
                     return (
                         <form
+                            id={ id }
                             noValidate={ noValidate }
                             onSubmit={ handleSubmit }
                             ref={ formRef }

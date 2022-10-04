@@ -695,6 +695,10 @@ export interface ConsoleNS {
                                                 heading: string;
                                                 warning: string;
                                             },
+                                            microsoft: {
+                                                description: string;
+                                                heading: string;
+                                            },
                                             emailOTP: {
                                                 description: string,
                                                 heading: string,
@@ -1022,6 +1026,46 @@ export interface ConsoleNS {
                     title: string;
                     description: string;
                     popup: string;
+                    enable: {
+                        0: string;
+                        1: string;
+                    };
+                    Confirmation: {
+                        enableConfirmation: {
+                            content: string;
+                            heading: string;
+                            message: string;
+                        };
+                        disableConfirmation: {
+                            content: string;
+                            heading: string;
+                            message: string;
+                        };
+                    };
+                    notifications: {
+                        error: {
+                            description: string;
+                            message: string;
+                        };
+                        genericError: {
+                            description: string;
+                            message: string;
+                        };
+                        success: {
+                            description: string;
+                            message: string;
+                        };
+                    };
+                    fetchMyAccountStatus: {
+                        error: {
+                            description: string;
+                            message: string;
+                        },
+                        genericError: {
+                            description: string;
+                            message: string;
+                        },
+                    }
                 };
                 notifications: {
                     addApplication: Notification;
@@ -1339,6 +1383,27 @@ export interface ConsoleNS {
                                 }
                             };
                         };
+                        microsoft: {
+                            callbackUrl: FormAttributes;
+                            clientId: FormAttributes;
+                            clientSecret: FormAttributes;
+                            AdditionalQueryParameters: FormAttributes;
+                            scopes: {
+                                heading: string;
+                                hint: string;
+                                list: {
+                                    email: {
+                                        description: string;
+                                    },
+                                    openid: {
+                                        description: string;
+                                    },
+                                    profile: {
+                                        description: string;
+                                    }
+                                }
+                            };
+                        };
                         saml: {
                             AuthRedirectUrl: FormAttributes;
                             SPEntityId: FormAttributes;
@@ -1514,6 +1579,31 @@ export interface ConsoleNS {
                         }
                     };
                     google?: {
+                        wizardHelp: {
+                            clientId: {
+                                description: string;
+                                heading: string;
+                            };
+                            clientSecret: {
+                                description: string;
+                                heading: string;
+                            };
+                            heading: string;
+                            name: {
+                                idpDescription: string;
+                                connectionDescription: string;
+                                heading: string;
+                            };
+                            preRequisites: {
+                                configureOAuthApps: string;
+                                configureRedirectURL: string;
+                                getCredentials: string;
+                                heading: string;
+                            },
+                            subHeading: string;
+                        }
+                    };
+                    microsoft?: {
                         wizardHelp: {
                             clientId: {
                                 description: string;

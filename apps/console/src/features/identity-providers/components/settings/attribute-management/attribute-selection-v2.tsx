@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -37,12 +37,17 @@ export interface AttributesSelectionV2Props extends TestableComponentInterface {
     isReadOnly: boolean;
 }
 
+const FORM_ID: string = "idp-attribute-selection-v2-form";
+
 /**
  * New implementation of attributes selection for IdPs. It has a similar
  * look and feel of Claims components.
  *
- * @param props {AttributesSelectionV2Props}
- * @constructor
+ * TODO: Validate the necessity of this component. If this is the way forward, remove the
+ * v1 component and remove the v2 suffix from this component.
+ *
+ * @param props - Props injected to the component.
+ * @returns Functional component.
  */
 export const AttributesSelectionV2: FunctionComponent<AttributesSelectionV2Props> = (
     props: AttributesSelectionV2Props
@@ -63,15 +68,19 @@ export const AttributesSelectionV2: FunctionComponent<AttributesSelectionV2Props
     const { t } = useTranslation();
 
     useEffect(() => {
-        const ids = [];
+        const ids: string[] = [];
+
         for (const mapping of mappedAttributesList) {
             ids.push(mapping.claim.id);
         }
+
         setMappedAttrIds(ids);
     }, [ attributeList ]);
 
     /**
-     * @predicate
+     * Check if there are mapped attibutes.
+     *
+     * @returns Has mapped attributes or not.
      */
     const hasMappedAttributes = (): boolean => {
         return mappedAttributesList &&
@@ -80,7 +89,8 @@ export const AttributesSelectionV2: FunctionComponent<AttributesSelectionV2Props
 
     /**
      * The placeholder component to show when there's no attributes selected.
-     * @return {ReactElement} JSX
+     *
+     * @returns Selection modal placeholder.
      */
     const _noAttributesSelectedModalPlaceholder = (): ReactElement => {
         return (
@@ -109,7 +119,8 @@ export const AttributesSelectionV2: FunctionComponent<AttributesSelectionV2Props
     /**
      * The placeholder component to show when there's no results for
      * the search query {@link searchQuery}.
-     * @return {ReactElement} JSX
+     *
+     * @returns Empty results placeholder.
      */
     const _attributesListSearchResultsEmptyPlaceholder = (): ReactElement => {
         return (
@@ -143,7 +154,7 @@ export const AttributesSelectionV2: FunctionComponent<AttributesSelectionV2Props
      * is, we simply close the modal and call {@link onAttributesSelected}
      * with the newly added mappings + existing mappings.
      *
-     * @param mappingsToBeAdded {IdentityProviderCommonClaimMappingInterface}
+     * @param mappingsToBeAdded - Set of mappings.
      */
     const onSave = (mappingsToBeAdded: IdentityProviderCommonClaimMappingInterface[]) => {
         onAttributesSelected([ ...mappedAttributesList, ...mappingsToBeAdded ]);
@@ -166,8 +177,11 @@ export const AttributesSelectionV2: FunctionComponent<AttributesSelectionV2Props
                             <Grid>
                                 <Grid.Row columns={ 2 }>
                                     <Grid.Column width={ 7 }>
-                                        <Form onSubmit={ () => ({ /*Noop*/ }) }
-                                              uncontrolledForm={ false }>
+                                        <Form
+                                            id={ FORM_ID }
+                                            onSubmit={ () => ({ /*Noop*/ }) }
+                                            uncontrolledForm={ false }
+                                        >
                                             <Field.Input
                                                 icon="search"
                                                 iconPosition="left"
@@ -202,6 +216,7 @@ export const AttributesSelectionV2: FunctionComponent<AttributesSelectionV2Props
                                                         return m.mappedValue.startsWith(searchQuery) ||
                                                             m.claim.id.startsWith(searchQuery);
                                                     }
+
                                                     return true;
                                                 })
                                             }

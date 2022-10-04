@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -65,6 +65,11 @@ interface TOTPProps extends TestableComponentInterface {
     enabledAuthenticators: Array<string>;
     onEnabledAuthenticatorsUpdated: (updatedAuthenticators: Array<string>) => void;
     triggerBackupCodesFlow: () => void;
+    /**
+     * This callback function handles the visibility of the
+     * session termination modal.
+     */
+     handleSessionTerminationModalVisibility: (visibility: boolean) => void;
 }
 
 /**
@@ -83,6 +88,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
         onEnabledAuthenticatorsUpdated,
         onAlertFired,
         triggerBackupCodesFlow,
+        handleSessionTerminationModalVisibility,
         ["data-testid"]: testId
     } = props;
 
@@ -115,7 +121,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     const pinCode6 = useRef<HTMLInputElement>();
 
     /**
-     * Check whether the TOTP is configured
+     * Check whether the TOTP is configured.
      */
     useEffect(() => {        
         checkIfTOTPEnabled().then((response) => {
@@ -124,7 +130,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     }, []);
 
     /**
-     * Check whether the TOTP is enabled
+     * Check whether the TOTP is enabled.
      */
     useEffect(() => {         
         setIsTOTPEnabled(enabledAuthenticators?.includes(totpAuthenticatorName) ?? false);
@@ -132,6 +138,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
 
     /**
      * Focus to next pin code after enter a value.
+     * 
      * @param field - The name of the field.
      */
     const focusInToNextPinCode = (field: string): void => {
@@ -161,6 +168,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
 
     /**
      * Focus to previous pin code after enter Backspace or Delete.
+     * 
      * @param field - The name of the field.
      */
     const focusInToPreviousPinCode = (field: string): void => {
@@ -189,7 +197,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     };
 
     /**
-     * Reset pin code value in Error state
+     * Reset pin code value in Error state.
      */
     const resetPinCodeFields = () => {
         if (pinCode1.current) {
@@ -205,6 +213,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
 
     /**
      * Update enabled authenticator list based on the update action.
+     * 
      * @param action - The update action.
      */
     const handleUpdateEnabledAuthenticators = (action: EnabledAuthenticatorUpdateAction): void => {
@@ -255,7 +264,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     };
 
     /**
-     * Initiate the TOTP configuration flow
+     * Initiate the TOTP configuration flow.
      */
     const initTOTPFlow = () => {
         setIsLoading(true);
@@ -284,7 +293,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     };
 
     /**
-     * Handle cancelling TOTP configuration flow
+     * Handle cancelling TOTP configuration flow.
      */
     const handleTOTPInitCancel = () => {
         deleteTOTP()
@@ -307,6 +316,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
 
     /**
      * Handle TOTP submit flow.
+     * 
      * @param event - Form submit event.
      * @param isRegenerated - Whether the TOTP is regenerated or not.
      */
@@ -339,6 +349,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
 
     /**
      * Handle TOTP enable/disable flow.
+     * 
      * @param _ - Radio button toggle event.
      * @param data - Data related to the toggle event.
      */
@@ -352,6 +363,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
 
     /**
      * Render TOTP form to shown in TOTP modal.
+     * 
      * @param isRegenerated - Whether the TOTP is regenerated or not.
      * @returns Rendered form component.
      */
@@ -535,6 +547,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
 
     /**
      * Render TOTP configuration modal content.
+     * 
      * @returns Modal content based on TOTPModalCurrentStep.
      */
     const renderTOTPWizardContent = (): React.ReactElement => {
@@ -584,6 +597,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
 
     /**
      * Render TOTP configuration modal actions.
+     * 
      * @returns Modal action based on TOTPModalCurrentStep.
      */
     const renderTOTPWizardActions = (): React.ReactElement => {
@@ -625,6 +639,8 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                     if (shouldContinueToBackupCodes) {
                         triggerBackupCodesFlow();
                     }
+
+                    handleSessionTerminationModalVisibility(true);
                 } }
             >
                 { shouldContinueToBackupCodes ? t("common:continue") : t("common:done") }
@@ -633,7 +649,8 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     };
 
     /**
-     * Renders the TOTP configuration Modal
+     * Renders the TOTP configuration Modal.
+     * 
      * @returns Rendered modal component
      */
     const renderTOTPWizard = (): React.ReactElement => {
@@ -660,7 +677,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     };
 
     /**
-     * Handle view TOTP event
+     * Handle view TOTP event.
      */
     const handleViewTOTP = (): void => {
         setIsLoading(true);
@@ -686,14 +703,14 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     };
 
     /**
-     * Handle confirm QR code regeneration checkbox event
+     * Handle confirm QR code regeneration checkbox event.
      */
     const handleConfirmRegenerateQRCode = (_: FormEvent<HTMLInputElement>, data: CheckboxProps): void => {
         setIsConfirmRegenerate(data.checked ?? false);
     };
 
     /**
-     * Handle regenerate QR code event
+     * Handle regenerate QR code event.
      */
     const handleRegenerateQRCode = (): void => {
         setIsLoading(true);
@@ -719,8 +736,9 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     };
 
     /**
+     * Renders modal content.
      * 
-     * @returns Modal content based on viewTOTPModalCurrentStep
+     * @returns Modal content based on viewTOTPModalCurrentStep.
      */
     const renderViewTOTPWizardContent = (): React.ReactElement => {
         switch (viewTOTPModalCurrentStep) {
@@ -870,6 +888,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                     setIsConfirmRegenerate(false);
                     setIsViewTOTPModalOpen(false);
                     setViewTOTPModalCurrentStep(0);
+                    handleSessionTerminationModalVisibility(true);
                 } }
             >
                 { t("common:done") }
@@ -878,7 +897,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     };
 
     /**
-     * Renders the TOTP wizard
+     * Renders the TOTP wizard.
      */
     const renderViewTOTPWizard = (): React.ReactElement => {
         return (
@@ -912,7 +931,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                 setIsTOTPConfigured(false);
                 handleUpdateEnabledAuthenticators(EnabledAuthenticatorUpdateAction.REMOVE);
 
-                // Deletes backup codes
+                // Deletes backup codes.
                 if (shouldContinueToBackupCodes) {
                     deleteBackupCode()
                         .then(() => {
@@ -921,6 +940,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                                 level: AlertLevels.SUCCESS,
                                 message: t(translateKey + "notifications.deleteSuccess.genericMessage")
                             });
+                            handleSessionTerminationModalVisibility(true);
                         })
                         .catch((errorMessage) => {
                             onAlertFired({
@@ -937,6 +957,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                         level: AlertLevels.SUCCESS,
                         message: t(translateKey + "notifications.deleteSuccess.genericMessage")
                     });
+                    handleSessionTerminationModalVisibility(true);
                 }
             })
             .catch((errorMessage) => {
@@ -961,7 +982,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     };
 
     /**
-     * This renders the TOTP Authenticator delete Modal
+     * This renders the TOTP Authenticator delete Modal.
      */
     const renderRevokeTOTPModal = () => {
         return (

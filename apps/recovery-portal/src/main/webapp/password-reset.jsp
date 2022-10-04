@@ -33,6 +33,7 @@
     String callback = (String) request.getAttribute(IdentityManagementEndpointConstants.CALLBACK);
     String username = request.getParameter("username");
     String userStoreDomain = request.getParameter("userstoredomain");
+    String type = request.getParameter("type");
     String tenantDomain = (String) request.getAttribute(IdentityManagementEndpointConstants.TENANT_DOMAIN);
     if (tenantDomain == null) {
         tenantDomain = (String) session.getAttribute(IdentityManagementEndpointConstants.TENANT_DOMAIN);
@@ -66,7 +67,7 @@
     <body class="login-portal layout recovery-layout">
         <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
             <layout:component componentName="ProductHeader" >
-                <!-- product-title -->
+                <%-- product-title --%>
                 <%
                     File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
                     if (productTitleFile.exists()) {
@@ -78,7 +79,7 @@
             </layout:component>
             <layout:component componentName="MainSection" >
                 <div class="ui segment">
-                    <!-- content -->
+                    <%-- content --%>
                     <h2>
                         <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Reset.Password")%>
                     </h2>
@@ -150,6 +151,17 @@
                             <%
                                 }
                             %>
+
+                            <%
+                                if (type != null) {
+                            %>
+                            <div>
+                                <input type="hidden" name="type" value="<%=Encode.forHtmlAttribute(type) %>"/>
+                            </div>
+                            <%
+                                }
+                            %>
+
                            <div class="field">
                                 <label>
                                     <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Confirm.password")%>
@@ -180,7 +192,7 @@
                 </div>
             </layout:component>
             <layout:component componentName="ProductFooter" >
-                <!-- product-footer -->
+                <%-- product-footer --%>
                 <%
                     File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
                     if (productFooterFile.exists()) {
@@ -192,7 +204,7 @@
             </layout:component>
         </layout:main>
 
-        <!-- footer -->
+        <%-- footer --%>
         <%
             File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
             if (footerFile.exists()) {

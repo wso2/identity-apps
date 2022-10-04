@@ -236,7 +236,8 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                             ) }
                             { (!hiddenOptions.includes(LoginFlowTypes.GOOGLE_LOGIN) ||
                                 !hiddenOptions.includes(LoginFlowTypes.FACEBOOK_LOGIN) ||
-                                !hiddenOptions.includes(LoginFlowTypes.GITHUB_LOGIN)) && (
+                                !hiddenOptions.includes(LoginFlowTypes.GITHUB_LOGIN) ||
+                                !hiddenOptions.includes(LoginFlowTypes.MICROSOFT_LOGIN)) && (
                                 <>
                                     <Heading as="h4">
                                         { t(
@@ -305,6 +306,31 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                                 "types.facebook.description"
                                             ) }
                                             onClick={ () => onLoginFlowSelect(LoginFlowTypes.FACEBOOK_LOGIN) }
+                                        />
+                                    ) }
+                                    { !hiddenOptions.includes(LoginFlowTypes.MICROSOFT_LOGIN) && (
+                                        <InfoCard
+                                            fluid
+                                            data-testid="microsoft-login-flow-card"
+                                            imageSize="mini"
+                                            image={ getAuthenticatorIcons().microsoft }
+                                            header={ t(
+                                                "console:develop.features.applications.edit.sections" +
+                                                ".signOnMethod.sections.landing.flowBuilder.types.microsoft.heading"
+                                            ) }
+                                            description={ t(
+                                                "console:develop.features.applications.edit.sections" +
+                                                ".signOnMethod.sections.landing.flowBuilder." +
+                                                "types.microsoft.description"
+                                            ) }
+                                            onClick={ () => {
+                                                eventPublisher.publish(
+                                                    "application-begin-sign-in-microsoft-social-login", {
+                                                        type: clientId
+                                                    }
+                                                );
+                                                onLoginFlowSelect(LoginFlowTypes.MICROSOFT_LOGIN);
+                                            } }
                                         />
                                     ) }
                                 </>
