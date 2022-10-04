@@ -97,7 +97,7 @@ interface EditIdentityProviderPropsInterface extends TestableComponentInterface 
  * Identity Provider edit component.
  *
  * @param props - Props injected to the component.
- * @returns ReactElement
+ * @returns React Element
  */
 export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsInterface> = (
     props: EditIdentityProviderPropsInterface
@@ -321,7 +321,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
          * {@link identityProviderConfig} contains the configuration
          * to enable or disable this via extensions. Please refer
          * {@link apps/console/src/extensions#} configs folder and
-         * models folder for types. 'identity-provider.ts'
+         * models folder for types. identity-provider.ts
          */
         const attributesForSamlEnabled = isSaml && identityProviderConfig.editIdentityProvider.attributesSettings;
 
@@ -371,7 +371,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
      *
      * @param type - IDP Type.
      *
-     * @returns boolean
+     * @returns Boolean value 
      */
     const shouldShowAttributeSettings = (type: string): boolean => {
 

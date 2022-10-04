@@ -1181,6 +1181,10 @@ export const console: ConsoleNS = {
                                                     "සත්‍යාපකයක් සමඟ එය භාවිතා කිරීම අනපේක්ෂිත හැසිරීමකට හේතු විය හැක."
 
                                             },
+                                            microsoft: {
+                                                description: "Microsoft සමඟ පුරනය වීමට පරිශීලකයින්ට සක්‍රීය කරන්න.",
+                                                heading: "Microsoft පිවිසුම එක් කරන්න"
+                                            },
                                             totp: {
                                                 description: "කාලය පදනම් කරගත් OTP සමඟ අතිරේක සත්‍යාපන ස්තරය " +
                                                     "සක්‍රීය කරන්න.",

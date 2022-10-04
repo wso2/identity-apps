@@ -1173,6 +1173,10 @@ export const console: ConsoleNS = {
                                                     "Magic Link authenticator. Using it with any other authenticator " +
                                                     "can lead to unexpected behavior."
                                             },
+                                            microsoft: {
+                                                description: "Enable users to login with Microsoft.",
+                                                heading: "Add Microsoft login"
+                                            },
                                             totp: {
                                                 description: "Enable additional authentication layer with Time "
                                                     + "based OTP.",
@@ -3327,6 +3331,57 @@ export const console: ConsoleNS = {
                                 }
                             }
                         },
+                        microsoft: {
+                            AdditionalQueryParameters: {
+                                ariaLabel: "Microsoft authenticator additional query parameters",
+                                hint: "Additional query parameters to be sent to Microsoft.",
+                                label: "Additional Query Parameters",
+                                placeholder: "Enter additional query parameters.",
+                                validations: {
+                                    required: "Client secret is not a required field."
+                                }
+                            },
+                            callbackUrl: {
+                                hint: "The authorized redirect URI used to obtain Microsoft credentials.",
+                                label: "Authorized redirect URI",
+                                placeholder: "Enter Authorized redirect URI.",
+                                validations: {
+                                    required: "Authorized redirect URI is a required field."
+                                }
+                            },
+                            clientId: {
+                                hint: "The <1>Client ID</1> you received from Microsoft for your OAuth app.",
+                                label: "Client ID",
+                                placeholder: "Enter Client ID from Microsoft application.",
+                                validations: {
+                                    required: "Client ID is a required field."
+                                }
+                            },
+                            clientSecret: {
+                                hint: "The <1>Client secret</1> you received from Microsoft for your OAuth app.",
+                                label: "Client secret",
+                                placeholder: "Enter Client secret from Microsoft application.",
+                                validations: {
+                                    required: "Client secret is a required field."
+                                }
+                            },
+                            scopes: {
+                                heading: "Scopes",
+                                hint: "The type of access provided for the connected apps to access data " +
+                                    "from Microsoft. Click <1>here</1> to learn more.",
+                                list: {
+                                    email: {
+                                        description: "Allows to view user's email address."
+                                    },
+                                    openid: {
+                                        description: "Allows to authenticate using OpenID Connect."
+                                    },
+                                    profile: {
+                                        description: "Allows to view user's basic profile data."
+                                    }
+                                }
+                            }
+                        },
                         saml: {
                             AuthRedirectUrl: {
                                 ariaLabel: "SAML assertion consumer service URL",
@@ -4275,6 +4330,34 @@ export const console: ConsoleNS = {
                                 configureRedirectURL: "Add the following URL as the <1>Authorized Redirect URI</1>.",
                                 getCredentials: "Before you begin, create an <1>OAuth application</1> " +
                                     "<3>on Google</3>, and obtain a <5>client ID & secret</5>.",
+                                heading: "Prerequisite"
+                            },
+                            subHeading: "Use the guide below"
+                        }
+                    },
+                    microsoft: {
+                        wizardHelp: {
+                            clientId: {
+                                description: "Provide the <1>Client ID</1> you received from Microsoft when you " +
+                                    "registered the OAuth app.",
+                                heading: "Client ID"
+                            },
+                            clientSecret: {
+                                description: "Provide the <1>Client secret</1> you received from Microsoft when you " +
+                                    "registered the OAuth app.",
+                                heading: "Client secret"
+                            },
+                            heading: "Help",
+                            name: {
+                                connectionDescription: "Provide a unique name for the connection.",
+                                heading: "Name",
+                                idpDescription: "Provide a unique name for the identity provider."
+                            },
+                            preRequisites: {
+                                configureOAuthApps: "See Microsoft's guide on configuring OAuth Apps.",
+                                configureRedirectURL: "Add the following URL as the <1>Authorized Redirect URI</1>.",
+                                getCredentials: "Before you begin, create an <1>OAuth application</1> " +
+                                    "<3>on Microsoft</3>, and obtain a <5>client ID & secret</5>.",
                                 heading: "Prerequisite"
                             },
                             subHeading: "Use the guide below"

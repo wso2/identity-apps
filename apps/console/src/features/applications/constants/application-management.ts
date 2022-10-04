@@ -337,6 +337,8 @@ export class ApplicationManagementConstants {
         IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_NAME,
         IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_ID,
         IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_NAME,
+        IdentityProviderManagementConstants.MICROSOFT_AUTHENTICATOR_ID,
+        IdentityProviderManagementConstants.MICROSOFT_AUTHENTICATOR_NAME,
         IdentityProviderManagementConstants.TWITTER_AUTHENTICATOR_ID,
         IdentityProviderManagementConstants.TWITTER_AUTHENTICATOR_NAME,
         IdentityProviderManagementConstants.GITHUB_AUTHENTICATOR_ID,
