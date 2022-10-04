@@ -68,6 +68,10 @@ jobs:
         run: |
             bash ./scripts/lint-changed.sh ${{ github.event.pull_request.number }}
 
+      - run: |
+          echo "BASE: ${{ env.NX_BASE }}"
+          echo "HEAD: ${{ env.NX_HEAD }}"
+
       - name: ⏳ Lint All Files
         id: lint-with-eslint
         run: pnpm nx affected --base=${{ env.NX_BASE }} --head=${{ env.NX_HEAD }} --plain --target=lint --parallel=3
