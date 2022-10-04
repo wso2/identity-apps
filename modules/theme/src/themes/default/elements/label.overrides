@@ -121,3 +121,23 @@
         text-transform: uppercase;
     }
 }
+
+/*******************************
+      Inbound Type Labels
+*******************************/
+
+.ui.label {
+    &.issuer-label {
+        color: #e68e00;
+        font-weight: 500;
+        background-color: #faebcd;
+    }
+}
+
+.ui.label { 
+    &.client-id-label {
+        color: #0082c3;
+        font-weight: 500;
+        background-color: #dcf0fa;
+    }
+}

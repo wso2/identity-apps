@@ -362,7 +362,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                                 }
                                 <div>
                                     { templateDisplayName && (
-                                        <Label className="no-margin-left" size="tiny">{ templateDisplayName }</Label>
+                                        <Label className="no-margin-left" size="mini">{ templateDisplayName }</Label>
                                     ) }
                                 </div>
                             </Header.Content>
@@ -378,28 +378,34 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                 key: "inboundKey",
                 render: (app: ApplicationListItemInterface): ReactNode => {
                     let inboundAuthKey: string = "";
-                    let inboundAuthType: ApplicationInboundTypes;
+                    let inboundAuthType: string = "";
+                    let inboundAuthTypeLabelClass: string = "";
 
                     if (app.clientId) {
                         inboundAuthKey = app.clientId;
-                        inboundAuthType = ApplicationInboundTypes.CLIENTID;
+                        inboundAuthType = "Client ID";
+                        inboundAuthTypeLabelClass = "client-id-label";
                     } else if (app.issuer) {
                         inboundAuthKey = app.issuer;
-                        inboundAuthType = ApplicationInboundTypes.ISSUER;
+                        inboundAuthType = "Issuer";
+                        inboundAuthTypeLabelClass = "issuer-label";
                     }
 
                     return (
                         <Header as="h6" data-testid={ `${ testId }-col-2-item-heading` }>
                             <Header.Content>
-                                {
-                                    inboundAuthType && (
-                                        <Label className="no-margin-left" pointing="right" size="mini">
-                                            { inboundAuthType } :
-                                        </Label>
-                                    )
-                                }
                                 <Header.Subheader data-testid={ `${ testId }-col-2-item-sub-heading` }>
                                     { inboundAuthKey }
+                                    { 
+                                        inboundAuthType && (
+                                            <Label
+                                                pointing="left"
+                                                size="mini"
+                                                className={ inboundAuthTypeLabelClass }>
+                                                { inboundAuthType }
+                                            </Label>
+                                        )
+                                    }
                                 </Header.Subheader>
                             </Header.Content>
                         </Header>
