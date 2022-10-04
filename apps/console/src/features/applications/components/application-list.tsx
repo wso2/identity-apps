@@ -58,7 +58,6 @@ import { deleteApplication } from "../api";
 import { ApplicationManagementConstants } from "../constants";
 import {
     ApplicationAccessTypes,
-    ApplicationInboundTypes,
     ApplicationListInterface,
     ApplicationListItemInterface,
     ApplicationTemplateListItemInterface
