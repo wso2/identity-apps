@@ -89,7 +89,7 @@ const IDENTITY_PROVIDER_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
  *
  * @param props - Props injected to the component.
  *
- * @return React Element
+ * @returns React Element
  */
 const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (props: IDPPropsInterface): ReactElement => {
     const { [ "data-testid" ]: testId } = props;
