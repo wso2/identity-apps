@@ -45,8 +45,20 @@
 
     if (Boolean.parseBoolean(request.getParameter(Constants.AUTH_FAILURE))) {
         authenticationFailed = "true";
+        String errorCode = request.getParameter("errorCode");
 
-        if (request.getParameter(Constants.AUTH_FAILURE_MSG) != null) {
+        if ( errorCode != null) {
+            if (errorCode.equals(IdentityCoreConstants.USER_ACCOUNT_LOCKED_ERROR_CODE)) {
+                String lockedReason = request.getParameter("lockedReason");
+                if (lockedReason!=null) {
+                    if (lockedReason.equals("MAX_TOTP_ATTEMPTS_EXCEEDED")) {
+                        errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.user.account.locked.incorrect.login.attempts");
+                    } else if (lockedReason.equals("ADMIN_INITIATED")) {
+                        errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.user.account.locked.admin.initiated");
+                    }
+                }
+            }
+        } else if (request.getParameter(Constants.AUTH_FAILURE_MSG) != null) {
             errorMessage = Encode.forHtmlAttribute(request.getParameter(Constants.AUTH_FAILURE_MSG));
 
                 if (errorMessage.equalsIgnoreCase("authentication.fail.message") ||
@@ -159,6 +171,7 @@
 
                         <input id="username" type="hidden"
                                value='<%=Encode.forHtmlAttribute(request.getParameter("username"))%>'>
+
 
                         <div class="segment-form">
                             <form action="<%=commonauthURL%>" method="post" id="totpForm" class="ui large form">
