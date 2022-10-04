@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -49,13 +49,12 @@ export class Config {
      * the class.
      *
      */
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
     private constructor() { }
 
     /**
      * This method adds organization path to the server host if an organization is selected.
      *
-     * @returns string
+     * @returns Server host.
      */
     public static resolveServerHost(): string {
         if (OrganizationUtils.isRootOrganization(store.getState().organization.organization)) {
@@ -161,7 +160,6 @@ export class Config {
      * Get i18n module config.
      *
      * @param metaFile - Meta file.
-     *
      * @returns i18n config object.
      */
     public static getI18nConfig(metaFile?: MetaI18N): I18nModuleOptionsInterface {

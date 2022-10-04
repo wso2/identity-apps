@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -28,16 +28,16 @@ import { AppState, ConfigReducerStateInterface } from "../../../../../core";
 /**
  * Prop types of the component.
  */
-type GoogleIDPCreateWizardHelpPropsInterface = TestableComponentInterface
+type MicrosoftIDPCreateWizardHelpPropsInterface = TestableComponentInterface
 
 /**
  * Help content for the custom IDP template creation wizard.
  *
  * @param props - Props injected into the component.
- * @returns React Element for Google Create Wizard
+ * @returns - React Element for Create Wizard
  */
-const GoogleIDPCreateWizardHelp: FunctionComponent<GoogleIDPCreateWizardHelpPropsInterface> = (
-    props: GoogleIDPCreateWizardHelpPropsInterface
+const MicrosoftIDPCreateWizardHelp: FunctionComponent<MicrosoftIDPCreateWizardHelpPropsInterface> = (
+    props: MicrosoftIDPCreateWizardHelpPropsInterface
 ): ReactElement => {
 
     const {
@@ -67,7 +67,7 @@ const GoogleIDPCreateWizardHelp: FunctionComponent<GoogleIDPCreateWizardHelpProp
             <Message
                 type="info"
                 header={
-                    t("console:develop.features.authenticationProvider.templates.google.wizardHelp." +
+                    t("console:develop.features.authenticationProvider.templates.microsoft.wizardHelp." +
                         "preRequisites.heading")
                 }
                 content={
@@ -75,22 +75,22 @@ const GoogleIDPCreateWizardHelp: FunctionComponent<GoogleIDPCreateWizardHelpProp
                         <p>
                             <Trans
                                 i18nKey={
-                                    "console:develop.features.authenticationProvider.templates.google.wizardHelp." +
+                                    "console:develop.features.authenticationProvider.templates.microsoft.wizardHelp." +
                                     "preRequisites.getCredentials"
                                 }
                             >
                                 Before you begin, create an <strong>OAuth credential</strong> on the <a
-                                    href="https://console.developers.google.com"
+                                    href="https://portal.azure.com"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                > Google developer console</a>, and obtain a <strong>Client ID & secret</strong>.
+                                > Azure Active Directory</a>, and obtain a <strong>Client ID & secret</strong>.
                             </Trans>
                         </p>
                         <p>
 
                             <Trans
                                 i18nKey={
-                                    "console:develop.features.authenticationProvider.templates.google.wizardHelp" +
+                                    "console:develop.features.authenticationProvider.templates.microsoft.wizardHelp" +
                                     ".preRequisites.configureRedirectURL"
                                 }
                             >
@@ -103,12 +103,13 @@ const GoogleIDPCreateWizardHelp: FunctionComponent<GoogleIDPCreateWizardHelpProp
                             />
 
                             <a
-                                href="https://support.google.com/googleapi/answer/6158849"
+                                href={ "https://learn.microsoft.com/en-us/azure/active-directory/saas-apps"
+                                +"/openidoauth-tutorial?source=recommendations" }
                                 target="_blank"
                                 rel="noopener noreferrer">
                                 {
-                                    t("console:develop.features.authenticationProvider.templates.google.wizardHelp." +
-                                        "preRequisites.configureOAuthApps")
+                                    t("console:develop.features.authenticationProvider.templates.microsoft.wizardHelp" +
+                                        ".preRequisites.configureOAuthApps")
                                 }
                             </a>
                         </p>
@@ -118,16 +119,16 @@ const GoogleIDPCreateWizardHelp: FunctionComponent<GoogleIDPCreateWizardHelpProp
 
             <Heading as="h5">
                 {
-                    t("console:develop.features.authenticationProvider.templates.google" +
+                    t("console:develop.features.authenticationProvider.templates.microsoft" +
                         ".wizardHelp.name.heading")
                 }
             </Heading>
             <p>
                 {
                     useNewConnectionsView
-                        ? t("console:develop.features.authenticationProvider.templates.google." +
+                        ? t("console:develop.features.authenticationProvider.templates.microsoft." +
                             "wizardHelp.name.connectionDescription")
-                        : t("console:develop.features.authenticationProvider.templates.google." +
+                        : t("console:develop.features.authenticationProvider.templates.microsoft." +
                             "wizardHelp.name.idpDescription")
                 }
             </p>
@@ -135,16 +136,16 @@ const GoogleIDPCreateWizardHelp: FunctionComponent<GoogleIDPCreateWizardHelpProp
             <Divider/>
 
             <Heading as="h5">
-                { t("console:develop.features.authenticationProvider.templates.google.wizardHelp.clientId.heading") }
+                { t("console:develop.features.authenticationProvider.templates.microsoft.wizardHelp.clientId.heading") }
             </Heading>
             <p>
                 <Trans
                     i18nKey={
-                        "console:develop.features.authenticationProvider.templates.google" +
+                        "console:develop.features.authenticationProvider.templates.microsoft" +
                         ".wizardHelp.clientId.description"
                     }
                 >
-                    Provide the <Code>Client ID</Code> obtained from Google.
+                    Provide the <Code>Client ID</Code> obtained from Microsoft.
                 </Trans>
             </p>
 
@@ -152,18 +153,18 @@ const GoogleIDPCreateWizardHelp: FunctionComponent<GoogleIDPCreateWizardHelpProp
 
             <Heading as="h5">
                 {
-                    t("console:develop.features.authenticationProvider.templates.google" +
+                    t("console:develop.features.authenticationProvider.templates.microsoft" +
                         ".wizardHelp.clientSecret.heading")
                 }
             </Heading>
             <p>
                 <Trans
                     i18nKey={
-                        "console:develop.features.authenticationProvider.templates.google" +
+                        "console:develop.features.authenticationProvider.templates.microsoft" +
                         ".wizardHelp.clientSecret.description"
                     }
                 >
-                    Provide the <Code>Client Secret</Code> obtained from Google.
+                    Provide the <Code>Client Secret</Code> obtained from Microsoft.
                 </Trans>
             </p>
         </div>
@@ -173,8 +174,8 @@ const GoogleIDPCreateWizardHelp: FunctionComponent<GoogleIDPCreateWizardHelpProp
 /**
  * Default props for the component
  */
-GoogleIDPCreateWizardHelp.defaultProps = {
-    "data-testid": "google-idp-create-wizard-help"
+MicrosoftIDPCreateWizardHelp.defaultProps = {
+    "data-testid": "microsoft-idp-create-wizard-help"
 };
 
 /**
@@ -182,4 +183,4 @@ GoogleIDPCreateWizardHelp.defaultProps = {
  * TODO: Change this to a named export once react starts supporting named exports for code splitting.
  * @see {@link https://reactjs.org/docs/code-splitting.html#reactlazy}
  */
-export default GoogleIDPCreateWizardHelp;
+export default MicrosoftIDPCreateWizardHelp;

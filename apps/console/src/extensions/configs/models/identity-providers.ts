@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -38,10 +38,8 @@ export interface IdentityProviderConfig {
     createIdentityProvider: {
         /**
          * Used to the IDP create wizard of a certain IDP template type.
-         * @param {string} templateId - The IDP Template Type.
-         * @param {
-         *  GenericIdentityProviderCreateWizardPropsInterface & IdentifiableComponentInterface
-        *  } templateId - Props for the component.
+         * @param templateId - The IDP Template Type.
+         * @param props - Props for the component.
          */
         getOverriddenCreateWizard: (
             templateId: string,
@@ -60,15 +58,15 @@ export interface IdentityProviderConfig {
         attributesSettings: boolean;
         /**
          * Used enable/disable certain tabs for certain IDP template type.
-         * @param {string} templateId - The IDP Template Type.
-         * @param {IdentityProviderTabTypes} tabType - Tab Type.
+         * @param templateId - The IDP Template Type.
+         * @param tabType - Tab Type.
          */
         isTabEnabledForIdP: (templateId: string, tabType: IdentityProviderTabTypes) => boolean | undefined;
         /**
          * Used to the IDP settings form of a certain IDP template type.
-         * @param {string} type - The IDP Authenticator ID.
-         * @param {string} templateId - The IDP Template Type.
-         * @param {Record<string, any>} templateId - Props for the component.
+         * @param type - The IDP Authenticator ID.
+         * @param templateId - The IDP Template Type.
+         * @param templateId - Props for the component.
          */
         getOverriddenAuthenticatorForm: (
             type: string,
@@ -108,15 +106,15 @@ export interface IdentityProviderConfig {
         hideIdentityClaimAttributes?: (authenticatorId: string) => boolean;
         hideLogoInputFieldInIdPGeneralSettingsForm?: (authenticatorId: string) => boolean;
         /**
-         * If returned {@code false} the provisioning claims section is hidden
+         * If returned `false` the provisioning claims section is hidden
          * entirely. Update operations will fallback to defaults.
-         * @param authenticatorId
+         * @param authenticatorId - ID of the authenticator.
          */
         isProvisioningAttributesEnabled: (authenticatorId: string) => boolean;
         /**
-         * If returned {@code false} it will hide both uri mapping for role and
+         * If returned `false` it will hide both uri mapping for role and
          * external mappings component entirely.
-         * @param authenticatorId
+         * @param authenticatorId - ID of the authenticator.
          */
         isRoleMappingsEnabled?: (authenticatorId: string) => boolean;
     };
@@ -131,6 +129,7 @@ export interface IdentityProviderConfig {
         github: boolean;
         enterprise: boolean;
         expertMode: boolean;
+        microsoft: boolean;
         /**
          * Adding `saml` and `oidc` template enabled property to this
          * config under the group `enterprise-protocols`.

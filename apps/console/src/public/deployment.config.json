@@ -412,6 +412,9 @@
             },
             "github": {
                 "enabled": false
+            },
+            "microsoft": {
+                "enabled": true
             }
         },
         "gravatarConfig": {

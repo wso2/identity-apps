@@ -326,7 +326,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                     window[ "AppUtils" ].updateCustomServerHost(serverHost);
                 })
                 .catch((error) => {
-                    // In case of failure customServerHost is set to the serverHost
+                    // In case of failure customServerHost is set to the serverHost.
                     window[ "AppUtils" ].updateCustomServerHost(Config.getDeploymentConfig().serverHost);
 
                     throw error;
