@@ -814,8 +814,8 @@ export const console: ConsoleNS = {
                                 attributeComponentHintAlt: "Gérez les attributs utilisateur que vous souhaitez" +
                                     " partager avec cette application. Vous pouvez ajouter de nouveaux attributs et " +
                                     "mappages en accédant à <1>Attributs</1>",
-                                description: "Ajoutez les attributs utilisateur autorisés à être partagés avec cette " +
-                                    "application.",
+                                description: "Ajoutez les groupes/étendues d'attributs utilisateur autorisés à être partagés " +
+                                    "avec cette application.",
                                 heading: "Sélection des attributs utilisateur",
                                 mandatoryAttributeHint: "Marquez les attributs utilisateur qui doivent " +
                                     "obligatoirement être partagés avec l'application. Lors de la connexion, " +
@@ -835,8 +835,10 @@ export const console: ConsoleNS = {
                                         actions: {
                                             makeMandatory: "Rendre obligatoire",
                                             makeRequested: "Rendre demandable",
+                                            makeScopeRequested: "Rendre la portée demandée",
                                             removeMandatory: "Retirer l'obligation",
                                             removeRequested: "Retirer la demandabilité",
+                                            removeScopeRequested: "Supprimer l'étendue demandée",
                                             subjectDisabledSelection: "Cet attribut est obligatoire car il " +
                                                 "s'agit de l'attribut sujet."
                                         },

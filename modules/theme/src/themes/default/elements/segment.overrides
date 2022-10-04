@@ -310,7 +310,7 @@
     &.user-role-edit-header-segment {
         &.attributes {
             max-height: 311px;
-            padding: 0 0 20px 0;
+            padding: 0 0 0 0;
             overflow-y: scroll;
 
             .transfer-list-sub-content {

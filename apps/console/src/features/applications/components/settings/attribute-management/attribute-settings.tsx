@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -28,6 +28,9 @@ import {
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ConfirmationModal, ContentLoader, EmphasizedSegment } from "@wso2is/react-components";
+import { getOIDCScopesList } from "apps/console/src/features/oidc-scopes/api/oidc-scopes";
+import { OIDCScopesClaimsListInterface, OIDCScopesListInterface 
+} from "apps/console/src/features/oidc-scopes/models/oidc-scopes";
 import isEmpty from "lodash-es/isEmpty";
 import sortBy from "lodash-es/sortBy";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -36,6 +39,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Button, Grid } from "semantic-ui-react";
 import { AdvanceAttributeSettings } from "./advance-attribute-settings";
 import { AttributeSelection } from "./attribute-selection";
+import { AttributeSelectionOIDC } from "./attribute-selection-oidc";
 import { RoleMapping } from "./role-mapping";
 import { applicationConfig } from "../../../../../extensions";
 import { getAllExternalClaims, getAllLocalClaims, getDialects } from "../../../../claims/api";
@@ -157,10 +161,6 @@ function isClaimInterface(claim: ExtendedClaimInterface | ExtendedExternalClaimI
 
 /**
  * Attribute settings component.
- *
- * @param {AttributeSelectionPropsInterface} props - Props injected to the component.
- *
- * @return {React.ReactElement}
  */
 export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterface> = (
     props: AttributeSelectionPropsInterface
@@ -191,6 +191,11 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
     // Manage selected dialect
     const [ selectedDialect, setSelectedDialect ] = useState<SelectedDialectInterface>();
 
+    // Get OIDC scope-use attributes list
+    const [ scopes, setScopes ] = useState<OIDCScopesListInterface[]>(null);
+    const [ externalClaimsGroupedByScopes, setExternalClaimsGroupedByScopes ] 
+        = useState<OIDCScopesClaimsListInterface[]>(null);
+
     // Manage available claims in local and external dialects.
     const [ isClaimRequestLoading, setIsClaimRequestLoading ] = useState(true);
     const [ claims, setClaims ] = useState<ExtendedClaimInterface[]>([]);
@@ -220,6 +225,130 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
+
+    /**
+     * Retrieves scopes with the details from the API.
+     *
+     */
+    const getScopes = () => {
+
+        getOIDCScopesList()
+            .then((response: OIDCScopesListInterface[]) => {
+                setScopes(response);
+            })
+            .catch((error) => {
+                if (error.response && error.response.data && error.response.data.description) {
+                    dispatch(
+                        addAlert({
+                            description: error.response.data.description,
+                            level: AlertLevels.ERROR,
+                            // todo: check whether you need to change the error message
+                            message: t(
+                                "console:manage.features.oidcScopes.notifications."
+                                + "fetchOIDCScope.error.message"
+                            )
+                        })
+                    );
+
+                    return;
+                }
+
+                dispatch(
+                    addAlert({
+                        // todo: check whether you need to change the error message
+                        description: t(
+                            "console:manage.features.oidcScopes.notifications.fetchOIDCScope" +
+                            ".genericError.description"
+                        ),
+                        level: AlertLevels.ERROR,
+                        // todo: check whether you need to change the error message
+                        message: t(
+                            "console:manage.features.oidcScopes.notifications.fetchOIDCScope.genericError."
+                            + "message"
+                        )
+                    })
+                );
+            });
+    };
+
+    /**
+     * Check whether claim is mandatory or not
+     *
+     * @param uri - Claim URI to be checked.
+     * @returns If initially requested as mandatory.
+     */
+    const checkInitialRequestMandatory = (uri: string): boolean => {
+        const externalClaim = externalClaims.find((claim) => claim.claimURI==uri);
+
+        if (externalClaim){
+            const requestURI = claimConfigurations.requestedClaims.find(
+                (requestClaims) => (requestClaims?.claim?.uri === externalClaim.mappedLocalClaimURI))?.mandatory;
+
+            if (requestURI!= undefined) {
+                return requestURI;
+            }
+        }
+
+        return false;
+    };
+
+    /**
+     * Check whether claim is requested or not.
+     *
+     * @param uri - Claim URI to be checked.
+     * @returns If initially requested or not.
+     */
+    const checkInitialRequested = (uri: string): boolean => {
+        const externalClaim = externalClaims.find((claim) => claim.claimURI==uri);
+
+        if (externalClaim){
+            const requestURI = claimConfigurations.requestedClaims.find(
+                (requestClaims) => requestClaims?.claim?.uri === externalClaim.mappedLocalClaimURI);
+
+            return requestURI!=undefined ? true : false;
+        }
+
+        return false;
+    };
+
+    const getExternalClaimsGroupedByScopes = () => {
+        const tempClaims = [ ...externalClaims ];
+        const updatedScopes = [];
+
+        if (scopes != undefined && scopes.length!=0 && claims.length!=0) {
+            scopes.map((scope) => {
+                const updatedClaims = [];
+                let scopeSelected = false;
+
+                scope.claims.map( (scopeClaim) => {
+                    tempClaims.map( (tempClaim) => {
+                        if (scopeClaim == tempClaim.claimURI) {
+                            const updatedClaim = { 
+                                ...tempClaim,
+                                mandatory: checkInitialRequestMandatory(tempClaim.claimURI),
+                                requested: checkInitialRequested(tempClaim.claimURI)
+                            };
+
+                            if (updatedClaim.requested) {
+                                scopeSelected = true;
+                            }
+
+                            updatedClaims.push(updatedClaim);
+                        }
+                    });
+                });
+
+                const updatedScope = { 
+                    ...scope,
+                    claims: updatedClaims,
+                    selected: scopeSelected
+                };
+
+                updatedScopes.push(updatedScope);
+            });
+        }
+        setExternalClaimsGroupedByScopes(updatedScopes);
+    };
 
     const getClaims = () => {
         setIsClaimLoading(true);
@@ -710,15 +839,19 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                 }
             });
         } else {
-            selectedExternalClaims.map((claim: ExtendedExternalClaimInterface) => {
-                const requestedClaim = {
-                    claim: {
-                        uri: claim.mappedLocalClaimURI
-                    },
-                    mandatory: claim.mandatory
-                };
+            externalClaimsGroupedByScopes.map((scope) => {
+                scope?.claims.map((claim: ExtendedExternalClaimInterface) => {
+                    if (claim.requested) {
+                        const requestedClaim = {
+                            claim: {
+                                uri: claim.mappedLocalClaimURI
+                            },
+                            mandatory: claim.mandatory
+                        };
 
-                RequestedClaims.push(requestedClaim);
+                        RequestedClaims.push(requestedClaim);
+                    }
+                });
             });
         }
 
@@ -798,10 +931,15 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
     };
 
     useEffect(() => {
+        getScopes();
         getClaims();
         getAllDialects();
         findLocalClaimDialectURI();
     }, []);
+
+    useEffect(() => {
+        getExternalClaimsGroupedByScopes();
+    }, [ externalClaims ]);
 
     // Set the dialects for inbound protocols
     useEffect(() => {
@@ -868,42 +1006,72 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                     <Grid className="claim-mapping">
                         <div className="form-container with-max-width">
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
-                                <AttributeSelection
-                                    claims={ claims }
-                                    setClaims={ setClaims }
-                                    externalClaims={ externalClaims }
-                                    setExternalClaims={ setExternalClaims }
-                                    selectedClaims={ selectedClaims }
-                                    selectedExternalClaims={ selectedExternalClaims }
-                                    setSelectedClaims={ setSelectedClaims }
-                                    setSelectedExternalClaims={ setSelectedExternalClaims }
-                                    selectedDialect={ selectedDialect }
-                                    selectedSubjectValue={ selectedSubjectValue }
-                                    claimMapping={ claimMapping }
-                                    setClaimMapping={ setClaimMapping }
-                                    createMapping={ createMapping }
-                                    removeMapping={ removeMapping }
-                                    updateMappings={ updateMappings }
-                                    getCurrentMapping={ getCurrentMapping }
-                                    updateClaimMapping={ updateClaimMapping }
-                                    addToClaimMapping={ addToClaimMapping }
-                                    claimConfigurations={ claimConfigurations }
-                                    claimMappingOn={ claimMappingOn }
-                                    defaultSubjectAttribute={ DefaultSubjectAttribute }
-                                    showClaimMappingRevertConfirmation={ setShowClaimMappingConfirmation }
-                                    setClaimMappingOn={ setClaimMappingOn }
-                                    claimMappingError={ claimMappingError }
-                                    readOnly={
-                                        readOnly
-                                        || !hasRequiredScopes(featureConfig?.applications,
-                                            featureConfig?.applications?.scopes?.update,
-                                            allowedScopes)
-                                    }
-                                    isUserAttributesLoading={ isUserAttributesLoading }
-                                    setUserAttributesLoading={ setUserAttributesLoading }
-                                    onlyOIDCConfigured={ onlyOIDCConfigured }
-                                    data-testid={ `${ testId }-attribute-selection` }
-                                />
+                                {
+                                    onlyOIDCConfigured ? (
+                                        <AttributeSelectionOIDC
+                                            claims={ claims }
+                                            externalClaims={ externalClaims }
+                                            externalClaimsGroupedByScopes = { externalClaimsGroupedByScopes }
+                                            setExternalClaimsGroupedByScopes = { setExternalClaimsGroupedByScopes }
+                                            setExternalClaims={ setExternalClaims }
+                                            selectedExternalClaims={ selectedExternalClaims }
+                                            setSelectedExternalClaims={ setSelectedExternalClaims }
+                                            selectedDialect={ selectedDialect }
+                                            selectedSubjectValue={ selectedSubjectValue }
+                                            claimMapping={ claimMapping }
+                                            claimConfigurations={ claimConfigurations }
+                                            defaultSubjectAttribute={ DefaultSubjectAttribute }
+                                            readOnly={
+                                                readOnly
+                                                || !hasRequiredScopes(featureConfig?.applications,
+                                                    featureConfig?.applications?.scopes?.update,
+                                                    allowedScopes)
+                                            }
+                                            isUserAttributesLoading={ isUserAttributesLoading }
+                                            setUserAttributesLoading={ setUserAttributesLoading }
+                                            onlyOIDCConfigured={ onlyOIDCConfigured }
+                                            data-testid={ `${ testId }-attribute-selection-oidc` }
+                                        />
+                                    ) : (
+                                        <AttributeSelection
+                                            claims={ claims }
+                                            setClaims={ setClaims }
+                                            externalClaims={ externalClaims }
+                                            setExternalClaims={ setExternalClaims }
+                                            selectedClaims={ selectedClaims }
+                                            selectedExternalClaims={ selectedExternalClaims }
+                                            setSelectedClaims={ setSelectedClaims }
+                                            setSelectedExternalClaims={ setSelectedExternalClaims }
+                                            selectedDialect={ selectedDialect }
+                                            selectedSubjectValue={ selectedSubjectValue }
+                                            claimMapping={ claimMapping }
+                                            setClaimMapping={ setClaimMapping }
+                                            createMapping={ createMapping }
+                                            removeMapping={ removeMapping }
+                                            updateMappings={ updateMappings }
+                                            getCurrentMapping={ getCurrentMapping }
+                                            updateClaimMapping={ updateClaimMapping }
+                                            addToClaimMapping={ addToClaimMapping }
+                                            claimConfigurations={ claimConfigurations }
+                                            claimMappingOn={ claimMappingOn }
+                                            defaultSubjectAttribute={ DefaultSubjectAttribute }
+                                            showClaimMappingRevertConfirmation={ setShowClaimMappingConfirmation }
+                                            setClaimMappingOn={ setClaimMappingOn }
+                                            claimMappingError={ claimMappingError }
+                                            readOnly={
+                                                readOnly
+                                                || !hasRequiredScopes(featureConfig?.applications,
+                                                    featureConfig?.applications?.scopes?.update,
+                                                    allowedScopes)
+                                            }
+                                            isUserAttributesLoading={ isUserAttributesLoading }
+                                            setUserAttributesLoading={ setUserAttributesLoading }
+                                            onlyOIDCConfigured={ onlyOIDCConfigured }
+                                            data-testid={ `${ testId }-attribute-selection` }
+                                        />
+                                    )
+                                }
+                                            
                             </Grid.Column>
                         </div>
                     </Grid>

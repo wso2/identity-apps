@@ -16,6 +16,12 @@
 }
 
 .ui.accordion {
+    .title {
+        padding: 0 !important;
+    }
+}
+
+.ui.accordion {
     .title.disabled {
         cursor: default;
         opacity: 0.5 !important;
