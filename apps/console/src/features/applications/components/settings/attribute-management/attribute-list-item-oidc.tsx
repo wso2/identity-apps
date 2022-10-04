@@ -122,7 +122,7 @@ export const AttributeListItemOIDC: FunctionComponent<AttributeListItemOIDCPropI
     };
 
     const handleClaimMapping = (e) => {
-        const mappingValue = e.target.value.replace(/[^\w+$:/.]/g, '');
+        const mappingValue = e.target.value.replace(/[^\w+$:/.]/g, "");
 
         setMappedAttribute(mappingValue);
         updateMapping(claimURI, mappingValue);

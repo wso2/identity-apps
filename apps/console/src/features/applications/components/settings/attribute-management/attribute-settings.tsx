@@ -973,7 +973,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
     /**
      * Util function to handle claim mapping.
      *
-     * @param confirmation confirmation state
+     * @param confirmation - confirmation state
      */
     const handleClaimMapping = (confirmation: boolean): void => {
         if (confirmation) {
