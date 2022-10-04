@@ -34,6 +34,8 @@ jobs:
       - name: 🐳 Set SHAs for Nx
         id: set-shas
         uses: nrwl/nx-set-shas@v3
+        with:
+          main-branch-name: "master"
 
       - name: 🥡 Setup pnpm
         id: setup-pnpm
@@ -90,6 +92,8 @@ jobs:
       - name: 🐳 Set SHAs for Nx
         id: set-shas
         uses: nrwl/nx-set-shas@v3
+        with:
+          main-branch-name: "master"
 
       - name: 🥡 Setup pnpm
         uses: pnpm/action-setup@v2.1.0
