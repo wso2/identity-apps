@@ -70,7 +70,7 @@ jobs:
 
       - name: ⏳ Lint All Files
         id: lint-with-eslint
-        run: pnpm nx affected --target=lint --parallel=3
+        run: pnpm nx affected --base=${{ env.NX_BASE }} --head=${{ env.NX_HEAD }} --plain --target=lint --parallel=3
 
   typecheck:
     name: ʦ Typecheck (STATIC ANALYSIS)
