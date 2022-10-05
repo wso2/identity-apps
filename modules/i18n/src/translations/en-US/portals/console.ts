@@ -577,7 +577,7 @@ export const console: ConsoleNS = {
                             }
                         }
                     },
-                    placeholder: "Search applications by name, clientID, or issuer"
+                    placeholder: "Search applications by name, client ID, or issuer"
                 },
                 confirmations: {
                     addSocialLogin: {
