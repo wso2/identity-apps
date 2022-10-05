@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,7 +19,7 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { EmptyPlaceholder, GenericIcon, Heading, LinkButton } from "@wso2is/react-components";
 import classNames from "classnames";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Card, Checkbox, Form, Icon, Label, Popup, Radio } from "semantic-ui-react";
 import { getGeneralIcons } from "../../../../../core";
@@ -152,6 +152,16 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
         });
     }, [ JSON.stringify(step.options) ]);
 
+    const isSubjectIdentifierChecked = useMemo(
+        () => (subjectStepId === (stepIndex + 1)), 
+        [ subjectStepId, stepIndex ]
+    );
+
+    const isAttributeIdentifierChecked = useMemo(
+        () => (attributeStepId === (stepIndex + 1)), 
+        [ attributeStepId, stepIndex ]
+    );
+    
     /**
      * Resolves the authenticator step option.
      *
@@ -376,8 +386,9 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                                     ".signOnMethod.sections.authenticationFlow.sections" +
                                     ".stepBased.forms.fields.subjectIdentifierFrom.label"
                                 ) }
-                                checked={ subjectStepId === (stepIndex + 1) }
+                                checked={ isSubjectIdentifierChecked }
                                 onChange={ (): void => onSubjectCheckboxChange(stepIndex + 1) }
+                                readOnly={ isSubjectIdentifierChecked }
                             />
                             <Checkbox
                                 label={ t(
@@ -385,8 +396,9 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                                     ".signOnMethod.sections.authenticationFlow.sections" +
                                     ".stepBased.forms.fields.attributesFrom.label"
                                 ) }
-                                checked={ attributeStepId === (stepIndex + 1) }
+                                checked={ isAttributeIdentifierChecked }
                                 onChange={ (): void => onAttributeCheckboxChange(stepIndex + 1) }
+                                readOnly={ isAttributeIdentifierChecked }
                             />
                         </div>
                     )
