@@ -155,7 +155,6 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             appName: "",
             appTitle: "",
             applicationTemplateLoadingStrategy: undefined,
-            isGOTEnabledForSuperTenantOnly: true,
             features: {
                 applications: null,
                 approvals: null,
@@ -206,6 +205,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             isCookieConsentBannerEnabled: undefined,
             isDefaultDialectEditingEnabled: undefined,
             isDialectAddingEnabled: undefined,
+            isGOTEnabledForSuperTenantOnly: undefined,
             isGroupAndRoleSeparationEnabled: undefined,
             isHeaderAvatarLabelAllowed: undefined,
             isLeftNavigationCategorized: undefined,

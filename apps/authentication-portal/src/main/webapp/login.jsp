@@ -361,11 +361,11 @@
 
                                             try {
                                                 Map<String,String> idpConfigMap = identityProviderDataRetrievalClient.getFederatedIdpConfigs(tenantDomain, GOOGLE_AUTHENTICATOR, idpName, configKeys);
-                                                if(idpConfigMap != null && !idpConfigMap.isEmpty()){
+                                                if (idpConfigMap != null && !idpConfigMap.isEmpty()) {
                                                     GOOGLE_CLIENT_ID = idpConfigMap.get("ClientId");
                                                     GOOGLE_CALLBACK_URL = idpConfigMap.get("callbackUrl");
                                                     String oneTapEnabledString = idpConfigMap.get("IsGoogleOneTapEnabled");
-                                                    if(StringUtils.isNotEmpty(oneTapEnabledString)) {
+                                                    if (StringUtils.isNotEmpty(oneTapEnabledString)) {
                                                         GOOGLE_ONE_TAP_ENABLED = oneTapEnabledString.equals("true");
                                                    }
                                                 }
@@ -390,7 +390,7 @@
                                             </div>
                                         </div>
 
-                                        <% if(GOOGLE_ONE_TAP_ENABLED) { %>
+                                        <% if (GOOGLE_ONE_TAP_ENABLED) { %>
 
                                             <script src="https://accounts.google.com/gsi/client" async defer></script>
 

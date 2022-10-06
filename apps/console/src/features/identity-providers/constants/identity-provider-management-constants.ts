@@ -128,7 +128,7 @@ export class IdentityProviderManagementConstants {
     };
 
     /**
-     * Email OTP Authenticator Settings Form element constraints
+     * Email OTP Authenticator Settings Form element constraints.
      */
     public static readonly EMAIL_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS: {
         EXPIRY_TIME_MAX_LENGTH: number;
