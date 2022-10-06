@@ -205,7 +205,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
         setAuthenticationSteps(authenticationSequence?.steps);
         setSubjectStepId(authenticationSequence?.subjectStepId);
         setAttributeStepId(authenticationSequence?.attributeStepId);
-    }, []);
+    }, [ authenticationSequence ]);
 
     /**
      * Called when update is triggered.
