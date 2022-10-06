@@ -301,15 +301,11 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
      * @param changeValue - search value
      */
     const searchFilter = (changeValue: string) => {
-        const scopeNameFiltered = unfilteredExternalClaimsGroupedByScopes
+        const scopesFiltered = unfilteredExternalClaimsGroupedByScopes
             .filter((item: OIDCScopesClaimsListInterface) => 
-                item.name.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1);
-        const scopeDisplayNameFiltered = unfilteredExternalClaimsGroupedByScopes
-            .filter((item: OIDCScopesClaimsListInterface) => 
-                item.displayName.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1);
-        const scopeDescriptionFiltered = unfilteredExternalClaimsGroupedByScopes
-            .filter((item: OIDCScopesClaimsListInterface) => 
-                item.description.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1);
+                item.name.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1 ||
+                item.displayName.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1 ||
+                item.description.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1);        
 
         const tempSelectedScopes = [];
         const userAttributesFiltered = unfilteredExternalClaimsGroupedByScopes
@@ -331,7 +327,7 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
             });
         
         setExternalClaimsGroupedByScopes(sortBy(
-            union(scopeNameFiltered, scopeDisplayNameFiltered, scopeDescriptionFiltered, userAttributesFiltered),
+            union(scopesFiltered, userAttributesFiltered),
             "displayName"
         ));
         setSelectedScopes(tempSelectedScopes);
