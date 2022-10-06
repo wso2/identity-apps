@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -76,7 +76,7 @@ interface AuthenticationFlowPropsInterface extends TestableComponentInterface {
     onIDPCreateWizardTrigger: (type: string, cb: () => void, template?: any) => void;
     /**
      * Callback to update the application details.
-     * @param {AuthenticationSequenceInterface} sequence - Authentication sequence.
+     * @param sequence - Authentication sequence.
      */
     onUpdate: (sequence: AuthenticationSequenceInterface) => void;
     /**
@@ -101,9 +101,9 @@ interface AuthenticationFlowPropsInterface extends TestableComponentInterface {
 /**
  * Configure the authentication flow of an application.
  *
- * @param {AuthenticationFlowPropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns StepBasedFlow Component
  */
 export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> = (
     props: AuthenticationFlowPropsInterface
@@ -277,10 +277,10 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
     /**
      * Validates if the addition to the step is valid.
      *
-     * @param {GenericAuthenticatorInterface} authenticator - Authenticator to be added.
-     * @param {AuthenticatorInterface[]} options - Current step options
+     * @param authenticator - Authenticator to be added.
+     * @param options - Current step options
      *
-     * @return {boolean} True or false.
+     * @returns True or false - Is step addition is valid or not.
      */
     const validateStepAddition = (
         authenticator: GenericAuthenticatorInterface,
@@ -294,7 +294,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
         const isEIDP: boolean = ApplicationManagementConstants
             .EIDP_AUTHENTICATORS.includes(authenticator?.defaultAuthenticator?.name as SupportedAuthenticators);
 
-        // If the added option is EIDP, eventhough the authenticator is same,
+        // If the added option is EIDP, even-though the authenticator is same,
         // we need to check if it's the same IDP. If it is, then mark as duplicate.
         if (isDuplicate && isEIDP) {
             isDuplicate = options.some((option: AuthenticatorInterface) => {
@@ -326,8 +326,8 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
     /**
      * Updates the authentication step based on the newly added authenticators.
      *
-     * @param {number} stepIndex - Step index.
-     * @param {string} authenticatorId - Id of the authenticator.
+     * @param stepIndex - Step index.
+     * @param authenticatorId - Id of the authenticator.
      */
     const updateAuthenticationStep = (stepIndex: number, authenticatorId: string): void => {
         const authenticators: GenericAuthenticatorInterface[] = [
@@ -408,8 +408,8 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
     /**
      * Handles step option delete action.
      *
-     * @param {number} stepIndex - Index of the step.
-     * @param {number} optionIndex - Index of the option.
+     * @param stepIndex - Index of the step.
+     * @param optionIndex - Index of the option.
      */
     const handleStepOptionDelete = (stepIndex: number, optionIndex: number): void => {
         const steps: AuthenticationStepInterface[] = [ ...authenticationSteps ];
@@ -547,9 +547,9 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
     /**
      * Handles step option authenticator change.
      *
-     * @param {number} stepIndex - Index of the step.
-     * @param {number} optionIndex - Index of the option.
-     * @param {FederatedAuthenticatorInterface} authenticator - Selected authenticator.
+     * @param stepIndex - Index of the step.
+     * @param optionIndex - Index of the option.
+     * @param authenticator - Selected authenticator.
      */
     const handleStepOptionAuthenticatorChange = (
         stepIndex: number,
@@ -565,7 +565,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
     /**
      * Handles step delete action.
      *
-     * @param {number} stepIndex - Authentication step.
+     * @param stepIndex - Authentication step.
      */
     const handleStepDelete = (stepIndex: number): void => {
 
@@ -605,7 +605,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                 ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS, rightSideSteps);
         const onlyTOTPOnRight: boolean = noOfFactorsOnRight === noOfTOTPOnRight;
 
-        // If there are second factors in the right side from the step that is to be deleted,
+        // If there are second factors on the right side from the step that is to be deleted,
         // Check if there are first factors on the left or if there is an immediate first factor on right.
         // If not, do not delete the step.
         if (containSecondFactorOnRight) {
@@ -662,7 +662,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
     /**
      * Handles the subject identifier value onchange event.
      *
-     * @param {number} stepIndex - Step index.
+     * @param stepIndex - Step index.
      */
     const handleSubjectRetrievalStepChange = (stepIndex: number): void => {
 
@@ -672,7 +672,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
     /**
      * Handles the attribute identifier value onchange event.
      *
-     * @param {number} stepIndex - Step index.
+     * @param stepIndex - Step index.
      */
     const handleAttributeRetrievalStepChange = (stepIndex: number): void => {
 
@@ -682,7 +682,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
     /**
      * Validates if the step deletion is valid.
      *
-     * @return {boolean} True or false.
+     * @returns True or false - Is steps are valid or not.
      */
     const validateSteps = (): boolean => {
         const steps: AuthenticationStepInterface[] = [ ...authenticationSteps ];
@@ -736,11 +736,11 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
      * Filter out the displayable set of authenticators by validating against
      * the array of authenticators defined to be hidden in the config.
      *
-     * @param {GenericAuthenticatorInterface[]} authenticators - Authenticators to be filtered.
-     * @param {string} category - Authenticator category.
-     * @param {string} categoryDisplayName - Authenticator category display name.
+     * @param authenticators - Authenticators to be filtered.
+     * @param category - Authenticator category.
+     * @param categoryDisplayName - Authenticator category display name.
      *
-     * @return {GenericAuthenticatorInterface[]}
+     * @returns List of moderated authenticators
      */
     const moderateAuthenticators = (authenticators: GenericAuthenticatorInterface[],
         category: string,
@@ -824,7 +824,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
 
     /**
      * Shows a disclaimer to users when a handler is added.
-     * @return {ReactElement}
+     * @returns Handler disclaimer modal.
      */
     const renderHandlerDisclaimerModal = (): ReactElement => (
 
@@ -861,7 +861,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
     /**
      * Render add authenticator modal.
      *
-     * @return {React.ReactElement}
+     * @returns Authenticator add modal.
      */
     const renderAuthenticatorAddModal = (): ReactElement => {
 
