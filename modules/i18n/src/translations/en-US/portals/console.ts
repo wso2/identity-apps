@@ -3499,6 +3499,7 @@ export const console: ConsoleNS = {
                     common: {
                         customProperties: "Custom Properties",
                         invalidQueryParamErrorMessage: "These are not valid query parameters",
+                        invalidScopesErrorMessage: "Scopes must contain 'openid'",
                         invalidURLErrorMessage: "Enter a valid URL",
                         requiredErrorMessage: "This field cannot be empty"
                     },
