@@ -127,7 +127,6 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
     };
 
     const handleRequestedCheckChange = () => {
-
         if (!localDialect) {
             if (requested) {
                 selectRequested(claimURI, false);
@@ -142,7 +141,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
     };
 
     const handleClaimMapping = (e) => {
-        const mappingValue = e.target.value.replace(/[^\w+$:/.]/g, '');
+        const mappingValue = e.target.value.replace(/[^\w+$:/.]/g, "");
 
         setMappedAttribute(mappingValue);
         updateMapping(claimURI, mappingValue);
@@ -185,7 +184,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
     }, [ claimMappingOn ]);
 
     return (
-        <Table.Row data-testid={ testId }>
+        <Table.Row data-testid={ testId + "" }>
             {
                 !localDialect && (<Table.Cell></Table.Cell>)
             }

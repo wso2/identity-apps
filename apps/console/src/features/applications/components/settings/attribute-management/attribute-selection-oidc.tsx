@@ -646,7 +646,7 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
             type: "checkbox popup",
             value: scope.name
         } ];
-    }
+    };
 
     return (
         (!isUserAttributesLoading && claimConfigurations && initializationFinished)

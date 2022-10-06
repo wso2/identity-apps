@@ -84,14 +84,14 @@ export interface StrictSegmentedAccordionTitleActionInterface {
     /**
      * On change callback.
      *
-     * @param {React.FormEvent<HTMLInputElement> | React.MouseEvent<HTMLDivElement>} e - Change event.
+     * @param e - Change event.
      * @param data - Other arguments.
      */
     onChange?: (e: FormEvent<HTMLInputElement>, ...data) => void;
     /**
      * On click callback for the action.
      *
-     * @param {React.FormEvent<HTMLInputElement> | React.MouseEvent<HTMLDivElement>} e - Click event.
+     * @param e - Click event.
      * @param data - Other arguments.
      */
     onClick?: (e: MouseEvent<HTMLDivElement>, ...data) => void;
@@ -117,9 +117,9 @@ export interface StrictSegmentedAccordionTitleActionInterface {
 /**
  * Segmented accordion title component.
  *
- * @param {SegmentedAccordionTitlePropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {ReactElement}
+ * @returns
  */
 export const SegmentedAccordionTitle: FunctionComponent<SegmentedAccordionTitlePropsInterface> = (
     props: SegmentedAccordionTitlePropsInterface
@@ -153,7 +153,7 @@ export const SegmentedAccordionTitle: FunctionComponent<SegmentedAccordionTitleP
      * Interferes the click events to stop default propagation.
      *
      * @param callback - onClick or onChange callback.
-     * @param {React.SyntheticEvent} e - Event.
+     * @param e - Event.
      * @param args - Other arguments.
      */
     const handleActionOnClick = (
@@ -168,10 +168,10 @@ export const SegmentedAccordionTitle: FunctionComponent<SegmentedAccordionTitleP
     /**
      * Resolve the action.
      *
-     * @param {SegmentedAccordionTitleActionInterface} action - Passed in action.
-     * @param {number} index - Array Index.
+     * @param action - Passed in action.
+     * @param index - Array Index.
      *
-     * @return {React.ReactElement} Resolved action.
+     * @returns Resolved action.
      */
     const resolveAction = (action: SegmentedAccordionTitleActionInterface, index: number): ReactElement => {
 
@@ -286,7 +286,6 @@ export const SegmentedAccordionTitle: FunctionComponent<SegmentedAccordionTitleP
 
             case "checkbox popup": {
                 return (
-
                     <Popup
                         disabled={ disabled || !popoverText }
                         trigger={ (
@@ -310,7 +309,6 @@ export const SegmentedAccordionTitle: FunctionComponent<SegmentedAccordionTitleP
                     
                 );
             }
-
 
             default: {
                 return null;
