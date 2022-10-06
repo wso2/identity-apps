@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { ExternalClaim, TestableComponentInterface } from "@wso2is/core/models";
 import {
     AnimatedAvatar,
     AppAvatar,
@@ -139,7 +139,7 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
     useEffect(() => {
         const tempFilterSelectedExternalClaims = [ ...filterSelectedExternalClaims ];
 
-        claimConfigurations?.claimMappings?.map((claim) => {
+        claimConfigurations?.claimMappings?.map((claim: ClaimMappingInterface) => {
             if (
                 !filterSelectedExternalClaims.find(
                     (selectedExternalClaim) => selectedExternalClaim?.mappedLocalClaimURI === claim.localClaim.uri
@@ -234,7 +234,7 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
 
                 return scope;
             }
-        })?.claims.map((claim) => {
+        })?.claims.map((claim: ExtendedExternalClaimInterface) => {
             claim.requested = value.checked;
             if (!value.checked) {
                 claim.mandatory = value.checked;
@@ -301,30 +301,34 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
      * @param changeValue - search value
      */
     const searchFilter = (changeValue: string) => {
-        const scopeNameFiltered = unfilteredExternalClaimsGroupedByScopes.filter((item) => 
-            item.name.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1);
-        const scopeDisplayNameFiltered = unfilteredExternalClaimsGroupedByScopes.filter((item) => 
-            item.displayName.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1);
-        const scopeDescriptionFiltered = unfilteredExternalClaimsGroupedByScopes.filter((item) => 
-            item.description.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1);
+        const scopeNameFiltered = unfilteredExternalClaimsGroupedByScopes
+            .filter((item: OIDCScopesClaimsListInterface) => 
+                item.name.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1);
+        const scopeDisplayNameFiltered = unfilteredExternalClaimsGroupedByScopes
+            .filter((item: OIDCScopesClaimsListInterface) => 
+                item.displayName.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1);
+        const scopeDescriptionFiltered = unfilteredExternalClaimsGroupedByScopes
+            .filter((item: OIDCScopesClaimsListInterface) => 
+                item.description.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1);
 
         const tempSelectedScopes = [];
-        const userAttributesFiltered = unfilteredExternalClaimsGroupedByScopes.filter((scope) => {
-            const matchedScopes = scope.claims.filter((claim) => 
-                (claim.claimURI.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1 ||
-                    claim.claimDialectURI.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1 ||
-                    claim.localClaimDisplayName.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1 ||
-                    claim.mappedLocalClaimURI.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1));
+        const userAttributesFiltered = unfilteredExternalClaimsGroupedByScopes
+            .filter((scope: OIDCScopesClaimsListInterface) => {
+                const matchedScopes = scope.claims.filter((claim: ExtendedExternalClaimInterface) => 
+                    (claim.claimURI.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1 ||
+                        claim.claimDialectURI.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1 ||
+                        claim.localClaimDisplayName.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1 ||
+                        claim.mappedLocalClaimURI.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1));
 
-            if (matchedScopes !== undefined && matchedScopes.length !== 0) {
-                // expand the scope item if the searched term matches any claims/user attributes
-                if (!tempSelectedScopes.includes(scope.name)) {
-                    tempSelectedScopes.push(scope.name);
+                if (matchedScopes !== undefined && matchedScopes.length !== 0) {
+                    // expand the scope item if the searched term matches any claims/user attributes
+                    if (!tempSelectedScopes.includes(scope.name)) {
+                        tempSelectedScopes.push(scope.name);
+                    }
+
+                    return scope;
                 }
-
-                return scope;
-            }
-        });
+            });
         
         setExternalClaimsGroupedByScopes(sortBy(
             union(scopeNameFiltered, scopeDisplayNameFiltered, scopeDescriptionFiltered, userAttributesFiltered),
@@ -360,7 +364,7 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
         const initialAvailableClaims: ExtendedExternalClaimInterface[] = [];
 
         applicationConfig.attributeSettings.attributeSelection.getExternalClaims(externalClaims)
-            .map((claim) => {
+            .map((claim: ExternalClaim) => {
                 if (initialRequest.includes(claim.mappedLocalClaimURI)) {
                     const newClaim: ExtendedExternalClaimInterface = {
                         ...claim,
@@ -377,7 +381,7 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
 
         const tempFilterSelectedExternalClaims = [ ...filterSelectedExternalClaims ];
 
-        claimConfigurations?.claimMappings?.map((claimMapping) => {
+        claimConfigurations?.claimMappings?.map((claimMapping: ClaimMappingInterface) => {
             claims?.map((claim) => {
                 if (claimMapping.localClaim.uri === claim.claimURI){
                     const option: ExtendedExternalClaimInterface = {
@@ -437,7 +441,7 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
     const checkMapping = (claiminput: ExtendedExternalClaimInterface): boolean => {
         let isMapping = false;
 
-        openIDConnectClaims?.map((claim) => {
+        openIDConnectClaims?.map((claim: ExtendedExternalClaimInterface) => {
             if (claim.mappedLocalClaimURI === claiminput.mappedLocalClaimURI ||
                 claiminput.mappedLocalClaimURI  === defaultSubjectAttribute){
                 isMapping = true;
@@ -566,7 +570,7 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                 <Table.Body>
                     <>
                         {
-                            claimsGroupedByScopes.map((claim) => {
+                            claimsGroupedByScopes.map((claim: ExtendedExternalClaimInterface) => {
                                 return (
                                     <AttributeListItem
                                         key={ claim.id }
@@ -623,7 +627,7 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
             tempSelectedScopes.push(scope.name);
         } else {
             tempSelectedScopes =  tempSelectedScopes
-                .filter((scopeDeselected) => 
+                .filter((scopeDeselected: string) => 
                     scopeDeselected !== scope.name);
         }
         setSelectedScopes(tempSelectedScopes);
@@ -700,32 +704,33 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                                         data-testid={ testId }
                                     >
                                         {
-                                            externalClaimsGroupedByScopes.map((scope) => {
-                                                return (
-                                                    <Fragment key={ scope.name }>
-                                                        <SegmentedAccordion.Title
-                                                            id={ scope.name }
-                                                            data-componentid={ `${testId}-${scope.name}-title` }
-                                                            active={ selectedScopes?.includes(scope.name) 
+                                            externalClaimsGroupedByScopes.map(
+                                                (scope: OIDCScopesClaimsListInterface) => {
+                                                    return (
+                                                        <Fragment key={ scope.name }>
+                                                            <SegmentedAccordion.Title
+                                                                id={ scope.name }
+                                                                data-componentid={ `${testId}-${scope.name}-title` }
+                                                                active={ selectedScopes?.includes(scope.name) 
                                                                         || false }
-                                                            accordionIndex={ scope.name }
-                                                            onClick={ () => handleAccordionTitleClick(scope) }
-                                                            content={ (
-                                                                resolveScopeListItem(scope)
-                                                            ) }
-                                                            hideChevron={ false } 
-                                                            actions={ createAccordionTitleAction(scope) }
-                                                        />
+                                                                accordionIndex={ scope.name }
+                                                                onClick={ () => handleAccordionTitleClick(scope) }
+                                                                content={ (
+                                                                    resolveScopeListItem(scope)
+                                                                ) }
+                                                                hideChevron={ false } 
+                                                                actions={ createAccordionTitleAction(scope) }
+                                                            />
                                                             
-                                                        <SegmentedAccordion.Content
-                                                            active={ selectedScopes?.includes(scope.name) 
+                                                            <SegmentedAccordion.Content
+                                                                active={ selectedScopes?.includes(scope.name) 
                                                                         || false }
-                                                            data-testid={ `${testId}-${scope.name}-content` }
-                                                            children={ resolveUserAttributeList(scope.claims) }
-                                                        />
-                                                    </Fragment>
-                                                );
-                                            })
+                                                                data-testid={ `${testId}-${scope.name}-content` }
+                                                                children={ resolveUserAttributeList(scope.claims) }
+                                                            />
+                                                        </Fragment>
+                                                    );
+                                                })
                                         }
                                     </SegmentedAccordion>
                                 </Grid.Row>
