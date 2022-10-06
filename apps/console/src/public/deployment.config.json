@@ -426,6 +426,7 @@
             "langAutoDetectEnabled":false
         },
         "isCookieConsentBannerEnabled": false,
+        "isMarketingConsentBannerEnabled": false,
         "isGroupAndRoleSeparationEnabled": true,
         "isSignatureValidationCertificateAliasEnabled" : false,
         "isClientSecretHashEnabled": false,

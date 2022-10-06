@@ -828,6 +828,9 @@
         {% if console.ui.is_cookie_consent_banner_enabled is defined %}
         "isCookieConsentBannerEnabled": {{ console.ui.is_cookie_consent_banner_enabled }},
         {% endif %}
+        {% if console.ui.is_marketing_consent_banner_enabled is defined %}
+        "isMarketingConsentBannerEnabled": {{ console.ui.is_marketing_consent_banner_enabled }},
+        {% endif %}
         {% if oauth.hash_tokens_and_secrets is defined %}
         "isClientSecretHashEnabled": {{ oauth.hash_tokens_and_secrets }},
         {% endif %}
