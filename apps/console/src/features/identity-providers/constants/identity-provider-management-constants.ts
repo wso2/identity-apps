@@ -128,7 +128,7 @@ export class IdentityProviderManagementConstants {
     };
 
     /**
-     * Email OTP Authenticator Settings Form element constraints
+     * Email OTP Authenticator Settings Form element constraints.
      */
     public static readonly EMAIL_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS: {
         EXPIRY_TIME_MAX_LENGTH: number;
@@ -156,7 +156,7 @@ export class IdentityProviderManagementConstants {
      */
     public static readonly GOOGLE_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS: Record<string, number> = {
         ADDITIONAL_QUERY_PARAMS_MAX_LENGTH: 1000,
-        ADDITIONAL_QUERY_PARAMS_MIN_LENGTH: 0  
+        ADDITIONAL_QUERY_PARAMS_MIN_LENGTH: 0
     };
 
     /**
@@ -167,6 +167,11 @@ export class IdentityProviderManagementConstants {
         OPENID: "openid",
         PROFILE: "profile"
     };
+
+    /**
+     * Google One Tap enabling request parameter
+     */
+    public static readonly GOOGLE_ONE_TAP_ENABLED: string = "IsGoogleOneTapEnabled";
 
     /**
      * Microsoft Scope mappings.
@@ -394,11 +399,11 @@ export class IdentityProviderManagementConstants {
     public static readonly AUTHENTICATOR_INIT_VALUES_EMAIL_OTP_EXPIRY_TIME_KEY = "EmailOTP_ExpiryTime";
 
     // Authenticator Endpoints
-    public static readonly MICROSOFT_AUTHENTICATION_ENDPOINT_URL: string = 
+    public static readonly MICROSOFT_AUTHENTICATION_ENDPOINT_URL: string =
     "https://login.microsoftonline.com/common/oauth2/v2.0/authorize";
 
     // Token Endpoints
-    public static readonly MICROSOFT_TOKEN_ENDPOINT_URL: string = 
+    public static readonly MICROSOFT_TOKEN_ENDPOINT_URL: string =
     "https://login.microsoftonline.com/common/oauth2/v2.0/token";
 
     /**
