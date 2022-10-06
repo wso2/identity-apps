@@ -206,6 +206,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     identityProviderTemplateLoadingStrategy?: IdentityProviderTemplateLoadingStrategies;
     /**
+     * Config for enabling GOT only for super users.
+     */
+    isGOTEnabledForSuperTenantOnly?: boolean;
+    /**
      * Should default dialects be allowed for editing.
      */
     isDefaultDialectEditingEnabled?: boolean;

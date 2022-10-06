@@ -216,15 +216,15 @@ export class Config {
             appCopyright: window[ "AppUtils" ]?.getConfig()?.ui?.appCopyright
                 .replace("${copyright}", "\u00A9")
                 .replace("${year}", new Date().getFullYear()),
-            appName: window[ "AppUtils" ]?.getConfig()?.ui?.appName,
-            appTitle: window[ "AppUtils" ]?.getConfig()?.ui?.appTitle,
-            applicationTemplateLoadingStrategy:
-                window[ "AppUtils" ]?.getConfig()?.ui?.applicationTemplateLoadingStrategy,
-            features: window[ "AppUtils" ]?.getConfig()?.ui?.features,
-            gravatarConfig: window[ "AppUtils" ]?.getConfig()?.ui?.gravatarConfig,
-            hiddenAuthenticators: window[ "AppUtils" ]?.getConfig()?.ui?.hiddenAuthenticators,
-            hiddenUserStores: window[ "AppUtils" ]?.getConfig()?.ui?.hiddenUserStores,
-            i18nConfigs: window[ "AppUtils" ]?.getConfig()?.ui?.i18nConfigs,
+            appName: window[ "AppUtils" ].getConfig().ui.appName,
+            appTitle: window[ "AppUtils" ].getConfig().ui.appTitle,
+            applicationTemplateLoadingStrategy: window[ "AppUtils" ].getConfig().ui.applicationTemplateLoadingStrategy,
+            isGOTEnabledForSuperTenantOnly:window["AppUtils"].getConfig().ui.isGOTEnabledForSuperTenantOnly,
+            features: window[ "AppUtils" ].getConfig().ui.features,
+            gravatarConfig: window[ "AppUtils" ].getConfig().ui.gravatarConfig,
+            hiddenAuthenticators: window[ "AppUtils" ].getConfig().ui.hiddenAuthenticators,
+            hiddenUserStores: window[ "AppUtils" ].getConfig().ui.hiddenUserStores,
+            i18nConfigs: window[ "AppUtils" ].getConfig().ui.i18nConfigs,
             identityProviderTemplateLoadingStrategy:
                 window[ "AppUtils" ]?.getConfig()?.ui?.identityProviderTemplateLoadingStrategy,
             identityProviderTemplates: window[ "AppUtils" ]?.getConfig()?.ui?.identityProviderTemplates,
