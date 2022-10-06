@@ -75,10 +75,6 @@
         }
 
         .data-table-cell {
-            align-self: center;
-        }
-
-        .data-table-cell {
             .header-with-icon {
                 display: @dataTableRowHeaderDisplay;
                 align-items: center;
@@ -141,13 +137,5 @@
 .ui.table {
     .values-list {
         overflow-wrap: anywhere;
-    }
-}
-
-.title {
-    .data-table-row {
-        border: 0.1px solid rgba(34,36,38,.15); 
-        display: flex; 
-        width: 100%;
     }
 }

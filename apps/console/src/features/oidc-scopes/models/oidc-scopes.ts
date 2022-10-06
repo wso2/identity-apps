@@ -61,5 +61,4 @@ export interface OIDCScopesClaimsListInterface {
      * Scope selected or not
      */
     selected?: boolean;
-
 }

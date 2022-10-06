@@ -228,7 +228,6 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
 
     /**
      * Retrieves scopes with the details from the API.
-     *
      */
     const getScopes = () => {
 
@@ -275,16 +274,17 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
      * Check whether claim is mandatory or not
      *
      * @param uri - Claim URI to be checked.
+     * 
      * @returns If initially requested as mandatory.
      */
     const checkInitialRequestMandatory = (uri: string): boolean => {
-        const externalClaim = externalClaims.find((claim) => claim.claimURI==uri);
+        const externalClaim = externalClaims.find((claim) => claim.claimURI === uri);
 
         if (externalClaim){
             const requestURI = claimConfigurations.requestedClaims.find(
                 (requestClaims) => (requestClaims?.claim?.uri === externalClaim.mappedLocalClaimURI))?.mandatory;
 
-            if (requestURI!= undefined) {
+            if (requestURI !== undefined) {
                 return requestURI;
             }
         }
@@ -296,60 +296,68 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
      * Check whether claim is requested or not.
      *
      * @param uri - Claim URI to be checked.
+     * 
      * @returns If initially requested or not.
      */
     const checkInitialRequested = (uri: string): boolean => {
-        const externalClaim = externalClaims.find((claim) => claim.claimURI==uri);
+        const externalClaim = externalClaims.find((claim) => claim.claimURI === uri);
 
         if (externalClaim){
             const requestURI = claimConfigurations.requestedClaims.find(
                 (requestClaims) => requestClaims?.claim?.uri === externalClaim.mappedLocalClaimURI);
 
-            return requestURI!=undefined ? true : false;
+            return requestURI !== undefined ? true : false;
         }
 
         return false;
     };
 
+    /**
+     * Grouped Scopes and external claims
+     */
     const getExternalClaimsGroupedByScopes = () => {
         const tempClaims = [ ...externalClaims ];
         const updatedScopes = [];
 
-        if (scopes != undefined && scopes.length!=0 && claims.length!=0) {
+        if ((scopes !== null) && (scopes !== undefined) && (scopes.length !== 0) && (claims.length !== 0)) {
             scopes.map((scope) => {
-                const updatedClaims = [];
-                let scopeSelected = false;
-
-                scope.claims.map( (scopeClaim) => {
-                    tempClaims.map( (tempClaim) => {
-                        if (scopeClaim == tempClaim.claimURI) {
-                            const updatedClaim = { 
-                                ...tempClaim,
-                                mandatory: checkInitialRequestMandatory(tempClaim.claimURI),
-                                requested: checkInitialRequested(tempClaim.claimURI)
-                            };
-
-                            if (updatedClaim.requested) {
-                                scopeSelected = true;
+                if (scope.name !== "openid"){
+                    const updatedClaims = [];
+                    let scopeSelected = false;
+    
+                    scope.claims.map((scopeClaim) => {
+                        tempClaims.map( (tempClaim) => {
+                            if (scopeClaim === tempClaim.claimURI) {
+                                const updatedClaim = { 
+                                    ...tempClaim,
+                                    mandatory: checkInitialRequestMandatory(tempClaim.claimURI),
+                                    requested: checkInitialRequested(tempClaim.claimURI)
+                                };
+    
+                                if (updatedClaim.requested) {
+                                    scopeSelected = true;
+                                }
+    
+                                updatedClaims.push(updatedClaim);
                             }
-
-                            updatedClaims.push(updatedClaim);
-                        }
+                        });
                     });
-                });
-
-                const updatedScope = { 
-                    ...scope,
-                    claims: updatedClaims,
-                    selected: scopeSelected
-                };
-
-                updatedScopes.push(updatedScope);
+                    const updatedScope = { 
+                        ...scope,
+                        claims: updatedClaims,
+                        selected: scopeSelected
+                    };
+    
+                    updatedScopes.push(updatedScope);
+                }
             });
         }
         setExternalClaimsGroupedByScopes(updatedScopes);
     };
 
+    /**
+     * Get Local Claims
+     */
     const getClaims = () => {
         setIsClaimLoading(true);
         const params: ClaimsGetParams = {
@@ -377,6 +385,9 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
             });
     };
 
+    /**
+     * Get All Dialected
+     */
     const getAllDialects = () => {
         getDialects(null)
             .then((response) => {
@@ -393,6 +404,9 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
             });
     };
 
+    /**
+     * Get All External Claims
+     */
     const getMappedClaims = (newClaimId) => {
         if (newClaimId !== null) {
             getAllExternalClaims(newClaimId, null)
@@ -465,6 +479,12 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         }
     };
 
+    /**
+     * Update Claim Mappings
+     *
+     * @param addedClaims - Mappings added
+     * @param removedClaims - Mappings removed
+     */
     const updateMappings = (addedClaims: Claim[], removedClaims: Claim[]) => {
         if (selectedDialect.localDialect) {
             const claimMappingList: ExtendedClaimMappingInterface[] = [ ...claimMapping ];
@@ -503,6 +523,11 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         }
     };
 
+    /**
+     * Remove Claim Mappings
+     *
+     * @param claimURI - URI of the mapping removed
+     */
     const removeMapping = (claimURI: string) => {
         const claimMappingList = [ ...claimMapping ];
         let mappedClaim : ExtendedClaimMappingInterface;
@@ -518,6 +543,13 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         }
     };
 
+    /**
+     * Get Claim Mapping of the URI given
+     *
+     * @param claimURI - URI of the mapping removed
+     * 
+     * @returns external claim with mapping
+     */
     const getCurrentMapping = (claimURI: string): ExtendedClaimMappingInterface => {
         const claimMappingList = [ ...claimMapping ];
         let result: ExtendedClaimMappingInterface;
@@ -531,7 +563,12 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         return result;
     };
 
-    // Update mapping value
+    /**
+     * Update mapping value
+     * 
+     * @param claimURI - URI of the mapping updated
+     * @param mappedValue - mapped claims value
+     */
     const updateClaimMapping = (claimURI: string, mappedValue: string) => {
         const claimMappingList = [ ...claimMapping ];
 
@@ -543,7 +580,12 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         setClaimMapping(claimMappingList);
     };
 
-    // Decide whether to use mapping or not
+    /**
+     * Decide whether to use mapping or not
+     * 
+     * @param claimURI - URI of the mapping
+     * @param addMapping - Whether add or not add the mapping
+     */
     const addToClaimMapping = (claimURI: string, addMapping: boolean) => {
         const claimMappingList = [ ...claimMapping ];
 
@@ -555,6 +597,11 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         setClaimMapping(claimMappingList);
     };
 
+    /**
+     * change selected dialect
+     * 
+     * @param dialectURI - dialect uri
+     */
     const changeSelectedDialect = (dialectURI: string) => {
         if (dialectURI !== null) {
             const selectedId = findDialectID(dialectURI);
@@ -574,7 +621,9 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         }
     };
 
-    // Set local claim URI and maintain it in a state
+    /**
+     * Set local claim URI and maintain it in a state
+     */
     const findLocalClaimDialectURI = () => {
         getLocalDialectURI();
         if (isEmpty(localDialectURI)) {
@@ -582,7 +631,10 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         }
     };
 
-    const createDropdownOption = () => {
+    /**
+     * Create dropdown options
+     */
+    const createDropdownOption = (): DropdownOptionsInterface[] => {
         const options: DropdownOptionsInterface[] = [];
 
         if (selectedDialect.localDialect) {
@@ -801,7 +853,12 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         }
     });
 
-    const submitUpdateRequest = (claimMappingFinal) => {
+    /**
+     *  Submit update request
+     * 
+     *  @param claimMappingFinal - final claim mappings
+     */
+    const submitUpdateRequest = (claimMappingFinal: ExtendedClaimMappingInterface[]) => {
         let isSubjectSelectedWithoutMapping = false;
         const RequestedClaims = [];
         const subjectClaim = advanceSettingValues?.subject?.claim;
