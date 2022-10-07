@@ -18,7 +18,7 @@
 
 import { store } from "../../core/store";
 import { OrganizationManagementConstants } from "../constants";
-import { OrganizationInterface, OrganizationResponseInterface } from "../models";
+import { GenericOrganization, OrganizationInterface, OrganizationResponseInterface } from "../models";
 
 export class OrganizationUtils {
     /**
@@ -33,7 +33,7 @@ export class OrganizationUtils {
      *
      * @returns if selected organization is the Super organization
      */
-    public static isRootOrganization(organization: OrganizationResponseInterface | OrganizationInterface): boolean {
+    public static isRootOrganization(organization: GenericOrganization): boolean {
         return !organization || organization.id === OrganizationManagementConstants.ROOT_ORGANIZATION_ID;
     }
 

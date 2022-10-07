@@ -23,22 +23,24 @@ import { useTranslation } from "react-i18next";
 import { Grid, Icon, Loader, Ref, Segment } from "semantic-ui-react";
 import OrganizationListItem from "./organization-list-item";
 import {
+    GenericOrganization,
     OrganizationInterface,
     OrganizationResponseInterface
 } from "../../models";
 
 interface OrganizationSwitcherListPropTypesInterface
     extends IdentifiableComponentInterface {
-    parents: (OrganizationInterface | OrganizationResponseInterface)[];
+    parents: (GenericOrganization)[];
     organizations: OrganizationInterface[];
     hasMore: boolean;
     handleBackButtonClick: (event: SyntheticEvent) => void;
     currentOrganization: OrganizationResponseInterface;
     handleOrgRowClick: (
-        organization: OrganizationInterface | OrganizationResponseInterface
+        organization: GenericOrganization
     ) => void;
     setShowDropdown: (shouldShow: boolean) => void;
     loadMore: () => void;
+    handleOrganizationSwitch: (organization: GenericOrganization) => void;
 }
 
 const OrganizationSwitcherList = (
@@ -53,6 +55,7 @@ const OrganizationSwitcherList = (
         handleOrgRowClick,
         setShowDropdown,
         loadMore,
+        handleOrganizationSwitch,
         "data-componentid": componentId
     } = props;
     const { t } = useTranslation();
@@ -94,6 +97,7 @@ const OrganizationSwitcherList = (
                                         isClickable={ true }
                                         handleOrgRowClick={ handleOrgRowClick }
                                         setShowDropdown={ setShowDropdown }
+                                        handleOrganizationSwitch= { handleOrganizationSwitch }
                                     />
                                 ) : null
                         ) }

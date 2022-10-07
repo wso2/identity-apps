@@ -108,3 +108,5 @@ export interface BreadcrumbItem {
 }
 
 export type BreadcrumbList = BreadcrumbItem[];
+
+export type GenericOrganization = OrganizationInterface | OrganizationResponseInterface | BreadcrumbItem;

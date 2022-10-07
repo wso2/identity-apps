@@ -33,7 +33,7 @@ import {
     ORGANIZATION_NAME_MIN_LENGTH,
     ORGANIZATION_TYPE
 } from "../constants";
-import { AddOrganizationInterface, OrganizationInterface, OrganizationResponseInterface } from "../models";
+import { AddOrganizationInterface, GenericOrganization, OrganizationInterface, OrganizationResponseInterface } from "../models";
 
 interface OrganizationAddFormProps {
     name: string;
@@ -46,7 +46,7 @@ interface OrganizationAddFormProps {
  */
 export interface AddOrganizationModalPropsInterface extends IdentifiableComponentInterface {
     closeWizard: () => void;
-    parent?: OrganizationInterface | OrganizationResponseInterface;
+    parent?: GenericOrganization;
     /**
      * Callback to update the organization details.
      */
