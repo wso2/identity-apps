@@ -202,15 +202,18 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
         = [ ...unfilteredExternalClaimsGroupedByScopes ];
 
         tempFilterSelectedExternalScopeClaims.forEach((scope) => {
+            let scopeSelected = false;
+  
             scope.claims.forEach((claim) => {
                 if (claim.claimURI === claimURI) {
                     claim.requested = requested;
-
-                    if (requested) {
-                        scope.selected = true;
-                    }
+                }
+  
+                if (claim.requested) {
+                    scopeSelected = true;
                 }
             });
+            scope.selected = scopeSelected;
         });
         sortBy(tempFilterSelectedExternalScopeClaims, "name");
         setExternalClaimsGroupedByScopes(tempFilterSelectedExternalScopeClaims);
@@ -633,6 +636,7 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
         SegmentedAccordionTitleActionInterface[] => {
         
         return [ {
+            checked: scope.selected,
             defaultChecked: scope.selected,
             disabled: false,
             onChange: handleSelectedScopeCheckChange,

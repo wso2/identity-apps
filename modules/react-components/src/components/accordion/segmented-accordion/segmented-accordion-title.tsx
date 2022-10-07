@@ -176,6 +176,7 @@ export const SegmentedAccordionTitle: FunctionComponent<SegmentedAccordionTitleP
     const resolveAction = (action: SegmentedAccordionTitleActionInterface, index: number): ReactElement => {
 
         const {
+            checked,
             icon,
             label,
             onChange,
@@ -290,6 +291,7 @@ export const SegmentedAccordionTitle: FunctionComponent<SegmentedAccordionTitleP
                         disabled={ disabled || !popoverText }
                         trigger={ (
                             <Checkbox
+                                checked={ checked }
                                 label={ label }
                                 disabled={ disabled }
                                 onChange={
