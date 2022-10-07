@@ -18,6 +18,7 @@
 
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
+<%@ page import="org.wso2.carbon.identity.core.util.IdentityCoreConstants" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.Map" %>
 <%@ page import="org.wso2.carbon.identity.application.authenticator.totp.util.TOTPUtil" %>
@@ -47,10 +48,10 @@
         authenticationFailed = "true";
         String errorCode = request.getParameter("errorCode");
 
-        if ( errorCode != null) {
+        if (errorCode != null) {
             if (errorCode.equals(IdentityCoreConstants.USER_ACCOUNT_LOCKED_ERROR_CODE)) {
                 String lockedReason = request.getParameter("lockedReason");
-                if (lockedReason!=null) {
+                if (lockedReason != null) {
                     if (lockedReason.equals("MAX_TOTP_ATTEMPTS_EXCEEDED")) {
                         errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.user.account.locked.incorrect.login.attempts");
                     } else if (lockedReason.equals("ADMIN_INITIATED")) {
