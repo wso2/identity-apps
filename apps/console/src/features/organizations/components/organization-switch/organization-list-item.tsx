@@ -63,7 +63,7 @@ const OrganizationListItem = (
             columns={ 3 }
             key={ `${ organization?.name }-organization-item` }
             onClick={ () => handleOrgRowClick(organization) }
-            className="organization-list-row"
+            className={ isClickable ? "organization-list-row" : "" }
             data-componentid={ `${ componentId }-organization-item` }
         >
             <Grid.Column width={ 3 } verticalAlign="middle">
