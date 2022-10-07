@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { IdentifiableComponentInterface } from "@wso2is/core/src/models";
 import { GenericIcon } from "@wso2is/react-components";
 import React, { ReactElement, SyntheticEvent } from "react";
@@ -112,30 +113,32 @@ const OrganizationListItem = (
                     />
                 ) }
                 { !OrganizationUtils.isRootOrganization(organization) && (
-                    <Popup
-                        trigger={
-                            (<Icon
-                                link
-                                className="list-icon"
-                                size="small"
-                                color="grey"
-                                name="pencil alternate"
-                                onClick={ (event: SyntheticEvent) => {
-                                    history.push({
-                                        pathname: AppConstants.getPaths()
-                                            .get("ORGANIZATION_UPDATE")
-                                            .replace(":id", organization?.id)
-                                    });
-                                    setShowDropdown(false);
-                                    event.stopPropagation();
-                                } }
-                                data-componentid={ `${ componentId }-organization-edit` }
-                            />)
-                        }
-                        position="top center"
-                        content={ t("common:edit") }
-                        inverted
-                    />
+                    <Show when={ AccessControlConstants.ORGANIZATION_EDIT }>
+                        <Popup
+                            trigger={
+                                (<Icon
+                                    link
+                                    className="list-icon"
+                                    size="small"
+                                    color="grey"
+                                    name="pencil alternate"
+                                    onClick={ (event: SyntheticEvent) => {
+                                        history.push({
+                                            pathname: AppConstants.getPaths()
+                                                .get("ORGANIZATION_UPDATE")
+                                                .replace(":id", organization?.id)
+                                        });
+                                        setShowDropdown(false);
+                                        event.stopPropagation();
+                                    } }
+                                    data-componentid={ `${ componentId }-organization-edit` }
+                                />)
+                            }
+                            position="top center"
+                            content={ t("common:edit") }
+                            inverted
+                        />
+                    </Show>
                 ) }
             </Grid.Column>
         </Grid.Row>
