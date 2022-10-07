@@ -226,15 +226,6 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
         getOrganizationList(listFilter, null, null);
     }, [ getOrganizationList, listFilter, isDropDownOpen ]);
 
-    /**
-     * Stops the dropdown from closing on click.
-     *
-     * @param e - Click event.
-     */
-    const handleDropdownClick = (e: SyntheticEvent<HTMLElement>): void => {
-        e.stopPropagation();
-    };
-
     const handleOrgRowClick = (
         organization: OrganizationInterface | OrganizationResponseInterface
     ): void => {
