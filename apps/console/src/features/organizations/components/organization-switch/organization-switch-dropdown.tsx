@@ -61,12 +61,15 @@ import {
 import { getOrganizations, useGetOrganizationBreadCrumb } from "../../api";
 import {
     BreadcrumbItem,
+    GenericOrganization,
     OrganizationInterface,
     OrganizationLinkInterface,
     OrganizationListInterface,
     OrganizationResponseInterface
 } from "../../models";
 import { AddOrganizationModal } from "../add-organization-modal";
+import { OrganizationUtils } from "../../utils";
+import { SessionStorageUtils } from "@wso2is/core/utils";
 
 /**
  * Interface for component dropdown.
@@ -106,12 +109,11 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
     const [ showBreadcrumb, setShowBreadcrumb ] = useState<boolean>(false);
 
     const {
-        data: breadcrumbList,
-        error: breadcrumbError
+        data: breadcrumbList
     } = useGetOrganizationBreadCrumb();
 
     const [ parents, setParents ] = useState<
-        (OrganizationInterface | OrganizationResponseInterface)[]
+        GenericOrganization[]
             >([]);
 
     const noOfItems = 10;
@@ -125,12 +127,40 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
         getOrganizationList(listFilter, afterCursor, null);
     };
 
+        const handleOrganizationSwitch = (
+        organization: GenericOrganization
+    ): void => {
+        let newOrgPath: string = "";
+
+        if (OrganizationUtils.isRootOrganization(organization)) {
+            newOrgPath = `${ window[ "AppUtils" ].getConfig().tenantPathWithoutSuperTenant
+            } /${ window[ "AppUtils" ].getConfig().appBase }`;
+        } else {
+            newOrgPath =
+                window[ "AppUtils" ].getConfig().tenantPathWithoutSuperTenant +
+                "/o/" +
+                organization.id +
+                "/" +
+                window[ "AppUtils" ].getConfig().appBase;
+        }
+
+        // Clear the callback url of the previous organization.
+        SessionStorageUtils.clearItemFromSessionStorage(
+            "auth_callback_url_console"
+        );
+
+        // Redirect the user to the newly selected organization path.
+        window.location.replace(newOrgPath);
+
+        setIsDropDownOpen(false);
+        };
+
     const getOrganizationList = useCallback(
         async (
             filter: string,
             after: string,
             before: string,
-            parentId?: OrganizationInterface | OrganizationResponseInterface
+            parentId?: GenericOrganization
         ) => {
             const filterStrWithDisableFilter = `status eq ACTIVE ${ filter ? "and " + filter : ""
             }`;
@@ -227,7 +257,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
     }, [ getOrganizationList, listFilter, isDropDownOpen ]);
 
     const handleOrgRowClick = (
-        organization: OrganizationInterface | OrganizationResponseInterface
+        organization: GenericOrganization
     ): void => {
         getOrganizationList(
             "parentId eq " + organization.id,
@@ -297,15 +327,20 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
             item
             floating
             pointing="top left"
-            className="tenant-dropdown"
+            className="tenant-dropdown breadcrumb"
             data-componentid={ "component-dropdown" }
             open={ isDropDownOpen }
             onClick={ handleCurrentOrgClick }
             trigger={
                 isBreadcrumbItem ? (
-                    <div className="item">
-                        <span>{ name }</span>
-                        <Icon name="caret down" className="separator-icon" />
+                    <div className="item breadcrumb" onClick={(e)=>e.stopPropagation()}>
+                        <span onClick={()=>setIsDropDownOpen(!isDropDownOpen)}>
+                            { name }
+                            <Icon
+                                name="caret down"
+                                className="separator-icon"
+                            />
+                        </span>
                     </div>
                 ) : (
                     <div className="organization-breadcrumb trigger">
@@ -318,7 +353,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                                 size="micro"
                             />
                         </div>
-                        <div className="item">
+                        <div className="item breadcrumb">
                             <span>{ name }</span>
                             <Icon
                                 name="caret down"
@@ -328,9 +363,12 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                     </div>
                 )
             }
-            icon=""
+            icon={ null }
         >
-            <Dropdown.Menu className="organization-dropdown-menu">
+            <Dropdown.Menu
+                className="organization-dropdown-menu"
+                onClick={ e => e.stopPropagation() }
+            >
                 { isDropDownOpen && (
                     <>
                         <Grid padded>
@@ -447,7 +485,8 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                                             currentOrganization
                                         }
                                         loadMore={ handlePaginationChange }
-                                        setShowDropdown={ setIsDropDownOpen }
+                                            setShowDropdown={ setIsDropDownOpen }
+                                            handleOrganizationSwitch={handleOrganizationSwitch}
                                     />
                                 )
                             ) : null }
@@ -466,12 +505,8 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                         (breadcrumb: BreadcrumbItem, index: number) => {
                             if (index !== breadcrumbList.length - 1) {
                                 return (
-                                    <Menu.Item
-                                        name="super"
-                                        onClick={ () => null }
-                                        key={ index }
-                                    >
-                                        <span>{ breadcrumb.name }</span>
+                                    <Menu.Item key={ index } className="breadcrumb">
+                                        <span onClick={ () => handleOrganizationSwitch(breadcrumb) }>{ breadcrumb.name }</span>
                                         <Icon
                                             name="caret right"
                                             className="separator-icon"
@@ -480,26 +515,34 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                                 );
                             }
 
-                            {
-                                tenantDropdownMenu(breadcrumb.name);
-                            }
+                            return tenantDropdownMenu(breadcrumb.name, true);
                         }
                     ) }
+                    <Menu.Item className="breadcrumb">
+                        <GenericIcon
+                            size="nano"
+                            defaultIcon
+                            transparent
+                            icon={ CrossIcon }
+                            onClick={ () => setShowBreadcrumb(false) }
+                            className="close-icon"
+                        />
+                    </Menu.Item>
                 </Menu>
             );
         }
 
         return (
             <Menu className="organization-breadcrumb">
-                <Menu.Item name="super" onClick={ () => null }>
-                    <span>{ breadcrumbList[ 0 ].name }</span>
+                <Menu.Item className="breadcrumb">
+                    <span onClick={ () => handleOrganizationSwitch(breadcrumbList[ 0 ]) }>{ breadcrumbList[ 0 ].name }</span>
                     <Icon name="caret right" className="separator-icon" />
                 </Menu.Item>
                 <Dropdown
                     item
                     text="..."
                     icon="caret right"
-                    className="breadcrumb-dropdown"
+                    className="breadcrumb-dropdown breadcrumb"
                 >
                     <Dropdown.Menu>
                         { breadcrumbList.map(
@@ -514,17 +557,18 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                                 return (
                                     <Dropdown.Item
                                         key={ index }
-                                        onClick={ () => null }
+                                        onClick={ () => handleOrganizationSwitch(breadcrumb) }
                                         icon="caret right"
                                         text={ breadcrumb.name }
+                                        className="breadcrumb-dropdown-item"
                                     />
                                 );
                             }
                         ) }
                     </Dropdown.Menu>
                 </Dropdown>
-                <Menu.Item name="super" onClick={ () => null }>
-                    <span>
+                <Menu.Item className="breadcrumb">
+                    <span onClick={ () => handleOrganizationSwitch(breadcrumbList[breadcrumbList.length - 2]) }>
                         { breadcrumbList[ breadcrumbList.length - 2 ].name }
                     </span>
                     <Icon name="caret right" className="separator-icon" />
@@ -533,6 +577,16 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                     breadcrumbList[ breadcrumbList.length - 1 ].name,
                     true
                 ) }
+                <Menu.Item className="breadcrumb">
+                        <GenericIcon
+                            size="nano"
+                            defaultIcon
+                            transparent
+                            icon={ CrossIcon }
+                        onClick={ () => setShowBreadcrumb(false) }
+
+                        />
+                    </Menu.Item>
             </Menu>
         );
     };
@@ -553,7 +607,10 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
         return (
             <div className="organization-breadcrumb-wrapper">
                 { !showBreadcrumb ? (
-                    <Menu className="organization-breadcrumb">
+                    <div
+                        className="organization-breadcrumb trigger"
+                        onClick={ () => setShowBreadcrumb(true) }
+                    >
                         <div className="icon-wrapper">
                             <GenericIcon
                                 transparent
@@ -563,18 +620,17 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                                 size="micro"
                             />
                         </div>
-                        <Menu.Item
-                            name="super"
-                            onClick={ () => setShowBreadcrumb(true) }
-                        >
+                        <div className="item">
                             <span>{ currentOrganization?.name }</span>
                             <Icon
                                 name="caret right"
                                 className="separator-icon"
                             />
-                        </Menu.Item>
-                    </Menu>
-                ) : generateBreadcrumb() }
+                        </div>
+                    </div>
+                ) : (
+                    generateBreadcrumb()
+                ) }
             </div>
         );
     };
