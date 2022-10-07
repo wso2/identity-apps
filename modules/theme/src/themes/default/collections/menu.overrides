@@ -936,21 +936,30 @@
         padding: 0 15px 0 0;
         color: @tenantDropdownTriggerTextColor;
         background: none;
+        cursor: default;
 
         .icon-wrapper {
             padding: 10px 0 0 15px;
         }
 
         .item {
-            padding: 0 0 0 5px;
+            &.breadcrumb {
+                padding: 0 0 0 5px;
+                cursor: default;
 
-            span, .text {
-                padding: 10px;
-                border-radius: 25px;
+                span, .text {
+                    padding: 10px;
+                    border-radius: 25px;
+                    cursor: pointer;
 
-                &:hover, &:active, &:focus {
-                    color: darken(@tenantDropdownTriggerTextColor, 10);
-                    background: @tenantDropdownTriggerHoverBackground;
+                    &:hover, &:active, &:focus {
+                        color: darken(@tenantDropdownTriggerTextColor, 10);
+                        background: @tenantDropdownTriggerHoverBackground;
+                    }
+                }
+
+                .close-icon {
+                    cursor: pointer;
                 }
             }
         }
