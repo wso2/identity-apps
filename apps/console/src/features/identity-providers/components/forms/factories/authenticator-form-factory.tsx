@@ -81,6 +81,8 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
     props: AuthenticatorFormFactoryInterface
 ): ReactElement => {
 
+    const microsoftIdpTemplate = "microsoft-idp";
+
     const {
         authenticator,
         metadata,
@@ -190,20 +192,37 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
                 />
             );
         case IdentityProviderManagementConstants.MICROSOFT_AUTHENTICATOR_ID:
-            return(
-                <MicrosoftAuthenticatorForm
-                    mode={ mode }
-                    initialValues={ initialValues }
-                    metadata={ metadata }
-                    onSubmit={ onSubmit }
-                    triggerSubmit={ triggerSubmit }
-                    enableSubmitButton={ enableSubmitButton }
-                    data-testid={ testId }
-                    showCustomProperties={ showCustomProperties }
-                    readOnly={ isReadOnly }
-                    isSubmitting={ isSubmitting }
-                />
-            );
+            if (templateId==microsoftIdpTemplate){
+                return(
+                    <MicrosoftAuthenticatorForm
+                        mode={ mode }
+                        initialValues={ initialValues }
+                        metadata={ metadata }
+                        onSubmit={ onSubmit }
+                        triggerSubmit={ triggerSubmit }
+                        enableSubmitButton={ enableSubmitButton }
+                        data-testid={ testId }
+                        showCustomProperties={ showCustomProperties }
+                        readOnly={ isReadOnly }
+                        isSubmitting={ isSubmitting }
+                    />
+                );
+            } else {
+                return (
+                    <CommonAuthenticatorForm
+                        mode={ mode }
+                        initialValues={ initialValues }
+                        metadata={ metadata }
+                        onSubmit={ onSubmit }
+                        triggerSubmit={ triggerSubmit }
+                        enableSubmitButton={ enableSubmitButton }
+                        data-testid={ testId }
+                        showCustomProperties={ showCustomProperties }
+                        readOnly={ isReadOnly }
+                        isSubmitting={ isSubmitting }
+                    />
+                );
+            }
         default:
             return (
                 <CommonAuthenticatorForm
