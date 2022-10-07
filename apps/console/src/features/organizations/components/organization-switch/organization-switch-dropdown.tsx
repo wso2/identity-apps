@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AccessControlConstants, Show } from "@wso2is/access-control";
 import {
     AlertLevels,
     IdentifiableComponentInterface
@@ -34,7 +35,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import {
     Button,
-    Divider,
     Dropdown,
     Grid,
     Icon,
@@ -48,10 +48,7 @@ import {
 import OrganizationListItem from "./organization-list-item";
 import OrganizationSwitcherList from "./organization-switcher-list";
 import { ReactComponent as CrossIcon } from "../../../../themes/default/assets/images/icons/cross-icon.svg";
-import {
-    AppState,
-    getMiscellaneousIcons
-} from "../../../core";
+import { AppState, getMiscellaneousIcons } from "../../../core";
 import { getOrganizations, useGetOrganizationBreadCrumb } from "../../api";
 import {
     BreadcrumbItem,
@@ -297,10 +294,41 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
     const closeNewOrgWizard = (): void => {
         setShowNewOrgWizard(false);
     };
+
     const handleCurrentOrgClick = (): void => {
         setParents([]);
         setIsDropDownOpen(!isDropDownOpen);
     };
+
+    const tenantDropdownTrigger = (
+        name: string,
+        isBreadcrumbItem?: boolean
+    ): ReactElement =>
+        isBreadcrumbItem ? (
+            <div className="item breadcrumb" onClick={ e => e.stopPropagation() }>
+                <span onClick={ () => setIsDropDownOpen(!isDropDownOpen) }>
+                    { name }
+                    <Icon name="caret down" className="separator-icon" />
+                </span>
+            </div>
+        ) : (
+            <div className="organization-breadcrumb trigger">
+                <div className="icon-wrapper">
+                    <GenericIcon
+                        transparent
+                        data-componentid="component-dropdown-trigger-icon"
+                        data-testid="tenant-dropdown-trigger-icon"
+                        icon={ getMiscellaneousIcons().tenantIcon }
+                        size="micro"
+                    />
+                </div>
+                <div className="item breadcrumb">
+                    <span>{ name }</span>
+                    <Icon name="caret down" className="separator-icon" />
+                </div>
+            </div>
+        );
+
     const tenantDropdownMenu = (name: string, isBreadcrumbItem?: boolean) => (
         <Dropdown
             onBlur={ resetTenantDropdown }
@@ -311,43 +339,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
             data-componentid={ "component-dropdown" }
             open={ isDropDownOpen }
             onClick={ handleCurrentOrgClick }
-            trigger={
-                isBreadcrumbItem ? (
-                    <div
-                        className="item breadcrumb"
-                        onClick={ e => e.stopPropagation() }
-                    >
-                        <span
-                            onClick={ () => setIsDropDownOpen(!isDropDownOpen) }
-                        >
-                            { name }
-                            <Icon
-                                name="caret down"
-                                className="separator-icon"
-                            />
-                        </span>
-                    </div>
-                ) : (
-                    <div className="organization-breadcrumb trigger">
-                        <div className="icon-wrapper">
-                            <GenericIcon
-                                transparent
-                                data-componentid="component-dropdown-trigger-icon"
-                                data-testid="tenant-dropdown-trigger-icon"
-                                icon={ getMiscellaneousIcons().tenantIcon }
-                                size="micro"
-                            />
-                        </div>
-                        <div className="item breadcrumb">
-                            <span>{ name }</span>
-                            <Icon
-                                name="caret down"
-                                className="separator-icon"
-                            />
-                        </div>
-                    </div>
-                )
-            }
+            trigger={ tenantDropdownTrigger(name, isBreadcrumbItem) }
             icon={ null }
         >
             <Dropdown.Menu
@@ -380,14 +372,20 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                                         </h5>
                                     </Grid.Column>
                                     <Grid.Column width={ 4 }>
-                                        <Button
-                                            basic
-                                            floated="right"
-                                            onClick={ handleNewClick }
+                                        <Show
+                                            when={
+                                                AccessControlConstants.ORGANIZATION_WRITE
+                                            }
                                         >
-                                            <Icon name="add" />
-                                            { t("common:new") }
-                                        </Button>
+                                            <Button
+                                                basic
+                                                floated="right"
+                                                onClick={ handleNewClick }
+                                            >
+                                                <Icon name="add" />
+                                                { t("common:new") }
+                                            </Button>
+                                        </Show>
                                     </Grid.Column>
                                 </Grid.Row>
                             </Grid>
@@ -601,7 +599,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
         );
     };
 
-    const breadcrumb = (): ReactElement => {
+    const organizationSwitcher = (): ReactElement => {
         if (!breadcrumbList || breadcrumbList.length === 0) {
             return;
         }
@@ -647,7 +645,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
 
     return (
         <>
-            { breadcrumb() }
+            { organizationSwitcher() }
             { showNewOrgWizard && (
                 <AddOrganizationModal
                     parent={ parents[ parents.length - 1 ] }
