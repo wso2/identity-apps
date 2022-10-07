@@ -16,20 +16,18 @@
  * under the License.
  */
 
-import { hasRequiredScopes } from "@wso2is/core/helpers";
 import {
     AlertLevels,
     IdentifiableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
+import { SessionStorageUtils } from "@wso2is/core/utils";
 import { GenericIcon } from "@wso2is/react-components";
 import React, {
     FunctionComponent,
     ReactElement,
-    SyntheticEvent,
     useCallback,
     useEffect,
-    useMemo,
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
@@ -44,18 +42,14 @@ import {
     Item,
     Loader,
     Menu,
-    Placeholder,
     Popup,
     Segment
 } from "semantic-ui-react";
 import OrganizationListItem from "./organization-list-item";
 import OrganizationSwitcherList from "./organization-switcher-list";
-import { organizationConfigs } from "../../../../extensions";
 import { ReactComponent as CrossIcon } from "../../../../themes/default/assets/images/icons/cross-icon.svg";
 import {
-    AppConstants,
     AppState,
-    FeatureConfigInterface,
     getMiscellaneousIcons
 } from "../../../core";
 import { getOrganizations, useGetOrganizationBreadCrumb } from "../../api";
@@ -67,9 +61,8 @@ import {
     OrganizationListInterface,
     OrganizationResponseInterface
 } from "../../models";
-import { AddOrganizationModal } from "../add-organization-modal";
 import { OrganizationUtils } from "../../utils";
-import { SessionStorageUtils } from "@wso2is/core/utils";
+import { AddOrganizationModal } from "../add-organization-modal";
 
 /**
  * Interface for component dropdown.
@@ -87,13 +80,6 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
     const currentOrganization: OrganizationResponseInterface = useSelector(
         (state: AppState) => state.organization.organization
     );
-    const feature: FeatureConfigInterface = useSelector(
-        (state: AppState) => state.config.ui.features
-    );
-    const scopes = useSelector((state: AppState) => state.auth.allowedScopes);
-    const tenantDomain: string = useSelector(
-        (state: AppState) => state?.auth?.tenantDomain
-    );
 
     const [ associatedOrganizations, setAssociatedOrganizations ] = useState<
         OrganizationInterface[]
@@ -108,13 +94,9 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
     const [ showNewOrgWizard, setShowNewOrgWizard ] = useState<boolean>(false);
     const [ showBreadcrumb, setShowBreadcrumb ] = useState<boolean>(false);
 
-    const {
-        data: breadcrumbList
-    } = useGetOrganizationBreadCrumb();
+    const { data: breadcrumbList } = useGetOrganizationBreadCrumb();
 
-    const [ parents, setParents ] = useState<
-        GenericOrganization[]
-            >([]);
+    const [ parents, setParents ] = useState<GenericOrganization[]>([]);
 
     const noOfItems = 10;
 
@@ -127,7 +109,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
         getOrganizationList(listFilter, afterCursor, null);
     };
 
-        const handleOrganizationSwitch = (
+    const handleOrganizationSwitch = (
         organization: GenericOrganization
     ): void => {
         let newOrgPath: string = "";
@@ -153,7 +135,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
         window.location.replace(newOrgPath);
 
         setIsDropDownOpen(false);
-        };
+    };
 
     const getOrganizationList = useCallback(
         async (
@@ -256,9 +238,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
         getOrganizationList(listFilter, null, null);
     }, [ getOrganizationList, listFilter, isDropDownOpen ]);
 
-    const handleOrgRowClick = (
-        organization: GenericOrganization
-    ): void => {
+    const handleOrgRowClick = (organization: GenericOrganization): void => {
         getOrganizationList(
             "parentId eq " + organization.id,
             null,
@@ -333,8 +313,13 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
             onClick={ handleCurrentOrgClick }
             trigger={
                 isBreadcrumbItem ? (
-                    <div className="item breadcrumb" onClick={(e)=>e.stopPropagation()}>
-                        <span onClick={()=>setIsDropDownOpen(!isDropDownOpen)}>
+                    <div
+                        className="item breadcrumb"
+                        onClick={ e => e.stopPropagation() }
+                    >
+                        <span
+                            onClick={ () => setIsDropDownOpen(!isDropDownOpen) }
+                        >
                             { name }
                             <Icon
                                 name="caret down"
@@ -485,8 +470,10 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                                             currentOrganization
                                         }
                                         loadMore={ handlePaginationChange }
-                                            setShowDropdown={ setIsDropDownOpen }
-                                            handleOrganizationSwitch={handleOrganizationSwitch}
+                                        setShowDropdown={ setIsDropDownOpen }
+                                        handleOrganizationSwitch={
+                                            handleOrganizationSwitch
+                                        }
                                     />
                                 )
                             ) : null }
@@ -505,8 +492,19 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                         (breadcrumb: BreadcrumbItem, index: number) => {
                             if (index !== breadcrumbList.length - 1) {
                                 return (
-                                    <Menu.Item key={ index } className="breadcrumb">
-                                        <span onClick={ () => handleOrganizationSwitch(breadcrumb) }>{ breadcrumb.name }</span>
+                                    <Menu.Item
+                                        key={ index }
+                                        className="breadcrumb"
+                                    >
+                                        <span
+                                            onClick={ () =>
+                                                handleOrganizationSwitch(
+                                                    breadcrumb
+                                                )
+                                            }
+                                        >
+                                            { breadcrumb.name }
+                                        </span>
                                         <Icon
                                             name="caret right"
                                             className="separator-icon"
@@ -535,7 +533,13 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
         return (
             <Menu className="organization-breadcrumb">
                 <Menu.Item className="breadcrumb">
-                    <span onClick={ () => handleOrganizationSwitch(breadcrumbList[ 0 ]) }>{ breadcrumbList[ 0 ].name }</span>
+                    <span
+                        onClick={ () =>
+                            handleOrganizationSwitch(breadcrumbList[ 0 ])
+                        }
+                    >
+                        { breadcrumbList[ 0 ].name }
+                    </span>
                     <Icon name="caret right" className="separator-icon" />
                 </Menu.Item>
                 <Dropdown
@@ -557,7 +561,9 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                                 return (
                                     <Dropdown.Item
                                         key={ index }
-                                        onClick={ () => handleOrganizationSwitch(breadcrumb) }
+                                        onClick={ () =>
+                                            handleOrganizationSwitch(breadcrumb)
+                                        }
                                         icon="caret right"
                                         text={ breadcrumb.name }
                                         className="breadcrumb-dropdown-item"
@@ -568,7 +574,13 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                     </Dropdown.Menu>
                 </Dropdown>
                 <Menu.Item className="breadcrumb">
-                    <span onClick={ () => handleOrganizationSwitch(breadcrumbList[breadcrumbList.length - 2]) }>
+                    <span
+                        onClick={ () =>
+                            handleOrganizationSwitch(
+                                breadcrumbList[ breadcrumbList.length - 2 ]
+                            )
+                        }
+                    >
                         { breadcrumbList[ breadcrumbList.length - 2 ].name }
                     </span>
                     <Icon name="caret right" className="separator-icon" />
@@ -578,15 +590,14 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                     true
                 ) }
                 <Menu.Item className="breadcrumb">
-                        <GenericIcon
-                            size="nano"
-                            defaultIcon
-                            transparent
-                            icon={ CrossIcon }
+                    <GenericIcon
+                        size="nano"
+                        defaultIcon
+                        transparent
+                        icon={ CrossIcon }
                         onClick={ () => setShowBreadcrumb(false) }
-
-                        />
-                    </Menu.Item>
+                    />
+                </Menu.Item>
             </Menu>
         );
     };

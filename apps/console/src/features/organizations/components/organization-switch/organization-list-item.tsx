@@ -17,16 +17,13 @@
  */
 
 import { IdentifiableComponentInterface } from "@wso2is/core/src/models";
-import { SessionStorageUtils } from "@wso2is/core/utils";
 import { GenericIcon } from "@wso2is/react-components";
 import React, { ReactElement, SyntheticEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, Icon, Placeholder, Popup } from "semantic-ui-react";
 import { AppConstants, getMiscellaneousIcons, history } from "../../../core";
 import {
-    GenericOrganization,
-    OrganizationInterface,
-    OrganizationResponseInterface
+    GenericOrganization
 } from "../../models";
 import { OrganizationUtils } from "../../utils";
 
