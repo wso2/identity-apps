@@ -286,6 +286,7 @@
 
                                 .search-bar {
                                     padding: 12px 0;
+                                    margin: 0;
                                 }
 
                                 .tenant-pagination {
@@ -919,6 +920,55 @@
                     cursor: default;
                 }
             }
+        }
+    }
+}
+
+/*----------------------------------
+      Organization Breadcrumb
+-----------------------------------*/
+
+.ui.menu {
+    &.organization-breadcrumb, .organization-breadcrumb {
+        box-shadow: none;
+        border: 1px solid @defaultBorderColor;
+        border-radius: 25px;
+        padding: 0 15px 0 0;
+        color: @tenantDropdownTriggerTextColor;
+        background: none;
+
+        .icon-wrapper {
+            padding: 10px 0 0 15px;
+        }
+
+        .item {
+            padding: 0 0 0 5px;
+
+            span, .text {
+                padding: 10px;
+                border-radius: 25px;
+
+                &:hover, &:active, &:focus {
+                    color: darken(@tenantDropdownTriggerTextColor, 10);
+                    background: @tenantDropdownTriggerHoverBackground;
+                }
+            }
+        }
+
+        .separator-icon, .dropdown.breadcrumb-dropdown .icon {
+            margin: 0;
+            padding: 0 0 0 5px;
+        }
+
+        &.trigger {
+            &:hover, &:active, &:focus {
+                color: darken(@tenantDropdownTriggerTextColor, 10);
+                background: @tenantDropdownTriggerHoverBackground;
+            }
+
+            cursor: pointer;
+            display: flex;
+            min-height: @minHeight;
         }
     }
 }
