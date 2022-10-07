@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (http://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,9 +17,11 @@
  */
 
 import { hasRequiredScopes } from "@wso2is/core/helpers";
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import {
+    AlertLevels,
+    IdentifiableComponentInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { SessionStorageUtils } from "@wso2is/core/utils";
 import { GenericIcon } from "@wso2is/react-components";
 import React, {
     FunctionComponent,
@@ -32,26 +34,39 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Divider, Dropdown, Input, Item, Label, Menu, Placeholder, Popup } from "semantic-ui-react";
+import {
+    Button,
+    Divider,
+    Dropdown,
+    Grid,
+    Icon,
+    Input,
+    Item,
+    Loader,
+    Menu,
+    Placeholder,
+    Popup,
+    Segment
+} from "semantic-ui-react";
+import OrganizationListItem from "./organization-list-item";
+import OrganizationSwitcherList from "./organization-switcher-list";
 import { organizationConfigs } from "../../../../extensions";
 import { ReactComponent as CrossIcon } from "../../../../themes/default/assets/images/icons/cross-icon.svg";
 import {
     AppConstants,
     AppState,
     FeatureConfigInterface,
-    getMiscellaneousIcons,
-    getSidePanelIcons,
-    history
+    getMiscellaneousIcons
 } from "../../../core";
-import { getOrganizations, useGetUserSuperOrganization } from "../../api";
-import { OrganizationManagementConstants } from "../../constants";
+import { getOrganizations, useGetOrganizationBreadCrumb } from "../../api";
 import {
+    BreadcrumbItem,
     OrganizationInterface,
     OrganizationLinkInterface,
     OrganizationListInterface,
     OrganizationResponseInterface
 } from "../../models";
-import { OrganizationUtils } from "../../utils";
+import { AddOrganizationModal } from "../add-organization-modal";
 
 /**
  * Interface for component dropdown.
@@ -69,125 +84,136 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
     const currentOrganization: OrganizationResponseInterface = useSelector(
         (state: AppState) => state.organization.organization
     );
-    const feature: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const feature: FeatureConfigInterface = useSelector(
+        (state: AppState) => state.config.ui.features
+    );
     const scopes = useSelector((state: AppState) => state.auth.allowedScopes);
-    const tenantDomain: string = useSelector((state: AppState) => state?.auth?.tenantDomain);
+    const tenantDomain: string = useSelector(
+        (state: AppState) => state?.auth?.tenantDomain
+    );
 
-    const [ associatedOrganizations, setAssociatedOrganizations ] = useState<OrganizationInterface[]>([]);
+    const [ associatedOrganizations, setAssociatedOrganizations ] = useState<
+        OrganizationInterface[]
+    >([]);
     const [ listFilter, setListFilter ] = useState("");
     const [ afterCursor, setAfterCursor ] = useState<string>();
-    const [ beforeCursor, setBeforeCursor ] = useState<string>();
     const [ isDropDownOpen, setIsDropDownOpen ] = useState<boolean>(false);
     const [ search, setSearch ] = useState<string>("");
-    const { data } = useGetUserSuperOrganization();
+    const [ isOrganizationsLoading, setIsOrganizationsLoading ] = useState<
+        boolean
+    >(false);
+    const [ showNewOrgWizard, setShowNewOrgWizard ] = useState<boolean>(false);
+    const [ showBreadcrumb, setShowBreadcrumb ] = useState<boolean>(false);
+
+    const {
+        data: breadcrumbList,
+        error: breadcrumbError
+    } = useGetOrganizationBreadCrumb();
+
+    const [ parents, setParents ] = useState<
+        (OrganizationInterface | OrganizationResponseInterface)[]
+            >([]);
+
+    const noOfItems = 10;
 
     /**
-     * Show the organization switching dropdown only if
-     *  - the extensions config enables this
-     *  - the requires scopes are there
-     *  - the organization management feature is enabled by the backend
-     *  - the user is logged in to a non-super-tenant account
+     * Handles the pagination change.
+     *
+     * @param data - Pagination component data.
      */
-    const isOrgSwitcherEnabled = useMemo(() => {
-        return (
-            isOrganizationManagementEnabled &&
-            // The `tenantDomain` takes the organization id when you log in to a sub-organization.
-            // So, we cannot use `tenantDomain` to check
-            // if the user is logged in to a non-super-tenant account reliably.
-            // So, we check if the organization id is there in the URL to see if the user is in a sub-organization.
-            (tenantDomain === AppConstants.getSuperTenant() || window[ "AppUtils" ].getConfig().organizationName) &&
-            hasRequiredScopes(feature?.organizations, feature?.organizations?.scopes?.read, scopes) &&
-            organizationConfigs.showOrganizationDropdown
-        );
-    }, [
-        organizationConfigs.showOrganizationDropdown,
-        tenantDomain,
-        feature.organizations
-    ]);
+    const handlePaginationChange = (): void => {
+        getOrganizationList(listFilter, afterCursor, null);
+    };
 
-    const getOrganizationList = useCallback(async (filter: string, after: string, before: string) => {
-        let superOrg: OrganizationInterface;
-        const filterStrWithDisableFilter = `status eq ACTIVE and ${filter}`;
+    const getOrganizationList = useCallback(
+        async (
+            filter: string,
+            after: string,
+            before: string,
+            parentId?: OrganizationInterface | OrganizationResponseInterface
+        ) => {
+            const filterStrWithDisableFilter = `status eq ACTIVE ${ filter ? "and " + filter : ""
+            }`;
 
-        try {
-            const superOrgId: string = data?.id;
+            !after && setIsOrganizationsLoading(true);
 
-            if (currentOrganization.id !== superOrgId) {
-                superOrg = {
-                    id: superOrgId,
-                    name: data?.name,
-                    ref: "",
-                    status: "ACTIVE"
-                };
-            }
-        } catch(error) {
-            superOrg = { ...OrganizationManagementConstants.ROOT_ORGANIZATION };
-        }
+            getOrganizations(
+                filterStrWithDisableFilter,
+                noOfItems,
+                after,
+                before,
+                false,
+                false
+            )
+                .then((response: OrganizationListInterface) => {
+                    if (!response || !response.organizations) {
+                        setAssociatedOrganizations(organizations =>
+                            after ? [ ...organizations ] : []
+                        );
+                        setPaginationData(response.links);
+                    } else {
+                        const organizations: OrganizationInterface[] = [
+                            ...response?.organizations
+                        ];
 
-        getOrganizations(filterStrWithDisableFilter, 5, after, before, false, false)
-            .then((response: OrganizationListInterface) => {
-                if (!response || !response.organizations) {
-                    superOrg && setAssociatedOrganizations([ superOrg ]);
-                    setPaginationData(response.links);
-                } else {
-                    const organizations: OrganizationInterface[] = superOrg
-                        ? [ superOrg, ...response?.organizations ]
-                        : [ ...response?.organizations ];
+                        setAssociatedOrganizations(associatedOrganizations =>
+                            after
+                                ? [ ...associatedOrganizations, ...organizations ]
+                                : [ ...organizations ]
+                        );
 
-                    setAssociatedOrganizations(organizations);
+                        setPaginationData(response.links);
+                    }
+                    parentId && setParents(parents => [ ...parents, parentId ]);
+                })
+                .catch(error => {
+                    if (error?.description) {
+                        dispatch(
+                            addAlert({
+                                description: error.description,
+                                level: AlertLevels.ERROR,
+                                message: t(
+                                    "console:manage.features.organizations.notifications." +
+                                    "getOrganizationList.error.message"
+                                )
+                            })
+                        );
 
-                    setPaginationData(response.links);
-                }
-            }).catch((error) => {
-                superOrg && setAssociatedOrganizations([ superOrg ]);
+                        return;
+                    }
 
-                if (error?.description) {
                     dispatch(
                         addAlert({
-                            description: error.description,
+                            description: t(
+                                "console:manage.features.organizations.notifications.getOrganizationList" +
+                                ".genericError.description"
+                            ),
                             level: AlertLevels.ERROR,
                             message: t(
                                 "console:manage.features.organizations.notifications." +
-                                    "getOrganizationList.error.message"
+                                "getOrganizationList.genericError.message"
                             )
                         })
                     );
-
-                    return;
-                }
-
-                dispatch(
-                    addAlert({
-                        description: t(
-                            "console:manage.features.organizations.notifications.getOrganizationList" +
-                                ".genericError.description"
-                        ),
-                        level: AlertLevels.ERROR,
-                        message: t(
-                            "console:manage.features.organizations.notifications." +
-                                "getOrganizationList.genericError.message"
-                        )
-                    })
-                );
-            });
-    }, [ data ]);
+                })
+                .finally(() => {
+                    setIsOrganizationsLoading(false);
+                });
+        },
+        []
+    );
 
     const setPaginationData = (links: OrganizationLinkInterface[]) => {
         setAfterCursor(undefined);
-        setBeforeCursor(undefined);
         if (!links || links.length === 0) {
             return;
         }
 
-        links.forEach((link) => {
+        links.forEach(link => {
             if (link.rel === "next") {
                 const afterCursorLink = link.href.toString().split("after=")[ 1 ];
 
                 setAfterCursor(afterCursorLink);
-            } else {
-                const beforeCursorLink = link.href.toString().split("before=")[ 1 ];
-
-                setBeforeCursor(beforeCursorLink);
             }
         });
     };
@@ -200,178 +226,57 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
         getOrganizationList(listFilter, null, null);
     }, [ getOrganizationList, listFilter, isDropDownOpen ]);
 
-    const triggerTenant = (
-        <span className="tenant-dropdown-trigger" data-componentid="component-dropdown-trigger">
-            <GenericIcon
-                transparent
-                inline
-                className="tenant-dropdown-trigger-icon"
-                data-componentid="component-dropdown-trigger-icon"
-                data-testid="tenant-dropdown-trigger-icon"
-                icon={ getMiscellaneousIcons().tenantIcon }
-                size="micro"
-                fill="white"
-                spaced="right"
-            />
-            <div
-                className="tenant-dropdown-trigger-display-name ellipsis"
-                data-componentid="component-dropdown-display-name"
-            >
-                { !currentOrganization ? (
-                    <Placeholder data-componentid="organization-loading-placeholder">
-                        <Placeholder.Line />
-                    </Placeholder>
-                ) : (
-                    currentOrganization?.name
-                ) }
-            </div>
-        </span>
-    );
-
-    const handleOrganizationSwitch = (organization: OrganizationInterface | OrganizationResponseInterface): void => {
-        let newOrgPath: string = "";
-
-        if (OrganizationUtils.isRootOrganization(organization)) {
-            newOrgPath = `${
-                window[ "AppUtils" ].getConfig().tenantPathWithoutSuperTenant
-            } /${ window[ "AppUtils" ].getConfig().appBase
-            }`;
-        } else {
-            newOrgPath =
-                window[ "AppUtils" ].getConfig().tenantPathWithoutSuperTenant +
-                "/o/" +
-                organization.id +
-                "/" +
-                window[ "AppUtils" ].getConfig().appBase;
-        }
-
-        // Clear the callback url of the previous organization.
-        SessionStorageUtils.clearItemFromSessionStorage("auth_callback_url_console");
-
-        // Redirect the user to the newly selected organization path.
-        window.location.replace(newOrgPath);
-
-        setIsDropDownOpen(false);
-    };
-
     /**
      * Stops the dropdown from closing on click.
      *
-     * @param { React.SyntheticEvent<HTMLElement> } e - Click event.
+     * @param e - Click event.
      */
     const handleDropdownClick = (e: SyntheticEvent<HTMLElement>): void => {
         e.stopPropagation();
     };
 
-    const getOrganizationItemGroup = (organization: OrganizationInterface | OrganizationResponseInterface,
-        isClickable: boolean) => (
-        <Item.Group className="tenant-item-wrapper" unstackable>
-            <Item
-                className="header"
-                key={ `${ organization?.name }-organization-item` }
-                onClick={ isClickable
-                    ? () => {
-                        handleOrganizationSwitch(organization);
-                    }
-                    : null
-                }
-            >
-                {
-                    <GenericIcon
-                        transparent
-                        inline
-                        className="associated-tenant-icon"
-                        data-componentid="associated-organization-icon"
-                        icon={ getMiscellaneousIcons().tenantIcon }
-                        size="mini"
-                    />
-                }
-                <Item.Content verticalAlign="middle">
-                    <Item.Description>
-                        <div
-                            className="name ellipsis tenant-description"
-                            data-componentid={ "organization-dropdown-display-name" }
-                        >
-                            <div>
-                                <div>
-                                    { organization?.name ?? (
-                                        <Placeholder>
-                                            <Placeholder.Line />
-                                        </Placeholder>
-                                    ) }
-                                </div>
+    const handleOrgRowClick = (
+        organization: OrganizationInterface | OrganizationResponseInterface
+    ): void => {
+        getOrganizationList(
+            "parentId eq " + organization.id,
+            null,
+            null,
+            organization
+        );
+    };
 
-                                <Label size="mini">{ organization.id }</Label>
-                            </div>
+    const handleBackButtonClick = (): void => {
+        const parentIdsCopy = [ ...parents ];
 
-
-                            <div className="manage-icon-wrapper" >
-                                { !OrganizationUtils.isRootOrganization(organization) && (
-                                    <GenericIcon
-                                        transparent
-                                        inline
-                                        className="manage-tenant-icon"
-                                        data-componentid="associated-component-icon"
-                                        icon={ getSidePanelIcons().serverConfigurations }
-                                        onClick={ (event: SyntheticEvent) => {
-                                            history.push({
-                                                pathname: AppConstants.getPaths()
-                                                    .get("ORGANIZATION_UPDATE")
-                                                    .replace(":id", organization?.id)
-                                            });
-                                            setIsDropDownOpen(false);
-                                            event.stopPropagation();
-                                        } }
-                                    />
-                                ) }
-                            </div>
-                        </div>
-                    </Item.Description>
-                </Item.Content>
-            </Item>
-        </Item.Group>
-    );
-
-    const resolveAssociatedOrganizations = (): ReactElement => {
-        if (Array.isArray(associatedOrganizations)) {
-            return (
-                <Item.Group
-                    className="tenants-list organizations"
-                    unstackable
-                    data-componentid={ "associated-organizations-container" }
-                >
-                    { associatedOrganizations.length > 0 ? (
-                        associatedOrganizations.map((organization, _) =>
-                            organization.id !== currentOrganization?.id
-                                ? getOrganizationItemGroup(organization, true)
-                                : null
-                        )
-                    ) : (
-                        <Item className="empty-list">
-                            <Item.Content verticalAlign="middle">
-                                <Item.Description>
-                                    <div className="message">
-                                        { // ToDo - Set this key
-                                            t("console:manage.features.organizations.switching." + "emptyList") }
-                                    </div>
-                                </Item.Description>
-                            </Item.Content>
-                        </Item>
-                    ) }
-                </Item.Group>
-            );
-        }
+        parentIdsCopy.pop();
+        setParents(parentIdsCopy);
+        setIsOrganizationsLoading(true);
+        getOrganizationList(
+            parentIdsCopy?.length > 0
+                ? "parentId eq " + parentIdsCopy[ parentIdsCopy.length - 1 ].id
+                : "",
+            null,
+            null
+        );
     };
 
     /**
      * Search the organization list.
      *
-     * @param event
+     * @param search - Search query.
      */
     const searchOrganizationList = (search: string): void => {
         const changeValue = search.trim();
 
-        setListFilter(changeValue ? `name co ${ changeValue }` : "");
+        setListFilter(
+            changeValue
+                ? parents.length > 0
+                    ? `name co ${ changeValue } and parentId eq ${ parents[ parents.length - 1 ]
+                    }`
+                    : `name co ${ changeValue }`
+                : ""
+        );
     };
 
     /**
@@ -380,115 +285,320 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
     const resetTenantDropdown = (): void => {
         setListFilter("");
         setAfterCursor(undefined);
-        setBeforeCursor(undefined);
         setIsDropDownOpen(false);
     };
 
-    /**
-     * Handles the pagination change.
-     *
-     * @param {PaginationProps} data - Pagination component data.
-     */
-    const handlePaginationChange = (isNext: boolean): void => {
-        if (isNext) {
-            getOrganizationList(listFilter, afterCursor, null);
-        } else {
-            getOrganizationList(listFilter, null, beforeCursor);
-        }
+    const handleNewClick = (): void => {
+        setIsDropDownOpen(false);
+        setShowNewOrgWizard(true);
     };
 
-    const tenantPagination = (
-        <div className="tenant-pagination organizations">
-            <Button disabled={ beforeCursor === undefined } onClick={ () => handlePaginationChange(false) }>
-                { t("common:previous") }
-            </Button>
-            <Button disabled={ afterCursor === undefined } onClick={ () => handlePaginationChange(true) }>
-                { t("common:next") }
-            </Button>
-        </div>
-    );
-
-    const tenantDropdownMenu = (
-        <Menu.Item className="tenant-dropdown-wrapper" key="tenant-dropdown">
-            <Dropdown
-                onBlur={ resetTenantDropdown }
-                item
-                trigger={ triggerTenant }
-                floating
-                pointing="top left"
-                className="tenant-dropdown"
-                data-componentid={ "component-dropdown" }
-                onClick={ () => {
-                    setIsDropDownOpen(!isDropDownOpen);
-                } }
-                open={ isDropDownOpen }
-            >
-                <Dropdown.Menu onClick={ handleDropdownClick }>
-                    { getOrganizationItemGroup(currentOrganization, false) }
-
-                    <Divider />
-
-                    <Item.Group className="search-bar">
-                        <div className="advanced-search-wrapper aligned-left fill-default">
-                            <Input
-                                className="advanced-search with-add-on"
-                                data-componentid="list-search-input"
-                                icon="search"
-                                iconPosition="left"
-                                value={ search }
-                                onChange={ (event) => {
-                                    setSearch(event.target.value);
-                                } }
-                                onKeyDown={ (event: React.KeyboardEvent) => {
-                                    event.key === "Enter" && searchOrganizationList(search);
-                                    event.stopPropagation();
-                                } }
-                                placeholder={ t("console:manage.features.organizations.switching.search.placeholder") }
-                                floated="right"
-                                size="small"
-                                action={
-                                    search ? (
-                                        <Popup
-                                            trigger={ (
-                                                <Button
-                                                    data-componentid={ `${componentId}-clear-button` }
-                                                    basic
-                                                    compact
-                                                    className="input-add-on organizations"
-                                                >
-                                                    <GenericIcon
-                                                        size="nano"
-                                                        defaultIcon
-                                                        transparent
-                                                        icon={ CrossIcon }
-                                                        onClick={ () => {
-                                                            setSearch("");
-                                                            searchOrganizationList("");
-                                                        } }
-                                                    />
-                                                </Button>
-                                            ) }
-                                            position="top center"
-                                            content={ t("console:common.advancedSearch.popups.clear") }
-                                            inverted={ true }
-                                        />
-                                    ) : null
-                                }
+    const closeNewOrgWizard = (): void => {
+        setShowNewOrgWizard(false);
+    };
+    const handleCurrentOrgClick = (): void => {
+        setParents([]);
+        setIsDropDownOpen(!isDropDownOpen);
+    };
+    const tenantDropdownMenu = (name: string, isBreadcrumbItem?: boolean) => (
+        <Dropdown
+            onBlur={ resetTenantDropdown }
+            item
+            floating
+            pointing="top left"
+            className="tenant-dropdown"
+            data-componentid={ "component-dropdown" }
+            open={ isDropDownOpen }
+            onClick={ handleCurrentOrgClick }
+            trigger={
+                isBreadcrumbItem ? (
+                    <div className="item">
+                        <span>{ name }</span>
+                        <Icon name="caret down" className="separator-icon" />
+                    </div>
+                ) : (
+                    <div className="organization-breadcrumb trigger">
+                        <div className="icon-wrapper">
+                            <GenericIcon
+                                transparent
+                                data-componentid="component-dropdown-trigger-icon"
+                                data-testid="tenant-dropdown-trigger-icon"
+                                icon={ getMiscellaneousIcons().tenantIcon }
+                                size="micro"
                             />
                         </div>
-                    </Item.Group>
-
-                    { associatedOrganizations ? resolveAssociatedOrganizations() : null }
-
-                    <Divider />
-
-                    { tenantPagination }
-                </Dropdown.Menu>
-            </Dropdown>
-        </Menu.Item>
+                        <div className="item">
+                            <span>{ name }</span>
+                            <Icon
+                                name="caret down"
+                                className="separator-icon"
+                            />
+                        </div>
+                    </div>
+                )
+            }
+            icon=""
+        >
+            <Dropdown.Menu className="organization-dropdown-menu">
+                { isDropDownOpen && (
+                    <>
+                        <Grid padded>
+                            <OrganizationListItem
+                                organization={ currentOrganization }
+                                isClickable={ false }
+                                showSwitch={ false }
+                                handleOrgRowClick={ handleOrgRowClick }
+                                setShowDropdown={ setIsDropDownOpen }
+                            />
+                        </Grid>
+                        <Divider />
+                        <Segment basic secondary>
+                            <Grid>
+                                <Grid.Row columns={ 2 }>
+                                    <Grid.Column
+                                        width={ 12 }
+                                        verticalAlign="middle"
+                                    >
+                                        <h5>
+                                            { t(
+                                                "console:manage.features.organizations." +
+                                                "switching.subOrganizations"
+                                            ) }
+                                        </h5>
+                                    </Grid.Column>
+                                    <Grid.Column width={ 4 }>
+                                        <Button
+                                            basic
+                                            floated="right"
+                                            onClick={ handleNewClick }
+                                        >
+                                            <Icon name="add" />
+                                            { t("common:new") }
+                                        </Button>
+                                    </Grid.Column>
+                                </Grid.Row>
+                            </Grid>
+                            <Item.Group className="search-bar">
+                                <div className="advanced-search-wrapper aligned-left fill-default">
+                                    <Input
+                                        className="advanced-search with-add-on"
+                                        data-componentid="list-search-input"
+                                        icon="search"
+                                        iconPosition="left"
+                                        value={ search }
+                                        onChange={ event => {
+                                            setSearch(event.target.value);
+                                        } }
+                                        onKeyDown={ (
+                                            event: React.KeyboardEvent
+                                        ) => {
+                                            event.key === "Enter" &&
+                                                searchOrganizationList(search);
+                                            event.stopPropagation();
+                                        } }
+                                        placeholder={ t(
+                                            "console:manage.features.organizations.switching.search.placeholder"
+                                        ) }
+                                        floated="right"
+                                        size="small"
+                                        action={
+                                            search ? (
+                                                <Popup
+                                                    trigger={
+                                                        (<Button
+                                                            data-componentid={ `${ componentId }-clear-button` }
+                                                            basic
+                                                            compact
+                                                            className="input-add-on organizations"
+                                                        >
+                                                            <GenericIcon
+                                                                size="nano"
+                                                                defaultIcon
+                                                                transparent
+                                                                icon={ CrossIcon }
+                                                                onClick={ () => {
+                                                                    setSearch(
+                                                                        ""
+                                                                    );
+                                                                    searchOrganizationList(
+                                                                        ""
+                                                                    );
+                                                                } }
+                                                            />
+                                                        </Button>)
+                                                    }
+                                                    position="top center"
+                                                    content={ t(
+                                                        "console:common.advancedSearch.popups.clear"
+                                                    ) }
+                                                    inverted={ true }
+                                                />
+                                            ) : null
+                                        }
+                                    />
+                                </div>
+                            </Item.Group>
+                            { associatedOrganizations ? (
+                                isOrganizationsLoading ? (
+                                    <Segment basic>
+                                        <Loader active inline="centered" />
+                                    </Segment>
+                                ) : (
+                                    <OrganizationSwitcherList
+                                        organizations={ associatedOrganizations }
+                                        handleOrgRowClick={ handleOrgRowClick }
+                                        handleBackButtonClick={
+                                            handleBackButtonClick
+                                        }
+                                        parents={ parents }
+                                        hasMore={ !!afterCursor }
+                                        currentOrganization={
+                                            currentOrganization
+                                        }
+                                        loadMore={ handlePaginationChange }
+                                        setShowDropdown={ setIsDropDownOpen }
+                                    />
+                                )
+                            ) : null }
+                        </Segment>
+                    </>
+                ) }
+            </Dropdown.Menu>
+        </Dropdown>
     );
 
-    return <>{ isOrgSwitcherEnabled ? tenantDropdownMenu : null }</>;
+    const generateBreadcrumb = (): ReactElement => {
+        if (breadcrumbList.length < 4) {
+            return (
+                <Menu className="organization-breadcrumb">
+                    { breadcrumbList.map(
+                        (breadcrumb: BreadcrumbItem, index: number) => {
+                            if (index !== breadcrumbList.length - 1) {
+                                return (
+                                    <Menu.Item
+                                        name="super"
+                                        onClick={ () => null }
+                                        key={ index }
+                                    >
+                                        <span>{ breadcrumb.name }</span>
+                                        <Icon
+                                            name="caret right"
+                                            className="separator-icon"
+                                        />
+                                    </Menu.Item>
+                                );
+                            }
+
+                            {
+                                tenantDropdownMenu(breadcrumb.name);
+                            }
+                        }
+                    ) }
+                </Menu>
+            );
+        }
+
+        return (
+            <Menu className="organization-breadcrumb">
+                <Menu.Item name="super" onClick={ () => null }>
+                    <span>{ breadcrumbList[ 0 ].name }</span>
+                    <Icon name="caret right" className="separator-icon" />
+                </Menu.Item>
+                <Dropdown
+                    item
+                    text="..."
+                    icon="caret right"
+                    className="breadcrumb-dropdown"
+                >
+                    <Dropdown.Menu>
+                        { breadcrumbList.map(
+                            (breadcrumb: BreadcrumbItem, index: number) => {
+                                if (
+                                    index === 0 ||
+                                    index > breadcrumbList.length - 3
+                                ) {
+                                    return;
+                                }
+
+                                return (
+                                    <Dropdown.Item
+                                        key={ index }
+                                        onClick={ () => null }
+                                        icon="caret right"
+                                        text={ breadcrumb.name }
+                                    />
+                                );
+                            }
+                        ) }
+                    </Dropdown.Menu>
+                </Dropdown>
+                <Menu.Item name="super" onClick={ () => null }>
+                    <span>
+                        { breadcrumbList[ breadcrumbList.length - 2 ].name }
+                    </span>
+                    <Icon name="caret right" className="separator-icon" />
+                </Menu.Item>
+                { tenantDropdownMenu(
+                    breadcrumbList[ breadcrumbList.length - 1 ].name,
+                    true
+                ) }
+            </Menu>
+        );
+    };
+
+    const breadcrumb = (): ReactElement => {
+        if (!breadcrumbList || breadcrumbList.length === 0) {
+            return;
+        }
+
+        if (breadcrumbList.length === 1) {
+            return (
+                <div className="organization-breadcrumb-wrapper">
+                    { tenantDropdownMenu(currentOrganization.name) }
+                </div>
+            );
+        }
+
+        return (
+            <div className="organization-breadcrumb-wrapper">
+                { !showBreadcrumb ? (
+                    <Menu className="organization-breadcrumb">
+                        <div className="icon-wrapper">
+                            <GenericIcon
+                                transparent
+                                data-componentid="component-dropdown-trigger-icon"
+                                data-testid="tenant-dropdown-trigger-icon"
+                                icon={ getMiscellaneousIcons().tenantIcon }
+                                size="micro"
+                            />
+                        </div>
+                        <Menu.Item
+                            name="super"
+                            onClick={ () => setShowBreadcrumb(true) }
+                        >
+                            <span>{ currentOrganization?.name }</span>
+                            <Icon
+                                name="caret right"
+                                className="separator-icon"
+                            />
+                        </Menu.Item>
+                    </Menu>
+                ) : generateBreadcrumb() }
+            </div>
+        );
+    };
+
+    return (
+        <>
+            { breadcrumb() }
+            { showNewOrgWizard && (
+                <AddOrganizationModal
+                    parent={ parents[ parents.length - 1 ] }
+                    closeWizard={ closeNewOrgWizard }
+                />
+            ) }
+        </>
+    );
 };
 
 export default OrganizationSwitchDropdown;
