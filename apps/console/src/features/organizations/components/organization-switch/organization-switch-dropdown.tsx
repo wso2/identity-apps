@@ -498,7 +498,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
     );
 
     const generateBreadcrumb = (): ReactElement => {
-        if (breadcrumbList.length < 4) {
+        if (breadcrumbList.length <= 4) {
             return (
                 <Menu className="organization-breadcrumb">
                     { breadcrumbList.map(
