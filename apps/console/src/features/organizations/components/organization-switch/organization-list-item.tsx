@@ -24,6 +24,7 @@ import { useTranslation } from "react-i18next";
 import { Grid, Icon, Placeholder, Popup } from "semantic-ui-react";
 import { AppConstants, getMiscellaneousIcons, history } from "../../../core";
 import {
+    GenericOrganization,
     OrganizationInterface,
     OrganizationResponseInterface
 } from "../../models";
@@ -31,13 +32,14 @@ import { OrganizationUtils } from "../../utils";
 
 interface OrganizationListItemPropsTypesInterface
     extends IdentifiableComponentInterface {
-    organization: OrganizationInterface | OrganizationResponseInterface;
+    organization: GenericOrganization;
     isClickable: boolean;
     showSwitch: boolean;
     handleOrgRowClick: (
-        organization: OrganizationInterface | OrganizationResponseInterface
+        organization: GenericOrganization
     ) => void;
     setShowDropdown: (shouldShow: boolean) => void;
+    handleOrganizationSwitch?: (organization: GenericOrganization) => void;
 }
 
 const OrganizationListItem = (
@@ -49,36 +51,10 @@ const OrganizationListItem = (
         showSwitch,
         handleOrgRowClick,
         setShowDropdown,
+        handleOrganizationSwitch,
         "data-componentid": componentId
     } = props;
 
-    const handleOrganizationSwitch = (
-        organization: OrganizationInterface | OrganizationResponseInterface
-    ): void => {
-        let newOrgPath: string = "";
-
-        if (OrganizationUtils.isRootOrganization(organization)) {
-            newOrgPath = `${ window[ "AppUtils" ].getConfig().tenantPathWithoutSuperTenant
-            } /${ window[ "AppUtils" ].getConfig().appBase }`;
-        } else {
-            newOrgPath =
-                window[ "AppUtils" ].getConfig().tenantPathWithoutSuperTenant +
-                "/o/" +
-                organization.id +
-                "/" +
-                window[ "AppUtils" ].getConfig().appBase;
-        }
-
-        // Clear the callback url of the previous organization.
-        SessionStorageUtils.clearItemFromSessionStorage(
-            "auth_callback_url_console"
-        );
-
-        // Redirect the user to the newly selected organization path.
-        window.location.replace(newOrgPath);
-
-        setShowDropdown(false);
-    };
 
     const { t } = useTranslation();
 
@@ -124,7 +100,7 @@ const OrganizationListItem = (
                                 onClick={
                                     isClickable
                                         ? () => {
-                                            handleOrganizationSwitch(
+                                            handleOrganizationSwitch && handleOrganizationSwitch(
                                                 organization
                                             );
                                         }
