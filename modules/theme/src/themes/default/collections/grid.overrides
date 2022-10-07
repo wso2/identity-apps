@@ -384,3 +384,20 @@
         }
     }
 }
+
+/*----------------------------------
+    Organization Switcher  Grid
+------------------------------------*/
+
+.ui.grid {
+    &.organization-list-grid {
+        max-height: 300px;
+        overflow-y: auto;
+    }
+
+    .row{
+        &.organization-list-row {
+            cursor: pointer;
+    }
+    }
+}
