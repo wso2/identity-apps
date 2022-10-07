@@ -25,6 +25,7 @@ import { List } from "semantic-ui-react";
 import { BackupCodeAuthenticator, FIDOAuthenticator, SMSOTPAuthenticator, TOTPAuthenticator } from "./authenticators";
 import { getEnabledAuthenticators } from "../../api";
 import { AppConstants } from "../../constants";
+import { commonConfig } from "../../extensions";
 import { 
     AlertInterface, 
     AlertLevels,
@@ -43,12 +44,14 @@ import { UserSessionTerminationModal } from "../user-sessions";
  */
 interface MfaProps extends SBACInterface<FeatureConfigInterface>, TestableComponentInterface {
     onAlertFired: (alert: AlertInterface) => void;
+    userStore?: string;
 }
 
 export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (props: MfaProps): React.ReactElement => {
     const {
         onAlertFired,
         featureConfig,
+        userStore,
         ["data-testid"]: testId
     } = props;
 
@@ -171,7 +174,7 @@ export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (pro
                     isFeatureEnabled(
                         featureConfig?.security,
                         AppConstants.FEATURE_DICTIONARY.get("SECURITY_MFA_FIDO")
-                    ) ? (
+                    ) && commonConfig?.utils?.isFIDOEnabled(userStore) ? (
                         <List.Item className="inner-list-item">
                             <FIDOAuthenticator 
                                 onAlertFired={ onAlertFired } 

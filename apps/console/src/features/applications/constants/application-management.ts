@@ -337,6 +337,8 @@ export class ApplicationManagementConstants {
         IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_NAME,
         IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_ID,
         IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_NAME,
+        IdentityProviderManagementConstants.MICROSOFT_AUTHENTICATOR_ID,
+        IdentityProviderManagementConstants.MICROSOFT_AUTHENTICATOR_NAME,
         IdentityProviderManagementConstants.TWITTER_AUTHENTICATOR_ID,
         IdentityProviderManagementConstants.TWITTER_AUTHENTICATOR_NAME,
         IdentityProviderManagementConstants.GITHUB_AUTHENTICATOR_ID,
@@ -374,7 +376,7 @@ export class ApplicationManagementConstants {
      * Form element constraints.
      */
     public static readonly FORM_FIELD_CONSTRAINTS = {
-        APP_DESCRIPTION_PATTERN: new RegExp("^[a-zA-Z0-9.+=!$#()@&%*~_-]+(?: [a-zA-Z0-9.+=!$#()@&%*~_-]+)*$"),
+        APP_DESCRIPTION_PATTERN: new RegExp("^[a-zA-Z0-9.+=!$#()@&%*~_-]+(?: [a-zA-Z0-9.+=!$#()@&%*~_-]+)*$", "gm"),
         APP_NAME_MAX_LENGTH: 50,
         APP_NAME_PATTERN: new RegExp("^[a-zA-Z0-9._-]+(?: [a-zA-Z0-9._-]+)*$")
     };

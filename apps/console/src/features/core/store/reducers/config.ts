@@ -196,15 +196,20 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
                 },
                 google: {
                     enabled: false
+                },
+                microsoft: {
+                    enabled: false
                 }
             },
             isClientSecretHashEnabled: undefined,
             isCookieConsentBannerEnabled: undefined,
             isDefaultDialectEditingEnabled: undefined,
             isDialectAddingEnabled: undefined,
+            isGOTEnabledForSuperTenantOnly: undefined,
             isGroupAndRoleSeparationEnabled: undefined,
             isHeaderAvatarLabelAllowed: undefined,
             isLeftNavigationCategorized: undefined,
+            isMarketingConsentBannerEnabled: undefined,
             isRequestPathAuthenticationEnabled: undefined,
             isSignatureValidationCertificateAliasEnabled: undefined,
             listAllAttributeDialects: undefined,

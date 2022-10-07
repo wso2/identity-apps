@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -24,10 +24,11 @@ import ExpertModeIdPTemplate from "../data/identity-provider-templates/templates
 import FacebookIdPTemplate from "../data/identity-provider-templates/templates/facebook/facebook.json";
 import GitHubIdPTemplate from "../data/identity-provider-templates/templates/github/github.json";
 import GoogleIdPTemplate from "../data/identity-provider-templates/templates/google/google.json";
+import MicrosoftIDPTemplate from "../data/identity-provider-templates/templates/microsoft/microsoft.json";
 import EnterpriseOIDCIdPTemplate from
     "../data/identity-provider-templates/templates/oidc-identity-provider/enterprise-oidc-identity-provider.json";
-import EnterpriseOrganizationIdPTemplate from
-    "../data/identity-provider-templates/templates/organization-enterprise-identity-provider/organization-enterprise-identity-provider.json";
+// eslint-disable-next-line max-len
+import EnterpriseOrganizationIdPTemplate from "../data/identity-provider-templates/templates/organization-enterprise-identity-provider/organization-enterprise-identity-provider.json";
 import EnterpriseSAMLIdPTemplate from
     "../data/identity-provider-templates/templates/saml-identity-provider/enterprise-saml-identity-provider.json";
 import { IdentityProviderTemplateLoadingStrategies } from "../models";
@@ -41,24 +42,17 @@ export class IdentityProviderManagementConstants {
 
     /**
      * Identifier for the local IDP.
-     * @constant
-     * @type {string}
-     * @default
      */
     public static readonly LOCAL_IDP_IDENTIFIER: string = "LOCAL";
 
     /**
      * Doc key for the IDP overview page.
-     * @constant
-     * @type {string}
      */
     public static readonly IDP_OVERVIEW_DOCS_KEY = `${
         DocumentationConstants.PORTAL_DOCS_KEY }["Identity Providers"]["Overview"]`;
 
     /**
      * Doc key for the IDP edit page.
-     * @constant
-     * @type {string}
      */
     public static readonly IDP_EDIT_OVERVIEW_DOCS_KEY = `${
         DocumentationConstants.PORTAL_DOCS_KEY }["Identity Providers"]["Edit Identity Provider"]["Overview"]`;
@@ -66,35 +60,27 @@ export class IdentityProviderManagementConstants {
     /**
      * Set of internal idps which are forbidden from deleting.
      * // TODO: Remove this once validating is available from the backend level.
-     * @type {string[]}
      */
     public static readonly DELETING_FORBIDDEN_IDPS: string[] = [];
 
     /**
      * Key for the URL search param for IDP state.
-     * @constant
-     * @type {string}
      */
     public static readonly IDP_STATE_URL_SEARCH_PARAM_KEY = "state";
 
     /**
      * URL Search param for newly created IDPs.
-     * @constant
-     * @type {string}
      */
     public static readonly NEW_IDP_URL_SEARCH_PARAM = `?${
         IdentityProviderManagementConstants.IDP_STATE_URL_SEARCH_PARAM_KEY }=new`;
 
     /**
      * Key for the URL search param for IDP create wizard trigger.
-     * @constant
-     * @type {string}
      */
     public static readonly IDP_CREATE_WIZARD_TRIGGER_URL_SEARCH_PARAM_KEY = "open";
 
     /**
      * Set of IDP template Ids.
-     * @type {object}
      */
     public static readonly IDP_TEMPLATE_IDS: {
         ENTERPRISE: string;
@@ -102,6 +88,7 @@ export class IdentityProviderManagementConstants {
         FACEBOOK: string;
         GITHUB: string;
         GOOGLE: string;
+        MICROSOFT: string;
         OIDC: string;
         ORGANIZATION_ENTERPRISE_IDP: string;
         SAML: string;
@@ -111,6 +98,7 @@ export class IdentityProviderManagementConstants {
         FACEBOOK: FacebookIdPTemplate.id,
         GITHUB: GitHubIdPTemplate.id,
         GOOGLE: GoogleIdPTemplate.id,
+        MICROSOFT: MicrosoftIDPTemplate.id,
         OIDC: EnterpriseOIDCIdPTemplate.id,
         ORGANIZATION_ENTERPRISE_IDP: EnterpriseOrganizationIdPTemplate.id,
         SAML: EnterpriseSAMLIdPTemplate.id
@@ -118,7 +106,6 @@ export class IdentityProviderManagementConstants {
 
     /**
      * Authenticator Settings Form element constraints.
-     * @type {Record<string, string | number>}
      */
     public static readonly AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS: Record<string, string | number> = {
         CALLBACK_URL_MIN_LENGTH: 3,
@@ -134,7 +121,6 @@ export class IdentityProviderManagementConstants {
 
     /**
      * General Form element constraints.
-     * @type {Record<string, string | number>}
      */
     public static readonly GENERAL_FORM_CONSTRAINTS: Record<string, string | number> = {
         IMAGE_URL_MAX_LENGTH: 2048,
@@ -143,7 +129,6 @@ export class IdentityProviderManagementConstants {
 
     /**
      * Email OTP Authenticator Settings Form element constraints.
-     * @type {Record<string, string | number>}
      */
     public static readonly EMAIL_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS: {
         EXPIRY_TIME_MAX_LENGTH: number;
@@ -168,16 +153,14 @@ export class IdentityProviderManagementConstants {
 
     /**
      * Google Authenticator Settings Form element constraints.
-     * @type {Record<string, number>}
      */
     public static readonly GOOGLE_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS: Record<string, number> = {
-        ADDITIONAL_QUERY_PARAMS_MIN_LENGTH: 0,
-        ADDITIONAL_QUERY_PARAMS_MAX_LENGTH: 1000
+        ADDITIONAL_QUERY_PARAMS_MAX_LENGTH: 1000,
+        ADDITIONAL_QUERY_PARAMS_MIN_LENGTH: 0
     };
 
     /**
      * Google Scope mappings.
-     * @type {Record<string, string>}
      */
     public static readonly GOOGLE_SCOPE_DICTIONARY: Record<string, string> = {
         EMAIL: "email",
@@ -186,8 +169,30 @@ export class IdentityProviderManagementConstants {
     };
 
     /**
+     * Google One Tap enabling request parameter
+     */
+    public static readonly GOOGLE_ONE_TAP_ENABLED: string = "IsGoogleOneTapEnabled";
+
+    /**
+     * Microsoft Scope mappings.
+     */
+    public static readonly MICROSOFT_SCOPE_DICTIONARY: Record<string, string> = {
+        EMAIL: "email",
+        OPENID: "openid",
+        PROFILE: "profile"
+    };
+
+    /**
+     * Scopes to request from GitHub.
+     */
+    public static readonly MICROSOFT_AUTHENTICATOR_REQUESTED_SCOPES: string[] = [
+        IdentityProviderManagementConstants.MICROSOFT_SCOPE_DICTIONARY.OPENID,
+        IdentityProviderManagementConstants.MICROSOFT_SCOPE_DICTIONARY.EMAIL,
+        IdentityProviderManagementConstants.MICROSOFT_SCOPE_DICTIONARY.PROFILE
+    ];
+
+    /**
      * GitHub Scope mappings.
-     * @type {Record<string, string>}
      */
     public static readonly GITHUB_SCOPE_DICTIONARY: Record<string, string> = {
         USER_EMAIL: "user:email",
@@ -196,7 +201,6 @@ export class IdentityProviderManagementConstants {
 
     /**
      * Scopes to request from GitHub.
-     * @type {string[]}
      */
     public static readonly GITHUB_AUTHENTICATOR_REQUESTED_SCOPES: string[] = [
         IdentityProviderManagementConstants.GITHUB_SCOPE_DICTIONARY.USER_EMAIL,
@@ -205,7 +209,6 @@ export class IdentityProviderManagementConstants {
 
     /**
      * Facebook Scope mappings.
-     * @type {Record<string, string>}
      */
     public static readonly FACEBOOK_SCOPE_DICTIONARY: Record<string, string> = {
         EMAIL: "email",
@@ -214,8 +217,7 @@ export class IdentityProviderManagementConstants {
 
     /**
      * Facebook Scope mappings.
-     * @type {Record<string, string>}
-     */
+    **/
     public static readonly FACEBOOK_PUBLIC_PROFILE_FIELD_DICTIONARY: Record<string, string> = {
         AGE_RANGE: "age_range",
         EMAIL: "email",
@@ -229,8 +231,7 @@ export class IdentityProviderManagementConstants {
 
     /**
      * Scopes to request from Facebook.
-     * @type {string[]}
-     */
+     **/
     public static readonly FACEBOOK_AUTHENTICATOR_REQUESTED_SCOPES: string[] = [
         IdentityProviderManagementConstants.FACEBOOK_SCOPE_DICTIONARY.EMAIL,
         IdentityProviderManagementConstants.FACEBOOK_SCOPE_DICTIONARY.PUBLIC_PROFILE
@@ -238,8 +239,7 @@ export class IdentityProviderManagementConstants {
 
     /**
      * Profile fields to request from Facebook.
-     * @type {string[]}
-     */
+    **/
     public static readonly FACEBOOK_AUTHENTICATOR_REQUESTED_PROFILE_FIELDS: string[] = [
         "id",
         "name",
@@ -253,17 +253,13 @@ export class IdentityProviderManagementConstants {
 
     /**
      * Default IDP template loading strategy.
-     * @constant
-     * @type {IdentityProviderTemplateLoadingStrategies}
-     */
+    **/
     public static readonly DEFAULT_IDP_TEMPLATE_LOADING_STRATEGY: IdentityProviderTemplateLoadingStrategies =
         IdentityProviderTemplateLoadingStrategies.LOCAL;
 
     /**
      * Doc key for the IDP create page.
-     * @constant
-     * @type {string}
-     */
+    **/
     public static readonly IDP_TEMPLATES_CREATE_DOCS_KEY = `${
         DocumentationConstants.PORTAL_DOCS_KEY }["Identity Providers"]["Create New Identity Provider"]`;
 
@@ -373,6 +369,7 @@ export class IdentityProviderManagementConstants {
     public static readonly OFFICE_365_AUTHENTICATOR_ID: string = "T2ZmaWNlMzY1QXV0aGVudGljYXRvcg";
     public static readonly MS_LIVE_AUTHENTICATOR_ID: string = "TWljcm9zb2Z0V2luZG93c0xpdmVBdXRoZW50aWNhdG9y";
     public static readonly IWA_KERBEROS_AUTHENTICATOR_ID: string = "SVdBS2VyYmVyb3NBdXRoZW50aWNhdG9y";
+    public static readonly MICROSOFT_AUTHENTICATOR_ID: string = "T3BlbklEQ29ubmVjdEF1dGhlbnRpY2F0b3I";
 
     // Known IS Predefined/Protocols authenticator IDs
     public static readonly PASSIVE_STS_AUTHENTICATOR_NAME: string = "PassiveSTSAuthenticator";
@@ -390,21 +387,28 @@ export class IdentityProviderManagementConstants {
     public static readonly OFFICE_365_AUTHENTICATOR_NAME: string = "Office365Authenticator";
     public static readonly MS_LIVE_AUTHENTICATOR_NAME: string = "MicrosoftWindowsLiveAuthenticator";
     public static readonly IWA_KERBEROS_AUTHENTICATOR_NAME: string = "IWAKerberosAuthenticator";
+    public static readonly MICROSOFT_AUTHENTICATOR_NAME: string = "MicrosoftAuthenticator";
 
     // Known Social authenticator display names;
     public static readonly GOOGLE_OIDC_AUTHENTICATOR_DISPLAY_NAME: string = "Google";
     public static readonly FACEBOOK_AUTHENTICATOR_DISPLAY_NAME: string = "Facebook";
     public static readonly GITHUB_AUTHENTICATOR_DISPLAY_NAME: string = "GitHub";
+    public static readonly MICROSOFT_AUTHENTICATOR_DISPLAY_NAME: string = "Microsoft";
 
     // Keys for the initial values of Email OTP Authenticator
     public static readonly AUTHENTICATOR_INIT_VALUES_EMAIL_OTP_EXPIRY_TIME_KEY = "EmailOTP_ExpiryTime";
 
+    // Authenticator Endpoints
+    public static readonly MICROSOFT_AUTHENTICATION_ENDPOINT_URL: string =
+    "https://login.microsoftonline.com/common/oauth2/v2.0/authorize";
+
+    // Token Endpoints
+    public static readonly MICROSOFT_TOKEN_ENDPOINT_URL: string =
+    "https://login.microsoftonline.com/common/oauth2/v2.0/token";
+
     /**
      * Identity provider create limit reached error.
-     * @constant
-     * @type IdentityAppsError
-     * @default
-     */
+    **/
     public static readonly ERROR_CREATE_LIMIT_REACHED = new IdentityAppsError(
         "IDP-60035",
         "console:develop.features.idp.notifications.apiLimitReachedError.error.description",
@@ -414,10 +418,7 @@ export class IdentityProviderManagementConstants {
 
     /**
      * AuthenticationProvider Connections create limit reached error.
-     * @constant
-     * @type IdentityAppsError
-     * @default
-     */
+    **/
      public static readonly ERROR_CREATE_LIMIT_REACHED_IDP = new IdentityAppsError(
          "IDP-60035",
          "console:develop.features.authenticationProvider.notifications.apiLimitReachedError.error.description",

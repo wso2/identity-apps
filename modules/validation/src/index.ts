@@ -29,6 +29,7 @@ import {
     isValidResourceName,
     mobileNumber,
     resourceName,
+    scopes,
     url
 } from "./validation";
 
@@ -44,5 +45,6 @@ export const FormValidation = {
     isValidResourceName,
     mobileNumber,
     resourceName,
+    scopes,
     url
 };
