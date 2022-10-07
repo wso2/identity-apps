@@ -134,7 +134,7 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                 cookieproEnabledFlag: "<% String is_cookiepro_enabled = System.getenv(\"is_cookiepro_enabled\"); %>",
                 // eslint-disable-next-line max-len
                 cookieproInitialScriptTypeCheck: "<% String initialScriptType = (Boolean.TRUE.toString()).equals(is_cookiepro_enabled) ? \"text/plain\" : \"text/javascript\"; %>",
-                cookieproInitialScriptTypeVar: "<%= intialScriptType %>",
+                cookieproInitialScriptTypeVar: "<%= initialScriptType %>",
                 filename: ABSOLUTE_PATHS.homeTemplateInDistribution,
                 getOrganizationManagementAvailability: !isDeployedOnExternalTomcatServer
                     ? "<%@ page import=\"static org.wso2.carbon.identity.application." +
