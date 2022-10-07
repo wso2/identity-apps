@@ -6820,7 +6820,9 @@ export const console: ConsoleNS = {
                     emptyList: "Il n'y a aucune organisation à afficher.",
                     search: {
                         placeholder: "Rechercher par nom"
-                    }
+                    },
+                    goBack: "Retourner",
+                    subOrganizations: "Sous-organisations"
                 },
                 title: "Organisations"
             },
