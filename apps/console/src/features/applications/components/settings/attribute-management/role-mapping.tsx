@@ -1,8 +1,8 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
- * Version 2.0 (the 'License'); you may not use this file except
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
  *
@@ -10,7 +10,7 @@
  *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
- * 'AS IS' BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
@@ -28,16 +28,17 @@ import { RoleMappingInterface } from "../../../models";
 
 interface RoleMappingPropsInterface extends TestableComponentInterface {
     /**
-     *  Trigger submission or not
+     * Trigger submission or not.
      */
     submitState?: boolean;
     /**
-     *  function to be called on submission
-     * @param roleMappings
+     * Function to be called on submission.
+     * 
+     * @param roleMappings - list of role mappings.
      */
     onSubmit?: (roleMappings: RoleMappingInterface[]) => void;
     /**
-     * Initial values of the role mapping
+     * Initial values of the role mapping.
      */
     initialMappings: RoleMappingInterface[];
     /**
@@ -45,8 +46,9 @@ interface RoleMappingPropsInterface extends TestableComponentInterface {
      */
     readOnly?: boolean;
     /**
-     * function to be called on value changes.
-     * @param data
+     * Function to be called on value changes.
+     * 
+     * @param data - list of role mappings.
      */
     onChange?: (data: RoleMappingInterface[]) => void;
 }
@@ -54,9 +56,9 @@ interface RoleMappingPropsInterface extends TestableComponentInterface {
 /**
  * Role mapping component.
  *
- * @param {RoleMappingPropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns RoleMapping component.
  */
 export const RoleMapping: FunctionComponent<RoleMappingPropsInterface> = (
     props: RoleMappingPropsInterface
@@ -76,7 +78,7 @@ export const RoleMapping: FunctionComponent<RoleMappingPropsInterface> = (
     const [ roleList, setRoleList ] = useState<RolesInterface[]>();
 
     /**
-     * Filter out Application related and Internal roles
+     * Filter out Application related and Internal roles.
      */
     const getFilteredRoles = () => {
         const filterRole: RolesInterface[] = roleList.filter(
@@ -154,7 +156,7 @@ export const RoleMapping: FunctionComponent<RoleMappingPropsInterface> = (
                         readOnly={ readOnly }
                         data-testid={ `${ testId }-dynamic-field` } 
                         listen={ (data) => {
-                            if(onChange) {
+                            if (onChange) {
                                 const finalData: RoleMappingInterface[] = data?.map((mapping: KeyValue) => {
                                     return {
                                         applicationRole: mapping.value,

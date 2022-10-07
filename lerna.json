@@ -5,5 +5,5 @@
         "modules/*",
         "tests"
     ],
-    "version": "1.6.10"
+    "version": "1.6.24"
 }

@@ -19,7 +19,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Form } from "semantic-ui-react";
 import { Field, GroupFields, InnerField, InnerGroupFields } from "./components";
-import { isCheckBoxField, isDropdownField, isInputField, isRadioField, isTextField, isToggleField } from "./helpers";
+import { isCheckBoxField, isDropdownField, isInputField,
+    isRadioField, isScopesField, isTextField, isToggleField } from "./helpers";
 import { Error, FormField, FormValue, Validation } from "./models";
 import { useNonInitialEffect } from "./utils";
 
@@ -217,13 +218,12 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
             };
 
             if (
-                (isTextField(inputField) || isDropdownField(inputField))
+                (isTextField(inputField) || isDropdownField(inputField) || isScopesField(inputField))
                 && inputField.validation
                 && !(form.get(name) === null || form.get(name) === "")
-            ) {
+            ) {              
                 await inputField.validation(form.get(name) as string, validation, new Map(form));
             }
-
             validFieldsParam.set(name, {
                 errorMessages: validation.errorMessages,
                 isValid: validation.isValid
@@ -505,13 +505,13 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
                 && !modifyingFields.get(inputField.name)
                 && (isSubmitting
                     || (touchedFields.get(inputField.name)
-                        && inputField.displayErrorOn === "blur"))) {
-                return {
+                        && inputField.displayErrorOn === "blur"))) {                          
+                return {                  
                     errorMessages: [ inputField.requiredErrorMessage ],
                     isError: true
                 };
             } else if (
-                (isTextField(inputField) || isDropdownField(inputField)) &&
+                (isTextField(inputField) || isDropdownField(inputField) || isScopesField(inputField)) &&
                 validFields.get(inputField.name) &&
                 !modifyingFields.get(inputField.name) &&
                 !validFields.get(inputField.name).isValid &&

@@ -19,6 +19,8 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { identityProviderConfig } from "../../../../../extensions/configs/identity-provider";
+import MicrosoftIDPTemplate from 
+    "../../../../identity-providers/data/identity-provider-templates/templates/microsoft/microsoft.json";
 import { IdentityProviderManagementConstants } from "../../../constants";
 import {
     AuthenticatorSettingsFormModes,
@@ -35,10 +37,10 @@ import {
     MicrosoftAuthenticatorForm
 } from "../authenticators";
 import { SamlAuthenticatorSettingsForm } from "../authenticators/saml-authenticator-form";
-
 /**
  * Proptypes for the authenticator form factory component.
  */
+
 interface AuthenticatorFormFactoryInterface extends TestableComponentInterface {
     /**
      * The intended mode of the authenticator form.
@@ -80,8 +82,6 @@ interface AuthenticatorFormFactoryInterface extends TestableComponentInterface {
 export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactoryInterface> = (
     props: AuthenticatorFormFactoryInterface
 ): ReactElement => {
-
-    const microsoftIdpTemplate = "microsoft-idp";
 
     const {
         authenticator,
@@ -192,7 +192,7 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
                 />
             );
         case IdentityProviderManagementConstants.MICROSOFT_AUTHENTICATOR_ID:
-            if (templateId==microsoftIdpTemplate){
+            if (templateId==MicrosoftIDPTemplate.id){
                 return(
                     <MicrosoftAuthenticatorForm
                         mode={ mode }

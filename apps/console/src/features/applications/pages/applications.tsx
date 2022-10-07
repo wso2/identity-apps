@@ -275,6 +275,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
      */
     const handleApplicationFilter = (query: string): void => {
         setSearchQuery(query);
+        setListOffset(0);
     };
 
     /**
