@@ -398,6 +398,6 @@
     .row{
         &.organization-list-row {
             cursor: pointer;
-    }
+        }
     }
 }
