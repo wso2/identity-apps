@@ -365,7 +365,6 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                                 setShowDropdown={ setIsDropDownOpen }
                             />
                         </Grid>
-                        <Divider />
                         <Segment basic secondary>
                             <Grid>
                                 <Grid.Row columns={ 2 }>
