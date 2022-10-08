@@ -166,11 +166,6 @@ export const AppUtils = (function() {
             const resolvedTenantPath = tenantPath.match(this.getSuperTenant())?.length > 0 ? "" : tenantPath;
 
             return {
-                consoleApp: {
-                    path: _config.consoleApp?.path
-                        ? _config.consoleAppOrigin + resolvedTenantPath + _config.consoleApp?.path
-                        : null
-                },
                 appBase: _config.appBaseName,
                 appBaseNameForHistoryAPI: this.constructAppBaseNameForHistoryAPI(),
                 appBaseWithTenant: this.getAppBaseWithTenant(),
@@ -179,6 +174,11 @@ export const AppUtils = (function() {
                     : _config.clientID + "_" + this.getTenantName(),
                 clientOrigin: _config.clientOrigin,
                 clientOriginWithTenant: _config.clientOrigin + this.getTenantPath(true),
+                consoleApp: {
+                    path: _config.consoleApp?.path
+                        ? _config.consoleAppOrigin + resolvedTenantPath + _config.consoleApp?.path
+                        : null
+                },
                 customServerHost: _config.customServerHost,
                 debug: _config.debug,
                 extensions: _config.extensions,
@@ -313,9 +313,9 @@ export const AppUtils = (function() {
             _args = Args;
 
             _default = {
-                "consoleAppOrigin": _args.consoleAppOrigin || _args.serverOrigin || fallbackServerOrigin,
                 "accountAppOrigin": _args.accountAppOrigin || _args.serverOrigin || fallbackServerOrigin,
                 "clientOrigin": window.location.origin,
+                "consoleAppOrigin": _args.consoleAppOrigin || _args.serverOrigin || fallbackServerOrigin,
                 "contextPath": _args.contextPath,
                 "serverOrigin": _args.serverOrigin || fallbackServerOrigin
             };
@@ -383,8 +383,10 @@ export const AppUtils = (function() {
 
         /**
          * Resolves IDP URLs by resolving the placeholders.
-         * ex: /t/{userTenantDomain}/common/oauth2/authz?t={superTenantDomain} ->
-         * /t/wso2.com/common/oauth2/authz?t=carbon.super
+         * ex: `/t/{userTenantDomain}/common/oauth2/authz?t={superTenantDomain}`
+         * to /t/wso2.com/common/oauth2/authz?t=carbon.super
+         *
+         * @returns Resolved URLs.
          */
         resolveURLs: function() {
             return {

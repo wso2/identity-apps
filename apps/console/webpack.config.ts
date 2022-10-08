@@ -530,9 +530,8 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
 };
 
 const getThemeConfigs = (theme: string) => {
-    const THEME_TO_USE = DeploymentConfig.ui.theme.name || "default";
     const THEME_DIR = path.resolve(__dirname,
-        "node_modules", "@wso2is", "theme", "dist", "lib", "themes",THEME_TO_USE);
+        "node_modules", "@wso2is", "theme", "dist", "lib", "themes", theme);
     const files = fs.readdirSync(THEME_DIR);
     const file = files ? files.filter(file => file.endsWith(".min.css"))[ 0 ] : null;
 
