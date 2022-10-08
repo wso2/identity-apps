@@ -378,6 +378,11 @@ export const AppUtils = (function() {
                 return urlPathForSuperTenantOriginsFallback;
             }
 
+            // For non-SaaS apps, no need to have tenanted paths.
+            if (!this.isSaas()) {
+                return "/";
+            }
+
             return (this.getTenantName() !== "") ?
                 "/" + this.getTenantPrefix() + "/" + this.getTenantName() : "";
         },
