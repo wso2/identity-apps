@@ -593,6 +593,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                         transparent
                         icon={ CrossIcon }
                         onClick={ () => setShowBreadcrumb(false) }
+                        className="close-icon"
                     />
                 </Menu.Item>
             </Menu>
