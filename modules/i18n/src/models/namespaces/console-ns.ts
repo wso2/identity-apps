@@ -1366,6 +1366,7 @@ export interface ConsoleNS {
                             callbackUrl: FormAttributes;
                             clientId: FormAttributes;
                             clientSecret: FormAttributes;
+                            enableGoogleOneTap: FormAttributes;
                             AdditionalQueryParameters: FormAttributes;
                             scopes: {
                                 heading: string;
@@ -1438,6 +1439,7 @@ export interface ConsoleNS {
                         requiredErrorMessage: string;
                         invalidURLErrorMessage: string;
                         invalidQueryParamErrorMessage: string;
+                        invalidScopesErrorMessage: string;
                         customProperties: string;
                     };
                     generalDetails: {

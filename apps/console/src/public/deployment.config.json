@@ -68,6 +68,7 @@
         "applicationTemplateLoadingStrategy": "LOCAL",
         "identityProviderTemplateLoadingStrategy": "LOCAL",
         "appLogoPath": "/assets/images/branding/logo.svg",
+        "isGOTEnabledForSuperTenantOnly": true,
         "features": {
             "applications": {
                 "disabledFeatures": [],
@@ -426,6 +427,7 @@
             "langAutoDetectEnabled":false
         },
         "isCookieConsentBannerEnabled": false,
+        "isMarketingConsentBannerEnabled": false,
         "isGroupAndRoleSeparationEnabled": true,
         "isSignatureValidationCertificateAliasEnabled" : false,
         "isClientSecretHashEnabled": false,

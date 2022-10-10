@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/x509-certificate-authentication-portal",
-    "version": "1.6.12",
+    "version": "1.6.26",
     "description": "WSO2 Identity Server X509 Certificate Authentication Portal",
     "author": "WSO2",
     "license": "Apache-2.0",
@@ -12,7 +12,7 @@
         "clean:node-modules": "pnpm rimraf node_modules"
     },
     "dependencies": {
-        "@wso2is/theme": "^1.6.12",
+        "@wso2is/theme": "^1.6.26",
         "rimraf": "^3.0.2"
     }
 }

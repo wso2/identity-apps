@@ -39,7 +39,6 @@ import { AuthenticatorAccordion } from "../../../core/components";
 import {
     getFederatedAuthenticatorDetails,
     getFederatedAuthenticatorMeta,
-    getIdentityProviderTemplate,
     updateFederatedAuthenticator,
     updateFederatedAuthenticators
 } from "../../api";
@@ -56,15 +55,13 @@ import {
     IdentityProviderInterface,
     IdentityProviderTemplateInterface,
     IdentityProviderTemplateItemInterface,
-    IdentityProviderTemplateListItemInterface,
     IdentityProviderTemplateLoadingStrategies
 } from "../../models";
 import { IdentityProviderManagementUtils, IdentityProviderTemplateManagementUtils } from "../../utils";
 import { AuthenticatorFormFactory } from "../forms";
 import { getConnectorMetadata } from "../meta";
 import {
-    handleGetFederatedAuthenticatorMetadataAPICallError,
-    handleGetIDPTemplateAPICallError
+    handleGetFederatedAuthenticatorMetadataAPICallError
 } from "../utils";
 import { AuthenticatorCreateWizard } from "../wizards/authenticator-create-wizard";
 
@@ -102,7 +99,7 @@ const AUTHORIZED_REDIRECT_URL: string = "callbackUrl";
  *  Identity Provider and advance settings component.
  *
  * @param props - Props injected to the component.
- * @returns ReactElement
+ * @returns Functional component.
  */
 export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPropsInterface> = (
     props: IdentityProviderSettingsPropsInterface
@@ -181,7 +178,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                 IdentityProviderTemplateLoadingStrategies.REMOTE);
 
         /**
-         * With {@link skipGrouping} being @example false we say
+         * With {@link skipGrouping} being `false` we say
          * we need to group the existing templates based on their
          * template-group.
          */
@@ -296,7 +293,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
      *
      * Add callback URL to the values.
      *
-     * @param values - List of Federated Authenticators
+     * @param values - Federated Authenticators.
      */
     const addCallbackUrl = (values: FederatedAuthenticatorListItemInterface) => {
 
@@ -590,44 +587,11 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
     };
 
     /**
-     * Asynchronous function to loop through IDP templates list and fetch templates.
-     *
-     * @param templatesList - List of templates.
-     */
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    async function fetchIDPTemplates(templatesList: IdentityProviderTemplateListItemInterface[]) {
-        const templates: IdentityProviderTemplateInterface[] = [];
-
-        for (const template of templatesList) {
-            templates.push(await fetchIDPTemplate(template.id));
-        }
-
-        return templates;
-    }
-
-    /**
-     * Fetch IDP template corresponds to the given tempalte ID.
-     *
-     * @param templateId - ID of the authenticator.
-     */
-    const fetchIDPTemplate = (templateId: string): Promise<IdentityProviderTemplateInterface> => {
-        return new Promise(resolve => {
-            getIdentityProviderTemplate(templateId)
-                .then(response => {
-                    resolve(response);
-                })
-                .catch(error => {
-                    handleGetIDPTemplateAPICallError(error);
-                });
-        });
-    };
-
-    /**
      * A predicate that checks whether a give federated authenticator
      * is a default authenticator.
      *
      * @param auth -  Authenticator.
-     * @returns true if @example auth.data.isDefault is truesy
+     * @returns true if `auth.data.isDefault` is truthy
      */
     const isDefaultAuthenticatorPredicate = (
         auth: FederatedAuthenticatorWithMetaInterface
@@ -637,11 +601,11 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
 
     /**
      * A helper function that generates {@link SegmentedAccordionTitleActionInterface}
-     * accordion actions foreach @example availableAuthenticators when rendering a
+     * accordion actions foreach `availableAuthenticators` when rendering a
      * {@link AuthenticatorAccordion}
      *
      * @see AuthenticatorAccordionItemInterface.actions
-     * @param authenticator - Authenticator
+     * @param authenticator - Authenticator.
      * @returns SegmentedAccordionTitleActionInterface
      */
     const createAccordionActions = (
@@ -716,7 +680,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
     /**
      * Shows the authenticator list.
      *
-     * @returns ReactElement
+     * @returns Functional component.
      */
     const showAuthenticatorList = (): ReactElement => {
 
@@ -911,26 +875,30 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                 //Temporarily removed until sub attributes are available
                 removeElementFromProps(authenticator.meta.properties, "IsUserIdInClaims" );
 
-                // Inject logout url
-                const logoutUrlData = {
-                    key: "OIDCLogoutEPUrl"
-                };
+                if (!authenticator.meta.properties?.find(prop => prop.key === "OIDCLogoutEPUrl")) {
 
-                authenticator.data.properties.push(logoutUrlData);
-                const logoutUrlMeta: CommonPluggableComponentMetaPropertyInterface = {
-                    description: `The URL of the identity provider to which ${ config.ui.productName } will send session
-                        invalidation requests.`,
-                    displayName: "Logout URL",
-                    displayOrder: 7,
-                    isConfidential: false,
-                    isMandatory: false,
-                    key: "OIDCLogoutEPUrl",
-                    options: [],
-                    subProperties: [],
-                    type: "URL"
-                };
+                    const logoutUrlData: CommonPluggableComponentPropertyInterface = {
+                        key: "OIDCLogoutEPUrl"
+                    };
 
-                authenticator.meta.properties.push(logoutUrlMeta);
+                    authenticator.data.properties.push(logoutUrlData);
+
+                    const logoutUrlMeta: CommonPluggableComponentMetaPropertyInterface = {
+                        description: `The URL of the identity provider to which
+                         ${ config.ui.productName } will send session
+                            invalidation requests.`,
+                        displayName: "Logout URL",
+                        displayOrder: 7,
+                        isConfidential: false,
+                        isMandatory: false,
+                        key: "OIDCLogoutEPUrl",
+                        options: [],
+                        subProperties: [],
+                        type: "URL"
+                    };
+
+                    authenticator.meta.properties.push(logoutUrlMeta);
+                }
             }
 
             return (

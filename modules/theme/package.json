@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/theme",
-    "version": "1.6.12",
+    "version": "1.6.26",
     "description": "Theme for web components of WSO2 Identity Server Webapps.",
     "keywords": [
         "WSO2",

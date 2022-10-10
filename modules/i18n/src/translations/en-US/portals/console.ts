@@ -577,7 +577,7 @@ export const console: ConsoleNS = {
                             }
                         }
                     },
-                    placeholder: "Search applications by name, clientID, or issuer"
+                    placeholder: "Search applications by name, client ID, or issuer"
                 },
                 confirmations: {
                     addSocialLogin: {
@@ -2365,14 +2365,14 @@ export const console: ConsoleNS = {
                     },
                     Confirmation: {
                         enableConfirmation: {
-                            content: "The My Account portal is in preview mode and it is recommended to disable it " + 
+                            content: "The My Account portal is in preview mode and it is recommended to disable it " +
                                 "when your organization goes into production.",
                             heading: "Are you sure?",
                             message: "Enable My Account portal."
                         },
                         disableConfirmation: {
-                            content: "The My Account portal is in preview mode and it is recommended to disable it " + 
-                                "when your organization goes into production. When My Account portal is disabled, " + 
+                            content: "The My Account portal is in preview mode and it is recommended to disable it " +
+                                "when your organization goes into production. When My Account portal is disabled, " +
                                 "users of your organization will not be able to access it.",
                             heading: "Are you sure?",
                             message: "Disable My Account portal."
@@ -3314,6 +3314,11 @@ export const console: ConsoleNS = {
                                     required: "Client secret is a required field."
                                 }
                             },
+                            enableGoogleOneTap: {
+                                hint: "Enabling Google One Tap as a sign in option",
+                                label: "Google One Tap",
+                                placeholder: "Google one tap as a sign in option"
+                            },
                             scopes: {
                                 heading: "Scopes",
                                 hint: "The type of access provided for the connected apps to access data " +
@@ -3499,6 +3504,7 @@ export const console: ConsoleNS = {
                     common: {
                         customProperties: "Custom Properties",
                         invalidQueryParamErrorMessage: "These are not valid query parameters",
+                        invalidScopesErrorMessage: "Scopes must contain 'openid'",
                         invalidURLErrorMessage: "Enter a valid URL",
                         requiredErrorMessage: "This field cannot be empty"
                     },
