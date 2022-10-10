@@ -49,7 +49,7 @@ export class AuthenticateUtils {
             clientID: window["AppUtils"]?.getConfig()?.clientID,
             clockTolerance: window[ "AppUtils" ]?.getConfig().idpConfigs?.clockTolerance,
             disableTrySignInSilently: new URL(location.href).searchParams.get("disable_silent_sign_in") === "true",
-            enableOIDCSessionManagement: true,
+            enableOIDCSessionManagement: window["AppUtils"]?.getConfig().idpConfigs?.enableOIDCSessionManagement ?? true,
             enablePKCE: window["AppUtils"]?.getConfig()?.idpConfigs?.enablePKCE ?? true,
             endpoints: {
                 authorizationEndpoint: window["AppUtils"]?.getConfig()?.idpConfigs?.authorizeEndpointURL,
