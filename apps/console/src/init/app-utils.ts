@@ -117,7 +117,7 @@ export const AppUtils = (function() {
          */
         constructRedirectURLs: function(url) {
             if (!this.isSaas()) {
-                return _config.clientOrigin + this.getTenantPath(true) + "/" + _config.appBaseName + url;
+                return _config.clientOrigin + (_config.appBaseName ? "/" + _config.appBaseName : "") + url;
             }
 
             return _config.clientOrigin + this.getOrganizationPath()
