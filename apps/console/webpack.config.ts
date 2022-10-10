@@ -95,6 +95,9 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
     const isDevServerHostCheckDisabled = process.env.DISABLE_DEV_SERVER_HOST_CHECK === "true";
     const isESLintPluginDisabled = process.env.DISABLE_ESLINT_PLUGIN === "true";
 
+    // Configurations resolved from deployment.config.json.
+    const theme = DeploymentConfig.ui.theme.name || "default";
+
     config.entry = {
         ...config.entry,
         ...ABSOLUTE_PATHS.entryPoints
@@ -185,7 +188,8 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                 tenantPrefix: !isDeployedOnExternalTomcatServer
                     ? "<%=TENANT_AWARE_URL_PREFIX%>"
                     : "",
-                themeHash: getThemeConfigs().styleSheetHash,
+                theme: theme,
+                themeHash: getThemeConfigs(theme).styleSheetHash,
                 vwoScriptVariable: "<%= vwo_ac_id %>",
                 // eslint-disable-next-line max-len
                 vwoSystemVariable: "<% String vwo_ac_id_system_var = System.getenv().getOrDefault(\"vwo_account_id\", null); %>",
@@ -246,7 +250,8 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                 tenantPrefix: !isDeployedOnExternalTomcatServer
                     ? "<%=TENANT_AWARE_URL_PREFIX%>"
                     : "",
-                themeHash: getThemeConfigs().styleSheetHash
+                theme: theme,
+                themeHash: getThemeConfigs(theme).styleSheetHash
             }) as unknown as WebpackPluginInstance
         );
     } else {
@@ -257,7 +262,8 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                 minify: false,
                 publicPath: baseHref,
                 template: ABSOLUTE_PATHS.indexTemplateInSource,
-                themeHash: getThemeConfigs().styleSheetHash
+                theme: theme,
+                themeHash: getThemeConfigs(theme).styleSheetHash
             }) as unknown as WebpackPluginInstance
         );
     }
@@ -523,10 +529,9 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
     return config;
 };
 
-const getThemeConfigs = () => {
-    const THEME_TO_USE = DeploymentConfig.ui.theme.name || "default";
+const getThemeConfigs = (theme: string) => {
     const THEME_DIR = path.resolve(__dirname,
-        "node_modules", "@wso2is", "theme", "dist", "lib", "themes",THEME_TO_USE);
+        "node_modules", "@wso2is", "theme", "dist", "lib", "themes", theme);
     const files = fs.readdirSync(THEME_DIR);
     const file = files ? files.filter(file => file.endsWith(".min.css"))[ 0 ] : null;
 
