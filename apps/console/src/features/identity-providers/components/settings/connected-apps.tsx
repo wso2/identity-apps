@@ -348,11 +348,11 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
      * @param appId - Application id.
      * @param access - Access level of the application.
      */
-    const handleApplicationEdit = (appId: string, access: ApplicationAccessTypes, tabNo: string): void => {
+    const handleApplicationEdit = (appId: string, access: ApplicationAccessTypes, tabName: string): void => {
         if (isSetStrongerAuth) {
             history.push({
                 pathname: AppConstants.getPaths().get("APPLICATION_SIGN_IN_METHOD_EDIT")
-                    .replace(":id", appId).replace(":tabNo", tabNo),
+                    .replace(":id", appId).replace(":tabName", tabName),
                 
                 search: `?${ ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_KEY }=
                 ${ ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_VALUE }`,
@@ -362,7 +362,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
         } else {
             history.push({
                 pathname: AppConstants.getPaths().get("APPLICATION_SIGN_IN_METHOD_EDIT")
-                    .replace(":id", appId).replace(":tabNo", tabNo),
+                    .replace(":id", appId).replace(":tabName", tabName),
                 
                 search: access === ApplicationAccessTypes.READ
                     ? `?${ ApplicationManagementConstants.APP_READ_ONLY_STATE_URL_SEARCH_PARAM_KEY }=true`
@@ -432,7 +432,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                     return "external";
                 },
                 onClick: (e: SyntheticEvent, app: ApplicationListItemInterface): void =>
-                    handleApplicationEdit(app.id, app.access, "#tab=4"),
+                    handleApplicationEdit(app.id, app.access, "#signInMethod"),
                 popupText: (): string => {
                     return t("console:develop.features.idp.connectedApps.action");
                 },
@@ -505,7 +505,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                 columns={ resolveTableColumns() }
                 data={ filterSelectedApps }
                 onRowClick={ (e: SyntheticEvent, app: ApplicationListItemInterface): void => {
-                    handleApplicationEdit(app.id, app.access, "#tab=4");
+                    handleApplicationEdit(app.id, app.access, "#signInMethod");
                     onListItemClick && onListItemClick(e, app);
                 } }
                 placeholders={ showPlaceholders() }
