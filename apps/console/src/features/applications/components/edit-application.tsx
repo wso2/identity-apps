@@ -226,6 +226,20 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             return;
         }
 
+        // Handle loading sign-in method tab when redirecting from the "Connected Apps" Tab of an IdP.
+        if(window.location.hash.includes("signInMethod")){
+            // no quick start tab 
+            if(totalTabs === 6) {
+                handleActiveTabIndexChange(3);
+            } else if(totalTabs === 7) {
+                handleActiveTabIndexChange(4);
+            } else {
+                handleDefaultTabIndexChange(defaultActiveIndex);
+            }
+
+            return;
+        }
+
         const urlFragment: string[] = window.location.hash.split("#"+URLFragmentTypes.TAB_INDEX);
 
         if(urlFragment.length === 2 && isEmpty(urlFragment[0]) && /^\d+$/.test(urlFragment[1])) {
