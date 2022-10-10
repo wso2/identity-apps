@@ -204,18 +204,19 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     * Fetch the identity provider id & name when calling the app edit through connected apps
     */
     useEffect(() => {
-        if(typeof history.location.state === "object"){
-            setisConnectedAppsRedirect(true);
-            type idpInfoType = {
-                "id": string, 
-                "name": string
-            };
-            
-            const idpInfo: idpInfoType = history.location.state as idpInfoType;
-            
-            setcallBackIdpID(idpInfo.id);
-            setcallBackIdpName(idpInfo.name);
+        if(typeof history.location.state != "object"){
+            return;
         }
+
+        setisConnectedAppsRedirect(true);
+        type idpInfoType = {
+            "id": string, 
+            "name": string
+        };      
+        const idpInfo: { "id": string, "name": string } = history.location.state as idpInfoType;
+
+        setcallBackIdpID(idpInfo.id);
+        setcallBackIdpName(idpInfo.name);
     });
 
     /**
