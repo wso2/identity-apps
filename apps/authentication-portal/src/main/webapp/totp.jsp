@@ -21,6 +21,7 @@
 <%@ page import="org.wso2.carbon.identity.core.util.IdentityCoreConstants" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.Map" %>
+<%@ page import="org.wso2.carbon.identity.application.authenticator.totp.TOTPAuthenticatorConstants" %>
 <%@ page import="org.wso2.carbon.identity.application.authenticator.totp.util.TOTPUtil" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
@@ -46,15 +47,15 @@
 
     if (Boolean.parseBoolean(request.getParameter(Constants.AUTH_FAILURE))) {
         authenticationFailed = "true";
-        String errorCode = request.getParameter("errorCode");
+        String errorCode = request.getParameter(TOTPAuthenticatorConstants.ERROR_CODE);
 
         if (errorCode != null) {
             if (errorCode.equals(IdentityCoreConstants.USER_ACCOUNT_LOCKED_ERROR_CODE)) {
-                String lockedReason = request.getParameter("lockedReason");
+                String lockedReason = request.getParameter(TOTPAuthenticatorConstants.LOCKED_REASON);
                 if (lockedReason != null) {
-                    if (lockedReason.equals("MAX_TOTP_ATTEMPTS_EXCEEDED")) {
+                    if (lockedReason.equals(TOTPAuthenticatorConstants.MAX_TOTP_ATTEMPTS_EXCEEDED)) {
                         errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.user.account.locked.incorrect.login.attempts");
-                    } else if (lockedReason.equals("ADMIN_INITIATED")) {
+                    } else if (lockedReason.equals(TOTPAuthenticatorConstants.ADMIN_INITIATED)) {
                         errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.user.account.locked.admin.initiated");
                     }
                 }
