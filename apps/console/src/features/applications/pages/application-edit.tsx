@@ -204,7 +204,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     * Fetch the identity provider id & name when calling the app edit through connected apps
     */
     useEffect(() => {
-        if(typeof history.location.state != "object"){
+        if(typeof history.location.state !== "object"){
             return;
         }
 

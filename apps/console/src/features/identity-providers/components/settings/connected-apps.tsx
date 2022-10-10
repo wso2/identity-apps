@@ -90,7 +90,7 @@ interface ConnectedAppsPropsInterface extends TestableComponentInterface {
     /**
      * On list item select callback.
      */
-     onListItemClick?: (event: SyntheticEvent, app: ApplicationListItemInterface) => void;
+    onListItemClick?: (event: SyntheticEvent, app: ApplicationListItemInterface) => void;
     /**
      * Enable selection styles.
      */
@@ -98,7 +98,7 @@ interface ConnectedAppsPropsInterface extends TestableComponentInterface {
     /**
      * Show list item actions.
      */
-     showListItemActions?: boolean;
+    showListItemActions?: boolean;
     /**
      * Default list item limit.
      */
@@ -110,7 +110,7 @@ interface ConnectedAppsPropsInterface extends TestableComponentInterface {
     /**
      * Is the list rendered on a portal.
      */
-     isRenderedOnPortal?: boolean;
+    isRenderedOnPortal?: boolean;
     /**
      * Specifies if the component should only be read-only.
      */
@@ -380,7 +380,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
      */
     const showPlaceholders = (): ReactElement => {
         // When the search returns empty.
-        if (filterSelectedApps.length == 0 && connectedAppsCount != 0) {
+        if (filterSelectedApps.length === 0 && connectedAppsCount !== 0) {
             return (
                 <EmptyPlaceholder
                     image={ getEmptyPlaceholderIllustrations().emptySearch }
