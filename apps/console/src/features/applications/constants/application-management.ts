@@ -115,6 +115,11 @@ export class ApplicationManagementConstants {
     public static readonly APP_STATE_STRONG_AUTH_PARAM_VALUE = "true";
 
     /**
+     * Value for sign in method tab url.
+     */
+    public static readonly SIGN_IN_METHOD_TAB_URL_FRAG = "sign-in-method";
+
+    /**
      * Default application template loading strategy.
      */
     public static readonly DEFAULT_APP_TEMPLATE_LOADING_STRATEGY: ApplicationTemplateLoadingStrategies =

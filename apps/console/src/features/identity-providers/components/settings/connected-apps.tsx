@@ -432,7 +432,8 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                     return "external";
                 },
                 onClick: (e: SyntheticEvent, app: ApplicationListItemInterface): void =>
-                    handleApplicationEdit(app.id, app.access, "#signInMethod"),
+                    handleApplicationEdit(app.id, app.access, "#tab=" +
+                        ApplicationManagementConstants.SIGN_IN_METHOD_TAB_URL_FRAG),
                 popupText: (): string => {
                     return t("console:develop.features.idp.connectedApps.action");
                 },

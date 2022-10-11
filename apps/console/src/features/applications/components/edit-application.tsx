@@ -227,16 +227,13 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         }
 
         // Handle loading sign-in method tab when redirecting from the "Connected Apps" Tab of an IdP.
-        if(window.location.hash.includes("signInMethod")){
-            // no quick start tab 
-            if(totalTabs === 6) {
-                handleActiveTabIndexChange(3);
-            } else if(totalTabs === 7) {
-                handleActiveTabIndexChange(4);
-            } else {
-                handleDefaultTabIndexChange(defaultActiveIndex);
-            }
-
+        if(window.location.hash.includes(ApplicationManagementConstants.SIGN_IN_METHOD_TAB_URL_FRAG)){
+            const renderedTabPanes = resolveTabPanes();
+            const SignInMethodtabIndex = renderedTabPanes.indexOf(renderedTabPanes.find(element => 
+                element.componentId === ApplicationManagementConstants.SIGN_IN_METHOD_TAB_URL_FRAG));
+            
+            handleActiveTabIndexChange(SignInMethodtabIndex);
+            
             return;
         }
 
