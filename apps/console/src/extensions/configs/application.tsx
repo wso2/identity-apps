@@ -77,6 +77,18 @@ export const applicationConfig: ApplicationConfig = {
         getOverriddenImage: (_clientId: string, _tenantDomain: string) => {
             return null;
         },
+        getStrongAuthenticationFlowTabIndex: (
+            _clientId: string,
+            _tenantDomain: string,
+            templateId: string,
+            customApplicationTemplateId: string
+        ): number => {
+            if (templateId === customApplicationTemplateId) {
+                return 3; // For apps built on Custom Application Templates
+            } else {
+                return 4; // Anything else
+            }
+        },
         getTabPanelReadOnlyStatus: (_tabPanelName: string, _applicationName: ApplicationInterface): boolean => {
             return false;
         },

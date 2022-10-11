@@ -82,6 +82,12 @@ export interface ApplicationConfig {
         ) => ReactNode,
         getOverriddenImage: (clientId: string, tenantDomain: string) => ReactElement;
         showApplicationShare: boolean;
+        getStrongAuthenticationFlowTabIndex: (
+            clientId: string,
+            tenantDomain: string,
+            templateId: string,
+            customApplicationTemplateId: string
+        ) => number;
     };
     inboundOIDCForm: {
         shouldValidateCertificate: boolean;
