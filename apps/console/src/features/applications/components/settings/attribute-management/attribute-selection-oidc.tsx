@@ -578,6 +578,7 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                                 return (
                                     <AttributeListItem
                                         key={ claim.id }
+                                        data-testid={ `${ testId }-${ claim.claimURI }` }
                                         claimURI={ claim.claimURI }
                                         displayName={ claim.claimURI }
                                         mappedURI={ claim.mappedLocalClaimURI }
@@ -594,7 +595,6 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                                         selectMandatory={ updateMandatory }
                                         selectRequested={ updateRequested }
                                         initialRequested={ claim.requested }
-                                        data-testid={ claim.claimURI }
                                         readOnly={
                                             (selectedSubjectValue
                                         === claim.mappedLocalClaimURI &&
