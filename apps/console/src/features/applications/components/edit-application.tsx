@@ -112,7 +112,7 @@ interface EditApplicationPropsInterface extends SBACInterface<FeatureConfigInter
  *
  * @param props - Props injected to the component.
  *
- * @returns ReactElement
+ * @returns EditApplication component
  */
 export const EditApplication: FunctionComponent<EditApplicationPropsInterface> = (
     props: EditApplicationPropsInterface
@@ -207,11 +207,14 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             }
 
             // When application selection is done through the strong authentication flow.
-            if(template.id === CustomApplicationTemplate.id) {
-                handleActiveTabIndexChange(3);
-            } else {
-                handleActiveTabIndexChange(4);
-            }
+            const tabIndex: number = applicationConfig.editApplication.getStrongAuthenticationFlowTabIndex(
+                application.clientId,
+                tenantDomain,
+                template.id,
+                CustomApplicationTemplate.id
+            );
+
+            handleActiveTabIndexChange(tabIndex);
         }
     },[ template ]);
 
@@ -463,7 +466,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
      * This function will normalize the SAML name ID format
      * returned by the API.
      *
-     * @param protocolConfigs - configs
+     * @param protocolConfigs - Protocol config object
      */
     const normalizeSAMLNameIDFormat = (protocolConfigs: any): void => {
         const key = "saml";
@@ -559,8 +562,6 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
     /**
      * Called when an application updates.
-     *
-     * @param id - Application id.
      */
     const handleProtocolUpdate = (): void => {
         if (!application?.id) {
@@ -926,7 +927,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
     /**
      * Renders the client secret hash disclaimer modal.
-     * @returns ReactElement
+     * @returns Client Secret Hash Disclaimer Modal
      */
     const renderClientSecretHashDisclaimerModal = (): ReactElement => {
 

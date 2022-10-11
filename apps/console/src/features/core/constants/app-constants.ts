@@ -316,7 +316,9 @@ export class AppConstants {
             .set("ORGANIZATION_UPDATE", `${AppConstants.getAdminViewBasePath()}/organizations/:id`)
             .set("ORGANIZATION_ROLES", `${AppConstants.getAdminViewBasePath()}/organization-roles`)
             .set("ORGANIZATION_ROLE_UPDATE", `${AppConstants.getAdminViewBasePath()}/organization-roles/:id`)
-            .set("ADMINISTRATORS", `${AppConstants.getAdminViewBasePath()}/administrators`);
+            .set("ADMINISTRATORS", `${AppConstants.getAdminViewBasePath()}/administrators`)
+            .set("MY_ACCOUNT", `${AppConstants.getAdminViewBasePath()}/my-account`)
+            .set("MY_ACCOUNT_EDIT", `${AppConstants.getAdminViewBasePath()}/edit-my-account`);
     }
 
     /**

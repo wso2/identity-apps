@@ -17,10 +17,10 @@
  */
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { useDocumentation } from "@wso2is/react-components";
 import classNames from "classnames";
 import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
 import { Icon } from "semantic-ui-react";
+import { useDocumentation } from "./use-documentation";
 
 /**
  * DocumentationLink component Prop types.

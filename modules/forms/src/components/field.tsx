@@ -21,6 +21,7 @@ import React, { ReactElement } from "react";
 import { Button, Divider, Form, Icon, Popup, Radio } from "semantic-ui-react";
 import { Password } from "./password";
 import { QueryParameters } from "./query-parameters";
+import { Scopes } from "./scopes";
 import {
     isButtonField,
     isCheckBoxField,
@@ -31,6 +32,7 @@ import {
     isQueryParamsField,
     isRadioField,
     isResetField,
+    isScopesField,
     isSubmitField,
     isTextField,
     isToggleField
@@ -381,6 +383,33 @@ export const InnerField = React.forwardRef((props: InnerFieldPropsInterface, ref
                             return field;
                         }
                     }) }
+                </Form.Group>
+            );
+        } else if (isScopesField(inputField)) {
+            return (
+                <Form.Group grouped={ true }>
+                    <label>
+                        { inputField.label }
+                        {
+                            inputField.label && inputField.required
+                                ? <span className="ui text color red">*</span>
+                                : null
+                        }
+                    </label>
+                    <Scopes
+                        value={ inputField.value }
+                        defaultValue={ inputField.defaultValue }
+                        error={
+                            isError
+                                ? errorMessages[0] : ""
+                        }
+                        onBlur={ (event: React.KeyboardEvent) => {
+                            handleBlur(event, inputField.name);
+                        } }
+                        onChange={ (event: React.ChangeEvent<HTMLInputElement>) => {
+                            handleChange(event.target.value, inputField.name);
+                        } }
+                    />
                 </Form.Group>
             );
         } else if (isQueryParamsField(inputField)) {

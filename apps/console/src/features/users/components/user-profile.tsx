@@ -448,7 +448,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     )
                 });
 
-                if (adminUserType === AdminAccountTypes.INTERNAL) {
+                if (adminUserType === AdminAccountTypes.EXTERNAL) {
                     history.push(AppConstants.getPaths().get("ADMINISTRATORS"));
                 } else {
                     history.push(AppConstants.getPaths().get("USERS"));
@@ -1107,7 +1107,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     setShowDeleteConfirmationModal(true);
                                     setDeletingUser(user);
                                 } }
-                                isButtonDisabled={ isReadOnlyUserStore }
+                                isButtonDisabled={ adminUserType === AdminAccountTypes.INTERNAL && isReadOnlyUserStore }
                                 buttonDisableHint={ t("console:manage.features.user.editUser.dangerZoneGroup." +
                                     "deleteUserZone.buttonDisableHint") }
                             />

@@ -494,8 +494,10 @@ export interface ConsoleNS {
                                         actions: {
                                             makeMandatory: string;
                                             makeRequested: string;
+                                            makeScopeRequested: string;
                                             removeMandatory: string;
                                             removeRequested: string;
+                                            removeScopeRequested: string;
                                             subjectDisabledSelection: string;
                                         };
                                         faultyAttributeMapping: string;
@@ -1366,6 +1368,7 @@ export interface ConsoleNS {
                             callbackUrl: FormAttributes;
                             clientId: FormAttributes;
                             clientSecret: FormAttributes;
+                            enableGoogleOneTap: FormAttributes;
                             AdditionalQueryParameters: FormAttributes;
                             scopes: {
                                 heading: string;
@@ -1438,6 +1441,7 @@ export interface ConsoleNS {
                         requiredErrorMessage: string;
                         invalidURLErrorMessage: string;
                         invalidQueryParamErrorMessage: string;
+                        invalidScopesErrorMessage: string;
                         customProperties: string;
                     };
                     generalDetails: {
