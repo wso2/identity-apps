@@ -192,7 +192,7 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
                 />
             );
         case IdentityProviderManagementConstants.MICROSOFT_AUTHENTICATOR_ID:
-            if (templateId==MicrosoftIDPTemplate.id){
+            if (templateId === MicrosoftIDPTemplate.id){
                 return(
                     <MicrosoftAuthenticatorForm
                         mode={ mode }
