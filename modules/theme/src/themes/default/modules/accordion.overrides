@@ -53,3 +53,29 @@
         }
     }
 }
+
+.ui.accordion {
+    &.segmented-accordion-table-view {
+        .segmented-accordion-title {
+            margin: 0;
+            border-radius: 0;
+            .chevron {
+                transition: transform .1s ease-in-out;
+            }
+            &.active {
+                border-bottom-right-radius: 0;
+                border-bottom-left-radius: 0;
+
+                .chevron {
+                    transform: rotate(90deg);
+                }
+            }
+        }
+        .segmented-accordion-content {
+            border-radius: 0;
+            border: @defaultBorderWidth solid @lightBorderColor;
+            margin-bottom: 0;
+            border: @defaultBorderWidth solid @lightBorderColor;
+        }
+    }
+}
