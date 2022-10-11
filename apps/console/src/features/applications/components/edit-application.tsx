@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -110,9 +110,9 @@ interface EditApplicationPropsInterface extends SBACInterface<FeatureConfigInter
 /**
  * Application edit component.
  *
- * @param {EditApplicationPropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {ReactElement}
+ * @returns EditApplication component
  */
 export const EditApplication: FunctionComponent<EditApplicationPropsInterface> = (
     props: EditApplicationPropsInterface
@@ -173,7 +173,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     /**
      * Called when an application updates.
      *
-     * @param {string} id - Application id.
+     * @param id - Application id.
      */
     const handleApplicationUpdate = (id: string): void => {
         setIsApplicationUpdated(true);
@@ -409,7 +409,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     /**
      * Handles the activeTabIndex change.
      *
-     * @param {number} tabIndex - Active tab index.
+     * @param tabIndex - Active tab index.
      */
     const handleActiveTabIndexChange = (tabIndex:number): void => {
 
@@ -423,8 +423,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     /**
      * Handles the tab change.
      *
-     * @param {React.SyntheticEvent} e - Click event.
-     * @param {TabProps} data - Tab properties.
+     * @param e - Click event.
+     * @param data - Tab properties.
      */
     const handleTabChange = (e: SyntheticEvent, data: TabProps): void => {
         eventPublisher.compute(() => {
@@ -459,7 +459,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
      * This function will normalize the SAML name ID format
      * returned by the API.
      *
-     * @param {any} protocolConfigs
+     * @param protocolConfigs - Protocol config object
      */
     const normalizeSAMLNameIDFormat = (protocolConfigs: any): void => {
         const key = "saml";
@@ -555,8 +555,6 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
     /**
      * Called when an application updates.
-     *
-     * @param {string} id - Application id.
      */
     const handleProtocolUpdate = (): void => {
         if (!application?.id) {
@@ -568,7 +566,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
     /**
      * Handles application secret regenerate.
-     * @param {OIDCDataInterface} config - Config response.
+     * @param config - Config response.
      */
     const handleApplicationSecretRegenerate = (config: OIDCDataInterface): void => {
 
@@ -722,7 +720,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     /**
      * Resolves the tab panes based on the application config.
      *
-     * @return {any[]} Resolved tab panes.
+     * @returns Resolved tab panes.
      */
     const resolveTabPanes = (): any[] => {
         const panes: any[] = [];
@@ -922,7 +920,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
     /**
      * Renders the client secret hash disclaimer modal.
-     * @return {React.ReactElement}
+     * @returns Client Secret Hash Disclaimer Modal
      */
     const renderClientSecretHashDisclaimerModal = (): ReactElement => {
 
