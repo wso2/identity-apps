@@ -108,7 +108,8 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
         isUserAttributesLoading,
         setUserAttributesLoading,
         onlyOIDCConfigured,
-        [ "data-testid" ]: testId
+        [ "data-testid" ]: testId,
+        [ "data-testid" ]: componentId
     } = props;
 
     const { t } = useTranslation();
@@ -484,6 +485,7 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                 as="h6"
                 className="header-with-icon"
                 data-testid={ `${ testId }-item-heading` }
+                data-componentId={ `${ componentId }-item-heading` }
             >
                 <AppAvatar
                     image={ (
@@ -491,11 +493,13 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                             name={ scope.displayName }
                             size="mini"
                             data-testid={ `${ testId }-item-image-inner` }
+                            data-componentId={ `${ componentId }-item-image-inner` }
                         />
                     ) }
                     size="mini"
                     spaced="right"
                     data-testid={ `${ testId }-item-image` }
+                    data-componentId={ `${ componentId }-item-image` }
                 />
                 <Header.Content>
                     { scope.displayName }
@@ -521,6 +525,7 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                 singleLine
                 compact
                 data-testid={ `${ testId }-list` }
+                data-componentId={ `${ componentId }-list` }
                 fixed
             >
                 <Table.Header>
@@ -656,7 +661,7 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
         (!isUserAttributesLoading && claimConfigurations && initializationFinished)
             ? (
                 <>
-                    <Grid.Row data-testid={ testId }>
+                    <Grid.Row data-testid={ testId } data-componentid={ componentId }>
                         <Grid.Column computer={ 16 } tablet={ 16 } largeScreen={ 12 } widescreen={ 12 } >
                             <Heading as="h4">
                                 {
@@ -673,6 +678,7 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                                 <Grid.Row className="user-role-edit-header-segment clearing attributes">
                                     <Table
                                         data-testid={ `${ testId }-action-bar` }
+                                        data-componentid={  `${ componentId }-action-bar` }
                                         basic="very"
                                         compact
                                     >
@@ -691,6 +697,7 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                                                         floated="left"
                                                         size="small"
                                                         data-testid={ `${ testId }-search` }
+                                                        data-componentid={  `${ componentId }-search` }
                                                     />
                                                 </Table.Cell>
                                                 <Table.Cell textAlign="right"></Table.Cell>
@@ -701,7 +708,9 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                                 <Grid.Row>
                                     <SegmentedAccordion
                                         fluid
-                                        data-testid={ testId }
+                                        data-testid={ `${ testId }-oidc-scopes` }
+                                        data-componentid={  `${ componentId }-oidc-scopes` }
+                                        viewType="table-view"
                                     >
                                         {
                                             externalClaimsGroupedByScopes.map(
@@ -710,7 +719,9 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                                                         <Fragment key={ scope.name }>
                                                             <SegmentedAccordion.Title
                                                                 id={ scope.name }
-                                                                data-componentid={ `${testId}-${scope.name}-title` }
+                                                                data-testid={ `${testId}-${scope.name}-title` }
+                                                                data-componentid={ `${componentId}-${scope.name}
+                                                                -title` }
                                                                 active={ expandedScopes?.includes(scope.name) 
                                                                         || false }
                                                                 accordionIndex={ scope.name }
@@ -726,6 +737,8 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                                                                 active={ expandedScopes?.includes(scope.name) 
                                                                         || false }
                                                                 data-testid={ `${testId}-${scope.name}-content` }
+                                                                data-componentid={ `${componentId}-${scope.name}
+                                                                -content` }
                                                                 children={ resolveUserAttributeList(scope.claims) }
                                                             />
                                                         </Fragment>

@@ -1088,6 +1088,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                                             setUserAttributesLoading={ setUserAttributesLoading }
                                             onlyOIDCConfigured={ onlyOIDCConfigured }
                                             data-testid={ `${ testId }-attribute-selection-oidc` }
+                                            data-componentid={ `${ testId }-attribute-selection-oidc` }
                                         />
                                     ) : (
                                         <AttributeSelection
