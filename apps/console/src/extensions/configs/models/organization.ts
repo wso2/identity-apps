@@ -20,6 +20,10 @@ import { ReactElement } from "react";
 import { BreadcrumbItem } from "../../../features/organizations/models";
 
 export interface OrganizationConfigs {
-    showOrganizationDropdown: boolean,
-    superOrganizationBreadcrumb: (breadcrumbItem: BreadcrumbItem, onClick: (breadcrumbItem: BreadcrumbItem) => void) => ReactElement;
+    showOrganizationDropdown: boolean;
+    superOrganizationBreadcrumb: (
+        breadcrumbItem: BreadcrumbItem,
+        onClick: (breadcrumbItem: BreadcrumbItem) => void
+    ) => ReactElement;
+    showSwitcherInTenants: boolean;
 }
