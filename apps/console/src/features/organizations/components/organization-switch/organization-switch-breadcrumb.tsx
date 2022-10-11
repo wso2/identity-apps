@@ -25,8 +25,9 @@ import { Dropdown, Icon, Menu } from "semantic-ui-react";
 import OrganizationSwitchDropdown from "./organization-switch-dropdown";
 import { organizationConfigs } from "../../../../extensions";
 import { ReactComponent as CrossIcon } from "../../../../themes/default/assets/images/icons/cross-icon.svg";
-import { AppState, getMiscellaneousIcons } from "../../../core";
+import { AppConstants, AppState, getMiscellaneousIcons } from "../../../core";
 import { useGetOrganizationBreadCrumb } from "../../api";
+import { OrganizationManagementConstants } from "../../constants";
 import {
     BreadcrumbItem,
     GenericOrganization,
@@ -49,6 +50,9 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
     );
 
     const [ showBreadcrumb, setShowBreadcrumb ] = useState<boolean>(false);
+    const tenantDomain: string = useSelector(
+        (state: AppState) => state?.auth?.tenantDomain
+    );
 
     const { data: breadcrumbList } = useGetOrganizationBreadCrumb();
 
@@ -58,11 +62,9 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
         let newOrgPath: string = "";
 
         if (OrganizationUtils.isRootOrganization(organization)) {
-            newOrgPath = `${ window[ "AppUtils" ].getConfig().tenantPathWithoutSuperTenant
-            } /${ window[ "AppUtils" ].getConfig().appBase }`;
+            newOrgPath = `/${ window[ "AppUtils" ].getConfig().appBase }`;
         } else {
             newOrgPath =
-                window[ "AppUtils" ].getConfig().tenantPathWithoutSuperTenant +
                 "/o/" +
                 organization.id +
                 "/" +
@@ -78,12 +80,55 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
         window.location.replace(newOrgPath);
     };
 
+    const generateSuperBreadcrumbItem = (item: BreadcrumbItem): ReactElement => {
+        return OrganizationUtils.isRootOrganization(item) ? (
+            organizationConfigs.superOrganizationBreadcrumb(
+                item,
+                handleOrganizationSwitch
+            )
+        ) : (
+            <span onClick={ () => handleOrganizationSwitch(item) }>
+                { item.name }
+            </span>
+        );
+    };
+
     const generateBreadcrumb = (): ReactElement => {
-        if (breadcrumbList.length <= 4) {
+        if (
+            AppConstants.getSuperTenant() !== tenantDomain &&
+            organizationConfigs.showSwitcherInTenants
+        ) {
+            return (
+                <Menu className="organization-breadcrumb">
+                    <Menu.Item className="breadcrumb">
+                        { generateSuperBreadcrumbItem(OrganizationManagementConstants.ROOT_ORGANIZATION) }
+                        <Icon name="caret right" className="separator-icon" />
+                    </Menu.Item>
+                    <Menu.Item className="breadcrumb">
+                        <span>{ tenantDomain }</span>
+                    </Menu.Item>
+                    <Menu.Item className="breadcrumb">
+                        <GenericIcon
+                            size="nano"
+                            defaultIcon
+                            transparent
+                            icon={ CrossIcon }
+                            onClick={ () => setShowBreadcrumb(false) }
+                            className="close-icon"
+                        />
+                    </Menu.Item>
+                </Menu>
+            );
+        }
+
+        if (breadcrumbList?.length <= 4) {
             return (
                 <Menu className="organization-breadcrumb">
                     { breadcrumbList.map(
                         (breadcrumb: BreadcrumbItem, index: number) => {
+                            if (index === 0) {
+                                return generateSuperBreadcrumbItem(breadcrumb);
+                            }
                             if (index !== breadcrumbList.length - 1) {
                                 return (
                                     <Menu.Item
@@ -136,21 +181,7 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
         return (
             <Menu className="organization-breadcrumb">
                 <Menu.Item className="breadcrumb">
-                    { OrganizationUtils.isRootOrganization(breadcrumbList[ 0 ]) ? (
-                        organizationConfigs.superOrganizationBreadcrumb(
-                            breadcrumbList[ 0 ],
-                            handleOrganizationSwitch
-                        )
-                    ) : (
-                        <span
-                            onClick={ () =>
-                                handleOrganizationSwitch(breadcrumbList[ 0 ])
-                            }
-                        >
-                            { breadcrumbList[ 0 ].name }
-                        </span>
-                    ) }
-
+                    { generateSuperBreadcrumbItem(breadcrumbList[ 0 ]) }
                     <Icon name="caret right" className="separator-icon" />
                 </Menu.Item>
                 <Dropdown
@@ -215,11 +246,28 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
         );
     };
 
+    const resolveTriggerName = (): string => {
+        if (AppConstants.getSuperTenant() === tenantDomain) {
+            return currentOrganization.name;
+        }
+
+        return tenantDomain;
+    };
+
     if (!breadcrumbList || breadcrumbList.length === 0) {
-        return;
+        if (AppConstants.getSuperTenant() === tenantDomain) {
+            return (
+                <div className="organization-breadcrumb-wrapper">
+                    <OrganizationSwitchDropdown
+                        triggerName={ currentOrganization.name }
+                        handleOrganizationSwitch={ handleOrganizationSwitch }
+                    />
+                </div>
+            );
+        }
     }
 
-    if (breadcrumbList.length === 1) {
+    if (breadcrumbList?.length === 1) {
         return (
             <div className="organization-breadcrumb-wrapper">
                 <OrganizationSwitchDropdown
@@ -247,7 +295,7 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
                         />
                     </div>
                     <div className="item">
-                        <span>{ currentOrganization?.name }</span>
+                        <span>{ resolveTriggerName() }</span>
                         <Icon name="caret right" className="separator-icon" />
                     </div>
                 </div>
