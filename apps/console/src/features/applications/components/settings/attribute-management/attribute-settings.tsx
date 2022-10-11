@@ -961,7 +961,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         if (!applicationConfig.attributeSettings.roleMapping) {
             delete submitValue.claimConfiguration.role;
         }
-        // Stop sending subject claim for OIDC applications.
+        // Stop sending subject claim for OIDC applications based on the excludeSubjectClaim configuration.
         if (applicationConfig.excludeSubjectClaim && onlyOIDCConfigured) {
             delete submitValue.claimConfiguration.subject;
         }
@@ -1030,7 +1030,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
     /**
      * Util function to handle claim mapping.
      *
-     * @param confirmation - confirmation state
+     * @param confirmation - confirmation state.
      */
     const handleClaimMapping = (confirmation: boolean): void => {
         if (confirmation) {

@@ -45,7 +45,7 @@ import { Helmet } from "react-helmet";
 import { Trans } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, Router, Switch } from "react-router-dom";
-import { commonConfig } from "./extensions";
+import { applicationConfig, commonConfig } from "./extensions";
 import { EventPublisher, PreLoader } from "./features/core";
 import { ProtectedRoute } from "./features/core/components";
 import { Config, DocumentationLinks, getBaseRoutes } from "./features/core/configs";
@@ -78,6 +78,9 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
     const appTitle: string = useSelector((state: AppState) => state?.config?.ui?.appTitle);
     const uuid: string = useSelector((state: AppState) => state.profile.profileInfo.id);
     const theme: string = useSelector((state: AppState) => state?.config?.ui?.theme?.name);
+    const isMarketingConsentBannerEnabled: boolean = useSelector((state: AppState) => {
+        return state?.config?.ui?.isMarketingConsentBannerEnabled;
+    });
 
     const [ baseRoutes, setBaseRoutes ] = useState<RouteInterface[]>(getBaseRoutes());
 
@@ -417,6 +420,10 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
                                                 </Trans>)
                                             }
                                         />
+                                        { 
+                                            isMarketingConsentBannerEnabled 
+                                                && applicationConfig.marketingConsent.getBannerComponent() 
+                                        }
                                         <Switch>
                                             <Redirect
                                                 exact

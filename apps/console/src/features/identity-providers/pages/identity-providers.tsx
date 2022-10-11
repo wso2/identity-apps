@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -87,9 +87,9 @@ const IDENTITY_PROVIDER_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
 /**
  * Identity Providers listing page component.
  *
- * @param {IDPPropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns React Element
  */
 const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (props: IDPPropsInterface): ReactElement => {
     const { [ "data-testid" ]: testId } = props;
@@ -237,7 +237,7 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (props: IDPP
     /**
      * Get all authenticators in the server from `Authenticators API`.
      *
-     * @param {string} filter - Search filter.
+     * @param filter - Search filter.
      */
     const getAllAuthenticators = (filter?: string): void => {
         setIsAuthenticatorFetchRequestRequestLoading(true);
@@ -302,10 +302,10 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (props: IDPP
     /**
      * Retrieves the list of identity providers.
      *
-     * @param {number} limit - List limit.
-     * @param {number} offset - List offset.
-     * @param {string} filter - Search query.
-     * @param {boolean} append - Should append items to the end?.
+     * @param limit - List limit.
+     * @param offset - List offset.
+     * @param filter - Search query.
+     * @param append - Should append items to the end?.
      */
     const getIdPList = (limit: number, offset: number, filter: string, append: boolean): void => {
         setIdPListRequestLoading(true);
@@ -372,12 +372,13 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (props: IDPP
     /**
      * Handles Connection grid filter.
      *
-     * @param {string} query - Search query.
-     * @param {string[]} selectedFilters - Selected filters.
+     * @param query - Search query.
+     * @param selectedFilters - Selected filters.
      */
     const handleConnectionGridFilter = (query: string, selectedFilters: string[]): void => {
         // Update the internal state to manage placeholders etc.
         setSearchQuery(query);
+        setListOffset(0);
 
         // Update the state of selected filterTags.
         const filterTags = selectedFilters || selectedFilterTags;
@@ -417,8 +418,8 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (props: IDPP
     /**
      * Sets the list sorting strategy.
      *
-     * @param {React.SyntheticEvent<HTMLElement>} event - The event.
-     * @param {DropdownProps} data - Dropdown data.
+     * @param event - The event.
+     * @param data - Dropdown data.
      */
     const handleListSortingStrategyOnChange = (event: SyntheticEvent<HTMLElement>, data: DropdownProps): void => {
         setListSortingStrategy(
@@ -431,8 +432,8 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (props: IDPP
     /**
      * Handles the pagination change.
      *
-     * @param {React.MouseEvent<HTMLAnchorElement>} event - Mouse event.
-     * @param {PaginationProps} data - Pagination component data.
+     * @param event - Mouse event.
+     * @param data - Pagination component data.
      */
     const handlePaginationChange = (event: MouseEvent<HTMLAnchorElement>, data: PaginationProps): void => {
         setListOffset(((data.activePage as number) - 1) * listItemLimit);
@@ -441,8 +442,8 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (props: IDPP
     /**
      * Handles per page dropdown page.
      *
-     * @param {React.MouseEvent<HTMLAnchorElement>} event - Mouse event.
-     * @param {DropdownProps} data - Dropdown data.
+     * @param event - Mouse event.
+     * @param data - Dropdown data.
      */
     const handleItemsPerPageDropdownChange = (event: MouseEvent<HTMLAnchorElement>, data: DropdownProps): void => {
         setListItemLimit(data.value as number);
@@ -452,7 +453,7 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (props: IDPP
      * Handles the `onFilter` callback action from the
      * identity provider search component.
      *
-     * @param {string} query - Search query.
+     * @param query - Search query.
      */
     const handleIdentityProviderListFilter = (query: string): void => {
         setSearchQuery(query);

@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,7 +14,6 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
 
 import { AuthReactConfig, Hooks, ResponseMode, Storage, useAuthContext } from "@asgardeo/auth-react";
@@ -123,7 +122,7 @@ export const getAuthInitializeConfig = (): AuthReactConfig => {
         clientID: window["AppUtils"]?.getConfig().clientID,
         clockTolerance: window["AppUtils"]?.getConfig().idpConfigs?.clockTolerance,
         disableTrySignInSilently: new URL(location.href).searchParams.get("disable_silent_sign_in") === "true",
-        enableOIDCSessionManagement: true,
+        enableOIDCSessionManagement: window["AppUtils"]?.getConfig().idpConfigs?.enableOIDCSessionManagement ?? true,
         enablePKCE: window["AppUtils"]?.getConfig().idpConfigs?.enablePKCE ?? true,
         endpoints: {
             authorizationEndpoint: window["AppUtils"]?.getConfig().idpConfigs?.authorizeEndpointURL,

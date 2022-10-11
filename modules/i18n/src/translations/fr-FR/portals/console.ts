@@ -1208,6 +1208,10 @@ export const console: ConsoleNS = {
                                                     "comportement inattendu."
 
                                             },
+                                            microsoft: {
+                                                description: "Autoriser les utilisateurs à se connecter avec Microsoft.",
+                                                heading: "Ajouter une connexion Microsoft"
+                                            },
                                             totp: {
                                                 description: "Activez une couche d'authentification supplémentaire " +
                                                     "avec OTP basé sur le temps.",

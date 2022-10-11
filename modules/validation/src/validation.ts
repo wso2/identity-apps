@@ -129,6 +129,23 @@ export const resourceName: ValidationFunction = (value: string): boolean => {
 };
 
 /**
+ * This validates if OpenID Connect scopes contains openid value. 
+ * Returns true if valid. False if not valid.
+ * @param value
+ */
+export const scopes: ValidationFunction = (value: string): boolean => {
+    if (
+        Joi.string()
+            .regex(new RegExp("^.*openid.*$"))
+            .validate(value).error
+    ) {
+        return false;
+    }
+
+    return true;
+};
+
+/**
  * Validates if the length of the value is less than the character limit.
  * @param value {string}
  * @param limit {number}

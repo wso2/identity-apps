@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,6 +19,8 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { identityProviderConfig } from "../../../../../extensions/configs/identity-provider";
+import MicrosoftIDPTemplate from 
+    "../../../../identity-providers/data/identity-provider-templates/templates/microsoft/microsoft.json";
 import { IdentityProviderManagementConstants } from "../../../constants";
 import {
     AuthenticatorSettingsFormModes,
@@ -31,13 +33,14 @@ import {
     EmailOTPAuthenticatorForm,
     FacebookAuthenticatorForm,
     GithubAuthenticatorForm,
-    GoogleAuthenticatorForm
+    GoogleAuthenticatorForm,
+    MicrosoftAuthenticatorForm
 } from "../authenticators";
 import { SamlAuthenticatorSettingsForm } from "../authenticators/saml-authenticator-form";
-
 /**
  * Proptypes for the authenticator form factory component.
  */
+
 interface AuthenticatorFormFactoryInterface extends TestableComponentInterface {
     /**
      * The intended mode of the authenticator form.
@@ -73,8 +76,8 @@ interface AuthenticatorFormFactoryInterface extends TestableComponentInterface {
 /**
  * Authenticator form factory.
  *
- * @param {AuthenticatorFormFactoryInterface} props - Props injected to the component.
- * @return {ReactElement}
+ * @param props - Props injected to the component.
+ * @returns React Element
  */
 export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactoryInterface> = (
     props: AuthenticatorFormFactoryInterface
@@ -188,6 +191,38 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
                     isSubmitting={ isSubmitting }
                 />
             );
+        case IdentityProviderManagementConstants.MICROSOFT_AUTHENTICATOR_ID:
+            if (templateId === MicrosoftIDPTemplate.id){
+                return(
+                    <MicrosoftAuthenticatorForm
+                        mode={ mode }
+                        initialValues={ initialValues }
+                        metadata={ metadata }
+                        onSubmit={ onSubmit }
+                        triggerSubmit={ triggerSubmit }
+                        enableSubmitButton={ enableSubmitButton }
+                        data-testid={ testId }
+                        showCustomProperties={ showCustomProperties }
+                        readOnly={ isReadOnly }
+                        isSubmitting={ isSubmitting }
+                    />
+                );
+            } else {
+                return (
+                    <CommonAuthenticatorForm
+                        mode={ mode }
+                        initialValues={ initialValues }
+                        metadata={ metadata }
+                        onSubmit={ onSubmit }
+                        triggerSubmit={ triggerSubmit }
+                        enableSubmitButton={ enableSubmitButton }
+                        data-testid={ testId }
+                        showCustomProperties={ showCustomProperties }
+                        readOnly={ isReadOnly }
+                        isSubmitting={ isSubmitting }
+                    />
+                );
+            }
         default:
             return (
                 <CommonAuthenticatorForm

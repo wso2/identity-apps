@@ -171,6 +171,16 @@ export interface CheckboxField extends FormRequiredFieldModel {
 }
 
 /**
+ * Scopes field model
+ */
+export interface ScopesField extends FormRequiredFieldModel {
+    type: "scopes";
+    value?: string;
+    defaultValue?: string;
+    validation?: (value: string, validation: Validation, allValues?: Map<string, FormValue>) => void;
+}
+
+/**
  * Query Parameters field model
  */
 export interface QueryParamsField extends FormRequiredFieldModel {
@@ -293,6 +303,7 @@ export type FormField =
     | FormDivider
     | CustomField
     | ToggleField
+    | ScopesField
     | QueryParamsField;
 
 /**

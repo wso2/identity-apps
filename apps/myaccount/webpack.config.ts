@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -38,7 +38,7 @@ import DeploymentConfig from "./src/public/deployment.config.json";
 /**
  * Different Server Types.
  */
- enum ServerTypes {
+enum ServerTypes {
     TOMCAT = "tomcat",
     STATIC = "static"
 }
@@ -95,6 +95,9 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
     const isDevServerHostCheckDisabled = process.env.DISABLE_DEV_SERVER_HOST_CHECK === "true";
     const isESLintPluginDisabled = process.env.DISABLE_ESLINT_PLUGIN === "true";
 
+    // Configurations resolved from deployment.config.json.
+    const theme = DeploymentConfig.ui.theme.name || "default";
+
     config.entry = {
         ...config.entry,
         ...ABSOLUTE_PATHS.entryPoints
@@ -126,6 +129,15 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                 authorizationCode: "<%=request.getParameter(\"code\")%>",
                 contentType: "<%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\" " +
                     "pageEncoding=\"UTF-8\" %>",
+                // eslint-disable-next-line max-len
+                cookieproDomainScriptId: "<% String cookiepro_domain_script_id = System.getenv(\"cookiepro_domain_script_id\"); %>",
+                cookieproDomainScriptIdVar: "<%= cookiepro_domain_script_id %>",
+                cookieproEnabledCheck: "<% if ((Boolean.TRUE.toString()).equals(is_cookiepro_enabled)) { %>",
+                cookieproEnabledCheckEnd: "<% } %>",
+                cookieproEnabledFlag: "<% String is_cookiepro_enabled = System.getenv(\"is_cookiepro_enabled\"); %>",
+                // eslint-disable-next-line max-len
+                cookieproInitialScriptTypeCheck: "<% String initialScriptType = (Boolean.TRUE.toString()).equals(is_cookiepro_enabled) ? \"text/plain\" : \"text/javascript\"; %>",
+                cookieproInitialScriptTypeVar: "<%= initialScriptType %>",
                 filename: ABSOLUTE_PATHS.homeTemplateInDistribution,
                 getOrganizationManagementAvailability: !isDeployedOnExternalTomcatServer
                     ? "<%@ page import=\"static org.wso2.carbon.identity.application." +
@@ -164,7 +176,8 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                 tenantPrefix: !isDeployedOnExternalTomcatServer
                     ? "<%=TENANT_AWARE_URL_PREFIX%>"
                     : "",
-                themeHash: getThemeConfigs().styleSheetHash,
+                theme: theme,
+                themeHash: getThemeConfigs(theme).styleSheetHash,
                 vwoScriptVariable: "<%= vwo_ac_id %>",
                 // eslint-disable-next-line max-len
                 vwoSystemVariable: "<% String vwo_ac_id_system_var = System.getenv().getOrDefault(\"vwo_account_id\", null); %>",
@@ -225,7 +238,8 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                 tenantPrefix: !isDeployedOnExternalTomcatServer
                     ? "<%=TENANT_AWARE_URL_PREFIX%>"
                     : "",
-                themeHash: getThemeConfigs().styleSheetHash
+                theme: theme,
+                themeHash: getThemeConfigs(theme).styleSheetHash
             }) as unknown as WebpackPluginInstance
         );
     } else {
@@ -236,7 +250,8 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                 minify: false,
                 publicPath: baseHref,
                 template: ABSOLUTE_PATHS.indexTemplateInSource,
-                themeHash: getThemeConfigs().styleSheetHash
+                theme: theme,
+                themeHash: getThemeConfigs(theme).styleSheetHash
             }) as unknown as WebpackPluginInstance
         );
     }
@@ -487,10 +502,9 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
     return config;
 };
 
-const getThemeConfigs = () => {
-    const THEME_TO_USE = DeploymentConfig.ui.theme.name || "default";
+const getThemeConfigs = (theme: string) => {
     const THEME_DIR = path.resolve(__dirname,
-        "node_modules", "@wso2is", "theme", "dist", "lib", "themes",THEME_TO_USE);
+        "node_modules", "@wso2is", "theme", "dist", "lib", "themes", theme);
     const files = fs.readdirSync(THEME_DIR);
     const file = files ? files.filter(file => file.endsWith(".min.css"))[ 0 ] : null;
 
