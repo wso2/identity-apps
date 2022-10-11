@@ -3133,6 +3133,10 @@ export const console: ConsoleNS = {
                     },
                     applicationEdit: {
                         back: "නැවත {{idpName}} වෙත යන්න"
+                    },
+                    genericError: {
+                        description: "සබැඳුනු යෙදවුම් ලබා ගැනීමට යාමේදී දෝෂයක් ඇති වී ඇත.",
+                        message: "යම් දෝෂයක් ඇති වී ඇත"
                     }
                 },
                 dangerZoneGroup: {

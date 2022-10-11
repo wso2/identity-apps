@@ -179,9 +179,10 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                         appRequests.map(response => response.catch(error => {
                             dispatch(addAlert({
                                 description: error?.description
-                                || "Error occurred while trying to retrieve connected applications.",
+                                    || t("console:develop.features.idp.connectedApps.genericError.description"),
                                 level: AlertLevels.ERROR,
-                                message: error?.message || "Error Occurred."
+                                message: error?.message 
+                                    || t("console:develop.features.idp.connectedApps.genericError.message")
                             }));
                         }))
                     );
@@ -193,9 +194,9 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
             .catch((error) => {
                 dispatch(addAlert({
                     description: error?.description
-                    || "Error occurred while trying to retrieve connected applications.",
+                        || t("console:develop.features.idp.connectedApps.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: error?.message || "Error Occurred."
+                    message: error?.message || t("console:develop.features.idp.connectedApps.genericError.message")
                 }));
             })
             .finally(() => {
@@ -214,6 +215,15 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
         setApplicationTemplateRequestLoadingStatus(true);
     
         ApplicationTemplateManagementUtils.getApplicationTemplates()
+            .catch((error) => {
+                dispatch(addAlert({
+                    description: error?.description
+                    || t("console:develop.features.applications.notifications.fetchTemplates.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: error?.message 
+                    || t("console:develop.features.applications.notifications.fetchTemplates.genericError.message")
+                }));
+            })
             .finally(() => {
                 setApplicationTemplateRequestLoadingStatus(false);
             });

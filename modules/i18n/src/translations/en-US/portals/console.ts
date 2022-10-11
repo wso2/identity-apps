@@ -4534,6 +4534,10 @@ export const console: ConsoleNS = {
                     },
                     applicationEdit: {
                         back: "Go back to {{idpName}}"
+                    },
+                    genericError: {
+                        description: "Error occurred while trying to retrieve connected applications.",
+                        message: "Error Occurred."
                     }
                 },
                 dangerZoneGroup: {

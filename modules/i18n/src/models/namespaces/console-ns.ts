@@ -1877,6 +1877,10 @@ export interface ConsoleNS {
                     applicationEdit: {
                         back: string;
                     };
+                    genericError: {
+                        description: string;
+                        message: string;
+                    }
                 };
                 dangerZoneGroup: {
                     header: string;

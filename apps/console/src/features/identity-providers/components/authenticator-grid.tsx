@@ -195,9 +195,10 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                         appRequests.map(response => response.catch(error => {
                             dispatch(addAlert({
                                 description: error?.description
-                                    || "Error occurred while trying to retrieve connected applications.",
+                                    || t("console:develop.features.idp.connectedApps.genericError.description"),
                                 level: AlertLevels.ERROR,
-                                message: error?.message || "Error Occurred."
+                                message: error?.message 
+                                    || t("console:develop.features.idp.connectedApps.genericError.message")
                             }));
                         }))
                     );
@@ -214,9 +215,9 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
             .catch((error) => {
                 dispatch(addAlert({
                     description: error?.description
-                        || "Error occurred while trying to retrieve connected applications.",
+                        || t("console:develop.features.idp.connectedApps.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: error?.message || "Error Occurred."
+                    message: error?.message || t("console:develop.features.idp.connectedApps.genericError.message")
                 }));
             })
             .finally(() => {

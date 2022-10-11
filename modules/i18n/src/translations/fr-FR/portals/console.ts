@@ -3219,6 +3219,10 @@ export const console: ConsoleNS = {
                     },
                     applicationEdit: {
                         back: "Revenir à {{idpName}}"
+                    },
+                    genericError: {
+                        description: "Une erreur s'est produite lors de la tentative de récupération des applications connectées.",
+                        message: "Erreur est survenue."
                     }
                 },
                 dangerZoneGroup: {
