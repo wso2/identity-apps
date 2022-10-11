@@ -207,11 +207,14 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             }
 
             // When application selection is done through the strong authentication flow.
-            if(template.id === CustomApplicationTemplate.id) {
-                handleActiveTabIndexChange(3);
-            } else {
-                handleActiveTabIndexChange(4);
-            }
+            const tabIndex: number = applicationConfig.editApplication.getStrongAuthenticationFlowTabIndex(
+                application.clientId,
+                tenantDomain,
+                template.id,
+                CustomApplicationTemplate.id
+            );
+
+            handleActiveTabIndexChange(tabIndex);
         }
     },[ template ]);
 
