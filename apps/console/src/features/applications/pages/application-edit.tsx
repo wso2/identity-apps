@@ -460,9 +460,9 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
      * Handles the back button click event.
      */
     const handleBackButtonClick = (): void => {
-        if(!isConnectedAppsRedirect){
+        if (!isConnectedAppsRedirect) {
             history.push(AppConstants.getPaths().get("APPLICATIONS"));
-        }else{
+        } else {
             history.push(AppConstants.getPaths().get("IDP_EDIT").replace(":id", callBackIdpID));
         }
     };
