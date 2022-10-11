@@ -726,3 +726,11 @@ export enum ApplicationTabTypes {
     ADVANCED = "advanced",
     INFO = "info"
 }
+
+/**
+ * Captures name and id of the callback identity provider.
+ */
+export interface idpInfoTypeInterface {
+    id: string;
+    name: string;
+}

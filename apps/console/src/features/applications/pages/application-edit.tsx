@@ -53,7 +53,8 @@ import {
     ApplicationTemplateListItemInterface,
     State,
     SupportedAuthProtocolTypes,
-    emptyApplication
+    emptyApplication,
+    idpInfoTypeInterface
 } from "../models";
 import { ApplicationTemplateManagementUtils } from "../utils";
 
@@ -204,16 +205,12 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     * Fetch the identity provider id & name when calling the app edit through connected apps
     */
     useEffect(() => {
-        if(typeof history.location.state !== "object"){
+        if (typeof history.location.state !== "object") {
             return;
         }
 
-        setisConnectedAppsRedirect(true);
-        type idpInfoType = {
-            "id": string, 
-            "name": string
-        };      
-        const idpInfo: { "id": string, "name": string } = history.location.state as idpInfoType;
+        setisConnectedAppsRedirect(true);    
+        const idpInfo: idpInfoTypeInterface = history.location.state as idpInfoTypeInterface;
 
         setcallBackIdpID(idpInfo.id);
         setcallBackIdpName(idpInfo.name);
