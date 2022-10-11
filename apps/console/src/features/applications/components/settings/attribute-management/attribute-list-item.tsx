@@ -103,6 +103,9 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
     const [ defaultMappedAttribute ] = useState(mappedAttribute);
     const localDialectURI = "http://wso2.org/claims";
 
+    /**
+     * Mandatory state of an attribute will be handled here
+     */
     const handleMandatoryCheckChange = () => {
 
         if (localDialect) {
@@ -126,6 +129,9 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
         }
     };
 
+    /**
+     * Requested state of an attribute will be handled here
+     */
     const handleRequestedCheckChange = () => {
         if (!localDialect) {
             if (requested) {
