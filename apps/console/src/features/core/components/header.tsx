@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -38,8 +38,7 @@ import { Container, Menu } from "semantic-ui-react";
 import { commonConfig, organizationConfigs } from "../../../extensions";
 import { getApplicationList } from "../../applications/api";
 import { ApplicationListInterface } from "../../applications/models";
-import OrganizationSwitchDropdown
-    from "../../organizations/components/organization-switch/organization-switch-dropdown";
+import { OrganizationSwitchBreadcrumb } from "../../organizations/components/organization-switch";
 import { AppSwitcherIcons, getAppHeaderIcons } from "../configs";
 import { AppConstants } from "../constants";
 import { history } from "../helpers";
@@ -424,7 +423,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                         floated: "right"
                     },
                     isOrgSwitcherEnabled && {
-                        component: <OrganizationSwitchDropdown />,
+                        component: <OrganizationSwitchBreadcrumb />,
                         floated: "left"
                     }
                 ])
