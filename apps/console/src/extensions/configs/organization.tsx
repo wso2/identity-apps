@@ -22,6 +22,7 @@ import { BreadcrumbItem } from "../../features/organizations/models";
 
 export const organizationConfigs: OrganizationConfigs = {
     showOrganizationDropdown: true,
+    showSwitcherInTenants: false,
     superOrganizationBreadcrumb: (
         breadcrumbItem: BreadcrumbItem,
         onClick: (breadcrumbItem: BreadcrumbItem) => void
