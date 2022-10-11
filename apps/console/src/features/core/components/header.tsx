@@ -136,7 +136,9 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             // So, we cannot use `tenantDomain` to check
             // if the user is logged in to a non-super-tenant account reliably.
             // So, we check if the organization id is there in the URL to see if the user is in a sub-organization.
-            (tenantDomain === AppConstants.getSuperTenant() || window[ "AppUtils" ].getConfig().organizationName) &&
+            (tenantDomain === AppConstants.getSuperTenant() ||
+                window[ "AppUtils" ].getConfig().organizationName ||
+                organizationConfigs.showSwitcherInTenants) &&
             hasRequiredScopes(feature?.organizations, feature?.organizations?.scopes?.read, scopes) &&
             organizationConfigs.showOrganizationDropdown
         );
