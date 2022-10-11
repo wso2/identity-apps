@@ -18,7 +18,7 @@
 
 
 import { isFeatureEnabled } from "@wso2is/core/helpers";
-import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { 
     AnimatedAvatar, 
@@ -78,7 +78,7 @@ import {
 /**
  * Proptypes for the advance settings component.
  */
-interface ConnectedAppsPropsInterface extends TestableComponentInterface {
+interface ConnectedAppsPropsInterface extends IdentifiableComponentInterface {
     /**
      * Currently editing IDP.
      */
@@ -141,7 +141,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
         isRenderedOnPortal,
         isLoading,
         loader: Loader,
-        [ "data-testid" ]: testId
+        [ "data-componentid" ]: testId
     } = props;
     
     const dispatch = useDispatch();
@@ -292,7 +292,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                             image
                             as="h6"
                             className="header-with-icon"
-                            data-testid={ `${ testId }-item-heading` }
+                            data-componentid={ `${ testId }-item-heading` }
                         >
                             {
                                 app.image
@@ -302,7 +302,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                                             name={ app.name }
                                             image={ app.image }
                                             spaced="right"
-                                            data-testid={ `${ testId }-item-image` }
+                                            data-componentid={ `${ testId }-item-image` }
                                         />
                                     )
                                     : (
@@ -311,12 +311,12 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                                                 <AnimatedAvatar
                                                     name={ app.name }
                                                     size="mini"
-                                                    data-testid={ `${ testId }-item-image-inner` }
+                                                    data-componentid={ `${ testId }-item-image-inner` }
                                                 />
                                             ) }
                                             size="mini"
                                             spaced="right"
-                                            data-testid={ `${ testId }-item-image` }
+                                            data-componentid={ `${ testId }-item-image` }
                                         />
                                     )
                             }
@@ -367,7 +367,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                 search: `?${ ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_KEY }=
                 ${ ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_VALUE }`,
                 
-                state: { "id": editingIDP.id, "name": editingIDP.name }
+                state: { id: editingIDP.id, name: editingIDP.name }
             });
         } else {
             history.push({
@@ -378,7 +378,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                     ? `?${ ApplicationManagementConstants.APP_READ_ONLY_STATE_URL_SEARCH_PARAM_KEY }=true`
                     : "",
 
-                state: { "id": editingIDP.id, "name": editingIDP.name }
+                state: { id: editingIDP.id, name: editingIDP.name }
             });
         }
     };
@@ -400,7 +400,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                         t("console:develop.placeholders.emptySearchResult.subtitles.0", { query: searchQuery }),
                         t("console:develop.placeholders.emptySearchResult.subtitles.1")
                     ] }
-                    data-testid={ `${ testId }-empty-search-placeholder` }
+                    data-componentid={ `${ testId }-empty-search-placeholder` }
                 />
             );
         }
@@ -415,7 +415,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                         t("console:develop.features.idp.connectedApps.placeholders.emptyList", 
                             { idpName: editingIDP.name })
                     ] }
-                    data-testid={ `${ testId }-empty-placeholder` }
+                    data-componentid={ `${ testId }-empty-placeholder` }
                 />
             );
         }
@@ -435,7 +435,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
 
         return [
             {
-                "data-testid": `${ testId }-item-edit-button`,
+                "data-componentid": `${ testId }-item-edit-button`,
                 hidden: (): boolean => !isFeatureEnabled(featureConfig?.applications,
                     ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT")),
                 icon: (): SemanticICONS => { 
@@ -502,7 +502,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                     floated="left"
                     size="small"
                     style={ { width: "250px" } }
-                    data-testid={ `${ testId }-searched` }
+                    data-componentid={ `${ testId }-searched` }
                 />)
             }
             <DataTable<ConnectedAppInterface>
@@ -516,14 +516,15 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                 columns={ resolveTableColumns() }
                 data={ filterSelectedApps }
                 onRowClick={ (e: SyntheticEvent, app: ApplicationListItemInterface): void => {
-                    handleApplicationEdit(app.id, app.access, "#signInMethod");
+                    handleApplicationEdit(app.id, app.access, "#tab=" +
+                        ApplicationManagementConstants.SIGN_IN_METHOD_TAB_URL_FRAG);
                     onListItemClick && onListItemClick(e, app);
                 } }
                 placeholders={ showPlaceholders() }
                 selectable={ selection }
                 showHeader={ applicationListConfig.enableTableHeaders }
                 transparent={ !(isLoading || isApplicationTemplateRequestLoading) && (showPlaceholders() !== null) }
-                data-testid={ testId }
+                data-componentid={ testId }
             />
         </EmphasizedSegment>
     );
@@ -533,7 +534,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
  * Default proptypes for the IDP advance settings component.
  */
 ConnectedApps.defaultProps = {
-    "data-testid": "idp-edit-connected-apps",
+    "data-componentid": "idp-edit-connected-apps",
     selection: true,
     showListItemActions: true
 };

@@ -259,7 +259,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
                 isReadOnly={ isReadOnly }
                 isLoading={ isLoading }
                 loader={ Loader }
-                data-testid={ `${ testId }-connected-apps-settings` }
+                data-componentid={ `${ testId }-connected-apps-settings` }
             />
         </ResourceTab.Pane>
     );
