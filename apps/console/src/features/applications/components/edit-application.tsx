@@ -226,17 +226,6 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             return;
         }
 
-        // Handle loading sign-in method tab when redirecting from the "Connected Apps" Tab of an IdP.
-        if(window.location.hash.includes(ApplicationManagementConstants.SIGN_IN_METHOD_TAB_URL_FRAG)){
-            const renderedTabPanes = resolveTabPanes();
-            const SignInMethodtabIndex = renderedTabPanes.indexOf(renderedTabPanes.find(element => 
-                element.componentId === ApplicationManagementConstants.SIGN_IN_METHOD_TAB_URL_FRAG));
-            
-            handleActiveTabIndexChange(SignInMethodtabIndex);
-            
-            return;
-        }
-
         const urlFragment: string[] = window.location.hash.split("#"+URLFragmentTypes.TAB_INDEX);
 
         if(urlFragment.length === 2 && isEmpty(urlFragment[0]) && /^\d+$/.test(urlFragment[1])) {
@@ -252,6 +241,13 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 // Change the tab index to defaultActiveIndex for invalid URL fragments.
                 handleDefaultTabIndexChange(defaultActiveIndex);
             }
+        } else if (window.location.hash.includes(ApplicationManagementConstants.SIGN_IN_METHOD_TAB_URL_FRAG)) {
+            // Handle loading sign-in method tab when redirecting from the "Connected Apps" Tab of an IdP.
+            const renderedTabPanes: any[] = resolveTabPanes();
+            const SignInMethodtabIndex: number = renderedTabPanes.indexOf(renderedTabPanes.find(element => 
+                element.componentId === ApplicationManagementConstants.SIGN_IN_METHOD_TAB_URL_FRAG));
+            
+            handleActiveTabIndexChange(SignInMethodtabIndex);
         } else {
             // Change the tab index to defaultActiveIndex for invalid URL fragments.
             handleDefaultTabIndexChange(defaultActiveIndex);
