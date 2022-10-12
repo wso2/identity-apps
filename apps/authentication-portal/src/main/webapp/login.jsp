@@ -39,6 +39,10 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.Arrays" %>
 <%@ page import="java.util.Map" %>
+<%@ page import="org.apache.commons.lang.StringUtils" %>
+<%@ page import="org.apache.http.client.utils.URLEncodedUtils" %>
+<%@ page import="org.apache.http.NameValuePair" %>
+<%@ page import="org.apache.http.message.BasicNameValuePair" %>
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 
 <%@ include file="includes/localize.jsp" %>
@@ -109,7 +113,9 @@
             return;
         }
 
-        String queryParamString = request.getQueryString() != null ? ("?" + request.getQueryString()) : "";
+        // Build the query string using the parameter map since the query string can contain fewer parameters
+        // due to parameter filtering.
+        String queryParamString = AuthenticationEndpointUtil.resolveQueryString(request.getParameterMap());
         multiOptionURIParam = "&multiOptionURI=" + Encode.forUriComponent(baseURL + queryParamString);
     }
 %>
