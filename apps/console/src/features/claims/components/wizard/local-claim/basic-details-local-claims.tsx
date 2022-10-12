@@ -1,20 +1,20 @@
 /**
-* Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
-*
-* WSO2 Inc. licenses this file to you under the Apache License,
-* Version 2.0 (the 'License'); you may not use this file except
-* in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing,
-* software distributed under the License is distributed on an
-* 'AS IS' BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-* KIND, either express or implied. See the License for the
-* specific language governing permissions and limitations
-* under the License.
-*/
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
@@ -58,9 +58,9 @@ interface BasicDetailsLocalClaimsPropsInterface extends TestableComponentInterfa
 /**
  * This component renders the basic details step of the add local claim wizard
  *
- * @param {BasicDetailsLocalClaimsPropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns ReactElement.
  */
 export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInterface): ReactElement => {
 
@@ -130,8 +130,8 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
     /**
      * This shows a popup with a delay of 500 ms.
      *
-     * @param {React.Dispatch<React.SetStateAction<boolean>>} callback The state dispatch method.
-     * @param {React.MutableRefObject<any>} ref The ref object carrying the `setTimeout` ID.
+     * @param callback - The state dispatch method.
+     * @param ref - The ref object carrying the `setTimeout` ID.
      */
     const delayPopup = (
         callback: React.Dispatch<React.SetStateAction<boolean>>,
@@ -143,8 +143,8 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
     /**
      * This closes the popup.
      *
-     * @param {React.Dispatch<React.SetStateAction<boolean>>} callback The state dispatch method.
-     * @param {React.MutableRefObject<any>} ref The ref object carrying the `setTimeout` ID.
+     * @param callback - The state dispatch method.
+     * @param ref - The ref object carrying the `setTimeout` ID.
      */
     const closePopup = (
         callback: React.Dispatch<React.SetStateAction<boolean>>,
@@ -444,7 +444,9 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                                                                 size="mini"
                                                                                 hideOnScroll
                                                                                 inverted
-                                                                                popper={ <div style={ { filter: "none" } }></div> }
+                                                                                popper={ 
+                                                                                    <div style={ { filter: "none" } }/>
+                                                                                }
                                                                             />
                                                                         ): null
                                                                     }
