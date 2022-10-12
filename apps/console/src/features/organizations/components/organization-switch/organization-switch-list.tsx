@@ -40,6 +40,7 @@ interface OrganizationSwitcherListPropTypesInterface
     setShowDropdown: (shouldShow: boolean) => void;
     loadMore: () => void;
     handleOrganizationSwitch: (organization: GenericOrganization) => void;
+    showEdit?: boolean;
 }
 
 const OrganizationSwitcherList = (
@@ -55,6 +56,7 @@ const OrganizationSwitcherList = (
         setShowDropdown,
         loadMore,
         handleOrganizationSwitch,
+        showEdit,
         "data-componentid": componentId
     } = props;
     const { t } = useTranslation();
@@ -96,7 +98,8 @@ const OrganizationSwitcherList = (
                                         isClickable={ true && !!handleOrgRowClick }
                                         handleOrgRowClick={ handleOrgRowClick }
                                         setShowDropdown={ setShowDropdown }
-                                        handleOrganizationSwitch= { handleOrganizationSwitch }
+                                        handleOrganizationSwitch={ handleOrganizationSwitch }
+                                        showEdit={ showEdit }
                                     />
                                 ) : null
                         ) }
@@ -132,5 +135,6 @@ const OrganizationSwitcherList = (
 export default OrganizationSwitcherList;
 
 OrganizationSwitcherList.defaultProps = {
-    "data-componentid": "organization-switcher-list"
+    "data-componentid": "organization-switcher-list",
+    showEdit: true
 };
