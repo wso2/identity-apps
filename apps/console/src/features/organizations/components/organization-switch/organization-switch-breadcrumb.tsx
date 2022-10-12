@@ -105,7 +105,7 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
                         <Icon name="caret right" className="separator-icon" />
                     </Menu.Item>
                     <Menu.Item className="breadcrumb">
-                        <span>{ tenantDomain }</span>
+                        <span className="un-clickable">{ tenantDomain }</span>
                     </Menu.Item>
                     <Menu.Item className="breadcrumb">
                         <GenericIcon
