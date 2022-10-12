@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,15 +14,11 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
 
 import { action } from "@storybook/addon-actions";
 import React, { ReactElement } from "react";
 import { meta } from "./section.stories.meta";
-import {
-    ReactComponent as ProfileExportMiniIllustration
-} from "../../storybook-helpers/assets/images/illustrations/profile-export-mini.svg";
 import {
     ReactComponent as ProfileExportIllustration
 } from "../../storybook-helpers/assets/images/illustrations/profile-export.svg";
@@ -40,20 +36,13 @@ export default {
 /**
  * Story to display a default section.
  *
- * @return {React.ReactElement}
+ * @returns default section.
  */
 export const DefaultSection = (): ReactElement => (
     <Section
         description="Manage and update your personal details like name, email, mobile number, organization, etc."
         header="Profile"
         icon={ (
-            <UserAvatar
-                spaced="right"
-                size="tiny"
-                image="https://avatars3.githubusercontent.com/u/25959096?s=460&v=4"
-            />
-        ) }
-        iconMini={ (
             <UserAvatar
                 spaced="right"
                 size="tiny"
@@ -74,7 +63,7 @@ DefaultSection.story = {
 /**
  * Story to display a section with an action.
  *
- * @return {React.ReactElement}
+ * @returns section with an action.
  */
 export const SectionWithAction = (): ReactElement => (
     <Section
@@ -82,10 +71,6 @@ export const SectionWithAction = (): ReactElement => (
         header="Export profile"
         contentPadding={ false }
         icon={ ProfileExportIllustration }
-        iconMini={ ProfileExportMiniIllustration }
-        iconSize="auto"
-        iconStyle="colored"
-        iconFloated="right"
         onPrimaryActionClick={ action("Downloading profile in JSON format") }
         primaryAction="Download as JSON"
         primaryActionIcon="cloud download"
