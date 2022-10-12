@@ -4534,7 +4534,7 @@ export const console: ConsoleNS = {
                 },
                 connectedApps: {
                     action: "Go to Sign-in Method",
-                    header: "Connected Application of {{idpName}}.",
+                    header: "Connected Applications of {{idpName}}.",
                     subHeader: "Applications connected to {{idpName}} are listed here.",
                     placeholders: {
                         search: "Search by Application Name",
