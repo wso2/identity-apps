@@ -956,6 +956,10 @@
                         color: darken(@tenantDropdownTriggerTextColor, 10);
                         background: @tenantDropdownTriggerHoverBackground;
                     }
+
+                    &.un-clickable {
+                        cursor: default;
+                    }
                 }
 
                 .close-icon {
