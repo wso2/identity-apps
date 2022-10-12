@@ -24,8 +24,7 @@ import { Grid, Icon, Loader, Ref, Segment } from "semantic-ui-react";
 import OrganizationListItem from "./organization-list-item";
 import {
     GenericOrganization,
-    OrganizationInterface,
-    OrganizationResponseInterface
+    OrganizationInterface
 } from "../../models";
 
 interface OrganizationSwitcherListPropTypesInterface
@@ -34,7 +33,7 @@ interface OrganizationSwitcherListPropTypesInterface
     organizations: OrganizationInterface[];
     hasMore: boolean;
     handleBackButtonClick: (event: SyntheticEvent) => void;
-    currentOrganization: OrganizationResponseInterface;
+    currentOrganization: GenericOrganization;
     handleOrgRowClick: (
         organization: GenericOrganization
     ) => void;
@@ -94,7 +93,7 @@ const OrganizationSwitcherList = (
                                     <OrganizationListItem
                                         organization={ organization }
                                         showSwitch={ true }
-                                        isClickable={ true }
+                                        isClickable={ true && !!handleOrgRowClick }
                                         handleOrgRowClick={ handleOrgRowClick }
                                         setShowDropdown={ setShowDropdown }
                                         handleOrganizationSwitch= { handleOrganizationSwitch }
