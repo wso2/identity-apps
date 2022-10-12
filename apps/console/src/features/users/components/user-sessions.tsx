@@ -420,7 +420,9 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                                 <Grid.Column width={ 5 }>
                                     {
                                         t("console:manage.features.users.userSessions.components" +
-                                            ".sessionDetails.labels.lastAccessed")
+                                            ".sessionDetails.labels.lastAccessed", {
+                                            date: ""
+                                        })
                                     }
                                 </Grid.Column>
                                 <Grid.Column width={ 11 }>
@@ -628,6 +630,12 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                 {
                     userSessions.sessions.map((session: UserSessionInterface, index: number) => {
 
+                        console.log({
+                            date: moment(
+                                parseInt(session.lastAccessTime, 10)
+                            ).fromNow()
+                        });
+
                         userAgentParser.uaString = session.userAgent;
 
                         return (
@@ -660,7 +668,7 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                                             <List.Content>
                                                 <List.Header>
                                                     { userAgentParser.browser.name }
-                                                    { "on" }
+                                                    { " on " }
                                                     { userAgentParser.os.name }
                                                 </List.Header>
                                                 <List.Description>
