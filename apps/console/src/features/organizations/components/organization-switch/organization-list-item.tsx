@@ -38,6 +38,7 @@ interface OrganizationListItemPropsTypesInterface
     ) => void;
     setShowDropdown: (shouldShow: boolean) => void;
     handleOrganizationSwitch?: (organization: GenericOrganization) => void;
+    showGravatar?: boolean;
 }
 
 const OrganizationListItem = (
@@ -50,6 +51,7 @@ const OrganizationListItem = (
         handleOrgRowClick,
         setShowDropdown,
         handleOrganizationSwitch,
+        showGravatar,
         "data-componentid": componentId
     } = props;
 
@@ -57,13 +59,13 @@ const OrganizationListItem = (
 
     return (
         <Grid.Row
-            columns={ 3 }
+            columns={ showGravatar ? 3 : 2 }
             key={ `${ organization?.name }-organization-item` }
-            onClick={ () => handleOrgRowClick(organization) }
+            onClick={ () => handleOrgRowClick && handleOrgRowClick(organization) }
             className={ isClickable ? "organization-list-row" : "" }
             data-componentid={ `${ componentId }-organization-item` }
         >
-            <Grid.Column width={ 3 } verticalAlign="middle">
+            { showGravatar && (<Grid.Column width={ 3 } verticalAlign="middle">
                 <GenericIcon
                     icon={ getMiscellaneousIcons().tenantIcon }
                     size="micro"
@@ -72,9 +74,9 @@ const OrganizationListItem = (
                     background={ "grey" }
                     shape="rounded"
                 />
-            </Grid.Column>
+            </Grid.Column>) }
             <Grid.Column
-                width={ 9 }
+                width={ showGravatar ? 9 : 12 }
                 verticalAlign="middle"
                 data-componentid={ `${ componentId }-organization-name` }
             >
@@ -148,5 +150,6 @@ export default OrganizationListItem;
 
 OrganizationListItem.defaultProps = {
     "data-componentid": "organization-switch-list-item",
+    showGravatar: true,
     showSwitch: true
 };
