@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -79,8 +79,8 @@ interface UserSessionsPropsInterface extends SBACInterface<FeatureConfigInterfac
 /**
  * Component to manage user sessions.
  *
- * @param {UserSessionsPropsInterface} props - Props injected to the component.
- * @return {React.ReactElement}
+ * @param props - Props injected to the component.
+ * @returns UserSessions component
  */
 export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
     props: UserSessionsPropsInterface
@@ -114,6 +114,7 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
     ] = useState<boolean>(false);
     const authenticatedUserTenanted: string = useSelector((state: AppState) => state?.auth?.username);
     const authenticatedUserComponents = authenticatedUserTenanted.split("@");
+
     authenticatedUserComponents.pop();
     const authenticatedUser = authenticatedUserComponents.join("@");
 
@@ -132,7 +133,7 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
     /**
      * Fetches the active user sessions belonging to a specific user.
      *
-     * @param {string} id - User ID
+     * @param id - User ID
      */
     const fetchUserSessions = (id: string): void => {
 
@@ -176,8 +177,8 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
     /**
      * Resolves an icon for the device type extracted from the user agent string.
      *
-     * @param {string} type - Device type.
-     * @return {SemanticICONS}
+     * @param type - Device type.
+     * @returns Device type icon
      */
     const resolveDeviceType = (type: string): SemanticICONS => {
         const deviceType = {
@@ -208,8 +209,8 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
     /**
      * Resolves an icon for the operating system type extracted from the user agent string.
      *
-     * @param {string} type - Operating system type.
-     * @return {SemanticICONS}
+     * @param type - Operating system type.
+     * @returns OSI Icon
      */
     const resolveOSIcon = (type: string): SemanticICONS => {
 
@@ -246,8 +247,8 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
     /**
      * Resolves an icon for the browser type extracted from the user agent string.
      *
-     * @param {string} type - Browser type.
-     * @return {SemanticICONS}
+     * @param type - Browser type.
+     * @returns Browser Icon
      */
     const resolveBrowserIcon = (type: string): SemanticICONS => {
 
@@ -284,8 +285,8 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
     /**
      * Handles accordion title click.
      *
-     * @param {React.SyntheticEvent} e - Click event.
-     * @param {number} index - Clicked on index.
+     * @param e - Click event.
+     * @param index - Clicked on index.
      */
     const handleAccordionOnClick = (e: SyntheticEvent, { index }: { index: number }): void => {
 
@@ -293,6 +294,7 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
 
         if (newIndexes.includes(index)) {
             const removingIndex = newIndexes.indexOf(index);
+
             newIndexes.splice(removingIndex, 1);
         } else {
             newIndexes.push(index);
@@ -304,8 +306,8 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
     /**
      * Processes the username according to userstore configurations.
      *
-     * @param {string} applicationSubject
-     * @return {string}
+     * @param applicationSubject - Application subject
+     * @returns username
      */
     const getUsername = (applicationSubject: string): string => {
 
@@ -325,8 +327,8 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
     /**
      * Renders user session details.
      *
-     * @param {UserSessionInterface} session - User session object.
-     * @return {React.ReactElement}
+     * @param session - User session object.
+     * @returns Session Details Element
      */
     const renderSessionDetails = (session: UserSessionInterface): ReactElement => {
 
@@ -444,7 +446,7 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                                             <Grid.Column mobile={ 16 } computer={ 11 }>
                                                 {
                                                     session.applications.map((application: ApplicationSessionInterface,
-                                                                              index: number) => (
+                                                        index: number) => (
                                                         <List.Description className="pb-2" key={ index }>
                                                             <Label
                                                                 className="micro spaced-right"
@@ -573,7 +575,7 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
     /**
      * Terminate the selected user session.
      *
-     * @param {string} sessionId - ID of the session to be terminated.
+     * @param sessionId - ID of the session to be terminated.
      */
     const handleSessionTerminate = (sessionId: string): void => {
 
@@ -621,7 +623,7 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
 
     /**
      * Renders the session listing accordion.
-     * @return {React.ReactElement}
+     * @returns Accordion element
      */
     const renderAccordion = (): ReactElement => {
 
@@ -629,12 +631,6 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
             <SegmentedAccordion fluid data-testid={ `${ testId }-accordion` }>
                 {
                     userSessions.sessions.map((session: UserSessionInterface, index: number) => {
-
-                        console.log({
-                            date: moment(
-                                parseInt(session.lastAccessTime, 10)
-                            ).fromNow()
-                        });
 
                         userAgentParser.uaString = session.userAgent;
 
@@ -676,11 +672,11 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                                                         {
                                                             t("console:manage.features.users.userSessions." +
                                                                 "components.sessionDetails.labels.lastAccessed",
-                                                                {
-                                                                    date: moment(
-                                                                        parseInt(session.lastAccessTime, 10)
-                                                                    ).fromNow()
-                                                                }
+                                                            {
+                                                                date: moment(
+                                                                    parseInt(session.lastAccessTime, 10)
+                                                                ).fromNow()
+                                                            }
                                                             )
                                                         }
                                                     </Text>
@@ -724,8 +720,8 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                                             {
                                                 t("console:manage.features.users.userSessions." +
                                                     "components.sessionDetails.actions.terminateAllSessions")
-                                                }
-                                            </DangerButton>
+                                            }
+                                        </DangerButton>
                                     </Show>
                                 ) }
                             </Grid.Column>
