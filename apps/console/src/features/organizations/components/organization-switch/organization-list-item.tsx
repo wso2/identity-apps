@@ -76,7 +76,7 @@ const OrganizationListItem = (
                 </Grid.Column>
             ) }
             <Grid.Column
-                width={ showGravatar ? 9 : 12 }
+                width={ showGravatar ? 11 : 13 }
                 verticalAlign="middle"
                 data-componentid={ `${ componentId }-organization-name` }
             >
