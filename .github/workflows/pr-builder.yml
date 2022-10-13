@@ -130,7 +130,7 @@ jobs:
         run: pnpm build:modules
 
       - name: ☄️ Check Type Errors
-        run: pnpm nx affected --target=typecheck --parallel=3
+        run: pnpm nx affected affected --base=${{ env.NX_BASE }} --head=${{ env.NX_HEAD }} --plain --target=typecheck --parallel=3
 
   test:
     name: 👾 Unit Test (TESTING)
