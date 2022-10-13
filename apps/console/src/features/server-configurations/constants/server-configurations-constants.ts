@@ -47,56 +47,42 @@ export class ServerConfigurationsConstants {
 	/**
 	 * UUID of the identity governance light user registration connector.
 	 *
-	 * @constant
-	 * @type {string}
 	 */
 	public static readonly LITE_USER_REGISTRATION_CONNECTOR_ID: string = "bGl0ZS11c2VyLXNpZ24tdXA";
 
 	/**
 	 * UUID of the identity governance account recovery connector.
 	 *
-	 * @constant
-	 * @type {string}
 	 */
 	public static readonly ACCOUNT_RECOVERY_CONNECTOR_ID: string = "YWNjb3VudC1yZWNvdmVyeQ";
 
 	/**
 	 * UUID of the identity governance password reset connector.
 	 *
-	 * @constant
-	 * @type {string}
 	 */
 	public static readonly PASSWORD_RESET_CONNECTOR_ID: string = "YWRtaW4tZm9yY2VkLXBhc3N3b3JkLXJlc2V0";
 
 	/**
 	 * UUID of the identity governance consent information connector.
 	 *
-	 * @constant
-	 * @type {string}
 	 */
 	public static readonly CONSENT_INFO_CONNECTOR_ID: string = "cGlpLWNvbnRyb2xsZXI";
 
 	/**
 	 * UUID of the identity governance analytics engine connector.
 	 *
-	 * @constant
-	 * @type {string}
 	 */
 	public static readonly ANALYTICS_ENGINE_CONNECTOR_ID: string = "YW5hbHl0aWNzLWVuZ2luZQ";
 
 	/**
 	 * UUID of the identity governance user claim update connector.
 	 *
-	 * @constant
-	 * @type {string}
 	 */
 	public static readonly USER_CLAIM_UPDATE_CONNECTOR_ID: string = "dXNlci1jbGFpbS11cGRhdGU";
 
 	/**
 	 * UUID of the identity governance login policies category.
 	 *
-	 * @constant
-	 * @type {string}
 	 */
 
 	public static readonly IDENTITY_GOVERNANCE_LOGIN_POLICIES_ID: string = "TG9naW4gUG9saWNpZXM";
@@ -104,72 +90,54 @@ export class ServerConfigurationsConstants {
 	/**
 	 * UUID of the identity governance account locking connector.
 	 *
-	 * @constant
-	 * @type {string}
 	 */
 	public static readonly ACCOUNT_LOCKING_CONNECTOR_ID: string = "YWNjb3VudC5sb2NrLmhhbmRsZXI";
 
 	/**
 	 * UUID of the identity governance account disabling connector.
 	 *
-	 * @constant
-	 * @type {string}
 	 */
 	public static readonly ACCOUNT_DISABLING_CONNECTOR_ID: string = "YWNjb3VudC5kaXNhYmxlLmhhbmRsZXI";
 
 	/**
 	 * UUID of the identity governance captcha for sso login connector.
 	 *
-	 * @constant
-	 * @type {string}
 	 */
 	public static readonly CAPTCHA_FOR_SSO_LOGIN_CONNECTOR_ID: string = "c3NvLmxvZ2luLnJlY2FwdGNoYQ";
 
 	/**
 	 * UUID of the identity governance idle account suspend connector.
 	 *
-	 * @constant
-	 * @type {string}
 	 */
 	public static readonly IDLE_ACCOUNT_SUSPEND_CONNECTOR_ID: string = "c3VzcGVuc2lvbi5ub3RpZmljYXRpb24";
 
 	/**
 	 * UUID of the identity governance account disable connector.
 	 *
-	 * @constant
-	 * @type {string}
 	 */
 	public static readonly ACCOUNT_DISABLE_CONNECTOR_ID: string = "YWNjb3VudC5kaXNhYmxlLmhhbmRsZXI";
 
 	/**
 	 * UUID of the identity governance login policies category.
 	 *
-	 * @constant
-	 * @type {string}
 	 */
 	public static readonly IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID: string = "UGFzc3dvcmQgUG9saWNpZXM";
 
 	/**
 	 * UUID of the identity governance captcha for sso login connector.
 	 *
-	 * @constant
-	 * @type {string}
 	 */
 	public static readonly PASSWORD_HISTORY_CONNECTOR_ID: string = "cGFzc3dvcmRIaXN0b3J5";
 
 	/**
 	 * UUID of the identity governance captcha for sso login connector.
 	 *
-	 * @constant
-	 * @type {string}
 	 */
 	public static readonly PASSWORD_POLICY_CONNECTOR_ID: string = "cGFzc3dvcmRQb2xpY3k";
 
     /**
      * Multi Attribute Login Claim List pattern regex.
-     * @constant
-     * @type {RegExp}
-     * @default
+     *
      */
     public static readonly MULTI_ATTRIBUTE_CLAIM_LIST_REGEX_PATTERN: RegExp =
         new RegExp("^(?:[a-zA-Z0-9:./]+,)+[a-zA-Z0-9:./]+$");
@@ -309,7 +277,7 @@ export class ServerConfigurationsConstants {
 	public static readonly IDLE_SESSION_TIMEOUT_PERIOD: string = "idleSessionTimeoutPeriod";
 	public static readonly REMEMBER_ME_PERIOD: string = "rememberMePeriod";
 
-	// API Errors
+	// API Errors.
 	public static readonly CONFIGS_FETCH_REQUEST_INVALID_STATUS_CODE_ERROR: string = "Received an invalid status " +
 		"code while retrieving the configurations.";
 
@@ -322,7 +290,7 @@ export class ServerConfigurationsConstants {
 	public static readonly CONFIGS_UPDATE_REQUEST_ERROR: string = "An error occurred while updating the " +
 		"configurations.";
 
-	// Idle account suspend names
+	// Idle account suspend names.
 	public static readonly ALLOWED_IDLE_TIME_SPAN_IN_DAYS: string = "suspension.notification.account.disable.delay";
 	public static readonly ALERT_SENDING_TIME_PERIODS_IN_DAYS: string = "suspension.notification.delays";
 
