@@ -33,7 +33,7 @@ import {
     ORGANIZATION_NAME_MIN_LENGTH,
     ORGANIZATION_TYPE
 } from "../constants";
-import { AddOrganizationInterface, GenericOrganization, OrganizationInterface, OrganizationResponseInterface } from "../models";
+import { AddOrganizationInterface, GenericOrganization } from "../models";
 
 interface OrganizationAddFormProps {
     name: string;

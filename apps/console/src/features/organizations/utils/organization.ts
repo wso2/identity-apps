@@ -18,7 +18,7 @@
 
 import { store } from "../../core/store";
 import { OrganizationManagementConstants } from "../constants";
-import { GenericOrganization, OrganizationInterface, OrganizationResponseInterface } from "../models";
+import { GenericOrganization } from "../models";
 
 export class OrganizationUtils {
     /**
