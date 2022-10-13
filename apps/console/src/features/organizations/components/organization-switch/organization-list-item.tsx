@@ -53,7 +53,6 @@ const OrganizationListItem = (
         "data-componentid": componentId
     } = props;
 
-
     const { t } = useTranslation();
 
     return (
