@@ -41,10 +41,7 @@ import { OrganizationUtils } from "../../utils";
 type OrganizationSwitchDropdownInterface = IdentifiableComponentInterface;
 
 export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchDropdownInterface> = (
-    props: OrganizationSwitchDropdownInterface
 ): ReactElement => {
-    const { "data-componentid": componentId } = props;
-
     const currentOrganization: OrganizationResponseInterface = useSelector(
         (state: AppState) => state.organization.organization
     );
@@ -80,7 +77,9 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
         window.location.replace(newOrgPath);
     };
 
-    const generateSuperBreadcrumbItem = (item: BreadcrumbItem): ReactElement => {
+    const generateSuperBreadcrumbItem = (
+        item: BreadcrumbItem
+    ): ReactElement => {
         return OrganizationUtils.isRootOrganization(item) ? (
             organizationConfigs.superOrganizationBreadcrumb(
                 item,
@@ -101,7 +100,9 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
             return (
                 <Menu className="organization-breadcrumb">
                     <Menu.Item className="breadcrumb">
-                        { generateSuperBreadcrumbItem(OrganizationManagementConstants.ROOT_ORGANIZATION) }
+                        { generateSuperBreadcrumbItem(
+                            OrganizationManagementConstants.ROOT_ORGANIZATION
+                        ) }
                         <Icon name="caret right" className="separator-icon" />
                     </Menu.Item>
                     <Menu.Item className="breadcrumb">
