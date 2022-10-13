@@ -21,15 +21,13 @@ export class ServerConfigurationsConstants {
     /**
 	 * Private constructor to avoid object instantiation from outside the class.
 	 *
-	 * @hideconstructor
 	 */
     /* eslint-disable @typescript-eslint/no-empty-function */
     private constructor() { }
 
     /**
 	 * UUID of the identity governance account management policies category.
-	 * @constant
-	 * @type {string}
+	 *
 	 */
 	public static readonly IDENTITY_GOVERNANCE_ACCOUNT_MANAGEMENT_POLICIES_ID: string =
     "QWNjb3VudCBNYW5hZ2VtZW50IFBvbGljaWVz";
@@ -37,16 +35,12 @@ export class ServerConfigurationsConstants {
 	/**
 	 * Regex matcher to identify if the connector is deprecated.
 	 *
-	 * @constant
-	 * @type {string}
 	 */
 	public static readonly DEPRECATION_MATCHER: string = "[Deprecated]";
 
 	/**
 	 * UUID of the identity governance self sign up connector.
 	 *
-	 * @constant
-	 * @type {string}
 	 */
 	public static readonly SELF_SIGN_UP_CONNECTOR_ID: string = "c2VsZi1zaWduLXVw";
 
