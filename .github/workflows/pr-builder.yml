@@ -24,6 +24,9 @@ jobs:
       - name: ⬇️ Checkout
         id: checkout
         uses: actions/checkout@v2.3.3
+        with:
+          # We need to fetch all branches and commits so that Nx affected has a base to compare against.
+          fetch-depth: 0
 
       - name: 🟢 Setup node
         id: setup-node
@@ -86,6 +89,9 @@ jobs:
       - name: ⬇️ Checkout
         id: checkout
         uses: actions/checkout@v2.3.3
+        with:
+          # We need to fetch all branches and commits so that Nx affected has a base to compare against.
+          fetch-depth: 0
 
       - name: 🟢 Setup node
         id: setup-node
@@ -147,10 +153,6 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
-
-      - name: 🐳 Set SHAs for Nx
-        id: set-shas
-        uses: nrwl/nx-set-shas@v3
 
       - name: 🥡 Setup pnpm
         uses: pnpm/action-setup@v2.1.0
