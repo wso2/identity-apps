@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
- * WSO2 LLC. licenses this file to you under the Apache License,
+ * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -80,18 +80,18 @@ export interface StrictSegmentedAccordionTitleActionInterface {
     /**
      * Type of the action to render the component.
      */
-    type: "checkbox" | "toggle" | "icon" | "checkbox popup";
+    type: "checkbox" | "toggle" | "icon";
     /**
      * On change callback.
      *
-     * @param e - Change event.
+     * @param {React.FormEvent<HTMLInputElement> | React.MouseEvent<HTMLDivElement>} e - Change event.
      * @param data - Other arguments.
      */
     onChange?: (e: FormEvent<HTMLInputElement>, ...data) => void;
     /**
      * On click callback for the action.
      *
-     * @param e - Click event.
+     * @param {React.FormEvent<HTMLInputElement> | React.MouseEvent<HTMLDivElement>} e - Click event.
      * @param data - Other arguments.
      */
     onClick?: (e: MouseEvent<HTMLDivElement>, ...data) => void;
@@ -117,9 +117,9 @@ export interface StrictSegmentedAccordionTitleActionInterface {
 /**
  * Segmented accordion title component.
  *
- * @param props - Props injected to the component.
+ * @param {SegmentedAccordionTitlePropsInterface} props - Props injected to the component.
  *
- * @returns
+ * @return {ReactElement}
  */
 export const SegmentedAccordionTitle: FunctionComponent<SegmentedAccordionTitlePropsInterface> = (
     props: SegmentedAccordionTitlePropsInterface
@@ -153,7 +153,7 @@ export const SegmentedAccordionTitle: FunctionComponent<SegmentedAccordionTitleP
      * Interferes the click events to stop default propagation.
      *
      * @param callback - onClick or onChange callback.
-     * @param e - Event.
+     * @param {React.SyntheticEvent} e - Event.
      * @param args - Other arguments.
      */
     const handleActionOnClick = (
@@ -168,15 +168,14 @@ export const SegmentedAccordionTitle: FunctionComponent<SegmentedAccordionTitleP
     /**
      * Resolve the action.
      *
-     * @param action - Passed in action.
-     * @param index - Array Index.
+     * @param {SegmentedAccordionTitleActionInterface} action - Passed in action.
+     * @param {number} index - Array Index.
      *
-     * @returns Resolved action.
+     * @return {React.ReactElement} Resolved action.
      */
     const resolveAction = (action: SegmentedAccordionTitleActionInterface, index: number): ReactElement => {
 
         const {
-            checked,
             icon,
             label,
             onChange,
@@ -220,7 +219,6 @@ export const SegmentedAccordionTitle: FunctionComponent<SegmentedAccordionTitleP
                     />
                 );
             }
-
             case "icon": {
                 if (typeof icon === "string") {
                     return (
@@ -284,34 +282,6 @@ export const SegmentedAccordionTitle: FunctionComponent<SegmentedAccordionTitleP
                     />
                 );
             }
-
-            case "checkbox popup": {
-                return (
-                    <Popup
-                        disabled={ disabled || !popoverText }
-                        trigger={ (
-                            <Checkbox
-                                checked={ checked }
-                                label={ label }
-                                disabled={ disabled }
-                                onChange={
-                                    (e: FormEvent<HTMLInputElement>, data: CheckboxProps) => handleActionOnClick(
-                                        onChange, e, data, id)
-                                }
-                                data-componentid={ `${ componentId }-${ action.type }-action-${ index }` }
-                                data-testid={ `${ testId }-${ action.type }-action-${ index }` }
-                                { ...actionsRest }
-                            />
-                        ) }
-                        position="top center"
-                        content={ popoverText }
-                        inverted
-                    />
-
-                    
-                );
-            }
-
             default: {
                 return null;
             }
@@ -330,10 +300,10 @@ export const SegmentedAccordionTitle: FunctionComponent<SegmentedAccordionTitleP
         >
             <Grid>
                 <Grid.Row>
-                    <Grid.Column computer={ 10 } tablet={ 8 } mobile={ 16 } verticalAlign="middle">
+                    <Grid.Column computer={ 8 } tablet={ 8 } mobile={ 16 } verticalAlign="middle">
                         { content || children }
                     </Grid.Column>
-                    <Grid.Column computer={ 6 } tablet={ 8 } mobile={ 16 } verticalAlign="middle">
+                    <Grid.Column computer={ 8 } tablet={ 8 } mobile={ 16 } verticalAlign="middle">
                         <div className="flex floated right">
                             {
                                 (actions && actions instanceof Array && actions.length > 0)
