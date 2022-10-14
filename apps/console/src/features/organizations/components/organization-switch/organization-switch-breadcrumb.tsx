@@ -50,6 +50,9 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
     const tenantDomain: string = useSelector(
         (state: AppState) => state?.auth?.tenantDomain
     );
+    const isFirstLevelOrg: boolean = useSelector(
+        (state: AppState) => state?.organization?.isFirstLevelOrganization
+    );
 
     const { data: breadcrumbList } = useGetOrganizationBreadCrumb();
 
@@ -95,6 +98,7 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
     const generateBreadcrumb = (): ReactElement => {
         if (
             AppConstants.getSuperTenant() !== tenantDomain &&
+            !isFirstLevelOrg &&
             organizationConfigs.showSwitcherInTenants
         ) {
             return (
