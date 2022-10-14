@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
- * WSO2 LLC. licenses this file to you under the Apache License,
+ * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -35,19 +35,14 @@ export interface SegmentedAccordionSubComponentsInterface {
  * Proptypes for the segmented accordion component.
  */
 export interface SegmentedAccordionPropsInterface extends AccordionProps, IdentifiableComponentInterface,
-    TestableComponentInterface { 
-    /**
-     * Type of final view of the list of accordion components.
-     */
-    viewType?: "list-view" | "table-view";
-}
+    TestableComponentInterface { }
 
 /**
  * Segmented accordion component.
  *
- * @param props - Props injected to the component.
+ * @param {SegmentedAccordionPropsInterface} props - Props injected to the component.
  *
- * @returns
+ * @return {ReactElement}
  */
 export const SegmentedAccordion: FunctionComponent<SegmentedAccordionPropsInterface>
     & SegmentedAccordionSubComponentsInterface = (
@@ -59,36 +54,13 @@ export const SegmentedAccordion: FunctionComponent<SegmentedAccordionPropsInterf
             children,
             [ "data-componentid" ]: componentId,
             [ "data-testid" ]: testId,
-            viewType,
             ...rest
         } = props;
 
-        let classes;
-
-        switch (viewType) {
-            case "list-view": {
-                classes = classNames(
-                    "segmented-accordion",
-                    className
-                );
-
-                break;
-            }
-            case "table-view": {
-                classes = classNames(
-                    "segmented-accordion-table-view",
-                    className
-                );
-
-                break;
-            }
-            default: {
-                classes = classNames(
-                    "segmented-accordion",
-                    className
-                );
-            }
-        }
+        const classes = classNames(
+            "segmented-accordion",
+            className
+        );
 
         return (
             <Accordion
@@ -107,8 +79,7 @@ export const SegmentedAccordion: FunctionComponent<SegmentedAccordionPropsInterf
  */
 SegmentedAccordion.defaultProps = {
     "data-componentid": "segmented-accordion",
-    "data-testid": "segmented-accordion",
-    viewType: "list-view"
+    "data-testid": "segmented-accordion"
 };
 
 SegmentedAccordion.Title = SegmentedAccordionTitle;
