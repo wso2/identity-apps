@@ -41,7 +41,7 @@ public class AppsCommonDataHolder {
 
     private Set<String> systemApplications = new HashSet<>();
 
-    private boolean isOrganizationManagementEnable;
+    private boolean isOrganizationManagementEnabled;
 
     private AppsCommonDataHolder() {
 
@@ -123,7 +123,7 @@ public class AppsCommonDataHolder {
      */
     public boolean isOrganizationManagementEnabled() {
 
-        return isOrganizationManagementEnable;
+        return isOrganizationManagementEnabled;
     }
 
     /**
@@ -131,11 +131,11 @@ public class AppsCommonDataHolder {
      *
      * @param organizationManagementInitializeService OrganizationManagementInitializeInstance.
      */
-    public void setOrganizationManagementEnable(
+    public void setOrganizationManagementEnabled(
             OrganizationManagementInitialize organizationManagementInitializeService) {
 
         if (organizationManagementInitializeService != null) {
-            isOrganizationManagementEnable = organizationManagementInitializeService.isOrganizationManagementEnabled();
+            isOrganizationManagementEnabled = organizationManagementInitializeService.isOrganizationManagementEnabled();
         }
     }
 }
