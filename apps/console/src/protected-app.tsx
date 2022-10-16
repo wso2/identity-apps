@@ -202,18 +202,13 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
 
             dispatchEvent(event);
 
-            const org_name = idToken.org_name;
             const org_id = idToken.org_id;
 
             let tenantDomain: string = "";
 
             const isFirstLevelOrg: boolean =
-                AppConstants.getSuperTenant() ===
-                CommonAuthenticateUtils.deriveTenantDomainFromSubject(
-                    idToken.sub
-                ) &&
                 !window[ "AppUtils" ].getConfig().organizationName &&
-                !!org_name;
+                !!org_id;
 
             dispatch(setIsFirstLevelOrganization(isFirstLevelOrg));
 
