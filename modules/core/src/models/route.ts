@@ -87,7 +87,7 @@ export interface StaticRouteInterface {
     /**
      * Status of the feature.
      */
-    featureStatus?: "NEW" | "ALPHA" | "BETA" | "COMING_SOON";
+    featureStatus?: "NEW" | "ALPHA" | "BETA" | "COMING_SOON" | "PREVIEW";
     /**
      * Feature Status Label.
      */
