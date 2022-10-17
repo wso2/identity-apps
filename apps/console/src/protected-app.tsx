@@ -619,7 +619,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             getDeveloperViewRoutes(),
             featureConfig,
             allowedScopes,
-            commonConfig.checkForUIResourceScopes,
+            window[ "AppUtils" ].getConfig().organizationName ? false : commonConfig.checkForUIResourceScopes,
             isOrganizationManagementEnabled
                 ? (OrganizationUtils.isCurrentOrganizationRoot() &&
                     AppConstants.getSuperTenant() === tenant) ||
@@ -628,10 +628,12 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                         ...AppUtils.getHiddenRoutes(),
                         ...AppConstants.ORGANIZATION_ONLY_ROUTES
                     ]
-                    : [
-                        ...AppUtils.getHiddenRoutes(),
-                        ...AppConstants.ORGANIZATION_ROUTES
-                    ]
+                    : window[ "AppUtils" ].getConfig().organizationName
+                        ? AppUtils.getHiddenRoutes()
+                        : [
+                            ...AppUtils.getHiddenRoutes(),
+                            ...AppConstants.ORGANIZATION_ROUTES
+                        ]
                 : [
                     ...AppUtils.getHiddenRoutes(),
                     ...AppConstants.ORGANIZATION_ROUTES
@@ -648,7 +650,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             getAdminViewRoutes(),
             featureConfig,
             allowedScopes,
-            commonConfig.checkForUIResourceScopes,
+            window[ "AppUtils" ].getConfig().organizationName ? false : commonConfig.checkForUIResourceScopes,
             isOrganizationManagementEnabled
                 ? (OrganizationUtils.isCurrentOrganizationRoot() &&
                     AppConstants.getSuperTenant() === tenant) ||
@@ -657,10 +659,12 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                         ...AppUtils.getHiddenRoutes(),
                         ...AppConstants.ORGANIZATION_ONLY_ROUTES
                     ]
-                    : [
-                        ...AppUtils.getHiddenRoutes(),
-                        ...AppConstants.ORGANIZATION_ROUTES
-                    ]
+                    : window[ "AppUtils" ].getConfig().organizationName
+                        ? AppUtils.getHiddenRoutes()
+                        : [
+                            ...AppUtils.getHiddenRoutes(),
+                            ...AppConstants.ORGANIZATION_ROUTES
+                        ]
                 : [
                     ...AppUtils.getHiddenRoutes(),
                     ...AppConstants.ORGANIZATION_ROUTES
