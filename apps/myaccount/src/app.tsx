@@ -31,6 +31,7 @@ import {
 } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import * as moment from "moment";
+import "moment/min/locales";
 import React, { ReactElement, Suspense, useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { Trans } from "react-i18next";

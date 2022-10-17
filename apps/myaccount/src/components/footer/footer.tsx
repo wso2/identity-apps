@@ -24,6 +24,7 @@ import {
     FooterPropsInterface as ReusableFooterPropsInterface
 } from "@wso2is/react-components";
 import * as moment from "moment";
+import "moment/min/locales";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
