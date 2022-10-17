@@ -706,8 +706,16 @@
                         color: @white;
                         background-color: @accentColor4;
                     }
+
                     &.coming-soon {
                         filter: grayscale(100%);
+                    }
+
+                    &.preview {
+                        text-transform: uppercase;
+                        color: @previewStatusTextColor;
+                        font-weight: 500;
+                        background-color: @previewStatusBgColor;
                     }
                 }
             }
