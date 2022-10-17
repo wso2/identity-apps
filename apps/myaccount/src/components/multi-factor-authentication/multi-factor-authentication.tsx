@@ -203,6 +203,8 @@ export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (pro
                                     // to stop showing duplicate modals.
                                     if (isSuperTenantLogin() && isTOTPEnabled && isBackupCodesConfigured) {
                                         setShowSessionTerminationModal(false);
+
+                                        return;
                                     }
 
                                     setShowSessionTerminationModal(true);
