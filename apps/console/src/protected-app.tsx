@@ -166,6 +166,8 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
 
     const governanceConnectorsLoaded = useRef(false);
 
+    const [ tenant, setTenant ] = useState<string>("");
+
     useEffect(() => {
         dispatch(
             setDeploymentConfigs<DeploymentConfigInterface>(
@@ -202,13 +204,13 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
 
             dispatchEvent(event);
 
-            const org_id = idToken.org_id;
-
+            const orgIdIdToken = idToken.org_id;
+            const orgName = idToken.org_name;
             let tenantDomain: string = "";
 
             const isFirstLevelOrg: boolean =
                 !window[ "AppUtils" ].getConfig().organizationName &&
-                !!org_id;
+                !!orgIdIdToken;
 
             dispatch(setIsFirstLevelOrganization(isFirstLevelOrg));
 
@@ -218,7 +220,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             ) {
                 // We are actually getting the orgId here rather than orgName
                 const orgId = isFirstLevelOrg
-                    ? org_id
+                    ? orgIdIdToken
                     : window[ "AppUtils" ].getConfig().organizationName;
 
                 // Setting a dummy object until real data comes from the API
@@ -310,11 +312,17 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                     .finally(() => {
                         dispatch(setGetOrganizationLoading(false));
                     });
+
+                if (isFirstLevelOrg) {
+                    tenantDomain = orgName;
+                    setTenant(tenantDomain);
+                }
             } else {
                 dispatch(setGetOrganizationLoading(false));
                 tenantDomain = CommonAuthenticateUtils.deriveTenantDomainFromSubject(
                     response.sub
                 );
+                setTenant(tenantDomain);
             }
 
             // Update the app base name with the newly resolved tenant.
@@ -612,7 +620,22 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             featureConfig,
             allowedScopes,
             commonConfig.checkForUIResourceScopes,
-            AppUtils.getHiddenRoutes(),
+            isOrganizationManagementEnabled
+                ? (OrganizationUtils.isCurrentOrganizationRoot() &&
+                    AppConstants.getSuperTenant() === tenant) ||
+                    isFirstLevelOrg
+                    ? [
+                        ...AppUtils.getHiddenRoutes(),
+                        ...AppConstants.ORGANIZATION_ONLY_ROUTES
+                    ]
+                    : [
+                        ...AppUtils.getHiddenRoutes(),
+                        ...AppConstants.ORGANIZATION_ROUTES
+                    ]
+                : [
+                    ...AppUtils.getHiddenRoutes(),
+                    ...AppConstants.ORGANIZATION_ROUTES
+                ],
             !OrganizationUtils.isCurrentOrganizationRoot() &&
             !isFirstLevelOrg &&
             AppConstants.ORGANIZATION_ENABLED_ROUTES
@@ -627,12 +650,17 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             allowedScopes,
             commonConfig.checkForUIResourceScopes,
             isOrganizationManagementEnabled
-                ? OrganizationUtils.isCurrentOrganizationRoot()
+                ? (OrganizationUtils.isCurrentOrganizationRoot() &&
+                    AppConstants.getSuperTenant() === tenant) ||
+                    isFirstLevelOrg
                     ? [
                         ...AppUtils.getHiddenRoutes(),
                         ...AppConstants.ORGANIZATION_ONLY_ROUTES
                     ]
-                    : AppUtils.getHiddenRoutes()
+                    : [
+                        ...AppUtils.getHiddenRoutes(),
+                        ...AppConstants.ORGANIZATION_ROUTES
+                    ]
                 : [
                     ...AppUtils.getHiddenRoutes(),
                     ...AppConstants.ORGANIZATION_ROUTES
