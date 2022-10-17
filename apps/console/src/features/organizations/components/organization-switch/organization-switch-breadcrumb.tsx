@@ -61,7 +61,16 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
     ): void => {
         let newOrgPath: string = "";
 
-        if (OrganizationUtils.isRootOrganization(organization)) {
+        if (
+            OrganizationUtils.isRootOrganization(breadcrumbList[ 0 ]) &&
+            breadcrumbList[ 1 ].id === organization.id
+        ) {
+            newOrgPath =
+                "/t/" +
+                organization.name +
+                "/" +
+                window[ "AppUtils" ].getConfig().appBase;
+        } else if (OrganizationUtils.isRootOrganization(organization)) {
             newOrgPath = `/${ window[ "AppUtils" ].getConfig().appBase }`;
         } else {
             newOrgPath =
@@ -252,7 +261,10 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
     };
 
     const resolveTriggerName = (): string => {
-        if (AppConstants.getSuperTenant() === tenantDomain) {
+        if (
+            AppConstants.getSuperTenant() === tenantDomain ||
+            window[ "AppUtils" ].getConfig().organizationName
+        ) {
             return currentOrganization.name;
         }
 
