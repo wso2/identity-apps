@@ -183,5 +183,5 @@
 /*-------------------
    Feature Status
 --------------------*/
-previewStatusBgColor: #c3e6f6;
-previewStatusTextColor: #01698a;
+@previewStatusBgColor: #c3e6f6;
+@previewStatusTextColor: #01698a;
