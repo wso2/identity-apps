@@ -39,10 +39,6 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.Arrays" %>
 <%@ page import="java.util.Map" %>
-<%@ page import="org.apache.commons.lang.StringUtils" %>
-<%@ page import="org.apache.http.client.utils.URLEncodedUtils" %>
-<%@ page import="org.apache.http.NameValuePair" %>
-<%@ page import="org.apache.http.message.BasicNameValuePair" %>
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 
 <%@ include file="includes/localize.jsp" %>
