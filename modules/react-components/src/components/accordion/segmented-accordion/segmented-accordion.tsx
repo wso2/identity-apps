@@ -42,7 +42,7 @@ export interface SegmentedAccordionPropsInterface extends AccordionProps, Identi
  *
  * @param props - Props injected to the component.
  *
- * @returns
+ * @returns Segmented Accordion React Component
  */
 export const SegmentedAccordion: FunctionComponent<SegmentedAccordionPropsInterface>
     & SegmentedAccordionSubComponentsInterface = (

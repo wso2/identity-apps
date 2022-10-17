@@ -119,7 +119,7 @@ export interface StrictSegmentedAccordionTitleActionInterface {
  *
  * @param props - Props injected to the component.
  *
- * @returns
+ * @returns Segmented Accordion Title React Component
  */
 export const SegmentedAccordionTitle: FunctionComponent<SegmentedAccordionTitlePropsInterface> = (
     props: SegmentedAccordionTitlePropsInterface
