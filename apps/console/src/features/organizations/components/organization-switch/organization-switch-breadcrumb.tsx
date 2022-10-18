@@ -98,7 +98,10 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
                 handleOrganizationSwitch
             )
         ) : (
-            <span onClick={ () => handleOrganizationSwitch(item) }>
+            <span
+                onClick={ () => handleOrganizationSwitch(item) }
+                data-componentid={ `${ componentId }-breadcrumb-item-super-organization` }
+            >
                 { item.name }
             </span>
         );
@@ -120,7 +123,12 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
                         <Icon name="caret right" className="separator-icon" />
                     </Menu.Item>
                     <Menu.Item className="breadcrumb">
-                        <span className="un-clickable">{ tenantDomain }</span>
+                        <span
+                            className="un-clickable"
+                            data-componentid={ `${ componentId }-breadcrumb-item-tenant` }
+                        >
+                            { tenantDomain }
+                        </span>
                     </Menu.Item>
                     <Menu.Item className="breadcrumb">
                         <GenericIcon
@@ -129,6 +137,7 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
                             transparent
                             icon={ CrossIcon }
                             onClick={ () => setShowBreadcrumb(false) }
+                            data-componentid={ `${ componentId }-breadcrumb-close-icon` }
                             className="close-icon"
                         />
                     </Menu.Item>
@@ -156,6 +165,7 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
                                                     breadcrumb
                                                 )
                                             }
+                                            data-componentid={ `${ componentId }-breadcrumb-item-${ breadcrumb.name }` }
                                         >
                                             { breadcrumb.name }
                                         </span>
@@ -187,6 +197,7 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
                             icon={ CrossIcon }
                             onClick={ () => setShowBreadcrumb(false) }
                             className="close-icon"
+                            data-componentid={ `${ componentId }-breadcrumb-close-icon` }
                         />
                     </Menu.Item>
                 </Menu>
@@ -204,6 +215,7 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
                     text="..."
                     icon="caret right"
                     className="breadcrumb-dropdown breadcrumb"
+                    data-componentid={ `${ componentId }-breadcrumb-ellipsis` }
                 >
                     <Dropdown.Menu>
                         { breadcrumbList.map(
@@ -224,6 +236,7 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
                                         icon="caret right"
                                         text={ breadcrumb.name }
                                         className="breadcrumb-dropdown-item"
+                                        data-componentid={ `${ componentId }-breadcrumb-menu-${ breadcrumb.name }` }
                                     />
                                 );
                             }
@@ -237,6 +250,9 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
                                 breadcrumbList[ breadcrumbList.length - 2 ]
                             )
                         }
+                        data-componentid={ `${ componentId }-breadcrumb-item-${
+                            breadcrumbList[ breadcrumbList.length - 2 ].name
+                        }` }
                     >
                         { breadcrumbList[ breadcrumbList.length - 2 ].name }
                     </span>
@@ -255,6 +271,7 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
                         icon={ CrossIcon }
                         onClick={ () => setShowBreadcrumb(false) }
                         className="close-icon"
+                        data-componentid={ `${ componentId }-breadcrumb-close-icon` }
                     />
                 </Menu.Item>
             </Menu>
@@ -302,6 +319,7 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
                 <div
                     className="organization-breadcrumb trigger"
                     onClick={ () => setShowBreadcrumb(true) }
+                    data-componentid={ `${ componentId }-breadcrumb-trigger` }
                 >
                     <div className="icon-wrapper">
                         <GenericIcon
