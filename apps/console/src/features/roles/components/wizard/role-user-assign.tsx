@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -150,8 +150,17 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                     return;
                 }
 
-                const responseUsers = response.Resources.filter((user
-                ) => user.userName.split("/")[0] !== CONSUMER_USERSTORE);
+                const responseUsers = response.Resources.map((user) => {
+                    const userNames: string[] = user.userName.split("/");
+
+                    if (userNames.length === 1) {
+                        return user;
+                    }
+
+                    user.userName = userNames[ 1 ];
+
+                    return user;
+                });
 
                 responseUsers.sort((userObject, comparedUserObject) =>
                     userObject.name?.givenName?.localeCompare(comparedUserObject.name?.givenName)
