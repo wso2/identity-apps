@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -39,11 +39,11 @@ import { AppConstants } from "../constants";
  * A route can have children and still be clickable.
  * If so, define a path. If no path is defined, the
  * child routes section will be extended in the UI.
- *  {
+ *  \{
  *      children: [ ... ],
  *     ...
  *     path: "/applications"
- *  }
+ *  \}
  */
 export const getDeveloperViewRoutes = (): RouteInterface[] => {
 
@@ -183,7 +183,7 @@ export const getDeveloperViewRoutes = (): RouteInterface[] => {
 /**
  * Get all the Admin View Routes.
  *
- * @return {RouteInterface[]}
+ * @returns
  */
 export const getAdminViewRoutes = (): RouteInterface[] => {
 
@@ -590,7 +590,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
 /**
  * Get full screen layout routes.
  *
- * @return {RouteInterface[]}
+ * @returns
  */
 export const getFullScreenViewRoutes = (): RouteInterface[] => {
 
@@ -617,7 +617,7 @@ export const getFullScreenViewRoutes = (): RouteInterface[] => {
 /**
  * Get default page layout routes.
  *
- * @return {RouteInterface[]}
+ * @returns
  */
 export const getDefaultLayoutRoutes = (): RouteInterface[] => {
 
@@ -643,7 +643,7 @@ export const getDefaultLayoutRoutes = (): RouteInterface[] => {
 /**
  * Get error page layout routes.
  *
- * @return {RouteInterface[]}
+ * @returns
  */
 export const getErrorLayoutRoutes = (): RouteInterface[] => {
 
@@ -684,7 +684,7 @@ export const getErrorLayoutRoutes = (): RouteInterface[] => {
 /**
  * Get auth page layout routes.
  *
- * @return {RouteInterface[]}
+ * @returns
  */
 export const getAuthLayoutRoutes = (): RouteInterface[] => {
 
@@ -716,7 +716,8 @@ export const getAuthLayoutRoutes = (): RouteInterface[] => {
  *
  * @example
  *     Without this, we'll have to manually let the app know to use the `AuthLayout` if someone hits `/login`.
- *     {
+ *
+ *    @example \{
  *          component: AuthLayout,
  *          icon: null,
  *          id: "appRouteLogin",
@@ -724,12 +725,12 @@ export const getAuthLayoutRoutes = (): RouteInterface[] => {
  *          path: AppConstants.getPaths().get("LOGIN"),
  *          protected: false,
  *          showOnSidePanel: false
- *    },
+ *    \},
  *
- * @param {RouteInterface[]} routes - Set of routes in the layout.
- * @param {React.FunctionComponent} layout - Layout to be used.
+ * @param routes - Set of routes in the layout.
+ * @param layout - Layout to be used.
  *
- * @return {RouteInterface[]}
+ * @returns
  */
 const getLayoutAssignedToRoutes = (routes: RouteInterface[], layout: FunctionComponent) => {
 
@@ -748,7 +749,7 @@ const getLayoutAssignedToRoutes = (routes: RouteInterface[], layout: FunctionCom
 /**
  * Get all the app layout routes.
  *
- * @return {RouteInterface[]}
+ * @returns
  */
 export const getAppLayoutRoutes = (): RouteInterface[] => {
 
@@ -799,7 +800,7 @@ export const getAppLayoutRoutes = (): RouteInterface[] => {
 /**
  * Get base layout routes.
  *
- * @return {RouteInterface[]}
+ * @returns
  */
 export const getBaseRoutes = (): RouteInterface[] => {
 
