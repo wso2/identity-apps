@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -76,9 +76,9 @@ const DEFAULT_POPUP_OPTIONS: PopupProps = {
 /**
  * Hint component.
  *
- * @param {React.PropsWithChildren<HintPropsInterface>} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns Hint component.
  */
 export const Hint: React.FunctionComponent<PropsWithChildren<HintPropsInterface>> = (
     props: PropsWithChildren<HintPropsInterface>
@@ -114,7 +114,7 @@ export const Hint: React.FunctionComponent<PropsWithChildren<HintPropsInterface>
     /**
      * Aggregated popup options.
      *
-     * @return {PopupProps}
+     * @returns Popup props.
      */
     const resolvePopupOptions = (): PopupProps => {
         
@@ -132,7 +132,7 @@ export const Hint: React.FunctionComponent<PropsWithChildren<HintPropsInterface>
     /**
      * Resolves hit icon.
      *
-     * @return {ReactElement}
+     * @returns Hit icon.
      */
     const resolveIcon = (): ReactElement => {
 
