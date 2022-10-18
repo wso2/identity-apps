@@ -78,6 +78,10 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
         (state: AppState) => state.organization.organization
     );
 
+    const isFirstLevelOrg: boolean = useSelector(
+        (state: AppState) => state?.organization?.isFirstLevelOrganization
+    );
+
     const [ associatedOrganizations, setAssociatedOrganizations ] = useState<
         OrganizationInterface[]
     >([]);
@@ -331,6 +335,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                                     showSwitch={ false }
                                     handleOrgRowClick={ handleOrgRowClick }
                                     setShowDropdown={ setIsDropDownOpen }
+                                    showEdit={ !isFirstLevelOrg }
                                 />
                             </Grid>
                             <Segment basic secondary>
