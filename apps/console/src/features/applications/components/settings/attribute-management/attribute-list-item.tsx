@@ -190,7 +190,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
     }, [ claimMappingOn ]);
 
     return (
-        <Table.Row data-testid={ testId + "" }>
+        <Table.Row data-testid={ testId }>
             {
                 !localDialect && (<Table.Cell></Table.Cell>)
             }
@@ -198,7 +198,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                 <div>
                     { !localDialect ? localClaimDisplayName : displayName }
                 </div>
-                { 
+                {
                     isOIDCMapping ?
                         (<Hint warning={ true } popup>
                             {

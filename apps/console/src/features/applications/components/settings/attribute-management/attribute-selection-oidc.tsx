@@ -819,5 +819,5 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
  * Default props for the application attribute selection component.
  */
 AttributeSelectionOIDC.defaultProps = {
-    "data-testid": "application-attribute-selection"
+    "data-testid": "application-attribute-selection-oidc"
 };
