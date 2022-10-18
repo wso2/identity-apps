@@ -22,6 +22,7 @@ import {
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
+    Hint,
     LinkButton,
     PrimaryButton,
     TransferComponent,
@@ -334,6 +335,9 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
                         checked={ shareWithAll }
                         data-componentid={ `${ componentId }-share-with-all-checkbox` }
                     />
+                    <Hint>
+                        { t("console:manage.features.organizations.shareApplicationInfo") }
+                    </Hint>
                 </Segment>
                 <Form>
                     { !shareWithAll ? (
