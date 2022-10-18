@@ -27,6 +27,7 @@ import {
     OrganizationListInterface,
     OrganizationPatchData,
     OrganizationResponseInterface,
+    ShareApplicationRequestInterface,
     UpdateOrganizationInterface
 } from "../models";
 
@@ -266,10 +267,10 @@ export const deleteOrganization = (id: string): Promise<string> => {
 export const shareApplication = (
     currentOrganizationId: string,
     applicationId: string,
-    organizationIds: Array<string>
+    data: ShareApplicationRequestInterface
 ): Promise<any> => {
     const requestConfig = {
-        data: organizationIds,
+        data,
         headers: {
             "Accept": "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
