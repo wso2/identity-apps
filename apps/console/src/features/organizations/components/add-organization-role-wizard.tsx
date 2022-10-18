@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (http://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -122,7 +122,7 @@ export const AddOrganizationRoleWizard: FunctionComponent<AddOrganizationRolePro
         if (groupList.length < 1) {
             getGroupList(null)
                 .then((response) => {
-                    const groups = response.data.Resources.filter(
+                    const groups = response?.data?.Resources?.filter(
                         (group) => group.displayName.split("/").length === 1);
 
                     setGroupList(groups);
