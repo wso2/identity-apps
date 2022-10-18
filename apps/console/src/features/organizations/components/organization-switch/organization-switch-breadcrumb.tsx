@@ -107,6 +107,7 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
     const generateBreadcrumb = (): ReactElement => {
         if (
             AppConstants.getSuperTenant() !== tenantDomain &&
+            !window[ "AppUtils" ].getConfig().organizationName &&
             !isFirstLevelOrg &&
             organizationConfigs.showSwitcherInTenants
         ) {
