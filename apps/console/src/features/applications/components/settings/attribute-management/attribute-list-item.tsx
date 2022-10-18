@@ -64,7 +64,7 @@ interface AttributeListItemPropInterface extends TestableComponentInterface {
  *
  * @param props - Props injected to the component.
  *
- * @returns Attribute liste item
+ * @returns Attribute list item
  */
 export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface> = (
     props: AttributeListItemPropInterface

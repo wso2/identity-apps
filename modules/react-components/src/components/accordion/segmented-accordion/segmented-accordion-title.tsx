@@ -307,8 +307,6 @@ export const SegmentedAccordionTitle: FunctionComponent<SegmentedAccordionTitleP
                         content={ popoverText }
                         inverted
                     />
-
-                    
                 );
             }
 
