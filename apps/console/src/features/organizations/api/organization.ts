@@ -259,7 +259,7 @@ export const deleteOrganization = (id: string): Promise<string> => {
  * @param currentOrganizationId - Current Organization Id
  * @param applicationId - ID of the application to be shared
  * @param organizationIds - ID of the organization which the app needs to be shared with
- * 
+ *
  * @returns a promise containing the response
  */
 export const shareApplication = (
@@ -268,7 +268,9 @@ export const shareApplication = (
     organizationIds: Array<string>
 ): Promise<any> => {
     const requestConfig = {
-        data: organizationIds,
+        data: {
+            "sharedOrganizations" : organizationIds
+        },
         headers: {
             "Accept": "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
