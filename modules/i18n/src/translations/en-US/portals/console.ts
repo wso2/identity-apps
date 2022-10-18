@@ -8280,6 +8280,8 @@ export const console: ConsoleNS = {
                     }
                 },
                 shareApplicationCheck: "Share with all suborganizations",
+                shareApplicationInfo: "Enable this to share the application with all the existing suborganizations " +
+                    "and all new suborganizations that you create under  your current organization.",
                 subTitle: "Create and manage organizations.",
                 switching: {
                     emptyList: "There is no organization to show.",

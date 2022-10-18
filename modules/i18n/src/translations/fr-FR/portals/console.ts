@@ -6818,6 +6818,9 @@ export const console: ConsoleNS = {
                     }
                 },
                 shareApplicationCheck: "Partager avec toutes les sous-organisationsrganisations",
+                shareApplicationInfo: "Activez cette option pour partager l'application avec toutes les " +
+                    "sous-organisations existantes et toutes les nouvelles sous-organisations que vous créez " +
+                    "sous votre organisation actuelle.",
                 subTitle: "Créer et gérer des organisations.",
                 switching: {
                     emptyList: "Il n'y a aucune organisation à afficher.",

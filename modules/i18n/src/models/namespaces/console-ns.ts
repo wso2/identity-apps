@@ -2510,6 +2510,7 @@ export interface ConsoleNS {
                     description: string;
                 };
                 shareApplicationCheck: string;
+                shareApplicationInfo: string;
                 switching: {
                     search: {
                         placeholder: string;
