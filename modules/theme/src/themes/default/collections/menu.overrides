@@ -960,9 +960,12 @@
                     border-radius: 25px;
                     cursor: pointer;
 
+
                     &:hover, &:active, &:focus {
-                        color: darken(@tenantDropdownTriggerTextColor, 10);
-                        background: @tenantDropdownTriggerHoverBackground;
+                        &:not(.un-clickable) {
+                            color: darken(@tenantDropdownTriggerTextColor, 10);
+                            background: @tenantDropdownTriggerHoverBackground;
+                        }
                     }
 
                     &.un-clickable {
