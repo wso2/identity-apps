@@ -157,10 +157,12 @@ export const Hint: React.FunctionComponent<PropsWithChildren<HintPropsInterface>
                 popup
                     ? (
                         <Popup
+                            inverted
                             trigger={ resolveIcon() }
                             content={ children }
                             data-componentid={ `${ componentId }-popup` }
                             data-testid={ `${ testId }-popup` }
+                            popper={ <div style={ { filter: "none" } }/> }
                             { ...resolvePopupOptions() }
                         />
                     )
