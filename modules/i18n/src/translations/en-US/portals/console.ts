@@ -810,7 +810,7 @@ export const console: ConsoleNS = {
                                 attributeComponentHintAlt: "Manage the user attributes you want to share with this" +
                                     " application. You can add new attributes and mappings by navigating to " +
                                     "<1>Attributes.</1>",
-                                description: "Add the user attributes that are allowed to be shared with this " +
+                                description: "Add the user attributes groups/scopes that are allowed to be shared with this " +
                                     "application.",
                                 heading: "User Attribute Selection",
                                 mandatoryAttributeHint: "Mark which user attributes are mandatory to be shared " +
@@ -830,8 +830,10 @@ export const console: ConsoleNS = {
                                         actions: {
                                             makeMandatory: "Make mandatory",
                                             makeRequested: "Make requested",
+                                            makeScopeRequested: "Make Scope requested",
                                             removeMandatory: "Remove mandatory",
                                             removeRequested: "Remove requested",
+                                            removeScopeRequested: "Remove Scope Requested",
                                             subjectDisabledSelection: "This attribute is mandatory because it " +
                                                 "is the subject attribute."
                                         },
