@@ -159,6 +159,7 @@ export const CopyInputField: FunctionComponent<CopyInputFieldPropsInterface> = (
                                 : hideSecretLabel
                         }
                         inverted
+                        popper={ <div style={ { filter: "none" } }/> }
                     />
                 )
             }
