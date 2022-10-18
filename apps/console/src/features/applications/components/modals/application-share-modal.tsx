@@ -327,13 +327,14 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
             </Modal.Header>
             <Modal.Content>
                 <Segment basic>
-                <Checkbox
-                    label="Share with all suborganizations"
-                    toggle
-                    onChange={ () => setShareWithAll(!shareWithAll) }
-                    checked={ shareWithAll }
+                    <Checkbox
+                        label={ t("console:manage.features.organizations.shareApplicationCheck") }
+                        toggle
+                        onChange={ () => setShareWithAll(!shareWithAll) }
+                        checked={ shareWithAll }
+                        data-componentid={ `${ componentId }-share-with-all-checkbox` }
                     />
-                    </Segment>
+                </Segment>
                 <Form>
                     { !shareWithAll ? (
                         <TransferComponent
@@ -407,7 +408,9 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
                                 ) }
                             </TransferList>
                         </TransferComponent>
-                    ) : <div style={ { height: "291px" } }></div> }
+                    ) : (
+                        <div className="share-organization-placeholder"></div>
+                    ) }
                 </Form>
             </Modal.Content>
             <Modal.Actions>
