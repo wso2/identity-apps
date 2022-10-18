@@ -2509,6 +2509,7 @@ export interface ConsoleNS {
                     name: string;
                     description: string;
                 };
+                shareApplicationCheck: string;
                 switching: {
                     search: {
                         placeholder: string;

@@ -6817,6 +6817,7 @@ export const console: ConsoleNS = {
                         title: "Ajouter une nouvelle organisation"
                     }
                 },
+                shareApplicationCheck: "Partager avec toutes les sous-organisationsrganisations",
                 subTitle: "Créer et gérer des organisations.",
                 switching: {
                     emptyList: "Il n'y a aucune organisation à afficher.",

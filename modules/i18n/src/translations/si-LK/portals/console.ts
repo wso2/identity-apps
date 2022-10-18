@@ -6686,6 +6686,7 @@ export const console: ConsoleNS = {
                         title: "නව සංවිධානයක් එක් කරන්න"
                     }
                 },
+                shareApplicationCheck: "සියලුම උප සංවිධාන සමඟ බෙදා ගන්න",
                 subTitle: "ආයතන සාදන්න සහ කළමනාකරණය කරන්න.",
                 switching: {
                     emptyList: "පෙන්වීමට සංවිධානයක් නැත.",
