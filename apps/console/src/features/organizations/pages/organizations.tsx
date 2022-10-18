@@ -36,7 +36,7 @@ import React, {
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
     Breadcrumb,
     Divider,
@@ -46,10 +46,9 @@ import {
     Icon,
     PaginationProps
 } from "semantic-ui-react";
-import { AdvancedSearchWithBasicFilters, EventPublisher, UIConstants } from "../../core";
-import { getOrganization, getOrganizations, useGetUserSuperOrganization } from "../api";
+import { AdvancedSearchWithBasicFilters, AppState, EventPublisher, UIConstants } from "../../core";
+import { getOrganization, getOrganizations } from "../api";
 import { AddOrganizationModal, OrganizationList } from "../components";
-import { OrganizationManagementConstants } from "../constants";
 import {
     OrganizationInterface,
     OrganizationLinkInterface,
@@ -102,11 +101,14 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
     const [ before, setBefore ] = useState<string>("");
     const [ activePage, setActivePage ] = useState<number>(1);
 
+    const currentOrganization: OrganizationResponseInterface = useSelector(
+        (state: AppState) => state.organization.organization
+    );
+
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     const [ paginationReset, triggerResetPagination ] = useTrigger();
 
-    const { data: superOrganization } = useGetUserSuperOrganization();
 
     useEffect(() => {
         let nextFound: boolean = false;
@@ -425,8 +427,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                                     } }
                                 >
                                     <span data-componentid={ `${ testId }-breadcrumb-home` }>
-                                        { superOrganization?.name
-                                            || OrganizationManagementConstants.ROOT_ORGANIZATION.name }
+                                        { currentOrganization.name }
                                     </span>
                                 </Breadcrumb.Section>
                                 { organizations?.map((organization: OrganizationInterface, index: number) => {
