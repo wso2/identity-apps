@@ -28,7 +28,7 @@ export const organizationConfigs: OrganizationConfigs = {
         onClick: (breadcrumbItem: BreadcrumbItem) => void
     ) => {
         return (
-            <span onClick={ () => onClick(breadcrumbItem) }>
+            <span onClick={ () => onClick(breadcrumbItem) } data-componentid={ "super-organization-breadcrumb-item" }>
                 { breadcrumbItem.name }
             </span>
         );

@@ -27,6 +27,7 @@ import {
     OrganizationListInterface,
     OrganizationPatchData,
     OrganizationResponseInterface,
+    ShareApplicationRequestInterface,
     UpdateOrganizationInterface
 } from "../models";
 
@@ -266,10 +267,10 @@ export const deleteOrganization = (id: string): Promise<string> => {
 export const shareApplication = (
     currentOrganizationId: string,
     applicationId: string,
-    organizationIds: Array<string>
+    data: ShareApplicationRequestInterface
 ): Promise<any> => {
     const requestConfig = {
-        data: organizationIds,
+        data,
         headers: {
             "Accept": "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -387,4 +388,31 @@ export const useGetOrganizationBreadCrumb = (): RequestResultInterface<Breadcrum
     };
 
     return useRequest<BreadcrumbList, Error>(requestConfig);
+};
+
+/**
+ * This unshares the application with all suborganizations.
+ *
+ * @param applicationId - The application id
+ * @param currentOrganizationId - The current organization id
+ * @returns
+ */
+export const unshareApplication = (
+    applicationId: string,
+    currentOrganizationId: string
+): Promise<void> => {
+    const requestConfig: HttpRequestConfig = {
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.DELETE,
+        url: `${
+            store.getState().config.endpoints.organizations
+        }/organizations/${ currentOrganizationId }/applications/${ applicationId }/fragment-apps`
+    };
+
+    return httpClient(requestConfig).catch((error: HttpError) => {
+        return Promise.reject(error?.response?.data);
+    });
 };

@@ -141,6 +141,8 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
 
     const [ isMyAccountEnabled, setMyAccountStatus ] = useState<boolean>(AppConstants.DEFAULT_MY_ACCOUNT_STATUS);
 
+    const isSubOrg: boolean = window[ "AppUtils" ].getConfig().organizationName;
+
     /**
      * Prepare form values for submitting.
      *
@@ -218,7 +220,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
     const {
         data: myAccountStatus,
         isLoading: isMyAccountStatusLoading
-    } = useMyAccountStatus();
+    } = useMyAccountStatus(!isSubOrg);
 
     /**
      * Sets the initial spinner.
@@ -229,7 +231,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
 
         if (myAccountStatus) {
             const enableProperty = myAccountStatus["value"];
-            
+
             if ( enableProperty && enableProperty === "false" ) {
 
                 status = false;
@@ -237,7 +239,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
         }
         setMyAccountStatus(status);
     }, [ isMyAccountStatusLoading ]);
- 
+
     if (isMyAccountStatusLoading) {
         return (
             <EmphasizedSegment padded="very">
@@ -245,7 +247,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
             </EmphasizedSegment>
         );
     }
-    
+
     return (
         <Form
             id={ FORM_ID }
@@ -350,7 +352,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     hidden={ hiddenFields?.includes("imageUrl") }
                 />
             }
-            { isMyAccountEnabled? (
+            { isMyAccountEnabled || isSubOrg? (
                 <Field.Checkbox
                     ariaLabel="Make application discoverable by end users"
                     name="discoverableByEndUsers"

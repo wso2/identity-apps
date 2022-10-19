@@ -60,7 +60,8 @@ import { AddOrganizationModal } from "../add-organization-modal";
 /**
  * Interface for component dropdown.
  */
-interface OrganizationSwitchDropdownInterface extends IdentifiableComponentInterface {
+interface OrganizationSwitchDropdownInterface
+    extends IdentifiableComponentInterface {
     triggerName: string;
     isBreadcrumbItem?: boolean;
     handleOrganizationSwitch?: (organization: GenericOrganization) => void;
@@ -69,13 +70,22 @@ interface OrganizationSwitchDropdownInterface extends IdentifiableComponentInter
 const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownInterface> = (
     props: OrganizationSwitchDropdownInterface
 ): ReactElement => {
-    const { "data-componentid": componentId, triggerName, isBreadcrumbItem, handleOrganizationSwitch } = props;
+    const {
+        "data-componentid": componentId,
+        triggerName,
+        isBreadcrumbItem,
+        handleOrganizationSwitch
+    } = props;
 
     const { t } = useTranslation();
     const dispatch = useDispatch();
 
     const currentOrganization: OrganizationResponseInterface = useSelector(
         (state: AppState) => state.organization.organization
+    );
+
+    const isFirstLevelOrg: boolean = useSelector(
+        (state: AppState) => state?.organization?.isFirstLevelOrganization
     );
 
     const [ associatedOrganizations, setAssociatedOrganizations ] = useState<
@@ -275,13 +285,19 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
     ): ReactElement =>
         isBreadcrumbItem ? (
             <div className="item breadcrumb" onClick={ e => e.stopPropagation() }>
-                <span onClick={ () => setIsDropDownOpen(!isDropDownOpen) }>
+                <span
+                    onClick={ () => setIsDropDownOpen(!isDropDownOpen) }
+                    data-componentid={ `${ componentId }-breadcrumb-item` }
+                >
                     { name }
                     <Icon name="caret down" className="separator-icon" />
                 </span>
             </div>
         ) : (
-            <div className="organization-breadcrumb trigger">
+            <div
+                className="organization-breadcrumb trigger"
+                data-componentid={ `${ componentId }-breadcrumb-trigger` }
+            >
                 <div className="icon-wrapper">
                     <GenericIcon
                         transparent
@@ -292,7 +308,11 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                     />
                 </div>
                 <div className="item breadcrumb">
-                    <span>{ name }</span>
+                    <span
+                        data-componentid={ `${ componentId }-breadcrumb-trigger-name` }
+                    >
+                        { name }
+                    </span>
                     <Icon name="caret down" className="separator-icon" />
                 </div>
             </div>
@@ -312,7 +332,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                 floating
                 pointing="top left"
                 className="tenant-dropdown breadcrumb"
-                data-componentid={ "component-dropdown" }
+                data-componentid={ `${ componentId }-dropdown` }
                 open={ isDropDownOpen }
                 onClick={ handleCurrentOrgClick }
                 trigger={ tenantDropdownTrigger(triggerName, isBreadcrumbItem) }
@@ -321,6 +341,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                 <Dropdown.Menu
                     className="organization-dropdown-menu"
                     onClick={ e => e.stopPropagation() }
+                    data-componentid={ `${ componentId }-dropdown-menu` }
                 >
                     { isDropDownOpen && (
                         <>
@@ -331,6 +352,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                                     showSwitch={ false }
                                     handleOrgRowClick={ handleOrgRowClick }
                                     setShowDropdown={ setIsDropDownOpen }
+                                    showEdit={ !isFirstLevelOrg }
                                 />
                             </Grid>
                             <Segment basic secondary>
@@ -357,6 +379,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                                                     basic
                                                     floated="right"
                                                     onClick={ handleNewClick }
+                                                    data-componentid={ `${ componentId }-new-button` }
                                                 >
                                                     <Icon name="add" />
                                                     { t("common:new") }
@@ -369,7 +392,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                                     <div className="advanced-search-wrapper aligned-left fill-default">
                                         <Input
                                             className="advanced-search with-add-on"
-                                            data-componentid="list-search-input"
+                                            data-componentid={ `${ componentId }-search-box` }
                                             icon="search"
                                             iconPosition="left"
                                             value={ search }
@@ -395,7 +418,9 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                                                     <Popup
                                                         trigger={
                                                             (<Button
-                                                                data-componentid={ `${ componentId }-clear-button` }
+                                                                data-componentid={
+                                                                    `${ componentId }-search-clear-button`
+                                                                }
                                                                 basic
                                                                 compact
                                                                 className="input-add-on organizations"

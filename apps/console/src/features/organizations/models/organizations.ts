@@ -110,3 +110,8 @@ export interface BreadcrumbItem {
 export type BreadcrumbList = BreadcrumbItem[];
 
 export type GenericOrganization = OrganizationInterface | OrganizationResponseInterface | BreadcrumbItem;
+
+export interface ShareApplicationRequestInterface {
+    shareWithAllChildren: boolean;
+    sharedOrganizations?: string[];
+}

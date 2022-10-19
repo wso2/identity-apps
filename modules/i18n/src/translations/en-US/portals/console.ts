@@ -8279,6 +8279,13 @@ export const console: ConsoleNS = {
                         title: "Add a new Organization"
                     }
                 },
+                shareApplicationRadio: "Share with all suborganizations",
+                shareApplicationInfo: "Select this to share the application with all the existing suborganizations " +
+                    "and all new suborganizations that you create under your current organization.",
+                unshareApplicationRadio: "Unshare with all suborganizations",
+                shareWithSelectedOrgsRadio: "Share with only selected suborganizations",
+                unshareApplicationInfo: "Select this to unshare the application with all the existing " +
+                    "suborganizations and all new suborganizations that you create under your current organizations.",
                 subTitle: "Create and manage organizations.",
                 switching: {
                     emptyList: "There is no organization to show.",

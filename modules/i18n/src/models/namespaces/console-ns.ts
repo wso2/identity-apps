@@ -2509,6 +2509,11 @@ export interface ConsoleNS {
                     name: string;
                     description: string;
                 };
+                shareApplicationRadio: string;
+                shareApplicationInfo: string;
+                unshareApplicationRadio: string;
+                shareWithSelectedOrgsRadio: string;
+                unshareApplicationInfo: string;
                 switching: {
                     search: {
                         placeholder: string;

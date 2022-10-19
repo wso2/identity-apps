@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,11 +14,9 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
 
-import { ChildRouteInterface, RouteInterface } from "@wso2is/core/models";
-import flatten from "lodash-es/flatten";
+import { RouteInterface } from "@wso2is/core/models";
 import sortBy from "lodash-es/sortBy";
 import { AppConstants } from "../constants";
 import { history } from "../helpers";
@@ -32,7 +30,6 @@ export class RouteUtils {
      * Private constructor to avoid object instantiation from outside
      * the class.
      *
-     * @hideconstructor
      */
     private constructor() { }
 
@@ -86,10 +83,9 @@ export class RouteUtils {
      * Checks whether a given pathname is available in the route's
      * children router paths.
      *
-     * @param {string} view - Top level route path
-     * @param {string} pathname - Cached route path
-     * @param {RouteInterface[]} routes - Available routes.
-     * @private
+     * @param view - Top level route path
+     * @param pathname - Cached route path
+     * @param routes - Available routes.
      */
     private static isRouteAvailable(view: string, pathname: string, routes: RouteInterface[]): boolean {
         /**
@@ -105,19 +101,23 @@ export class RouteUtils {
          *
          * Regex explanation
          * --
-         * {@code [\w~\-\\.!*'(),]+} is a set expression that allows the following
-         * characters { a-z A-Z 0-9 _ ~ - \ . ! * () , <space> } one or more times.
+         * `[\w~\-\\.!*'(),]+` is a set expression that allows the following
+         * characters  [a-z A-Z 0-9 _ ~ - \\ . ! * () , <space> ] one or more times.
          * The expression assumes the path_parameter has at-lease one character and
          * contains only the characters specified above.
          *
          * Refer RFC-3986
          * {@link https://tools.ietf.org/html/rfc3986#section-2.3}
          *
-         * @param {string} path - A valid URL
-         * @return {RegExp} expression like `some/path/[\w~\-\\.!*'(),]+/another`
+         * @param path - A valid URL
+         * @returns expression like `some/path/[\w~\-\\.!*'(),]+/another`
          */
         const pathToARegex = (path: string): string => {
             if (!path || !path.trim().length) return "";
+
+            if (path === "*") {
+                return "";
+            }
 
             return path.split("/").map((fragment: string) => {
                 if (fragment && fragment.startsWith(":")) {
@@ -130,15 +130,15 @@ export class RouteUtils {
 
         /**
          * To keep track of the qualified paths that matches exactly the
-         * {@code pathname}
+         *  `pathname`
          */
         const qualifiedPaths: string[] = [];
 
         /**
-         * Validate each of the child paths against the {@code pathname}.
+         * Validate each of the child paths against the `pathname`.
          * Breaks the search loop after the first successful match. If
          * you do want to keep searching multiple paths that matches a
-         * certain criteria then you should remove the {@code break}
+         * certain criteria then you should remove the `break`
          * statement and write your aggregation logic after the loop.
          */
         for (const route of routes) {
@@ -165,8 +165,8 @@ export class RouteUtils {
     /**
      * Checks if the passed in path is the home path defined in deployment.config.json.
      *
-     * @param {string} path - Path to check.
-     * @return {boolean} Is home path or not.
+     * @param path - Path to check.
+     * @returns Is home path or not.
      */
     public static isHomePath(path: string): boolean {
 
@@ -180,8 +180,8 @@ export class RouteUtils {
     /**
      * Checks if only the `404` is available.
      *
-     * @param {RouteInterface[]} routes - Set of routes.
-     * @return {boolean} Is only `404` available.
+     * @param routes - Set of routes.
+     * @returns Is only `404` available.
      */
     public static isOnlyPageNotFoundPresent(routes: RouteInterface[]): boolean {
         if (routes && Array.isArray(routes) && routes.length === 1) {
@@ -196,9 +196,9 @@ export class RouteUtils {
     /**
      * Checks if the view is presentable.
      *
-     * @param {RouteInterface[]} routes - Set of routes.
-     * @param {string[]} pathsToSkip - Set of paths to skip.
-     * @return {boolean}
+     * @param routes - Set of routes.
+     * @param pathsToSkip - Set of paths to skip.
+     * @returns
      */
     public static isViewPresentable(routes: RouteInterface[], pathsToSkip?: string[]): boolean {
 
@@ -212,9 +212,9 @@ export class RouteUtils {
     /**
      * Filters the list of presentable routes.
      *
-     * @param {RouteInterface[]} routes - Set of routes.
-     * @param {string[]} pathsToSkip - Set of paths to skip.
-     * @return {RouteInterface[]}
+     * @param routes - Set of routes.
+     * @param pathsToSkip - Set of paths to skip.
+     * @returns
      */
     public static filterPresentableRoutes(routes: RouteInterface[], pathsToSkip?: string[]): RouteInterface[] {
 
@@ -234,7 +234,7 @@ export class RouteUtils {
      *
      * @param routes - Set of routes.
      *
-     * @returns {RouteInterface[]}
+     * @returns
      */
     public static filterOrganizationEnabledRoutes(routes: RouteInterface[]): RouteInterface[] {
         return routes.filter((route: RouteInterface) => AppConstants.ORGANIZATION_ENABLED_ROUTES.includes(route.id));

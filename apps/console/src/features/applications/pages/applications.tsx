@@ -150,12 +150,14 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
         mutate: mutateApplicationListFetchRequest
     } = useApplicationList("advancedConfigurations,templateId,clientId,issuer", listItemLimit, listOffset, searchQuery);
 
+    const isSubOrg: boolean = window[ "AppUtils" ].getConfig().organizationName;
+
     const {
         data: myAccountStatus,
         isLoading: isMyAccountStatusLoading,
         error: myAccountStatusFetchRequestError,
         mutate: mutateMyAccountStatusFetchRequest
-    } = useMyAccountStatus();
+    } = useMyAccountStatus(!isSubOrg);
 
     /**
      * Sets the initial spinner.
@@ -508,7 +510,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                                     </DocumentationLink>
                                 </List.Description>
                             </Grid.Column>
-                            { isMyAccountEnabled? (
+                            { isMyAccountEnabled || isSubOrg ? (
                                 <Popup
                                     trigger={
                                         (<Grid.Column
@@ -532,16 +534,18 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                                 mobile={ 16 }
                                 computer={ 5 }
                             >
-                                <Checkbox
-                                    className="right floated mr-3"
-                                    label={ t( isMyAccountEnabled ?
-                                        "console:develop.features.applications.myaccount.enable.0" :
-                                        "console:develop.features.applications.myaccount.enable.1") }
-                                    toggle
-                                    onChange={ handleMyAccountStatusToggle }
-                                    checked={ isMyAccountEnabled }
-                                    data-testId={ `${ testId }-myaccount-status-update-toggle` }
-                                />
+                                { !isSubOrg && (
+                                    <Checkbox
+                                        className="right floated mr-3"
+                                        label={ t( isMyAccountEnabled ?
+                                            "console:develop.features.applications.myaccount.enable.0" :
+                                            "console:develop.features.applications.myaccount.enable.1") }
+                                        toggle
+                                        onChange={ handleMyAccountStatusToggle }
+                                        checked={ isMyAccountEnabled }
+                                        data-testId={ `${ testId }-myaccount-status-update-toggle` }
+                                    />
+                                ) }
                             </Grid.Column>
                         </Grid>
                     </List.Item>

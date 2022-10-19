@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -38,7 +38,6 @@ import { useTranslation } from "react-i18next";
 import { Grid, Icon, Input, Modal, Table } from "semantic-ui-react";
 import { UIConstants, getEmptyPlaceholderIllustrations } from "../../../core";
 import { UserBasicInterface, getUsersList } from "../../../users";
-import { CONSUMER_USERSTORE } from "../../../userstores";
 
 /**
  * Proptypes for the role user list component.
@@ -150,8 +149,17 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                     return;
                 }
 
-                const responseUsers = response.Resources.filter((user
-                ) => user.userName.split("/")[0] !== CONSUMER_USERSTORE);
+                const responseUsers = response.Resources.map((user) => {
+                    const userNames: string[] = user.userName.split("/");
+
+                    if (userNames.length === 1) {
+                        return user;
+                    }
+
+                    user.userName = userNames[ 1 ];
+
+                    return user;
+                });
 
                 responseUsers.sort((userObject, comparedUserObject) =>
                     userObject.name?.givenName?.localeCompare(comparedUserObject.name?.givenName)
@@ -225,7 +233,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
      * The following method accepts a Map and returns the values as a string.
      *
      * @param attributeMap - IterableIterator<string>
-     * @return string
+     * @returns
      */
     const generateAttributesString = (attributeMap: IterableIterator<string>) => {
         const attArray = [];

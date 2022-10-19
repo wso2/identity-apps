@@ -22,21 +22,16 @@ import React, { ReactElement, SyntheticEvent, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, Icon, Loader, Ref, Segment } from "semantic-ui-react";
 import OrganizationListItem from "./organization-list-item";
-import {
-    GenericOrganization,
-    OrganizationInterface
-} from "../../models";
+import { GenericOrganization, OrganizationInterface } from "../../models";
 
 interface OrganizationSwitcherListPropTypesInterface
     extends IdentifiableComponentInterface {
-    parents: (GenericOrganization)[];
+    parents: GenericOrganization[];
     organizations: OrganizationInterface[];
     hasMore: boolean;
     handleBackButtonClick: (event: SyntheticEvent) => void;
     currentOrganization: GenericOrganization;
-    handleOrgRowClick: (
-        organization: GenericOrganization
-    ) => void;
+    handleOrgRowClick: (organization: GenericOrganization) => void;
     setShowDropdown: (shouldShow: boolean) => void;
     loadMore: () => void;
     handleOrganizationSwitch: (organization: GenericOrganization) => void;
@@ -82,7 +77,9 @@ const OrganizationSwitcherList = (
                                 onClick={ handleBackButtonClick }
                             >
                                 <Icon name="arrow left" />
-                                { t("console:manage.features.organizations.switching.goBack") }
+                                { t(
+                                    "console:manage.features.organizations.switching.goBack"
+                                ) }
                             </div>
                         </Grid.Column>
                     </Grid.Row>
@@ -95,10 +92,14 @@ const OrganizationSwitcherList = (
                                     <OrganizationListItem
                                         organization={ organization }
                                         showSwitch={ true }
-                                        isClickable={ true && !!handleOrgRowClick }
+                                        isClickable={
+                                            true && !!handleOrgRowClick
+                                        }
                                         handleOrgRowClick={ handleOrgRowClick }
                                         setShowDropdown={ setShowDropdown }
-                                        handleOrganizationSwitch={ handleOrganizationSwitch }
+                                        handleOrganizationSwitch={
+                                            handleOrganizationSwitch
+                                        }
                                         showEdit={ showEdit }
                                     />
                                 ) : null
@@ -118,7 +119,10 @@ const OrganizationSwitcherList = (
                 ) : (
                     <Grid.Row columns={ 1 }>
                         <Grid.Column>
-                            <div className="message">
+                            <div
+                                className="message"
+                                data-componentid={ `${ componentId }-empty-message` }
+                            >
                                 { t(
                                     "console:manage.features.organizations.switching." +
                                     "emptyList"
