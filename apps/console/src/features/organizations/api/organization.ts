@@ -377,17 +377,28 @@ export const useGetUserSuperOrganization = (): RequestResultInterface<Organizati
  *
  * @returns The breadcrumb list of organizations.
  */
-export const useGetOrganizationBreadCrumb = (): RequestResultInterface<BreadcrumbList, Error> => {
+export const useGetOrganizationBreadCrumb = (
+    shouldSendRequest: boolean
+): { data: BreadcrumbList, error: Error; } => {
     const requestConfig = {
         headers: {
             "Accept": "application/json",
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: store.getState().config.endpoints.breadcrumb
+        url: shouldSendRequest ? store.getState().config.endpoints.breadcrumb : ""
     };
 
-    return useRequest<BreadcrumbList, Error>(requestConfig);
+    const { data, error } = useRequest<BreadcrumbList, Error>(requestConfig);
+
+    if (error && !shouldSendRequest) {
+        return {
+            data: null,
+            error: null
+        };
+    }
+
+    return { data, error };
 };
 
 /**

@@ -19,7 +19,7 @@
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { SessionStorageUtils } from "@wso2is/core/utils";
 import { GenericIcon } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useState } from "react";
+import React, { FunctionComponent, ReactElement, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { Dropdown, Icon, Menu } from "semantic-ui-react";
 import OrganizationSwitchDropdown from "./organization-switch-dropdown";
@@ -57,7 +57,15 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
         (state: AppState) => state?.organization?.isFirstLevelOrganization
     );
 
-    const { data: breadcrumbList } = useGetOrganizationBreadCrumb();
+    const shouldSendRequest = useMemo(() => {
+        return (
+            isFirstLevelOrg ||
+            window[ "AppUtils" ].getConfig().organizationName ||
+            tenantDomain === AppConstants.getSuperTenant()
+        );
+    }, [ isFirstLevelOrg, tenantDomain ]);
+
+    const { data: breadcrumbList } = useGetOrganizationBreadCrumb(shouldSendRequest);
 
     const handleOrganizationSwitch = (
         organization: GenericOrganization
