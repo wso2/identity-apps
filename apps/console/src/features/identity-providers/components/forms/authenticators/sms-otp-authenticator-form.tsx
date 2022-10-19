@@ -18,7 +18,7 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
-import { Code } from "@wso2is/react-components";
+import { Code, Message } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import isBoolean from "lodash-es/isBoolean";
 import isEmpty from "lodash-es/isEmpty";
@@ -351,6 +351,13 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
             initialValues={ initialValues }
             validate={ validateForm }
         >
+
+            <Message
+                type={ "info" }
+                content={ t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+            ".smsOTP.testingPurposesNote") }
+                width={ 14 }
+            />
             <Field.Input
                 ariaLabel="SMS OTP expiry time"
                 inputType="number"

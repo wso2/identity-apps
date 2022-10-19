@@ -3179,6 +3179,7 @@ export const console: ConsoleNS = {
                             }
                         },
                         smsOTP: {
+                            testingPurposesNote: "Try out SMS OTP two-factor authentication using our default SMS provider.",
                             expiryTime: {
                                 hint: "Please pick a value between <1>1 minute</1> & <3> 1440 minutes (1 day)</3>.",
                                 label: "SMS OTP expiry time",
