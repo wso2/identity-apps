@@ -41,7 +41,10 @@ import { OrganizationUtils } from "../../utils";
 type OrganizationSwitchDropdownInterface = IdentifiableComponentInterface;
 
 export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchDropdownInterface> = (
+    props: OrganizationSwitchDropdownInterface
 ): ReactElement => {
+    const { "data-componentid": componentId } = props;
+
     const currentOrganization: OrganizationResponseInterface = useSelector(
         (state: AppState) => state.organization.organization
     );
