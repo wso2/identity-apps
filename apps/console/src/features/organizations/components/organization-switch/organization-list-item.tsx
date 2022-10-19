@@ -64,7 +64,7 @@ const OrganizationListItem = (
             data-componentid={ `${ componentId }-organization-item` }
         >
             { showGravatar && (
-                <Grid.Column width={ 3 } verticalAlign="middle">
+                <Grid.Column width={ 3 } verticalAlign="middle" textAlign="left">
                     <GenericIcon
                         icon={ getMiscellaneousIcons().tenantIcon }
                         size="micro"
@@ -76,7 +76,7 @@ const OrganizationListItem = (
                 </Grid.Column>
             ) }
             <Grid.Column
-                width={ showGravatar ? 11 : 13 }
+                width={ showGravatar ? 9 : 12 }
                 verticalAlign="middle"
                 data-componentid={ `${ componentId }-organization-name` }
             >
@@ -86,7 +86,7 @@ const OrganizationListItem = (
                     </Placeholder>
                 ) }
             </Grid.Column>
-            <Grid.Column width={ 2 } verticalAlign="middle" textAlign="right">
+            <Grid.Column width={ 4 } verticalAlign="middle" textAlign="right">
                 { showSwitch && (
                     <Popup
                         trigger={
