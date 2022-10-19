@@ -1437,7 +1437,7 @@ export const myAccount: MyAccountNS = {
                     subheader: "L'accès à votre compte depuis cet appareil sera supprimé."
                 }
             },
-            lastAccessed: "Dernier accès il y a {{date}}",
+            lastAccessed: "Dernier accès {{date}}",
             modals: {
                 terminateActiveUserSessionModal: {
                     heading: "Terminer les sessions actives en cours",
