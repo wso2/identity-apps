@@ -38,7 +38,6 @@ import { useTranslation } from "react-i18next";
 import { Grid, Icon, Input, Modal, Table } from "semantic-ui-react";
 import { UIConstants, getEmptyPlaceholderIllustrations } from "../../../core";
 import { UserBasicInterface, getUsersList } from "../../../users";
-import { CONSUMER_USERSTORE } from "../../../userstores";
 
 /**
  * Proptypes for the role user list component.
@@ -234,7 +233,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
      * The following method accepts a Map and returns the values as a string.
      *
      * @param attributeMap - IterableIterator<string>
-     * @return string
+     * @returns
      */
     const generateAttributesString = (attributeMap: IterableIterator<string>) => {
         const attArray = [];
