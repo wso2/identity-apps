@@ -17,10 +17,11 @@
  */
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { GenericIcon, useMediaContext } from "@wso2is/react-components";
 import classNames from "classnames";
 import React, { FunctionComponent, MouseEvent, PropsWithChildren } from "react";
 import { Card, Grid, Header, Icon, List, Menu, Message, SemanticICONS } from "semantic-ui-react";
+import { GenericIcon } from "../icon";
+import { useMediaContext } from "../media";
 
 /**
  * Prop-types for the section component.
