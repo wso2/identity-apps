@@ -23,9 +23,7 @@ import React, { ReactElement, SyntheticEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, Icon, Placeholder, Popup } from "semantic-ui-react";
 import { AppConstants, getMiscellaneousIcons, history } from "../../../core";
-import {
-    GenericOrganization
-} from "../../models";
+import { GenericOrganization } from "../../models";
 import { OrganizationUtils } from "../../utils";
 
 interface OrganizationListItemPropsTypesInterface
@@ -33,11 +31,11 @@ interface OrganizationListItemPropsTypesInterface
     organization: GenericOrganization;
     isClickable: boolean;
     showSwitch: boolean;
-    handleOrgRowClick: (
-        organization: GenericOrganization
-    ) => void;
+    handleOrgRowClick: (organization: GenericOrganization) => void;
     setShowDropdown: (shouldShow: boolean) => void;
     handleOrganizationSwitch?: (organization: GenericOrganization) => void;
+    showGravatar?: boolean;
+    showEdit?: boolean;
 }
 
 const OrganizationListItem = (
@@ -50,6 +48,8 @@ const OrganizationListItem = (
         handleOrgRowClick,
         setShowDropdown,
         handleOrganizationSwitch,
+        showGravatar,
+        showEdit,
         "data-componentid": componentId
     } = props;
 
@@ -57,24 +57,26 @@ const OrganizationListItem = (
 
     return (
         <Grid.Row
-            columns={ 3 }
+            columns={ showGravatar ? 3 : 2 }
             key={ `${ organization?.name }-organization-item` }
-            onClick={ () => handleOrgRowClick(organization) }
+            onClick={ () => handleOrgRowClick && handleOrgRowClick(organization) }
             className={ isClickable ? "organization-list-row" : "" }
             data-componentid={ `${ componentId }-organization-item` }
         >
-            <Grid.Column width={ 3 } verticalAlign="middle">
-                <GenericIcon
-                    icon={ getMiscellaneousIcons().tenantIcon }
-                    size="micro"
-                    relaxed="very"
-                    fill="white"
-                    background={ "grey" }
-                    shape="rounded"
-                />
-            </Grid.Column>
+            { showGravatar && (
+                <Grid.Column width={ 3 } verticalAlign="middle">
+                    <GenericIcon
+                        icon={ getMiscellaneousIcons().tenantIcon }
+                        size="micro"
+                        relaxed="very"
+                        fill="white"
+                        background={ "grey" }
+                        shape="rounded"
+                    />
+                </Grid.Column>
+            ) }
             <Grid.Column
-                width={ 9 }
+                width={ showGravatar ? 11 : 13 }
                 verticalAlign="middle"
                 data-componentid={ `${ componentId }-organization-name` }
             >
@@ -84,7 +86,7 @@ const OrganizationListItem = (
                     </Placeholder>
                 ) }
             </Grid.Column>
-            <Grid.Column width={ 2 } verticalAlign="middle">
+            <Grid.Column width={ 2 } verticalAlign="middle" textAlign="right">
                 { showSwitch && (
                     <Popup
                         trigger={
@@ -94,15 +96,10 @@ const OrganizationListItem = (
                                 size="small"
                                 color="grey"
                                 name="exchange"
-                                onClick={
-                                    isClickable
-                                        ? () => {
-                                            handleOrganizationSwitch && handleOrganizationSwitch(
-                                                organization
-                                            );
-                                        }
-                                        : null
-                                }
+                                onClick={ () => {
+                                    handleOrganizationSwitch &&
+                                        handleOrganizationSwitch(organization);
+                                } }
                                 data-componentid={ `${ componentId }-organization-switch` }
                             />)
                         }
@@ -111,7 +108,8 @@ const OrganizationListItem = (
                         inverted
                     />
                 ) }
-                { !OrganizationUtils.isRootOrganization(organization) && (
+                { !OrganizationUtils.isRootOrganization(organization) &&
+                    showEdit && (
                     <Show when={ AccessControlConstants.ORGANIZATION_EDIT }>
                         <Popup
                             trigger={
@@ -125,7 +123,10 @@ const OrganizationListItem = (
                                         history.push({
                                             pathname: AppConstants.getPaths()
                                                 .get("ORGANIZATION_UPDATE")
-                                                .replace(":id", organization?.id)
+                                                .replace(
+                                                    ":id",
+                                                    organization?.id
+                                                )
                                         });
                                         setShowDropdown(false);
                                         event.stopPropagation();
@@ -148,5 +149,7 @@ export default OrganizationListItem;
 
 OrganizationListItem.defaultProps = {
     "data-componentid": "organization-switch-list-item",
+    showEdit: true,
+    showGravatar: true,
     showSwitch: true
 };
