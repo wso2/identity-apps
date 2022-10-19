@@ -389,3 +389,30 @@ export const useGetOrganizationBreadCrumb = (): RequestResultInterface<Breadcrum
 
     return useRequest<BreadcrumbList, Error>(requestConfig);
 };
+
+/**
+ * This unshares the application with all suborganizations.
+ *
+ * @param applicationId - The application id
+ * @param currentOrganizationId - The current organization id
+ * @returns
+ */
+export const unshareApplication = (
+    applicationId: string,
+    currentOrganizationId: string
+): Promise<void> => {
+    const requestConfig: HttpRequestConfig = {
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.DELETE,
+        url: `${
+            store.getState().config.endpoints.organizations
+        }/organizations/${ currentOrganizationId }/applications/${ applicationId }/fragment-apps`
+    };
+
+    return httpClient(requestConfig).catch((error: HttpError) => {
+        return Promise.reject(error?.response?.data);
+    });
+};
