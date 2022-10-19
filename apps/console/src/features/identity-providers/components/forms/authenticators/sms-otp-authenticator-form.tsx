@@ -49,7 +49,7 @@ interface SMSOTPAuthenticatorFormPropsInterface extends TestableComponentInterfa
     initialValues: CommonAuthenticatorFormInitialValuesInterface;
     /**
      * Callback for form submit.
-     * @param {CommonAuthenticatorFormInitialValuesInterface} values - Resolved Form Values.
+     * @param values - Resolved Form Values.
      */
     onSubmit: (values: CommonAuthenticatorFormInitialValuesInterface) => void;
     /**
@@ -146,9 +146,8 @@ const FORM_ID: string = "sms-otp-authenticator-form";
 /**
  * SMS OTP Authenticator Form.
  *
- * @param {SMSOTPAuthenticatorFormPropsInterface} props - Props injected to the component.
- *
- * @return {React.ReactElement}
+ * @param props - Props injected to the component.
+ * @returns Functional component.
  */
 export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormPropsInterface> = (
     props: SMSOTPAuthenticatorFormPropsInterface
@@ -191,7 +190,7 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
             const moderatedName: string = value.name.replace(/\./g, "_");
 
             // Converting expiry time from seconds to minutes
-            if (moderatedName === IdentityProviderManagementConstants.AUTHENTICATOR_INIT_VALUES_SMS_OTP_EXPIRY_TIME_KEY){
+            if(moderatedName === IdentityProviderManagementConstants.AUTHENTICATOR_INIT_VALUES_SMS_OTP_EXPIRY_TIME_KEY){
                 const expiryTimeInMinutes = Math.round(parseInt(value.value,10) / 60);
 
                 resolvedInitialValues = {
@@ -234,8 +233,7 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
      * Prepare form values for submitting.
      *
      * @param values - Form values.
-     *
-     * @return {CommonAuthenticatorFormInitialValuesInterface} Sanitized form values.
+     * @returns Sanitized form values.
      */
     const getUpdatedConfigurations = (values: SMSOTPAuthenticatorFormInitialValuesInterface)
         : CommonAuthenticatorFormInitialValuesInterface => {
@@ -273,9 +271,8 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
     /**
      * Validates the Form.
      *
-     * @param {SMSOTPAuthenticatorFormInitialValuesInterface} values - Form Values.
-     *
-     * @return {SMSOTPAuthenticatorFormErrorValidationsInterface}
+     * @param values - Form Values.
+     * @returns Form validation
      */
     const validateForm = (values: SMSOTPAuthenticatorFormInitialValuesInterface):
         SMSOTPAuthenticatorFormErrorValidationsInterface => {
