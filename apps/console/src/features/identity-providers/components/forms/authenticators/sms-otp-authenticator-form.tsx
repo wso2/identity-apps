@@ -318,7 +318,7 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
                 .SMS_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.OTP_LENGTH_MAX_VALUE)) {
             // Check for invalid range.
             errors.SmsOTP_OTPLength = t("console:develop.features.authenticationProvider.forms" +
-                `.authenticatorSettings.smsOTP.tokenLength.validations.range.${isOTPNumeric ? "digits" : "characters"}`);
+                `.authenticatorSettings.smsOTP.tokenLength.validations.range.${isOTPNumeric? "digits" : "characters"}`);
         }
 
         if (!values.SmsOTP_ResendAttemptsCount) {
@@ -466,6 +466,8 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
                     }
                 </Label>
             </Field.Input>
+            { /* TODO: Uncomment resend attempt count field once it's finalized.
+
             <Field.Input
                 ariaLabel="Allowed Resend Attempts"
                 inputType="number"
@@ -485,7 +487,8 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
                             ".smsOTP.allowedResendAttemptCount.hint"
                         }
                     >
-                        Users will be limited to the specified resend attempt count when trying to resend the SMS OTP code.
+                        Users will be limited to the specified resend attempt count when trying to resend the SMS OTP
+                        code.
                     </Trans>)
                 }
                 required={ true }
@@ -503,6 +506,8 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
             >
                 <input />
             </Field.Input>
+
+            */ }
             <Field.Button
                 form={ FORM_ID }
                 size="small"
