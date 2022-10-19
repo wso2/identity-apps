@@ -22,6 +22,7 @@ import { store } from "../../core";
 import useRequest, { RequestResultInterface } from "../../core/hooks/use-request";
 import {
     AddOrganizationInterface,
+    BreadcrumbList,
     OrganizationInterface,
     OrganizationListInterface,
     OrganizationPatchData,
@@ -259,7 +260,7 @@ export const deleteOrganization = (id: string): Promise<string> => {
  * @param currentOrganizationId - Current Organization Id
  * @param applicationId - ID of the application to be shared
  * @param organizationIds - ID of the organization which the app needs to be shared with
- * 
+ *
  * @returns a promise containing the response
  */
 export const shareApplication = (
@@ -368,4 +369,22 @@ export const useGetUserSuperOrganization = (): RequestResultInterface<Organizati
     };
 
     return useRequest<OrganizationInterface, Error>(requestConfig);
+};
+
+/**
+ * Fetches the organization breadcrumb.
+ *
+ * @returns The breadcrumb list of organizations.
+ */
+export const useGetOrganizationBreadCrumb = (): RequestResultInterface<BreadcrumbList, Error> => {
+    const requestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: store.getState().config.endpoints.breadcrumb
+    };
+
+    return useRequest<BreadcrumbList, Error>(requestConfig);
 };

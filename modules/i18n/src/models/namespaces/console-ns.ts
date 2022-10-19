@@ -2514,6 +2514,8 @@ export interface ConsoleNS {
                         placeholder: string;
                     };
                     emptyList: string;
+                    subOrganizations: string;
+                    goBack: string;
                 }
             };
             users: {

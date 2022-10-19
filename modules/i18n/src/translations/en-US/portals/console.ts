@@ -8282,9 +8282,11 @@ export const console: ConsoleNS = {
                 subTitle: "Create and manage organizations.",
                 switching: {
                     emptyList: "There is no organization to show.",
+                    goBack: "Go back",
                     search: {
                         placeholder: "Search by Name"
-                    }
+                    },
+                    subOrganizations: "Suborganizations"
                 },
                 title: "Organizations"
             },
