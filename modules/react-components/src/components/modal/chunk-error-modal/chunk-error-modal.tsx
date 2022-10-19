@@ -43,7 +43,7 @@ export const ChunkErrorModal: FunctionComponent<ChunkModalPropsInterface> = (
         heading,
         description,
         primaryActionText,
-        [ "data-componentid" ]: componentId,
+        [ "data-componentid" ]: componentId
     } = props;
 
     const [ showModal, setShowModal ] = useState(false);

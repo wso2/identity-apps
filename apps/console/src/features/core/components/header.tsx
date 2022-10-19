@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -18,7 +18,7 @@
 
 import { hasRequiredScopes, resolveAppLogoFilePath } from "@wso2is/core/helpers";
 import { AnnouncementBannerInterface, ProfileInfoInterface } from "@wso2is/core/models";
-import { LocalStorageUtils, CommonUtils as ReusableCommonUtils } from "@wso2is/core/utils";
+import { LocalStorageUtils, CommonUtils as ReusableCommonUtils, StringUtils } from "@wso2is/core/utils";
 import {
     Announcement,
     AppSwitcher,
@@ -78,8 +78,8 @@ export interface HeaderSubPanelItemInterface {
 /**
  * Implementation of the Reusable Header component.
  *
- * @param {HeaderPropsInterface} props - Props injected to the component.
- * @return {React.ReactElement}
+ * @param props - Props injected to the component.
+ * @returns react element containing the Reusable Header component.
  */
 export const Header: FunctionComponent<HeaderPropsInterface> = (
     props: HeaderPropsInterface
@@ -221,7 +221,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     /**
      * Renders the app switcher dropdown.
      *
-     * @return {React.ReactElement}
+     * @returns The app switcher dropdown.
      */
     const renderAppSwitcher = (): ReactElement => {
 
@@ -276,9 +276,9 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     /**
      * Renders the sub header panel items merging extended ones.
      *
-     * @param {HeaderSubPanelItemInterface["floated"]} floated - Floated direction.
+     * @param floated - Floated direction.
      *
-     * @return {React.ReactElement}
+     * @returns The sub header panel items.
      */
     const renderSubHeaderPanelItems = (floated: HeaderSubPanelItemInterface[ "floated" ]): ReactElement => {
 
@@ -391,7 +391,15 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                             image={
                                 resolveAppLogoFilePath(window[ "AppUtils" ].getConfig().ui.appLogoPath,
                                     `${ window[ "AppUtils" ].getConfig().clientOrigin }/` +
-                                    `${ window[ "AppUtils" ].getConfig().appBase }/libs/themes/` +
+                                    `${
+                                        StringUtils.removeSlashesFromPath(
+                                            window[ "AppUtils" ].getConfig().appBase
+                                        ) !== ""
+                                            ? StringUtils.removeSlashesFromPath(
+                                                window[ "AppUtils" ].getConfig().appBase
+                                            ) + "/"
+                                            : ""
+                                    }libs/themes/` +
                                     config.ui.theme.name)
                             }
                         />
@@ -423,6 +431,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             }
             fluid={ fluid }
             isProfileInfoLoading={ isProfileInfoLoading }
+            isPrivilegedUser={ isPrivilegedUser }
             userDropdownLinks={
                 compact([
                     !commonConfig?.header?.renderAppSwitcherAsDropdown && {

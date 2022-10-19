@@ -24,6 +24,6 @@ const log = console.log;
 log("Post install script started.....");
 
 // Run theme content copying to source script.
-execSync("npm run copy:themes:src");
+execSync("pnpm copy:themes:src");
 
 log("\nFinishing up the post install script.....");

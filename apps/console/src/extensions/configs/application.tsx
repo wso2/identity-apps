@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -18,13 +18,12 @@
 
 import { ReactElement, ReactNode } from "react";
 import { ApplicationConfig } from "./models";
-import { ApplicationTabTypes } from "../../features/applications";
 import {
     ExtendedClaimInterface,
     ExtendedExternalClaimInterface,
     SelectedDialectInterface
 } from "../../features/applications/components/settings";
-import { ApplicationInterface } from "../../features/applications";
+import { ApplicationInterface, ApplicationTabTypes } from "../../features/applications/models";
 
 export const applicationConfig: ApplicationConfig = {
     advancedConfigurations: {
@@ -32,11 +31,6 @@ export const applicationConfig: ApplicationConfig = {
         showMyAccount: false,
         showReturnAuthenticatedIdPs: true,
         showSaaS: true
-    },
-    generalSettings: {
-        getFieldReadOnlyStatus: (application: ApplicationInterface, fieldName: string): boolean => {
-            return false;
-        }
     },
     attributeSettings: {
         advancedAttributeSettings: {
@@ -56,8 +50,7 @@ export const applicationConfig: ApplicationConfig = {
                 return claims;
             },
             showAttributePlaceholderTitle: false,
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            showShareAttributesHint: (selectedDialect: SelectedDialectInterface): boolean => {
+            showShareAttributesHint: (_selectedDialect: SelectedDialectInterface): boolean => {
                 return true;
             }
         },
@@ -74,7 +67,7 @@ export const applicationConfig: ApplicationConfig = {
             return null;
         },
         // TODO: Move the default to the usage
-        getOveriddenTab: (_clientId: string, _tabName: ApplicationTabTypes, 
+        getOveriddenTab: (_clientId: string, _tabName: ApplicationTabTypes,
             defaultComponent: ReactElement, _appName: string, _appId: string, _tenantDomain: string) => {
             return defaultComponent;
         },
@@ -84,26 +77,43 @@ export const applicationConfig: ApplicationConfig = {
         getOverriddenImage: (_clientId: string, _tenantDomain: string) => {
             return null;
         },
+        getStrongAuthenticationFlowTabIndex: (
+            _clientId: string,
+            _tenantDomain: string,
+            templateId: string,
+            customApplicationTemplateId: string
+        ): number => {
+            if (templateId === customApplicationTemplateId) {
+                return 3; // For apps built on Custom Application Templates
+            } else {
+                return 4; // Anything else
+            }
+        },
+        getTabPanelReadOnlyStatus: (_tabPanelName: string, _applicationName: ApplicationInterface): boolean => {
+            return false;
+        },
         isTabEnabledForApp: (_clientId: string, _tabType: ApplicationTabTypes, _tenantDomain: string): boolean => {
             return true;
         },
         renderHelpPanelItems: (): ReactNode => {
             return null;
         },
-        showProvisioningSettings: true,
-        showDangerZone: (application: ApplicationInterface): boolean => {
+        showApplicationShare: true,
+        showDangerZone: (_application: ApplicationInterface): boolean => {
             return true;
         },
-        showDeleteButton: (application: ApplicationInterface): boolean => {
+        showDeleteButton: (_application: ApplicationInterface): boolean => {
             return true;
         },
-        getTabPanelReadOnlyStatus: (tabPanelName: string, applicationName: ApplicationInterface): boolean => {
-            return false;
-        },
-        showApplicationShare: true
+        showProvisioningSettings: true
     },
     excludeIdentityClaims: false,
     excludeSubjectClaim: false,
+    generalSettings: {
+        getFieldReadOnlyStatus: (_application: ApplicationInterface, _fieldName: string): boolean => {
+            return false;
+        }
+    },
     inboundOIDCForm: {
         disabledGrantTypes: {
             "custom-application": []
@@ -124,6 +134,9 @@ export const applicationConfig: ApplicationConfig = {
         showApplicationQualifier: true,
         showAttributeConsumingServiceIndex: true,
         showQueryRequestProfile: true
+    },
+    marketingConsent: {
+        getBannerComponent: (): ReactElement => null
     },
     signInMethod: {
         authenticatorSelection: {

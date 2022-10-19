@@ -17,7 +17,6 @@
  */
 
 import { AccessControlConstants, Show } from "@wso2is/access-control";
-import { getUserStoreList } from "@wso2is/core/api";
 import { AlertInterface, AlertLevels, RolesInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -44,6 +43,7 @@ import {
 } from "../../core";
 import { OrganizationUtils } from "../../organizations/utils";
 import { UserStorePostData } from "../../userstores";
+import { getUserStoreList } from "../../userstores/api";
 import { deleteGroupById, getGroupList, searchGroupList } from "../api";
 import { GroupList } from "../components";
 import { CreateGroupWizard } from "../components/wizard";
@@ -202,9 +202,9 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
         setUserStore(storeOptions[ 0 ].value);
 
         if (OrganizationUtils.isCurrentOrganizationRoot()) {
-            getUserStoreList(store.getState().config.endpoints.userStores)
+            getUserStoreList()
                 .then((response) => {
-                    if (storeOptions === []) {
+                    if (storeOptions.length === 0) {
                         storeOptions.push(storeOption);
                     }
 

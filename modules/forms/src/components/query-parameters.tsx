@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -74,11 +74,11 @@ export const QueryParameters: FunctionComponent<QueryParametersPropsInterface> =
 
     /**
      * Trigger provided onChange handler with provided query parameters.
-     * 
+     *
      * @param queryParams QueryParameters.
-     * @param onChange onChange handler. 
+     * @param onChange onChange handler.
      */
-    const fireOnChangeEvent = (queryParams: QueryParameter[], onChange: (event: React.ChangeEvent<HTMLInputElement>) 
+    const fireOnChangeEvent = (queryParams: QueryParameter[], onChange: (event: React.ChangeEvent<HTMLInputElement>)
         => void) => {
 
         onChange(
@@ -92,10 +92,10 @@ export const QueryParameters: FunctionComponent<QueryParametersPropsInterface> =
 
     /**
      * Update input field values for query parameter.
-     * 
+     *
      * @param queryParam QueryParameter.
      */
-    const updateQueryParameterInputFields = (queryParam: QueryParameter) => {
+    const updateQueryParameterInputFields = (queryParam: QueryParameter): void => {
         setQueryParamName(queryParam?.name);
         setQueryParamValue(queryParam?.value);
     };
@@ -115,7 +115,7 @@ export const QueryParameters: FunctionComponent<QueryParametersPropsInterface> =
      * Called when `queryParams` is changed.
      */
     useEffect(() => {
-        
+
         fireOnChangeEvent(queryParams, onChange);
     }, [ queryParams ]);
 
@@ -178,12 +178,12 @@ export const QueryParameters: FunctionComponent<QueryParametersPropsInterface> =
         });
     };
 
-    const handleLabelRemove = (queryParameter: string) => {
-        
+    const handleLabelRemove = (queryParameter: string): void => {
+
         if (isEmpty(queryParameter)) {
             return;
         }
-        
+
         setQueryParams(filter(queryParams, queryParam => !isEqual(queryParam,
             buildQueryParameter(queryParameter))));
     };

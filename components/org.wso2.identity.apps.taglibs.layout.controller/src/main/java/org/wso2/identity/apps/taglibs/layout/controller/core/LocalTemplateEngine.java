@@ -79,7 +79,7 @@ public class LocalTemplateEngine implements TemplateEngine {
     }
 
     /**
-     * Get the compiled layout file as an object
+     * Get the compiled layout file as an object.
      *
      * @return Compiled layout will be return
      */
@@ -89,7 +89,7 @@ public class LocalTemplateEngine implements TemplateEngine {
     }
 
     /**
-     * Get the executor which is used to execute the compiled layout
+     * Get the executor which is used to execute the compiled layout.
      *
      * @return Layout executor will return
      */

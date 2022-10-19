@@ -16,10 +16,14 @@
  * under the License.
  */
 
+import {  FunctionComponent, SVGProps } from "react";
 import { ReactComponent as DocumentIcon } from "../../../themes/default/assets/images/icons/document-icon.svg";
 import { ReactComponent as GearsIcon } from "../../../themes/default/assets/images/icons/gears-icon.svg";
 
-export const getOIDCScopeWizardStepIcons = () => {
+export const getOIDCScopeWizardStepIcons = (): {
+    claimConfig: FunctionComponent<SVGProps<SVGSVGElement>>;
+    general: FunctionComponent<SVGProps<SVGSVGElement>>;
+} => {
 
     return {
         claimConfig: GearsIcon,

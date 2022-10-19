@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -50,7 +50,7 @@ export interface AccessControlShowInterface {
 /**
  * Show component which will render child elements based on the permissions received.
  *
- * @param props props required for permissions based rendering.
+ * @param props - props required for permissions based rendering.
  * @returns permission matched child elements
  */
 export const Show: FunctionComponent<PropsWithChildren<AccessControlShowInterface>> = (

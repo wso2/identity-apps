@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -33,7 +33,7 @@ export interface AvatarProps extends TestableComponentInterface {
     bordered?: boolean;
     className?: string;
     floated?: "left" | "right";
-    image?: React.ReactNode;
+    image?: React.ReactNode | Promise<string>;
     inline?: boolean;
     isLoading?: boolean;
     label?: string;
@@ -44,7 +44,7 @@ export interface AvatarProps extends TestableComponentInterface {
     showTopLabel?: boolean;
     size?: AvatarSizes;
     spaced?: "left" | "right";
-    style?: object;
+    style?: Record<string, unknown>;
     transparent?: boolean;
 }
 
@@ -56,8 +56,8 @@ export type AvatarSizes = SemanticSIZES | "little";
 /**
  * Avatar component.
  *
- * @param {React.PropsWithChildren<AvatarProps>} props - Props passed in to the Avatar component.
- * @return {JSX.Element}
+ * @param props - Props passed in to the Avatar component.
+ * @returns Avatar component.
  */
 export const Avatar: React.FunctionComponent<AvatarProps> = (props: AvatarProps): JSX.Element => {
     const {
@@ -122,7 +122,7 @@ export const Avatar: React.FunctionComponent<AvatarProps> = (props: AvatarProps)
      * If the name only has one word, then only a single initial
      * will be generated. i.e For "Brion", "B" will be generated.
      *
-     * @return {string}
+     * @returns Generated initials.
      */
     const generateInitials = (): string => {
         // App avatar only requires one letter.

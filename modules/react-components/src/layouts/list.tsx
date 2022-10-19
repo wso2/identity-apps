@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -49,6 +49,14 @@ export interface ListLayoutPropsInterface extends PaginationProps, IdentifiableC
      */
     className?: string;
     /**
+     * Disables Left action panel component.
+     */
+    disableLeftActionPanel?: boolean;
+    /**
+     * Disables Right action panel component.
+     */
+    disableRightActionPanel?: boolean;
+    /**
      * Left action panel component.
      */
     leftActionPanel?: ReactNode;
@@ -62,19 +70,19 @@ export interface ListLayoutPropsInterface extends PaginationProps, IdentifiableC
     minimalPagination?: boolean;
     /**
      * Callback to be fired on page number change.
-     * @param {React.MouseEvent<HTMLAnchorElement, MouseEvent>} event - Event.
-     * @param {PaginationProps} data - Pagination data.
+     * @param event - Mouse event.
+     * @param data - Pagination data.
      */
     onPageChange: (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>, data: PaginationProps) => void;
     /**
      * Callback to be fired when the sort strategy is changed.
-     * @param {React.SyntheticEvent<HTMLElement>} event - Event.
-     * @param {DropdownProps} data - Metadata.
+     * @param event - Synthetic event.
+     * @param data - Metadata.
      */
     onSortStrategyChange?: (event: SyntheticEvent<HTMLElement>, data: DropdownProps) => void;
     /**
      * Callback to be fired when the sort order is changed.
-     * @param {boolean} isAscending - Is the order ascending.
+     * @param isAscending - Is the order ascending.
      */
     onSortOrderChange?: (isAscending: boolean) => void;
     /**
@@ -115,8 +123,8 @@ export interface ListLayoutPropsInterface extends PaginationProps, IdentifiableC
     totalListSize?: number;
     /**
      * Callback for items per page change.
-     * @param {React.SyntheticEvent<HTMLElement>} event - Click event.
-     * @param {DropdownProps} data - Data.
+     * @param event - Click event.
+     * @param data - Data.
      */
     onItemsPerPageDropdownChange?: (event: React.SyntheticEvent<HTMLElement>, data: DropdownProps) => void;
     /**
@@ -128,9 +136,9 @@ export interface ListLayoutPropsInterface extends PaginationProps, IdentifiableC
 /**
  * List layout.
  *
- * @param {React.PropsWithChildren<ListLayoutPropsInterface>} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns React element.
  */
 export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInterface>> = (
     props: PropsWithChildren<ListLayoutPropsInterface>
@@ -141,6 +149,8 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
         advancedSearchPosition,
         children,
         className,
+        disableLeftActionPanel,
+        disableRightActionPanel,
         leftActionPanel,
         minimalPagination,
         onItemsPerPageDropdownChange,
@@ -186,64 +196,82 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
                         >
                             <Grid>
                                 <Grid.Row>
-                                    <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 }>
-                                        <div className="left-aligned actions">
-                                            { advancedSearchPosition === "left" && advancedSearch }
-                                            { leftActionPanel }
-                                        </div>
-                                    </Grid.Column>
-                                    <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 }>
-                                        <div className="actions right-aligned">
-                                            { advancedSearchPosition === "right" && advancedSearch }
-                                            { rightActionPanel }
-                                            {
-                                                sortOptions &&
-                                                sortStrategy &&
-                                                onSortStrategyChange &&
-                                                onSortOrderChange && (
-                                                    <div className="sort-list">
-                                                        <Dropdown
-                                                            onChange={ onSortStrategyChange }
-                                                            options={ sortOptions }
-                                                            placeholder={ "Sort by" }
-                                                            selection
-                                                            value={
-                                                                sortOptions?.length === 1
-                                                                    ? sortOptions[0].value
-                                                                    : sortStrategy.value
-                                                            }
-                                                            disabled={ sortOptions?.length === 1 }
-                                                            data-componentid={ `${ componentId }-sort` }
-                                                            data-testid={ `${ testId }-sort` }
-                                                        />
-                                                        <Button
-                                                            data-tooltip={ 
-                                                                isAscending 
-                                                                    ? "Sort in the descending order" 
-                                                                    : "Sort in the ascending order" 
-                                                            }
-                                                            data-position="top right"
-                                                            data-inverted=""
-                                                            icon
-                                                            onClick={ () => {
-                                                                setIsAscending(!isAscending);
-                                                                onSortOrderChange(!isAscending);
-                                                            } }
-                                                            className="left-aligned-action"
-                                                        >
-                                                            <Icon
-                                                                name={
-                                                                    isAscending
-                                                                        ? "sort amount down"
-                                                                        : "sort amount up"
-                                                                }
-                                                            />
-                                                        </Button>
+                                    { 
+                                        !disableLeftActionPanel
+                                            ? (
+                                                <Grid.Column
+                                                    mobile={ 16 }
+                                                    tablet={ 16 }
+                                                    computer={ disableRightActionPanel ? 16 : 8 }
+                                                >
+                                                    <div className="left-aligned actions">
+                                                        { advancedSearchPosition === "left" && advancedSearch }
+                                                        { leftActionPanel }
                                                     </div>
-                                                )
-                                            }
-                                        </div>
-                                    </Grid.Column>
+                                                </Grid.Column>
+                                            ) : null
+                                    }
+                                    {
+                                        !disableRightActionPanel
+                                            ? (
+                                                <Grid.Column
+                                                    mobile={ 16 }
+                                                    tablet={ 16 }
+                                                    computer={ disableLeftActionPanel ? 16 : 8 }
+                                                >
+                                                    <div className="actions right-aligned">
+                                                        { advancedSearchPosition === "right" && advancedSearch }
+                                                        { rightActionPanel }
+                                                        {
+                                                            sortOptions &&
+                                                            sortStrategy &&
+                                                            onSortStrategyChange &&
+                                                            onSortOrderChange && (
+                                                                <div className="sort-list">
+                                                                    <Dropdown
+                                                                        onChange={ onSortStrategyChange }
+                                                                        options={ sortOptions }
+                                                                        placeholder={ "Sort by" }
+                                                                        selection
+                                                                        value={
+                                                                            sortOptions?.length === 1
+                                                                                ? sortOptions[0].value
+                                                                                : sortStrategy.value
+                                                                        }
+                                                                        disabled={ sortOptions?.length === 1 }
+                                                                        data-componentid={ `${ componentId }-sort` }
+                                                                        data-testid={ `${ testId }-sort` }
+                                                                    />
+                                                                    <Button
+                                                                        data-tooltip={
+                                                                            isAscending
+                                                                                ? "Sort in the descending order"
+                                                                                : "Sort in the ascending order"
+                                                                        }
+                                                                        data-position="top right"
+                                                                        data-inverted=""
+                                                                        icon
+                                                                        onClick={ () => {
+                                                                            setIsAscending(!isAscending);
+                                                                            onSortOrderChange(!isAscending);
+                                                                        } }
+                                                                        className="left-aligned-action"
+                                                                    >
+                                                                        <Icon
+                                                                            name={
+                                                                                isAscending
+                                                                                    ? "sort amount down"
+                                                                                    : "sort amount up"
+                                                                            }
+                                                                        />
+                                                                    </Button>
+                                                                </div>
+                                                            )
+                                                        }
+                                                    </div>
+                                                </Grid.Column>
+                                            ) : null
+                                    }
                                 </Grid.Row>
                             </Grid>
                         </div>
@@ -285,6 +313,8 @@ ListLayout.defaultProps = {
     advancedSearchPosition: "left",
     "data-componentid": "list-layout",
     "data-testid": "list-layout",
+    disableLeftActionPanel: false,
+    disableRightActionPanel: false,
     minimalPagination: true,
     showPagination: false,
     showPaginationPageLimit: true,

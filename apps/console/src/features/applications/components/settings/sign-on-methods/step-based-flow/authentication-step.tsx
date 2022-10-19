@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,12 +19,11 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { EmptyPlaceholder, GenericIcon, Heading, LinkButton } from "@wso2is/react-components";
 import classNames from "classnames";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Card, Checkbox, Form, Icon, Label, Popup, Radio } from "semantic-ui-react";
 import { getGeneralIcons } from "../../../../../core";
 import {
-    AuthenticatorMeta,
     FederatedAuthenticatorInterface,
     GenericAuthenticatorInterface,
     IdentityProviderManagementConstants
@@ -53,9 +52,9 @@ interface AuthenticationStepPropsInterface extends TestableComponentInterface {
     onStepDelete: (stepIndex: number) => void;
     /**
      * Callback for step option authenticator change.
-     * @param {number} stepIndex - Step index.
-     * @param {number} optionIndex - Option Index.
-     * @param {FederatedAuthenticatorInterface} authenticator - Selected authenticator.
+     * @param stepIndex - Step index.
+     * @param optionIndex - Option Index.
+     * @param authenticator - Selected authenticator.
      */
     onStepOptionAuthenticatorChange: (
         stepIndex: number,
@@ -106,9 +105,9 @@ interface AuthenticationStepPropsInterface extends TestableComponentInterface {
 /**
  * Component to render the authentication step.
  *
- * @param {AuthenticationStepPropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns React element.
  */
 export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterface> = (
     props: AuthenticationStepPropsInterface
@@ -153,14 +152,24 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
         });
     }, [ JSON.stringify(step.options) ]);
 
+    const isSubjectIdentifierChecked = useMemo(
+        () => (subjectStepId === (stepIndex + 1)), 
+        [ subjectStepId, stepIndex ]
+    );
+
+    const isAttributeIdentifierChecked = useMemo(
+        () => (attributeStepId === (stepIndex + 1)), 
+        [ attributeStepId, stepIndex ]
+    );
+    
     /**
      * Resolves the authenticator step option.
      *
-     * @param {AuthenticatorInterface} option - Authenticator step option.
-     * @param {number} stepIndex - Index of the step.
-     * @param {number} optionIndex - Index of the option.
+     * @param option - Authenticator step option.
+     * @param stepIndex - Index of the step.
+     * @param optionIndex - Index of the option.
      *
-     * @return {ReactElement}
+     * @returns React element.
      */
     const resolveStepOption = (option: AuthenticatorInterface, stepIndex: number,
         optionIndex: number): ReactElement => {
@@ -229,10 +238,7 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                                         transparent
                                     />
                                     <span data-testid={ `${ testId }-option-name` }>
-                                        {
-                                            AuthenticatorMeta.getAuthenticatorDisplayName(option.authenticator)
-                                        || authenticator.displayName
-                                        }
+                                        { authenticator.displayName }
                                     </span>
                                 </Card.Content>
                             </Card>
@@ -380,8 +386,9 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                                     ".signOnMethod.sections.authenticationFlow.sections" +
                                     ".stepBased.forms.fields.subjectIdentifierFrom.label"
                                 ) }
-                                checked={ subjectStepId === (stepIndex + 1) }
+                                checked={ isSubjectIdentifierChecked }
                                 onChange={ (): void => onSubjectCheckboxChange(stepIndex + 1) }
+                                readOnly={ isSubjectIdentifierChecked }
                             />
                             <Checkbox
                                 label={ t(
@@ -389,8 +396,9 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                                     ".signOnMethod.sections.authenticationFlow.sections" +
                                     ".stepBased.forms.fields.attributesFrom.label"
                                 ) }
-                                checked={ attributeStepId === (stepIndex + 1) }
+                                checked={ isAttributeIdentifierChecked }
                                 onChange={ (): void => onAttributeCheckboxChange(stepIndex + 1) }
+                                readOnly={ isAttributeIdentifierChecked }
                             />
                         </div>
                     )

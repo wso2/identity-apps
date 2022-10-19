@@ -18,7 +18,6 @@
 
 import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
-import { useTranslation } from "react-i18next";
 import { Checkbox, Table, TableProps } from "semantic-ui-react";
 import { ContentLoader } from "../loader";
 import { EmptyPlaceholder } from "../placeholder";

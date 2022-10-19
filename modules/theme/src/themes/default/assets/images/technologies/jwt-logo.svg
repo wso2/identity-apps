@@ -18,7 +18,7 @@
  * under the License.
 -->
 
-<svg xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns" id="jwt-logo" class="icon" height="14" width="14" viewBox="0 0 101 101" version="1.1" xmlns="http://www.w3.org/2000/svg">
+<svg id="jwt-logo" class="icon" height="14" width="14" viewBox="0 0 101 101" version="1.1" xmlns="http://www.w3.org/2000/svg">
     <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
         <g id="jwt_logo" transform="translate(-150.000000, -538.000000)">
             <g id="Group" transform="translate(0.000000, 413.000000)">

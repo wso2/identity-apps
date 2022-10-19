@@ -16,7 +16,6 @@
   ~ under the License.
   --%>
 
-<%@ page import="com.google.gson.Gson" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="java.io.File" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthContextAPIClient" %>
@@ -48,20 +47,9 @@
     if (stat == null || statusMessage == null) {
         String errorKey = request.getParameter(REQUEST_PARAM_ERROR_KEY);
         if (errorKey != null) {
-            String authAPIURL = application.getInitParameter(Constants.AUTHENTICATION_REST_ENDPOINT_URL);
-            if (StringUtils.isBlank(authAPIURL)) {
-                authAPIURL = IdentityUtil.getServerURL(SERVER_AUTH_URL, true, true);
-            }
-            if (!authAPIURL.endsWith("/")) {
-                authAPIURL += "/";
-            }
-            authAPIURL += DATA_AUTH_ERROR_URL + errorKey;
-            String contextProperties = AuthContextAPIClient.getContextProperties(authAPIURL);
-            Gson gson = new Gson();
-            Map<String, Object> parameters = gson.fromJson(contextProperties, Map.class);
-            if (parameters != null) {
-                String statusParam = (String) parameters.get("status");
-                String statusMessageParam = (String) parameters.get("statusMsg");
+            if (request.getParameter(Constants.STATUS) != null) {
+                String statusParam = request.getParameter(Constants.STATUS);
+                String statusMessageParam = request.getParameter(Constants.STATUS_MSG);
                 if (StringUtils.isNotEmpty(statusParam)) {
                     stat = AuthenticationEndpointUtil.customi18n(resourceBundle, statusParam);
                 }
@@ -82,11 +70,11 @@
             stat, statusMessage);
         if (!(Constants.ErrorToi18nMappingConstants.INCORRECT_ERROR_MAPPING_KEY).equals(i18nErrorMapping)) {
             stat = AuthenticationEndpointUtil.customi18n(resourceBundle, stat);
-            statusMessage = AuthenticationEndpointUtil.customi18n(resourceBundle, statusMessage);                  
+            statusMessage = AuthenticationEndpointUtil.customi18n(resourceBundle, statusMessage);
         } else {
             stat = AuthenticationEndpointUtil.i18n(resourceBundle, "authentication.error");
             statusMessage =  AuthenticationEndpointUtil.i18n(resourceBundle,
-                "something.went.wrong.during.authentication");    
+                "something.went.wrong.during.authentication");
         }
     }
     session.invalidate();
@@ -110,7 +98,7 @@
 <!doctype html>
 <html>
 <head>
-    <!-- header -->
+    <%-- header --%>
     <%
         File headerFile = new File(getServletContext().getRealPath("extensions/header.jsp"));
         if (headerFile.exists()) {
@@ -123,7 +111,7 @@
 <body class="login-portal layout authentication-portal-layout">
     <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
         <layout:component componentName="ProductHeader" >
-            <!-- product-title -->
+            <%-- product-title --%>
             <%
                 File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
                 if (productTitleFile.exists()) {
@@ -147,7 +135,7 @@
             </div>
         </layout:component>
         <layout:component componentName="ProductFooter" >
-            <!-- product-footer -->
+            <%-- product-footer --%>
             <%
                 File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
                 if (productFooterFile.exists()) {
@@ -159,7 +147,7 @@
         </layout:component>
     </layout:main>
 
-    <!-- footer -->
+    <%-- footer --%>
     <%
         File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
         if (footerFile.exists()) {

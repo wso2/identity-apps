@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -36,12 +36,13 @@ interface ProvisioningConfigurationFormPropsInterface extends TestableComponentI
     isSubmitting?: boolean;
 }
 
+const FORM_ID: string = "application-provisioning-configuration-form";
+
 /**
  * Provisioning configurations form component.
  *
- * @param {ProvisioningConfigurationFormPropsInterface} props - Props injected to the component.
- *
- * @return {React.ReactElement}
+ * @param props - Props injected to the component.
+ * @returns Functional component.
  */
 export const ProvisioningConfigurationsForm: FunctionComponent<ProvisioningConfigurationFormPropsInterface> = (
     props: ProvisioningConfigurationFormPropsInterface
@@ -64,7 +65,7 @@ export const ProvisioningConfigurationsForm: FunctionComponent<ProvisioningConfi
      * Prepare form values for submitting.
      *
      * @param values - Form values.
-     * @return {any} Sanitized form values.
+     * @returns Sanitized form values.
      */
     const updateConfiguration = (values: any): void => {
         const formData = {
@@ -107,6 +108,7 @@ export const ProvisioningConfigurationsForm: FunctionComponent<ProvisioningConfi
 
     return (
         <Form
+            id={ FORM_ID }
             uncontrolledForm={ false }
             onSubmit={ (values) => {
                 updateConfiguration(values);
@@ -141,6 +143,7 @@ export const ProvisioningConfigurationsForm: FunctionComponent<ProvisioningConfi
                     "userstoreDomain.hint") }
             />
             <Field.Button
+                form={ FORM_ID }
                 size="small"
                 buttonType="primary_btn"
                 ariaLabel="Update button"

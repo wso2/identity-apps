@@ -258,11 +258,8 @@ export const OrganizationEnterpriseAuthenticationProviderCreateWizard: FunctionC
      *
      * @param {OrganizationEnterpriseAuthenticationProviderCreateWizardFormValuesInterface} values - Form values.
      */
-    const onSubmitWizard = async (
-        values: OrganizationEnterpriseAuthenticationProviderCreateWizardFormValuesInterface
-    ): Promise<void> => {
-
-        await identityProviderConfig.overrideTemplate(template);
+    const onSubmitWizard = (values: OrganizationEnterpriseAuthenticationProviderCreateWizardFormValuesInterface
+        ): void => {
 
         const identityProvider: IdentityProviderInterface = { ...template.idp };
 

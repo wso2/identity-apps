@@ -277,9 +277,7 @@ export const FacebookAuthenticationProviderCreateWizard: FunctionComponent<
         *
         * @param {FacebookAuthenticationProviderCreateWizardFormValuesInterface} values - Form values.
         */
-        const onSubmitWizard = async (values: FacebookAuthenticationProviderCreateWizardFormValuesInterface): Promise<void> => {
-
-            await identityProviderConfig.overrideTemplate(template);
+        const onSubmitWizard = (values: FacebookAuthenticationProviderCreateWizardFormValuesInterface): void => {
 
             const identityProvider: IdentityProviderInterface = { ...template.idp };
 

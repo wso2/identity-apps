@@ -36,16 +36,16 @@
         idpAuthenticatorMapping = (Map<String, String>) request
                 .getAttribute(Constants.IDP_AUTHENTICATOR_MAP);
     }
-    
+
     String errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.retry");
     String authenticationFailed = "false";
-    
+
     if (Boolean.parseBoolean(request.getParameter(Constants.AUTH_FAILURE))) {
         authenticationFailed = "true";
-        
+
         if (request.getParameter(Constants.AUTH_FAILURE_MSG) != null) {
             errorMessage = request.getParameter(Constants.AUTH_FAILURE_MSG);
-            
+
             if (errorMessage.equalsIgnoreCase("authentication.fail.message")) {
                 errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.retry");
             }
@@ -60,7 +60,7 @@
 
 <html>
 <head>
-    <!-- header -->
+    <%-- header --%>
     <%
         File headerFile = new File(getServletContext().getRealPath("extensions/header.jsp"));
         if (headerFile.exists()) {
@@ -73,7 +73,7 @@
     <%
         }
     %>
-    
+
     <!--[if lt IE 9]>
     <script src="js/html5shiv.min.js"></script>
     <script src="js/respond.min.js"></script>
@@ -83,7 +83,7 @@
 <body class="login-portal layout email-otp-portal-layout" onload="getLoginDiv()">
     <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
         <layout:component componentName="ProductHeader" >
-            <!-- product-title -->
+            <%-- product-title --%>
             <%
                 File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
                 if (productTitleFile.exists()) {
@@ -99,7 +99,7 @@
         </layout:component>
         <layout:component componentName="MainSection" >
             <div class="ui segment">
-                <!-- page content -->
+                <%-- page content --%>
                 <h2><%=AuthenticationEndpointUtil.i18n(resourceBundle, "enter.email")%>
                 </h2>
                 <div class="ui divider hidden"></div>
@@ -125,7 +125,7 @@
                 <div class="segment-form">
                     <form class="ui large form" id="pin_form" name="pin_form"
                         action="<%=commonauthURL%>" method="POST">
-                        
+
                         <%
                             String loginFailed = request.getParameter("authFailure");
                             if (loginFailed != null && "true".equals(loginFailed)) {
@@ -139,7 +139,7 @@
                                 }
                             }
                         %>
-                        
+
                         <div class="field">
                             <label for="password"></label> <input type="text"
                                                                 id='EMAIL_ADDRESS' name="EMAIL_ADDRESS" size='30'/>
@@ -157,7 +157,7 @@
             </div>
         </layout:component>
         <layout:component componentName="ProductFooter" >
-            <!-- product-footer -->
+            <%-- product-footer --%>
             <%
                 File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
                 if (productFooterFile.exists()) {
@@ -173,7 +173,7 @@
         </layout:component>
     </layout:main>
 
-    <!-- footer -->
+    <%-- footer --%>
     <%
         File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
         if (footerFile.exists()) {
@@ -193,7 +193,7 @@
                             var emailAddress = document
                                     .getElementById("EMAIL_ADDRESS").value;
                             if (emailAddress == "") {
-                                document.getElementById('alertDiv').innerHTML 
+                                document.getElementById('alertDiv').innerHTML
                                     = '<div id="error-msg" class="ui negative message"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "error.enter.email")%></div>'
                                     +'<div class="ui divider hidden"></div>';
                             } else {
@@ -201,7 +201,7 @@
                             }
                         });
                     });
-                
+
 
 
     </script>

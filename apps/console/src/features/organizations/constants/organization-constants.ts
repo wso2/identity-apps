@@ -46,7 +46,8 @@ export class OrganizationManagementConstants {
     public static readonly ROOT_ORGANIZATION: OrganizationInterface = {
         id: this.ROOT_ORGANIZATION_ID,
         name: "Super",
-        ref: ""
+        ref: "",
+        status: "ACTIVE"
     };
 }
 

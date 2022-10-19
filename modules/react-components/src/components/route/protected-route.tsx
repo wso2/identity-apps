@@ -89,6 +89,7 @@ export const ProtectedRoute: FunctionComponent<ProtectedRouteProps> = (
                     <Component { ...props } /> :
                     <Redirect to={ loginPath } />
             }
+            data-componentid={ componentId }
             data-testid={ testId }
             { ...rest }
         />

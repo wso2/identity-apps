@@ -21,8 +21,8 @@
  */
 export class IdentityAppsException extends Error {
 
-    public name: string;
-    public stack: string;
+    public override name: string;
+    public override stack: string;
 
     /**
      * Constructor.

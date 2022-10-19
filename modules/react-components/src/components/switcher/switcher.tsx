@@ -270,6 +270,7 @@ export const Switcher: FC<SwitcherProps> = (props: SwitcherProps): ReactElement 
                 if (disabled) {
                     return (
                         <Popup
+                            key={ index }
                             content={ disabledMessage ?? DEFAULT_DISABLED_MESSAGE }
                             // Why a <div> wrapping the button? Well, buttons doesn't
                             // trigger hovers when they're disabled...

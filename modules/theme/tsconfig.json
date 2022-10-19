@@ -1,4 +1,5 @@
 {
+    "extends": "../../tsconfig.base.json",
     "compilerOptions": {
         "baseUrl": ".",
         "paths": {
@@ -23,6 +24,5 @@
         "**/*.spec.jsx",
         "**/*.spec.ts",
         "**/*.spec.tsx"
-    ],
-    "extends": "../../configs/common.tsconfig.json"
+    ]
 }

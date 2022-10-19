@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -31,18 +31,21 @@ import FacebookLoginSequenceTemplate from "./templates/facebook-login-sequence.j
 import GitHubLoginSequenceTemplate from "./templates/github-login-sequence.json";
 import GoogleLoginSequenceTemplate from "./templates/google-login-sequence.json";
 import MagicLinkSequenceTemplate from "./templates/magic-link-sequence.json";
+import MicrosoftLoginSequenceTemplate from "./templates/microsoft-login-sequence.json";
+import SecondFactorEMAILOTPSequenceTemplate from "./templates/second-factor-email-otp-sequence.json";
 import SecondFactorSMSOTPSequenceTemplate from "./templates/second-factor-sms-otp-sequence.json";
 import SecondFactorTOTPSequenceTemplate from "./templates/second-factor-totp-sequence.json";
 import UsernamelessSequenceTemplate from "./templates/usernameless-login-sequence.json";
 import { AppConstants, EventPublisher, FeatureConfigInterface, history } from "../../../../core";
 import {
     AuthenticatorCreateWizardFactory,
-    AuthenticatorMeta,
     GenericAuthenticatorInterface,
     IdentityProviderManagementConstants,
     IdentityProviderManagementUtils,
     IdentityProviderTemplateInterface
 } from "../../../../identity-providers";
+// eslint-disable-next-line max-len
+import MicrosoftIDPTemplate from "../../../../identity-providers/data/identity-provider-templates/templates/microsoft/microsoft.json";
 import { ApplicationManagementConstants } from "../../../constants";
 import {
     ApplicationInterface,
@@ -90,16 +93,15 @@ interface SignOnMethodsPropsInterface extends SBACInterface<FeatureConfigInterfa
 /**
  * Closure to broadcast the IDP create success to the child component.
  * If this is placed inside the component, it will not initialize properly.
- * @type {null}
  */
 let broadcastIDPCreateSuccessMessage: () => void = null;
 
 /**
  * Configure the different sign on strategies for an application.
  *
- * @param {SignOnMethodsPropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns React element.
  */
 export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
     props: SignOnMethodsPropsInterface
@@ -123,6 +125,8 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
     const [ googleAuthenticators, setGoogleAuthenticators ] = useState<GenericAuthenticatorInterface[]>(undefined);
     const [ gitHubAuthenticators, setGitHubAuthenticators ] = useState<GenericAuthenticatorInterface[]>(undefined);
     const [ facebookAuthenticators, setFacebookAuthenticators ] = useState<GenericAuthenticatorInterface[]>(undefined);
+    const [ microsoftAuthenticators, setMicrosoftAuthenticators ] =
+    useState<GenericAuthenticatorInterface[]>(undefined);
     const [ showMissingSocialAuthenticatorModal, setShowMissingSocialAuthenticatorModal ] = useState<boolean>(false);
     const [ isAuthenticatorsFetchRequestLoading, setIsAuthenticatorsFetchRequestLoading ] = useState<boolean>(true);
     const [
@@ -185,13 +189,13 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
     /**
      * Fetches the list of Authenticators and categorize them.
      *
-     * @param {(all: GenericAuthenticatorInterface[][],
-     *     google: GenericAuthenticatorInterface[]) => void} onSuccess - On Success callback.
+     * @param onSuccess - On Success callback.
      */
     const fetchAndCategorizeAuthenticators = (onSuccess?: (all: GenericAuthenticatorInterface[][],
         google: GenericAuthenticatorInterface[],
         github: GenericAuthenticatorInterface[],
-        facebook: GenericAuthenticatorInterface[]
+        facebook: GenericAuthenticatorInterface[],
+        microsoft: GenericAuthenticatorInterface[]
     ) => void): Promise<void> => {
 
         setIsAuthenticatorsFetchRequestLoading(true);
@@ -202,6 +206,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                 const google: GenericAuthenticatorInterface[] = [];
                 const gitHub: GenericAuthenticatorInterface[] = [];
                 const facebook: GenericAuthenticatorInterface[] = [];
+                const microsoft: GenericAuthenticatorInterface[] = [];
 
                 response[1].filter((authenticator: GenericAuthenticatorInterface) => {
                     if (authenticator.defaultAuthenticator.authenticatorId
@@ -216,18 +221,24 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                         === IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_ID) {
 
                         facebook.push(authenticator);
+                    } else if (authenticator.defaultAuthenticator.authenticatorId
+                        === IdentityProviderManagementConstants.MICROSOFT_AUTHENTICATOR_ID &&
+                        authenticator.description === MicrosoftIDPTemplate.description) {
+
+                        microsoft.push(authenticator);
                     }
                 });
 
                 setGoogleAuthenticators(google);
                 setGitHubAuthenticators(gitHub);
                 setFacebookAuthenticators(facebook);
+                setMicrosoftAuthenticators(microsoft);
                 setAuthenticators(response);
 
                 // Trigger the onsuccess callback and send the responses to the calller.
                 // Reason for this is that the invoker needs the responses ASAP,
                 // but the state update takes time.
-                onSuccess && onSuccess(response, google, gitHub, facebook);
+                onSuccess && onSuccess(response, google, gitHub, facebook, microsoft);
             })
             .finally(() => {
                 setIsAuthenticatorsFetchRequestLoading(false);
@@ -239,7 +250,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
      * If only on step is configured with BasicAuthenticator and the script is default,
      * this function will identify the sequence as a default flow.
      *
-     * @return {boolean}
+     * @returns Sequence is default or not.
      */
     const isDefaultFlowConfiguration = (): boolean => {
 
@@ -258,15 +269,17 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
     /**
      * Handles the login flow select action.
      *
-     * @param {LoginFlowTypes} loginFlow - Selected login flow.
-     * @param {GenericAuthenticatorInterface[]} googleAuthenticators -  Set of configured Google Authenticators.
-     * @param {GenericAuthenticatorInterface[]} gitHubAuthenticators -  Set of configured GutHub Authenticators.
-     * @param {GenericAuthenticatorInterface[]} facebookAuthenticators -  Set of configured Facebook Authenticators.
+     * @param loginFlow - Selected login flow.
+     * @param googleAuthenticators - Set of configured Google Authenticators.
+     * @param gitHubAuthenticators - Set of configured GutHub Authenticators.
+     * @param facebookAuthenticators - Set of configured Facebook Authenticators.
+     * @param microsoftAuthenticators - Set of configured Microsoft Authenticators.
      */
     const handleLoginFlowSelect = (loginFlow: LoginFlowTypes,
         googleAuthenticators: GenericAuthenticatorInterface[],
         gitHubAuthenticators: GenericAuthenticatorInterface[],
-        facebookAuthenticators: GenericAuthenticatorInterface[]): void => {
+        facebookAuthenticators: GenericAuthenticatorInterface[],
+        microsoftAuthenticators: GenericAuthenticatorInterface[]): void => {
 
         if (!loginFlow) {
             setModeratedAuthenticationSequence(authenticationSequence);
@@ -285,6 +298,14 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
             setModeratedAuthenticationSequence({
                 ...authenticationSequence,
                 ...cloneDeep(SecondFactorTOTPSequenceTemplate)
+            });
+        } else if(loginFlow === LoginFlowTypes.SECOND_FACTOR_EMAIL_OTP){
+            eventPublisher.publish("application-sign-in-method-click-add", {
+                type: "second-factor-email-otp"
+            });
+            setModeratedAuthenticationSequence({
+                ...authenticationSequence,
+                ...cloneDeep(SecondFactorEMAILOTPSequenceTemplate)
             });
         } else if(loginFlow === LoginFlowTypes.SECOND_FACTOR_SMS_OTP){
             eventPublisher.publish("application-sign-in-method-click-add", {
@@ -394,6 +415,37 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                         LoginFlowTypes.FACEBOOK_LOGIN)
                 });
             }
+        } else if (loginFlow === LoginFlowTypes.MICROSOFT_LOGIN) {
+            eventPublisher.publish("application-sign-in-method-click-add", {
+                type: "microsoft-login"
+            });
+
+            setSocialDisclaimerModalType(LoginFlowTypes.MICROSOFT_LOGIN);
+
+            // If there are no IDP's with Facebook authenticator, show missing authenticator modal.
+            if (isEmpty(microsoftAuthenticators)) {
+                setShowMissingSocialAuthenticatorModal(true);
+
+                return;
+            }
+
+            // If there are more than 1 IDP's with Facebook authenticator, show authenticator select modal.
+            if (microsoftAuthenticators.length > 1) {
+                // Set the first element as the selected GitHub authenticator.
+                setSelectedSocialAuthenticator(microsoftAuthenticators[0]);
+                setShowDuplicateSocialAuthenticatorSelectionModal(true);
+
+                return;
+            }
+
+            // If there are only 1 IDP's with Facebook authenticator, move on.
+            if (microsoftAuthenticators.length === 1) {
+                setModeratedAuthenticationSequence({
+                    ...authenticationSequence,
+                    ...updateSocialLoginSequenceWithIDPName(microsoftAuthenticators[0].idp,
+                        LoginFlowTypes.MICROSOFT_LOGIN)
+                });
+            }
         } else if (loginFlow === LoginFlowTypes.MAGIC_LINK) {
             eventPublisher.publish("application-sign-in-method-click-add", {
                 type: "magic-link-login"
@@ -412,7 +464,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
      * Updates the predefined google login sequence with the desired IDP name.
      * i.e. Replaces the `<GOOGLE_IDP>`, `<FACEBOOK_IDP>` etc. in the JSON with a properly configured IDP.
      *
-     * @return {AuthenticationSequenceInterface}
+     * @returns AuthenticationSequenceInterface.
      */
     const updateSocialLoginSequenceWithIDPName = (idp: string,
         loginType: LoginFlowTypes): AuthenticationSequenceInterface => {
@@ -429,8 +481,10 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
         } else if (loginType === LoginFlowTypes.FACEBOOK_LOGIN) {
             modifiedSequenceTemplate = cloneDeep(FacebookLoginSequenceTemplate);
             authenticatorType = IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_NAME;
+        } else if (loginType === LoginFlowTypes.MICROSOFT_LOGIN) {
+            modifiedSequenceTemplate = cloneDeep(MicrosoftLoginSequenceTemplate);
+            authenticatorType = IdentityProviderManagementConstants.MICROSOFT_AUTHENTICATOR_NAME;
         }
-
         modifiedSequenceTemplate.steps[0].options.forEach((option) => {
             if (option.authenticator === authenticatorType) {
                 option.idp = idp;
@@ -443,7 +497,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
     /**
      * Shows the missing google authenticator modal.
      *
-     * @return {ReactElement}
+     * @returns React element.
      */
     const renderMissingSocialAuthenticatorModal = (): ReactElement => {
 
@@ -459,6 +513,9 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
         } else if (socialDisclaimerModalType === LoginFlowTypes.FACEBOOK_LOGIN) {
             idpTemplateTypeToTrigger = IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.FACEBOOK;
             authenticatorName = IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_DISPLAY_NAME;
+        } else if (socialDisclaimerModalType === LoginFlowTypes.MICROSOFT_LOGIN) {
+            idpTemplateTypeToTrigger = IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.MICROSOFT;
+            authenticatorName = IdentityProviderManagementConstants.MICROSOFT_AUTHENTICATOR_DISPLAY_NAME;
         } else {
             return null;
         }
@@ -529,7 +586,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
      * Shows a modal to select the IDP when multiple IDP's have the selected
      * social authenticator configured as default.
      *
-     * @return {ReactElement}
+     * @returns React element.
      */
     const renderDuplicateSocialAuthenticatorSelectionModal = (): ReactElement => {
 
@@ -545,6 +602,9 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
         } else if (socialDisclaimerModalType === LoginFlowTypes.FACEBOOK_LOGIN) {
             authenticators = [ ...facebookAuthenticators ];
             authenticatorName = IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_DISPLAY_NAME;
+        } else if (socialDisclaimerModalType === LoginFlowTypes.MICROSOFT_LOGIN) {
+            authenticators = [ ...microsoftAuthenticators ];
+            authenticatorName = IdentityProviderManagementConstants.MICROSOFT_AUTHENTICATOR_DISPLAY_NAME;
         } else {
             return null;
         }
@@ -611,7 +671,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                         {
                             authenticators
                                 .filter((authenticator) => {
-                                    authenticator.name !== IdentityProviderManagementConstants
+                                    return authenticator.name !== IdentityProviderManagementConstants
                                         .BACKUP_CODE_AUTHENTICATOR;
                                 })
                                 .map((authenticator, index) => (
@@ -622,10 +682,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                                         size="tiny"
                                         selected={ selectedSocialAuthenticator?.id === authenticator.id }
                                         image={ authenticator.image }
-                                        label={
-                                            AuthenticatorMeta.getAuthenticatorDisplayName(authenticator.name)
-                                            || authenticator.displayName
-                                        }
+                                        label={ authenticator.displayName }
                                         labelEllipsis={ true }
                                         data-testid={
                                             `${testId}-authenticator-${authenticator.name}`
@@ -658,7 +715,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
     /**
      * Renders the IDP create wizard.
      *
-     * @return {React.ReactElement}
+     * @returns React element.
      */
     const renderIDPCreateWizard = (): ReactElement => {
 
@@ -677,7 +734,8 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                     fetchAndCategorizeAuthenticators((all: GenericAuthenticatorInterface[][],
                         google: GenericAuthenticatorInterface[],
                         github: GenericAuthenticatorInterface[],
-                        facebook: GenericAuthenticatorInterface[]) => {
+                        facebook: GenericAuthenticatorInterface[],
+                        microsoft: GenericAuthenticatorInterface[]) => {
 
                         // Housekeeping...Reset IDP wizard related states.
                         setIDPTemplateTypeToTrigger(undefined);
@@ -689,7 +747,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                         // If the IDP creation is triggered from the landing page, handle the relevant
                         // login flow changes so that we can navigate the user to the customizing page.
                         if (idpCreateWizardTriggerOrigin === "INTERNAL") {
-                            handleLoginFlowSelect(socialDisclaimerModalType, google, github, facebook);
+                            handleLoginFlowSelect(socialDisclaimerModalType, google, github, facebook, microsoft);
                         }
                     }).finally();
                 } }
@@ -716,7 +774,8 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                                     handleLoginFlowSelect(type,
                                         googleAuthenticators,
                                         gitHubAuthenticators,
-                                        facebookAuthenticators);
+                                        facebookAuthenticators,
+                                        microsoftAuthenticators);
                                 } }
                                 data-testid={ `${testId}-landing` }
                             />

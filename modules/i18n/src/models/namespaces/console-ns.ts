@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -494,8 +494,10 @@ export interface ConsoleNS {
                                         actions: {
                                             makeMandatory: string;
                                             makeRequested: string;
+                                            makeScopeRequested: string;
                                             removeMandatory: string;
                                             removeRequested: string;
+                                            removeScopeRequested: string;
                                             subjectDisabledSelection: string;
                                         };
                                         faultyAttributeMapping: string;
@@ -694,6 +696,14 @@ export interface ConsoleNS {
                                                 description: string;
                                                 heading: string;
                                                 warning: string;
+                                            },
+                                            microsoft: {
+                                                description: string;
+                                                heading: string;
+                                            },
+                                            emailOTP: {
+                                                description: string,
+                                                heading: string,
                                             },
                                             smsOTP: {
                                                 description: string;
@@ -961,6 +971,10 @@ export interface ConsoleNS {
                             };
                             certificates: {
                                 disabledPopup: string;
+                                certificateRemoveConfirmation: {
+                                    header: string;
+                                    content: string;
+                                }
                             }
                         };
                     };
@@ -1003,6 +1017,7 @@ export interface ConsoleNS {
                     columns: {
                         actions: string;
                         name: string;
+                        inboundKey: string;
                     };
                     actions: {
                         add: string;
@@ -1017,6 +1032,46 @@ export interface ConsoleNS {
                     title: string;
                     description: string;
                     popup: string;
+                    enable: {
+                        0: string;
+                        1: string;
+                    };
+                    Confirmation: {
+                        enableConfirmation: {
+                            content: string;
+                            heading: string;
+                            message: string;
+                        };
+                        disableConfirmation: {
+                            content: string;
+                            heading: string;
+                            message: string;
+                        };
+                    };
+                    notifications: {
+                        error: {
+                            description: string;
+                            message: string;
+                        };
+                        genericError: {
+                            description: string;
+                            message: string;
+                        };
+                        success: {
+                            description: string;
+                            message: string;
+                        };
+                    };
+                    fetchMyAccountStatus: {
+                        error: {
+                            description: string;
+                            message: string;
+                        },
+                        genericError: {
+                            description: string;
+                            message: string;
+                        },
+                    }
                 };
                 notifications: {
                     addApplication: Notification;
@@ -1231,10 +1286,17 @@ export interface ConsoleNS {
                             tokenLength: {
                                 hint: string;
                                 label: string;
+                                unit: {
+                                    digits: string;
+                                    characters: string;
+                                },
                                 placeholder: string;
                                 validations: {
                                     invalid: string;
-                                    range: string;
+                                    range: {
+                                        digits: string;
+                                        characters: string;
+                                    };
                                     required: string;
                                 };
                             };
@@ -1362,6 +1424,28 @@ export interface ConsoleNS {
                             callbackUrl: FormAttributes;
                             clientId: FormAttributes;
                             clientSecret: FormAttributes;
+                            enableGoogleOneTap: FormAttributes;
+                            AdditionalQueryParameters: FormAttributes;
+                            scopes: {
+                                heading: string;
+                                hint: string;
+                                list: {
+                                    email: {
+                                        description: string;
+                                    },
+                                    openid: {
+                                        description: string;
+                                    },
+                                    profile: {
+                                        description: string;
+                                    }
+                                }
+                            };
+                        };
+                        microsoft: {
+                            callbackUrl: FormAttributes;
+                            clientId: FormAttributes;
+                            clientSecret: FormAttributes;
                             AdditionalQueryParameters: FormAttributes;
                             scopes: {
                                 heading: string;
@@ -1413,6 +1497,7 @@ export interface ConsoleNS {
                         requiredErrorMessage: string;
                         invalidURLErrorMessage: string;
                         invalidQueryParamErrorMessage: string;
+                        invalidScopesErrorMessage: string;
                         customProperties: string;
                     };
                     generalDetails: {
@@ -1554,6 +1639,31 @@ export interface ConsoleNS {
                         }
                     };
                     google?: {
+                        wizardHelp: {
+                            clientId: {
+                                description: string;
+                                heading: string;
+                            };
+                            clientSecret: {
+                                description: string;
+                                heading: string;
+                            };
+                            heading: string;
+                            name: {
+                                idpDescription: string;
+                                connectionDescription: string;
+                                heading: string;
+                            };
+                            preRequisites: {
+                                configureOAuthApps: string;
+                                configureRedirectURL: string;
+                                getCredentials: string;
+                                heading: string;
+                            },
+                            subHeading: string;
+                        }
+                    };
+                    microsoft?: {
                         wizardHelp: {
                             clientId: {
                                 description: string;
@@ -2382,6 +2492,9 @@ export interface ConsoleNS {
                     fetchOrganization: Notification;
                     deleteOrganization: Notification;
                     deleteOrganizationWithSubOrganizationError: string;
+                    disableOrganization: Notification;
+                    disableOrganizationWithSubOrganizationError: string;
+                    enableOrganization: Notification;
                     updateOrganization: Notification;
                     updateOrganizationAttributes: Notification;
                     addOrganization: Notification;
@@ -2417,6 +2530,11 @@ export interface ConsoleNS {
                     dangerZone: {
                         title: string;
                         subHeader: string;
+                        disableOrganization: {
+                            enableActionTitle: string;
+                            disableActionTitle: string;
+                            subheader: string;
+                        }
                     },
                     attributes: {
                         hint: string;
@@ -2452,6 +2570,8 @@ export interface ConsoleNS {
                         placeholder: string;
                     };
                     emptyList: string;
+                    subOrganizations: string;
+                    goBack: string;
                 }
             };
             users: {
@@ -2579,6 +2699,8 @@ export interface ConsoleNS {
                     addUser: Notification;
                     deleteUser: Notification;
                     fetchUsers: Notification;
+                    getAdminRole: Notification;
+                    revokeAdmin: Notification;
                 };
                 placeholders: {
                     emptyList: Placeholder;
@@ -3098,7 +3220,8 @@ export interface ConsoleNS {
                         content: string;
                         header: string;
                         message: string;
-                    }
+                    },
+                    saveChangesButton: string;
                 };
             };
             emailLocale: {
@@ -4331,6 +4454,9 @@ export interface ConsoleNS {
                 deleteUser: {
                     confirmationModal: Confirmation;
                 };
+                revokeAdmin: {
+                    confirmationModal: Confirmation;
+                };
                 disableUser: {
                     confirmationModal: Confirmation;
                 };
@@ -4341,6 +4467,7 @@ export interface ConsoleNS {
                         disableUserZone: DangerZone;
                         lockUserZone: DangerZone;
                         passwordResetZone: DangerZone;
+                        deleteAdminPriviledgeZone: DangerZone;
                     };
                     dateOfBirth: {
                         placeholder: {

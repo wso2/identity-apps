@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -58,7 +58,6 @@ import {
 import { Authenticators } from "./authenticators";
 import { EventPublisher, getEmptyPlaceholderIllustrations } from "../../../../../core";
 import {
-    AuthenticatorMeta,
     GenericAuthenticatorInterface,
     IdentityProviderManagementUtils,
     IdentityProviderTemplateCategoryInterface,
@@ -69,7 +68,7 @@ import { getGeneralIcons } from "../../../../configs";
 import { AuthenticationStepInterface } from "../../../../models";
 
 /**
- * Proptypes for the Add authenticator modal component.
+ * Prop-types for the Add authenticator modal component.
  */
 interface AddAuthenticatorModalPropsInterface extends TestableComponentInterface, ModalProps {
     /**
@@ -127,16 +126,14 @@ interface AddAuthenticatorModalPropsInterface extends TestableComponentInterface
 
 /**
  * Number of cards per row.
- * @type {SemanticWIDTHS}
  */
 const CARDS_PER_ROW: SemanticWIDTHS = 3;
 
 /**
  * Authenticator side panel component.
  *
- * @param {AddAuthenticatorModalPropsInterface} props - Props injected to the component.
- *
- * @return {ReactElement}
+ * @param props - Props injected to the component.
+ * @returns AddAuthenticator Modal component.
  */
 export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalPropsInterface> = (
     props: AddAuthenticatorModalPropsInterface
@@ -206,7 +203,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
     /**
      * Extract Authenticator labels.
      *
-     * @param {GenericAuthenticatorInterface[]} authenticators - Set of authenticators.
+     * @param authenticators - Set of authenticators.
      */
     const extractAuthenticatorLabels = (authenticators: GenericAuthenticatorInterface[]): void => {
 
@@ -226,7 +223,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
     /**
      * Generates the options for the step selector dropdown.
      *
-     * @return {DropdownItemProps[]}
+     * @returns Selector options.
      */
     const generateStepSelectorOptions = (): DropdownItemProps[] => {
 
@@ -246,8 +243,8 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
     /**
      * Handles the authenticator add step onchange event.
      *
-     * @param {React.SyntheticEvent<HTMLElement>} event - Change Event.
-     * @param {string} value - Value of the step.
+     * @param event - Change Event.
+     * @param value - Value of the step.
      */
     const handleAddStepChange = (event: SyntheticEvent<HTMLElement>, { value }: { value: string }): void => {
 
@@ -272,8 +269,8 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
     /**
      * Handles the Authenticator Search input onchange.
      *
-     * @param {React.ChangeEvent<HTMLInputElement>} e - Change event.
-     * @param {string} value - Input value.
+     * @param e - Change event.
+     * @param value - Input value.
      */
     const handleAuthenticatorSearch = (e: ChangeEvent<HTMLInputElement>, { value }: { value: string }): void => {
 
@@ -286,17 +283,16 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
     /**
      * Get search results.
      *
-     * @param {string} query - Search query.
-     * @param {string[]} filterLabels - Filter labels.
-     *
-     * @return {GenericAuthenticatorInterface[]}
+     * @param query - Search query.
+     * @param filterLabels - Filter labels.
+     * @returns Get search results.
      */
     const getSearchResults = (query: string, filterLabels: string[]): GenericAuthenticatorInterface[] => {
 
         /**
          * Checks if any of the filters are matching.
-         * @param {GenericAuthenticatorInterface} authenticator - Authenticator object.
-         * @return {boolean}
+         * @param authenticator - Authenticator object.
+         * @returns Is matched or not.
          */
         const isFiltersMatched = (authenticator: GenericAuthenticatorInterface): boolean => {
 
@@ -314,9 +310,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                 return isFiltersMatched(authenticator);
             }
 
-            const name: string = (AuthenticatorMeta.getAuthenticatorDisplayName(
-                authenticator.defaultAuthenticator?.authenticatorId)
-                || authenticator.displayName)?.toLocaleLowerCase();
+            const name: string = authenticator?.displayName?.toLocaleLowerCase();
 
             if (name.includes(query)
                 || IdentityProviderManagementUtils.getAuthenticatorLabels(authenticator)
@@ -333,7 +327,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
     /**
      * Handles Authenticator filter.
      *
-     * @param {string} label - Selected label.
+     * @param label - Selected label.
      */
     const handleAuthenticatorFilter = (label: string): void => {
 
@@ -352,7 +346,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
 
     /**
      * Renders add new authenticator content inside modal.
-     * @return {React.ReactElement}
+     * @returns Authenticator content.
      */
     const renderAddNewAuthenticatorContent = (): ReactElement => {
 
@@ -442,7 +436,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
 
     /**
      * Render Authenticator selection content inside modal.
-     * @return {React.ReactElement}
+     * @returns Authenticator selection content.
      */
     const renderAuthenticatorSelectionContent = (): ReactElement => (
 
@@ -609,7 +603,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                 open={ isModalOpen }
                 { ...rest }
             >
-                <Modal.Header>{ header }</Modal.Header>
+                <Modal.Header>{ header as ReactNode }</Modal.Header>
                 { showStepSelector && (
                     <Modal.Content className="step-selection-dropdown-container">
                         <>

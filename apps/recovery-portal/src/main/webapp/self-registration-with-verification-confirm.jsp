@@ -19,6 +19,7 @@
 
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="org.wso2.carbon.base.MultitenantConstants" %>
+<%@ page import="org.wso2.carbon.core.SameSiteCookie" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 <%@ page import="org.wso2.carbon.identity.recovery.IdentityRecoveryConstants" %>
 <%@ page import="org.wso2.carbon.identity.base.IdentityRuntimeException" %>
@@ -32,14 +33,16 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.List" %>
 <%@ page import="javax.ws.rs.HttpMethod" %>
-<jsp:directive.include file="includes/localize.jsp"/>
-<jsp:directive.include file="tenant-resolve.jsp"/>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.User" %>
 <%@ page import="org.wso2.carbon.identity.recovery.util.Utils" %>
 <%@ page import="org.wso2.carbon.core.util.SignatureUtil" %>
 <%@ page import="org.json.simple.JSONObject" %>
 <%@ page import="javax.servlet.http.Cookie" %>
 <%@ page import="java.util.Base64" %>
+
+<jsp:directive.include file="includes/localize.jsp"/>
+<jsp:directive.include file="tenant-resolve.jsp"/>
+
 <%
     boolean error = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("error"));
     String errorMsg = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("errorMsg"));
@@ -121,15 +124,10 @@
             cookieValueInJson.put("content", content);
             String signature = Base64.getEncoder().encodeToString(SignatureUtil.doSignature(content));
             cookieValueInJson.put("signature", signature);
-            Cookie cookie = new Cookie(AUTO_LOGIN_COOKIE_NAME,
-                    Base64.getEncoder().encodeToString(cookieValueInJson.toString().getBytes()));
-            cookie.setPath("/");
-            cookie.setSecure(true);
-            cookie.setMaxAge(300);
-            if (StringUtils.isNotBlank(cookieDomain)) {
-                cookie.setDomain(cookieDomain);
-            }
-            response.addCookie(cookie);
+            String cookieValue = Base64.getEncoder().encodeToString(cookieValueInJson.toString().getBytes());
+
+            IdentityManagementEndpointUtil.setCookie(request, response, AUTO_LOGIN_COOKIE_NAME, cookieValue,
+                300, SameSiteCookie.NONE, "/", cookieDomain);
             request.setAttribute("isAutoLoginEnabled", true);
         }
 
@@ -148,7 +146,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <!-- title -->
+        <%-- title --%>
         <%
             File titleFile = new File(getServletContext().getRealPath("extensions/title.jsp"));
             if (titleFile.exists()) {
@@ -171,7 +169,7 @@
 
     <body>
 
-    <!-- header -->
+    <%-- header --%>
     <%
         File headerFile = new File(getServletContext().getRealPath("extensions/header.jsp"));
         if (headerFile.exists()) {
@@ -181,11 +179,11 @@
             <jsp:include page="includes/header.jsp"/>
     <% } %>
 
-    <!-- page content -->
+    <%-- page content --%>
     <div class="container-fluid body-wrapper">
 
         <div class="row">
-            <!-- content -->
+            <%-- content --%>
             <div class="col-xs-12 col-sm-10 col-md-8 col-lg-5 col-centered wr-login">
 
                 <div class="boarder-all ">
@@ -207,7 +205,7 @@
         </div>
     </div>
 
-    <!-- footer -->
+    <%-- footer --%>
     <%
         File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
         if (footerFile.exists()) {

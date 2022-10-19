@@ -1,20 +1,20 @@
 /**
-* Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
-*
-* WSO2 Inc. licenses this file to you under the Apache License,
-* Version 2.0 (the 'License'); you may not use this file except
-* in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing,
-* software distributed under the License is distributed on an
-* 'AS IS' BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-* KIND, either express or implied. See the License for the
-* specific language governing permissions and limitations
-* under the License.
-*/
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 
 import { CertificateManagementConstants } from "@wso2is/core/constants";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
@@ -56,17 +56,9 @@ import {
 } from "../api";
 import { getCertificateIllustrations } from "../configs";
 
-/**
- * @constant
- * @type {string}
- */
-const KEYSTORE = "keystore";
+const KEYSTORE: string = "keystore";
 
-/**
- * @constant
- * @type {string}
- */
-const TRUSTSTORE = "truststore";
+const TRUSTSTORE: string = "truststore";
 
 /**
  * Prop types of the `CertificatesList` component
@@ -123,9 +115,8 @@ interface CertificatesListPropsInterface extends SBACInterface<FeatureConfigInte
 /**
  * This component renders the certificate List.
  *
- * @param {CertificatesListPropsInterface} props - Props injected to the component.
- *
- * @return {React.ReactElement}
+ * @param props - Props injected to the component.
+ * @returns Certificate listing component.
  */
 export const CertificatesList: FunctionComponent<CertificatesListPropsInterface> = (
     props: CertificatesListPropsInterface
@@ -171,7 +162,7 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
     /**
      * Delete a certificate
      *
-     * @param {Certificate} certificate - Deleting certificate.
+     * @param certificate - Deleting certificate.
      */
     const initDelete = (certificate: Certificate): void => {
         retrieveCertificateAlias(certificate.alias, true).then(response => {
@@ -241,8 +232,7 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
     /**
      * Shows the delete confirmation modal.
      *
-     * @return {ReactElement} The delete confirmation modal.
-     *
+     * @returns The delete confirmation modal.
      */
     const showDeleteConfirm = (): ReactElement => {
         const isTenantCertificate: boolean = decodeCertificate(deleteCertificatePem)
@@ -256,8 +246,11 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
                 assertion={ isTenantCertificate ? deleteID : null }
                 assertionHint={
                     (<p>
-                        <Trans i18nKey="console:manage.features.certificates.keystore.confirmation.hint">
-                           Please type <strong>{ { id:deleteID } }</strong> to confirm.
+                        <Trans
+                            i18nKey="console:manage.features.certificates.keystore.confirmation.hint"
+                            i18nOptions={ { id: deleteID } }
+                        >
+                           Please type <strong>{ deleteID }</strong> to confirm.
                         </Trans>
                     </p>)
                 }
@@ -329,8 +322,8 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
      * This converts a PEM-encoded certificate to a
      * binary file and saves it to the disk.
      *
-     * @param {string} name The alias of the certificate.
-     * @param {string} pem The PEM encoded certificate content.
+     * @param name -  The alias of the certificate.
+     * @param pem - The PEM encoded certificate content.
      */
     const exportCertificate = (name: string, pem: string): void => {
         const certificate = decodeCertificate(pem);
@@ -358,9 +351,8 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
     /**
      * Converts a PEM encoded string to a X509 certificate object.
      *
-     * @param {string} pem The PEM encoded certificate content.
-     *
-     * @returns {X509} The X509 Certificate object.
+     * @param pem - The PEM encoded certificate content.
+     * @returns The X509 Certificate object.
      */
     const decodeCertificate = (pem: string): X509 => {
         const pemValue = pem?.split("\n");
@@ -386,8 +378,8 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
     /**
      * This serializes the certificate content to a displayable format.
      *
-     * @param {Certificate} certificate The Certificate object returned by teh API endpoints.
-     * @param {string} pem The PEM encoded certificate content.
+     * @param certificate - The Certificate object returned by teh API endpoints.
+     * @param pem - The PEM encoded certificate content.
      */
     const displayCertificate = (certificate: Certificate, pem: string): void => {
         const cert: X509 = decodeCertificate(pem);
@@ -418,7 +410,7 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
     /**
      * This renders the modal that displays the certificate.
      *
-     * @returns {ReactElement} The certificate modal.
+     * @returns The certificate modal.
      */
     const renderCertificateModal = (): ReactElement => {
         return (
@@ -470,7 +462,7 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
     /**
      * Shows list placeholders.
      *
-     * @return {React.ReactElement}
+     * @returns Placeholders.
      */
     const showPlaceholders = (): ReactElement => {
         // When the search returns empty.
@@ -520,7 +512,7 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
     /**
      * Evaluates the permission based on scopes.
      *
-     * @return {boolean} If permitted or not.
+     * @returns If permitted or not.
      */
     const hasRequiredPermissions = (): boolean => {
         if (type === KEYSTORE
@@ -537,7 +529,7 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
 
     /**
      * Handles certificate view.
-     * @param {Certificate} certificate - Certificate.
+     * @param certificate - Certificate.
      */
     const handleCertificateView = (certificate: Certificate): void => {
         if (type === KEYSTORE) {
@@ -577,7 +569,7 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
 
     /**
      * Handles certificate download.
-     * @param {Certificate} certificate - Certificate.
+     * @param certificate - Certificate.
      */
     const handleCertificateDownload = (certificate: Certificate) => {
         if (type === KEYSTORE) {
@@ -618,7 +610,7 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
     /**
      * Resolves data table columns.
      *
-     * @return {TableColumnInterface[]}
+     * @returns Table columns.
      */
     const resolveTableColumns = (): TableColumnInterface[] => {
         return [
@@ -667,7 +659,7 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
     /**
      * Resolves data table actions.
      *
-     * @return {TableActionsInterface[]}
+     * @returns Table actions.
      */
     const resolveTableActions = (): TableActionsInterface[] => {
         if (!showListItemActions) {

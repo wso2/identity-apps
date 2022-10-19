@@ -16,7 +16,6 @@
 * under the License.
 */
 
-import { getUserStoreList } from "@wso2is/core/api";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -26,6 +25,7 @@ import { Divider, Grid } from "semantic-ui-react";
 import { attributeConfig } from "../../../../../extensions";
 import { AppState, store } from "../../../../core";
 import { UserStoreListItem } from "../../../../userstores";
+import { getUserStoreList } from "../../../../userstores/api";
 
 /**
  * Prop types of `MappedAttributes` component
@@ -80,7 +80,7 @@ export const MappedAttributes: FunctionComponent<MappedAttributesPropsInterface>
                 self: ""
             });
         }
-        getUserStoreList(store.getState().config.endpoints.userStores).then((response) => {
+        getUserStoreList().then((response) => {
             if (hiddenUserStores && hiddenUserStores.length > 0) {
                 response.data.map((store: UserStoreListItem) => {
                     if (hiddenUserStores.length > 0 && !hiddenUserStores.includes(store.name)) {

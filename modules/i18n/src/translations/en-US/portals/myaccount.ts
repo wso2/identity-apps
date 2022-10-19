@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -594,7 +594,7 @@ export const myAccount: MyAccountNS = {
                     "authenticator app for two-factor authentication. If you don't have " +
                     "access to the application you can set up a new authenticator app from here.",
                 deleteHint: "Remove",
-                description: "You can use the authenticator app to get verification codes for " + 
+                description: "You can use the authenticator app to get verification codes for " +
                     "two-factor authentication.",
                 enableHint: "Enable/Disable TOTP Authenticator",
                 heading: "Authenticator App",
@@ -680,14 +680,14 @@ export const myAccount: MyAccountNS = {
                 regenerate: "Regenerate"
             },
             backupCode: {
-                description: "Use backup codes when you don’t have access to your authenticator app. You can " + 
+                description: "Use backup codes when you don’t have access to your authenticator app. You can " +
                     "regenerate new codes if required.",
                 download: {
                     heading: "Backup codes for {{productName}}",
                     info1: "You can only use each backup code once.",
                     info2: "These codes were generated on ",
-                    subHeading: "You can use these backup codes to sign in to {{productName}} when you are " + 
-                        "away from your phone. Keep these backup codes somewhere safe but accessible."  
+                    subHeading: "You can use these backup codes to sign in to {{productName}} when you are " +
+                        "away from your phone. Keep these backup codes somewhere safe but accessible."
                 },
                 heading: "Backup Codes",
                 modals: {
@@ -705,12 +705,12 @@ export const myAccount: MyAccountNS = {
                     heading: "Backup Codes",
                     info: "Each code can only be used once. You can generate new codes at any time to replace these.",
                     regenerate: {
-                        description: "After you generate new codes, your old codes will no longer work. " 
+                        description: "After you generate new codes, your old codes will no longer work. "
                             + "Be sure to save the new codes once they are generated.",
                         heading: "Confirmation"
                     },
                     subHeading: "One-time passcodes that you can use to sign in",
-                    warn: "These codes will appear only once. Be sure to save them now and store " 
+                    warn: "These codes will appear only once. Be sure to save them now and store "
                         + "them somewhere safe but accessible."
                 },
                 notifications: {
@@ -1246,7 +1246,7 @@ export const myAccount: MyAccountNS = {
                         },
                         validations: {
                             empty: "{{fieldName}} is a required field",
-                            invalidFormat: "The format of the {{fieldName}} entered is incorrect"   
+                            invalidFormat: "The format of the {{fieldName}} entered is incorrect"
                         }
                     }
                 },
@@ -1395,6 +1395,15 @@ export const myAccount: MyAccountNS = {
             },
             lastAccessed: "Last accessed {{date}}",
             modals: {
+                terminateActiveUserSessionModal: {
+                    heading: "Terminate Current Active Sessions",
+                    message:
+                        "The second-factor authentication (2FA) option changes will not be applied to your active sessions. We recommend " +
+                        "that you terminate them.",
+                    primaryAction: "Terminate all",
+                    secondaryAction: "Review and terminate"    
+
+                },
                 terminateAllUserSessionsModal: {
                     heading: "Confirmation",
                     message:

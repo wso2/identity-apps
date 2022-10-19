@@ -110,7 +110,8 @@ Use the following command to examine the footprint introduced by the prospective
 :bulb: The analyzer will open in http://localhost:8889
 
 ```shell
-npx lerna run build:analyze --scope @wso2is/console
+cd apps/console
+pnpm build:analyze
 ```
 
 #### Analyze for My Account
@@ -118,7 +119,8 @@ npx lerna run build:analyze --scope @wso2is/console
 :bulb: The analyzer will open in http://localhost:8888
 
 ```shell
-npx lerna run build:analyze --scope @wso2is/myaccount
+cd apps/myaccount
+pnpm build:analyze
 ```
 
 Once you execute the above command, the resulting view will look something like the following.

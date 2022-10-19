@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -25,11 +25,11 @@ import {
     ErrorBoundary,
     LinkButton
 } from "@wso2is/react-components";
-import React, { ErrorInfo, FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Redirect, Route, Switch } from "react-router-dom";
-import { AppState, AppUtils, EventPublisher, PreLoader } from "../features/core";
+import { AppState, AppUtils, PreLoader } from "../features/core";
 import { ProtectedRoute } from "../features/core/components";
 import { getAppLayoutRoutes, getEmptyPlaceholderIllustrations } from "../features/core/configs";
 import { AppConstants } from "../features/core/constants";
@@ -38,17 +38,16 @@ import { AppConstants } from "../features/core/constants";
  * Implementation of the Main app layout skeleton.
  * Used to render all the layouts that's being used inside the app.
  *
- * @return {React.Element}
+ * @returns App Layout.
  */
-export const AppLayout: FunctionComponent<{}> = (): ReactElement => {
+export const AppLayout: FunctionComponent<Record<string, unknown>> = (): ReactElement => {
 
     const { t } = useTranslation();
 
     const [ appRoutes, setAppRoutes ] = useState<RouteInterface[]>(getAppLayoutRoutes());
-    const isCookieConsentBannerEnabled: boolean = useSelector((state: AppState) =>
-        state.config.ui.isCookieConsentBannerEnabled);
-
-    const eventPublisher: EventPublisher = EventPublisher.getInstance();
+    const isCookieConsentBannerEnabled: boolean = useSelector((state: AppState) => {
+        return state.config.ui.isCookieConsentBannerEnabled;
+    });
 
     /**
      * Listen for base name changes and updated the layout routes.

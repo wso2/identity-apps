@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -109,7 +109,7 @@ export const updateConfigurations = (data: UpdateGovernanceConnectorConfigInterf
 /**
  * Retrieve governance connector categories.
  *
- * @returns {Promise<any>} a promise containing the data.
+ * @returns a promise containing the data.
  */
 export const getConnectorCategories = (): Promise<any> => {
     return getData(store.getState().config.endpoints.governanceConnectorCategories);
@@ -118,7 +118,7 @@ export const getConnectorCategories = (): Promise<any> => {
 /**
  * Retrieve governance connector category.
  *
- * @returns {Promise<any>} a promise containing the data.
+ * @returns a promise containing the data.
  */
 export const getConnectorCategory = (categoryId: string): Promise<any> => {
     return getData(store.getState().config.endpoints.governanceConnectorCategories + "/" + categoryId);
@@ -127,10 +127,10 @@ export const getConnectorCategory = (categoryId: string): Promise<any> => {
 /**
  * Update governance connector configurations.
  *
- * @param data request payload
- * @param categoryId ID of the connector category
- * @param connectorId ID of the connector
- * @returns {Promise<any>} a promise containing the response.
+ * @param data - request payload
+ * @param categoryId - ID of the connector category
+ * @param connectorId - ID of the connector
+ * @returns a promise containing the response.
  */
 export const updateGovernanceConnector = (data: UpdateGovernanceConnectorConfigInterface, categoryId: string,
     connectorId: string): Promise<any> => {
@@ -143,8 +143,8 @@ export const updateGovernanceConnector = (data: UpdateGovernanceConnectorConfigI
 /**
  * Get governance connector configurations.
  *
- * @param categoryId ID of the connector category
- * @returns {Promise<any>} a promise containing the response.
+ * @param categoryId - ID of the connector category
+ * @returns a promise containing the response.
  */
 export const getGovernanceConnectors = (categoryId: string): Promise<GovernanceConnectorInterface[]> => {
     const url = store.getState().config.endpoints.governanceConnectorCategories +
@@ -156,7 +156,7 @@ export const getGovernanceConnectors = (categoryId: string): Promise<GovernanceC
 /**
  * Retrieve server configurations.
  *
- * @returns {Promise<any>} a promise containing the response.
+ * @returns a promise containing the response.
  */
 export const getServerConfigurations = (): Promise<any> => {
     return getData(store.getState().config.endpoints.serverConfigurations);
@@ -165,9 +165,9 @@ export const getServerConfigurations = (): Promise<any> => {
 /**
  * Update server configurations.
  *
- * @param data request payload
+ * @param data - request payload
  *
- * @returns {Promise<any>} a promise containing the response.
+ * @returns a promise containing the response.
  */
 export const updateServerConfigurations = (data: UpdateGovernanceConnectorConfigInterface): Promise<any> => {
     return updateConfigurations(data, store.getState().config.endpoints.serverConfigurations);
@@ -176,7 +176,7 @@ export const updateServerConfigurations = (data: UpdateGovernanceConnectorConfig
 /**
  * Retrieve governance connector details.
  *
- * @returns {Promise<any>} a promise containing the data.
+ * @returns a promise containing the data.
  */
 export const getConnectorDetails = (categoryId: string, connectorId: string): Promise<any> => {
     return getData(store.getState().config.endpoints.governanceConnectorCategories + "/" + categoryId +

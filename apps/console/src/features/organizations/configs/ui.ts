@@ -16,8 +16,9 @@
  * under the License.
  */
 
+import {  FunctionComponent, SVGProps } from "react";
 import {
     ReactComponent as LDAPOutlineIcon
 } from "../../../themes/default/assets/images/icons/outline-icons/ldap-outline.svg";
 
-export const OrganizationIcon = LDAPOutlineIcon;
+export const OrganizationIcon: FunctionComponent<SVGProps<SVGSVGElement>> = LDAPOutlineIcon;

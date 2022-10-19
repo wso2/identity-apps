@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import {  FunctionComponent, SVGProps } from "react";
 import { ReactComponent as DocumentIcon } from "../../../themes/default/assets/images/icons/document-icon.svg";
 import {
     ReactComponent as DatabaseOutlineIcon
@@ -33,19 +34,26 @@ import {
     ReactComponent as LDAPUserstoreIllustration
 } from "../../../themes/default/assets/images/illustrations/ldap-illustration.svg";
 
-export const getAddUserstoreWizardStepIcons  = () => {
+export const getAddUserstoreWizardStepIcons  = (): {
+    general: FunctionComponent<SVGProps<SVGSVGElement>>;
+} => {
 
     return {
         general: DocumentIcon
     };
 };
 
-export const getDatabaseAvatarGraphic  = () => {
+export const getDatabaseAvatarGraphic  = (): FunctionComponent<SVGProps<SVGSVGElement>> => {
 
     return DatabaseOutlineIcon;
 };
 
-export const getUserstoreTemplateIllustrations = () => {
+export const getUserstoreTemplateIllustrations = (): {
+    ad: FunctionComponent<SVGProps<SVGSVGElement>>;
+    default: FunctionComponent<SVGProps<SVGSVGElement>>;
+    jdbc: FunctionComponent<SVGProps<SVGSVGElement>>;
+    ldap: FunctionComponent<SVGProps<SVGSVGElement>>;
+} => {
 
     return {
         ad: ActiveDirectoryUserstoreIllustration,
@@ -55,7 +63,11 @@ export const getUserstoreTemplateIllustrations = () => {
     };
 };
 
-export const getTableIcons = () => {
+export const getTableIcons = (): {
+    header: {
+        default: FunctionComponent<SVGProps<SVGSVGElement>>;
+    }
+} => {
 
     return {
         header: {

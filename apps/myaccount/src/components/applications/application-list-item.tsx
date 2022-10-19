@@ -35,7 +35,7 @@ interface ApplicationListItemProps extends TestableComponentInterface {
 /**
  * Application list item component.
  *
- * @return {JSX.Element}
+ * @returns JSX.Element
  */
 export const ApplicationListItem: FunctionComponent<ApplicationListItemProps> = (
     props: ApplicationListItemProps
@@ -81,35 +81,37 @@ export const ApplicationListItem: FunctionComponent<ApplicationListItemProps> = 
                             )
                     }
                 </List.Content>
-                <Item.Content
-                    className={
-                        app.description 
-                            ? "text-content-container" 
-                            : "text-content-container application-text" 
-                    }
-                >
-                    <Item.Header as="a">
-                        <div className="item-header">{ app.name }</div>
+                <Item>
+                    <Item.Content
+                        className="text-content-container app-text"
+                    >
+                        <Item.Header className="app-header">
+                            <div className="item-header">{ app.name }</div>
+                            {
+                                (showFavouriteIcon && app.favourite)
+                                    ? (
+                                        <Icon
+                                            name={
+                                                app.favourite ? "star" : "star outline"
+                                            }
+                                            size="small"
+                                            className="favourite-icon favoured"
+                                        />
+                                    ) : null
+                            }
+                        </Item.Header>
                         {
-                            (showFavouriteIcon && app.favourite)
+                            app.description
                                 ? (
-                                    <Icon
-                                        name={
-                                            app.favourite ? "star" : "star outline"
-                                        }
-                                        size="small"
-                                        className="favourite-icon favoured"
-                                    />
-                                )
-                                : null
+                                    <Item.Meta className="item-description app-description">
+                                        { app.description }
+                                    </Item.Meta>
+                                ) : null
                         }
-                    </Item.Header>
-                    <Item.Meta className="item-description">{ app.description }</Item.Meta>
-                    <Item.Extra>
                         {
                             (app.tags && app.tags.length && app.tags.length > 0)
                                 ? (
-                                    <>
+                                    <Item.Extra>
                                         <Icon name="tag" size="small"/>
                                         {
                                             app.tags.map((tag, index) => {
@@ -120,12 +122,11 @@ export const ApplicationListItem: FunctionComponent<ApplicationListItemProps> = 
                                                 return <span className="tag" key={ index }>, { tag }</span>;
                                             })
                                         }
-                                    </>
-                                )
-                                : null
+                                    </Item.Extra>
+                                ) : null
                         }
-                    </Item.Extra>
-                </Item.Content>
+                    </Item.Content>
+                </Item>
             </Item>
         </Item.Group>
     );

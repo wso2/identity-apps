@@ -88,8 +88,8 @@ import {
 import DummyUser from "../themes/default/assets/images/user.png";
  
 export const UserImage: string = DummyUser;
-export const ConsentedAppIcon = PackageIcon;
-export const DefaultAppIcon = CodeIcon;
+export const ConsentedAppIcon: React.FunctionComponent<React.SVGProps<SVGSVGElement>> = PackageIcon;
+export const DefaultAppIcon: React.FunctionComponent<React.SVGProps<SVGSVGElement>> = CodeIcon;
 
 export const getSidePanelIcons = (): {
     account: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;

@@ -20,10 +20,10 @@
  * Shell script for Jenkins (Post script in the build pipeline):
  *
  * #!/usr/bin/env bash
- * npm i
+ * pnpm i
  *
  * # Update package version to parent pom version
- * npm run update-version -- jenkins=true build=${BUILD_DISPLAY_NAME} pom=${POM_VERSION/-SNAPSHOT/}
+ * pnpm update-version -- jenkins=true build=${BUILD_DISPLAY_NAME} pom=${POM_VERSION/-SNAPSHOT/}
  */
 
 const path = require("path");
@@ -52,7 +52,7 @@ packageJsonContent.version = getProjectVersion();
  */
 fs.writeFileSync(packageJson, JSON.stringify(packageJsonContent, null, 4) + "\n");
 
-execSync("npx lerna version " + getProjectVersion() + " --yes --no-git-tag-version --force-publish && npm i", {
+execSync("pnpm lerna version " + getProjectVersion() + " --yes --no-git-tag-version --force-publish && pnpm install --no-frozen-lockfile", {
 	cwd: path.join(__dirname, "..")
 });
 
@@ -69,7 +69,11 @@ processArgs.map((arg) => {
 	args[argSplit[0]] = argSplit[1];
 });
 
-const packageFiles = ["package.json", "package-lock.json", "lerna.json"];
+const packageFiles = [
+    "package.json",
+    "lerna.json",
+    "pnpm-lock.yaml"
+];
 
 /**
  * Stage changed files

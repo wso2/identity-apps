@@ -42,7 +42,7 @@ export interface ResourceTabPropsInterface extends TabProps, IdentifiableCompone
     /**
      * Callback to set the panes list length.
      */
-    onInitialize?: ({ panesLength:number }) => void;
+    onInitialize?: ({ panesLength }: { panesLength: number }) => void;
     /**
      * Is the tab menu and content attached?
      */

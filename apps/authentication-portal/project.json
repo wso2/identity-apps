@@ -1,0 +1,40 @@
+{
+    "$schema": "../../node_modules/nx/schemas/project-schema.json",
+    "root": "apps/authentication-portal",
+    "sourceRoot": "apps/authentication-portal/src",
+    "projectType": "application",
+    "generators": {},
+    "prefix": "@wso2is",
+    "tags": [],
+    "implicitDependencies": [
+        "theme"
+    ],
+    "targets": {
+        "build": {
+            "executor": "@nrwl/workspace:run-commands",
+            "options": {
+                "commands": [
+                    {
+                        "command": "pnpm build",
+                        "description": "Building Authentication Portal"
+                    }
+                ],
+                "cwd": "apps/authentication-portal",
+                "parallel": false
+            }
+        },
+        "clean": {
+            "executor": "@nrwl/workspace:run-commands",
+            "options": {
+                "commands": [
+                    {
+                        "command": "pnpm clean",
+                        "description": "Cleaning Authentication Portal"
+                    }
+                ],
+                "cwd": "apps/authentication-portal",
+                "parallel": false
+            }
+        }
+    }
+}

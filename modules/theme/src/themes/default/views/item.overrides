@@ -58,11 +58,17 @@
             margin-top: 5px;
             margin-left: 5px;
 
-            &.application-text {
+            &.app-text {
                 margin-top: 0;
                 display: flex;
+                min-height: 65px;
+                justify-content: center;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .header.app-header{
+                display: flex;
                 align-items: center;
-                min-height: 50px;
             }
             .item-header {
                 line-height: initial;
@@ -81,6 +87,10 @@
                 overflow: hidden;
                 text-overflow: ellipsis;
                 min-height: @applicationListItemDescMinWidth;
+
+                    &.app-description {
+                        margin: 2px 0;
+                    }
             }
             .tag {
                 margin: 0;

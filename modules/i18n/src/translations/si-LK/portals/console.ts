@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -583,7 +583,7 @@ export const console: ConsoleNS = {
                             }
                         }
                     },
-                    placeholder: "යෙදුම් නාමයෙන් හෝ සේවාලාභී හැඳුනුම්පතෙන් සොයන්න"
+                    placeholder: "යෙදුම් නාමයෙන්, සේවාලාභී හැඳුනුම්පතෙන්, හෝ යෙදුම් නිකුත් කරන්නාගෙන් සොයන්න"
                 },
                 confirmations: {
                     addSocialLogin: {
@@ -814,7 +814,8 @@ export const console: ConsoleNS = {
                                 attributeComponentHintAlt: "මෙම යෙදුම සමඟ ඔබට බෙදා ගැනීමට අවශ්‍ය පරිශීලක ගුණාංග" +
                                     " කළමනාකරණය කරන්න. <1> ගුණාංග </1> වෙත යාමෙන් ඔබට නව ගුණාංග සහ සිතියම් එකතු කළ " +
                                     "හැකියය",
-                                description: "මෙම යෙදුම සමඟ බෙදා ගැනීමට අවසර දී ඇති පරිශීලක ගුණාංග එකතු කරන්න.",
+                                description: "සමූහගත පරිශීලක ගුණාංග එක් කරන්න, එනම් මෙම යෙදුම සමඟ බෙදා ගැනීමට අවසර දී " +
+                                    "ඇති විෂය පථයන්.",
                                 heading: "පරිශීලක ගුණාංග තේරීම",
                                 mandatoryAttributeHint: "යෙදුම සමඟ බෙදා ගැනීමට අනිවාර්යය වන පරිශීලක ගුණාංග මොනවාදැයි " +
                                     "ලකුණු කරන්න. පුරනය වීමේ දී, පරිශීලකයාගේ පැතිකඩෙහි දැනටමත් සපයා නොමැති නම්, මෙම " +
@@ -833,8 +834,10 @@ export const console: ConsoleNS = {
                                         actions: {
                                             makeMandatory: "අනිවාර්ය කරන්න",
                                             makeRequested: "ඉල්ලීමක් කරන්න",
+                                            makeScopeRequested: "විෂය පථය ඉල්ලා සිටින්න",
                                             removeMandatory: "අනිවාර්ය ඉවත් කරන්න",
                                             removeRequested: "ඉල්ලූ දේ ඉවත් කරන්න",
+                                            removeScopeRequested: "විෂය පථය ඉවත් කරන්න ඉල්ලා ඇත",
                                             subjectDisabledSelection: "මෙම ගුණාංගය අනිවාර්ය වන්නේ " +
                                                 "එය විෂය ගුණාංගය වන බැවිනි."
                                         },
@@ -1181,13 +1184,17 @@ export const console: ConsoleNS = {
                                                     "සත්‍යාපකයක් සමඟ එය භාවිතා කිරීම අනපේක්ෂිත හැසිරීමකට හේතු විය හැක."
 
                                             },
+                                            microsoft: {
+                                                description: "Microsoft සමඟ පුරනය වීමට පරිශීලකයින්ට සක්‍රීය කරන්න.",
+                                                heading: "Microsoft පිවිසුම එක් කරන්න"
+                                            },
                                             totp: {
                                                 description: "කාලය පදනම් කරගත් OTP සමඟ අතිරේක සත්‍යාපන ස්තරය " +
                                                     "සක්‍රීය කරන්න.",
                                                 heading: "TOTP දෙවන සාධකය ලෙස එක් කරන්න"
                                             },
                                             usernameless: {
-                                                description: "පරිශීලකයින්ට ඔවුන්ගේ FIDO2 ආරක්ෂක යතුරක්, ජෛවමිතික හෝ " 
+                                                description: "පරිශීලකයින්ට ඔවුන්ගේ FIDO2 ආරක්ෂක යතුරක්, ජෛවමිතික හෝ "
                                                     + "මුර යතුරු භාවිතයෙන් පුරනය වීමට සබල කරන්න.",
                                                 heading: "ආරක්ෂක යතුර/Biometrics පිවිසුම එක් කරන්න",
                                                 info: "මුරපද රහිත සත්‍යාපනය සමඟින් පුරනය වීමට, " +
@@ -1195,6 +1202,10 @@ export const console: ConsoleNS = {
                                                     "යතුරු හෝ මගේ ගිණුම හරහා ජෛවමිතික ලියාපදිංචි " +
                                                     "කර තිබිය යුතුය."
 
+                                            },
+                                            emailOTP: {
+                                                description: "විද්‍යුත් තැපෑල පදනම් කරගත් OTP සමඟ අතිරේක සත්‍යාපන ස්තරය සක්‍රීය කරන්න.",
+                                                heading: "විද්‍යුත් තැපෑල දෙවන සාධකය ලෙස එක් කරන්න"
                                             },
                                             smsOTP: {
                                                 description: "SMS පදනම් කරගත් OTP සමඟ අතිරේක සත්‍යාපන ස්තරය සක්‍රීය කරන්න.",
@@ -1397,7 +1408,7 @@ export const console: ConsoleNS = {
                                 },
                                 invalidOperationModal: {
                                     header: "මෙහෙයුම වලංගු නැත",
-                                    message: "සහතිකය ඉවත් කිරීමට ඔබ ඉල්ලීම් අත්සන වලංගු කිරීම අක්‍රිය කළ යුතුය. " + 
+                                    message: "සහතිකය ඉවත් කිරීමට ඔබ ඉල්ලීම් අත්සන වලංගු කිරීම අක්‍රිය කළ යුතුය. " +
                                         "ඉල්ලීම හෝ ප්‍රතිචාර අත්සන් කිරීම සක්‍රීය කර ඇත්නම්, අත්සන" +
                                         " සත්‍යාපනය කිරීමට වලංගු සහතිකයක් තිබීම අත්‍යවශ්‍ය වේ."
                                 }
@@ -1939,7 +1950,12 @@ export const console: ConsoleNS = {
                             },
                             certificates: {
                                 disabledPopup: "ඉදිරියට යාමට ඉල්ලීම් අත්සන් වලංගුකරණය සහ තහවුරු කිරීමේ " +
-                                    "සංකේතනය අබල කර ඇති බවට වග බලා ගන්න."
+                                    "සංකේතනය අබල කර ඇති බවට වග බලා ගන්න.",
+                                certificateRemoveConfirmation: {
+                                    header: "වත්මන් සහතිකය ඉවත් කරන්නද?",
+                                    content: "සහතික වර්ගය කිසිවක් නැත ලෙස සැකසීම මෙම යෙදුම සඳහා සපයා ඇති වත්මන් සහතිකය ඉවත් " +
+                                        "කරයි. කල්පනාකාරීව ඉදිරියට යන්න."
+                                }
                             },
                             encryption: {
                                 fields: {
@@ -2322,7 +2338,8 @@ export const console: ConsoleNS = {
                     },
                     columns: {
                         actions: "ක්‍රියා",
-                        name: "නම"
+                        name: "නම",
+                        inboundKey: "අභ්යන්තර යොමුගත යතුර"
                     },
                     labels: {
                         fragment: "ඛණ්ඩක යෙදුම"
@@ -2332,7 +2349,50 @@ export const console: ConsoleNS = {
                     description: "Asgardeo භාවිතා කරන්නන් සඳහා ස්වයං සේවා ද්වාරය",
                     popup: "මගේ ගිණුමට ප්‍රවේශ වීමට සහ ඔවුන්ගේ ගිණුම් කළමනාකරණය කිරීමට" +
                     " ඔබේ පරිශීලකයන් සමඟ මෙම සබැඳිය බෙදා ගන්න.",
-                    title: "මගේ ගිණුම"
+                    title: "මගේ ගිණුම",
+                    enable: {
+                        0: "සක්‍රීය කර ඇත",
+                        1: "ආබාඅක්‍රීය කර ඇතධිතයි"
+                    },
+                    Confirmation: {
+                        enableConfirmation: {
+                            content: "මගේ ගිණුම් ද්වාරය පෙරදසුන් මාදිලියේ ඇති අතර ඔබේ ආයතනය නිෂ්පාදනයට යන විට" +
+                                "එය අබල කිරීමට නිර්දේශ කෙරේ.",
+                            heading: "ඔබට විශ්වාසද?",
+                            message: "මගේ ගිණුම සබල කරන්න."
+                        },
+                        disableConfirmation: {
+                            content: "මගේ ගිණුම් ද්වාරය පෙරදසුන් මාදිලියේ ඇති අතර ඔබේ ආයතනය නිෂ්පාදනයට යන විට " +
+                                "එය අබල කිරීමට නිර්දේශ කෙරේ. මගේ ගිණුම් ද්වාරය අබල කළ විට, ඔබේ සංවිධානයේ " +
+                                "පරිශීලකයින්ට එයට ප්‍රවේශ වීමට නොහැකි වනු ඇත.",
+                            heading: "ඔබට විශ්වාසද?",
+                            message: "මගේ ගිණුම අක්‍රීය කරන්න."
+                        }
+                    },
+                    notifications: {
+                        error: {
+                            description: "{{description}}",
+                            message: "යාවත්කාලීන දෝෂයකි"
+                        },
+                        genericError: {
+                            description: "මගේ ගිණුම යාවත්කාලීන කිරීමට අපොහොසත් විය.",
+                            message: "යම් දෝෂයක් ඇති වී ඇත"
+                        },
+                        success: {
+                            description: "මගේ ගිණුම සාර්ථකව යාවත්කාලීන කරන ලදී.",
+                            message: "යාවත්කාලීන කිරීම සාර්ථකයි"
+                        }
+                    },
+                    fetchMyAccountStatus: {
+                        error: {
+                            description: "{{description}}",
+                            message: "නැවත ලබා ගැනීමේ දෝෂය"
+                        },
+                        genericError: {
+                            description: "මගේ ගිණුම් ද්වාර තත්ත්වය ලබා ගැනීමට නොහැකි විය.",
+                            message: "යම් දෝෂයක් ඇති වී ඇත"
+                        }
+                    }
                 },
                 notifications: {
                     addApplication: {
@@ -5053,7 +5113,8 @@ export const console: ConsoleNS = {
                             "කරුණාකර ප්‍රවේශමෙන් ඉදිරියට යන්න.",
                         header: "ඔයාට විශ්වාස ද?",
                         message: "මෙම ක්‍රියාව ආපසු හැරවිය නොහැකි අතර විෂය පථය හිමිකම් සිතියම්ගත කිරීම ස්ථිරවම මකනු ඇත"
-                    }
+                    },
+                    saveChangesButton: "වෙනස්කම් සුරකින්න"
                 }
             },
             emailLocale: {
@@ -6320,7 +6381,7 @@ export const console: ConsoleNS = {
                             message: "යාවත්කාලීන දෝෂයකි"
                         },
                         genericError: {
-                            description: "OIDC විෂය පථය යාවත්කාලීන කිරීමේදී දෝෂයක් ඇතිවිය.",
+                            description: "{{ scope }} OIDC විෂය පථය යාවත්කාලීන කිරීමේදී දෝෂයක් ඇතිවිය.",
                             message: "යම් දෝෂයක් ඇති වී ඇත"
                         },
                         success: {
@@ -6410,6 +6471,11 @@ export const console: ConsoleNS = {
                     },
                     back: "ආපසු",
                     dangerZone: {
+                        disableOrganization: {
+                            disableActionTitle: "සංවිධානය අක්‍රීය කරන්න",
+                            enableActionTitle: "සංවිධානය සක්‍රීය කරන්න",
+                            subheader: "සංවිධානයක් අක්‍රිය කිරීමෙන් ඔබට සංවිධානයට සම්බන්ධ ප්‍රවේශය අහිමි විය හැක. කල්පනාකාරීව ඉදිරියට යන්න."
+                        },
                         subHeader: "ඔබට මෙම සංවිධානය මැකීමට අවශ්‍ය බව විශ්වාසද?",
                         title: "සංවිධානය මකන්න"
                     },
@@ -6529,6 +6595,36 @@ export const console: ConsoleNS = {
                     },
                     deleteOrganizationWithSubOrganizationError: "{{ organizationName }} සංවිධානයට උප සංවිධාන එකක් හෝ " +
                         "කිහිපයක් ඇති බැවින් එය මකා දැමිය නොහැක.",
+                    disableOrganization: {
+                        error: {
+                            description: "{{description}}",
+                            message: "සංවිධානය අක්‍රිය කිරීමේදී දෝෂයකි"
+                        },
+                        genericError: {
+                            description: "සංවිධානය අක්‍රිය කිරීමේදී දෝෂයක් ඇති විය",
+                            message: "මොකක්හරි වැරැද්දක් වෙලා"
+                        },
+                        success: {
+                            description: "සංවිධානය සාර්ථකව අක්‍රිය කර ඇත",
+                            message: "සංවිධානය සාර්ථකව අක්‍රිය කර ඇත"
+                        }
+                    },
+                    disableOrganizationWithSubOrganizationError: "Organization {{ organizationName }} cannot be " +
+                        "disabled since it has one or more sub organizations.",
+                    enableOrganization: {
+                        error: {
+                            description: "{{description}}",
+                            message: "සංවිධානය සක්‍රීය කිරීමේදී දෝෂයකි"
+                        },
+                        genericError: {
+                            description: "සංවිධානය සක්‍රීය කිරීමේදී දෝෂයක් ඇති විය",
+                            message: "මොකක්හරි වැරැද්දක් වෙලා"
+                        },
+                        success: {
+                            description: "සංවිධානය සාර්ථකව සක්‍රීය කර ඇත",
+                            message: "සංවිධානය සාර්ථකව සක්‍රීය කර ඇත"
+                        }
+                    },
                     fetchOrganization: {
                         error: {
                             description: "{{description}}",
@@ -6599,7 +6695,9 @@ export const console: ConsoleNS = {
                     emptyList: "පෙන්වීමට සංවිධානයක් නැත.",
                     search: {
                         placeholder: "නම අනුව සොයන්න"
-                    }
+                    },
+                    goBack: "ආපසු යන්න",
+                    subOrganizations: "උප සංවිධාන"
                 },
                 title: "ආයතන"
             },
@@ -7308,6 +7406,12 @@ export const console: ConsoleNS = {
                             header: "මුරපදය නැවත සකසන්න",
                             subheader: "ඔබ මුරපදය වෙනස් කළ පසු, පරිශීලකයාට දැනට පවතින මුරපදය භාවිතා කර " +
                                 "කිසිඳු යෙදුමකට ප්‍රවේශ විය නොහැක."
+                        },
+                        deleteAdminPriviledgeZone: {
+                            actionTitle: "වරප්‍රසාද අවලංගු කරන්න",
+                            header: "පරිපාලක වරප්‍රසාද අවලංගු කරන්න",
+                            subheader: "මෙම ක්‍රියාව පරිශීලකයාගේ පරිපාලක වරප්‍රසාද ඉවත් කරයි, " +
+                                "නමුත් පරිශීලකයා දිගටම සංවිධානයේ සිටිනු ඇත."
                         }
                     },
                     dateOfBirth: {
@@ -7684,6 +7788,16 @@ export const console: ConsoleNS = {
                         }
                     }
                 },
+                revokeAdmin: {
+                    confirmationModal: {
+                        assertionHint: "කරුණාකර ඔබගේ ක්‍රියාව තහවුරු කරන්න.",
+                        content: "ඔබ මෙම පරිශීලකයාගේ පරිපාලක වරප්‍රසාද අවලංගු කළහොත්, පරිශීලකයාට Asgardeo " +
+                            "කොන්සෝලයට ඇතුළු වීමට නොහැකි වන අතර පරිපාලක මෙහෙයුම් සිදු කිරීමට නොහැකි වනු " +
+                            "ඇත. කරුණාකර ප්‍රවේශමෙන් ඉදිරියට යන්න.",
+                        header: "ඔබට විශ්වාසද?",
+                        message: "මෙම ක්‍රියාව පරිශීලකයාගේ පරිපාලක වරප්‍රසාද අවලංගු කරයි."
+                    }
+                },
                 updateUser: {
                     groups: {
                         addGroupsModal: {
@@ -8020,6 +8134,34 @@ export const console: ConsoleNS = {
                         success: {
                             description: "පරිශීලකයින් සාර්ථකව ලබා ගන්නා ලදි.",
                             message: "පරිශීලකයින් ලබා ගැනීම සාර්ථකයි"
+                        }
+                    },
+                    getAdminRole: {
+                        error: {
+                            description: "{{description}}",
+                            message: "පරිපාලක භූමිකාව ලබා ගැනීමේ දෝෂයකි"
+                        },
+                        genericError: {
+                            description: "පරිපාලක භූමිකාවන් ලබා ගැනීමට නොහැකි විය.",
+                            message: "යම් දෝෂයක් ඇති වී ඇත"
+                        },
+                        success: {
+                            description: "පරිපාලක භූමිකාවන් සාර්ථකව ලබා ගන්නා ලදී.",
+                            message: "භූමිකාව ලබා ගැනීම සාර්ථකයි"
+                        }
+                    },
+                    revokeAdmin: {
+                        error: {
+                            description: "{{description}}",
+                            message: "පරිපාලක වරප්‍රසාද අවලංගු කිරීමේ දෝෂයකි"
+                        },
+                        genericError: {
+                            description: "පරිපාලක වරප්‍රසාද අවලංගු කිරීමට නොහැකි විය.",
+                            message: "යම් දෝෂයක් ඇති වී ඇත"
+                        },
+                        success: {
+                            description: "පරිපාලක වරප්‍රසාද සාර්ථකව අවලංගු කරන ලදී.",
+                            message: "වරප්‍රසාද සාර්ථකව අවලංගු කරන ලදී"
                         }
                     }
                 },

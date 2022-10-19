@@ -17,7 +17,6 @@
  */
 
 import { AccessControlConstants, Show } from "@wso2is/access-control";
-import { getRolesList } from "@wso2is/core/api";
 import { AlertLevels, RoleListInterface, RolesInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Heading, Hint } from "@wso2is/react-components";
@@ -32,6 +31,7 @@ import { AppState } from "../../../../core";
 import { getOrganizationRoles } from "../../../../organizations/api";
 import { OrganizationResponseInterface } from "../../../../organizations/models";
 import { OrganizationUtils } from "../../../../organizations/utils";
+import { getRolesList } from "../../../../roles/api";
 import { updateIDPRoleMappings } from "../../../api";
 import { IdentityProviderRolesInterface } from "../../../models";
 import { handleGetRoleListError, handleUpdateIDPRoleMappingsError } from "../../utils";

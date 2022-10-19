@@ -19,6 +19,7 @@
 
 <%@ page import="org.apache.commons.collections.map.HashedMap" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
+<%@ page import="org.wso2.carbon.core.SameSiteCookie" %>
 <%@ page import="org.wso2.carbon.core.util.SignatureUtil" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementServiceUtil" %>
@@ -41,6 +42,7 @@
 <%@ page import="java.util.Base64" %>
 <%@ page import="org.wso2.carbon.identity.core.util.IdentityUtil" %>
 <%@ page import="javax.servlet.http.Cookie" %>
+
 <jsp:directive.include file="includes/localize.jsp"/>
 <jsp:directive.include file="tenant-resolve.jsp"/>
 
@@ -49,7 +51,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- title -->
+    <%-- title --%>
     <%
         File titleFile = new File(getServletContext().getRealPath("extensions/title.jsp"));
         if (titleFile.exists()) {
@@ -70,7 +72,7 @@
     <![endif]-->
 </head>
 <body>
-    <!-- header -->
+    <%-- header --%>
     <%
         File headerFile = new File(getServletContext().getRealPath("extensions/header.jsp"));
         if (headerFile.exists()) {
@@ -80,7 +82,7 @@
     <jsp:include page="includes/header.jsp"/>
     <% } %>
 
-    <!-- page content -->
+    <%-- page content --%>
     <div class="container-fluid body-wrapper">
 
         <%
@@ -95,7 +97,7 @@
             PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
             Boolean isAutoLoginEnable = preferenceRetrievalClient.checkAutoLoginAfterSelfRegistrationEnabled(tenantDomain);
             Boolean isSelfRegistrationWithVerificationEnabled = preferenceRetrievalClient.checkSelfRegistrationLockOnCreation(tenantDomain);
-    
+
             boolean isSelfRegistrationWithVerification =
                     Boolean.parseBoolean(request.getParameter("isSelfRegistrationWithVerification"));
 
@@ -247,20 +249,15 @@
                         contentValueInJson.put("domain", cookieDomain);
                     }
                     String content = contentValueInJson.toString();
-        
+
                     JSONObject cookieValueInJson = new JSONObject();
                     cookieValueInJson.put("content", content);
                     String signature = Base64.getEncoder().encodeToString(SignatureUtil.doSignature(content));
                     cookieValueInJson.put("signature", signature);
-                    Cookie cookie = new Cookie(AUTO_LOGIN_COOKIE_NAME,
-                            Base64.getEncoder().encodeToString(cookieValueInJson.toString().getBytes()));
-                    cookie.setPath("/");
-                    cookie.setSecure(true);
-                    cookie.setMaxAge(300);
-                    if (StringUtils.isNotBlank(cookieDomain)) {
-                        cookie.setDomain(cookieDomain);
-                    }
-                    response.addCookie(cookie);
+                    String cookieValue = Base64.getEncoder().encodeToString(cookieValueInJson.toString().getBytes());
+
+                    IdentityManagementEndpointUtil.setCookie(request, response, AUTO_LOGIN_COOKIE_NAME, cookieValue,
+                        300, SameSiteCookie.NONE, "/", cookieDomain);
                     request.setAttribute("isAutoLoginEnabled", true);
                 }
                 request.setAttribute("callback", callback);
@@ -291,7 +288,7 @@
     </div>
 
 
-    <!-- footer -->
+    <%-- footer --%>
     <%
         File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
         if (footerFile.exists()) {

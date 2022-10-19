@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { getAllExternalClaims, getAllLocalClaims } from "@wso2is/core/api";
 import { AlertLevels, Claim, ExternalClaim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
@@ -26,6 +25,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
 import { AddOIDCScopeForm } from "./add-oidc-scope-form";
+import { getAllExternalClaims, getAllLocalClaims } from "../../../claims/api";
 import { AttributeSelectList } from "../../../core";
 import { createOIDCScope } from "../../api";
 import { getOIDCScopeWizardStepIcons } from "../../configs";

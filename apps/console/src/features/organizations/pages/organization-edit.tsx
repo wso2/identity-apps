@@ -17,8 +17,7 @@
  */
 
 import { isFeatureEnabled } from "@wso2is/core/helpers";
-import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
-import { AlertLevels } from "@wso2is/core/src/models";
+import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { GenericIcon, PageLayout } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useCallback, useEffect, useState } from "react";
@@ -53,11 +52,12 @@ const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface
     const [ isReadOnly, setIsReadOnly ] = useState(true);
 
     useEffect(() => {
-        setIsReadOnly(!isFeatureEnabled(
-            featureConfig?.organizations,
-            OrganizationManagementConstants.FEATURE_DICTIONARY.get("ORGANIZATION_UPDATE")
-        ));
-    }, [ featureConfig ]);
+        setIsReadOnly(
+            !isFeatureEnabled(
+                featureConfig?.organizations,
+                OrganizationManagementConstants.FEATURE_DICTIONARY.get("ORGANIZATION_UPDATE")
+            ) || organization?.status !== "ACTIVE");
+    }, [ featureConfig, organization ]);
 
 
     const getOrganizationData = useCallback((organizationId: string) => {

@@ -7,19 +7,19 @@ Product integration tests have been written using [Cypress Testing Framework](ht
 ### Headless mode
 
 ```bash
-npm run test:integration
+pnpm test:integration
 ```
 
 ### Interactive mode
 
 ```bash
-npm run test:integration:interactive
+pnpm test:integration:interactive
 ```
 
 ### Only Smoke Tests
 
 ```bash
-npm run test:integration:smoke
+pnpm test:integration:smoke
 ```
 
 For more information regarding the test module, checkout the [README](../../tests/README.md) in the `tests` module.

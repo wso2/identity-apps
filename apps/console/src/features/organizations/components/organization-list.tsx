@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -38,7 +38,7 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
+import { Header, Icon, Label, Popup, SemanticICONS } from "semantic-ui-react";
 import {
     AppConstants,
     AppState,
@@ -113,9 +113,9 @@ export interface OrganizationListPropsInterface
 /**
  * Organization list component.
  *
- * @param {OrganizationListPropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns
  */
 export const OrganizationList: FunctionComponent<OrganizationListPropsInterface> = (
     props: OrganizationListPropsInterface
@@ -153,7 +153,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
     /**
      * Redirects to the organizations edit page when the edit button is clicked.
      *
-     * @param {string} organizationId - Organization id.
+     * @param organizationId - Organization id.
      */
     const handleOrganizationEdit = (organizationId: string): void => {
         history.push({
@@ -166,7 +166,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
     /**
      * Deletes an organization when the delete organization button is clicked.
      *
-     * @param {string} organizationId - Organization id.
+     * @param organizationId - Organization id.
      */
     const handleOrganizationDelete = (organizationId: string): void => {
         deleteOrganization(organizationId)
@@ -242,7 +242,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
     /**
      * Resolves data table columns.
      *
-     * @return {TableColumnInterface[]}
+     * @returns
      */
     const resolveTableColumns = (): TableColumnInterface[] => {
         return [
@@ -280,6 +280,25 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                                </Header.Content>)
                             }
                             <Header.Content>
+                                <Popup
+                                    trigger={
+                                        (<Icon
+                                            data-componentid={ `${ componentId }-org-status-icon` }
+                                            className="mr-2 ml-0 vertical-aligned-baseline"
+                                            size="small"
+                                            name="circle"
+                                            color={ organization.status === "ACTIVE" ? "green" : "orange" }
+                                        />)
+                                    }
+                                    content={
+                                        organization.status === "ACTIVE"
+                                            ? t("console:common.status.active")
+                                            : t("console:common.status.disabled")
+                                    }
+                                    inverted
+                                />
+                            </Header.Content>
+                            <Header.Content>
                                 { organization.name }
                                 <Header.Subheader
                                     className="truncate ellipsis"
@@ -307,7 +326,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
     /**
      * Resolves data table actions.
      *
-     * @return {TableActionsInterface[]}
+     * @returns
      */
     const resolveTableActions = (): TableActionsInterface[] => {
         if (!showListItemActions) {
@@ -377,7 +396,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
     /**
      * Resolve the relevant placeholder.
      *
-     * @return {React.ReactElement}
+     * @returns
      */
     const showPlaceholders = (): ReactElement => {
         if (searchQuery && (isEmpty(list) || list?.organizations?.length === 0)) {
@@ -413,6 +432,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                         onEmptyListPlaceholderActionClick && (
                             <Show when={ AccessControlConstants.ORGANIZATION_WRITE }>
                                 <PrimaryButton
+                                    disabled={ parentOrganization?.status === "DISABLED" }
                                     onClick={ () => {
                                         eventPublisher.publish(componentId + "-click-new-organization-button");
                                         onEmptyListPlaceholderActionClick();

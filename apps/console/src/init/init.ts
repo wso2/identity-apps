@@ -16,14 +16,11 @@
  * under the License.
  */
 
-import { UAParser } from "ua-parser-js";
-import { AppUtils } from "./app-utils";
 import "core-js/stable";
 import "regenerator-runtime/runtime";
-import TimerWorker from "@wso2is/core/src/workers/timer.worker";
-// DO NOT SHORTEN THE IMPORT PATH as it could lead to circular dependencies.
-import { commonConfig } from "../extensions/configs/common";
-
+import TimerWorker from "@wso2is/core/workers/timer.worker";
+import { UAParser } from "ua-parser-js";
+import { AppUtils } from "./app-utils";
 
 if (!window["AppUtils"] || !window["AppUtils"]?.getConfig()) {
     AppUtils.init({
@@ -40,7 +37,7 @@ if (!window["AppUtils"] || !window["AppUtils"]?.getConfig()) {
 }
 
 function handleTimeOut(_idleSecondsCounter: number, _sessionAgeCounter: number,
-                SESSION_REFRESH_TIMEOUT: number, IDLE_TIMEOUT: number, IDLE_WARNING_TIMEOUT: number): number {
+    SESSION_REFRESH_TIMEOUT: number, IDLE_TIMEOUT: number, IDLE_WARNING_TIMEOUT: number): number {
 
     if (_idleSecondsCounter === IDLE_WARNING_TIMEOUT || _idleSecondsCounter >= IDLE_TIMEOUT) {
         const warningSearchParamKey = "session_timeout_warning";
@@ -80,10 +77,12 @@ const config = window["AppUtils"]?.getConfig();
 
 // Tracking user interactions
 let IDLE_TIMEOUT = 600;
+
 if (config?.session != null && config.session.userIdleTimeOut != null && config.session.userIdleTimeOut > 1) {
     IDLE_TIMEOUT = config.session.userIdleTimeOut;
 }
 let IDLE_WARNING_TIMEOUT = 580;
+
 if (
     config?.session != null &&
     config.session.userIdleWarningTimeOut != null &&
@@ -92,6 +91,7 @@ if (
     IDLE_WARNING_TIMEOUT = config.session.userIdleWarningTimeOut;
 }
 let SESSION_REFRESH_TIMEOUT = 300;
+
 if (
     config?.session != null &&
     config.session.sessionRefreshTimeOut != null &&
@@ -128,6 +128,7 @@ if (new UAParser().getBrowser().name === "IE") {
     }, 1000);
 } else {
     const worker = new TimerWorker();
+
     worker.onmessage = () => {
         _idleSecondsCounter++;
         _sessionAgeCounter++;

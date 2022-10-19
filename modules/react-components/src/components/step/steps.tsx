@@ -93,7 +93,8 @@ export const Steps: FunctionComponent<PropsWithChildren<StepsPropsInterface>> & 
     return (
         <div
             className={ classes }
-            style={ style } data-testid={ testId }
+            style={ style }
+            data-testid={ testId }
             data-componentid={ componentId }
         >
             { header && (
