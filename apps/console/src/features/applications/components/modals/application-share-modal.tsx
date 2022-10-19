@@ -40,16 +40,30 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Checkbox, Form, Modal, ModalProps, Segment } from "semantic-ui-react";
+import {
+    Divider,
+    Form,
+    Modal,
+    ModalProps,
+    Radio,
+    Segment
+} from "semantic-ui-react";
 import { AppState, EventPublisher } from "../../../core";
 import {
     shareApplication,
-    stopSharingApplication
+    stopSharingApplication,
+    unshareApplication
 } from "../../../organizations/api";
 import {
     OrganizationInterface,
     ShareApplicationRequestInterface
 } from "../../../organizations/models";
+
+enum ShareType {
+    SHARE_ALL,
+    SHARE_SELECTED,
+    UNSHARE
+}
 
 export interface ApplicationShareModalPropsInterface
     extends ModalProps,
@@ -104,8 +118,9 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
         checkedUnassignedListItems,
         setCheckedUnassignedListItems
     ] = useState<OrganizationInterface[]>([]);
-    const [ shareWithAll, setShareWithAll ] = useState<boolean>(false);
-
+    const [ shareType, setShareType ] = useState<ShareType>(
+        ShareType.SHARE_SELECTED
+    );
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     useEffect(() => setTempOrganizationList(subOrganizationList || []), [
@@ -118,83 +133,37 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
     );
 
     const handleShareApplication = useCallback(() => {
-        const addedOrganizations = differenceBy(
-            checkedUnassignedListItems,
-            sharedOrganizationList,
-            "id"
-        ).map(organization => organization.id);
-        const removedOrganization = differenceBy(
-            sharedOrganizationList,
-            checkedUnassignedListItems,
-            "id"
-        );
+        let shareAppData: ShareApplicationRequestInterface;
+        let removedOrganization: OrganizationInterface[];
 
-        const shareAppData: ShareApplicationRequestInterface = {
-            shareWithAllChildren: shareWithAll,
-            sharedOrganizations: addedOrganizations
-        };
+        if (shareType === ShareType.SHARE_ALL) {
+            shareAppData = {
+                shareWithAllChildren: true
+            };
+        } else if (shareType === ShareType.SHARE_SELECTED) {
+            const addedOrganizations = differenceBy(
+                checkedUnassignedListItems,
+                sharedOrganizationList,
+                "id"
+            ).map(organization => organization.id);
 
-        shareWithAll && delete shareAppData.sharedOrganizations;
+            removedOrganization = differenceBy(
+                sharedOrganizationList,
+                checkedUnassignedListItems,
+                "id"
+            );
 
-        shareApplication(currentOrganization.id, applicationId, shareAppData)
-            .then(_response => {
-                onClose(null, null);
-                dispatch(
-                    addAlert({
-                        description: t(
-                            "console:develop.features.applications.edit.sections.shareApplication" +
-                            ".addSharingNotification.success.description"
-                        ),
-                        level: AlertLevels.SUCCESS,
-                        message: t(
-                            "console:develop.features.applications.edit.sections.shareApplication" +
-                            ".addSharingNotification.success.message"
-                        )
-                    })
-                );
-                eventPublisher.publish("application-share", {
-                    "client-id": clientId
-                });
-            })
-            .catch(error => {
-                onClose(null, null);
-                if (error.response.data.message) {
-                    dispatch(
-                        addAlert({
-                            description: error.response.data.message,
-                            level: AlertLevels.ERROR,
-                            message: t(
-                                "console:develop.features.applications.edit.sections.shareApplication" +
-                                ".addSharingNotification.genericError.message"
-                            )
-                        })
-                    );
-                } else {
-                    dispatch(
-                        addAlert({
-                            description: t(
-                                "console:develop.features.applications.edit.sections.shareApplication" +
-                                ".addSharingNotification.genericError.description"
-                            ),
-                            level: AlertLevels.ERROR,
-                            message: t(
-                                "console:develop.features.applications.edit.sections.shareApplication" +
-                                ".addSharingNotification.genericError.message"
-                            )
-                        })
-                    );
-                }
-                eventPublisher.publish("application-share-error", {
-                    "client-id": clientId
-                });
-            })
-            .finally(() => onApplicationSharingCompleted());
+            shareAppData = {
+                shareWithAllChildren: false,
+                sharedOrganizations: addedOrganizations
+            };
+        }
 
-        removedOrganization.forEach(removedOrganization => {
-            stopSharingApplication(
+        if(shareType === ShareType.SHARE_ALL || shareType === ShareType.SHARE_SELECTED) {
+            shareApplication(
                 currentOrganization.id,
                 applicationId,
-                removedOrganization.id
+                shareAppData
             )
                 .then(_response => {
                     onClose(null, null);
@@ -202,13 +171,12 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
                         addAlert({
                             description: t(
                                 "console:develop.features.applications.edit.sections.shareApplication" +
-                                ".stopSharingNotification.success.description",
-                                { organization: removedOrganization.name }
+                                ".addSharingNotification.success.description"
                             ),
                             level: AlertLevels.SUCCESS,
                             message: t(
                                 "console:develop.features.applications.edit.sections.shareApplication" +
-                                ".stopSharingNotification.success.message"
+                                ".addSharingNotification.success.message"
                             )
                         })
                     );
@@ -225,7 +193,7 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
                                 level: AlertLevels.ERROR,
                                 message: t(
                                     "console:develop.features.applications.edit.sections.shareApplication" +
-                                    ".stopSharingNotification.genericError.message"
+                                    ".addSharingNotification.genericError.message"
                                 )
                             })
                         );
@@ -234,13 +202,12 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
                             addAlert({
                                 description: t(
                                     "console:develop.features.applications.edit.sections.shareApplication" +
-                                    ".stopSharingNotification.genericError.description",
-                                    { organization: removedOrganization.name }
+                                    ".addSharingNotification.genericError.description"
                                 ),
                                 level: AlertLevels.ERROR,
                                 message: t(
                                     "console:develop.features.applications.edit.sections.shareApplication" +
-                                    ".stopSharingNotification.genericError.message"
+                                    ".addSharingNotification.genericError.message"
                                 )
                             })
                         );
@@ -248,8 +215,127 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
                     eventPublisher.publish("application-share-error", {
                         "client-id": clientId
                     });
-                });
-        });
+                })
+                .finally(() => onApplicationSharingCompleted());
+
+            removedOrganization?.forEach(removedOrganization => {
+                stopSharingApplication(
+                    currentOrganization.id,
+                    applicationId,
+                    removedOrganization.id
+                )
+                    .then(_response => {
+                        onClose(null, null);
+                        dispatch(
+                            addAlert({
+                                description: t(
+                                    "console:develop.features.applications.edit.sections.shareApplication" +
+                                    ".stopSharingNotification.success.description",
+                                    { organization: removedOrganization.name }
+                                ),
+                                level: AlertLevels.SUCCESS,
+                                message: t(
+                                    "console:develop.features.applications.edit.sections.shareApplication" +
+                                    ".stopSharingNotification.success.message"
+                                )
+                            })
+                        );
+                        eventPublisher.publish("application-share", {
+                            "client-id": clientId
+                        });
+                    })
+                    .catch(error => {
+                        onClose(null, null);
+                        if (error.response.data.message) {
+                            dispatch(
+                                addAlert({
+                                    description: error.response.data.message,
+                                    level: AlertLevels.ERROR,
+                                    message: t(
+                                        "console:develop.features.applications.edit.sections.shareApplication" +
+                                        ".stopSharingNotification.genericError.message"
+                                    )
+                                })
+                            );
+                        } else {
+                            dispatch(
+                                addAlert({
+                                    description: t(
+                                        "console:develop.features.applications.edit.sections.shareApplication" +
+                                        ".stopSharingNotification.genericError.description",
+                                        {
+                                            organization:
+                                                removedOrganization.name
+                                        }
+                                    ),
+                                    level: AlertLevels.ERROR,
+                                    message: t(
+                                        "console:develop.features.applications.edit.sections.shareApplication" +
+                                        ".stopSharingNotification.genericError.message"
+                                    )
+                                })
+                            );
+                        }
+                        eventPublisher.publish("application-share-error", {
+                            "client-id": clientId
+                        });
+                    });
+            });
+        } else if (shareType === ShareType.UNSHARE) {
+            unshareApplication(applicationId, currentOrganization.id)
+                .then(() => {
+                    onClose(null, null);
+                    dispatch(
+                        addAlert({
+                            description: t(
+                                "console:develop.features.applications.edit.sections.shareApplication" +
+                                ".addSharingNotification.success.description"
+                            ),
+                            level: AlertLevels.SUCCESS,
+                            message: t(
+                                "console:develop.features.applications.edit.sections.shareApplication" +
+                                ".addSharingNotification.success.message"
+                            )
+                        })
+                    );
+                    eventPublisher.publish("application-share", {
+                        "client-id": clientId
+                    });
+                })
+                .catch(error => {
+                    onClose(null, null);
+                    if (error.response.data.message) {
+                        dispatch(
+                            addAlert({
+                                description: error.response.data.message,
+                                level: AlertLevels.ERROR,
+                                message: t(
+                                    "console:develop.features.applications.edit.sections.shareApplication" +
+                                    ".addSharingNotification.genericError.message"
+                                )
+                            })
+                        );
+                    } else {
+                        dispatch(
+                            addAlert({
+                                description: t(
+                                    "console:develop.features.applications.edit.sections.shareApplication" +
+                                    ".addSharingNotification.genericError.description"
+                                ),
+                                level: AlertLevels.ERROR,
+                                message: t(
+                                    "console:develop.features.applications.edit.sections.shareApplication" +
+                                    ".addSharingNotification.genericError.message"
+                                )
+                            })
+                        );
+                    }
+                    eventPublisher.publish("application-share-error", {
+                        "client-id": clientId
+                    });
+                })
+                .finally(() => onApplicationSharingCompleted());
+        }
     }, [
         sharedOrganizationList,
         checkedUnassignedListItems,
@@ -258,7 +344,7 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
         currentOrganization.id,
         applicationId,
         onClose,
-        shareWithAll
+        shareType
     ]);
 
     const handleUnselectedListSearch = (e, { value }) => {
@@ -328,20 +414,17 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
             </Modal.Header>
             <Modal.Content>
                 <Segment basic>
-                    <Checkbox
-                        label={ t("console:manage.features.organizations.shareApplicationCheck") }
-                        toggle
-                        onChange={ () => setShareWithAll(!shareWithAll) }
-                        checked={ shareWithAll }
+                    <Radio
+                        label={ t(
+                            "console:manage.features.organizations.shareWithSelectedOrgsRadio"
+                        ) }
+                        onChange={ () => setShareType(ShareType.SHARE_SELECTED) }
+                        checked={ shareType === ShareType.SHARE_SELECTED }
                         data-componentid={ `${ componentId }-share-with-all-checkbox` }
                     />
-                    <Hint>
-                        { t("console:manage.features.organizations.shareApplicationInfo") }
-                    </Hint>
-                </Segment>
-                <Form>
-                    { !shareWithAll ? (
+                    <Form>
                         <TransferComponent
+                            disabled={ shareType !== ShareType.SHARE_SELECTED }
                             selectionComponent
                             searchPlaceholder={ t(
                                 "console:manage.features.transferList.searchPlaceholder",
@@ -353,6 +436,9 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
                             data-componentId="application-share-modal-organization-transfer-component"
                         >
                             <TransferList
+                                disabled={
+                                    shareType !== ShareType.SHARE_SELECTED
+                                }
                                 isListEmpty={
                                     !(tempOrganizationList?.length > 0)
                                 }
@@ -393,6 +479,10 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
 
                                         return (
                                             <TransferListItem
+                                                disabled={
+                                                    shareType !==
+                                                    ShareType.SHARE_SELECTED
+                                                }
                                                 handleItemChange={ () =>
                                                     handleUnassignedItemCheckboxChange(
                                                         organization
@@ -412,10 +502,36 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
                                 ) }
                             </TransferList>
                         </TransferComponent>
-                    ) : (
-                        <div className="share-organization-placeholder"></div>
-                    ) }
-                </Form>
+                    </Form>
+                    <Divider hidden />
+                    <Radio
+                        label={ t(
+                            "console:manage.features.organizations.shareApplicationRadio"
+                        ) }
+                        onChange={ () => setShareType(ShareType.SHARE_ALL) }
+                        checked={ shareType === ShareType.SHARE_ALL }
+                        data-componentid={ `${ componentId }-share-with-all-checkbox` }
+                    />
+                    <Hint>
+                        { t(
+                            "console:manage.features.organizations.shareApplicationInfo"
+                        ) }
+                    </Hint>
+                    <Divider hidden />
+                    <Radio
+                        label={ t(
+                            "console:manage.features.organizations.unshareApplicationRadio"
+                        ) }
+                        onChange={ () => setShareType(ShareType.UNSHARE) }
+                        checked={ shareType === ShareType.UNSHARE }
+                        data-componentid={ `${ componentId }-share-with-all-checkbox` }
+                    />
+                    <Hint>
+                        { t(
+                            "console:manage.features.organizations.unshareApplicationInfo"
+                        ) }
+                    </Hint>
+                </Segment>
             </Modal.Content>
             <Modal.Actions>
                 <LinkButton onClick={ () => onClose(null, null) }>
