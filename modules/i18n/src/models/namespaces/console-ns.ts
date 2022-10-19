@@ -1462,6 +1462,7 @@ export interface ConsoleNS {
                                 3: string;
                             };
                         };
+                        associateLocalUser: FormAttributes;
                     };
                     roleMapping: {
                         heading: string;

@@ -3535,6 +3535,12 @@ export const console: ConsoleNS = {
                         }
                     },
                     jitProvisioning: {
+                        associateLocalUser: {
+                            label: "Associate provisioned users with existing local users",
+                            hint: "When enabled, users that are provisioned with this identity " +
+                                "provider will be linked to the local users who are already registered " +
+                                "with the same email address."
+                        },
                         enableJITProvisioning: {
                             disabledMessageContent: "You cannot disable the Just-in-Time User" +
                                 " Provisioning setting because the following applications" +
