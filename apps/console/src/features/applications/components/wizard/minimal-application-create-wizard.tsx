@@ -1023,6 +1023,10 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
             return getLink("develop.applications.newApplication.samlApplication.learnMore");
         }
 
+        if (selectedTemplate?.templateId === ApplicationTemplateIdTypes.MOBILE_APPLICATION) {
+            return getLink("develop.applications.newApplication.mobileApplication.learnMore");
+        }
+
         // Returns undefined for application which does not have doc links.
         // Used to hide the learn more link.
         return undefined;
