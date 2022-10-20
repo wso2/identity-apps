@@ -876,7 +876,13 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
         // Add the `allowedOrigins` & `callbackURLs` only if the grant types
         // `authorization_code` and `implicit` are selected.
-        if (showCallbackURLField) {
+        if (isMobileApplication) {
+            inboundConfigFormValues = {
+                ...inboundConfigFormValues,
+                allowedOrigins: [],
+                callbackURLs: [ ApplicationManagementUtils.buildCallBackUrlWithRegExp(url ? url : callBackUrls) ]
+            };
+        } else if (showCallbackURLField) {
             inboundConfigFormValues = {
                 ...inboundConfigFormValues,
                 allowedOrigins: ApplicationManagementUtils.resolveAllowedOrigins(origin ? origin : allowedOrigins),
@@ -1313,8 +1319,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             !(isMobileApplication) 
                                             && CustomApplicationTemplate?.id !== template?.id
                                             && !(URLUtils.isURLValid(value, true) &&
-                                                (URLUtils.isHttpUrl(value) ||
-                                                    URLUtils.isHttpsUrl(value)))
+                                                (URLUtils.isHttpUrl(value)
+                                                || URLUtils.isHttpsUrl(value)))
                                         ) {
 
                                             return false;

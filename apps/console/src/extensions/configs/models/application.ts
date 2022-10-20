@@ -128,7 +128,6 @@ export interface ApplicationConfig {
         identifierFirstWarning: boolean;
     };
     templates: {
-        android: boolean;
         oidc: boolean;
         saml: boolean;
         spa: boolean;
