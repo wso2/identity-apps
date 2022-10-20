@@ -1314,6 +1314,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         t("console:develop.features.applications.forms.inboundOIDC.fields." +
                                             "callBackUrls.validations.empty")
                                     }
+                                    skipInternalValidation= {
+                                        template.templateId === ApplicationManagementConstants.MOBILE
+                                    }
                                     validation={ (value: string) => {
                                         if (
                                             !(isMobileApplication) 
