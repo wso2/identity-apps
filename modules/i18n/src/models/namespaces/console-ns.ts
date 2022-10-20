@@ -468,6 +468,12 @@ export interface ConsoleNS {
                                     };
                                 };
                                 heading: string;
+                                scopelessAttributes: {
+                                    description: string;
+                                    displayName: string;
+                                    name: string;
+                                    hint: string;
+                                },
                                 attributeComponentHint: string;
                                 attributeComponentHintAlt: string;
                                 description: string;

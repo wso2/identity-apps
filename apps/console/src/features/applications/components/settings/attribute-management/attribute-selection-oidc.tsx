@@ -501,13 +501,30 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                     data-testid={ `${ testId }-item-image` }
                     data-componentId={ `${ componentId }-item-image` }
                 />
-                <Header.Content>
-                    { scope.displayName }
-                    <Header.Subheader>
-                        <Code withBackground>{ scope.name }</Code>
-                        { " " + (scope.description ?? "") }
-                    </Header.Subheader>
-                </Header.Content>
+                {
+                    scope.name === "" ? (
+                        <Header.Content className="align-self-center">
+                            <Hint warning={ true } popup compact>
+                                {
+                                    t("console:develop.features.applications.edit.sections.attributes" +
+                                            ".selection.scopelessAttributes.hint")
+                                }
+                            </Hint>
+                            { scope.displayName }
+                            <Header.Subheader>
+                                { " " + (scope.description ?? "") }
+                            </Header.Subheader>
+                        </Header.Content>
+                    ) : (
+                        <Header.Content>
+                            { scope.displayName }
+                            <Header.Subheader>
+                                <Code withBackground>{ scope.name }</Code>
+                                { " " + (scope.description ?? "") }
+                            </Header.Subheader>
+                        </Header.Content>
+                    )
+                }
             </Header>
         );
     };
@@ -705,6 +722,50 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                                         </Table.Body>
                                     </Table>
                                 </Grid.Row>
+                                <Grid.Row className="mb-5">
+                                    <SegmentedAccordion
+                                        fluid
+                                        data-testid={ `${ testId }-oidc-scopes` }
+                                        data-componentid={  `${ componentId }-oidc-scopes` }
+                                        viewType="table-view"
+                                    >
+                                        {
+                                            externalClaimsGroupedByScopes.map(
+                                                (scope: OIDCScopesClaimsListInterface) => {
+                                                    if (scope.name !== ""){
+                                                        return (
+                                                            <Fragment key={ scope.name }>
+                                                                <SegmentedAccordion.Title
+                                                                    id={ scope.name }
+                                                                    data-testid={ `${testId}-${scope.name}-title` }
+                                                                    data-componentid={ `${componentId}-${scope.name}
+                                                                    -title` }
+                                                                    active={ expandedScopes?.includes(scope.name)
+                                                                            || false }
+                                                                    accordionIndex={ scope.name }
+                                                                    onClick={ () => handleAccordionTitleClick(scope) }
+                                                                    content={ (
+                                                                        resolveScopeListItem(scope)
+                                                                    ) }
+                                                                    hideChevron={ false }
+                                                                    actions={ createAccordionTitleAction(scope) }
+                                                                />
+    
+                                                                <SegmentedAccordion.Content
+                                                                    active={ expandedScopes?.includes(scope.name)
+                                                                            || false }
+                                                                    data-testid={ `${testId}-${scope.name}-content` }
+                                                                    data-componentid={ `${componentId}-${scope.name}
+                                                                    -content` }
+                                                                    children={ resolveUserAttributeList(scope.claims) }
+                                                                />
+                                                            </Fragment>
+                                                        );
+                                                    }
+                                                })
+                                        }
+                                    </SegmentedAccordion>
+                                </Grid.Row>
                                 <Grid.Row>
                                     <SegmentedAccordion
                                         fluid
@@ -715,34 +776,36 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                                         {
                                             externalClaimsGroupedByScopes.map(
                                                 (scope: OIDCScopesClaimsListInterface) => {
-                                                    return (
-                                                        <Fragment key={ scope.name }>
-                                                            <SegmentedAccordion.Title
-                                                                id={ scope.name }
-                                                                data-testid={ `${testId}-${scope.name}-title` }
-                                                                data-componentid={ `${componentId}-${scope.name}
-                                                                -title` }
-                                                                active={ expandedScopes?.includes(scope.name)
-                                                                        || false }
-                                                                accordionIndex={ scope.name }
-                                                                onClick={ () => handleAccordionTitleClick(scope) }
-                                                                content={ (
-                                                                    resolveScopeListItem(scope)
-                                                                ) }
-                                                                hideChevron={ false }
-                                                                actions={ createAccordionTitleAction(scope) }
-                                                            />
-
-                                                            <SegmentedAccordion.Content
-                                                                active={ expandedScopes?.includes(scope.name)
-                                                                        || false }
-                                                                data-testid={ `${testId}-${scope.name}-content` }
-                                                                data-componentid={ `${componentId}-${scope.name}
-                                                                -content` }
-                                                                children={ resolveUserAttributeList(scope.claims) }
-                                                            />
-                                                        </Fragment>
-                                                    );
+                                                    if (scope.name === ""){
+                                                        return (
+                                                            <Fragment key={ scope.name }>
+                                                                <SegmentedAccordion.Title
+                                                                    id={ scope.name }
+                                                                    data-testid={ `${testId}-${scope.name}-title` }
+                                                                    data-componentid={ `${componentId}-${scope.name}
+                                                                    -title` }
+                                                                    active={ expandedScopes?.includes(scope.name)
+                                                                            || false }
+                                                                    accordionIndex={ scope.name }
+                                                                    onClick={ () => handleAccordionTitleClick(scope) }
+                                                                    content={ (
+                                                                        resolveScopeListItem(scope)
+                                                                    ) }
+                                                                    hideChevron={ false }
+                                                                    actions={ createAccordionTitleAction(scope) }
+                                                                />
+    
+                                                                <SegmentedAccordion.Content
+                                                                    active={ expandedScopes?.includes(scope.name)
+                                                                            || false }
+                                                                    data-testid={ `${testId}-${scope.name}-content` }
+                                                                    data-componentid={ `${componentId}-${scope.name}
+                                                                    -content` }
+                                                                    children={ resolveUserAttributeList(scope.claims) }
+                                                                />
+                                                            </Fragment>
+                                                        );
+                                                    }
                                                 })
                                         }
                                     </SegmentedAccordion>
@@ -758,7 +821,7 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                                                 "attributes.selection.attributeComponentHint"
                                             }
                                         >
-                                            Manage the user attributes you want to share with this application via
+                                            Use
                                             <Link
                                                 external={ false }
                                                 onClick={ () => {
@@ -766,9 +829,10 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                                                         AppConstants.getPaths().get("OIDC_SCOPES")
                                                     );
                                                 } }
-                                            > OpenID Connect Scopes.
+                                            > OpenID Connect Scopes
                                             </Link>
-                                            You can map additional attributes under
+                                            to add/remove user attribute to a scope. You can add new 
+                                            attributes by navigating to 
                                             <Link
                                                 external={ false }
                                                 onClick={ () => {
@@ -778,7 +842,7 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                                                             .replace(":type", ClaimManagementConstants.OIDC)
                                                     );
                                                 } }
-                                            > Attribute.
+                                            > Attributes.
                                             </Link>
                                         </Trans>
                                     </Hint>

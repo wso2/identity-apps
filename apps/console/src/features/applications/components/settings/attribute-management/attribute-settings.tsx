@@ -318,13 +318,14 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
     const getExternalClaimsGroupedByScopes = () => {
         const tempClaims = [ ...externalClaims ];
         const updatedScopes = [];
-
+        const scopedClaims = [];
+ 
         if ((scopes !== null) && (scopes !== undefined) && (scopes.length !== 0) && (claims.length !== 0)) {
             scopes.map((scope) => {
                 if (scope.name !== "openid"){
                     const updatedClaims = [];
                     let scopeSelected = false;
-    
+     
                     scope.claims.map((scopeClaim) => {
                         tempClaims.map( (tempClaim) => {
                             if (scopeClaim === tempClaim.claimURI) {
@@ -333,12 +334,12 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                                     mandatory: checkInitialRequestMandatory(tempClaim.claimURI),
                                     requested: checkInitialRequested(tempClaim.claimURI)
                                 };
-    
+     
                                 if (updatedClaim.requested) {
                                     scopeSelected = true;
                                 }
-    
                                 updatedClaims.push(updatedClaim);
+                                scopedClaims.push(tempClaim);
                             }
                         });
                     });
@@ -347,9 +348,34 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                         claims: updatedClaims,
                         selected: scopeSelected
                     };
-    
+     
                     updatedScopes.push(updatedScope);
                 }
+            });
+ 
+            const scopelessClaims = tempClaims.filter((tempClaim) => !scopedClaims.includes(tempClaim));
+            const updatedScopelessClaims = [];
+            let isScopelessClaimRequested = false;
+ 
+            scopelessClaims.map((tempClaim) => {
+                const isInitialRequested = checkInitialRequested(tempClaim.claimURI);
+ 
+                updatedScopelessClaims.push({
+                    ...tempClaim,
+                    mandatory: checkInitialRequestMandatory(tempClaim.claimURI),
+                    requested: checkInitialRequested(tempClaim.claimURI)
+                });
+                isScopelessClaimRequested = isInitialRequested;
+            });
+            updatedScopes.push({
+                claims: updatedScopelessClaims,
+                description: t("console:develop.features.applications.edit.sections.attributes" +
+                    ".selection.scopelessAttributes.description"),
+                displayName: t("console:develop.features.applications.edit.sections.attributes" +
+                    ".selection.scopelessAttributes.displayName"),
+                name: t("console:develop.features.applications.edit.sections.attributes" +
+                    ".selection.scopelessAttributes.name"),
+                selected: isScopelessClaimRequested
             });
         }
         setExternalClaimsGroupedByScopes(updatedScopes);
