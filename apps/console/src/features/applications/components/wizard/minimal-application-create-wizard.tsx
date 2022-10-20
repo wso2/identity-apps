@@ -105,7 +105,7 @@ interface MinimalApplicationCreateWizardPropsInterface extends TestableComponent
 /**
  * An app creation wizard with only the minimal features.
  *
- * @param {MinimalApplicationCreateWizardPropsInterface} props Props to be injected into the component.
+ * @param Props - Props to be injected into the component.
  */
 export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateWizardPropsInterface> = (
     props: MinimalApplicationCreateWizardPropsInterface
@@ -244,8 +244,8 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         /**
          * Remove the default(provided by the template) callbackURLs & allowed origins from the
          * form values if theres any user defined values in the form. We do this to prevent appending
-         * the default `callbackURL` to the model. {@code callbackURLs?.filter(Boolean)} ensures
-         * the passing value has no undefined or falsy values so that {@code isEmpty()} call returns a clean check.
+         * the default `callbackURL` to the model. callbackURLs?.filter(Boolean) ensures
+         * the passing value has no undefined or falsy values so that isEmpty() call returns a clean check.
          *
          * If you check the file [single-page-application.json] you can see that there's default
          * value is already populated.
@@ -508,7 +508,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
     /**
      * Scrolls to the first field that throws an error.
      *
-     * @param {string} field The name of the field.
+     * @param field - field The name of the field.
      */
     const scrollToInValidField = (field: string): void => {
         const options: ScrollIntoViewOptions = {
@@ -547,7 +547,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
     /**
      * Handles the protocol form values change.
      *
-     * @param {boolean} state - Flag to trigger validation.
+     * @param state - Flag to trigger validation.
      */
     const handleProtocolValueChange = (state: boolean) => {
         setProtocolValuesChange(state);
@@ -556,7 +556,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
     /**
      * Check the protocol errors.
      *
-     * @param {boolean} state - Flag to show the error.
+     * @param state - Flag to show the error.
      */
     const handleError = (field: string, state: boolean) => {
         switch (field) {
@@ -579,7 +579,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
     /**
      * Resolves the relevant protocol form based on the selected protocol.
      *
-     * @return {React.ReactElement}
+     * @returns Minimal Protocol fields.
      */
     const resolveMinimalProtocolFormFields = (): ReactElement => {
 
@@ -614,14 +614,14 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
              * Enable to have SAML wizard without config mode options.
              *
              * @example
-             * <SAMLProtocolSettingsWizardForm
-             *     fields={ [ "issuer", "assertionConsumerURLs" ] }
-             *     hideFieldHints={ true }
-             *     triggerSubmit={ submitProtocolForm }
-             *     templateValues={ templateSettings?.application }
-             *     onSubmit={ (values): void => setProtocolFormValues(values) }
-             *     data-testid={ `${ testId }-saml-protocol-settings-form` }
-             * />
+             * SAMLProtocolSettingsWizardForm
+             *     fields= [ "issuer", "assertionConsumerURLs" ] 
+             *     hideFieldHints= true 
+             *     triggerSubmit= submitProtocolForm 
+             *     templateValues= templateSettings?.application 
+             *     onSubmit= (values): void = setProtocolFormValues(values) 
+             *     data-testid= `${ testId }-saml-protocol-settings-form` 
+             * /
              */
             return (
                 <SAMLProtocolAllSettingsWizardForm
@@ -662,8 +662,8 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
     /**
      * Get the list of supported custom protocols.
      *
-     * @param {string} filterProtocol - Protocol to filder.
-     * @return {SupportedAuthProtocolTypes[]}
+     * @param filterProtocol - Protocol to filder.
+     * @returns Supported Auth Protocol Types.
      */
     const getSupportedCustomProtocols = (filterProtocol?: string): SupportedAuthProtocolTypes[] => {
 
@@ -707,7 +707,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
 
     /**
      * Renders the sub template selection.
-     * @return {React.ReactElement}
+     * @returns Sub Template Selection.
      */
     const renderSubTemplateSelection = (): ReactElement => {
 
@@ -820,7 +820,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
     /**
      * Resolves to the applicable content of an application template.
      *
-     * @return {ReactElement} The content relevant to a specified application template.
+     * @returns The content relevant to a specified application template.
      */
     const resolveContent = (): ReactElement => {
         return (
@@ -965,7 +965,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
     /**
      * Renders the help panel containing wizard help.
      *
-     * @return {React.ReactElement}
+     * @returns Help Panel.
      */
     const renderHelpPanel = (): ReactElement => {
 
@@ -1007,7 +1007,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
     /**
      * Returns the documentation links based on the application type.
      *
-     * @return {string}
+     * @returns Document Link.
      */
     const resolveDocumentationLink = (): string => {
 

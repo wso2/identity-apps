@@ -96,9 +96,9 @@ interface OAuthProtocolSettingsWizardFormPropsInterface extends TestableComponen
 /**
  * Oauth protocol settings wizard form component.
  *
- * @param {OAuthProtocolSettingsWizardFormPropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns Oauth Protocol Settings Wizard Form.
  */
 export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSettingsWizardFormPropsInterface> = (
     props: OAuthProtocolSettingsWizardFormPropsInterface
@@ -226,8 +226,8 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
     /**
      * Add regexp to multiple callbackUrls and update configs.
      *
-     * @param {string} urls - Callback URLs.
-     * @return {string} Prepared callback URL.
+     * @param urls - Callback URLs.
+     * @returns Prepared callback URL.
      */
     const buildCallBackUrlWithRegExp = (urls: string): string => {
         let callbackURL = urls?.replace(/['"]+/g, "");
@@ -242,8 +242,8 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
     /**
      * Remove regexp from incoming data and show the callbackUrls.
      *
-     * @param {string} url - Callback URLs.
-     * @return {string} Prepared callback URL.
+     * @param url - Callback URLs.
+     * @returns Prepared callback URL.
      */
     const buildCallBackURLWithSeparator = (url: string): string => {
         if (url && url.includes("regexp=(")) {
@@ -294,8 +294,8 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
      * <li>All the available CORS origins.</li>
      * </ul>
      *
-     * @param {string} urls - Callback URLs.
-     * @return {string[]} Allowed origin URLs.
+     * @param urls - Callback URLs.
+     * @returns Allowed origin URLs.
      */
     const resolveAllowedOrigins = (urls: string): string[] => {
         let calBackUrls: string[] = [];
@@ -316,8 +316,8 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
      * Sanitizes and prepares the form values for submission.
      *
      * @param values - Form values.
-     * @param {string} urls - Callback URLs.
-     * @return {object} Prepared values.
+     * @param urls - Callback URLs.
+     * @returns Prepared values.
      */
     const getFormValues = (values: any, urls?: string): Record<string, unknown> => {
         const config = {
@@ -359,7 +359,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
     /**
      * The following function handles removing CORS allowed origin.
      *
-     * @param {string} url - Removing origin
+     * @param url - Removing origin.
      */
     const handleRemoveAllowOrigin = (url: string): void => {
         const allowedURLs = [ ...allowCORSUrls ];
@@ -373,7 +373,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
     /**
      * The following function handles allowing CORS for a new origin.
      *
-     * @param {string} url - Allowed origin
+     * @param url - Allowed origin.
      */
     const handleAddAllowOrigin = (url: string): void => {
         const allowedURLs = [ ...allowCORSUrls ];
@@ -385,9 +385,9 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
     /**
      * Creates options for Radio GrantTypeMetaDataInterface options.
      *
-     * @param {GrantTypeMetaDataInterface} metadataProp - Metadata.
+     * @param metadataProp - Metadata.
      *
-     * @return {any[]}
+     * @returns Allowed Grant Type List
      */
     const getAllowedGranTypeList = (metadataProp: GrantTypeMetaDataInterface): any[] => {
         const allowedList = [];
@@ -405,7 +405,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
     /**
      * Handle grant type change.
      *
-     * @param {Map<string, FormValue>} values - Form values
+     * @param values - Form values.
      */
     const handleGrantTypeChange = (values: Map<string, FormValue>) => {
         const grants: string[] = values.get("grant") as string[];

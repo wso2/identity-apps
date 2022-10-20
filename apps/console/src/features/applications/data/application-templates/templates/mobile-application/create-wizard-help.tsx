@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -24,16 +24,16 @@ import { Divider } from "semantic-ui-react";
 /**
  * Prop types of the component.
  */
-type AndroidApplicationCreateWizardHelpPropsInterface = TestableComponentInterface
+type MobileApplicationCreateWizardHelpPropsInterface = TestableComponentInterface
 
 /**
- * Help content for the android mobile application template creation wizard.
+ * Help content for the mobile application template creation wizard.
  *
- * @param {AndroidApplicationCreateWizardHelpPropsInterface} props - Props injected into the component.
- * @return {React.ReactElement}
+ * @param props - Props injected into the component.
+ * @returns Mobile Application Create Wizard Help
  */
-const AndroidApplicationCreateWizardHelp: FunctionComponent<AndroidApplicationCreateWizardHelpPropsInterface> = (
-    props: AndroidApplicationCreateWizardHelpPropsInterface
+const MobileApplicationCreateWizardHelp: FunctionComponent<MobileApplicationCreateWizardHelpPropsInterface> = (
+    props: MobileApplicationCreateWizardHelpPropsInterface
 ): ReactElement => {
 
     const {
@@ -63,8 +63,8 @@ const AndroidApplicationCreateWizardHelp: FunctionComponent<AndroidApplicationCr
 /**
  * Default props for the component
  */
-AndroidApplicationCreateWizardHelp.defaultProps = {
-    "data-testid": "android-app-create-wizard-help"
+MobileApplicationCreateWizardHelp.defaultProps = {
+    "data-testid": "mobile-app-create-wizard-help"
 };
 
 /**
@@ -72,4 +72,4 @@ AndroidApplicationCreateWizardHelp.defaultProps = {
  * TODO: Change this to a named export once react starts supporting named exports for code splitting.
  * @see {@link https://reactjs.org/docs/code-splitting.html#reactlazy}
  */
-export default AndroidApplicationCreateWizardHelp;
+export default MobileApplicationCreateWizardHelp;
