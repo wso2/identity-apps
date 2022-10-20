@@ -229,7 +229,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
 
         if (myAccountStatus) {
             const enableProperty = myAccountStatus["value"];
-            
+
             if ( enableProperty && enableProperty === "false" ) {
 
                 status = false;
@@ -237,7 +237,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
         }
         setMyAccountStatus(status);
     }, [ isMyAccountStatusLoading ]);
- 
+
     if (isMyAccountStatusLoading) {
         return (
             <EmphasizedSegment padded="very">
@@ -245,7 +245,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
             </EmphasizedSegment>
         );
     }
-    
+
     return (
         <Form
             id={ FORM_ID }
@@ -350,49 +350,51 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     hidden={ hiddenFields?.includes("imageUrl") }
                 />
             }
-            { isMyAccountEnabled? (
-                <Field.Checkbox
-                    ariaLabel="Make application discoverable by end users"
-                    name="discoverableByEndUsers"
-                    required={ false }
-                    label={ t("console:develop.features.applications.forms.generalDetails.fields" +
+            { isMyAccountEnabled || isSubOrg
+                && !(application?.templateId === ApplicationManagementConstants.MOBILE)
+                ? (
+                    <Field.Checkbox
+                        ariaLabel="Make application discoverable by end users"
+                        name="discoverableByEndUsers"
+                        required={ false }
+                        label={ t("console:develop.features.applications.forms.generalDetails.fields" +
                                 ".discoverable.label") }
-                    initialValue={ isDiscoverable }
-                    readOnly={ readOnly }
-                    data-testid={ `${ testId }-application-discoverable-checkbox` }
-                    listen={ (value) => setDiscoverability(value) }
-                    hint={ (
-                        <Trans
-                            i18nKey={
-                                "console:develop.features.applications.forms.generalDetails.fields." +
+                        initialValue={ isDiscoverable }
+                        readOnly={ readOnly }
+                        data-testid={ `${ testId }-application-discoverable-checkbox` }
+                        listen={ (value) => setDiscoverability(value) }
+                        hint={ (
+                            <Trans
+                                i18nKey={
+                                    "console:develop.features.applications.forms.generalDetails.fields." +
                                 "discoverable.hint"
-                            }
-                            tOptions={ { myAccount: "My Account" } }
-                        >
-                            { " " }
-                            { getLink("develop.applications.managementApplication.selfServicePortal") === undefined
-                                ? (
-                                    <strong data-testid="application-name-assertion">
+                                }
+                                tOptions={ { myAccount: "My Account" } }
+                            >
+                                { " " }
+                                { getLink("develop.applications.managementApplication.selfServicePortal") === undefined
+                                    ? (
+                                        <strong data-testid="application-name-assertion">
                                         My Account
-                                    </strong>
-                                )
-                                : (
-                                    <strong
-                                        className="link pointing"
-                                        data-testid="application-name-assertion"
-                                        onClick={
-                                            () => window.open(getLink("develop.applications.managementApplication"+
+                                        </strong>
+                                    )
+                                    : (
+                                        <strong
+                                            className="link pointing"
+                                            data-testid="application-name-assertion"
+                                            onClick={
+                                                () => window.open(getLink("develop.applications.managementApplication"+
                                                             ".selfServicePortal"), "_blank")
-                                        }
-                                    >
+                                            }
+                                        >
                                         My Account
-                                    </strong>
-                                )
-                            }
-                        </Trans>
-                    ) }
-                    width={ 16 }
-                /> ) : null
+                                        </strong>
+                                    )
+                                }
+                            </Trans>
+                        ) }
+                        width={ 16 }
+                    /> ) : null
             }
             <Field.Input
                 ariaLabel="Application access URL"
