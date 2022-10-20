@@ -367,7 +367,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                         <Trans
                             i18nKey={
                                 "console:develop.features.applications.forms.generalDetails.fields." +
-                            "discoverable.hint"
+                                "discoverable.hint"
                             }
                             tOptions={ { myAccount: "My Account" } }
                         >
@@ -375,7 +375,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                             { getLink("develop.applications.managementApplication.selfServicePortal") === undefined
                                 ? (
                                     <strong data-testid="application-name-assertion">
-                                    My Account
+                                        My Account
                                     </strong>
                                 )
                                 : (
@@ -387,7 +387,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                                         ".selfServicePortal"), "_blank")
                                         }
                                     >
-                                    My Account
+                                        My Account
                                     </strong>
                                 )
                             }
