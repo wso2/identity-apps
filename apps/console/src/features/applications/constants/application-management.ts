@@ -214,7 +214,10 @@ export class ApplicationManagementConstants {
         [ "mobile-application" ] : [
             ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
             ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
-            ApplicationManagementConstants.IMPLICIT_GRANT
+            ApplicationManagementConstants.IMPLICIT_GRANT,
+            ApplicationManagementConstants.PASSWORD,
+            ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT,
+            ApplicationManagementConstants.DEVICE_GRANT
         ]
     };
 

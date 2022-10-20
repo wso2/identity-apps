@@ -352,7 +352,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     hidden={ hiddenFields?.includes("imageUrl") }
                 />
             }
-            { isMyAccountEnabled || isSubOrg 
+            { (isMyAccountEnabled || isSubOrg) 
                 && !(application?.templateId === ApplicationManagementConstants.MOBILE)
                 ? (
                     <Field.Checkbox
