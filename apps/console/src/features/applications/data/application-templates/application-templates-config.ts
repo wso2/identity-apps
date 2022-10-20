@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -22,10 +22,9 @@ import values from "lodash-es/values";
 import { ComponentType, LazyExoticComponent, ReactElement, lazy } from "react";
 import GeneralApplicationTemplateCategory from "./categories/general-application-template-category.json";
 import DesktopApplicationTemplateGroup from "./groups/desktop-application-template-group.json";
-import MobileApplicationTemplateGroup from "./groups/mobile-application-template-group.json";
 import WebApplicationTemplateGroup from "./groups/web-application-template-group.json";
-import AndroidMobileApplicationTemplate from "./templates/android-mobile-application/android-mobile-application.json";
 import CustomApplicationTemplate from "./templates/custom-application/custom-application.json";
+import MobileApplicationTemplate from "./templates/mobile-application/mobile-application.json";
 import OIDCWebApplicationTemplate from "./templates/oidc-web-application/oidc-web-application.json";
 import SAMLWebApplicationTemplate from "./templates/saml-web-application/saml-web-application.json";
 import SinglePageApplicationTemplate from "./templates/single-page-application/single-page-application.json";
@@ -90,11 +89,6 @@ export const getApplicationTemplatesConfig = (): ApplicationTemplatesConfigInter
                         enabled: true,
                         id: DesktopApplicationTemplateGroup.id,
                         resource: DesktopApplicationTemplateGroup
-                    },
-                    {
-                        enabled: true,
-                        id: MobileApplicationTemplateGroup.id,
-                        resource: MobileApplicationTemplateGroup
                     }
                 ], "id"),
                 keyBy(extensionsManager.getApplicationTemplatesConfig().groups, "id")
@@ -103,14 +97,6 @@ export const getApplicationTemplatesConfig = (): ApplicationTemplatesConfigInter
         templates: values(
             merge(
                 keyBy([
-                    {
-                        content: {
-                            wizardHelp: lazy(() => import("./templates/android-mobile-application/create-wizard-help"))
-                        },
-                        enabled: applicationConfig.templates.android,
-                        id: AndroidMobileApplicationTemplate.id,
-                        resource: AndroidMobileApplicationTemplate
-                    },
                     {
                         content: {
                             wizardHelp: lazy(() => import("./templates/oidc-web-application/create-wizard-help"))
@@ -154,6 +140,14 @@ export const getApplicationTemplatesConfig = (): ApplicationTemplatesConfigInter
                         enabled: applicationConfig.templates.custom,
                         id: CustomApplicationTemplate.id,
                         resource: CustomApplicationTemplate
+                    },
+                    {
+                        content: {
+                            wizardHelp: lazy(() => import("./templates/mobile-application/create-wizard-help"))
+                        },
+                        enabled: applicationConfig.templates.mobile,
+                        id: MobileApplicationTemplate.id,
+                        resource: MobileApplicationTemplate
                     }
                 ], "id"),
                 keyBy(extensionsManager.getApplicationTemplatesConfig().templates, "id")

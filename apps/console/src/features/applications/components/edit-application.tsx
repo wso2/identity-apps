@@ -728,7 +728,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         if (!tabPaneExtensions && applicationConfig.editApplication.extendTabs
             && application?.templateId !== ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
             && application?.templateId !== ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS
-            && application?.templateId !== ApplicationManagementConstants.CUSTOM_APPLICATION_SAML) {
+            && application?.templateId !== ApplicationManagementConstants.CUSTOM_APPLICATION_SAML
+            && application?.templateId !== ApplicationManagementConstants.MOBILE) {
             return [];
         }
 
@@ -736,7 +737,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             && application?.templateId !== CustomApplicationTemplate.id
             && application?.templateId !== ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
             && application?.templateId !== ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS
-            && application?.templateId !== ApplicationManagementConstants.CUSTOM_APPLICATION_SAML) {
+            && application?.templateId !== ApplicationManagementConstants.CUSTOM_APPLICATION_SAML
+            && application?.templateId !== ApplicationManagementConstants.MOBILE) {
             panes.push(...tabPaneExtensions);
         }
 
@@ -1037,7 +1039,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         && (tabPaneExtensions || !applicationConfig.editApplication.extendTabs
             || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
             || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS
-            || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_SAML )
+            || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_SAML 
+            || application?.templateId === ApplicationManagementConstants.MOBILE)
             ? (
                 <>
                     <ResourceTab
