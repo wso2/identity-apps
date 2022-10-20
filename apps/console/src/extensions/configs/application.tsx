@@ -151,7 +151,6 @@ export const applicationConfig: ApplicationConfig = {
         identifierFirstWarning: false
     },
     templates: {
-        android: true,
         custom: true,
         mobile: true,
         oidc: true,
