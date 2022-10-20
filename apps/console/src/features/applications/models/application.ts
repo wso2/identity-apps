@@ -673,7 +673,8 @@ export enum AdaptiveAuthTemplateTypes {
 export enum ApplicationTemplateIdTypes {
     SPA = "single-page-application",
     OIDC_WEB_APPLICATION = "oidc-web-application",
-    SAML_WEB_APPLICATION = "saml-web-application"
+    SAML_WEB_APPLICATION = "saml-web-application",
+    MOBILE_APPLICATION = "mobile-application"
 }
 
 /**

@@ -1005,6 +1005,7 @@ export interface ConsoleNS {
                         fields: {
                             callBackUrls: FormAttributes;
                             name: FormAttributes;
+                            urlDeepLinkError: string;
                         };
                     };
                 };

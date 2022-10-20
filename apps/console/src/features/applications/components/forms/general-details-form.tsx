@@ -352,13 +352,13 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     hidden={ hiddenFields?.includes("imageUrl") }
                 />
             }
-            { isMyAccountEnabled || isSubOrg? (
+            { (isMyAccountEnabled || isSubOrg) ? (
                 <Field.Checkbox
                     ariaLabel="Make application discoverable by end users"
                     name="discoverableByEndUsers"
                     required={ false }
                     label={ t("console:develop.features.applications.forms.generalDetails.fields" +
-                                ".discoverable.label") }
+                            ".discoverable.label") }
                     initialValue={ isDiscoverable }
                     readOnly={ readOnly }
                     data-testid={ `${ testId }-application-discoverable-checkbox` }
@@ -384,7 +384,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                         data-testid="application-name-assertion"
                                         onClick={
                                             () => window.open(getLink("develop.applications.managementApplication"+
-                                                            ".selfServicePortal"), "_blank")
+                                                        ".selfServicePortal"), "_blank")
                                         }
                                     >
                                         My Account
