@@ -141,6 +141,8 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
 
     const [ isMyAccountEnabled, setMyAccountStatus ] = useState<boolean>(AppConstants.DEFAULT_MY_ACCOUNT_STATUS);
 
+    const isSubOrg: boolean = window[ "AppUtils" ].getConfig().organizationName;
+
     /**
      * Prepare form values for submitting.
      *
@@ -218,7 +220,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
     const {
         data: myAccountStatus,
         isLoading: isMyAccountStatusLoading
-    } = useMyAccountStatus();
+    } = useMyAccountStatus(!isSubOrg);
 
     /**
      * Sets the initial spinner.
@@ -350,7 +352,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     hidden={ hiddenFields?.includes("imageUrl") }
                 />
             }
-            { isMyAccountEnabled || isSubOrg
+            { (isMyAccountEnabled || isSubOrg)
                 && !(application?.templateId === ApplicationManagementConstants.MOBILE)
                 ? (
                     <Field.Checkbox
