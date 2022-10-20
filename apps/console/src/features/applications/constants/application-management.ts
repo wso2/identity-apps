@@ -139,7 +139,7 @@ export class ApplicationManagementConstants {
      */
     public static readonly APPLICATION_TEMPLATE_DOC_MAPPING: Map<string, string> = new Map<string, string>()
         .set(ApplicationManagementConstants.TEMPLATE_IDS.get("box"), "OIDC Web Application")
-        .set(ApplicationManagementConstants.TEMPLATE_IDS.get("oidcMobile"), "OIDC Mobile Application")
+        .set(ApplicationManagementConstants.TEMPLATE_IDS.get("mobile"), "Mobile Application")
         .set(ApplicationManagementConstants.TEMPLATE_IDS.get("oidcWeb"), "OIDC Web Application")
         .set(ApplicationManagementConstants.TEMPLATE_IDS.get("spa"), "Single Page Application")
         .set(ApplicationManagementConstants.TEMPLATE_IDS.get("slack"), "OIDC Web Application")
