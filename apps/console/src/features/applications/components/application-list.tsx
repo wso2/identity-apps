@@ -315,6 +315,13 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                                 && groupedApplicationTemplates.find((group) => {
                                     return (group.id === templateGroupId || group.templateGroup === templateGroupId);
                                 }).name;
+                        } else {
+                            templateDisplayName = applicationTemplates
+                            && applicationTemplates instanceof Array
+                            && applicationTemplates.length > 0
+                            && applicationTemplates.find((template) => {
+                                return template.id === app.templateId;
+                            }).name;
                         }
                     }
 

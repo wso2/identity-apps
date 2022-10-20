@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -28,6 +28,7 @@ import { useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
 import { AppState, ConfigReducerStateInterface } from "../../../../features/core";
 import { getAuthProtocolMetadata } from "../../api";
+import { ApplicationManagementConstants } from "../../constants";
 import SinglePageApplicationTemplate
     from "../../data/application-templates/templates/single-page-application/single-page-application.json";
 import {
@@ -473,6 +474,9 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                             <Grid.Row column={ 1 }>
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 } className="field">
                                     <URLInput
+                                        isCustom = {
+                                            !(selectedTemplate.templateId === ApplicationManagementConstants.MOBILE) 
+                                        }
                                         labelEnabled={ true }
                                         handleAddAllowedOrigin={ (url) => handleAddAllowOrigin(url) }
                                         handleRemoveAllowedOrigin={ (url) => handleRemoveAllowOrigin(url) }
@@ -498,8 +502,14 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                                 "spaProtocolSettingsWizard.fields.callBackUrls.validations.empty")
                                         }
                                         validation={ (value: string) => {
-                                            if (!(URLUtils.isURLValid(value, true) && (URLUtils.isHttpUrl(value) ||
-                                                URLUtils.isHttpsUrl(value)))) {
+                                            if (
+                                                !(selectedTemplate.templateId === ApplicationManagementConstants.MOBILE)
+                                                && (
+                                                    !(URLUtils.isURLValid(value, true)
+                                                    && (URLUtils.isHttpUrl(value)
+                                                    || URLUtils.isHttpsUrl(value)))
+                                                )
+                                            ) {
 
                                                 return false;
                                             }

@@ -208,6 +208,11 @@ export class ApplicationManagementConstants {
             ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
             ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT,
             ApplicationManagementConstants.DEVICE_GRANT
+        ],
+        [ "mobile-application" ] : [
+            ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
+            ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
+            ApplicationManagementConstants.IMPLICIT_GRANT
         ]
     };
 
@@ -390,6 +395,8 @@ export class ApplicationManagementConstants {
     public static readonly CUSTOM_APPLICATION_PASSIVE_STS = "custom-application-passive-sts";
 
     public static readonly CUSTOM_APPLICATION = "custom-application";
+
+    public static readonly MOBILE = "mobile-application";
 
     public static readonly CUSTOM_APPLICATION_PROTOCOL_ORDER: Map<string, number> =
         new Map<string, number>([

@@ -50,6 +50,8 @@ import OIDCWebApplicationTemplate
     from "../../data/application-templates/templates/oidc-web-application/oidc-web-application.json";
 import SinglePageApplicationTemplate
     from "../../data/application-templates/templates/single-page-application/single-page-application.json";
+import MobileTemplate
+    from "../../data/application-templates/templates/mobile-application/mobile-application.json";
 import {
     ApplicationInterface,
     ApplicationTemplateIdTypes,
@@ -207,6 +209,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const scopeValidator = useRef<HTMLElement>();
     const [ isSPAApplication, setSPAApplication ] = useState<boolean>(false);
     const [ isOIDCWebApplication, setOIDCWebApplication ] = useState<boolean>(false);
+    const [ isMobileApplication, setMobileApplication ] = useState<boolean>(false);
 
     const [ finalCertValue, setFinalCertValue ] = useState<string>(undefined);
     const [ selectedCertType, setSelectedCertType ] = useState<CertificateTypeInterface>(CertificateTypeInterface.NONE);
@@ -311,6 +314,22 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         if (template.id == OIDCWebApplicationTemplate.id) {
             setOIDCWebApplication(true);
         }
+    }, [ template ]);
+
+    /**
+     * Check whether the application is a Mobile Application
+     */
+    useEffect(() => {
+        if (!template?.id || !MobileTemplate?.id) {
+            setIsLoading(false);
+
+            return;
+        }
+
+        if (template.id == MobileTemplate.id) {
+            setMobileApplication(true);
+        }
+        setIsLoading(false);
     }, [ template ]);
 
     /**
@@ -1290,10 +1309,13 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             "callBackUrls.validations.empty")
                                     }
                                     validation={ (value: string) => {
-                                        if (CustomApplicationTemplate?.id !== template?.id
+                                        if (
+                                            !(isMobileApplication) 
+                                            && CustomApplicationTemplate?.id !== template?.id
                                             && !(URLUtils.isURLValid(value, true) &&
                                                 (URLUtils.isHttpUrl(value) ||
-                                                    URLUtils.isHttpsUrl(value)))) {
+                                                    URLUtils.isHttpsUrl(value)))
+                                        ) {
 
                                             return false;
                                         }
@@ -1366,9 +1388,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     }
                                     validation={ (value: string) => {
 
-                                        if (!(((URLUtils.isHttpsUrl(value) || URLUtils.isHttpUrl(value))) &&
-                                            URLUtils.isAValidOriginUrl(value))) {
-
+                                        if (
+                                            !(isMobileApplication)
+                                            && !(((URLUtils.isHttpsUrl(value) || URLUtils.isHttpUrl(value)))
+                                            && URLUtils.isAValidOriginUrl(value))
+                                        ) {
                                             return false;
                                         }
 
@@ -1561,7 +1585,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 </Grid.Column>
             </Grid.Row>
             {
-                (!isSPAApplication) && isTokenBindingTypeSelected && (
+                (!isSPAApplication) && !isMobileApplication && isTokenBindingTypeSelected && (
                     <>
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
@@ -2808,7 +2832,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         }
                         {
                             (initialValues?.clientSecret && (initialValues?.state !== State.REVOKED) &&
-                                (!isSPAApplication)) && (
+                                (!isSPAApplication) &&  (!isMobileApplication)) && (
                                 <Grid.Row columns={ 2 }>
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                         <Form.Field>
