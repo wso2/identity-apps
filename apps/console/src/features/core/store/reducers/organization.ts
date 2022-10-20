@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { OrganizationManagementConstants } from "../../../organizations/constants";
+import { OrganizationManagementConstants, OrganizationType } from "../../../organizations/constants";
 import { OrganizationReducerStateInterface } from "../../models";
 import { OrganizationAction, OrganizationActionTypes } from "../actions/types";
 
@@ -37,7 +37,8 @@ const initialState: OrganizationReducerStateInterface = {
         },
         status: "",
         type: ""
-    }
+    },
+    organizationType: OrganizationType.SUPER_ORGANIZATION
 };
 
 export const organizationReducer = (
@@ -59,6 +60,11 @@ export const organizationReducer = (
             return {
                 ...state,
                 isFirstLevelOrganization: action.payload
+            };
+        case OrganizationActionTypes.SET_ORGANIZATION_TYPE:
+            return {
+                ...state,
+                organizationType: action.payload
             };
         default:
             return {
