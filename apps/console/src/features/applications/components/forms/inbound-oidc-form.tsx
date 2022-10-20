@@ -46,12 +46,12 @@ import { getGeneralIcons } from "../../configs";
 import { ApplicationManagementConstants } from "../../constants";
 import CustomApplicationTemplate
     from "../../data/application-templates/templates/custom-application/custom-application.json";
+import MobileTemplate
+    from "../../data/application-templates/templates/mobile-application/mobile-application.json";
 import OIDCWebApplicationTemplate
     from "../../data/application-templates/templates/oidc-web-application/oidc-web-application.json";
 import SinglePageApplicationTemplate
     from "../../data/application-templates/templates/single-page-application/single-page-application.json";
-import MobileTemplate
-    from "../../data/application-templates/templates/mobile-application/mobile-application.json";
 import {
     ApplicationInterface,
     ApplicationTemplateIdTypes,
