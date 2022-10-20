@@ -31,7 +31,6 @@ import {
 } from "@wso2is/react-components";
 import { OIDCScopesClaimsListInterface } from "apps/console/src/features/oidc-scopes";
 import sortBy from "lodash-es/sortBy";
-import union from "lodash-es/union";
 import React, { Fragment, FunctionComponent, ReactElement, SyntheticEvent, useEffect, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -129,6 +128,8 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
 
     const [ expandedScopes, setExpandedScopes ] = useState<string[]>([]);
 
+    const [ searchValue, setSearchValue ] = useState<string>("");
+
     const [ initializationFinished, setInitializationFinished ] = useState<boolean>(false);
 
     const initValue = useRef(false);
@@ -190,6 +191,7 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
         sortBy(tempFilterSelectedExternalScopeClaims, "name");
         setExternalClaimsGroupedByScopes(tempFilterSelectedExternalScopeClaims);
         setUnfilteredExternalClaimsGroupedByScopes(tempFilterSelectedExternalScopeClaims);
+        searchFilter(searchValue);
     };
 
     /**
@@ -219,6 +221,7 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
         sortBy(tempFilterSelectedExternalScopeClaims, "name");
         setExternalClaimsGroupedByScopes(tempFilterSelectedExternalScopeClaims);
         setUnfilteredExternalClaimsGroupedByScopes(tempFilterSelectedExternalScopeClaims);
+        searchFilter(searchValue);
     };
 
     /**
@@ -311,27 +314,40 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                 item.displayName?.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1 ||
                 item.description?.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1);
 
+        const unfilteredClaims = [ ...unfilteredExternalClaimsGroupedByScopes ];
         const tempExpandedScopes = [];
-        const userAttributesFiltered = unfilteredExternalClaimsGroupedByScopes
-            .filter((scope: OIDCScopesClaimsListInterface) => {
-                const matchedScopes = scope.claims.filter((claim: ExtendedExternalClaimInterface) =>
-                    (claim.claimURI?.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1 ||
-                        claim.claimDialectURI?.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1 ||
-                        claim.localClaimDisplayName?.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1 ||
-                        claim.mappedLocalClaimURI?.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1));
+        const userAttributesFiltered = [];
 
-                if (matchedScopes !== undefined && matchedScopes.length !== 0) {
-                    // expand the scope item if the searched term matches any claims/user attributes
-                    if (!tempExpandedScopes.includes(scope.name)) {
-                        tempExpandedScopes.push(scope.name);
-                    }
+        unfilteredClaims.forEach((scope: OIDCScopesClaimsListInterface) => {
+            const matchedClaims = scope.claims.filter((claim: ExtendedExternalClaimInterface) =>
+                (claim.claimURI?.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1 ||
+                    claim.claimDialectURI?.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1 ||
+                    claim.localClaimDisplayName?.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1 ||
+                    claim.mappedLocalClaimURI?.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1));
 
-                    return scope;
+            if (matchedClaims !== undefined && matchedClaims.length !== 0) {
+                // expand the scope item if the searched term matches any claims/user attributes
+                if (!tempExpandedScopes.includes(scope.name)) {
+                    tempExpandedScopes.push(scope.name);
+                }
+                const updatedScope = { 
+                    ...scope,
+                    claims: matchedClaims
+                };
+
+                userAttributesFiltered.push(updatedScope);
+            }
+
+            scopesFiltered.map((tempScope) => {
+                if (tempScope.name === scope.name && matchedClaims.length === 0){
+                    userAttributesFiltered.push(scope);
                 }
             });
+        });
+
 
         setExternalClaimsGroupedByScopes(sortBy(
-            union(scopesFiltered, userAttributesFiltered),
+            userAttributesFiltered,
             "displayName"
         ));
         setExpandedScopes(tempExpandedScopes);
@@ -345,6 +361,7 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
     const handleChange = (event) => {
         const changeValue = event.target.value;
 
+        setSearchValue(changeValue);
         if (changeValue.length > 0) {
             searchFilter(changeValue);
         } else {
