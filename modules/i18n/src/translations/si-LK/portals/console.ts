@@ -2211,7 +2211,8 @@ export const console: ConsoleNS = {
                                 validations: {
                                     invalid: "The application name should contain letters, numbers."
                                 }
-                            }
+                            },
+                            urlDeepLinkError: "ඇතුළත් කළ Deep URL සබැඳියක් නොවේ."
                         }
                     }
                 },
