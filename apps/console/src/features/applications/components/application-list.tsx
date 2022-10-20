@@ -318,10 +318,10 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                         } else {
                             templateDisplayName = applicationTemplates
                             && applicationTemplates instanceof Array
-                            && applicationTemplates.length > 0
+                            && applicationTemplates?.length > 0
                             && applicationTemplates.find((template) => {
-                                return template.id === app.templateId;
-                            }).name;
+                                return template?.id === app?.templateId;
+                            })?.name;
                         }
                     }
 

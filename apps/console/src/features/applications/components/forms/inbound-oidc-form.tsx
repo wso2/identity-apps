@@ -326,7 +326,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             return;
         }
 
-        if (template.id == MobileTemplate.id) {
+        if (template?.id == MobileTemplate?.id) {
             setMobileApplication(true);
         }
         setIsLoading(false);
@@ -1591,7 +1591,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 </Grid.Column>
             </Grid.Row>
             {
-                (!isSPAApplication) && !isMobileApplication && isTokenBindingTypeSelected && (
+                (!isSPAApplication)
+                && !isMobileApplication
+                && isTokenBindingTypeSelected
+                && (
                     <>
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
@@ -2836,9 +2839,12 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 </Grid.Row>
                             )
                         }
-                        {
-                            (initialValues?.clientSecret && (initialValues?.state !== State.REVOKED) &&
-                                (!isSPAApplication) &&  (!isMobileApplication)) && (
+                        { (
+                            initialValues?.clientSecret
+                            && (initialValues?.state !== State.REVOKED)
+                            && (!isSPAApplication)
+                            && (!isMobileApplication))
+                            && (
                                 <Grid.Row columns={ 2 }>
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                         <Form.Field>
