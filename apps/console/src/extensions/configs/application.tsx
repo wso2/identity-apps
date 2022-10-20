@@ -153,10 +153,10 @@ export const applicationConfig: ApplicationConfig = {
     templates: {
         android: true,
         custom: true,
+        mobile: true,
         oidc: true,
         saml: true,
         spa: true,
-        windows: true,
-        mobile: true
+        windows: true
     }
 };
