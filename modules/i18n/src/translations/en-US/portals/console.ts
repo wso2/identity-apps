@@ -2358,8 +2358,7 @@ export const console: ConsoleNS = {
                 },
                 myaccount: {
                     description: "Self-service portal for your users.",
-                    popup: "Share this link with your users to allow access to My Account" +
-                    " and to manage their accounts.",
+                    popup: "Share this link with your users to allow access to My Account.",
                     title: "My Account",
                     enable: {
                         0: "Enabled",
