@@ -105,22 +105,10 @@ export const ProtocolLanding: FunctionComponent<ProtocolLandingPropsInterface> =
 
             protocolContentList.push(protocolContent);
         }
-        if (availableProtocols.includes(SupportedAuthProtocolTypes.WS_FEDERATION)) {
-            const protocolContent: ProtocolContentInterface = {
-                description: ApplicationManagementUtils.resolveProtocolDescription(
-                    SupportedAuthProtocolTypes.WS_FEDERATION),
-                image: getInboundProtocolLogos()["passive-sts"],
-                name: ApplicationManagementUtils.resolveProtocolDisplayName(SupportedAuthProtocolTypes.WS_FEDERATION),
-                protocol: SupportedAuthProtocolTypes.WS_FEDERATION
-            };
-
-            protocolContentList.push(protocolContent);
-        }
 
         availableProtocols.map(
             (protocol: string)=> {
-                if (protocol !== SupportedAuthProtocolTypes.OIDC && protocol !== SupportedAuthProtocolTypes.SAML
-                 && protocol !== SupportedAuthProtocolTypes.WS_FEDERATION) {
+                if (protocol !== SupportedAuthProtocolTypes.OIDC && protocol !== SupportedAuthProtocolTypes.SAML) {
                     const protocolContent: ProtocolContentInterface = {
                         description: protocol,
                         image: <AnimatedAvatar

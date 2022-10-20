@@ -289,7 +289,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                     }
                 };
             } else if (customApplicationProtocol === SupportedAuthProtocolTypes.SAML) {
-                
+
                 application.templateId = ApplicationManagementConstants.CUSTOM_APPLICATION_SAML;
 
                 if (samlConfigureMode === SAMLConfigModes.MANUAL) {
@@ -303,9 +303,6 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                         }
                     );
                 }
-
-            } else if (customApplicationProtocol === SupportedAuthProtocolTypes.WS_FEDERATION) {
-                application.templateId = ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS;
             }
         }
 
@@ -615,12 +612,12 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
              *
              * @example
              * SAMLProtocolSettingsWizardForm
-             *     fields= [ "issuer", "assertionConsumerURLs" ] 
-             *     hideFieldHints= true 
-             *     triggerSubmit= submitProtocolForm 
-             *     templateValues= templateSettings?.application 
-             *     onSubmit= (values): void = setProtocolFormValues(values) 
-             *     data-testid= `${ testId }-saml-protocol-settings-form` 
+             *     fields= [ "issuer", "assertionConsumerURLs" ]
+             *     hideFieldHints= true
+             *     triggerSubmit= submitProtocolForm
+             *     templateValues= templateSettings?.application
+             *     onSubmit= (values): void = setProtocolFormValues(values)
+             *     data-testid= `${ testId }-saml-protocol-settings-form`
              * /
              */
             return (
@@ -681,21 +678,12 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                 }
             }
 
-            if (protocol === SupportedAuthProtocolTypes.WS_TRUST
-                || protocol === SupportedAuthProtocolTypes.OIDC
-                || protocol === SupportedAuthProtocolTypes.CUSTOM
-                || (filterProtocol && protocol === filterProtocol)) {
-
-                return false;
-            }
-
             return protocol;
         });
 
         const sortOrder: SupportedAuthProtocolTypes[] = [
             SupportedAuthProtocolTypes.OAUTH2_OIDC,
-            SupportedAuthProtocolTypes.SAML,
-            SupportedAuthProtocolTypes.WS_FEDERATION
+            SupportedAuthProtocolTypes.SAML
         ];
 
         supportedProtocols = sortBy(supportedProtocols, (protocol: SupportedAuthProtocolTypes) => {

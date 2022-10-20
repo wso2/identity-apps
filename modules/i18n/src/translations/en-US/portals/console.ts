@@ -2151,48 +2151,6 @@ export const console: ConsoleNS = {
                             }
                         }
                     },
-                    inboundSTS: {
-                        fields: {
-                            realm: {
-                                hint: "Enter realm identifier for passive sts",
-                                label: "Realm",
-                                placeholder: "Enter realm.",
-                                validations: {
-                                    empty: "This is a required field."
-                                }
-                            },
-                            replyTo: {
-                                hint: "Enter RP endpoint URL that handles the response.",
-                                label: "Reply URL",
-                                placeholder: "Enter Reply URL",
-                                validations: {
-                                    empty: "This is a required field.",
-                                    invalid: "Enter a valid URL"
-                                }
-                            }
-                        }
-                    },
-                    inboundWSTrust: {
-                        fields: {
-                            audience: {
-                                hint: "The trusted relying party's endpoint address.",
-                                label: "Audience",
-                                placeholder: "Enter audience",
-                                validations: {
-                                    empty: "Enter the audience.",
-                                    invalid: "Enter a valid URL"
-                                }
-                            },
-                            certificateAlias: {
-                                hint: "Public certificate of the trusted relying party.",
-                                label: "Certificate alias",
-                                placeholder: "Enter audience",
-                                validations: {
-                                    empty: "Select the certificate alias"
-                                }
-                            }
-                        }
-                    },
                     outboundProvisioning: {
                         fields: {
                             blocking: {
@@ -2262,7 +2220,7 @@ export const console: ConsoleNS = {
                         configs: {
                             content: {
                                 subTitle: "Update the pre defined configurations through the template or add new " +
-                                    "configurations depending on the protocol (OIDC, SAML, WS-Trust, etc.) " +
+                                    "configurations depending on the protocol (OIDC, SAML, etc.) " +
                                     "configured for the application.",
                                 title: "Application Configurations"
                             },

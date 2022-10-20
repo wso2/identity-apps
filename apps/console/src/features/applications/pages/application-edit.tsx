@@ -398,8 +398,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         let template = applicationTemplates.find((template) => template.id === application.templateId);
 
         if (application.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
-            || application.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_SAML
-            || application.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS) {
+            || application.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_SAML) {
             template = applicationTemplates.find((template) => template.id === CustomApplicationTemplate.id);
         }
 

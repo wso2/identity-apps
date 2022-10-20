@@ -87,13 +87,7 @@ export const ProtocolWizardSummary: FunctionComponent<ProtocolWizardSummaryProps
      *  Set protocol image.
      */
     useEffect(() => {
-        if (image === SupportedAuthProtocolTypes.WS_FEDERATION) {
-            setProtocolImage("wsFed");
-        } else if (image === SupportedAuthProtocolTypes.WS_TRUST) {
-            setProtocolImage("wsTrust");
-        } else {
-            setProtocolImage(image);
-        }
+        setProtocolImage(image);
     }, [ image ]);
 
     return (

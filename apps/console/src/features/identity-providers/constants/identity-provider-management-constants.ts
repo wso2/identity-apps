@@ -373,7 +373,6 @@ export class IdentityProviderManagementConstants {
     // Known IS Predefined/Protocols authenticator IDs
     public static readonly OIDC_AUTHENTICATOR_ID: string = "T3BlbklEQ29ubmVjdEF1dGhlbnRpY2F0b3I";
     public static readonly SAML_AUTHENTICATOR_ID: string = "U0FNTFNTT0F1dGhlbnRpY2F0b3I";
-    public static readonly PASSIVE_STS_AUTHENTICATOR_ID: string = "UGFzc2l2ZVNUU0F1dGhlbnRpY2F0b3I";
     public static readonly ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID: string = "T3JnYW5pemF0aW9uQXV0aGVudGljYXRvcg";
 
     // Known Local Authenticator IDS.
@@ -406,7 +405,6 @@ export class IdentityProviderManagementConstants {
     public static readonly MICROSOFT_AUTHENTICATOR_ID: string = "T3BlbklEQ29ubmVjdEF1dGhlbnRpY2F0b3I";
 
     // Known IS Predefined/Protocols authenticator IDs
-    public static readonly PASSIVE_STS_AUTHENTICATOR_NAME: string = "PassiveSTSAuthenticator";
     public static readonly SAML_AUTHENTICATOR_NAME: string = "SAMLSSOAuthenticator";
     public static readonly OIDC_AUTHENTICATOR_NAME: string = "OpenIDConnectAuthenticator";
     public static readonly LEGACY_EMAIL_OTP_AUTHENTICATOR_NAME: string = "EmailOTP";

@@ -277,8 +277,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                     // Create a set with custom-application Ids.
                     const customApplicationIds: Set<string> = new Set([
                         ApplicationManagementConstants.CUSTOM_APPLICATION_SAML,
-                        ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC,
-                        ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS
+                        ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
                     ]);
 
                     let templateDisplayName: string = "";
@@ -292,7 +291,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                                 return template.id === ApplicationManagementConstants.CUSTOM_APPLICATION;
                             }).name;
                     } else {
-                        const relevantApplicationTemplate: ApplicationTemplateListItemInterface | undefined = 
+                        const relevantApplicationTemplate: ApplicationTemplateListItemInterface | undefined =
                             applicationTemplates
                             && applicationTemplates instanceof Array
                             && applicationTemplates.length > 0
@@ -397,7 +396,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                             <Header.Content>
                                 <Header.Subheader data-testid={ `${ testId }-col-2-item-sub-heading` }>
                                     { inboundAuthKey }
-                                    { 
+                                    {
                                         inboundAuthType && (
                                             <Label
                                                 pointing="left"

@@ -444,10 +444,6 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
         if (protocolName === "oauth2") {
             protocolName = SupportedAuthProtocolTypes.OIDC;
-        } else if (protocolName === "passivests") {
-            protocolName = SupportedAuthProtocolTypes.WS_FEDERATION;
-        } else if (protocolName === "wstrust") {
-            protocolName = SupportedAuthProtocolTypes.WS_TRUST;
         } else if (protocolName === "samlsso") {
             protocolName = SupportedAuthProtocolTypes.SAML;
         }
@@ -727,7 +723,6 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
         if (!tabPaneExtensions && applicationConfig.editApplication.extendTabs
             && application?.templateId !== ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
-            && application?.templateId !== ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS
             && application?.templateId !== ApplicationManagementConstants.CUSTOM_APPLICATION_SAML
             && application?.templateId !== ApplicationManagementConstants.MOBILE) {
             return [];
@@ -736,7 +731,6 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         if (tabPaneExtensions && tabPaneExtensions.length > 0
             && application?.templateId !== CustomApplicationTemplate.id
             && application?.templateId !== ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
-            && application?.templateId !== ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS
             && application?.templateId !== ApplicationManagementConstants.CUSTOM_APPLICATION_SAML
             && application?.templateId !== ApplicationManagementConstants.MOBILE) {
             panes.push(...tabPaneExtensions);
@@ -856,7 +850,6 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             }
             if (isFeatureEnabled(featureConfig?.applications,
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_INFO"))
-                 && application?.templateId != ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS
                     && !isFragmentApp) {
 
                 applicationConfig.editApplication.
@@ -1038,8 +1031,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         application && !isInboundProtocolsRequestLoading && inboundProtocolList != undefined
         && (tabPaneExtensions || !applicationConfig.editApplication.extendTabs
             || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
-            || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS
-            || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_SAML 
+            || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_SAML
             || application?.templateId === ApplicationManagementConstants.MOBILE)
             ? (
                 <>

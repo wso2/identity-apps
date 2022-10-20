@@ -996,18 +996,6 @@ export interface ConsoleNS {
                             }
                         };
                     };
-                    inboundSTS: {
-                        fields: {
-                            realm: FormAttributes;
-                            replyTo: FormAttributes;
-                        };
-                    };
-                    inboundWSTrust: {
-                        fields: {
-                            audience: FormAttributes;
-                            certificateAlias: FormAttributes;
-                        };
-                    };
                     outboundProvisioning: {
                         fields: {
                             blocking: FormAttributes;

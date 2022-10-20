@@ -788,8 +788,6 @@ export enum AuthenticatorTypes {
 export enum AuthProtocolTypes {
     SAML = "saml",
     OIDC = "oidc",
-    WS_FEDERATION = "passive-sts",
-    WS_TRUST = "ws-trust",
     CUSTOM= "custom"
 }
 

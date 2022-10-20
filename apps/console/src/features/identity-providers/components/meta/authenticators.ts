@@ -64,13 +64,6 @@ const getKnownConnectorMetadata = (): FederatedAuthenticatorMetaDataInterface[] 
             name: IdentityProviderManagementConstants.MS_LIVE_AUTHENTICATOR_NAME
         },
         {
-            authenticatorId: IdentityProviderManagementConstants.PASSIVE_STS_AUTHENTICATOR_ID,
-            description: "Login users with WS Federation.",
-            displayName: "Passive STS",
-            icon: getIdPIcons().wsFed,
-            name: IdentityProviderManagementConstants.PASSIVE_STS_AUTHENTICATOR_NAME
-        },
-        {
             authenticatorId: IdentityProviderManagementConstants.IWA_KERBEROS_AUTHENTICATOR_ID,
             description: "Login users to Microsoft Windows servers.",
             displayName: "IWA Kerberos",
