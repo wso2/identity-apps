@@ -24,7 +24,7 @@ import isBoolean from "lodash-es/isBoolean";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { Label } from "semantic-ui-react";
+import { Divider, Icon, Label } from "semantic-ui-react";
 import { IdentityProviderManagementConstants } from "../../../constants";
 import {
     CommonAuthenticatorFormFieldInterface,
@@ -351,9 +351,20 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
 
             <Message
                 type={ "info" }
-                content={ t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
-            ".smsOTP.testingPurposesNote") }
-                width={ 14 }
+                content={
+                    ( <Trans>
+                        <span>
+                            { t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                                ".smsOTP.forTestingOnlyNotice.firstLine") }
+                        </span>
+                        <Divider hidden fitted/>
+                        <span>
+                            <Icon name="info circle" style={ { visibility: "hidden" } }/>
+                            { t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                                ".smsOTP.forTestingOnlyNotice.secondLine") }
+                        </span>
+                    </Trans> ) }
+                width={ 13 }
             />
             <Field.Input
                 ariaLabel="SMS OTP expiry time"

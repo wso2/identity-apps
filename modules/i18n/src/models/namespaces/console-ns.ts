@@ -1309,7 +1309,10 @@ export interface ConsoleNS {
                             };
                         };
                         smsOTP: {
-                            testingPurposesNote: string,
+                            forTestingOnlyNotice: {
+                                firstLine :string,
+                                secondLine: string
+                            },
                             expiryTime: {
                                 hint: string;
                                 label: string;
