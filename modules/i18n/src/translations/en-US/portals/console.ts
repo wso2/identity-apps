@@ -2224,7 +2224,8 @@ export const console: ConsoleNS = {
                                         "{{characterLimit}} characters, including alphanumerics, periods (.), " +
                                         "dashes (-), underscores (_) and spaces."
                                 }
-                            }
+                            },
+                            urlDeepLinkError: "The entered URL is not a deep link."
                         }
                     }
                 },

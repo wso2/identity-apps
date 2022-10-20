@@ -135,6 +135,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
     const [ selectedGrantTypes, setSelectedGrantTypes ] = useState<string[]>(undefined);
     const [ isGrantChanged, setGrantChanged ] = useState<boolean>(false);
     const [ showGrantTypes, setShowGrantTypes ] = useState<boolean>(false);
+    const [ isDeepLinkError, setIsDeepLinkError ] = useState<boolean>(false);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
     // Maintain the state if the user allowed the CORS for the
@@ -494,27 +495,35 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                                 ".placeholder")
                                         }
                                         validationErrorMsg={
-                                            t("console:develop.features.applications.forms." +
-                                                "spaProtocolSettingsWizard.fields.callBackUrls.validations.invalid")
+                                            isDeepLinkError
+                                                ? t("console:develop.features.applications.forms." +
+                                                    "spaProtocolSettingsWizard.fields.urlDeepLinkError")
+                                                : t("console:develop.features.applications.forms." +
+                                                    "spaProtocolSettingsWizard.fields.callBackUrls.validations.invalid")
                                         }
                                         emptyErrorMessage={
                                             t("console:develop.features.applications.forms." +
                                                 "spaProtocolSettingsWizard.fields.callBackUrls.validations.empty")
                                         }
+                                        skipInternalValidation= {
+                                            selectedTemplate.templateId === ApplicationManagementConstants.MOBILE
+                                        }
                                         validation={ (value: string) => {
                                             if (
                                                 !(selectedTemplate.templateId === ApplicationManagementConstants.MOBILE)
-                                                && (
+                                            ) {
+                                                if ((
                                                     !(URLUtils.isURLValid(value, true)
                                                     && (URLUtils.isHttpUrl(value)
                                                     || URLUtils.isHttpsUrl(value)))
-                                                )
-                                            ) {
-
-                                                return false;
+                                                )) {
+                                                    return false;
+                                                }
                                             }
 
                                             if (!URLUtils.isMobileDeepLink(value)) {
+                                                setIsDeepLinkError(true);
+
                                                 return false;
                                             }
 
