@@ -308,15 +308,15 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
      * @param changeValue - search value
      */
     const searchFilter = (changeValue: string) => {
-        const scopesFiltered = unfilteredExternalClaimsGroupedByScopes
+        const scopesFiltered: OIDCScopesClaimsListInterface[] = unfilteredExternalClaimsGroupedByScopes
             .filter((item: OIDCScopesClaimsListInterface) =>
                 item.name?.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1 ||
                 item.displayName?.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1 ||
                 item.description?.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1);
 
-        const unfilteredClaims = [ ...unfilteredExternalClaimsGroupedByScopes ];
-        const tempExpandedScopes = [];
-        const userAttributesFiltered = [];
+        const unfilteredClaims: OIDCScopesClaimsListInterface[] = [ ...unfilteredExternalClaimsGroupedByScopes ];
+        const tempExpandedScopes: string[] = [];
+        const userAttributesFiltered: OIDCScopesClaimsListInterface[] = [];
 
         unfilteredClaims.forEach((scope: OIDCScopesClaimsListInterface) => {
             const matchedClaims = scope.claims.filter((claim: ExtendedExternalClaimInterface) =>
@@ -337,8 +337,7 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
 
                 userAttributesFiltered.push(updatedScope);
             }
-
-            scopesFiltered.map((tempScope) => {
+            scopesFiltered.map((tempScope: OIDCScopesClaimsListInterface) => {
                 if (tempScope.name === scope.name && matchedClaims.length === 0){
                     userAttributesFiltered.push(scope);
                 }

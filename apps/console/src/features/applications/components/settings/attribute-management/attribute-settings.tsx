@@ -316,20 +316,20 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
      * Grouped Scopes and external claims
      */
     const getExternalClaimsGroupedByScopes = () => {
-        const tempClaims = [ ...externalClaims ];
-        const updatedScopes = [];
-        const scopedClaims = [];
+        const tempClaims: ExtendedExternalClaimInterface[] = [ ...externalClaims ];
+        const updatedScopes: OIDCScopesClaimsListInterface[] = [];
+        const scopedClaims: ExtendedExternalClaimInterface[] = [];
  
         if ((scopes !== null) && (scopes !== undefined) && (scopes.length !== 0) && (claims.length !== 0)) {
-            scopes.map((scope) => {
+            scopes.map((scope: OIDCScopesListInterface) => {
                 if (scope.name !== "openid"){
-                    const updatedClaims = [];
-                    let scopeSelected = false;
+                    const updatedClaims: ExtendedExternalClaimInterface[] = [];
+                    let scopeSelected: boolean = false;
      
-                    scope.claims.map((scopeClaim) => {
-                        tempClaims.map( (tempClaim) => {
+                    scope.claims.map((scopeClaim: string) => {
+                        tempClaims.map( (tempClaim: ExtendedExternalClaimInterface) => {
                             if (scopeClaim === tempClaim.claimURI) {
-                                const updatedClaim = { 
+                                const updatedClaim: ExtendedExternalClaimInterface = { 
                                     ...tempClaim,
                                     mandatory: checkInitialRequestMandatory(tempClaim.claimURI),
                                     requested: checkInitialRequested(tempClaim.claimURI)
@@ -343,7 +343,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                             }
                         });
                     });
-                    const updatedScope = { 
+                    const updatedScope: OIDCScopesClaimsListInterface = { 
                         ...scope,
                         claims: updatedClaims,
                         selected: scopeSelected
@@ -353,12 +353,13 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                 }
             });
  
-            const scopelessClaims = tempClaims.filter((tempClaim) => !scopedClaims.includes(tempClaim));
-            const updatedScopelessClaims = [];
-            let isScopelessClaimRequested = false;
+            const scopelessClaims: ExtendedExternalClaimInterface[] = tempClaims.filter(
+                (tempClaim) => !scopedClaims.includes(tempClaim));
+            const updatedScopelessClaims: ExtendedExternalClaimInterface[] = [];
+            let isScopelessClaimRequested: boolean = false;
  
-            scopelessClaims.map((tempClaim) => {
-                const isInitialRequested = checkInitialRequested(tempClaim.claimURI);
+            scopelessClaims.map((tempClaim: ExtendedExternalClaimInterface) => {
+                const isInitialRequested: boolean = checkInitialRequested(tempClaim.claimURI);
  
                 updatedScopelessClaims.push({
                     ...tempClaim,
