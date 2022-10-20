@@ -133,8 +133,6 @@ export enum SupportedAuthProtocolTypes {
     SAML = "saml",
     OIDC = "oidc",
     OAUTH2_OIDC = "oauth2-oidc",
-    WS_FEDERATION = "passive-sts",
-    WS_TRUST = "ws-trust",
     CUSTOM= "custom"
 }
 
@@ -146,9 +144,7 @@ export enum SupportedAuthProtocolTypes {
  */
 export enum SupportedAuthProtocolName {
     SAML = "saml",
-    OIDC = "oidc",
-    WS_FEDERATION = "ws-federation",
-    WS_TRUST = "ws-trust"
+    OIDC = "oidc"
 }
 
 /**
@@ -159,9 +155,7 @@ export enum SupportedAuthProtocolName {
  */
 export enum DefaultProtocolTemplate {
     SAML = "default-saml",
-    OIDC = "default-oidc",
-    WS_FEDERATION = "default-ws-federation",
-    WS_TRUST = "default-ws-trust"
+    OIDC = "default-oidc"
 }
 
 /**
@@ -187,8 +181,7 @@ export enum SupportedQuickStartTemplateTypes {
  */
 export enum SupportedAuthProtocolMetaTypes {
     SAML = "saml",
-    OIDC = "oidc",
-    WS_TRUST = "ws-trust"
+    OIDC = "oidc"
 }
 
 interface AssertionEncryptionConfigurationInterface {
@@ -304,29 +297,6 @@ export interface SAMLMetaDataInterface {
     responseDigestAlgorithm?: MetadataPropertyInterface;
     assertionEncryptionAlgorithm?: MetadataPropertyInterface;
     keyEncryptionAlgorithm?: MetadataPropertyInterface;
-}
-
-/**
- * WS Trust configuration interface.
- */
-export interface WSTrustConfigurationInterface {
-    audience: string;
-    certificateAlias: string;
-}
-
-/**
- * WS Trust metadata interface.
- */
-export interface WSTrustMetaDataInterface {
-    certificateAlias: MetadataPropertyInterface;
-}
-
-/**
- * Passive Sts interface.
- */
-export interface PassiveStsConfigurationInterface {
-    realm: string;
-    replyTo: string;
 }
 
 export enum CustomTypeEnum {

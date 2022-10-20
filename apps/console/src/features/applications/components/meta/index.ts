@@ -19,4 +19,3 @@
 export * from "./inbound-protocols.meta";
 export * from "./oauth-protocol-template.meta";
 export * from  "./saml-protocol-template.meta";
-export * from "./passive-sts-protocol-template.meta";

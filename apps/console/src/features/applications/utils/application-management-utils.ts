@@ -405,10 +405,6 @@ export class ApplicationManagementUtils {
 
         if (protocolName === "oauth2") {
             protocolName = SupportedAuthProtocolTypes.OIDC;
-        } else if (protocolName === "passivests") {
-            protocolName = SupportedAuthProtocolTypes.WS_FEDERATION;
-        } else if (protocolName === "wstrust") {
-            protocolName = SupportedAuthProtocolTypes.WS_TRUST;
         } else if (protocolName === "samlsso") {
             protocolName = SupportedAuthProtocolTypes.SAML;
         }

@@ -2061,48 +2061,6 @@ export const console: ConsoleNS = {
                             }
                         }
                     },
-                    inboundSTS: {
-                        fields: {
-                            realm: {
-                                hint: "උදාසීන sts සඳහා තාත්වික හඳුනාගැනුම ඇතුළත් කරන්න",
-                                label: "රාජධානිය",
-                                placeholder: "රාජධානියට ඇතුළු වන්න.",
-                                validations: {
-                                    empty: "මෙය අත්‍යවශ්‍ය ක්ෂේත්‍රයකි."
-                                }
-                            },
-                            replyTo: {
-                                hint: "ප්‍රතිචාරය හසුරුවන ආර්පී එන්ඩ්පොයින්ට් URL ඇතුල් කරන්න.",
-                                label: "පිළිතුරු URL",
-                                placeholder: "පිළිතුරු URL ඇතුලත් කරන්න",
-                                validations: {
-                                    empty: "මෙය අත්‍යවශ්‍ය ක්ෂේත්‍රයකි.",
-                                    invalid: "මෙය වලංගු URL එකක් නොවේ"
-                                }
-                            }
-                        }
-                    },
-                    inboundWSTrust: {
-                        fields: {
-                            audience: {
-                                hint: "විශ්වාසදායක පක්ෂයේ අවසාන ලක්ෂ්‍ය ලිපිනය.",
-                                label: "ප්‍රේක්ෂකයෝ",
-                                placeholder: "ප්‍රේක්ෂකයින් ඇතුළත් කරන්න",
-                                validations: {
-                                    empty: "ප්‍රේක්ෂකයන් ඇතුළත් කරන්න.",
-                                    invalid: "මෙය වලංගු URL එකක් නොවේ"
-                                }
-                            },
-                            certificateAlias: {
-                                hint: "විශ්වාසදායක පක්ෂයේ පොදු සහතිකය.",
-                                label: "සහතික අන්වර්ථය",
-                                placeholder: "ප්‍රේක්ෂකයින් ඇතුළත් කරන්න",
-                                validations: {
-                                    empty: "සහතිකය අන්වර්ථය තෝරන්න"
-                                }
-                            }
-                        }
-                    },
                     outboundProvisioning: {
                         fields: {
                             blocking: {
@@ -2169,7 +2127,7 @@ export const console: ConsoleNS = {
                     tabs: {
                         configs: {
                             content: {
-                                subTitle: "යෙදුම සඳහා වින්‍යාස කර ඇති ප්‍රොටෝකෝලය (OIDC, SAML, WS-Trust, ආදිය) " +
+                                subTitle: "යෙදුම සඳහා වින්‍යාස කර ඇති ප්‍රොටෝකෝලය (OIDC, SAML, ආදිය) " +
                                     "මත පදනම්ව අච්චුව හරහා කලින් නිර්වචනය කළ වින්‍යාසයන් " +
                                     "යාවත්කාලීන කරන්න හෝ නව වින්‍යාසයන් එක් කරන්න.",
                                 title: "යෙදුම් වින්‍යාස කිරීම"

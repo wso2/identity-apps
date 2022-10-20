@@ -20,7 +20,6 @@ import { ApplicationManagementConstants } from "../../constants";
 import { AuthProtocolMetaListItemInterface, SAMLConfigModes, SupportedAuthProtocolTypes } from "../../models";
 
 export const InboundProtocolDefaultFallbackTemplates = new Map<string, string>([
-    [ "passivests", ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS ],
     [ "openid", ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC ],
     [ "oauth2", ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC ],
     [ "samlsso", ApplicationManagementConstants.CUSTOM_APPLICATION_SAML ]
@@ -50,22 +49,6 @@ export const InboundProtocolsMeta: AuthProtocolMetaListItemInterface[] = [
         logo: "saml",
         name: "saml",
         type: "samlsso"
-    },
-    {
-        displayName: "WS-Federation",
-        enabled: true,
-        id: "passive-sts",
-        logo: "wsFed",
-        name: "ws-federation",
-        type: "passivests"
-    },
-    {
-        displayName: "WS-Trust",
-        enabled: true,
-        id: "ws-trust",
-        logo: "wsTrust",
-        name: "ws-trust",
-        type: "wstrust"
     }
 ];
 
@@ -76,8 +59,6 @@ export const SupportedAuthProtocolTypeDisplayNames = {
     [ SupportedAuthProtocolTypes.SAML ]: "SAML",
     [ SupportedAuthProtocolTypes.OIDC ]: "OpenID Connect",
     [ SupportedAuthProtocolTypes.OAUTH2_OIDC ]: "OAuth2.0/OpenID Connect",
-    [ SupportedAuthProtocolTypes.WS_FEDERATION ]: "Passive STS",
-    [ SupportedAuthProtocolTypes.WS_TRUST ]: "WS-Trust",
     [ SupportedAuthProtocolTypes.CUSTOM ]: "Custom"
 };
 
@@ -87,8 +68,6 @@ export const SupportedAuthProtocolTypeDisplayNames = {
 export const SupportedAuthProtocolTypeDescriptions = {
     [ SupportedAuthProtocolTypes.SAML ]: "Open-standard for authentication and authorization.",
     [ SupportedAuthProtocolTypes.OIDC ]: "Authentication layer on top of OAuth 2.0",
-    [ SupportedAuthProtocolTypes.WS_FEDERATION ]: "Enable STS in a web browser.",
-    [ SupportedAuthProtocolTypes.WS_TRUST ]: "Standard that provides extensions to WS-Security.",
     [ SupportedAuthProtocolTypes.CUSTOM ]: "Custom protocol."
 };
 

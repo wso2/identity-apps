@@ -422,15 +422,12 @@ export class ApplicationManagementConstants {
 
     public static readonly CUSTOM_APPLICATION_SAML = "custom-application-saml";
 
-    public static readonly CUSTOM_APPLICATION_PASSIVE_STS = "custom-application-passive-sts";
-
     public static readonly CUSTOM_APPLICATION = "custom-application";
 
     public static readonly CUSTOM_APPLICATION_PROTOCOL_ORDER: Map<string, number> =
         new Map<string, number>([
             [ "oidc", 0 ],
-            [ "saml", 1 ],
-            [  "passive-sts", 2 ]
+            [ "saml", 1 ]
         ])
 
     /**
