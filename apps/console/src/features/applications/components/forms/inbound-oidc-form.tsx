@@ -2842,8 +2842,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         { (
                             initialValues?.clientSecret
                             && (initialValues?.state !== State.REVOKED)
-                            && (!isSPAApplication)
-                            && (!isMobileApplication))
+                            && (!isSPAApplication))
                             && (
                                 <Grid.Row columns={ 2 }>
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
