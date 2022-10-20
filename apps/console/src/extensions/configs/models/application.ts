@@ -134,6 +134,7 @@ export interface ApplicationConfig {
         spa: boolean;
         windows: boolean;
         custom: boolean;
+        mobile: boolean;
     };
     customApplication: {
         allowedProtocolTypes: string[];
