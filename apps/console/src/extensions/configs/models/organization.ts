@@ -26,4 +26,5 @@ export interface OrganizationConfigs {
         onClick: (breadcrumbItem: BreadcrumbItem) => void
     ) => ReactElement;
     showSwitcherInTenants: boolean;
+    canCreateOrganization: () => boolean;
 }
