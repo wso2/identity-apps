@@ -494,10 +494,8 @@ export interface ConsoleNS {
                                         actions: {
                                             makeMandatory: string;
                                             makeRequested: string;
-                                            makeScopeRequested: string;
                                             removeMandatory: string;
                                             removeRequested: string;
-                                            removeScopeRequested: string;
                                             subjectDisabledSelection: string;
                                         };
                                         faultyAttributeMapping: string;
