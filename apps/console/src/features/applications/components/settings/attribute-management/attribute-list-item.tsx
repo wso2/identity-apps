@@ -246,7 +246,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                                 ? !requested
                                 : false
                     }
-                    flowing = { subject }
+                    flowing={ subject }
                 />
             </Table.Cell>
             { (!readOnly || isOIDCMapping) && deleteAttribute ? (
