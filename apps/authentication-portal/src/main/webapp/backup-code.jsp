@@ -1,7 +1,7 @@
 <%--
-  ~ Copyright (c) 2022, WSO2 Inc. (http://www.wso2.com) All Rights Reserved.
+  ~ Copyright (c) 2022, WSO2 LLC. (https://www.wso2.org) All Rights Reserved.
   ~
-  ~ WSO2 Inc. licenses this file to you under the Apache License,
+  ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
   ~ in compliance with the License.
   ~ You may obtain a copy of the License at
@@ -19,6 +19,8 @@
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
+<%@ page import="org.wso2.carbon.identity.application.authenticator.backupcode.constants.BackupCodeAuthenticatorConstants" %>
+<%@ page import="org.wso2.carbon.identity.core.util.IdentityCoreConstants" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.Map" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
@@ -39,8 +41,19 @@
 
     if (Boolean.parseBoolean(request.getParameter(Constants.AUTH_FAILURE))) {
         authenticationFailed = "true";
-
-        if (request.getParameter(Constants.AUTH_FAILURE_MSG) != null) {
+        String errorCode = request.getParameter(BackupCodeAuthenticatorConstants.ERROR_CODE);
+        if (errorCode != null) {
+            if (errorCode.equals(IdentityCoreConstants.USER_ACCOUNT_LOCKED_ERROR_CODE)) {
+                String lockedReason = request.getParameter(BackupCodeAuthenticatorConstants.LOCKED_REASON);
+                if (lockedReason != null) {
+                    if (lockedReason.equals(BackupCodeAuthenticatorConstants.MAX_ATTEMPTS_EXCEEDED)) {
+                        errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.user.account.locked.incorrect.login.attempts");
+                    } else if (lockedReason.equals(BackupCodeAuthenticatorConstants.ADMIN_INITIATED)) {
+                        errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.user.account.locked.admin.initiated");
+                    }
+                }
+            }
+        } else if (request.getParameter(Constants.AUTH_FAILURE_MSG) != null) {
             errorMessage = Encode.forHtmlAttribute(request.getParameter(Constants.AUTH_FAILURE_MSG));
             if (errorMessage.equalsIgnoreCase("authentication.fail.message") || errorMessage.equalsIgnoreCase("login.fail.message")) {
                 errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle,"error.retry");
