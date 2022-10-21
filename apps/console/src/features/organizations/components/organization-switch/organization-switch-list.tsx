@@ -92,9 +92,7 @@ const OrganizationSwitcherList = (
                                     <OrganizationListItem
                                         organization={ organization }
                                         showSwitch={ true }
-                                        isClickable={
-                                            true && !!handleOrgRowClick
-                                        }
+                                        isClickable={ !!handleOrgRowClick }
                                         handleOrgRowClick={ handleOrgRowClick }
                                         setShowDropdown={ setShowDropdown }
                                         handleOrganizationSwitch={
