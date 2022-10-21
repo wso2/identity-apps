@@ -23,6 +23,7 @@ import {
     Announcement,
     AppSwitcher,
     GenericIcon,
+    HeaderLinkCategoryInterface,
     Logo,
     ProductBrand,
     Header as ReusableHeader,
@@ -119,6 +120,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     const scopes = useSelector((state: AppState) => state.auth.allowedScopes);
 
     const [ announcement, setAnnouncement ] = useState<AnnouncementBannerInterface>(undefined);
+    const [ headerLinks, setHeaderLinks ] = useState<HeaderLinkCategoryInterface[]>([]);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -147,6 +149,15 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         tenantDomain,
         feature.organizations
     ]);
+
+    useEffect(() => {
+        commonConfig
+            ?.header
+            ?.getUserDropdownLinkExtensions(tenantDomain, associatedTenants)
+            .then((response: HeaderLinkCategoryInterface[]) => {
+                setHeaderLinks(response);
+            } );
+    }, [ tenantDomain, associatedTenants ]);
 
     /**
      * Check if there are applications registered and set the value to local storage.
@@ -451,7 +462,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                             }
                         ]
                     },
-                    ...commonConfig?.header?.getUserDropdownLinkExtensions(tenantDomain, associatedTenants),
+                    ...headerLinks,
                     {
                         category: "GENERAL",
                         categoryLabel: null,
