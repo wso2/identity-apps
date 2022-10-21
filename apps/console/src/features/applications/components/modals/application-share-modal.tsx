@@ -42,7 +42,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import {
     Divider,
-    Form,
     Modal,
     ModalProps,
     Radio,
@@ -88,6 +87,10 @@ export interface ApplicationShareModalPropsInterface
      * Callback when the application sharing completed.
      */
     onApplicationSharingCompleted: () => void;
+    /**
+     * Specifies if the application is shared with all suborganizations.
+     */
+    isSharedWithAll?: boolean;
 }
 
 export const ApplicationShareModal: FunctionComponent<ApplicationShareModalPropsInterface> = (
@@ -100,6 +103,7 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
         clientId,
         onClose,
         onApplicationSharingCompleted,
+        isSharedWithAll,
         [ "data-componentid" ]: componentId,
         ...rest
     } = props;
@@ -123,6 +127,14 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
     );
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
+    useEffect(() => {
+        if (isSharedWithAll) {
+            setShareType(ShareType.SHARE_ALL);
+        } else if (!sharedOrganizationList || sharedOrganizationList?.length === 0) {
+            setShareType(ShareType.UNSHARE);
+        }
+    }, [ isSharedWithAll, sharedOrganizationList ]);
+
     useEffect(() => setTempOrganizationList(subOrganizationList || []), [
         subOrganizationList
     ]);
@@ -132,7 +144,7 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
         [ sharedOrganizationList ]
     );
 
-    const handleShareApplication = useCallback(() => {
+    const handleShareApplication = useCallback(async () => {
         let shareAppData: ShareApplicationRequestInterface;
         let removedOrganization: OrganizationInterface[];
 
@@ -141,17 +153,26 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
                 shareWithAllChildren: true
             };
         } else if (shareType === ShareType.SHARE_SELECTED) {
-            const addedOrganizations = differenceBy(
-                checkedUnassignedListItems,
-                sharedOrganizationList,
-                "id"
-            ).map(organization => organization.id);
+            let addedOrganizations: string[];
 
-            removedOrganization = differenceBy(
-                sharedOrganizationList,
-                checkedUnassignedListItems,
-                "id"
-            );
+            if (isSharedWithAll) {
+                addedOrganizations = checkedUnassignedListItems.map((org) => org.id);
+
+                await unshareApplication(applicationId, currentOrganization.id);
+
+            } else {
+                addedOrganizations = differenceBy(
+                    checkedUnassignedListItems,
+                    sharedOrganizationList,
+                    "id"
+                ).map(organization => organization.id);
+
+                removedOrganization = differenceBy(
+                    sharedOrganizationList,
+                    checkedUnassignedListItems,
+                    "id"
+                );
+            }
 
             shareAppData = {
                 shareWithAllChildren: false,
@@ -422,87 +443,86 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
                         checked={ shareType === ShareType.SHARE_SELECTED }
                         data-componentid={ `${ componentId }-share-with-all-checkbox` }
                     />
-                    <Form>
-                        <TransferComponent
-                            disabled={ shareType !== ShareType.SHARE_SELECTED }
-                            selectionComponent
-                            searchPlaceholder={ t(
-                                "console:manage.features.transferList.searchPlaceholder",
+                    <TransferComponent
+                        disabled={ shareType !== ShareType.SHARE_SELECTED }
+                        selectionComponent
+                        searchPlaceholder={ t(
+                            "console:manage.features.transferList.searchPlaceholder",
+                            { type: "organizations" }
+                        ) }
+                        handleUnelectedListSearch={
+                            handleUnselectedListSearch
+                        }
+                        data-componentId="application-share-modal-organization-transfer-component"
+                        className="share-app-modal"
+                    >
+                        <TransferList
+                            disabled={
+                                shareType !== ShareType.SHARE_SELECTED
+                            }
+                            isListEmpty={
+                                !(tempOrganizationList?.length > 0)
+                            }
+                            handleHeaderCheckboxChange={
+                                handleHeaderCheckboxChange
+                            }
+                            isHeaderCheckboxChecked={
+                                checkedUnassignedListItems?.length ===
+                                    subOrganizationList?.length
+                            }
+                            listType="unselected"
+                            listHeaders={ [
+                                t(
+                                    "console:manage.features.transferList.list.headers.1"
+                                ),
+                                ""
+                            ] }
+                            emptyPlaceholderContent={ t(
+                                "console:manage.features.transferList.list.emptyPlaceholders." +
+                                    "groups.unselected",
                                 { type: "organizations" }
                             ) }
-                            handleUnelectedListSearch={
-                                handleUnselectedListSearch
-                            }
-                            data-componentId="application-share-modal-organization-transfer-component"
-                        >
-                            <TransferList
-                                disabled={
-                                    shareType !== ShareType.SHARE_SELECTED
-                                }
-                                isListEmpty={
-                                    !(tempOrganizationList?.length > 0)
-                                }
-                                handleHeaderCheckboxChange={
-                                    handleHeaderCheckboxChange
-                                }
-                                isHeaderCheckboxChecked={
-                                    checkedUnassignedListItems?.length ===
-                                    subOrganizationList?.length
-                                }
-                                listType="unselected"
-                                listHeaders={ [
-                                    t(
-                                        "console:manage.features.transferList.list.headers.1"
-                                    ),
-                                    ""
-                                ] }
-                                emptyPlaceholderContent={ t(
-                                    "console:manage.features.transferList.list.emptyPlaceholders." +
-                                    "groups.unselected",
-                                    { type: "organizations" }
-                                ) }
-                                data-testid="application-share-modal-organization-transfer-component-all-items"
-                                emptyPlaceholderDefaultContent={ t(
-                                    "console:manage.features.transferList.list." +
+                            data-testid="application-share-modal-organization-transfer-component-all-items"
+                            emptyPlaceholderDefaultContent={ t(
+                                "console:manage.features.transferList.list." +
                                     "emptyPlaceholders.default"
-                                ) }
-                            >
-                                { tempOrganizationList?.map(
-                                    (organization, index) => {
-                                        const organizationName =
+                            ) }
+                        >
+                            { tempOrganizationList?.map(
+                                (organization, index) => {
+                                    const organizationName =
                                             organization?.name;
-                                        const isChecked =
+                                    const isChecked =
                                             checkedUnassignedListItems.findIndex(
                                                 org =>
                                                     org.id === organization.id
                                             ) !== -1;
 
-                                        return (
-                                            <TransferListItem
-                                                disabled={
-                                                    shareType !==
+                                    return (
+                                        <TransferListItem
+                                            disabled={
+                                                shareType !==
                                                     ShareType.SHARE_SELECTED
-                                                }
-                                                handleItemChange={ () =>
-                                                    handleUnassignedItemCheckboxChange(
-                                                        organization
-                                                    )
-                                                }
-                                                key={ index }
-                                                listItem={ organizationName }
-                                                listItemId={ organization.id }
-                                                listItemIndex={ index }
-                                                isItemChecked={ isChecked }
-                                                showSecondaryActions={ false }
-                                                data-testid="application-share-modal-organization-transfer-component
+                                            }
+                                            handleItemChange={ () =>
+                                                handleUnassignedItemCheckboxChange(
+                                                    organization
+                                                )
+                                            }
+                                            key={ index }
+                                            listItem={ organizationName }
+                                            listItemId={ organization.id }
+                                            listItemIndex={ index }
+                                            isItemChecked={ isChecked }
+                                            showSecondaryActions={ false }
+                                            data-testid="application-share-modal-organization-transfer-component
                                             -unselected-organizations"
-                                            />
-                                        );
-                                    }
-                                ) }
-                            </TransferList>
-                        </TransferComponent>
-                    </Form>
+                                        />
+                                    );
+                                }
+                            ) }
+                        </TransferList>
+                    </TransferComponent>
                     <Divider hidden />
                     <Radio
                         label={ t(
