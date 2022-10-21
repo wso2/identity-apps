@@ -17,5 +17,4 @@
  */
 
 export * from "./attribute-selection";
-export * from "./attribute-selection-oidc";
 export * from "./attribute-settings";
