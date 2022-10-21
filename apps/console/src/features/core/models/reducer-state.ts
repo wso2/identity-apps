@@ -34,8 +34,8 @@ import {
 } from "./config";
 import { PortalDocumentationStructureInterface } from "./help-panel";
 import { AppViewTypes } from "./ui";
-import { OrganizationResponseInterface } from "../../organizations/models";
 import { OrganizationType } from "../../organizations/constants";
+import { OrganizationResponseInterface } from "../../organizations/models";
 
 /**
  * Portal config reducer state interface.
