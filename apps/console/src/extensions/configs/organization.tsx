@@ -21,6 +21,9 @@ import { OrganizationConfigs } from "./models";
 import { BreadcrumbItem } from "../../features/organizations/models";
 
 export const organizationConfigs: OrganizationConfigs = {
+    canCreateOrganization: (): boolean => {
+        return true;
+    },
     showOrganizationDropdown: true,
     showSwitcherInTenants: false,
     superOrganizationBreadcrumb: (
