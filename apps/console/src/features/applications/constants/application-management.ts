@@ -125,7 +125,7 @@ export class ApplicationManagementConstants {
      */
     public static readonly TEMPLATE_IDS: Map<string, any> = new Map<string, any>()
         .set("box", "h9c5e23e-fc78-484b-9bec-015d242361b8")
-        .set("oidcMobile", "44a2d9d9-bc0c-4b54-85df-1cf08f4002ec")
+        .set("mobile", "mobile-application")
         .set("oidcWeb", "b9c5e11e-fc78-484b-9bec-015d247561b8")
         .set("samlWeb", "776a73da-fd8e-490b-84ff-93009f8ede85")
         .set("spa", "6a90e4b0-fbff-42d7-bfde-1efd98f07cd7")
@@ -139,7 +139,7 @@ export class ApplicationManagementConstants {
      */
     public static readonly APPLICATION_TEMPLATE_DOC_MAPPING: Map<string, string> = new Map<string, string>()
         .set(ApplicationManagementConstants.TEMPLATE_IDS.get("box"), "OIDC Web Application")
-        .set(ApplicationManagementConstants.TEMPLATE_IDS.get("oidcMobile"), "OIDC Mobile Application")
+        .set(ApplicationManagementConstants.TEMPLATE_IDS.get("mobile"), "Mobile Application")
         .set(ApplicationManagementConstants.TEMPLATE_IDS.get("oidcWeb"), "OIDC Web Application")
         .set(ApplicationManagementConstants.TEMPLATE_IDS.get("spa"), "Single Page Application")
         .set(ApplicationManagementConstants.TEMPLATE_IDS.get("slack"), "OIDC Web Application")
@@ -207,6 +207,14 @@ export class ApplicationManagementConstants {
             ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT,
             ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
             ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT,
+            ApplicationManagementConstants.DEVICE_GRANT
+        ],
+        [ "mobile-application" ] : [
+            ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
+            ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
+            ApplicationManagementConstants.IMPLICIT_GRANT,
+            ApplicationManagementConstants.PASSWORD,
+            ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT,
             ApplicationManagementConstants.DEVICE_GRANT
         ]
     };
@@ -390,6 +398,8 @@ export class ApplicationManagementConstants {
     public static readonly CUSTOM_APPLICATION_PASSIVE_STS = "custom-application-passive-sts";
 
     public static readonly CUSTOM_APPLICATION = "custom-application";
+
+    public static readonly MOBILE = "mobile-application";
 
     public static readonly CUSTOM_APPLICATION_PROTOCOL_ORDER: Map<string, number> =
         new Map<string, number>([

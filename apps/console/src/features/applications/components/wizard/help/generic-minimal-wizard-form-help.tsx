@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -45,7 +45,7 @@ interface GenericMinimalWizardFormHelpPropsInterface extends TestableComponentIn
  * Generic Help component for the minimal template wizard form.
  * TODO: Move these to a `mdx` file or something similar.
  *
- * @param {GenericMinimalWizardFormHelpPropsInterface} props Props to be injected into the component.
+ * @param props - Props to be injected into the component.
  */
 export const GenericMinimalWizardFormHelp: FunctionComponent<GenericMinimalWizardFormHelpPropsInterface> = (
     props: GenericMinimalWizardFormHelpPropsInterface
@@ -60,12 +60,12 @@ export const GenericMinimalWizardFormHelp: FunctionComponent<GenericMinimalWizar
     /**
      * Resolves to teh right help panel content.
      *
-     * @return {ReactElement} The appropriate help content.
+     * @returns The appropriate help content.
      */
     const resolveHelpContent = (): ReactElement => {
         switch (template.id) {
             case ApplicationManagementConstants.TEMPLATE_IDS.get("box"):
-            case ApplicationManagementConstants.TEMPLATE_IDS.get("oidcMobile"):
+            case ApplicationManagementConstants.TEMPLATE_IDS.get("mobile"):
             case ApplicationManagementConstants.TEMPLATE_IDS.get("oidcWeb"):
             case ApplicationManagementConstants.TEMPLATE_IDS.get("samlWeb"):
             case ApplicationManagementConstants.TEMPLATE_IDS.get("spa"):
@@ -92,12 +92,12 @@ export const GenericMinimalWizardFormHelp: FunctionComponent<GenericMinimalWizar
                                     <Message
                                         type="info"
                                         content={
-                                            <>
+                                            (<>
                                                 <a href="#" target="_blank">
                                                     Click here
                                                 </a>{ " " }
                                                 to learn more about supported protocols for agent-based single sign-on.
-                                            </>
+                                            </>)
                                         }
                                     />
                                 </>

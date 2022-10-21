@@ -2267,7 +2267,8 @@ export const console: ConsoleNS = {
                                 validations: {
                                     invalid: "The application name should contain letters, numbers."
                                 }
-                            }
+                            },
+                            urlDeepLinkError: "L'URL saisie n'est pas un lien profond."
                         }
                     }
                 },

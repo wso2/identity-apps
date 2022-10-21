@@ -46,6 +46,8 @@ import { getGeneralIcons } from "../../configs";
 import { ApplicationManagementConstants } from "../../constants";
 import CustomApplicationTemplate
     from "../../data/application-templates/templates/custom-application/custom-application.json";
+import MobileTemplate
+    from "../../data/application-templates/templates/mobile-application/mobile-application.json";
 import OIDCWebApplicationTemplate
     from "../../data/application-templates/templates/oidc-web-application/oidc-web-application.json";
 import SinglePageApplicationTemplate
@@ -207,6 +209,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const scopeValidator = useRef<HTMLElement>();
     const [ isSPAApplication, setSPAApplication ] = useState<boolean>(false);
     const [ isOIDCWebApplication, setOIDCWebApplication ] = useState<boolean>(false);
+    const [ isMobileApplication, setMobileApplication ] = useState<boolean>(false);
 
     const [ finalCertValue, setFinalCertValue ] = useState<string>(undefined);
     const [ selectedCertType, setSelectedCertType ] = useState<CertificateTypeInterface>(CertificateTypeInterface.NONE);
@@ -311,6 +314,22 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         if (template.id == OIDCWebApplicationTemplate.id) {
             setOIDCWebApplication(true);
         }
+    }, [ template ]);
+
+    /**
+     * Check whether the application is a Mobile Application
+     */
+    useEffect(() => {
+        if (!template?.id || !MobileTemplate?.id) {
+            setIsLoading(false);
+
+            return;
+        }
+
+        if (template?.id == MobileTemplate?.id) {
+            setMobileApplication(true);
+        }
+        setIsLoading(false);
     }, [ template ]);
 
     /**
@@ -1264,8 +1283,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     urlState={ callBackUrls }
                                     setURLState={ setCallBackUrls }
                                     labelName={
-                                        t("console:develop.features.applications.forms.inboundOIDC.fields." +
-                                            "callBackUrls.label")
+                                        isMobileApplication
+                                            ? "Authorized redirect URIs"
+                                            : t("console:develop.features.applications.forms.inboundOIDC.fields." +
+                                                "callBackUrls.label")
                                     }
                                     required={ true }
                                     value={
@@ -1275,8 +1296,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             : ""
                                     }
                                     placeholder={
-                                        t("console:develop.features.applications.forms.inboundOIDC.fields." +
-                                            "callBackUrls.placeholder")
+                                        isMobileApplication
+                                            ? "wso2sample://oauth2"
+                                            : t("console:develop.features.applications.forms.inboundOIDC.fields." +
+                                                "callBackUrls.placeholder")
                                     }
                                     validationErrorMsg={
                                         CustomApplicationTemplate?.id !== template?.id
@@ -1289,11 +1312,17 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         t("console:develop.features.applications.forms.inboundOIDC.fields." +
                                             "callBackUrls.validations.empty")
                                     }
+                                    skipInternalValidation= {
+                                        template.templateId === ApplicationManagementConstants.MOBILE
+                                    }
                                     validation={ (value: string) => {
-                                        if (CustomApplicationTemplate?.id !== template?.id
+                                        if (
+                                            !(isMobileApplication) 
+                                            && CustomApplicationTemplate?.id !== template?.id
                                             && !(URLUtils.isURLValid(value, true) &&
-                                                (URLUtils.isHttpUrl(value) ||
-                                                    URLUtils.isHttpsUrl(value)))) {
+                                                (URLUtils.isHttpUrl(value)
+                                                || URLUtils.isHttpsUrl(value)))
+                                        ) {
 
                                             return false;
                                         }
@@ -1309,10 +1338,17 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     showError={ showURLError }
                                     setShowError={ setShowURLError }
                                     hint={
-                                        t("console:develop.features.applications." +
-                                            "forms.inboundOIDC.fields.callBackUrls.hint", {
-                                            productName: config.ui.productName
-                                        })
+                                        isMobileApplication
+                                            ? "The authorized redirect URI determines where the authorization code " +
+                                                "is sent to upon user authentication, and where the user is " +
+                                                "redirected to upon user logout. The client app should specify the " +
+                                                "authorized redirect URI in the authorization or logout request and " +
+                                                config.ui.productName + " will validate it " +
+                                                "against the authorized redirect URLs entered here."
+                                            : t("console:develop.features.applications." +
+                                                "forms.inboundOIDC.fields.callBackUrls.hint", {
+                                                productName: config.ui.productName
+                                            })
                                     }
                                     readOnly={ readOnly }
                                     addURLTooltip={ t("common:addURL") }
@@ -1410,7 +1446,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     showMoreContent={ t("common:showMore") }
                                 />
                                 <Hint>
-                                    The HTTP origins that host your web application. You can define multiple web
+                                    The HTTP origins that host your { !isMobileApplication && "web" } application.
+                                    You can define multiple web
                                     origins by adding them separately.
                                     <p className={ "mt-0" }>(E.g.,&nbsp;&nbsp;
                                         <Code>https://myapp.io, https://localhost:3000</Code>)
@@ -1561,7 +1598,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 </Grid.Column>
             </Grid.Row>
             {
-                (!isSPAApplication) && isTokenBindingTypeSelected && (
+                (!isSPAApplication)
+                && !isMobileApplication
+                && isTokenBindingTypeSelected
+                && (
                     <>
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
@@ -2806,9 +2846,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 </Grid.Row>
                             )
                         }
-                        {
-                            (initialValues?.clientSecret && (initialValues?.state !== State.REVOKED) &&
-                                (!isSPAApplication)) && (
+                        { (
+                            initialValues?.clientSecret
+                            && (initialValues?.state !== State.REVOKED)
+                            && (!isSPAApplication))
+                            && (
                                 <Grid.Row columns={ 2 }>
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                         <Form.Field>

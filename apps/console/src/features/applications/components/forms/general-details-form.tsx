@@ -229,7 +229,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
 
         if (myAccountStatus) {
             const enableProperty = myAccountStatus["value"];
-            
+
             if ( enableProperty && enableProperty === "false" ) {
 
                 status = false;
@@ -237,7 +237,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
         }
         setMyAccountStatus(status);
     }, [ isMyAccountStatusLoading ]);
- 
+
     if (isMyAccountStatusLoading) {
         return (
             <EmphasizedSegment padded="very">
@@ -245,7 +245,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
             </EmphasizedSegment>
         );
     }
-    
+
     return (
         <Form
             id={ FORM_ID }
