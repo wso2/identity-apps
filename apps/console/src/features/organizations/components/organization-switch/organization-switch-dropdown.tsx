@@ -45,6 +45,7 @@ import {
 } from "semantic-ui-react";
 import OrganizationListItem from "./organization-list-item";
 import OrganizationSwitcherList from "./organization-switch-list";
+import { organizationConfigs } from "../../../../extensions";
 import { ReactComponent as CrossIcon } from "../../../../themes/default/assets/images/icons/cross-icon.svg";
 import { AppState, getMiscellaneousIcons } from "../../../core";
 import { getOrganizations } from "../../api";
@@ -370,21 +371,23 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                                             </h5>
                                         </Grid.Column>
                                         <Grid.Column width={ 4 }>
-                                            <Show
-                                                when={
-                                                    AccessControlConstants.ORGANIZATION_WRITE
-                                                }
-                                            >
-                                                <Button
-                                                    basic
-                                                    floated="right"
-                                                    onClick={ handleNewClick }
-                                                    data-componentid={ `${ componentId }-new-button` }
+                                            { organizationConfigs.canCreateOrganization() && (
+                                                <Show
+                                                    when={
+                                                        AccessControlConstants.ORGANIZATION_WRITE
+                                                    }
                                                 >
-                                                    <Icon name="add" />
-                                                    { t("common:new") }
-                                                </Button>
-                                            </Show>
+                                                    <Button
+                                                        basic
+                                                        floated="right"
+                                                        onClick={ handleNewClick }
+                                                        data-componentid={ `${ componentId }-new-button` }
+                                                    >
+                                                        <Icon name="add" />
+                                                        { t("common:new") }
+                                                    </Button>
+                                                </Show>
+                                            ) }
                                         </Grid.Column>
                                     </Grid.Row>
                                 </Grid>

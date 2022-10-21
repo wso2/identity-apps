@@ -16,15 +16,17 @@
  * under the License.
  */
 
-import { ReactElement } from "react";
-import { BreadcrumbItem } from "../../../features/organizations/models";
+import { useSelector } from "react-redux";
+import { AppState } from "../../core";
+import { OrganizationType } from "../constants";
 
-export interface OrganizationConfigs {
-    showOrganizationDropdown: boolean;
-    superOrganizationBreadcrumb: (
-        breadcrumbItem: BreadcrumbItem,
-        onClick: (breadcrumbItem: BreadcrumbItem) => void
-    ) => ReactElement;
-    showSwitcherInTenants: boolean;
-    canCreateOrganization: () => boolean;
-}
+/**
+ * This is a React hook that returns the type of the organization.
+ *
+ * @returns The type of the organization.
+ */
+export const useGetOrganizationType = (): OrganizationType => {
+    return useSelector(
+        (state: AppState) => state.organization.organizationType
+    );
+};
