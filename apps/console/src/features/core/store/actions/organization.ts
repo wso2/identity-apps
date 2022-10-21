@@ -20,9 +20,11 @@ import {
     OrganizationActionTypes,
     SetGetOrganizationLoadingActionInterface,
     SetIsFirstLevelOrganizationInterface,
-    SetOrganizationActionInterface
+    SetOrganizationActionInterface,
+    SetOrganizationTypeInterface
 } from "./types";
 import { OrganizationResponseInterface } from "../../../organizations/models";
+import { OrganizationType } from "../../../organizations/constants";
 
 /**
  * This action sets an organization in the redux store.
@@ -62,5 +64,18 @@ export const setIsFirstLevelOrganization = (isFirstLevel: boolean): SetIsFirstLe
     return {
         payload: isFirstLevel,
         type: OrganizationActionTypes.SET_IS_FIRST_LEVEL_ORGANIZATION
+    };
+};
+
+/**
+ * Sets the organization type.
+ *
+ * @param orgType - The organization type.
+ * @returns Redux action
+ */
+export const setOrganizationType = (orgType: OrganizationType): SetOrganizationTypeInterface => {
+    return {
+        payload: orgType,
+        type: OrganizationActionTypes.SET_ORGANIZATION_TYPE
     };
 };
