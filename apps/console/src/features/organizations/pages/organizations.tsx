@@ -46,6 +46,7 @@ import {
     Icon,
     PaginationProps
 } from "semantic-ui-react";
+import { organizationConfigs } from "../../../extensions";
 import { AdvancedSearchWithBasicFilters, AppState, EventPublisher, UIConstants } from "../../core";
 import { getOrganization, getOrganizations } from "../api";
 import { AddOrganizationModal, OrganizationList } from "../components";
@@ -372,7 +373,8 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
             <PageLayout
                 action={
                     !isOrganizationListRequestLoading &&
-                    !(!searchQuery && (isEmpty(organizationList) || organizationList?.organizations?.length <= 0)) && (
+                    !(!searchQuery && (isEmpty(organizationList) || organizationList?.organizations?.length <= 0)) &&
+                        organizationConfigs.canCreateOrganization() && (
                         <Show when={ AccessControlConstants.ORGANIZATION_WRITE }>
                             <PrimaryButton
                                 disabled={ isOrganizationListRequestLoading }
@@ -388,6 +390,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                             </PrimaryButton>
                         </Show>
                     )
+
                 }
                 pageTitle="Organizations"
                 title={
