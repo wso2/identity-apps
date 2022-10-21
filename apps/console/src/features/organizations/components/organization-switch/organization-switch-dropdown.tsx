@@ -351,7 +351,6 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                                     organization={ currentOrganization }
                                     isClickable={ false }
                                     showSwitch={ false }
-                                    handleOrgRowClick={ handleOrgRowClick }
                                     setShowDropdown={ setIsDropDownOpen }
                                     showEdit={ !isFirstLevelOrg }
                                 />
