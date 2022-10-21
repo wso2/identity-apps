@@ -23,8 +23,8 @@ import {
     SetOrganizationActionInterface,
     SetOrganizationTypeInterface
 } from "./types";
-import { OrganizationResponseInterface } from "../../../organizations/models";
 import { OrganizationType } from "../../../organizations/constants";
+import { OrganizationResponseInterface } from "../../../organizations/models";
 
 /**
  * This action sets an organization in the redux store.
