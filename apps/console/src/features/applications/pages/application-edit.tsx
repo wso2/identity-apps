@@ -53,6 +53,7 @@ import {
     ApplicationTemplateListItemInterface,
     State,
     SupportedAuthProtocolTypes,
+    additionalSpProperty,
     emptyApplication
 } from "../models";
 import { ApplicationTemplateManagementUtils } from "../utils";
@@ -106,6 +107,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     const [ showAppShareModal, setShowAppShareModal ] = useState(false);
     const [ subOrganizationList, setSubOrganizationList ] = useState<Array<OrganizationInterface>>([]);
     const [ sharedOrganizationList, setSharedOrganizationList ] = useState<Array<OrganizationInterface>>([]);
+    const [ sharedWithAll, setSharedWithAll ] = useState<boolean>(false);
 
     const isFirstLevelOrg: boolean = useSelector(
         (state: AppState) => state.organization.isFirstLevelOrganization
@@ -416,6 +418,13 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         getApplicationDetails(id)
             .then((response: ApplicationInterface) => {
                 setApplication(response);
+
+                const isSharedWithAll: boolean = JSON.parse(response?.advancedConfigurations
+                    ?.additionalSpProperties?.filter((property: additionalSpProperty) =>
+                        property.name === "shareWithAllChildren"
+                    )[0].value ?? "false") ;
+
+                setSharedWithAll(isSharedWithAll);
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
@@ -643,6 +652,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                     sharedOrganizationList={ sharedOrganizationList }
                     onClose={ () => setShowAppShareModal(false) }
                     onApplicationSharingCompleted={ onApplicationSharingCompleted }
+                    isSharedWithAll={ sharedWithAll }
                 />
             ) }
         </PageLayout>
