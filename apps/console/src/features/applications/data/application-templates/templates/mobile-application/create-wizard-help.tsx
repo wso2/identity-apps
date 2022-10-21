@@ -51,7 +51,7 @@ const MobileApplicationCreateWizardHelp: FunctionComponent<MobileApplicationCrea
             <React.Fragment>
                 <Heading as="h5">Authorized redirect URIs</Heading>
                 <p>
-                    The URL to which the authorization code is sent to upon authentication and where the user
+                    The URI to which the authorization code is sent to upon authentication and where the user
                     is redirected to upon logout.
                 </p>
                 <p>E.g. wso2sample://oauth2</p>

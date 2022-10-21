@@ -876,13 +876,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
         // Add the `allowedOrigins` & `callbackURLs` only if the grant types
         // `authorization_code` and `implicit` are selected.
-        if (isMobileApplication) {
-            inboundConfigFormValues = {
-                ...inboundConfigFormValues,
-                allowedOrigins: [],
-                callbackURLs: [ ApplicationManagementUtils.buildCallBackUrlWithRegExp(url ? url : callBackUrls) ]
-            };
-        } else if (showCallbackURLField) {
+        if (showCallbackURLField) {
             inboundConfigFormValues = {
                 ...inboundConfigFormValues,
                 allowedOrigins: ApplicationManagementUtils.resolveAllowedOrigins(origin ? origin : allowedOrigins),
@@ -1289,8 +1283,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     urlState={ callBackUrls }
                                     setURLState={ setCallBackUrls }
                                     labelName={
-                                        t("console:develop.features.applications.forms.inboundOIDC.fields." +
-                                            "callBackUrls.label")
+                                        isMobileApplication
+                                            ? "Authorized redirect URIs"
+                                            : t("console:develop.features.applications.forms.inboundOIDC.fields." +
+                                                "callBackUrls.label")
                                     }
                                     required={ true }
                                     value={
@@ -1300,8 +1296,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             : ""
                                     }
                                     placeholder={
-                                        t("console:develop.features.applications.forms.inboundOIDC.fields." +
-                                            "callBackUrls.placeholder")
+                                        isMobileApplication
+                                            ? "wso2sample://oauth2"
+                                            : t("console:develop.features.applications.forms.inboundOIDC.fields." +
+                                                "callBackUrls.placeholder")
                                     }
                                     validationErrorMsg={
                                         CustomApplicationTemplate?.id !== template?.id
@@ -1340,10 +1338,17 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     showError={ showURLError }
                                     setShowError={ setShowURLError }
                                     hint={
-                                        t("console:develop.features.applications." +
-                                            "forms.inboundOIDC.fields.callBackUrls.hint", {
-                                            productName: config.ui.productName
-                                        })
+                                        isMobileApplication
+                                            ? "The authorized redirect URI determines where the authorization code " +
+                                                "is sent to upon user authentication, and where the user is " +
+                                                "redirected to upon user logout. The client app should specify the " +
+                                                "authorized redirect URI in the authorization or logout request and " +
+                                                config.ui.productName + " will validate it " +
+                                                "against the authorized redirect URLs entered here."
+                                            : t("console:develop.features.applications." +
+                                                "forms.inboundOIDC.fields.callBackUrls.hint", {
+                                                productName: config.ui.productName
+                                            })
                                     }
                                     readOnly={ readOnly }
                                     addURLTooltip={ t("common:addURL") }
@@ -1397,11 +1402,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     }
                                     validation={ (value: string) => {
 
-                                        if (
-                                            !(isMobileApplication)
-                                            && !(((URLUtils.isHttpsUrl(value) || URLUtils.isHttpUrl(value)))
-                                            && URLUtils.isAValidOriginUrl(value))
-                                        ) {
+                                        if (!(((URLUtils.isHttpsUrl(value) || URLUtils.isHttpUrl(value))) &&
+                                            URLUtils.isAValidOriginUrl(value))) {
+
                                             return false;
                                         }
 
@@ -1443,7 +1446,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     showMoreContent={ t("common:showMore") }
                                 />
                                 <Hint>
-                                    The HTTP origins that host your web application. You can define multiple web
+                                    The HTTP origins that host your { !isMobileApplication && "web" } application.
+                                    You can define multiple web
                                     origins by adding them separately.
                                     <p className={ "mt-0" }>(E.g.,&nbsp;&nbsp;
                                         <Code>https://myapp.io, https://localhost:3000</Code>)
