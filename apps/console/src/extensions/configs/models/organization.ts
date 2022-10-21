@@ -27,4 +27,6 @@ export interface OrganizationConfigs {
     ) => ReactElement;
     showSwitcherInTenants: boolean;
     canCreateOrganization: () => boolean;
+    tenantSwitcher: () => ReactElement;
+    allowNavigationInDropdown: boolean;
 }

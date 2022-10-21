@@ -21,6 +21,7 @@ import { OrganizationConfigs } from "./models";
 import { BreadcrumbItem } from "../../features/organizations/models";
 
 export const organizationConfigs: OrganizationConfigs = {
+    allowNavigationInDropdown: true,
     canCreateOrganization: (): boolean => {
         return true;
     },
@@ -35,5 +36,6 @@ export const organizationConfigs: OrganizationConfigs = {
                 { breadcrumbItem.name }
             </span>
         );
-    }
+    },
+    tenantSwitcher: () => null
 };
