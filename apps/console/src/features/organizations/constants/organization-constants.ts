@@ -21,9 +21,6 @@ import { OrganizationInterface } from "../models";
 export class OrganizationManagementConstants {
     /**
      * Set of keys used to enable/disable features.
-     * @constant
-     * @type {Map<string, string>}
-     * @default
      */
     public static readonly FEATURE_DICTIONARY: Map<string, string> = new Map<string, string>()
         .set("ORGANIZATION_CREATE", "organizations.create")
@@ -39,9 +36,6 @@ export class OrganizationManagementConstants {
     /**
      * Super organization object.
      *
-     * @@constant
-     * @type {OrganizationInterface}
-     * @default
      */
     public static readonly ROOT_ORGANIZATION: OrganizationInterface = {
         id: this.ROOT_ORGANIZATION_ID,
@@ -61,9 +55,6 @@ export enum ORGANIZATION_TYPE {
 export class OrganizationRoleManagementConstants {
     /**
      * Set of keys used to enable/disable features.
-     * @constant
-     * @type {Map<string, string>}
-     * @default
      */
     public static readonly FEATURE_DICTIONARY: Map<string, string> = new Map<string, string>()
         .set("ORGANIZATION_ROLE_CREATE", "organization-roles.create")
@@ -89,8 +80,8 @@ export const ORGANIZATION_DESCRIPTION_MAX_LENGTH = 300;
  * Contains all the possible types of organizations.
  */
 export enum OrganizationType {
-    SUBORGANIZATION,
-    TENANT,
-    FIRST_LEVEL_ORGANIZATION,
-    SUPER_ORGANIZATION
+    SUBORGANIZATION = "SUBORGANIZATION",
+    TENANT = "TENANT",
+    FIRST_LEVEL_ORGANIZATION = "FIRST_LEVEL_ORGANIZATION",
+    SUPER_ORGANIZATION= "SUPER_ORGANIZATION"
 }
