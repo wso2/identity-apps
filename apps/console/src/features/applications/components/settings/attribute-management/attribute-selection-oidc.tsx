@@ -308,48 +308,50 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
      * @param changeValue - search value
      */
     const searchFilter = (changeValue: string) => {
-        const scopesFiltered: OIDCScopesClaimsListInterface[] = unfilteredExternalClaimsGroupedByScopes
-            .filter((item: OIDCScopesClaimsListInterface) =>
-                item.name?.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1 ||
+        if (changeValue !== ""){
+            const scopesFiltered: OIDCScopesClaimsListInterface[] = unfilteredExternalClaimsGroupedByScopes
+                .filter((item: OIDCScopesClaimsListInterface) =>
+                    item.name?.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1 ||
                 item.displayName?.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1 ||
                 item.description?.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1);
 
-        const unfilteredClaims: OIDCScopesClaimsListInterface[] = [ ...unfilteredExternalClaimsGroupedByScopes ];
-        const tempExpandedScopes: string[] = [];
-        const userAttributesFiltered: OIDCScopesClaimsListInterface[] = [];
+            const unfilteredClaims: OIDCScopesClaimsListInterface[] = [ ...unfilteredExternalClaimsGroupedByScopes ];
+            const tempExpandedScopes: string[] = [];
+            const userAttributesFiltered: OIDCScopesClaimsListInterface[] = [];
 
-        unfilteredClaims.forEach((scope: OIDCScopesClaimsListInterface) => {
-            const matchedClaims = scope.claims.filter((claim: ExtendedExternalClaimInterface) =>
-                (claim.claimURI?.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1 ||
+            unfilteredClaims.forEach((scope: OIDCScopesClaimsListInterface) => {
+                const matchedClaims = scope.claims.filter((claim: ExtendedExternalClaimInterface) =>
+                    (claim.claimURI?.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1 ||
                     claim.claimDialectURI?.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1 ||
                     claim.localClaimDisplayName?.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1 ||
                     claim.mappedLocalClaimURI?.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1));
 
-            if (matchedClaims !== undefined && matchedClaims.length !== 0) {
+                if (matchedClaims !== undefined && matchedClaims.length !== 0) {
                 // expand the scope item if the searched term matches any claims/user attributes
-                if (!tempExpandedScopes.includes(scope.name)) {
-                    tempExpandedScopes.push(scope.name);
-                }
-                const updatedScope = { 
-                    ...scope,
-                    claims: matchedClaims
-                };
+                    if (!tempExpandedScopes.includes(scope.name)) {
+                        tempExpandedScopes.push(scope.name);
+                    }
+                    const updatedScope = { 
+                        ...scope,
+                        claims: matchedClaims
+                    };
 
-                userAttributesFiltered.push(updatedScope);
-            }
-            scopesFiltered.map((tempScope: OIDCScopesClaimsListInterface) => {
-                if (tempScope.name === scope.name && matchedClaims.length === 0){
-                    userAttributesFiltered.push(scope);
+                    userAttributesFiltered.push(updatedScope);
                 }
+                scopesFiltered.map((tempScope: OIDCScopesClaimsListInterface) => {
+                    if (tempScope.name === scope.name && matchedClaims.length === 0){
+                        userAttributesFiltered.push(scope);
+                    }
+                });
             });
-        });
 
 
-        setExternalClaimsGroupedByScopes(sortBy(
-            userAttributesFiltered,
-            "displayName"
-        ));
-        setExpandedScopes(tempExpandedScopes);
+            setExternalClaimsGroupedByScopes(sortBy(
+                userAttributesFiltered,
+                "displayName"
+            ));
+            setExpandedScopes(tempExpandedScopes);
+        }
     };
 
     /**
