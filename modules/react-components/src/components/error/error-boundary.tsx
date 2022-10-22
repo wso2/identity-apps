@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { AppConstants } from "@wso2is/core/constants";
 import React, { Component, ErrorInfo, PropsWithChildren, ReactNode } from "react";
 
 /**
