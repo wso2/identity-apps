@@ -1,7 +1,7 @@
-/*
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+/**
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -46,14 +46,14 @@ export interface SearchWithFilterLabelsPropsInterface extends InputProps,
     filterLabels: string[];
     /**
      * Filter labels' on click callback.
-     * @param {string} query - Search query.
-     * @param {string[]} selectedFilters - Set of selected filters.
+     * @param query - Search query.
+     * @param selectedFilters - Set of selected filters.
      */
     onFilter?: (query: string, selectedFilters: string[]) => void;
     /**
      * Search query onchange callback.
-     * @param {string} query - Search query.
-     * @param {string[]} selectedFilters - Set of already selected filters.
+     * @param query - Search query.
+     * @param selectedFilters - Set of already selected filters.
      */
     onSearch?: (query: string, selectedFilters: string[]) => void;
     /**
@@ -65,9 +65,9 @@ export interface SearchWithFilterLabelsPropsInterface extends InputProps,
 /**
  * Search box with filter labels.
  *
- * @param {React.PropsWithChildren<SearchWithFilterLabelsPropsInterface>} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns the search box with filter labels.
  */
 export const SearchWithFilterLabels: FunctionComponent<PropsWithChildren<SearchWithFilterLabelsPropsInterface>> = (
     props: PropsWithChildren<SearchWithFilterLabelsPropsInterface>
@@ -95,8 +95,8 @@ export const SearchWithFilterLabels: FunctionComponent<PropsWithChildren<SearchW
     /**
      * Handles the Search input onchange.
      *
-     * @param {React.ChangeEvent<HTMLInputElement>} e - Change event.
-     * @param {string} value - Input value.
+     * @param e - Change event.
+     * @param value - Input value.
      */
     const handleQuerySearch = (e: ChangeEvent<HTMLInputElement>, { value }: { value: string }): void => {
 
@@ -108,7 +108,7 @@ export const SearchWithFilterLabels: FunctionComponent<PropsWithChildren<SearchW
     /**
      * Handles filters on click.
      *
-     * @param {string} newFilter - Newly selected label.
+     * @param newFilter - Newly selected label.
      */
     const handleFilter = (newFilter: string): void => {
 

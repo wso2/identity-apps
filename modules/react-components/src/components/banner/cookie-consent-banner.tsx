@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -82,16 +82,15 @@ export interface CookieConsentBannerPropsInterface extends SegmentProps, Identif
 
 /**
  * Cookie consent cookie name.
- * @type {string}
  */
 export const COOKIE_CONSENT_COOKIE_NAME: string = "accepts-cookies";
 
 /**
  * Banner to get consent for Cookie usage.
  *
- * @param {CookieConsentBannerPropsInterface} props - Props injected to the components.
+ * @param props - Props injected to the components.
  *
- * @return {React.ReactElement}
+ * @returns CookieConsentBanner React Component
  */
 export const CookieConsentBanner: FunctionComponent<PropsWithChildren<CookieConsentBannerPropsInterface>> = (
     props: PropsWithChildren<CookieConsentBannerPropsInterface>
@@ -140,7 +139,7 @@ export const CookieConsentBanner: FunctionComponent<PropsWithChildren<CookieCons
     /**
      * Checks if the cookie consent is shown.
      *
-     * @return {boolean}
+     * @returns a boolean 
      */
     const isCookieConsentShown = (): boolean => {
 
@@ -184,7 +183,7 @@ export const CookieConsentBanner: FunctionComponent<PropsWithChildren<CookieCons
      * Extracts the domain from the hostname.
      * If parsing fails, undefined will be returned.
      *
-     * @return {string}
+     * @returns the domain of the current host
      */
     const extractDomainFromHost = (): string => {
 

@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -36,7 +36,7 @@ interface StrictSwitcher {
      * This function callback will trigger each time when the value
      * changes in the toggle group.
      *
-     * @param selectedValue will return all the props you have passed
+     * @param selectedValue - will return all the props you have passed
      * to this interface and the current state of the option itself.
      */
     onChange?: (selectedValue: SwitcherOptionProps) => void;
@@ -172,7 +172,7 @@ const canButtonGroupHaveIcons = (options: SwitcherOptionProps[]): boolean => {
  *      ] }
  *  />
  *
- * @param props {SwitcherProps}
+ * @param props - props injected to the component
  * @constructor
  */
 export const Switcher: FC<SwitcherProps> = (props: SwitcherProps): ReactElement => {
@@ -225,8 +225,8 @@ export const Switcher: FC<SwitcherProps> = (props: SwitcherProps): ReactElement 
      * {@link Button} element. It uses the {@code data.value}
      * to access the event source value.
      *
-     * @param event {OptionMouseEventAlias} alias for {@link React.MouseEvent}
-     * @param data {ButtonProps} passed props for the button element.
+     * @param event - alias for {@link React.MouseEvent}
+     * @param data - passed props for the button element.
      */
     const onSwitchOptionButtonClick = (event: OptionMouseEventAlias, data: SwitcherOptionProps) => {
         if (event) {
