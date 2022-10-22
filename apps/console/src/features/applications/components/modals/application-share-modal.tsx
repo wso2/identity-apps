@@ -132,6 +132,8 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
             setShareType(ShareType.SHARE_ALL);
         } else if (!sharedOrganizationList || sharedOrganizationList?.length === 0) {
             setShareType(ShareType.UNSHARE);
+        } else {
+            setShareType(ShareType.SHARE_SELECTED);
         }
     }, [ isSharedWithAll, sharedOrganizationList ]);
 
