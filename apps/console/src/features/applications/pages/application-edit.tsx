@@ -421,8 +421,8 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
 
                 const isSharedWithAll: boolean = JSON.parse(response?.advancedConfigurations
                     ?.additionalSpProperties?.filter((property: additionalSpProperty) =>
-                        property.name === "shareWithAllChildren"
-                    )[0].value ?? "false") ;
+                        property?.name === "shareWithAllChildren"
+                    )[0]?.value ?? "false") ;
 
                 setSharedWithAll(isSharedWithAll);
             })
