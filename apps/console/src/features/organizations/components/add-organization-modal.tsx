@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import {  AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
 import { Heading, LinkButton, Message, PrimaryButton } from "@wso2is/react-components";
