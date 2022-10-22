@@ -32,9 +32,7 @@ import { organizationConfigs } from "../../../../extensions";
 import { ReactComponent as CrossIcon } from "../../../../themes/default/assets/images/icons/cross-icon.svg";
 import { AppConstants, AppState, getMiscellaneousIcons } from "../../../core";
 import { useGetOrganizationBreadCrumb } from "../../api";
-import {
-    OrganizationType
-} from "../../constants";
+import { OrganizationType } from "../../constants";
 import { useGetOrganizationType } from "../../hooks/use-get-organization-type";
 import {
     BreadcrumbItem,
@@ -152,7 +150,10 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
                                     </Menu.Item>
                                 );
                             }
-                            if (index !== breadcrumbList.length - 1) {
+                            if (
+                                index !== breadcrumbList.length - 1 ||
+                                !organizationConfigs.canCreateOrganization()
+                            ) {
                                 return (
                                     <Menu.Item
                                         key={ index }
@@ -160,18 +161,28 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
                                     >
                                         <span
                                             onClick={ () =>
+                                                index !==
+                                                breadcrumbList.length - 1 &&
                                                 handleOrganizationSwitch(
                                                     breadcrumb
                                                 )
+                                            }
+                                            className={
+                                                index ===
+                                                breadcrumbList.length - 1 &&
+                                                "un-clickable"
                                             }
                                             data-componentid={ `${ componentId }-breadcrumb-item-${ breadcrumb.name }` }
                                         >
                                             { breadcrumb.name }
                                         </span>
-                                        <Icon
-                                            name="angle right"
-                                            className="separator-icon"
-                                        />
+                                        { index !==
+                                            breadcrumbList.length - 1 && (
+                                            <Icon
+                                                name="angle right"
+                                                className="separator-icon"
+                                            />
+                                        ) }
                                     </Menu.Item>
                                 );
                             }
@@ -188,6 +199,7 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
                             );
                         }
                     ) }
+
                     <Menu.Item className="breadcrumb end">
                         <GenericIcon
                             size="nano"
@@ -249,19 +261,34 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
                                 breadcrumbList[ breadcrumbList.length - 2 ]
                             )
                         }
-                        data-componentid={ `${componentId}-breadcrumb-item-${
-                            breadcrumbList[breadcrumbList.length - 2].name
-                        }` }
+                        data-componentid={ `${
+                            componentId }-breadcrumb-item-${ breadcrumbList[ breadcrumbList.length - 2 ].name }` }
                     >
                         { breadcrumbList[ breadcrumbList.length - 2 ].name }
                     </span>
                     <Icon name="angle right" className="separator-icon" />
                 </Menu.Item>
-                <OrganizationSwitchDropdown
-                    triggerName={ breadcrumbList[ breadcrumbList.length - 1 ].name }
-                    handleOrganizationSwitch={ handleOrganizationSwitch }
-                    isBreadcrumbItem={ true }
-                />
+                { organizationConfigs.canCreateOrganization() ? (
+                    <OrganizationSwitchDropdown
+                        triggerName={
+                            breadcrumbList[ breadcrumbList.length - 1 ].name
+                        }
+                        handleOrganizationSwitch={ handleOrganizationSwitch }
+                        isBreadcrumbItem={ true }
+                    />
+                ) : (
+                    <Menu.Item className="breadcrumb">
+                        <span
+                            data-componentid={ `${
+                                componentId
+                            }-breadcrumb-item-${ breadcrumbList[ breadcrumbList.length - 1 ].name }` }
+                            className={ "un-clickable" }
+                        >
+                            { breadcrumbList[ breadcrumbList.length - 1 ].name }
+                        </span>
+                        \{ " " }
+                    </Menu.Item>
+                ) }
                 <Menu.Item className="breadcrumb end">
                     <GenericIcon
                         size="nano"
