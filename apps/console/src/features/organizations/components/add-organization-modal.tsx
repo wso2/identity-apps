@@ -16,10 +16,10 @@
  * under the License.
  */
 
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import {  AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
-import { Heading, LinkButton, PrimaryButton } from "@wso2is/react-components";
+import { Heading, LinkButton, Message, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -72,6 +72,7 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
 
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ type ] = useState<ORGANIZATION_TYPE>(ORGANIZATION_TYPE.STRUCTURAL);
+    const [ error, setError ] = useState<string>("");
 
     const submitForm = useRef<() => void>();
 
@@ -110,35 +111,18 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
             })
             .catch((error) => {
                 if (error?.description) {
-                    dispatch(
-                        addAlert({
-                            description: t(
-                                "console:manage.features.organizations.notifications." +
+                    setError(t(
+                        "console:manage.features.organizations.notifications." +
                                 "addOrganization.error.description",
-                                {
-                                    description: error.description
-                                }
-                            ),
-                            level: AlertLevels.ERROR,
-                            message: t(
-                                "console:manage.features.organizations.notifications." + "addOrganization.error.message"
-                            )
-                        })
-                    );
+                        {
+                            description: error.description
+                        }
+                    ));
                 } else {
-                    dispatch(
-                        addAlert({
-                            description: t(
-                                "console:manage.features.organizations.notifications." +
+                    setError(t(
+                        "console:manage.features.organizations.notifications." +
                                 "addOrganization.genericError.description"
-                            ),
-                            level: AlertLevels.ERROR,
-                            message: t(
-                                "console:manage.features.organizations.notifications." +
-                                "addOrganization.genericError.message"
-                            )
-                        })
-                    );
+                    ));
                 }
             })
             .finally(() => {
@@ -193,6 +177,13 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
                 </Modal.Header>
                 <Modal.Content>
                     <Grid>
+                        { (error && !isSubmitting) && (
+                            <Grid.Row columns={ 1 }>
+                                <Grid.Column width={ 16 }>
+                                    <Message type="error" content={ error } />
+                                </Grid.Column>
+                            </Grid.Row>
+                        ) }
                         <Grid.Row columns={ 1 }>
                             <Grid.Column width={ 16 }>
                                 <Form
@@ -239,29 +230,6 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
                                         width={ 16 }
                                     />
                                 </Form>
-                                { /*Temporarily hidden */ }
-                                { /*  <Divider hidden />
-                                <SemanticForm>
-                                    <SemanticForm.Group grouped>
-                                        <label>
-                                            { t("console:manage.features.organizations.forms.addOrganization.type") }
-                                        </label>
-                                        <SemanticForm.Radio
-                                            label={ t("console:manage.features.organizations.forms." +
-                                                "addOrganization.structural") }
-                                            value={ ORGANIZATION_TYPE.STRUCTURAL }
-                                            checked={ type === ORGANIZATION_TYPE.STRUCTURAL }
-                                            onChange={ () => setType(ORGANIZATION_TYPE.STRUCTURAL) }
-                                        />
-                                        <SemanticForm.Radio
-                                            label={ t("console:manage.features.organizations." +
-                                                "forms.addOrganization.tenant") }
-                                            value={ ORGANIZATION_TYPE.TENANT }
-                                            checked={ type === ORGANIZATION_TYPE.TENANT }
-                                            onChange={ () => setType(ORGANIZATION_TYPE.TENANT) }
-                                        />
-                                    </SemanticForm.Group>
-                                </SemanticForm> */ }
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>
