@@ -8893,7 +8893,7 @@ export const console: ConsoleNS = {
                     certificates: "Certificates",
                     configurations: "Configurations",
                     general: "General",
-                    organizations: "Organizations",
+                    organizations: "Organization Management",
                     users: "Users",
                     userstores: "User Stores"
                 },

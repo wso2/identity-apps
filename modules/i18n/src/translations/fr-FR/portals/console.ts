@@ -7445,7 +7445,7 @@ export const console: ConsoleNS = {
                     certificates: "Certificats",
                     configurations: "Configurations",
                     general: "Général",
-                    organizations: "Organisations",
+                    organizations: "Gestion de l'organisation",
                     users: "Utilisateurs",
                     userstores: "Annuaires"
                 },
