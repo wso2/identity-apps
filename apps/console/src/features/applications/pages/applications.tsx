@@ -68,6 +68,8 @@ import {
     getGeneralIcons,
     history
 } from "../../core";
+import { OrganizationType } from "../../organizations/constants";
+import { useGetOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import { updateMyAccountStatus, useApplicationList, useMyAccountStatus } from "../api";
 import { ApplicationList, MinimalAppCreateWizard } from "../components";
 import { ApplicationManagementConstants } from "../constants";
@@ -140,6 +142,8 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     const [ showMyAccountStatusEnableModal, setShowMyAccountStatusEnableConfirmationModal ] = useState<boolean>(false);
     const [ showMyAccountStatusDisableModal,
         setShowMyAccountStatusDisableConfirmationModal ] = useState<boolean>(false);
+
+    const orgType: OrganizationType = useGetOrganizationType();
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -595,7 +599,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
         >
             { !isLoadingForTheFirstTime ? (
                 <>
-                    { renderTenantedMyAccountLink() }
+                    { orgType !== OrganizationType.SUBORGANIZATION && renderTenantedMyAccountLink() }
                     <ListLayout
                         advancedSearch={ (
                             <AdvancedSearchWithBasicFilters
