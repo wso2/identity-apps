@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2022, WSO2 Inc. (http://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -21,9 +21,6 @@ import { OrganizationInterface } from "../models";
 export class OrganizationManagementConstants {
     /**
      * Set of keys used to enable/disable features.
-     * @constant
-     * @type {Map<string, string>}
-     * @default
      */
     public static readonly FEATURE_DICTIONARY: Map<string, string> = new Map<string, string>()
         .set("ORGANIZATION_CREATE", "organizations.create")
@@ -39,9 +36,6 @@ export class OrganizationManagementConstants {
     /**
      * Super organization object.
      *
-     * @@constant
-     * @type {OrganizationInterface}
-     * @default
      */
     public static readonly ROOT_ORGANIZATION: OrganizationInterface = {
         id: this.ROOT_ORGANIZATION_ID,
@@ -61,9 +55,6 @@ export enum ORGANIZATION_TYPE {
 export class OrganizationRoleManagementConstants {
     /**
      * Set of keys used to enable/disable features.
-     * @constant
-     * @type {Map<string, string>}
-     * @default
      */
     public static readonly FEATURE_DICTIONARY: Map<string, string> = new Map<string, string>()
         .set("ORGANIZATION_ROLE_CREATE", "organization-roles.create")
@@ -84,3 +75,13 @@ export const ORGANIZATION_NAME_MIN_LENGTH = 3;
 export const ORGANIZATION_NAME_MAX_LENGTH = 32;
 export const ORGANIZATION_DESCRIPTION_MIN_LENGTH = 3;
 export const ORGANIZATION_DESCRIPTION_MAX_LENGTH = 300;
+
+/**
+ * Contains all the possible types of organizations.
+ */
+export enum OrganizationType {
+    SUBORGANIZATION = "SUBORGANIZATION",
+    TENANT = "TENANT",
+    FIRST_LEVEL_ORGANIZATION = "FIRST_LEVEL_ORGANIZATION",
+    SUPER_ORGANIZATION= "SUPER_ORGANIZATION"
+}

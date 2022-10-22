@@ -475,8 +475,8 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                             <Grid.Row column={ 1 }>
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 } className="field">
                                     <URLInput
-                                        isCustom = {
-                                            !(selectedTemplate.templateId === ApplicationManagementConstants.MOBILE) 
+                                        isCustom={
+                                            selectedTemplate.templateId === ApplicationManagementConstants.MOBILE
                                         }
                                         labelEnabled={ true }
                                         handleAddAllowedOrigin={ (url) => handleAddAllowOrigin(url) }
@@ -486,13 +486,16 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                         urlState={ callBackUrls }
                                         setURLState={ setCallBackUrls }
                                         labelName={
-                                            t("console:develop.features.applications.forms." +
-                                                "spaProtocolSettingsWizard.fields.callBackUrls.label")
+                                            selectedTemplate.templateId === ApplicationManagementConstants.MOBILE
+                                                ? "Authorized redirect URIs"
+                                                : t("console:develop.features.applications.forms." +
+                                                    "spaProtocolSettingsWizard.fields.callBackUrls.label")
                                         }
                                         placeholder={
-                                            t("console:develop.features.applications.forms.inboundOIDC." +
-                                                "fields.callBackUrls" +
-                                                ".placeholder")
+                                            selectedTemplate.templateId === ApplicationManagementConstants.MOBILE
+                                                ? "wso2sample://oauth2"
+                                                : t("console:develop.features.applications.forms.inboundOIDC." +
+                                                    "fields.callBackUrls.placeholder")
                                         }
                                         validationErrorMsg={
                                             isDeepLinkError
