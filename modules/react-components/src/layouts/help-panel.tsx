@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -47,7 +47,7 @@ export interface HelpPanelLayoutLayoutPropsInterface extends HelpPanelPropsInter
     onHelpPanelPinToggle: () => void;
     /**
      * Callback for help panel visibility change.
-     * @param {boolean} isVisible - Is sidebar visible.
+     * @param isVisible - Is sidebar visible.
      */
     onHelpPanelVisibilityChange?: (isVisible: boolean) => void;
     /**
@@ -109,9 +109,9 @@ export interface HelpPanelIconsInterface {
 /**
  * Help panel layout.
  *
- * @param {React.PropsWithChildren<HelpPanelLayoutLayoutPropsInterface>} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns the Help panel layout component.
  */
 export const HelpPanelLayout: FunctionComponent<PropsWithChildren<HelpPanelLayoutLayoutPropsInterface>> = (
     props: PropsWithChildren<HelpPanelLayoutLayoutPropsInterface>
@@ -181,7 +181,7 @@ export const HelpPanelLayout: FunctionComponent<PropsWithChildren<HelpPanelLayou
     /**
      * Handles sidebar mini item click event.
      *
-     * @param {string} item - Clicked item.
+     * @param item - Clicked item.
      */
     const handleSidebarMiniItemClick = (item: string) => {
         getFilteredHelpPanelTabs().forEach((pane, index) => {
@@ -197,7 +197,7 @@ export const HelpPanelLayout: FunctionComponent<PropsWithChildren<HelpPanelLayou
     /**
      * Filter the help panel tabs and remove hidden tabs.
      *
-     * @return {HelpPanelTabInterface[]} Modified tabs array.
+     * @returns an array of Modified tabs.
      */
     const getFilteredHelpPanelTabs = (): HelpPanelTabInterface[] => {
         return tabs.filter((tab) => !tab.hidden);
