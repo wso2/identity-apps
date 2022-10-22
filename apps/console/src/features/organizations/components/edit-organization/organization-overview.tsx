@@ -40,7 +40,7 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, CheckboxProps, Divider, Grid } from "semantic-ui-react";
+import { CheckboxProps, Divider, Grid } from "semantic-ui-react";
 import { AppState, FeatureConfigInterface } from "../../../core";
 import { deleteOrganization, patchOrganization } from "../../api";
 import {
@@ -515,25 +515,27 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                                     minLength={ 3 }
                                 />
                             ) }
+                            { !isReadOnly && (
+                                <Field.Button
+                                    form={ FORM_ID }
+                                    size="small"
+                                    buttonType="primary_btn"
+                                    ariaLabel="Update button"
+                                    name="update-button"
+                                    className="form-button"
+                                    data-testid={ `${ testId }-form-update-button` }
+                                    disabled={ isSubmitting }
+                                    loading={ isSubmitting }
+                                    label={ t("common:update") }
+                                />
+                            ) }
                             <Grid.Row columns={ 1 }>
                                 <Grid.Column
                                     mobile={ 16 }
                                     tablet={ 16 }
                                     computer={ 8 }
                                 >
-                                    { !isReadOnly && (
-                                        <Button
-                                            data-testid={ `${ testId }-form-update-button` }
-                                            primary
-                                            type="submit"
-                                            size="small"
-                                            className="form-button"
-                                            loading={ isSubmitting }
-                                            disabled={ isSubmitting }
-                                        >
-                                            { t("common:update") }
-                                        </Button>
-                                    ) }
+
                                 </Grid.Column>
                             </Grid.Row>
                         </Form>
