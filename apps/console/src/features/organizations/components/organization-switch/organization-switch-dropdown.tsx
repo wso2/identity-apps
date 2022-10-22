@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { AccessControlConstants, Show } from "@wso2is/access-control";
 import {
     AlertLevels,
     IdentifiableComponentInterface
@@ -45,7 +44,6 @@ import {
 } from "semantic-ui-react";
 import OrganizationListItem from "./organization-list-item";
 import OrganizationSwitcherList from "./organization-switch-list";
-import { organizationConfigs } from "../../../../extensions";
 import { ReactComponent as CrossIcon } from "../../../../themes/default/assets/images/icons/cross-icon.svg";
 import { AppState, getMiscellaneousIcons } from "../../../core";
 import { getOrganizations } from "../../api";
@@ -266,6 +264,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
         setIsDropDownOpen(false);
     };
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const handleNewClick = (): void => {
         setIsDropDownOpen(false);
         setShowNewOrgWizard(true);
@@ -370,7 +369,8 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                                             </h5>
                                         </Grid.Column>
                                         <Grid.Column width={ 4 }>
-                                            { organizationConfigs.canCreateOrganization() && (
+                                            { /* HIDE TEMPORARILY */ }
+                                            { /* { organizationConfigs.canCreateOrganization() && (
                                                 <Show
                                                     when={
                                                         AccessControlConstants.ORGANIZATION_WRITE
@@ -386,7 +386,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                                                         { t("common:new") }
                                                     </Button>
                                                 </Show>
-                                            ) }
+                                            ) } */ }
                                         </Grid.Column>
                                     </Grid.Row>
                                 </Grid>

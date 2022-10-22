@@ -74,7 +74,7 @@ import React, {
 } from "react";
 import { I18nextProvider, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { commonConfig, serverConfigurationConfig } from "./extensions";
+import { commonConfig, organizationConfigs, serverConfigurationConfig } from "./extensions";
 import {
     AuthenticateUtils,
     getProfileInformation
@@ -106,7 +106,7 @@ import {
 import { AppConstants, CommonConstants } from "./features/core/constants";
 import { history } from "./features/core/helpers";
 import { getOrganization } from "./features/organizations/api";
-import { OrganizationType } from "./features/organizations/constants";
+import { OrganizationManagementConstants, OrganizationType } from "./features/organizations/constants";
 import { OrganizationResponseInterface } from "./features/organizations/models";
 import { OrganizationUtils } from "./features/organizations/utils";
 import {
@@ -640,7 +640,9 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                         ...AppConstants.ORGANIZATION_ONLY_ROUTES
                     ]
                     : window[ "AppUtils" ].getConfig().organizationName
-                        ? AppUtils.getHiddenRoutes()
+                        ? organizationConfigs.canCreateOrganization()
+                            ? AppUtils.getHiddenRoutes()
+                            : [ ...AppUtils.getHiddenRoutes(), OrganizationManagementConstants.ORGANIZATION_ROUTES ]
                         : [
                             ...AppUtils.getHiddenRoutes(),
                             ...AppConstants.ORGANIZATION_ROUTES
@@ -671,7 +673,9 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                         ...AppConstants.ORGANIZATION_ONLY_ROUTES
                     ]
                     : window[ "AppUtils" ].getConfig().organizationName
-                        ? AppUtils.getHiddenRoutes()
+                        ? organizationConfigs.canCreateOrganization()
+                            ? AppUtils.getHiddenRoutes()
+                            : [ ...AppUtils.getHiddenRoutes(), OrganizationManagementConstants.ORGANIZATION_ROUTES ]
                         : [
                             ...AppUtils.getHiddenRoutes(),
                             ...AppConstants.ORGANIZATION_ROUTES
