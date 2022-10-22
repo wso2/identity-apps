@@ -7296,7 +7296,7 @@ export const console: ConsoleNS = {
                     certificates: "සහතික",
                     configurations: "වින්‍යාස කිරීම්",
                     general: "ජනරාල්",
-                    organizations: "ආයතන",
+                    organizations: "සංවිධාන කළමනාකරණය",
                     users: "පරිශීලකයින්",
                     userstores: "පරිශීලක වෙළඳසැල්"
                 },
