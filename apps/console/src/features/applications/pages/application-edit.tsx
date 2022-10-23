@@ -44,7 +44,7 @@ import { OrganizationInterface } from "../../organizations/models";
 import { getApplicationDetails } from "../api";
 import { EditApplication, InboundProtocolDefaultFallbackTemplates } from "../components";
 import { ApplicationShareModal } from "../components/modals/application-share-modal";
-import { ApplicationManagementConstants } from "../constants";
+import { ApplicationManagementConstants, ShareWithOrgStatus } from "../constants";
 import CustomApplicationTemplate
     from "../data/application-templates/templates/custom-application/custom-application.json";
 import {
@@ -107,7 +107,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     const [ showAppShareModal, setShowAppShareModal ] = useState(false);
     const [ subOrganizationList, setSubOrganizationList ] = useState<Array<OrganizationInterface>>([]);
     const [ sharedOrganizationList, setSharedOrganizationList ] = useState<Array<OrganizationInterface>>([]);
-    const [ sharedWithAll, setSharedWithAll ] = useState<boolean>(false);
+    const [ sharedWithAll, setSharedWithAll ] = useState<ShareWithOrgStatus>(ShareWithOrgStatus.UNDEFINED);
 
     const isFirstLevelOrg: boolean = useSelector(
         (state: AppState) => state.organization.isFirstLevelOrganization
@@ -419,12 +419,20 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             .then((response: ApplicationInterface) => {
                 setApplication(response);
 
-                const isSharedWithAll: boolean = JSON.parse(response?.advancedConfigurations
+                const isSharedWithAll: additionalSpProperty[] = response?.advancedConfigurations
                     ?.additionalSpProperties?.filter((property: additionalSpProperty) =>
                         property?.name === "shareWithAllChildren"
-                    )[0]?.value ?? "false") ;
+                    );
 
-                setSharedWithAll(isSharedWithAll);
+                if (!isSharedWithAll || isSharedWithAll.length === 0) {
+                    setSharedWithAll(ShareWithOrgStatus.UNDEFINED);
+                } else {
+                    setSharedWithAll(
+                        JSON.parse(isSharedWithAll[ 0 ].value)
+                            ? ShareWithOrgStatus.TRUE
+                            : ShareWithOrgStatus.FALSE
+                    );
+                }
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
