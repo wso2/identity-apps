@@ -139,7 +139,7 @@ export const getOrganization = (id: string, showChildren?: boolean): Promise<Org
         params: {
             showChildren
         },
-        url: `${store.getState().config.endpoints.organizations}/organizations/${id}`
+        url: `${ store.getState().config.endpoints.organizations }/organizations/${ id }`
     };
 
     return httpClient(config)
@@ -174,7 +174,7 @@ export const updateOrganization = (
             "Content-Type": "application/json"
         },
         method: "PUT",
-        url: `${ store.getState().config.endpoints.organizations }/organizations/${organizationId}`
+        url: `${ store.getState().config.endpoints.organizations }/organizations/${ organizationId }`
     };
 
     return httpClient(config)
@@ -209,7 +209,7 @@ export const patchOrganization = (
             "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,
-        url: `${ store.getState().config.endpoints.organizations }/organizations/${organizationId}`
+        url: `${ store.getState().config.endpoints.organizations }/organizations/${ organizationId }`
     };
 
     return httpClient(config)
@@ -379,7 +379,7 @@ export const useGetUserSuperOrganization = (): RequestResultInterface<Organizati
  */
 export const useGetOrganizationBreadCrumb = (
     shouldSendRequest: boolean
-): { data: BreadcrumbList, error: Error; } => {
+): { data: BreadcrumbList, error: Error; isLoading: boolean; } => {
     const requestConfig = {
         headers: {
             "Accept": "application/json",
@@ -394,11 +394,12 @@ export const useGetOrganizationBreadCrumb = (
     if (error && !shouldSendRequest) {
         return {
             data: null,
-            error: null
+            error: null,
+            isLoading: null
         };
     }
 
-    return { data, error };
+    return { data, error, isLoading: !data && !error };
 };
 
 /**
