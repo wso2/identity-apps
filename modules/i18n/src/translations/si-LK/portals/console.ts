@@ -90,6 +90,10 @@ export const console: ConsoleNS = {
                 tooltip: "Apps"
             },
             organizationSwitch: {
+                breadcrumbError: {
+                    description: "සංවිධාන ධුරාවලිය ලබා ගැනීමේදී දෝෂයක් ඇති විය.",
+                    message: "මොකක්හරි වැරැද්දක් වෙලා"
+                },
                 emptyOrgListMessage: "සංවිධාන නොමැත",
                 orgSearchPlaceholder: "සංවිධානයේ නම අනුව සොයන්න"
             }

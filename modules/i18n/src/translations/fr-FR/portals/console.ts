@@ -91,6 +91,10 @@ export const console: ConsoleNS = {
                 tooltip: "Apps"
             },
             organizationSwitch: {
+                breadcrumbError: {
+                    description: "Une erreur s'est produite lors de la récupération de la hiérarchie de l'organisation.",
+                    message: "Quelque chose s'est mal passé"
+                },
                 emptyOrgListMessage: "Aucune organisation disponible",
                 orgSearchPlaceholder: "Rechercher par nom d'organisation"
             }

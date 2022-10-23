@@ -99,6 +99,7 @@ export interface ConsoleNS {
             organizationSwitch: {
                 emptyOrgListMessage: string;
                 orgSearchPlaceholder: string;
+                breadcrumbError: NotificationItem;
             }
         },
         modals: {
