@@ -57,6 +57,7 @@ import {
     OrganizationInterface,
     ShareApplicationRequestInterface
 } from "../../../organizations/models";
+import { ShareWithOrgStatus } from "../../constants";
 
 enum ShareType {
     SHARE_ALL,
@@ -90,7 +91,7 @@ export interface ApplicationShareModalPropsInterface
     /**
      * Specifies if the application is shared with all suborganizations.
      */
-    isSharedWithAll?: boolean;
+    isSharedWithAll?: ShareWithOrgStatus;
 }
 
 export const ApplicationShareModal: FunctionComponent<ApplicationShareModalPropsInterface> = (
@@ -128,9 +129,12 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     useEffect(() => {
-        if (isSharedWithAll) {
+        if (isSharedWithAll === ShareWithOrgStatus.TRUE) {
             setShareType(ShareType.SHARE_ALL);
-        } else if (!sharedOrganizationList || sharedOrganizationList?.length === 0) {
+        } else if (!sharedOrganizationList
+            || sharedOrganizationList?.length === 0
+            || isSharedWithAll === ShareWithOrgStatus.UNDEFINED
+        ) {
             setShareType(ShareType.UNSHARE);
         } else {
             setShareType(ShareType.SHARE_SELECTED);
@@ -157,7 +161,7 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
         } else if (shareType === ShareType.SHARE_SELECTED) {
             let addedOrganizations: string[];
 
-            if (isSharedWithAll) {
+            if (isSharedWithAll === ShareWithOrgStatus.TRUE) {
                 addedOrganizations = checkedUnassignedListItems.map((org) => org.id);
 
                 await unshareApplication(applicationId, currentOrganization.id);
