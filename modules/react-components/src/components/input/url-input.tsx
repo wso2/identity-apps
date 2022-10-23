@@ -680,6 +680,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                         size="mini"
                         hoverable
                         inverted
+                        popper={ <div style={ { filter: "none" } }/> }
                     />
                 ) : <span>{ protocol }</span> }
                 <span>://</span>
@@ -808,6 +809,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                                 position="top center"
                                 content={ addURLTooltip }
                                 inverted
+                                popper={ <div style={ { filter: "none" } }/> }
                             />
                         </Input>
                         { resolveValidationLabel() }

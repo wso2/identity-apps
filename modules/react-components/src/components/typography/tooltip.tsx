@@ -60,7 +60,7 @@ export const Tooltip: React.FunctionComponent<PropsWithChildren<TooltipPropsInte
             className={ classes }
             data-componentid={ componentId }
             data-testid={ testId }
-            popper={ <div style={ { filter: "none" } }></div> }
+            popper={ <div style={ { filter: "none" } }/> }
             { ...rest }
         >
             { children }
