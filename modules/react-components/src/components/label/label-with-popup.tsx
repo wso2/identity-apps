@@ -107,6 +107,7 @@ export const LabelWithPopup: FunctionComponent<LabelWithPopupPropsInterface> = (
             }
             on="hover"
             data-componentid={ componentId }
+            popper={ <div style={ { filter: "none" } }/> }
             { ...popupOptions }
         >
             <Popup.Content data-componentid={ `${ componentId }-content-container` }>

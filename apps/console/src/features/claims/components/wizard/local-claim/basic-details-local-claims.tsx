@@ -284,7 +284,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                         } }
                                         position="bottom left"
                                         context={ claimField }
-                                        popper={ <div style={ { filter: "none" } }></div> }
+                                        popper={ <div style={ { filter: "none" } }/> }
                                     />
                                     <Label className="mb-3 ml-0">
                                         <em>Attribute URI</em>:&nbsp;
@@ -444,7 +444,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                                                                 size="mini"
                                                                                 hideOnScroll
                                                                                 inverted
-                                                                                popper={ 
+                                                                                popper={
                                                                                     <div style={ { filter: "none" } }/>
                                                                                 }
                                                                             />
@@ -494,7 +494,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                             } }
                             position="bottom left"
                             context={ nameField }
-                            popper={ <div style={ { filter: "none" } }></div> }
+                            popper={ <div style={ { filter: "none" } }/> }
                         />
                         {
                             attributeConfig.localAttributes.createWizard.customWIzard && (
@@ -540,7 +540,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                     } }
                                     position="bottom left"
                                     context={ claimField }
-                                    popper={ <div style={ { filter: "none" } }></div> }
+                                    popper={ <div style={ { filter: "none" } }/> }
                                 />
                                 {
                                     claimID
@@ -604,7 +604,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                     } }
                                     position="bottom left"
                                     context={ regExField }
-                                    popper={ <div style={ { filter: "none" } }></div> }
+                                    popper={ <div style={ { filter: "none" } }/> }
                                 />
                             </Grid.Column>
                         )
@@ -670,7 +670,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                     } }
                                     position="bottom left"
                                     context={ displayOrderField }
-                                    popper={ <div style={ { filter: "none" } }></div> }
+                                    popper={ <div style={ { filter: "none" } }/> }
                                 />
                             </Grid.Column>
                         </Grid.Row>
