@@ -767,6 +767,13 @@ export const console: ConsoleNS = {
                                     message: "Mappage d'attributs modifié"
                                 }
                             },
+                            emptySearchResults: {
+                                subtitles: {
+                                    0: "Nous n'avons trouvé aucun résultat pour '{{ searchQuery }}'",
+                                    1: "Veuillez essayer un autre terme de recherche."
+                                },
+                                title: "Aucun résultat trouvé"
+                            },
                             forms: {
                                 fields: {
                                     dynamic: {

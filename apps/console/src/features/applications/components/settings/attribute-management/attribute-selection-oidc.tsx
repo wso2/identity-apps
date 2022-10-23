@@ -22,6 +22,7 @@ import {
     AppAvatar,
     Code,
     DocumentationLink,
+    EmptyPlaceholder,
     Heading,
     Hint,
     Link,
@@ -48,6 +49,7 @@ import {
     AppConstants,
     AppState,
     ConfigReducerStateInterface,
+    getEmptyPlaceholderIllustrations,
     history
 } from "../../../../core";
 import {
@@ -520,28 +522,30 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                     data-componentId={ `${ componentId }-item-image` }
                 />
                 {
-                    scope.name === "" ? (
-                        <Header.Content className="align-self-center">
-                            <Hint warning={ true } popup compact>
-                                {
-                                    t("console:develop.features.applications.edit.sections.attributes" +
+                    scope.name === "" 
+                        ? (
+                            <Header.Content className="align-self-center">
+                                <Hint warning={ true } popup compact>
+                                    {
+                                        t("console:develop.features.applications.edit.sections.attributes" +
                                             ".selection.scopelessAttributes.hint")
-                                }
-                            </Hint>
-                            { scope.displayName }
-                            <Header.Subheader>
-                                { " " + (scope.description ?? "") }
-                            </Header.Subheader>
-                        </Header.Content>
-                    ) : (
-                        <Header.Content>
-                            { scope.displayName }
-                            <Header.Subheader>
-                                <Code withBackground>{ scope.name }</Code>
-                                { " " + (scope.description ?? "") }
-                            </Header.Subheader>
-                        </Header.Content>
-                    )
+                                    }
+                                </Hint>
+                                { scope.displayName }
+                                <Header.Subheader>
+                                    { " " + (scope.description ?? "") }
+                                </Header.Subheader>
+                            </Header.Content>
+                        ) 
+                        : (
+                            <Header.Content>
+                                { scope.displayName }
+                                <Header.Subheader>
+                                    <Code withBackground>{ scope.name }</Code>
+                                    { " " + (scope.description ?? "") }
+                                </Header.Subheader>
+                            </Header.Content>
+                        )
                 }
             </Header>
         );
@@ -682,11 +686,11 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
             onChange: handleSelectedScopeCheckChange,
             popoverText: scope.selected
                 ? t("console:develop.features.applications.edit" +
-                ".sections.attributes.selection.mappingTable" +
-                ".listItem.actions.removeScopeRequested")
+                    ".sections.attributes.selection.mappingTable" +
+                    ".listItem.actions.removeScopeRequested")
                 : t("console:develop.features.applications.edit" +
-                ".sections.attributes.selection.mappingTable" +
-                ".listItem.actions.makeScopeRequested"),
+                    ".sections.attributes.selection.mappingTable" +
+                    ".listItem.actions.makeScopeRequested"),
             type: "checkbox popup",
             value: scope.name
         } ];
@@ -741,48 +745,89 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                                     </Table>
                                 </Grid.Row>
                                 <Grid.Row className="mb-5">
-                                    <SegmentedAccordion
-                                        fluid
-                                        data-testid={ `${ testId }-oidc-scopes` }
-                                        data-componentid={  `${ componentId }-oidc-scopes` }
-                                        viewType="table-view"
-                                    >
-                                        {
-                                            externalClaimsGroupedByScopes.map(
-                                                (scope: OIDCScopesClaimsListInterface) => {
-                                                    if (scope.name !== ""){
-                                                        return (
-                                                            <Fragment key={ scope.name }>
-                                                                <SegmentedAccordion.Title
-                                                                    id={ scope.name }
-                                                                    data-testid={ `${testId}-${scope.name}-title` }
-                                                                    data-componentid={ `${componentId}-${scope.name}
-                                                                    -title` }
-                                                                    active={ expandedScopes?.includes(scope.name)
-                                                                            || false }
-                                                                    accordionIndex={ scope.name }
-                                                                    onClick={ () => handleAccordionTitleClick(scope) }
-                                                                    content={ (
-                                                                        resolveScopeListItem(scope)
-                                                                    ) }
-                                                                    hideChevron={ false }
-                                                                    actions={ createAccordionTitleAction(scope) }
-                                                                />
-    
-                                                                <SegmentedAccordion.Content
-                                                                    active={ expandedScopes?.includes(scope.name)
-                                                                            || false }
-                                                                    data-testid={ `${testId}-${scope.name}-content` }
-                                                                    data-componentid={ `${componentId}-${scope.name}
-                                                                    -content` }
-                                                                    children={ resolveUserAttributeList(scope.claims) }
-                                                                />
-                                                            </Fragment>
-                                                        );
+                                    {
+                                        externalClaimsGroupedByScopes.length !== 0
+                                            ? (
+                                                <SegmentedAccordion
+                                                    fluid
+                                                    data-testid={ `${ testId }-oidc-scopes` }
+                                                    data-componentid={  `${ componentId }-oidc-scopes` }
+                                                    viewType="table-view"
+                                                >
+                                                    {
+                                                        externalClaimsGroupedByScopes.map(
+                                                            (scope: OIDCScopesClaimsListInterface) => {
+                                                                if (scope.name !== ""){
+                                                                    return (
+                                                                        <Fragment key={ scope.name }>
+                                                                            <SegmentedAccordion.Title
+                                                                                id={ scope.name }
+                                                                                data-testid={ 
+                                                                                    `${testId}-${scope.name}-title` 
+                                                                                }
+                                                                                data-componentid={ 
+                                                                                    `${componentId}-${scope.name}
+                                                                                    -title` 
+                                                                                }
+                                                                                active={ 
+                                                                                    expandedScopes?.
+                                                                                        includes(scope.name) || false }
+                                                                                accordionIndex={ scope.name }
+                                                                                onClick={ 
+                                                                                    () => 
+                                                                                        handleAccordionTitleClick(scope)
+                                                                                }
+                                                                                content={ (
+                                                                                    resolveScopeListItem(scope)
+                                                                                ) }
+                                                                                hideChevron={ false }
+                                                                                actions={ 
+                                                                                    createAccordionTitleAction(scope) 
+                                                                                }
+                                                                            />
+                                                                            <SegmentedAccordion.Content
+                                                                                active={ 
+                                                                                    expandedScopes?.
+                                                                                        includes(scope.name) || false
+                                                                                }
+                                                                                data-testid={ 
+                                                                                    `${testId}-${scope.name}-content` 
+                                                                                }
+                                                                                data-componentid={ 
+                                                                                    `${componentId}-${scope.name}
+                                                                                    -content`
+                                                                                }
+                                                                                children={ 
+                                                                                    resolveUserAttributeList(scope
+                                                                                        .claims)
+                                                                                }
+                                                                            />
+                                                                        </Fragment>
+                                                                    );
+                                                                }
+                                                            }
+                                                        )
                                                     }
-                                                })
-                                        }
-                                    </SegmentedAccordion>
+                                                </SegmentedAccordion>
+                                            ) 
+                                            : (
+                                                <EmptyPlaceholder
+                                                    image={ getEmptyPlaceholderIllustrations().emptySearch }
+                                                    imageSize="tiny"
+                                                    title={ 
+                                                        t("console:develop.features.applications.edit.sections." +
+                                                        "attributes.emptySearchResults.title") }
+                                                    subtitle={ [
+                                                        t("console:develop.features.applications.edit.sections." +
+                                                        "attributes.emptySearchResults.subtitles.0",
+                                                        { searchQuery: searchValue }),
+                                                        t("console:develop.features.applications.edit.sections." +
+                                                        "attributes.emptySearchResults.subtitles.1")
+                                                    ] }
+                                                    data-testid={ `${ testId }-empty-search-placeholder` }
+                                                />
+                                            )
+                                    }
                                 </Grid.Row>
                                 <Grid.Row>
                                     <SegmentedAccordion

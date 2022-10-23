@@ -764,6 +764,13 @@ export const console: ConsoleNS = {
                                     message: "User Attribute Mapping Changed"
                                 }
                             },
+                            emptySearchResults: {
+                                subtitles: {
+                                    0: "We couldn't find any results for '{{ searchQuery }}'",
+                                    1: "Please try a different search term."
+                                },
+                                title: "No results found"
+                            },
                             forms: {
                                 fields: {
                                     dynamic: {

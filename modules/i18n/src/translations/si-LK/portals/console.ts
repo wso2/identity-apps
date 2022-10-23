@@ -768,6 +768,13 @@ export const console: ConsoleNS = {
                                     message: "ගුණාංග අගයන් වෙනස් කරන ලදි"
                                 }
                             },
+                            emptySearchResults: {
+                                subtitles: {
+                                    0: " '{{ searchQuery }}' සඳහා අපට කිසිදු ප්‍රතිපලයක් සොයාගත නොහැකි විය.",
+                                    1: "කරුණාකර වෙනත් සෙවුම් පදයක් උත්සාහ කරන්න."
+                                },
+                                title: "ප්‍රතිපල හමු නොවීය"
+                            },
                             forms: {
                                 fields: {
                                     dynamic: {
