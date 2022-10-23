@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -153,9 +153,9 @@ export interface URLInputPropsInterface extends IdentifiableComponentInterface, 
 /**
  * URL Input component.
  *
- * @param {URLInputPropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns React Element.
  */
 export const URLInput: FunctionComponent<URLInputPropsInterface> = (
     props: URLInputPropsInterface
@@ -221,7 +221,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
     /**
      * Add URL to the URL list.
      *
-     * @returns {string} URLs.
+     * @returns URLs.
      */
     const addUrl = useCallback((): string => {
 
@@ -298,7 +298,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
     /**
      * This submits the URL and calls the callback function passing the URL as an argument.
      *
-     * @param {(url: string) => void} callback A callback function that accepts the url as an optional argument.
+     * @param callback - A callback function that accepts the url as an optional argument.
      */
     const externalSubmit = (callback: (url?: string) => void): void => {
         if (getChangeUrl()) {
@@ -314,7 +314,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
 
     /**
      * Initial prediction for the URL.
-     * @param changeValue input by the user.
+     * @param changeValue - input by the user.
      */
     const getPredictions = (changeValue) => {
 
@@ -326,7 +326,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
 
     /**
      * Enter button option.
-     * @param e keypress event.
+     * @param e - keypress event.
      */
     const keyPressed = (e) => {
         const key = e.which || e.charCode || e.keyCode;
@@ -340,7 +340,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
     /**
      * Handle change event of the input.
      *
-     * @param event change event.
+     * @param event - change event.
      */
     const handleChange = (event) => {
         const changeValue = event.target.value;
@@ -370,7 +370,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
 
     /**
      * When the predicted element is clicked select the predict.
-     * @param predict filter prediction.
+     * @param predict - filter prediction.
      */
     const onPredictClick = (predict: string) => {
         setChangeUrl(predict);
@@ -384,7 +384,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
 
     /**
      * Remove the URL from the listed URLS.
-     * @param removeURL URL to be removed.
+     * @param removeURL - URL to be removed.
      */
     const removeValue = (removeURL) => {
         let urlsAfterRemoved = urlState;
@@ -415,7 +415,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
     /**
      * Returns the changeUrl value.
      *
-     * @returns {string} Change URL.
+     * @returns Change URL.
      */
     const getChangeUrl = useCallback((): string => {
         return changeUrl;
@@ -460,8 +460,8 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
      * {@link React.MouseEvent.preventDefault} to avoid accidental
      * form submission events.
      *
-     * @param event {React.MouseEvent<HTMLButtonElement>}
-     * @param url {string} user input
+     * @param event - button element event.
+     * @param url - user input
      */
     const onAllowOriginClick = (event: React.MouseEvent<HTMLButtonElement>, url: string): void => {
         event.preventDefault();
@@ -579,7 +579,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
     /**
      * Resolves the error label.
      *
-     * @return {React.ReactElement | React.ReactNode}
+     * @returns React element.
      */
     const resolveValidationLabel = (): ReactElement | ReactNode => {
         if(!validURL && !changeUrl && emptyErrorMessage) {
@@ -622,8 +622,8 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
      * {@link https://tools.ietf.org/html/rfc6454#section-3.2.1}
      * {@link https://stackoverflow.com/a/19542686}
      *
-     * @param url {string} a URL i.e., https://myapp.io/x/y/z\
-     * @return {boolean} origin allowed or not
+     * @param url - origin URL 
+     * @returns origin allowed or not
      */
     const isOriginIsKnownAndAllowed = (url: string): boolean => {
         const urlComponents = URLUtils.urlComponents(url);
@@ -652,7 +652,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
      * Chip widget that contains the origin or href with a
      * following remove button.
      *
-     * @param url {string}
+     * @param url - origin url
      */
     const urlTextWidget = (url: string): ReactElement => {
 
@@ -680,6 +680,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                         size="mini"
                         hoverable
                         inverted
+                        popper={ <div style={ { filter: "none" } }/> }
                     />
                 ) : <span>{ protocol }</span> }
                 <span>://</span>
@@ -692,9 +693,9 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
 
     /**
      * Added url remove button. In the click event it will send
-     * the full {@code url} regardless of the type {@code onlyOrigin}
+     * the full url regardless of the type onlyOrigin.
      *
-     * @param url {string}
+     * @param url - origin url
      */
     const urlRemoveButtonWidget = (url: string): ReactElement => {
         return (
@@ -808,6 +809,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                                 position="top center"
                                 content={ addURLTooltip }
                                 inverted
+                                popper={ <div style={ { filter: "none" } }/> }
                             />
                         </Input>
                         { resolveValidationLabel() }
