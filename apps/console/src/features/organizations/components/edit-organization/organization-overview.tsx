@@ -384,7 +384,7 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
     };
 
     return organization ? (
-        <EmphasizedSegment padded="very">
+        <EmphasizedSegment padded="very" key={ organization?.id }>
             <Grid>
                 <Grid.Row columns={ 1 }>
                     <Grid.Column width={ 8 }>

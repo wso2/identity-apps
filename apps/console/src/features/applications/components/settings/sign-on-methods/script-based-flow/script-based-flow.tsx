@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -48,6 +48,7 @@ import { useDispatch } from "react-redux";
 import { Checkbox, Dropdown, Header, Icon, Input, Menu, Popup, Sidebar } from "semantic-ui-react";
 import { stripSlashes } from "slashes";
 import { ScriptTemplatesSidePanel } from "./script-templates-side-panel";
+import { organizationConfigs } from "../../../../../../extensions";
 import { AppUtils, EventPublisher, getOperationIcons } from "../../../../../core";
 import { OrganizationUtils } from "../../../../../organizations/utils";
 import { deleteSecret, getSecretList } from "../../../../../secrets/api/secret";
@@ -95,12 +96,12 @@ interface AdaptiveScriptsPropsInterface extends TestableComponentInterface {
     onAdaptiveScriptReset: () => void;
     /**
      * Callback when the script changes.
-     * @param {string | string[]} script - Authentication script.
+     * @param script - Authentication script.
      */
     onScriptChange: (script: string | string[]) => void;
     /**
      * Fired when a template is selected.
-     * @param {AdaptiveAuthTemplateInterface} template - Adaptive authentication template.
+     * @param template - Adaptive authentication template.
      */
     onTemplateSelect: (template: AdaptiveAuthTemplateInterface) => void;
     /**
@@ -113,8 +114,9 @@ interface AdaptiveScriptsPropsInterface extends TestableComponentInterface {
 /**
  * Configure the authentication flow using an adaptive script.
  *
- * @param {AdaptiveScriptsPropsInterface} props - Props injected to the component.
- * @return {ReactElement}
+ * @param props - Props injected to the component.
+ *
+ * @returns
  */
 export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> = (
     props: AdaptiveScriptsPropsInterface
@@ -161,7 +163,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     const [ isSecretsDropdownOpen, setIsSecretsDropdownOpen ] = useState<boolean>(false);
 
     /**
-     * List of secrets for the selected {@code secretType}. It can hold secrets of
+     * List of secrets for the selected `secretType`. It can hold secrets of
      * either a custom one or the static type "ADAPTIVE_AUTH_CALL_CHOREO"
      */
     const [ secretList, setSecretList ] = useState<SecretModel[]>([]);
@@ -227,7 +229,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     /**
      * Add secret name to adaptive script.
      *
-     * @param secret
+     * @param secret - Secret
      */
     const addSecretToScript = (secret:SecretModel): void => {
         const doc = editorInstance.getDoc();
@@ -246,7 +248,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
 
     /**
      * Handle secret delete operation.
-     * @param secret
+     * @param secret - Secret
      */
     const handleSecretDelete = (secret:SecretModel) :void => {
         setDeletingSecret(secret);
@@ -265,8 +267,8 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     /**
      * This will be called when secret delete confirmation is closed.
      * It will tell us to refresh the secret list or not.
-     * @param deletingSecret {SecretModel}
-     * @param shouldRefresh {boolean}
+     * @param deletingSecret - SecretModel
+     * @param shouldRefresh - boolean
      */
     const whenSecretDeleted = (deletingSecret:SecretModel, shouldRefresh: boolean): void => {
         if (shouldRefresh) {
@@ -277,7 +279,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     /**
      * Display Add Secret Modal.
      *
-     * @return {React.ReactElement}
+     * @returns
      */
     const renderAddSecretModal = (): ReactElement => {
         return(
@@ -372,8 +374,9 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     /**
      * Resolves the adaptive script.
      *
-     * @param {string} script - Script passed through props.
-     * @return {string | string[]} Moderated script.
+     * @param script - Script passed through props.
+     *
+     * @returns
      */
     const resolveAdaptiveScript = (script: string): string | string[] => {
         // Check if there is no script defined and the step count is o.
@@ -472,7 +475,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     /**
      * Handles template selection click event.
      *
-     * @param {AdaptiveAuthTemplateInterface} template - Adaptive authentication template.
+     * @param template - Adaptive authentication template.
      */
     const handleTemplateSelection = (template: AdaptiveAuthTemplateInterface) => {
         eventPublisher.publish("application-sign-in-method-conditional-authentication-template", {
@@ -511,16 +514,16 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
      * Why implement this in the first place? When switching from full screen to
      * normal view it loses all user entered source code vice versa.
      *
-     * That happens because, we pass {@code sourceCode={ sourceCode }} to
+     * That happens because, we pass `sourceCode={ sourceCode }` to
      * {@link CodeEditor}. We cannot alter it's depending state since it's
      * used in conditional script generators. We have checked the feasibility
      * of adding {@link useCallback} and mix it with a debounce handler to
      * track changes within onChange event. But the problem is it causes the
      * component to re-render multiple times and causes unforeseen side effects.
      *
-     * In this function we read {@code internalScript} and {@code sourceCode}
+     * In this function we read `internalScript` and `sourceCode`
      * and checks whether their state has been changed. If yes then simply
-     * set the new {@code sourceCode} to what user entered. And place the cursor
+     * set the new `sourceCode` to what user entered. And place the cursor
      * back to where it was originally.
      */
     const preserveStateOnFullScreenChange = (): void => {
@@ -540,7 +543,6 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     /**
      * Steps for the conditional authentication toggle tour.
      *
-     * @type {Array<Step>}
      */
     const conditionalAuthTourSteps: Array<Step> = [
         {
@@ -627,7 +629,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     /**
      * Should the conditional auth tour open.
      *
-     * @return {boolean}
+     * @returns
      */
     const shouldConditionalAuthTourOpen = (): boolean => {
 
@@ -641,7 +643,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     /**
      * Renders the Conditional Auth tour.
      *
-     * @return {React.ReactElement}
+     * @returns
      */
     const renderConditionalAuthTour = (): ReactElement => (
         <Joyride
@@ -676,7 +678,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
 
     /**
      * This will be only called when user gives their consent for deletion.
-     * @see {@code SecretDeleteConfirmationModal}
+     * @see `SecretDeleteConfirmationModal`
      */
     const onSecretDeleteClick = async (): Promise<void> => {
         if (deletingSecret) {
@@ -879,19 +881,22 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                             )
                         }
                     </Dropdown.Menu>
-                    <Dropdown.Menu
-                        className={ "create-button-item" }
-                        scrolling
-                    >
-                        <Dropdown.Item
-                            key={ "createSecret" }
-                            text={ t("console:develop.features.applications.edit.sections.signOnMethod" +
-                                ".sections.authenticationFlow.sections.scriptBased.secretsList.create") }
-                            onClick={ () => {
-                                setShowAddSecretModal(true);
-                            } }
-                        />
-                    </Dropdown.Menu>
+
+                    { organizationConfigs.canCreateOrganization() && (
+                        <Dropdown.Menu
+                            className={ "create-button-item" }
+                            scrolling
+                        >
+                            <Dropdown.Item
+                                key={ "createSecret" }
+                                text={ t("console:develop.features.applications.edit.sections.signOnMethod" +
+                                    ".sections.authenticationFlow.sections.scriptBased.secretsList.create") }
+                                onClick={ () => {
+                                    setShowAddSecretModal(true);
+                                } }
+                            />
+                        </Dropdown.Menu>
+                    ) }
                 </Dropdown.Menu>
             </Dropdown>
         );
@@ -901,7 +906,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     /**
      * Persist the Conditional Auth Tour seen status in Local Storage.
      *
-     * @param {boolean} status - Status to set.
+     * @param status - Status to set.
      */
     const persistConditionalAuthTourViewedStatus = (status: boolean = true): void => {
 
@@ -922,7 +927,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     /**
      * Check if the Conditional Auth Tour has already been seen by the user.
      *
-     * @return {boolean}
+     * @returns
      */
     const getConditionalAuthTourViewedStatus = (): boolean => {
 
@@ -939,7 +944,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     /**
      * Renders API Documentation link.
      *
-     * @return {React.ReactElement}
+     * @returns
      */
     const resolveApiDocumentationLink = (): ReactElement => {
         const apiDocLink: string = getLink("develop.applications.editApplication.common." +
@@ -987,7 +992,8 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
 
     /**
      * Renders a confirmation modal when the Adaptive auth template is being reset back to default.
-     * @return {ReactElement}
+     *
+     * @returns
      */
     const renderAdaptiveScriptResetWarning = (): ReactElement => {
 
@@ -1037,7 +1043,8 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
 
     /**
      * Renders a confirmation modal when the Adaptive auth template is being changed.
-     * @return {ReactElement}
+     *
+     * @returns
      */
     const renderAdaptiveAuthTemplateChangeWarning = (): ReactElement => {
 
@@ -1209,7 +1216,10 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                         <Menu.Menu position="right">
                                             { resolveApiDocumentationLink() }
                                             <Menu.Item
-                                                className={ `action ${isSecretsDropdownOpen ? "selected-secret" : "" }` }>
+                                                className={ `action ${ isSecretsDropdownOpen
+                                                    ? "selected-secret"
+                                                    : ""
+                                                }` }>
                                                 <div>
                                                     { renderSecretListDropdown() }
                                                 </div>
