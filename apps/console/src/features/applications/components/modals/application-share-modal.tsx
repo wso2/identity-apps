@@ -131,9 +131,8 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
     useEffect(() => {
         if (isSharedWithAll === ShareWithOrgStatus.TRUE) {
             setShareType(ShareType.SHARE_ALL);
-        } else if (!sharedOrganizationList
-            || sharedOrganizationList?.length === 0
-            || isSharedWithAll === ShareWithOrgStatus.UNDEFINED
+        } else if ((!sharedOrganizationList || sharedOrganizationList?.length === 0) &&
+            isSharedWithAll === ShareWithOrgStatus.FALSE
         ) {
             setShareType(ShareType.UNSHARE);
         } else {
