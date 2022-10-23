@@ -190,7 +190,6 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                 }
             });
         });
-        sortBy(tempFilterSelectedExternalScopeClaims, "name");
         setExternalClaimsGroupedByScopes(tempFilterSelectedExternalScopeClaims);
         setUnfilteredExternalClaimsGroupedByScopes(tempFilterSelectedExternalScopeClaims);
         searchFilter(searchValue);
@@ -249,9 +248,9 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                 claim.mandatory = value.checked;
             }
         });
-
         setExternalClaimsGroupedByScopes(tempExternalClaimsGroupedByScopes);
         setUnfilteredExternalClaimsGroupedByScopes(tempExternalClaimsGroupedByScopes);
+        searchFilter(searchValue);
     };
 
     /**
@@ -329,7 +328,7 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                     claim.mappedLocalClaimURI?.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1));
 
                 if (matchedClaims !== undefined && matchedClaims.length !== 0) {
-                // expand the scope item if the searched term matches any claims/user attributes
+                    // expand the scope item if the searched term matches any claims/user attributes
                     if (!tempExpandedScopes.includes(scope.name)) {
                         tempExpandedScopes.push(scope.name);
                     }
@@ -347,11 +346,7 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                 });
             });
 
-
-            setExternalClaimsGroupedByScopes(sortBy(
-                userAttributesFiltered,
-                "displayName"
-            ));
+            setExternalClaimsGroupedByScopes(userAttributesFiltered);
             setExpandedScopes(tempExpandedScopes);
         }
     };

@@ -379,7 +379,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                 selected: isScopelessClaimRequested
             });
         }
-        setExternalClaimsGroupedByScopes(updatedScopes);
+        setExternalClaimsGroupedByScopes(sortBy(updatedScopes, "name"));
     };
 
     /**
