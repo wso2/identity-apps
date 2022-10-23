@@ -177,7 +177,7 @@ export const OrganizationAttributes: FunctionComponent<OrganizationAttributesPro
     );
 
     return (
-        <EmphasizedSegment>
+        <EmphasizedSegment key={ organization.id } >
             <Grid>
                 <Grid.Row columns={ 1 }>
                     <Grid.Column
