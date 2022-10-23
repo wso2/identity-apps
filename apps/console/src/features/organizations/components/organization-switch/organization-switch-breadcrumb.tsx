@@ -16,16 +16,19 @@
  * under the License.
  */
 
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { SessionStorageUtils } from "@wso2is/core/utils";
 import { GenericIcon } from "@wso2is/react-components";
 import React, {
     FunctionComponent,
     ReactElement,
+    useEffect,
     useMemo,
     useState
 } from "react";
-import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
 import { Dropdown, Icon, Menu } from "semantic-ui-react";
 import OrganizationSwitchDropdown from "./organization-switch-dropdown";
 import { organizationConfigs } from "../../../../extensions";
@@ -63,6 +66,9 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
         (state: AppState) => state?.organization?.isFirstLevelOrganization
     );
 
+    const dispatch = useDispatch();
+    const { t } = useTranslation();
+
     const orgType: OrganizationType = useGetOrganizationType();
 
     const shouldSendRequest = useMemo(() => {
@@ -73,9 +79,22 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
         );
     }, [ isFirstLevelOrg, tenantDomain ]);
 
-    const { data: breadcrumbList } = useGetOrganizationBreadCrumb(
+    const { data: breadcrumbList, error, isLoading } = useGetOrganizationBreadCrumb(
         shouldSendRequest
     );
+
+    useEffect(() => {
+        if (!error) {
+            return;
+        }
+
+        dispatch(addAlert({
+            description: t("console:common.header.organizationSwitch.breadcrumbError.description"),
+            level: AlertLevels.ERROR,
+            message: error?.message ?? t("console:common.header.organizationSwitch.breadcrumbError.message")
+        }));
+
+    }, [ error ]);
 
     const handleOrganizationSwitch = (
         organization: GenericOrganization
@@ -83,6 +102,7 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
         let newOrgPath: string = "";
 
         if (
+            breadcrumbList && breadcrumbList.length > 0 &&
             OrganizationUtils.isRootOrganization(breadcrumbList[ 0 ]) &&
             breadcrumbList[ 1 ].id === organization.id
         ) {
@@ -129,6 +149,10 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
     };
 
     const generateBreadcrumb = (): ReactElement => {
+        if (!breadcrumbList || breadcrumbList.length < 1) {
+            return;
+        }
+
         if (breadcrumbList?.length <= 4) {
             return (
                 <Menu className="organization-breadcrumb">
@@ -264,7 +288,7 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
                         data-componentid={ `${
                             componentId }-breadcrumb-item-${ breadcrumbList[ breadcrumbList.length - 2 ].name }` }
                     >
-                        { breadcrumbList[ breadcrumbList.length - 2 ].name }
+                        { breadcrumbList[ breadcrumbList?.length - 2 ].name }
                     </span>
                     <Icon name="angle right" className="separator-icon" />
                 </Menu.Item>
@@ -286,7 +310,6 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
                         >
                             { breadcrumbList[ breadcrumbList.length - 1 ].name }
                         </span>
-                        \{ " " }
                     </Menu.Item>
                 ) }
                 <Menu.Item className="breadcrumb end">
@@ -340,39 +363,45 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
     }
 
     return (
-        <div className="organization-breadcrumb-wrapper">
-            { !showBreadcrumb ? (
-                orgType === OrganizationType.TENANT &&
-                    organizationConfigs.showSwitcherInTenants ? (
-                        organizationConfigs.tenantSwitcher()
-                    ) : (
-                        <div
-                            className="organization-breadcrumb trigger"
-                            onClick={ () => setShowBreadcrumb(true) }
-                            data-componentid={ `${ componentId }-breadcrumb-trigger` }
-                        >
-                            <div className="icon-wrapper">
-                                <GenericIcon
-                                    transparent
-                                    data-componentid="component-dropdown-trigger-icon"
-                                    data-testid="tenant-dropdown-trigger-icon"
-                                    icon={ getMiscellaneousIcons().tenantIcon }
-                                    size="micro"
-                                />
-                            </div>
-                            <div className="item">
-                                <span>{ resolveTriggerName() }</span>
-                                <Icon
-                                    name="caret right"
-                                    className="separator-icon"
-                                />
-                            </div>
-                        </div>
+        !isLoading && (
+            <div className="organization-breadcrumb-wrapper">
+                { !showBreadcrumb
+                    ? (
+                        orgType === OrganizationType.TENANT &&
+                            organizationConfigs.showSwitcherInTenants
+                            ? (
+                                organizationConfigs.tenantSwitcher()
+                            )
+                            : (
+                                <div
+                                    className="organization-breadcrumb trigger"
+                                    onClick={ () => setShowBreadcrumb(true) }
+                                    data-componentid={ `${ componentId }-breadcrumb-trigger` }
+                                >
+                                    <div className="icon-wrapper">
+                                        <GenericIcon
+                                            transparent
+                                            data-componentid="component-dropdown-trigger-icon"
+                                            data-testid="tenant-dropdown-trigger-icon"
+                                            icon={ getMiscellaneousIcons().tenantIcon }
+                                            size="micro"
+                                        />
+                                    </div>
+                                    <div className="item">
+                                        <span>{ resolveTriggerName() }</span>
+                                        <Icon
+                                            name="caret right"
+                                            className="separator-icon"
+                                        />
+                                    </div>
+                                </div>
+                            )
                     )
-            ) : (
-                generateBreadcrumb()
-            ) }
-        </div>
+                    : (
+                        generateBreadcrumb()
+                    ) }
+            </div>
+        )
     );
 };
 

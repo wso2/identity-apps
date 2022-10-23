@@ -90,6 +90,10 @@ export const console: ConsoleNS = {
                 tooltip: "Apps"
             },
             organizationSwitch: {
+                breadcrumbError: {
+                    description: "An error occurred while fetching the organization hierarchy.",
+                    message: "Something went wrong"
+                },
                 emptyOrgListMessage: "No organizations available",
                 orgSearchPlaceholder: "Search by organization name"
             }
