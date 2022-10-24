@@ -820,7 +820,7 @@ export const console: ConsoleNS = {
                                 attributeComponentHintAlt: "Manage the user attributes you want to share with this" +
                                     " application. You can add new attributes and mappings by navigating to " +
                                     "<1>Attributes.</1>",
-                                description: "Add grouped user attributes, i.e scopes that are allowed to be shared with this " +
+                                description: "Select scopes, i.e grouped user attributes that are allowed to be shared with this " +
                                     "application.",
                                 heading: "User Attribute Selection",
                                 scopelessAttributes: {

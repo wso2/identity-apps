@@ -824,8 +824,8 @@ export const console: ConsoleNS = {
                                     " avec cette application.",
                                 attributeComponentHintAlt: "Utilisez les étendues <1>OpenID Connect</1> pour ajouter/supprimer un attribut utilisateur " +
                                     "à une étendue. Vous pouvez ajouter de nouveaux attributs en accédant à <3>Attributs.</3>",
-                                description: "Ajoutez les attributs utilisateur groupés, c'est-à-dire les étendues " +
-                                    "autorisées à être partagées avec cette application.",
+                                description: "Sélectionnez les étendues, c'est-à-dire les attributs utilisateur groupés qui sont autorisés à être " +
+                                    "partagés avec cette application.",
                                 heading: "Sélection des attributs utilisateur",
                                 scopelessAttributes: {
                                     description: "Afficher les attributs sans étendue",
