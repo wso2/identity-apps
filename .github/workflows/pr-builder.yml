@@ -191,6 +191,7 @@ jobs:
 
   build:
     name: 🚧 Build
+    if: ${{ false }}
     needs: [ lint, typecheck, test ]
     runs-on: ubuntu-latest
     strategy:
@@ -248,6 +249,63 @@ jobs:
       - name: 🏗️ Maven Build
         id: build-with-maven
         run: mvn clean install -U -Dlint.exec.skip=true -Dbootstrap.exec.skip=true
+
+      - name: 💾 Cache local Maven repository
+        id: cache-maven-m2
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+  TEMP_NODE_build:
+    name: 🚧 [TEMP] Build with Node
+    needs: [ lint, typecheck, test ]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [ lts/* ]
+        maven-version: [ 3.6.3 ]
+        java-version: [ 1.8 ]
+    steps:
+      - name: ⬇️ Checkout
+        id: checkout
+        uses: actions/checkout@v2.3.3
+
+      - name: 🟢 Setup node
+        id: setup-node
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: 🥡 Setup pnpm
+        uses: pnpm/action-setup@v2.1.0
+        with:
+          version: latest
+          run_install: false
+
+      - name: 🎈 Get pnpm store directory
+        id: get-pnpm-cache-dir
+        run: |
+          echo "::set-output name=pnpm_cache_dir::$(pnpm store path)"
+
+      - name: 🔆 Cache pnpm modules
+        uses: actions/cache@v3
+        id: pnpm-cache
+        with:
+          path: ${{ steps.get-pnpm-cache-dir.outputs.pnpm_cache_dir }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: 🧩 Install Dependencies
+        id: install-dependencies
+        run: pnpm install --no-frozen-lockfile
+
+      - name: 🏗️ Node Build
+        id: build-with-node
+        run: pnpm build
 
       - name: 💾 Cache local Maven repository
         id: cache-maven-m2
