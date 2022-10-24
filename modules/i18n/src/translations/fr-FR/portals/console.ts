@@ -883,7 +883,7 @@ export const console: ConsoleNS = {
                                         confirmationMessage: "Cette action rétablira les valeurs mappées aux " +
                                             "valeurs par défaut."
                                     },
-                                    searchPlaceholder: "Attributs de recherche"
+                                    searchPlaceholder: "Rechercher des attributs d'utilisateur par nom, nom d'affichage ou détails de portée"
                                 },
                                 selectAll: "Sélectionnez tous les attributs"
                             },

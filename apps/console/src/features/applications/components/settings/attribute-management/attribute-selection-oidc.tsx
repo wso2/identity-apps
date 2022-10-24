@@ -313,8 +313,7 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
             const scopesFiltered: OIDCScopesClaimsListInterface[] = unfilteredExternalClaimsGroupedByScopes
                 .filter((item: OIDCScopesClaimsListInterface) =>
                     item.name?.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1 ||
-                item.displayName?.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1 ||
-                item.description?.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1);
+                item.displayName?.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1);
 
             const unfilteredClaims: OIDCScopesClaimsListInterface[] = [ ...unfilteredExternalClaimsGroupedByScopes ];
             const tempExpandedScopes: string[] = [];
@@ -537,7 +536,6 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                                 { scope.displayName }
                                 <Header.Subheader>
                                     <Code withBackground>{ scope.name }</Code>
-                                    { " " + (scope.description ?? "") }
                                 </Header.Subheader>
                             </Header.Content>
                         )
@@ -562,7 +560,7 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                 data-componentId={ `${ componentId }-list` }
                 fixed
             >
-                <Table.Header>
+                <Table.Header className="table-header-oidc-user-attribute">
                     <Table.Row>
                         <Table.HeaderCell width="1"></Table.HeaderCell>
                         <Table.HeaderCell width="10">
@@ -584,7 +582,7 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                             }
 
                         </Table.HeaderCell>
-                        <Table.HeaderCell  width="4">
+                        <Table.HeaderCell width="4">
                             {
                                 t("console:develop.features" +
                                     ".applications.edit.sections" +
@@ -718,7 +716,7 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                                     >
                                         <Table.Body>
                                             <Table.Row>
-                                                <Table.Cell collapsing width="6">
+                                                <Table.Cell collapsing width="16">
                                                     <Input
                                                         icon={ <Icon name="search" /> }
                                                         iconPosition="left"

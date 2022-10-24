@@ -877,7 +877,7 @@ export const console: ConsoleNS = {
                                         confirmationMessage: "This action will revert mapped custom attribute " +
                                             "values to default values."
                                     },
-                                    searchPlaceholder: "Search user attributes"
+                                    searchPlaceholder: "Search user attributes by name, display name or scope details"
                                 },
                                 selectAll: "Select all attributes"
                             },
