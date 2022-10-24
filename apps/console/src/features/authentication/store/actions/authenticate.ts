@@ -100,7 +100,7 @@ export const getProfileInformation = (
                     familyName: decodedToken.family_name ?? "",
                     givenName: decodedToken.given_name ?? ""
                 },
-                profileUrl: "",
+                profileUrl: decodedToken.profile,
                 userName: decodedToken.username
             };
 
