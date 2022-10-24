@@ -768,6 +768,13 @@ export const console: ConsoleNS = {
                                     message: "User Attribute Mapping Changed"
                                 }
                             },
+                            emptySearchResults: {
+                                subtitles: {
+                                    0: "We couldn't find any results for '{{ searchQuery }}'",
+                                    1: "Please try a different search term."
+                                },
+                                title: "No results found"
+                            },
                             forms: {
                                 fields: {
                                     dynamic: {
@@ -808,15 +815,21 @@ export const console: ConsoleNS = {
                                     },
                                     subHeading: "Select which user attributes you want to share with the application."
                                 },
-                                attributeComponentHint: "Manage the user attributes you want to share with this " +
-                                    "application via <1>OpenID Connect Scopes.</1> You can add new attributes " +
-                                    "and mappings by navigating to <3>Attributes.</3>",
+                                attributeComponentHint: "Use <1>OpenID Connect Scopes</1> to add/remove user attribute to a scope. " +
+                                    "You can add new attributes by navigating to <3>Attributes.</3>",
                                 attributeComponentHintAlt: "Manage the user attributes you want to share with this" +
                                     " application. You can add new attributes and mappings by navigating to " +
                                     "<1>Attributes.</1>",
                                 description: "Add grouped user attributes, i.e scopes that are allowed to be shared with this " +
                                     "application.",
                                 heading: "User Attribute Selection",
+                                scopelessAttributes: {
+                                    description: "View attributes without a scope",
+                                    displayName: "Attributes without a scope",
+                                    name: "",
+                                    hint: "Cannot retrieve these user attributes by requesting " +
+                                            "OIDC scopes. To retrieve, add the required attributes to a relevant scope."
+                                },
                                 mandatoryAttributeHint: "Mark which user attributes are mandatory to be shared " +
                                     "with the application. At login, {{productName}} prompts the user to enter these " +
                                     "attribute values, if not already provided in the user's profile.",

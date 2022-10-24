@@ -216,12 +216,21 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                             : claimURI }
                         inverted
                         trigger={ (
-                            <Code compact withBackground={ false }>
-                                { isOIDCMapping && claimURI.startsWith(localDialectURI)
-                                    ? t("console:develop.features.applications.edit.sections.attributes" +
+                            localDialect ? (
+                                <Code compact withBackground={ false }>
+                                    { isOIDCMapping && claimURI.startsWith(localDialectURI)
+                                        ? t("console:develop.features.applications.edit.sections.attributes" +
                                         ".selection.mappingTable.listItem.faultyAttributeMapping")
-                                    : claimURI }
-                            </Code>
+                                        : claimURI }
+                                </Code>
+                            ) : (
+                                <Code>
+                                    { isOIDCMapping && claimURI.startsWith(localDialectURI)
+                                        ? t("console:develop.features.applications.edit.sections.attributes" +
+                                        ".selection.mappingTable.listItem.faultyAttributeMapping")
+                                        : claimURI }
+                                </Code>
+                            )
                         ) }
                         position="bottom left">
                     </Popup>

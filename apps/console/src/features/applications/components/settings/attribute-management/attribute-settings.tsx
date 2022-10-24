@@ -316,43 +316,70 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
      * Grouped Scopes and external claims
      */
     const getExternalClaimsGroupedByScopes = () => {
-        const tempClaims = [ ...externalClaims ];
-        const updatedScopes = [];
-
+        const tempClaims: ExtendedExternalClaimInterface[] = [ ...externalClaims ];
+        const updatedScopes: OIDCScopesClaimsListInterface[] = [];
+        const scopedClaims: ExtendedExternalClaimInterface[] = [];
+ 
         if ((scopes !== null) && (scopes !== undefined) && (scopes.length !== 0) && (claims.length !== 0)) {
-            scopes.map((scope) => {
+            scopes.map((scope: OIDCScopesListInterface) => {
                 if (scope.name !== "openid"){
-                    const updatedClaims = [];
-                    let scopeSelected = false;
-    
-                    scope.claims.map((scopeClaim) => {
-                        tempClaims.map( (tempClaim) => {
+                    const updatedClaims: ExtendedExternalClaimInterface[] = [];
+                    let scopeSelected: boolean = false;
+     
+                    scope.claims.map((scopeClaim: string) => {
+                        tempClaims.map( (tempClaim: ExtendedExternalClaimInterface) => {
                             if (scopeClaim === tempClaim.claimURI) {
-                                const updatedClaim = { 
+                                const updatedClaim: ExtendedExternalClaimInterface = { 
                                     ...tempClaim,
                                     mandatory: checkInitialRequestMandatory(tempClaim.claimURI),
                                     requested: checkInitialRequested(tempClaim.claimURI)
                                 };
-    
+     
                                 if (updatedClaim.requested) {
                                     scopeSelected = true;
                                 }
-    
                                 updatedClaims.push(updatedClaim);
+                                scopedClaims.push(tempClaim);
                             }
                         });
                     });
-                    const updatedScope = { 
+                    const updatedScope: OIDCScopesClaimsListInterface = { 
                         ...scope,
                         claims: updatedClaims,
                         selected: scopeSelected
                     };
-    
+     
                     updatedScopes.push(updatedScope);
                 }
             });
+ 
+            const scopelessClaims: ExtendedExternalClaimInterface[] = tempClaims.filter(
+                (tempClaim) => !scopedClaims.includes(tempClaim));
+            const updatedScopelessClaims: ExtendedExternalClaimInterface[] = [];
+            let isScopelessClaimRequested: boolean = false;
+ 
+            scopelessClaims.map((tempClaim: ExtendedExternalClaimInterface) => {
+                const isInitialRequested: boolean = checkInitialRequested(tempClaim.claimURI);
+ 
+                updatedScopelessClaims.push({
+                    ...tempClaim,
+                    mandatory: checkInitialRequestMandatory(tempClaim.claimURI),
+                    requested: checkInitialRequested(tempClaim.claimURI)
+                });
+                isScopelessClaimRequested = isInitialRequested;
+            });
+            updatedScopes.push({
+                claims: updatedScopelessClaims,
+                description: t("console:develop.features.applications.edit.sections.attributes" +
+                    ".selection.scopelessAttributes.description"),
+                displayName: t("console:develop.features.applications.edit.sections.attributes" +
+                    ".selection.scopelessAttributes.displayName"),
+                name: t("console:develop.features.applications.edit.sections.attributes" +
+                    ".selection.scopelessAttributes.name"),
+                selected: isScopelessClaimRequested
+            });
         }
-        setExternalClaimsGroupedByScopes(updatedScopes);
+        setExternalClaimsGroupedByScopes(sortBy(updatedScopes, "name"));
     };
 
     /**
