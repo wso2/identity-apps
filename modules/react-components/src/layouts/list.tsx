@@ -285,19 +285,19 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
                 )
             }
             <div className="list-container">
-                { isLoading ?
-                    (
-                        <DataTable 
+                { 
+                    isLoading ? (
+                        <DataTable
                             isLoading={ true }
                             loadingStateOptions={ {
                                 count: 10,
                                 imageType: "square"
                             } }
-                            columns={ [] } 
-                            data={ [] } 
-                            onRowClick={ null }                
-                        /> ) 
-                    : children 
+                            columns={ [] }
+                            data={ [] }
+                            onRowClick={ null }
+                        />
+                    ) : children
                 }
                 {
                     (showPagination)

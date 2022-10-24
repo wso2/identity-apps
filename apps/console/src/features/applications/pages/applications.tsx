@@ -25,7 +25,6 @@ import {
     DocumentationLink,
     EmphasizedSegment,
     GenericIcon,
-    GridLayout,
     ListLayout,
     PageLayout,
     PrimaryButton,
@@ -513,6 +512,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                     />
                 ) }
                 currentListSize={ applicationList?.count }
+                isLoading={ isApplicationListFetchRequestLoading }
                 listItemLimit={ listItemLimit }
                 onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
                 onPageChange={ handlePaginationChange }
