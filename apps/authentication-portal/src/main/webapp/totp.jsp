@@ -47,6 +47,7 @@
 
     if (Boolean.parseBoolean(request.getParameter(Constants.AUTH_FAILURE))) {
         authenticationFailed = "true";
+        boolean isErrorMessageFromErrorCodeAdded = false;
         String errorCode = request.getParameter(TOTPAuthenticatorConstants.ERROR_CODE);
 
         if (errorCode != null) {
@@ -55,12 +56,15 @@
                 if (lockedReason != null) {
                     if (lockedReason.equals(TOTPAuthenticatorConstants.MAX_TOTP_ATTEMPTS_EXCEEDED)) {
                         errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.user.account.locked.incorrect.login.attempts");
+                        isErrorMessageFromErrorCodeAdded = true;
                     } else if (lockedReason.equals(TOTPAuthenticatorConstants.ADMIN_INITIATED)) {
                         errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.user.account.locked.admin.initiated");
+                        isErrorMessageFromErrorCodeAdded = true;
                     }
                 }
             }
-        } else if (request.getParameter(Constants.AUTH_FAILURE_MSG) != null) {
+        }
+        if (!isErrorMessageFromErrorCodeAdded && request.getParameter(Constants.AUTH_FAILURE_MSG) != null) {
             errorMessage = Encode.forHtmlAttribute(request.getParameter(Constants.AUTH_FAILURE_MSG));
 
                 if (errorMessage.equalsIgnoreCase("authentication.fail.message") ||
