@@ -16,12 +16,14 @@
  * under the License.
  */
 
+import { OrganizationType } from "../../../../organizations/constants";
 import { OrganizationResponseInterface } from "../../../../organizations/models";
 
 export enum OrganizationActionTypes {
     SET_ORGANIZATION = "SET_ORGANIZATION",
     SET_GET_ORGANIZATION_LOADING = "SET_GET_ORGANIZATION_LOADING",
-    SET_IS_FIRST_LEVEL_ORGANIZATION = "SET_IS_FIRST_LEVEL_ORGANIZATION"
+    SET_IS_FIRST_LEVEL_ORGANIZATION = "SET_IS_FIRST_LEVEL_ORGANIZATION",
+    SET_ORGANIZATION_TYPE = "SET_ORGANIZATION_TYPE"
 }
 
 export interface SetOrganizationActionInterface {
@@ -39,7 +41,13 @@ export interface SetIsFirstLevelOrganizationInterface {
     type: OrganizationActionTypes.SET_IS_FIRST_LEVEL_ORGANIZATION;
 }
 
+export interface SetOrganizationTypeInterface {
+    payload: OrganizationType;
+    type: OrganizationActionTypes.SET_ORGANIZATION_TYPE;
+}
+
 export type OrganizationAction =
     | SetOrganizationActionInterface
     | SetGetOrganizationLoadingActionInterface
-    | SetIsFirstLevelOrganizationInterface;
+    | SetIsFirstLevelOrganizationInterface
+    | SetOrganizationTypeInterface;

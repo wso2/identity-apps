@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { AccessControlConstants, Show } from "@wso2is/access-control";
 import {
     AlertLevels,
     IdentifiableComponentInterface
@@ -265,6 +264,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
         setIsDropDownOpen(false);
     };
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const handleNewClick = (): void => {
         setIsDropDownOpen(false);
         setShowNewOrgWizard(true);
@@ -350,7 +350,6 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                                     organization={ currentOrganization }
                                     isClickable={ false }
                                     showSwitch={ false }
-                                    handleOrgRowClick={ handleOrgRowClick }
                                     setShowDropdown={ setIsDropDownOpen }
                                     showEdit={ !isFirstLevelOrg }
                                 />
@@ -370,21 +369,24 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                                             </h5>
                                         </Grid.Column>
                                         <Grid.Column width={ 4 }>
-                                            <Show
-                                                when={
-                                                    AccessControlConstants.ORGANIZATION_WRITE
-                                                }
-                                            >
-                                                <Button
-                                                    basic
-                                                    floated="right"
-                                                    onClick={ handleNewClick }
-                                                    data-componentid={ `${ componentId }-new-button` }
+                                            { /* HIDE TEMPORARILY */ }
+                                            { /* { organizationConfigs.canCreateOrganization() && (
+                                                <Show
+                                                    when={
+                                                        AccessControlConstants.ORGANIZATION_WRITE
+                                                    }
                                                 >
-                                                    <Icon name="add" />
-                                                    { t("common:new") }
-                                                </Button>
-                                            </Show>
+                                                    <Button
+                                                        basic
+                                                        floated="right"
+                                                        onClick={ handleNewClick }
+                                                        data-componentid={ `${ componentId }-new-button` }
+                                                    >
+                                                        <Icon name="add" />
+                                                        { t("common:new") }
+                                                    </Button>
+                                                </Show>
+                                            ) } */ }
                                         </Grid.Column>
                                     </Grid.Row>
                                 </Grid>

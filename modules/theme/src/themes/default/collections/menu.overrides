@@ -287,6 +287,10 @@
                                 .search-bar {
                                     padding: 12px 0;
                                     margin: 0;
+
+                                    &.tenant {
+                                        padding: 12px 15px !important;
+                                    }
                                 }
 
                                 .tenant-pagination {
@@ -955,6 +959,10 @@
                 padding: 0 0 0 5px;
                 cursor: default;
 
+                &.end {
+                    padding-right: 5px;
+                }
+
                 >span, >.text {
                     padding: 10px;
                     border-radius: 25px;
@@ -980,7 +988,7 @@
         }
 
         .separator-icon, .dropdown.breadcrumb-dropdown .icon {
-            margin: 0;
+            margin: 0 !important;
             padding: 0 0 0 5px;
         }
 

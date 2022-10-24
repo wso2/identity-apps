@@ -375,7 +375,11 @@ export const AppUtils = (function() {
          * @param skipSuperTenant - Flag to skip super tenant.
          * @returns Tenant path.
          */
-        getTenantPath: function(skipSuperTenant = false) {
+        getTenantPath: function (skipSuperTenant = false) {
+            if (this.getOrganizationName()) {
+                return "";
+            }
+
             if (skipSuperTenant && (this.getTenantName() === this.getSuperTenant() || this.getTenantName() === "")) {
                 return urlPathForSuperTenantOriginsFallback;
             }

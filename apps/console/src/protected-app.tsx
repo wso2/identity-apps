@@ -74,7 +74,7 @@ import React, {
 } from "react";
 import { I18nextProvider, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { commonConfig, serverConfigurationConfig } from "./extensions";
+import { commonConfig, organizationConfigs, serverConfigurationConfig } from "./extensions";
 import {
     AuthenticateUtils,
     getProfileInformation
@@ -98,6 +98,7 @@ import {
     setIsFirstLevelOrganization,
     setManageVisibility,
     setOrganization,
+    setOrganizationType,
     setSanitizedDevelopRoutes,
     setSanitizedManageRoutes,
     store
@@ -105,6 +106,7 @@ import {
 import { AppConstants, CommonConstants } from "./features/core/constants";
 import { history } from "./features/core/helpers";
 import { getOrganization } from "./features/organizations/api";
+import { OrganizationManagementConstants, OrganizationType } from "./features/organizations/constants";
 import { OrganizationResponseInterface } from "./features/organizations/models";
 import { OrganizationUtils } from "./features/organizations/utils";
 import {
@@ -204,9 +206,27 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
 
             dispatchEvent(event);
 
-            const orgIdIdToken = idToken.org_id;
-            const orgName = idToken.org_name;
-            let tenantDomain: string = "";
+            const orgIdIdToken: string = idToken.org_id;
+
+            const tenantDomain: string = CommonAuthenticateUtils.deriveTenantDomainFromSubject(
+                response.sub
+            );
+
+            setTenant(tenantDomain);
+
+            let orgType: OrganizationType;
+
+            if (window[ "AppUtils" ].getConfig().organizationName) {
+                orgType = OrganizationType.SUBORGANIZATION;
+            } else if (tenantDomain === AppConstants.getSuperTenant()) {
+                orgType = OrganizationType.SUPER_ORGANIZATION;
+            } else if (orgIdIdToken) {
+                orgType = OrganizationType.FIRST_LEVEL_ORGANIZATION;
+            } else {
+                orgType = OrganizationType.TENANT;
+            }
+
+            dispatch(setOrganizationType(orgType));
 
             const isFirstLevelOrg: boolean =
                 !window[ "AppUtils" ].getConfig().organizationName &&
@@ -312,17 +332,8 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                     .finally(() => {
                         dispatch(setGetOrganizationLoading(false));
                     });
-
-                if (isFirstLevelOrg) {
-                    tenantDomain = orgName;
-                    setTenant(tenantDomain);
-                }
             } else {
                 dispatch(setGetOrganizationLoading(false));
-                tenantDomain = CommonAuthenticateUtils.deriveTenantDomainFromSubject(
-                    response.sub
-                );
-                setTenant(tenantDomain);
             }
 
             // Update the app base name with the newly resolved tenant.
@@ -629,7 +640,9 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                         ...AppConstants.ORGANIZATION_ONLY_ROUTES
                     ]
                     : window[ "AppUtils" ].getConfig().organizationName
-                        ? AppUtils.getHiddenRoutes()
+                        ? organizationConfigs.canCreateOrganization()
+                            ? AppUtils.getHiddenRoutes()
+                            : [ ...AppUtils.getHiddenRoutes(), OrganizationManagementConstants.ORGANIZATION_ROUTES ]
                         : [
                             ...AppUtils.getHiddenRoutes(),
                             ...AppConstants.ORGANIZATION_ROUTES
@@ -660,7 +673,9 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                         ...AppConstants.ORGANIZATION_ONLY_ROUTES
                     ]
                     : window[ "AppUtils" ].getConfig().organizationName
-                        ? AppUtils.getHiddenRoutes()
+                        ? organizationConfigs.canCreateOrganization()
+                            ? AppUtils.getHiddenRoutes()
+                            : [ ...AppUtils.getHiddenRoutes(), OrganizationManagementConstants.ORGANIZATION_ROUTES ]
                         : [
                             ...AppUtils.getHiddenRoutes(),
                             ...AppConstants.ORGANIZATION_ROUTES

@@ -99,6 +99,7 @@ export interface ConsoleNS {
             organizationSwitch: {
                 emptyOrgListMessage: string;
                 orgSearchPlaceholder: string;
+                breadcrumbError: NotificationItem;
             }
         },
         modals: {
@@ -494,10 +495,8 @@ export interface ConsoleNS {
                                         actions: {
                                             makeMandatory: string;
                                             makeRequested: string;
-                                            makeScopeRequested: string;
                                             removeMandatory: string;
                                             removeRequested: string;
-                                            removeScopeRequested: string;
                                             subjectDisabledSelection: string;
                                         };
                                         faultyAttributeMapping: string;
@@ -1005,6 +1004,7 @@ export interface ConsoleNS {
                         fields: {
                             callBackUrls: FormAttributes;
                             name: FormAttributes;
+                            urlDeepLinkError: string;
                         };
                     };
                 };

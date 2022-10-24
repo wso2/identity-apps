@@ -34,6 +34,7 @@ import {
 } from "./config";
 import { PortalDocumentationStructureInterface } from "./help-panel";
 import { AppViewTypes } from "./ui";
+import { OrganizationType } from "../../organizations/constants";
 import { OrganizationResponseInterface } from "../../organizations/models";
 
 /**
@@ -79,6 +80,7 @@ export interface OrganizationReducerStateInterface {
     organization?: OrganizationResponseInterface;
     getOrganizationLoading: boolean;
     isFirstLevelOrganization: boolean;
+    organizationType: OrganizationType;
 }
 
 export interface RoutesReducerStateInterface {

@@ -22,6 +22,7 @@ import { GenericIcon } from "@wso2is/react-components";
 import React, { ReactElement, SyntheticEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, Icon, Placeholder, Popup } from "semantic-ui-react";
+import { organizationConfigs } from "../../../../extensions";
 import { AppConstants, getMiscellaneousIcons, history } from "../../../core";
 import { GenericOrganization } from "../../models";
 import { OrganizationUtils } from "../../utils";
@@ -31,7 +32,7 @@ interface OrganizationListItemPropsTypesInterface
     organization: GenericOrganization;
     isClickable: boolean;
     showSwitch: boolean;
-    handleOrgRowClick: (organization: GenericOrganization) => void;
+    handleOrgRowClick?: (organization: GenericOrganization) => void;
     setShowDropdown: (shouldShow: boolean) => void;
     handleOrganizationSwitch?: (organization: GenericOrganization) => void;
     showGravatar?: boolean;
@@ -59,8 +60,16 @@ const OrganizationListItem = (
         <Grid.Row
             columns={ showGravatar ? 3 : 2 }
             key={ `${ organization?.name }-organization-item` }
-            onClick={ () => handleOrgRowClick && handleOrgRowClick(organization) }
-            className={ isClickable ? "organization-list-row" : "" }
+            onClick={ () =>
+                organizationConfigs.allowNavigationInDropdown &&
+                handleOrgRowClick &&
+                handleOrgRowClick(organization)
+            }
+            className={
+                isClickable && organizationConfigs.allowNavigationInDropdown
+                    ? "organization-list-row"
+                    : ""
+            }
             data-componentid={ `${ componentId }-organization-item` }
         >
             { showGravatar && (

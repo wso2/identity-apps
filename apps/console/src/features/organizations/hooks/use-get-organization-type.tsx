@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,24 +16,17 @@
  * under the License.
  */
 
+import { useSelector } from "react-redux";
+import { AppState } from "../../core";
+import { OrganizationType } from "../constants";
+
 /**
- *  OIDC Scopes list model.
+ * This is a React hook that returns the type of the organization.
+ *
+ * @returns The type of the organization.
  */
-export interface OIDCScopesListInterface {
-    /**
-     * Name of the scope.
-     */
-    name?: string;
-    /**
-     * Display name of the scope.
-     */
-    displayName?: string;
-    /**
-     * List of claims belong to the scope.
-     */
-    claims?: string[];
-    /**
-     * Description of the scope
-     */
-    description?: string;
-}
+export const useGetOrganizationType = (): OrganizationType => {
+    return useSelector(
+        (state: AppState) => state.organization.organizationType
+    );
+};
