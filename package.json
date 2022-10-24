@@ -105,7 +105,6 @@
         "@nrwl/web": "14.4.2",
         "@nrwl/workspace": "14.4.2",
         "@pmmmwh/react-refresh-webpack-plugin": "^0.5.4",
-        "@storybook/addon-essentials": "~6.4.12",
         "@storybook/builder-webpack5": "~6.4.12",
         "@storybook/core-server": "~6.4.12",
         "@storybook/manager-webpack5": "~6.4.12",
