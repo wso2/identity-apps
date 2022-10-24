@@ -28,7 +28,7 @@ import {
     Icon,
     PaginationProps
 } from "semantic-ui-react";
-import { Pagination, PaginationPropsInterface } from "../components";
+import { DataTable, Pagination, PaginationPropsInterface } from "../components";
 
 /**
  * List layout component Prop types.
@@ -56,6 +56,10 @@ export interface ListLayoutPropsInterface extends PaginationProps, IdentifiableC
      * Disables Right action panel component.
      */
     disableRightActionPanel?: boolean;
+    /**
+     * Check if the list is loading
+     */
+    isLoading?: boolean;
     /**
      * Left action panel component.
      */
@@ -151,6 +155,7 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
         className,
         disableLeftActionPanel,
         disableRightActionPanel,
+        isLoading,
         leftActionPanel,
         minimalPagination,
         onItemsPerPageDropdownChange,
@@ -280,7 +285,20 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
                 )
             }
             <div className="list-container">
-                { children }
+                { isLoading ?
+                    (
+                        <DataTable 
+                            isLoading={ true }
+                            loadingStateOptions={ {
+                                count: 10,
+                                imageType: "square"
+                            } }
+                            columns={ [] } 
+                            data={ [] } 
+                            onRowClick={ null }                
+                        /> ) 
+                    : children 
+                }
                 {
                     (showPagination)
                         ? (

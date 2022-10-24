@@ -689,6 +689,7 @@ export const DataTable = <T extends Record<string, any> = Record<string, any>>(
                                                 <Placeholder.Image />
                                             </Placeholder>
                                         ) }
+                                        shape={ loadingStateOptions.imageType }
                                         isLoading={ true }
                                         avatarType={ loadingStateOptions.imageType === "circular" ? "user" : "app" }
                                         size="mini"
