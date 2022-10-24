@@ -9029,7 +9029,7 @@ export const console: ConsoleNS = {
                                 label: "Select the method to set the user password",
                                 options: {
                                     askPassword: "Invite the user to set their own password",
-                                    createPassword: "Set a temporary password for the user"
+                                    createPassword: "Set a password for the user"
 
                                 }
                             }
