@@ -409,7 +409,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
         let summary: any = {};
 
         if (addProtocol) {
-            let configName = selectedTemplate.authenticationProtocol;
+            const configName = selectedTemplate.authenticationProtocol;
 
             summary = get(wizardState[WizardStepsFormTypes.PROTOCOL_SETTINGS],
                 ("inboundProtocolConfiguration." + configName));
