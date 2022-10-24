@@ -7586,7 +7586,7 @@ export const console: ConsoleNS = {
                                 label: "Sélectionnez la méthode pour réinitialiser le mot de passe utilisateur",
                                 options: {
                                     askPassword: "Invitez l'utilisateur à définir son propre mot de passe",
-                                    createPassword: "Définissez un mot de passe temporaire pour l'utilisateur"
+                                    createPassword: "Définissez un mot de passe pour l'utilisateur"
 
                                 }
                             }
