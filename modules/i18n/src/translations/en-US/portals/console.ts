@@ -1197,6 +1197,10 @@ export const console: ConsoleNS = {
                                             emailOTP: {
                                                 description: "Enable additional authentication layer with Email based OTP.",
                                                 heading: "Add Email OTP as a second factor"
+                                            },
+                                            smsOTP: {
+                                                description: "Enable additional authentication layer with SMS based OTP.",
+                                                heading: "Add SMS OTP as a second factor"
                                             }
                                         }
                                     }
@@ -3047,6 +3051,11 @@ export const console: ConsoleNS = {
                         emailTemplate: {
                             tabName: "Email Template <1>(Coming Soon)</1>"
                         }
+                    },
+                    smsOTP: {
+                        smsProvider:{
+                            tabName: "SMS Provider <1>(Coming Soon)</1>"
+                        }
                     }
                 },
                 forms: {
@@ -3169,6 +3178,58 @@ export const console: ConsoleNS = {
                                 label: "Use only numeric characters for OTP",
                                 validations: {
                                     required: "Use only numeric characters for OTP is a required field."
+                                }
+                            }
+                        },
+                        smsOTP: {
+                            forTestingOnlyNotice: {
+                                firstLine: "Test SMS OTP two-factor authentication using our default SMS provider.",
+                                secondLine: "(Limited to 15 messages per month)"
+                            },
+                            expiryTime: {
+                                hint: "Please pick a value between <1>1 minute</1> & <3> 1440 minutes (1 day)</3>.",
+                                label: "SMS OTP expiry time",
+                                placeholder: "Enter SMS OTP expiry time.",
+                                unit: "minutes",
+                                validations: {
+                                    invalid: "SMS OTP expiry time should be an integer.",
+                                    range: "SMS OTP expiry time should be between 1 minutes & 1440 minutes (1 day).",
+                                    required: "SMS OTP expiry time is a required field."
+                                }
+                            },
+                            tokenLength: {
+                                hint: "The number of allowed characters in the OTP. Please " +
+                                    "pick a value between <1>4-10</1>.",
+                                label: "SMS OTP length",
+                                placeholder: "Enter SMS OTP length.",
+                                validations: {
+                                    invalid: "SMS OTP length should be an integer.",
+                                    range: {
+                                        digits: "SMS OTP length should be between 4 & 10 digits.",
+                                        characters: "SMS OTP length should be between 4 & 10 characters."
+                                    },
+                                    required: "SMS OTP length is a required field."
+                                },
+                                unit: {
+                                    digits: "digits",
+                                    characters: "characters"
+                                }
+                            },
+                            useNumericChars: {
+                                hint: "Please clear this checkbox to enable alphanumeric characters.",
+                                label: "Use only numeric characters for OTP",
+                                validations: {
+                                    required: "Use only numeric characters for OTP token is a required field."
+                                }
+                            },
+                            allowedResendAttemptCount: {
+                                hint: "The number of allowed OTP resend attempts.",
+                                label: "Allowed OTP resend attempt count",
+                                placeholder: "Enter allowed resend attempt count.",
+                                validations: {
+                                    required: "Allowed OTP resend attempt count is a required field.",
+                                    invalid: "Allowed OTP resend attempt count should be an integer.",
+                                    range: "Allowed OTP resend attempt count should be between 0 & 100."
                                 }
                             }
                         },

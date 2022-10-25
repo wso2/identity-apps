@@ -16,8 +16,7 @@
  * under the License.
  */
 
-import { Extensions } from "../../models";
+import { AuthenticatorConfig } from "./models/authenticator";
 
-export const extensions: Extensions = {
-
+export const authenticatorConfig : AuthenticatorConfig = {
 };

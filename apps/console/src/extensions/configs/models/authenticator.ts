@@ -16,8 +16,11 @@
  * under the License.
  */
 
-import { Extensions } from "../../models";
-
-export const extensions: Extensions = {
-
-};
+export interface AuthenticatorConfig {
+    overriddenAuthenticatorIds?: {
+        SMS_OTP_AUTHENTICATOR_ID?: string;
+    },
+    overriddenAuthenticatorNames?: {
+        SMS_OTP_AUTHENTICATOR?: string;
+    }
+}
