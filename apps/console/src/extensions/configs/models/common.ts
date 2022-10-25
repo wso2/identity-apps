@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -30,24 +30,25 @@ export interface CommonConfig {
     header: {
         /**
          * Get the extensions for the header.
-         * @return {HeaderExtension[]}
+         * @returns
          */
         getHeaderExtensions: () => HeaderExtension[];
         /**
          * Get the extensions for the Header sub panel.
          * These will come along with the `Manage` & `Develop` links.
-         * @return {{aligned: "left" | "right"; component: React.ReactElement; order: number}[]}
+         * @returns
          */
         getHeaderSubPanelExtensions: () => HeaderSubPanelItemInterface[];
         /**
          * Get the user dropdown link extensions.
-         * 
-         * @param {string} tenantDomain - Current tenant.
-         * @param {any[]} associatedTenants - Tenant list.
-         * @return {HeaderLinkCategoryInterface[]}
+         *
+         * @param tenantDomain - Current tenant.
+         * @param associatedTenants - Tenant list.
+         *
+         * @returns
          */
         getUserDropdownLinkExtensions: (tenantDomain: string,
-            associatedTenants: any[]) => HeaderLinkCategoryInterface[];
+            associatedTenants: any[]) => Promise<HeaderLinkCategoryInterface[]>;
         /**
          * Should the app switcher be shown as nine dots dropdown.
          */
@@ -72,7 +73,7 @@ export interface CommonConfig {
     };
     hotjarTracking : {
         /*
-         * Tag hotjar attributes. 
+         * Tag hotjar attributes.
         */
         tagAttributes : () => void;
     }
@@ -82,7 +83,6 @@ export interface CommonConfig {
  * Types of views that are extended.
  * @remarks Any views other than `DEVELOP` and `MANAGE` can go here.
  * @readonly
- * @enum {string}
  */
 export enum AppViewExtensionTypes { }
 

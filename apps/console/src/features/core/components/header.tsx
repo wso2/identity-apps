@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -23,6 +23,7 @@ import {
     Announcement,
     AppSwitcher,
     GenericIcon,
+    HeaderLinkCategoryInterface,
     Logo,
     ProductBrand,
     Header as ReusableHeader,
@@ -38,8 +39,7 @@ import { Container, Menu } from "semantic-ui-react";
 import { commonConfig, organizationConfigs } from "../../../extensions";
 import { getApplicationList } from "../../applications/api";
 import { ApplicationListInterface } from "../../applications/models";
-import OrganizationSwitchDropdown
-    from "../../organizations/components/organization-switch/organization-switch-dropdown";
+import { OrganizationSwitchBreadcrumb } from "../../organizations/components/organization-switch";
 import { AppSwitcherIcons, getAppHeaderIcons } from "../configs";
 import { AppConstants } from "../constants";
 import { history } from "../helpers";
@@ -120,6 +120,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     const scopes = useSelector((state: AppState) => state.auth.allowedScopes);
 
     const [ announcement, setAnnouncement ] = useState<AnnouncementBannerInterface>(undefined);
+    const [ headerLinks, setHeaderLinks ] = useState<HeaderLinkCategoryInterface[]>([]);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -137,7 +138,9 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             // So, we cannot use `tenantDomain` to check
             // if the user is logged in to a non-super-tenant account reliably.
             // So, we check if the organization id is there in the URL to see if the user is in a sub-organization.
-            (tenantDomain === AppConstants.getSuperTenant() || window[ "AppUtils" ].getConfig().organizationName) &&
+            (tenantDomain === AppConstants.getSuperTenant() ||
+                window[ "AppUtils" ].getConfig().organizationName ||
+                organizationConfigs.showSwitcherInTenants) &&
             hasRequiredScopes(feature?.organizations, feature?.organizations?.scopes?.read, scopes) &&
             organizationConfigs.showOrganizationDropdown
         );
@@ -146,6 +149,15 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         tenantDomain,
         feature.organizations
     ]);
+
+    useEffect(() => {
+        commonConfig
+            ?.header
+            ?.getUserDropdownLinkExtensions(tenantDomain, associatedTenants)
+            .then((response: HeaderLinkCategoryInterface[]) => {
+                setHeaderLinks(response);
+            } );
+    }, [ tenantDomain, associatedTenants ]);
 
     /**
      * Check if there are applications registered and set the value to local storage.
@@ -424,7 +436,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                         floated: "right"
                     },
                     isOrgSwitcherEnabled && {
-                        component: <OrganizationSwitchDropdown />,
+                        component: <OrganizationSwitchBreadcrumb />,
                         floated: "left"
                     }
                 ])
@@ -450,7 +462,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                             }
                         ]
                     },
-                    ...commonConfig?.header?.getUserDropdownLinkExtensions(tenantDomain, associatedTenants),
+                    ...headerLinks,
                     {
                         category: "GENERAL",
                         categoryLabel: null,

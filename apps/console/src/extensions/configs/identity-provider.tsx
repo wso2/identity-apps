@@ -91,6 +91,9 @@ export const identityProviderConfig: IdentityProviderConfig = {
         useLegacyListing: true
     },
     jitProvisioningSettings: {
+        enableAssociateLocalUserField: {
+            show: false
+        },
         enableJitProvisioningField: {
             show: true
         },

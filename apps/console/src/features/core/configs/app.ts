@@ -54,10 +54,13 @@ export class Config {
     /**
      * This method adds organization path to the server host if an organization is selected.
      *
+     * @param enforceOrgPath - Enforces the organization path
+     *
      * @returns Server host.
      */
-    public static resolveServerHost(): string {
-        if (OrganizationUtils.isRootOrganization(store.getState().organization.organization)) {
+    public static resolveServerHost(enforceOrgPath?: boolean): string {
+        if ((OrganizationUtils.isRootOrganization(store.getState().organization.organization)
+            || store.getState().organization.isFirstLevelOrganization) && !enforceOrgPath) {
             return window[ "AppUtils" ]?.getConfig()?.serverOriginWithTenant;
         } else {
             return `${
@@ -196,7 +199,7 @@ export class Config {
             ...getRemoteFetchConfigResourceEndpoints(this.getDeploymentConfig()?.serverHost),
             ...getSecretsManagementEndpoints(this.getDeploymentConfig()?.serverHost),
             ...getExtendedFeatureResourceEndpoints(this.getDeploymentConfig()?.serverHost),
-            ...getOrganizationsResourceEndpoints(this.resolveServerHost(), this.getDeploymentConfig().serverHost),
+            ...getOrganizationsResourceEndpoints(this.resolveServerHost(true), this.getDeploymentConfig().serverHost),
             CORSOrigins: `${ this.getDeploymentConfig()?.serverHost }/api/server/v1/cors/origins`,
             // TODO: Remove this endpoint and use ID token to get the details
             me: `${ this.getDeploymentConfig()?.serverHost }/scim2/Me`,

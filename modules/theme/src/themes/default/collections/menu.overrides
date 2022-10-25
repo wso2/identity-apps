@@ -287,6 +287,10 @@
                                 .search-bar {
                                     padding: 12px 0;
                                     margin: 0;
+
+                                    &.tenant {
+                                        padding: 12px 15px !important;
+                                    }
                                 }
 
                                 .tenant-pagination {
@@ -706,8 +710,16 @@
                         color: @white;
                         background-color: @accentColor4;
                     }
+
                     &.coming-soon {
                         filter: grayscale(100%);
+                    }
+
+                    &.preview {
+                        text-transform: uppercase;
+                        color: @previewStatusTextColor;
+                        font-weight: 500;
+                        background-color: @previewStatusBgColor;
                     }
                 }
             }
@@ -947,14 +959,25 @@
                 padding: 0 0 0 5px;
                 cursor: default;
 
+                &.end {
+                    padding-right: 5px;
+                }
+
                 >span, >.text {
                     padding: 10px;
                     border-radius: 25px;
                     cursor: pointer;
 
+
                     &:hover, &:active, &:focus {
-                        color: darken(@tenantDropdownTriggerTextColor, 10);
-                        background: @tenantDropdownTriggerHoverBackground;
+                        &:not(.un-clickable) {
+                            color: darken(@tenantDropdownTriggerTextColor, 10);
+                            background: @tenantDropdownTriggerHoverBackground;
+                        }
+                    }
+
+                    &.un-clickable {
+                        cursor: default;
                     }
                 }
 
@@ -965,7 +988,7 @@
         }
 
         .separator-icon, .dropdown.breadcrumb-dropdown .icon {
-            margin: 0;
+            margin: 0 !important;
             padding: 0 0 0 5px;
         }
 

@@ -109,7 +109,9 @@
             return;
         }
 
-        String queryParamString = request.getQueryString() != null ? ("?" + request.getQueryString()) : "";
+        // Build the query string using the parameter map since the query string can contain fewer parameters
+        // due to parameter filtering.
+        String queryParamString = AuthenticationEndpointUtil.resolveQueryString(request.getParameterMap());
         multiOptionURIParam = "&multiOptionURI=" + Encode.forUriComponent(baseURL + queryParamString);
     }
 %>

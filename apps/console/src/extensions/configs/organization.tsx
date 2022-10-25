@@ -16,17 +16,26 @@
  * under the License.
  */
 
-import { ReactElement } from "react";
-import { BreadcrumbItem } from "../../../features/organizations/models";
+import React from "react";
+import { OrganizationConfigs } from "./models";
+import { BreadcrumbItem } from "../../features/organizations/models";
 
-export interface OrganizationConfigs {
-    showOrganizationDropdown: boolean;
+export const organizationConfigs: OrganizationConfigs = {
+    allowNavigationInDropdown: true,
+    canCreateOrganization: (): boolean => {
+        return true;
+    },
+    showOrganizationDropdown: true,
+    showSwitcherInTenants: false,
     superOrganizationBreadcrumb: (
         breadcrumbItem: BreadcrumbItem,
         onClick: (breadcrumbItem: BreadcrumbItem) => void
-    ) => ReactElement;
-    showSwitcherInTenants: boolean;
-    canCreateOrganization: () => boolean;
-    tenantSwitcher: () => ReactElement;
-    allowNavigationInDropdown: boolean;
-}
+    ) => {
+        return (
+            <span onClick={ () => onClick(breadcrumbItem) } data-componentid={ "super-organization-breadcrumb-item" }>
+                { breadcrumbItem.name }
+            </span>
+        );
+    },
+    tenantSwitcher: () => null
+};

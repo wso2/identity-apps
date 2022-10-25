@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -47,6 +47,7 @@ interface TransferListItemPropsInterface extends TableRowProps, IdentifiableComp
     showListSubItem?: boolean;
     listSubItem?: ReactNode;
     readOnly?: boolean;
+    disabled?: boolean;
 }
 
 /**
@@ -60,9 +61,9 @@ interface ListItemPropsInterface {
 /**
  * Transfer list item component.
  *
- * @param {TransferListItemPropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns
  */
 export const TransferListItem: FunctionComponent<TransferListItemPropsInterface> = (
     props: TransferListItemPropsInterface
@@ -81,6 +82,7 @@ export const TransferListItem: FunctionComponent<TransferListItemPropsInterface>
         showListSubItem,
         listSubItem,
         readOnly,
+        disabled,
         [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId
     } = props;
@@ -109,6 +111,7 @@ export const TransferListItem: FunctionComponent<TransferListItemPropsInterface>
                     onChange={ handleItemChange }
                     onClick={ handleItemClick }
                     readOnly={ readOnly }
+                    disabled={ disabled }
                 />
             </Table.Cell>
             {
@@ -152,6 +155,7 @@ export const TransferListItem: FunctionComponent<TransferListItemPropsInterface>
                 showSecondaryActions && (
                     <Table.Cell collapsing>
                         <Popup
+                            disabled={ disabled }
                             inverted
                             basic
                             content="View permissions"
@@ -178,5 +182,6 @@ export const TransferListItem: FunctionComponent<TransferListItemPropsInterface>
 TransferListItem.defaultProps = {
     "data-componentid": "transfer-list-item",
     "data-testid": "transfer-list-item",
+    disabled: false,
     showListSubItem: false
 };

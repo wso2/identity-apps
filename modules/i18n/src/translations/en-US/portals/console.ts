@@ -90,6 +90,10 @@ export const console: ConsoleNS = {
                 tooltip: "Apps"
             },
             organizationSwitch: {
+                breadcrumbError: {
+                    description: "An error occurred while fetching the organization hierarchy.",
+                    message: "Something went wrong"
+                },
                 emptyOrgListMessage: "No organizations available",
                 orgSearchPlaceholder: "Search by organization name"
             }
@@ -810,7 +814,7 @@ export const console: ConsoleNS = {
                                 attributeComponentHintAlt: "Manage the user attributes you want to share with this" +
                                     " application. You can add new attributes and mappings by navigating to " +
                                     "<1>Attributes.</1>",
-                                description: "Add grouped user attributes, i.e scopes that are allowed to be shared with this " +
+                                description: "Add the user attributes that are allowed to be shared with this " +
                                     "application.",
                                 heading: "User Attribute Selection",
                                 mandatoryAttributeHint: "Mark which user attributes are mandatory to be shared " +
@@ -830,10 +834,8 @@ export const console: ConsoleNS = {
                                         actions: {
                                             makeMandatory: "Make mandatory",
                                             makeRequested: "Make requested",
-                                            makeScopeRequested: "Make Scope requested",
                                             removeMandatory: "Remove mandatory",
                                             removeRequested: "Remove requested",
-                                            removeScopeRequested: "Remove Scope Requested",
                                             subjectDisabledSelection: "This attribute is mandatory because it " +
                                                 "is the subject attribute."
                                         },
@@ -2230,7 +2232,8 @@ export const console: ConsoleNS = {
                                         "{{characterLimit}} characters, including alphanumerics, periods (.), " +
                                         "dashes (-), underscores (_) and spaces."
                                 }
-                            }
+                            },
+                            urlDeepLinkError: "The entered URL is not a deep link."
                         }
                     }
                 },
@@ -3596,6 +3599,12 @@ export const console: ConsoleNS = {
                         }
                     },
                     jitProvisioning: {
+                        associateLocalUser: {
+                            label: "Associate provisioned users with existing local users",
+                            hint: "When enabled, users that are provisioned with this identity " +
+                                "provider will be linked to the local users who are already registered " +
+                                "with the same email address."
+                        },
                         enableJITProvisioning: {
                             disabledMessageContent: "You cannot disable the Just-in-Time User" +
                                 " Provisioning setting because the following applications" +
@@ -8340,14 +8349,21 @@ export const console: ConsoleNS = {
                         title: "Add a new Organization"
                     }
                 },
+                shareApplicationRadio: "Share with all sub-organizations",
+                shareApplicationInfo: "Select this to share the application with all the existing sub-organizations " +
+                    "and all new sub-organizations that you create under your current organization.",
+                unshareApplicationRadio: "Unshare with all sub-organizations",
+                shareWithSelectedOrgsRadio: "Share with only selected sub-organizations",
+                unshareApplicationInfo: "Select this to unshare the application with all the existing " +
+                    "sub-organizations and all new sub-organizations that you create under your current organizations.",
                 subTitle: "Create and manage organizations.",
                 switching: {
-                    emptyList: "There is no organization to show.",
+                    emptyList: "There are no sub-organizations to show.",
                     goBack: "Go back",
                     search: {
                         placeholder: "Search by Name"
                     },
-                    subOrganizations: "Suborganizations"
+                    subOrganizations: "Sub-organizations"
                 },
                 title: "Organizations"
             },
@@ -8942,7 +8958,7 @@ export const console: ConsoleNS = {
                     certificates: "Certificates",
                     configurations: "Configurations",
                     general: "General",
-                    organizations: "Organizations",
+                    organizations: "Organization Management",
                     users: "Users",
                     userstores: "User Stores"
                 },
@@ -9074,7 +9090,7 @@ export const console: ConsoleNS = {
                                 label: "Select the method to set the user password",
                                 options: {
                                     askPassword: "Invite the user to set their own password",
-                                    createPassword: "Set a temporary password for the user"
+                                    createPassword: "Set a password for the user"
 
                                 }
                             }

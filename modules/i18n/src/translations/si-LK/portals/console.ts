@@ -90,6 +90,10 @@ export const console: ConsoleNS = {
                 tooltip: "Apps"
             },
             organizationSwitch: {
+                breadcrumbError: {
+                    description: "සංවිධාන ධුරාවලිය ලබා ගැනීමේදී දෝෂයක් ඇති විය.",
+                    message: "මොකක්හරි වැරැද්දක් වෙලා"
+                },
                 emptyOrgListMessage: "සංවිධාන නොමැත",
                 orgSearchPlaceholder: "සංවිධානයේ නම අනුව සොයන්න"
             }
@@ -814,8 +818,7 @@ export const console: ConsoleNS = {
                                 attributeComponentHintAlt: "මෙම යෙදුම සමඟ ඔබට බෙදා ගැනීමට අවශ්‍ය පරිශීලක ගුණාංග" +
                                     " කළමනාකරණය කරන්න. <1> ගුණාංග </1> වෙත යාමෙන් ඔබට නව ගුණාංග සහ සිතියම් එකතු කළ " +
                                     "හැකියය",
-                                description: "සමූහගත පරිශීලක ගුණාංග එක් කරන්න, එනම් මෙම යෙදුම සමඟ බෙදා ගැනීමට අවසර දී " +
-                                    "ඇති විෂය පථයන්.",
+                                description: "මෙම යෙදුම සමඟ බෙදා ගැනීමට අවසර දී ඇති පරිශීලක ගුණාංග එකතු කරන්න.",
                                 heading: "පරිශීලක ගුණාංග තේරීම",
                                 mandatoryAttributeHint: "යෙදුම සමඟ බෙදා ගැනීමට අනිවාර්යය වන පරිශීලක ගුණාංග මොනවාදැයි " +
                                     "ලකුණු කරන්න. පුරනය වීමේ දී, පරිශීලකයාගේ පැතිකඩෙහි දැනටමත් සපයා නොමැති නම්, මෙම " +
@@ -834,10 +837,8 @@ export const console: ConsoleNS = {
                                         actions: {
                                             makeMandatory: "අනිවාර්ය කරන්න",
                                             makeRequested: "ඉල්ලීමක් කරන්න",
-                                            makeScopeRequested: "විෂය පථය ඉල්ලා සිටින්න",
                                             removeMandatory: "අනිවාර්ය ඉවත් කරන්න",
                                             removeRequested: "ඉල්ලූ දේ ඉවත් කරන්න",
-                                            removeScopeRequested: "විෂය පථය ඉවත් කරන්න ඉල්ලා ඇත",
                                             subjectDisabledSelection: "මෙම ගුණාංගය අනිවාර්ය වන්නේ " +
                                                 "එය විෂය ගුණාංගය වන බැවිනි."
                                         },
@@ -2215,7 +2216,8 @@ export const console: ConsoleNS = {
                                 validations: {
                                     invalid: "The application name should contain letters, numbers."
                                 }
-                            }
+                            },
+                            urlDeepLinkError: "ඇතුළත් කළ Deep URL සබැඳියක් නොවේ."
                         }
                     }
                 },
@@ -6690,6 +6692,13 @@ export const console: ConsoleNS = {
                         title: "නව සංවිධානයක් එක් කරන්න"
                     }
                 },
+                shareApplicationRadio: "සියලුම උප සංවිධාන සමඟ බෙදා ගන්න",
+                shareApplicationInfo: "ඔබගේ වත්මන් සංවිධානය යටතේ ඔබ නිර්මාණය කරන දැනට පවතින සියලුම උප " +
+                    "සංවිධාන සහ සියලුම නව උපසංවිධාන සමඟ යෙදුම බෙදා ගැනීමට මෙය තෝරන්න.",
+                unshareApplicationRadio: "සියලුම උප සංවිධාන සමඟ බෙදා නොගන්න",
+                shareWithSelectedOrgsRadio: "තෝරාගත් උප සංවිධාන සමඟ පමණක් බෙදා ගන්න",
+                unshareApplicationInfo: "ඔබගේ වත්මන් සංවිධාන යටතේ ඔබ නිර්මාණය කරන දැනට පවතින සියලුම උප සංවිධාන " +
+                    "සහ සියලුම නව උපසංවිධාන සමඟ යෙදුම බෙදා නොගැනීමට මෙය තෝරන්න.",
                 subTitle: "ආයතන සාදන්න සහ කළමනාකරණය කරන්න.",
                 switching: {
                     emptyList: "පෙන්වීමට සංවිධානයක් නැත.",
@@ -7295,7 +7304,7 @@ export const console: ConsoleNS = {
                     certificates: "සහතික",
                     configurations: "වින්‍යාස කිරීම්",
                     general: "ජනරාල්",
-                    organizations: "ආයතන",
+                    organizations: "සංවිධාන කළමනාකරණය",
                     users: "පරිශීලකයින්",
                     userstores: "පරිශීලක වෙළඳසැල්"
                 },
