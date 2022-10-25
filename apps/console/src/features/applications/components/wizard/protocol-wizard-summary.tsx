@@ -60,8 +60,6 @@ export const ProtocolWizardSummary: FunctionComponent<ProtocolWizardSummaryProps
 
     const { t } = useTranslation();
 
-    const [ protocolImage, setProtocolImage ] = useState<string>("");
-
     /**
      * Submits the form programmatically if triggered from outside.
      */
@@ -83,13 +81,6 @@ export const ProtocolWizardSummary: FunctionComponent<ProtocolWizardSummaryProps
         onSubmit(summary);
     }, [ triggerSubmit ]);
 
-    /**
-     *  Set protocol image.
-     */
-    useEffect(() => {
-        setProtocolImage(image);
-    }, [ image ]);
-
     return (
         <Grid className="wizard-summary" data-testid={ testId }>
             <Grid.Row>
@@ -102,7 +93,7 @@ export const ProtocolWizardSummary: FunctionComponent<ProtocolWizardSummaryProps
                                     <AppAvatar
                                         image={
                                             ApplicationManagementUtils.findIcon(
-                                                protocolImage,
+                                                image,
                                                 getInboundProtocolLogos()
                                             ) as ReactNode
                                         }
