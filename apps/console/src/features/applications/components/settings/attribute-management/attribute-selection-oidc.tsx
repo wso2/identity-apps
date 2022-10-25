@@ -163,7 +163,9 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
         setFilterSelectedExternalClaims(tempFilterSelectedExternalClaims);
     }, [ claimConfigurations ]);
 
-    // Stops the UI loader when the component is initialized and have fetched the availableExternalClaims.
+    /**
+     * Stops the UI loader when the component is initialized and have fetched the availableExternalClaims.
+     */
     useEffect(() => {
         if (initializationFinished && claimConfigurations) {
             //  Stop loader UI for OIDC and SP applications.
@@ -172,6 +174,27 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
             }
         }
     }, [ availableExternalClaims, claimConfigurations, initializationFinished ]);
+
+    useEffect(() => {
+        if (externalClaims) {
+            setAvailableExternalClaims([ ...applicationConfig.attributeSettings
+                .attributeSelection.getExternalClaims(externalClaims) ]);
+        }
+    }, [ externalClaims ]);
+
+    useEffect(() => {
+        if (selectedExternalClaims) {
+            setFilterSelectedExternalClaims([ ...selectedExternalClaims ]);
+        }
+    }, [ selectedExternalClaims ]);
+
+    useEffect(() => {
+        if (!initValue.current) {
+            setInitializationFinished(false);
+            setInitialValues();
+            initValue.current = true;
+        }
+    }, [ claimConfigurations ]);
 
     /**
      * Update mandatory user attributes
@@ -423,27 +446,6 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
         setExternalClaims(initialAvailableClaims.concat(initialSelectedClaims));
         setInitializationFinished(true);
     };
-
-    useEffect(() => {
-        if (externalClaims) {
-            setAvailableExternalClaims([ ...applicationConfig.attributeSettings
-                .attributeSelection.getExternalClaims(externalClaims) ]);
-        }
-    }, [ externalClaims ]);
-
-    useEffect(() => {
-        if (selectedExternalClaims) {
-            setFilterSelectedExternalClaims([ ...selectedExternalClaims ]);
-        }
-    }, [ selectedExternalClaims ]);
-
-    useEffect(() => {
-        if (!initValue.current) {
-            setInitializationFinished(false);
-            setInitialValues();
-            initValue.current = true;
-        }
-    }, [ claimConfigurations ]);
 
     /**
      * Check if the claim has OIDC mapping.

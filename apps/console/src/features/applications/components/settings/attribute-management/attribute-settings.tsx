@@ -28,7 +28,7 @@ import {
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ConfirmationModal, ContentLoader, EmphasizedSegment } from "@wso2is/react-components";
-import { getOIDCScopesList } from "apps/console/src/features/oidc-scopes/api/oidc-scopes";
+import { useOIDCScopesList } from "apps/console/src/features/oidc-scopes/api/oidc-scopes";
 import { OIDCScopesClaimsListInterface, OIDCScopesListInterface 
 } from "apps/console/src/features/oidc-scopes/models/oidc-scopes";
 import isEmpty from "lodash-es/isEmpty";
@@ -182,13 +182,10 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
 
     const dispatch = useDispatch();
 
-    // Manage Local Dialect URI
     const [ localDialectURI, setLocalDialectURI ] = useState("");
 
-    // available dialects.
     const [ dialect, setDialect ] = useState<ClaimDialect[]>([]);
 
-    // Manage selected dialect
     const [ selectedDialect, setSelectedDialect ] = useState<SelectedDialectInterface>();
 
     // Get OIDC scope-use attributes list
@@ -226,49 +223,77 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
+    const { 
+        data: OIDCScopeList,
+        isLoading: isOIDCScopeListLoading
+    } = useOIDCScopesList();
+
     /**
-     * Retrieves scopes with the details from the API.
+     * Get local mapped claim display name for external claims
      */
-    const getScopes = () => {
-
-        getOIDCScopesList()
-            .then((response: OIDCScopesListInterface[]) => {
-                setScopes(response);
-            })
-            .catch((error) => {
-                if (error.response && error.response.data && error.response.data.description) {
-                    dispatch(
-                        addAlert({
-                            description: error.response.data.description,
-                            level: AlertLevels.ERROR,
-                            // todo: check whether you need to change the error message
-                            message: t(
-                                "console:manage.features.oidcScopes.notifications."
-                                + "fetchOIDCScope.error.message"
-                            )
-                        })
-                    );
-
-                    return;
-                }
-
-                dispatch(
-                    addAlert({
-                        // todo: check whether you need to change the error message
-                        description: t(
-                            "console:manage.features.oidcScopes.notifications.fetchOIDCScope" +
-                            ".genericError.description"
-                        ),
-                        level: AlertLevels.ERROR,
-                        // todo: check whether you need to change the error message
-                        message: t(
-                            "console:manage.features.oidcScopes.notifications.fetchOIDCScope.genericError."
-                            + "message"
-                        )
-                    })
-                );
+    useEffect(() => {
+        externalClaims.forEach((externalClaim) => {
+            const mappedLocalClaimUri = externalClaim.mappedLocalClaimURI;
+            const matchedLocalClaim = claims.filter(localClaim => {
+                return localClaim.claimURI === mappedLocalClaimUri;
             });
-    };
+
+            if (matchedLocalClaim && matchedLocalClaim[0] && matchedLocalClaim[0].displayName) {
+                externalClaim.localClaimDisplayName = matchedLocalClaim[0].displayName;
+            }
+        });
+        setExternalClaims(externalClaims);
+    }, [ claims, externalClaims ]);
+
+    useEffect(() => {
+        setScopes(OIDCScopeList);
+        getClaims();
+        getAllDialects();
+        findLocalClaimDialectURI();
+    }, [ isOIDCScopeListLoading ]);
+
+    useEffect(() => {
+        getExternalClaimsGroupedByScopes();
+    }, [ externalClaims ]);
+
+    /**
+     * Set the dialects for inbound protocols
+     */
+    useEffect(() => {
+        if (isEmpty(dialect)) {
+            return;
+        }
+        //TODO  move this logic to backend
+        setIsClaimRequestLoading(true);
+
+        if (onlyOIDCConfigured) {
+            changeSelectedDialect("http://wso2.org/oidc/claim");
+
+            return;
+        }
+
+        setIsClaimRequestLoading(false);
+        changeSelectedDialect(localDialectURI);
+    }, [ onlyOIDCConfigured, dialect ]);
+
+    useEffect(() => {
+        if (advanceSettingValues) {
+            const mappingList = getFinalMappingList();
+
+            if (mappingList !== null) {
+                submitUpdateRequest(mappingList);
+            }
+        }
+    }, [ advanceSettingValues ]);
+
+    /**
+     * Set initial value for claim mapping.
+     */
+    useEffect(() => {
+        if (claimConfigurations?.dialect === "CUSTOM") {
+            setClaimMappingOn(true);
+        }
+    }, [ claimConfigurations ]);
 
     /**
      * Check whether claim is mandatory or not
@@ -455,21 +480,6 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                 });
         }
     };
-
-    //Get local mapped claim display name for external claims
-    useEffect(() => {
-        externalClaims.forEach((externalClaim) => {
-            const mappedLocalClaimUri = externalClaim.mappedLocalClaimURI;
-            const matchedLocalClaim = claims.filter(localClaim => {
-                return localClaim.claimURI === mappedLocalClaimUri;
-            });
-
-            if (matchedLocalClaim && matchedLocalClaim[0] && matchedLocalClaim[0].displayName) {
-                externalClaim.localClaimDisplayName = matchedLocalClaim[0].displayName;
-            }
-        });
-        setExternalClaims(externalClaims);
-    }, [ claims, externalClaims ]);
 
     const findDialectID = (value) => {
         let id = "";
@@ -1014,46 +1024,6 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
             });
     };
 
-    useEffect(() => {
-        getScopes();
-        getClaims();
-        getAllDialects();
-        findLocalClaimDialectURI();
-    }, []);
-
-    useEffect(() => {
-        getExternalClaimsGroupedByScopes();
-    }, [ externalClaims ]);
-
-    // Set the dialects for inbound protocols
-    useEffect(() => {
-        if (isEmpty(dialect)) {
-            return;
-        }
-        //TODO  move this logic to backend
-        setIsClaimRequestLoading(true);
-
-        if (onlyOIDCConfigured) {
-            changeSelectedDialect("http://wso2.org/oidc/claim");
-
-            return;
-        }
-
-        setIsClaimRequestLoading(false);
-        changeSelectedDialect(localDialectURI);
-    }, [ onlyOIDCConfigured, dialect ]);
-
-    useEffect(() => {
-
-        if (advanceSettingValues) {
-            const mappingList = getFinalMappingList();
-
-            if (mappingList !== null) {
-                submitUpdateRequest(mappingList);
-            }
-        }
-    }, [ advanceSettingValues ]);
-
     /**
      * Util function to handle claim mapping.
      *
@@ -1068,15 +1038,6 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
             setShowClaimMappingConfirmation(false);
         }
     };
-
-    /**
-     * Set initial value for claim mapping.
-     */
-    useEffect(() => {
-        if (claimConfigurations?.dialect === "CUSTOM") {
-            setClaimMappingOn(true);
-        }
-    }, [ claimConfigurations ]);
 
     /**
      * submit form function.
