@@ -451,10 +451,6 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
             return [ SupportedAuthProtocolTypes.OAUTH2_OIDC ];
         }
 
-        if (applicationTemplateId === ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS) {
-            return [ SupportedAuthProtocolTypes.WS_FEDERATION ];
-        }
-
         // Filter out legacy and unsupported auth protocols.
         supportedProtocols = supportedProtocols.filter((protocol) => {
 
@@ -466,14 +462,6 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                 } else {
                     return false;
                 }
-            }
-
-            if (protocol === SupportedAuthProtocolTypes.WS_TRUST
-                || protocol === SupportedAuthProtocolTypes.CUSTOM
-                || (extendedAccessConfig && protocol === SupportedAuthProtocolTypes.WS_FEDERATION)
-                || (filterProtocol && protocol === filterProtocol)) {
-
-                return false;
             }
 
             return protocol;
@@ -881,12 +869,6 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
         const protocols: string[] = Object.values(SupportedAuthProtocolMetaTypes);
 
         protocols.map((selected) => {
-
-            if (selected === SupportedAuthProtocolTypes.WS_FEDERATION
-                || selected === SupportedAuthProtocolTypes.WS_TRUST) {
-
-                return;
-            }
 
             const selectedProtocol = selected as SupportedAuthProtocolMetaTypes;
 

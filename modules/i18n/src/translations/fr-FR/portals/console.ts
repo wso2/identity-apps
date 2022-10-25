@@ -2118,48 +2118,6 @@ export const console: ConsoleNS = {
                             }
                         }
                     },
-                    inboundSTS: {
-                        fields: {
-                            realm: {
-                                hint: "Saisir l'identifiant du domaine STS passif",
-                                label: "Domaine d'identité",
-                                placeholder: "Saisir le domaine.",
-                                validations: {
-                                    empty: "Ce champ est obligatoire."
-                                }
-                            },
-                            replyTo: {
-                                hint: "Saisir l'URL du RP qui gère la réponse.",
-                                label: "URL de la réponse",
-                                placeholder: "Saisir l'URL de la réponse",
-                                validations: {
-                                    empty: "C'est un champ obligatoire.",
-                                    invalid: "Ce n'est pas une URL valide"
-                                }
-                            }
-                        }
-                    },
-                    inboundWSTrust: {
-                        fields: {
-                            audience: {
-                                hint: "L'adresse de la partie de confiance.",
-                                label: "Adresse",
-                                placeholder: "Saisir l'adresse",
-                                validations: {
-                                    empty: "Saisir l'adresse.",
-                                    invalid: "Ce n'est pas une URL valide"
-                                }
-                            },
-                            certificateAlias: {
-                                hint: "Certificat public de la partie de confiance.",
-                                label: "Alias du certificat",
-                                placeholder: "Saisir l'alias du certificat",
-                                validations: {
-                                    empty: "Sélectionnez un alias de certificat"
-                                }
-                            }
-                        }
-                    },
                     outboundProvisioning: {
                         fields: {
                             blocking: {
@@ -2230,7 +2188,7 @@ export const console: ConsoleNS = {
                             content: {
                                 subTitle: "Mettre à jour les configurations prédéfinies par le biais du modèle " +
                                     "ou ajouter de nouvelles configurations en fonction du protocole " +
-                                    "(OIDC, SAML, WS-Trust, etc.) configuré.",
+                                    "(OIDC, SAML, etc.) configuré.",
                                 title: "Configurations de l'application"
                             },
                             heading: "Guide de Configuration"

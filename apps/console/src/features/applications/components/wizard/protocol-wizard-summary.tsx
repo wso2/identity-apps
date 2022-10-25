@@ -19,11 +19,11 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { EncodeDecodeUtils } from "@wso2is/core/utils";
 import { AppAvatar, UserAvatar } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, Label } from "semantic-ui-react";
 import { getInboundProtocolLogos } from "../../configs";
-import { SubmitFormCustomPropertiesInterface, SupportedAuthProtocolTypes } from "../../models";
+import { SubmitFormCustomPropertiesInterface } from "../../models";
 import { ApplicationManagementUtils } from "../../utils";
 
 /**
@@ -61,8 +61,6 @@ export const ProtocolWizardSummary: FunctionComponent<ProtocolWizardSummaryProps
 
     const { t } = useTranslation();
 
-    const [ protocolImage, setProtocolImage ] = useState<string>("");
-
     /**
      * Submits the form programmatically if triggered from outside.
      */
@@ -84,19 +82,6 @@ export const ProtocolWizardSummary: FunctionComponent<ProtocolWizardSummaryProps
         onSubmit(summary);
     }, [ triggerSubmit ]);
 
-    /**
-     *  Set protocol image.
-     */
-    useEffect(() => {
-        if (image === SupportedAuthProtocolTypes.WS_FEDERATION) {
-            setProtocolImage("wsFed");
-        } else if (image === SupportedAuthProtocolTypes.WS_TRUST) {
-            setProtocolImage("wsTrust");
-        } else {
-            setProtocolImage(image);
-        }
-    }, [ image ]);
-
     return (
         <Grid className="wizard-summary" data-testid={ testId }>
             <Grid.Row>
@@ -109,7 +94,7 @@ export const ProtocolWizardSummary: FunctionComponent<ProtocolWizardSummaryProps
                                     <AppAvatar
                                         image={
                                             ApplicationManagementUtils.findIcon(
-                                                protocolImage,
+                                                image,
                                                 getInboundProtocolLogos()
                                             )
                                         }

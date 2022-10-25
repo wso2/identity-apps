@@ -34,13 +34,11 @@ import { Grid, Icon, Modal } from "semantic-ui-react";
 import { InboundCustomProtocolWizardForm } from "./custom-protcol-settings-wizard-form";
 import { GeneralSettingsWizardForm } from "./general-settings-wizard-form";
 import { OauthProtocolSettingsWizardForm } from "./oauth-protocol-settings-wizard-form";
-import { PassiveStsProtocolSettingsWizardForm } from "./passive-sts-protocol-settings-wizard-form";
 import { ProtocolSelectionWizardForm } from "./protocol-selection-wizard-form";
 import { ProtocolWizardSummary } from "./protocol-wizard-summary";
 import { SAMLProtocolAllSettingsWizardForm } from "./saml-protocol-settings-all-option-wizard-form";
 import { SAMLProtocolSettingsWizardForm } from "./saml-protocol-settings-wizard-form";
 import { WizardSummary } from "./wizard-summary";
-import { WSTrustProtocolSettingsWizardForm } from "./ws-trust-protocol-settings-wizard-form";
 import { AppConstants, AppState, history } from "../../../core";
 import {
     createApplication,
@@ -68,8 +66,6 @@ import { setAuthProtocolMeta } from "../../store";
 import {
     OAuthProtocolTemplate,
     OAuthProtocolTemplateItem,
-    PassiveStsProtocolTemplate,
-    PassiveStsProtocolTemplateItem,
     SAMLProtocolTemplate,
     SAMLProtocolTemplateItem
 } from "../meta";
@@ -179,8 +175,6 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
             setTemplateSettings(OAuthProtocolTemplate.application);
         } else if (id === DefaultProtocolTemplate.SAML) {
             setTemplateSettings(SAMLProtocolTemplate.application);
-        } else if (id === DefaultProtocolTemplate.WS_FEDERATION) {
-            setTemplateSettings(PassiveStsProtocolTemplate.application);
         } else {
             getApplicationTemplateData(id)
                 .then((response) => {
@@ -415,13 +409,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
         let summary: any = {};
 
         if (addProtocol) {
-            let configName = selectedTemplate.authenticationProtocol;
-
-            if (configName === SupportedAuthProtocolTypes.WS_FEDERATION) {
-                configName = "passiveSts";
-            } else if (configName === SupportedAuthProtocolTypes.WS_TRUST) {
-                configName = "wsTrust";
-            }
+            const configName: string = selectedTemplate.authenticationProtocol;
 
             summary = get(wizardState[WizardStepsFormTypes.PROTOCOL_SETTINGS],
                 ("inboundProtocolConfiguration." + configName));
@@ -486,7 +474,6 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                         onSubmit={ (values): void => handleWizardFormSubmit(values,
                             WizardStepsFormTypes.PROTOCOL_SELECTION) }
                         defaultTemplates={ [
-                            PassiveStsProtocolTemplateItem,
                             OAuthProtocolTemplateItem,
                             SAMLProtocolTemplateItem
                         ] }
@@ -585,30 +572,6 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                                         data-testid={ `${ testId }-saml-protocol-settings-form` }
                                     />
                                 )
-                        );
-                    } else if (wizardState[WizardStepsFormTypes.PROTOCOL_SELECTION] ===
-                        SupportedAuthProtocolTypes.WS_TRUST) {
-                        return (
-                            <WSTrustProtocolSettingsWizardForm
-                                triggerSubmit={ submitOAuth }
-                                initialValues={ wizardState && wizardState[WizardStepsFormTypes.PROTOCOL_SETTINGS] }
-                                templateValues={ templateSettings }
-                                onSubmit={ (values): void => handleWizardFormSubmit(values,
-                                    WizardStepsFormTypes.PROTOCOL_SETTINGS) }
-                                data-testid={ `${ testId }-ws-trust-protocol-settings-form` }
-                            />
-                        );
-                    } else if (wizardState[WizardStepsFormTypes.PROTOCOL_SELECTION] ===
-                        SupportedAuthProtocolTypes.WS_FEDERATION) {
-                        return (
-                            <PassiveStsProtocolSettingsWizardForm
-                                triggerSubmit={ submitOAuth }
-                                initialValues={ wizardState && wizardState[WizardStepsFormTypes.PROTOCOL_SETTINGS] }
-                                templateValues={ templateSettings }
-                                onSubmit={ (values): void => handleWizardFormSubmit(values,
-                                    WizardStepsFormTypes.PROTOCOL_SETTINGS) }
-                                data-testid={ `${ testId }-passive-sts-protocol-settings-form` }
-                            />
                         );
                     }
                 }

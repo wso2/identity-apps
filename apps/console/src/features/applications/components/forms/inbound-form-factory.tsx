@@ -20,10 +20,8 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { InboundCustomProtocolForm } from "./inbound-custom-form";
 import { InboundOIDCForm } from "./inbound-oidc-form";
-import { InboundPassiveStsForm } from "./inbound-passive-sts-form";
 import { InboundSAMLCreationForm } from "./inbound-saml-creation-form";
 import { InboundSAMLForm } from "./inbound-saml-form";
-import { InboundWSTrustForm } from "./inbound-ws-trust-form";
 import {
     ApplicationInterface,
     ApplicationTemplateListItemInterface,
@@ -177,31 +175,6 @@ export const InboundFormFactory: FunctionComponent<InboundFormFactoryInterface> 
                     certificate={ certificate }
                     initialValues={ initialValues }
                     metadata={ metadata }
-                    onSubmit={ onSubmit }
-                    readOnly={ readOnly }
-                    data-testid={ testId }
-                />
-            );
-        case SupportedAuthProtocolTypes.WS_TRUST:
-            return (
-                <InboundWSTrustForm
-                    isLoading={ isLoading }
-                    certificate={ certificate }
-                    initialValues={ initialValues }
-                    metadata={ metadata }
-                    onSubmit={ onSubmit }
-                    readOnly={ readOnly }
-                    data-testid={ testId }
-                />
-            );
-        case SupportedAuthProtocolTypes.WS_FEDERATION:
-            return (
-                <InboundPassiveStsForm
-                    onUpdate={ onUpdate }
-                    application={ application }
-                    isLoading={ isLoading }
-                    certificate={ certificate }
-                    initialValues={ initialValues }
                     onSubmit={ onSubmit }
                     readOnly={ readOnly }
                     data-testid={ testId }

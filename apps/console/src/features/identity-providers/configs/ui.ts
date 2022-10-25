@@ -54,7 +54,6 @@ import YahooLogo from "../../../themes/default/assets/images/identity-providers/
 import OIDCLogo from "../../../themes/default/assets/images/protocols/openid-connect.png";
 import OpenIDLogo from "../../../themes/default/assets/images/protocols/openid.png";
 import SamlLogo from "../../../themes/default/assets/images/protocols/saml.png";
-import WSFedLogo from "../../../themes/default/assets/images/protocols/ws-fed.png";
 import JWTLogo from "../../../themes/default/assets/images/technologies/jwt-logo.svg";
 import AppleLogo
     from "../../../themes/default/assets/images/third-party/apple-logo.svg";
@@ -133,7 +132,6 @@ export const getIdPIcons = (): any => {
         saml: SamlLogo,
         smsOTP: SMSOTPIcon,
         twitter: TwitterLogo,
-        wsFed: WSFedLogo,
         yahoo: YahooLogo,
         ...identityProviderConfig.getIconExtensions()
     };

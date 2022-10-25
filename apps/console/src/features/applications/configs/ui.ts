@@ -104,9 +104,6 @@ import {
     ReactComponent as OIDCWebAppTemplateIllustration
 } from "../../../themes/default/assets/images/illustrations/oidc-web-app-template-illustration.svg";
 import {
-    ReactComponent as PassiveSTSTemplateIllustration
-} from "../../../themes/default/assets/images/illustrations/passive-sts-template-illustration.svg";
-import {
     ReactComponent as SAMLWebAppTemplateIllustration
 } from "../../../themes/default/assets/images/illustrations/saml-web-app-template-illustration.svg";
 import {
@@ -125,16 +122,11 @@ import {
     ReactComponent as WorkdayTemplateIllustration
 } from "../../../themes/default/assets/images/illustrations/workday-template-illustration.svg";
 import {
-    ReactComponent as WSTrustTemplateIllustration
-} from "../../../themes/default/assets/images/illustrations/ws-trust-template-illustration.svg";
-import {
     ReactComponent as ZoomTemplateIllustration
 } from "../../../themes/default/assets/images/illustrations/zoom-template-illustration.svg";
 import OAuth2OpenIDLogo from "../../../themes/default/assets/images/protocols/oauth2-oidc.png";
 import OpenIDLogo from "../../../themes/default/assets/images/protocols/openid.png";
 import SamlLogo from "../../../themes/default/assets/images/protocols/saml.png";
-import WSFedLogo from "../../../themes/default/assets/images/protocols/ws-fed.png";
-import WSTrustLogo from "../../../themes/default/assets/images/protocols/ws-trust.png";
 import { ReactComponent as JWTLogo } from "../../../themes/default/assets/images/technologies/jwt-logo.svg";
 import { ReactComponent as MicrosoftLogo } from "../../../themes/default/assets/images/third-party/microsoft-logo.svg";
 import { SupportedAuthProtocolTypes } from "../models";
@@ -143,24 +135,16 @@ export const getInboundProtocolLogos = (): {
     general: FunctionComponent<SVGProps<SVGSVGElement>>;
     oidc: string;
     openid: string;
-    "passive-sts": string;
     [ SupportedAuthProtocolTypes.OAUTH2_OIDC ]: string;
     saml: string;
-    "ws-trust": string;
-    wsFed: string;
-    wsTrust: string;
 } => {
 
     return {
         general: ProtocolIllustration,
         oidc: OpenIDLogo,
         openid: OpenIDLogo,
-        "passive-sts": WSFedLogo,
         [ SupportedAuthProtocolTypes.OAUTH2_OIDC ]: OAuth2OpenIDLogo,
-        saml: SamlLogo,
-        "ws-trust": WSTrustLogo,
-        wsFed: WSFedLogo,
-        wsTrust: WSTrustLogo
+        saml: SamlLogo
     };
 };
 
@@ -169,13 +153,11 @@ export const getApplicationTemplateIllustrations = (): {
     customApp: FunctionComponent<SVGProps<SVGSVGElement>>;
     oidcMobile: FunctionComponent<SVGProps<SVGSVGElement>>;
     oidcWebApp: FunctionComponent<SVGProps<SVGSVGElement>>;
-    passiveSTS: FunctionComponent<SVGProps<SVGSVGElement>>;
     samlWebApp: FunctionComponent<SVGProps<SVGSVGElement>>;
     slack: FunctionComponent<SVGProps<SVGSVGElement>>;
     spa: FunctionComponent<SVGProps<SVGSVGElement>>;
     windowsNative: FunctionComponent<SVGProps<SVGSVGElement>>;
     workday: FunctionComponent<SVGProps<SVGSVGElement>>;
-    wsTrust: FunctionComponent<SVGProps<SVGSVGElement>>;
     zoom: FunctionComponent<SVGProps<SVGSVGElement>>;
 } => {
 
@@ -184,13 +166,11 @@ export const getApplicationTemplateIllustrations = (): {
         customApp: CustomApplicationTemplateIllustration,
         oidcMobile: OIDCMobileTemplateIllustration,
         oidcWebApp: OIDCWebAppTemplateIllustration,
-        passiveSTS: PassiveSTSTemplateIllustration,
         samlWebApp: SAMLWebAppTemplateIllustration,
         slack: SlackTemplateIllustration,
         spa: SPATemplateIllustration,
         windowsNative: WindowsTemplateIllustration,
         workday: WorkdayTemplateIllustration,
-        wsTrust: WSTrustTemplateIllustration,
         zoom: ZoomTemplateIllustration
     };
 };

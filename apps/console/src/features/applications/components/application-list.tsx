@@ -43,7 +43,7 @@ import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useE
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Header, Icon, Popup, SemanticICONS } from "semantic-ui-react";
-import { OAuthProtocolTemplateItem, PassiveStsProtocolTemplateItem, SAMLProtocolTemplateItem } from "./meta";
+import { OAuthProtocolTemplateItem, SAMLProtocolTemplateItem } from "./meta";
 import { applicationConfig } from "../../../extensions";
 import {
     AppConstants,
@@ -346,8 +346,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                     // Create a set with custom-application Ids
                     const customApplicationIds = new Set([
                         ApplicationManagementConstants.CUSTOM_APPLICATION_SAML,
-                        ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC,
-                        ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS
+                        ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
                     ]);
 
                     // Checking whether the templateId from backend, is for a custom application
@@ -368,9 +367,6 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                                 templateClone.name = SAMLProtocolTemplateItem.name;
                             } else if (app.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC) {
                                 templateClone.name = OAuthProtocolTemplateItem.name;
-                            } else if (app.templateId
-                                === ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS) {
-                                templateClone.name = PassiveStsProtocolTemplateItem.name;
                             }
                         }
 

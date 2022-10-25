@@ -19,9 +19,7 @@
 import { LinkInterface } from "@wso2is/core/models";
 import {
     OIDCDataInterface,
-    PassiveStsConfigurationInterface,
     SAML2ConfigurationInterface,
-    WSTrustConfigurationInterface
 } from "./application-inbound";
 import { TemplateContentInterface } from "../data/application-templates";
 
@@ -87,8 +85,6 @@ export interface ApplicationBasicWizard extends ApplicationBasicInterface {
 export interface InboundProtocolsInterface {
     oidc?: OIDCDataInterface;
     saml?: SAML2ConfigurationInterface;
-    wsTrust?: WSTrustConfigurationInterface;
-    passiveSts?: PassiveStsConfigurationInterface;
 }
 
 /**
