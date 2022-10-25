@@ -2405,8 +2405,7 @@ export const console: ConsoleNS = {
                 },
                 myaccount: {
                     description: "Portail libre-service pour les utilisateurs d'Asgardeo",
-                    popup: "Partagez ce lien avec vos utilisateurs pour autoriser" +
-                    " l'accès à Mon compte et gérer leurs comptes.",
+                    popup: "Partagez ce lien avec vos utilisateurs pour autoriser l'accès à Mon compte.",
                     title: "Mon compte",
                     enable: {
                         0: "Activé",
