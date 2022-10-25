@@ -469,6 +469,12 @@ export interface ConsoleNS {
                                     };
                                 };
                                 heading: string;
+                                scopelessAttributes: {
+                                    description: string;
+                                    displayName: string;
+                                    name: string;
+                                    hint: string;
+                                },
                                 attributeComponentHint: string;
                                 attributeComponentHintAlt: string;
                                 description: string;
@@ -495,8 +501,10 @@ export interface ConsoleNS {
                                         actions: {
                                             makeMandatory: string;
                                             makeRequested: string;
+                                            makeScopeRequested: string;
                                             removeMandatory: string;
                                             removeRequested: string;
+                                            removeScopeRequested: string;
                                             subjectDisabledSelection: string;
                                         };
                                         faultyAttributeMapping: string;
@@ -510,6 +518,13 @@ export interface ConsoleNS {
                                 selectAll: string;
                             };
                             attributeMappingChange: Notification;
+                            emptySearchResults: {
+                                subtitles: {
+                                    0: string,
+                                    1: string
+                                },
+                                title: string;
+                            },
                             roleMapping: {
                                 heading: string;
                             };

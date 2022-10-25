@@ -35,14 +35,19 @@ export interface SegmentedAccordionSubComponentsInterface {
  * Proptypes for the segmented accordion component.
  */
 export interface SegmentedAccordionPropsInterface extends AccordionProps, IdentifiableComponentInterface,
-    TestableComponentInterface { }
+    TestableComponentInterface {
+    /**
+     * Type of final view of the list of accordion components.
+     */
+    viewType?: "list-view" | "table-view";
+}
 
 /**
  * Segmented accordion component.
  *
  * @param props - Props injected to the component.
  *
- * @returns Segmented Accordion React Component
+ * @returns Segmented Accordion React Component.
  */
 export const SegmentedAccordion: FunctionComponent<SegmentedAccordionPropsInterface>
     & SegmentedAccordionSubComponentsInterface = (
@@ -54,13 +59,36 @@ export const SegmentedAccordion: FunctionComponent<SegmentedAccordionPropsInterf
             children,
             [ "data-componentid" ]: componentId,
             [ "data-testid" ]: testId,
+            viewType,
             ...rest
         } = props;
 
-        const classes = classNames(
-            "segmented-accordion",
-            className
-        );
+        let classes;
+
+        switch (viewType) {
+            case "list-view": {
+                classes = classNames(
+                    "segmented-accordion",
+                    className
+                );
+
+                break;
+            }
+            case "table-view": {
+                classes = classNames(
+                    "segmented-accordion-table-view",
+                    className
+                );
+
+                break;
+            }
+            default: {
+                classes = classNames(
+                    "segmented-accordion",
+                    className
+                );
+            }
+        }
 
         return (
             <Accordion
@@ -79,7 +107,8 @@ export const SegmentedAccordion: FunctionComponent<SegmentedAccordionPropsInterf
  */
 SegmentedAccordion.defaultProps = {
     "data-componentid": "segmented-accordion",
-    "data-testid": "segmented-accordion"
+    "data-testid": "segmented-accordion",
+    viewType: "list-view"
 };
 
 SegmentedAccordion.Title = SegmentedAccordionTitle;

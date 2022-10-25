@@ -80,7 +80,7 @@ export interface StrictSegmentedAccordionTitleActionInterface {
     /**
      * Type of the action to render the component.
      */
-    type: "checkbox" | "toggle" | "icon";
+    type: "checkbox" | "toggle" | "icon" | "checkbox popup";
     /**
      * On change callback.
      *
@@ -119,7 +119,7 @@ export interface StrictSegmentedAccordionTitleActionInterface {
  *
  * @param props - Props injected to the component.
  *
- * @returns Segmented Accordion Title React Component
+ * @returns Segmented Accordion React Component.
  */
 export const SegmentedAccordionTitle: FunctionComponent<SegmentedAccordionTitlePropsInterface> = (
     props: SegmentedAccordionTitlePropsInterface
@@ -176,6 +176,7 @@ export const SegmentedAccordionTitle: FunctionComponent<SegmentedAccordionTitleP
     const resolveAction = (action: SegmentedAccordionTitleActionInterface, index: number): ReactElement => {
 
         const {
+            checked,
             icon,
             label,
             onChange,
@@ -219,6 +220,7 @@ export const SegmentedAccordionTitle: FunctionComponent<SegmentedAccordionTitleP
                     />
                 );
             }
+
             case "icon": {
                 if (typeof icon === "string") {
                     return (
@@ -282,6 +284,32 @@ export const SegmentedAccordionTitle: FunctionComponent<SegmentedAccordionTitleP
                     />
                 );
             }
+
+            case "checkbox popup": {
+                return (
+                    <Popup
+                        disabled={ disabled || !popoverText }
+                        trigger={ (
+                            <Checkbox
+                                checked={ checked }
+                                label={ label }
+                                disabled={ disabled }
+                                onChange={
+                                    (e: FormEvent<HTMLInputElement>, data: CheckboxProps) => handleActionOnClick(
+                                        onChange, e, data, id)
+                                }
+                                data-componentid={ `${ componentId }-${ action.type }-action-${ index }` }
+                                data-testid={ `${ testId }-${ action.type }-action-${ index }` }
+                                { ...actionsRest }
+                            />
+                        ) }
+                        position="top center"
+                        content={ popoverText }
+                        inverted
+                    />
+                );
+            }
+
             default: {
                 return null;
             }
@@ -300,10 +328,10 @@ export const SegmentedAccordionTitle: FunctionComponent<SegmentedAccordionTitleP
         >
             <Grid>
                 <Grid.Row>
-                    <Grid.Column computer={ 8 } tablet={ 8 } mobile={ 16 } verticalAlign="middle">
+                    <Grid.Column computer={ 10 } tablet={ 8 } mobile={ 16 } verticalAlign="middle">
                         { content || children }
                     </Grid.Column>
-                    <Grid.Column computer={ 8 } tablet={ 8 } mobile={ 16 } verticalAlign="middle">
+                    <Grid.Column computer={ 6 } tablet={ 8 } mobile={ 16 } verticalAlign="middle">
                         <div className="flex floated right">
                             {
                                 (actions && actions instanceof Array && actions.length > 0)

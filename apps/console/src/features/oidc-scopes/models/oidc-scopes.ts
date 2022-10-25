@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { ExtendedExternalClaimInterface } from "../../applications/components/settings";
+
 /**
  *  OIDC Scopes list model.
  */
@@ -36,4 +38,27 @@ export interface OIDCScopesListInterface {
      * Description of the scope
      */
     description?: string;
+}
+
+export interface OIDCScopesClaimsListInterface {
+    /**
+     * Name of the scope.
+     */
+    name?: string;
+    /**
+     * Display name of the scope.
+     */
+    displayName?: string;
+    /**
+     * List of claims belong to the scope.
+     */
+    claims?: ExtendedExternalClaimInterface[];
+    /**
+     * Description of the scope
+     */
+    description?: string;
+    /**
+     * Scope selected or not
+     */
+    selected?: boolean;
 }
