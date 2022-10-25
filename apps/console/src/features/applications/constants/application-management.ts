@@ -401,12 +401,6 @@ export class ApplicationManagementConstants {
 
     public static readonly MOBILE = "mobile-application";
 
-    public static readonly CUSTOM_APPLICATION_PROTOCOL_ORDER: Map<string, number> =
-        new Map<string, number>([
-            [ "oidc", 0 ],
-            [ "saml", 1 ]
-        ])
-
     /**
      * Application create limit reached error.
      */

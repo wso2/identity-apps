@@ -19,11 +19,11 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { EncodeDecodeUtils } from "@wso2is/core/utils";
 import { AppAvatar, UserAvatar } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, ReactNode, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, Label } from "semantic-ui-react";
 import { getInboundProtocolLogos } from "../../configs";
-import { SubmitFormCustomPropertiesInterface, SupportedAuthProtocolTypes } from "../../models";
+import { SubmitFormCustomPropertiesInterface } from "../../models";
 import { ApplicationManagementUtils } from "../../utils";
 
 /**
