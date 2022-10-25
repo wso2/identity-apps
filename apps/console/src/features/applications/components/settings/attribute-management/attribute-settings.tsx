@@ -29,7 +29,9 @@ import {
 import { addAlert } from "@wso2is/core/store";
 import { ConfirmationModal, ContentLoader, EmphasizedSegment } from "@wso2is/react-components";
 import { useOIDCScopesList } from "apps/console/src/features/oidc-scopes/api/oidc-scopes";
-import { OIDCScopesClaimsListInterface, OIDCScopesListInterface 
+import {
+    OIDCScopesClaimsListInterface,
+    OIDCScopesListInterface 
 } from "apps/console/src/features/oidc-scopes/models/oidc-scopes";
 import isEmpty from "lodash-es/isEmpty";
 import sortBy from "lodash-es/sortBy";
