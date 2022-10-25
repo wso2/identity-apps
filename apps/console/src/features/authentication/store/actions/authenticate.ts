@@ -34,7 +34,6 @@ import {
 import { I18n } from "@wso2is/i18n";
 import isEmpty from "lodash-es/isEmpty";
 import { Dispatch } from "redux";
-import { commonConfig } from "../../../../extensions";
 import { Config } from "../../../core/configs";
 import { store } from "../../../core/store";
 import { getProfileInfo, getProfileSchemas } from "../../../users/api";
