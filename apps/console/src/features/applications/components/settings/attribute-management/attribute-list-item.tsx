@@ -274,7 +274,6 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                     </Table.Cell>
                 )
             }
-
             <Table.Cell
                 { ...(localDialect && !mappingOn && { textAlign: "center" }) }
                 { ...(localDialect && mappingOn && { textAlign: "center" }) }
