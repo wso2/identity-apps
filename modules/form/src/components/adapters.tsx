@@ -78,8 +78,8 @@ export const TextFieldAdapter = (props): ReactElement => {
                     : "text"
             }
             error={
-                (meta.error && meta.touched)
-                    ? meta.error
+                ((meta.error || meta.submitError) && meta.touched)
+                    ? meta.error || meta.submitError
                     : null
             }
             onKeyDown={
@@ -144,8 +144,8 @@ export const PasswordFieldAdapter = (props): ReactElement => {
             onChange={ (event, data) => input.onChange(data?.value) }
             onBlur={ (event) => input.onBlur(event) }
             error={
-                (meta.error && meta.touched)
-                    ? meta.error
+                ((meta.error || meta.submitError) && meta.touched)
+                    ? meta.error || meta.submitError
                     : null
             }
             autoFocus={ childFieldProps.autoFocus || false }
@@ -223,8 +223,8 @@ export const TextAreaAdapter = (props): ReactElement => {
             value={ meta.modified ? input.value : (childFieldProps?.value ? childFieldProps?.value
                 : (parentFormProps?.values[ childFieldProps?.name ] ? parentFormProps?.values[ childFieldProps?.name ] : "")) }
             error={
-                (meta.error && meta.touched)
-                    ? meta.error
+                ((meta.error || meta.submitError) && meta.touched)
+                    ? meta.error || meta.submitError
                     : null
             }
         />
@@ -396,8 +396,8 @@ export const SelectAdapter = (props): ReactElement => {
             control={ Select }
             { ...omit(childFieldProps, [ "value", "children" ]) }
             error={
-                (meta.error && meta.touched)
-                    ? meta.error
+                ((meta.error || meta.submitError) && meta.touched)
+                    ? meta.error || meta.submitError
                     : null
             }
             value={ meta.modified ? input.value : (childFieldProps?.value ? childFieldProps?.value : "") }
@@ -554,8 +554,8 @@ export const ColorPickerAdapter = (props: ColorPickerAdapterPropsInterface): Rea
                         { ...omit(childFieldProps, [ "value", "listen", "label" ]) }
                         type="text"
                         error={
-                            (meta.error && meta.touched)
-                                ? meta.error
+                            ((meta.error || meta.submitError) && meta.touched)
+                                ? meta.error || meta.submitError
                                 : null
                         }
                     >
