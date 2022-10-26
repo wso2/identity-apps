@@ -71,7 +71,7 @@ interface StrictSwitcherOption {
      * {@link onSelect} will be triggered when this button
      * state has been changed to active.
      *
-     * @param self
+     * @param self - switcher options
      */
     onSelect?: (self: StrictSwitcherOption) => void;
     /**
@@ -99,20 +99,20 @@ export type SwitcherProps = PropsWithChildren<StrictSwitcher & ButtonGroupProps 
  * this property is explicitly added to this interface to
  * give more clarity. Same goes to {@link color} as well.
  *
- * Example: { ... icon: 'file' }
+ * Example: `{ ... icon: 'file' }`
  *
  * Optionally specify the color to each of the {@link StrictSwitcherOption}
  * to distinguish from other options. For a color palette refer:
  * {@link https://react.semantic-ui.com/elements/button/#types-basic-shorthand}
  *
- * Example: { ... color: 'grey' }
+ * Example: `{ ... color: 'grey' }`
  *
  * Optionally specify the label position of the labeled
  * icon button. It can be either left or right depending on the
  * option. By default {@link Switcher} has enabled the
- * {@link StrictButtonGroupProps.labeled} property to {@code true}.
+ * {@link StrictButtonGroupProps.labeled} property to true.
  *
- * Example: { ... labelPosition?: 'right' | 'left' }
+ * Example: `{ ... labelPosition?: 'right' | 'left' }`
  */
 export type SwitcherOptionProps = StrictSwitcherOption & ButtonProps & IdentifiableComponentInterface;
 
@@ -122,8 +122,8 @@ const FIRST_ELEMENT_INDEX: number = 0;
 const EMPTY_OBJECT: Record<string, any> = {};
 
 /**
- * @pure check every option has icon value in place.
- * @param options {SwitcherOptionProps[]}
+ * Check every option has icon value in place.
+ * @param options - switcher props
  */
 const canButtonGroupHaveIcons = (options: SwitcherOptionProps[]): boolean => {
     return options.every((optionHas) => Boolean(optionHas?.icon));
@@ -152,13 +152,14 @@ const canButtonGroupHaveIcons = (options: SwitcherOptionProps[]): boolean => {
  *
  * How can I use this interface? As a example refer below block.
  *
+ * ```
  *  <Switcher
  *      defaultOptionValue="option2"
  *      onChange={ (selectedOption: SwitcherOptionProps) => {
  *          // Will be triggered initially and on value change.
  *          console.log(selectedOption.value);
  *      } }
- *      options={ [
+ *      options=\{ [
  *          {
  *              value: "option1",
  *              label: "My option 1",
@@ -171,9 +172,8 @@ const canButtonGroupHaveIcons = (options: SwitcherOptionProps[]): boolean => {
  *          }
  *      ] }
  *  />
- *
+ *```
  * @param props - props injected to the component
- * @constructor
  */
 export const Switcher: FC<SwitcherProps> = (props: SwitcherProps): ReactElement => {
 
@@ -222,7 +222,7 @@ export const Switcher: FC<SwitcherProps> = (props: SwitcherProps): ReactElement 
     /**
      * On {@link SwitcherOptionProps} button click this function will
      * be triggered with the event and the data passed to the
-     * {@link Button} element. It uses the {@code data.value}
+     * {@link Button} element. It uses the `data.value`
      * to access the event source value.
      *
      * @param event - alias for {@link React.MouseEvent}

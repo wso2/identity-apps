@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import PropTypes from "prop-types";
 import React, { Component, ErrorInfo, PropsWithChildren, ReactNode } from "react";
 
 /**
@@ -45,10 +46,21 @@ interface ErrorBoundaryProps {
  * @param props - Props injected in to the placeholder component.
  * @returns a JSX Element
  */
-export class ErrorBoundary extends Component<
+class ErrorBoundary extends Component<
     PropsWithChildren<ErrorBoundaryProps>,
     ErrorBoundaryState,
     ErrorBoundaryProps> {
+
+    static propTypes = {
+        children: PropTypes.oneOfType([
+            PropTypes.arrayOf(PropTypes.node),
+            PropTypes.node,
+            PropTypes.func
+        ]),
+        fallback: PropTypes.element,
+        handleError: PropTypes.func,
+        onChunkLoadError: PropTypes.func
+    }
 
     constructor(props: ErrorBoundaryProps) {
         super(props);
@@ -87,3 +99,5 @@ export class ErrorBoundary extends Component<
         return children;
     }
 }
+
+export { ErrorBoundary };
