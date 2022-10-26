@@ -88,6 +88,7 @@ const OrganizationListItem = (
                 width={ showGravatar ? 9 : 12 }
                 verticalAlign="middle"
                 data-componentid={ `${ componentId }-organization-name` }
+                className="ellipsis"
             >
                 { organization?.name ?? (
                     <Placeholder>
