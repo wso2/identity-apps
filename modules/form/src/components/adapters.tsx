@@ -400,7 +400,7 @@ export const SelectAdapter = (props: FieldRenderProps<any>): ReactElement => {
 
                 input.onChange(data.value.toString());
             } }
-            onBlur={ (event: React.SyntheticEvent) => input.onBlur(event) }
+            onBlur={ (event: React.FocusEvent<HTMLElement, Element>) => input.onBlur(event) }
             autoFocus={ childFieldProps.autoFocus || false }
             disabled={ childFieldProps.disabled }
             required={ childFieldProps.required }
