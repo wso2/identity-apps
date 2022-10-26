@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -28,6 +28,7 @@ import {
 } from "@wso2is/react-components";
 import omit from "lodash-es/omit";
 import React, { ClipboardEvent, FormEvent, KeyboardEvent, ReactElement } from "react";
+import { FieldRenderProps } from "react-final-form";
 import { Checkbox, Form, Icon, Input, Popup, Select } from "semantic-ui-react";
 import { QueryParameters } from "../addons";
 import {
@@ -39,12 +40,10 @@ import {
 
 /**
  * The enter key.
- * @constant
- * @type {string}
  */
 const ENTER_KEY = "Enter";
 
-export const TextFieldAdapter = (props): ReactElement => {
+export const TextFieldAdapter = (props:FieldRenderProps<any> ): ReactElement => {
 
     const { childFieldProps, input, meta, parentFormProps } = props;
 
@@ -68,9 +67,13 @@ export const TextFieldAdapter = (props): ReactElement => {
             onBlur={ (event) => input.onBlur(event) }
             control={ Input }
             autoFocus={ childFieldProps.autoFocus || false }
-            value={ meta.modified ? input.value
-                : (childFieldProps?.value ? childFieldProps?.value
-                    : (parentFormProps?.values[ childFieldProps?.name ] ? parentFormProps?.values[ childFieldProps?.name ] : "")) }
+            value={ meta.modified
+                ? input.value
+                : (childFieldProps?.value
+                    ? childFieldProps?.value
+                    : (parentFormProps?.values[ childFieldProps?.name ]
+                        ? parentFormProps?.values[ childFieldProps?.name ]
+                        : "")) }
             { ...omit(childFieldProps, [ "value", "listen" ]) }
             type={
                 childFieldProps.inputType === "number"
@@ -125,7 +128,7 @@ export const TextFieldAdapter = (props): ReactElement => {
     );
 };
 
-export const PasswordFieldAdapter = (props): ReactElement => {
+export const PasswordFieldAdapter = (props: FieldRenderProps<any>): ReactElement => {
 
     const { childFieldProps, input, meta, parentFormProps } = props;
 
@@ -150,14 +153,20 @@ export const PasswordFieldAdapter = (props): ReactElement => {
             }
             autoFocus={ childFieldProps.autoFocus || false }
             { ...childFieldProps }
-            value={ meta.modified ? input.value
-                : (childFieldProps?.value ? childFieldProps?.value
-                    : (parentFormProps?.values[ childFieldProps?.name ] ? parentFormProps?.values[ childFieldProps?.name ] : "")) }
+            value={ meta.modified
+                ? input.value
+                : (childFieldProps?.value
+                    ? childFieldProps?.value
+                    : (parentFormProps?.values[ childFieldProps?.name ]
+                        ? parentFormProps?.values[ childFieldProps?.name ]
+                        : "")
+                )
+            }
         />
     );
 };
 
-export const CopyFieldAdapter = (props): ReactElement => {
+export const CopyFieldAdapter = (props: FieldRenderProps<any>): ReactElement => {
 
     const { childFieldProps, parentFormProps } = props;
     const {
@@ -193,7 +202,7 @@ export const CopyFieldAdapter = (props): ReactElement => {
     );
 };
 
-export const TextAreaAdapter = (props): ReactElement => {
+export const TextAreaAdapter = (props: FieldRenderProps<any>): ReactElement => {
 
     const { childFieldProps, input, meta, parentFormProps } = props;
 
@@ -220,8 +229,13 @@ export const TextAreaAdapter = (props): ReactElement => {
             } }
             type="textarea"
             { ...omit(childFieldProps, [ "value", "listen" ]) }
-            value={ meta.modified ? input.value : (childFieldProps?.value ? childFieldProps?.value
-                : (parentFormProps?.values[ childFieldProps?.name ] ? parentFormProps?.values[ childFieldProps?.name ] : "")) }
+            value={ meta.modified
+                ? input.value
+                : (childFieldProps?.value
+                    ? childFieldProps?.value
+                    : (parentFormProps?.values[ childFieldProps?.name ]
+                        ? parentFormProps?.values[ childFieldProps?.name ]
+                        : "")) }
             error={
                 ((meta.error || meta.submitError) && meta.touched)
                     ? meta.error || meta.submitError
@@ -237,11 +251,11 @@ export const TextAreaAdapter = (props): ReactElement => {
  *
  * @param props - Props injected to the component. props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns
  */
-export const ToggleAdapter = (props): ReactElement => {
+export const ToggleAdapter = (props: FieldRenderProps<any>): ReactElement => {
 
-    const { childFieldProps, input, meta } = props;
+    const { childFieldProps, input } = props;
 
     return (
         <Form.Checkbox
@@ -269,9 +283,9 @@ export const ToggleAdapter = (props): ReactElement => {
  * Semantic Checkbox adapter.
  * @see {@link https://codesandbox.io/s/react-final-form-simple-example-3we74?fontsize=14&file=/index.js}
  *
- * @param {CheckboxAdapterPropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns
  */
 export const CheckboxAdapter = (props: CheckboxAdapterPropsInterface): ReactElement => {
 
@@ -321,9 +335,9 @@ export const CheckboxAdapter = (props: CheckboxAdapterPropsInterface): ReactElem
 /**
  * Semantic UI Radio Adapter.
  *
- * @param {RadioAdapterPropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns
  */
 export const RadioAdapter = (props: RadioAdapterPropsInterface): ReactElement => {
 
@@ -370,7 +384,7 @@ export const RadioAdapter = (props: RadioAdapterPropsInterface): ReactElement =>
     );
 };
 
-export const SelectAdapter = (props): ReactElement => {
+export const SelectAdapter = (props: FieldRenderProps<any>): ReactElement => {
 
     const { childFieldProps, input, meta } = props;
 
@@ -405,7 +419,7 @@ export const SelectAdapter = (props): ReactElement => {
     );
 };
 
-export const ButtonAdapter = ({ childFieldProps }): ReactElement => {
+export const ButtonAdapter = ({ childFieldProps }: FieldRenderProps<any>): ReactElement => {
     if (childFieldProps.buttonType === FieldButtonTypes.BUTTON_PRIMARY) {
         return (
             <PrimaryButton
@@ -460,7 +474,7 @@ export const ButtonAdapter = ({ childFieldProps }): ReactElement => {
     }
 };
 
-export const QueryParamsAdapter = ({ input, childFieldProps }): ReactElement => {
+export const QueryParamsAdapter = ({ input, childFieldProps }: FieldRenderProps<any>): ReactElement => {
 
     const { label, name } = childFieldProps;
 
@@ -483,9 +497,9 @@ export const QueryParamsAdapter = ({ input, childFieldProps }): ReactElement => 
 /**
  * Color Picker Adapter implemented with `react-color`.
  *
- * @param {ColorPickerAdapterPropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns
  */
 export const ColorPickerAdapter = (props: ColorPickerAdapterPropsInterface): ReactElement => {
 
