@@ -61,6 +61,18 @@ export class IdentityProviderConstants {
      */
     public static readonly APPLICATION_DOMAIN = "Application/";
 
+    /**
+     * data-tabIds of the panes in the IdP settings
+     * 
+    */
+    public static readonly ADVANCED_TAB_ID = "advanced";
+    public static readonly ATTRIBUTES_TAB_ID = "attributes";
+    public static readonly CONNECTED_APPS_TAB_ID = "connected-apps";
+    public static readonly GENERAL_TAB_ID = "general";
+    public static readonly JIT_PROVISIONING_TAB_ID = "jit-provisioning";
+    public static readonly OUTBOUND_PROVISIONING_TAB_ID = "outbound-provisioning";
+    public static readonly SETTINGS_TAB_ID = "settings";
+    
 }
 
 export const GOOGLE_IDP_NAME = "Google";
