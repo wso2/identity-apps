@@ -439,7 +439,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                 hidden: (): boolean => !isFeatureEnabled(featureConfig?.applications,
                     ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT")),
                 icon: (): SemanticICONS => { 
-                    return "external";
+                    return "caret right";
                 },
                 onClick: (e: SyntheticEvent, app: ApplicationListItemInterface): void =>
                     handleApplicationEdit(app.id, app.access, "#tab=" +
