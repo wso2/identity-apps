@@ -20,9 +20,10 @@ import { EffectCallback, useEffect, useRef } from "react";
 
 /**
  * This is a custom React hook that calls the the useEffect hook whenever the passed deps change
- * EXCEPT during initial render
- * @param {React.EffectCallback} effect The callback function passed into the useEffect hook
- * @param deps states or props based on which the callback function should be conditionally called
+ * EXCEPT during initial render.
+ * 
+ * @param effect - The callback function passed into the useEffect hook.
+ * @param deps - states or props based on which the callback function should be conditionally called.
  */
 export const useNonInitialEffect = (effect: EffectCallback, deps?: readonly any[]): void => {
 
