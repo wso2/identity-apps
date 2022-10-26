@@ -834,6 +834,10 @@ export interface ConsoleNS {
                             grant: FormAttributes;
                             public: FormAttributes;
                         };
+                        mobileApp: {
+                            discoverableHint: string;
+                            mobileAppPlaceholder: string;
+                        },
                         sections: {
                             accessToken: {
                                 heading: string;

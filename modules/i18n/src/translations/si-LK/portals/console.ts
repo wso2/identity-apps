@@ -1602,6 +1602,11 @@ export const console: ConsoleNS = {
                                 heading: "යෙදුම අවලංගු කර ඇත"
                             }
                         },
+                        mobileApp: {
+                            discoverableHint: "සබල කර ඇති නම් සහ වෙබ් ප්‍රවේශ විය හැකි url (ගැඹුරු සබැඳියක්) ලබා දී " +
+                                "ඇත්නම්, පාරිභෝගිකයින්ට <1>{{ myAccount }}</1> ද්වාරයෙන් මෙම යෙදුමට ප්‍රවේශ විය හැක.",
+                            mobileAppPlaceholder: "myapp://oauth2"
+                        },
                         sections: {
                             accessToken: {
                                 fields: {
