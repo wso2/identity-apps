@@ -28,6 +28,7 @@ import {
     Icon,
     PaginationProps
 } from "semantic-ui-react";
+import { UIConstants } from "../../../core/src/constants";
 import { DataTable, Pagination, PaginationPropsInterface } from "../components";
 
 /**
@@ -48,6 +49,10 @@ export interface ListLayoutPropsInterface extends PaginationProps, IdentifiableC
      * Extra CSS classes.
      */
     className?: string;
+    /**
+     * Default list item limit.
+     */
+    defaultListItemLimit?: number;
     /**
      * Disables Left action panel component.
      */
@@ -153,6 +158,7 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
         advancedSearchPosition,
         children,
         className,
+        defaultListItemLimit,
         disableLeftActionPanel,
         disableRightActionPanel,
         isLoading,
@@ -290,7 +296,7 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
                         <DataTable
                             isLoading={ true }
                             loadingStateOptions={ {
-                                count: 10,
+                                count: defaultListItemLimit ?? UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
                                 imageType: "square"
                             } }
                             columns={ [] }

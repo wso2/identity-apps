@@ -50,7 +50,6 @@ import {
     EventPublisher,
     FeatureConfigInterface,
     UIConfigInterface,
-    UIConstants,
     getEmptyPlaceholderIllustrations,
     history
 } from "../../core";
@@ -76,10 +75,6 @@ interface ApplicationListPropsInterface extends SBACInterface<FeatureConfigInter
      * Advanced Search component.
      */
     advancedSearch?: ReactNode;
-    /**
-     * Default list item limit.
-     */
-    defaultListItemLimit?: number;
     /**
      * Application list.
      */
@@ -135,7 +130,6 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
 
     const {
         advancedSearch,
-        defaultListItemLimit,
         featureConfig,
         isLoading,
         list,
@@ -553,10 +547,6 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                 className="applications-table"
                 externalSearch={ advancedSearch }
                 isLoading={ isLoading || isApplicationTemplateRequestLoading }
-                loadingStateOptions={ {
-                    count: defaultListItemLimit ?? UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
-                    imageType: "square"
-                } }
                 actions={ !isSetStrongerAuth && resolveTableActions() }
                 columns={ resolveTableColumns() }
                 data={ list?.applications }
