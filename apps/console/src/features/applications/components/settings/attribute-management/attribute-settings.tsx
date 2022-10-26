@@ -192,7 +192,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
 
     // Get OIDC scope-use attributes list
     const [ scopes, setScopes ] = useState<OIDCScopesListInterface[]>(null);
-    const [ externalClaimsGroupedByScopes, setExternalClaimsGroupedByScopes ] 
+    const [ externalClaimsGroupedByScopes, setExternalClaimsGroupedByScopes ]
         = useState<OIDCScopesClaimsListInterface[]>(null);
 
     // Manage available claims in local and external dialects.
@@ -225,7 +225,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
-    const { 
+    const {
         data: OIDCScopeList,
         isLoading: isOIDCScopeListLoading
     } = useOIDCScopesList();
@@ -248,10 +248,14 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
     }, [ claims, externalClaims ]);
 
     useEffect(() => {
-        setScopes(OIDCScopeList);
-        getClaims();
-        getAllDialects();
-        findLocalClaimDialectURI();
+        if (!isOIDCScopeListLoading) {
+            setScopes(OIDCScopeList);
+            getClaims();
+            getAllDialects();
+            findLocalClaimDialectURI();
+
+            return;
+        }
     }, [ isOIDCScopeListLoading ]);
 
     useEffect(() => {
@@ -301,7 +305,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
      * Check whether claim is mandatory or not
      *
      * @param uri - Claim URI to be checked.
-     * 
+     *
      * @returns If initially requested as mandatory.
      */
     const checkInitialRequestMandatory = (uri: string): boolean => {
@@ -323,7 +327,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
      * Check whether claim is requested or not.
      *
      * @param uri - Claim URI to be checked.
-     * 
+     *
      * @returns If initially requested or not.
      */
     const checkInitialRequested = (uri: string): boolean => {
@@ -346,22 +350,22 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         const tempClaims: ExtendedExternalClaimInterface[] = [ ...externalClaims ];
         const updatedScopes: OIDCScopesClaimsListInterface[] = [];
         const scopedClaims: ExtendedExternalClaimInterface[] = [];
- 
+
         if ((scopes !== null) && (scopes !== undefined) && (scopes.length !== 0) && (claims.length !== 0)) {
             scopes.map((scope: OIDCScopesListInterface) => {
                 if (scope.name !== "openid"){
                     const updatedClaims: ExtendedExternalClaimInterface[] = [];
                     let scopeSelected: boolean = false;
-     
+
                     scope.claims.map((scopeClaim: string) => {
                         tempClaims.map( (tempClaim: ExtendedExternalClaimInterface) => {
                             if (scopeClaim === tempClaim.claimURI) {
-                                const updatedClaim: ExtendedExternalClaimInterface = { 
+                                const updatedClaim: ExtendedExternalClaimInterface = {
                                     ...tempClaim,
                                     mandatory: checkInitialRequestMandatory(tempClaim.claimURI),
                                     requested: checkInitialRequested(tempClaim.claimURI)
                                 };
-     
+
                                 if (updatedClaim.requested) {
                                     scopeSelected = true;
                                 }
@@ -370,24 +374,24 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                             }
                         });
                     });
-                    const updatedScope: OIDCScopesClaimsListInterface = { 
+                    const updatedScope: OIDCScopesClaimsListInterface = {
                         ...scope,
                         claims: updatedClaims,
                         selected: scopeSelected
                     };
-     
+
                     updatedScopes.push(updatedScope);
                 }
             });
- 
+
             const scopelessClaims: ExtendedExternalClaimInterface[] = tempClaims.filter(
                 (tempClaim) => !scopedClaims.includes(tempClaim));
             const updatedScopelessClaims: ExtendedExternalClaimInterface[] = [];
             let isScopelessClaimRequested: boolean = false;
- 
+
             scopelessClaims.map((tempClaim: ExtendedExternalClaimInterface) => {
                 const isInitialRequested: boolean = checkInitialRequested(tempClaim.claimURI);
- 
+
                 updatedScopelessClaims.push({
                     ...tempClaim,
                     mandatory: checkInitialRequestMandatory(tempClaim.claimURI),
@@ -586,7 +590,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
      * Get Claim Mapping of the URI given
      *
      * @param claimURI - URI of the mapping removed
-     * 
+     *
      * @returns external claim with mapping
      */
     const getCurrentMapping = (claimURI: string): ExtendedClaimMappingInterface => {
@@ -604,7 +608,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
 
     /**
      * Update mapping value
-     * 
+     *
      * @param claimURI - URI of the mapping updated
      * @param mappedValue - mapped claims value
      */
@@ -621,7 +625,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
 
     /**
      * Decide whether to use mapping or not
-     * 
+     *
      * @param claimURI - URI of the mapping
      * @param addMapping - Whether add or not add the mapping
      */
@@ -638,7 +642,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
 
     /**
      * change selected dialect
-     * 
+     *
      * @param dialectURI - dialect uri
      */
     const changeSelectedDialect = (dialectURI: string) => {
@@ -894,7 +898,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
 
     /**
      *  Submit update request
-     * 
+     *
      *  @param claimMappingFinal - final claim mappings
      */
     const submitUpdateRequest = (claimMappingFinal: ExtendedClaimMappingInterface[]) => {
@@ -1119,7 +1123,6 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                                         />
                                     )
                                 }
-                                            
                             </Grid.Column>
                         </div>
                     </Grid>
