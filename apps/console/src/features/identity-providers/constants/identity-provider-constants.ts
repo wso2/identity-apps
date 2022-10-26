@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -18,17 +18,13 @@
 
 /**
  * Identity provider settings key in local storage.
- * @constant
- * @type {string}
- * @default
+ * @defaultValue
  */
 export const IDENTITY_PROVIDER_SETTINGS_STORAGE_KEY = "identity_provider_settings";
 
 /**
  * Path to the identity provider page.
- * @constant
- * @type {string}
- * @default
+ * @defaultValue
  */
 export const IDENTITY_PROVIDER_PAGE_PATH = "/identity-providers";
 
@@ -41,15 +37,12 @@ export class IdentityProviderConstants {
      * Private constructor to avoid object instantiation from outside
      * the class.
      *
-     * @hideconstructor
      */
     /* eslint-disable @typescript-eslint/no-empty-function */
     private constructor() { }
 
     /**
      * Paths for the identity provider management config files.
-     * @constant
-     * @type {object}
      */
     /* eslint-disable  @typescript-eslint/no-explicit-any */
     public static readonly IDENTITY_PROVIDER_MGT_CONFIG_PATHS: any = {
@@ -59,16 +52,12 @@ export class IdentityProviderConstants {
     /**
      * Internal domain name.
      *
-     * @constant
-     * @type {string}
      */
     public static readonly INTERNAL_DOMAIN = "Internal/";
 
     /**
      * Application domain name.
      *
-     * @constant
-     * @type {string}
      */
     public static readonly APPLICATION_DOMAIN = "Application/";
 
