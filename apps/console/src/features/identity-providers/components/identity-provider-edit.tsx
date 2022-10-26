@@ -35,7 +35,7 @@ import {
 } from "./settings";
 import { JITProvisioningSettings } from "./settings/jit-provisioning-settings";
 import { ComponentExtensionPlaceholder, identityProviderConfig } from "../../../extensions";
-import { IdentityProviderManagementConstants } from "../constants";
+import { IdentityProviderConstants, IdentityProviderManagementConstants } from "../constants";
 import {
     IdentityProviderAdvanceInterface,
     IdentityProviderInterface,
@@ -306,11 +306,13 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
         }
 
         panes.push({
+            "data-tabid": IdentityProviderConstants.GENERAL_TAB_ID,
             menuItem: "General",
             render: GeneralIdentityProviderSettingsTabPane
         });
 
         !isOrganizationEnterpriseAuthenticator && panes.push({
+            "data-tabid": IdentityProviderConstants.SETTINGS_TAB_ID,
             menuItem: "Settings",
             render: AuthenticatorSettingsTabPane
         });
@@ -329,12 +331,14 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
         if ((attributesForSamlEnabled || shouldShowAttributeSettings(type))
             && !isOrganizationEnterpriseAuthenticator) {
             panes.push({
+                "data-tabid": IdentityProviderConstants.ATTRIBUTES_TAB_ID,
                 menuItem: "Attributes",
                 render: AttributeSettingsTabPane
             });
         }
 
         panes.push({
+            "data-tabid": IdentityProviderConstants.CONNECTED_APPS_TAB_ID,
             menuItem: "Connected Apps",
             render: ConnectedAppsTabPane
         });
@@ -342,6 +346,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
         if (identityProviderConfig.editIdentityProvider.showOutboundProvisioning
             && !isOrganizationEnterpriseAuthenticator ) {
             panes.push({
+                "data-tabid": IdentityProviderConstants.OUTBOUND_PROVISIONING_TAB_ID,
                 menuItem: "Outbound Provisioning",
                 render: OutboundProvisioningSettingsTabPane
             });
@@ -350,6 +355,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
         if (identityProviderConfig.editIdentityProvider.showJitProvisioning
             && !isOrganizationEnterpriseAuthenticator) {
             panes.push({
+                "data-tabid": IdentityProviderConstants.JIT_PROVISIONING_TAB_ID,
                 menuItem: identityProviderConfig.jitProvisioningSettings?.menuItemName,
                 render: JITProvisioningSettingsTabPane
             });
@@ -358,6 +364,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
         if (identityProviderConfig.editIdentityProvider.showAdvancedSettings
             && !isOrganizationEnterpriseAuthenticator) {
             panes.push({
+                "data-tabid": IdentityProviderConstants.ADVANCED_TAB_ID,
                 menuItem: "Advanced",
                 render: AdvancedSettingsTabPane
             });
