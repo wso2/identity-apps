@@ -297,6 +297,7 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
                     selected={ selectedRoute }
                     translationHook={ t }
                     allowedScopes={ allowedScopes }
+                    skipCategoryLabelForSingleItemCategories={ false }
                 />
             ) }
             footer={ (

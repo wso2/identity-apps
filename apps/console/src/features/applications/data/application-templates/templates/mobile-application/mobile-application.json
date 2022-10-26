@@ -1,16 +1,18 @@
 {
-    "id": "44a2d9d9-bc0c-4b54-85df-1cf08f4002ec",
-    "templateId": "android-mobile-application",
-    "name": "Android",
-    "description": "Applications developed to target native Android mobile devices.",
-    "image": "android",
-    "authenticationProtocol": "oidc",
-    "types": [
-        "android"
-    ],
+    "id": "mobile-application",
+    "templateId": "mobile-application",
     "category": "DEFAULT",
+    "description": "Applications developed to target mobile devices.",
+    "enabled": true,
     "displayOrder": 4,
-    "templateGroup": "mobile",
+    "image": "oidcMobile",
+    "name": "Mobile Application",
+    "subTemplatesSectionTitle": "Technology",
+    "types": [
+        "android",
+        "ios"
+    ],
+    "authenticationProtocol": "oidc",
     "application": {
         "name": "",
         "advancedConfigurations": {

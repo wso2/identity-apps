@@ -22,10 +22,12 @@ import { store } from "../../core";
 import useRequest, { RequestResultInterface } from "../../core/hooks/use-request";
 import {
     AddOrganizationInterface,
+    BreadcrumbList,
     OrganizationInterface,
     OrganizationListInterface,
     OrganizationPatchData,
     OrganizationResponseInterface,
+    ShareApplicationRequestInterface,
     UpdateOrganizationInterface
 } from "../models";
 
@@ -137,7 +139,7 @@ export const getOrganization = (id: string, showChildren?: boolean): Promise<Org
         params: {
             showChildren
         },
-        url: `${store.getState().config.endpoints.organizations}/organizations/${id}`
+        url: `${ store.getState().config.endpoints.organizations }/organizations/${ id }`
     };
 
     return httpClient(config)
@@ -172,7 +174,7 @@ export const updateOrganization = (
             "Content-Type": "application/json"
         },
         method: "PUT",
-        url: `${ store.getState().config.endpoints.organizations }/organizations/${organizationId}`
+        url: `${ store.getState().config.endpoints.organizations }/organizations/${ organizationId }`
     };
 
     return httpClient(config)
@@ -207,7 +209,7 @@ export const patchOrganization = (
             "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,
-        url: `${ store.getState().config.endpoints.organizations }/organizations/${organizationId}`
+        url: `${ store.getState().config.endpoints.organizations }/organizations/${ organizationId }`
     };
 
     return httpClient(config)
@@ -259,16 +261,16 @@ export const deleteOrganization = (id: string): Promise<string> => {
  * @param currentOrganizationId - Current Organization Id
  * @param applicationId - ID of the application to be shared
  * @param organizationIds - ID of the organization which the app needs to be shared with
- * 
+ *
  * @returns a promise containing the response
  */
 export const shareApplication = (
     currentOrganizationId: string,
     applicationId: string,
-    organizationIds: Array<string>
+    data: ShareApplicationRequestInterface
 ): Promise<any> => {
     const requestConfig = {
-        data: organizationIds,
+        data,
         headers: {
             "Accept": "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -368,4 +370,61 @@ export const useGetUserSuperOrganization = (): RequestResultInterface<Organizati
     };
 
     return useRequest<OrganizationInterface, Error>(requestConfig);
+};
+
+/**
+ * Fetches the organization breadcrumb.
+ *
+ * @returns The breadcrumb list of organizations.
+ */
+export const useGetOrganizationBreadCrumb = (
+    shouldSendRequest: boolean
+): { data: BreadcrumbList, error: Error; isLoading: boolean; } => {
+    const requestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: shouldSendRequest ? store.getState().config.endpoints.breadcrumb : ""
+    };
+
+    const { data, error } = useRequest<BreadcrumbList, Error>(requestConfig);
+
+    if (error && !shouldSendRequest) {
+        return {
+            data: null,
+            error: null,
+            isLoading: null
+        };
+    }
+
+    return { data, error, isLoading: !data && !error };
+};
+
+/**
+ * This unshares the application with all suborganizations.
+ *
+ * @param applicationId - The application id
+ * @param currentOrganizationId - The current organization id
+ * @returns
+ */
+export const unshareApplication = (
+    applicationId: string,
+    currentOrganizationId: string
+): Promise<void> => {
+    const requestConfig: HttpRequestConfig = {
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.DELETE,
+        url: `${
+            store.getState().config.endpoints.organizations
+        }/organizations/${ currentOrganizationId }/applications/${ applicationId }/fragment-apps`
+    };
+
+    return httpClient(requestConfig).catch((error: HttpError) => {
+        return Promise.reject(error?.response?.data);
+    });
 };

@@ -18,6 +18,7 @@
 
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { DocumentationConstants } from "./documentation-constants";
+import { authenticatorConfig } from "../../../extensions/configs/authenticator";
 import EnterpriseIdPTemplate from
     "../data/identity-provider-templates/templates/enterprise-identity-provider/enterprise-identity-provider.json";
 import ExpertModeIdPTemplate from "../data/identity-provider-templates/templates/expert-mode/expert-mode.json";
@@ -142,6 +143,35 @@ export class IdentityProviderManagementConstants {
     } = {
 
         EXPIRY_TIME_MAX_LENGTH: 10000,
+        EXPIRY_TIME_MAX_VALUE: 1440,
+        EXPIRY_TIME_MIN_LENGTH: 1,
+        EXPIRY_TIME_MIN_VALUE: 1,
+        OTP_LENGTH_MAX_LENGTH: 2,
+        OTP_LENGTH_MAX_VALUE: 10,
+        OTP_LENGTH_MIN_LENGTH: 1,
+        OTP_LENGTH_MIN_VALUE: 4
+    };
+
+    public static readonly SMS_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS: {
+        EXPIRY_TIME_MAX_LENGTH: number;
+        EXPIRY_TIME_MAX_VALUE: number;
+        EXPIRY_TIME_MIN_LENGTH: number;
+        EXPIRY_TIME_MIN_VALUE: number;
+        OTP_LENGTH_MAX_LENGTH: number;
+        OTP_LENGTH_MAX_VALUE: number;
+        OTP_LENGTH_MIN_LENGTH: number;
+        OTP_LENGTH_MIN_VALUE: number;
+        ALLOWED_RESEND_ATTEMPT_COUNT_MIN_LENGTH: number;
+        ALLOWED_RESEND_ATTEMPT_COUNT_MAX_LENGTH: number;
+        ALLOWED_RESEND_ATTEMPT_COUNT_MIN_VALUE: number;
+        ALLOWED_RESEND_ATTEMPT_COUNT_MAX_VALUE: number;
+    } = {
+
+        ALLOWED_RESEND_ATTEMPT_COUNT_MAX_LENGTH: 10000,
+        ALLOWED_RESEND_ATTEMPT_COUNT_MAX_VALUE: 100,
+        ALLOWED_RESEND_ATTEMPT_COUNT_MIN_LENGTH: 1,
+        ALLOWED_RESEND_ATTEMPT_COUNT_MIN_VALUE: 0,
+        EXPIRY_TIME_MAX_LENGTH: 4,
         EXPIRY_TIME_MAX_VALUE: 1440,
         EXPIRY_TIME_MIN_LENGTH: 1,
         EXPIRY_TIME_MIN_VALUE: 1,
@@ -334,7 +364,9 @@ export class IdentityProviderManagementConstants {
     public static readonly FIDO_AUTHENTICATOR: string = "FIDOAuthenticator";
     public static readonly BASIC_AUTHENTICATOR: string = "BasicAuthenticator";
     public static readonly IDENTIFIER_FIRST_AUTHENTICATOR: string = "IdentifierExecutor";
-    public static readonly SMS_OTP_AUTHENTICATOR: string = "sms-otp";
+    public static readonly SMS_OTP_AUTHENTICATOR: string = authenticatorConfig?.overriddenAuthenticatorNames?.
+        SMS_OTP_AUTHENTICATOR ?? "sms-otp";
+
     public static readonly BACKUP_CODE_AUTHENTICATOR: string = "backup-code-authenticator";
     public static readonly MAGIC_LINK_AUTHENTICATOR: string = "MagicLinkAuthenticator";
 
@@ -349,7 +381,9 @@ export class IdentityProviderManagementConstants {
     public static readonly IDENTIFIER_FIRST_AUTHENTICATOR_ID: string = "SWRlbnRpZmllckV4ZWN1dG9y";
     public static readonly JWT_BASIC_AUTHENTICATOR_ID: string = "SldUQmFzaWNBdXRoZW50aWNhdG9y";
     public static readonly FIDO_AUTHENTICATOR_ID: string = "RklET0F1dGhlbnRpY2F0b3I";
-    public static readonly SMS_OTP_AUTHENTICATOR_ID: string = "U01TT1RQ";
+    public static readonly SMS_OTP_AUTHENTICATOR_ID: string = authenticatorConfig?.overriddenAuthenticatorIds?.
+        SMS_OTP_AUTHENTICATOR_ID ?? "U01TT1RQ";
+
     public static readonly TOTP_AUTHENTICATOR_ID: string = "dG90cA";
     public static readonly ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_ID: string = "U2Vzc2lvbkV4ZWN1dG9y";
     public static readonly X509_CERTIFICATE_AUTHENTICATOR_ID: string = "eDUwOUNlcnRpZmljYXRlQXV0aGVudGljYXRvcg";
@@ -405,6 +439,9 @@ export class IdentityProviderManagementConstants {
     // Token Endpoints
     public static readonly MICROSOFT_TOKEN_ENDPOINT_URL: string =
     "https://login.microsoftonline.com/common/oauth2/v2.0/token";
+
+    // Keys for the initial values of SMS OTP Authenticator
+    public static readonly AUTHENTICATOR_INIT_VALUES_SMS_OTP_EXPIRY_TIME_KEY = "SmsOTP_ExpiryTime";
 
     /**
      * Identity provider create limit reached error.

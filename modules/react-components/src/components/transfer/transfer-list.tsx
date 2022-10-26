@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -49,13 +49,14 @@ export interface TransferListPropsInterface extends TableProps, IdentifiableComp
      * Resolve i18n tag for empty placeholder content
      */
     emptyPlaceholderDefaultContent?: string;
+    disabled?: boolean;
 }
 
 /**
  * Transfer list component.
  *
- * @param {TransferListPropsInterface} props - Props injected to the component.
- * @return {React.ReactElement}
+ * @param props - Props injected to the component.
+ * @returns
  */
 export const TransferList: FunctionComponent<TransferListPropsInterface> = (
     props: TransferListPropsInterface
@@ -71,6 +72,7 @@ export const TransferList: FunctionComponent<TransferListPropsInterface> = (
         selectionComponent,
         isLoading,
         emptyPlaceholderDefaultContent,
+        disabled,
         [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId
     } = props;
@@ -95,6 +97,7 @@ export const TransferList: FunctionComponent<TransferListPropsInterface> = (
                                                                 data-testid={ testId }
                                                                 checked={ isHeaderCheckboxChecked }
                                                                 onChange={ handleHeaderCheckboxChange }
+                                                                disabled={ disabled }
                                                             />
                                                         </Table.HeaderCell>
                                                     )
@@ -128,7 +131,7 @@ export const TransferList: FunctionComponent<TransferListPropsInterface> = (
                                 subtitle={ [
                                     emptyPlaceholderContent
                                         ? emptyPlaceholderContent
-                                        : (emptyPlaceholderDefaultContent 
+                                        : (emptyPlaceholderDefaultContent
                                             ? emptyPlaceholderDefaultContent
                                             : "There are no items in this list at the moment.")
                                 ] }
@@ -148,5 +151,6 @@ export const TransferList: FunctionComponent<TransferListPropsInterface> = (
  */
 TransferList.defaultProps = {
     "data-componentid": "transfer-list",
-    "data-testid": "transfer-list"
+    "data-testid": "transfer-list",
+    disabled: false
 };

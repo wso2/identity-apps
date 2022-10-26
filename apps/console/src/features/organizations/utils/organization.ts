@@ -17,8 +17,8 @@
  */
 
 import { store } from "../../core/store";
-import { OrganizationManagementConstants } from "../constants";
-import { OrganizationInterface, OrganizationResponseInterface } from "../models";
+import { OrganizationManagementConstants, OrganizationType } from "../constants";
+import { GenericOrganization } from "../models";
 
 export class OrganizationUtils {
     /**
@@ -33,7 +33,7 @@ export class OrganizationUtils {
      *
      * @returns if selected organization is the Super organization
      */
-    public static isRootOrganization(organization: OrganizationResponseInterface | OrganizationInterface): boolean {
+    public static isRootOrganization(organization: GenericOrganization): boolean {
         return !organization || organization.id === OrganizationManagementConstants.ROOT_ORGANIZATION_ID;
     }
 
@@ -45,5 +45,14 @@ export class OrganizationUtils {
     public static isCurrentOrganizationRoot(): boolean {
         return store.getState().organization?.organization?.id
             === OrganizationManagementConstants.ROOT_ORGANIZATION_ID;
+    }
+
+    /**
+     * Get the type of the current organization.
+     *
+     * @returns The type of the current organization.
+     */
+    public static getOrganizationType(): OrganizationType{
+        return store.getState().organization?.organizationType;
     }
 }

@@ -1,7 +1,7 @@
-/*
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+/**
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -36,7 +36,7 @@ export default {
 /**
  * Story to display the default button.
  *
- * @return {React.ReactElement}
+ * @returns the story for displaying the default button.
  */
 export const DefaultButtonVariation = (): ReactElement => (
     <Button>Default Button</Button>
@@ -53,7 +53,7 @@ DefaultButtonVariation.story = {
 /**
  * Story to display the primary button.
  *
- * @return {React.ReactElement}
+ * @returns the story for displaying the primary button.
  */
 export const PrimaryButtonVariation = (): ReactElement => (
     <PrimaryButton>Primary Button</PrimaryButton>
@@ -70,7 +70,7 @@ PrimaryButtonVariation.story = {
 /**
  * Story to display the secondary button.
  *
- * @return {React.ReactElement}
+ * @returns the story for displaying the secondary button.
  */
 export const SecondaryButtonVariation = (): ReactElement => (
     <SecondaryButton>Secondary Button</SecondaryButton>
@@ -87,7 +87,7 @@ SecondaryButtonVariation.story = {
 /**
  * Story to display the link button.
  *
- * @return {React.ReactElement}
+ * @returns the story for displaying the link button.
  */
 export const LinkButtonVariation = (): ReactElement => (
     <LinkButton>Link Button</LinkButton>
@@ -104,7 +104,7 @@ LinkButtonVariation.story = {
 /**
  * Story to display the danger button.
  *
- * @return {React.ReactElement}
+ * @returns the story for displaying the danger button.
  */
 export const DangerButtonVariation = (): ReactElement => (
     <DangerButton>Danger Button</DangerButton>
@@ -121,7 +121,7 @@ DangerButtonVariation.story = {
 /**
  * Story to display the icon button.
  *
- * @return {React.ReactElement}
+ * @returns the story for displaying the icon button.
  */
 export const IconButtonVariation = (): ReactElement => {
 

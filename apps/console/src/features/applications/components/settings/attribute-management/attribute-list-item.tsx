@@ -64,7 +64,7 @@ interface AttributeListItemPropInterface extends TestableComponentInterface {
  *
  * @param props - Props injected to the component.
  *
- * @returns Attribute liste item
+ * @returns Attribute list item
  */
 export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface> = (
     props: AttributeListItemPropInterface
@@ -190,7 +190,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
     }, [ claimMappingOn ]);
 
     return (
-        <Table.Row data-testid={ testId + "" }>
+        <Table.Row data-testid={ testId }>
             {
                 !localDialect && (<Table.Cell></Table.Cell>)
             }
@@ -198,7 +198,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                 <div>
                     { !localDialect ? localClaimDisplayName : displayName }
                 </div>
-                { 
+                {
                     isOIDCMapping ?
                         (<Hint warning={ true } popup>
                             {
@@ -216,12 +216,21 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                             : claimURI }
                         inverted
                         trigger={ (
-                            <Code compact withBackground={ false }>
-                                { isOIDCMapping && claimURI.startsWith(localDialectURI)
-                                    ? t("console:develop.features.applications.edit.sections.attributes" +
+                            localDialect ? (
+                                <Code compact withBackground={ false }>
+                                    { isOIDCMapping && claimURI.startsWith(localDialectURI)
+                                        ? t("console:develop.features.applications.edit.sections.attributes" +
                                         ".selection.mappingTable.listItem.faultyAttributeMapping")
-                                    : claimURI }
-                            </Code>
+                                        : claimURI }
+                                </Code>
+                            ) : (
+                                <Code>
+                                    { isOIDCMapping && claimURI.startsWith(localDialectURI)
+                                        ? t("console:develop.features.applications.edit.sections.attributes" +
+                                        ".selection.mappingTable.listItem.faultyAttributeMapping")
+                                        : claimURI }
+                                </Code>
+                            )
                         ) }
                         position="bottom left">
                     </Popup>
@@ -265,7 +274,6 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                     </Table.Cell>
                 )
             }
-
             <Table.Cell
                 { ...(localDialect && !mappingOn && { textAlign: "center" }) }
                 { ...(localDialect && mappingOn && { textAlign: "center" }) }

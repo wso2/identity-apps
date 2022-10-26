@@ -22,6 +22,7 @@ import {
     AppAvatar,
     Code,
     DocumentationLink,
+    EmptyPlaceholder,
     Heading,
     Hint,
     Link,
@@ -31,7 +32,6 @@ import {
 } from "@wso2is/react-components";
 import { OIDCScopesClaimsListInterface } from "apps/console/src/features/oidc-scopes";
 import sortBy from "lodash-es/sortBy";
-import union from "lodash-es/union";
 import React, { Fragment, FunctionComponent, ReactElement, SyntheticEvent, useEffect, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -49,6 +49,7 @@ import {
     AppConstants,
     AppState,
     ConfigReducerStateInterface,
+    getEmptyPlaceholderIllustrations,
     history
 } from "../../../../core";
 import {
@@ -116,18 +117,20 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
     const { getLink } = useDocumentation();
 
     const [ availableExternalClaims, setAvailableExternalClaims ] = useState<ExtendedExternalClaimInterface[]>([]);
-    
+
     const [
         filterSelectedExternalClaims,
         setFilterSelectedExternalClaims
     ] = useState<ExtendedExternalClaimInterface[]>([]);
 
     const [
-        unfilteredExternalClaimsGroupedByScopes, 
-        setUnfilteredExternalClaimsGroupedByScopes 
+        unfilteredExternalClaimsGroupedByScopes,
+        setUnfilteredExternalClaimsGroupedByScopes
     ] = useState<OIDCScopesClaimsListInterface[]>(externalClaimsGroupedByScopes);
 
     const [ expandedScopes, setExpandedScopes ] = useState<string[]>([]);
+
+    const [ searchValue, setSearchValue ] = useState<string>("");
 
     const [ initializationFinished, setInitializationFinished ] = useState<boolean>(false);
 
@@ -160,7 +163,9 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
         setFilterSelectedExternalClaims(tempFilterSelectedExternalClaims);
     }, [ claimConfigurations ]);
 
-    // Stops the UI loader when the component is initialized and have fetched the availableExternalClaims.
+    /**
+     * Stops the UI loader when the component is initialized and have fetched the availableExternalClaims.
+     */
     useEffect(() => {
         if (initializationFinished && claimConfigurations) {
             //  Stop loader UI for OIDC and SP applications.
@@ -170,6 +175,27 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
         }
     }, [ availableExternalClaims, claimConfigurations, initializationFinished ]);
 
+    useEffect(() => {
+        if (externalClaims) {
+            setAvailableExternalClaims([ ...applicationConfig.attributeSettings
+                .attributeSelection.getExternalClaims(externalClaims) ]);
+        }
+    }, [ externalClaims ]);
+
+    useEffect(() => {
+        if (selectedExternalClaims) {
+            setFilterSelectedExternalClaims([ ...selectedExternalClaims ]);
+        }
+    }, [ selectedExternalClaims ]);
+
+    useEffect(() => {
+        if (!initValue.current) {
+            setInitializationFinished(false);
+            setInitialValues();
+            initValue.current = true;
+        }
+    }, [ claimConfigurations ]);
+
     /**
      * Update mandatory user attributes
      *
@@ -177,7 +203,7 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
      * @param mandatory - Is the user attribute mandatory or not
      */
     const updateMandatory = (claimURI: string, mandatory: boolean) => {
-        const tempFilterSelectedExternalScopeClaims: OIDCScopesClaimsListInterface[] 
+        const tempFilterSelectedExternalScopeClaims: OIDCScopesClaimsListInterface[]
         = [ ...unfilteredExternalClaimsGroupedByScopes ];
 
         tempFilterSelectedExternalScopeClaims.forEach((scope) => {
@@ -187,9 +213,9 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                 }
             });
         });
-        sortBy(tempFilterSelectedExternalScopeClaims, "name");
         setExternalClaimsGroupedByScopes(tempFilterSelectedExternalScopeClaims);
         setUnfilteredExternalClaimsGroupedByScopes(tempFilterSelectedExternalScopeClaims);
+        searchFilter(searchValue);
     };
 
     /**
@@ -199,17 +225,17 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
      * @param requested - Is the user attribute requested or not
      */
     const updateRequested = (claimURI: string, requested: boolean) => {
-        const tempFilterSelectedExternalScopeClaims: OIDCScopesClaimsListInterface[] 
+        const tempFilterSelectedExternalScopeClaims: OIDCScopesClaimsListInterface[]
         = [ ...unfilteredExternalClaimsGroupedByScopes ];
 
         tempFilterSelectedExternalScopeClaims.forEach((scope) => {
             let scopeSelected = false;
-  
+
             scope.claims.forEach((claim) => {
                 if (claim.claimURI === claimURI) {
                     claim.requested = requested;
                 }
-  
+
                 if (claim.requested) {
                     scopeSelected = true;
                 }
@@ -219,6 +245,7 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
         sortBy(tempFilterSelectedExternalScopeClaims, "name");
         setExternalClaimsGroupedByScopes(tempFilterSelectedExternalScopeClaims);
         setUnfilteredExternalClaimsGroupedByScopes(tempFilterSelectedExternalScopeClaims);
+        searchFilter(searchValue);
     };
 
     /**
@@ -227,9 +254,9 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
      * @param event - Change Event.
      * @param value - Value of the step.
      */
-    const handleSelectedScopeCheckChange = 
+    const handleSelectedScopeCheckChange =
     (event: SyntheticEvent<HTMLElement>, value: { value: string, checked: boolean }): void => {
-        const tempExternalClaimsGroupedByScopes: OIDCScopesClaimsListInterface[] 
+        const tempExternalClaimsGroupedByScopes: OIDCScopesClaimsListInterface[]
         = [ ...unfilteredExternalClaimsGroupedByScopes ];
 
         tempExternalClaimsGroupedByScopes.find((scope) => {
@@ -244,9 +271,9 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                 claim.mandatory = value.checked;
             }
         });
-        
         setExternalClaimsGroupedByScopes(tempExternalClaimsGroupedByScopes);
         setUnfilteredExternalClaimsGroupedByScopes(tempExternalClaimsGroupedByScopes);
+        searchFilter(searchValue);
     };
 
     /**
@@ -272,7 +299,7 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
      * Check whether claim is mandatory or not
      *
      * @param uri - Claim URI to be checked.
-     * 
+     *
      * @returns If initially requested as mandatory.
      */
     const checkInitialRequestMandatory = (uri: string): boolean => {
@@ -305,36 +332,45 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
      * @param changeValue - search value
      */
     const searchFilter = (changeValue: string) => {
-        const scopesFiltered = unfilteredExternalClaimsGroupedByScopes
-            .filter((item: OIDCScopesClaimsListInterface) => 
-                item.name.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1 ||
-                item.displayName.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1 ||
-                item.description.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1);        
+        if (changeValue !== ""){
+            const scopesFiltered: OIDCScopesClaimsListInterface[] = unfilteredExternalClaimsGroupedByScopes
+                .filter((item: OIDCScopesClaimsListInterface) =>
+                    item.name?.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1 ||
+                item.displayName?.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1);
 
-        const tempExpandedScopes = [];
-        const userAttributesFiltered = unfilteredExternalClaimsGroupedByScopes
-            .filter((scope: OIDCScopesClaimsListInterface) => {
-                const matchedScopes = scope.claims.filter((claim: ExtendedExternalClaimInterface) => 
-                    (claim.claimURI.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1 ||
-                        claim.claimDialectURI.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1 ||
-                        claim.localClaimDisplayName.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1 ||
-                        claim.mappedLocalClaimURI.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1));
+            const unfilteredClaims: OIDCScopesClaimsListInterface[] = [ ...unfilteredExternalClaimsGroupedByScopes ];
+            const tempExpandedScopes: string[] = [];
+            const userAttributesFiltered: OIDCScopesClaimsListInterface[] = [];
 
-                if (matchedScopes !== undefined && matchedScopes.length !== 0) {
+            unfilteredClaims.forEach((scope: OIDCScopesClaimsListInterface) => {
+                const matchedClaims = scope.claims.filter((claim: ExtendedExternalClaimInterface) =>
+                    (claim.claimURI?.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1 ||
+                    claim.claimDialectURI?.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1 ||
+                    claim.localClaimDisplayName?.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1 ||
+                    claim.mappedLocalClaimURI?.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1));
+
+                if (matchedClaims !== undefined && matchedClaims.length !== 0) {
                     // expand the scope item if the searched term matches any claims/user attributes
                     if (!tempExpandedScopes.includes(scope.name)) {
                         tempExpandedScopes.push(scope.name);
                     }
+                    const updatedScope = { 
+                        ...scope,
+                        claims: matchedClaims
+                    };
 
-                    return scope;
+                    userAttributesFiltered.push(updatedScope);
                 }
+                scopesFiltered.map((tempScope: OIDCScopesClaimsListInterface) => {
+                    if (tempScope.name === scope.name && matchedClaims.length === 0){
+                        userAttributesFiltered.push(scope);
+                    }
+                });
             });
-        
-        setExternalClaimsGroupedByScopes(sortBy(
-            union(scopesFiltered, userAttributesFiltered),
-            "displayName"
-        ));
-        setExpandedScopes(tempExpandedScopes);
+
+            setExternalClaimsGroupedByScopes(userAttributesFiltered);
+            setExpandedScopes(tempExpandedScopes);
+        }
     };
 
     /**
@@ -345,6 +381,7 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
     const handleChange = (event) => {
         const changeValue = event.target.value;
 
+        setSearchValue(changeValue);
         if (changeValue.length > 0) {
             searchFilter(changeValue);
         } else {
@@ -358,7 +395,7 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
      */
     const setInitialValues = () => {
         setUserAttributesLoading(true);
-        
+
         const initialRequest = getInitiallySelectedClaimsURI();
         const initialSelectedClaims: ExtendedExternalClaimInterface[] = [];
         const initialAvailableClaims: ExtendedExternalClaimInterface[] = [];
@@ -410,32 +447,11 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
         setInitializationFinished(true);
     };
 
-    useEffect(() => {
-        if (externalClaims) {
-            setAvailableExternalClaims([ ...applicationConfig.attributeSettings
-                .attributeSelection.getExternalClaims(externalClaims) ]);
-        }
-    }, [ externalClaims ]);
-
-    useEffect(() => {
-        if (selectedExternalClaims) {
-            setFilterSelectedExternalClaims([ ...selectedExternalClaims ]);
-        }
-    }, [ selectedExternalClaims ]);
-
-    useEffect(() => {
-        if (!initValue.current) {
-            setInitializationFinished(false);
-            setInitialValues();
-            initValue.current = true;
-        }
-    }, [ claimConfigurations ]);
-
     /**
      * Check if the claim has OIDC mapping.
      *
      * @param claiminput - Input claim.
-     * 
+     *
      * @returns Is a mapping or not.
      */
     const checkMapping = (claiminput: ExtendedExternalClaimInterface): boolean => {
@@ -453,7 +469,7 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
 
     /**
      * Resolves the documentation link when a claim is selected.
-     * 
+     *
      * @returns Documentation link.
      */
     const resolveClaimDocumentationLink = (): ReactElement => {
@@ -473,9 +489,9 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
 
     /**
      * Resolves the Scope list item component
-     * 
+     *
      * @param scope - scope item
-     * 
+     *
      * @returns React component
      */
     const resolveScopeListItem = (scope: OIDCScopesClaimsListInterface): ReactElement => {
@@ -501,22 +517,40 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                     data-testid={ `${ testId }-item-image` }
                     data-componentId={ `${ componentId }-item-image` }
                 />
-                <Header.Content>
-                    { scope.displayName }
-                    <Header.Subheader>
-                        <Code withBackground>{ scope.name }</Code>
-                        { " " + (scope.description ?? "") }
-                    </Header.Subheader>
-                </Header.Content>
+                {
+                    scope.name === "" 
+                        ? (
+                            <Header.Content className="align-self-center">
+                                <Hint warning={ true } popup compact>
+                                    {
+                                        t("console:develop.features.applications.edit.sections.attributes" +
+                                            ".selection.scopelessAttributes.hint")
+                                    }
+                                </Hint>
+                                { scope.displayName }
+                                <Header.Subheader>
+                                    { " " + (scope.description ?? "") }
+                                </Header.Subheader>
+                            </Header.Content>
+                        ) 
+                        : (
+                            <Header.Content>
+                                { scope.displayName }
+                                <Header.Subheader>
+                                    <Code withBackground>{ scope.name }</Code>
+                                </Header.Subheader>
+                            </Header.Content>
+                        )
+                }
             </Header>
         );
     };
 
     /**
      * Resolves claims items under a scope
-     * 
+     *
      * @param claimsGroupedByScopes - claims grouped by a scope
-     * 
+     *
      * @returns React component
      */
     const resolveUserAttributeList = (claimsGroupedByScopes: ExtendedExternalClaimInterface[]): ReactElement => {
@@ -528,7 +562,7 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                 data-componentId={ `${ componentId }-list` }
                 fixed
             >
-                <Table.Header>
+                <Table.Header className="table-header-oidc-user-attribute">
                     <Table.Row>
                         <Table.HeaderCell width="1"></Table.HeaderCell>
                         <Table.HeaderCell width="10">
@@ -550,7 +584,7 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                             }
 
                         </Table.HeaderCell>
-                        <Table.HeaderCell  width="4">
+                        <Table.HeaderCell width="4">
                             {
                                 t("console:develop.features" +
                                     ".applications.edit.sections" +
@@ -631,15 +665,15 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
             tempExpandedScopes.push(scope.name);
         } else {
             tempExpandedScopes =  tempExpandedScopes
-                .filter((scopeDeselected: string) => 
+                .filter((scopeDeselected: string) =>
                     scopeDeselected !== scope.name);
         }
         setExpandedScopes(tempExpandedScopes);
     };
 
-    const createAccordionTitleAction = (scope: OIDCScopesClaimsListInterface): 
+    const createAccordionTitleAction = (scope: OIDCScopesClaimsListInterface):
         SegmentedAccordionTitleActionInterface[] => {
-        
+
         return [ {
             checked: scope.selected,
             defaultChecked: scope.selected,
@@ -647,11 +681,11 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
             onChange: handleSelectedScopeCheckChange,
             popoverText: scope.selected
                 ? t("console:develop.features.applications.edit" +
-                ".sections.attributes.selection.mappingTable" +
-                ".listItem.actions.removeScopeRequested")
+                    ".sections.attributes.selection.mappingTable" +
+                    ".listItem.actions.removeScopeRequested")
                 : t("console:develop.features.applications.edit" +
-                ".sections.attributes.selection.mappingTable" +
-                ".listItem.actions.makeScopeRequested"),
+                    ".sections.attributes.selection.mappingTable" +
+                    ".listItem.actions.makeScopeRequested"),
             type: "checkbox popup",
             value: scope.name
         } ];
@@ -684,7 +718,7 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                                     >
                                         <Table.Body>
                                             <Table.Row>
-                                                <Table.Cell collapsing width="6">
+                                                <Table.Cell collapsing width="16">
                                                     <Input
                                                         icon={ <Icon name="search" /> }
                                                         iconPosition="left"
@@ -705,6 +739,91 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                                         </Table.Body>
                                     </Table>
                                 </Grid.Row>
+                                <Grid.Row className="mb-5">
+                                    {
+                                        externalClaimsGroupedByScopes.length !== 0
+                                            ? (
+                                                <SegmentedAccordion
+                                                    fluid
+                                                    data-testid={ `${ testId }-oidc-scopes` }
+                                                    data-componentid={  `${ componentId }-oidc-scopes` }
+                                                    viewType="table-view"
+                                                >
+                                                    {
+                                                        externalClaimsGroupedByScopes.map(
+                                                            (scope: OIDCScopesClaimsListInterface) => {
+                                                                if (scope.name !== ""){
+                                                                    return (
+                                                                        <Fragment key={ scope.name }>
+                                                                            <SegmentedAccordion.Title
+                                                                                id={ scope.name }
+                                                                                data-testid={ 
+                                                                                    `${testId}-${scope.name}-title` 
+                                                                                }
+                                                                                data-componentid={ 
+                                                                                    `${componentId}-${scope.name}
+                                                                                    -title` 
+                                                                                }
+                                                                                active={ 
+                                                                                    expandedScopes?.
+                                                                                        includes(scope.name) || false }
+                                                                                accordionIndex={ scope.name }
+                                                                                onClick={ 
+                                                                                    () => 
+                                                                                        handleAccordionTitleClick(scope)
+                                                                                }
+                                                                                content={ (
+                                                                                    resolveScopeListItem(scope)
+                                                                                ) }
+                                                                                hideChevron={ false }
+                                                                                actions={ 
+                                                                                    createAccordionTitleAction(scope) 
+                                                                                }
+                                                                            />
+                                                                            <SegmentedAccordion.Content
+                                                                                active={ 
+                                                                                    expandedScopes?.
+                                                                                        includes(scope.name) || false
+                                                                                }
+                                                                                data-testid={ 
+                                                                                    `${testId}-${scope.name}-content` 
+                                                                                }
+                                                                                data-componentid={ 
+                                                                                    `${componentId}-${scope.name}
+                                                                                    -content`
+                                                                                }
+                                                                                children={ 
+                                                                                    resolveUserAttributeList(scope
+                                                                                        .claims)
+                                                                                }
+                                                                            />
+                                                                        </Fragment>
+                                                                    );
+                                                                }
+                                                            }
+                                                        )
+                                                    }
+                                                </SegmentedAccordion>
+                                            ) 
+                                            : (
+                                                <EmptyPlaceholder
+                                                    image={ getEmptyPlaceholderIllustrations().emptySearch }
+                                                    imageSize="tiny"
+                                                    title={ 
+                                                        t("console:develop.features.applications.edit.sections." +
+                                                        "attributes.emptySearchResults.title") }
+                                                    subtitle={ [
+                                                        t("console:develop.features.applications.edit.sections." +
+                                                        "attributes.emptySearchResults.subtitles.0",
+                                                        { searchQuery: searchValue }),
+                                                        t("console:develop.features.applications.edit.sections." +
+                                                        "attributes.emptySearchResults.subtitles.1")
+                                                    ] }
+                                                    data-testid={ `${ testId }-empty-search-placeholder` }
+                                                />
+                                            )
+                                    }
+                                </Grid.Row>
                                 <Grid.Row>
                                     <SegmentedAccordion
                                         fluid
@@ -715,34 +834,36 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                                         {
                                             externalClaimsGroupedByScopes.map(
                                                 (scope: OIDCScopesClaimsListInterface) => {
-                                                    return (
-                                                        <Fragment key={ scope.name }>
-                                                            <SegmentedAccordion.Title
-                                                                id={ scope.name }
-                                                                data-testid={ `${testId}-${scope.name}-title` }
-                                                                data-componentid={ `${componentId}-${scope.name}
-                                                                -title` }
-                                                                active={ expandedScopes?.includes(scope.name) 
-                                                                        || false }
-                                                                accordionIndex={ scope.name }
-                                                                onClick={ () => handleAccordionTitleClick(scope) }
-                                                                content={ (
-                                                                    resolveScopeListItem(scope)
-                                                                ) }
-                                                                hideChevron={ false } 
-                                                                actions={ createAccordionTitleAction(scope) }
-                                                            />
-                                                            
-                                                            <SegmentedAccordion.Content
-                                                                active={ expandedScopes?.includes(scope.name) 
-                                                                        || false }
-                                                                data-testid={ `${testId}-${scope.name}-content` }
-                                                                data-componentid={ `${componentId}-${scope.name}
-                                                                -content` }
-                                                                children={ resolveUserAttributeList(scope.claims) }
-                                                            />
-                                                        </Fragment>
-                                                    );
+                                                    if (scope.name === ""){
+                                                        return (
+                                                            <Fragment key={ scope.name }>
+                                                                <SegmentedAccordion.Title
+                                                                    id={ scope.name }
+                                                                    data-testid={ `${testId}-${scope.name}-title` }
+                                                                    data-componentid={ `${componentId}-${scope.name}
+                                                                    -title` }
+                                                                    active={ expandedScopes?.includes(scope.name)
+                                                                            || false }
+                                                                    accordionIndex={ scope.name }
+                                                                    onClick={ () => handleAccordionTitleClick(scope) }
+                                                                    content={ (
+                                                                        resolveScopeListItem(scope)
+                                                                    ) }
+                                                                    hideChevron={ false }
+                                                                    actions={ createAccordionTitleAction(scope) }
+                                                                />
+    
+                                                                <SegmentedAccordion.Content
+                                                                    active={ expandedScopes?.includes(scope.name)
+                                                                            || false }
+                                                                    data-testid={ `${testId}-${scope.name}-content` }
+                                                                    data-componentid={ `${componentId}-${scope.name}
+                                                                    -content` }
+                                                                    children={ resolveUserAttributeList(scope.claims) }
+                                                                />
+                                                            </Fragment>
+                                                        );
+                                                    }
                                                 })
                                         }
                                     </SegmentedAccordion>
@@ -758,7 +879,7 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                                                 "attributes.selection.attributeComponentHint"
                                             }
                                         >
-                                            Manage the user attributes you want to share with this application via
+                                            Use
                                             <Link
                                                 external={ false }
                                                 onClick={ () => {
@@ -766,9 +887,10 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                                                         AppConstants.getPaths().get("OIDC_SCOPES")
                                                     );
                                                 } }
-                                            > OpenID Connect Scopes.
+                                            > OpenID Connect Scopes
                                             </Link>
-                                            You can map additional attributes under
+                                            to add/remove user attribute to a scope. You can add new 
+                                            attributes by navigating to 
                                             <Link
                                                 external={ false }
                                                 onClick={ () => {
@@ -778,7 +900,7 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                                                             .replace(":type", ClaimManagementConstants.OIDC)
                                                     );
                                                 } }
-                                            > Attribute.
+                                            > Attributes.
                                             </Link>
                                         </Trans>
                                     </Hint>
@@ -819,5 +941,5 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
  * Default props for the application attribute selection component.
  */
 AttributeSelectionOIDC.defaultProps = {
-    "data-testid": "application-attribute-selection"
+    "data-testid": "application-attribute-selection-oidc"
 };

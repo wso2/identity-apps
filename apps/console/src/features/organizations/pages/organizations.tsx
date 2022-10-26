@@ -21,7 +21,7 @@ import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import { I18n } from "@wso2is/i18n";
-import { GridLayout, ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
+import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
 import find from "lodash-es/find";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
@@ -36,7 +36,7 @@ import React, {
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
     Breadcrumb,
     Divider,
@@ -46,10 +46,10 @@ import {
     Icon,
     PaginationProps
 } from "semantic-ui-react";
-import { AdvancedSearchWithBasicFilters, EventPublisher, UIConstants } from "../../core";
-import { getOrganization, getOrganizations, useGetUserSuperOrganization } from "../api";
+import { organizationConfigs } from "../../../extensions";
+import { AdvancedSearchWithBasicFilters, AppState, EventPublisher, UIConstants } from "../../core";
+import { getOrganization, getOrganizations } from "../api";
 import { AddOrganizationModal, OrganizationList } from "../components";
-import { OrganizationManagementConstants } from "../constants";
 import {
     OrganizationInterface,
     OrganizationLinkInterface,
@@ -102,11 +102,14 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
     const [ before, setBefore ] = useState<string>("");
     const [ activePage, setActivePage ] = useState<number>(1);
 
+    const currentOrganization: OrganizationResponseInterface = useSelector(
+        (state: AppState) => state.organization.organization
+    );
+
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     const [ paginationReset, triggerResetPagination ] = useTrigger();
 
-    const { data: superOrganization } = useGetUserSuperOrganization();
 
     useEffect(() => {
         let nextFound: boolean = false;
@@ -370,7 +373,8 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
             <PageLayout
                 action={
                     !isOrganizationListRequestLoading &&
-                    !(!searchQuery && (isEmpty(organizationList) || organizationList?.organizations?.length <= 0)) && (
+                    !(!searchQuery && (isEmpty(organizationList) || organizationList?.organizations?.length <= 0)) &&
+                        organizationConfigs.canCreateOrganization() && (
                         <Show when={ AccessControlConstants.ORGANIZATION_WRITE }>
                             <PrimaryButton
                                 disabled={ isOrganizationListRequestLoading }
@@ -386,6 +390,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                             </PrimaryButton>
                         </Show>
                     )
+
                 }
                 pageTitle="Organizations"
                 title={
@@ -425,8 +430,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                                     } }
                                 >
                                     <span data-componentid={ `${ testId }-breadcrumb-home` }>
-                                        { superOrganization?.name
-                                            || OrganizationManagementConstants.ROOT_ORGANIZATION.name }
+                                        { currentOrganization.name }
                                     </span>
                                 </Breadcrumb.Section>
                                 { organizations?.map((organization: OrganizationInterface, index: number) => {
@@ -452,85 +456,79 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                     </>)
                 }
             >
-                { !isOrganizationListRequestLoading ? (
-                    <>
-                        <ListLayout
-                            advancedSearch={
-                                (<AdvancedSearchWithBasicFilters
-                                    onFilter={ handleOrganizationFilter }
-                                    filterAttributeOptions={ [
-                                        {
-                                            key: 0,
-                                            text: t("common:name"),
-                                            value: "name"
-                                        }
-                                    ] }
-                                    filterAttributePlaceholder={ t(
-                                        "console:manage.features.organizations.advancedSearch.form" +
+                <ListLayout
+                    advancedSearch={
+                        (<AdvancedSearchWithBasicFilters
+                            onFilter={ handleOrganizationFilter }
+                            filterAttributeOptions={ [
+                                {
+                                    key: 0,
+                                    text: t("common:name"),
+                                    value: "name"
+                                }
+                            ] }
+                            filterAttributePlaceholder={ t(
+                                "console:manage.features.organizations.advancedSearch.form" +
                                         ".inputs.filterAttribute.placeholder"
-                                    ) }
-                                    filterConditionsPlaceholder={ t(
-                                        "console:manage.features.organizations.advancedSearch.form" +
+                            ) }
+                            filterConditionsPlaceholder={ t(
+                                "console:manage.features.organizations.advancedSearch.form" +
                                         ".inputs.filterCondition.placeholder"
-                                    ) }
-                                    filterValuePlaceholder={ t(
-                                        "console:manage.features.organizations.advancedSearch.form.inputs.filterValue" +
+                            ) }
+                            filterValuePlaceholder={ t(
+                                "console:manage.features.organizations.advancedSearch.form.inputs.filterValue" +
                                         ".placeholder"
-                                    ) }
-                                    placeholder={ t(
-                                        "console:manage.features.organizations." + "advancedSearch.placeholder"
-                                    ) }
-                                    defaultSearchAttribute="name"
-                                    defaultSearchOperator="co"
-                                    data-componentid={ `${ testId }-list-advanced-search` }
-                                />)
-                            }
-                            currentListSize={ organizationList?.organizations?.length }
-                            listItemLimit={ listItemLimit }
-                            onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
-                            onPageChange={ handlePaginationChange }
-                            onSortStrategyChange={ handleListSortingStrategyOnChange }
-                            showPagination={ true }
-                            showTopActionPanel={
-                                isOrganizationListRequestLoading ||
+                            ) }
+                            placeholder={ t(
+                                "console:manage.features.organizations." + "advancedSearch.placeholder"
+                            ) }
+                            defaultSearchAttribute="name"
+                            defaultSearchOperator="co"
+                            data-componentid={ `${ testId }-list-advanced-search` }
+                        />)
+                    }
+                    currentListSize={ organizationList?.organizations?.length }
+                    listItemLimit={ listItemLimit }
+                    onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
+                    onPageChange={ handlePaginationChange }
+                    onSortStrategyChange={ handleListSortingStrategyOnChange }
+                    showPagination={ true }
+                    showTopActionPanel={
+                        isOrganizationListRequestLoading ||
                                 !(!searchQuery && organizationList?.organizations?.length <= 0)
-                            }
-                            sortOptions={ ORGANIZATIONS_LIST_SORTING_OPTIONS }
-                            sortStrategy={ listSortingStrategy }
-                            totalPages={ 10 }
-                            totalListSize={ organizationList?.organizations?.length }
-                            paginationOptions={ {
-                                disableNextButton: !isOrganizationsNextPageAvailable,
-                                disablePreviousButton: !isOrganizationsPrevPageAvailable
-                            } }
-                            data-componentid={ `${ testId }-list-layout` }
-                            resetPagination={ paginationReset }
-                            activePage={ activePage }
-                        >
-                            <OrganizationList
-                                isLoading={ isOrganizationListRequestLoading }
-                                list={ organizationList }
-                                onOrganizationDelete={ handleOrganizationDelete }
-                                onEmptyListPlaceholderActionClick={ () => {
-                                    setShowWizard(true);
-                                } }
-                                onSearchQueryClear={ handleSearchQueryClear }
-                                searchQuery={ searchQuery }
-                                data-componentid="organization-list"
-                                onListItemClick={ handleListItemClick }
-                                parentOrganization={ parent }
-                            />
-                        </ListLayout>
-                        { showWizard && (
-                            <AddOrganizationModal
-                                onUpdate={ handleOrganizationListUpdate }
-                                closeWizard={ () => setShowWizard(false) }
-                                parent={ parent }
-                            />
-                        ) }
-                    </>
-                ) : (
-                    <GridLayout isLoading={ isOrganizationListRequestLoading } />
+                    }
+                    sortOptions={ ORGANIZATIONS_LIST_SORTING_OPTIONS }
+                    sortStrategy={ listSortingStrategy }
+                    totalPages={ 10 }
+                    totalListSize={ organizationList?.organizations?.length }
+                    paginationOptions={ {
+                        disableNextButton: !isOrganizationsNextPageAvailable,
+                        disablePreviousButton: !isOrganizationsPrevPageAvailable
+                    } }
+                    data-componentid={ `${ testId }-list-layout` }
+                    resetPagination={ paginationReset }
+                    activePage={ activePage }
+                >
+                    <OrganizationList
+                        isLoading={ isOrganizationListRequestLoading }
+                        list={ organizationList }
+                        onOrganizationDelete={ handleOrganizationDelete }
+                        onEmptyListPlaceholderActionClick={ () => {
+                            setShowWizard(true);
+                        } }
+                        onSearchQueryClear={ handleSearchQueryClear }
+                        searchQuery={ searchQuery }
+                        data-componentid="organization-list"
+                        onListItemClick={ handleListItemClick }
+                        parentOrganization={ parent }
+                    />
+                </ListLayout>
+                { showWizard && (
+                    <AddOrganizationModal
+                        onUpdate={ handleOrganizationListUpdate }
+                        closeWizard={ () => setShowWizard(false) }
+                        parent={ parent }
+                    />
                 ) }
             </PageLayout>
         </>

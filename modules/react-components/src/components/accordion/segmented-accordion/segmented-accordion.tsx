@@ -35,7 +35,7 @@ export interface SegmentedAccordionSubComponentsInterface {
  * Proptypes for the segmented accordion component.
  */
 export interface SegmentedAccordionPropsInterface extends AccordionProps, IdentifiableComponentInterface,
-    TestableComponentInterface { 
+    TestableComponentInterface {
     /**
      * Type of final view of the list of accordion components.
      */
@@ -47,7 +47,7 @@ export interface SegmentedAccordionPropsInterface extends AccordionProps, Identi
  *
  * @param props - Props injected to the component.
  *
- * @returns
+ * @returns Segmented Accordion React Component.
  */
 export const SegmentedAccordion: FunctionComponent<SegmentedAccordionPropsInterface>
     & SegmentedAccordionSubComponentsInterface = (

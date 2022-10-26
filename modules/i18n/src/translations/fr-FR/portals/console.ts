@@ -91,6 +91,10 @@ export const console: ConsoleNS = {
                 tooltip: "Apps"
             },
             organizationSwitch: {
+                breadcrumbError: {
+                    description: "Une erreur s'est produite lors de la récupération de la hiérarchie de l'organisation.",
+                    message: "Quelque chose s'est mal passé"
+                },
                 emptyOrgListMessage: "Aucune organisation disponible",
                 orgSearchPlaceholder: "Rechercher par nom d'organisation"
             }
@@ -767,6 +771,13 @@ export const console: ConsoleNS = {
                                     message: "Mappage d'attributs modifié"
                                 }
                             },
+                            emptySearchResults: {
+                                subtitles: {
+                                    0: "Nous n'avons trouvé aucun résultat pour '{{ searchQuery }}'",
+                                    1: "Veuillez essayer un autre terme de recherche."
+                                },
+                                title: "Aucun résultat trouvé"
+                            },
                             forms: {
                                 fields: {
                                     dynamic: {
@@ -811,12 +822,18 @@ export const console: ConsoleNS = {
                                 },
                                 attributeComponentHint: "Gérez les attributs utilisateur que vous souhaitez partager" +
                                     " avec cette application.",
-                                attributeComponentHintAlt: "Gérez les attributs utilisateur que vous souhaitez" +
-                                    " partager avec cette application. Vous pouvez ajouter de nouveaux attributs et " +
-                                    "mappages en accédant à <1>Attributs</1>",
-                                description: "Ajoutez les groupes/étendues d'attributs utilisateur autorisés à être partagés " +
-                                    "avec cette application.",
+                                attributeComponentHintAlt: "Utilisez les étendues <1>OpenID Connect</1> pour ajouter/supprimer un attribut utilisateur " +
+                                    "à une étendue. Vous pouvez ajouter de nouveaux attributs en accédant à <3>Attributs.</3>",
+                                description: "Sélectionnez les étendues, c'est-à-dire les attributs utilisateur groupés qui sont autorisés à être " +
+                                    "partagés avec cette application.",
                                 heading: "Sélection des attributs utilisateur",
+                                scopelessAttributes: {
+                                    description: "Afficher les attributs sans étendue",
+                                    displayName: "Attributs sans portée",
+                                    name: "",
+                                    hint: "Impossible de récupérer ces attributs utilisateur en demandant " +
+                                        "des étendues OIDC. Pour récupérer, ajoutez les attributs requis à une étendue pertinente."
+                                },
                                 mandatoryAttributeHint: "Marquez les attributs utilisateur qui doivent " +
                                     "obligatoirement être partagés avec l'application. Lors de la connexion, " +
                                     "{{productName}} invite l'utilisateur à saisir ces valeurs d'attribut, si elles " +
@@ -866,7 +883,7 @@ export const console: ConsoleNS = {
                                         confirmationMessage: "Cette action rétablira les valeurs mappées aux " +
                                             "valeurs par défaut."
                                     },
-                                    searchPlaceholder: "Attributs de recherche"
+                                    searchPlaceholder: "Rechercher des attributs d'utilisateur par nom, nom d'affichage ou détails de portée"
                                 },
                                 selectAll: "Sélectionnez tous les attributs"
                             },
@@ -1230,6 +1247,10 @@ export const console: ConsoleNS = {
                                             emailOTP: {
                                                 description: "Activez une couche supplémentaire d'authentification avec OTP basé sur Email.",
                                                 heading: "Ajouter Email OTP comme deuxième facteur"
+                                            },
+                                            smsOTP: {
+                                                description: "Activez une couche supplémentaire d'authentification avec OTP basé sur SMS.",
+                                                heading: "Ajouter SMS OTP comme deuxième facteur"
                                             }
                                         }
                                     }
@@ -2269,7 +2290,8 @@ export const console: ConsoleNS = {
                                 validations: {
                                     invalid: "The application name should contain letters, numbers."
                                 }
-                            }
+                            },
+                            urlDeepLinkError: "L'URL saisie n'est pas un lien profond."
                         }
                     }
                 },
@@ -6833,12 +6855,23 @@ export const console: ConsoleNS = {
                         title: "Ajouter une nouvelle organisation"
                     }
                 },
+                shareApplicationRadio: "Partager avec toutes les sous-organisations",
+                shareApplicationInfo: "Sélectionnez cette option pour partager l'application avec toutes " +
+                    "les sous-organisations existantes et toutes les nouvelles sous-organisations que vous " +
+                    "créez sous votre organisation actuelle.",
+                unshareApplicationRadio: "Annuler le partage avec toutes les sous-organisations",
+                shareWithSelectedOrgsRadio: "Partager uniquement avec les sous-organisations sélectionnées",
+                unshareApplicationInfo: "Sélectionnez cette option pour annuler le partage de l'application " +
+                    "avec toutes les sous-organisations existantes et toutes les nouvelles sous-organisations " +
+                    "que vous créez sous vos organisations actuelles.",
                 subTitle: "Créer et gérer des organisations.",
                 switching: {
                     emptyList: "Il n'y a aucune organisation à afficher.",
                     search: {
                         placeholder: "Rechercher par nom"
-                    }
+                    },
+                    goBack: "Retourner",
+                    subOrganizations: "Sous-organisations"
                 },
                 title: "Organisations"
             },
@@ -7451,7 +7484,7 @@ export const console: ConsoleNS = {
                     certificates: "Certificats",
                     configurations: "Configurations",
                     general: "Général",
-                    organizations: "Organisations",
+                    organizations: "Gestion de l'organisation",
                     users: "Utilisateurs",
                     userstores: "Annuaires"
                 },
@@ -7588,7 +7621,7 @@ export const console: ConsoleNS = {
                                 label: "Sélectionnez la méthode pour réinitialiser le mot de passe utilisateur",
                                 options: {
                                     askPassword: "Invitez l'utilisateur à définir son propre mot de passe",
-                                    createPassword: "Définissez un mot de passe temporaire pour l'utilisateur"
+                                    createPassword: "Définissez un mot de passe pour l'utilisateur"
 
                                 }
                             }

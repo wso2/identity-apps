@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -201,16 +201,15 @@ interface WithPropertiesInterface {
 /**
  * Initial display limit.
  * TODO: Generate limit dynamically with screen dimensions.
- * @type {number}
  */
 const DEFAULT_PAGINATION_LIMIT = 5;
 
 /**
  * Template grid component.
  *
- * @param {TemplateGridPropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns the template grid component.
  */
 export const TemplateGrid = <T extends WithPropertiesInterface>(
     props: TemplateGridPropsInterface<T>
@@ -285,9 +284,9 @@ export const TemplateGrid = <T extends WithPropertiesInterface>(
      * Checks if the template image URL is a valid image URL and if not checks if it's
      * available in the passed in icon set.
      *
-     * @param image Input image.
+     * @param image - Input image.
      *
-     * @return Predefined image if available. If not, return input parameter.
+     * @returns the predefined image if available. If not, return input parameter.
      */
     const resolveTemplateImage = (image: any) => {
 

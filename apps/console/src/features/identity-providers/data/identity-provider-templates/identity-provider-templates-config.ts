@@ -39,6 +39,7 @@ import { ExtensionsManager, identityProviderConfig } from "../../../../extension
 import {
     EnterpriseIdentityProviderTemplateExtension
 } from "../../../../extensions/configs/identity-providers-templates";
+import { AppConstants, store } from "../../../core";
 import { IdentityProviderTemplateCategoryInterface, IdentityProviderTemplateGroupInterface } from "../../models";
 
 /**
@@ -155,9 +156,18 @@ export const getIdentityProviderTemplatesConfig = (): IdentityProviderTemplatesC
                                 wizardHelp: lazy(() => import("./templates/" +
                                 "organization-enterprise-identity-provider/create-wizard-help"))
                             },
-                            enabled: window["AppUtils"].getConfig().ui.identityProviderTemplates
-                                ?.organizationEnterprise?.enabled
-                                ?? identityProviderConfig.templates.organizationEnterprise,
+                            enabled:
+                                (window[ "AppUtils" ].getConfig().ui
+                                    ?.identityProviderTemplates
+                                    ?.organizationEnterprise?.enabled ||
+                                    identityProviderConfig?.templates
+                                        ?.organizationEnterprise) &&
+                                (store.getState()?.organization
+                                    ?.isFirstLevelOrganization ||
+                                    window[ "AppUtils" ].getConfig()
+                                        ?.organizationName ||
+                                    store.getState()?.auth?.tenantDomain ===
+                                    AppConstants.getSuperTenant()),
                             id: OrganizationEnterpriseIDPTemplate.id,
                             resource: OrganizationEnterpriseIDPTemplate
                         },

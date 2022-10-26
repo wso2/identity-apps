@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -27,8 +27,8 @@ import { SupportedLanguagesInterface } from "./language-switcher";
 export interface LanguageSwitcherDropdownProps extends IdentifiableComponentInterface, TestableComponentInterface {
     /**
      * Language chanege callback.
-     * @param {React.SyntheticEvent} event - Click event.
-     * @param {DropdownItemProps} data - Data.
+     * @param event - Click event.
+     * @param data - Data.
      */
     changeLanguage: (event: SyntheticEvent, data: Record<string, unknown>) => void;
     /**
@@ -60,9 +60,9 @@ export interface LanguageSwitcherDropdownProps extends IdentifiableComponentInte
 /**
  * Language switcher dropdown component.
  *
- * @param {LanguageSwitcherDropdownProps} props - Props passed in to the language switcher dropdown component.
+ * @param props - Props passed in to the language switcher dropdown component.
  *
- * @return {React.ReactElement}
+ * @returns the language switcher dropdown component
  */
 export const LanguageSwitcherDropdown: React.FunctionComponent<LanguageSwitcherDropdownProps> = (
     props: LanguageSwitcherDropdownProps

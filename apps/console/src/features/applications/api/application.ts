@@ -20,7 +20,7 @@ import { AsgardeoSPAClient } from "@asgardeo/auth-react";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
-import useRequest, { 
+import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
     RequestResultInterface
@@ -312,7 +312,7 @@ export const getAuthProtocolMetadata = <T>(protocol: string): Promise<T> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: `${ store.getState().config.endpoints.applications}/meta/inbound-protocols/${ protocol }`
+        url: `${ store.getState().config.endpoints.applications }/meta/inbound-protocols/${ protocol }`
     };
 
     return httpClient(requestConfig)
@@ -407,7 +407,7 @@ export const getInboundProtocolConfig = (applicationId: string, inboundProtocolI
  *
  * @param id - Application ID
  * @param OIDC - OIDC configuration data.
- * 
+ *
  * @returns Response as a promise.
  */
 export const updateOIDCData = (id: string, OIDC: Record<string, unknown>): Promise<any> => {
@@ -440,7 +440,7 @@ export const updateOIDCData = (id: string, OIDC: Record<string, unknown>): Promi
  * @param id - Application ID.
  * @param config - Protocol config.
  * @param protocol - The protocol to be updated.
- * 
+ *
  * @returns Response as a promise.
  * @throws IdentityAppsApiException
  */
@@ -465,7 +465,7 @@ export const updateAuthProtocolConfig = <T>(id: string, config: T,
             "Content-Type": "application/json"
         },
         method: HttpMethods.PUT,
-        url: `${ store.getState().config.endpoints.applications}/${ id }/inbound-protocols/${ protocol }`
+        url: `${ store.getState().config.endpoints.applications }/${ id }/inbound-protocols/${ protocol }`
     };
 
     return httpClient(requestConfig)
@@ -509,7 +509,7 @@ export const deleteProtocol = <T>(id: string, protocol: string): Promise<T> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
-        url: `${ store.getState().config.endpoints.applications}/${ id }/inbound-protocols/${ protocol }`
+        url: `${ store.getState().config.endpoints.applications }/${ id }/inbound-protocols/${ protocol }`
     };
 
     return httpClient(requestConfig)
@@ -893,7 +893,7 @@ export const getOIDCApplicationConfigurations = (): Promise<OIDCApplicationConfi
                 tokenEndpoint: response.data.token_endpoint,
                 tokenRevocationEndpoint: response.data.revocation_endpoint,
                 userEndpoint: response.data.userinfo_endpoint,
-                wellKnownEndpoint: `${response.data.token_endpoint}/.well-known/openid-configuration`
+                wellKnownEndpoint: `${ response.data.token_endpoint }/.well-known/openid-configuration`
             };
 
             return Promise.resolve(oidcConfigs);
@@ -1005,9 +1005,9 @@ export const updateMyAccountStatus = (status: boolean): Promise<MyAccountPortalS
     const config = {
         attributes: [
             {
-                key: "enable", 
+                key: "enable",
                 value: status
-            } 
+            }
         ],
         name: "status"
     };
@@ -1051,9 +1051,10 @@ export const updateMyAccountStatus = (status: boolean): Promise<MyAccountPortalS
 /**
  * Hook to get the status of the My Account Portal.
  *
- * @returns Reponse of the My Account status retrieval request.
+ * @returns Response of the My Account status retrieval request.
  */
 export const useMyAccountStatus = <Data = MyAccountPortalStatusInterface, Error = RequestErrorInterface>(
+    shouldSendRequest: boolean = true
 ): RequestResultInterface<Data, Error> => {
 
     const requestConfig: RequestConfigInterface = {
@@ -1063,12 +1064,22 @@ export const useMyAccountStatus = <Data = MyAccountPortalStatusInterface, Error 
         },
         method: HttpMethods.GET,
         params: {},
-        url: store.getState().config.endpoints.myAccountConfigMgt + "/status/enable"
+        url: shouldSendRequest ? store.getState().config.endpoints.myAccountConfigMgt + "/status/enable" : ""
     };
 
     const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig, {
         shouldRetryOnError: false
     });
+
+    if (error && !shouldSendRequest) {
+        return {
+            data: null,
+            error: null,
+            isLoading: false,
+            isValidating: false,
+            mutate: null
+        };
+    }
 
     return {
         data,

@@ -84,6 +84,9 @@ export interface IdentityProviderConfig {
         enableJitProvisioningField: {
             show: boolean;
         },
+        enableAssociateLocalUserField: {
+            show: boolean;
+        },
         userstoreDomainField: {
             show: boolean;
         },

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -44,7 +44,7 @@ import { OrganizationInterface } from "../../organizations/models";
 import { getApplicationDetails } from "../api";
 import { EditApplication, InboundProtocolDefaultFallbackTemplates } from "../components";
 import { ApplicationShareModal } from "../components/modals/application-share-modal";
-import { ApplicationManagementConstants } from "../constants";
+import { ApplicationManagementConstants, ShareWithOrgStatus } from "../constants";
 import CustomApplicationTemplate
     from "../data/application-templates/templates/custom-application/custom-application.json";
 import {
@@ -53,6 +53,7 @@ import {
     ApplicationTemplateListItemInterface,
     State,
     SupportedAuthProtocolTypes,
+    additionalSpProperty,
     emptyApplication,
     idpInfoTypeInterface
 } from "../models";
@@ -69,7 +70,7 @@ interface ApplicationEditPageInterface extends TestableComponentInterface, Route
  *
  * @param props - Props injected to the component.
  *
- * @returns React Element
+ * @returns
  */
 const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     props: ApplicationEditPageInterface
@@ -107,6 +108,11 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     const [ showAppShareModal, setShowAppShareModal ] = useState(false);
     const [ subOrganizationList, setSubOrganizationList ] = useState<Array<OrganizationInterface>>([]);
     const [ sharedOrganizationList, setSharedOrganizationList ] = useState<Array<OrganizationInterface>>([]);
+    const [ sharedWithAll, setSharedWithAll ] = useState<ShareWithOrgStatus>(ShareWithOrgStatus.UNDEFINED);
+
+    const isFirstLevelOrg: boolean = useSelector(
+        (state: AppState) => state.organization.isFirstLevelOrganization
+    );
     const [ isConnectedAppsRedirect, setisConnectedAppsRedirect ] = useState(false);
     const [ callBackIdpID, setcallBackIdpID ] = useState<string>();
     const [ callBackIdpName, setcallBackIdpName ] = useState<string>();
@@ -138,8 +144,8 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
          * 2nd Call -
          *  React updates the {@link appDescElement} with the target element.
          *  But {@link PageHeader} will immediately unmount it (because there's a request is ongoing).
-         *  When that happens, for "some reason" we always get [ offsetWidth, scrollWidth
-         *  and all the related attributes ] as zero or null.
+         *  When that happens, for "some reason" we always get \{ offsetWidth, scrollWidth
+         *  and all the related attributes \} as zero or null.
          *
          * 3rd Call -
          *  So, whenever there's some changes to {@link isApplicationRequestLoading}
@@ -233,7 +239,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
              * /t/foo/develop/applications/:id#tab=1 this component will be
              * mounted. But you see this {@link applicationTemplates}?; it is
              * loaded elsewhere. For some reason, requesting the state from
-             * {@link useSelector} always returns 'undefined' when
+             * {@link useSelector} always returns `undefined` when
              * directly navigating or refreshing the page. Therefore; it hangs
              * without doing anything. It will show a overlay loader but
              * that's it. Nothing happens afterwards.
@@ -431,6 +437,21 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         getApplicationDetails(id)
             .then((response: ApplicationInterface) => {
                 setApplication(response);
+
+                const isSharedWithAll: additionalSpProperty[] = response?.advancedConfigurations
+                    ?.additionalSpProperties?.filter((property: additionalSpProperty) =>
+                        property?.name === "shareWithAllChildren"
+                    );
+
+                if (!isSharedWithAll || isSharedWithAll.length === 0) {
+                    setSharedWithAll(ShareWithOrgStatus.UNDEFINED);
+                } else {
+                    setSharedWithAll(
+                        JSON.parse(isSharedWithAll[ 0 ].value)
+                            ? ShareWithOrgStatus.TRUE
+                            : ShareWithOrgStatus.FALSE
+                    );
+                }
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
@@ -485,7 +506,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
 
     /**
      * Resolves the application status label.
-     * @returns ReactElement
+     * @returns
      */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const resolveApplicationStatusLabel = (): ReactElement => {
@@ -623,6 +644,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                             && applicationConfig.editApplication.showApplicationShare
                             && !application.advancedConfigurations?.fragment
                             && application.access === ApplicationAccessTypes.WRITE
+                            && (isFirstLevelOrg || window[ "AppUtils" ].getConfig().organizationName)
                             && hasRequiredScopes(featureConfig?.applications,
                                 featureConfig?.applications?.scopes?.update, allowedScopes)) && (
                             <PrimaryButton onClick={ () => setShowAppShareModal(true) }>
@@ -662,6 +684,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                     sharedOrganizationList={ sharedOrganizationList }
                     onClose={ () => setShowAppShareModal(false) }
                     onApplicationSharingCompleted={ onApplicationSharingCompleted }
+                    isSharedWithAll={ sharedWithAll }
                 />
             ) }
         </PageLayout>

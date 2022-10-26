@@ -179,3 +179,9 @@
 @tenantDropdownDefaultButtonHoverBorderColor: #e64800;
 @tenantDropdownLinkMargin: 0;
 @tenantDropdownLinkMinHeight: 46px;
+
+/*-------------------
+   Feature Status
+--------------------*/
+@previewStatusBgColor: #c3e6f6;
+@previewStatusTextColor: #01698a;

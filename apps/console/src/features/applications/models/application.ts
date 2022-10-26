@@ -673,7 +673,8 @@ export enum AdaptiveAuthTemplateTypes {
 export enum ApplicationTemplateIdTypes {
     SPA = "single-page-application",
     OIDC_WEB_APPLICATION = "oidc-web-application",
-    SAML_WEB_APPLICATION = "saml-web-application"
+    SAML_WEB_APPLICATION = "saml-web-application",
+    MOBILE_APPLICATION = "mobile-application"
 }
 
 /**
@@ -699,6 +700,7 @@ export enum LoginFlowTypes {
     MICROSOFT_LOGIN = "MICROSOFT_LOGIN",
     SECOND_FACTOR_TOTP = "SECOND_FACTOR_TOTP",
     SECOND_FACTOR_EMAIL_OTP = "SECOND_FACTOR_EMAIL_OTP",
+    SECOND_FACTOR_SMS_OTP = "SECOND_FACTOR_SMS_OTP",
     FIDO_LOGIN = "FIDO_LOGIN",
     MAGIC_LINK = "MAGIC_LINK",
     DEFAULT = "DEFAULT"

@@ -44,7 +44,7 @@ interface PasswordPropsInterface {
 
 /**
  * Password component
- * @param props
+ * @param props - Props injected to the component.
  */
 export const Password: React.FunctionComponent<PasswordPropsInterface> = (
     props: PasswordPropsInterface
@@ -88,6 +88,7 @@ export const Password: React.FunctionComponent<PasswordPropsInterface> = (
                                 : props.hidePassword
                         }
                         inverted
+                        popper={ <div style={ { filter: "none" } }/> }
                     />
                 )
             }

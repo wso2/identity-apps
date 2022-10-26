@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -76,8 +76,8 @@ export interface TemplateCardPropsInterface extends IdentifiableComponentInterfa
     imageOptions?: Omit<GenericIconProps, "icon" | "size">;
     /**
      * Template card onclick event.
-     * @param {React.MouseEvent<HTMLAnchorElement>} e - Event,
-     * @param {CardProps} data - Card data.
+     * @param e - Event,
+     * @param data - Card data.
      */
     onClick: (e: MouseEvent<HTMLAnchorElement>, data: CardProps) => void;
     /**
@@ -135,9 +135,9 @@ export interface TemplateCardTagInterface {
 /**
  * Template card component that can be used to represent application and IDP templates.
  *
- * @param {TemplateCardPropsInterface} props - Props injected to the components.
+ * @param props - Props injected to the components.
  *
- * @return {React.ReactElement}
+ * @returns the Template Card component
  */
 export const TemplateCard: FunctionComponent<TemplateCardPropsInterface> = (
     props: TemplateCardPropsInterface
@@ -186,10 +186,10 @@ export const TemplateCard: FunctionComponent<TemplateCardPropsInterface> = (
     /**
      * Renders the tag based on render type.
      *
-     * @param {TemplateCardTagInterface | string} tag - Tag to be rendered.
-     * @param {"icon" | "label" | "default"} as - Render type.
-     * @param {number} index - Tag index in array.
-     * @return {React.ReactElement}
+     * @param tag - Tag to be rendered.
+     * @param as - Render type.
+     * @param index - Tag index in array.
+     * @returns the tag component for the corresponding render type 
      */
     const renderTag = (tag: TemplateCardTagInterface | string, as: "icon" | "label" | "default",
         index: number): ReactElement => {

@@ -19,7 +19,7 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { identityProviderConfig } from "../../../../../extensions/configs/identity-provider";
-import MicrosoftIDPTemplate from 
+import MicrosoftIDPTemplate from
     "../../../../identity-providers/data/identity-provider-templates/templates/microsoft/microsoft.json";
 import { IdentityProviderManagementConstants } from "../../../constants";
 import {
@@ -34,7 +34,8 @@ import {
     FacebookAuthenticatorForm,
     GithubAuthenticatorForm,
     GoogleAuthenticatorForm,
-    MicrosoftAuthenticatorForm
+    MicrosoftAuthenticatorForm,
+    SMSOTPAuthenticatorForm
 } from "../authenticators";
 import { SamlAuthenticatorSettingsForm } from "../authenticators/saml-authenticator-form";
 /**
@@ -170,6 +171,20 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
             return (
                 <EmailOTPAuthenticatorForm
                     mode={ mode }
+                    initialValues={ initialValues }
+                    metadata={ metadata }
+                    onSubmit={ onSubmit }
+                    triggerSubmit={ triggerSubmit }
+                    enableSubmitButton={ enableSubmitButton }
+                    data-testid={ testId }
+                    showCustomProperties={ showCustomProperties }
+                    readOnly={ isReadOnly }
+                    isSubmitting={ isSubmitting }
+                />
+            );
+        case IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID:
+            return (
+                <SMSOTPAuthenticatorForm
                     initialValues={ initialValues }
                     metadata={ metadata }
                     onSubmit={ onSubmit }

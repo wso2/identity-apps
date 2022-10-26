@@ -368,6 +368,7 @@ export interface JITProvisioningResponseInterface {
     isEnabled?: boolean;
     scheme?: SupportedJITProvisioningSchemes;
     userstore?: string;
+    associateLocalUser?: boolean;
 }
 
 export enum SupportedJITProvisioningSchemes {

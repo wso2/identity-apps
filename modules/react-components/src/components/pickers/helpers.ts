@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2022, WSO2 Inc. (http://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -24,8 +24,8 @@ import tinycolor from "tinycolor2";
  * @example
  *  rgbToHex(65, 131, 196);
  *  // Returns '4183c4'
- * @param {string} value - The value to be converted.
- * @returns {string} Returns a convered HEX value.
+ * @param value - The value to be converted.
+ * @returns a convered HEX value.
  */
 export const rgbToHex = (value: string): string => {
 
