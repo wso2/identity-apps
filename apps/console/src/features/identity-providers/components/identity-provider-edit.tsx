@@ -334,6 +334,11 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
             });
         }
 
+        panes.push({
+            menuItem: "Connected Apps",
+            render: ConnectedAppsTabPane
+        });
+
         if (identityProviderConfig.editIdentityProvider.showOutboundProvisioning
             && !isOrganizationEnterpriseAuthenticator ) {
             panes.push({
@@ -357,11 +362,6 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
                 render: AdvancedSettingsTabPane
             });
         }
-
-        panes.push({
-            menuItem: "Connected Apps",
-            render: ConnectedAppsTabPane
-        });
 
         return panes;
     };
