@@ -4619,10 +4619,10 @@ export const console: ConsoleNS = {
                 },
                 connectedApps: {
                     action: "Go to Sign-in Method",
-                    header: "Connected Applications of {{idpName}}.",
+                    header: "Connected Application(s) of {{idpName}}.",
                     subHeader: "Applications connected to {{idpName}} are listed here.",
                     placeholders: {
-                        search: "Search by Application Name",
+                        search: "Search by application name",
                         emptyList: "There are no applications connected to {{idpName}} at the moment."
                     },
                     applicationEdit: {
