@@ -39,6 +39,7 @@ import {
     setHelpPanelDocsContentURL,
     toggleHelpPanelVisibility
 } from "../../core";
+import { IdentityProviderConstants } from "../../identity-providers/constants";
 import { getOrganizations, getSharedOrganizations } from "../../organizations/api";
 import { OrganizationInterface } from "../../organizations/models";
 import { getApplicationDetails } from "../api";
@@ -484,7 +485,10 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         if (!isConnectedAppsRedirect) {
             history.push(AppConstants.getPaths().get("APPLICATIONS"));
         } else {
-            history.push(AppConstants.getPaths().get("IDP_EDIT").replace(":id", callBackIdpID));
+            history.push({
+                pathname: AppConstants.getPaths().get("IDP_EDIT").replace(":id", callBackIdpID),
+                state: IdentityProviderConstants.CONNECTED_APPS_TAB_ID
+            });
         }
     };
 
