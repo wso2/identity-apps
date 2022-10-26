@@ -1123,7 +1123,6 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                                         />
                                     )
                                 }
-
                             </Grid.Column>
                         </div>
                     </Grid>
