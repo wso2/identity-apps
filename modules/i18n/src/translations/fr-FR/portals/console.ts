@@ -771,6 +771,13 @@ export const console: ConsoleNS = {
                                     message: "Mappage d'attributs modifié"
                                 }
                             },
+                            emptySearchResults: {
+                                subtitles: {
+                                    0: "Nous n'avons trouvé aucun résultat pour '{{ searchQuery }}'",
+                                    1: "Veuillez essayer un autre terme de recherche."
+                                },
+                                title: "Aucun résultat trouvé"
+                            },
                             forms: {
                                 fields: {
                                     dynamic: {
@@ -815,12 +822,18 @@ export const console: ConsoleNS = {
                                 },
                                 attributeComponentHint: "Gérez les attributs utilisateur que vous souhaitez partager" +
                                     " avec cette application.",
-                                attributeComponentHintAlt: "Gérez les attributs utilisateur que vous souhaitez" +
-                                    " partager avec cette application. Vous pouvez ajouter de nouveaux attributs et " +
-                                    "mappages en accédant à <1>Attributs</1>",
-                                description: "Ajoutez les attributs utilisateur autorisés à être partagés avec cette " +
-                                    "application.",
+                                attributeComponentHintAlt: "Utilisez les étendues <1>OpenID Connect</1> pour ajouter/supprimer un attribut utilisateur " +
+                                    "à une étendue. Vous pouvez ajouter de nouveaux attributs en accédant à <3>Attributs.</3>",
+                                description: "Sélectionnez les étendues, c'est-à-dire les attributs utilisateur groupés qui sont autorisés à être " +
+                                    "partagés avec cette application.",
                                 heading: "Sélection des attributs utilisateur",
+                                scopelessAttributes: {
+                                    description: "Afficher les attributs sans étendue",
+                                    displayName: "Attributs sans portée",
+                                    name: "",
+                                    hint: "Impossible de récupérer ces attributs utilisateur en demandant " +
+                                        "des étendues OIDC. Pour récupérer, ajoutez les attributs requis à une étendue pertinente."
+                                },
                                 mandatoryAttributeHint: "Marquez les attributs utilisateur qui doivent " +
                                     "obligatoirement être partagés avec l'application. Lors de la connexion, " +
                                     "{{productName}} invite l'utilisateur à saisir ces valeurs d'attribut, si elles " +
@@ -839,8 +852,10 @@ export const console: ConsoleNS = {
                                         actions: {
                                             makeMandatory: "Rendre obligatoire",
                                             makeRequested: "Rendre demandable",
+                                            makeScopeRequested: "Rendre la portée demandée",
                                             removeMandatory: "Retirer l'obligation",
                                             removeRequested: "Retirer la demandabilité",
+                                            removeScopeRequested: "Supprimer l'étendue demandée",
                                             subjectDisabledSelection: "Cet attribut est obligatoire car il " +
                                                 "s'agit de l'attribut sujet."
                                         },
@@ -868,7 +883,7 @@ export const console: ConsoleNS = {
                                         confirmationMessage: "Cette action rétablira les valeurs mappées aux " +
                                             "valeurs par défaut."
                                     },
-                                    searchPlaceholder: "Attributs de recherche"
+                                    searchPlaceholder: "Rechercher des attributs d'utilisateur par nom, nom d'affichage ou détails de portée"
                                 },
                                 selectAll: "Sélectionnez tous les attributs"
                             },
@@ -1232,6 +1247,10 @@ export const console: ConsoleNS = {
                                             emailOTP: {
                                                 description: "Activez une couche supplémentaire d'authentification avec OTP basé sur Email.",
                                                 heading: "Ajouter Email OTP comme deuxième facteur"
+                                            },
+                                            smsOTP: {
+                                                description: "Activez une couche supplémentaire d'authentification avec OTP basé sur SMS.",
+                                                heading: "Ajouter SMS OTP comme deuxième facteur"
                                             }
                                         }
                                     }

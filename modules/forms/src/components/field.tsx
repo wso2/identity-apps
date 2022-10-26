@@ -42,8 +42,6 @@ import { filterPassedProps } from "../utils";
 
 /**
  * The enter key.
- * @constant
- * @type {string}
  */
 const ENTER_KEY = "Enter";
 
@@ -64,8 +62,9 @@ interface InnerFieldPropsInterface {
 }
 
 /**
- * This produces a InnerField component
- * @param props
+ * This produces a InnerField component.
+ * 
+ * @param props - The props for the InnerField component.
  */
 export const InnerField = React.forwardRef((props: InnerFieldPropsInterface, ref: React.Ref<any>): JSX.Element => {
 
@@ -86,8 +85,9 @@ export const InnerField = React.forwardRef((props: InnerFieldPropsInterface, ref
     }, formField.className);
 
     /**
-     * Generates a semantic Form element
-     * @param inputField
+     * Generates a semantic Form element.
+     * 
+     * @param inputField - The input field to be generated to a semantic Form element.
      */
     const formFieldGenerator = (inputField: FormField): JSX.Element => {
 
@@ -532,8 +532,7 @@ export const InnerField = React.forwardRef((props: InnerFieldPropsInterface, ref
  * form fields. To see usages see {@link Checkbox} and {@link Radio}
  * conditional rendering sections in {@link InnerField}.
  *
- * @param hint {string}
- * @constructor
+ * @param hint - The hint text.
  */
 export const FieldHint: React.FC<{ hint: string }> = ({ hint }: { hint: string }): ReactElement => {
     return (

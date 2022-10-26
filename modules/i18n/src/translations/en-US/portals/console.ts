@@ -768,6 +768,13 @@ export const console: ConsoleNS = {
                                     message: "User Attribute Mapping Changed"
                                 }
                             },
+                            emptySearchResults: {
+                                subtitles: {
+                                    0: "We couldn't find any results for '{{ searchQuery }}'",
+                                    1: "Please try a different search term."
+                                },
+                                title: "No results found"
+                            },
                             forms: {
                                 fields: {
                                     dynamic: {
@@ -808,15 +815,21 @@ export const console: ConsoleNS = {
                                     },
                                     subHeading: "Select which user attributes you want to share with the application."
                                 },
-                                attributeComponentHint: "Manage the user attributes you want to share with this " +
-                                    "application via <1>OpenID Connect Scopes.</1> You can add new attributes " +
-                                    "and mappings by navigating to <3>Attributes.</3>",
+                                attributeComponentHint: "Use <1>OpenID Connect Scopes</1> to add/remove user attribute to a scope. " +
+                                    "You can add new attributes by navigating to <3>Attributes.</3>",
                                 attributeComponentHintAlt: "Manage the user attributes you want to share with this" +
                                     " application. You can add new attributes and mappings by navigating to " +
                                     "<1>Attributes.</1>",
-                                description: "Add the user attributes that are allowed to be shared with this " +
+                                description: "Select scopes, i.e grouped user attributes that are allowed to be shared with this " +
                                     "application.",
                                 heading: "User Attribute Selection",
+                                scopelessAttributes: {
+                                    description: "View attributes without a scope",
+                                    displayName: "Attributes without a scope",
+                                    name: "",
+                                    hint: "Cannot retrieve these user attributes by requesting " +
+                                            "OIDC scopes. To retrieve, add the required attributes to a relevant scope."
+                                },
                                 mandatoryAttributeHint: "Mark which user attributes are mandatory to be shared " +
                                     "with the application. At login, {{productName}} prompts the user to enter these " +
                                     "attribute values, if not already provided in the user's profile.",
@@ -834,8 +847,10 @@ export const console: ConsoleNS = {
                                         actions: {
                                             makeMandatory: "Make mandatory",
                                             makeRequested: "Make requested",
+                                            makeScopeRequested: "Make Scope requested",
                                             removeMandatory: "Remove mandatory",
                                             removeRequested: "Remove requested",
+                                            removeScopeRequested: "Remove Scope Requested",
                                             subjectDisabledSelection: "This attribute is mandatory because it " +
                                                 "is the subject attribute."
                                         },
@@ -862,7 +877,7 @@ export const console: ConsoleNS = {
                                         confirmationMessage: "This action will revert mapped custom attribute " +
                                             "values to default values."
                                     },
-                                    searchPlaceholder: "Search user attributes"
+                                    searchPlaceholder: "Search user attributes by name, display name or scope details"
                                 },
                                 selectAll: "Select all attributes"
                             },
@@ -1197,6 +1212,10 @@ export const console: ConsoleNS = {
                                             emailOTP: {
                                                 description: "Enable additional authentication layer with Email based OTP.",
                                                 heading: "Add Email OTP as a second factor"
+                                            },
+                                            smsOTP: {
+                                                description: "Enable additional authentication layer with SMS based OTP.",
+                                                heading: "Add SMS OTP as a second factor"
                                             }
                                         }
                                     }
@@ -3047,6 +3066,11 @@ export const console: ConsoleNS = {
                         emailTemplate: {
                             tabName: "Email Template <1>(Coming Soon)</1>"
                         }
+                    },
+                    smsOTP: {
+                        smsProvider:{
+                            tabName: "SMS Provider <1>(Coming Soon)</1>"
+                        }
                     }
                 },
                 forms: {
@@ -3169,6 +3193,58 @@ export const console: ConsoleNS = {
                                 label: "Use only numeric characters for OTP",
                                 validations: {
                                     required: "Use only numeric characters for OTP is a required field."
+                                }
+                            }
+                        },
+                        smsOTP: {
+                            forTestingOnlyNotice: {
+                                firstLine: "Test SMS OTP two-factor authentication using our default SMS provider.",
+                                secondLine: "(Limited to 15 messages per month)"
+                            },
+                            expiryTime: {
+                                hint: "Please pick a value between <1>1 minute</1> & <3> 1440 minutes (1 day)</3>.",
+                                label: "SMS OTP expiry time",
+                                placeholder: "Enter SMS OTP expiry time.",
+                                unit: "minutes",
+                                validations: {
+                                    invalid: "SMS OTP expiry time should be an integer.",
+                                    range: "SMS OTP expiry time should be between 1 minutes & 1440 minutes (1 day).",
+                                    required: "SMS OTP expiry time is a required field."
+                                }
+                            },
+                            tokenLength: {
+                                hint: "The number of allowed characters in the OTP. Please " +
+                                    "pick a value between <1>4-10</1>.",
+                                label: "SMS OTP length",
+                                placeholder: "Enter SMS OTP length.",
+                                validations: {
+                                    invalid: "SMS OTP length should be an integer.",
+                                    range: {
+                                        digits: "SMS OTP length should be between 4 & 10 digits.",
+                                        characters: "SMS OTP length should be between 4 & 10 characters."
+                                    },
+                                    required: "SMS OTP length is a required field."
+                                },
+                                unit: {
+                                    digits: "digits",
+                                    characters: "characters"
+                                }
+                            },
+                            useNumericChars: {
+                                hint: "Please clear this checkbox to enable alphanumeric characters.",
+                                label: "Use only numeric characters for OTP",
+                                validations: {
+                                    required: "Use only numeric characters for OTP token is a required field."
+                                }
+                            },
+                            allowedResendAttemptCount: {
+                                hint: "The number of allowed OTP resend attempts.",
+                                label: "Allowed OTP resend attempt count",
+                                placeholder: "Enter allowed resend attempt count.",
+                                validations: {
+                                    required: "Allowed OTP resend attempt count is a required field.",
+                                    invalid: "Allowed OTP resend attempt count should be an integer.",
+                                    range: "Allowed OTP resend attempt count should be between 0 & 100."
                                 }
                             }
                         },

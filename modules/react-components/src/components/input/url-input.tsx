@@ -415,7 +415,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
     /**
      * Returns the changeUrl value.
      *
-     * @returns Change URL.
+     * @returns the change URL.
      */
     const getChangeUrl = useCallback((): string => {
         return changeUrl;
@@ -460,8 +460,8 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
      * {@link React.MouseEvent.preventDefault} to avoid accidental
      * form submission events.
      *
-     * @param event - button element event.
-     * @param url - user input
+     * @param event - React mousevent
+     * @param url - user input url
      */
     const onAllowOriginClick = (event: React.MouseEvent<HTMLButtonElement>, url: string): void => {
         event.preventDefault();
@@ -579,7 +579,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
     /**
      * Resolves the error label.
      *
-     * @returns React element.
+     * @returns the resolved error label.
      */
     const resolveValidationLabel = (): ReactElement | ReactNode => {
         if(!validURL && !changeUrl && emptyErrorMessage) {
@@ -622,8 +622,8 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
      * {@link https://tools.ietf.org/html/rfc6454#section-3.2.1}
      * {@link https://stackoverflow.com/a/19542686}
      *
-     * @param url - origin URL 
-     * @returns origin allowed or not
+     * @param url - a URL i.e., https://myapp.io/x/y/z
+     * @returns a boolean that indicates whether the origin is allowed or not
      */
     const isOriginIsKnownAndAllowed = (url: string): boolean => {
         const urlComponents = URLUtils.urlComponents(url);

@@ -64,7 +64,7 @@ interface AttributeListItemPropInterface extends TestableComponentInterface {
  *
  * @param props - Props injected to the component.
  *
- * @returns Attribute List Items
+ * @returns Attribute list item
  */
 export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface> = (
     props: AttributeListItemPropInterface
@@ -78,6 +78,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
         updateMapping,
         addToMapping,
         selectMandatory,
+        selectRequested,
         isDefaultMappingChanged,
         mapping,
         initialMandatory,
@@ -102,13 +103,46 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
     const [ defaultMappedAttribute ] = useState(mappedAttribute);
     const localDialectURI = "http://wso2.org/claims";
 
+    /**
+     * Mandatory state of an attribute will be handled here
+     */
     const handleMandatoryCheckChange = () => {
-        if (mandatory) {
-            selectMandatory(claimURI, false);
-            setMandatory(false);
+
+        if (localDialect) {
+            if (mandatory) {
+                selectMandatory(claimURI, false);
+                setMandatory(false);
+            } else {
+                setMandatory(true);
+                selectMandatory(claimURI, true);
+            }
         } else {
-            setMandatory(true);
-            selectMandatory(claimURI, true);
+            if (mandatory) {
+                selectMandatory(claimURI, false);
+                setMandatory(false);
+            } else {
+                setMandatory(true);
+                selectMandatory(claimURI, true);
+                setRequested(true);
+                selectRequested(claimURI, true);
+            }
+        }
+    };
+
+    /**
+     * Requested state of an attribute will be handled here
+     */
+    const handleRequestedCheckChange = () => {
+        if (!localDialect) {
+            if (requested) {
+                selectRequested(claimURI, false);
+                setRequested(false);
+                selectMandatory(claimURI, false);
+                setMandatory(false);
+            } else {
+                setRequested(true);
+                selectRequested(claimURI, true);
+            }
         }
     };
 
@@ -157,11 +191,14 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
 
     return (
         <Table.Row data-testid={ testId }>
+            {
+                !localDialect && (<Table.Cell></Table.Cell>)
+            }
             <Table.Cell>
                 <div>
                     { !localDialect ? localClaimDisplayName : displayName }
                 </div>
-                { 
+                {
                     isOIDCMapping ?
                         (<Hint warning={ true } popup>
                             {
@@ -179,12 +216,21 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                             : claimURI }
                         inverted
                         trigger={ (
-                            <Code compact withBackground={ false }>
-                                { isOIDCMapping && claimURI.startsWith(localDialectURI)
-                                    ? t("console:develop.features.applications.edit.sections.attributes" +
+                            localDialect ? (
+                                <Code compact withBackground={ false }>
+                                    { isOIDCMapping && claimURI.startsWith(localDialectURI)
+                                        ? t("console:develop.features.applications.edit.sections.attributes" +
                                         ".selection.mappingTable.listItem.faultyAttributeMapping")
-                                    : claimURI }
-                            </Code>
+                                        : claimURI }
+                                </Code>
+                            ) : (
+                                <Code>
+                                    { isOIDCMapping && claimURI.startsWith(localDialectURI)
+                                        ? t("console:develop.features.applications.edit.sections.attributes" +
+                                        ".selection.mappingTable.listItem.faultyAttributeMapping")
+                                        : claimURI }
+                                </Code>
+                            )
                         ) }
                         position="bottom left">
                     </Popup>
@@ -212,41 +258,32 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                     </>
                 )
             }
+            {
+                !localDialect && (
+                    <Table.Cell
+                        { ...(localDialect && !mappingOn && { textAlign: "center" }) }
+                        { ...(localDialect && mappingOn && { textAlign: "center" }) }
+                        { ...(!localDialect && { textAlign: "center" }) }
+                    >
+                        <Checkbox
+                            checked={ initialRequested || requested || subject }
+                            onClick={ !readOnly && handleRequestedCheckChange }
+                            disabled={ mappingOn ? !mandatory : false }
+                            readOnly={ subject || readOnly || isOIDCMapping }
+                        />
+                    </Table.Cell>
+                )
+            }
             <Table.Cell
                 { ...(localDialect && !mappingOn && { textAlign: "center" }) }
                 { ...(localDialect && mappingOn && { textAlign: "center" }) }
                 { ...(!localDialect && { textAlign: "center" }) }
             >
-                <Popup
-                    trigger={
-                        (
-                            <Checkbox
-                                checked={ initialMandatory || mandatory || subject }
-                                onClick={ !readOnly && handleMandatoryCheckChange }
-                                disabled={ mappingOn ? !requested : false }
-                                readOnly={ subject || readOnly || isOIDCMapping }
-                            />
-                        )
-                    }
-                    position="top right"
-                    content={
-                        subject ? t("console:develop.features.applications.edit.sections.attributes.selection" +
-                            ".mappingTable.listItem.actions.subjectDisabledSelection") :
-                            mandatory
-                                ? t("console:develop.features.applications.edit.sections.attributes.selection" +
-                                ".mappingTable.listItem.actions.removeMandatory")
-                                : t("console:develop.features.applications.edit.sections.attributes.selection" +
-                                ".mappingTable.listItem.actions.makeMandatory")
-                    }
-                    inverted
-                    disabled={
-                        subject ? false : readOnly
-                            ? true
-                            : mappingOn
-                                ? !requested
-                                : false
-                    }
-                    flowing={ subject }
+                <Checkbox
+                    checked={ initialMandatory || mandatory || subject }
+                    onClick={ !readOnly && handleMandatoryCheckChange }
+                    disabled={ mappingOn ? !requested : false }
+                    readOnly={ subject || readOnly || isOIDCMapping }
                 />
             </Table.Cell>
             { (!readOnly || isOIDCMapping) && deleteAttribute ? (
