@@ -25,7 +25,6 @@ import {
     DocumentationLink,
     EmphasizedSegment,
     GenericIcon,
-    GridLayout,
     ListLayout,
     PageLayout,
     PrimaryButton,
@@ -135,7 +134,6 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const consumerAccountURL: string = useSelector((state: AppState) =>
         state?.config?.deployment?.accountApp?.tenantQualifiedPath);
-    const [ isLoadingForTheFirstTime, setIsLoadingForTheFirstTime ] = useState<boolean>(true);
     const [ isMyAccountEnabled, setMyAccountStatus ] = useState<boolean>(AppConstants.DEFAULT_MY_ACCOUNT_STATUS);
 
     const orgType: OrganizationType = useGetOrganizationType();
@@ -162,8 +160,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
      * TODO: Remove this once the loaders are finalized.
      */
     useEffect(() => {
-        if (isApplicationListFetchRequestLoading === false && isMyAccountStatusLoading === false
-            && isLoadingForTheFirstTime === true) {
+        if (isApplicationListFetchRequestLoading === false && isMyAccountStatusLoading === false) {
             let status: boolean = AppConstants.DEFAULT_MY_ACCOUNT_STATUS;
 
             if (myAccountStatus) {
@@ -174,9 +171,8 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                 }
             }
             setMyAccountStatus(status);
-            setIsLoadingForTheFirstTime(false);
         }
-    }, [ isApplicationListFetchRequestLoading, isMyAccountStatusLoading, isLoadingForTheFirstTime ]);
+    }, [ isApplicationListFetchRequestLoading, isMyAccountStatusLoading ]);
 
     /**
      * Handles the application list fetch request error.
@@ -436,26 +432,20 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     return (
         <PageLayout
             pageTitle="Applications"
-            action={
-                (!isApplicationListFetchRequestLoading && !isMyAccountStatusLoading
-                    &&!(!searchQuery && applicationList?.totalResults <= 0))
-                && (
-                    <Show when={ AccessControlConstants.APPLICATION_WRITE }>
-                        <PrimaryButton
-                            disabled={ isApplicationListFetchRequestLoading || isMyAccountStatusLoading }
-                            loading={ isApplicationListFetchRequestLoading || isMyAccountStatusLoading }
-                            onClick={ (): void => {
-                                eventPublisher.publish("application-click-new-application-button");
-                                history.push(AppConstants.getPaths().get("APPLICATION_TEMPLATES"));
-                            } }
-                            data-testid={ `${ testId }-list-layout-add-button` }
-                        >
-                            <Icon name="add" />
-                            { t("console:develop.features.applications.list.actions.add") }
-                        </PrimaryButton>
-                    </Show>
-                )
-            }
+            action={ (
+                <Show when={ AccessControlConstants.APPLICATION_WRITE }>
+                    <PrimaryButton
+                        onClick={ (): void => {
+                            eventPublisher.publish("application-click-new-application-button");
+                            history.push(AppConstants.getPaths().get("APPLICATION_TEMPLATES"));
+                        } }
+                        data-testid={ `${ testId }-list-layout-add-button` }
+                    >
+                        <Icon name="add" />
+                        { t("console:develop.features.applications.list.actions.add") }
+                    </PrimaryButton>
+                </Show>
+            ) }
             title={ t("console:develop.pages.applications.title") }
             description={ (
                 <p>
@@ -470,156 +460,148 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
             contentTopMargin={ (AppConstants.getTenant() === AppConstants.getSuperTenant()) }
             data-testid={ `${ testId }-page-layout` }
         >
-            { !isLoadingForTheFirstTime ? (
-                <>
-                    { orgType !== OrganizationType.SUBORGANIZATION && renderTenantedMyAccountLink() }
-                    <ListLayout
-                        advancedSearch={ (
-                            <AdvancedSearchWithBasicFilters
-                                onFilter={ handleApplicationFilter }
-                                filterAttributeOptions={ [
-                                    {
-                                        key: 0,
-                                        text: t("common:name"),
-                                        value: "name"
-                                    },
-                                    {
-                                        key: 1,
-                                        text: t("common:clientId"),
-                                        value: "clientId"
-                                    },
-                                    {
-                                        key: 2,
-                                        text: t("common:issuer"),
-                                        value: "issuer"
-                                    }
-                                ] }
-                                filterAttributePlaceholder={
-                                    t("console:develop.features.applications.advancedSearch.form" +
-                                        ".inputs.filterAttribute.placeholder")
-                                }
-                                filterConditionsPlaceholder={
-                                    t("console:develop.features.applications.advancedSearch.form" +
-                                        ".inputs.filterCondition.placeholder")
-                                }
-                                filterValuePlaceholder={
-                                    t("console:develop.features.applications.advancedSearch.form.inputs.filterValue" +
-                                        ".placeholder")
-                                }
-                                placeholder={ t("console:develop.features.applications.advancedSearch.placeholder") }
-                                style={ { minWidth: "425px" } }
-                                defaultSearchAttribute="name"
-                                defaultSearchOperator="co"
-                                predefinedDefaultSearchStrategy={
-                                    "name co %search-value% or clientId co %search-value% or issuer co %search-value%"
-                                }
-                                triggerClearQuery={ triggerClearQuery }
-                                data-testid={ `${ testId }-list-advanced-search` }
-                            />
-                        ) }
-                        currentListSize={ applicationList?.count }
-                        listItemLimit={ listItemLimit }
-                        onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
-                        onPageChange={ handlePaginationChange }
-                        onSortStrategyChange={ handleListSortingStrategyOnChange }
-                        showPagination={ true }
-                        showTopActionPanel={
-                            isApplicationListFetchRequestLoading
-                            || !(!searchQuery && applicationList?.totalResults <= 0) }
-                        sortOptions={ APPLICATIONS_LIST_SORTING_OPTIONS }
-                        sortStrategy={ listSortingStrategy }
-                        totalPages={ Math.ceil(applicationList?.totalResults / listItemLimit) }
-                        totalListSize={ applicationList?.totalResults }
-                        paginationOptions={ {
-                            disableNextButton: !shouldShowNextPageNavigation(applicationList)
-                        } }
-                        data-testid={ `${ testId }-list-layout` }
-                    >
-                        <ApplicationList
-                            advancedSearch={ (
-                                <AdvancedSearchWithBasicFilters
-                                    onFilter={ handleApplicationFilter }
-                                    filterAttributeOptions={ [
-                                        {
-                                            key: 0,
-                                            text: t("common:name"),
-                                            value: "name"
-                                        },
-                                        {
-                                            key: 1,
-                                            text: t("common:clientId"),
-                                            value: "clientId"
-                                        },
-                                        {
-                                            key: 2,
-                                            text: t("common:issuer"),
-                                            value: "issuer"
-                                        }
-                                    ] }
-                                    filterAttributePlaceholder={
-                                        t("console:develop.features.applications.advancedSearch." +
-                                            "form.inputs.filterAttribute.placeholder")
-                                    }
-                                    filterConditionsPlaceholder={
-                                        t("console:develop.features.applications.advancedSearch." +
-                                            "form.inputs.filterCondition.placeholder")
-                                    }
-                                    filterValuePlaceholder={
-                                        t("console:develop.features.applications.advancedSearch." +
-                                            "form.inputs.filterValue.placeholder")
-                                    }
-                                    placeholder={
-                                        t("console:develop.features.applications.advancedSearch.placeholder")
-                                    }
-                                    style={ { minWidth: "425px" } }
-                                    defaultSearchAttribute="name"
-                                    defaultSearchOperator="co"
-                                    predefinedDefaultSearchStrategy={
-                                        "name co %search-value% or clientId co %search-value% or " +
-                                        "issuer co %search-value%"
-                                    }
-                                    triggerClearQuery={ triggerClearQuery }
-                                    data-testid={ `${ testId }-list-advanced-search` }
-                                />
-                            ) }
-                            featureConfig={ featureConfig }
-                            isLoading={ isApplicationListFetchRequestLoading || isMyAccountStatusLoading }
-                            list={ applicationList }
-                            onApplicationDelete={ handleApplicationDelete }
-                            onEmptyListPlaceholderActionClick={
-                                () => {
-                                    history.push(AppConstants.getPaths().get("APPLICATION_TEMPLATES"));
-                                }
+            { orgType !== OrganizationType.SUBORGANIZATION && renderTenantedMyAccountLink() }
+            <ListLayout
+                advancedSearch={ (
+                    <AdvancedSearchWithBasicFilters
+                        onFilter={ handleApplicationFilter }
+                        filterAttributeOptions={ [
+                            {
+                                key: 0,
+                                text: t("common:name"),
+                                value: "name"
+                            },
+                            {
+                                key: 1,
+                                text: t("common:clientId"),
+                                value: "clientId"
+                            },
+                            {
+                                key: 2,
+                                text: t("common:issuer"),
+                                value: "issuer"
                             }
-                            onSearchQueryClear={ handleSearchQueryClear }
-                            searchQuery={ searchQuery }
-                            data-testid={ `${ testId }-list` }
-                            data-componentid="application"
-                        />
-                    </ListLayout>
-                    { showWizard && (
-                        <MinimalAppCreateWizard
-                            title={ CustomApplicationTemplate?.name }
-                            subTitle={ CustomApplicationTemplate?.description }
-                            closeWizard={ (): void => setShowWizard(false) }
-                            template={ CustomApplicationTemplate }
-                            showHelpPanel={ true }
-                            subTemplates={ CustomApplicationTemplate?.subTemplates }
-                            subTemplatesSectionTitle={ CustomApplicationTemplate?.subTemplatesSectionTitle }
-                            addProtocol={ false }
-                            templateLoadingStrategy={
-                                config.ui.applicationTemplateLoadingStrategy
-                                ?? ApplicationManagementConstants.DEFAULT_APP_TEMPLATE_LOADING_STRATEGY
+                        ] }
+                        filterAttributePlaceholder={
+                            t("console:develop.features.applications.advancedSearch.form" +
+                                ".inputs.filterAttribute.placeholder")
+                        }
+                        filterConditionsPlaceholder={
+                            t("console:develop.features.applications.advancedSearch.form" +
+                                ".inputs.filterCondition.placeholder")
+                        }
+                        filterValuePlaceholder={
+                            t("console:develop.features.applications.advancedSearch.form.inputs.filterValue" +
+                                ".placeholder")
+                        }
+                        placeholder={ t("console:develop.features.applications.advancedSearch.placeholder") }
+                        style={ { minWidth: "425px" } }
+                        defaultSearchAttribute="name"
+                        defaultSearchOperator="co"
+                        predefinedDefaultSearchStrategy={
+                            "name co %search-value% or clientId co %search-value% or issuer co %search-value%"
+                        }
+                        triggerClearQuery={ triggerClearQuery }
+                        data-testid={ `${ testId }-list-advanced-search` }
+                    />
+                ) }
+                currentListSize={ applicationList?.count }
+                isLoading={ isApplicationListFetchRequestLoading }
+                listItemLimit={ listItemLimit }
+                onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
+                onPageChange={ handlePaginationChange }
+                onSortStrategyChange={ handleListSortingStrategyOnChange }
+                showPagination={ true }
+                showTopActionPanel={
+                    isApplicationListFetchRequestLoading
+                    || !(!searchQuery && applicationList?.totalResults <= 0) }
+                sortOptions={ APPLICATIONS_LIST_SORTING_OPTIONS }
+                sortStrategy={ listSortingStrategy }
+                totalPages={ Math.ceil(applicationList?.totalResults / listItemLimit) }
+                totalListSize={ applicationList?.totalResults }
+                paginationOptions={ {
+                    disableNextButton: !shouldShowNextPageNavigation(applicationList)
+                } }
+                data-testid={ `${ testId }-list-layout` }
+            >
+                <ApplicationList
+                    advancedSearch={ (
+                        <AdvancedSearchWithBasicFilters
+                            onFilter={ handleApplicationFilter }
+                            filterAttributeOptions={ [
+                                {
+                                    key: 0,
+                                    text: t("common:name"),
+                                    value: "name"
+                                },
+                                {
+                                    key: 1,
+                                    text: t("common:clientId"),
+                                    value: "clientId"
+                                },
+                                {
+                                    key: 2,
+                                    text: t("common:issuer"),
+                                    value: "issuer"
+                                }
+                            ] }
+                            filterAttributePlaceholder={
+                                t("console:develop.features.applications.advancedSearch." +
+                                    "form.inputs.filterAttribute.placeholder")
                             }
+                            filterConditionsPlaceholder={
+                                t("console:develop.features.applications.advancedSearch." +
+                                    "form.inputs.filterCondition.placeholder")
+                            }
+                            filterValuePlaceholder={
+                                t("console:develop.features.applications.advancedSearch." +
+                                    "form.inputs.filterValue.placeholder")
+                            }
+                            placeholder={
+                                t("console:develop.features.applications.advancedSearch.placeholder")
+                            }
+                            style={ { minWidth: "425px" } }
+                            defaultSearchAttribute="name"
+                            defaultSearchOperator="co"
+                            predefinedDefaultSearchStrategy={
+                                "name co %search-value% or clientId co %search-value% or " +
+                                "issuer co %search-value%"
+                            }
+                            triggerClearQuery={ triggerClearQuery }
+                            data-testid={ `${ testId }-list-advanced-search` }
                         />
                     ) }
-                </>
-            ) : (
-                <GridLayout
-                    isLoading={ isLoadingForTheFirstTime }
+                    featureConfig={ featureConfig }
+                    isLoading={ isApplicationListFetchRequestLoading }
+                    list={ applicationList }
+                    onApplicationDelete={ handleApplicationDelete }
+                    onEmptyListPlaceholderActionClick={
+                        () => {
+                            history.push(AppConstants.getPaths().get("APPLICATION_TEMPLATES"));
+                        }
+                    }
+                    onSearchQueryClear={ handleSearchQueryClear }
+                    searchQuery={ searchQuery }
+                    data-testid={ `${ testId }-list` }
+                    data-componentid="application"
                 />
-            )
-            }
+            </ListLayout>
+            { showWizard && (
+                <MinimalAppCreateWizard
+                    title={ CustomApplicationTemplate?.name }
+                    subTitle={ CustomApplicationTemplate?.description }
+                    closeWizard={ (): void => setShowWizard(false) }
+                    template={ CustomApplicationTemplate }
+                    showHelpPanel={ true }
+                    subTemplates={ CustomApplicationTemplate?.subTemplates }
+                    subTemplatesSectionTitle={ CustomApplicationTemplate?.subTemplatesSectionTitle }
+                    addProtocol={ false }
+                    templateLoadingStrategy={
+                        config.ui.applicationTemplateLoadingStrategy
+                        ?? ApplicationManagementConstants.DEFAULT_APP_TEMPLATE_LOADING_STRATEGY
+                    }
+                />
+            ) }
         </PageLayout>
     );
 };
