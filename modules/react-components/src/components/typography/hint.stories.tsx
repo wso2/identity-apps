@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,7 +14,6 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
 
 import * as React from "react";
@@ -32,7 +31,7 @@ export default {
 /**
  * Story to display the default hint.
  *
- * @return {React.ReactElement}
+ * @returns DefaultHint React Component
  */
 export const DefaultHint = (): React.ReactElement => (
     <Hint>This is a default hint</Hint>
@@ -49,7 +48,7 @@ DefaultHint.story = {
 /**
  * Story to display a hint with an icon.
  *
- * @return {React.ReactElement}
+ * @returns HintWithIcon React Component
  */
 export const HintWithIcon = (): React.ReactElement => (
     <Hint icon="info circle">This is an example of a hint with an icon.</Hint>
@@ -66,7 +65,7 @@ HintWithIcon.story = {
 /**
  * Story to display a hint as a popup.
  *
- * @return {React.ReactElement}
+ * @returns HintAsPopup React Component
  */
 export const HintAsPopup = (): React.ReactElement => (
     <>

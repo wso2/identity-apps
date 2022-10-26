@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,7 +14,6 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
 
 import { ChildRouteInterface, RouteInterface } from "@wso2is/core/models";
@@ -33,7 +32,7 @@ export default {
 /**
  * Story to display a default side panel.
  *
- * @return {React.ReactElement}
+ * @returns a React component
  */
 export const DefaultSidePanel = (): ReactElement => {
 
@@ -73,7 +72,7 @@ DefaultSidePanel.story = {
 /**
  * Story to display a side panel with children.
  *
- * @return {React.ReactElement}
+ * @returns a React component
  */
 export const WithChildren = (): ReactElement => {
 
@@ -113,7 +112,7 @@ WithChildren.story = {
 /**
  * Story to display a categorized side panel.
  *
- * @return {React.ReactElement}
+ * @returns a React component
  */
 export const Categorized = (): ReactElement => {
 

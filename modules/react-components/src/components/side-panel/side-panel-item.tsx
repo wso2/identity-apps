@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -53,9 +53,9 @@ export interface SidePanelItemPropsInterface extends CommonSidePanelPropsInterfa
 /**
  * Side panel item component.
  *
- * @param {SidePanelItemPropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns SidePanelItem React Component
  */
 export const SidePanelItem: React.FunctionComponent<SidePanelItemPropsInterface> = (
     props: SidePanelItemPropsInterface
@@ -100,8 +100,8 @@ export const SidePanelItem: React.FunctionComponent<SidePanelItemPropsInterface>
      * Validates if any of the child routes is supposed to be shown
      * on the side panel.
      *
-     * @param {ChildRouteInterface[]} children - Child routes.
-     * @return {boolean} If valid or not.
+     * @param children - Child routes.
+     * @returns a boolean that indicates whether the passed child routes are valid or not.
      */
     const validateChildren = (children: ChildRouteInterface[]): boolean => {
         if (!(children && children instanceof Array && children.length > 0)) {
@@ -117,10 +117,10 @@ export const SidePanelItem: React.FunctionComponent<SidePanelItemPropsInterface>
      * Checks if the child item is the selected, if so opens
      * the child items section automatically to improve UX.
      *
-     * @param {boolean} isOpen - Passed as a prop when manually clicked.
-     * @param {RouteInterface | ChildRouteInterface}selectedRoute - The selected route.
-     * @param {ChildRouteInterface[]} children - Child routes.
-     * @return {boolean} Should the child item section be opened or not.
+     * @param isOpen - Passed as a prop when manually clicked.
+     * @param selectedRoute - The selected route.
+     * @param children - Child routes.
+     * @returns a boolean that indicates whether the child item section should be opened or not.
      */
     const validateOpenState = (isOpen: boolean, selectedRoute: RouteInterface | ChildRouteInterface,
         children: ChildRouteInterface[]): boolean => {

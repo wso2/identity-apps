@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,7 +14,6 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
 
 import React, { ReactElement } from "react";
@@ -32,7 +31,7 @@ export default {
 /**
  * Story to display the default heading.
  *
- * @return {React.ReactElement}
+ * @returns the default heading
  */
 export const DefaultHeading = (): ReactElement => (
     <Heading>Heading Default</Heading>
@@ -49,7 +48,7 @@ DefaultHeading.story = {
 /**
  * Story to display page headings.
  *
- * @return {React.ReactElement}
+ * @returns a list of page headings
  */
 export const PageHeadings = (): ReactElement => (
     <>
@@ -73,7 +72,7 @@ PageHeadings.story = {
 /**
  * Story to display different heading sizes.
  *
- * @return {React.ReactElement}
+ * @returns a list of headings to be used in Storybook stories
  */
 export const HeadingSizes = (): ReactElement => (
     <>
@@ -96,7 +95,7 @@ HeadingSizes.story = {
 /**
  * Story to display heading with ellipsis.
  *
- * @return {React.ReactElement}
+ * @returns HeadingWithElipsis React Component
  */
 export const HeadingWithEllipsis = (): ReactElement => (
     <div style={ { width: "300px" } }>
