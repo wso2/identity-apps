@@ -489,9 +489,6 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
         <EmphasizedSegment padded="very">
             <Heading as="h4">{ t("console:develop.features.idp.connectedApps.header", 
                 { idpName: editingIDP.name }) }</Heading>
-            <Heading subHeading ellipsis as="h6">
-                { t("console:develop.features.idp.connectedApps.subHeader", { idpName: editingIDP.name }) }
-            </Heading>
             <Divider hidden />
             { connectedApps && (
                 <Input 
