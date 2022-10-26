@@ -151,6 +151,10 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     ]);
 
     useEffect(() => {
+        if (isPrivilegedUser) {
+            return;
+        }
+        
         commonConfig
             ?.header
             ?.getUserDropdownLinkExtensions(tenantDomain, associatedTenants)
