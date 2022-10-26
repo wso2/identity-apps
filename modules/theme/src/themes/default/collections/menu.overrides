@@ -720,6 +720,7 @@
                         color: @previewStatusTextColor;
                         font-weight: 500;
                         background-color: @previewStatusBgColor;
+                        font-size: 0.7em;
                     }
                 }
             }
