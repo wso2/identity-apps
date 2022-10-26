@@ -285,7 +285,7 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
                 )
             }
             <div className="list-container">
-                { 
+                {
                     isLoading ? (
                         <DataTable
                             isLoading={ true }

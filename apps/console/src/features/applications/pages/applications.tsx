@@ -432,26 +432,20 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     return (
         <PageLayout
             pageTitle="Applications"
-            action={
-                (!isApplicationListFetchRequestLoading && !isMyAccountStatusLoading
-                    &&!(!searchQuery && applicationList?.totalResults <= 0))
-                && (
-                    <Show when={ AccessControlConstants.APPLICATION_WRITE }>
-                        <PrimaryButton
-                            disabled={ isApplicationListFetchRequestLoading || isMyAccountStatusLoading }
-                            loading={ isApplicationListFetchRequestLoading || isMyAccountStatusLoading }
-                            onClick={ (): void => {
-                                eventPublisher.publish("application-click-new-application-button");
-                                history.push(AppConstants.getPaths().get("APPLICATION_TEMPLATES"));
-                            } }
-                            data-testid={ `${ testId }-list-layout-add-button` }
-                        >
-                            <Icon name="add" />
-                            { t("console:develop.features.applications.list.actions.add") }
-                        </PrimaryButton>
-                    </Show>
-                )
-            }
+            action={ (
+                <Show when={ AccessControlConstants.APPLICATION_WRITE }>
+                    <PrimaryButton
+                        onClick={ (): void => {
+                            eventPublisher.publish("application-click-new-application-button");
+                            history.push(AppConstants.getPaths().get("APPLICATION_TEMPLATES"));
+                        } }
+                        data-testid={ `${ testId }-list-layout-add-button` }
+                    >
+                        <Icon name="add" />
+                        { t("console:develop.features.applications.list.actions.add") }
+                    </PrimaryButton>
+                </Show>
+            ) }
             title={ t("console:develop.pages.applications.title") }
             description={ (
                 <p>
@@ -578,7 +572,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                         />
                     ) }
                     featureConfig={ featureConfig }
-                    isLoading={ isApplicationListFetchRequestLoading || isMyAccountStatusLoading }
+                    isLoading={ isApplicationListFetchRequestLoading }
                     list={ applicationList }
                     onApplicationDelete={ handleApplicationDelete }
                     onEmptyListPlaceholderActionClick={
