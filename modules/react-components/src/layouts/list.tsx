@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { UIConstants } from "@wso2is/core/constants";
 import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, PropsWithChildren, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
@@ -28,7 +29,6 @@ import {
     Icon,
     PaginationProps
 } from "semantic-ui-react";
-import { UIConstants } from "../../../core/src/constants";
 import { DataTable, Pagination, PaginationPropsInterface } from "../components";
 
 /**
