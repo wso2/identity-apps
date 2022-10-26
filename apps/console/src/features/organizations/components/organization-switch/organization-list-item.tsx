@@ -96,8 +96,8 @@ const OrganizationListItem = (
                     </Placeholder>
                 ) }
             </Grid.Column>
-            <Grid.Column width={ 4 } verticalAlign="middle" textAlign="right">
-                { showSwitch && (
+            { showSwitch && (
+                <Grid.Column width={ 2 } verticalAlign="middle" textAlign="right">
                     <Popup
                         trigger={
                             (<Icon
@@ -117,10 +117,15 @@ const OrganizationListItem = (
                         content={ t("common:switch") }
                         inverted
                     />
-                ) }
-                { !OrganizationUtils.isRootOrganization(organization) &&
-                    showEdit && (
-                    <Show when={ AccessControlConstants.ORGANIZATION_EDIT }>
+                </Grid.Column>
+            ) }
+            { !OrganizationUtils.isRootOrganization(organization) && showEdit && (
+                <Show when={ AccessControlConstants.ORGANIZATION_EDIT }>
+                    <Grid.Column
+                        width={ 2 }
+                        verticalAlign="middle"
+                        textAlign="right"
+                    >
                         <Popup
                             trigger={
                                 (<Icon
@@ -148,9 +153,9 @@ const OrganizationListItem = (
                             content={ t("common:edit") }
                             inverted
                         />
-                    </Show>
-                ) }
-            </Grid.Column>
+                    </Grid.Column>
+                </Show>
+            ) }
         </Grid.Row>
     );
 };
