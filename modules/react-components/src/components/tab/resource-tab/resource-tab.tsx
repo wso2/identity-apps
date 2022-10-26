@@ -18,6 +18,7 @@
 
 import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
+import inRange from "lodash-es/inRange";
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
 import { MenuProps, Tab, TabProps } from "semantic-ui-react";
 import { ResourceTabPane } from "./resource-tab-pane";
@@ -55,6 +56,14 @@ export interface ResourceTabPropsInterface extends TabProps, IdentifiableCompone
      * Is the tab menu in secondary variation.
      */
     secondary?: MenuProps[ "secondary" ];
+    /**
+     * Specifies if it is needed to redirect to a specific tabindex
+     */
+    isAutomaticTabRedirectionEnabled?: boolean;
+    /**
+     * Specifies, to which tab(tabid) it need to redirect.
+     */
+    tabIdentifier?: string;
 }
 
 /**
@@ -77,6 +86,8 @@ export const ResourceTab: FunctionComponent<ResourceTabPropsInterface> & Resourc
         pointing,
         secondary,
         onTabChange,
+        isAutomaticTabRedirectionEnabled,
+        tabIdentifier,
         [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId,
         ...rest
@@ -95,6 +106,25 @@ export const ResourceTab: FunctionComponent<ResourceTabPropsInterface> & Resourc
     useEffect(() => {
         setActiveIndex(defaultActiveIndex);
     }, [ defaultActiveIndex ]);
+
+    /**
+     * Called to set the pane index as the active tab index if it is needed to redirect to a specific tab
+     */
+    useEffect(() => {
+        if (isAutomaticTabRedirectionEnabled) {
+            const tabIndex: number = panes.indexOf(panes.find(element => element["data-tabid"] === tabIdentifier));
+            
+            if (inRange(tabIndex,  0, panes.length)) {
+                if (tabIndex === activeIndex) {
+                    return;
+                }
+                setActiveIndex(tabIndex);
+            } else {
+                setActiveIndex(defaultActiveIndex);
+            }
+        }
+        
+    }, []);
 
     /**
      * Called to set the panes list length initially.
@@ -141,8 +171,10 @@ ResourceTab.defaultProps = {
     attached: false,
     "data-componentid": "resource-tabs",
     "data-testid": "resource-tabs",
+    isAutomaticTabRedirectionEnabled: false,
     pointing: true,
-    secondary: true
+    secondary: true,
+    tabIdentifierURLFrag: ""
 };
 
 ResourceTab.Pane = ResourceTabPane;

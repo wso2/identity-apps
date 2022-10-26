@@ -64,8 +64,8 @@ interface EditIdentityProviderPropsInterface extends TestableComponentInterface 
      */
     onUpdate: (id: string) => void;
     /**
- * Check if IDP is Google
- */
+     * Check if IDP is Google
+     */
     isGoogle: boolean;
     /**
      * Check if the requesting IDP is enterprise
@@ -88,9 +88,17 @@ interface EditIdentityProviderPropsInterface extends TestableComponentInterface 
      */
     type: string;
     /**
-    * Specifies if the component should only be read-only.
-    */
+     * Specifies if the component should only be read-only.
+     */
     isReadOnly: boolean;
+    /**
+     * Specifies if it is needed to redirect to a specific tabindex
+     */
+    isAutomaticTabRedirectionEnabled?: boolean;
+    /**
+     * Specifies, to which tab(tabid) it need to redirect.
+     */
+    tabIdentifier?: string;
 }
 
 /**
@@ -114,6 +122,8 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
         isTabExtensionsAvailable,
         type,
         isReadOnly,
+        isAutomaticTabRedirectionEnabled,
+        tabIdentifier,
         [ "data-testid" ]: testId
     } = props;
 
@@ -403,6 +413,8 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
             onTabChange={ (e, data: TabProps ) => {
                 setDefaultActiveIndex(data.activeIndex);
             } }
+            isAutomaticTabRedirectionEnabled={ isAutomaticTabRedirectionEnabled }
+            tabIdentifier={ tabIdentifier }
         />
     );
 };

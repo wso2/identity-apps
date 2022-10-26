@@ -112,6 +112,9 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const [ isDescTruncated, setIsDescTruncated ] = useState<boolean>(false);
+    const [ tabIdentifier, setTabIdentifier ] = useState<string>();
+    const [ isAutomaticTabRedirectionEnabled, setIsAutomaticTabRedirectionEnabled ] = useState<boolean>(false);
+
 
     const isReadOnly = useMemo(() => (
         !hasRequiredScopes(
@@ -170,6 +173,20 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
 
         setUseNewConnectionsView(identityProviderConfig.useNewConnectionsView);
     }, [ identityProviderConfig ]);
+
+    /**
+     * Checks if the user needs to go to a specific tab index.
+     */    
+    useEffect(() => {
+        const tabName: string =  location.state as string;
+
+        if (tabName === undefined) {
+            return;
+        } else {
+            setIsAutomaticTabRedirectionEnabled(true);
+            setTabIdentifier(tabName);
+        }
+    }, []);
 
     /**
      *  Get IDP templates.
@@ -612,6 +629,8 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
                             isTabExtensionsAvailable={ (isAvailable) => setIsExtensionsAvailable(isAvailable) }
                             type={ identityProviderTemplate?.id }
                             isReadOnly={ isReadOnly }
+                            isAutomaticTabRedirectionEnabled={ isAutomaticTabRedirectionEnabled }
+                            tabIdentifier={ tabIdentifier }
                         />
                     )
                     : (
