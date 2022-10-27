@@ -697,10 +697,10 @@
                 padding: 10px 5px;
 
                 .feature-status-label {
-                    font-size: .8em;
+                    font-size: .6em;
                     padding: 4px 7px;
                     font-weight: 500;
-                    top: 7px;
+                    top: 9px;
                     margin-left: 10px;
                     position: absolute;
                     border: 1px solid @defaultBorderColor;
