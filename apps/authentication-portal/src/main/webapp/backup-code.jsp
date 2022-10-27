@@ -19,6 +19,7 @@
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
+<%@ page import="org.wso2.carbon.identity.application.authentication.framework.util.FrameworkConstants" %>
 <%@ page import="org.wso2.carbon.identity.application.authenticator.backupcode.constants.BackupCodeAuthenticatorConstants" %>
 <%@ page import="org.wso2.carbon.identity.core.util.IdentityCoreConstants" %>
 <%@ page import="java.io.File" %>
@@ -41,19 +42,23 @@
 
     if (Boolean.parseBoolean(request.getParameter(Constants.AUTH_FAILURE))) {
         authenticationFailed = "true";
-        String errorCode = request.getParameter(BackupCodeAuthenticatorConstants.ERROR_CODE);
+        boolean isErrorMessageFromErrorCodeAdded = false;
+        String errorCode = request.getParameter(FrameworkConstants.ERROR_CODE);
         if (errorCode != null) {
             if (errorCode.equals(IdentityCoreConstants.USER_ACCOUNT_LOCKED_ERROR_CODE)) {
-                String lockedReason = request.getParameter(BackupCodeAuthenticatorConstants.LOCKED_REASON);
+                String lockedReason = request.getParameter(FrameworkConstants.LOCK_REASON);
                 if (lockedReason != null) {
                     if (lockedReason.equals(BackupCodeAuthenticatorConstants.MAX_ATTEMPTS_EXCEEDED)) {
                         errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.user.account.locked.incorrect.login.attempts");
+                        isErrorMessageFromErrorCodeAdded = true;
                     } else if (lockedReason.equals(BackupCodeAuthenticatorConstants.ADMIN_INITIATED)) {
                         errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.user.account.locked.admin.initiated");
+                        isErrorMessageFromErrorCodeAdded = true;
                     }
                 }
             }
-        } else if (request.getParameter(Constants.AUTH_FAILURE_MSG) != null) {
+        }
+        if (!isErrorMessageFromErrorCodeAdded && request.getParameter(Constants.AUTH_FAILURE_MSG) != null) {
             errorMessage = Encode.forHtmlAttribute(request.getParameter(Constants.AUTH_FAILURE_MSG));
             if (errorMessage.equalsIgnoreCase("authentication.fail.message") || errorMessage.equalsIgnoreCase("login.fail.message")) {
                 errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle,"error.retry");
