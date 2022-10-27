@@ -36,11 +36,6 @@ export const commonConfig: CommonConfig = {
         headerQuickstartMenuItem: "",
         renderAppSwitcherAsDropdown: false
     },
-    hotjarTracking : {
-        tagAttributes : () : void => {
-            return;
-        }
-    },
     leftNavigation: {
         isLeftNavigationCategorized: {
             develop: true,
