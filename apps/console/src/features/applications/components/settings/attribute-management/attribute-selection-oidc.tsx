@@ -31,7 +31,6 @@ import {
     useDocumentation
 } from "@wso2is/react-components";
 import { OIDCScopesClaimsListInterface } from "apps/console/src/features/oidc-scopes";
-import sortBy from "lodash-es/sortBy";
 import React, { Fragment, FunctionComponent, ReactElement, SyntheticEvent, useEffect, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
