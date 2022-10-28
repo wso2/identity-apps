@@ -194,6 +194,8 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
     const [ scopes, setScopes ] = useState<OIDCScopesListInterface[]>(null);
     const [ externalClaimsGroupedByScopes, setExternalClaimsGroupedByScopes ]
         = useState<OIDCScopesClaimsListInterface[]>(null);
+    const [ unfilteredExternalClaimsGroupedByScopes, setUnfilteredExternalClaimsGroupedByScopes ] 
+        = useState<OIDCScopesClaimsListInterface[]>([]);
 
     // Manage available claims in local and external dialects.
     const [ isClaimRequestLoading, setIsClaimRequestLoading ] = useState(true);
@@ -422,6 +424,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                 selected: isScopelessClaimRequested
             });
         }
+        setUnfilteredExternalClaimsGroupedByScopes(sortBy(updatedScopes, "name"));
         setExternalClaimsGroupedByScopes(sortBy(updatedScopes, "name"));
         setIsScopeExternalClaimMappingLoading(false);
     };
@@ -953,7 +956,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                 }
             });
         } else {
-            externalClaimsGroupedByScopes.map((scope) => {
+            unfilteredExternalClaimsGroupedByScopes.map((scope) => {
                 scope?.claims.map((claim: ExtendedExternalClaimInterface) => {
                     if (claim.requested) {
                         const requestedClaim = {
@@ -1080,6 +1083,12 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                                                 externalClaims={ externalClaims }
                                                 externalClaimsGroupedByScopes = { externalClaimsGroupedByScopes }
                                                 setExternalClaimsGroupedByScopes = { setExternalClaimsGroupedByScopes }
+                                                unfilteredExternalClaimsGroupedByScopes = { 
+                                                    unfilteredExternalClaimsGroupedByScopes 
+                                                }
+                                                setUnfilteredExternalClaimsGroupedByScopes = { 
+                                                    setUnfilteredExternalClaimsGroupedByScopes
+                                                }
                                                 setExternalClaims={ setExternalClaims }
                                                 selectedExternalClaims={ selectedExternalClaims }
                                                 setSelectedExternalClaims={ setSelectedExternalClaims }
