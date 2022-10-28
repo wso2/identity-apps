@@ -17,7 +17,7 @@
  */
 
 import { AlertInterface, RouteInterface } from "@wso2is/core/models";
-import { initializeAlertSystem } from "@wso2is/core/store";
+import { initializeAlertSystem, setMobileSidePanelVisibility } from "@wso2is/core/store";
 import {
     Alert,
     ContentLoader,
@@ -42,7 +42,8 @@ import {
     Header,
     ProtectedRoute,
     UIConstants,
-    getDefaultLayoutRoutes
+    getDefaultLayoutRoutes,
+    AppViewTypes
 } from "../features/core";
 
 /**
@@ -77,7 +78,10 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = (
 
     const alert: AlertInterface = useSelector((state: AppState) => state.global.alert);
     const alertSystem: System = useSelector((state: AppState) => state.global.alertSystem);
+    const activeView: AppViewTypes = useSelector((state: AppState) => state.global.activeView);
     const isAJAXTopLoaderVisible: boolean = useSelector((state: AppState) => state.global.isAJAXTopLoaderVisible);
+    const isMobileSidePanelVisible: boolean = useSelector((state: AppState) => state.global.isMobileSidePanelVisible);
+    const isMobileSidePanelToggleVisible: boolean = useSelector((state: AppState) => state.global.isMobileSidePanelToggleVisible);
 
     const [ defaultLayoutRoutes, setDefaultLayoutRoutes ] = useState<RouteInterface[]>(getDefaultLayoutRoutes());
 
@@ -88,7 +92,19 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = (
         setDefaultLayoutRoutes(getDefaultLayoutRoutes());
     }, [ AppConstants.getTenantQualifiedAppBasename() ]);
 
-    const handleAlertSystemInitialize = (system) => {
+    /**
+     * Handles side panel toggle click.
+     */
+    const handleSidePanelToggleClick = (): void => {
+        dispatch(setMobileSidePanelVisibility(!isMobileSidePanelVisible));
+    };
+
+    /**
+     * Handles alert system initialize.
+     *
+     * @param system - Alert system object.
+     */
+    const handleAlertSystemInitialize = (system: System): void => {
         dispatch(initializeAlertSystem(system));
     };
 
@@ -113,11 +129,12 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = (
             ) }
             footerHeight={ footerHeight }
             headerHeight={ headerHeight }
-            desktopContentTopSpacing={ UIConstants.DASHBOARD_LAYOUT_DESKTOP_CONTENT_TOP_SPACING }
             header={ (
                 <Header
+                    activeView={ activeView }
                     fluid={ fluid }
-                    showSidePanelToggle={ false }
+                    onSidePanelToggleClick={ handleSidePanelToggleClick }
+                    showSidePanelToggle={ isMobileSidePanelToggleVisible }
                 />
             ) }
             footer={ (

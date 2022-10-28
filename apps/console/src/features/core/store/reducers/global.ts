@@ -34,7 +34,9 @@ const initialState: GlobalReducerStateInterface = {
     alert: null,
     alertSystem: null,
     isAJAXTopLoaderVisible: false,
-    supportedI18nLanguages: null
+    supportedI18nLanguages: null,
+    isMobileSidePanelVisible: false,
+    isMobileSidePanelToggleVisible: false
 };
 
 /**

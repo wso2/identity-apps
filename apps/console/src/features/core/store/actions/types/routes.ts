@@ -22,7 +22,8 @@ export enum RoutesActionTypes {
     SET_FILTERED_MANAGE_ROUTES = "SET_FILTERED_MANAGE_ROUTES",
     SET_SANITIZED_MANAGE_ROUTES = "SET_SANITIZED_MANAGE_ROUTES",
     SET_FILTERED_DEVELOP_ROUTES = "SET_FILTERED_DEVELOP_ROUTES",
-    SET_SANITIZED_DEVELOP_ROUTES = "SET_SANITIZED_DEVELOP_ROUTES"
+    SET_SANITIZED_DEVELOP_ROUTES = "SET_SANITIZED_DEVELOP_ROUTES",
+    SET_SELECTED_ROUTE = "SET_SELECTED_ROUTE"
 }
 
 export interface SetFilteredManageRoutesActionInterface {
@@ -45,7 +46,16 @@ export interface SetSanitizedDevelopRoutesActionInterface {
     type: RoutesActionTypes.SET_SANITIZED_DEVELOP_ROUTES;
 }
 
+/**
+ * Action interface for the selected route action.
+ */
+export interface SetSelectedRouteActionInterface {
+    payload: RouteInterface;
+    type: RoutesActionTypes.SET_SELECTED_ROUTE;
+}
+
 export type RoutesAction = SetFilteredDevelopRoutesActionInterface |
     SetFilteredManageRoutesActionInterface |
     SetSanitizedDevelopRoutesActionInterface |
-    SetSanitizedManageRoutesActionInterface;
+    SetSanitizedManageRoutesActionInterface |
+    SetSelectedRouteActionInterface;

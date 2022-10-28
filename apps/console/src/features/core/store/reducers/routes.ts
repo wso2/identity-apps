@@ -27,7 +27,8 @@ const initialState: RoutesReducerStateInterface = {
     manageRoutes: {
         filteredRoutes: [],
         sanitizedRoutes: []
-    }
+    },
+    selectedRoute: undefined
 };
 
 export const routeReducer = (
@@ -66,6 +67,11 @@ export const routeReducer = (
                     ...state.developeRoutes,
                     sanitizedRoutes: action.payload
                 }
+            };
+        case RoutesActionTypes.SET_SELECTED_ROUTE:
+            return {
+                ...state,
+                selectedRoute: action.payload
             };
         default:
             return {

@@ -22,7 +22,8 @@ import {
     SetFilteredDevelopRoutesActionInterface,
     SetFilteredManageRoutesActionInterface,
     SetSanitizedDevelopRoutesActionInterface,
-    SetSanitizedManageRoutesActionInterface
+    SetSanitizedManageRoutesActionInterface,
+    SetSelectedRouteActionInterface
 } from "./types";
 
 export const setFilteredManageRoutes = (routes: RouteInterface[]): SetFilteredManageRoutesActionInterface => {
@@ -50,5 +51,18 @@ export const setSanitizedDevelopRoutes = (routes: RouteInterface[]): SetSanitize
     return {
         payload: routes,
         type: RoutesActionTypes.SET_SANITIZED_DEVELOP_ROUTES
+    };
+};
+
+/**
+ * Action to set the selected route.
+ *
+ * @param route - Selected route.
+ * @returns Selected Route action.
+ */
+export const setSelectedRoute = (route: RouteInterface): SetSelectedRouteActionInterface => {
+    return {
+        payload: route,
+        type: RoutesActionTypes.SET_SELECTED_ROUTE
     };
 };
