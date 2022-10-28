@@ -23,7 +23,7 @@ import values from "lodash-es/values";
 import { FunctionComponent, lazy } from "react";
 import { getSidePanelIcons } from "./ui";
 import { EXTENSION_ROUTES, identityProviderConfig } from "../../../extensions";
-import { AppLayout, AuthLayout, DefaultLayout, ErrorLayout, DashboardLayout } from "../../../layouts";
+import { AppLayout, AuthLayout, DashboardLayout, DefaultLayout, ErrorLayout } from "../../../layouts";
 import { AdminView, DeveloperView, FullScreenView } from "../../../views";
 import { AppConstants } from "../constants";
 
@@ -183,7 +183,7 @@ export const getDeveloperViewRoutes = (): RouteInterface[] => {
 /**
  * Get all the Admin View Routes.
  *
- * @return Admin view routes.
+ * @returns Admin view routes.
  */
 export const getAdminViewRoutes = (): RouteInterface[] => {
 
@@ -590,7 +590,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
 /**
  * Get full screen layout routes.
  *
- * @return Full screen layout routes.
+ * @returns Full screen layout routes.
  */
 export const getFullScreenViewRoutes = (): RouteInterface[] => {
 
@@ -617,7 +617,7 @@ export const getFullScreenViewRoutes = (): RouteInterface[] => {
 /**
  * Get default page layout routes.
  *
- * @return Default layout routes.
+ * @returns Default layout routes.
  */
 export const getDefaultLayoutRoutes = (): RouteInterface[] => {
 
@@ -658,7 +658,7 @@ export const getDefaultLayoutRoutes = (): RouteInterface[] => {
  *
  * @returns Dashboard layout routes.
  */
- export const getDashboardLayoutRoutes = (): RouteInterface[] => {
+export const getDashboardLayoutRoutes = (): RouteInterface[] => {
 
     return [
         {
@@ -694,7 +694,7 @@ export const getDefaultLayoutRoutes = (): RouteInterface[] => {
 /**
  * Get error page layout routes.
  *
- * @return Error layout routes.
+ * @returns Error layout routes.
  */
 export const getErrorLayoutRoutes = (): RouteInterface[] => {
 
@@ -735,7 +735,7 @@ export const getErrorLayoutRoutes = (): RouteInterface[] => {
 /**
  * Get auth page layout routes.
  *
- * @return Auth layout routes.
+ * @returns Auth layout routes.
  */
 export const getAuthLayoutRoutes = (): RouteInterface[] => {
 
@@ -781,7 +781,7 @@ export const getAuthLayoutRoutes = (): RouteInterface[] => {
  * @param routes - Set of routes in the layout.
  * @param layout - Layout to be used.
  *
- * @return Routes assigned to a layout.
+ * @returns Routes assigned to a layout.
  */
 const getLayoutAssignedToRoutes = (routes: RouteInterface[], layout: FunctionComponent): RouteInterface[] => {
 

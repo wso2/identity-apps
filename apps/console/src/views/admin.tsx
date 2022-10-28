@@ -22,7 +22,8 @@ import {
     ContentLoader,
     EmptyPlaceholder,
     ErrorBoundary,
-    LinkButton} from "@wso2is/react-components";
+    LinkButton
+} from "@wso2is/react-components";
 import React, {
     FunctionComponent,
     MutableRefObject,

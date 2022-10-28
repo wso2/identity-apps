@@ -38,12 +38,12 @@ import { Redirect, Route, Switch } from "react-router-dom";
 import {
     AppConstants,
     AppState,
+    AppViewTypes,
     Footer,
     Header,
     ProtectedRoute,
     UIConstants,
-    getDefaultLayoutRoutes,
-    AppViewTypes
+    getDefaultLayoutRoutes
 } from "../features/core";
 
 /**
@@ -81,7 +81,9 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = (
     const activeView: AppViewTypes = useSelector((state: AppState) => state.global.activeView);
     const isAJAXTopLoaderVisible: boolean = useSelector((state: AppState) => state.global.isAJAXTopLoaderVisible);
     const isMobileSidePanelVisible: boolean = useSelector((state: AppState) => state.global.isMobileSidePanelVisible);
-    const isMobileSidePanelToggleVisible: boolean = useSelector((state: AppState) => state.global.isMobileSidePanelToggleVisible);
+    const isMobileSidePanelToggleVisible: boolean = useSelector((state: AppState) => {
+        return state.global.isMobileSidePanelToggleVisible;
+    });
 
     const [ defaultLayoutRoutes, setDefaultLayoutRoutes ] = useState<RouteInterface[]>(getDefaultLayoutRoutes());
 
