@@ -31,7 +31,6 @@ import {
     useDocumentation
 } from "@wso2is/react-components";
 import { OIDCScopesClaimsListInterface } from "apps/console/src/features/oidc-scopes";
-import sortBy from "lodash-es/sortBy";
 import React, { Fragment, FunctionComponent, ReactElement, SyntheticEvent, useEffect, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -242,7 +241,6 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
             });
             scope.selected = scopeSelected;
         });
-        sortBy(tempFilterSelectedExternalScopeClaims, "name");
         setExternalClaimsGroupedByScopes(tempFilterSelectedExternalScopeClaims);
         setUnfilteredExternalClaimsGroupedByScopes(tempFilterSelectedExternalScopeClaims);
         searchFilter(searchValue);
@@ -266,14 +264,11 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                 return scope;
             }
         })?.claims.map((claim: ExtendedExternalClaimInterface) => {
-            claim.requested = value.checked;
+            updateRequested(claim.claimURI, value.checked);
             if (!value.checked) {
-                claim.mandatory = value.checked;
+                updateMandatory(claim.claimURI, value.checked);
             }
         });
-        setExternalClaimsGroupedByScopes(tempExternalClaimsGroupedByScopes);
-        setUnfilteredExternalClaimsGroupedByScopes(tempExternalClaimsGroupedByScopes);
-        searchFilter(searchValue);
     };
 
     /**
