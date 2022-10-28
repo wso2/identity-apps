@@ -19,14 +19,14 @@
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { ConfirmationModal, ContentLoader, CopyInputField, ResourceTab } from "@wso2is/react-components";
+import { ConfirmationModal, CopyInputField, ResourceTab } from "@wso2is/react-components";
 import Axios from "axios";
 import inRange from "lodash-es/inRange";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Form, Grid, Menu, TabProps } from "semantic-ui-react";
+import { Form, Grid, Menu, Placeholder, TabProps } from "semantic-ui-react";
 import { InboundProtocolsMeta } from "./meta";
 import {
     AccessConfiguration,
@@ -165,6 +165,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     const [ activeTabIndex, setActiveTabIndex ] = useState<number>(undefined);
     const [ defaultActiveIndex, setDefaultActiveIndex ] = useState<number>(undefined);
     const [ totalTabs, setTotalTabs ] = useState<number>(undefined);
+    const [ canLoadResourceTab, setCanLoadResourceTab ] = useState<boolean>(false);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -179,6 +180,20 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         setIsApplicationUpdated(true);
         onUpdate(id);
     };
+
+    /**
+     * Loading status for the resource tabs
+     */
+    useEffect(() => {
+        setCanLoadResourceTab(
+            application && !isInboundProtocolsRequestLoading && inboundProtocolList != undefined
+            && (tabPaneExtensions || !applicationConfig.editApplication.extendTabs
+            || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
+            || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS
+            || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_SAML 
+            || application?.templateId === ApplicationManagementConstants.MOBILE)
+        );
+    }, [ application, isInboundProtocolsRequestLoading, inboundProtocolList, applicationConfig ]);
 
     /**
      * Set the defaultTabIndex when the application template updates.
@@ -1034,29 +1049,49 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         );
     };
 
+    /**
+     * Renders the placeholder elements
+     * @returns Placeholders
+     */
+    const detailedViewPlaceholder = (): ReactElement => {
+        return (
+            <>
+                <Placeholder style={ { maxWidth: "60%" } }>
+                    <Placeholder.Image style={ { height: "40px", maxWidth: "70%" } } />
+                </Placeholder>
+                <Placeholder>
+                    { [ ...Array(3) ].map(() => {
+                        return (
+                            <>
+                                <Placeholder.Line length="very short" />
+                                <Placeholder.Image style={ { height: "38px" } } />
+                                <Placeholder.Line />
+                                <Placeholder.Line />
+                            </>
+                        );
+                    })
+                    }
+                </Placeholder>
+            </>
+        );
+    };
+
     return (
-        application && !isInboundProtocolsRequestLoading && inboundProtocolList != undefined
-        && (tabPaneExtensions || !applicationConfig.editApplication.extendTabs
-            || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
-            || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS
-            || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_SAML 
-            || application?.templateId === ApplicationManagementConstants.MOBILE)
-            ? (
-                <>
-                    <ResourceTab
-                        activeIndex= { activeTabIndex }
-                        data-testid= { `${testId}-resource-tabs` }
-                        defaultActiveIndex={ defaultActiveIndex }
-                        onTabChange={ handleTabChange }
-                        panes= { resolveTabPanes() }
-                        onInitialize={ ({ panesLength }) => {
-                            setTotalTabs(panesLength);
-                        } }
-                    />
-                    { showClientSecretHashDisclaimerModal && renderClientSecretHashDisclaimerModal() }
-                </>
-            )
-            : <ContentLoader />
+        canLoadResourceTab ? (
+            <>
+                <ResourceTab
+                    activeIndex= { activeTabIndex }
+                    data-testid= { `${testId}-resource-tabs` }
+                    defaultActiveIndex={ defaultActiveIndex }
+                    onTabChange={ handleTabChange }
+                    panes= { resolveTabPanes() }
+                    onInitialize={ ({ panesLength }) => {
+                        setTotalTabs(panesLength);
+                    } }
+                />
+                { showClientSecretHashDisclaimerModal && renderClientSecretHashDisclaimerModal() }
+            </>
+        ) : detailedViewPlaceholder()
     );
 };
 

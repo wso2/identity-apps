@@ -295,6 +295,10 @@ const UserEditPage = (): ReactElement => {
                     }
                 />
             ) }
+            loadingStateOptions={ {
+                count: null,
+                imageType: "circular"
+            } }
             backButton={ {
                 "data-testid": "user-mgt-edit-user-back-button",
                 onClick: handleBackButtonClick,

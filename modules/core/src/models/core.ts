@@ -115,8 +115,22 @@ export interface TestableComponentInterface {
 export interface IdentifiableComponentInterface {
     /**
      * Unique component id.
-    */
+     */
    "data-componentid"?: string;
+}
+
+/**
+ * Interface for loading state options.
+ */
+export interface LoadingStateOptionsInterface {
+    /**
+     * Number of loading rows.
+     */
+    count: number;
+    /**
+     * Loading state image type.
+     */
+    imageType?: "circular" | "square";
 }
 
 /**

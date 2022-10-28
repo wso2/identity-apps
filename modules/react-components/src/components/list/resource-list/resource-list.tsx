@@ -16,7 +16,10 @@
  * under the License.
  */
 
-import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, 
+    LoadingStateOptionsInterface, 
+    TestableComponentInterface 
+} from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement } from "react";
 import { List, ListProps, Placeholder } from "semantic-ui-react";
@@ -51,25 +54,11 @@ export interface ResourceListPropsInterface extends ListProps, IdentifiableCompo
     /**
      * Optional meta for the loading state.
      */
-    loadingStateOptions?: ListLoadingStateOptionsInterface;
+    loadingStateOptions?: LoadingStateOptionsInterface;
     /**
      * Should the list appear on a transparent background.
      */
     transparent?: boolean;
-}
-
-/**
- * Interface for loading state options.
- */
-interface ListLoadingStateOptionsInterface {
-    /**
-     * Number of loading rows.
-     */
-    count: number;
-    /**
-     * Loading state image type.
-     */
-    imageType: "circular" | "square";
 }
 
 /**

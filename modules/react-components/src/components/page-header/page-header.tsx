@@ -19,6 +19,7 @@
 import {
     IdentifiableComponentInterface,
     LoadableComponentInterface,
+    LoadingStateOptionsInterface,
     TestableComponentInterface
 } from "@wso2is/core/models";
 import classNames from "classnames";
@@ -92,6 +93,10 @@ export interface PageHeaderPropsInterface extends LoadableComponentInterface, Te
      * Truncate content
      */
     truncateContent?: boolean;
+    /**
+     * Optional meta for the loading state.
+     */
+    loadingStateOptions?: LoadingStateOptionsInterface;
 }
 
 /**
@@ -130,6 +135,7 @@ export const PageHeader: React.FunctionComponent<PageHeaderPropsInterface> = (
         image,
         isLoading,
         imageSpaced,
+        loadingStateOptions,
         showBottomDivider,
         title,
         titleAs,
@@ -185,8 +191,14 @@ export const PageHeader: React.FunctionComponent<PageHeaderPropsInterface> = (
                         isLoading ?
                             (
                                 <div className="fluid">
-                                    <Placeholder style={ { height: 100, width: 100 } }>
-                                        <Placeholder.Image square/>
+                                    <Placeholder
+                                        style={
+                                            loadingStateOptions?.imageType === "circular" ? {
+                                                borderRadius: "100%", height: 85, width: 85
+                                            } : { height: 85, width: 85 }
+                                        }
+                                    >
+                                        <Placeholder.Image square />
                                     </Placeholder>
                                 </div>
                             )

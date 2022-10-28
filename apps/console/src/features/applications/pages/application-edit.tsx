@@ -598,6 +598,11 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                         )
                 )
             }
+            loadingStateOptions={ {
+                count: null,
+                imageType: "square"
+            } }
+            isLoading={ isApplicationRequestLoading }
             backButton={ {
                 "data-testid": `${testId}-page-back-button`,
                 onClick: handleBackButtonClick,
