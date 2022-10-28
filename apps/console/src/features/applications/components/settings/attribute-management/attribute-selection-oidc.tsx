@@ -242,7 +242,6 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
             });
             scope.selected = scopeSelected;
         });
-        sortBy(tempFilterSelectedExternalScopeClaims, "name");
         setExternalClaimsGroupedByScopes(tempFilterSelectedExternalScopeClaims);
         setUnfilteredExternalClaimsGroupedByScopes(tempFilterSelectedExternalScopeClaims);
         searchFilter(searchValue);
@@ -266,14 +265,11 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                 return scope;
             }
         })?.claims.map((claim: ExtendedExternalClaimInterface) => {
-            claim.requested = value.checked;
+            updateRequested(claim.claimURI, value.checked);
             if (!value.checked) {
-                claim.mandatory = value.checked;
+                updateMandatory(claim.claimURI, value.checked);
             }
         });
-        setExternalClaimsGroupedByScopes(tempExternalClaimsGroupedByScopes);
-        setUnfilteredExternalClaimsGroupedByScopes(tempExternalClaimsGroupedByScopes);
-        searchFilter(searchValue);
     };
 
     /**
