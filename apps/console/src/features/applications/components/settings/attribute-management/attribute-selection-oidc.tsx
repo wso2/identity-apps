@@ -62,6 +62,8 @@ interface AttributeSelectionOIDCPropsInterface extends TestableComponentInterfac
     externalClaims: ExtendedExternalClaimInterface[];
     externalClaimsGroupedByScopes: OIDCScopesClaimsListInterface[];
     setExternalClaimsGroupedByScopes: any;
+    unfilteredExternalClaimsGroupedByScopes: OIDCScopesClaimsListInterface[];
+    setUnfilteredExternalClaimsGroupedByScopes: any;
     setExternalClaims: any;
     selectedExternalClaims: ExtendedExternalClaimInterface[];
     setSelectedExternalClaims: any;
@@ -98,6 +100,8 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
         externalClaimsGroupedByScopes,
         setExternalClaimsGroupedByScopes,
         setExternalClaims,
+        unfilteredExternalClaimsGroupedByScopes,
+        setUnfilteredExternalClaimsGroupedByScopes,
         selectedExternalClaims,
         selectedDialect,
         setSelectedExternalClaims,
@@ -121,11 +125,6 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
         filterSelectedExternalClaims,
         setFilterSelectedExternalClaims
     ] = useState<ExtendedExternalClaimInterface[]>([]);
-
-    const [
-        unfilteredExternalClaimsGroupedByScopes,
-        setUnfilteredExternalClaimsGroupedByScopes
-    ] = useState<OIDCScopesClaimsListInterface[]>(externalClaimsGroupedByScopes);
 
     const [ expandedScopes, setExpandedScopes ] = useState<string[]>([]);
 
