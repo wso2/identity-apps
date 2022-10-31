@@ -69,8 +69,9 @@
     } else if (StringUtils.isNotEmpty(stat) || StringUtils.isNotEmpty(statusMessage)) {
         String i18nErrorMapping = AuthenticationEndpointUtil.getErrorCodeToi18nMapping(stat, statusMessage);
         if (Constants.ErrorToi18nMappingConstants.INCORRECT_ERROR_MAPPING_KEY.equals(i18nErrorMapping)) {
-            stat = null;
-            statusMessage = null;
+            stat = AuthenticationEndpointUtil.i18n(resourceBundle, "authentication.error");
+            statusMessage = AuthenticationEndpointUtil.i18n(resourceBundle, 
+                    "something.went.wrong.during.authentication");
         } else {
             if (StringUtils.isNotEmpty(stat)) {
                 stat = AuthenticationEndpointUtil.customi18n(resourceBundle, stat);
