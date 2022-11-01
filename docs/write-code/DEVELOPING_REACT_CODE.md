@@ -4,7 +4,7 @@
 
 ### Ordering
 
-When writing React components, follow the bellow ordering pattern for better readability.
+When writing React components, follow the below ordering pattern for better readability.
 
 ```jsx
 
