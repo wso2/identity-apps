@@ -17,8 +17,7 @@
  */
 
 import { AuthParams, AuthProvider, SPAUtils } from "@asgardeo/auth-react";
-import { AppConstants as AppConstantsCore } from "@wso2is/core/constants";
-import { AuthenticateUtils, ContextUtils, StringUtils } from "@wso2is/core/utils";
+import { ContextUtils, StringUtils } from "@wso2is/core/utils";
 import axios from "axios";
 import * as React from "react";
 import "react-app-polyfill/ie11";
@@ -29,7 +28,6 @@ import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import { PreLoader } from "./components";
 import { Config } from "./configs";
-import { AppConstants } from "./constants";
 import { ProtectedApp } from "./protected-app";
 import { store } from "./store";
 import "core-js/stable";

@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -38,8 +38,8 @@ interface ProtectedRoutePropsInterface extends RouteProps {
 /**
  * Protected route component.
  *
- * @param {RouteProps} props - Props injected to the component.
- * @return {React.ReactElement}
+ * @param props - Props injected to the component.
+ * @returns ProtectedRoute component.
  */
 export const ProtectedRoute: FunctionComponent<ProtectedRoutePropsInterface> = (
     props: ProtectedRoutePropsInterface
@@ -70,8 +70,8 @@ export const ProtectedRoute: FunctionComponent<ProtectedRoutePropsInterface> = (
     /**
      * Checks if the users have the required scope and direct them to the relevant
      *
-     * @param {RouteComponentProps<any>} props - Route props.
-     * @return {React.ReactElement}
+     * @param props - Route props.
+     * @returns Resolved Component
      */
     const resolveComponents = (props: RouteComponentProps<any>): ReactElement => {
         const scopes = allowedScopes?.split(" ");
