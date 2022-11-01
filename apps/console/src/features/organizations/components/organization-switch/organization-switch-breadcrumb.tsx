@@ -104,7 +104,8 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
         if (
             breadcrumbList && breadcrumbList.length > 0 &&
             OrganizationUtils.isRootOrganization(breadcrumbList[ 0 ]) &&
-            breadcrumbList[ 1 ].id === organization.id
+            breadcrumbList[ 1 ]?.id === organization.id &&
+            organizationConfigs.showSwitcherInTenants
         ) {
             newOrgPath =
                 "/t/" +
