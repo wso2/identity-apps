@@ -493,7 +493,9 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
                 const protocolName = mapProtocolTypeToName(protocol.type);
 
-                protocolNames.push(protocolName);
+                if(!protocolNames.includes(protocolName)){
+                    protocolNames.push(protocolName);
+                }
 
                 inboundProtocolRequests.push(getInboundProtocolConfig(appId, protocolName));
             });
