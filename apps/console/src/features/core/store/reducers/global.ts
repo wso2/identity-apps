@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -34,14 +34,16 @@ const initialState: GlobalReducerStateInterface = {
     alert: null,
     alertSystem: null,
     isAJAXTopLoaderVisible: false,
+    isMobileSidePanelToggleVisible: false,
+    isMobileSidePanelVisible: false,
     supportedI18nLanguages: null
 };
 
 /**
  * Reducer to handle the state of Global actions specific to Console.
  *
- * @param {AccessControlReducerStateInterface} state - Previous state
- * @param {AccessControlActionType} action - Action type.
+ * @param state - Previous state
+ * @param action - Action type.
  * @returns The new state
  */
 const GlobalReducer = (state: GlobalReducerStateInterface = initialState,

@@ -16,40 +16,31 @@
  * under the License.
  */
 
-import { AlertInterface, ChildRouteInterface, RouteInterface } from "@wso2is/core/models";
-import { initializeAlertSystem } from "@wso2is/core/store";
+import { ChildRouteInterface, RouteInterface } from "@wso2is/core/models";
 import { RouteUtils as CommonRouteUtils, CommonUtils, RouteUtils } from "@wso2is/core/utils";
 import {
-    Alert,
     ContentLoader,
     DashboardLayout as DashboardLayoutSkeleton,
     EmptyPlaceholder,
     ErrorBoundary,
     LinkButton,
-    Media,
     SidePanel,
-    TopLoadingBar,
     useMediaContext,
     useUIElementSizes
 } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, PropsWithChildren, ReactElement, Suspense, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { System } from "react-notification-system";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
 import { fetchApplications } from "../api";
-import {
-    Footer,
-    Header,
-    ProtectedRoute
-} from "../components";
+import { ProtectedRoute } from "../components";
 import { getDashboardLayoutRoutes, getEmptyPlaceholderIllustrations } from "../configs";
 import { AppConstants, UIConstants } from "../constants";
 import { history } from "../helpers";
 import { ConfigReducerStateInterface } from "../models";
 import { AppState } from "../store";
-import { toggleApplicationsPageVisibility } from "../store/actions";
+import { setMobileSidePanelVisibility, toggleApplicationsPageVisibility } from "../store/actions";
 import { AppUtils, filterRoutes } from "../utils";
 
 /**
@@ -72,7 +63,10 @@ export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayou
     props: PropsWithChildren<DashboardLayoutPropsInterface & RouteComponentProps>
 ): ReactElement => {
 
-    const { location } = props;
+    const {
+        fluid,
+        location
+    } = props;
 
     const { t } = useTranslation();
     const dispatch = useDispatch();
@@ -83,19 +77,16 @@ export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayou
         topLoadingBarHeight: UIConstants.AJAX_TOP_LOADING_BAR_HEIGHT
     });
 
-    const alert: AlertInterface = useSelector((state: AppState) => state.global.alert);
-    const alertSystem: System = useSelector((state: AppState) => state.global.alertSystem);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
-    const isAJAXTopLoaderVisible: boolean = useSelector((state: AppState) => state.global.isGlobalLoaderVisible);
     const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
     const isApplicationsPageVisible = useSelector((state: AppState) => state.global.isApplicationsPageVisible);
+    const isMobileSidePanelVisible: boolean = useSelector((state: AppState) => state.global.isMobileSidePanelVisible);
 
     const [
         selectedRoute,
         setSelectedRoute
     ] = useState<RouteInterface | ChildRouteInterface>(getDashboardLayoutRoutes()[ 0 ]);
-    const [ mobileSidePanelVisibility, setMobileSidePanelVisibility ] = useState(false);
-    const [ dashboardLayoutRoutes, setDashboardLayoutRoutes ] = useState<RouteInterface[]>(getDashboardLayoutRoutes());
+    const [ dashboardLayoutRoutes, setDashboardLayoutRoutes ] = useState<RouteInterface[]>([]);
 
     /**
      * Performs pre-requisites for the side panel items visibility.
@@ -154,17 +145,10 @@ export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayou
     }, [ location.pathname, dashboardLayoutRoutes ]);
 
     /**
-     * Callback for side panel hamburger click.
-     */
-    const handleSidePanelToggleClick = (): void => {
-        setMobileSidePanelVisibility(!mobileSidePanelVisibility);
-    };
-
-    /**
-     * Callback for side panel pusher click.
+     * Handles side panel pusher on click.
      */
     const handleSidePanelPusherClick = (): void => {
-        setMobileSidePanelVisibility(false);
+        dispatch(setMobileSidePanelVisibility(false));
     };
 
     /**
@@ -177,47 +161,17 @@ export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayou
             return;
         }
 
+        if (isMobileViewport) {
+            dispatch(setMobileSidePanelVisibility(false));
+        }
+
         setSelectedRoute(route);
         history.push(route.path);
-
-        if (isMobileViewport) {
-            setMobileSidePanelVisibility(false);
-        }
-    };
-
-    /**
-     * Handles alert system initialize action.
-     *
-     * @param system - Alert system instance.
-     */
-    const handleAlertSystemInitialize = (system: System) => {
-        dispatch(initializeAlertSystem(system));
     };
 
     return (
         <DashboardLayoutSkeleton
-            alert={ (
-                <Alert
-                    dismissInterval={ UIConstants.ALERT_DISMISS_INTERVAL }
-                    alertsPosition="br"
-                    alertSystem={ alertSystem }
-                    alert={ alert }
-                    onAlertSystemInitialize={ handleAlertSystemInitialize }
-                    withIcon={ true }
-                />
-            ) }
-            topLoadingBar={ (
-                <TopLoadingBar
-                    height={ UIConstants.AJAX_TOP_LOADING_BAR_HEIGHT }
-                    visibility={ isAJAXTopLoaderVisible }
-                />
-            ) }
-            header={ (
-                <Header
-                    fluid={ false }
-                    onSidePanelToggleClick={ handleSidePanelToggleClick }
-                />
-            ) }
+            fluid={ fluid }
             sidePanel={ (
                 <SidePanel
                     desktopContentTopSpacing={ UIConstants.DASHBOARD_LAYOUT_DESKTOP_CONTENT_TOP_SPACING }
@@ -225,7 +179,7 @@ export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayou
                     footerHeight={ footerHeight }
                     headerHeight={ headerHeight }
                     hoverType="background"
-                    mobileSidePanelVisibility={ mobileSidePanelVisibility }
+                    mobileSidePanelVisibility={ isMobileSidePanelVisible }
                     onSidePanelItemClick={ handleSidePanelItemClick }
                     onSidePanelPusherClick={ handleSidePanelPusherClick }
                     routes={ RouteUtils.sanitizeForUI(dashboardLayoutRoutes, []) }
@@ -233,11 +187,6 @@ export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayou
                     translationHook={ t }
                     allowedScopes={ allowedScopes }
                 />
-            ) }
-            footer={ (
-                <Media greaterThan="mobile">
-                    <Footer fluid={ false } />
-                </Media>
             ) }
         >
             <ErrorBoundary

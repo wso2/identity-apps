@@ -23,6 +23,19 @@
     }
 }
 
+/*-----------------------------
+      Mobile Sidebar
+------------------------------*/
+
+.mobile-container {
+    .pusher.side-panel-pusher {
+        padding: 0 1em;
+    }
+    .ui.left.visible.sidebar, .ui.right.visible.sidebar {
+        padding-top: 1em;
+    }
+}
+
 /*******************************
      Help Panel Variation
 *******************************/
@@ -103,13 +116,13 @@
                 }
             }
         }
-        
+
         .sidebar-mini-menu {
             .item {
                 min-width: @helpPanelMiniItemMinWidth;
                 padding: @helpPanelMiniItemPadding;
                 margin: @helpPanelMiniItemMargin;
-               
+
                 &:hover {
                     background: transparent;
                 }
