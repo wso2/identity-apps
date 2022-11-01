@@ -16,32 +16,4 @@
  * under the License.
  */
 
-/**
- *Defining the interface for the schema.
- */
-export interface Schema {
-    /**
-     * Name to use for the generated component.
-     */
-    name: string;
-    /**
-     * Name of the project for the generated component
-     */
-    project: string;
-    /**
-     * Should create a directory?
-     */
-    directory?: string;
-    /**
-     * Should add an export?
-     */
-    export?: boolean;
-    /**
-     * Should create component at the source root rather than its own directory?
-     */
-    flat?: boolean;
-    /**
-     * Name of the file.
-     */
-    fileName?: string;
-}
+export * from "./ast-utils";

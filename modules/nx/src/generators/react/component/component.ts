@@ -18,6 +18,7 @@
 
 import {
     GeneratorCallback,
+    ProjectConfiguration,
     Tree,
     applyChangesToString,
     convertNxGenerator,
@@ -26,22 +27,40 @@ import {
     getProjects,
     joinPathFragments,
     logger,
-    names,
-    toJS
+    names
 } from "@nrwl/devkit";
 import { runTasksInSerial } from "@nrwl/workspace/src/utilities/run-tasks-in-serial";
 import * as ts from "typescript";
+import { SourceFile } from "typescript";
 import { Schema } from "./schema";
-import { addImport } from "../../../utils/ast-utils";
+import { addImport } from "../../../utils";
 
+/**
+ * Interface extending the schema with the properties that are needed for the component generator.
+ */
 interface NormalizedSchema extends Schema {
+    /**
+     * The path to the project's source root.
+     */
     projectSourceRoot: string;
+    /**
+     * File name.
+     */
     fileName: string;
+    /**
+     * Class name.
+     */
     className: string;
-    styledModule: null | string;
-    hasStyles: boolean;
 }
 
+/**
+ * Create the component files, adds the exports to the barrel, and formats the files.
+ *
+ * @param host - The host is the tree that the schematic is operating on.
+ * @param schema - The schema object that was passed to the schematic.
+ * @returns A function that takes a host and a schema and returns a promise that resolves to an array
+ * of generator callbacks.
+ */
 export const componentGenerator = async (host: Tree, schema: Schema): Promise<GeneratorCallback> => {
     const options = await normalizeOptions(host, schema);
 
@@ -56,9 +75,15 @@ export const componentGenerator = async (host: Tree, schema: Schema): Promise<Ge
     return runTasksInSerial(...tasks);
 };
 
+/**
+ * Generates the component files, deletes the ones that aren't needed, and converts the files to
+ * JavaScript if the user has selected that option.
+ *
+ * @param host - Tree - The tree that contains the files that will be generated.
+ * @param options - NormalizedSchema
+ */
 const createComponentFiles = (host: Tree, options: NormalizedSchema): void => {
-
-    const componentDir = joinPathFragments(
+    const componentDir: string = joinPathFragments(
         options.projectSourceRoot,
         options.directory
     );
@@ -68,60 +93,40 @@ const createComponentFiles = (host: Tree, options: NormalizedSchema): void => {
         tmpl: ""
     });
 
-    for (const c of host.listChanges()) {
-        let deleteFile = false;
-
-        if (options.skipTests && /.*spec.tsx/.test(c.path)) {
-            deleteFile = true;
-        }
-
-        if (
-            (options.styledModule || !options.hasStyles) &&
-            c.path.endsWith(`.${options.style}`)
-        ) {
-            deleteFile = true;
-        }
-
-        if (options.globalCss && c.path.endsWith(`.module.${options.style}`)) {
-            deleteFile = true;
-        }
-
-        if (
-            !options.globalCss &&
-            c.path.endsWith(`${options.fileName}.${options.style}`)
-        ) {
-            deleteFile = true;
-        }
+    for (const changes of host.listChanges()) {
+        const deleteFile: boolean = false;
 
         if (deleteFile) {
-            host.delete(c.path);
+            host.delete(changes.path);
         }
-    }
-
-    if (options.js) {
-        toJS(host);
     }
 };
 
+/**
+ * Adds an export statement to the index file of the project.
+ *
+ * @param host - Tree - The tree that contains the files that will be modified.
+ * @param options - NormalizedSchema
+ */
 const addExportsToBarrel = (host: Tree, options: NormalizedSchema): void => {
-    const workspace = getProjects(host);
-    const isApp = workspace.get(options.project).projectType === "application";
+    const workspace: Map<string, ProjectConfiguration> = getProjects(host);
+    const isApp: boolean = workspace.get(options.project).projectType === "application";
 
     if (options.export && !isApp) {
-        const indexFilePath = joinPathFragments(
+        const indexFilePath: string = joinPathFragments(
             options.projectSourceRoot,
-            options.js ? "index.js" : "index.ts"
+            "index.ts"
         );
-        const indexSource = host.read(indexFilePath, "utf-8");
+        const indexSource: string | null = host.read(indexFilePath, "utf-8");
 
         if (indexSource !== null) {
-            const indexSourceFile = ts.createSourceFile(
+            const indexSourceFile: SourceFile = ts.createSourceFile(
                 indexFilePath,
                 indexSource,
                 ts.ScriptTarget.Latest,
                 true
             );
-            const changes = applyChangesToString(
+            const changes: string = applyChangesToString(
                 indexSource,
                 addImport(
                     indexSourceFile,
@@ -134,14 +139,25 @@ const addExportsToBarrel = (host: Tree, options: NormalizedSchema): void => {
     }
 };
 
+/**
+ * Takes the options passed to the schematic and normalizes them.
+ *
+ * @param host - Tree
+ * @param options - Schema - This is the options object that we pass to the schematic.
+ * @returns - options
+ *     - className
+ *     - directory
+ *     - fileName
+ *     - hasStyles
+ *     - projectSourceRoot
+ *     - styledModule
+ */
 const normalizeOptions = async (host: Tree, options: Schema): Promise<NormalizedSchema> => {
-
     assertValidOptions(options);
 
     const { className, fileName } = names(options.name);
-    const componentFileName =
-        options.fileName ?? (options.pascalCaseFiles ? className : fileName);
-    const project = getProjects(host).get(options.project);
+    const componentFileName: string = options.fileName ?? fileName;
+    const project: ProjectConfiguration = getProjects(host).get(options.project);
 
     if (!project) {
         logger.error(
@@ -154,39 +170,31 @@ const normalizeOptions = async (host: Tree, options: Schema): Promise<Normalized
 
     const directory = await getDirectory(host, options);
 
-    const styledModule = /^(css|scss|less|styl|none)$/.test(options.style)
-        ? null
-        : options.style;
-
     if (options.export && projectType === "application") {
         logger.warn(
             "The \"--export\" option should not be used with applications and will do nothing."
         );
     }
 
-    options.classComponent = options.classComponent ?? false;
-    options.routing = options.routing ?? false;
-    options.globalCss = options.globalCss ?? false;
-
     return {
         ...options,
         className,
         directory,
         fileName: componentFileName,
-        hasStyles: options.style !== "none",
-        projectSourceRoot,
-        styledModule
+        projectSourceRoot
     };
 };
 
+/**
+ * Returns the directory where the new component will be created.
+ *
+ * @param host - Tree - The tree that contains the files that will be generated.
+ * @param options - Schema - This is the options object that is passed to the schematic.
+ * @returns The directory where the component will be created.
+ */
 const getDirectory = (host: Tree, options: Schema): string => {
-
-    const genNames = names(options.name);
-    const fileName =
-        options.pascalCaseDirectory === true
-            ? genNames.className
-            : genNames.fileName;
-    const workspace = getProjects(host);
+    const { fileName }  = names(options.name);
+    const workspace: Map<string, ProjectConfiguration> = getProjects(host);
     let baseDir: string;
 
     if (options.directory) {
@@ -201,10 +209,12 @@ const getDirectory = (host: Tree, options: Schema): string => {
     return options.flat ? baseDir : joinPathFragments(baseDir, fileName);
 };
 
+/**
+ * Checks if the user has entered a slash in the component name and if so, it throws an error.
+ *
+ * @param options - Schema - this is the options object that is passed to the schematic.
+ */
 const assertValidOptions = (options: Schema): void => {
-
-    // assertValidStyle(options.style);
-
     const slashes = [ "/", "\\" ];
 
     slashes.forEach(s => {

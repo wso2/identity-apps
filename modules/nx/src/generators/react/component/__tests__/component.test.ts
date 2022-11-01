@@ -33,8 +33,8 @@ describe("nx React component generator", () => {
 
         await createApp(appTree, projectName, false);
 
-        jest.spyOn(logger, "warn").mockImplementation(() => {});
-        jest.spyOn(logger, "debug").mockImplementation(() => {});
+        jest.spyOn(logger, "warn").mockImplementation(() => {/**/});
+        jest.spyOn(logger, "debug").mockImplementation(() => {/**/});
     });
 
     afterEach(() => {
@@ -45,8 +45,7 @@ describe("nx React component generator", () => {
         const options: Schema = {
             directory: "components",
             name: "label",
-            project: projectName,
-            style: "None"
+            project: projectName
         };
 
         await componentGenerator(appTree, options);

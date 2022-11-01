@@ -17,7 +17,7 @@
  */
 
 export default {
-    coverageReporters: ["html"],
+    coverageReporters: [ "html" ],
     displayName: "nx",
     globals: {
         "ts-jest": {
