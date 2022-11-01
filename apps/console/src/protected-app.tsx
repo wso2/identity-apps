@@ -583,8 +583,13 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                         // If there is an association, the user should be redirected to console landing page.
                         const location =
                             !AuthenticationCallbackUrl ||
-                                AuthenticationCallbackUrl ===
-                                AppConstants.getAppLoginPath()
+                            AuthenticationCallbackUrl ===
+                                AppConstants.getAppLoginPath() ||
+                                (window[ "AppUtils" ].getConfig().organizationName &&
+                                    AuthenticationCallbackUrl ===
+                                    `${ window[ "AppUtils" ].getConfig()
+                                        .appBaseWithTenant
+                                    }/`)
                                 ? AppConstants.getAppHomePath()
                                 : AuthenticationCallbackUrl;
 
@@ -606,7 +611,10 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
         } else {
             const location =
                 !AuthenticationCallbackUrl ||
-                    AuthenticationCallbackUrl === AppConstants.getAppLoginPath()
+                    AuthenticationCallbackUrl === AppConstants.getAppLoginPath() ||
+                    (window[ "AppUtils" ].getConfig().organizationName &&
+                        AuthenticationCallbackUrl ===
+                        `${ window[ "AppUtils" ].getConfig().appBaseWithTenant }/`)
                     ? AppConstants.getAppHomePath()
                     : AuthenticationCallbackUrl;
 
