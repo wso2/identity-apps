@@ -32,6 +32,10 @@ import { Button, Form, Icon, Label, Message, Popup } from "semantic-ui-react";
       * Default OIDC scope `openid`.
     */
      defaultValue: string;
+     /**
+      * Id for testing.
+    */
+      ["data-testid"]: string;
     /**
       * Error message.
     */
@@ -66,6 +70,7 @@ export const Scopes: FunctionComponent<ScopesPropsInterface> = (
     const {
         value,
         defaultValue,
+        [ "data-testid" ]: testId,
         error,
         onBlur,
         onChange
@@ -208,6 +213,7 @@ export const Scopes: FunctionComponent<ScopesPropsInterface> = (
                         setScopeValue(data.value.trim());
                     } }
                     onKeyDown={ keyPressed }
+                    data-testid={ testId }
                 />
  
                 <Popup
@@ -218,6 +224,7 @@ export const Scopes: FunctionComponent<ScopesPropsInterface> = (
                                 icon="add"
                                 type="button"
                                 disabled={ false }
+                                data-testid={ testId+"-add-button" }
                             />
                         )
                     }

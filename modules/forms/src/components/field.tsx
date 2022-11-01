@@ -399,6 +399,7 @@ export const InnerField = React.forwardRef((props: InnerFieldPropsInterface, ref
                     <Scopes
                         value={ inputField.value }
                         defaultValue={ inputField.defaultValue }
+                        data-testid={ inputField["data-testid"] }
                         error={
                             isError
                                 ? errorMessages[0] : ""
