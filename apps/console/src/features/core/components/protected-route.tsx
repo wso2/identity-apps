@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { AppConstants as AppConstantsCore } from "@wso2is/core/constants";
+import { AuthenticateUtils } from "@wso2is/core/utils";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useSelector } from "react-redux";
 import { Redirect, Route, RouteComponentProps, RouteProps } from "react-router-dom";
@@ -36,6 +38,18 @@ export const ProtectedRoute: FunctionComponent<RouteProps> = (props: RouteProps)
     } = props;
 
     const isAuthenticated: boolean = useSelector((state: AppState) => state.auth.isAuthenticated);
+
+    /**
+     * Update existing location path (auth_callback_url) in the state to home route if the current page is either login
+     * page, unauthorized page, 404 page or storing_data_disabled page. For other pages, auth_callback_url will be
+     * updated in index.jsp for every page reload
+     */
+    if ((window.location.pathname === AppConstants.getAppLoginPath())
+        || (window.location.pathname === AppConstants.getPaths().get("UNAUTHORIZED"))
+        || (window.location.pathname === AppConstants.getPaths().get("PAGE_NOT_FOUND")
+            || (window.location.pathname === AppConstants.getPaths().get("STORING_DATA_DISABLED")))) {
+        AuthenticateUtils.updateAuthenticationCallbackUrl(AppConstantsCore.CONSOLE_APP, AppConstants.getAppHomePath());
+    }
 
     return (
         <Route

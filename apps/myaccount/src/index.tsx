@@ -39,14 +39,6 @@ import { getAuthInitializeConfig } from "./utils";
 // Set the runtime config in the context.
 ContextUtils.setRuntimeConfig(Config.getDeploymentConfig());
 
-if ((window.location.pathname !== AppConstants.getAppLoginPath())
-    && (window.location.pathname !== AppConstants.getPaths().get("UNAUTHORIZED"))
-    && (window.location.pathname !== AppConstants.getPaths().get("PAGE_NOT_FOUND")
-    && (window.location.pathname !== AppConstants.getPaths().get("STORING_DATA_DISABLED")))) {
-    AuthenticateUtils.updateAuthenticationCallbackUrl(AppConstantsCore.MY_ACCOUNT_APP,
-        window.location.pathname + window.location.hash);
-}
-
 const getAuthParams = (): Promise<AuthParams> => {
     if (!SPAUtils.hasAuthSearchParamsInURL() && process.env.NODE_ENV === "production") {
 

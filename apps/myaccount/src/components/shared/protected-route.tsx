@@ -55,20 +55,16 @@ export const ProtectedRoute: FunctionComponent<ProtectedRoutePropsInterface> = (
     const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
 
     /**
-     * Update existing location path in the state to recall upon page refresh or authentication callback.
-     * The login path and the login error path have been skipped.
+     * Update existing location path (auth_callback_url) in the state to home route if the current page is either login
+     * page, unauthorized page, 404 page or storing_data_disabled page. For other pages, auth_callback_url will be
+     * updated in index.jsp for every page reload
      */
-    if ((window.location.pathname !== AppConstants.getAppLoginPath())
-        && (window.location.pathname !== AppConstants.getPaths().get("UNAUTHORIZED"))
-        && (window.location.pathname !== AppConstants.getPaths().get("PAGE_NOT_FOUND")
-        && (window.location.pathname !== AppConstants.getPaths().get("STORING_DATA_DISABLED")))) {
+    if ((window.location.pathname === AppConstants.getAppLoginPath())
+        || (window.location.pathname === AppConstants.getPaths().get("UNAUTHORIZED"))
+        || (window.location.pathname === AppConstants.getPaths().get("PAGE_NOT_FOUND")
+            || (window.location.pathname === AppConstants.getPaths().get("STORING_DATA_DISABLED")))) {
         AuthenticateUtils.updateAuthenticationCallbackUrl(AppConstantsCore.MY_ACCOUNT_APP,
-            window.location.pathname);
-    } else {
-        AuthenticateUtils.updateAuthenticationCallbackUrl(
-            AppConstantsCore.MY_ACCOUNT_APP, 
-            AppConstants.getAppHomePath()
-        );
+            AppConstants.getAppHomePath());
     }
 
     /**

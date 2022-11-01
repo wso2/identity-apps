@@ -33,7 +33,6 @@ import { ProtectedApp } from "./protected-app";
 // Set the runtime config in the context.
 ContextUtils.setRuntimeConfig(Config.getDeploymentConfig());
 
-
 const getAuthParams = (): Promise<AuthParams> => {
     if (!SPAUtils.hasAuthSearchParamsInURL() && process.env.NODE_ENV === "production") {
 
