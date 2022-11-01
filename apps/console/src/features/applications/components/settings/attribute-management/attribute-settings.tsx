@@ -271,9 +271,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
     }, [ isOIDCScopeListLoading ]);
 
     useEffect(() => {
-        if (externalClaims.length !== 0) {
-            getExternalClaimsGroupedByScopes();
-        }
+        getExternalClaimsGroupedByScopes();
     }, [ externalClaims ]);
 
     /**
