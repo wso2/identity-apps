@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2022, WSO2 Inc. (http://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -228,7 +228,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
      * The following method handles the onChange event of the
      * checkbox field of an assigned item.
      *
-     * @param group
+     * @param group - The role that's changed
      */
     const handleAssignedItemCheckboxChange = (group) => {
         const checkedGroups = [ ...checkedAssignedListItems ];
@@ -613,7 +613,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
     };
 
     return (
-        <>
+        <EmphasizedSegment padded="very">
             <Heading as="h4">
                 { t("console:manage.features.roles.edit.groups.heading") }
                 <Heading subHeading ellipsis as="h6">
@@ -623,7 +623,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
             <Divider hidden />
             <Grid>
                 <Grid.Row>
-                    <Grid.Column computer={ 8 }>
+                    <Grid.Column computer={ 16 }>
                         {
                             primaryGroupsList?.size > 0 ? (
                                 <EmphasizedSegment
@@ -712,6 +712,6 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                 </Grid.Row>
             </Grid>
             { addNewGroupModal() }
-        </>
+        </EmphasizedSegment>
     );
 };

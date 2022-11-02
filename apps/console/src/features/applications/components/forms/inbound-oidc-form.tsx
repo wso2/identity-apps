@@ -1297,12 +1297,13 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     }
                                     placeholder={
                                         isMobileApplication
-                                            ? "wso2sample://oauth2"
+                                            ? t("console:develop.features.applications.forms.inboundOIDC.mobileApp" +
+                                                ".mobileAppPlaceholder")
                                             : t("console:develop.features.applications.forms.inboundOIDC.fields." +
                                                 "callBackUrls.placeholder")
                                     }
                                     validationErrorMsg={
-                                        CustomApplicationTemplate?.id !== template?.id
+                                        CustomApplicationTemplate?.id !== template?.id && !isMobileApplication
                                             ? t("console:develop.features.applications.forms.inboundOIDC.fields." +
                                             "callBackUrls.validations.invalid")
                                             : t("console:develop.features.applications.forms.inboundOIDC.messages." +

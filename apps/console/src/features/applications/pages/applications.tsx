@@ -21,12 +21,10 @@ import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
 import {
-    ConfirmationModal,
     CopyInputField,
     DocumentationLink,
     EmphasizedSegment,
     GenericIcon,
-    GridLayout,
     ListLayout,
     PageLayout,
     PrimaryButton,
@@ -45,8 +43,7 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import {
-    Checkbox,
-    CheckboxProps,
+    Button,
     DropdownItemProps,
     DropdownProps,
     Grid,
@@ -68,7 +65,9 @@ import {
     getGeneralIcons,
     history
 } from "../../core";
-import { updateMyAccountStatus, useApplicationList, useMyAccountStatus } from "../api";
+import { OrganizationType } from "../../organizations/constants";
+import { useGetOrganizationType } from "../../organizations/hooks/use-get-organization-type";
+import { useApplicationList, useMyAccountStatus } from "../api";
 import { ApplicationList, MinimalAppCreateWizard } from "../components";
 import { ApplicationManagementConstants } from "../constants";
 import CustomApplicationTemplate
@@ -135,11 +134,9 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const consumerAccountURL: string = useSelector((state: AppState) =>
         state?.config?.deployment?.accountApp?.tenantQualifiedPath);
-    const [ isLoadingForTheFirstTime, setIsLoadingForTheFirstTime ] = useState<boolean>(true);
     const [ isMyAccountEnabled, setMyAccountStatus ] = useState<boolean>(AppConstants.DEFAULT_MY_ACCOUNT_STATUS);
-    const [ showMyAccountStatusEnableModal, setShowMyAccountStatusEnableConfirmationModal ] = useState<boolean>(false);
-    const [ showMyAccountStatusDisableModal,
-        setShowMyAccountStatusDisableConfirmationModal ] = useState<boolean>(false);
+
+    const orgType: OrganizationType = useGetOrganizationType();
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -155,8 +152,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     const {
         data: myAccountStatus,
         isLoading: isMyAccountStatusLoading,
-        error: myAccountStatusFetchRequestError,
-        mutate: mutateMyAccountStatusFetchRequest
+        error: myAccountStatusFetchRequestError
     } = useMyAccountStatus(!isSubOrg);
 
     /**
@@ -164,8 +160,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
      * TODO: Remove this once the loaders are finalized.
      */
     useEffect(() => {
-        if (isApplicationListFetchRequestLoading === false && isMyAccountStatusLoading === false
-            && isLoadingForTheFirstTime === true) {
+        if (isApplicationListFetchRequestLoading === false && isMyAccountStatusLoading === false) {
             let status: boolean = AppConstants.DEFAULT_MY_ACCOUNT_STATUS;
 
             if (myAccountStatus) {
@@ -176,9 +171,8 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                 }
             }
             setMyAccountStatus(status);
-            setIsLoadingForTheFirstTime(false);
         }
-    }, [ isApplicationListFetchRequestLoading, isMyAccountStatusLoading, isLoadingForTheFirstTime ]);
+    }, [ isApplicationListFetchRequestLoading, isMyAccountStatusLoading ]);
 
     /**
      * Handles the application list fetch request error.
@@ -317,142 +311,13 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     };
 
     /**
-     * Handles the My Account Portal status update action.
-     *
-     * @param e - SyntheticEvent of My Account toggle.
-     * @param data - CheckboxProps of My Account toggle.
+     * Navigate to the my account edit page.
      */
-    const handleMyAccountStatusToggle = (e: SyntheticEvent, data: CheckboxProps): void => {
-
-        if (data.checked) {
-            setShowMyAccountStatusEnableConfirmationModal(true);
-        } else {
-            setShowMyAccountStatusDisableConfirmationModal(true);
-        }
-    };
-
-    /**
-     * Update the My Account Portal status.
-     *
-     * @param status - New status of the My Account portal.
-     */
-    const handleUpdateMyAccountStatus = (status: boolean): void => {
-
-        updateMyAccountStatus(status)
-            .then(() => {
-                setMyAccountStatus(status);
-                mutateMyAccountStatusFetchRequest();
-                dispatch(addAlert({
-                    description: t("console:develop.features.applications.myaccount.notifications.success.description"),
-                    level: AlertLevels.SUCCESS,
-                    message: t("console:develop.features.applications.myaccount.notifications.success.message")
-                }));
-
-            }).catch((error) => {
-                if (error?.response?.data?.description) {
-                    dispatch(addAlert({
-                        description: error?.response?.data?.description ?? error?.response?.data?.detail
-                            ?? t("console:develop.features.applications.myaccount.notifications.error.description"),
-                        level: AlertLevels.ERROR,
-                        message: error?.response?.data?.message
-                            ?? t("console:develop.features.applications.myaccount.notifications.error.message")
-                    }));
-
-                    return;
-                }
-                dispatch(addAlert({
-                    description: t(
-                        "console:develop.features.applications.myaccount.notifications.genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("console:develop.features.applications.myaccount.notifications.genericError.message")
-                }));
-            });
-    };
-
-
-    /**
-     * Renders a confirmation modal when the My Account Portal status is being enabled.
-     * @returns My Account status enabling warning modal.
-     */
-    const renderMyAccountStatusEnableWarning = (): ReactElement => {
-
-        return (
-            <ConfirmationModal
-                onClose={ (): void => setShowMyAccountStatusEnableConfirmationModal(false) }
-                type="warning"
-                open={ showMyAccountStatusEnableModal }
-                primaryAction={ t("common:confirm") }
-                secondaryAction={ t("common:cancel") }
-                onSecondaryActionClick={
-                    (): void => {
-                        setShowMyAccountStatusEnableConfirmationModal(false);
-                    }
-                }
-                onPrimaryActionClick={
-                    (): void => {
-                        setShowMyAccountStatusEnableConfirmationModal(false);
-                        handleUpdateMyAccountStatus(true);
-                    }
-                }
-                closeOnDimmerClick={ false }
-            >
-                <ConfirmationModal.Header>
-                    { t("console:develop.features.applications.myaccount.Confirmation.enableConfirmation.heading") }
-                </ConfirmationModal.Header>
-                <ConfirmationModal.Message
-                    attached
-                    warning
-                >
-                    { t("console:develop.features.applications.myaccount.Confirmation.enableConfirmation.message") }
-                </ConfirmationModal.Message>
-                <ConfirmationModal.Content>
-                    { t("console:develop.features.applications.myaccount.Confirmation.enableConfirmation.content") }
-                </ConfirmationModal.Content>
-            </ConfirmationModal>
-        );
-    };
-
-
-    /**
-     * Renders a confirmation modal when the My Account Portal status is being disabled.
-     * @returns My Account status disabling warning modal.
-     */
-    const renderMyAccountStatusDisableWarning = (): ReactElement => {
-
-        return (
-            <ConfirmationModal
-                onClose={ (): void => setShowMyAccountStatusDisableConfirmationModal(false) }
-                type="warning"
-                open={ showMyAccountStatusDisableModal }
-                primaryAction={ t("common:confirm") }
-                secondaryAction={ t("common:cancel") }
-                onSecondaryActionClick={
-                    (): void => {
-                        setShowMyAccountStatusDisableConfirmationModal(false);
-                    }
-                }
-                onPrimaryActionClick={
-                    (): void => {
-                        setShowMyAccountStatusDisableConfirmationModal(false);
-                        handleUpdateMyAccountStatus(false);
-                    }
-                }
-                closeOnDimmerClick={ false }
-            >
-                <ConfirmationModal.Header>
-                    { t("console:develop.features.applications.myaccount.Confirmation.disableConfirmation.heading") }
-                </ConfirmationModal.Header>
-                <ConfirmationModal.Message
-                    attached
-                    warning
-                >
-                    { t("console:develop.features.applications.myaccount.Confirmation.disableConfirmation.message") }
-                </ConfirmationModal.Message>
-                <ConfirmationModal.Content>
-                    { t("console:develop.features.applications.myaccount.Confirmation.disableConfirmation.content") }
-                </ConfirmationModal.Content>
-            </ConfirmationModal>
-        );
+    const navigateToMyAccountSettings = (): void => {
+        history.push({
+            pathname: AppConstants.getPaths().get("MY_ACCOUNT_EDIT"),
+            state: ApplicationManagementConstants.APPLICATION_STATE
+        });
     };
 
     /**
@@ -477,7 +342,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                             <Grid.Column
                                 floated="left"
                                 mobile={ 16 }
-                                computer={ 5 }
+                                computer={ 9 }
                             >
                                 <GenericIcon
                                     icon={ getGeneralIcons().myAccountSolidIcon }
@@ -498,6 +363,11 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                                     <Label size="tiny" className="preview-label ml-2">
                                         { t("common:preview") }
                                     </Label>
+                                    <Icon
+                                        color={ isMyAccountEnabled ? "green":"grey" }
+                                        name={ isMyAccountEnabled ? "check circle" : "minus circle" }
+                                        className="middle aligned ml-1"
+                                    />
                                 </List.Header>
                                 <List.Description
                                     data-componentid="application-consumer-account-link-description"
@@ -512,46 +382,49 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                             </Grid.Column>
                             { isMyAccountEnabled || isSubOrg ? (
                                 <Popup
-                                    trigger={
-                                        (<Grid.Column
+                                    trigger={ (
+                                        <Grid.Column
                                             mobile={ 16 }
                                             computer={ 6 }
+                                            className="pr-0"
                                         >
                                             <CopyInputField
                                                 value={ consumerAccountURL }
                                                 data-componentid={ "application-consumer-account-link-copy-field" }
                                             />
-                                        </Grid.Column>)
-                                    }
+                                        </Grid.Column>
+                                    ) }
                                     content={ t("console:develop.features.applications.myaccount.popup") }
                                     position="top center"
                                     size="mini"
                                     hideOnScroll
                                     inverted
-                                /> ) : null
-                            }
+                                />
+                            ) : null 
+                            } 
                             <Grid.Column
                                 mobile={ 16 }
-                                computer={ 5 }
+                                computer={ 1 }
                             >
                                 { !isSubOrg && (
-                                    <Checkbox
-                                        className="right floated mr-3"
-                                        label={ t( isMyAccountEnabled ?
-                                            "console:develop.features.applications.myaccount.enable.0" :
-                                            "console:develop.features.applications.myaccount.enable.1") }
-                                        toggle
-                                        onChange={ handleMyAccountStatusToggle }
-                                        checked={ isMyAccountEnabled }
-                                        data-testId={ `${ testId }-myaccount-status-update-toggle` }
+                                    <Popup
+                                        trigger={ (
+                                            <Button 
+                                                icon="setting"
+                                                onClick={ (): void => navigateToMyAccountSettings() }
+                                            />
+                                        ) }
+                                        content={ t("common:settings") }
+                                        position="top center"
+                                        size="mini"
+                                        hideOnScroll
+                                        inverted
                                     />
                                 ) }
                             </Grid.Column>
                         </Grid>
                     </List.Item>
                 </List>
-                { showMyAccountStatusEnableModal && renderMyAccountStatusEnableWarning() }
-                { showMyAccountStatusDisableModal && renderMyAccountStatusDisableWarning() }
             </EmphasizedSegment>
         );
     };
@@ -559,26 +432,20 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     return (
         <PageLayout
             pageTitle="Applications"
-            action={
-                (!isApplicationListFetchRequestLoading && !isMyAccountStatusLoading
-                    &&!(!searchQuery && applicationList?.totalResults <= 0))
-                && (
-                    <Show when={ AccessControlConstants.APPLICATION_WRITE }>
-                        <PrimaryButton
-                            disabled={ isApplicationListFetchRequestLoading || isMyAccountStatusLoading }
-                            loading={ isApplicationListFetchRequestLoading || isMyAccountStatusLoading }
-                            onClick={ (): void => {
-                                eventPublisher.publish("application-click-new-application-button");
-                                history.push(AppConstants.getPaths().get("APPLICATION_TEMPLATES"));
-                            } }
-                            data-testid={ `${ testId }-list-layout-add-button` }
-                        >
-                            <Icon name="add" />
-                            { t("console:develop.features.applications.list.actions.add") }
-                        </PrimaryButton>
-                    </Show>
-                )
-            }
+            action={ (
+                <Show when={ AccessControlConstants.APPLICATION_WRITE }>
+                    <PrimaryButton
+                        onClick={ (): void => {
+                            eventPublisher.publish("application-click-new-application-button");
+                            history.push(AppConstants.getPaths().get("APPLICATION_TEMPLATES"));
+                        } }
+                        data-testid={ `${ testId }-list-layout-add-button` }
+                    >
+                        <Icon name="add" />
+                        { t("console:develop.features.applications.list.actions.add") }
+                    </PrimaryButton>
+                </Show>
+            ) }
             title={ t("console:develop.pages.applications.title") }
             description={ (
                 <p>
@@ -593,156 +460,148 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
             contentTopMargin={ (AppConstants.getTenant() === AppConstants.getSuperTenant()) }
             data-testid={ `${ testId }-page-layout` }
         >
-            { !isLoadingForTheFirstTime ? (
-                <>
-                    { renderTenantedMyAccountLink() }
-                    <ListLayout
-                        advancedSearch={ (
-                            <AdvancedSearchWithBasicFilters
-                                onFilter={ handleApplicationFilter }
-                                filterAttributeOptions={ [
-                                    {
-                                        key: 0,
-                                        text: t("common:name"),
-                                        value: "name"
-                                    },
-                                    {
-                                        key: 1,
-                                        text: t("common:clientId"),
-                                        value: "clientId"
-                                    },
-                                    {
-                                        key: 2,
-                                        text: t("common:issuer"),
-                                        value: "issuer"
-                                    }
-                                ] }
-                                filterAttributePlaceholder={
-                                    t("console:develop.features.applications.advancedSearch.form" +
-                                        ".inputs.filterAttribute.placeholder")
-                                }
-                                filterConditionsPlaceholder={
-                                    t("console:develop.features.applications.advancedSearch.form" +
-                                        ".inputs.filterCondition.placeholder")
-                                }
-                                filterValuePlaceholder={
-                                    t("console:develop.features.applications.advancedSearch.form.inputs.filterValue" +
-                                        ".placeholder")
-                                }
-                                placeholder={ t("console:develop.features.applications.advancedSearch.placeholder") }
-                                style={ { minWidth: "425px" } }
-                                defaultSearchAttribute="name"
-                                defaultSearchOperator="co"
-                                predefinedDefaultSearchStrategy={
-                                    "name co %search-value% or clientId co %search-value% or issuer co %search-value%"
-                                }
-                                triggerClearQuery={ triggerClearQuery }
-                                data-testid={ `${ testId }-list-advanced-search` }
-                            />
-                        ) }
-                        currentListSize={ applicationList?.count }
-                        listItemLimit={ listItemLimit }
-                        onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
-                        onPageChange={ handlePaginationChange }
-                        onSortStrategyChange={ handleListSortingStrategyOnChange }
-                        showPagination={ true }
-                        showTopActionPanel={
-                            isApplicationListFetchRequestLoading
-                            || !(!searchQuery && applicationList?.totalResults <= 0) }
-                        sortOptions={ APPLICATIONS_LIST_SORTING_OPTIONS }
-                        sortStrategy={ listSortingStrategy }
-                        totalPages={ Math.ceil(applicationList?.totalResults / listItemLimit) }
-                        totalListSize={ applicationList?.totalResults }
-                        paginationOptions={ {
-                            disableNextButton: !shouldShowNextPageNavigation(applicationList)
-                        } }
-                        data-testid={ `${ testId }-list-layout` }
-                    >
-                        <ApplicationList
-                            advancedSearch={ (
-                                <AdvancedSearchWithBasicFilters
-                                    onFilter={ handleApplicationFilter }
-                                    filterAttributeOptions={ [
-                                        {
-                                            key: 0,
-                                            text: t("common:name"),
-                                            value: "name"
-                                        },
-                                        {
-                                            key: 1,
-                                            text: t("common:clientId"),
-                                            value: "clientId"
-                                        },
-                                        {
-                                            key: 2,
-                                            text: t("common:issuer"),
-                                            value: "issuer"
-                                        }
-                                    ] }
-                                    filterAttributePlaceholder={
-                                        t("console:develop.features.applications.advancedSearch." +
-                                            "form.inputs.filterAttribute.placeholder")
-                                    }
-                                    filterConditionsPlaceholder={
-                                        t("console:develop.features.applications.advancedSearch." +
-                                            "form.inputs.filterCondition.placeholder")
-                                    }
-                                    filterValuePlaceholder={
-                                        t("console:develop.features.applications.advancedSearch." +
-                                            "form.inputs.filterValue.placeholder")
-                                    }
-                                    placeholder={
-                                        t("console:develop.features.applications.advancedSearch.placeholder")
-                                    }
-                                    style={ { minWidth: "425px" } }
-                                    defaultSearchAttribute="name"
-                                    defaultSearchOperator="co"
-                                    predefinedDefaultSearchStrategy={
-                                        "name co %search-value% or clientId co %search-value% or " +
-                                        "issuer co %search-value%"
-                                    }
-                                    triggerClearQuery={ triggerClearQuery }
-                                    data-testid={ `${ testId }-list-advanced-search` }
-                                />
-                            ) }
-                            featureConfig={ featureConfig }
-                            isLoading={ isApplicationListFetchRequestLoading || isMyAccountStatusLoading }
-                            list={ applicationList }
-                            onApplicationDelete={ handleApplicationDelete }
-                            onEmptyListPlaceholderActionClick={
-                                () => {
-                                    history.push(AppConstants.getPaths().get("APPLICATION_TEMPLATES"));
-                                }
+            { orgType !== OrganizationType.SUBORGANIZATION && renderTenantedMyAccountLink() }
+            <ListLayout
+                advancedSearch={ (
+                    <AdvancedSearchWithBasicFilters
+                        onFilter={ handleApplicationFilter }
+                        filterAttributeOptions={ [
+                            {
+                                key: 0,
+                                text: t("common:name"),
+                                value: "name"
+                            },
+                            {
+                                key: 1,
+                                text: t("common:clientId"),
+                                value: "clientId"
+                            },
+                            {
+                                key: 2,
+                                text: t("common:issuer"),
+                                value: "issuer"
                             }
-                            onSearchQueryClear={ handleSearchQueryClear }
-                            searchQuery={ searchQuery }
-                            data-testid={ `${ testId }-list` }
-                            data-componentid="application"
-                        />
-                    </ListLayout>
-                    { showWizard && (
-                        <MinimalAppCreateWizard
-                            title={ CustomApplicationTemplate?.name }
-                            subTitle={ CustomApplicationTemplate?.description }
-                            closeWizard={ (): void => setShowWizard(false) }
-                            template={ CustomApplicationTemplate }
-                            showHelpPanel={ true }
-                            subTemplates={ CustomApplicationTemplate?.subTemplates }
-                            subTemplatesSectionTitle={ CustomApplicationTemplate?.subTemplatesSectionTitle }
-                            addProtocol={ false }
-                            templateLoadingStrategy={
-                                config.ui.applicationTemplateLoadingStrategy
-                                ?? ApplicationManagementConstants.DEFAULT_APP_TEMPLATE_LOADING_STRATEGY
+                        ] }
+                        filterAttributePlaceholder={
+                            t("console:develop.features.applications.advancedSearch.form" +
+                                ".inputs.filterAttribute.placeholder")
+                        }
+                        filterConditionsPlaceholder={
+                            t("console:develop.features.applications.advancedSearch.form" +
+                                ".inputs.filterCondition.placeholder")
+                        }
+                        filterValuePlaceholder={
+                            t("console:develop.features.applications.advancedSearch.form.inputs.filterValue" +
+                                ".placeholder")
+                        }
+                        placeholder={ t("console:develop.features.applications.advancedSearch.placeholder") }
+                        style={ { minWidth: "425px" } }
+                        defaultSearchAttribute="name"
+                        defaultSearchOperator="co"
+                        predefinedDefaultSearchStrategy={
+                            "name co %search-value% or clientId co %search-value% or issuer co %search-value%"
+                        }
+                        triggerClearQuery={ triggerClearQuery }
+                        data-testid={ `${ testId }-list-advanced-search` }
+                    />
+                ) }
+                currentListSize={ applicationList?.count }
+                isLoading={ isApplicationListFetchRequestLoading }
+                listItemLimit={ listItemLimit }
+                onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
+                onPageChange={ handlePaginationChange }
+                onSortStrategyChange={ handleListSortingStrategyOnChange }
+                showPagination={ true }
+                showTopActionPanel={
+                    isApplicationListFetchRequestLoading
+                    || !(!searchQuery && applicationList?.totalResults <= 0) }
+                sortOptions={ APPLICATIONS_LIST_SORTING_OPTIONS }
+                sortStrategy={ listSortingStrategy }
+                totalPages={ Math.ceil(applicationList?.totalResults / listItemLimit) }
+                totalListSize={ applicationList?.totalResults }
+                paginationOptions={ {
+                    disableNextButton: !shouldShowNextPageNavigation(applicationList)
+                } }
+                data-testid={ `${ testId }-list-layout` }
+            >
+                <ApplicationList
+                    advancedSearch={ (
+                        <AdvancedSearchWithBasicFilters
+                            onFilter={ handleApplicationFilter }
+                            filterAttributeOptions={ [
+                                {
+                                    key: 0,
+                                    text: t("common:name"),
+                                    value: "name"
+                                },
+                                {
+                                    key: 1,
+                                    text: t("common:clientId"),
+                                    value: "clientId"
+                                },
+                                {
+                                    key: 2,
+                                    text: t("common:issuer"),
+                                    value: "issuer"
+                                }
+                            ] }
+                            filterAttributePlaceholder={
+                                t("console:develop.features.applications.advancedSearch." +
+                                    "form.inputs.filterAttribute.placeholder")
                             }
+                            filterConditionsPlaceholder={
+                                t("console:develop.features.applications.advancedSearch." +
+                                    "form.inputs.filterCondition.placeholder")
+                            }
+                            filterValuePlaceholder={
+                                t("console:develop.features.applications.advancedSearch." +
+                                    "form.inputs.filterValue.placeholder")
+                            }
+                            placeholder={
+                                t("console:develop.features.applications.advancedSearch.placeholder")
+                            }
+                            style={ { minWidth: "425px" } }
+                            defaultSearchAttribute="name"
+                            defaultSearchOperator="co"
+                            predefinedDefaultSearchStrategy={
+                                "name co %search-value% or clientId co %search-value% or " +
+                                "issuer co %search-value%"
+                            }
+                            triggerClearQuery={ triggerClearQuery }
+                            data-testid={ `${ testId }-list-advanced-search` }
                         />
                     ) }
-                </>
-            ) : (
-                <GridLayout
-                    isLoading={ isLoadingForTheFirstTime }
+                    featureConfig={ featureConfig }
+                    isLoading={ isApplicationListFetchRequestLoading }
+                    list={ applicationList }
+                    onApplicationDelete={ handleApplicationDelete }
+                    onEmptyListPlaceholderActionClick={
+                        () => {
+                            history.push(AppConstants.getPaths().get("APPLICATION_TEMPLATES"));
+                        }
+                    }
+                    onSearchQueryClear={ handleSearchQueryClear }
+                    searchQuery={ searchQuery }
+                    data-testid={ `${ testId }-list` }
+                    data-componentid="application"
                 />
-            )
-            }
+            </ListLayout>
+            { showWizard && (
+                <MinimalAppCreateWizard
+                    title={ CustomApplicationTemplate?.name }
+                    subTitle={ CustomApplicationTemplate?.description }
+                    closeWizard={ (): void => setShowWizard(false) }
+                    template={ CustomApplicationTemplate }
+                    showHelpPanel={ true }
+                    subTemplates={ CustomApplicationTemplate?.subTemplates }
+                    subTemplatesSectionTitle={ CustomApplicationTemplate?.subTemplatesSectionTitle }
+                    addProtocol={ false }
+                    templateLoadingStrategy={
+                        config.ui.applicationTemplateLoadingStrategy
+                        ?? ApplicationManagementConstants.DEFAULT_APP_TEMPLATE_LOADING_STRATEGY
+                    }
+                />
+            ) }
         </PageLayout>
     );
 };

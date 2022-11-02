@@ -22,6 +22,7 @@ import { GenericIcon } from "@wso2is/react-components";
 import React, { ReactElement, SyntheticEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, Icon, Placeholder, Popup } from "semantic-ui-react";
+import { organizationConfigs } from "../../../../extensions";
 import { AppConstants, getMiscellaneousIcons, history } from "../../../core";
 import { GenericOrganization } from "../../models";
 import { OrganizationUtils } from "../../utils";
@@ -31,7 +32,7 @@ interface OrganizationListItemPropsTypesInterface
     organization: GenericOrganization;
     isClickable: boolean;
     showSwitch: boolean;
-    handleOrgRowClick: (organization: GenericOrganization) => void;
+    handleOrgRowClick?: (organization: GenericOrganization) => void;
     setShowDropdown: (shouldShow: boolean) => void;
     handleOrganizationSwitch?: (organization: GenericOrganization) => void;
     showGravatar?: boolean;
@@ -59,8 +60,16 @@ const OrganizationListItem = (
         <Grid.Row
             columns={ showGravatar ? 3 : 2 }
             key={ `${ organization?.name }-organization-item` }
-            onClick={ () => handleOrgRowClick && handleOrgRowClick(organization) }
-            className={ isClickable ? "organization-list-row" : "" }
+            onClick={ () =>
+                organizationConfigs.allowNavigationInDropdown &&
+                handleOrgRowClick &&
+                handleOrgRowClick(organization)
+            }
+            className={
+                isClickable && organizationConfigs.allowNavigationInDropdown
+                    ? "organization-list-row"
+                    : ""
+            }
             data-componentid={ `${ componentId }-organization-item` }
         >
             { showGravatar && (
@@ -79,6 +88,7 @@ const OrganizationListItem = (
                 width={ showGravatar ? 9 : 12 }
                 verticalAlign="middle"
                 data-componentid={ `${ componentId }-organization-name` }
+                className="ellipsis"
             >
                 { organization?.name ?? (
                     <Placeholder>
@@ -86,8 +96,8 @@ const OrganizationListItem = (
                     </Placeholder>
                 ) }
             </Grid.Column>
-            <Grid.Column width={ 4 } verticalAlign="middle" textAlign="right">
-                { showSwitch && (
+            { showSwitch && (
+                <Grid.Column width={ 2 } verticalAlign="middle" textAlign="right">
                     <Popup
                         trigger={
                             (<Icon
@@ -107,10 +117,15 @@ const OrganizationListItem = (
                         content={ t("common:switch") }
                         inverted
                     />
-                ) }
-                { !OrganizationUtils.isRootOrganization(organization) &&
-                    showEdit && (
-                    <Show when={ AccessControlConstants.ORGANIZATION_EDIT }>
+                </Grid.Column>
+            ) }
+            { !OrganizationUtils.isRootOrganization(organization) && showEdit && (
+                <Show when={ AccessControlConstants.ORGANIZATION_EDIT }>
+                    <Grid.Column
+                        width={ 2 }
+                        verticalAlign="middle"
+                        textAlign="right"
+                    >
                         <Popup
                             trigger={
                                 (<Icon
@@ -138,9 +153,9 @@ const OrganizationListItem = (
                             content={ t("common:edit") }
                             inverted
                         />
-                    </Show>
-                ) }
-            </Grid.Column>
+                    </Grid.Column>
+                </Show>
+            ) }
         </Grid.Row>
     );
 };

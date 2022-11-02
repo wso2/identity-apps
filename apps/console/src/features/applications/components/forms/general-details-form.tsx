@@ -366,8 +366,11 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     hint={ (
                         <Trans
                             i18nKey={
-                                "console:develop.features.applications.forms.generalDetails.fields." +
-                                "discoverable.hint"
+                                application.templateId === ApplicationManagementConstants.MOBILE
+                                    ? "console:develop.features.applications.forms.inboundOIDC.mobileApp" +
+                                        ".discoverableHint"
+                                    : "console:develop.features.applications.forms.generalDetails.fields." +
+                                        "discoverable.hint"
                             }
                             tOptions={ { myAccount: "My Account" } }
                         >

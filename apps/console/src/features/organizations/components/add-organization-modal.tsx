@@ -19,7 +19,7 @@
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
-import { Heading, LinkButton, PrimaryButton } from "@wso2is/react-components";
+import { Heading, LinkButton, Message, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -71,20 +71,26 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
     const dispatch = useDispatch();
 
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
-    const [ type ] = useState<ORGANIZATION_TYPE>(ORGANIZATION_TYPE.STRUCTURAL);
+    const [ error, setError ] = useState<string>("");
 
     const submitForm = useRef<() => void>();
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
     const currentOrganization = useSelector((state: AppState) => state.organization.organization);
 
-    const submitOrganization = async (values: OrganizationAddFormProps): Promise<void> => {
+    const submitOrganization = async (values: OrganizationAddFormProps): Promise<Record<string, string>|void> => {
         const organization: AddOrganizationInterface = {
             description: values?.description,
             name: values?.name,
             parentId: parent?.id ?? currentOrganization.id,
             type: ORGANIZATION_TYPE.TENANT
         };
+
+        if (!values?.name) {
+            return Promise.resolve({
+                name: t("console:manage.features.organizations.forms.addOrganization.name.validation.empty")
+            });
+        }
 
         setIsSubmitting(true);
 
@@ -110,56 +116,23 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
             })
             .catch((error) => {
                 if (error?.description) {
-                    dispatch(
-                        addAlert({
-                            description: t(
-                                "console:manage.features.organizations.notifications." +
+                    setError(t(
+                        "console:manage.features.organizations.notifications." +
                                 "addOrganization.error.description",
-                                {
-                                    description: error.description
-                                }
-                            ),
-                            level: AlertLevels.ERROR,
-                            message: t(
-                                "console:manage.features.organizations.notifications." + "addOrganization.error.message"
-                            )
-                        })
-                    );
+                        {
+                            description: error.description
+                        }
+                    ));
                 } else {
-                    dispatch(
-                        addAlert({
-                            description: t(
-                                "console:manage.features.organizations.notifications." +
+                    setError(t(
+                        "console:manage.features.organizations.notifications." +
                                 "addOrganization.genericError.description"
-                            ),
-                            level: AlertLevels.ERROR,
-                            message: t(
-                                "console:manage.features.organizations.notifications." +
-                                "addOrganization.genericError.message"
-                            )
-                        })
-                    );
+                    ));
                 }
             })
             .finally(() => {
                 setIsSubmitting(false);
             });
-    };
-
-    const validate = async (values: OrganizationAddFormProps): Promise<Partial<OrganizationAddFormProps>> => {
-        const error: Partial<OrganizationAddFormProps> = {};
-
-        if (!values?.name) {
-            error.name = t("console:manage.features.organizations.forms.addOrganization.name.validation.empty");
-        }
-
-        if (!values?.domainName && type === ORGANIZATION_TYPE.TENANT) {
-            error.domainName = t(
-                "console:manage.features.organizations.forms.addOrganization." + "domainName.validation.empty"
-            );
-        }
-
-        return error;
     };
 
     /**
@@ -193,13 +166,19 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
                 </Modal.Header>
                 <Modal.Content>
                     <Grid>
+                        { (error && !isSubmitting) && (
+                            <Grid.Row columns={ 1 }>
+                                <Grid.Column width={ 16 }>
+                                    <Message type="error" content={ error } />
+                                </Grid.Column>
+                            </Grid.Row>
+                        ) }
                         <Grid.Row columns={ 1 }>
                             <Grid.Column width={ 16 }>
                                 <Form
                                     id={ FORM_ID }
                                     uncontrolledForm={ false }
                                     onSubmit={ submitOrganization }
-                                    validate={ validate }
                                     triggerSubmit={ (submit) => (submitForm.current = submit) }
                                 >
                                     <Field.Input
@@ -239,29 +218,6 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
                                         width={ 16 }
                                     />
                                 </Form>
-                                { /*Temporarily hidden */ }
-                                { /*  <Divider hidden />
-                                <SemanticForm>
-                                    <SemanticForm.Group grouped>
-                                        <label>
-                                            { t("console:manage.features.organizations.forms.addOrganization.type") }
-                                        </label>
-                                        <SemanticForm.Radio
-                                            label={ t("console:manage.features.organizations.forms." +
-                                                "addOrganization.structural") }
-                                            value={ ORGANIZATION_TYPE.STRUCTURAL }
-                                            checked={ type === ORGANIZATION_TYPE.STRUCTURAL }
-                                            onChange={ () => setType(ORGANIZATION_TYPE.STRUCTURAL) }
-                                        />
-                                        <SemanticForm.Radio
-                                            label={ t("console:manage.features.organizations." +
-                                                "forms.addOrganization.tenant") }
-                                            value={ ORGANIZATION_TYPE.TENANT }
-                                            checked={ type === ORGANIZATION_TYPE.TENANT }
-                                            onChange={ () => setType(ORGANIZATION_TYPE.TENANT) }
-                                        />
-                                    </SemanticForm.Group>
-                                </SemanticForm> */ }
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>

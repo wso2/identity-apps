@@ -313,7 +313,6 @@ export interface TableActionsInterface<T = Record<string, any>>
     link?: (item: TableDataInterface<T>) => boolean;
 }
 
-
 /**
  * Interface for loading state options.
  */
@@ -676,21 +675,22 @@ export const DataTable = <T extends Record<string, any> = Record<string, any>>(
 
         const placeholders: ReactElement[] = [];
 
-        for (let i = 0; i < loadingStateOptions.count; i++) {
+        for (let i = 0; i < loadingStateOptions?.count; i++) {
             placeholders.push(
                 <DataTable.Row key={ i }>
                     <DataTable.Cell>
                         <Header as="h6" image>
                             {
-                                loadingStateOptions.imageType && (
+                                loadingStateOptions?.imageType && (
                                     <Avatar
                                         image={ (
                                             <Placeholder style={ { height: 35, width: 35 } }>
                                                 <Placeholder.Image />
                                             </Placeholder>
                                         ) }
+                                        shape={ loadingStateOptions?.imageType }
                                         isLoading={ true }
-                                        avatarType={ loadingStateOptions.imageType === "circular" ? "user" : "app" }
+                                        avatarType={ loadingStateOptions?.imageType === "circular" ? "user" : "app" }
                                         size="mini"
                                         floated="left"
                                     />

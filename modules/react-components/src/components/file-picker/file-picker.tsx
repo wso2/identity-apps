@@ -1,8 +1,8 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
- * Version 2.0 (the 'License'); you may not use this file except
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
  *
@@ -10,7 +10,7 @@
  *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
- * 'AS IS' BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
@@ -68,7 +68,7 @@ export interface FilePickerProps extends IdentifiableComponentInterface {
      * This has no debounce time and will be called
      * immediately.
      *
-     * @param result {PickerResult} data.
+     * @param result - PickerResult data.
      */
     onChange: (result: PickerResult<any>) => void;
     /**
@@ -611,7 +611,7 @@ export interface PickerStrategy<T> {
      * validate the type, size, name, and the expected content
      * if applicable.
      *
-     * @param data {File | string} uploaded file or the pasted text.
+     * @param data - uploaded file or the pasted text.
      */
     validate: (data: File | string) => Promise<ValidationResult>;
     /**
@@ -633,7 +633,7 @@ export interface PickerStrategy<T> {
      * representation. You can return an empty string if there's
      * no post-processing logic to your use-case.
      *
-     * @param data {File | string} uploaded file or pasted text.
+     * @param data - uploaded file or pasted text.
      */
     serialize: (data: File | string) => Promise<T>;
 }

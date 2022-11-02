@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -70,9 +70,9 @@ export interface TechnologyCardPropsInterface extends Omit<CardProps, "image">, 
 /**
  * Technology card component.
  *
- * @param {TechnologyCardPropsInterface} props - Props injected to the components.
+ * @param props - Props injected to the components.
  *
- * @return {React.ReactElement}
+ * @returns the TechnologyCard component
  */
 export const TechnologyCard: FunctionComponent<TechnologyCardPropsInterface> = (
     props: TechnologyCardPropsInterface
@@ -153,8 +153,8 @@ export const TechnologyCard: FunctionComponent<TechnologyCardPropsInterface> = (
                 data-componentid={ `technology-card-alias-${ kebabCase(displayName) }` }
                 className={
                     classNames("name", {
-                        "tech-name-visible": dimmerState,
-                        "tech-name-hidden": !dimmerState
+                        "tech-name-hidden": !dimmerState,
+                        "tech-name-visible": dimmerState
                     })
                 }>
                 { displayName }

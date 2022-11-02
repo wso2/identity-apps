@@ -283,8 +283,9 @@
                                     data-size="invisible"
                                     data-callback="onCompleted"
                                     data-action="passwordRecovery"
-                                    data-sitekey=
-                                            "<%=Encode.forHtmlContent(reCaptchaKey)%>">
+                                    data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>"
+                                    data-tabindex="-1"
+                                    >
                             </div>
                         </div>
                         <%
@@ -378,6 +379,20 @@
 
                 return true;
             });
+        });
+
+        // Removing the recaptcha UI from the keyboard tab order
+        Array.prototype.forEach.call(document.getElementsByClassName('g-recaptcha'), function (element) {
+            //Add a load event listener to each wrapper, using capture.
+            element.addEventListener('load', function (e) {
+                //Get the data-tabindex attribute value from the wrapper.
+                var tabindex = e.currentTarget.getAttribute('data-tabindex');
+                //Check if the attribute is set.
+                if (tabindex) {
+                    //Set the tabIndex on the iframe.
+                    e.target.tabIndex = "-1";
+                }
+            }, true);
         });
 
     </script>

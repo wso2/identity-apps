@@ -99,6 +99,7 @@ export interface ConsoleNS {
             organizationSwitch: {
                 emptyOrgListMessage: string;
                 orgSearchPlaceholder: string;
+                breadcrumbError: NotificationItem;
             }
         },
         modals: {
@@ -468,6 +469,12 @@ export interface ConsoleNS {
                                     };
                                 };
                                 heading: string;
+                                scopelessAttributes: {
+                                    description: string;
+                                    displayName: string;
+                                    name: string;
+                                    hint: string;
+                                },
                                 attributeComponentHint: string;
                                 attributeComponentHintAlt: string;
                                 description: string;
@@ -494,8 +501,10 @@ export interface ConsoleNS {
                                         actions: {
                                             makeMandatory: string;
                                             makeRequested: string;
+                                            makeScopeRequested: string;
                                             removeMandatory: string;
                                             removeRequested: string;
+                                            removeScopeRequested: string;
                                             subjectDisabledSelection: string;
                                         };
                                         faultyAttributeMapping: string;
@@ -509,6 +518,13 @@ export interface ConsoleNS {
                                 selectAll: string;
                             };
                             attributeMappingChange: Notification;
+                            emptySearchResults: {
+                                subtitles: {
+                                    0: string,
+                                    1: string
+                                },
+                                title: string;
+                            },
                             roleMapping: {
                                 heading: string;
                             };
@@ -702,6 +718,10 @@ export interface ConsoleNS {
                                             emailOTP: {
                                                 description: string,
                                                 heading: string,
+                                            },
+                                            smsOTP: {
+                                                description: string;
+                                                heading: string;
                                             }
                                         }
                                     }
@@ -814,6 +834,10 @@ export interface ConsoleNS {
                             grant: FormAttributes;
                             public: FormAttributes;
                         };
+                        mobileApp: {
+                            discoverableHint: string;
+                            mobileAppPlaceholder: string;
+                        },
                         sections: {
                             accessToken: {
                                 heading: string;
@@ -1201,6 +1225,11 @@ export interface ConsoleNS {
                             tabName: string;
                         };
                     };
+                    smsOTP: {
+                        smsProvider: {
+                            tabName: string;
+                        };
+                    };
                 };
                 forms?: {
                     advancedConfigs: {
@@ -1298,6 +1327,57 @@ export interface ConsoleNS {
                                 };
                             };
                         };
+                        smsOTP: {
+                            forTestingOnlyNotice: {
+                                firstLine :string,
+                                secondLine: string
+                            },
+                            expiryTime: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    invalid: string;
+                                    range: string;
+                                    required: string;
+                                };
+                                unit: string;
+                            };
+                            tokenLength: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    invalid: string;
+                                    range: {
+                                        digits: string;
+                                        characters: string;
+                                    };
+                                    required: string;
+                                };
+                                unit: {
+                                    digits: string;
+                                    characters: string;
+                                }
+                            };
+                            useNumericChars: {
+                                hint: string;
+                                label: string;
+                                validations: {
+                                    required: string;
+                                };
+                            };
+                            allowedResendAttemptCount: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    required: string;
+                                    invalid: string;
+                                    range: string;
+                                };
+                            };
+                        }
                         facebook: {
                             callbackUrl: FormAttributes;
                             clientId: FormAttributes;

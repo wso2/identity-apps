@@ -57,6 +57,7 @@ import static org.wso2.identity.apps.common.util.AppPortalConstants.GRANT_TYPE_A
 import static org.wso2.identity.apps.common.util.AppPortalConstants.GRANT_TYPE_ORGANIZATION_SWITCH;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.INBOUND_AUTH2_TYPE;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.INBOUND_CONFIG_TYPE;
+import static org.wso2.identity.apps.common.util.AppPortalConstants.PROFILE_CLAIM_URI;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.USERNAME_CLAIM_URI;
 
 /**
@@ -250,7 +251,15 @@ public class AppPortalUtils {
         usernameClaimMapping.setLocalClaim(usernameClaim);
         usernameClaimMapping.setRemoteClaim(usernameClaim);
 
-        return new ClaimMapping[] { emailClaimMapping, displayNameClaimMapping, usernameClaimMapping };
+        Claim profileUrlClaim = new Claim();
+        profileUrlClaim.setClaimUri(PROFILE_CLAIM_URI);
+        ClaimMapping profileUrlClaimMapping = new ClaimMapping();
+        profileUrlClaimMapping.setRequested(true);
+        profileUrlClaimMapping.setLocalClaim(profileUrlClaim);
+        profileUrlClaimMapping.setRemoteClaim(profileUrlClaim);
+
+        return new ClaimMapping[] { emailClaimMapping, displayNameClaimMapping, usernameClaimMapping,
+            profileUrlClaimMapping };
     }
 
     /**

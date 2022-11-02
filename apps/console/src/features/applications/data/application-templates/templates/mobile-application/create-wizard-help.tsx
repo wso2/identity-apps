@@ -54,7 +54,11 @@ const MobileApplicationCreateWizardHelp: FunctionComponent<MobileApplicationCrea
                     The URI to which the authorization code is sent to upon authentication and where the user
                     is redirected to upon logout.
                 </p>
-                <p>E.g. wso2sample://oauth2</p>
+                <p>
+                    E.g., https://myapp.io/login, <br></br>
+                    &emsp;&emsp;
+                    myapp://oauth2
+                </p>
             </React.Fragment>
         </div>
     );

@@ -401,3 +401,17 @@
         }
     }
 }
+
+/*----------------------------------
+   Share App Transfer List  Grid
+------------------------------------*/
+
+.ui.grid {
+    &.share-app-modal {
+        margin-top: 0 !important;
+
+        .transfer-list-row {
+            padding-top: 0 !important;
+        }
+    }
+}

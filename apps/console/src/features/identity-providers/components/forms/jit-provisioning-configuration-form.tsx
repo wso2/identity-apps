@@ -87,7 +87,7 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
     const updateConfiguration = (values: any): any => {
         return {
             associateLocalUser: values.get(JITProvisioningConstants.ASSOCIATE_LOCAL_USER)
-                .includes(JITProvisioningConstants.ASSOCIATE_LOCAL_USER) ?? initialValues?.associateLocalUser,
+                ?.includes(JITProvisioningConstants.ASSOCIATE_LOCAL_USER) ?? initialValues?.associateLocalUser,
             isEnabled: values.get(
                 JITProvisioningConstants.ENABLE_JIT_PROVISIONING_KEY
             ).includes(JITProvisioningConstants.ENABLE_JIT_PROVISIONING_KEY) ?? initialValues?.isEnabled,

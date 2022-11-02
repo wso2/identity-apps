@@ -90,6 +90,10 @@ export const console: ConsoleNS = {
                 tooltip: "Apps"
             },
             organizationSwitch: {
+                breadcrumbError: {
+                    description: "සංවිධාන ධුරාවලිය ලබා ගැනීමේදී දෝෂයක් ඇති විය.",
+                    message: "මොකක්හරි වැරැද්දක් වෙලා"
+                },
                 emptyOrgListMessage: "සංවිධාන නොමැත",
                 orgSearchPlaceholder: "සංවිධානයේ නම අනුව සොයන්න"
             }
@@ -768,6 +772,13 @@ export const console: ConsoleNS = {
                                     message: "ගුණාංග අගයන් වෙනස් කරන ලදි"
                                 }
                             },
+                            emptySearchResults: {
+                                subtitles: {
+                                    0: " '{{ searchQuery }}' සඳහා අපට කිසිදු ප්‍රතිපලයක් සොයාගත නොහැකි විය.",
+                                    1: "කරුණාකර වෙනත් සෙවුම් පදයක් උත්සාහ කරන්න."
+                                },
+                                title: "ප්‍රතිපල හමු නොවීය"
+                            },
                             forms: {
                                 fields: {
                                     dynamic: {
@@ -811,11 +822,18 @@ export const console: ConsoleNS = {
                                 },
                                 attributeComponentHint: "මෙම යෙදුම සමඟ ඔබට බෙදා ගැනීමට අවශ්‍ය පරිශීලක ගුණාංග" +
                                     " කළමනාකරණය කරන්න.",
-                                attributeComponentHintAlt: "මෙම යෙදුම සමඟ ඔබට බෙදා ගැනීමට අවශ්‍ය පරිශීලක ගුණාංග" +
-                                    " කළමනාකරණය කරන්න. <1> ගුණාංග </1> වෙත යාමෙන් ඔබට නව ගුණාංග සහ සිතියම් එකතු කළ " +
-                                    "හැකියය",
-                                description: "මෙම යෙදුම සමඟ බෙදා ගැනීමට අවසර දී ඇති පරිශීලක ගුණාංග එකතු කරන්න.",
+                                attributeComponentHintAlt: "විෂය පථයකට පරිශීලක ගුණාංග එක් කිරීමට/ඉවත් කිරීමට " +
+                                    "<1>OpenID Connect Scopes</1> භාවිතා කරන්න. ඔබට <3>Attributes</3> වෙත සංචාලනය කිරීමෙන් " +
+                                    "නව ගුණාංග එක් කළ හැක.",
+                                description: "මෙම යෙදුම සමඟ බෙදා ගැනීමට අවසර දී ඇති විෂය පථයන්, එනම් සමූහගත පරිශීලක ගුණාංග තෝරන්න.",
                                 heading: "පරිශීලක ගුණාංග තේරීම",
+                                scopelessAttributes: {
+                                    description: "විෂය පථයකින් තොරව ගුණාංග බලන්න",
+                                    displayName: "විෂය පථයක් නොමැති ගුණාංග",
+                                    name: "",
+                                    hint: "OpenID Connect විෂය පථයන් ඉල්ලීමෙන් මෙම පරිශීලක " +
+                                        "ගුණාංග ලබා ගත නොහැක. නැවත ලබා ගැනීමට, අදාළ විෂය පථයකට අවශ්‍ය ගුණාංග එක් කරන්න."
+                                },
                                 mandatoryAttributeHint: "යෙදුම සමඟ බෙදා ගැනීමට අනිවාර්යය වන පරිශීලක ගුණාංග මොනවාදැයි " +
                                     "ලකුණු කරන්න. පුරනය වීමේ දී, පරිශීලකයාගේ පැතිකඩෙහි දැනටමත් සපයා නොමැති නම්, මෙම " +
                                     "ගුණාංග අගයන් ඇතුළත් කිරීමට {{productName}} පරිශීලකයාගෙන් ඉල්ලා සිටී.",
@@ -833,8 +851,10 @@ export const console: ConsoleNS = {
                                         actions: {
                                             makeMandatory: "අනිවාර්ය කරන්න",
                                             makeRequested: "ඉල්ලීමක් කරන්න",
+                                            makeScopeRequested: "විෂය පථය ඉල්ලා සිටින්න",
                                             removeMandatory: "අනිවාර්ය ඉවත් කරන්න",
                                             removeRequested: "ඉල්ලූ දේ ඉවත් කරන්න",
+                                            removeScopeRequested: "විෂය පථය ඉවත් කරන්න ඉල්ලා ඇත",
                                             subjectDisabledSelection: "මෙම ගුණාංගය අනිවාර්ය වන්නේ " +
                                                 "එය විෂය ගුණාංගය වන බැවිනි."
                                         },
@@ -862,7 +882,7 @@ export const console: ConsoleNS = {
                                         confirmationMessage: "මෙම ක්‍රියාව මඟින් සිතියම්ගත කළ අගයන් පෙරනිමි අගයන් " +
                                             "වෙත ආපසු හරවනු ඇත"
                                     },
-                                    searchPlaceholder: "පරිශීලක ගුණාංග සොයන්න"
+                                    searchPlaceholder: "නම, සංදර්ශක නම හෝ විෂය පථය විස්තර අනුව පරිශීලක ගුණාංග සොයන්න"
                                 },
                                 selectAll: "සියලුම ගුණාංග තෝරන්න"
                             },
@@ -1203,6 +1223,10 @@ export const console: ConsoleNS = {
                                             emailOTP: {
                                                 description: "විද්‍යුත් තැපෑල පදනම් කරගත් OTP සමඟ අතිරේක සත්‍යාපන ස්තරය සක්‍රීය කරන්න.",
                                                 heading: "විද්‍යුත් තැපෑල දෙවන සාධකය ලෙස එක් කරන්න"
+                                            },
+                                            smsOTP: {
+                                                description: "SMS පදනම් කරගත් OTP සමඟ අතිරේක සත්‍යාපන ස්තරය සක්‍රීය කරන්න.",
+                                                heading: "SMS දෙවන සාධකය ලෙස එක් කරන්න"
                                             }
                                         }
                                     }
@@ -1577,6 +1601,11 @@ export const console: ConsoleNS = {
                                     "කරුණාකර රහස ජනනය කරන්න.",
                                 heading: "යෙදුම අවලංගු කර ඇත"
                             }
+                        },
+                        mobileApp: {
+                            discoverableHint: "සබල කර ඇති නම් සහ වෙබ් ප්‍රවේශ විය හැකි url (ගැඹුරු සබැඳියක්) ලබා දී " +
+                                "ඇත්නම්, පාරිභෝගිකයින්ට <1>{{ myAccount }}</1> ද්වාරයෙන් මෙම යෙදුමට ප්‍රවේශ විය හැක.",
+                            mobileAppPlaceholder: "myapp://oauth2"
                         },
                         sections: {
                             accessToken: {
@@ -7296,7 +7325,7 @@ export const console: ConsoleNS = {
                     certificates: "සහතික",
                     configurations: "වින්‍යාස කිරීම්",
                     general: "ජනරාල්",
-                    organizations: "ආයතන",
+                    organizations: "සංවිධාන කළමනාකරණය",
                     users: "පරිශීලකයින්",
                     userstores: "පරිශීලක වෙළඳසැල්"
                 },

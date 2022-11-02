@@ -21,6 +21,7 @@ import { OrganizationConfigs } from "./models";
 import { BreadcrumbItem } from "../../features/organizations/models";
 
 export const organizationConfigs: OrganizationConfigs = {
+    allowNavigationInDropdown: true,
     canCreateOrganization: (): boolean => {
         return true;
     },
@@ -31,9 +32,14 @@ export const organizationConfigs: OrganizationConfigs = {
         onClick: (breadcrumbItem: BreadcrumbItem) => void
     ) => {
         return (
-            <span onClick={ () => onClick(breadcrumbItem) } data-componentid={ "super-organization-breadcrumb-item" }>
+            <span
+                className="ellipsis"
+                onClick={ () => onClick(breadcrumbItem) }
+                data-componentid={ "super-organization-breadcrumb-item" }
+            >
                 { breadcrumbItem.name }
             </span>
         );
-    }
+    },
+    tenantSwitcher: () => null
 };

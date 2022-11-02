@@ -33,6 +33,7 @@ import GoogleLoginSequenceTemplate from "./templates/google-login-sequence.json"
 import MagicLinkSequenceTemplate from "./templates/magic-link-sequence.json";
 import MicrosoftLoginSequenceTemplate from "./templates/microsoft-login-sequence.json";
 import SecondFactorEMAILOTPSequenceTemplate from "./templates/second-factor-email-otp-sequence.json";
+import SecondFactorSMSOTPSequenceTemplate from "./templates/second-factor-sms-otp-sequence.json";
 import SecondFactorTOTPSequenceTemplate from "./templates/second-factor-totp-sequence.json";
 import UsernamelessSequenceTemplate from "./templates/usernameless-login-sequence.json";
 import { AppConstants, EventPublisher, FeatureConfigInterface, history } from "../../../../core";
@@ -124,7 +125,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
     const [ googleAuthenticators, setGoogleAuthenticators ] = useState<GenericAuthenticatorInterface[]>(undefined);
     const [ gitHubAuthenticators, setGitHubAuthenticators ] = useState<GenericAuthenticatorInterface[]>(undefined);
     const [ facebookAuthenticators, setFacebookAuthenticators ] = useState<GenericAuthenticatorInterface[]>(undefined);
-    const [ microsoftAuthenticators, setMicrosoftAuthenticators ] = 
+    const [ microsoftAuthenticators, setMicrosoftAuthenticators ] =
     useState<GenericAuthenticatorInterface[]>(undefined);
     const [ showMissingSocialAuthenticatorModal, setShowMissingSocialAuthenticatorModal ] = useState<boolean>(false);
     const [ isAuthenticatorsFetchRequestLoading, setIsAuthenticatorsFetchRequestLoading ] = useState<boolean>(true);
@@ -221,7 +222,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
 
                         facebook.push(authenticator);
                     } else if (authenticator.defaultAuthenticator.authenticatorId
-                        === IdentityProviderManagementConstants.MICROSOFT_AUTHENTICATOR_ID && 
+                        === IdentityProviderManagementConstants.MICROSOFT_AUTHENTICATOR_ID &&
                         authenticator.description === MicrosoftIDPTemplate.description) {
 
                         microsoft.push(authenticator);
@@ -279,7 +280,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
         gitHubAuthenticators: GenericAuthenticatorInterface[],
         facebookAuthenticators: GenericAuthenticatorInterface[],
         microsoftAuthenticators: GenericAuthenticatorInterface[]): void => {
-        
+
         if (!loginFlow) {
             setModeratedAuthenticationSequence(authenticationSequence);
         } else if (loginFlow === LoginFlowTypes.DEFAULT) {
@@ -305,6 +306,14 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
             setModeratedAuthenticationSequence({
                 ...authenticationSequence,
                 ...cloneDeep(SecondFactorEMAILOTPSequenceTemplate)
+            });
+        } else if(loginFlow === LoginFlowTypes.SECOND_FACTOR_SMS_OTP){
+            eventPublisher.publish("application-sign-in-method-click-add", {
+                type: "second-factor-sms-otp"
+            });
+            setModeratedAuthenticationSequence({
+                ...authenticationSequence,
+                ...cloneDeep(SecondFactorSMSOTPSequenceTemplate)
             });
         }else if (loginFlow === LoginFlowTypes.FIDO_LOGIN) {
             eventPublisher.publish("application-sign-in-method-click-add", {
@@ -481,7 +490,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                 option.idp = idp;
             }
         });
-        
+
         return modifiedSequenceTemplate;
     };
 
@@ -727,7 +736,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                         github: GenericAuthenticatorInterface[],
                         facebook: GenericAuthenticatorInterface[],
                         microsoft: GenericAuthenticatorInterface[]) => {
-                            
+
                         // Housekeeping...Reset IDP wizard related states.
                         setIDPTemplateTypeToTrigger(undefined);
                         setShowIDPCreateWizard(false);

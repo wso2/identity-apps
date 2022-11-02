@@ -109,7 +109,9 @@
             return;
         }
 
-        String queryParamString = request.getQueryString() != null ? ("?" + request.getQueryString()) : "";
+        // Build the query string using the parameter map since the query string can contain fewer parameters
+        // due to parameter filtering.
+        String queryParamString = AuthenticationEndpointUtil.resolveQueryString(request.getParameterMap());
         multiOptionURIParam = "&multiOptionURI=" + Encode.forUriComponent(baseURL + queryParamString);
     }
 %>
@@ -490,12 +492,12 @@
                                         '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpEntry.getKey()))%>',
                                         '<%=MAGIC_LINK_AUTHENTICATOR%>')" id="icon-<%=iconId%>"
                                         title="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%>
-                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "magic.link" )%>"
+                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "magic.link")%>"
                                         data-componentid="login-page-sign-in-with-magic-link">
                                         <img class="ui image" src="libs/themes/default/assets/images/icons/magic-link-icon.svg" alt="Magic Link Logo" />
                                         <span>
-                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with" )%>
-                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "magic.link" )%>
+                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%>
+                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "magic.link")%>
                                         </span>
                                     </button>
                                 </div>

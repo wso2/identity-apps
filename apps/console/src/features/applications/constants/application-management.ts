@@ -195,14 +195,14 @@ export class ApplicationManagementConstants {
             ApplicationManagementConstants.IMPLICIT_GRANT,
             ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT
         ],
-        ["b9c5e11e-fc78-484b-9bec-015d247561b8"]: [
+        [ "b9c5e11e-fc78-484b-9bec-015d247561b8" ]: [
             ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
             ApplicationManagementConstants.IMPLICIT_GRANT,
             ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT,
             ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
             ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT
         ],
-        ["custom-application"] : [
+        [ "custom-application" ]: [
             ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
             ApplicationManagementConstants.IMPLICIT_GRANT,
             ApplicationManagementConstants.PASSWORD,
@@ -211,7 +211,7 @@ export class ApplicationManagementConstants {
             ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT,
             ApplicationManagementConstants.DEVICE_GRANT
         ],
-        [ "mobile-application" ] : [
+        [ "mobile-application" ]: [
             ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
             ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
             ApplicationManagementConstants.IMPLICIT_GRANT,
@@ -225,7 +225,7 @@ export class ApplicationManagementConstants {
      * Holds metadata on how to arrange the values when rendering above
      * Usage: Map the index to key to rearrange the values.
      */
-    public static readonly TEMPLATE_WISE_ALLOWED_GRANT_TYPE_ARRANGE_ORDER: { [ key: string ]: Map<string, number> } = {
+    public static readonly TEMPLATE_WISE_ALLOWED_GRANT_TYPE_ARRANGE_ORDER: { [ key: string ]: Map<string, number>; } = {
         [ "6a90e4b0-fbff-42d7-bfde-1efd98f07cd7" ]: new Map<string, number>([
             [ ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT, 0 ],
             [ ApplicationManagementConstants.IMPLICIT_GRANT, 1 ],
@@ -245,7 +245,7 @@ export class ApplicationManagementConstants {
             [ ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT, 1 ],
             [ ApplicationManagementConstants.REFRESH_TOKEN_GRANT, 2 ]
         ])
-    }
+    };
 
     /**
      * Key for the SPA template.
@@ -407,8 +407,8 @@ export class ApplicationManagementConstants {
         new Map<string, number>([
             [ "oidc", 0 ],
             [ "saml", 1 ],
-            [  "passive-sts", 2 ]
-        ])
+            [ "passive-sts", 2 ]
+        ]);
 
     /**
      * Application create limit reached error.
@@ -418,7 +418,7 @@ export class ApplicationManagementConstants {
         "console:develop.features.applications.notifications.apiLimitReachedError.error.description",
         "console:develop.features.applications.notifications.apiLimitReachedError.error.message",
         "cdaefcee-ecdb-47af-8538-174ec13292db"
-    )
+    );
 
     /**
      * Error code for Issuer already exists.
@@ -428,4 +428,15 @@ export class ApplicationManagementConstants {
      * Error code for invalid metadata URL.
      */
     public static readonly ERROR_CODE_INVALID_METADATA_URL: string = "SAML-60003";
+
+    /**
+     * Application state param to be sent in the routing.
+     */
+    public static readonly APPLICATION_STATE: string = "application";
+}
+
+export enum ShareWithOrgStatus {
+    TRUE,
+    FALSE,
+    UNDEFINED
 }

@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -37,7 +37,7 @@ import { SessionTimeoutModal } from "../../components";
 export interface SessionManagementProviderPropsInterface extends TestableComponentInterface {
     /**
      * Session timeout abort callback.
-     * @param {URL} url - Current URL.
+     * @param url - Current URL.
      */
     onSessionTimeoutAbort: (url: URL) => void;
     /**
@@ -124,12 +124,10 @@ export interface SessionTimeoutEventStateInterface {
 export enum SessionTimeoutModalTypes {
     /**
      * Auto logout based on the counter.
-     * @type {string}
      */
     COUNTER = "COUNTER",
     /**
      * Default session timeout modal with warning messages.
-     * @type {string}
      */
     DEFAULT = "DEFAULT"
 }
@@ -137,8 +135,8 @@ export enum SessionTimeoutModalTypes {
 /**
  * Session management provider component.
  *
- * @param {React.PropsWithChildren<SessionManagementProviderPropsInterface>} props - Props injected to the component.
- * @return {React.ReactElement}
+ * @param props - Props injected to the component.
+ * @returns the session management provider component
  */
 export const SessionManagementProvider: FunctionComponent<PropsWithChildren<
     SessionManagementProviderPropsInterface
@@ -275,7 +273,7 @@ export const SessionManagementProvider: FunctionComponent<PropsWithChildren<
 
         /**
      * Starts the timer.
-     * @param {number} duration - Timer duration.
+     * @param duration - Timer duration.
      */
         const startTimer = (duration: number) => {
             let timer: number = duration;

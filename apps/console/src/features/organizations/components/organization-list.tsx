@@ -39,6 +39,7 @@ import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useS
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Header, Icon, Label, Popup, SemanticICONS } from "semantic-ui-react";
+import { organizationConfigs } from "../../../extensions";
 import {
     AppConstants,
     AppState,
@@ -292,8 +293,8 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                                     }
                                     content={
                                         organization.status === "ACTIVE"
-                                            ? t("console:common.status.active")
-                                            : t("console:common.status.disabled")
+                                            ? t("common:active")
+                                            : t("common:disabled")
                                     }
                                     inverted
                                 />
@@ -334,7 +335,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
         }
 
         return [
-            {
+            organizationConfigs.allowNavigationInDropdown && {
                 "data-componentid": `${ componentId }-item-go-to-organization-button`,
                 icon: (): SemanticICONS => {
                     return "arrow alternate circle right";
@@ -429,7 +430,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                 <EmptyPlaceholder
                     className={ !isRenderedOnPortal ? "list-placeholder" : "" }
                     action={
-                        onEmptyListPlaceholderActionClick && (
+                        (onEmptyListPlaceholderActionClick && organizationConfigs.canCreateOrganization()) && (
                             <Show when={ AccessControlConstants.ORGANIZATION_WRITE }>
                                 <PrimaryButton
                                     disabled={ parentOrganization?.status === "DISABLED" }
@@ -473,8 +474,11 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                 columns={ resolveTableColumns() }
                 data={ list?.organizations }
                 onRowClick={ (e: SyntheticEvent, organization: OrganizationInterface): void => {
-                    onListItemClick && onListItemClick(e, organization);
-                } }
+                    organizationConfigs.allowNavigationInDropdown
+                        ? onListItemClick && onListItemClick(e, organization)
+                        : handleOrganizationEdit(organization.id);
+                }
+                }
                 placeholders={ showPlaceholders() }
                 selectable={ selection }
                 showHeader={ false }

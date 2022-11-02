@@ -1,0 +1,84 @@
+{
+    "$schema": "../../node_modules/nx/schemas/project-schema.json",
+    "sourceRoot": "modules/nx/src",
+    "projectType": "library",
+    "targets": {
+        "build-base": {
+            "executor": "@nrwl/js:tsc",
+            "outputs": ["{options.outputPath}"],
+            "options": {
+                "outputPath": "modules/nx/dist",
+                "main": "modules/nx/src/index.ts",
+                "tsConfig": "modules/nx/tsconfig.lib.json",
+                "assets": [
+                    "modules/nx/*.md",
+                    {
+                        "input": "./modules/nx/src",
+                        "glob": "**/!(*.ts)",
+                        "output": "./src"
+                    },
+                    {
+                        "input": "./modules/nx/src",
+                        "glob": "**/*.d.ts",
+                        "output": "./src"
+                    },
+                    {
+                        "input": "./modules/nx",
+                        "glob": "generators.json",
+                        "output": "."
+                    },
+                    {
+                        "input": "./modules/nx",
+                        "glob": "executors.json",
+                        "output": "."
+                    }
+                ]
+            }
+        },
+        "build-prepare": {
+            "executor": "@nrwl/workspace:run-commands",
+            "options": {
+                "commands": [
+                    {
+                        "command": "pnpm clean:build",
+                        "description": "Preparing the build copying necessary assets, etc."
+                    }
+                ],
+                "cwd": "modules/nx",
+                "parallel": false
+            }
+        },
+        "build": {
+            "executor": "@nrwl/workspace:run-commands",
+            "options": {
+                "commands": [
+                    "pnpm nx run nx:build-prepare",
+                    "pnpm nx run nx:build-base"
+                ],
+                "cwd": "modules/nx",
+                "parallel": false
+            }
+        },
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "outputs": ["{options.outputFile}"],
+            "options": {
+                "lintFilePatterns": [
+                    "modules/nx/**/*.ts",
+                    "modules/nx/generators.json",
+                    "modules/nx/executors.json",
+                    "modules/nx/package.json"
+                ]
+            }
+        },
+        "test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": ["coverage/modules/nx"],
+            "options": {
+                "jestConfig": "modules/nx/jest.config.ts",
+                "passWithNoTests": true
+            }
+        }
+    },
+    "tags": []
+}

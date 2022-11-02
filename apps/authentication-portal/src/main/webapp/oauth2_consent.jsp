@@ -186,7 +186,7 @@
                                             %>
                                             <div class="field required">
                                                 <div class="ui checkbox checked read-only disabled claim-cb">
-                                                    <input type="checkbox" class="mandatory-claim hidden" name="consent_<%=Encode.forHtmlAttribute(claimId)%>" id="consent_<%=Encode.forHtmlAttribute(claimId)%>" required checked readonly />
+                                                    <input tabindex="-1" type="checkbox" class="mandatory-claim hidden" name="consent_<%=Encode.forHtmlAttribute(claimId)%>" id="consent_<%=Encode.forHtmlAttribute(claimId)%>" required checked readonly />
                                                     <label for="consent_<%=Encode.forHtmlAttribute(claimId)%>"><%=Encode.forHtml(displayName)%></label>
                                                 </div>
                                             </div>
@@ -313,7 +313,6 @@
                                 <div class="field">
                                     <div class="ui checkbox">
                                         <input
-                                            tabindex="3"
                                             type="checkbox"
                                             id="rememberApproval"
                                             name="rememberApproval"

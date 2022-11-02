@@ -24,12 +24,21 @@ jobs:
       - name: ⬇️ Checkout
         id: checkout
         uses: actions/checkout@v2.3.3
+        with:
+          # We need to fetch all branches and commits so that Nx affected has a base to compare against.
+          fetch-depth: 0
 
       - name: 🟢 Setup node
         id: setup-node
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
+
+      - name: 🐳 Set SHAs for Nx
+        id: set-shas
+        uses: nrwl/nx-set-shas@v3
+        with:
+          main-branch-name: "master"
 
       - name: 🥡 Setup pnpm
         id: setup-pnpm
@@ -64,7 +73,7 @@ jobs:
 
       - name: ⏳ Lint All Files
         id: lint-with-eslint
-        run: pnpm lint
+        run: pnpm nx affected --base=${{ env.NX_BASE }} --head=${{ env.NX_HEAD }} --plain --target=lint --parallel=3
 
   typecheck:
     name: ʦ Typecheck (STATIC ANALYSIS)
@@ -76,12 +85,21 @@ jobs:
       - name: ⬇️ Checkout
         id: checkout
         uses: actions/checkout@v2.3.3
+        with:
+          # We need to fetch all branches and commits so that Nx affected has a base to compare against.
+          fetch-depth: 0
 
       - name: 🟢 Setup node
         id: setup-node
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
+
+      - name: 🐳 Set SHAs for Nx
+        id: set-shas
+        uses: nrwl/nx-set-shas@v3
+        with:
+          main-branch-name: "master"
 
       - name: 🥡 Setup pnpm
         uses: pnpm/action-setup@v2.1.0
@@ -112,7 +130,7 @@ jobs:
         run: pnpm build:modules
 
       - name: ☄️ Check Type Errors
-        run: pnpm typecheck
+        run: pnpm nx affected --base=${{ env.NX_BASE }} --head=${{ env.NX_HEAD }} --plain --target=typecheck --parallel=3
 
   test:
     name: 👾 Unit Test (TESTING)

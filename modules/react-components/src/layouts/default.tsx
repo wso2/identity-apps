@@ -42,10 +42,6 @@ export interface DefaultLayoutPropsInterface extends BaseLayoutInterface {
      */
     header?: ReactNode;
     /**
-     * Content spacing.
-     */
-    desktopContentTopSpacing?: number;
-    /**
      * height of the footer.
      */
     footerHeight: number;
@@ -69,7 +65,6 @@ export const DefaultLayout: FunctionComponent<PropsWithChildren<DefaultLayoutPro
         alert,
         children,
         className,
-        desktopContentTopSpacing,
         footer,
         footerHeight,
         fluid,
@@ -92,10 +87,6 @@ export const DefaultLayout: FunctionComponent<PropsWithChildren<DefaultLayoutPro
         paddingTop: `${ headerHeight }px`
     };
 
-    const mainContentStyle = {
-        minHeight: `calc(100vh - ${ headerHeight + footerHeight }px`,
-        paddingTop: `${ desktopContentTopSpacing }px`
-    };
 
     return (
         <BaseLayout
@@ -108,7 +99,7 @@ export const DefaultLayout: FunctionComponent<PropsWithChildren<DefaultLayoutPro
             >
                 { header }
                 <div style={ mainLayoutStyles } className="layout-content-wrapper">
-                    <div style={ mainContentStyle } className="layout-content">
+                    <div className="default-layout-content">
                         { children }
                     </div>
                 </div>

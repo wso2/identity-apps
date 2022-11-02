@@ -43,13 +43,14 @@ export class OrganizationManagementConstants {
         ref: "",
         status: "ACTIVE"
     };
+
+    public static readonly ORGANIZATION_ROUTES = "organizations";
 }
 
 export enum ORGANIZATION_TYPE {
     STRUCTURAL = "STRUCTURAL",
     TENANT = "TENANT"
 }
-
 
 // Role constants
 export class OrganizationRoleManagementConstants {
