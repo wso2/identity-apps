@@ -584,7 +584,13 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
     const resolveValidationLabel = (): ReactElement | ReactNode => {
         if(!validURL && !changeUrl && emptyErrorMessage) {
             return (
-                <Label className="prompt" basic color="red" pointing>
+                <Label
+                    data-componentid={ `${ componentId }-empty-error-message` }
+                    className="prompt"
+                    basic
+                    color="red"
+                    pointing
+                >
                     { emptyErrorMessage }
                 </Label>
             );
@@ -592,7 +598,13 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
 
         if (!validURL) {
             return (
-                <Label basic className="prompt" color="red" pointing>
+                <Label 
+                    data-componentid={ `${ componentId }-valid-url-error-message` }
+                    basic
+                    className="prompt"
+                    color="red"
+                    pointing
+                >
                     { validationErrorMsg }
                 </Label>
             );
@@ -600,7 +612,13 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
 
         if (duplicateURL) {
             return (
-                <Label basic className="prompt" color="red" pointing>
+                <Label
+                    data-componentid={ `${ componentId }-duplicate-error-message` }
+                    basic
+                    className="prompt"
+                    color="red"
+                    pointing
+                >
                     { duplicateURLErrorMessage }
                 </Label>
             );
