@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,126 +16,54 @@
  * under the License.
  */
 
-import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import React, { Fragment, FunctionComponent, MouseEvent, PropsWithChildren, ReactElement } from "react";
-import { Card, Grid, Header, Icon, List, Menu, Message, Responsive, SemanticICONS } from "semantic-ui-react";
-import { GenericIcon, GenericIconSizes } from "../icon";
+import React, { FunctionComponent, MouseEvent, PropsWithChildren } from "react";
+import { Card, Grid, Header, Icon, List, Menu, Message, SemanticICONS } from "semantic-ui-react";
+import { GenericIcon } from "../icon";
+import { useMediaContext } from "../media";
 
 /**
- * Proptypes for the section component.
+ * Prop-types for the section component.
  */
-export interface SectionProps extends IdentifiableComponentInterface, TestableComponentInterface {
-    /**
-     * Additional CSS classes.
-     */
+export interface SectionProps extends IdentifiableComponentInterface {
     className?: string;
-    /**
-     * Show content padding.
-     */
     contentPadding?: boolean;
-    /**
-     * Section description.
-     */
     description?: string;
-    /**
-     * Section header.
-     */
+    connectorEnabled?: boolean;
     header: string;
-    /**
-     * Section icon.
-     */
     icon?: any;
-    /**
-     * Mini version of the section icon.
-     */
-    iconMini?: any;
-    /**
-     * Icon floated direction.
-     */
-    iconFloated?: "left" | "right";
-    /**
-     * Icon style.
-     */
-    iconStyle?: "twoTone" | "default" | "colored";
-    /**
-     * Icon size.
-     */
-    iconSize?: GenericIconSizes;
-    /**
-     * Primary action onclick callback.
-     * @param {React.MouseEvent<HTMLElement>} e - Click event.
-     */
-    onPrimaryActionClick?: (e: MouseEvent<HTMLElement>) => void;
-    /**
-     * Secondary action onclick callback.
-     * @param {React.MouseEvent<HTMLElement>} e - Click event.
-     */
-    onSecondaryActionClick?: (e: MouseEvent<HTMLElement>) => void;
-    /**
-     * Placeholder text.
-     */
+    onPrimaryActionClick?: (e: MouseEvent<HTMLElement> | KeyboardEvent) => void;
+    onSecondaryActionClick?: (e: MouseEvent<HTMLElement> | KeyboardEvent) => void;
     placeholder?: string;
-    /**
-     * Primary action node.
-     */
     primaryAction?: any;
-    /**
-     * Enable/ Disable primary action.
-     */
     primaryActionDisabled?: boolean;
-    /**
-     * Primary action icon.
-     */
     primaryActionIcon?: SemanticICONS;
-    /**
-     * Secondary action node.
-     */
     secondaryAction?: any;
-    /**
-     * Enable/ Disable secondary action.
-     */
     secondaryActionDisabled?: boolean;
-    /**
-     * Secondary action icon.
-     */
     secondaryActionIcon?: SemanticICONS;
-    /**
-     * Show/ Hide action bar.
-     */
     showActionBar?: boolean;
-    /**
-     * Show/ Hide top action bar.
-     */
     topActionBar?: React.ReactNode;
-    /**
-     * Accordion.
-     */
-    accordion?: any;
 }
 
 /**
  * Section component.
  *
- * @param {PropsWithChildren<SectionProps>} props - Props injected to the section component.
- *
- * @return {React.ReactElement}
+ * @param props - Props injected to the section component.
+ * @returns Section component.
  */
 export const Section: FunctionComponent<PropsWithChildren<SectionProps>> = (
     props: PropsWithChildren<SectionProps>
-): ReactElement => {
+): JSX.Element => {
 
     const {
         children,
         className,
         contentPadding,
         description,
+        connectorEnabled,
         header,
         icon,
-        iconMini,
-        iconFloated,
-        iconStyle,
-        iconSize,
         onPrimaryActionClick,
         onSecondaryActionClick,
         placeholder,
@@ -146,11 +74,11 @@ export const Section: FunctionComponent<PropsWithChildren<SectionProps>> = (
         secondaryActionDisabled,
         secondaryActionIcon,
         showActionBar,
-        topActionBar,
-        accordion,
-        [ "data-componentid" ]: componentId,
-        [ "data-testid" ]: testId
+        ["data-componentid"]: testId,
+        topActionBar
     } = props;
+
+    const { isGreaterThanOrEqualComputerViewport } = useMediaContext();
 
     const classes = classNames({
         "with-top-action-bar": topActionBar !== undefined
@@ -160,11 +88,11 @@ export const Section: FunctionComponent<PropsWithChildren<SectionProps>> = (
      * Construct the action element.
      *
      * @param action - action which is passed in.
-     * @param {SemanticICONS} actionIcon - Icon for the action.
-     * @param {boolean} actionDisabled - Flag to determine if the action should be disabled.
+     * @param actionIcon - Icon for the action.
+     * @param actionDisabled - Flag to determine if the action should be disabled.
      * @param actionOnClick - On Click handler of the action.
-     * @param {"primary" | "secondary"} actionType - Type of the action.
-     * @return Constructed element.
+     * @param actionType - Type of the action.
+     * @returns Constructed element.
      */
     const constructAction = (
         action: any,
@@ -179,8 +107,6 @@ export const Section: FunctionComponent<PropsWithChildren<SectionProps>> = (
                 <List.Content
                     className={ actionDisabled ? "disabled" : "" }
                     floated={ actionType === "secondary" ? "right" : "left" }
-                    data-componentid={ `${ componentId }-${ actionType }-action` }
-                    data-testid={ `${ testId }-${ actionType }-action` }
                 >
                     { action }
                 </List.Content>
@@ -193,8 +119,6 @@ export const Section: FunctionComponent<PropsWithChildren<SectionProps>> = (
                 <List.Content
                     className={ actionDisabled ? "disabled" : "" }
                     floated={ actionType === "secondary" ? "right" : "left" }
-                    data-componentid={ `${ componentId }-${ actionType }-action` }
-                    data-testid={ `${ testId }-${ actionType }-action` }
                 >
                     <List.Header className="action-button-text" onClick={ actionOnClick }>
                         {
@@ -212,87 +136,109 @@ export const Section: FunctionComponent<PropsWithChildren<SectionProps>> = (
     };
 
     return (
-        <Card
-            className={ `settings-card ${ classes }` }
-            fluid
-            padded="very"
-            data-componentid={ componentId }
-            data-testid={ testId }
-        >
-            <Card.Content>
+        <Card className={ `settings-card ${ classes }` } fluid padded="very" data-testid={ `${testId}-card` }>
+            <Card.Content data-testid={ `${testId}-card-content` }>
                 <Grid>
-                    <Grid.Row className="header-section" columns={ 2 }>
-                        <Grid.Column width={ (icon || iconMini) ? 10 : 16 } className="no-padding">
-                            <Header
-                                as="h2"
-                                data-componentid={ `${ componentId }-header` }
-                                data-testid={ `${ testId }-header` }
-                            >
-                                { header }
-                            </Header>
-                            <Card.Meta
-                                data-componentid={ `${ componentId }-description` }
-                                data-testid={ `${ testId }-description` }
-                            >
-                                { description }
-                            </Card.Meta>
-                        </Grid.Column>
-                        {
-                            icon || iconMini ? (
-                                <Grid.Column width={ 6 } className="no-padding">
-                                    <Responsive as={ Fragment } { ...Responsive.onlyComputer }>
-                                        {
-                                            icon
-                                                ? (
-                                                    <GenericIcon
-                                                        icon={ icon }
-                                                        transparent
-                                                        size={ iconSize }
-                                                        floated={ iconFloated }
-                                                        defaultIcon={ iconStyle === "default" }
-                                                        twoTone={ iconStyle === "twoTone" }
-                                                        colored={ iconStyle === "colored" }
-                                                        data-componentid={ `${ componentId }-icon` }
-                                                        data-testid={ `${ testId }-icon` }
+                    {
+                        isGreaterThanOrEqualComputerViewport
+                            ? (
+                                <Grid.Row
+                                    className="header-section"
+                                    columns={ 2 }
+                                    data-testid={ `${testId}-card-content-header` }
+                                >
+                                    <Grid.Column
+                                        width={ (connectorEnabled != undefined) ? 13 : 16 }
+                                        className="no-padding"
+                                    >
+                                        <Header as="h2">
+                                            {
+                                                icon
+                                                    ? (
+                                                        <GenericIcon
+                                                            size="micro"
+                                                            icon={ icon }
+                                                            inline
+                                                            transparent
+                                                            shape={ "square" }
+                                                            style={ {
+                                                                "display": "inline",
+                                                                "verticalAlign": "text-bottom"
+                                                            } }
+                                                        />
+                                                    )
+                                                    : null
+                                            }
+                                            { header }
+                                        </Header>
+                                        <Card.Meta>{ description }</Card.Meta>
+                                    </Grid.Column>
+                                    {
+                                        connectorEnabled !== undefined
+                                            ? (
+                                                <Grid.Column
+                                                    width={ 3 }
+                                                    className="no-padding"
+                                                    textAlign="right"
+                                                    as="h5"
+                                                    data-testid={ `${testId}-connector-enable-status` }
+                                                >
+                                                    <Icon
+                                                        color={ connectorEnabled ? "green":"grey" }
+                                                        name={ connectorEnabled ? "check circle" : "minus circle" }
                                                     />
-                                                )
-                                                : null
-                                        }
-                                    </Responsive>
-                                    <Responsive as={ Fragment } maxWidth={ Responsive.onlyTablet.maxWidth }>
-                                        {
-                                            iconMini
-                                                ? (
-                                                    <GenericIcon
-                                                        icon={ iconMini }
-                                                        transparent
-                                                        size={ iconSize }
-                                                        floated={ iconFloated }
-                                                        defaultIcon={ iconStyle === "default" }
-                                                        twoTone={ iconStyle === "twoTone" }
-                                                        colored={ iconStyle === "colored" }
-                                                        data-componentid={ `${ componentId }-icon-mini` }
-                                                        data-testid={ `${ testId }-icon-mini` }
-                                                    />
-                                                )
-                                                : null
-                                        }
-                                    </Responsive>
-                                </Grid.Column>
+                                                    { connectorEnabled ? "Enabled" : "Disabled" }
+                                                </Grid.Column>
+                                            )
+                                            : null
+                                    }
+                                </Grid.Row>
                             )
-                                : null
-                        }
-                    </Grid.Row>
-                    <Grid.Row className={ `main-content ${ contentPadding ? "" : "no-padding" }` } columns={ 1 }>
+                            : (
+                                <Grid.Row
+                                    className="header-section"
+                                    columns={ 2 }
+                                    data-testid={ `${testId}-card-content-header` }
+                                >
+                                    <Grid.Column
+                                        width={ (connectorEnabled != undefined) ? 12 : 16 }
+                                        className="no-padding"
+                                    >
+                                        <Header as="h2">{ header }</Header>
+                                        <Card.Meta>{ description }</Card.Meta>
+                                    </Grid.Column>
+                                    {
+                                        connectorEnabled !== undefined
+                                            ? (
+                                                <Grid.Column
+                                                    width={ 4 }
+                                                    className="no-padding"
+                                                    textAlign="right"
+                                                    as="h5"
+                                                    data-testid={ `${testId}-connector-enable-status` }
+                                                >
+                                                    <Icon
+                                                        color={ connectorEnabled ? "green":"grey" }
+                                                        name={ connectorEnabled ? "check circle" : "minus circle" }
+                                                    />
+                                                    { connectorEnabled ? "Enabled" : "Disabled" }
+                                                </Grid.Column>
+                                            )
+                                            : null
+                                    }
+                                </Grid.Row>
+                            )
+                    }
+                    <Grid.Row
+                        className={ `main-content ${ contentPadding ? "" : "no-padding" }` }
+                        columns={ 1 }
+                        data-testid={ `${testId}-card-content-items` }
+                    >
                         <Grid.Column className="no-padding" width={ 16 }>
                             {
                                 topActionBar
                                     ? (
-                                        <Menu
-                                            className="top-action-panel no-margin-bottom"
-                                            data-componentid={ `${ componentId }-top-action-panel` }
-                                            data-testid={ `${ testId }-top-action-panel` }
-                                        >
+                                        <Menu className="top-action-panel no-margin-bottom">
                                             <Menu.Menu position="right">
                                                 { topActionBar }
                                             </Menu.Menu>
@@ -311,7 +257,9 @@ export const Section: FunctionComponent<PropsWithChildren<SectionProps>> = (
                         <Card.Content className="extra-content" extra>
                             <List selection={ !secondaryAction } verticalAlign="middle">
                                 <List.Item
+                                    active
                                     className="action-button"
+                                    tabIndex={ 0 }
                                     disabled={ !!placeholder }
                                     // if both `primaryAction` & `secondaryAction` are passed in,
                                     // disable list item `onClick`.
@@ -319,7 +267,30 @@ export const Section: FunctionComponent<PropsWithChildren<SectionProps>> = (
                                         ? onSecondaryActionClick || onPrimaryActionClick
                                         : null
                                     }
+                                    data-testid={ primaryAction
+                                        ? `${testId}-card-primary-button`
+                                        : secondaryAction
+                                            ? `${testId}-card-secondary-button`
+                                            : `${testId}-card-placeholder` }
+                                    onKeyPress={ (e: KeyboardEvent) => {
+                                        if (e.key !== "Enter") {
+                                            return;
+                                        }
+
+                                        if (onPrimaryActionClick) {
+                                            onPrimaryActionClick(e);
+
+                                            return;
+                                        }
+
+                                        if (onSecondaryActionClick) {
+                                            onSecondaryActionClick(e);
+
+                                            return;
+                                        }
+                                    } }
                                 >
+
                                     {
                                         placeholder
                                             ? (
@@ -357,6 +328,13 @@ export const Section: FunctionComponent<PropsWithChildren<SectionProps>> = (
                                                             )
                                                             : null
                                                     }
+                                                    <List.Content
+                                                        floated={ "right" }
+                                                    >
+                                                        <List.Header className="action-button-text">
+                                                            <Icon name="angle right" size="large"/>
+                                                        </List.Header>
+                                                    </List.Content>
                                                 </>
                                             )
                                     }
@@ -364,26 +342,21 @@ export const Section: FunctionComponent<PropsWithChildren<SectionProps>> = (
                             </List>
                         </Card.Content>
                     )
-                    : (
-                        accordion
-                    )
+                    : null
             }
         </Card>
     );
 };
 
 /**
- * Default proptypes for the section component.
+ * Default prop-types for the section component.
  */
 Section.defaultProps = {
     className: "",
     contentPadding: false,
     "data-componentid": "section",
-    "data-testid": "section",
     description: "",
     header: "",
-    iconFloated: "right",
-    iconStyle: "colored",
     primaryAction: "",
     primaryActionDisabled: false,
     showActionBar: true,

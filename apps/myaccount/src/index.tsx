@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,19 +17,17 @@
  */
 
 import { AuthParams, AuthProvider, SPAUtils } from "@asgardeo/auth-react";
-import { AppConstants as AppConstantsCore } from "@wso2is/core/constants";
-import { AuthenticateUtils, ContextUtils, StringUtils } from "@wso2is/core/utils";
+import { ContextUtils, StringUtils } from "@wso2is/core/utils";
 import axios from "axios";
 import * as React from "react";
 import "react-app-polyfill/ie11";
 import "react-app-polyfill/ie9";
 import "react-app-polyfill/stable";
-import * as ReactDOM from "react-dom";
+import ReactDOM, { Root } from "react-dom/client";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import { PreLoader } from "./components";
 import { Config } from "./configs";
-import { AppConstants } from "./constants";
 import { ProtectedApp } from "./protected-app";
 import { store } from "./store";
 import "core-js/stable";
@@ -38,14 +36,6 @@ import { getAuthInitializeConfig } from "./utils";
 
 // Set the runtime config in the context.
 ContextUtils.setRuntimeConfig(Config.getDeploymentConfig());
-
-if ((window.location.pathname !== AppConstants.getAppLoginPath())
-    && (window.location.pathname !== AppConstants.getPaths().get("UNAUTHORIZED"))
-    && (window.location.pathname !== AppConstants.getPaths().get("PAGE_NOT_FOUND")
-    && (window.location.pathname !== AppConstants.getPaths().get("STORING_DATA_DISABLED")))) {
-    AuthenticateUtils.updateAuthenticationCallbackUrl(AppConstantsCore.MY_ACCOUNT_APP,
-        window.location.pathname + window.location.hash);
-}
 
 const getAuthParams = (): Promise<AuthParams> => {
     if (!SPAUtils.hasAuthSearchParamsInURL() && process.env.NODE_ENV === "production") {
@@ -66,6 +56,11 @@ const getAuthParams = (): Promise<AuthParams> => {
     return;
 };
 
+/**
+ * Render root component with configs.
+ *
+ * @returns Root element with configs.
+ */
 const RootWithConfig = () => {
 
     const [ ready, setReady ] = React.useState(false);
@@ -101,4 +96,8 @@ const RootWithConfig = () => {
     );
 };
 
-ReactDOM.render(<RootWithConfig />, document.getElementById("root"));
+const root: Root = ReactDOM.createRoot(
+    document.getElementById("root") as HTMLElement
+);
+
+root.render(<RootWithConfig />);

@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -20,11 +20,8 @@ import classNames from "classnames";
 import React, {
     FunctionComponent,
     PropsWithChildren,
-    ReactElement,
-    ReactNode,
-    SyntheticEvent
+    ReactElement
 } from "react";
-import { Responsive } from "semantic-ui-react";
 import { BaseLayout, BaseLayoutInterface } from "./base";
 
 /**
@@ -32,23 +29,9 @@ import { BaseLayout, BaseLayoutInterface } from "./base";
  */
 export interface DashboardLayoutPropsInterface extends BaseLayoutInterface {
     /**
-     * App footer component.
-     */
-    footer?: ReactNode;
-    /**
      * Is layout fluid.
      */
     fluid?: boolean;
-    /**
-     * Fired on layout update to handle responsiveness.
-     * @param {React.SyntheticEvent<HTMLElement>} event - Event.
-     * @param {ResponsiveOnUpdateData} data - Metadata.
-     */
-    onLayoutOnUpdate?: (event: SyntheticEvent<HTMLElement>, data: any) => void;
-    /**
-     * App header component.
-     */
-    header?: ReactNode;
     /**
      * App side navigation component.
      */
@@ -58,9 +41,8 @@ export interface DashboardLayoutPropsInterface extends BaseLayoutInterface {
 /**
  * Dashboard layout.
  *
- * @param {React.PropsWithChildren<DashboardLayoutPropsInterface>} props - Props injected to the component.
- *
- * @return {React.ReactElement}
+ * @param props - Props injected to the component.
+ * @returns Dashboard Layout component.
  */
 export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayoutPropsInterface>> = (
     props: PropsWithChildren<DashboardLayoutPropsInterface>
@@ -70,10 +52,7 @@ export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayou
         alert,
         children,
         className,
-        footer,
         fluid,
-        onLayoutOnUpdate,
-        header,
         sidePanel,
         topLoadingBar
     } = props;
@@ -92,15 +71,9 @@ export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayou
             alert={ alert }
             topLoadingBar={ topLoadingBar }
         >
-            <Responsive
-                className={ classes }
-                fireOnMount
-                onUpdate={ onLayoutOnUpdate }
-            >
-                { header }
+            <div className={ classes }>
                 { React.cloneElement(sidePanel, { children: children }) }
-                { footer }
-            </Responsive>
+            </div>
         </BaseLayout>
     );
 };

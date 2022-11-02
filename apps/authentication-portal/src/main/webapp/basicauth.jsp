@@ -311,7 +311,6 @@
                     id="username"
                     value=""
                     name="username"
-                    tabindex="1"
                     placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, usernameLabel)%>"
                     data-testid="login-page-username-input"
                     required>
@@ -329,7 +328,6 @@
                     name="password"
                     value=""
                     autocomplete="off"
-                    tabindex="2"
                     placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "password")%>"
                     data-testid="login-page-password-input"
                     style="padding-right: 2.3em !important;"
@@ -429,7 +427,6 @@
             <% if (!isIdentifierFirstLogin(inputType) && isUsernameRecoveryEnabledInTenant) { %>
             <a
                 id="usernameRecoverLink"
-                tabindex="5"
                 href="<%=StringEscapeUtils.escapeHtml4(getRecoverAccountUrl(identityMgtEndpointContext, urlEncodedURL, true, urlParameters))%>"
                 data-testid="login-page-username-recovery-button"
             >
@@ -442,7 +439,6 @@
               if (isPasswordRecoveryEnabledInTenant) { %>
             <a
                 id="passwordRecoverLink"
-                tabindex="6"
                 href="<%=StringEscapeUtils.escapeHtml4(getRecoverAccountUrlWithUsername(identityMgtEndpointContext, urlEncodedURL, false, urlParameters, usernameIdentifier))%>"
                 data-testid="login-page-password-recovery-button"
             >
@@ -455,7 +451,13 @@
 
         <% if (isIdentifierFirstLogin(inputType)) { %>
         <div class="field">
-            <a id="backLink" tabindex="7" onclick="goBack()" data-testid="login-page-back-button">
+            <a 
+                id="backLink" 
+                class="clickable-link" 
+                tabindex="0" 
+                onclick="goBack()" 
+                onkeypress="javascript: if (window.event.keyCode === 13) goBack()"
+                data-testid="login-page-back-button">
                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.different.account")%>
             </a>
         </div>
@@ -467,7 +469,6 @@
     <div class="field">
         <div class="ui checkbox">
             <input
-                tabindex="3"
                 type="checkbox"
                 id="chkRemember"
                 name="chkRemember"
@@ -499,7 +500,6 @@
         <div class="column buttons">
             <button
                 class="ui primary fluid large button"
-                tabindex="4"
                 type="submit"
             >
                 <%=StringEscapeUtils.escapeHtml4(AuthenticationEndpointUtil.i18n(resourceBundle, "continue"))%>
@@ -512,7 +512,6 @@
                 onclick="window.location.href='<%=StringEscapeUtils.escapeHtml4(getRegistrationUrl(accountRegistrationEndpointURL, urlEncodedURL, urlParameters))%>';"
                 class="ui secondary fluid large button"
                 id="registerLink"
-                tabindex="8"
                 role="button"
                 data-testid="login-page-create-account-button"
             >
@@ -575,6 +574,20 @@
         function onSubmitResend(token) {
            $("#resendForm").submit();
         }
+
+        // Removing the recaptcha UI from the keyboard tab order
+        Array.prototype.forEach.call(document.getElementsByClassName('g-recaptcha'), function (element) {
+            //Add a load event listener to each wrapper, using capture.
+            element.addEventListener('load', function (e) {
+                //Get the data-tabindex attribute value from the wrapper.
+                var tabindex = e.currentTarget.getAttribute('data-tabindex');
+                //Check if the attribute is set.
+                if (tabindex) {
+                    //Set the tabIndex on the iframe.
+                    e.target.tabIndex = "-1";
+                }
+            }, true);
+        });
 
     </script>
 

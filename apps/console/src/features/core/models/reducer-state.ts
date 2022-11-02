@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -34,6 +34,7 @@ import {
 } from "./config";
 import { PortalDocumentationStructureInterface } from "./help-panel";
 import { AppViewTypes } from "./ui";
+import { OrganizationType } from "../../organizations/constants";
 import { OrganizationResponseInterface } from "../../organizations/models";
 
 /**
@@ -78,6 +79,8 @@ export interface AccessControlReducerStateInterface {
 export interface OrganizationReducerStateInterface {
     organization?: OrganizationResponseInterface;
     getOrganizationLoading: boolean;
+    isFirstLevelOrganization: boolean;
+    organizationType: OrganizationType;
 }
 
 export interface RoutesReducerStateInterface {
@@ -89,6 +92,7 @@ export interface RoutesReducerStateInterface {
         filteredRoutes: RouteInterface[];
         sanitizedRoutes: RouteInterface[];
     };
+    selectedRoute: RouteInterface;
 }
 
 export interface AuthReducerStateInterface extends CommonAuthReducerStateInterface, AuthenticatedUserInfo { }

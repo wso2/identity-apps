@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -21,8 +21,15 @@ import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models
 import { addAlert } from "@wso2is/core/store";
 import { URLUtils } from "@wso2is/core/utils";
 import { Field, Form } from "@wso2is/form";
-import { CertFileStrategy, Code, EmphasizedSegment, Hint, PrimaryButton, Switcher } from "@wso2is/react-components";
-import { SwitcherOptionProps } from "@wso2is/react-components";
+import {
+    CertFileStrategy,
+    Code,
+    EmphasizedSegment,
+    Hint,
+    PrimaryButton,
+    Switcher,
+    SwitcherOptionProps
+} from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -31,9 +38,9 @@ import { Divider, Grid, Icon, Segment } from "semantic-ui-react";
 import { AddIdpCertificateModal } from "./add-idp-certificate-modal";
 import { EmptyCertificatesPlaceholder } from "./empty-certificates-placeholder";
 import { IdpCertificatesList } from "./idp-cetificates-list";
+import { commonConfig } from "../../../../../extensions/configs";
 import { updateIDPCertificate } from "../../../api";
 import { IdentityProviderInterface } from "../../../models";
-import { commonConfig } from "../../../../../extensions/configs";
 
 /**
  * Props interface of {@link IdpCertificates}
@@ -53,6 +60,8 @@ export interface IdpCertificatesV2Props extends IdentifiableComponentInterface {
 }
 
 export type CertificateConfigurationMode = "jwks" | "certificates";
+
+const FORM_ID: string = "idp-certificate-jwks-input-form";
 
 /**
  * This is the certificates component for IdPs.
@@ -95,7 +104,7 @@ export type CertificateConfigurationMode = "jwks" | "certificates";
  *  |   | Upload | Paste |                                                 |
  *  |   +==============================================================+   |
  *  |   |                                                              |   |
- *  |   |                         <Some Icon>                          |   |
+ *  |   |                         Some Icon                          |   |
  *  |   |                                                              |   |
  *  |   |             Drag and drop a certificate file here.           |   |
  *  |   |                                                              |   |
@@ -109,7 +118,8 @@ export type CertificateConfigurationMode = "jwks" | "certificates";
  *  |                                                                      |
  *  +======================================================================+
  *
- * @constructor
+ * @param props - Props injected to the component.
+ * @returns Functional component.
  */
 export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props): ReactElement => {
 
@@ -170,7 +180,7 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
 
     /**
      * The following function update the IDP JWKS endpoint.
-     * @param values {Record<string, any>}
+     * @param values - Form values.
      */
     const onJWKSFormSubmit = (values: Record<string, any>) => {
 
@@ -227,19 +237,20 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
 
     const jwksInputForm: ReactNode = (
         <Form
+            id={ FORM_ID }
             uncontrolledForm={ true }
             initialValues={ { jwks_endpoint: editingIDP?.certificate?.jwksUri } }
             onSubmit={ onJWKSFormSubmit }>
 
             <Field.Input
                 required
-                hint={
+                hint={ (
                     <React.Fragment>
                         A JSON Web Key (JWK) Set is a JSON object that represents a set of JWKs. The JSON
                         object MUST have a <Code>keys</Code> member, with its value being an array of
                         JWKs.
                     </React.Fragment>
-                }
+                ) }
                 label="JWKS Endpoint URL"
                 ariaLabel="JWKS Endpoint URL"
                 inputType="url"
@@ -247,21 +258,25 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
                 validation={ (value: string) => {
                     if (!value || !FormValidation.url(value)) {
                         setIsJwksValueValid(false);
+
                         return t("console:develop.features.applications.forms.inboundSAML" +
                             ".fields.metaURL.validations.invalid");
                     }
                     if (commonConfig?.blockLoopBackCalls && URLUtils.isLoopBackCall(value)) {
                         setIsJwksValueValid(false);
+
                         return t("console:develop.features.idp.forms.common.internetResolvableErrorMessage");
                     }
                     setIsJwksValueValid(true);
+
                     return undefined;
                 } }
                 listen={ (value: string) => setJwksValue(value) }
                 placeholder="https://{ oauth-provider-url }/oauth/jwks"
                 maxLength={ JWKS_MAX_LENGTH }
                 minLength={ JWKS_MIN_LENGTH }
-                name="jwks_endpoint"/>
+                name="jwks_endpoint"
+            />
 
             <Show when={ AccessControlConstants.IDP_EDIT }>
                 <PrimaryButton

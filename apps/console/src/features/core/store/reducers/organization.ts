@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2022, WSO2 Inc. (http://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,12 +16,13 @@
  * under the License.
  */
 
-import { OrganizationManagementConstants } from "../../../organizations/constants";
+import { OrganizationManagementConstants, OrganizationType } from "../../../organizations/constants";
 import { OrganizationReducerStateInterface } from "../../models";
 import { OrganizationAction, OrganizationActionTypes } from "../actions/types";
 
 const initialState: OrganizationReducerStateInterface = {
     getOrganizationLoading: true,
+    isFirstLevelOrganization: false,
     organization: {
         attributes: [],
         created: new Date().toString(),
@@ -36,8 +37,8 @@ const initialState: OrganizationReducerStateInterface = {
         },
         status: "",
         type: ""
-
-    }
+    },
+    organizationType: OrganizationType.SUPER_ORGANIZATION
 };
 
 export const organizationReducer = (
@@ -54,6 +55,16 @@ export const organizationReducer = (
             return {
                 ...state,
                 getOrganizationLoading: action.payload
+            };
+        case OrganizationActionTypes.SET_IS_FIRST_LEVEL_ORGANIZATION:
+            return {
+                ...state,
+                isFirstLevelOrganization: action.payload
+            };
+        case OrganizationActionTypes.SET_ORGANIZATION_TYPE:
+            return {
+                ...state,
+                organizationType: action.payload
             };
         default:
             return {

@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -18,7 +18,7 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { PrimaryButton } from "@wso2is/react-components";
-import React, { MouseEvent, ReactElement } from "react";
+import React, { MouseEvent, ReactElement, ReactNode } from "react";
 import { Button, Icon, Modal, ModalProps } from "semantic-ui-react";
 
 /**
@@ -149,11 +149,11 @@ export const ModalComponent = (props: ModalComponentProps): ReactElement => {
             { iconName() }
             <Modal.Content>
                 <h3 className="modal-heading">
-                    { header }
+                    { header as ReactNode }
                 </h3>
             </Modal.Content>
             <p className="modal-description">
-                { content }
+                { content as ReactNode }
             </p>
             { children }
             <Modal.Actions>

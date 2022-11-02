@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -79,8 +79,8 @@ export interface PaginationPropsInterface extends PaginationProps, IdentifiableC
     nextButtonText?: string;
     /**
      * Callback for items per page change.
-     * @param {React.SyntheticEvent<HTMLElement>} event - Click event.
-     * @param {DropdownProps} data - Data.
+     * @param event - Click event.
+     * @param data - Data.
      */
     onItemsPerPageDropdownChange?: (event: React.SyntheticEvent<HTMLElement>, data: DropdownProps) => void;
     /**
@@ -106,8 +106,8 @@ export interface PaginationPropsInterface extends PaginationProps, IdentifiableC
     /**
      * Called when the page change event occurs.
      *
-     * @param {React.MouseEvent<HTMLAnchorElement, MouseEvent>} event MouseEvent.
-     * @param {PaginationProps} data Pagination props data.
+     * @param event - MouseEvent.
+     * @param data - Pagination props data.
      */
     onPageChange?: (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>, data: PaginationProps) => void;
     /**
@@ -127,9 +127,9 @@ export interface PaginationPropsInterface extends PaginationProps, IdentifiableC
 /**
  * Pagination component.
  *
- * @param {PaginationPropsInterface} props - Props injected in to the component.
+ * @param props - Props injected in to the component.
  *
- * @return {React.ReactElement}
+ * @returns the pagination component
  */
 export const Pagination: FunctionComponent<PaginationPropsInterface> = (
     props: PaginationPropsInterface
@@ -213,8 +213,8 @@ export const Pagination: FunctionComponent<PaginationPropsInterface> = (
     /**
      * This is called when page change occurs.
      *
-     * @param {React.MouseEvent<HTMLAnchorElement, MouseEvent>} event Mouse event.
-     * @param {PaginationProps} data Semantic pagination props.
+     * @param event - Mouse event.
+     * @param data - Semantic pagination props.
      */
     const pageChangeHandler = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>, data: PaginationProps): void => {
         setActivePage(parseInt(data.activePage.toString()));
@@ -223,7 +223,7 @@ export const Pagination: FunctionComponent<PaginationPropsInterface> = (
 
     /**
      * Renders the content based on the mode.
-     * @return {React.ReactElement}
+     * @returns the child content
      */
     const renderChildren = (): ReactElement => {
 

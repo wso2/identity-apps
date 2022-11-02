@@ -2,7 +2,7 @@
 
 # -------------------------------------------------------------------------------------
 #
-# Copyright (c) 2022, WSO2 LLC. (http://www.wso2.com) All Rights Reserved.
+# Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
 #
 # WSO2 LLC. licenses this file to you under the Apache License,
 # Version 2.0 (the "License"); you may not use this file except
@@ -31,6 +31,8 @@ GITHUB_PR_NUMBER=$1
 # Hence, we need to manually filter out the supported formats.
 # Tracker: https://github.com/eslint/eslint/issues/15010
 ESLINT_SUPPORTED_EXT=(js jsx ts tsx)
+
+MAX_FILE_THRESHOLD_FOR_LINTER=50
 
 # Check relevant packages are available
 command -v pnpm >/dev/null 2>&1 || { echo >&2 "Error: $0 script requires 'pnpm' for buid.  Aborting as not found."; exit 1; }
@@ -61,17 +63,28 @@ for file in "${supported_files[@]}"; do
     echo -e "   - $file"
 done
 
+echo -e "\n 🔢 Total number of changed files: ${#supported_files[@]}"
+
 echo -e "\n=============================================================\n"
 
-echo -e "🥬 Starting analyzing the changed files with ESLint.."
+echo -e "\n 🥬 Starting analyzing the changed files with ESLint.. \n"
 
-# Modify the filepattern to avoid eslint pattern mismatch errors.
-if [[ ${#supported_files[@]} -gt 1 ]]; then
-    filer_pattern="{""$(IFS=","; echo "${supported_files[*]}")""}";
-elif [[ ${#supported_files[@]} == 1 ]]; then
-    filer_pattern="$(IFS=","; echo "${supported_files[*]}")";
-else
-    filer_pattern="{}";
-fi
+for ((i=0; i < ${#supported_files[@]}; i+=MAX_FILE_THRESHOLD_FOR_LINTER))
+do
+    chunk=( "${supported_files[@]:i:MAX_FILE_THRESHOLD_FOR_LINTER}" )
 
-pnpm eslint --ext .js,.jsx,.ts,.tsx --no-error-on-unmatched-pattern --max-warnings=0 --resolve-plugins-relative-to . -- "$filer_pattern"
+    # Modify the filepattern to avoid eslint pattern mismatch errors.
+    if [[ ${#chunk[@]} -gt 1 ]]; then
+        filter_pattern="{""$(IFS=","; echo "${chunk[*]}")""}";
+    elif [[ ${#chunk[@]} == 1 ]]; then
+        filter_pattern="$(IFS=","; echo "${chunk[*]}")";
+    else
+        filter_pattern="{}";
+    fi
+
+    if [[ ${#supported_files[@]} -gt MAX_FILE_THRESHOLD_FOR_LINTER ]]; then
+        echo -e "\n 🔥 Linting the changed files as batches..Here are the results... \n"
+    fi
+
+    pnpm eslint --ext .js,.jsx,.ts,.tsx --no-error-on-unmatched-pattern --max-warnings=0 --resolve-plugins-relative-to . -- "$filter_pattern"
+done

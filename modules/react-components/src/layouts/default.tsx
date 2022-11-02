@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,8 +17,8 @@
  */
 
 import classNames from "classnames";
-import React, { FunctionComponent, PropsWithChildren, ReactElement, ReactNode, SyntheticEvent } from "react";
-import { Container, Responsive } from "semantic-ui-react";
+import React, { FunctionComponent, PropsWithChildren, ReactElement, ReactNode } from "react";
+import { Container } from "semantic-ui-react";
 import { BaseLayout, BaseLayoutInterface } from "./base";
 
 /**
@@ -42,10 +42,6 @@ export interface DefaultLayoutPropsInterface extends BaseLayoutInterface {
      */
     header?: ReactNode;
     /**
-     * Content spacing.
-     */
-    desktopContentTopSpacing?: number;
-    /**
      * height of the footer.
      */
     footerHeight: number;
@@ -53,20 +49,13 @@ export interface DefaultLayoutPropsInterface extends BaseLayoutInterface {
      * Height of the header.
      */
     headerHeight: number;
-    /**
-     * Fired on layout update to handle responsiveness.
-     * @param {React.SyntheticEvent<HTMLElement>} event - Event.
-     * @param {ResponsiveOnUpdateData} data - Metadata.
-     */
-    onLayoutOnUpdate?: (event: SyntheticEvent<HTMLElement>, data: any) => void;
 }
 
 /**
  * Default layout.
  *
- * @param {React.PropsWithChildren<DefaultLayoutPropsInterface>} props - Props injected to the component.
- *
- * @return {React.ReactElement}
+ * @param props - Props injected to the component.
+ * @returns Default Layout component.
  */
 export const DefaultLayout: FunctionComponent<PropsWithChildren<DefaultLayoutPropsInterface>> = (
     props: PropsWithChildren<DefaultLayoutPropsInterface>
@@ -76,13 +65,11 @@ export const DefaultLayout: FunctionComponent<PropsWithChildren<DefaultLayoutPro
         alert,
         children,
         className,
-        desktopContentTopSpacing,
         footer,
         footerHeight,
         fluid,
         header,
         headerHeight,
-        onLayoutOnUpdate,
         topLoadingBar
     } = props;
 
@@ -100,31 +87,24 @@ export const DefaultLayout: FunctionComponent<PropsWithChildren<DefaultLayoutPro
         paddingTop: `${ headerHeight }px`
     };
 
-    const mainContentStyle = {
-        minHeight: `calc(100vh - ${ headerHeight + footerHeight }px`,
-        paddingTop: `${ desktopContentTopSpacing }px`
-    };
 
     return (
         <BaseLayout
             alert={ alert }
             topLoadingBar={ topLoadingBar }
         >
-            <Responsive
-                as={ Container }
+            <Container
                 fluid={ fluid }
                 className={ classes }
-                fireOnMount
-                onUpdate={ onLayoutOnUpdate }
             >
                 { header }
                 <div style={ mainLayoutStyles } className="layout-content-wrapper">
-                    <div style={ mainContentStyle } className="layout-content">
+                    <div className="default-layout-content">
                         { children }
                     </div>
                 </div>
                 { footer }
-            </Responsive>
+            </Container>
         </BaseLayout>
     );
 };

@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -28,6 +28,7 @@ import { useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
 import { AppState, ConfigReducerStateInterface } from "../../../../features/core";
 import { getAuthProtocolMetadata } from "../../api";
+import { ApplicationManagementConstants } from "../../constants";
 import SinglePageApplicationTemplate
     from "../../data/application-templates/templates/single-page-application/single-page-application.json";
 import {
@@ -95,9 +96,9 @@ interface OAuthProtocolSettingsWizardFormPropsInterface extends TestableComponen
 /**
  * Oauth protocol settings wizard form component.
  *
- * @param {OAuthProtocolSettingsWizardFormPropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns Oauth Protocol Settings Wizard Form.
  */
 export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSettingsWizardFormPropsInterface> = (
     props: OAuthProtocolSettingsWizardFormPropsInterface
@@ -134,6 +135,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
     const [ selectedGrantTypes, setSelectedGrantTypes ] = useState<string[]>(undefined);
     const [ isGrantChanged, setGrantChanged ] = useState<boolean>(false);
     const [ showGrantTypes, setShowGrantTypes ] = useState<boolean>(false);
+    const [ isDeepLinkError, setIsDeepLinkError ] = useState<boolean>(false);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
     // Maintain the state if the user allowed the CORS for the
@@ -225,8 +227,8 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
     /**
      * Add regexp to multiple callbackUrls and update configs.
      *
-     * @param {string} urls - Callback URLs.
-     * @return {string} Prepared callback URL.
+     * @param urls - Callback URLs.
+     * @returns Prepared callback URL.
      */
     const buildCallBackUrlWithRegExp = (urls: string): string => {
         let callbackURL = urls?.replace(/['"]+/g, "");
@@ -241,8 +243,8 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
     /**
      * Remove regexp from incoming data and show the callbackUrls.
      *
-     * @param {string} url - Callback URLs.
-     * @return {string} Prepared callback URL.
+     * @param url - Callback URLs.
+     * @returns Prepared callback URL.
      */
     const buildCallBackURLWithSeparator = (url: string): string => {
         if (url && url.includes("regexp=(")) {
@@ -293,8 +295,8 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
      * <li>All the available CORS origins.</li>
      * </ul>
      *
-     * @param {string} urls - Callback URLs.
-     * @return {string[]} Allowed origin URLs.
+     * @param urls - Callback URLs.
+     * @returns Allowed origin URLs.
      */
     const resolveAllowedOrigins = (urls: string): string[] => {
         let calBackUrls: string[] = [];
@@ -315,8 +317,8 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
      * Sanitizes and prepares the form values for submission.
      *
      * @param values - Form values.
-     * @param {string} urls - Callback URLs.
-     * @return {object} Prepared values.
+     * @param urls - Callback URLs.
+     * @returns Prepared values.
      */
     const getFormValues = (values: any, urls?: string): Record<string, unknown> => {
         const config = {
@@ -358,7 +360,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
     /**
      * The following function handles removing CORS allowed origin.
      *
-     * @param {string} url - Removing origin
+     * @param url - Removing origin.
      */
     const handleRemoveAllowOrigin = (url: string): void => {
         const allowedURLs = [ ...allowCORSUrls ];
@@ -372,7 +374,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
     /**
      * The following function handles allowing CORS for a new origin.
      *
-     * @param {string} url - Allowed origin
+     * @param url - Allowed origin.
      */
     const handleAddAllowOrigin = (url: string): void => {
         const allowedURLs = [ ...allowCORSUrls ];
@@ -384,9 +386,9 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
     /**
      * Creates options for Radio GrantTypeMetaDataInterface options.
      *
-     * @param {GrantTypeMetaDataInterface} metadataProp - Metadata.
+     * @param metadataProp - Metadata.
      *
-     * @return {any[]}
+     * @returns Allowed Grant Type List
      */
     const getAllowedGranTypeList = (metadataProp: GrantTypeMetaDataInterface): any[] => {
         const allowedList = [];
@@ -404,7 +406,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
     /**
      * Handle grant type change.
      *
-     * @param {Map<string, FormValue>} values - Form values
+     * @param values - Form values.
      */
     const handleGrantTypeChange = (values: Map<string, FormValue>) => {
         const grants: string[] = values.get("grant") as string[];
@@ -473,6 +475,9 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                             <Grid.Row column={ 1 }>
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 } className="field">
                                     <URLInput
+                                        isCustom={
+                                            selectedTemplate.templateId === ApplicationManagementConstants.MOBILE
+                                        }
                                         labelEnabled={ true }
                                         handleAddAllowedOrigin={ (url) => handleAddAllowOrigin(url) }
                                         handleRemoveAllowedOrigin={ (url) => handleRemoveAllowOrigin(url) }
@@ -481,30 +486,48 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                         urlState={ callBackUrls }
                                         setURLState={ setCallBackUrls }
                                         labelName={
-                                            t("console:develop.features.applications.forms." +
-                                                "spaProtocolSettingsWizard.fields.callBackUrls.label")
+                                            selectedTemplate.templateId === ApplicationManagementConstants.MOBILE
+                                                ? "Authorized redirect URIs"
+                                                : t("console:develop.features.applications.forms." +
+                                                    "spaProtocolSettingsWizard.fields.callBackUrls.label")
                                         }
                                         placeholder={
-                                            t("console:develop.features.applications.forms.inboundOIDC." +
-                                                "fields.callBackUrls" +
-                                                ".placeholder")
+                                            selectedTemplate.templateId === ApplicationManagementConstants.MOBILE
+                                                ? t("console:develop.features.applications.forms.inboundOIDC." +
+                                                    "mobileApp.mobileAppPlaceholder")
+                                                : t("console:develop.features.applications.forms.inboundOIDC." +
+                                                    "fields.callBackUrls.placeholder")
                                         }
                                         validationErrorMsg={
-                                            t("console:develop.features.applications.forms." +
-                                                "spaProtocolSettingsWizard.fields.callBackUrls.validations.invalid")
+                                            isDeepLinkError
+                                                ? t("console:develop.features.applications.forms." +
+                                                    "spaProtocolSettingsWizard.fields.urlDeepLinkError")
+                                                : t("console:develop.features.applications.forms." +
+                                                    "spaProtocolSettingsWizard.fields.callBackUrls.validations.invalid")
                                         }
                                         emptyErrorMessage={
                                             t("console:develop.features.applications.forms." +
                                                 "spaProtocolSettingsWizard.fields.callBackUrls.validations.empty")
                                         }
+                                        skipInternalValidation= {
+                                            selectedTemplate.templateId === ApplicationManagementConstants.MOBILE
+                                        }
                                         validation={ (value: string) => {
-                                            if (!(URLUtils.isURLValid(value, true) && (URLUtils.isHttpUrl(value) ||
-                                                URLUtils.isHttpsUrl(value)))) {
-
-                                                return false;
+                                            if (
+                                                !(selectedTemplate.templateId === ApplicationManagementConstants.MOBILE)
+                                            ) {
+                                                if ((
+                                                    !(URLUtils.isURLValid(value, true)
+                                                    && (URLUtils.isHttpUrl(value)
+                                                    || URLUtils.isHttpsUrl(value)))
+                                                )) {
+                                                    return false;
+                                                }
                                             }
 
                                             if (!URLUtils.isMobileDeepLink(value)) {
+                                                setIsDeepLinkError(true);
+
                                                 return false;
                                             }
 

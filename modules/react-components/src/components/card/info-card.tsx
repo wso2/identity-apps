@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -113,9 +113,8 @@ export interface GithubHubRepoMetaInfoInterface {
 /**
  * Selection card component.
  *
- * @param {PropsWithChildren<InfoCardPropsInterface>} props - Props injected to the components.
- *
- * @return {React.ReactElement}
+ * @param props - Props injected to the components.
+ * @returns Selection card component.
  */
 export const InfoCard: FunctionComponent<PropsWithChildren<InfoCardPropsInterface>> = (
     props: PropsWithChildren<InfoCardPropsInterface>
@@ -210,7 +209,7 @@ export const InfoCard: FunctionComponent<PropsWithChildren<InfoCardPropsInterfac
                                     data-componentid={ `${ componentId }-header` }
                                     data-testid={ `${ testId }-header` }
                                 >
-                                    { header }
+                                    { header as ReactNode }
                                 </Card.Header>
                             ) }
                             content={ header }
@@ -238,7 +237,7 @@ export const InfoCard: FunctionComponent<PropsWithChildren<InfoCardPropsInterfac
                                         data-componentid={ `${ componentId }-description` }
                                         data-testid={ `${ testId }-description` }
                                     >
-                                        { description }
+                                        { description as ReactNode }
                                     </Card.Description>
                                 ) }
                                 content={ description }
@@ -319,7 +318,7 @@ export const InfoCard: FunctionComponent<PropsWithChildren<InfoCardPropsInterfac
                                 data-componentid={ `${ componentId }-description` }
                                 data-testid={ `${ testId }-description` }
                             >
-                                { description }
+                                { description as ReactNode }
                             </Card.Description>
                         ) }
                         content={ description }

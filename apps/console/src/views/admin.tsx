@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,122 +16,71 @@
  * under the License.
  */
 
-import { AlertInterface, ChildRouteInterface, ProfileInfoInterface, RouteInterface } from "@wso2is/core/models";
-import { initializeAlertSystem } from "@wso2is/core/store";
+import { RouteInterface } from "@wso2is/core/models";
 import { RouteUtils as CommonRouteUtils, CommonUtils } from "@wso2is/core/utils";
 import {
-    Alert,
     ContentLoader,
-    DashboardLayout as DashboardLayoutSkeleton,
     EmptyPlaceholder,
     ErrorBoundary,
-    LinkButton,
-    SidePanel,
-    TopLoadingBar
+    LinkButton
 } from "@wso2is/react-components";
-import isEmpty from "lodash-es/isEmpty";
 import React, {
     FunctionComponent,
+    MutableRefObject,
     ReactElement,
     ReactNode,
     Suspense,
-    SyntheticEvent,
     useEffect,
-    useRef,
-    useState
+    useRef
 } from "react";
 import { useTranslation } from "react-i18next";
-import { System } from "react-notification-system";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
-import { Responsive } from "semantic-ui-react";
-import { commonConfig } from "../extensions";
-import { getProfileInformation } from "../features/authentication/store";
 import {
     AppConstants,
     AppState,
     AppUtils,
     AppViewTypes,
-    ConfigReducerStateInterface,
-    EventPublisher,
-    Footer,
-    Header,
     ProtectedRoute,
     RouteUtils,
     StrictAppViewTypes,
-    UIConstants,
-    getAdminViewRoutes,
-    getEmptyPlaceholderIllustrations,
-    getSidePanelMiscIcons,
-    history,
-    useUIElementSizes
+    getEmptyPlaceholderIllustrations
 } from "../features/core";
-import { setActiveView } from "../features/core/store/actions";
+import { setActiveView, setSelectedRoute } from "../features/core/store/actions";
 
 /**
  * Admin View Prop types.
  */
-interface AdminViewPropsInterface {
-    /**
-     * Is layout fluid.
-     */
-    fluid?: boolean;
-}
+type AdminViewPropsInterface = RouteComponentProps;
 
 /**
  * Parent component for Admin features inherited from Dashboard layout skeleton.
  *
- * @param {AdminViewPropsInterface} props - Props injected to the component.
- *
- * @return {React.ReactElement}
+ * @param props - Props injected to the component.
+ * @returns Admin View Wrapper.
  */
 export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
-    props: AdminViewPropsInterface & RouteComponentProps
+    props: AdminViewPropsInterface
 ): ReactElement => {
 
     const {
-        fluid,
         location
     } = props;
 
-    const { t } = useTranslation();
-    const { headerHeight, footerHeight } = useUIElementSizes();
-
     const dispatch = useDispatch();
+    const { t } = useTranslation();
 
-    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
-    const profileInfo: ProfileInfoInterface = useSelector((state: AppState) => state.profile.profileInfo);
-    const alert: AlertInterface = useSelector((state: AppState) => state.global.alert);
-    const alertSystem: System = useSelector((state: AppState) => state.global.alertSystem);
-    const isAJAXTopLoaderVisible: boolean = useSelector((state: AppState) => state.global.isAJAXTopLoaderVisible);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const activeView: AppViewTypes = useSelector((state: AppState) => state.global.activeView);
-
     const filteredRoutes: RouteInterface[] = useSelector(
         (state: AppState) => state.routes.manageRoutes.filteredRoutes
     );
-    const sanitizedRoutes: RouteInterface[] = useSelector(
-        (state: AppState) => state.routes.manageRoutes.sanitizedRoutes
-    );
 
-    const [
-        selectedRoute,
-        setSelectedRoute
-    ] = useState<RouteInterface | ChildRouteInterface>(getAdminViewRoutes()[ 0 ]);
-    const [ mobileSidePanelVisibility, setMobileSidePanelVisibility ] = useState<boolean>(false);
-    const [ isMobileViewport, setIsMobileViewport ] = useState<boolean>(false);
-
-    const eventPublisher: EventPublisher = EventPublisher.getInstance();
-    const organizationLoading: boolean
-        = useSelector((state: AppState) => state?.organization?.getOrganizationLoading);
-
-    const initLoad = useRef(true);
+    const initLoad: MutableRefObject<boolean> = useRef(true);
 
     /**
      * Make sure `MANAGE` tab is highlighted when this layout is used.
      */
     useEffect(() => {
-
         if (activeView === StrictAppViewTypes.MANAGE) {
             return;
         }
@@ -139,6 +88,9 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
         dispatch(setActiveView(StrictAppViewTypes.MANAGE));
     }, [ dispatch, activeView ]);
 
+    /**
+     * Handle routing and the selected route on location change.
+     */
     useEffect(() => {
         if (!location?.pathname) {
             return;
@@ -150,71 +102,8 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
             initLoad.current = false;
         }
 
-        setSelectedRoute(CommonRouteUtils.getInitialActiveRoute(location.pathname, filteredRoutes));
-
+        dispatch(setSelectedRoute(CommonRouteUtils.getInitialActiveRoute(location.pathname, filteredRoutes)));
     }, [ location.pathname, filteredRoutes ]);
-
-    useEffect(() => {
-        if (!isEmpty(profileInfo)) {
-            return;
-        }
-
-        dispatch(getProfileInformation());
-
-    }, [
-        dispatch,
-        profileInfo
-    ]);
-
-    /**
-     * Handles side panel toggle click.
-     */
-    const handleSidePanelToggleClick = (): void => {
-        setMobileSidePanelVisibility(!mobileSidePanelVisibility);
-    };
-
-    /**
-     * Handles side panel pusher on click.
-     */
-    const handleSidePanelPusherClick = (): void => {
-        setMobileSidePanelVisibility(false);
-    };
-
-    /**
-     * Handles side panel item click event.
-     *
-     * @param { RouteInterface | ChildRouteInterface } route - Clicked on route.
-     */
-    const handleSidePanelItemClick = (route: RouteInterface | ChildRouteInterface): void => {
-        if (route.path) {
-            setSelectedRoute(route);
-            history.push(route.path);
-
-            if (isMobileViewport) {
-                setMobileSidePanelVisibility(false);
-            }
-        }
-    };
-
-    /**
-     * Handles the layout on change event.
-     *
-     * @param {React.SyntheticEvent<HTMLElement>} event - On change event.
-     * @param {any} width - Width of the browser window.
-     */
-    const handleLayoutOnUpdate = (event: SyntheticEvent<HTMLElement>, { width }): void => {
-        if (width < Responsive.onlyTablet.minWidth) {
-            setIsMobileViewport(true);
-
-            return;
-        }
-
-        if (!isMobileViewport) {
-            return;
-        }
-
-        setIsMobileViewport(false);
-    };
 
     /**
      * Conditionally renders a route. If a route has defined a Redirect to
@@ -223,7 +112,7 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
      *
      * @param route - Route to be rendered.
      * @param key - Index of the route.
-     * @return {React.ReactNode} Resolved route to be rendered.
+     * @returns Resolved route to be rendered.
      */
     const renderRoute = (route, key): ReactNode => (
         route.redirectTo
@@ -256,9 +145,9 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
      * This function recursively adds any child routes
      * defined.
      *
-     * @return {RouteInterface[]} Set of resolved routes.
+     * @returns Set of resolved routes.
      */
-    const resolveRoutes = (): RouteInterface[] => {
+    const resolveRoutes = (): RouteInterface[] | ReactNode[] => {
         const resolvedRoutes = [];
 
         filteredRoutes.forEach((route, key) => {
@@ -268,97 +157,36 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
         return resolvedRoutes;
     };
 
-    const handleAlertSystemInitialize = (system) => {
-        dispatch(initializeAlertSystem(system));
-    };
-
     return (
-        <DashboardLayoutSkeleton
-            alert={ (
-                <Alert
-                    dismissInterval={ UIConstants.ALERT_DISMISS_INTERVAL }
-                    alertsPosition="br"
-                    alertSystem={ alertSystem }
-                    alert={ alert }
-                    onAlertSystemInitialize={ handleAlertSystemInitialize }
-                    withIcon={ true }
-                />
-            ) }
-            topLoadingBar={ (
-                <TopLoadingBar
-                    height={ UIConstants.AJAX_TOP_LOADING_BAR_HEIGHT }
-                    visibility={ isAJAXTopLoaderVisible }
-                />
-            ) }
-            onLayoutOnUpdate={ handleLayoutOnUpdate }
-            header={ (
-                <Header
-                    activeView={ StrictAppViewTypes.MANAGE }
-                    fluid={ !isMobileViewport ? fluid : false }
-                    onSidePanelToggleClick={ handleSidePanelToggleClick }
-                />
-            ) }
-            sidePanel={ (
-                <SidePanel
-                    categorized={
-                        config?.ui?.isLeftNavigationCategorized !== undefined
-                            ? config.ui.isLeftNavigationCategorized
-                                && commonConfig?.leftNavigation?.isLeftNavigationCategorized?.manage
-                            : true
-                    }
-                    caretIcon={ getSidePanelMiscIcons().caretRight }
-                    desktopContentTopSpacing={ UIConstants.DASHBOARD_LAYOUT_DESKTOP_CONTENT_TOP_SPACING }
-                    fluid={ !isMobileViewport ? fluid : false }
-                    footerHeight={ footerHeight }
-                    headerHeight={ headerHeight }
-                    hoverType="background"
-                    mobileSidePanelVisibility={ mobileSidePanelVisibility }
-                    onSidePanelItemClick={ handleSidePanelItemClick }
-                    onSidePanelPusherClick={ handleSidePanelPusherClick }
-                    routes={ !organizationLoading && sanitizedRoutes }
-                    selected={ selectedRoute }
-                    translationHook={ t }
-                    allowedScopes={ allowedScopes }
-                />
-            ) }
-            footer={ (
-                <Footer
-                    fluid={ !isMobileViewport ? fluid : false }
+        <ErrorBoundary
+            onChunkLoadError={ AppUtils.onChunkLoadError }
+            fallback={ (
+                <EmptyPlaceholder
+                    action={ (
+                        <LinkButton onClick={ () => CommonUtils.refreshPage() }>
+                            { t("console:common.placeholders.brokenPage.action") }
+                        </LinkButton>
+                    ) }
+                    image={ getEmptyPlaceholderIllustrations().brokenPage }
+                    imageSize="tiny"
+                    subtitle={ [
+                        t("console:common.placeholders.brokenPage.subtitles.0"),
+                        t("console:common.placeholders.brokenPage.subtitles.1")
+                    ] }
+                    title={ t("console:common.placeholders.brokenPage.title") }
                 />
             ) }
         >
-            <ErrorBoundary
-                onChunkLoadError={ AppUtils.onChunkLoadError }
-                fallback={ (
-                    <EmptyPlaceholder
-                        action={ (
-                            <LinkButton onClick={ () => CommonUtils.refreshPage() }>
-                                { t("console:common.placeholders.brokenPage.action") }
-                            </LinkButton>
-                        ) }
-                        image={ getEmptyPlaceholderIllustrations().brokenPage }
-                        imageSize="tiny"
-                        subtitle={ [
-                            t("console:common.placeholders.brokenPage.subtitles.0"),
-                            t("console:common.placeholders.brokenPage.subtitles.1")
-                        ] }
-                        title={ t("console:common.placeholders.brokenPage.title") }
-                    />
-                ) }
-            >
-                <Suspense fallback={ <ContentLoader dimmer={ false } /> }>
-                    <Switch>
-                        { resolveRoutes() }
-                    </Switch>
-                </Suspense>
-            </ErrorBoundary>
-        </DashboardLayoutSkeleton>
+            <Suspense fallback={ <ContentLoader dimmer={ false } /> }>
+                <Switch>
+                    { resolveRoutes() as ReactNode[] }
+                </Switch>
+            </Suspense>
+        </ErrorBoundary>
     );
 };
 
 /**
  * Default props for the Admin View.
  */
-AdminView.defaultProps = {
-    fluid: true
-};
+AdminView.defaultProps = {};

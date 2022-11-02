@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -40,13 +40,13 @@ export interface ResourceGridCardPropsInterface extends InfoCardPropsInterface, 
     editButtonLabel?: ReactNode;
     /**
      * On resource delete callback.
-     * @param {React.MouseEvent<HTMLDivElement>} e - Click event.
+     * @param e - Click event.
      */
     onDelete?: (e: MouseEvent<HTMLDivElement>) => void;
     /**
      * On resource edit callback.
-     * @param {React.MouseEvent<HTMLButtonElement>} e - Click event.
-     * @param {ButtonProps} data - Button data.
+     * @param e - Click event.
+     * @param data - Button data.
      */
     onEdit?: (e: MouseEvent<HTMLButtonElement>, data: ButtonProps) => void;
     /**
@@ -90,8 +90,8 @@ export interface ResourceGridCardPropsInterface extends InfoCardPropsInterface, 
 /**
  * Resource Grid Card component.
  *
- * @param {PropsWithChildren<ResourceGridCardPropsInterface>} props - Props injected to the component.
- * @return {React.ReactElement}
+ * @param props - Props injected to the component.
+ * @returns the Resource grid card component.
  */
 export const ResourceGridCard: FunctionComponent<PropsWithChildren<ResourceGridCardPropsInterface>> = (
     props: PropsWithChildren<ResourceGridCardPropsInterface>

@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,36 +16,38 @@
  * under the License.
  */
 
+import { PageLayout } from "@wso2is/react-components";
 import React, { ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
 import { Consents } from "../components";
-import { InnerPageLayout } from "../layouts";
 import { AlertInterface } from "../models";
 import { addAlert } from "../store/actions";
 
 /**
  * Consents Management page.
  *
- * @return {React.ReactElement}
+ * @returns Consent management page.
  */
 const ConsentManagementPage = (): ReactElement => {
+
     const { t } = useTranslation();
     const dispatch = useDispatch();
 
     /**
      * Dispatches the alert object to the redux store.
-     * @param {AlertInterface} alert - Alert object.
+     * @param alert - Alert object.
      */
-    const handleAlerts = (alert: AlertInterface) => {
+    const handleAlerts = (alert: AlertInterface): void => {
         dispatch(addAlert(alert));
     };
 
     return (
-        <InnerPageLayout
-            pageTitle={ t("myAccount:pages.consentManagement.title") }
-            pageDescription={ t("myAccount:pages.consentManagement.subTitle") }
+        <PageLayout
+            pageTitle="Consent Management"
+            title={ t("myAccount:pages.consentManagement.title") }
+            description={ t("myAccount:pages.consentManagement.subTitle") }
         >
             <Divider hidden />
             <Grid>
@@ -55,7 +57,7 @@ const ConsentManagementPage = (): ReactElement => {
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
-        </InnerPageLayout>
+        </PageLayout>
     );
 };
 

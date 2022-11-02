@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -23,7 +23,7 @@ import values from "lodash-es/values";
 import { FunctionComponent, lazy } from "react";
 import { getSidePanelIcons } from "./ui";
 import { EXTENSION_ROUTES, identityProviderConfig } from "../../../extensions";
-import { AppLayout, AuthLayout, DefaultLayout, ErrorLayout } from "../../../layouts";
+import { AppLayout, AuthLayout, DashboardLayout, DefaultLayout, ErrorLayout } from "../../../layouts";
 import { AdminView, DeveloperView, FullScreenView } from "../../../views";
 import { AppConstants } from "../constants";
 
@@ -39,11 +39,11 @@ import { AppConstants } from "../constants";
  * A route can have children and still be clickable.
  * If so, define a path. If no path is defined, the
  * child routes section will be extended in the UI.
- *  {
+ *  \{
  *      children: [ ... ],
  *     ...
  *     path: "/applications"
- *  }
+ *  \}
  */
 export const getDeveloperViewRoutes = (): RouteInterface[] => {
 
@@ -183,7 +183,7 @@ export const getDeveloperViewRoutes = (): RouteInterface[] => {
 /**
  * Get all the Admin View Routes.
  *
- * @return {RouteInterface[]}
+ * @returns Admin view routes.
  */
 export const getAdminViewRoutes = (): RouteInterface[] => {
 
@@ -590,7 +590,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
 /**
  * Get full screen layout routes.
  *
- * @return {RouteInterface[]}
+ * @returns Full screen layout routes.
  */
 export const getFullScreenViewRoutes = (): RouteInterface[] => {
 
@@ -617,7 +617,7 @@ export const getFullScreenViewRoutes = (): RouteInterface[] => {
 /**
  * Get default page layout routes.
  *
- * @return {RouteInterface[]}
+ * @returns Default layout routes.
  */
 export const getDefaultLayoutRoutes = (): RouteInterface[] => {
 
@@ -627,8 +627,21 @@ export const getDefaultLayoutRoutes = (): RouteInterface[] => {
         )
     );
 
+    routes.push(
+        {
+            component: DashboardLayout,
+            icon: null,
+            id: "dashboard",
+            name: "Dashboard",
+            path: AppConstants.getMainViewBasePath(),
+            protected: false,
+            showOnSidePanel: false
+        }
+    );
+
     routes.push({
         component: lazy(() => import("../pages/privacy")),
+        exact: true,
         icon: null,
         id: "privacy",
         name: "console:common.sidePanel.privacy",
@@ -641,9 +654,47 @@ export const getDefaultLayoutRoutes = (): RouteInterface[] => {
 };
 
 /**
+ * Get default page layout routes.
+ *
+ * @returns Dashboard layout routes.
+ */
+export const getDashboardLayoutRoutes = (): RouteInterface[] => {
+
+    return [
+        {
+            component: AdminView,
+            icon: null,
+            id: "admin",
+            name: "Admin",
+            path: AppConstants.getAdminViewBasePath(),
+            protected: false,
+            showOnSidePanel: false
+        },
+        {
+            component: DeveloperView,
+            icon: null,
+            id: "developer",
+            name: "Developer",
+            path: AppConstants.getDeveloperViewBasePath(),
+            protected: false,
+            showOnSidePanel: false
+        },
+        {
+            component: FullScreenView,
+            icon: null,
+            id: "full-screen-view",
+            name: "Full Screen View",
+            path: AppConstants.getFullScreenViewBasePath(),
+            protected: false,
+            showOnSidePanel: false
+        }
+    ];
+};
+
+/**
  * Get error page layout routes.
  *
- * @return {RouteInterface[]}
+ * @returns Error layout routes.
  */
 export const getErrorLayoutRoutes = (): RouteInterface[] => {
 
@@ -684,7 +735,7 @@ export const getErrorLayoutRoutes = (): RouteInterface[] => {
 /**
  * Get auth page layout routes.
  *
- * @return {RouteInterface[]}
+ * @returns Auth layout routes.
  */
 export const getAuthLayoutRoutes = (): RouteInterface[] => {
 
@@ -716,7 +767,8 @@ export const getAuthLayoutRoutes = (): RouteInterface[] => {
  *
  * @example
  *     Without this, we'll have to manually let the app know to use the `AuthLayout` if someone hits `/login`.
- *     {
+ *
+ *    \{
  *          component: AuthLayout,
  *          icon: null,
  *          id: "appRouteLogin",
@@ -724,14 +776,14 @@ export const getAuthLayoutRoutes = (): RouteInterface[] => {
  *          path: AppConstants.getPaths().get("LOGIN"),
  *          protected: false,
  *          showOnSidePanel: false
- *    },
+ *    \},
  *
- * @param {RouteInterface[]} routes - Set of routes in the layout.
- * @param {React.FunctionComponent} layout - Layout to be used.
+ * @param routes - Set of routes in the layout.
+ * @param layout - Layout to be used.
  *
- * @return {RouteInterface[]}
+ * @returns Routes assigned to a layout.
  */
-const getLayoutAssignedToRoutes = (routes: RouteInterface[], layout: FunctionComponent) => {
+const getLayoutAssignedToRoutes = (routes: RouteInterface[], layout: FunctionComponent): RouteInterface[] => {
 
     let modifiedRoutes: RouteInterface[] = [ ...routes ];
 
@@ -748,38 +800,19 @@ const getLayoutAssignedToRoutes = (routes: RouteInterface[], layout: FunctionCom
 /**
  * Get all the app layout routes.
  *
- * @return {RouteInterface[]}
+ * @returns App routes.
  */
 export const getAppLayoutRoutes = (): RouteInterface[] => {
 
     return [
         ...getLayoutAssignedToRoutes(getAuthLayoutRoutes(), AuthLayout),
-        ...getLayoutAssignedToRoutes(getDefaultLayoutRoutes(), DefaultLayout),
         ...getLayoutAssignedToRoutes(getErrorLayoutRoutes(), ErrorLayout),
         {
-            component: FullScreenView,
+            component: DefaultLayout,
             icon: null,
-            id: "full-screen-view",
-            name: "Full Screen View",
-            path: AppConstants.getFullScreenViewBasePath(),
-            protected: false,
-            showOnSidePanel: false
-        },
-        {
-            component: AdminView,
-            icon: null,
-            id: "admin",
-            name: "Admin",
-            path: AppConstants.getAdminViewBasePath(),
-            protected: false,
-            showOnSidePanel: false
-        },
-        {
-            component: DeveloperView,
-            icon: null,
-            id: "developer",
-            name: "Developer",
-            path: AppConstants.getDeveloperViewBasePath(),
+            id: "default",
+            name: "Default",
+            path: AppConstants.getMainViewBasePath(),
             protected: false,
             showOnSidePanel: false
         },
@@ -798,8 +831,9 @@ export const getAppLayoutRoutes = (): RouteInterface[] => {
 
 /**
  * Get base layout routes.
+ * These are the root routes of the application.
  *
- * @return {RouteInterface[]}
+ * @returns Base Routes.
  */
 export const getBaseRoutes = (): RouteInterface[] => {
 

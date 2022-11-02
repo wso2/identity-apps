@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -60,8 +60,8 @@ export interface StatCountCardPropsInterface extends IdentifiableComponentInterf
     inline?: boolean;
     /**
      * Stat count card onclick event.
-     * @param {React.MouseEvent<HTMLAnchorElement>} e - Event,
-     * @param {CardProps} data - Card data.
+     * @param e - Event,
+     * @param data - Card data.
      */
     onClick?: (e: MouseEvent<HTMLAnchorElement>, data: CardProps) => void;
     /**
@@ -95,9 +95,9 @@ interface StatOptionsInterface extends StatisticProps {
 /**
  * Stat count card component that can be used to represent statistics.
  *
- * @param {StatCountCardPropsInterface} props - Props injected to the components.
+ * @param props - Props injected to the components.
  *
- * @return {React.ReactElement}
+ * @returns the stat count card component.
  */
 export const StatCountCard: FunctionComponent<StatCountCardPropsInterface> = (
     props: StatCountCardPropsInterface

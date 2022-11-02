@@ -44,6 +44,15 @@
             }
             display: flex;
             justify-content: space-between;
+
+            .bars-container {
+                height: 100%;
+            }
+
+            .brand-container {
+                padding: 0;
+                height: 100%;
+            }
         }
         &.has-announcement {
             display: block;
@@ -277,6 +286,11 @@
 
                                 .search-bar {
                                     padding: 12px 0;
+                                    margin: 0;
+
+                                    &.tenant {
+                                        padding: 12px 15px !important;
+                                    }
                                 }
 
                                 .tenant-pagination {
@@ -560,6 +574,18 @@
     }
 }
 
+/* Removes the automatically added ui.container margins in mobile view */
+@media only screen and (max-width: 767px) {
+    .ui.menu {
+        .secondary-panel {
+            .ui.container {
+                margin-left: 0 !important;
+                margin-right: 0 !important;
+            }
+        }
+    }
+}
+
 /*-------------------------------
          User Dropdown
 --------------------------------*/
@@ -683,10 +709,10 @@
                 padding: 10px 5px;
 
                 .feature-status-label {
-                    font-size: .8em;
+                    font-size: .6em;
                     padding: 4px 7px;
                     font-weight: 500;
-                    top: 7px;
+                    top: 8px;
                     margin-left: 10px;
                     position: absolute;
                     border: 1px solid @defaultBorderColor;
@@ -696,8 +722,17 @@
                         color: @white;
                         background-color: @accentColor4;
                     }
+
                     &.coming-soon {
                         filter: grayscale(100%);
+                    }
+
+                    &.preview {
+                        text-transform: uppercase;
+                        color: @previewStatusTextColor;
+                        font-weight: 500;
+                        background-color: @previewStatusBgColor;
+                        font-size: 0.7em;
                     }
                 }
             }
@@ -910,6 +945,75 @@
                     cursor: default;
                 }
             }
+        }
+    }
+}
+
+/*----------------------------------
+      Organization Breadcrumb
+-----------------------------------*/
+
+.ui.menu {
+    &.organization-breadcrumb, .organization-breadcrumb {
+        box-shadow: none;
+        border: 1px solid @defaultBorderColor;
+        border-radius: 25px;
+        padding: 0 15px 0 0;
+        color: @tenantDropdownTriggerTextColor;
+        background: none;
+        cursor: default;
+
+        .icon-wrapper {
+            padding: 10px 0 0 15px;
+        }
+
+        .item {
+            &.breadcrumb {
+                padding: 0 0 0 5px;
+                cursor: default;
+
+                &.end {
+                    padding-right: 5px;
+                }
+
+                >span, >.text {
+                    padding: 10px;
+                    border-radius: 25px;
+                    cursor: pointer;
+
+
+                    &:hover, &:active, &:focus {
+                        &:not(.un-clickable) {
+                            color: darken(@tenantDropdownTriggerTextColor, 10);
+                            background: @tenantDropdownTriggerHoverBackground;
+                        }
+                    }
+
+                    &.un-clickable {
+                        cursor: default;
+                    }
+                }
+
+                .close-icon {
+                    cursor: pointer;
+                }
+            }
+        }
+
+        .separator-icon, .dropdown.breadcrumb-dropdown .icon {
+            margin: 0 !important;
+            padding: 0 0 0 5px;
+        }
+
+        &.trigger {
+            &:hover, &:active, &:focus {
+                color: darken(@tenantDropdownTriggerTextColor, 10);
+                background: @tenantDropdownTriggerHoverBackground;
+            }
+
+            cursor: pointer;
+            display: flex;
+            min-height: @minHeight;
         }
     }
 }

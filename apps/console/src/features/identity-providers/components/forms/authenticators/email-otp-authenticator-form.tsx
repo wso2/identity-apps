@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -56,7 +56,7 @@ interface EmailOTPAuthenticatorFormPropsInterface extends TestableComponentInter
     initialValues: CommonAuthenticatorFormInitialValuesInterface;
     /**
      * Callback for form submit.
-     * @param {CommonAuthenticatorFormInitialValuesInterface} values - Resolved Form Values.
+     * @param values - Resolved Form Values.
      */
     onSubmit: (values: CommonAuthenticatorFormInitialValuesInterface) => void;
     /**
@@ -136,12 +136,13 @@ export interface EmailOTPAuthenticatorFormErrorValidationsInterface {
     EmailOTP_OtpRegex_UseNumericChars: string;
 }
 
+const FORM_ID: string = "email-otp-authenticator-form";
+
 /**
  * Email OTP Authenticator Form.
  *
- * @param {EmailOTPAuthenticatorFormPropsInterface} props - Props injected to the component.
- *
- * @return {React.ReactElement}
+ * @param props - Props injected to the component.
+ * @returns Functional component.
  */
 export const EmailOTPAuthenticatorForm: FunctionComponent<EmailOTPAuthenticatorFormPropsInterface> = (
     props: EmailOTPAuthenticatorFormPropsInterface
@@ -184,7 +185,8 @@ export const EmailOTPAuthenticatorForm: FunctionComponent<EmailOTPAuthenticatorF
             const moderatedName: string = value.name.replace(/\./g, "_");
 
             // Converting expiry time from seconds to minutes
-            if (moderatedName === IdentityProviderManagementConstants.AUTHENTICATOR_INIT_VALUES_EMAIL_OTP_EXPIRY_TIME_KEY) {
+            if (moderatedName === IdentityProviderManagementConstants
+                .AUTHENTICATOR_INIT_VALUES_EMAIL_OTP_EXPIRY_TIME_KEY) {
                 const expiryTimeInMinutes = Math.round(parseInt(value.value, 10) / 60);
 
                 resolvedInitialValues = {
@@ -227,8 +229,7 @@ export const EmailOTPAuthenticatorForm: FunctionComponent<EmailOTPAuthenticatorF
      * Prepare form values for submitting.
      *
      * @param values - Form values.
-     *
-     * @return {CommonAuthenticatorFormInitialValuesInterface} Sanitized form values.
+     * @returns Sanitized form values.
      */
     const getUpdatedConfigurations = (values: EmailOTPAuthenticatorFormInitialValuesInterface)
         : CommonAuthenticatorFormInitialValuesInterface => {
@@ -267,9 +268,8 @@ export const EmailOTPAuthenticatorForm: FunctionComponent<EmailOTPAuthenticatorF
     /**
      * Validates the Form.
      *
-     * @param {EmailOTPAuthenticatorFormInitialValuesInterface} values - Form Values.
-     *
-     * @return {EmailOTPAuthenticatorFormErrorValidationsInterface}
+     * @param values - Form Values.
+     * @returns Form validation.
      */
     const validateForm = (values: EmailOTPAuthenticatorFormInitialValuesInterface):
         EmailOTPAuthenticatorFormErrorValidationsInterface => {
@@ -310,8 +310,11 @@ export const EmailOTPAuthenticatorForm: FunctionComponent<EmailOTPAuthenticatorF
             || (parseInt(values.EmailOTP_OTPLength, 10) > IdentityProviderManagementConstants
                 .EMAIL_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.OTP_LENGTH_MAX_VALUE)) {
             // Check for invalid range.
-            errors.EmailOTP_OTPLength = t("console:develop.features.authenticationProvider.forms" +
-                `.authenticatorSettings.emailOTP.tokenLength.validations.range.${isOTPNumeric ? "digits" : "characters"}`);
+            errors.EmailOTP_OTPLength = t(
+                "console:develop.features.authenticationProvider.forms" +
+                `.authenticatorSettings.emailOTP.tokenLength.validations.range.${
+                    isOTPNumeric ? "digits" : "characters"
+                }`);
         }
 
         return errors;
@@ -319,6 +322,7 @@ export const EmailOTPAuthenticatorForm: FunctionComponent<EmailOTPAuthenticatorF
 
     return (
         <Form
+            id={ FORM_ID }
             uncontrolledForm={ false }
             onSubmit={ (values) => {
                 onSubmit(getUpdatedConfigurations(values as EmailOTPAuthenticatorFormInitialValuesInterface));
@@ -442,6 +446,7 @@ export const EmailOTPAuthenticatorForm: FunctionComponent<EmailOTPAuthenticatorF
                 </Label>
             </Field.Input>
             <Field.Button
+                form={ FORM_ID }
                 size="small"
                 buttonType="primary_btn"
                 ariaLabel="Email OTP authenticator update button"

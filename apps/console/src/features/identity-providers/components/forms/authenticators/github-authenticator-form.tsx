@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -53,7 +53,7 @@ interface GithubAuthenticatorFormPropsInterface extends TestableComponentInterfa
     initialValues: CommonAuthenticatorFormInitialValuesInterface;
     /**
      * Callback for form submit.
-     * @param {CommonAuthenticatorFormInitialValuesInterface} values - Resolved Form Values.
+     * @param values - Resolved Form Values.
      */
     onSubmit: (values: CommonAuthenticatorFormInitialValuesInterface) => void;
     /**
@@ -149,12 +149,13 @@ interface ScopeMetaInterface {
     icon: SemanticICONS;
 }
 
+const FORM_ID: string = "github-authenticator-form";
+
 /**
  * GitHub Authenticator Form.
  *
- * @param {GithubAuthenticatorFormPropsInterface} props - Props injected to the component.
- *
- * @return {React.ReactElement}
+ * @param props - Props injected to the component.
+ * @returns Functional component.
  */
 export const GithubAuthenticatorForm: FunctionComponent<GithubAuthenticatorFormPropsInterface> = (
     props: GithubAuthenticatorFormPropsInterface
@@ -213,8 +214,7 @@ export const GithubAuthenticatorForm: FunctionComponent<GithubAuthenticatorFormP
      * Prepare form values for submitting.
      *
      * @param values - Form values.
-     *
-     * @return {CommonAuthenticatorFormInitialValuesInterface} Sanitized form values.
+     * @returns Sanitized form values.
      */
     const getUpdatedConfigurations = (values: GithubAuthenticatorFormInitialValuesInterface)
         : CommonAuthenticatorFormInitialValuesInterface => {
@@ -239,9 +239,8 @@ export const GithubAuthenticatorForm: FunctionComponent<GithubAuthenticatorFormP
     /**
      * Resolve metadata for UI rendering of scopes.
      *
-     * @param {string} scope - Input scope.
-     *
-     * @return {ScopeMetaInterface}
+     * @param scope - Input scope.
+     * @returns Scope metadata.
      */
     const resolveScopeMetadata = (scope: string): ScopeMetaInterface => {
 
@@ -278,6 +277,7 @@ export const GithubAuthenticatorForm: FunctionComponent<GithubAuthenticatorFormP
 
     return (
         <Form
+            id={ FORM_ID }
             uncontrolledForm={ false }
             onSubmit={ (values) => onSubmit(getUpdatedConfigurations(values as any)) }
             initialValues={ initialValues }
@@ -294,7 +294,7 @@ export const GithubAuthenticatorForm: FunctionComponent<GithubAuthenticatorFormP
                     t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                         ".github.clientId.placeholder")
                 }
-                hint={
+                hint={ (
                     <Trans
                         i18nKey={
                             "console:develop.features.authenticationProvider.forms.authenticatorSettings" +
@@ -303,7 +303,7 @@ export const GithubAuthenticatorForm: FunctionComponent<GithubAuthenticatorFormP
                     >
                         The <Code>Client ID</Code> you received from GitHub for your OAuth app.
                     </Trans>
-                }
+                ) }
                 required={ formFields?.ClientId?.meta?.isMandatory }
                 readOnly={
                     readOnly || (
@@ -335,7 +335,7 @@ export const GithubAuthenticatorForm: FunctionComponent<GithubAuthenticatorFormP
                     t("console:develop.features.authenticationProvider.forms" +
                         ".authenticatorSettings.github.clientSecret.placeholder")
                 }
-                hint={
+                hint={ (
                     <Trans
                         i18nKey={
                             "console:develop.features.authenticationProvider.forms.authenticatorSettings" +
@@ -344,7 +344,7 @@ export const GithubAuthenticatorForm: FunctionComponent<GithubAuthenticatorFormP
                     >
                         The <Code>Client secret</Code> you received from GitHub for your OAuth app.
                     </Trans>
-                }
+                ) }
                 required={ formFields?.ClientSecret?.meta?.isMandatory }
                 readOnly={
                     readOnly || (
@@ -455,19 +455,20 @@ export const GithubAuthenticatorForm: FunctionComponent<GithubAuthenticatorFormP
                             >
                                 The scopes specifies the type of access provided for connected apps
                                 to access data from GitHub. Click <a
-                                href={
-                                    "https://docs.github.com/en/developers/apps/building-oauth" +
-                                    "-apps/scopes-for-oauth-apps"
-                                }
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >here</a> to learn more.
+                                    href={
+                                        "https://docs.github.com/en/developers/apps/building-oauth" +
+                                        "-apps/scopes-for-oauth-apps"
+                                    }
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >here</a> to learn more.
                             </Trans>
                         </Hint>
                     </FormSection>
                 )
             }
             <Field.Button
+                form={ FORM_ID }
                 size="small"
                 buttonType="primary_btn"
                 ariaLabel="GitHub authenticator update button"

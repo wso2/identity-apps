@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -45,12 +45,13 @@ interface AdvancedConfigurationsFormPropsInterface extends TestableComponentInte
     isSubmitting?: boolean;
 }
 
+const FORM_ID: string = "application-advanced-configuration-form";
+
 /**
  * Advanced configurations form component.
  *
- * @param {AdvancedConfigurationsFormPropsInterface} props - Props injected to the component.
- *
- * @return {React.ReactElement}
+ * @param props - Props injected to the component.
+ * @returns Functional component.
  */
 export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfigurationsFormPropsInterface> = (
     props: AdvancedConfigurationsFormPropsInterface
@@ -68,10 +69,9 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
     const { t } = useTranslation();
 
     /**
-     * Prepare form values for submitting.
+     * Update configuration.
      *
      * @param values - Form values.
-     * @return {any} Sanitized form values.
      */
     const updateConfiguration = (values: any): void => {
         const data = {
@@ -95,6 +95,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
 
     return (
         <Form
+            id={ FORM_ID }
             uncontrolledForm={ false }
             onSubmit={ (values) => {
                 updateConfiguration(values);
@@ -171,6 +172,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                 hint={ t("console:develop.features.applications.forms.advancedConfig.fields.enableAuthorization.hint") }
             />
             <Field.Button
+                form={ FORM_ID }
                 size="small"
                 buttonType="primary_btn"
                 ariaLabel="Update button"

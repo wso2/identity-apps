@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -35,8 +35,8 @@ import { CommonConstants, FieldType, getFieldType, getPropertyField } from "../h
 /**
  * Common pluggable connector configurations form.
  *
- * @param {CommonPluggableComponentFormPropsInterface} props
- * @return { ReactElement }
+ * @param props - CommonPluggableComponentFormPropsInterface
+ * @returns ReactElement 
  */
 export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComponentFormPropsInterface> = (
     props: CommonPluggableComponentFormPropsInterface
@@ -79,7 +79,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
      * Prepares form values for submit.
      *
      * @param values - Form values.
-     * @return {any} Sanitized form values.
+     * @returns Sanitized form values.
      */
     const getUpdatedConfigurations = (values: Map<string, FormValue>): any => {
 
@@ -128,7 +128,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
     /**
      * Check whether provided property is a checkbox and contain sub-properties.
      *
-     * @param propertyMetadata Metadata of the property.
+     * @param propertyMetadata - Metadata of the property.
      */
     const isCheckboxWithSubProperties = (propertyMetadata: CommonPluggableComponentMetaPropertyInterface): boolean => {
         return propertyMetadata?.subProperties?.length > 0
@@ -138,11 +138,32 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
     /**
      * Check whether provided property is a radiobutton and contain sub-properties.
      *
-     * @param propertyMetadata Metadata of the property.
+     * @param propertyMetadata - Metadata of the property.
      */
     const isRadioButtonWithSubProperties = (propertyMetadata
         : CommonPluggableComponentMetaPropertyInterface): boolean => {
         return propertyMetadata?.subProperties?.length > 0 && getFieldType(propertyMetadata, mode) === FieldType.RADIO;
+    };
+
+    /**
+     * Check whether additional query parameters has scopes defined.
+     *
+     */
+    const isScopesDefined = (): boolean => {
+        return !!(initialValues?.properties?.find(
+            (queryParam: CommonPluggableComponentPropertyInterface) =>
+                queryParam.key === CommonConstants.QUERY_PARAMETERS_KEY)?.
+            value?.toLowerCase().includes("scope="));
+    };
+
+    /**
+     * Check whether Scopes field is empty.
+     *
+     */
+    const isScopesEmpty = (): boolean => {
+        return isEmpty(initialValues?.properties?.find(
+            (scopes: CommonPluggableComponentPropertyInterface) =>
+                scopes.key === CommonConstants.FIELD_COMPONENT_SCOPES)?.value);
     };
 
     const getField = (property: CommonPluggableComponentPropertyInterface,
@@ -212,7 +233,18 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
                 let field: ReactElement;
 
                 if (!isCheckboxWithSubProperties(metaProperty)) {
-                    field = getField(property, metaProperty, isSub, `${ testId }-form`, handleParentPropertyChange);
+                    if (metaProperty?.key === CommonConstants.FIELD_COMPONENT_SCOPES 
+                        && !isScopesDefined() && isScopesEmpty()) {
+                        const updatedProperty: CommonPluggableComponentPropertyInterface = {
+                            key: CommonConstants.FIELD_COMPONENT_SCOPES,
+                            value: metaProperty.defaultValue
+                        };
+
+                        field = getField(updatedProperty, metaProperty, isSub,
+                            `${ testId }-form`, handleParentPropertyChange);
+                    } else {
+                        field = getField(property, metaProperty, isSub, `${ testId }-form`, handleParentPropertyChange);
+                    }                  
                 } else if (isRadioButtonWithSubProperties(metaProperty)) {
                     field =
                         (<React.Fragment key={ metaProperty?.key }>

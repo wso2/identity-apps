@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2022, WSO2 Inc. (http://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -40,8 +40,8 @@ export interface ImagePreviewPropsInterface extends IdentifiableComponentInterfa
 /**
  * Image Preview container component.
  *
- * @param {ImagePreviewPropsInterface} props - Props injected to the component.
- * @return {React.ReactElement}
+ * @param props - Props injected to the component.
+ * @returns the Image Preview container component.
  */
 export const ImagePreview: FunctionComponent<PropsWithChildren<ImagePreviewPropsInterface>> = (
     props: PropsWithChildren<ImagePreviewPropsInterface>

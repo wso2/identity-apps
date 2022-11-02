@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,7 +14,6 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
 
 import { action } from "@storybook/addon-actions";
@@ -39,7 +38,7 @@ export default {
 /**
  * Story to display the basic usage of a Data Table.
  *
- * @return {React.ReactElement}
+ * @returns the story to display the basic usage of a Data Table.
  */
 export const BasicUsage = (): ReactElement => (
     <DataTable
@@ -121,7 +120,7 @@ BasicUsage.story = {
 /**
  * Story to display the usage of a Data Table with an operations bar present.
  *
- * @return {React.ReactElement}
+ * @returns the story to display the usage of a Data Table with an operations bar present.
  */
 export const WithOperationsBar = (): ReactElement => (
     <DataTable
@@ -288,7 +287,7 @@ WithOperationsBar.story = {
 /**
  * Story to display a sortable Data Table.
  *
- * @return {React.ReactElement}
+ * @returns the story to display a sortable Data Table.
  */
 export const Sortable = (): ReactElement => {
 

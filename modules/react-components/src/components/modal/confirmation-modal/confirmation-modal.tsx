@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -109,9 +109,9 @@ export interface ConfirmationModalSubComponentsInterface {
 /**
  * Confirmation modal component.
  *
- * @param {ConfirmationModalPropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns Confirmation Modal Component.
  */
 export const ConfirmationModal: FunctionComponent<ConfirmationModalPropsInterface> &
     ConfirmationModalSubComponentsInterface = (
@@ -194,9 +194,9 @@ export const ConfirmationModal: FunctionComponent<ConfirmationModalPropsInterfac
         /**
      * Resolves the animated icon.
      *
-     * @param {string} type - Type of the modal.
+     * @param type - Type of the modal.
      *
-     * @return {React.ReactElement}
+     * @returns Animated Icon.
      */
         const resolveIcon = (type: string): ReactElement => {
             if (type === "positive") {
@@ -303,9 +303,9 @@ export const ConfirmationModal: FunctionComponent<ConfirmationModalPropsInterfac
         /**
      * Resolves the assertion input.
      *
-     * @param {"input" | "checkbox"} type - Type of the assertion.
+     * @param type - Type of the assertion.
      *
-     * @return {React.ReactElement}
+     * @returns Assertion Input.
      */
         const resolveAssertionInput = (type: "input" | "checkbox"): ReactElement => {
             if (type === "input") {
@@ -392,9 +392,9 @@ export const ConfirmationModal: FunctionComponent<ConfirmationModalPropsInterfac
                                         data-testid={ testId + "-confirm-button" }
                                         className={ `${ type } ${ primaryActionFluid ? "fluid" : "" }` }
                                         disabled={
-                                            primaryActionLoading || !skipAssertion
+                                            primaryActionLoading || (!skipAssertion
                                                 ? !(!assertionType || confirmed)
-                                                : false
+                                                : false)
                                         }
                                         onClick={ handlePrimaryActionClick }
                                         fluid={ primaryActionFluid }
