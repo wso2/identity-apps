@@ -200,6 +200,11 @@
                 <version>${totp.authenticator.version}</version>
             </dependency>
             <dependency>
+                <groupId>org.wso2.carbon.extension.identity.authenticator.outbound.backupcode</groupId>
+                <artifactId>org.wso2.carbon.extension.identity.authenticator.backupcode.connector</artifactId>
+                <version>${backupcode.authenticator.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.wso2.carbon.identity.organization.management.core</groupId>
                 <artifactId>org.wso2.carbon.identity.organization.management.service</artifactId>
                 <version>${identity.organization.management.core.service.version}</version>
@@ -680,6 +685,7 @@
         <carbon.identity.oauth.imp.pkg.version.range>[6.1.0, 7.0.0)</carbon.identity.oauth.imp.pkg.version.range>
         <identity.governance.version>1.5.48</identity.governance.version>
         <totp.authenticator.version>3.2.2</totp.authenticator.version>
+        <backupcode.authenticator.version>0.0.12</backupcode.authenticator.version>
 
         <commons-io.wso2.version>2.7.0.wso2v1</commons-io.wso2.version>
         <commons-lang.wso2.version>2.6.0.wso2v1</commons-lang.wso2.version>
