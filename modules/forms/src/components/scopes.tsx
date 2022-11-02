@@ -19,10 +19,11 @@
 import filter from "lodash-es/filter";
 import isEmpty from "lodash-es/isEmpty";
 import isEqual from "lodash-es/isEqual";
+import { TestableComponentInterface } from "modules/core/dist/types/models";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { Button, Form, Icon, Label, Message, Popup } from "semantic-ui-react";
  
- interface ScopesPropsInterface {
+ interface ScopesPropsInterface extends TestableComponentInterface {
     /**
       * Initial value of the scopes field.
       * @example `openid profile`
@@ -32,10 +33,6 @@ import { Button, Form, Icon, Label, Message, Popup } from "semantic-ui-react";
       * Default OIDC scope `openid`.
     */
      defaultValue: string;
-     /**
-      * Id for testing.
-    */
-      ["data-testid"]: string;
     /**
       * Error message.
     */
