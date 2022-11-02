@@ -16,72 +16,122 @@
  * under the License.
  */
 
-import { RouteInterface } from "@wso2is/core/models";
+import { AlertInterface, ChildRouteInterface, ProfileInfoInterface, RouteInterface } from "@wso2is/core/models";
+import { initializeAlertSystem } from "@wso2is/core/store";
 import { RouteUtils as CommonRouteUtils, CommonUtils } from "@wso2is/core/utils";
 import {
+    Alert,
     ContentLoader,
+    DashboardLayout as DashboardLayoutSkeleton,
     EmptyPlaceholder,
     ErrorBoundary,
-    LinkButton
+    LinkButton,
+    SidePanel,
+    TopLoadingBar,
+    useMediaContext,
+    useUIElementSizes
 } from "@wso2is/react-components";
+import isEmpty from "lodash-es/isEmpty";
 import React, {
     FunctionComponent,
-    MutableRefObject,
     ReactElement,
     ReactNode,
     Suspense,
     useCallback,
     useEffect,
-    useRef
+    useRef,
+    useState
 } from "react";
 import { useTranslation } from "react-i18next";
+import { System } from "react-notification-system";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
+import { commonConfig } from "../extensions";
+import { getProfileInformation } from "../features/authentication/store";
 import {
     AppConstants,
     AppState,
     AppUtils,
     AppViewTypes,
+    ConfigReducerStateInterface,
+    Footer,
+    Header,
     ProtectedRoute,
     RouteUtils,
     StrictAppViewTypes,
-    getEmptyPlaceholderIllustrations
+    UIConstants,
+    getDeveloperViewRoutes,
+    getEmptyPlaceholderIllustrations,
+    getSidePanelMiscIcons,
+    history
 } from "../features/core";
-import { setActiveView, setSelectedRoute } from "../features/core/store/actions";
+import { setActiveView } from "../features/core/store/actions";
 
 /**
  * Developer View Prop types.
  */
-type DeveloperViewPropsInterface = RouteComponentProps;
+interface DeveloperViewPropsInterface {
+    /**
+     * Is layout fluid.
+     */
+    fluid?: boolean;
+}
 
 /**
  * Parent component for Developer features inherited from Dashboard layout skeleton.
  *
  * @param props - Props injected to the component.
+ *
  * @returns Developer View Wrapper
  */
 export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
-    props: DeveloperViewPropsInterface
+    props: DeveloperViewPropsInterface & RouteComponentProps
 ): ReactElement => {
 
     const {
+        fluid,
         location
     } = props;
 
     const dispatch = useDispatch();
     const { t } = useTranslation();
+    const { isMobileViewport } = useMediaContext();
+    const { headerHeight, footerHeight } = useUIElementSizes({
+        footerHeight: UIConstants.DEFAULT_FOOTER_HEIGHT,
+        headerHeight: UIConstants.DEFAULT_HEADER_HEIGHT,
+        topLoadingBarHeight: UIConstants.AJAX_TOP_LOADING_BAR_HEIGHT
+    });
 
+    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+    const profileInfo: ProfileInfoInterface = useSelector((state: AppState) => state.profile.profileInfo);
+    const alert: AlertInterface = useSelector((state: AppState) => state.global.alert);
+    const alertSystem: System = useSelector((state: AppState) => state.global.alertSystem);
+    const isAJAXTopLoaderVisible: boolean = useSelector((state: AppState) => state.global.isAJAXTopLoaderVisible);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const activeView: AppViewTypes = useSelector((state: AppState) => state.global.activeView);
     const filteredRoutes: RouteInterface[] = useSelector(
         (state: AppState) => state.routes.developeRoutes.filteredRoutes
     );
+    const sanitizedRoutes: RouteInterface[] = useSelector(
+        (state: AppState) => state.routes.developeRoutes.sanitizedRoutes
+    );
 
-    const initLoad: MutableRefObject<boolean> = useRef(true);
+    const [
+        selectedRoute,
+        setSelectedRoute
+    ] = useState<RouteInterface | ChildRouteInterface>(getDeveloperViewRoutes()[0]);
+    const [ mobileSidePanelVisibility, setMobileSidePanelVisibility ] = useState<boolean>(false);
+
+    const organizationLoading: boolean
+            = useSelector((state: AppState) => state?.organization?.getOrganizationLoading);
+
+    const initLoad = useRef(true);
 
     /**
      * Make sure `DEVELOP` tab is highlighted when this layout is used.
      */
     useEffect(() => {
+
         if (activeView === StrictAppViewTypes.DEVELOP) {
             return;
         }
@@ -89,9 +139,6 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
         dispatch(setActiveView(StrictAppViewTypes.DEVELOP));
     }, [ dispatch, activeView ]);
 
-    /**
-     * Handle routing and the selected route on location change.
-     */
     useEffect(() => {
         if (!location?.pathname) {
             return;
@@ -107,8 +154,49 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
             initLoad.current = false;
         }
 
-        dispatch(setSelectedRoute(CommonRouteUtils.getInitialActiveRoute(location.pathname, filteredRoutes)));
+        setSelectedRoute(CommonRouteUtils.getInitialActiveRoute(location.pathname, filteredRoutes));
     }, [ location.pathname, filteredRoutes ]);
+
+    useEffect(() => {
+        if (!isEmpty(profileInfo)) {
+            return;
+        }
+
+        dispatch(getProfileInformation());
+    }, [
+        dispatch,
+        profileInfo
+    ]);
+
+    /**
+     * Handles side panel toggle click.
+     */
+    const handleSidePanelToggleClick = (): void => {
+        setMobileSidePanelVisibility(!mobileSidePanelVisibility);
+    };
+
+    /**
+     * Handles side panel pusher on click.
+     */
+    const handleSidePanelPusherClick = (): void => {
+        setMobileSidePanelVisibility(false);
+    };
+
+    /**
+     * Handles side panel item click event.
+     *
+     * @param route - Clicked on route.
+     */
+    const handleSidePanelItemClick = (route: RouteInterface | ChildRouteInterface): void => {
+        if (route.path) {
+            setSelectedRoute(route);
+            history.push(route.path);
+
+            if (isMobileViewport) {
+                setMobileSidePanelVisibility(false);
+            }
+        }
+    };
 
     /**
      * Conditionally renders a route. If a route has defined a Redirect to
@@ -153,7 +241,7 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
      * @returns Set of resolved routes.
      */
     const resolveRoutes = useCallback((): RouteInterface[] | ReactNode[] => {
-        const resolvedRoutes: ReactNode[] = [];
+        const resolvedRoutes = [];
 
         filteredRoutes.forEach((route, key) => {
             resolvedRoutes.push(renderRoute(route, key));
@@ -162,36 +250,104 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
         return resolvedRoutes;
     }, [ filteredRoutes ]);
 
+
+    /**
+     * Handles alert system initialize.
+     *
+     * @param system - Alert system object.
+     */
+    const handleAlertSystemInitialize = (system) => {
+        dispatch(initializeAlertSystem(system));
+    };
+
     return (
-        <ErrorBoundary
-            onChunkLoadError={ AppUtils.onChunkLoadError }
-            fallback={ (
-                <EmptyPlaceholder
-                    action={ (
-                        <LinkButton onClick={ () => CommonUtils.refreshPage() }>
-                            { t("console:common.placeholders.brokenPage.action") }
-                        </LinkButton>
-                    ) }
-                    image={ getEmptyPlaceholderIllustrations().brokenPage }
-                    imageSize="tiny"
-                    subtitle={ [
-                        t("console:common.placeholders.brokenPage.subtitles.0"),
-                        t("console:common.placeholders.brokenPage.subtitles.1")
-                    ] }
-                    title={ t("console:common.placeholders.brokenPage.title") }
+        <DashboardLayoutSkeleton
+            alert={ (
+                <Alert
+                    dismissInterval={ UIConstants.ALERT_DISMISS_INTERVAL }
+                    alertsPosition="br"
+                    alertSystem={ alertSystem }
+                    alert={ alert }
+                    onAlertSystemInitialize={ handleAlertSystemInitialize }
+                    withIcon={ true }
+                />
+            ) }
+            topLoadingBar={ (
+                <TopLoadingBar
+                    height={ UIConstants.AJAX_TOP_LOADING_BAR_HEIGHT }
+                    visibility={ isAJAXTopLoaderVisible }
+                />
+            ) }
+            header={ (
+                <Header
+                    activeView={ StrictAppViewTypes.DEVELOP }
+                    fluid={ fluid }
+                    onSidePanelToggleClick={ handleSidePanelToggleClick }
+                />
+            ) }
+            sidePanel={  (
+                <SidePanel
+                    ordered
+                    categorized={
+                        config?.ui?.isLeftNavigationCategorized !== undefined
+                            ? config.ui.isLeftNavigationCategorized
+                                && commonConfig?.leftNavigation?.isLeftNavigationCategorized?.develop
+                            : true
+                    }
+                    caretIcon={ getSidePanelMiscIcons().caretRight }
+                    desktopContentTopSpacing={ UIConstants.DASHBOARD_LAYOUT_DESKTOP_CONTENT_TOP_SPACING }
+                    fluid={ fluid }
+                    footerHeight={ footerHeight }
+                    headerHeight={ headerHeight }
+                    hoverType="background"
+                    mobileSidePanelVisibility={ mobileSidePanelVisibility }
+                    onSidePanelItemClick={ handleSidePanelItemClick }
+                    onSidePanelPusherClick={ handleSidePanelPusherClick }
+                    routes={ !organizationLoading
+                        && sanitizedRoutes }
+                    selected={ selectedRoute }
+                    translationHook={ t }
+                    allowedScopes={ allowedScopes }
+                />
+            ) }
+            footer={ (
+                <Footer
+                    fluid={ fluid }
                 />
             ) }
         >
-            <Suspense fallback={ <ContentLoader dimmer={ false } /> }>
-                <Switch>
-                    { resolveRoutes() as ReactNode[] }
-                </Switch>
-            </Suspense>
-        </ErrorBoundary>
+            <ErrorBoundary
+                onChunkLoadError={ AppUtils.onChunkLoadError }
+                fallback={ (
+                    <EmptyPlaceholder
+                        action={ (
+                            <LinkButton onClick={ () => CommonUtils.refreshPage() }>
+                                { t("console:common.placeholders.brokenPage.action") }
+                            </LinkButton>
+                        ) }
+                        image={ getEmptyPlaceholderIllustrations().brokenPage }
+                        imageSize="tiny"
+                        subtitle={ [
+                            t("console:common.placeholders.brokenPage.subtitles.0"),
+                            t("console:common.placeholders.brokenPage.subtitles.1")
+                        ] }
+                        title={ t("console:common.placeholders.brokenPage.title") }
+                    />
+                ) }
+            >
+                <Suspense fallback={ <ContentLoader dimmer={ false } /> }>
+                    <Switch>
+                        { resolveRoutes() as ReactNode[] }
+                    </Switch>
+                </Suspense>
+            </ErrorBoundary>
+        </DashboardLayoutSkeleton>
     );
 };
 
 /**
  * Default props for the Developer View.
  */
-DeveloperView.defaultProps = {};
+DeveloperView.defaultProps = {
+    fluid: true
+};

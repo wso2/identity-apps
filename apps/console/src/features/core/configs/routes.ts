@@ -23,7 +23,7 @@ import values from "lodash-es/values";
 import { FunctionComponent, lazy } from "react";
 import { getSidePanelIcons } from "./ui";
 import { EXTENSION_ROUTES, identityProviderConfig } from "../../../extensions";
-import { AppLayout, AuthLayout, DashboardLayout, DefaultLayout, ErrorLayout } from "../../../layouts";
+import { AppLayout, AuthLayout, DefaultLayout, ErrorLayout } from "../../../layouts";
 import { AdminView, DeveloperView, FullScreenView } from "../../../views";
 import { AppConstants } from "../constants";
 
@@ -183,7 +183,7 @@ export const getDeveloperViewRoutes = (): RouteInterface[] => {
 /**
  * Get all the Admin View Routes.
  *
- * @returns Admin view routes.
+ * @returns
  */
 export const getAdminViewRoutes = (): RouteInterface[] => {
 
@@ -590,7 +590,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
 /**
  * Get full screen layout routes.
  *
- * @returns Full screen layout routes.
+ * @returns
  */
 export const getFullScreenViewRoutes = (): RouteInterface[] => {
 
@@ -617,7 +617,7 @@ export const getFullScreenViewRoutes = (): RouteInterface[] => {
 /**
  * Get default page layout routes.
  *
- * @returns Default layout routes.
+ * @returns
  */
 export const getDefaultLayoutRoutes = (): RouteInterface[] => {
 
@@ -627,21 +627,8 @@ export const getDefaultLayoutRoutes = (): RouteInterface[] => {
         )
     );
 
-    routes.push(
-        {
-            component: DashboardLayout,
-            icon: null,
-            id: "dashboard",
-            name: "Dashboard",
-            path: AppConstants.getMainViewBasePath(),
-            protected: false,
-            showOnSidePanel: false
-        }
-    );
-
     routes.push({
         component: lazy(() => import("../pages/privacy")),
-        exact: true,
         icon: null,
         id: "privacy",
         name: "console:common.sidePanel.privacy",
@@ -654,47 +641,9 @@ export const getDefaultLayoutRoutes = (): RouteInterface[] => {
 };
 
 /**
- * Get default page layout routes.
- *
- * @returns Dashboard layout routes.
- */
-export const getDashboardLayoutRoutes = (): RouteInterface[] => {
-
-    return [
-        {
-            component: AdminView,
-            icon: null,
-            id: "admin",
-            name: "Admin",
-            path: AppConstants.getAdminViewBasePath(),
-            protected: false,
-            showOnSidePanel: false
-        },
-        {
-            component: DeveloperView,
-            icon: null,
-            id: "developer",
-            name: "Developer",
-            path: AppConstants.getDeveloperViewBasePath(),
-            protected: false,
-            showOnSidePanel: false
-        },
-        {
-            component: FullScreenView,
-            icon: null,
-            id: "full-screen-view",
-            name: "Full Screen View",
-            path: AppConstants.getFullScreenViewBasePath(),
-            protected: false,
-            showOnSidePanel: false
-        }
-    ];
-};
-
-/**
  * Get error page layout routes.
  *
- * @returns Error layout routes.
+ * @returns
  */
 export const getErrorLayoutRoutes = (): RouteInterface[] => {
 
@@ -735,7 +684,7 @@ export const getErrorLayoutRoutes = (): RouteInterface[] => {
 /**
  * Get auth page layout routes.
  *
- * @returns Auth layout routes.
+ * @returns
  */
 export const getAuthLayoutRoutes = (): RouteInterface[] => {
 
@@ -768,7 +717,7 @@ export const getAuthLayoutRoutes = (): RouteInterface[] => {
  * @example
  *     Without this, we'll have to manually let the app know to use the `AuthLayout` if someone hits `/login`.
  *
- *    \{
+ *    @example \{
  *          component: AuthLayout,
  *          icon: null,
  *          id: "appRouteLogin",
@@ -781,9 +730,9 @@ export const getAuthLayoutRoutes = (): RouteInterface[] => {
  * @param routes - Set of routes in the layout.
  * @param layout - Layout to be used.
  *
- * @returns Routes assigned to a layout.
+ * @returns
  */
-const getLayoutAssignedToRoutes = (routes: RouteInterface[], layout: FunctionComponent): RouteInterface[] => {
+const getLayoutAssignedToRoutes = (routes: RouteInterface[], layout: FunctionComponent) => {
 
     let modifiedRoutes: RouteInterface[] = [ ...routes ];
 
@@ -800,19 +749,38 @@ const getLayoutAssignedToRoutes = (routes: RouteInterface[], layout: FunctionCom
 /**
  * Get all the app layout routes.
  *
- * @returns App routes.
+ * @returns
  */
 export const getAppLayoutRoutes = (): RouteInterface[] => {
 
     return [
         ...getLayoutAssignedToRoutes(getAuthLayoutRoutes(), AuthLayout),
+        ...getLayoutAssignedToRoutes(getDefaultLayoutRoutes(), DefaultLayout),
         ...getLayoutAssignedToRoutes(getErrorLayoutRoutes(), ErrorLayout),
         {
-            component: DefaultLayout,
+            component: FullScreenView,
             icon: null,
-            id: "default",
-            name: "Default",
-            path: AppConstants.getMainViewBasePath(),
+            id: "full-screen-view",
+            name: "Full Screen View",
+            path: AppConstants.getFullScreenViewBasePath(),
+            protected: false,
+            showOnSidePanel: false
+        },
+        {
+            component: AdminView,
+            icon: null,
+            id: "admin",
+            name: "Admin",
+            path: AppConstants.getAdminViewBasePath(),
+            protected: false,
+            showOnSidePanel: false
+        },
+        {
+            component: DeveloperView,
+            icon: null,
+            id: "developer",
+            name: "Developer",
+            path: AppConstants.getDeveloperViewBasePath(),
             protected: false,
             showOnSidePanel: false
         },
@@ -831,9 +799,8 @@ export const getAppLayoutRoutes = (): RouteInterface[] => {
 
 /**
  * Get base layout routes.
- * These are the root routes of the application.
  *
- * @returns Base Routes.
+ * @returns
  */
 export const getBaseRoutes = (): RouteInterface[] => {
 
