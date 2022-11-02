@@ -23,6 +23,7 @@
     },
     "devDependencies": {
         "@nrwl/devkit": "14.4.2",
+        "@nrwl/nx-plugin": "14.4.2",
         "@nrwl/workspace": "14.4.2",
         "@testing-library/react": "^13.4.0",
         "babel-polyfill": "^6.26.0",

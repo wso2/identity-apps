@@ -19,18 +19,5 @@
 module.exports = {
     extends: [
         "../../.eslintrc.js"
-    ],
-    "overrides": [
-        {
-            "files": [
-                "./package.json",
-                "./generators.json",
-                "./executors.json"
-            ],
-            "parser": "jsonc-eslint-parser",
-            "rules": {
-                "@nrwl/nx/nx-plugin-checks": "error"
-            }
-        }
     ]
 };
