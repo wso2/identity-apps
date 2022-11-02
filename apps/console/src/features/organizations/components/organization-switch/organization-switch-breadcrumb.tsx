@@ -142,6 +142,7 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
             <span
                 onClick={ () => handleOrganizationSwitch(item) }
                 data-componentid={ `${ componentId }-breadcrumb-item-super-organization` }
+                className="ellipsis"
             >
                 { item.name }
             </span>
@@ -193,8 +194,9 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
                                             }
                                             className={
                                                 index ===
-                                                breadcrumbList.length - 1 &&
-                                                "un-clickable"
+                                                breadcrumbList.length - 1
+                                                    ? "un-clickable ellipsis"
+                                                    : "ellipsis"
                                             }
                                             data-componentid={ `${ componentId }-breadcrumb-item-${ breadcrumb.name }` }
                                         >
@@ -287,6 +289,7 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
                         }
                         data-componentid={ `${
                             componentId }-breadcrumb-item-${ breadcrumbList[ breadcrumbList.length - 2 ].name }` }
+                        className="ellipsis"
                     >
                         { breadcrumbList[ breadcrumbList?.length - 2 ].name }
                     </span>
@@ -306,7 +309,7 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
                             data-componentid={ `${
                                 componentId
                             }-breadcrumb-item-${ breadcrumbList[ breadcrumbList.length - 1 ].name }` }
-                            className={ "un-clickable" }
+                            className="un-clickable ellipsis"
                         >
                             { breadcrumbList[ breadcrumbList.length - 1 ].name }
                         </span>
@@ -388,7 +391,7 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
                                         />
                                     </div>
                                     <div className="item">
-                                        <span>{ resolveTriggerName() }</span>
+                                        <span className="ellipsis">{ resolveTriggerName() }</span>
                                         <Icon
                                             name="caret right"
                                             className="separator-icon"

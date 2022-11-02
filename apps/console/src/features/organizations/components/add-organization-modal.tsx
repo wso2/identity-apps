@@ -71,7 +71,6 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
     const dispatch = useDispatch();
 
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
-    const [ type ] = useState<ORGANIZATION_TYPE>(ORGANIZATION_TYPE.STRUCTURAL);
     const [ error, setError ] = useState<string>("");
 
     const submitForm = useRef<() => void>();
@@ -79,13 +78,19 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
     const currentOrganization = useSelector((state: AppState) => state.organization.organization);
 
-    const submitOrganization = async (values: OrganizationAddFormProps): Promise<void> => {
+    const submitOrganization = async (values: OrganizationAddFormProps): Promise<Record<string, string>|void> => {
         const organization: AddOrganizationInterface = {
             description: values?.description,
             name: values?.name,
             parentId: parent?.id ?? currentOrganization.id,
             type: ORGANIZATION_TYPE.TENANT
         };
+
+        if (!values?.name) {
+            return Promise.resolve({
+                name: t("console:manage.features.organizations.forms.addOrganization.name.validation.empty")
+            });
+        }
 
         setIsSubmitting(true);
 
@@ -128,22 +133,6 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
             .finally(() => {
                 setIsSubmitting(false);
             });
-    };
-
-    const validate = async (values: OrganizationAddFormProps): Promise<Partial<OrganizationAddFormProps>> => {
-        const error: Partial<OrganizationAddFormProps> = {};
-
-        if (!values?.name) {
-            error.name = t("console:manage.features.organizations.forms.addOrganization.name.validation.empty");
-        }
-
-        if (!values?.domainName && type === ORGANIZATION_TYPE.TENANT) {
-            error.domainName = t(
-                "console:manage.features.organizations.forms.addOrganization." + "domainName.validation.empty"
-            );
-        }
-
-        return error;
     };
 
     /**
@@ -190,7 +179,6 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
                                     id={ FORM_ID }
                                     uncontrolledForm={ false }
                                     onSubmit={ submitOrganization }
-                                    validate={ validate }
                                     triggerSubmit={ (submit) => (submitForm.current = submit) }
                                 >
                                     <Field.Input
