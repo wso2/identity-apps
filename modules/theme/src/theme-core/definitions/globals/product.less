@@ -58,7 +58,7 @@ body {
                 background-color: @secondaryColor !important;
             }
         }
-
+        
         &.absolute {
             position: absolute;
             top: @productVersionLabelAbsoluteTop;
@@ -460,11 +460,11 @@ body {
 
 @fluidDefaultLayoutHeaderPadding: 0 @fluidLayoutHorizontalPadding;
 @fluidDefaultLayoutFooterPadding: 0 @fluidLayoutHorizontalPadding;
-@defaultLayoutPadding: 0;
+@defaultLayoutPadding: 4em 6em;
 
 .layout {
     &.dashboard-layout {
-        .dashboard-layout-content {
+        .layout-content {
             min-height: 100vh;
 
             .desktop-container {
@@ -604,7 +604,7 @@ body {
     }
 
     &.default-layout {
-        .default-layout-content {
+        .layout-content {
             padding: @defaultLayoutPadding !important;
         }
 
@@ -622,7 +622,7 @@ body {
             }
         }
     }
-
+    
     &.grid-layout {
         .search-input-wrapper {
             max-width: @advancedSearchWidth;
@@ -635,17 +635,6 @@ body {
                 z-index: 9;
             }
         }
-    }
-}
-
-@media only screen and (max-width: 767px) {
-    .ui.fluid.container.layout.base-layout {
-        margin-left: 0 !important;
-        margin-right: 0 !important;
-    }
-    .ui.fluid.container.layout.default-layout.fluid-default-layout {
-        margin-left: 0 !important;
-        margin-right: 0 !important;
     }
 }
 
@@ -1251,7 +1240,7 @@ body {
         &:hover {
             background: @iconHoverBgColor;
             cursor: pointer;
-
+            
             &.inverted {
                 background: @defaultInvertedHoverBackground;
             }
@@ -2055,7 +2044,7 @@ code {
                 color: @whiteSmoke;
                 height: 100%;
                 width: 100%;
-
+                
                 &:hover {
                     color: @whiteSmoke;
                 }
@@ -2073,7 +2062,7 @@ code {
             &:hover {
                 .theme-icon {
                     path {
-                        fill: @black;
+                        fill: @black; 
                     }
                 }
             }
@@ -2083,7 +2072,7 @@ code {
             }
         }
     }
-
+    
     &.light {
         .editor-actions {
             .editor-action {
@@ -2122,7 +2111,7 @@ code {
             max-height: @codeEditorFullScreenWrapperHeight;
             min-height: @codeEditorFullScreenWrapperHeight;
             padding: 0;
-
+            
             .CodeMirror {
                 height: @codeEditorFullScreenWrapperHeight;
             }

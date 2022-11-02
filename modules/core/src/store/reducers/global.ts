@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
- * WSO2 LLC. licenses this file to you under the Apache License,
+ * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -22,8 +22,8 @@ import { CommonGlobalActionTypes, CommonGlobalActions } from "../actions/types";
 /**
  * Reducer to handle the state of common global app actions.
  *
- * @param initialState - Reducer initial state.
- * @returns The new state.
+ * @param {CommonGlobalReducerStateInterface<T, S, U>} initialState - Reducer initial state.
+ * @return {CommonGlobalReducerStateInterface<T, S, U>} The new state.
  */
 export const commonGlobalReducer = <T, S, U>(initialState: CommonGlobalReducerStateInterface<T, S, U>) => (
     state: CommonGlobalReducerStateInterface<T, S, U> = initialState,
@@ -55,16 +55,6 @@ export const commonGlobalReducer = <T, S, U>(initialState: CommonGlobalReducerSt
             return {
                 ...state,
                 supportedI18nLanguages: action.payload
-            };
-        case CommonGlobalActionTypes.SET_MOBILE_SIDE_PANEL_VISIBILITY:
-            return {
-                ...state,
-                isMobileSidePanelVisible: action.payload
-            };
-        case CommonGlobalActionTypes.SET_MOBILE_SIDE_PANEL_TOGGLE_VISIBILITY:
-            return {
-                ...state,
-                isMobileSidePanelToggleVisible: action.payload
             };
         default:
             return state;

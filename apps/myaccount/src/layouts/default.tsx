@@ -40,7 +40,6 @@ import { Footer, Header, ProtectedRoute } from "../components";
 import { getDefaultLayoutRoutes } from "../configs";
 import { AppConstants, UIConstants } from "../constants";
 import { AppState } from "../store";
-import { setMobileSidePanelVisibility } from "../store/actions";
 
 /**
  * Default page layout component Prop types.
@@ -75,7 +74,6 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = (
     const alert: AlertInterface = useSelector((state: AppState) => state.global.alert);
     const alertSystem: System = useSelector((state: AppState) => state.global.alertSystem);
     const isAJAXTopLoaderVisible: boolean = useSelector((state: AppState) => state.global.isGlobalLoaderVisible);
-    const isMobileSidePanelVisible: boolean = useSelector((state: AppState) => state.global.isMobileSidePanelVisible);
 
     const [ defaultLayoutRoutes, setDefaultLayoutRoutes ] = useState<RouteInterface[]>(getDefaultLayoutRoutes());
 
@@ -88,13 +86,6 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = (
 
     const handleAlertSystemInitialize = (system) => {
         dispatch(initializeAlertSystem(system));
-    };
-
-    /**
-     * Handles side panel toggle click.
-     */
-    const handleSidePanelToggleClick = (): void => {
-        dispatch(setMobileSidePanelVisibility(!isMobileSidePanelVisible));
     };
 
     return (
@@ -118,15 +109,16 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = (
             ) }
             footerHeight={ footerHeight }
             headerHeight={ headerHeight }
+            desktopContentTopSpacing={ UIConstants.DASHBOARD_LAYOUT_DESKTOP_CONTENT_TOP_SPACING }
             header={ (
                 <Header
-                    fluid={ fluid }
-                    onSidePanelToggleClick={ handleSidePanelToggleClick }
+                    fluid={ false }
+                    showSidePanelToggle={ false }
                 />
             ) }
             footer={ (
                 <Media greaterThan="mobile">
-                    <Footer fluid={ fluid } />
+                    <Footer fluid={ false } />
                 </Media>
             ) }
         >
