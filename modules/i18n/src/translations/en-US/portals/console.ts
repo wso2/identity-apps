@@ -1596,6 +1596,11 @@ export const console: ConsoleNS = {
                                 heading: "Application is inactive"
                             }
                         },
+                        mobileApp: {
+                            discoverableHint: "If enabled and a web accessible url(deep link) is given, customers " +
+                                "can access this application from the <1>{{ myAccount }}</1> portal.",
+                            mobileAppPlaceholder: "myapp://oauth2"
+                        },
                         sections: {
                             accessToken: {
                                 fields: {

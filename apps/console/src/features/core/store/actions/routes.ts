@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (http://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -22,7 +22,8 @@ import {
     SetFilteredDevelopRoutesActionInterface,
     SetFilteredManageRoutesActionInterface,
     SetSanitizedDevelopRoutesActionInterface,
-    SetSanitizedManageRoutesActionInterface
+    SetSanitizedManageRoutesActionInterface,
+    SetSelectedRouteActionInterface
 } from "./types";
 
 export const setFilteredManageRoutes = (routes: RouteInterface[]): SetFilteredManageRoutesActionInterface => {
@@ -50,5 +51,18 @@ export const setSanitizedDevelopRoutes = (routes: RouteInterface[]): SetSanitize
     return {
         payload: routes,
         type: RoutesActionTypes.SET_SANITIZED_DEVELOP_ROUTES
+    };
+};
+
+/**
+ * Action to set the selected route.
+ *
+ * @param route - Selected route.
+ * @returns Selected Route action.
+ */
+export const setSelectedRoute = (route: RouteInterface): SetSelectedRouteActionInterface => {
+    return {
+        payload: route,
+        type: RoutesActionTypes.SET_SELECTED_ROUTE
     };
 };

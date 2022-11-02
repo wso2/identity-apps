@@ -574,6 +574,18 @@
     }
 }
 
+/* Removes the automatically added ui.container margins in mobile view */
+@media only screen and (max-width: 767px) {
+    .ui.menu {
+        .secondary-panel {
+            .ui.container {
+                margin-left: 0 !important;
+                margin-right: 0 !important;
+            }
+        }
+    }
+}
+
 /*-------------------------------
          User Dropdown
 --------------------------------*/
@@ -697,10 +709,10 @@
                 padding: 10px 5px;
 
                 .feature-status-label {
-                    font-size: .8em;
+                    font-size: .6em;
                     padding: 4px 7px;
                     font-weight: 500;
-                    top: 7px;
+                    top: 8px;
                     margin-left: 10px;
                     position: absolute;
                     border: 1px solid @defaultBorderColor;
@@ -720,6 +732,7 @@
                         color: @previewStatusTextColor;
                         font-weight: 500;
                         background-color: @previewStatusBgColor;
+                        font-size: 0.7em;
                     }
                 }
             }

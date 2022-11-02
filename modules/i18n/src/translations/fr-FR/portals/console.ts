@@ -1635,6 +1635,12 @@ export const console: ConsoleNS = {
                                 heading: "La demande est révoquée"
                             }
                         },
+                        mobileApp: {
+                            discoverableHint: "Si cette option est activée et qu'une URL accessible sur le " +
+                                "Web (lien profond) est fournie, les clients peuvent accéder à cette " +
+                                "application à partir du portail <1>{{ myAccount }}</1>.",
+                            mobileAppPlaceholder: "myapp://oauth2"
+                        },
                         sections: {
                             accessToken: {
                                 fields: {
