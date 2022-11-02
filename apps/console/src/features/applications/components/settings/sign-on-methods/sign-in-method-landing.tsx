@@ -169,7 +169,7 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                     } }
                                 />
                             ) }
-                            { /*TODO: Uncomment this code block once the SMS OTP backend changes are done */}
+                            { /*TODO: Uncomment this code block once the SMS OTP backend changes are done */ }
                             { /*{ !hiddenOptions.includes(LoginFlowTypes.SECOND_FACTOR_SMS_OTP) && (*/ }
                             { /*    <InfoCard*/ }
                             { /*        fluid*/ }
