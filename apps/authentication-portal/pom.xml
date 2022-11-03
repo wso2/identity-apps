@@ -246,6 +246,11 @@
             </exclusions>
         </dependency>
         <dependency>
+            <groupId>org.wso2.carbon.extension.identity.authenticator.outbound.backupcode</groupId>
+            <artifactId>org.wso2.carbon.extension.identity.authenticator.backupcode.connector</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>org.wso2.carbon.identity.governance</groupId>
             <artifactId>org.wso2.carbon.identity.captcha</artifactId>
             <scope>provided</scope>
