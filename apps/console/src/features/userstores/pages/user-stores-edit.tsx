@@ -1,25 +1,25 @@
 /**
-* Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
-*
-* WSO2 Inc. licenses this file to you under the Apache License,
-* Version 2.0 (the 'License'); you may not use this file except
-* in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing,
-* software distributed under the License is distributed on an
-* 'AS IS' BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-* KIND, either express or implied. See the License for the
-* specific language governing permissions and limitations
-* under the License.
-*/
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 
 import { UserstoreConstants } from "@wso2is/core/constants";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { GenericIcon, PageLayout, ResourceTab } from "@wso2is/react-components";
+import { GenericIcon, ResourceTab, TabPageLayout } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -52,9 +52,9 @@ interface RouteParams {
 /**
  * This renders the userstore edit page.
  *
- * @param {UserStoresEditPageInterface & RouteComponentProps<RouteParams>} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns User store edit page.
  */
 const UserStoresEditPage: FunctionComponent<UserStoresEditPageInterface> = (
     props: UserStoresEditPageInterface & RouteComponentProps<RouteParams>
@@ -70,6 +70,7 @@ const UserStoresEditPage: FunctionComponent<UserStoresEditPageInterface> = (
     const [ userStore, setUserStore ] = useState<UserStore>(null);
     const [ type, setType ] = useState<UserstoreType>(null);
     const [ properties, setProperties ] = useState<CategorizedProperties>(null);
+    const [ isGroupDetailsRequestLoading, setIsGroupDetailsRequestLoading ] = useState<boolean>(undefined);
 
     const dispatch = useDispatch();
 
@@ -79,6 +80,8 @@ const UserStoresEditPage: FunctionComponent<UserStoresEditPageInterface> = (
      * Fetches the userstore by its id
      */
     const getUserStore = () => {
+        setIsGroupDetailsRequestLoading(true);
+
         getAUserStore(userStoreId).then(response => {
             setUserStore(response);
         }).catch(error => {
@@ -92,6 +95,8 @@ const UserStoresEditPage: FunctionComponent<UserStoresEditPageInterface> = (
                         || t("console:manage.features.userstores.notifications.fetchUserstores.genericError.message")
                 }
             ));
+        }).finally(() => {
+            setIsGroupDetailsRequestLoading(false);
         });
     };
 
@@ -187,7 +192,8 @@ const UserStoresEditPage: FunctionComponent<UserStoresEditPageInterface> = (
     ];
 
     return (
-        <PageLayout
+        <TabPageLayout
+            isLoading= { isGroupDetailsRequestLoading }
             image={
                 (<GenericIcon
                     bordered
@@ -221,6 +227,7 @@ const UserStoresEditPage: FunctionComponent<UserStoresEditPageInterface> = (
             data-testid={ `${ testId }-page-layout` }
         >
             <ResourceTab
+                isLoading= { isGroupDetailsRequestLoading }
                 panes={ panes }
                 onTabChange={ () => {
                     // Re-fetch userstore details on every tab change to try to get the latest available updated
@@ -230,7 +237,7 @@ const UserStoresEditPage: FunctionComponent<UserStoresEditPageInterface> = (
                 } }
                 data-testid={ `${ testId }-tabs` }
             />
-        </PageLayout>
+        </TabPageLayout>
     );
 };
 

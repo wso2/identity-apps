@@ -26,7 +26,7 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Form, Grid, Menu, Placeholder, TabProps } from "semantic-ui-react";
+import { Form, Grid, Menu, TabProps } from "semantic-ui-react";
 import { InboundProtocolsMeta } from "./meta";
 import {
     AccessConfiguration,
@@ -83,7 +83,10 @@ interface EditApplicationPropsInterface extends SBACInterface<FeatureConfigInter
     /**
      * Is the data still loading.
      */
-    isLoading?: boolean;
+    isLoading: boolean;
+    /**
+     * Set is loading.
+     */
     setIsLoading?: any;
     /**
      * Callback to be triggered after deleting the application.
@@ -105,6 +108,10 @@ interface EditApplicationPropsInterface extends SBACInterface<FeatureConfigInter
      * URL Search params received to the parent edit page component.
      */
     urlSearchParams?: URLSearchParams;
+    /**
+     * Callback function to set the loading state.
+     */
+    getLoadingState?: (isLoading: boolean) => void;
 }
 
 /**
@@ -130,6 +137,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         template,
         readOnly,
         urlSearchParams,
+        getLoadingState,
         [ "data-testid" ]: testId
     } = props;
 
@@ -165,7 +173,6 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     const [ activeTabIndex, setActiveTabIndex ] = useState<number>(undefined);
     const [ defaultActiveIndex, setDefaultActiveIndex ] = useState<number>(undefined);
     const [ totalTabs, setTotalTabs ] = useState<number>(undefined);
-    const [ canLoadResourceTab, setCanLoadResourceTab ] = useState<boolean>(false);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -185,13 +192,13 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
      * Loading status for the resource tabs
      */
     useEffect(() => {
-        setCanLoadResourceTab(
-            application && !isInboundProtocolsRequestLoading && inboundProtocolList != undefined
+        getLoadingState(
+            !(application && !isInboundProtocolsRequestLoading && inboundProtocolList != undefined
             && (tabPaneExtensions || !applicationConfig.editApplication.extendTabs
             || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
             || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS
             || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_SAML 
-            || application?.templateId === ApplicationManagementConstants.MOBILE)
+            || application?.templateId === ApplicationManagementConstants.MOBILE))
         );
     }, [ application, isInboundProtocolsRequestLoading, inboundProtocolList, applicationConfig ]);
 
@@ -659,9 +666,9 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 onlyOIDCConfigured={
                     (application?.templateId === CustomApplicationTemplate.id
                         || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC)
-                    && inboundProtocolList.length === 0
+                    && inboundProtocolList?.length === 0
                         ? true
-                        : inboundProtocolList.length === 1
+                        : inboundProtocolList?.length === 1
                         && (inboundProtocolList[ 0 ] === SupportedAuthProtocolTypes.OIDC)
                 }
                 onUpdate={ handleApplicationUpdate }
@@ -1049,49 +1056,21 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         );
     };
 
-    /**
-     * Renders the placeholder elements
-     * @returns Placeholders
-     */
-    const detailedViewPlaceholder = (): ReactElement => {
-        return (
-            <>
-                <Placeholder style={ { maxWidth: "60%" } }>
-                    <Placeholder.Image style={ { height: "40px", maxWidth: "70%" } } />
-                </Placeholder>
-                <Placeholder>
-                    { [ ...Array(3) ].map(() => {
-                        return (
-                            <>
-                                <Placeholder.Line length="very short" />
-                                <Placeholder.Image style={ { height: "38px" } } />
-                                <Placeholder.Line />
-                                <Placeholder.Line />
-                            </>
-                        );
-                    })
-                    }
-                </Placeholder>
-            </>
-        );
-    };
-
     return (
-        canLoadResourceTab ? (
-            <>
-                <ResourceTab
-                    activeIndex= { activeTabIndex }
-                    data-testid= { `${testId}-resource-tabs` }
-                    defaultActiveIndex={ defaultActiveIndex }
-                    onTabChange={ handleTabChange }
-                    panes= { resolveTabPanes() }
-                    onInitialize={ ({ panesLength }) => {
-                        setTotalTabs(panesLength);
-                    } }
-                />
-                { showClientSecretHashDisclaimerModal && renderClientSecretHashDisclaimerModal() }
-            </>
-        ) : detailedViewPlaceholder()
+        <>
+            <ResourceTab
+                isLoading= { isLoading }
+                activeIndex= { activeTabIndex }
+                data-testid= { `${testId}-resource-tabs` }
+                defaultActiveIndex={ defaultActiveIndex }
+                onTabChange={ handleTabChange }
+                panes= { resolveTabPanes() }
+                onInitialize={ ({ panesLength }) => {
+                    setTotalTabs(panesLength);
+                } }
+            />
+            { showClientSecretHashDisclaimerModal && renderClientSecretHashDisclaimerModal() }
+        </>
     );
 };
 

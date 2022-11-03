@@ -16,10 +16,10 @@
  * under the License.
  */
 
-import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
-import { MenuProps, Tab, TabProps } from "semantic-ui-react";
+import { Card, MenuProps, Placeholder, Tab, TabProps } from "semantic-ui-react";
 import { ResourceTabPane } from "./resource-tab-pane";
 
 /**
@@ -32,8 +32,7 @@ export interface ResourceTabSubComponentsInterface {
 /**
  * Resource tabs component Prop types.
  */
-export interface ResourceTabPropsInterface extends TabProps, IdentifiableComponentInterface,
-    TestableComponentInterface {
+export interface ResourceTabPropsInterface extends TabProps, IdentifiableComponentInterface {
 
     /**
      * Custom class for the component.
@@ -55,6 +54,14 @@ export interface ResourceTabPropsInterface extends TabProps, IdentifiableCompone
      * Is the tab menu in secondary variation.
      */
     secondary?: MenuProps[ "secondary" ];
+    /**
+     * Placeholder tab count.
+     */
+    tabCount?: number;
+    /**
+     * Is the data still loading.
+     */
+    isLoading?: boolean;
 }
 
 /**
@@ -69,6 +76,7 @@ export const ResourceTab: FunctionComponent<ResourceTabPropsInterface> & Resourc
 ): ReactElement => {
 
     const {
+        isLoading,
         attached,
         className,
         onInitialize,
@@ -77,8 +85,8 @@ export const ResourceTab: FunctionComponent<ResourceTabPropsInterface> & Resourc
         pointing,
         secondary,
         onTabChange,
+        tabCount,
         [ "data-componentid" ]: componentId,
-        [ "data-testid" ]: testId,
         ...rest
     } = props;
 
@@ -113,24 +121,57 @@ export const ResourceTab: FunctionComponent<ResourceTabPropsInterface> & Resourc
         setActiveIndex(activeIndex);
     };
 
+    if(isLoading === false) {
+        return (
+            <Tab
+                onTabChange={ (e: MouseEvent<HTMLDivElement>, data: TabProps) => {
+                    handleTabChange(e, data.activeIndex);
+                    onTabChange && typeof onTabChange === "function" && onTabChange(e, data);
+                } }
+                className={ classes }
+                menu={ {
+                    attached,
+                    pointing,
+                    secondary
+                } }
+                panes={ panes }
+                activeIndex={ activeIndex }
+                data-componentid={ componentId }
+                { ...rest }
+            />
+        );
+    }
+
     return (
-        <Tab
-            onTabChange={ (e: MouseEvent<HTMLDivElement>, data: TabProps ) => {
-                handleTabChange(e, data.activeIndex);
-                onTabChange && typeof onTabChange === "function" && onTabChange(e, data);
-            } }
-            className={ classes }
-            menu={ {
-                attached,
-                pointing,
-                secondary
-            } }
-            panes={ panes }
-            activeIndex={ activeIndex }
-            data-componentid={ componentId }
-            data-testid={ testId }
-            { ...rest }
-        />
+        <>
+            <Card.Group style={ { marginBottom: "3rem" } } >
+                { [ ...Array(tabCount) ].map(() => {
+                    return (
+                        <>
+                            <Card style={ { boxShadow: "none", width: "15%" } }>
+                                <Placeholder >
+                                    <Placeholder.Image style={ { height: "30px" } } />
+                                </Placeholder>
+                            </Card>
+                        </>
+                    );
+                }) }
+            </Card.Group>
+            <Placeholder>
+                { [ ...Array(3) ].map(() => {
+                    return (
+                        <>
+                            <Placeholder.Line length="very short" />
+                            <Placeholder.Image style={ { height: "38px" } } />
+                            <Placeholder.Line />
+                            <Placeholder.Line />
+
+                        </>
+                    );
+                })
+                }
+            </Placeholder>
+        </>
     );
 };
 
@@ -140,9 +181,10 @@ export const ResourceTab: FunctionComponent<ResourceTabPropsInterface> & Resourc
 ResourceTab.defaultProps = {
     attached: false,
     "data-componentid": "resource-tabs",
-    "data-testid": "resource-tabs",
+    isLoading: false,
     pointing: true,
-    secondary: true
+    secondary: true,
+    tabCount: 5
 };
 
 ResourceTab.Pane = ResourceTabPane;
