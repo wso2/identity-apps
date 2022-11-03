@@ -471,7 +471,7 @@
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-databind</artifactId>
-                <version>${com.fasterxml.jackson.annotation.version}</version>
+                <version>${com.fasterxml.jackson.databind.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.sun.jersey.contribs</groupId>
@@ -693,7 +693,8 @@
         <javax.jsp-api.version>2.0</javax.jsp-api.version>
         <jersey-version>1.19.1</jersey-version>
         <com.fasterxml.jackson.version>2.10.5</com.fasterxml.jackson.version>
-        <com.fasterxml.jackson.annotation.version>2.14.0-rc2</com.fasterxml.jackson.annotation.version>
+        <com.fasterxml.jackson.annotation.version>2.13.2</com.fasterxml.jackson.annotation.version>
+        <com.fasterxml.jackson.databind.version>2.13.4.2</com.fasterxml.jackson.databind.version>
         <com.fasterxml.jackson.jaxrs-json-provider-version>2.10.5</com.fasterxml.jackson.jaxrs-json-provider-version>
         <com.google.code.gson.version>2.9.0</com.google.code.gson.version>
         <commons-codec.wso2.version>1.14.0.wso2v1</commons-codec.wso2.version>
