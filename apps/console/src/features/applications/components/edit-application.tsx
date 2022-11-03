@@ -19,7 +19,13 @@
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { ConfirmationModal, ContentLoader, CopyInputField, ResourceTab } from "@wso2is/react-components";
+import {
+    ConfirmationModal,
+    ContentLoader,
+    CopyInputField,
+    ResourceTab,
+    ResourceTabPanePropsInterface
+} from "@wso2is/react-components";
 import Axios, { AxiosError, AxiosResponse } from "axios";
 import inRange from "lodash-es/inRange";
 import isEmpty from "lodash-es/isEmpty";
@@ -38,7 +44,7 @@ import {
     SignOnMethods
 } from "./settings";
 import { Info } from "./settings/info";
-import { ComponentExtensionPlaceholder, applicationConfig } from "../../../extensions";
+import { applicationConfig } from "../../../extensions";
 import {
     AppState,
     CORSOriginsListInterface,
@@ -358,23 +364,18 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             inboundProtocolConfig.issuer = samlConfigurations.issuer;
         }
 
-        const extensions: any[] = ComponentExtensionPlaceholder({
-            component: "application",
-            props: {
-                application: application,
-                content: template.content.quickStart,
-                inboundProtocolConfig: inboundProtocolConfig,
-                inboundProtocols: inboundProtocolList,
-                onApplicationUpdate: () => {
-                    onUpdate(application?.id);
-                },
-                onTriggerTabUpdate: (tabIndex: number) => {
-                    setActiveTabIndex(tabIndex);
-                },
-                template: template
+        const extensions: ResourceTabPanePropsInterface[] = applicationConfig.editApplication.getTabExtensions({
+            application: application,
+            content: template.content.quickStart,
+            inboundProtocolConfig: inboundProtocolConfig,
+            inboundProtocols: inboundProtocolList,
+            onApplicationUpdate: () => {
+                onUpdate(application?.id);
             },
-            subComponent: "edit",
-            type: "tab"
+            onTriggerTabUpdate: (tabIndex: number) => {
+                setActiveTabIndex(tabIndex);
+            },
+            template: template
         });
 
         setTabPaneExtensions(extensions);

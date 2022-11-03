@@ -17,7 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { ContentLoader, EmphasizedSegment, ResourceTab } from "@wso2is/react-components";
+import { ContentLoader, EmphasizedSegment, ResourceTab, ResourceTabPanePropsInterface } from "@wso2is/react-components";
 import React, {
     FunctionComponent,
     ReactElement,
@@ -33,7 +33,7 @@ import {
     OutboundProvisioningSettings
 } from "./settings";
 import { JITProvisioningSettings } from "./settings/jit-provisioning-settings";
-import { ComponentExtensionPlaceholder, identityProviderConfig } from "../../../extensions";
+import { identityProviderConfig } from "../../../extensions";
 import { IdentityProviderManagementConstants } from "../constants";
 import {
     IdentityProviderAdvanceInterface,
@@ -260,16 +260,12 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
             return;
         }
 
-        const extensions: any[] = ComponentExtensionPlaceholder({
-            component: "identityProvider",
-            props: {
+        const extensions: ResourceTabPanePropsInterface[] = identityProviderConfig
+            .editIdentityProvider.getTabExtensions({
                 content: template.content.quickStart,
                 identityProvider: identityProvider,
                 template: template
-            },
-            subComponent: "edit",
-            type: "tab"
-        });
+            });
 
         if (Array.isArray(extensions) && extensions.length > 0) {
             isTabExtensionsAvailable(true);
@@ -353,7 +349,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
      *
      * @param type - IDP Type.
      *
-     * @returns Boolean value 
+     * @returns Should show attribute settings or not.
      */
     const shouldShowAttributeSettings = (type: string): boolean => {
 
