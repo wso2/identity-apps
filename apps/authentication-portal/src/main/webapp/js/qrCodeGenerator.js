@@ -1309,9 +1309,11 @@ var strinbuf = [],
 // Control values - width is based on version, last 4 are from table.
 var version, width, neccblk1, neccblk2, datablkw, eccblkwid;
 var ecclevel = 1;
+
 // set bit to indicate cell in qrframe is immutable.  symmetric around diagonal
 function setmask(x, y) {
     var bt;
+
     if (x > y) {
         bt = x;
         x = y;
@@ -1331,12 +1333,14 @@ function putalign(x, y) {
     var j;
 
     qrframe[x + width * y] = 1;
+
     for (j = -2; j < 2; j++) {
         qrframe[x + j + width * (y - 2)] = 1;
         qrframe[x - 2 + width * (y + j + 1)] = 1;
         qrframe[x + 2 + width * (y + j)] = 1;
         qrframe[x + j + 1 + width * (y + 2)] = 1;
     }
+
     for (j = 0; j < 2; j++) {
         setmask(x - 1, y + j);
         setmask(x + 1, y - j);
@@ -1353,6 +1357,7 @@ function modnn(x) {
         x -= 255;
         x = (x >> 8) + (x & 255);
     }
+
     return x;
 }
 
@@ -1363,6 +1368,7 @@ function appendrs(data, dlen, ecbuf, eclen) {
     var i, j, fb;
 
     for (i = 0; i < eclen; i++) strinbuf[ecbuf + i] = 0;
+
     for (i = 0; i < dlen; i++) {
         fb = glog[strinbuf[data + i] ^ strinbuf[ecbuf]];
         if (fb != 255)
@@ -1380,6 +1386,7 @@ function appendrs(data, dlen, ecbuf, eclen) {
 // check mask - since symmetrical use half.
 function ismasked(x, y) {
     var bt;
+
     if (x > y) {
         bt = x;
         x = y;
@@ -1389,6 +1396,7 @@ function ismasked(x, y) {
     bt += y * y;
     bt >>= 1;
     bt += x;
+
     return framask[bt];
 }
 
@@ -1401,10 +1409,12 @@ function applymask(m) {
         case 0:
             for (y = 0; y < width; y++)
                 for (x = 0; x < width; x++) if (!((x + y) & 1) && !ismasked(x, y)) qrframe[x + y * width] ^= 1;
+
             break;
         case 1:
             for (y = 0; y < width; y++)
                 for (x = 0; x < width; x++) if (!(y & 1) && !ismasked(x, y)) qrframe[x + y * width] ^= 1;
+
             break;
         case 2:
             for (y = 0; y < width; y++)
@@ -1412,15 +1422,18 @@ function applymask(m) {
                     if (r3x == 3) r3x = 0;
                     if (!r3x && !ismasked(x, y)) qrframe[x + y * width] ^= 1;
                 }
+
             break;
         case 3:
             for (r3y = 0, y = 0; y < width; y++, r3y++) {
                 if (r3y == 3) r3y = 0;
+
                 for (r3x = r3y, x = 0; x < width; x++, r3x++) {
                     if (r3x == 3) r3x = 0;
                     if (!r3x && !ismasked(x, y)) qrframe[x + y * width] ^= 1;
                 }
             }
+
             break;
         case 4:
             for (y = 0; y < width; y++)
@@ -1431,35 +1444,43 @@ function applymask(m) {
                     }
                     if (!r3y && !ismasked(x, y)) qrframe[x + y * width] ^= 1;
                 }
+
             break;
         case 5:
             for (r3y = 0, y = 0; y < width; y++, r3y++) {
                 if (r3y == 3) r3y = 0;
+
                 for (r3x = 0, x = 0; x < width; x++, r3x++) {
                     if (r3x == 3) r3x = 0;
                     if (!((x & y & 1) + !(!r3x | !r3y)) && !ismasked(x, y)) qrframe[x + y * width] ^= 1;
                 }
             }
+
             break;
         case 6:
             for (r3y = 0, y = 0; y < width; y++, r3y++) {
                 if (r3y == 3) r3y = 0;
+
                 for (r3x = 0, x = 0; x < width; x++, r3x++) {
                     if (r3x == 3) r3x = 0;
                     if (!(((x & y & 1) + (r3x && r3x == r3y)) & 1) && !ismasked(x, y)) qrframe[x + y * width] ^= 1;
                 }
             }
+
             break;
         case 7:
             for (r3y = 0, y = 0; y < width; y++, r3y++) {
                 if (r3y == 3) r3y = 0;
+
                 for (r3x = 0, x = 0; x < width; x++, r3x++) {
                     if (r3x == 3) r3x = 0;
                     if (!(((r3x && r3x == r3y) + ((x + y) & 1)) & 1) && !ismasked(x, y)) qrframe[x + y * width] ^= 1;
                 }
             }
+
             break;
     }
+
     return;
 }
 
@@ -1474,7 +1495,9 @@ var N1 = 3,
 function badruns(length) {
     var i;
     var runsbad = 0;
+
     for (i = 0; i <= length; i++) if (rlens[i] >= 5) runsbad += N1 + rlens[i] - 5;
+
     // BwBBBwB as in finder
     for (i = 3; i < length - 1; i += 2)
         if (
@@ -1489,6 +1512,7 @@ function badruns(length) {
                 rlens[i + 3] * 3 >= rlens[i] * 4)
         )
             runsbad += N3;
+
     return runsbad;
 }
 
@@ -1519,6 +1543,7 @@ function badcheck() {
     // X runs
     for (y = 0; y < width; y++) {
         rlens[0] = 0;
+
         for (h = b = x = 0; x < width; x++) {
             if ((b1 = qrframe[x + width * y]) == b) rlens[h]++;
             else rlens[++h] = 1;
@@ -1533,6 +1558,7 @@ function badcheck() {
 
     var big = bw;
     let count = 0;
+
     big += big << 2;
     big <<= 1;
     while (big > width * width) (big -= width * width), count++;
@@ -1541,6 +1567,7 @@ function badcheck() {
     // Y runs
     for (x = 0; x < width; x++) {
         rlens[0] = 0;
+
         for (h = b = y = 0; y < width; y++) {
             if ((b1 = qrframe[x + width * y]) == b) rlens[h]++;
             else rlens[++h] = 1;
@@ -1548,6 +1575,7 @@ function badcheck() {
         }
         thisbad += badruns(h);
     }
+
     return thisbad;
 }
 
@@ -1573,6 +1601,7 @@ function genframe(instring) {
 
     // allocate, clear and setup data structures
     v = datablkw + (datablkw + eccblkwid) * (neccblk1 + neccblk2) + neccblk2;
+
     for (t = 0; t < v; t++) eccbuf[t] = 0;
     strinbuf = instring.slice(0);
 
@@ -1587,18 +1616,21 @@ function genframe(instring) {
         if (t == 1) k = width - 7;
         if (t == 2) y = width - 7;
         qrframe[y + 3 + width * (k + 3)] = 1;
+
         for (x = 0; x < 6; x++) {
             qrframe[y + x + width * k] = 1;
             qrframe[y + width * (k + x + 1)] = 1;
             qrframe[y + 6 + width * (k + x)] = 1;
             qrframe[y + x + 1 + width * (k + 6)] = 1;
         }
+
         for (x = 1; x < 5; x++) {
             setmask(y + x, k + 1);
             setmask(y + 1, k + x + 1);
             setmask(y + 5, k + x);
             setmask(y + x + 1, k + 5);
         }
+
         for (x = 2; x < 4; x++) {
             qrframe[y + x + width * (k + 2)] = 1;
             qrframe[y + 2 + width * (k + x + 1)] = 1;
@@ -1611,6 +1643,7 @@ function genframe(instring) {
     if (version > 1) {
         t = adelta[version];
         y = width - 7;
+
         for (;;) {
             x = width - 7;
             while (x > t - 3) {
@@ -1634,6 +1667,7 @@ function genframe(instring) {
         setmask(width - 8, y);
         setmask(7, y + width - 7);
     }
+
     for (x = 0; x < 8; x++) {
         setmask(x, 7);
         setmask(x + width - 8, 7);
@@ -1642,10 +1676,12 @@ function genframe(instring) {
 
     // reserve mask-format area
     for (x = 0; x < 9; x++) setmask(x, 8);
+
     for (x = 0; x < 8; x++) {
         setmask(x + width - 8, 8);
         setmask(8, x);
     }
+
     for (y = 0; y < 7; y++) setmask(8, y + width - 7);
 
     // timing row/col
@@ -1662,6 +1698,7 @@ function genframe(instring) {
     if (version > 6) {
         t = vpat[version - 7];
         k = 17;
+
         for (x = 0; x < 6; x++)
             for (y = 0; y < 3; y++, k--)
                 if (1 & (k > 11 ? version >> (k - 12) : t >> k)) {
@@ -1727,22 +1764,27 @@ function genframe(instring) {
 
     // calculate generator polynomial
     genpoly[0] = 1;
+
     for (i = 0; i < eccblkwid; i++) {
         genpoly[i + 1] = 1;
+
         for (j = i; j > 0; j--)
             genpoly[j] = genpoly[j] ? genpoly[j - 1] ^ gexp[modnn(glog[genpoly[j]] + i)] : genpoly[j - 1];
         genpoly[0] = gexp[modnn(glog[genpoly[0]] + i)];
     }
+
     for (i = 0; i <= eccblkwid; i++) genpoly[i] = glog[genpoly[i]]; // use logs for genpoly[] to save calc step
 
     // append ecc to data buffer
     k = x;
     y = 0;
+
     for (i = 0; i < neccblk1; i++) {
         appendrs(y, datablkw, k, eccblkwid);
         y += datablkw;
         k += eccblkwid;
     }
+
     for (i = 0; i < neccblk2; i++) {
         appendrs(y, datablkw + 1, k, eccblkwid);
         y += datablkw + 1;
@@ -1750,11 +1792,15 @@ function genframe(instring) {
     }
     // interleave blocks
     y = 0;
+
     for (i = 0; i < datablkw; i++) {
         for (j = 0; j < neccblk1; j++) eccbuf[y++] = strinbuf[i + j * datablkw];
+
         for (j = 0; j < neccblk2; j++) eccbuf[y++] = strinbuf[neccblk1 * datablkw + i + j * (datablkw + 1)];
     }
+
     for (j = 0; j < neccblk2; j++) eccbuf[y++] = strinbuf[neccblk1 * datablkw + i + j * (datablkw + 1)];
+
     for (i = 0; i < eccblkwid; i++)
         for (j = 0; j < neccblk1 + neccblk2; j++) eccbuf[y++] = strinbuf[x + i + j * eccblkwid];
     strinbuf = eccbuf;
@@ -1764,8 +1810,10 @@ function genframe(instring) {
     k = v = 1; // up, minus
     /* inteleaved data and ecc codes */
     m = (datablkw + eccblkwid) * (neccblk1 + neccblk2) + neccblk2;
+
     for (i = 0; i < m; i++) {
         t = strinbuf[i];
+
         for (j = 0; j < 8; j++, t <<= 1) {
             if (0x80 & t) qrframe[x + width * y] = 1;
             do {
@@ -1804,6 +1852,7 @@ function genframe(instring) {
     strinbuf = qrframe.slice(0);
     t = 0; // best
     y = 30000; // demerit
+
     // for instead of while since in original arduino code
     // if an early mask was "good enough" it wouldn't try for a better one
     // since they get more complex and take longer.
@@ -1824,6 +1873,7 @@ function genframe(instring) {
 
     // add in final mask/ecclevel bytes
     y = fmtword[t + ((ecclevel - 1) << 3)];
+
     // low byte
     for (k = 0; k < 8; k++, y >>= 1)
         if (y & 1) {
@@ -1831,6 +1881,7 @@ function genframe(instring) {
             if (k < 6) qrframe[8 + width * k] = 1;
             else qrframe[8 + width * (k + 1)] = 1;
         }
+
     // high byte
     for (k = 0; k < 7; k++, y >>= 1)
         if (y & 1) {
@@ -1845,6 +1896,7 @@ function genframe(instring) {
 
 function toggleFunction() {
     var togglediv = document.getElementById("qrcanvdiv");
+
     if (togglediv.style.display === "none") {
         togglediv.style.display = "block";
         document.getElementById("scanQR").innerHTML = "<b>-</b>";
@@ -1862,6 +1914,7 @@ function setupqr() {
     //    window.scrollTo(0,1)
 
     var elem = document.getElementById("qrcanv");
+
     qrc = elem.getContext("2d");
     qrc.canvas.width = wd;
     qrc.canvas.height = ht;
@@ -1872,10 +1925,12 @@ function setupqr() {
 function doqr(key) {
     ecclevel = document.getElementById("ecc").value;
     let qf = genframe(key);
+
     qrc.lineWidth = 1;
 
     var i, j;
     let px = wd;
+
     if (ht < wd) px = ht;
     px /= width + 10;
     px = Math.round(px - 0.5);
@@ -1883,6 +1938,7 @@ function doqr(key) {
     qrc.fillStyle = "#fff";
     qrc.fillRect(0, 0, px * (width + 8), px * (width + 8));
     qrc.fillStyle = "#000";
+
     for (i = 0; i < width; i++)
         for (j = 0; j < width; j++) if (qf[j * width + i]) qrc.fillRect(px * (4 + i), px * (4 + j), px, px);
 }
