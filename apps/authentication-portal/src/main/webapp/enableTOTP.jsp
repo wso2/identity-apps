@@ -18,6 +18,9 @@
 
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
+<%@ page import="org.wso2.carbon.identity.application.authenticator.totp.TOTPAuthenticatorConstants" %>
+<%@ page import="org.wso2.carbon.identity.application.authenticator.totp.util.TOTPUtil" %>
+<%@ page import="org.wso2.carbon.identity.core.util.IdentityCoreConstants" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.Map" %>
 
@@ -33,6 +36,7 @@
     request.getSession().invalidate();
     String queryString = request.getQueryString();
     Map<String, String> idpAuthenticatorMapping = null;
+    boolean isTOTPEnrollInSinglePageEnabled = TOTPUtil.isTOTPEnrollInSinglePageEnabled();
     if (request.getAttribute(Constants.IDP_AUTHENTICATOR_MAP) != null) {
         idpAuthenticatorMapping = (Map<String, String>) request.getAttribute(Constants.IDP_AUTHENTICATOR_MAP);
     }
@@ -43,10 +47,26 @@
     if (Boolean.parseBoolean(request.getParameter(Constants.AUTH_FAILURE))) {
         authenticationFailed = "true";
 
-        if (request.getParameter(Constants.AUTH_FAILURE_MSG) != null) {
+        boolean isErrorMessageFromErrorCodeAdded = false;
+        String errorCode = request.getParameter(TOTPAuthenticatorConstants.ERROR_CODE);
+        if (errorCode != null) {
+            if (errorCode.equals(IdentityCoreConstants.USER_ACCOUNT_LOCKED_ERROR_CODE)) {
+                String lockedReason = request.getParameter(TOTPAuthenticatorConstants.LOCKED_REASON);
+                if (lockedReason != null) {
+                    if (lockedReason.equals(TOTPAuthenticatorConstants.MAX_TOTP_ATTEMPTS_EXCEEDED)) {
+                        errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.user.account.locked.incorrect.login.attempts");
+                        isErrorMessageFromErrorCodeAdded = true;
+                    } else if (lockedReason.equals(TOTPAuthenticatorConstants.ADMIN_INITIATED)) {
+                        errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.user.account.locked.admin.initiated");
+                        isErrorMessageFromErrorCodeAdded = true;
+                    }
+                }
+            }
+        }
+        if (!isErrorMessageFromErrorCodeAdded && request.getParameter(Constants.AUTH_FAILURE_MSG) != null) {
             errorMessage = Encode.forHtmlAttribute(request.getParameter(Constants.AUTH_FAILURE_MSG));
-
-                if (errorMessage.equalsIgnoreCase("authentication.fail.message")) {
+            if (errorMessage.equalsIgnoreCase("authentication.fail.message") ||
+                    errorMessage.equalsIgnoreCase("login.fail.message")) {
                 errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle,"error.retry");
             }
         }
@@ -103,30 +123,98 @@
                     <% } %>
                     <div class="segment-form">
                         <form class="ui large form" id="pin_form" name="pin_form" action="<%=commonauthURL%>"  method="POST">
-                            <%
-                                String loginFailed = request.getParameter("authFailure");
-                                if (loginFailed != null && "true".equals(loginFailed)) {
-                                    String authFailureMsg = request.getParameter("authFailureMsg");
-                                    if (authFailureMsg != null && "login.fail.message".equals(authFailureMsg)) {
-                            %>
-                                        <div class="ui negative message"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "error.retry")%></div>
-                                        <div class="ui divider hidden"></div>
-                            <% } }  %>
-
                             <p><%=AuthenticationEndpointUtil.i18n(resourceBundle, "error.totp.not.enabled.please.enable")%></p>
 
                             <input type="hidden" id="ENABLE_TOTP" name="ENABLE_TOTP" value="false"/>
                             <input type="hidden" name='ske' id='ske' value='<%=Encode.forHtmlAttribute(request.getParameter("ske"))%>'/>
                             <input type="hidden" name="sessionDataKey" id="sessionDataKey"
                                 value='<%=Encode.forHtmlAttribute(request.getParameter("sessionDataKey"))%>'/>
-
+                            <%
+                                if (isTOTPEnrollInSinglePageEnabled) {
+			                %>
+                                <input hidden type="text"  id="token" name="token" />
+                            <%
+				                }
+			                %>
                             <div class="ui center aligned basic segment">
-                                <form name="qrinp">
                                     <input type="numeric" name="ECC" value="1" size="1" style="Display:none" id="ecc">
                                     <canvas id="qrcanv">
-                                </form>
                             </div>
-
+                            <%
+                                if (isTOTPEnrollInSinglePageEnabled) {
+                            %>
+                            <div class="equal width fields">
+                                <div class="field mt-5">
+                                    <input
+                                        class="text-center p-3"
+                                        id="pincode-1"
+                                        name="pincode-1"
+                                        tabindex="1"
+                                        placeholder="·"
+                                        maxlength="1"
+                                        onkeyup="movetoNext(this, 'pincode-2', null)"
+                                        autocomplete="off"
+                                        autofocus />
+                                </div>
+                                <div class="field mt-5">
+                                    <input
+                                        class="text-center p-3"
+                                        id="pincode-2"
+                                        name="pincode-2"
+                                        tabindex="2"
+                                        placeholder="·"
+                                        maxlength="1"
+                                        onkeyup="movetoNext(this, 'pincode-3', 'pincode-1')"
+                                        autocomplete="off" />
+                                </div>
+                                <div class="field mt-5">
+                                    <input
+                                        class="text-center p-3"
+                                        id="pincode-3"
+                                        name="pincode-3"
+                                        tabindex="3"
+                                        placeholder="·"
+                                        maxlength="1"
+                                        onkeyup="movetoNext(this, 'pincode-4', 'pincode-2')"
+                                        autocomplete="off" />
+                                </div>
+                                <div class="field mt-5">
+                                    <input
+                                        class="text-center p-3"
+                                        id="pincode-4"
+                                        name="pincode-4"
+                                        tabindex="4"
+                                        placeholder="·"
+                                        maxlength="1"
+                                        onkeyup="movetoNext(this, 'pincode-5', 'pincode-3')"
+                                        autocomplete="off" />
+                                </div>
+                                <div class="field mt-5">
+                                    <input
+                                        class="text-center p-3"
+                                        id="pincode-5"
+                                        name="pincode-5"
+                                        tabindex="5"
+                                        placeholder="·"
+                                        maxlength="1"
+                                        onkeyup="movetoNext(this, 'pincode-6', 'pincode-4')"
+                                        autocomplete="off" />
+                                </div>
+                                <div class="field mt-5">
+                                    <input
+                                        class="text-center p-3"
+                                        id="pincode-6"
+                                        name="pincode-6"
+                                        tabindex="6"
+                                        placeholder="·"
+                                        maxlength="1"
+                                        onkeyup="movetoNext(this, null, 'pincode-5')"
+                                        autocomplete="off">
+                                </div>
+                            </div>
+                            <%
+                                }
+                            %>
                             <div class="align-right buttons">
                                 <input type="button" name="cancel" id="cancel" value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "cancel")%>" class="ui button secondary">
                                 <input type="button" name="continue" id="continue" value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "continue")%>" class="ui primary button">
@@ -148,6 +236,9 @@
             </layout:component>
         </layout:main>
 
+        <%
+            if (!isTOTPEnrollInSinglePageEnabled) {
+        %>
         <div class="ui modal tiny">
             <div class="content">
                 <p><%=AuthenticationEndpointUtil.i18n(resourceBundle, "confirm.you.have.scanned.the.qr.code")%></p>
@@ -159,7 +250,9 @@
                 </div>
             </div>
         </div>
-
+        <%
+           }
+        %>
         <%-- footer --%>
         <%
             File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
@@ -174,7 +267,18 @@
             $(document).ready(function() {
                 $('#continue').click(function() {
                     document.getElementById("ENABLE_TOTP").value = 'true';
+                    <%
+                        if (isTOTPEnrollInSinglePageEnabled) {
+                    %>
+                        sub();
+                        $('#pin_form').submit();
+                    <%
+                        } else {
+                    %>
                     $(".ui.modal").modal("show");
+                    <%
+                        }
+                    %>
                 });
                 $('#cancel').click(function() {
                     document.getElementById("ENABLE_TOTP").value = 'false';
@@ -193,6 +297,60 @@
             });
             $("#cancelM").click(function () {
                 $(".ui.modal").modal("hide");
+            });
+
+            function sub() {
+                var pin1 = document.getElementById("pincode-1").value;
+                var pin2 = document.getElementById("pincode-2").value;
+                var pin3 = document.getElementById("pincode-3").value;
+                var pin4 = document.getElementById("pincode-4").value;
+                var pin5 = document.getElementById("pincode-5").value;
+                var pin6 = document.getElementById("pincode-6").value;
+                var token = pin1 + pin2 + pin3 + pin4 + pin5 + pin6;
+                document.getElementById('token').value = token;
+            }
+
+            // Handle paste events
+            function handlePaste(e) {
+                var clipboardData, value;
+                // Stop data actually being pasted into element
+                e.stopPropagation();
+                e.preventDefault();
+                // Get pasted data via clipboard API
+                clipboardData = e.clipboardData || window.clipboardData;
+                value = clipboardData.getData('Text');
+                const reg = new RegExp(/^\d+$/);
+                if (reg.test(value)) {
+                    for (n = 0; n < 6; ++n) {
+                        $("#pincode-" + (n+1)).val(value[n]);
+                        $("#pincode-" + (n+1)).focus();
+                    }
+                }
+            }
+
+            function movetoNext(current, nextFieldID, previousID) {
+                var key = event.keyCode || event.charCode;
+                if (nextFieldID != null && current.value.length >= current.maxLength) {
+                    document.getElementById(nextFieldID).focus();
+                }
+                if( key == 8 || key == 46 ) {
+                    if ( previousID != null) {
+                        document.getElementById(previousID).focus();
+                    }
+                }
+            }
+
+            document.getElementById('pincode-1').addEventListener('paste', handlePaste);
+
+            $('#continue').attr('disabled', true);
+
+            $('#pincode-6').on('keyup', function() {
+                if ($('#pincode-1').val() != '' && $('#pincode-2').val() != ''
+                        && $('#pincode-3').val() != '' && $('#pincode-4').val() != '' && $('#pincode-5').val() != ''  && $('#pincode-6').val() != '') {
+                    $('#continue').attr('disabled', false);
+                } else {
+                    $('#continue').attr('disabled', true);
+                }
             });
         </script>
     </body>

@@ -1854,9 +1854,10 @@ function toggleFunction() {
     }
 }
 
-var wd = 180,
-    ht = 180,
+var wd = 150,
+    ht = 150,
     qrc;
+
 function setupqr() {
     //    window.scrollTo(0,1)
 
