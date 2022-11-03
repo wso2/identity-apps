@@ -384,164 +384,226 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
     };
 
     return organization ? (
-        <EmphasizedSegment padded="very" key={ organization?.id }>
-            <Grid>
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column width={ 8 }>
-                        <Form
-                            id={ FORM_ID }
-                            data-testid={ `${ testId }-form` }
-                            onSubmit={ handleSubmit }
-                            uncontrolledForm={ false }
-                            validate={ validate }
-                        >
-                            { organization?.name && (
-                                <Field.Input
-                                    data-testid={ `${ testId }-overview-form-name-input` }
-                                    name="name"
-                                    label={ t(
-                                        "console:manage.features.organizations.edit.fields.name.label"
-                                    ) }
-                                    required={ true }
-                                    requiredErrorMessage="Please enter the organization name"
-                                    value={ organization.name }
-                                    ariaLabel={ t(
-                                        "console:manage.features.organizations.edit.fields." +
+        <>
+            <EmphasizedSegment padded="very" key={ organization?.id }>
+                <Grid>
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column width={ 8 }>
+                            <Form
+                                id={ FORM_ID }
+                                data-testid={ `${ testId }-form` }
+                                onSubmit={ handleSubmit }
+                                uncontrolledForm={ false }
+                                validate={ validate }
+                            >
+                                { organization?.name && (
+                                    <Field.Input
+                                        data-testid={ `${ testId }-overview-form-name-input` }
+                                        name="name"
+                                        label={ t(
+                                            "console:manage.features.organizations.edit.fields.name.label"
+                                        ) }
+                                        required={ true }
+                                        requiredErrorMessage="Please enter the organization name"
+                                        value={ organization.name }
+                                        ariaLabel={ t(
+                                            "console:manage.features.organizations.edit.fields." +
                                         "name.ariaLabel"
-                                    ) }
-                                    placeholder={ t(
-                                        "console:manage.features.organizations.edit.fields." +
+                                        ) }
+                                        placeholder={ t(
+                                            "console:manage.features.organizations.edit.fields." +
                                         "name.placeholder"
-                                    ) }
-                                    inputType="name"
-                                    maxLength={ ORGANIZATION_NAME_MAX_LENGTH }
-                                    minLength={ ORGANIZATION_NAME_MIN_LENGTH }
-                                />
-                            ) }
-                            {
-                                <Field.Textarea
-                                    data-testid={ `${ testId }-overview-form-description-input` }
-                                    name="description"
-                                    label={ t(
-                                        "console:manage.features.organizations.edit.fields." +
+                                        ) }
+                                        inputType="name"
+                                        maxLength={ ORGANIZATION_NAME_MAX_LENGTH }
+                                        minLength={ ORGANIZATION_NAME_MIN_LENGTH }
+                                    />
+                                ) }
+                                {
+                                    <Field.Textarea
+                                        data-testid={ `${ testId }-overview-form-description-input` }
+                                        name="description"
+                                        label={ t(
+                                            "console:manage.features.organizations.edit.fields." +
                                         "description.label"
-                                    ) }
-                                    required={ false }
-                                    requiredErrorMessage=""
-                                    value={ organization?.description ?? "" }
-                                    placeholder={ t(
-                                        "console:manage.features.organizations.edit.fields." +
+                                        ) }
+                                        required={ false }
+                                        requiredErrorMessage=""
+                                        value={ organization?.description ?? "" }
+                                        placeholder={ t(
+                                            "console:manage.features.organizations.edit.fields." +
                                         "description.placeholder"
-                                    ) }
-                                    ariaLabel={ t(
-                                        "console:manage.features.organizations.edit.fields." +
+                                        ) }
+                                        ariaLabel={ t(
+                                            "console:manage.features.organizations.edit.fields." +
                                         "description.ariaLabel"
-                                    ) }
-                                    inputType="description"
-                                    maxLength={
-                                        ORGANIZATION_DESCRIPTION_MAX_LENGTH
-                                    }
-                                    minLength={
-                                        ORGANIZATION_DESCRIPTION_MIN_LENGTH
-                                    }
-                                />
-                            }
-                            { organization?.domain && (
-                                <Field.Input
-                                    data-testid={ `${ testId }-overview-form-domain-input` }
-                                    name="domain"
-                                    label={ t(
-                                        "console:manage.features.organizations.edit.fields." +
+                                        ) }
+                                        inputType="description"
+                                        maxLength={
+                                            ORGANIZATION_DESCRIPTION_MAX_LENGTH
+                                        }
+                                        minLength={
+                                            ORGANIZATION_DESCRIPTION_MIN_LENGTH
+                                        }
+                                    />
+                                }
+                                { organization?.domain && (
+                                    <Field.Input
+                                        data-testid={ `${ testId }-overview-form-domain-input` }
+                                        name="domain"
+                                        label={ t(
+                                            "console:manage.features.organizations.edit.fields." +
                                         "domain.label"
-                                    ) }
-                                    required={ false }
-                                    requiredErrorMessage=""
-                                    value={ organization?.domain || "" }
-                                    readOnly={ true }
-                                    ariaLabel={ t(
-                                        "console:manage.features.organizations.edit.fields." +
+                                        ) }
+                                        required={ false }
+                                        requiredErrorMessage=""
+                                        value={ organization?.domain || "" }
+                                        readOnly={ true }
+                                        ariaLabel={ t(
+                                            "console:manage.features.organizations.edit.fields." +
                                         "domain.ariaLabel"
-                                    ) }
-                                    inputType="url"
-                                    maxLength={ 32 }
-                                    minLength={ 3 }
-                                />
-                            ) }
-                            { organization?.created && (
+                                        ) }
+                                        inputType="url"
+                                        maxLength={ 32 }
+                                        minLength={ 3 }
+                                    />
+                                ) }
                                 <Field.Input
                                     data-testid={ `${ testId }-overview-form-created-input` }
-                                    name="created"
+                                    name="id"
                                     label={ t(
                                         "console:manage.features.organizations.edit.fields." +
+                                    "id.label"
+                                    ) }
+                                    required={ false }
+                                    requiredErrorMessage=""
+                                    type="text"
+                                    readOnly={ true }
+                                    value={ organization?.id }
+                                    ariaLabel={ t(
+                                        "console:manage.features.organizations.edit.fields." +
+                                    "id.ariaLabel"
+                                    ) }
+                                    inputType="copy_input"
+                                    maxLength={ 32 }
+                                    minLength={ 3 }
+                                />
+                                { organization?.created && (
+                                    <Field.Input
+                                        data-testid={ `${ testId }-overview-form-created-input` }
+                                        name="created"
+                                        label={ t(
+                                            "console:manage.features.organizations.edit.fields." +
                                         "created.label"
-                                    ) }
-                                    required={ false }
-                                    requiredErrorMessage=""
-                                    type="text"
-                                    readOnly={ true }
-                                    value={ moment(organization.created).format(
-                                        "YYYY-MM-DD hh:mm:ss"
-                                    ) }
-                                    ariaLabel={ t(
-                                        "console:manage.features.organizations.edit.fields." +
+                                        ) }
+                                        required={ false }
+                                        requiredErrorMessage=""
+                                        type="text"
+                                        readOnly={ true }
+                                        value={ moment(organization.created).format(
+                                            "YYYY-MM-DD hh:mm:ss"
+                                        ) }
+                                        ariaLabel={ t(
+                                            "console:manage.features.organizations.edit.fields." +
                                         "created.ariaLabel"
-                                    ) }
-                                    inputType="default"
-                                    maxLength={ 32 }
-                                    minLength={ 3 }
-                                />
-                            ) }
-                            { organization?.lastModified && (
-                                <Field.Input
-                                    data-testid={ `${ testId }-overview-form-last-modified-input` }
-                                    name="lastModified"
-                                    label={ t(
-                                        "console:manage.features.organizations.edit.fields." +
+                                        ) }
+                                        inputType="default"
+                                        maxLength={ 32 }
+                                        minLength={ 3 }
+                                    />
+                                ) }
+                                { organization?.lastModified && (
+                                    <Field.Input
+                                        data-testid={ `${ testId }-overview-form-last-modified-input` }
+                                        name="lastModified"
+                                        label={ t(
+                                            "console:manage.features.organizations.edit.fields." +
                                         "lastModified.label"
-                                    ) }
-                                    required={ false }
-                                    requiredErrorMessage=""
-                                    type="text"
-                                    readOnly={ true }
-                                    value={ moment(
-                                        organization.lastModified
-                                    ).format("YYYY-MM-DD hh:mm:ss") }
-                                    ariaLabel={ t(
-                                        "console:manage.features.organizations.edit.fields." +
+                                        ) }
+                                        required={ false }
+                                        requiredErrorMessage=""
+                                        type="text"
+                                        readOnly={ true }
+                                        value={ moment(
+                                            organization.lastModified
+                                        ).format("YYYY-MM-DD hh:mm:ss") }
+                                        ariaLabel={ t(
+                                            "console:manage.features.organizations.edit.fields." +
                                         "lastModified.ariaLabel"
-                                    ) }
-                                    inputType="default"
-                                    maxLength={ 32 }
-                                    minLength={ 3 }
-                                />
-                            ) }
-                            { !isReadOnly && (
-                                <Field.Button
-                                    form={ FORM_ID }
-                                    size="small"
-                                    buttonType="primary_btn"
-                                    ariaLabel="Update button"
-                                    name="update-button"
-                                    className="form-button"
-                                    data-testid={ `${ testId }-form-update-button` }
-                                    disabled={ isSubmitting }
-                                    loading={ isSubmitting }
-                                    label={ t("common:update") }
-                                />
-                            ) }
-                            <Grid.Row columns={ 1 }>
-                                <Grid.Column
-                                    mobile={ 16 }
-                                    tablet={ 16 }
-                                    computer={ 8 }
-                                >
+                                        ) }
+                                        inputType="default"
+                                        maxLength={ 32 }
+                                        minLength={ 3 }
+                                    />
+                                ) }
+                                { !isReadOnly && (
+                                    <Field.Button
+                                        form={ FORM_ID }
+                                        size="small"
+                                        buttonType="primary_btn"
+                                        ariaLabel="Update button"
+                                        name="update-button"
+                                        className="form-button"
+                                        data-testid={ `${ testId }-form-update-button` }
+                                        disabled={ isSubmitting }
+                                        loading={ isSubmitting }
+                                        label={ t("common:update") }
+                                    />
+                                ) }
+                                <Grid.Row columns={ 1 }>
+                                    <Grid.Column
+                                        mobile={ 16 }
+                                        tablet={ 16 }
+                                        computer={ 8 }
+                                    >
 
-                                </Grid.Column>
-                            </Grid.Row>
-                        </Form>
-                    </Grid.Column>
-                </Grid.Row>
-            </Grid>
+                                    </Grid.Column>
+                                </Grid.Row>
+                            </Form>
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
+                { showOrgDeleteConfirmation && (
+                    <ConfirmationModal
+                        onClose={ (): void =>
+                            setShowOrgDeleteConfirmationModal(false)
+                        }
+                        type="negative"
+                        open={ showOrgDeleteConfirmation }
+                        assertionHint={ t(
+                            "console:manage.features.organizations.confirmations." +
+                        "deleteOrganization.assertionHint"
+                        ) }
+                        assertionType="checkbox"
+                        primaryAction="Confirm"
+                        secondaryAction="Cancel"
+                        onSecondaryActionClick={ (): void =>
+                            setShowOrgDeleteConfirmationModal(false)
+                        }
+                        onPrimaryActionClick={ (): void =>
+                            handleOnDeleteOrganization(organization.id)
+                        }
+                        data-testid={ `${ testId }-role-confirmation-modal` }
+                        closeOnDimmerClick={ false }
+                    >
+                        <ConfirmationModal.Header>
+                            { t(
+                                "console:manage.features.organizations.confirmations.deleteOrganization.header"
+                            ) }
+                        </ConfirmationModal.Header>
+                        <ConfirmationModal.Message attached negative>
+                            { t(
+                                "console:manage.features.organizations.confirmations.deleteOrganization.message"
+                            ) }
+                        </ConfirmationModal.Message>
+                        <ConfirmationModal.Content>
+                            { t(
+                                "console:manage.features.organizations.confirmations.deleteOrganization.content"
+                            ) }
+                        </ConfirmationModal.Content>
+                    </ConfirmationModal>
+                ) }
+            </EmphasizedSegment>
             <Divider hidden />
             <Show
                 when={
@@ -610,47 +672,7 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                     </DangerZoneGroup>
                 ) }
             </Show>
-            { showOrgDeleteConfirmation && (
-                <ConfirmationModal
-                    onClose={ (): void =>
-                        setShowOrgDeleteConfirmationModal(false)
-                    }
-                    type="negative"
-                    open={ showOrgDeleteConfirmation }
-                    assertionHint={ t(
-                        "console:manage.features.organizations.confirmations." +
-                        "deleteOrganization.assertionHint"
-                    ) }
-                    assertionType="checkbox"
-                    primaryAction="Confirm"
-                    secondaryAction="Cancel"
-                    onSecondaryActionClick={ (): void =>
-                        setShowOrgDeleteConfirmationModal(false)
-                    }
-                    onPrimaryActionClick={ (): void =>
-                        handleOnDeleteOrganization(organization.id)
-                    }
-                    data-testid={ `${ testId }-role-confirmation-modal` }
-                    closeOnDimmerClick={ false }
-                >
-                    <ConfirmationModal.Header>
-                        { t(
-                            "console:manage.features.organizations.confirmations.deleteOrganization.header"
-                        ) }
-                    </ConfirmationModal.Header>
-                    <ConfirmationModal.Message attached negative>
-                        { t(
-                            "console:manage.features.organizations.confirmations.deleteOrganization.message"
-                        ) }
-                    </ConfirmationModal.Message>
-                    <ConfirmationModal.Content>
-                        { t(
-                            "console:manage.features.organizations.confirmations.deleteOrganization.content"
-                        ) }
-                    </ConfirmationModal.Content>
-                </ConfirmationModal>
-            ) }
-        </EmphasizedSegment>
+        </>
     ) : (
         <ContentLoader dimmer />
     );
