@@ -81,12 +81,6 @@
                     }
                 }
 
-                sessionStorage.setItem("auth_callback_url_my_account",
-                    userAccessedPath.split(window.origin)[1]
-                        ? userAccessedPath.split(window.origin)[1].replace(/\/+$/, '')
-                        : null
-                );
-
                 auth.initialize(authConfig);
                 auth.signIn();
             }

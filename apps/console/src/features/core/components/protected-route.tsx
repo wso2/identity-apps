@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
- * WSO2 LLC. licenses this file to you under the Apache License,
+ * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -27,8 +27,8 @@ import { AppState } from "../store";
 /**
  * Protected route component.
  *
- * @param props - Props injected to the component.
- * @returns ProtectedRoute component.
+ * @param {RouteProps} props - Props injected to the component.
+ * @return {React.ReactElement}
  */
 export const ProtectedRoute: FunctionComponent<RouteProps> = (props: RouteProps): ReactElement => {
 
@@ -40,14 +40,16 @@ export const ProtectedRoute: FunctionComponent<RouteProps> = (props: RouteProps)
     const isAuthenticated: boolean = useSelector((state: AppState) => state.auth.isAuthenticated);
 
     /**
-     * Update existing location path (auth_callback_url) in the state to home route if the current page is either login
-     * page, unauthorized page, 404 page or storing_data_disabled page. For other pages, auth_callback_url will be
-     * updated in index.jsp for every page reload
+     * Update existing location path in the state to recall upon page refresh or authentication callback.
+     * The login path and the login error path have been skipped.
      */
-    if ((window.location.pathname === AppConstants.getAppLoginPath())
-        || (window.location.pathname === AppConstants.getPaths().get("UNAUTHORIZED"))
-        || (window.location.pathname === AppConstants.getPaths().get("PAGE_NOT_FOUND")
-            || (window.location.pathname === AppConstants.getPaths().get("STORING_DATA_DISABLED")))) {
+    if ((window.location.pathname !== AppConstants.getAppLoginPath())
+        && (window.location.pathname !== AppConstants.getPaths().get("UNAUTHORIZED"))
+        && (window.location.pathname !== AppConstants.getPaths().get("PAGE_NOT_FOUND")
+        && (window.location.pathname !== AppConstants.getPaths().get("STORING_DATA_DISABLED")))) {
+        AuthenticateUtils.updateAuthenticationCallbackUrl(AppConstantsCore.CONSOLE_APP,
+            window.location.pathname + window.location.hash);
+    } else {
         AuthenticateUtils.updateAuthenticationCallbackUrl(AppConstantsCore.CONSOLE_APP, AppConstants.getAppHomePath());
     }
 
