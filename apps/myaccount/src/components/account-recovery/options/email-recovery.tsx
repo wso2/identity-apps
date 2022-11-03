@@ -183,7 +183,7 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (
      * This function gets the email address from the response passed as the argument
      * and assigns it to email and editedEmail.
      * @param response - response as the parameter.
-     * @remark Temporarily the first element in the emails array is shown.
+     * Temporarily the first element in the emails array is shown.
      * In the future, we need to decide whether or not to allow multiple recovery emails
      */
     const setEmailAddress = (response) => {
@@ -226,7 +226,7 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (
     /**
      * This function masks the email address passed as the argument and returns
      * the masked email address.
-     * The text between the second character of the email and the @ sign is masked.
+     * The text between the second character of the email and the \@ sign is masked.
      * @param emailAddress - email address.
      */
     const maskEmail = (emailAddress: string) => {
