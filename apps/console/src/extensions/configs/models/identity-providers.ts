@@ -17,6 +17,7 @@
  */
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { ResourceTabPanePropsInterface } from "@wso2is/react-components";
 import { FunctionComponent, ReactElement, ReactNode, SVGProps } from "react";
 import {
     AuthenticatorInterface,
@@ -56,6 +57,12 @@ export interface IdentityProviderConfig {
          * variable values is pointless.
          */
         attributesSettings: boolean;
+        /**
+         * Get the list of passible tab extensions.
+         * @param props - Props for the component.
+         * @returns Array of tab extensions.
+         */
+        getTabExtensions: (props: Record<string, unknown>) => ResourceTabPanePropsInterface[];
         /**
          * Used enable/disable certain tabs for certain IDP template type.
          * @param templateId - The IDP Template Type.

@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { ResourceTabPanePropsInterface } from "@wso2is/react-components";
 import { ReactElement, ReactNode } from "react";
 import { ApplicationConfig } from "./models";
 import {
@@ -89,6 +90,7 @@ export const applicationConfig: ApplicationConfig = {
                 return 4; // Anything else
             }
         },
+        getTabExtensions: (_props: Record<string, unknown>): ResourceTabPanePropsInterface[] => [],
         getTabPanelReadOnlyStatus: (_tabPanelName: string, _applicationName: ApplicationInterface): boolean => {
             return false;
         },
