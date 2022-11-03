@@ -17,7 +17,8 @@
  */
 
 import { AuthParams, AuthProvider, SPAUtils } from "@asgardeo/auth-react";
-import { ContextUtils, StringUtils } from "@wso2is/core/utils";
+import { AppConstants as AppConstantsCore } from "@wso2is/core/constants";
+import { AuthenticateUtils, ContextUtils, StringUtils } from "@wso2is/core/utils";
 import axios from "axios";
 import * as React from "react";
 import "react-app-polyfill/ie11";
@@ -28,6 +29,7 @@ import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import { PreLoader } from "./components";
 import { Config } from "./configs";
+import { AppConstants } from "./constants";
 import { ProtectedApp } from "./protected-app";
 import { store } from "./store";
 import "core-js/stable";
@@ -36,6 +38,14 @@ import { getAuthInitializeConfig } from "./utils";
 
 // Set the runtime config in the context.
 ContextUtils.setRuntimeConfig(Config.getDeploymentConfig());
+
+if ((window.location.pathname !== AppConstants.getAppLoginPath())
+    && (window.location.pathname !== AppConstants.getPaths().get("UNAUTHORIZED"))
+    && (window.location.pathname !== AppConstants.getPaths().get("PAGE_NOT_FOUND")
+    && (window.location.pathname !== AppConstants.getPaths().get("STORING_DATA_DISABLED")))) {
+    AuthenticateUtils.updateAuthenticationCallbackUrl(AppConstantsCore.MY_ACCOUNT_APP,
+        window.location.pathname + window.location.hash);
+}
 
 const getAuthParams = (): Promise<AuthParams> => {
     if (!SPAUtils.hasAuthSearchParamsInURL() && process.env.NODE_ENV === "production") {
