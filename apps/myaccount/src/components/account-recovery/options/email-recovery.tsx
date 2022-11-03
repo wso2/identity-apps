@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { ProfileConstants } from "@wso2is/core/constants";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Forms, Validation } from "@wso2is/forms";
 import { GenericIcon } from "@wso2is/react-components";
@@ -39,7 +40,6 @@ import { EditSection } from "../../shared";
  *
  * @constant
  * @default
- * @type {string}
  */
 const EMAIL = "email";
 
@@ -55,8 +55,8 @@ interface EmailRecoveryProps extends TestableComponentInterface {
 /**
  * Email recovery section.
  *
- * @param {EmailRecoveryProps} props
- * @return {ReactElement}
+ * @param props - Props injected to the component.
+ * @return React element.
  */
 export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (
     props: EmailRecoveryProps
