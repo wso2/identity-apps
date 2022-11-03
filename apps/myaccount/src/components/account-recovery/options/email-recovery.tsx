@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -37,9 +37,6 @@ import { EditSection } from "../../shared";
 
 /**
  * Email key.
- *
- * @constant
- * @default
  */
 const EMAIL = "email";
 
@@ -56,7 +53,7 @@ interface EmailRecoveryProps extends TestableComponentInterface {
  * Email recovery section.
  *
  * @param props - Props injected to the component.
- * @return React element.
+ * @returns React element.
  */
 export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (
     props: EmailRecoveryProps
@@ -77,11 +74,13 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (
     const emailSchema: ProfileSchema = useSelector((state: AppState) => {
         const emailSchemas: ProfileSchema = state.authenticationInformation.profileSchemas.find(
             (profileSchema) => {
-            return profileSchema.name === "emails";
-        });
+                return profileSchema.name === "emails";
+            });
+
         if (emailSchemas && emailSchemas.subAttributes) {
             return emailSchemas.subAttributes[0];
         }
+
         return emailSchemas;
     });
     const activeForm: string = useSelector((state: AppState) => state.global.activeForm);
@@ -115,8 +114,9 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (
                     value: {}
                 }
             ],
-            schemas: ["urn:ietf:params:scim:api:messages:2.0:PatchOp"]
+            schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
         };
+
         data.Operations[0].value = {
             emails: emailType || emailSchema
                 ? [
@@ -125,7 +125,10 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (
                         value: emailAddress
                     }
                 ]
-                : [emailAddress]
+                : [ emailAddress ],
+            [ProfileConstants.SCIM2_ENT_USER_SCHEMA]: {
+                "verifyEmail": true
+            }
         };
 
         updateProfileInfo(data)
@@ -179,12 +182,13 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (
     /**
      * This function gets the email address from the response passed as the argument
      * and assigns it to email and editedEmail.
-     * @param response
+     * @param response - response as the parameter.
      * @remark Temporarily the first element in the emails array is shown.
      * In the future, we need to decide whether or not to allow multiple recovery emails
      */
     const setEmailAddress = (response) => {
         let emailAddress = "";
+
         if (response.emails) {
             if (typeof response.emails[0] === "object" && response.emails[0] !== null) {
                 emailAddress = response.emails[0].value;
@@ -202,7 +206,7 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (
         if (!isEmpty(profileInfo)) {
             setEmailAddress(profileInfo);
         }
-    }, [profileInfo]);
+    }, [ profileInfo ]);
 
     /**
      * This is called when the edit icon is clicked.
@@ -223,7 +227,7 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (
      * This function masks the email address passed as the argument and returns
      * the masked email address.
      * The text between the second character of the email and the @ sign is masked.
-     * @param emailAddress
+     * @param emailAddress - email address.
      */
     const maskEmail = (emailAddress: string) => {
         let mask = "";
@@ -264,9 +268,9 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (
                                 }</List.Header>
                                 <List.Description>
                                     {
-                                        email || email !== ""
-                                        ? t("myAccount:components.accountRecovery.emailRecovery.descriptions.update",
-                                            { email: email ? maskEmail(email) : "" })
+                                        email || email !== "" ?
+                                            t("myAccount:components.accountRecovery.emailRecovery.descriptions.update",
+                                                { email: email ? maskEmail(email) : "" })
                                             : t("myAccount:components.accountRecovery.emailRecovery.descriptions.add")
                                     }
                                     {
@@ -274,11 +278,11 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (
                                             <Popup
                                                 size="tiny"
                                                 trigger={
-                                                    <Icon
+                                                    (<Icon
                                                         style={ { marginLeft: "0.1em" } }
                                                         name="info circle"
                                                         color="yellow"
-                                                    />
+                                                    />)
                                                 }
                                                 content={
                                                     t("myAccount:components.profile.messages." +
@@ -309,35 +313,36 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (
                                             name="pencil alternate"
                                         />
                                     ):
-                                    (
-                                        <Icon
-                                            link={ true }
-                                            onClick={ handleEdit }
-                                            data-testid={ `${testId}-view-button` }
-                                            className="list-icon"
-                                            size="small"
-                                            color="grey"
-                                            name="eye"
-                                        />
-                                    )
+                                        (
+                                            <Icon
+                                                link={ true }
+                                                onClick={ handleEdit }
+                                                data-testid={ `${testId}-view-button` }
+                                                className="list-icon"
+                                                size="small"
+                                                color="grey"
+                                                name="eye"
+                                            />
+                                        )
 
-                                    ) : (
-                                        <Icon
-                                            link={ true }
-                                            onClick={ handleEdit }
-                                            className="list-icon"
-                                            data-testid={ `${testId}-edit-button` }
-                                            size="small"
-                                            color="grey"
-                                            name="plus"
-                                        />
-                                    ) }
+                                ) : (
+                                    <Icon
+                                        link={ true }
+                                        onClick={ handleEdit }
+                                        className="list-icon"
+                                        data-testid={ `${testId}-edit-button` }
+                                        size="small"
+                                        color="grey"
+                                        name="plus"
+                                    />
+                                ) }
                             </List.Content>
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
             );
         }
+
         return (
             <EditSection data-testid={ `${testId}-edit-section` }>
                 <Grid>
@@ -406,7 +411,9 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (
                                                                 size="small"
                                                                 type="submit"
                                                                 value={ t("common:update").toString() }
-                                                                data-testid={ `${testId}--edit-section-form-sumbit-button` }
+                                                                data-testid={
+                                                                    `${testId}--edit-section-form-sumbit-button`
+                                                                }
                                                             />
                                                             <Field
                                                                 className="link-button"
@@ -414,23 +421,27 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (
                                                                 size="small"
                                                                 type="button"
                                                                 value={ t("common:cancel").toString() }
-                                                                data-testid={ `${testId}--edit-section-form-cancel-button` }
+                                                                data-testid={
+                                                                    `${testId}--edit-section-form-cancel-button`
+                                                                }
                                                             />
                                                         </Form.Group>
                                                     </>
                                                 ):
-                                                (
-                                                    <Form.Group inline={ true }>
-                                                        <Field
-                                                            className="button"
-                                                            onClick={ handleCancel }
-                                                            size="small"
-                                                            type="button"
-                                                            value={ t("common:done").toString() }
-                                                            data-testid={ `${testId}--edit-section-form-done-button` }
-                                                        />
-                                                    </Form.Group>
-                                                )
+                                                    (
+                                                        <Form.Group inline={ true }>
+                                                            <Field
+                                                                className="button"
+                                                                onClick={ handleCancel }
+                                                                size="small"
+                                                                type="button"
+                                                                value={ t("common:done").toString() }
+                                                                data-testid={
+                                                                    `${testId}--edit-section-form-done-button`
+                                                                }
+                                                            />
+                                                        </Form.Group>
+                                                    )
                                             }
                                         </Forms>
 
