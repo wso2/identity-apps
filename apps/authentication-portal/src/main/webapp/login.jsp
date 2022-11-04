@@ -396,10 +396,9 @@
 
                                             <script src="https://accounts.google.com/gsi/client" async defer></script>
 
-                                            <div id="google_parent" class="google-one-tap-container">
-                                            </div>
+                                            <div id="google_parent" class="google-one-tap-container"></div>
 
-                                            <form action="<%=GOOGLE_CALLBACK_URL%>" method="post" id="googleOneTapForm">
+                                            <form action="<%=GOOGLE_CALLBACK_URL%>" method="post" id="googleOneTapForm" style="display: none;">
                                                 <input type="hidden" name="state" value="<%=Encode.forHtmlAttribute(request.getParameter("sessionDataKey"))%>"/>
                                                 <input type="hidden" name="idp" value="<%=idpName%>"/>
                                                 <input type="hidden" name="authenticator"  value="<%=idpEntry.getValue()%>"/>
@@ -416,10 +415,10 @@
                                                         cancel_on_tap_outside: false,
                                                         nonce: "<%=Encode.forJavaScriptAttribute(request.getParameter("sessionDataKey"))%>",
                                                         callback: handleCredentialResponse
-                                                     });
-                                                     google.accounts.id.prompt((notification) => {
-                                                         onMoment(notification);
-                                                     });
+                                                    });
+                                                    google.accounts.id.prompt((notification) => {
+                                                        onMoment(notification);
+                                                    });
                                                 }
                                             </script>
                                         <% } else { %>
@@ -595,8 +594,8 @@
         }
 
         function handleCredentialResponse(response) {
-            document.getElementById("googleOneTapForm").elements.credential.value = response.credential;
-            document.getElementById("googleOneTapForm").submit();
+           $('#credential').val(response.credential);
+           $('#googleOneTapForm').submit();
         }
 
         function checkSessionKey() {
