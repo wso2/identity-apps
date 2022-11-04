@@ -204,7 +204,12 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (
 
     useEffect(() => {
         if (!isEmpty(profileInfo)) {
-            setEmailAddress(profileInfo);
+            const tempProfileInfo: BasicProfileInterface = profileInfo;
+
+            if (profileInfo?.pendingEmails?.length > 0) {
+                tempProfileInfo.emails = [ profileInfo.pendingEmails[0].value ];
+            }
+            setEmailAddress(tempProfileInfo);
         }
     }, [ profileInfo ]);
 
