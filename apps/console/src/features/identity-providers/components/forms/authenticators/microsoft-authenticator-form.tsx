@@ -86,7 +86,7 @@ interface MicrosoftAuthenticatorFormInitialValuesInterface {
     /**
      * Microsoft Authenticator client secret field value.
      */
-    AdditionalQueryParameters: string;
+    commonAuthQueryParams: string;
     /**
      * Microsoft Authenticator client secret field value.
      */
@@ -99,6 +99,10 @@ interface MicrosoftAuthenticatorFormInitialValuesInterface {
      * Microsoft Authenticator client id field value.
      */
     ClientId: string;
+    /**
+     * Microsoft Authenticator scope values.
+     */
+    Scopes: string;
 }
 
 /**
@@ -108,7 +112,7 @@ interface MicrosoftAuthenticatorFormFieldsInterface {
     /**
      * Microsoft Authenticator client secret field value.
      */
-    AdditionalQueryParameters: CommonAuthenticatorFormFieldInterface;
+    commonAuthQueryParams: CommonAuthenticatorFormFieldInterface;
     /**
      * Microsoft Authenticator client secret field.
      */
@@ -121,6 +125,10 @@ interface MicrosoftAuthenticatorFormFieldsInterface {
      * Microsoft Authenticator client id field value.
      */
     ClientId: CommonAuthenticatorFormFieldInterface;
+    /**
+     * Microsoft Authenticator scope values.
+     */
+    Scopes: CommonAuthenticatorFormFieldInterface;
 }
 
 /**
@@ -241,7 +249,7 @@ export const MicrosoftAuthenticatorForm: FunctionComponent<MicrosoftAuthenticato
         if (scope === IdentityProviderManagementConstants.MICROSOFT_SCOPE_DICTIONARY.EMAIL) {
             return {
                 description: t("console:develop.features.authenticationProvider.forms" +
-                    ".authenticatorSettings.microsoft.scopes.list.email.description"),
+                    ".authenticatorSettings.microsoft.Scopes.list.email.description"),
                 displayName: (
                     <Code compact withBackground={ false } fontSize="inherit" fontColor="inherit">
                         { IdentityProviderManagementConstants.MICROSOFT_SCOPE_DICTIONARY.EMAIL }
@@ -254,7 +262,7 @@ export const MicrosoftAuthenticatorForm: FunctionComponent<MicrosoftAuthenticato
         if (scope === IdentityProviderManagementConstants.MICROSOFT_SCOPE_DICTIONARY.OPENID) {
             return {
                 description: t("console:develop.features.authenticationProvider.forms" +
-                    ".authenticatorSettings.microsoft.scopes.list.openid.description"),
+                    ".authenticatorSettings.microsoft.Scopes.list.openid.description"),
                 displayName: (
                     <Code compact withBackground={ false } fontSize="inherit" fontColor="inherit">
                         { IdentityProviderManagementConstants.MICROSOFT_SCOPE_DICTIONARY.OPENID }
@@ -267,7 +275,7 @@ export const MicrosoftAuthenticatorForm: FunctionComponent<MicrosoftAuthenticato
         if (scope === IdentityProviderManagementConstants.MICROSOFT_SCOPE_DICTIONARY.PROFILE) {
             return {
                 description: t("console:develop.features.authenticationProvider.forms" +
-                    ".authenticatorSettings.microsoft.scopes.list.profile.description"),
+                    ".authenticatorSettings.microsoft.Scopes.list.profile.description"),
                 displayName: (
                     <Code compact withBackground={ false } fontSize="inherit" fontColor="inherit">
                         { IdentityProviderManagementConstants.MICROSOFT_SCOPE_DICTIONARY.PROFILE }
@@ -299,7 +307,7 @@ export const MicrosoftAuthenticatorForm: FunctionComponent<MicrosoftAuthenticato
         let scopes: string[] = [];
 
         try {
-            scopes = rawScopes.trim().split("scope=")[1].split(" ");
+            scopes = rawScopes.trim().split(" ");
         } catch(e) {
             // Silent any issues occurred when trying to scroll.
             // Add debug logs here one a logger is added.
@@ -430,32 +438,62 @@ export const MicrosoftAuthenticatorForm: FunctionComponent<MicrosoftAuthenticato
                 width={ 16 }
                 data-testid={ `${ testId }-authorized-redirect-url` }
             />
-            <Field.Input
-                ariaLabel={
-                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
-                        ".microsoft.AdditionalQueryParameters.ariaLabel")
-                }
+            <Field.Scopes
+                ariaLabel="Scopes provided by Microsoft Authenticator"
                 inputType="default"
-                name="AdditionalQueryParameters"
+                name="Scopes"
                 label={
                     t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
-                        ".microsoft.AdditionalQueryParameters.label")
+                        ".microsoft.Scopes.label")
                 }
                 placeholder={
                     t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
-                        ".microsoft.AdditionalQueryParameters.placeholder")
+                        ".microsoft.Scopes.placeholder")
                 }
-                hint={
-                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
-                        ".microsoft.AdditionalQueryParameters.hint")
-                }
-                required={ formFields?.AdditionalQueryParameters?.meta?.isMandatory }
-                value={ formFields?.AdditionalQueryParameters?.value }
+                hint="The types of access provided for the connected apps to access data from Microsoft."
+                required={ formFields?.Scopes?.meta?.isMandatory }
+                value={ formFields?.Scopes?.value }
                 readOnly={
                     readOnly || (
                         mode === AuthenticatorSettingsFormModes.CREATE
                             ? false
-                            : formFields?.AdditionalQueryParameters?.meta?.readOnly
+                            : formFields?.Scopes?.meta?.readOnly
+                    )
+                }
+                maxLength={ formFields?.ClientId?.meta?.maxLength }
+                minLength={
+                    IdentityProviderManagementConstants
+                        .AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.CLIENT_ID_MIN_LENGTH as number
+                }
+                width={ 16 }
+                data-testid={ `${ testId }-additional-query-parameters` }
+            />
+            <Field.QueryParams
+                ariaLabel={
+                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                        ".microsoft.commonAuthQueryParams.ariaLabel")
+                }
+                inputType="default"
+                name="commonAuthQueryParams"
+                label={
+                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                        ".microsoft.commonAuthQueryParams.label")
+                }
+                placeholder={
+                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                        ".microsoft.commonAuthQueryParams.placeholder")
+                }
+                hint={
+                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                        ".microsoft.commonAuthQueryParams.hint")
+                }
+                required={ formFields?.commonAuthQueryParams?.meta?.isMandatory }
+                value={ formFields?.commonAuthQueryParams?.value }
+                readOnly={
+                    readOnly || (
+                        mode === AuthenticatorSettingsFormModes.CREATE
+                            ? false
+                            : formFields?.commonAuthQueryParams?.meta?.readOnly
                     )
                 }
                 maxLength={ formFields?.ClientId?.meta?.maxLength }
@@ -467,17 +505,17 @@ export const MicrosoftAuthenticatorForm: FunctionComponent<MicrosoftAuthenticato
                 data-testid={ `${ testId }-additional-query-parameters` }
             />
             {
-                (formFields?.AdditionalQueryParameters?.value
-                    && !isEmpty(extractScopes(formFields.AdditionalQueryParameters.value))) && (
+                (formFields?.Scopes?.value
+                    && !isEmpty(extractScopes(formFields.Scopes.value))) && (
                     <FormSection
                         heading={
                             t("console:develop.features.authenticationProvider.forms" +
-                                ".authenticatorSettings.microsoft.scopes.heading")
+                                ".authenticatorSettings.microsoft.Scopes.heading")
                         }
                     >
                         <div className="authenticator-dynamic-properties">
                             {
-                                extractScopes(formFields.AdditionalQueryParameters.value)
+                                extractScopes(formFields.Scopes.value)
                                     .map((scope: string, index: number) => {
 
                                         const scopeMeta: ScopeMetaInterface = resolveScopeMetadata(scope);
@@ -518,7 +556,7 @@ export const MicrosoftAuthenticatorForm: FunctionComponent<MicrosoftAuthenticato
                             <Trans
                                 i18nKey={
                                     "console:develop.features.authenticationProvider.forms" +
-                                    ".authenticatorSettings.microsoft.scopes.hint"
+                                    ".authenticatorSettings.microsoft.Scopes.hint"
                                 }
                             >
                                 Scopes provide a way for connected apps to access data from Microsoft.

@@ -3423,7 +3423,7 @@ export const console: ConsoleNS = {
                             }
                         },
                         microsoft: {
-                            AdditionalQueryParameters: {
+                            commonAuthQueryParams: {
                                 ariaLabel: "Microsoft authenticator additional query parameters",
                                 hint: "Additional query parameters to be sent to Microsoft.",
                                 label: "Additional Query Parameters",
@@ -3456,10 +3456,11 @@ export const console: ConsoleNS = {
                                     required: "Client secret is a required field."
                                 }
                             },
-                            scopes: {
+                            Scopes: {
                                 heading: "Scopes",
                                 hint: "The type of access provided for the connected apps to access data " +
                                     "from Microsoft. Click <1>here</1> to learn more.",
+                                label: "Scopes",
                                 list: {
                                     email: {
                                         description: "Allows to view user's email address."
@@ -3470,7 +3471,8 @@ export const console: ConsoleNS = {
                                     profile: {
                                         description: "Allows to view user's basic profile data."
                                     }
-                                }
+                                },
+                                placeholder: "e.g: openid"
                             }
                         },
                         saml: {

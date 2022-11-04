@@ -30,7 +30,7 @@ import omit from "lodash-es/omit";
 import React, { ClipboardEvent, FormEvent, KeyboardEvent, ReactElement } from "react";
 import { FieldRenderProps } from "react-final-form";
 import { Checkbox, Form, Icon, Input, Popup, Select } from "semantic-ui-react";
-import { QueryParameters } from "../addons";
+import { QueryParameters, Scopes } from "../addons";
 import {
     CheckboxAdapterPropsInterface,
     ColorPickerAdapterPropsInterface,
@@ -125,6 +125,27 @@ export const TextFieldAdapter = (props:FieldRenderProps<any> ): ReactElement => 
                     : (): void => { return; }
             }
         />
+    );
+};
+
+export const ScopeFieldAdapter = (props:FieldRenderProps<any> ): ReactElement => {
+
+    const { childFieldProps, input } = props;
+
+    return (
+        <>
+            <Scopes
+                defaultValue={ childFieldProps.defaultValue }
+                label = { childFieldProps.label }
+                name = { childFieldProps.name }
+                value = { childFieldProps.value }
+                required = { childFieldProps.required }
+                onChange = { input.onChange }
+                onBlur = { input.onBlur }
+                placeholder = { childFieldProps.placeholder }
+            />
+
+        </>
     );
 };
 
