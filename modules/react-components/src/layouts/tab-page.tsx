@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { LoadingStateOptionsInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
 import { PageLayout, PageLayoutPropsInterface } from "../";
 import { ResourceTab } from "../components";
@@ -33,6 +34,10 @@ export interface TabPageLayoutPropsInterface extends Omit<PageLayoutPropsInterfa
      * Is page loading.
      */
     isLoading: boolean;
+    /**
+     * Optional meta for the loading state.
+     */
+    loadingStateOptions?: LoadingStateOptionsInterface;
 }
 
 /**

@@ -111,7 +111,7 @@ interface EditApplicationPropsInterface extends SBACInterface<FeatureConfigInter
     /**
      * Callback function to set the loading state.
      */
-    getLoadingState?: (isLoading: boolean) => void;
+     onLoadingStateChanged?: (isLoading: boolean) => void;
 }
 
 /**
@@ -137,7 +137,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         template,
         readOnly,
         urlSearchParams,
-        getLoadingState,
+        onLoadingStateChanged,
         [ "data-testid" ]: testId
     } = props;
 
@@ -189,10 +189,10 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     };
 
     /**
-     * Loading status for the resource tabs
+     * Loading status for the resource tabs.
      */
     useEffect(() => {
-        getLoadingState(
+        onLoadingStateChanged(
             !(application && !isInboundProtocolsRequestLoading && inboundProtocolList != undefined
             && (tabPaneExtensions || !applicationConfig.editApplication.extendTabs
             || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
@@ -944,7 +944,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
     /**
      * Renders the client secret hash disclaimer modal.
-     * @returns Client Secret Hash Disclaimer Modal
+     * @returns Client Secret Hash Disclaimer Modal.
      */
     const renderClientSecretHashDisclaimerModal = (): ReactElement => {
 

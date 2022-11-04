@@ -37,26 +37,18 @@ export interface AlertInterface extends Notification {
 export enum AlertLevels {
     /**
      * Success alert level.
-     *
-     * @typeParam SUCCESS - string
      */
     SUCCESS = "success",
     /**
      * Error alert level.
-     *
-     * @typeParam ERROR - string
      */
     ERROR = "error",
     /**
      * Info alert level.
-     *
-     * @typeParam INFO - string
      */
     INFO = "info",
     /**
      * Warning alert level.
-     *
-     * @typeParam WARNING - string
      */
     WARNING = "warning"
 }
@@ -111,7 +103,7 @@ export interface TestableComponentInterface {
 
 /**
  * Common interface to extend identifiable components.
-*/
+ */
 export interface IdentifiableComponentInterface {
     /**
      * Unique component id.
@@ -161,22 +153,18 @@ export interface ReferableComponentInterface<T = Record<string, any>> {
 export enum ProductReleaseTypes {
     /**
      * Milestone release.
-     * @typeParam MILESTONE - string
      */
     MILESTONE = "milestone",
     /**
      * Alpha release.
-     * @typeParam ALPHA - string
      */
     ALPHA = "alpha",
     /**
      * Beta Release.
-     * @typeParam BETA - string
      */
     BETA = "beta",
     /**
      * Release candidate.
-     * @typeParam RC - string
      */
     RC = "rc"
 }

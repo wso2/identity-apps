@@ -110,7 +110,6 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     const [ sharedWithAll, setSharedWithAll ] = useState<ShareWithOrgStatus>(ShareWithOrgStatus.UNDEFINED);
     const [ externalLoadingState, setExternalLoadingState ] = useState<boolean>(undefined);
 
-
     const isFirstLevelOrg: boolean = useSelector(
         (state: AppState) => state.organization.isFirstLevelOrganization
     );
@@ -554,7 +553,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
      *
      * @param isLoading - Loading state.
      */
-    const handleLoadingState = (isLoading: boolean): void => {  
+    const handleLoadingStateChange = (isLoading: boolean): void => {  
         setExternalLoadingState(isLoading);
     };
 
@@ -649,7 +648,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             ) }
         >
             <EditApplication
-                getLoadingState={ handleLoadingState }
+                onLoadingStateChanged={ handleLoadingStateChange }
                 application={ application }
                 featureConfig={ featureConfig }
                 isLoading={ isApplicationRequestLoading && externalLoadingState }
