@@ -2999,6 +2999,20 @@ export const console: ConsoleNS = {
                             },
                             subHeading: "පහත මාර්ගෝපදේශය භාවිතා කරන්න"
                         }
+                    },
+                    organizationIDP: {
+                        wizardHelp: {
+                            name: {
+                                description: "එය පහසුවෙන් හඳුනාගත හැකි වන පරිදි ව්‍යවසාය සත්‍යාපන සැපයුම්කරු සඳහා අද්විතීය නමක්" +
+                                    " ලබා දෙන්න.",
+                                heading: "නම"
+                            },
+                            description: {
+                                description: "ඒ ගැන වැඩි විස්තර සඳහා ව්‍යවසාය සත්‍යාපන සැපයුම්කරු සඳහා විස්තරයක් සපයන්න.",
+                                heading: "විස්තර",
+                                example: "උදා., MyApp සඳහා IDP ලෙස ක්‍රියා කරන MyOrg සඳහා සත්‍යාපනය සැපයුම්කරු මෙයයි."
+                            }
+                        }
                     }
                 },
                 wizards: {
