@@ -100,7 +100,7 @@ export const OrganizationPermissionList: FunctionComponent<OrganizationPermissio
                 });
                 setPreviouslyCheckedKeys(previousFormCheckedKeys);
                 previouslyCheckedKeys?.forEach(key => {
-                    const nodeByKey = getNodeByKey(key, permissions);
+                    const nodeByKey: TreeNode = getNodeByKey(key, permissions);
 
                     if (nodeByKey !== null) {
                         checkedNodes.push(nodeByKey);
