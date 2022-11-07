@@ -202,7 +202,7 @@
                     + "<td><input type='checkbox' onchange='toggleMasterCheckbox()' value='<e:forHtmlAttribute value="${session[0]}"/>' name='sessionsToTerminate' checked/></td>"
                     + "</tr>";
 
-                $("#session-details tbody").append(tableRow;
+                $("#session-details tbody").append(tableRow);
             </c:forEach>
         });
 
