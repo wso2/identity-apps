@@ -56,7 +56,8 @@ export enum AlertLevels {
 /**
  * Interface for the runtime config.
  * 
- * @deprecated TODO: Remove this and use the ones passed from portals.
+ * TODO: Remove this and use the ones passed from portals.
+ * @deprecated Maintain this on the app side.
  */
 export interface RuntimeConfigInterface {
     /**
@@ -92,7 +93,7 @@ export interface RuntimeConfigInterface {
 /**
  * Common interface to extend testable components.
  * 
- * @deprecated TODO
+ * @deprecated Use IdentifiableComponentInterface instead.
  */
 export interface TestableComponentInterface {
     /**

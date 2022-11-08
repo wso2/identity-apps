@@ -193,9 +193,9 @@ export const PageHeader: React.FunctionComponent<PageHeaderPropsInterface> = (
                                 <div className="fluid">
                                     <Placeholder
                                         style={
-                                            loadingStateOptions?.imageType === "circular" ? {
-                                                borderRadius: "100%", height: 85, width: 85
-                                            } : { height: 85, width: 85 }
+                                            loadingStateOptions?.imageType === "circular"
+                                                ? { borderRadius: "100%", height: 85, width: 85 }
+                                                : { height: 85, width: 85 }
                                         }
                                     >
                                         <Placeholder.Image square />
