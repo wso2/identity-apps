@@ -227,7 +227,7 @@ const UserStoresEditPage: FunctionComponent<UserStoresEditPageInterface> = (
             data-testid={ `${ testId }-page-layout` }
         >
             <ResourceTab
-                isLoading= { isGroupDetailsRequestLoading }
+                isLoading={ isGroupDetailsRequestLoading }
                 panes={ panes }
                 onTabChange={ () => {
                     // Re-fetch userstore details on every tab change to try to get the latest available updated

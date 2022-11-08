@@ -20,8 +20,7 @@ import { TabPageLayout } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { AppConstants, AppState, FeatureConfigInterface, SharedUserStoreUtils, history } from "../../core";
-import { OrganizationUtils } from "../../organizations/utils";
+import { AppConstants, AppState, FeatureConfigInterface, history } from "../../core";
 import { getGroupById } from "../api";
 import { EditGroup } from "../components";
 import { GroupsInterface } from "../models";
@@ -35,20 +34,6 @@ const GroupEditPage: FunctionComponent<any> = (): ReactElement => {
     const [ roleId, setGroupId ] = useState<string>(undefined);
     const [ group, setGroup ] = useState<GroupsInterface>();
     const [ isGroupDetailsRequestLoading, setIsGroupDetailsRequestLoading ] = useState<boolean>(false);
-    const [ readOnlyUserStoresList, setReadOnlyUserStoresList ] = useState<string[]>(undefined);
-
-    /**
-     * Get the readOnly user stores list.
-     */
-    useEffect(() => {
-        if (!OrganizationUtils.isCurrentOrganizationRoot()) {
-            return;
-        }
-
-        SharedUserStoreUtils.getReadOnlyUserStores().then((response) => {
-            setReadOnlyUserStoresList(response);
-        });
-    }, [ group ]);
 
     /**
      * Get Group data from URL id

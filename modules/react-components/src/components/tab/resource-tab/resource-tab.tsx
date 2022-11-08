@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
 import { Card, MenuProps, Placeholder, Tab, TabProps } from "semantic-ui-react";
@@ -32,7 +32,8 @@ export interface ResourceTabSubComponentsInterface {
 /**
  * Resource tabs component Prop types.
  */
-export interface ResourceTabPropsInterface extends TabProps, IdentifiableComponentInterface {
+export interface ResourceTabPropsInterface extends TabProps, IdentifiableComponentInterface,
+    TestableComponentInterface {
 
     /**
      * Custom class for the component.
@@ -87,6 +88,7 @@ export const ResourceTab: FunctionComponent<ResourceTabPropsInterface> & Resourc
         onTabChange,
         tabCount,
         [ "data-componentid" ]: componentId,
+        [ "data-testid" ]: testId,
         ...rest
     } = props;
 
@@ -121,7 +123,7 @@ export const ResourceTab: FunctionComponent<ResourceTabPropsInterface> & Resourc
         setActiveIndex(activeIndex);
     };
 
-    if(isLoading === false) {
+    if (isLoading === false) {
         return (
             <Tab
                 onTabChange={ (e: MouseEvent<HTMLDivElement>, data: TabProps) => {
@@ -137,6 +139,7 @@ export const ResourceTab: FunctionComponent<ResourceTabPropsInterface> & Resourc
                 panes={ panes }
                 activeIndex={ activeIndex }
                 data-componentid={ componentId }
+                data-testid={ testId }
                 { ...rest }
             />
         );
@@ -165,7 +168,6 @@ export const ResourceTab: FunctionComponent<ResourceTabPropsInterface> & Resourc
                             <Placeholder.Image style={ { height: "38px" } } />
                             <Placeholder.Line />
                             <Placeholder.Line />
-
                         </>
                     );
                 })
@@ -181,6 +183,7 @@ export const ResourceTab: FunctionComponent<ResourceTabPropsInterface> & Resourc
 ResourceTab.defaultProps = {
     attached: false,
     "data-componentid": "resource-tabs",
+    "data-testid": "resource-tabs",
     isLoading: false,
     pointing: true,
     secondary: true,

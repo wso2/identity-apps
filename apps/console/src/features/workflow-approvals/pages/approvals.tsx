@@ -60,14 +60,7 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ offset, setOffset ] = useState(0);
     const [ filterStatus, setFilterStatus ] = useState<string>(ApprovalStatus.ALL);
-    const [ pagination, setPagination ] = useState({
-        [ ApprovalStatus.READY ]: false,
-        [ ApprovalStatus.RESERVED ]: false,
-        [ ApprovalStatus.COMPLETED ]: false,
-        [ ApprovalStatus.ALL ]: false
-    });
     const [ searchResult, setSearchResult ] = useState<number>(undefined);
-    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     const APPROVAL_OPTIONS = [
         {
@@ -107,13 +100,6 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
         setSearchResult(undefined);
         getApprovals(false);
     }, [ filterStatus ]);
-
-    /**
-     * Updates the approvals list when the pagination buttons are being clicked.
-     */
-    useEffect(() => {
-        getApprovals(false);
-    }, [ pagination ]);
 
     /**
      * Fetches the list of pending approvals from the API.
@@ -267,7 +253,6 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
         id: string,
         status: ApprovalStatus.CLAIM | ApprovalStatus.RELEASE | ApprovalStatus.APPROVE | ApprovalStatus.REJECT
     ): void => {
-        setIsSubmitting(true);
 
         updatePendingApprovalStatus(id, status)
             .then(() => {
@@ -299,9 +284,6 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
                         "console:manage.features.approvals.notifications.updatePendingApprovals.genericError.message"
                     )
                 }));
-            })
-            .finally(() => {
-                setIsSubmitting(false);
             });
     };
 
