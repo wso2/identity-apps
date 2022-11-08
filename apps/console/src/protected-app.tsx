@@ -16,7 +16,7 @@
  * under the License.
  */
 
- import {
+import {
     AuthenticatedUserInfo,
     BasicUserInfo,
     DecodedIDTokenPayload,
