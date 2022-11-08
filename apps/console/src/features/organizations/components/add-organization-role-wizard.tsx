@@ -192,7 +192,7 @@ export const AddOrganizationRoleWizard: FunctionComponent<AddOrganizationRolePro
     };
 
     /**
-     * Method to handle the create role wizard finish action.
+     * Method to handle the creation role wizard finish action.
      *
      */
     const handleRoleWizardFinish = () => {
@@ -226,10 +226,8 @@ export const AddOrganizationRoleWizard: FunctionComponent<AddOrganizationRolePro
         setWizardState({ ...wizardState, [formType]: values });
     };
 
-    const handleGroupUserSubmit = (value: {
-                                       [WizardStepsFormTypes.USER_LIST]: any;
-                                       [WizardStepsFormTypes.GROUP_LIST]: any;
-                                   }
+    const handleGroupUserSubmit = (
+        value: { [WizardStepsFormTypes.USER_LIST]: any; [WizardStepsFormTypes.GROUP_LIST]: any; }
     ): void => {
         setCurrentWizardStep(currentStep + 1);
         setWizardState({ ...wizardState, ...value });

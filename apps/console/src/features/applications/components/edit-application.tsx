@@ -168,7 +168,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
-    const isFragmentApp = application.advancedConfigurations?.fragment || false;
+    const isFragmentApp: boolean = application.advancedConfigurations?.fragment || false;
 
     /**
      * Called when an application updates.
@@ -1039,7 +1039,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         && (tabPaneExtensions || !applicationConfig.editApplication.extendTabs
             || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
             || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS
-            || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_SAML 
+            || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_SAML
             || application?.templateId === ApplicationManagementConstants.MOBILE)
             ? (
                 <>

@@ -190,8 +190,8 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
         }
         setTempGroupList(addedGroups);
         setInitialTempGroupList(addedGroups);
-        setGroupList(groupListCopy.filter(x => !addedGroups?.includes(x)));
-        setInitialGroupList(groupListCopy.filter(x => !addedGroups?.includes(x)));
+        setGroupList(groupListCopy.filter(group => !addedGroups?.includes(group)));
+        setInitialGroupList(groupListCopy.filter(group => !addedGroups?.includes(group)));
     };
 
     /**
@@ -254,8 +254,8 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
         }
         setTempGroupList(addedRoles);
         setInitialTempGroupList(addedRoles);
-        setGroupList(groupList.filter(x => !addedRoles?.includes(x)));
-        setInitialGroupList(groupList.filter(x => !addedRoles?.includes(x)));
+        setGroupList(groupList.filter(group => !addedRoles?.includes(group)));
+        setInitialGroupList(groupList.filter(group => !addedRoles?.includes(group)));
         setCheckedAssignedListItems([]);
         setIsSelectUnassignedAllRolesChecked(false);
     };
@@ -272,8 +272,8 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
         }
         setGroupList(removedRoles);
         setInitialGroupList(removedRoles);
-        setTempGroupList(tempGroupList?.filter(x => !removedRoles?.includes(x)));
-        setInitialTempGroupList(tempGroupList?.filter(x => !removedRoles?.includes(x)));
+        setTempGroupList(tempGroupList?.filter(group => !removedRoles?.includes(group)));
+        setInitialTempGroupList(tempGroupList?.filter(group => !removedRoles?.includes(group)));
         setCheckedUnassignedListItems([]);
         setIsSelectAssignedAllRolesChecked(false);
     };
@@ -292,12 +292,12 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
         const filteredGroupList = [];
 
         if (!isEmpty(value)) {
-            const re = new RegExp(escapeRegExp(value), "i");
+            const groupListFilterRegExp = new RegExp(escapeRegExp(value), "i");
 
-            groupList && groupList.map((role) => {
-                isMatch = re.test(role.displayName);
+            groupList && groupList.map((group) => {
+                isMatch = groupListFilterRegExp.test(group.displayName);
                 if (isMatch) {
-                    filteredGroupList.push(role);
+                    filteredGroupList.push(group);
                     setGroupList(filteredGroupList);
                 }
             });
@@ -311,12 +311,12 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
         const filteredGroupList = [];
 
         if (!isEmpty(value)) {
-            const re = new RegExp(escapeRegExp(value), "i");
+            const groupListFilterRegExp = new RegExp(escapeRegExp(value), "i");
 
-            tempGroupList && tempGroupList?.map((role) => {
-                isMatch = re.test(role.displayName);
+            tempGroupList && tempGroupList?.map((group) => {
+                isMatch = groupListFilterRegExp.test(group.displayName);
                 if (isMatch) {
-                    filteredGroupList.push(role);
+                    filteredGroupList.push(group);
                     setTempGroupList(filteredGroupList);
                 }
             });
@@ -552,13 +552,13 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
         const filteredGroupList = [];
 
         if (!isEmpty(value)) {
-            const re = new RegExp(escapeRegExp(value), "i");
+            const groupListFilterRegExp = new RegExp(escapeRegExp(value), "i");
 
             assignedGroups && assignedGroups?.map((group) => {
                 const groupName = group.display.split("/");
 
                 if (groupName.length === 1) {
-                    isMatch = re.test(group.display);
+                    isMatch = groupListFilterRegExp.test(group.display);
                     if (isMatch) {
                         filteredGroupList.push(group);
                         setAssignedGroups(filteredGroupList);
