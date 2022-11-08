@@ -47,26 +47,42 @@ const OrganizationEnterpriseIdentityProviderCreateWizardHelp:
         return (
             <>
                 <div data-testid={ testId }>
-                    <Heading as="h5">{
-                        t("console:develop.features.authenticationProvider.templates.organizationIDP.wizardHelp" +
-                            ".name.heading")
-                    }</Heading>
-                    <p>{ t("console:develop.features.authenticationProvider.templates.organizationIDP.wizardHelp" +
-                        ".name.description") }</p>
+                    <Heading as="h5">
+                        {
+                            t("console:develop.features.authenticationProvider.templates.organizationIDP" +
+                                ".wizardHelp.name.heading")
+                        }
+                    </Heading>
+                    <p>
+                        {
+                            t("console:develop.features.authenticationProvider.templates.organizationIDP" +
+                                ".wizardHelp.name.description")
+                        }
+                    </p>
                     <p>E.g., MyOrgEnterpriseAuthProvider.</p>
                 </div>
 
                 <Divider/>
 
                 <div data-testid={ testId }>
-                    <Heading as="h5">{
-                        t("console:develop.features.authenticationProvider.templates.organizationIDP.wizardHelp" +
-                            ".description.heading")
-                    }</Heading>
-                    <p>{ t("console:develop.features.authenticationProvider.templates.organizationIDP.wizardHelp" +
-                        ".description.description") }</p>
-                    <p>{ t("console:develop.features.authenticationProvider.templates.organizationIDP.wizardHelp" +
-                        ".description.example") }</p>
+                    <Heading as="h5">
+                        {
+                            t("console:develop.features.authenticationProvider.templates.organizationIDP" +
+                                ".wizardHelp.description.heading")
+                        }
+                    </Heading>
+                    <p>
+                        {
+                            t("console:develop.features.authenticationProvider.templates.organizationIDP" +
+                                ".wizardHelp.description.description")
+                        }
+                    </p>
+                    <p>
+                        {
+                            t("console:develop.features.authenticationProvider.templates.organizationIDP" +
+                                ".wizardHelp.description.example")
+                        }
+                    </p>
                 </div>
             </>
         );
