@@ -135,14 +135,13 @@ export const ScopeFieldAdapter = (props:FieldRenderProps<any> ): ReactElement =>
     return (
         <>
             <Scopes
-                defaultValue={ childFieldProps.defaultValue }
-                label = { childFieldProps.label }
-                name = { childFieldProps.name }
-                value = { childFieldProps.value }
-                required = { childFieldProps.required }
-                onChange = { input.onChange }
-                onBlur = { input.onBlur }
-                placeholder = { childFieldProps.placeholder }
+                defaultValue={ childFieldProps?.defaultValue }
+                label = { childFieldProps?.label }
+                value = { childFieldProps?.value }
+                required = { childFieldProps?.required }
+                onChange = { input?.onChange }
+                onBlur = { input?.onBlur }
+                placeholder = { childFieldProps?.placeholder }
             />
 
         </>

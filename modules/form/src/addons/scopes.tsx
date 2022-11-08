@@ -16,17 +16,15 @@
  * under the License.
  */
 
-import { FormInputLabel } from "@wso2is/react-components";
 import filter from "lodash-es/filter";
 import isEmpty from "lodash-es/isEmpty";
 import isEqual from "lodash-es/isEqual";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { Button, Form, Icon, Input, Label, Message, Popup } from "semantic-ui-react";
+import { Button, Form, Icon, Label, Message, Popup } from "semantic-ui-react";
 
 interface ScopesPropsInterface {
     defaultValue: string;
     label?: string | ReactElement;
-    name: string;
     value: string;
     required: boolean;
     onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -49,7 +47,6 @@ export const Scopes: FunctionComponent<ScopesPropsInterface> = (
     const { 
         defaultValue,
         label, 
-        name, 
         value, 
         required,
         onChange,
@@ -146,7 +143,8 @@ export const Scopes: FunctionComponent<ScopesPropsInterface> = (
         if (isEmpty(scopeValue)) {
             return;
         }
-             
+
+        setErrorMessage("");
         const output: ScopeInterface[] = [ {
             value: scopeValue
         } ];
