@@ -56,6 +56,7 @@ import {
 } from "../models";
 import { setAvailableAuthenticatorsMeta } from "../store";
 import { IdentityProviderManagementUtils, IdentityProviderTemplateManagementUtils } from "../utils";
+import { OrganizationUtils } from "../../organizations/utils";
 
 /**
  * Proptypes for the IDP template selection page component.
@@ -464,7 +465,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                                             ) => {
                                                 const isOrgIdp = template.templateId === "organization-enterprise-idp";
 
-                                                if (isOrgIdp && !isOrganizationManagementEnabled) {
+                                                if (isOrgIdp && !OrganizationUtils.getOrganizationFeatureConfig()) {
                                                     return null;
                                                 }
 

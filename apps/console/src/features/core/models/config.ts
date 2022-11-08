@@ -161,6 +161,10 @@ export interface DeploymentConfigInterface extends CommonDeploymentConfigInterfa
  */
 interface ExternalAppConfigInterface {
     /**
+     * Origin of the app.
+     */
+    origin?: string;
+    /**
      * App base path. ex: `/account`, `/admin` etc.
      */
     basePath: string;
@@ -223,6 +227,14 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     isRequestPathAuthenticationEnabled?: boolean;
     /**
+     * Flag to check if adaptive authentication is enabled.
+     */
+    isAdaptiveAuthenticationAvailable?: boolean;
+    /**
+     * Flag to check if organization management feature is enabled.
+     */
+    isOrganizationManagementEnabled?: boolean;
+     /**
      * Flag to check whether to list all the attribute dialects
      */
     listAllAttributeDialects?: boolean;

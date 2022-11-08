@@ -68,6 +68,7 @@ import {
 } from "../../models";
 import { ApplicationManagementUtils } from "../../utils";
 import { ApplicationCertificateWrapper } from "../settings/certificate";
+import { OrganizationUtils } from "../../../organizations/utils";
 
 /**
  * Proptypes for the inbound OIDC form component.
@@ -660,7 +661,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
                 // Hides the organization switch grant type if the organization management feature disabled.
                 if (name === ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT
-                    && !isOrganizationManagementEnabled) {
+                    && !OrganizationUtils.getOrganizationFeatureConfig()) {
                     return;
                 }
 

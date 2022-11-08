@@ -56,6 +56,7 @@ import {
     emptyApplication
 } from "../models";
 import { ApplicationTemplateManagementUtils } from "../utils";
+import { OrganizationUtils } from "../../organizations/utils";
 
 /**
  * Proptypes for the applications edit page component.
@@ -527,7 +528,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                     }
 
                     {
-                        (isOrganizationManagementEnabled
+                        (OrganizationUtils.getOrganizationFeatureConfig()
                             && applicationConfig.editApplication.showApplicationShare
                             && !application.advancedConfigurations.fragment
                             && application.access === ApplicationAccessTypes.WRITE) && (
