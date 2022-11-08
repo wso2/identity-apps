@@ -16,7 +16,8 @@
  * under the License.
  */
 
-import { IdentifiableComponentInterface, 
+import { 
+    IdentifiableComponentInterface, 
     LoadingStateOptionsInterface, 
     TestableComponentInterface 
 } from "@wso2is/core/models";

@@ -147,30 +147,33 @@ export const ResourceTab: FunctionComponent<ResourceTabPropsInterface> & Resourc
 
     return (
         <>
-            <Card.Group style={ { marginBottom: "3rem" } } >
-                { [ ...Array(tabCount) ].map(() => {
-                    return (
-                        <>
-                            <Card style={ { boxShadow: "none", width: "15%" } }>
-                                <Placeholder >
-                                    <Placeholder.Image style={ { height: "30px" } } />
-                                </Placeholder>
-                            </Card>
-                        </>
-                    );
-                }) }
+            <Card.Group style={ { marginBottom: "3rem" } }>
+                {
+                    [ ...Array(tabCount) ].map(() => {
+                        return (
+                            <>
+                                <Card style={ { boxShadow: "none", width: "15%" } }>
+                                    <Placeholder >
+                                        <Placeholder.Image style={ { height: "30px" } } />
+                                    </Placeholder>
+                                </Card>
+                            </>
+                        );
+                    })
+                }
             </Card.Group>
             <Placeholder>
-                { [ ...Array(3) ].map(() => {
-                    return (
-                        <>
-                            <Placeholder.Line length="very short" />
-                            <Placeholder.Image style={ { height: "38px" } } />
-                            <Placeholder.Line />
-                            <Placeholder.Line />
-                        </>
-                    );
-                })
+                {
+                    [ ...Array(3) ].map(() => {
+                        return (
+                            <>
+                                <Placeholder.Line length="very short" />
+                                <Placeholder.Image style={ { height: "38px" } } />
+                                <Placeholder.Line />
+                                <Placeholder.Line />
+                            </>
+                        );
+                    })
                 }
             </Placeholder>
         </>
