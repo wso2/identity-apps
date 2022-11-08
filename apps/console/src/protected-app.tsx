@@ -624,7 +624,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             !featureConfig.users
         ) {
             return;
-        }        
+        }
 
         const [
             devRoutes,
