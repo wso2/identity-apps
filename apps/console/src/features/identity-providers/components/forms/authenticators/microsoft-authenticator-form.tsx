@@ -249,7 +249,7 @@ export const MicrosoftAuthenticatorForm: FunctionComponent<MicrosoftAuthenticato
         if (scope === IdentityProviderManagementConstants.MICROSOFT_SCOPE_DICTIONARY.EMAIL) {
             return {
                 description: t("console:develop.features.authenticationProvider.forms" +
-                    ".authenticatorSettings.microsoft.Scopes.list.email.description"),
+                    ".authenticatorSettings.microsoft.scopes.list.email.description"),
                 displayName: (
                     <Code compact withBackground={ false } fontSize="inherit" fontColor="inherit">
                         { IdentityProviderManagementConstants.MICROSOFT_SCOPE_DICTIONARY.EMAIL }
@@ -262,7 +262,7 @@ export const MicrosoftAuthenticatorForm: FunctionComponent<MicrosoftAuthenticato
         if (scope === IdentityProviderManagementConstants.MICROSOFT_SCOPE_DICTIONARY.OPENID) {
             return {
                 description: t("console:develop.features.authenticationProvider.forms" +
-                    ".authenticatorSettings.microsoft.Scopes.list.openid.description"),
+                    ".authenticatorSettings.microsoft.scopes.list.openid.description"),
                 displayName: (
                     <Code compact withBackground={ false } fontSize="inherit" fontColor="inherit">
                         { IdentityProviderManagementConstants.MICROSOFT_SCOPE_DICTIONARY.OPENID }
@@ -275,7 +275,7 @@ export const MicrosoftAuthenticatorForm: FunctionComponent<MicrosoftAuthenticato
         if (scope === IdentityProviderManagementConstants.MICROSOFT_SCOPE_DICTIONARY.PROFILE) {
             return {
                 description: t("console:develop.features.authenticationProvider.forms" +
-                    ".authenticatorSettings.microsoft.Scopes.list.profile.description"),
+                    ".authenticatorSettings.microsoft.scopes.list.profile.description"),
                 displayName: (
                     <Code compact withBackground={ false } fontSize="inherit" fontColor="inherit">
                         { IdentityProviderManagementConstants.MICROSOFT_SCOPE_DICTIONARY.PROFILE }
@@ -444,11 +444,11 @@ export const MicrosoftAuthenticatorForm: FunctionComponent<MicrosoftAuthenticato
                 name="Scopes"
                 label={
                     t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
-                        ".microsoft.Scopes.label")
+                        ".microsoft.scopes.label")
                 }
                 placeholder={
                     t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
-                        ".microsoft.Scopes.placeholder")
+                        ".microsoft.scopes.placeholder")
                 }
                 hint="The types of access provided for the connected apps to access data from Microsoft."
                 required={ formFields?.Scopes?.meta?.isMandatory }
@@ -510,7 +510,7 @@ export const MicrosoftAuthenticatorForm: FunctionComponent<MicrosoftAuthenticato
                     <FormSection
                         heading={
                             t("console:develop.features.authenticationProvider.forms" +
-                                ".authenticatorSettings.microsoft.Scopes.heading")
+                                ".authenticatorSettings.microsoft.scopes.heading")
                         }
                     >
                         <div className="authenticator-dynamic-properties">
@@ -556,7 +556,7 @@ export const MicrosoftAuthenticatorForm: FunctionComponent<MicrosoftAuthenticato
                             <Trans
                                 i18nKey={
                                     "console:develop.features.authenticationProvider.forms" +
-                                    ".authenticatorSettings.microsoft.Scopes.hint"
+                                    ".authenticatorSettings.microsoft.scopes.hint"
                                 }
                             >
                                 Scopes provide a way for connected apps to access data from Microsoft.

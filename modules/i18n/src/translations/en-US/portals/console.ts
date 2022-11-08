@@ -3456,7 +3456,7 @@ export const console: ConsoleNS = {
                                     required: "Client secret is a required field."
                                 }
                             },
-                            Scopes: {
+                            scopes: {
                                 heading: "Scopes",
                                 hint: "The type of access provided for the connected apps to access data " +
                                     "from Microsoft. Click <1>here</1> to learn more.",

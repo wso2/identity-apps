@@ -1470,7 +1470,7 @@ export interface ConsoleNS {
                             clientId: FormAttributes;
                             clientSecret: FormAttributes;
                             commonAuthQueryParams: FormAttributes;
-                            Scopes: {
+                            scopes: {
                                 heading: string;
                                 hint: string;
                                 label: string;
