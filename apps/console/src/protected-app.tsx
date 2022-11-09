@@ -165,6 +165,9 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
     const isFirstLevelOrg: boolean = useSelector(
         (state: AppState) => state.organization.isFirstLevelOrganization
     );
+    const isPrivilegedUser: boolean = useSelector(
+        (state: AppState) => state?.auth?.isPrivilegedUser
+    );
 
     const governanceConnectorsLoaded = useRef(false);
 
@@ -631,7 +634,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             featureConfig,
             allowedScopes,
             window[ "AppUtils" ].getConfig().organizationName ? false : commonConfig.checkForUIResourceScopes,
-            isOrganizationManagementEnabled
+            isOrganizationManagementEnabled && !isPrivilegedUser
                 ? (OrganizationUtils.isCurrentOrganizationRoot() &&
                     AppConstants.getSuperTenant() === tenant) ||
                     isFirstLevelOrg
@@ -664,7 +667,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             featureConfig,
             allowedScopes,
             window[ "AppUtils" ].getConfig().organizationName ? false : commonConfig.checkForUIResourceScopes,
-            isOrganizationManagementEnabled
+            isOrganizationManagementEnabled && !isPrivilegedUser
                 ? (OrganizationUtils.isCurrentOrganizationRoot() &&
                     AppConstants.getSuperTenant() === tenant) ||
                     isFirstLevelOrg
