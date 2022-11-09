@@ -216,7 +216,6 @@ export class ApplicationManagementConstants {
             ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
             ApplicationManagementConstants.IMPLICIT_GRANT,
             ApplicationManagementConstants.PASSWORD,
-            ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT,
             ApplicationManagementConstants.DEVICE_GRANT
         ]
     };
