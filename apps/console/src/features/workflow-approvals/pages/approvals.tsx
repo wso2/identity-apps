@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -36,9 +36,9 @@ type ApprovalsPageInterface = TestableComponentInterface;
 /**
  * Workflow approvals page.
  *
- * @param {ApprovalsPageInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns Approvals page.
  */
 const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
     props: ApprovalsPageInterface
@@ -60,14 +60,7 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ offset, setOffset ] = useState(0);
     const [ filterStatus, setFilterStatus ] = useState<string>(ApprovalStatus.ALL);
-    const [ pagination, setPagination ] = useState({
-        [ ApprovalStatus.READY ]: false,
-        [ ApprovalStatus.RESERVED ]: false,
-        [ ApprovalStatus.COMPLETED ]: false,
-        [ ApprovalStatus.ALL ]: false
-    });
     const [ searchResult, setSearchResult ] = useState<number>(undefined);
-    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     const APPROVAL_OPTIONS = [
         {
@@ -109,13 +102,6 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
     }, [ filterStatus ]);
 
     /**
-     * Updates the approvals list when the pagination buttons are being clicked.
-     */
-    useEffect(() => {
-        getApprovals(false);
-    }, [ pagination ]);
-
-    /**
      * Fetches the list of pending approvals from the API.
      *
      * @remarks
@@ -123,7 +109,7 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
      * As a temporary workaround, 1000 approvals are fetched when the `Show all` button
      * is fetched. TODO: Remove this once the API supports this functionality.
      *
-     * @param {boolean} shallowUpdate - A flag to specify if only the statuses should be updated.
+     * @param shallowUpdate - A flag to specify if only the statuses should be updated.
      */
     const getApprovals = (shallowUpdate = false): void => {
         setApprovalListRequestLoading(true);
@@ -190,10 +176,10 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
     /**
      * This slices and returns a portion of the list.
      *
-     * @param {number} list - List.
-     * @param {number} limit - List limit.
-     * @param {number} offset - List offset.
-     * @return {ApprovalTaskListItemInterface[]} Paginated list.
+     * @param list - List.
+     * @param limit - List limit.
+     * @param offset - List offset.
+     * @returns Paginated list.
      */
     const paginate = (list: ApprovalTaskListItemInterface[], limit: number,
         offset: number): ApprovalTaskListItemInterface[] => {
@@ -204,8 +190,8 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
     /**
      * Handles the change in the number of items to display.
      *
-     * @param {React.MouseEvent<HTMLAnchorElement>} event - Event.
-     * @param {DropdownProps} data - Dropdown data.
+     * @param event - Event.
+     * @param data - Dropdown data.
      */
     const handleItemsPerPageDropdownChange = (event: MouseEvent<HTMLAnchorElement>, data: DropdownProps): void => {
 
@@ -215,8 +201,8 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
     /**
      * Handles pagination change.
      *
-     * @param {React.MouseEvent<HTMLAnchorElement>} event - Event.
-     * @param {PaginationProps} data - Dropdown data.
+     * @param event - Event.
+     * @param data - Dropdown data.
      */
     const handlePaginationChange = (event: MouseEvent<HTMLAnchorElement>, data: PaginationProps): void => {
 
@@ -226,9 +212,9 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
     /**
      * Resolves the filter tag colors based on the approval statuses.
      *
-     * @param {ApprovalStatus.READY | ApprovalStatus.RESERVED | ApprovalStatus.COMPLETED | ApprovalStatus.ALL } status -
-     *     Filter status.
-     * @return {SemanticCOLORS} A semantic color instance.
+     * @param status - Filter status.
+     * 
+     * @returns A semantic color instance.
      */
     const resolveApprovalTagColor = (
         status: ApprovalStatus.READY | ApprovalStatus.RESERVED | ApprovalStatus.COMPLETED | ApprovalStatus.ALL
@@ -250,8 +236,8 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
     /**
      * Handle the approval status filter change.
      *
-     * @param event
-     * @param data
+     * @param event - event
+     * @param data - data
      */
     const handleFilterStatusChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
         setFilterStatus(data.value as string);
@@ -260,15 +246,13 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
     /**
      * Updates the approvals status.
      *
-     * @param {string} id - ID of the approval.
-     * @param {ApprovalStatus.CLAIM | ApprovalStatus.RELEASE | ApprovalStatus.APPROVE | ApprovalStatus.REJECT} status -
-     *     New status of the approval.
+     * @param id - ID of the approval.
+     * @param status - New status of the approval.
      */
     const updateApprovalStatus = (
         id: string,
         status: ApprovalStatus.CLAIM | ApprovalStatus.RELEASE | ApprovalStatus.APPROVE | ApprovalStatus.REJECT
     ): void => {
-        setIsSubmitting(true);
 
         updatePendingApprovalStatus(id, status)
             .then(() => {
@@ -300,16 +284,13 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
                         "console:manage.features.approvals.notifications.updatePendingApprovals.genericError.message"
                     )
                 }));
-            })
-            .finally(() => {
-                setIsSubmitting(false);
             });
     };
 
     /**
      * Search the approvals list.
      *
-     * @param event
+     * @param event - event
      */
     const searchApprovalList = (event) => {
         const changeValue = event.target.value;

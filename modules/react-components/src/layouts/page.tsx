@@ -80,6 +80,7 @@ export const PageLayout: FunctionComponent<PropsWithChildren<PageLayoutPropsInte
         padded,
         pageTitle,
         componentAbovePageHeader,
+        isLoading,
         ...rest
     } = props;
 
@@ -105,6 +106,7 @@ export const PageLayout: FunctionComponent<PropsWithChildren<PageLayoutPropsInte
                 <div className={ layoutContentClasses }>
                     { componentAbovePageHeader && componentAbovePageHeader }
                     <PageHeader
+                        isLoading={ isLoading }
                         action={ action }
                         data-testid={ `${testId}-page-header` }
                         data-componentid={ `${componentId}-page-header` }

@@ -27,3 +27,4 @@ export * from "./help-panel";
 export * from "./dashboard";
 export * from "./list";
 export * from "./page";
+export * from "./tab-page";

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -25,7 +25,7 @@ import {
     emptyProfileInfo
 }from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { EditAvatarModal, PageLayout, UserAvatar } from "@wso2is/react-components";
+import { EditAvatarModal, TabPageLayout, UserAvatar } from "@wso2is/react-components";
 import React, { MouseEvent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -229,7 +229,7 @@ const UserEditPage = (): ReactElement => {
     };
 
     return (
-        <PageLayout
+        <TabPageLayout
             isLoading={ isUserDetailsRequestLoading }
             title={ (
                 <>
@@ -295,6 +295,9 @@ const UserEditPage = (): ReactElement => {
                     }
                 />
             ) }
+            loadingStateOptions={ {
+                imageType: "circular"
+            } }
             backButton={ {
                 "data-testid": "user-mgt-edit-user-back-button",
                 onClick: handleBackButtonClick,
@@ -309,6 +312,7 @@ const UserEditPage = (): ReactElement => {
                 handleUserUpdate={ handleUserUpdate }
                 readOnlyUserStores={ readOnlyUserStoresList }
                 connectorProperties={ connectorProperties }
+                isLoading={ isUserDetailsRequestLoading }
                 isReadOnlyUserStoresLoading={ isReadOnlyUserStoresLoading }
             />
             {
@@ -379,7 +383,7 @@ const UserEditPage = (): ReactElement => {
                     />
                 )
             }
-        </PageLayout>
+        </TabPageLayout>
     );
 };
 
