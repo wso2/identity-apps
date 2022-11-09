@@ -111,7 +111,7 @@ interface EditApplicationPropsInterface extends SBACInterface<FeatureConfigInter
     /**
      * Callback function to set the loading state.
      */
-     onLoadingStateChanged?: (isLoading: boolean) => void;
+    onLoadingStateChanged?: (isLoading: boolean) => void;
 }
 
 /**
