@@ -9362,6 +9362,7 @@ export const console: ConsoleNS = {
                             },
                             success: {
                                 description: "The user account disabled successfully.",
+                                genericMessage: "Account is disabled",
                                 message: "{{name}}'s account is disabled"
                             }
                         },
@@ -9376,6 +9377,7 @@ export const console: ConsoleNS = {
                             },
                             success: {
                                 description: "The user account enabled successfully.",
+                                genericMessage: "Account is enabled",
                                 message: "{{name}}'s account is enabled"
                             }
                         },
@@ -9418,6 +9420,7 @@ export const console: ConsoleNS = {
                             },
                             success: {
                                 description: "The user account locked successfully.",
+                                genericMessage: "Account is locked",
                                 message: "{{name}}'s account is locked"
                             }
                         },
@@ -9438,6 +9441,7 @@ export const console: ConsoleNS = {
                             },
                             success: {
                                 description: "The user account unlocked successfully.",
+                                genericMessage: "Account is unlocked",
                                 message: "{{name}}'s account is unlocked"
                             }
                         },

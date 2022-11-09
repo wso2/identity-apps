@@ -7871,6 +7871,7 @@ export const console: ConsoleNS = {
                             },
                             success: {
                                 description: "Le compte utilisateur a bien été désactivé",
+                                genericMessage: "Le compte utilisateur a bien été désactivé",
                                 message: "Le compte de {{name}} est désactivé"
                             }
                         },
@@ -7885,6 +7886,7 @@ export const console: ConsoleNS = {
                             },
                             success: {
                                 description: "Le compte d'utilisateur a bien été activé",
+                                genericMessage: "Le compte de l'utilisateur a bien été activé",
                                 message: "Le compte de {{name}} est activé"
                             }
                         },
@@ -7932,6 +7934,7 @@ export const console: ConsoleNS = {
                             },
                             success: {
                                 description: "Le compte d'utilisateur a été verrouillé avec succès.",
+                                genericMessage: "Le compte d'utilisateur a été verrouillé avec succès.",
                                 message: "Le compte de {{name}} est verrouillé"
                             }
                         },
@@ -7952,6 +7955,7 @@ export const console: ConsoleNS = {
                             },
                             success: {
                                 description: "Le compte utilisateur a été déverrouillé avec succès.",
+                                genericMessage: "Le compte utilisateur a été déverrouillé avec succès.",
                                 message: "Le compte de {{name}} est déverrouillé"
                             }
                         },
