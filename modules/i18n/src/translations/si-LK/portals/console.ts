@@ -7726,6 +7726,7 @@ export const console: ConsoleNS = {
                             },
                             success: {
                                 description: "පරිශීලක ගිණුම සාර්ථකව අක්‍රීය කර ඇත",
+                                genericMessage: "ගිණුම අක්‍රීය කරන ලදි",
                                 message: "{{name}} ගිණුම අක්‍රීය කර ඇත"
                             }
                         },
@@ -7740,6 +7741,7 @@ export const console: ConsoleNS = {
                             },
                             success: {
                                 description: "පරිශීලක ගිණුම සාර්ථකව සක්‍රීය කර ඇත",
+                                genericMessage: "ගිණුම සක්‍රීය කරන ලදි",
                                 message: "{{name}} ගිණුම සක්‍රීය කර ඇත"
                             }
                         },
@@ -7782,6 +7784,7 @@ export const console: ConsoleNS = {
                             },
                             success: {
                                 description: "පරිශීලක ගිණුම සාර්ථකව අගුළු දමා ඇත.",
+                                genericMessage: "ගිණුම අගුළු දමා ඇත",
                                 message: "{{name}} ගිණුම අගුළු දමා ඇත"
                             }
                         },
@@ -7802,6 +7805,7 @@ export const console: ConsoleNS = {
                             },
                             success: {
                                 description: "පරිශීලක ගිණුම සාර්ථකව අගුළු හරින ලදි.",
+                                genericMessage: "ගිණුම අගුළු ඇරීම සාර්ථකව සම්පූර්ණ විය",
                                 message: "{{name}} ගිණුම අගුළු හරිනු ලැබේ"
                             }
                         },
