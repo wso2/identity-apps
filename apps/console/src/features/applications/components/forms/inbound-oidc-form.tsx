@@ -1485,9 +1485,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             ".fields.pkce.validations.empty")
                                     }
                                     type="checkbox"
-                                    value={ findPKCE(initialValues.pkce) }
+                                    value={ initialValues?.pkce && findPKCE(initialValues.pkce) }
                                     listen={ pkceValuesChangeListener }
-                                    children={ (!isSPAApplication &&!isMobileApplication)
+                                    children={ (!isSPAApplication && !isMobileApplication)
                                         ? [
                                             {
                                                 label: t("console:develop.features.applications.forms.inboundOIDC" +
@@ -1961,10 +1961,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 </Grid.Column>
             </Grid.Row>
             {
-                applicationConfig.inboundOIDCForm.showIdTokenEncryption &&
-                    ApplicationTemplateIdTypes.SPA !== template?.templateId &&
-                    !isMobileApplication &&
-                (
+                applicationConfig.inboundOIDCForm.showIdTokenEncryption
+                && ApplicationTemplateIdTypes.SPA !== template?.templateId
+                && !isMobileApplication
+                && (
                     <>
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
