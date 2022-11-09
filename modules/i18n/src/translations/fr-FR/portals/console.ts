@@ -3083,6 +3083,22 @@ export const console: ConsoleNS = {
                             },
                             subHeading: "Utilisez le guide ci-dessous"
                         }
+                    },
+                    organizationIDP: {
+                        wizardHelp: {
+                            name: {
+                                description: "Fournissez un nom unique au fournisseur d'authentification d'entreprise" +
+                                    " afin qu'il puisse être facilement identifié.",
+                                heading: "Nom"
+                            },
+                            description: {
+                                description: "Fournissez une description du fournisseur d'authentification" +
+                                    " d'entreprise pour en savoir plus à ce sujet.",
+                                heading: "La description",
+                                example: "Par exemple, il s'agit de l'authentificateur pour MyOrg, qui agit en tant" +
+                                    " qu'IDP pour MyApp."
+                            }
+                        }
                     }
                 },
                 wizards: {

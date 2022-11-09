@@ -176,7 +176,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
-    const isFragmentApp = application.advancedConfigurations?.fragment || false;
+    const isFragmentApp: boolean = application.advancedConfigurations?.fragment || false;
 
     /**
      * Called when an application updates.

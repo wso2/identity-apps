@@ -181,6 +181,13 @@ module.exports = {
                     version: "detect"
                 }
             }
+        },
+        {
+            "files": "*.json",
+            "parser": "jsonc-eslint-parser",
+            "rules": {
+                "header/header": "off"
+            }
         }
     ],
     parserOptions: {
