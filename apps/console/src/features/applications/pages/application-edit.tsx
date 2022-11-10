@@ -108,7 +108,6 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     const [ subOrganizationList, setSubOrganizationList ] = useState<Array<OrganizationInterface>>([]);
     const [ sharedOrganizationList, setSharedOrganizationList ] = useState<Array<OrganizationInterface>>([]);
     const [ sharedWithAll, setSharedWithAll ] = useState<ShareWithOrgStatus>(ShareWithOrgStatus.UNDEFINED);
-    const [ externalLoadingState, setExternalLoadingState ] = useState<boolean>(undefined);
 
     const isFirstLevelOrg: boolean = useSelector(
         (state: AppState) => state.organization.isFirstLevelOrganization
@@ -548,15 +547,6 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                 allowedScopes);
     };
 
-    /**
-     * Sets the loading state taken from child component.
-     *
-     * @param isLoading - Loading state.
-     */
-    const handleLoadingStateChange = (isLoading: boolean): void => {  
-        setExternalLoadingState(isLoading);
-    };
-
     return (
         <TabPageLayout
             pageTitle="Edit Application"
@@ -612,7 +602,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                 count: 5,
                 imageType: "square"
             } }
-            isLoading={ isApplicationRequestLoading && externalLoadingState }
+            isLoading={ isApplicationRequestLoading }
             backButton={ {
                 "data-testid": `${testId}-page-back-button`,
                 onClick: handleBackButtonClick,
@@ -648,10 +638,9 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             ) }
         >
             <EditApplication
-                onLoadingStateChanged={ handleLoadingStateChange }
                 application={ application }
                 featureConfig={ featureConfig }
-                isLoading={ isApplicationRequestLoading && externalLoadingState }
+                isLoading={ isApplicationRequestLoading }
                 setIsLoading={ setApplicationRequestLoading }
                 onDelete={ handleApplicationDelete }
                 onUpdate={ handleApplicationUpdate }

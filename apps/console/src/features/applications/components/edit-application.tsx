@@ -19,7 +19,7 @@
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { ConfirmationModal, CopyInputField, ResourceTab } from "@wso2is/react-components";
+import { ConfirmationModal, ContentLoader, CopyInputField, ResourceTab } from "@wso2is/react-components";
 import Axios from "axios";
 import inRange from "lodash-es/inRange";
 import isEmpty from "lodash-es/isEmpty";
@@ -108,10 +108,6 @@ interface EditApplicationPropsInterface extends SBACInterface<FeatureConfigInter
      * URL Search params received to the parent edit page component.
      */
     urlSearchParams?: URLSearchParams;
-    /**
-     * Callback function to set the loading state.
-     */
-    onLoadingStateChanged?: (isLoading: boolean) => void;
 }
 
 /**
@@ -137,7 +133,6 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         template,
         readOnly,
         urlSearchParams,
-        onLoadingStateChanged,
         [ "data-testid" ]: testId
     } = props;
 
@@ -187,20 +182,6 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         setIsApplicationUpdated(true);
         onUpdate(id);
     };
-
-    /**
-     * Loading status for the resource tabs.
-     */
-    useEffect(() => {
-        onLoadingStateChanged(
-            !(application && !isInboundProtocolsRequestLoading && inboundProtocolList != undefined
-            && (tabPaneExtensions || !applicationConfig.editApplication.extendTabs
-            || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
-            || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS
-            || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_SAML 
-            || application?.templateId === ApplicationManagementConstants.MOBILE))
-        );
-    }, [ application, isInboundProtocolsRequestLoading, inboundProtocolList, applicationConfig ]);
 
     /**
      * Set the defaultTabIndex when the application template updates.
@@ -1057,20 +1038,28 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     };
 
     return (
-        <>
-            <ResourceTab
-                isLoading= { isLoading }
-                activeIndex= { activeTabIndex }
-                data-testid= { `${testId}-resource-tabs` }
-                defaultActiveIndex={ defaultActiveIndex }
-                onTabChange={ handleTabChange }
-                panes= { resolveTabPanes() }
-                onInitialize={ ({ panesLength }) => {
-                    setTotalTabs(panesLength);
-                } }
-            />
-            { showClientSecretHashDisclaimerModal && renderClientSecretHashDisclaimerModal() }
-        </>
+        application && !isInboundProtocolsRequestLoading && inboundProtocolList != undefined
+        && (tabPaneExtensions || !applicationConfig.editApplication.extendTabs
+            || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
+            || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS
+            || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_SAML
+            || application?.templateId === ApplicationManagementConstants.MOBILE)
+            ? (
+                <>
+                    <ResourceTab
+                        isLoading={ isLoading }
+                        activeIndex={ activeTabIndex }
+                        data-testid={ `${testId}-resource-tabs` }
+                        defaultActiveIndex={ defaultActiveIndex }
+                        onTabChange={ handleTabChange }
+                        panes={ resolveTabPanes() }
+                        onInitialize={ ({ panesLength }) => {
+                            setTotalTabs(panesLength);
+                        } }
+                    />
+                    { showClientSecretHashDisclaimerModal && renderClientSecretHashDisclaimerModal() }
+                </>
+            ) : <ContentLoader />
     );
 };
 
