@@ -239,7 +239,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
 
             if (
                 window[ "AppUtils" ].getConfig().organizationName ||
-                isFirstLevelOrg
+                (isFirstLevelOrg && !isPrivilegedUser)
             ) {
                 // We are actually getting the orgId here rather than orgName
                 const orgId = isFirstLevelOrg

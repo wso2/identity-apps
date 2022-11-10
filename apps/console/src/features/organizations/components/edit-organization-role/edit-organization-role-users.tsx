@@ -57,10 +57,10 @@ export const RoleUserDetails: FunctionComponent<RoleUserDetailsProps> = (
     );
 
     useEffect(() => {
-        const roleName = roleObject.displayName;
+        const roleName = roleObject?.displayName;
 
-        if (roleName.indexOf("/") !== -1) {
-            setCurrentUserStore(roleName.split("/")[0]);
+        if (roleName?.indexOf("/") !== -1) {
+            setCurrentUserStore(roleName?.split("/")[0]);
         } else {
             setCurrentUserStore(PRIMARY_DOMAIN);
         }
