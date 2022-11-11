@@ -296,6 +296,7 @@ const UserEditPage = (): ReactElement => {
                 />
             ) }
             loadingStateOptions={ {
+                count: 5,
                 imageType: "circular"
             } }
             backButton={ {
