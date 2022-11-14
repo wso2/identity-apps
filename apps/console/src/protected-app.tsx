@@ -199,10 +199,12 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             let response: BasicUserInfo = { ...signInResponse };
             let logoutUrl;
             let logoutRedirectUrl;
-            let isPrivilegedUser: boolean = false;
 
             const idToken = await getDecodedIDToken();
-
+            const isPrivilegedUser: boolean =
+                idToken?.amr?.length > 0
+                    ? idToken?.amr[ 0 ] === "EnterpriseIDPAuthenticator"
+                    : false;
             const event = new Event(
                 CommonConstantsCore.AUTHENTICATION_SUCCESSFUL_EVENT
             );
@@ -445,10 +447,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                     ContextUtils.setRuntimeConfig(Config.getDeploymentConfig());
                 });
 
-            isPrivilegedUser =
-                idToken?.amr?.length > 0
-                    ? idToken?.amr[ 0 ] === "EnterpriseIDPAuthenticator"
-                    : false;
+
             const firstName = idToken?.given_name;
             const lastName = idToken?.family_name;
             const fullName = firstName
