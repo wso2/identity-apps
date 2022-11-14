@@ -180,8 +180,8 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
     /**
     * Importing all UI configurations.
     */
-    const isGOTEnabledForSuperTenantOnly: boolean = useSelector((state: AppState) =>
-        state?.config?.ui?.isGOTEnabledForSuperTenantOnly);
+    const googleOneTapEnabledTenants: string[] = useSelector((state: AppState) =>
+        state?.config?.ui?.googleOneTapEnabledTenants);
 
     /**
      * Flattens and resolved form initial values and field metadata.
@@ -233,21 +233,21 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
     }, [ originalInitialValues ]);
 
     /**
-     * Checking the current user is a super user or not.
-     *
-     * @returns Is super user logged in.
-     */
-    const isSuperTenantLogin = (): boolean => {
-        return AppConstants.getTenant() === AppConstants.getSuperTenant();
-    };
-
-    /**
      * Checking ability to enable Google One Tap.
      *
      * @returns Whether enable Google One Tap or not.
      */
     const isEnableGoogleOneTap = (): boolean => {
-        return !isGOTEnabledForSuperTenantOnly || isSuperTenantLogin();
+        if (googleOneTapEnabledTenants?.length > 0) {
+            return googleOneTapEnabledTenants.includes(AppConstants.getTenant());
+        }
+
+        /**
+         * To enable Google One Tap for all tenants
+         * if this configuration is not defined or empty.
+         */
+
+        return true;
     };
 
     /**
