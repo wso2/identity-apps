@@ -964,7 +964,10 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                             mandatory: claim.mandatory
                         };
 
-                        RequestedClaims.push(requestedClaim);
+                        if (!RequestedClaims.find((claimRequested) => 
+                            claimRequested.claim.uri === requestedClaim.claim.uri)) {
+                            RequestedClaims.push(requestedClaim);
+                        }
                     }
                 });
             });
