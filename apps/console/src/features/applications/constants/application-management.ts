@@ -420,6 +420,10 @@ export class ApplicationManagementConstants {
     );
 
     /**
+     * Error code for application already exists.
+     */
+    public static readonly ERROR_CODE_APPLICATION_ALREADY_EXISTS = "OAUTH-60008";
+    /**
      * Error code for Issuer already exists.
      */
     public static readonly ERROR_CODE_ISSUER_EXISTS: string = "SAML-60002";
