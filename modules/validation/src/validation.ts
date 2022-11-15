@@ -194,8 +194,8 @@ export const isInteger = (value: number): boolean => {
 /**
  * This can be used to validate resource names. For example
  * IdP names and Application names. This allows values like
- * `{ abc123, ab-c123, some-name, some_name, SOME-NAME } but`
- * `not values starting with { - _ numbers } only alphabet`
+ * `{ abc123, ab-c123, some-name, some_name, SOME-NAME }` but
+ * not values starting with `{ - _ numbers }` only alphabet
  * lower or upper case.
  *
  * This function does not handle lengths! You should have
