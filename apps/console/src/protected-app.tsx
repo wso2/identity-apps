@@ -561,9 +561,16 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
     }, []);
 
     const loginSuccessRedirect = (): void => {
-        const AuthenticationCallbackUrl = CommonAuthenticateUtils.getAuthenticationCallbackUrl(
+        let AuthenticationCallbackUrl = CommonAuthenticateUtils.getAuthenticationCallbackUrl(
             CommonAppConstants.CONSOLE_APP
         );
+
+        // Setting fallback value for auth_callback if the value is not set in the session.
+        if (!AuthenticationCallbackUrl ||  AuthenticationCallbackUrl === "") {
+            CommonAuthenticateUtils.updateAuthenticationCallbackUrl(CommonAppConstants.CONSOLE_APP, "/");
+
+            AuthenticationCallbackUrl = "/";
+        }
 
         if (commonConfig?.enableOrganizationAssociations) {
             /**
