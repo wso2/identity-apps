@@ -193,7 +193,7 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
     applicationTemplateLoadingStrategy?: ApplicationTemplateLoadingStrategies;
     /**
      * Configuration to enable Google One Tap for specific tenants.
-    */
+     */
     googleOneTapEnabledTenants?: string[];
     /**
      * Set of authenticators to be hidden in application sign on methods.

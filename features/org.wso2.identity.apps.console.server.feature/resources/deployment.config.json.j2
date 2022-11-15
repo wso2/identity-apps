@@ -182,8 +182,8 @@
         {% endif %}
         "appLogoPath": "{{ console.ui.app_logo_path }}",
         "googleOneTapEnabledTenants": [
-            {% if console.google_one_tap_enabled_tenants is defined %}
-                {% for value in console.google_one_tap_enabled_tenants %}
+            {% if console.ui.google_one_tap_enabled_tenants is defined %}
+                {% for value in console.ui.google_one_tap_enabled_tenants %}
                     "{{ value }}"{{ "," if not loop.last }}
                 {% endfor %}
             {% endif %}
