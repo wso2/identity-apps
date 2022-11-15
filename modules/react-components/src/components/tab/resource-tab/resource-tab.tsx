@@ -22,7 +22,7 @@ import {
     TestableComponentInterface 
 } from "@wso2is/core/models";
 import classNames from "classnames";
-import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, MouseEvent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { Card, MenuProps, Placeholder, Tab, TabProps } from "semantic-ui-react";
 import { ResourceTabPane } from "./resource-tab-pane";
 
@@ -96,7 +96,7 @@ export const ResourceTab: FunctionComponent<ResourceTabPropsInterface> & Resourc
         ...rest
     } = props;
 
-    const classes = classNames(
+    const classes: string = classNames(
         "tabs resource-tabs",
         {
             "attached": attached
@@ -123,7 +123,7 @@ export const ResourceTab: FunctionComponent<ResourceTabPropsInterface> & Resourc
     /**
      * Handles the tab change.
      */
-    const handleTabChange = (e, activeIndex) => {
+    const handleTabChange = (e: SyntheticEvent, activeIndex: string | number) => {
         setActiveIndex(activeIndex);
     };
 
