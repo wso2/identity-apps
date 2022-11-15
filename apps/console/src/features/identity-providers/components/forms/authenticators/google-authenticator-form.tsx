@@ -246,7 +246,6 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
          * To enable Google One Tap for all tenants
          * if this configuration is not defined or empty.
          */
-
         return true;
     };
 
