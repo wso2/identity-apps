@@ -18,13 +18,14 @@
 
 import { DecodedIDTokenPayload, useAuthContext } from "@asgardeo/auth-react";
 import { AccessControlProvider } from "@wso2is/access-control";
+import { AppConstants as CommonAppConstants } from "@wso2is/core/constants";
 import { CommonHelpers, isPortalAccessGranted } from "@wso2is/core/helpers";
 import { RouteInterface, emptyIdentityAppsSettings } from "@wso2is/core/models";
 import {
     setI18nConfigs,
     setServiceResourceEndpoints
 } from "@wso2is/core/store";
-import { LocalStorageUtils } from "@wso2is/core/utils";
+import { AuthenticateUtils, LocalStorageUtils } from "@wso2is/core/utils";
 import {
     I18nModuleOptionsInterface
 } from "@wso2is/i18n";
@@ -226,6 +227,7 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
      * Handles session logout.
      */
     const handleSessionLogout = (): void => {
+        AuthenticateUtils.removeAuthenticationCallbackUrl(CommonAppConstants.CONSOLE_APP);
         history.push(AppConstants.getAppLogoutPath());
     };
 
@@ -420,9 +422,9 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
                                                 </Trans>)
                                             }
                                         />
-                                        { 
-                                            isMarketingConsentBannerEnabled 
-                                                && applicationConfig.marketingConsent.getBannerComponent() 
+                                        {
+                                            isMarketingConsentBannerEnabled
+                                                && applicationConfig.marketingConsent.getBannerComponent()
                                         }
                                         <Switch>
                                             <Redirect
