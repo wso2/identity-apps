@@ -127,6 +127,7 @@ export const ResourceTab: FunctionComponent<ResourceTabPropsInterface> & Resourc
         setActiveIndex(activeIndex);
     };
 
+    //TODO - Add style classes to placeholders.
     if (isLoading) {
         return (
             <>
