@@ -132,7 +132,7 @@ export const ResourceTab: FunctionComponent<ResourceTabPropsInterface> & Resourc
             <>
                 <Card.Group style={ { marginBottom: "3rem" } }>
                     {
-                        [ ...Array(loadingStateOptions?.count ? loadingStateOptions?.count : 0) ].map(() => {
+                        [ ...Array(loadingStateOptions?.count ?? 0) ].map(() => {
                             return (
                                 <>
                                     <Card style={ { boxShadow: "none", width: "10%" } }>
