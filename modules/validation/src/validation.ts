@@ -194,8 +194,8 @@ export const isInteger = (value: number): boolean => {
 /**
  * This can be used to validate resource names. For example
  * IdP names and Application names. This allows values like
- * \{ abc123, ab-c123, some-name, some_name, SOME-NAME \} but
- * not values starting with \{ - _ numbers \} only alphabet
+ * `{ abc123, ab-c123, some-name, some_name, SOME-NAME } but`
+ * `not values starting with { - _ numbers } only alphabet`
  * lower or upper case.
  *
  * This function does not handle lengths! You should have
@@ -242,8 +242,7 @@ export const isValidResourceName = (value: string): boolean => {
  * we have enforced this validation a bit by saying , "a client id
  * must not have line breaks or spaces.
  *
- * Disallowed characters ∊ \{ \\r \\n \\t \\f \\v \\u00a0 \\u1680 \\u2000-\\u200a 
- * \\u2028 \\u2029 \\u202f \\u205f \\u3000 \\ufeff \}
+ * `Disallowed characters ∊ {\r\n\t\f\v\u00a0\u1680\u2000-\u200a\u2028\u2029\u202f\u205f\u3000\ufeff}`
  *
  * [1] {@link https://datatracker.ietf.org/doc/html/rfc6749#section-2.2}
  *
