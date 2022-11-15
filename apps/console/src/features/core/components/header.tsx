@@ -439,7 +439,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                         component: renderAppSwitcher(),
                         floated: "right"
                     },
-                    isOrgSwitcherEnabled && !isPrivilegedUser && {
+                    isOrgSwitcherEnabled && {
                         component: <OrganizationSwitchBreadcrumb />,
                         floated: "left"
                     }
