@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/nx",
-    "version": "1.6.110",
+    "version": "1.6.111",
     "description": "Nx plugin for WSO2 Identity Server apps.",
     "keywords": [
         "WSO2",
