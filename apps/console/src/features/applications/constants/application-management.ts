@@ -170,6 +170,7 @@ export class ApplicationManagementConstants {
     public static readonly IWA_NTLM: string = "iwa:ntlm";
     public static readonly UMA_TICKET: string = "urn:ietf:params:oauth:grant-type:uma-ticket";
     public static readonly DEVICE_GRANT: string = "urn:ietf:params:oauth:grant-type:device_code";
+    public static readonly OAUTH2_TOKEN_EXCHANGE: string = "urn:ietf:params:oauth:grant-type:token-exchange";
 
     /**
      * Currently refresh grant type is recommended to use at least one of below.
@@ -193,14 +194,16 @@ export class ApplicationManagementConstants {
             ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
             ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
             ApplicationManagementConstants.IMPLICIT_GRANT,
-            ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT
+            ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT,
+            ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE
         ],
         [ "b9c5e11e-fc78-484b-9bec-015d247561b8" ]: [
             ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
             ApplicationManagementConstants.IMPLICIT_GRANT,
             ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT,
             ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
-            ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT
+            ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT,
+            ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE
         ],
         [ "custom-application" ]: [
             ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
@@ -209,7 +212,8 @@ export class ApplicationManagementConstants {
             ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT,
             ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
             ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT,
-            ApplicationManagementConstants.DEVICE_GRANT
+            ApplicationManagementConstants.DEVICE_GRANT,
+            ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE
         ],
         [ "mobile-application" ]: [
             ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
