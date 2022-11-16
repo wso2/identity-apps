@@ -31,7 +31,6 @@ import {
     useDocumentation
 } from "@wso2is/react-components";
 import { OIDCScopesClaimsListInterface } from "apps/console/src/features/oidc-scopes";
-import sortBy from "lodash-es/sortBy";
 import React, { Fragment, FunctionComponent, ReactElement, SyntheticEvent, useEffect, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -63,6 +62,8 @@ interface AttributeSelectionOIDCPropsInterface extends TestableComponentInterfac
     externalClaims: ExtendedExternalClaimInterface[];
     externalClaimsGroupedByScopes: OIDCScopesClaimsListInterface[];
     setExternalClaimsGroupedByScopes: any;
+    unfilteredExternalClaimsGroupedByScopes: OIDCScopesClaimsListInterface[];
+    setUnfilteredExternalClaimsGroupedByScopes: any;
     setExternalClaims: any;
     selectedExternalClaims: ExtendedExternalClaimInterface[];
     setSelectedExternalClaims: any;
@@ -99,6 +100,8 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
         externalClaimsGroupedByScopes,
         setExternalClaimsGroupedByScopes,
         setExternalClaims,
+        unfilteredExternalClaimsGroupedByScopes,
+        setUnfilteredExternalClaimsGroupedByScopes,
         selectedExternalClaims,
         selectedDialect,
         setSelectedExternalClaims,
@@ -122,11 +125,6 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
         filterSelectedExternalClaims,
         setFilterSelectedExternalClaims
     ] = useState<ExtendedExternalClaimInterface[]>([]);
-
-    const [
-        unfilteredExternalClaimsGroupedByScopes,
-        setUnfilteredExternalClaimsGroupedByScopes
-    ] = useState<OIDCScopesClaimsListInterface[]>(externalClaimsGroupedByScopes);
 
     const [ expandedScopes, setExpandedScopes ] = useState<string[]>([]);
 
@@ -242,7 +240,6 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
             });
             scope.selected = scopeSelected;
         });
-        sortBy(tempFilterSelectedExternalScopeClaims, "name");
         setExternalClaimsGroupedByScopes(tempFilterSelectedExternalScopeClaims);
         setUnfilteredExternalClaimsGroupedByScopes(tempFilterSelectedExternalScopeClaims);
         searchFilter(searchValue);
@@ -266,14 +263,11 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                 return scope;
             }
         })?.claims.map((claim: ExtendedExternalClaimInterface) => {
-            claim.requested = value.checked;
+            updateRequested(claim.claimURI, value.checked);
             if (!value.checked) {
-                claim.mandatory = value.checked;
+                updateMandatory(claim.claimURI, value.checked);
             }
         });
-        setExternalClaimsGroupedByScopes(tempExternalClaimsGroupedByScopes);
-        setUnfilteredExternalClaimsGroupedByScopes(tempExternalClaimsGroupedByScopes);
-        searchFilter(searchValue);
     };
 
     /**

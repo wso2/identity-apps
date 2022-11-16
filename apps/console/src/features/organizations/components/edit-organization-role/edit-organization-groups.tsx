@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2022, WSO2 Inc. (http://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -190,8 +190,8 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
         }
         setTempGroupList(addedGroups);
         setInitialTempGroupList(addedGroups);
-        setGroupList(groupListCopy.filter(x => !addedGroups?.includes(x)));
-        setInitialGroupList(groupListCopy.filter(x => !addedGroups?.includes(x)));
+        setGroupList(groupListCopy.filter(group => !addedGroups?.includes(group)));
+        setInitialGroupList(groupListCopy.filter(group => !addedGroups?.includes(group)));
     };
 
     /**
@@ -228,7 +228,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
      * The following method handles the onChange event of the
      * checkbox field of an assigned item.
      *
-     * @param group
+     * @param group - The role that's changed
      */
     const handleAssignedItemCheckboxChange = (group) => {
         const checkedGroups = [ ...checkedAssignedListItems ];
@@ -254,8 +254,8 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
         }
         setTempGroupList(addedRoles);
         setInitialTempGroupList(addedRoles);
-        setGroupList(groupList.filter(x => !addedRoles?.includes(x)));
-        setInitialGroupList(groupList.filter(x => !addedRoles?.includes(x)));
+        setGroupList(groupList.filter(group => !addedRoles?.includes(group)));
+        setInitialGroupList(groupList.filter(group => !addedRoles?.includes(group)));
         setCheckedAssignedListItems([]);
         setIsSelectUnassignedAllRolesChecked(false);
     };
@@ -272,8 +272,8 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
         }
         setGroupList(removedRoles);
         setInitialGroupList(removedRoles);
-        setTempGroupList(tempGroupList?.filter(x => !removedRoles?.includes(x)));
-        setInitialTempGroupList(tempGroupList?.filter(x => !removedRoles?.includes(x)));
+        setTempGroupList(tempGroupList?.filter(group => !removedRoles?.includes(group)));
+        setInitialTempGroupList(tempGroupList?.filter(group => !removedRoles?.includes(group)));
         setCheckedUnassignedListItems([]);
         setIsSelectAssignedAllRolesChecked(false);
     };
@@ -292,12 +292,12 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
         const filteredGroupList = [];
 
         if (!isEmpty(value)) {
-            const re = new RegExp(escapeRegExp(value), "i");
+            const groupListFilterRegExp = new RegExp(escapeRegExp(value), "i");
 
-            groupList && groupList.map((role) => {
-                isMatch = re.test(role.displayName);
+            groupList && groupList.map((group) => {
+                isMatch = groupListFilterRegExp.test(group.displayName);
                 if (isMatch) {
-                    filteredGroupList.push(role);
+                    filteredGroupList.push(group);
                     setGroupList(filteredGroupList);
                 }
             });
@@ -311,12 +311,12 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
         const filteredGroupList = [];
 
         if (!isEmpty(value)) {
-            const re = new RegExp(escapeRegExp(value), "i");
+            const groupListFilterRegExp = new RegExp(escapeRegExp(value), "i");
 
-            tempGroupList && tempGroupList?.map((role) => {
-                isMatch = re.test(role.displayName);
+            tempGroupList && tempGroupList?.map((group) => {
+                isMatch = groupListFilterRegExp.test(group.displayName);
                 if (isMatch) {
-                    filteredGroupList.push(role);
+                    filteredGroupList.push(group);
                     setTempGroupList(filteredGroupList);
                 }
             });
@@ -552,13 +552,13 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
         const filteredGroupList = [];
 
         if (!isEmpty(value)) {
-            const re = new RegExp(escapeRegExp(value), "i");
+            const groupListFilterRegExp = new RegExp(escapeRegExp(value), "i");
 
             assignedGroups && assignedGroups?.map((group) => {
                 const groupName = group.display.split("/");
 
                 if (groupName.length === 1) {
-                    isMatch = re.test(group.display);
+                    isMatch = groupListFilterRegExp.test(group.display);
                     if (isMatch) {
                         filteredGroupList.push(group);
                         setAssignedGroups(filteredGroupList);
@@ -613,7 +613,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
     };
 
     return (
-        <>
+        <EmphasizedSegment padded="very">
             <Heading as="h4">
                 { t("console:manage.features.roles.edit.groups.heading") }
                 <Heading subHeading ellipsis as="h6">
@@ -623,7 +623,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
             <Divider hidden />
             <Grid>
                 <Grid.Row>
-                    <Grid.Column computer={ 8 }>
+                    <Grid.Column computer={ 16 }>
                         {
                             primaryGroupsList?.size > 0 ? (
                                 <EmphasizedSegment
@@ -712,6 +712,6 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                 </Grid.Row>
             </Grid>
             { addNewGroupModal() }
-        </>
+        </EmphasizedSegment>
     );
 };

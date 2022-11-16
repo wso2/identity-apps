@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2022, WSO2 Inc. (http://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -20,6 +20,7 @@ import { RolesInterface, TestableComponentInterface } from "@wso2is/core/models"
 import { Forms } from "@wso2is/forms";
 import { ContentLoader, EmphasizedSegment } from "@wso2is/react-components";
 import Tree from "rc-tree";
+import { DataNode, EventDataNode } from "rc-tree/es/interface";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Divider, Grid } from "semantic-ui-react";
@@ -54,7 +55,7 @@ interface OrganizationPermissionListProp extends TestableComponentInterface {
 /**
  * Component to create the permission tree structure from the give permission list.
  *
- * @param props props containing event handlers for permission component
+ * @param props - props containing event handlers for permission component
  */
 export const OrganizationPermissionList: FunctionComponent<OrganizationPermissionListProp> =
     (props: OrganizationPermissionListProp): ReactElement => {
@@ -99,7 +100,7 @@ export const OrganizationPermissionList: FunctionComponent<OrganizationPermissio
                 });
                 setPreviouslyCheckedKeys(previousFormCheckedKeys);
                 previouslyCheckedKeys?.forEach(key => {
-                    const nodeByKey = getNodeByKey(key, permissions);
+                    const nodeByKey: TreeNode = getNodeByKey(key, permissions);
 
                     if (nodeByKey !== null) {
                         checkedNodes.push(nodeByKey);
@@ -123,30 +124,18 @@ export const OrganizationPermissionList: FunctionComponent<OrganizationPermissio
         }, [ permissions.length > 0 ]);
 
         /**
-         * Util function to disable checking of a node and it's children.
-         *
-         * @param permissionNodes - array of permission nodes
-         * @param state - disable state
-         */
-        const disableTreeNode = (permissionNodes: TreeNode[], state: boolean) => {
-            permissionNodes.forEach((permission: TreeNode) => {
-                permission.disableCheckbox = state;
-                if (permission.children) {
-                    disableTreeNode(permission.children, state);
-                }
-            });
-        };
-
-        /**
          * Event handler when a node is checked on the permission tree.
          *
          * @param checked - checked states of the node
          * @param info - checked information
          */
-        const onCheck = (checked: { checked: React.ReactText[]; halfChecked: React.ReactText[] }, info) => {
+        const onCheck = (
+            checked: { checked: React.ReactText[]; halfChecked: React.ReactText[] },
+            info: { checked: boolean, checkedNodes: DataNode[], node: EventDataNode }
+        ): void => {
             if (info.checked) {
                 if (!checkedPermission.find(permission => permission.key === info.node.key)) {
-                    const parentNode: TreeNode = getNodeByKey(info.node.key, permissions, true);
+                    const parentNode: TreeNode = getNodeByKey(info.node.key.toString(), permissions, true);
                     let checkedChildren: number = 1;
 
                     parentNode?.children?.forEach((childPermission: TreeNode) => {

@@ -94,16 +94,16 @@ export const OrganizationEnterpriseAuthenticationProviderCreateWizardContent:
         const [ isIdPListRequestLoading, setIdPListRequestLoading ] = useState<boolean>(undefined);
 
         /**
-     * Loads the identity provider authenticators on initial component load.
-     */
+         * Loads the identity provider authenticators on initial component load.
+         */
         useEffect(() => {
 
             getIDPlist();
         }, []);
 
         /**
-     * Get Idp List.
-     */
+         * Get Idp List.
+         */
         const getIDPlist = (): void => {
 
             setIdPListRequestLoading(true);
@@ -121,14 +121,14 @@ export const OrganizationEnterpriseAuthenticationProviderCreateWizardContent:
         };
 
         /**
-     * Check whether IDP name is already exist or not.
-     *
-     * @param value - IDP name.
-     * @returns error msg if name is already taken.
-     */
+         * Check whether IDP name is already exist or not.
+         *
+         * @param value - IDP name.
+         * @returns error msg if name is already taken.
+         */
         const idpNameValidation = (value): string => {
 
-            let nameExist = false;
+            let nameExist: boolean = false;
 
             if (idpList?.count > 0) {
                 idpList?.identityProviders.map((idp) => {
@@ -146,11 +146,11 @@ export const OrganizationEnterpriseAuthenticationProviderCreateWizardContent:
         };
 
         /**
-     * Validates the Form.
-     *
-     * @param values - Form Values.
-     * @returns Form validation.
-     */
+         * Validates the Form.
+         *
+         * @param values - Form Values.
+         * @returns Form validation.
+         */
         const validateForm = (values: OrganizationEnterpriseAuthenticationProviderCreateWizardFormValuesInterface):
         OrganizationEnterpriseAuthenticationProviderCreateWizardFormErrorValidationsInterface => {
 
@@ -168,7 +168,7 @@ export const OrganizationEnterpriseAuthenticationProviderCreateWizardContent:
         };
 
         return (
-            (isIdPListRequestLoading !== undefined && isIdPListRequestLoading === false)
+            isIdPListRequestLoading === false
                 ? (
                     <Wizard
                         id={ FORM_ID }

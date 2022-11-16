@@ -38,6 +38,10 @@
                 "grantTypes": [
                     "authorization_code"
                 ],
+                "pkce": {
+                    "mandatory": true,
+                    "supportPlainTransformAlgorithm": false
+                },
                 "publicClient": true
             }
         }

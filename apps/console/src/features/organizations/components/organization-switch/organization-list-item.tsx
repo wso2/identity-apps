@@ -88,6 +88,7 @@ const OrganizationListItem = (
                 width={ showGravatar ? 9 : 12 }
                 verticalAlign="middle"
                 data-componentid={ `${ componentId }-organization-name` }
+                className="ellipsis"
             >
                 { organization?.name ?? (
                     <Placeholder>
@@ -95,8 +96,8 @@ const OrganizationListItem = (
                     </Placeholder>
                 ) }
             </Grid.Column>
-            <Grid.Column width={ 4 } verticalAlign="middle" textAlign="right">
-                { showSwitch && (
+            { showSwitch && (
+                <Grid.Column width={ 2 } verticalAlign="middle" textAlign="right">
                     <Popup
                         trigger={
                             (<Icon
@@ -105,7 +106,8 @@ const OrganizationListItem = (
                                 size="small"
                                 color="grey"
                                 name="exchange"
-                                onClick={ () => {
+                                onClick={ (event: SyntheticEvent) => {
+                                    event.stopPropagation();
                                     handleOrganizationSwitch &&
                                         handleOrganizationSwitch(organization);
                                 } }
@@ -116,10 +118,15 @@ const OrganizationListItem = (
                         content={ t("common:switch") }
                         inverted
                     />
-                ) }
-                { !OrganizationUtils.isRootOrganization(organization) &&
-                    showEdit && (
-                    <Show when={ AccessControlConstants.ORGANIZATION_EDIT }>
+                </Grid.Column>
+            ) }
+            { !OrganizationUtils.isRootOrganization(organization) && showEdit && (
+                <Show when={ AccessControlConstants.ORGANIZATION_EDIT }>
+                    <Grid.Column
+                        width={ 2 }
+                        verticalAlign="middle"
+                        textAlign="right"
+                    >
                         <Popup
                             trigger={
                                 (<Icon
@@ -129,6 +136,7 @@ const OrganizationListItem = (
                                     color="grey"
                                     name="pencil alternate"
                                     onClick={ (event: SyntheticEvent) => {
+                                        event.stopPropagation();
                                         history.push({
                                             pathname: AppConstants.getPaths()
                                                 .get("ORGANIZATION_UPDATE")
@@ -138,7 +146,6 @@ const OrganizationListItem = (
                                                 )
                                         });
                                         setShowDropdown(false);
-                                        event.stopPropagation();
                                     } }
                                     data-componentid={ `${ componentId }-organization-edit` }
                                 />)
@@ -147,9 +154,9 @@ const OrganizationListItem = (
                             content={ t("common:edit") }
                             inverted
                         />
-                    </Show>
-                ) }
-            </Grid.Column>
+                    </Grid.Column>
+                </Show>
+            ) }
         </Grid.Row>
     );
 };

@@ -700,7 +700,7 @@
                     font-size: .6em;
                     padding: 4px 7px;
                     font-weight: 500;
-                    top: 9px;
+                    top: 8px;
                     margin-left: 10px;
                     position: absolute;
                     border: 1px solid @defaultBorderColor;
@@ -720,6 +720,7 @@
                         color: @previewStatusTextColor;
                         font-weight: 500;
                         background-color: @previewStatusBgColor;
+                        font-size: 0.7em;
                     }
                 }
             }

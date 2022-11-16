@@ -168,6 +168,9 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
     const isFirstLevelOrg: boolean = useSelector(
         (state: AppState) => state.organization.isFirstLevelOrganization
     );
+    const isPrivilegedUser: boolean = useSelector(
+        (state: AppState) => state?.auth?.isPrivilegedUser
+    );
 
     const governanceConnectorsLoaded: MutableRefObject<boolean> = useRef(false);
 
@@ -199,10 +202,12 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             let response: BasicUserInfo = { ...signInResponse };
             let logoutUrl: string;
             let logoutRedirectUrl: string;
-            let isPrivilegedUser: boolean = false;
 
             const idToken: DecodedIDTokenPayload = await getDecodedIDToken();
-
+            const isPrivilegedUser: boolean =
+                idToken?.amr?.length > 0
+                    ? idToken?.amr[ 0 ] === "EnterpriseIDPAuthenticator"
+                    : false;
             const event: Event = new Event(
                 CommonConstantsCore.AUTHENTICATION_SUCCESSFUL_EVENT
             );
@@ -239,7 +244,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
 
             if (
                 window[ "AppUtils" ].getConfig().organizationName ||
-                isFirstLevelOrg
+                (isFirstLevelOrg && !isPrivilegedUser)
             ) {
                 // We are actually getting the orgId here rather than orgName
                 const orgId: string = isFirstLevelOrg
@@ -445,10 +450,6 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                     ContextUtils.setRuntimeConfig(Config.getDeploymentConfig());
                 });
 
-            isPrivilegedUser =
-                idToken?.amr?.length > 0
-                    ? idToken?.amr[ 0 ] === "EnterpriseIDPAuthenticator"
-                    : false;
             const firstName: string = idToken?.given_name;
             const lastName: string = idToken?.family_name;
             const fullName: string = firstName
@@ -593,8 +594,13 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                         // If there is an association, the user should be redirected to console landing page.
                         const location: string =
                             !AuthenticationCallbackUrl ||
-                                AuthenticationCallbackUrl ===
-                                AppConstants.getAppLoginPath()
+                            AuthenticationCallbackUrl ===
+                                AppConstants.getAppLoginPath() ||
+                                (window[ "AppUtils" ].getConfig().organizationName &&
+                                    AuthenticationCallbackUrl ===
+                                    `${ window[ "AppUtils" ].getConfig()
+                                        .appBaseWithTenant
+                                    }/`)
                                 ? AppConstants.getAppHomePath()
                                 : AuthenticationCallbackUrl;
 
@@ -616,7 +622,10 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
         } else {
             const location: string =
                 !AuthenticationCallbackUrl ||
-                    AuthenticationCallbackUrl === AppConstants.getAppLoginPath()
+                    AuthenticationCallbackUrl === AppConstants.getAppLoginPath() ||
+                    (window[ "AppUtils" ].getConfig().organizationName &&
+                        AuthenticationCallbackUrl ===
+                        `${ window[ "AppUtils" ].getConfig().appBaseWithTenant }/`)
                     ? AppConstants.getAppHomePath()
                     : AuthenticationCallbackUrl;
 
@@ -641,7 +650,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             featureConfig,
             allowedScopes,
             window[ "AppUtils" ].getConfig().organizationName ? false : commonConfig.checkForUIResourceScopes,
-            isOrganizationManagementEnabled
+            isOrganizationManagementEnabled && !isPrivilegedUser
                 ? (OrganizationUtils.isCurrentOrganizationRoot() &&
                     AppConstants.getSuperTenant() === tenant) ||
                     isFirstLevelOrg
@@ -674,7 +683,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             featureConfig,
             allowedScopes,
             window[ "AppUtils" ].getConfig().organizationName ? false : commonConfig.checkForUIResourceScopes,
-            isOrganizationManagementEnabled
+            isOrganizationManagementEnabled && !isPrivilegedUser
                 ? (OrganizationUtils.isCurrentOrganizationRoot() &&
                     AppConstants.getSuperTenant() === tenant) ||
                     isFirstLevelOrg

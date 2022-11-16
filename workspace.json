@@ -10,6 +10,7 @@
         "forms": "modules/forms",
         "i18n": "modules/i18n",
         "myaccount": "apps/myaccount",
+        "nx": "modules/nx",
         "react-components": "modules/react-components",
         "recovery-portal": "apps/recovery-portal",
         "tests": "tests",
