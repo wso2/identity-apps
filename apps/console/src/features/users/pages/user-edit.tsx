@@ -113,11 +113,13 @@ const UserEditPage = (): ReactElement => {
         }
 
         setReadOnlyUserStoresLoading(true);
-        SharedUserStoreUtils.getReadOnlyUserStores().then((response: string[]) => {
-            setReadOnlyUserStoresList(response);
-        }).finally(() => {
-            setReadOnlyUserStoresLoading(false);
-        });
+        SharedUserStoreUtils.getReadOnlyUserStores()
+            .then((response: string[]) => {
+                setReadOnlyUserStoresList(response);
+            })
+            .finally(() => {
+                setReadOnlyUserStoresLoading(false);
+            });
     }, [ user ]);
 
     const getUser = (id: string) => {
