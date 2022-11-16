@@ -34,6 +34,7 @@ export const applicationConfig: ApplicationConfig = {
     },
     attributeSettings: {
         advancedAttributeSettings: {
+            showHowToUseScopesDocLink: false,
             showIncludeTenantDomain: true,
             showIncludeUserstoreDomainRole: true,
             showIncludeUserstoreDomainSubject: true,

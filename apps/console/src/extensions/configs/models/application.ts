@@ -37,6 +37,7 @@ export interface ApplicationConfig {
     };
     attributeSettings: {
         advancedAttributeSettings: {
+            showHowToUseScopesDocLink: boolean;
             showIncludeTenantDomain: boolean;
             showIncludeUserstoreDomainRole: boolean;
             showIncludeUserstoreDomainSubject: boolean;

@@ -21,6 +21,7 @@ import {
     AnimatedAvatar,
     AppAvatar,
     Code,
+    CopyInputField,
     DocumentationLink,
     EmptyPlaceholder,
     Heading,
@@ -34,7 +35,7 @@ import { OIDCScopesClaimsListInterface } from "apps/console/src/features/oidc-sc
 import React, { Fragment, FunctionComponent, ReactElement, SyntheticEvent, useEffect, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Grid, Header, Icon, Input, Table } from "semantic-ui-react";
+import { Form, Grid, Header, Icon, Input, Table } from "semantic-ui-react";
 import { AttributeListItem } from "./attribute-list-item";
 import {
     ExtendedClaimInterface,
@@ -138,6 +139,8 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
 
     const [ openIDConnectClaims ] = useState<ExtendedExternalClaimInterface[]>(externalClaims);
 
+    const [ selectedScopes, setSelectedScopes ] = useState([ "openid" ]);
+
     useEffect(() => {
         const tempFilterSelectedExternalClaims = [ ...filterSelectedExternalClaims ];
 
@@ -160,6 +163,20 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
         setSelectedExternalClaims(tempFilterSelectedExternalClaims);
         setFilterSelectedExternalClaims(tempFilterSelectedExternalClaims);
     }, [ claimConfigurations ]);
+
+    useEffect(() => {
+        if (unfilteredExternalClaimsGroupedByScopes.length != 0) {
+            const initialSelectedScopes = [ "openid" ];
+
+            unfilteredExternalClaimsGroupedByScopes.map((scope) => {
+                if (scope.selected && scope.name !== "") {
+                    initialSelectedScopes.push(scope.name);
+                }
+            });
+
+            setSelectedScopes(initialSelectedScopes);
+        }
+    }, [ unfilteredExternalClaimsGroupedByScopes ]);
 
     /**
      * Stops the UI loader when the component is initialized and have fetched the availableExternalClaims.
@@ -690,7 +707,7 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
             ? (
                 <>
                     <Grid.Row data-testid={ testId } data-componentid={ componentId }>
-                        <Grid.Column computer={ 16 } tablet={ 16 } largeScreen={ 12 } widescreen={ 12 } >
+                        <Grid.Column computer={ 16 } tablet={ 16 } largeScreen={ 12 } widescreen={ 12 }>
                             <Heading as="h4">
                                 {
                                     t("console:develop.features.applications.edit.sections" +
@@ -863,68 +880,89 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                                     </SegmentedAccordion>
                                 </Grid.Row>
                             </>
-                            { !readOnly && applicationConfig.attributeSettings.attributeSelection
-                                .showShareAttributesHint(selectedDialect)
-                                ? (
-                                    <Hint>
-                                        <Trans
-                                            i18nKey={
-                                                "console:develop.features.applications.edit.sections." +
-                                                "attributes.selection.attributeComponentHint"
-                                            }
-                                        >
-                                            Use
-                                            <Link
-                                                external={ false }
-                                                onClick={ () => {
-                                                    history.push(
-                                                        AppConstants.getPaths().get("OIDC_SCOPES")
-                                                    );
-                                                } }
-                                            > OpenID Connect Scopes
-                                            </Link>
-                                            to add/remove user attribute to a scope. You can add new 
+                            <Hint>
+                                <Trans
+                                    i18nKey={
+                                        "console:develop.features.applications.edit.sections." +
+                                        "attributes.selection.attributeComponentHint"
+                                    }
+                                >
+                                    Use
+                                    <Link
+                                        external={ false }
+                                        onClick={ () => {
+                                            history.push(
+                                                AppConstants.getPaths().get("OIDC_SCOPES")
+                                            );
+                                        } }
+                                    > OpenID Connect Scopes
+                                    </Link>
+                                            to manage user attribute to a scope. You can add new 
                                             attributes by navigating to 
-                                            <Link
-                                                external={ false }
-                                                onClick={ () => {
-                                                    history.push(
-                                                        AppConstants.getPaths()
-                                                            .get("ATTRIBUTE_MAPPINGS")
-                                                            .replace(":type", ClaimManagementConstants.OIDC)
-                                                    );
-                                                } }
-                                            > Attributes.
-                                            </Link>
-                                        </Trans>
-                                    </Hint>
-                                )
-                                : (
-                                    <Hint>
-                                        <Trans
-                                            i18nKey={
-                                                "console:develop.features.applications.edit.sections.attributes." +
-                                                "selection.attributeComponentHintAlt"
-                                            }
-                                        >
-                                        Manage the user attributes you want to share with this application.
-                                        You can add new attributes and mappings by navigating to
-                                            <Link
-                                                external={ false }
-                                                onClick={ () => {
-                                                    history.push(
-                                                        AppConstants.getPaths()
-                                                            .get("LOCAL_CLAIMS")
-                                                    );
-                                                } }
-                                            > Attribute.
-                                            </Link>
-                                        </Trans>
-                                    </Hint>
-                                )
-                            }
+                                    <Link
+                                        external={ false }
+                                        onClick={ () => {
+                                            history.push(
+                                                AppConstants.getPaths()
+                                                    .get("ATTRIBUTE_MAPPINGS")
+                                                    .replace(":type", ClaimManagementConstants.OIDC)
+                                            );
+                                        } }
+                                    > Attributes.
+                                    </Link>
+                                </Trans>
+                            </Hint>
                         </Grid.Column>
                     </Grid.Row>
+                    <Grid.Row className="mt-5">
+                        <Grid.Column computer={ 16 } tablet={ 16 } largeScreen={ 12 } widescreen={ 12 }>
+                            <Grid.Row>
+                                <Form>
+                                    <Grid.Column>
+                                        <Form.Field>
+                                            <div className="display-flex">
+                                                <CopyInputField
+                                                    className="copy-input spaced"
+                                                    value={ selectedScopes.join(" ") }
+                                                    data-testid={ `${ testId }-client-id-readonly-input` }
+                                                />
+                                            </div>
+                                        </Form.Field>
+                                    </Grid.Column>
+                                </Form>
+                            </Grid.Row>
+                        </Grid.Column>
+                    </Grid.Row>
+                    <Hint>
+                        <Trans
+                            i18nKey={
+                                "console:develop.features.applications.edit.sections.attributes." +
+                                                "selection.selectedScopesComponentHint"
+                            }
+                        >
+                            Request these scopes from your application to retrieve the user attributes 
+                            you selected.
+                        </Trans>
+                        {
+                            applicationConfig.attributeSettings.advancedAttributeSettings
+                                .showHowToUseScopesDocLink
+                                ? ( <Trans
+                                    i18nKey={
+                                        "console:develop.features.applications.edit.sections.attributes." +
+                                                "selection.howToUseScopesHint"
+                                    }
+                                >
+                                    <DocumentationLink
+                                        link={ 
+                                            getLink("develop.connections.editApplication.attributeManagement" +
+                                                    ".manageOIDCScopes")
+                                        }>
+                                            How to use Scopes
+                                    </DocumentationLink>
+                                </Trans> )
+                                : ( null )
+                        }
+                    </Hint>
                 </>
             )
             : null
