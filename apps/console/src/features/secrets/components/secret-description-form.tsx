@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -32,6 +32,14 @@ export type SecretDescriptionFormProps = {
     editingSecret: SecretModel;
 } & IdentifiableComponentInterface;
 
+const FORM_ID: string = "secrets-description-form";
+
+/**
+ * Secret description form.
+ *
+ * @param props - Props injected to the component.
+ * @returns Functional component.
+ */
 const SecretDescriptionForm: FC<SecretDescriptionFormProps> = (
     props: SecretDescriptionFormProps
 ): ReactElement => {
@@ -54,8 +62,8 @@ const SecretDescriptionForm: FC<SecretDescriptionFormProps> = (
     }, []);
 
     /**
-     * This is used only for validation. Even though {@code secretDescription}
-     * and form submission value is equal, we use the submission's {@code values}.
+     * This is used only for validation. Even though `secretDescription`
+     * and form submission value is equal, we use the submission's `values`.
      */
     useEffect(() => {
         if (!secretDescription ||
@@ -70,7 +78,7 @@ const SecretDescriptionForm: FC<SecretDescriptionFormProps> = (
     /**
      * Updates a secret. To update both `value` and `description` must
      * be in the form values otherwise the API will complain with 400.
-     * @param values {Record<string, any>}
+     * @param values - Form values.
      */
     const updateSecretDescription = (values: Record<string, any>): void => {
 
@@ -109,6 +117,7 @@ const SecretDescriptionForm: FC<SecretDescriptionFormProps> = (
                     level: AlertLevels.ERROR,
                     message: error.response.data?.message
                 }));
+
                 return;
             }
             dispatch(addAlert({
@@ -124,7 +133,11 @@ const SecretDescriptionForm: FC<SecretDescriptionFormProps> = (
 
     return (
         <Fragment>
-            <Form uncontrolledForm={ true } onSubmit={ updateSecretDescription }>
+            <Form
+                id={ FORM_ID }
+                uncontrolledForm={ true }
+                onSubmit={ updateSecretDescription }
+            >
                 <Field.Textarea
                     data-componentid={ `${ testId }-description-field` }
                     ariaLabel={
@@ -145,6 +158,7 @@ const SecretDescriptionForm: FC<SecretDescriptionFormProps> = (
                 />
                 <Show when={ AccessControlConstants.SECRET_EDIT }>
                     <Field.Button
+                        form={ FORM_ID }
                         data-componentid={ `${ testId }-update-button` }
                         loading={ loading }
                         disabled={ !canUpdateDescription || loading }

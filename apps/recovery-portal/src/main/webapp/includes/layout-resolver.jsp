@@ -26,7 +26,7 @@
 
 <%-- Activate the "custom" layout if exists --%>
 <%
-    if (config.getServletContext().getResource("extensions/layouts/custom/body.html") != null) {
+    if (config.getServletContext().getResource("extensions/layouts/custom/body.ser") != null) {
         layout = "custom";
     }
 %>
@@ -38,15 +38,15 @@
 
     if (!layout.equals("custom")) {
         if (layout.equals("default")) {
-            layoutFileRelativePath = "includes/layouts/" + layout + "/body.html";
+            layoutFileRelativePath = "includes/layouts/" + layout + "/body.ser";
         } else {
-            layoutFileRelativePath = "extensions/layouts/" + layout + "/body.html";
+            layoutFileRelativePath = "extensions/layouts/" + layout + "/body.ser";
             if (config.getServletContext().getResource(layoutFileRelativePath) == null) {
                 layout = "default";
-                layoutFileRelativePath = "includes/layouts/default/body.html";
+                layoutFileRelativePath = "includes/layouts/default/body.ser";
             }
         }
     } else {
-        layoutFileRelativePath = "extensions/layouts/custom/body.html";
+        layoutFileRelativePath = "extensions/layouts/custom/body.ser";
     }
 %>

@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2022, WSO2 Inc. (http://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,7 +17,6 @@
  */
 
 /**
- * @fileoverview AppUtils object Mock.
  *
  * @remarks Document and place all the AppUtils mocks in this file.
  */
@@ -30,7 +29,7 @@ interface CustomWindow extends Window {
 
 /**
  * `AppUtils` Mock.
- * @remarks The `deployment.config.json file is resolved and stored in the window object under `AppUtils`.
+ * @remarks The deployment.config.json file is resolved and stored in the window object under AppUtils.
  * This has a method called `getConfig` that needs mocking.
  * IMPORTANT: Constantly keep this updated by executing `window.AppUtils.getConfig()` on the browser.
  */
@@ -437,6 +436,9 @@ interface CustomWindow extends Window {
                     },
                     github: {
                         enabled: false
+                    },
+                    microsoft: {
+                        enabled: true
                     }
                 },
                 gravatarConfig: {

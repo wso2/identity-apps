@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,7 +14,6 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
 
 require("@babel/register");
@@ -41,13 +40,13 @@ const log = {
 
 const srcDir = path.join(__dirname, "..", "src");
 const distDir = path.join(__dirname, "..", "dist");
+const nodeModules = path.join(__dirname, "..", "node_modules");
 const themesDir = path.join(srcDir, "themes");
 const semanticUICorePath = path.join("src", "semantic-ui-core");
 const semanticUICoreDefinitions = path.join(semanticUICorePath, "definitions");
 
-const lessNpmModuleDir = path.dirname(require.resolve("less"));
-const semanticUICSSModuleDir = path.join(lessNpmModuleDir, "..", "semantic-ui-css");
-const semanticUILessModuleDir = path.join(lessNpmModuleDir, "..", "semantic-ui-less");
+const semanticUICSSModuleDir = path.join(nodeModules, "semantic-ui-css");
+const semanticUILessModuleDir = path.join(nodeModules, "semantic-ui-less");
 
 const SAMPLE_THEME_NAME = "sample";
 const DEFAULT_THEME_NAME = "default";
@@ -67,7 +66,7 @@ const createVariablesLessJson = async (theme) => {
 
     const exportJsFileName = "theme-variables.json";
     const exportMergeLessFileName = "theme-variables.less";
-    
+
     const themeDistDir = path.join(distDir, "lib", "themes", theme);
 
     const exportMergeLessFile = path.join(themeDistDir, exportMergeLessFileName);

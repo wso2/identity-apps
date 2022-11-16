@@ -20,7 +20,12 @@ import { RoleListInterface, RolesInterface, TestableComponentInterface } from "@
 import { DynamicField, Heading, Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
+import { AppState } from "../../../../core";
+import { getOrganizationRoles } from "../../../../organizations/api";
+import { OrganizationRoleListItemInterface } from "../../../../organizations/models";
+import { OrganizationUtils } from "../../../../organizations/utils";
 import { getRolesList } from "../../../../roles";
 import { IdentityProviderConstants } from "../../../constants";
 import { IdentityProviderRoleMappingInterface } from "../../../models";
@@ -61,7 +66,8 @@ export const RoleMappingSettings: FunctionComponent<RoleMappingSettingsPropsInte
     props: RoleMappingSettingsPropsInterface
 ): ReactElement => {
 
-    const [ roleList, setRoleList ] = useState<RolesInterface[]>();
+    const currentOrganization = useSelector((state: AppState) => state.organization.organization);
+    const [ roleList, setRoleList ] = useState<RolesInterface[] | OrganizationRoleListItemInterface[]>();
 
     const {
         onSubmit,
@@ -77,7 +83,7 @@ export const RoleMappingSettings: FunctionComponent<RoleMappingSettingsPropsInte
      * Filter out Application related and Internal roles
      */
     const getFilteredRoles = () => {
-        const filterRole: RolesInterface[] = roleList.filter(
+        const filterRole: RolesInterface[] | OrganizationRoleListItemInterface[] = roleList.filter(
             (role) => {
                 return !(role.displayName.includes("Application/") || role.displayName.includes("Internal/"));
             });
@@ -91,17 +97,24 @@ export const RoleMappingSettings: FunctionComponent<RoleMappingSettingsPropsInte
     };
 
     useEffect(() => {
-        getRolesList(null)
-            .then((response) => {
-                if (response.status === 200) {
-                    const allRole: RoleListInterface = response.data;
+        if (OrganizationUtils.isCurrentOrganizationRoot()) {
+            getRolesList(null)
+                .then((response) => {
+                    if (response.status === 200) {
+                        const allRole: RoleListInterface = response.data;
 
-                    setRoleList(allRole.Resources);
-                }
-            })
-            .catch((error) => {
-                handleGetRoleListError(error);
-            });
+                        setRoleList(allRole.Resources);
+                    }
+                })
+                .catch((error) => {
+                    handleGetRoleListError(error);
+                });
+        } else {
+            getOrganizationRoles(currentOrganization.id, null, null, null)
+                .then((response) => {
+                    setRoleList(response.Resources);
+                });
+        }
     }, [ initialRoleMappings ]);
 
 

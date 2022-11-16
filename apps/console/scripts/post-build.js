@@ -29,9 +29,11 @@ const i18nDir = path.join(__dirname, "..", "build", "console", "resources", "i18
 const i18nFiles = fs.readdirSync(i18nDir);
 
 // Remove tmp directory in the extensions directory
-log("Removing tmp directory in the extensions directory.");
-fs.removeSync(tmpDir);
-log("tmp directory removed.");
+if (fs.existsSync(tmpDir)) {
+    log("Removing tmp directory in the extensions directory.");
+    fs.removeSync(tmpDir);
+    log("tmp directory removed.");
+}
 
 // Remove the redundant meta.json file from the i18n directory in the build directory.
 log("Removing the redundant meta.json file from the i18n directory in the build directory.");

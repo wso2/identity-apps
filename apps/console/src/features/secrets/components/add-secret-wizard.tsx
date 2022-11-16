@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -59,13 +59,14 @@ type FieldDropDownOption = {
     value: string;
 }
 
+const FORM_ID: string = "secrets-add-wizard-form";
+
 /**
  * This wizard is sorely responsible for adding a new `secret` for a
  * given `secret-type`.
  *
- * @param props {AddSecretWizardProps}
- * @constructor
- * @return {ReactElement}
+ * @param props - Props injected to the component.
+ * @returns Functional component.
  */
 const AddSecretWizard: FC<AddSecretWizardProps> = (props: AddSecretWizardProps): ReactElement => {
 
@@ -89,13 +90,13 @@ const AddSecretWizard: FC<AddSecretWizardProps> = (props: AddSecretWizardProps):
     const [ secretNameInvalid, setSecretNameInvalid ] = useState<boolean>(false);
     const [ secretValueInvalid, setSecretValueInvalid ] = useState<boolean>(false);
     const [ initialFormValues, setInitialFormValues ] = useState<Record<string, any>>({});
-    const [ showInfoMessage, setShowInfoMessage ] = useState<boolean>(true);
+    const [ showInfoMessage ] = useState<boolean>(true);
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
     /**
      * Initial state hook. Fetches the available secret types and
-     * sets it to {@code secretTypes} state. Also, it fetches the
+     * sets it to `secretTypes` state. Also, it fetches the
      * available secrets for the initial secret-type :)
      */
     useEffect(() => {
@@ -151,8 +152,8 @@ const AddSecretWizard: FC<AddSecretWizardProps> = (props: AddSecretWizardProps):
     }, []);
 
     /**
-     * Triggered whenever {@code secretNameInvalid} or
-     * {@code secretValueInvalid} changes.
+     * Triggered whenever `secretNameInvalid` or
+     * `secretValueInvalid` changes.
      */
     useEffect(() => {
         setSubmitShouldBeDisabled(secretNameInvalid || secretValueInvalid);
@@ -209,9 +210,9 @@ const AddSecretWizard: FC<AddSecretWizardProps> = (props: AddSecretWizardProps):
 
     /**
      * Called when wizard Cancel button click and when after a
-     * successful submission of the wizard. {@see onWizardSubmission}
+     * successful submission of the wizard. @see onWizardSubmission.
      *
-     * @param shouldRefreshTheSecretListOnClose {boolean}
+     * @param shouldRefreshTheSecretListOnClose - should refresh the secret list on close or not.
      */
     const onWizardClose = (shouldRefreshTheSecretListOnClose?: boolean): void => {
         if (onClose)
@@ -225,7 +226,7 @@ const AddSecretWizard: FC<AddSecretWizardProps> = (props: AddSecretWizardProps):
      * is a static secret-type supported by the API.
      *
      * @remarks Note that this function is WIP and may change in the future.
-     * @return {Promise<FieldDropDownOption[]>}
+     * @returns Promise of type FieldDropDownOption[].
      */
     const fetchSecretTypes = async (): Promise<FieldDropDownOption[]> => {
         // FIXME: Practically, this should be a API call that fetches all the available
@@ -241,8 +242,10 @@ const AddSecretWizard: FC<AddSecretWizardProps> = (props: AddSecretWizardProps):
     };
 
     /**
-     * Fetches all the secrets for the {@param secretType}.
-     * @param secretType {string}
+     * Fetches all the secrets for the given secret type.
+     *
+     * @param secretType - Type of the secret.
+     * @returns Promise fo type SecretModel[].
      */
     const fetchAllSecretsForSecretType = async (secretType: string): Promise<SecretModel[]> => {
         try {
@@ -281,6 +284,7 @@ const AddSecretWizard: FC<AddSecretWizardProps> = (props: AddSecretWizardProps):
             <Modal.Content className="content-container">
                 { alert && alertComponent }
                 <Form
+                    id={ FORM_ID }
                     ref={ formRef }
                     onSubmit={ onWizardSubmission }
                     uncontrolledForm={ false }
@@ -351,8 +355,8 @@ const AddSecretWizard: FC<AddSecretWizardProps> = (props: AddSecretWizardProps):
                                 type="info"
                                 content={
                                     t("console:develop.features.secrets.banners.secretIsHidden.content",
-                                    { productName: config.ui?.productName }
-                                ) }
+                                        { productName: config.ui?.productName })
+                                }
                             />
                         )
                     }

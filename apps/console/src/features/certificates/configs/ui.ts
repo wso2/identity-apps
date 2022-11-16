@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import {  FunctionComponent, SVGProps } from "react";
 import {
     ReactComponent as CertificateAvatar
 } from "../../../themes/default/assets/images/icons/certificate-avatar.svg";
@@ -27,7 +28,13 @@ import {
 } from "../../../themes/default/assets/images/illustrations/certificate.svg";
 import { ReactComponent as CertificateRibbon } from "../../../themes/default/assets/images/illustrations/ribbon.svg";
 
-export const getCertificateIllustrations = () => {
+export const getCertificateIllustrations = (): {
+    avatar: FunctionComponent<SVGProps<SVGSVGElement>>;
+    badge: FunctionComponent<SVGProps<SVGSVGElement>>;
+    file: FunctionComponent<SVGProps<SVGSVGElement>>;
+    ribbon: FunctionComponent<SVGProps<SVGSVGElement>>;
+    uploadPlaceholder: FunctionComponent<SVGProps<SVGSVGElement>>;
+} => {
 
     return {
         avatar: CertificateAvatar,
@@ -38,7 +45,9 @@ export const getCertificateIllustrations = () => {
     };
 };
 
-export const getImportCertificateWizardStepIcons = () => {
+export const getImportCertificateWizardStepIcons = (): {
+    general: FunctionComponent<SVGProps<SVGSVGElement>> ,
+} => {
 
     return {
         general: DocumentIcon

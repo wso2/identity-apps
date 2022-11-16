@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -23,7 +23,7 @@ import { AnimatedAvatar, AppAvatar, LabelWithPopup, PageLayout, PrimaryButton } 
 import cloneDeep from "lodash-es/cloneDeep";
 import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
+import React, { FunctionComponent, ReactElement, useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
@@ -39,12 +39,12 @@ import {
     setHelpPanelDocsContentURL,
     toggleHelpPanelVisibility
 } from "../../core";
-import { getOrganizations } from "../../organizations/api";
+import { getOrganizations, getSharedOrganizations } from "../../organizations/api";
 import { OrganizationInterface } from "../../organizations/models";
 import { getApplicationDetails } from "../api";
 import { EditApplication, InboundProtocolDefaultFallbackTemplates } from "../components";
 import { ApplicationShareModal } from "../components/modals/application-share-modal";
-import { ApplicationManagementConstants } from "../constants";
+import { ApplicationManagementConstants, ShareWithOrgStatus } from "../constants";
 import CustomApplicationTemplate
     from "../data/application-templates/templates/custom-application/custom-application.json";
 import {
@@ -53,6 +53,7 @@ import {
     ApplicationTemplateListItemInterface,
     State,
     SupportedAuthProtocolTypes,
+    additionalSpProperty,
     emptyApplication
 } from "../models";
 import { ApplicationTemplateManagementUtils } from "../utils";
@@ -66,9 +67,9 @@ interface ApplicationEditPageInterface extends TestableComponentInterface, Route
 /**
  * Application Edit page component.
  *
- * @param {ApplicationEditPageInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns
  */
 const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     props: ApplicationEditPageInterface
@@ -95,6 +96,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         (state: AppState) => state.application.templates);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const tenantDomain: string = useSelector((state: AppState) => state.auth.tenantDomain);
+    const currentOrganization = useSelector((state: AppState) => state.organization.organization);
 
     const [ application, setApplication ] = useState<ApplicationInterface>(emptyApplication);
     const [ applicationTemplate, setApplicationTemplate ] = useState<ApplicationTemplateListItemInterface>(undefined);
@@ -104,6 +106,12 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     const [ isDescTruncated, setIsDescTruncated ] = useState<boolean>(false);
     const [ showAppShareModal, setShowAppShareModal ] = useState(false);
     const [ subOrganizationList, setSubOrganizationList ] = useState<Array<OrganizationInterface>>([]);
+    const [ sharedOrganizationList, setSharedOrganizationList ] = useState<Array<OrganizationInterface>>([]);
+    const [ sharedWithAll, setSharedWithAll ] = useState<ShareWithOrgStatus>(ShareWithOrgStatus.UNDEFINED);
+
+    const isFirstLevelOrg: boolean = useSelector(
+        (state: AppState) => state.organization.isFirstLevelOrganization
+    );
 
     useEffect(() => {
         /**
@@ -126,14 +134,14 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
          * What exactly happens inside this effect?
          *
          * 1st Call -
-         *  React calls this with a {@code null} value for {@link appDescElement}
+         *  React calls this with a `null` value for {@link appDescElement}
          *  (This is expected in useRef())
          *
          * 2nd Call -
          *  React updates the {@link appDescElement} with the target element.
          *  But {@link PageHeader} will immediately unmount it (because there's a request is ongoing).
-         *  When that happens, for "some reason" we always get { offsetWidth, scrollWidth
-         *  and all the related attributes } as zero or null.
+         *  When that happens, for "some reason" we always get \{ offsetWidth, scrollWidth
+         *  and all the related attributes \} as zero or null.
          *
          * 3rd Call -
          *  So, whenever there's some changes to {@link isApplicationRequestLoading}
@@ -142,7 +150,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
          *  will try to render the component we actually pass down the tree)
          *
          *  For more additional context please refer comment:
-         *  {@see https://github.com/wso2/identity-apps/pull/3028#issuecomment-1123847668}
+         *  @see https://github.com/wso2/identity-apps/pull/3028#issuecomment-1123847668
          */
         if (appDescElement || isApplicationRequestLoading) {
             const nativeElement = appDescElement.current;
@@ -212,7 +220,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
              * /t/foo/develop/applications/:id#tab=1 this component will be
              * mounted. But you see this {@link applicationTemplates}?; it is
              * loaded elsewhere. For some reason, requesting the state from
-             * {@link useSelector} always returns {@code undefined} when
+             * {@link useSelector} always returns `undefined` when
              * directly navigating or refreshing the page. Therefore; it hangs
              * without doing anything. It will show a overlay loader but
              * that's it. Nothing happens afterwards.
@@ -254,7 +262,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
          * template if none is present. One caveat is that, if we couldn't
          * find any template from the fallback mapping, we always assign
          * {@link ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC} to it.
-         * Additionally {@see InboundFormFactory}.
+         * Additionally @see InboundFormFactory.
          */
         if (!application?.templateId) {
             if (application.inboundProtocols?.length > 0) {
@@ -305,10 +313,11 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     }, [ applicationTemplate, helpPanelDocStructure ]);
 
     /**
-     * Load the list of sub organizations under the current organization for application sharing.
+     * Load the list of sub organizations under the current organization & list of already shared organizations of the
+     * application for application sharing.
      */
     useEffect(() => {
-        if (!showAppShareModal) {
+        if (!showAppShareModal || !isOrganizationManagementEnabled) {
             return;
         }
 
@@ -321,7 +330,67 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             false
         ).then((response) => {
             setSubOrganizationList(response.organizations);
+        }).catch((error) => {
+            if (error?.description) {
+                dispatch(
+                    addAlert({
+                        description: error.description,
+                        level: AlertLevels.ERROR,
+                        message: t(
+                            "console:manage.features.organizations.notifications." +
+                                "getOrganizationList.error.message"
+                        )
+                    })
+                );
+
+                return;
+            }
+
+            dispatch(
+                addAlert({
+                    description: t(
+                        "console:manage.features.organizations.notifications.getOrganizationList" +
+                            ".genericError.description"
+                    ),
+                    level: AlertLevels.ERROR,
+                    message: t(
+                        "console:manage.features.organizations.notifications." +
+                            "getOrganizationList.genericError.message"
+                    )
+                })
+            );
         });
+
+        getSharedOrganizations(
+            currentOrganization.id,
+            application.id
+        ).then((response) => {
+            setSharedOrganizationList(response.data.organizations);
+        }).catch((error) => {
+            if (error.response.data.description) {
+                dispatch(
+                    addAlert({
+                        description: error.response.data.description,
+                        level: AlertLevels.ERROR,
+                        message: t("console:develop.features.applications.edit.sections.shareApplication" +
+                                ".getSharedOrganizations.genericError.message")
+                    })
+                );
+
+                return;
+            }
+
+            dispatch(
+                addAlert({
+                    description: t("console:develop.features.applications.edit.sections.shareApplication" +
+                            ".getSharedOrganizations.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("console:develop.features.applications.edit.sections.shareApplication" +
+                            ".getSharedOrganizations.genericError.message")
+                })
+            );
+        }
+        );
     }, [ getOrganizations, showAppShareModal ]);
 
     const determineApplicationTemplate = () => {
@@ -340,7 +409,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     /**
      * Retrieves application details from the API.
      *
-     * @param {string} id - Application id.
+     * @param id - Application id.
      */
     const getApplication = (id: string): void => {
         setApplicationRequestLoading(true);
@@ -348,6 +417,21 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         getApplicationDetails(id)
             .then((response: ApplicationInterface) => {
                 setApplication(response);
+
+                const isSharedWithAll: additionalSpProperty[] = response?.advancedConfigurations
+                    ?.additionalSpProperties?.filter((property: additionalSpProperty) =>
+                        property?.name === "shareWithAllChildren"
+                    );
+
+                if (!isSharedWithAll || isSharedWithAll.length === 0) {
+                    setSharedWithAll(ShareWithOrgStatus.UNDEFINED);
+                } else {
+                    setSharedWithAll(
+                        JSON.parse(isSharedWithAll[ 0 ].value)
+                            ? ShareWithOrgStatus.TRUE
+                            : ShareWithOrgStatus.FALSE
+                    );
+                }
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
@@ -390,7 +474,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     /**
      * Called when an application updates.
      *
-     * @param {string} id - Application id.
+     * @param id - Application id.
      */
     const handleApplicationUpdate = (id: string): void => {
         getApplication(id);
@@ -398,7 +482,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
 
     /**
      * Resolves the application status label.
-     * @return {ReactElement}
+     * @returns
      */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const resolveApplicationStatusLabel = (): ReactElement => {
@@ -444,11 +528,15 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         );
     };
 
+    const onApplicationSharingCompleted = useCallback(() => {
+        getApplication(application.id);
+    }, [ getApplication, application ]);
+
     /**
      * Returns if the application is readonly or not by evaluating the `readOnly` attribute in
      * URL, the `access` attribute in application info response && the scope validation.
      *
-     * @return {boolean} If an application is Read Only or not.
+     * @returns If an application is Read Only or not.
      */
     const resolveReadOnlyState = (): boolean => {
 
@@ -529,10 +617,14 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                     {
                         (isOrganizationManagementEnabled
                             && applicationConfig.editApplication.showApplicationShare
-                            && !application.advancedConfigurations.fragment
-                            && application.access === ApplicationAccessTypes.WRITE) && (
+                            && !application.advancedConfigurations?.fragment
+                            && application.access === ApplicationAccessTypes.WRITE
+                            && (isFirstLevelOrg || window[ "AppUtils" ].getConfig().organizationName)
+                            && hasRequiredScopes(featureConfig?.applications,
+                                featureConfig?.applications?.scopes?.update, allowedScopes)) && (
                             <PrimaryButton onClick={ () => setShowAppShareModal(true) }>
-                                Share Application
+                                { t("console:develop.features.applications.edit.sections" +
+                                    ".shareApplication.shareApplication") }
                             </PrimaryButton>
                         )
                     }
@@ -564,7 +656,10 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                     applicationId={ application.id }
                     clientId={ inboundProtocolConfigs?.oidc?.clientId }
                     subOrganizationList={ subOrganizationList }
+                    sharedOrganizationList={ sharedOrganizationList }
                     onClose={ () => setShowAppShareModal(false) }
+                    onApplicationSharingCompleted={ onApplicationSharingCompleted }
+                    isSharedWithAll={ sharedWithAll }
                 />
             ) }
         </PageLayout>

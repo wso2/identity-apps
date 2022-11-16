@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -73,9 +73,8 @@ interface EditMultiFactorAuthenticatorPropsInterface extends TestableComponentIn
 /**
  * Identity Provider edit component.
  *
- * @param {EditIdentityProviderPropsInterface} props - Props injected to the component.
- *
- * @return {ReactElement}
+ * @param props - Props injected to the component.
+ * @returns Functional Component
  */
 export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuthenticatorPropsInterface> = (
     props: EditMultiFactorAuthenticatorPropsInterface
@@ -134,7 +133,7 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
 
     /**
      * Handles authenticator configurations submit action.
-     * @param {MultiFactorAuthenticatorInterface} values - Form values.
+     * @param values - Form values.
      */
     const handleAuthenticatorConfigFormSubmit = (values: MultiFactorAuthenticatorInterface): void => {
         setIsSubmitting(true);
@@ -180,7 +179,7 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
 
     /**
      * Authenticator settings tab content.
-     * @return {React.ReactElement}
+     * @returns Functional Component
      */
     const AuthenticatorSettingsTabPane = (): ReactElement => (
         <ResourceTab.Pane controlledSegmentation>
@@ -216,7 +215,7 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
 
     /**
      * Get Tab panes.
-     * @return {{pane?: SemanticShorthandItem<TabPaneProps>; menuItem?: any; render?: () => React.ReactNode}[]}
+     * @returns Tab panes as an array
      */
     const getPanes = (): ({
         pane?: SemanticShorthandItem<TabPaneProps>;
@@ -266,14 +265,32 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
             });
         }
 
+        // If the MFA is SMS OTP, add the SMS Provider tab.
+        if (authenticator.id === IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID) {
+            panes.push({
+                menuItem: (
+                    <Menu.Item disabled key="messages" className="upcoming-item">
+                        <Trans
+                            i18nKey={
+                                "console:develop.features.authenticationProvider.edit.smsOTP.smsProvider.tabName"
+                            }
+                        >
+                            SMS Provider <span className="coming-soon-label">(Coming Soon)</span>
+                        </Trans>
+                    </Menu.Item>
+                ),
+                render: null
+            });
+        }
+
         return panes;
     };
 
     /**
      * Resolves the active index of the tabs.
      *
-     * @param {number} activeIndex - Active index of the tabs.
-     * @return {number}
+     * @param activeIndex - Active index of the tabs.
+     * @returns Active index as a number
      */
     const resolveDefaultActiveIndex = (activeIndex: number): number => {
 

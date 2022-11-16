@@ -1,10 +1,13 @@
 {
+    "extends": "../../tsconfig.base.react.json",
     "compilerOptions": {
         "declaration": true,
         "declarationDir": "dist/types",
         "experimentalDecorators": true,
+        "jsx": "react",
         "outDir": "dist/src",
         "rootDir": "src",
+        "resolveJsonModule": true,
         "types": [ "node", "jest" ]
     },
     "exclude": [
@@ -25,6 +28,5 @@
         "**/*.spec.jsx",
         "**/*.spec.ts",
         "**/*.spec.tsx"
-    ],
-    "extends": "../../configs/common.tsconfig.json"
+    ]
 }

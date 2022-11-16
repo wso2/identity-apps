@@ -242,7 +242,7 @@
 <!doctype html>
 <html>
 <head>
-    <!-- header -->
+    <%-- header --%>
     <%
         File headerFile = new File(getServletContext().getRealPath("extensions/header.jsp"));
         if (headerFile.exists()) {
@@ -265,7 +265,7 @@
 <body class="login-portal layout recovery-layout">
     <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
         <layout:component componentName="ProductHeader" >
-            <!-- product-title -->
+            <%-- product-title --%>
             <%
                 File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
                 if (productTitleFile.exists()) {
@@ -282,7 +282,7 @@
                     <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Create.account")%>
                 </h2>
                 <div class="ui divider hidden"></div>
-                <!-- content -->
+                <%-- content --%>
                 <div class="segment-form">
                     <% if (skipSignUpEnableCheck) { %>
                     <form class="ui large form" action="../commonauth" method="post" id="register">
@@ -307,7 +307,7 @@
                                 </p>
                             </div>
                             <div class="ui divider hidden"></div>
-                            <!-- validation -->
+                            <%-- validation --%>
                             <div>
                                 <div id="regFormError" class="ui negative message" style="display:none"></div>
                                 <div id="regFormSuc" class="ui positive message" style="display:none"></div>
@@ -562,19 +562,19 @@
                                     <%
                                         if (consentDisplayType == "template") {
                                     %>
-                                    <!--User Consents from Template-->
+                                    <%--User Consents from Template--%>
                                         <div class="consent-statement"></div>
-                                    <!--End User Consents from Template-->
+                                    <%--End User Consents from Template--%>
                                     <% } else if (consentDisplayType == "tree") { %>
-                                    <!--User Consents Tree-->
+                                    <%--User Consents Tree--%>
                                         <div id="tree-table"></div>
-                                    <!--End User Consents Tree-->
+                                    <%--End User Consents Tree--%>
                                     <%
                                     } else if (consentDisplayType == "row") {
                                     %>
-                                    <!--User Consents Row-->
+                                    <%--User Consents Row--%>
                                         <div id="row-container"></div>
-                                    <!--End User Consents Row-->
+                                    <%--End User Consents Row--%>
                                     <%
                                         }
                                     %>
@@ -602,7 +602,7 @@
                                 %>
                                 <div class="ui divider hidden"></div>
                                 <div>
-                                    <!--Cookie Policy-->
+                                    <%--Cookie Policy--%>
                                     <div class="ui message info compact" role="alert">
                                         <div>
                                             <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
@@ -614,11 +614,11 @@
                                             <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "For.more.details")%>
                                         </div>
                                     </div>
-                                    <!--End Cookie Policy-->
+                                    <%--End Cookie Policy--%>
                                 </div>
                                 <div class="ui divider hidden"></div>
                                 <div>
-                                    <!--Terms/Privacy Policy-->
+                                    <%--Terms/Privacy Policy--%>
                                     <div class="required field">
                                         <div class="ui checkbox">
                                             <input id="termsCheckbox" type="checkbox"/>
@@ -629,7 +629,7 @@
                                                 </a></label>
                                         </div>
                                     </div>
-                                    <!--End Terms/Privacy Policy-->
+                                    <%--End Terms/Privacy Policy--%>
                                 </div>
                                 <div class="ui divider hidden"></div>
                                 <div class="align-right buttons">
@@ -672,7 +672,7 @@
             </div>
         </layout:component>
         <layout:component componentName="ProductFooter" >
-            <!-- product-footer -->
+            <%-- product-footer --%>
             <%
                 File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
                 if (productFooterFile.exists()) {
@@ -684,7 +684,7 @@
         </layout:component>
     </layout:main>
 
-    <!-- footer -->
+    <%-- footer --%>
     <%
         File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
         if (footerFile.exists()) {

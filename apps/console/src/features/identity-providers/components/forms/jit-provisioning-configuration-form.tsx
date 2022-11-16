@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -23,11 +23,9 @@ import { Code, DocumentationLink, Hint, Message, useDocumentation } from "@wso2i
 import classNames from "classnames";
 import React, { Fragment, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
 import { Button, Grid } from "semantic-ui-react";
 import { identityProviderConfig } from "../../../../extensions";
-import { SimpleUserStoreListItemInterface } from "../../../applications";
-import { AppState, ConfigReducerStateInterface } from "../../../core";
+import { SimpleUserStoreListItemInterface } from "../../../applications/models";
 import {
     IdentityProviderInterface,
     JITProvisioningResponseInterface,
@@ -52,14 +50,15 @@ interface JITProvisioningConfigurationFormPropsInterface extends TestableCompone
 enum JITProvisioningConstants {
     ENABLE_JIT_PROVISIONING_KEY = "enableJITProvisioning",
     PROVISIONING_USER_STORE_DOMAIN_KEY = "provisioningUserstoreDomain",
-    PROVISIONING_SCHEME_TYPE_KEY = "provisioningScheme"
+    PROVISIONING_SCHEME_TYPE_KEY = "provisioningScheme",
+    ASSOCIATE_LOCAL_USER = "associateLocalUser"
 }
 
 /**
  * Just-in time Provisioning configurations form component.
  *
- * @param {JITProvisioningConfigurationFormPropsInterface} props - Props injected to the component.
- * @return {ReactElement}
+ * @param props - Props injected to the component.
+ * @returns
  */
 export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisioningConfigurationFormPropsInterface> = (
     props: JITProvisioningConfigurationFormPropsInterface
@@ -77,18 +76,18 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
 
-    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
-
     const [ isJITProvisioningEnabled, setIsJITProvisioningEnabled ] = useState<boolean>(false);
 
     /**
      * Prepare form values for submitting.
      *
      * @param values - Form values.
-     * @return {any} Sanitized form values.
+     * @returns
      */
     const updateConfiguration = (values: any): any => {
         return {
+            associateLocalUser: values.get(JITProvisioningConstants.ASSOCIATE_LOCAL_USER)
+                ?.includes(JITProvisioningConstants.ASSOCIATE_LOCAL_USER) ?? initialValues?.associateLocalUser,
             isEnabled: values.get(
                 JITProvisioningConstants.ENABLE_JIT_PROVISIONING_KEY
             ).includes(JITProvisioningConstants.ENABLE_JIT_PROVISIONING_KEY) ?? initialValues?.isEnabled,
@@ -180,47 +179,78 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
             <Grid>
                 {
                     identityProviderConfig?.jitProvisioningSettings?.enableJitProvisioningField?.show
-                        ? (
-                            <Grid.Row columns={ 1 }>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 7 }>
-                                    <Field
-                                        name={ JITProvisioningConstants.ENABLE_JIT_PROVISIONING_KEY }
-                                        label=""
-                                        required={ false }
-                                        requiredErrorMessage=""
-                                        value={
-                                            initialValues?.isEnabled
-                                                ? [ JITProvisioningConstants.ENABLE_JIT_PROVISIONING_KEY ]
-                                                : []
-                                        }
-                                        type="checkbox"
-                                        listen={ (values) => {
-                                            setIsJITProvisioningEnabled(
-                                                values
-                                                    .get(JITProvisioningConstants.ENABLE_JIT_PROVISIONING_KEY)
-                                                    .includes(JITProvisioningConstants.ENABLE_JIT_PROVISIONING_KEY)
-                                            );
-                                        } }
-                                        children={ [ {
-                                            label: t("console:develop.features.authenticationProvider.forms." +
-                                                "jitProvisioning.enableJITProvisioning.label"),
-                                            value: JITProvisioningConstants.ENABLE_JIT_PROVISIONING_KEY
-                                        } ] }
-                                        data-testid={ `${ testId }-is-enable` }
-                                        readOnly={ isReadOnly }
-                                    />
-                                    <Hint>
-                                        When enabled, users who log in with this identity provider will be
-                                        provisioned to your organization.
-                                    </Hint>
-                                    { !isJITProvisioningEnabled
-                                        ? ProxyModeConflictMessage
-                                        : <Fragment/>
+                    && (
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 7 }>
+                                <Field
+                                    name={ JITProvisioningConstants.ENABLE_JIT_PROVISIONING_KEY }
+                                    label=""
+                                    required={ false }
+                                    requiredErrorMessage=""
+                                    value={
+                                        initialValues?.isEnabled
+                                            ? [ JITProvisioningConstants.ENABLE_JIT_PROVISIONING_KEY ]
+                                            : []
                                     }
-                                </Grid.Column>
-                            </Grid.Row>
-                        )
-                        : <Fragment/>
+                                    type="checkbox"
+                                    listen={ (values) => {
+                                        setIsJITProvisioningEnabled(
+                                            values
+                                                .get(JITProvisioningConstants.ENABLE_JIT_PROVISIONING_KEY)
+                                                .includes(JITProvisioningConstants.ENABLE_JIT_PROVISIONING_KEY)
+                                        );
+                                    } }
+                                    children={ [ {
+                                        label: t("console:develop.features.authenticationProvider.forms." +
+                                            "jitProvisioning.enableJITProvisioning.label"),
+                                        value: JITProvisioningConstants.ENABLE_JIT_PROVISIONING_KEY
+                                    } ] }
+                                    data-testid={ `${ testId }-is-enable` }
+                                    readOnly={ isReadOnly }
+                                />
+                                <Hint>
+                                    When enabled, users who log in with this identity provider will be
+                                    provisioned to your organization.
+                                </Hint>
+                                { !isJITProvisioningEnabled
+                                    ? ProxyModeConflictMessage
+                                    : <Fragment />
+                                }
+                            </Grid.Column>
+                        </Grid.Row>
+                    )
+                }
+                {
+                    identityProviderConfig?.jitProvisioningSettings?.enableAssociateLocalUserField?.show &&
+                    isJITProvisioningEnabled && (
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 7 }>
+                                <Field
+                                    name={ JITProvisioningConstants.ASSOCIATE_LOCAL_USER }
+                                    label=""
+                                    required={ false }
+                                    requiredErrorMessage=""
+                                    value={
+                                        initialValues?.associateLocalUser
+                                            ? [ JITProvisioningConstants.ASSOCIATE_LOCAL_USER ]
+                                            : []
+                                    }
+                                    type="checkbox"
+                                    children={ [ {
+                                        label: t("console:develop.features.authenticationProvider.forms." +
+                                            "jitProvisioning.associateLocalUser.label"),
+                                        value: JITProvisioningConstants.ASSOCIATE_LOCAL_USER
+                                    } ] }
+                                    data-testid={ `${ testId }-is-enable` }
+                                    readOnly={ isReadOnly }
+                                />
+                                <Hint>
+                                    { t("console:develop.features.authenticationProvider.forms." +
+                                        "jitProvisioning.associateLocalUser.hint") }
+                                </Hint>
+                            </Grid.Column>
+                        </Grid.Row>
+                    )
                 }
                 {
                     identityProviderConfig?.jitProvisioningSettings?.userstoreDomainField?.show
@@ -252,7 +282,7 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                                 </Grid.Column>
                             </Grid.Row>
                         )
-                        : <Fragment/>
+                        : <Fragment />
                 }
                 {
                     identityProviderConfig?.jitProvisioningSettings?.provisioningSchemeField?.show
@@ -285,7 +315,7 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                                 </Grid.Column>
                             </Grid.Row>
                         )
-                        : <Fragment/>
+                        : <Fragment />
                 }
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 7 }>

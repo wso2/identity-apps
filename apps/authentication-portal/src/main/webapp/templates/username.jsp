@@ -39,9 +39,9 @@
 <div class="boarder-all ">
     <div class="clearfix"></div>
     <div class="padding-double login-form">
-        
+
         <form action="<%=commonauthURL%>" method="POST">
-    
+
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group required">
                 <label for="username" class="control-label"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "username")%></label>
                 <input type="text" id="username" name="username" class="form-control" tabindex="0" placeholder="" required>
@@ -64,19 +64,19 @@
                 Boolean isRecoveryEPAvailable;
                 Boolean isSelfSignUpEPAvailable;
                 String encodedUrlParameters = "";
-        
+
                 if (StringUtils.isNotBlank(recoveryEPAvailable)) {
                     isRecoveryEPAvailable = Boolean.valueOf(recoveryEPAvailable);
                 } else {
                     isRecoveryEPAvailable = isRecoveryEPAvailable();
                 }
-        
+
                 if (StringUtils.isNotBlank(enableSelfSignUpEndpoint)) {
                     isSelfSignUpEPAvailable = Boolean.valueOf(enableSelfSignUpEndpoint);
                 } else {
                     isSelfSignUpEPAvailable = isSelfSignUpEPAvailable();
                 }
-        
+
                 if (isRecoveryEPAvailable || isSelfSignUpEPAvailable) {
                     String scheme = request.getScheme();
                     String serverName = request.getServerName();
@@ -84,7 +84,7 @@
                     String urlWithoutEncoding = request.getRequestURL().append("?").append(request.getQueryString()).toString();
                     String urlEncodedURL = URLEncoder.encode(urlWithoutEncoding, UTF_8);
                     String encodedUrlParameters = prmstr;
-            
+
                     String identityMgtEndpointContext =
                             application.getInitParameter("IdentityManagementEndpointContextURL");
                     if (StringUtils.isBlank(identityMgtEndpointContext)) {
@@ -95,7 +95,7 @@
                     if (StringUtils.isBlank(accountRegistrationEndpointURL)) {
                         accountRegistrationEndpointURL = identityMgtEndpointContext + "/register.do";
                     }
-            
+
                     if (isRecoveryEPAvailable) {
             %>
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group">
@@ -124,7 +124,7 @@
                 }
             %>
         </form>
-        
+
         <div class="clearfix"></div>
     </div>
 </div>
@@ -137,4 +137,4 @@
         return accountRegistrationEndpointURL + "?callback=" + Encode.forHtmlAttribute(urlEncodedURL);
     }
 %>
-<!-- /content -->
+<%-- /content --%>

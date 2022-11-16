@@ -16,7 +16,6 @@
 * under the License.
 */
 
-import { getProfileSchemas, getUserStoreList } from "@wso2is/core/api";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, Claim, ProfileSchemaInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert, setProfileSchemaRequestLoadingStatus, setSCIMSchemas } from "@wso2is/core/store";
@@ -27,11 +26,12 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
-import { UserStoreListItem } from "../../../../features/userstores";
+import { UserStoreListItem } from "../../../userstores/models";
 import { attributeConfig } from "../../../../extensions";
-import { AppState, EventPublisher, store } from "../../../core";
+import { AppState, EventPublisher } from "../../../core";
 import { AppConstants } from "../../../core/constants";
 import { history } from "../../../core/helpers";
+import { getProfileSchemas } from "../../../users/api";
 import { addDialect, addExternalClaim, addLocalClaim } from "../../api";
 import { getAddLocalClaimWizardStepIcons } from "../../configs";
 import { ClaimManagementConstants } from "../../constants";
@@ -243,7 +243,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
     const fetchUpdatedSchemaList = (): void => {
         dispatch(setProfileSchemaRequestLoadingStatus(true));
 
-        getProfileSchemas(store.getState().config.endpoint?.schemas)
+        getProfileSchemas()
             .then((response: ProfileSchemaInterface[]) => {
                 dispatch(setSCIMSchemas<ProfileSchemaInterface[]>(response));
             })

@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,7 +19,7 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { GenericIcon } from "@wso2is/react-components";
 import QRCode from "qrcode.react";
-import React, { PropsWithChildren, SyntheticEvent, useEffect, useRef, useState } from "react";
+import React, { FormEvent, PropsWithChildren, SyntheticEvent, useEffect, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import {
@@ -46,6 +46,7 @@ import {
     validateTOTPCode
 } from "../../../api";
 import { getMFAIcons } from "../../../configs";
+import { commonConfig } from "../../../extensions";
 import {
     AlertInterface,
     AlertLevels,
@@ -64,13 +65,18 @@ interface TOTPProps extends TestableComponentInterface {
     enabledAuthenticators: Array<string>;
     onEnabledAuthenticatorsUpdated: (updatedAuthenticators: Array<string>) => void;
     triggerBackupCodesFlow: () => void;
+    /**
+     * This callback function handles the visibility of the
+     * session termination modal.
+     */
+     handleSessionTerminationModalVisibility: (visibility: boolean) => void;
 }
 
 /**
  * TOTP Authenticator.
  *
- * @param {React.PropsWithChildren<TOTPProps>} props - Props injected to the component.
- * @return {React.ReactElement}
+ * @param props - Props injected to the component.
+ * @returns React element.
  */
 export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     props: PropsWithChildren<TOTPProps>
@@ -82,14 +88,15 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
         onEnabledAuthenticatorsUpdated,
         onAlertFired,
         triggerBackupCodesFlow,
+        handleSessionTerminationModalVisibility,
         ["data-testid"]: testId
     } = props;
 
     const { t } = useTranslation();
 
     const translateKey = "myAccount:components.mfa.authenticatorApp.";
-    const totpAuthenticatorName = "TOTP";
-    const backupCodeAuthenticatorName = "Backup Code Authenticator";
+    const totpAuthenticatorName = "totp";
+    const backupCodeAuthenticatorName = "backup-code-authenticator";
 
     const enableMFAUserWise: boolean = useSelector((state: AppState) => state?.config?.ui?.enableMFAUserWise);
     const shouldContinueToBackupCodes: boolean = isSuperTenantLogin && isBackupCodeForced;
@@ -104,6 +111,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     const [ isRevokeTOTPModalOpen, setIsRevokeTOTPModalOpen ] = useState<boolean>(false);
     const [ isViewTOTPModalOpen, setIsViewTOTPModalOpen ] = useState<boolean>(false);
     const [ viewTOTPModalCurrentStep, setViewTOTPModalCurrentStep ] = useState<number>(0);
+    const [ isConfirmRegenerate, setIsConfirmRegenerate ] = useState<boolean>(false);
     
     const pinCode1 = useRef<HTMLInputElement>();
     const pinCode2 = useRef<HTMLInputElement>();
@@ -113,7 +121,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     const pinCode6 = useRef<HTMLInputElement>();
 
     /**
-     * Check whether the TOTP is configured
+     * Check whether the TOTP is configured.
      */
     useEffect(() => {        
         checkIfTOTPEnabled().then((response) => {
@@ -122,7 +130,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     }, []);
 
     /**
-     * Check whether the TOTP is enabled
+     * Check whether the TOTP is enabled.
      */
     useEffect(() => {         
         setIsTOTPEnabled(enabledAuthenticators?.includes(totpAuthenticatorName) ?? false);
@@ -130,7 +138,8 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
 
     /**
      * Focus to next pin code after enter a value.
-     * @param {string} field The name of the field.
+     * 
+     * @param field - The name of the field.
      */
     const focusInToNextPinCode = (field: string): void => {
         switch (field) {
@@ -159,7 +168,8 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
 
     /**
      * Focus to previous pin code after enter Backspace or Delete.
-     * @param {string} field The name of the field.
+     * 
+     * @param field - The name of the field.
      */
     const focusInToPreviousPinCode = (field: string): void => {
         switch (field) {
@@ -187,7 +197,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     };
 
     /**
-     * Reset pin code value in Error state
+     * Reset pin code value in Error state.
      */
     const resetPinCodeFields = () => {
         if (pinCode1.current) {
@@ -203,7 +213,8 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
 
     /**
      * Update enabled authenticator list based on the update action.
-     * @param action The update action.
+     * 
+     * @param action - The update action.
      */
     const handleUpdateEnabledAuthenticators = (action: EnabledAuthenticatorUpdateAction): void => {
         const authenticatorsList: Array<string> = [ ...enabledAuthenticators ];
@@ -253,7 +264,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     };
 
     /**
-     * Initiate the TOTP configuration flow
+     * Initiate the TOTP configuration flow.
      */
     const initTOTPFlow = () => {
         setIsLoading(true);
@@ -282,7 +293,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     };
 
     /**
-     * Handle cancelling TOTP configuration flow
+     * Handle cancelling TOTP configuration flow.
      */
     const handleTOTPInitCancel = () => {
         deleteTOTP()
@@ -304,9 +315,10 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     };
 
     /**
-     * Handle TOTP submit flow
-     * @param event Form submit event
-     * @param isRegenerated Whether the TOTP is regenerated or not
+     * Handle TOTP submit flow.
+     * 
+     * @param event - Form submit event.
+     * @param isRegenerated - Whether the TOTP is regenerated or not.
      */
     const handleTOTPSubmit = (event: React.FormEvent<HTMLFormElement>, isRegenerated: boolean = false): void => {
         let verificationCode: string =  event.target[0].value;
@@ -336,9 +348,10 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     };
 
     /**
-     * Handle TOTP enable/disable flow
-     * @param {SyntheticEvent} _ Radio button toggle event
-     * @param {CheckboxProps} data Data related to the toggle event
+     * Handle TOTP enable/disable flow.
+     * 
+     * @param _ - Radio button toggle event.
+     * @param data - Data related to the toggle event.
      */
     const handleTOTPToggle = (_: SyntheticEvent, data: CheckboxProps): void => {
         if (data.checked) {
@@ -349,9 +362,10 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     };
 
     /**
-     * Render TOTP form to shown in TOTP modal
-     * @param {boolean} isRegenerated Whether the TOTP is regenerated or not
-     * @returns {React.ReactElement} Rendered form component
+     * Render TOTP form to shown in TOTP modal.
+     * 
+     * @param isRegenerated - Whether the TOTP is regenerated or not.
+     * @returns Rendered form component.
      */
     const renderTOTPVerifyForm = (isRegenerated: boolean = false): React.ReactElement => {
         return (
@@ -532,8 +546,9 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     };
 
     /**
-     * Render TOTP configuration modal content
-     * @returns Modal content based on {TOTPModalCurrentStep}
+     * Render TOTP configuration modal content.
+     * 
+     * @returns Modal content based on TOTPModalCurrentStep.
      */
     const renderTOTPWizardContent = (): React.ReactElement => {
         if (TOTPModalCurrentStep === 0) {
@@ -581,8 +596,9 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     };
 
     /**
-     * Render TOTP configuration modal actions
-     * @returns Modal action based on {TOTPModalCurrentStep}
+     * Render TOTP configuration modal actions.
+     * 
+     * @returns Modal action based on TOTPModalCurrentStep.
      */
     const renderTOTPWizardActions = (): React.ReactElement => {
         if (TOTPModalCurrentStep === 0) {
@@ -623,6 +639,8 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                     if (shouldContinueToBackupCodes) {
                         triggerBackupCodesFlow();
                     }
+
+                    handleSessionTerminationModalVisibility(true);
                 } }
             >
                 { shouldContinueToBackupCodes ? t("common:continue") : t("common:done") }
@@ -631,7 +649,8 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     };
 
     /**
-     * Renders the TOTP configuration Modal
+     * Renders the TOTP configuration Modal.
+     * 
      * @returns Rendered modal component
      */
     const renderTOTPWizard = (): React.ReactElement => {
@@ -658,7 +677,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     };
 
     /**
-     * Handle view TOTP event
+     * Handle view TOTP event.
      */
     const handleViewTOTP = (): void => {
         setIsLoading(true);
@@ -684,7 +703,14 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     };
 
     /**
-     * Handle regenerate QR code event
+     * Handle confirm QR code regeneration checkbox event.
+     */
+    const handleConfirmRegenerateQRCode = (_: FormEvent<HTMLInputElement>, data: CheckboxProps): void => {
+        setIsConfirmRegenerate(data.checked ?? false);
+    };
+
+    /**
+     * Handle regenerate QR code event.
      */
     const handleRegenerateQRCode = (): void => {
         setIsLoading(true);
@@ -710,8 +736,9 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     };
 
     /**
+     * Renders modal content.
      * 
-     * @returns Modal content based on viewTOTPModalCurrentStep
+     * @returns Modal content based on viewTOTPModalCurrentStep.
      */
     const renderViewTOTPWizardContent = (): React.ReactElement => {
         switch (viewTOTPModalCurrentStep) {
@@ -729,9 +756,21 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                             <Message className="display-flex" size="small" warning>
                                 <Icon name="warning sign" color="orange" corner />
                                 <Message.Content className="tiny">
-                                    { t(translateKey + "modals.scan.regenerateWarning") }
+                                    { t(commonConfig.accountSecurityPage.mfa.totp.regenerateWarning) }
                                 </Message.Content>
                             </Message>
+                            {
+                                commonConfig.accountSecurityPage.mfa.totp.showRegenerateConfirmation
+                                    ? (
+                                        <Checkbox
+                                            className="mb-2"
+                                            label={ t(translateKey + "modals.scan.regenerateConfirmLabel") }
+                                            checked={ isConfirmRegenerate }
+                                            onChange={ handleConfirmRegenerateQRCode }
+                                            data-componentid={ `${ testId }-regenerate-assertion-checkbox` }
+                                        />
+                                    ) : null
+                            }
                             <div className = "totp-verify-step-btn">
                                 <Grid.Row columns={ 1 }>
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
@@ -740,7 +779,11 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                                             type="button"
                                             className=" totp-verify-action-button"
                                             onClick={ handleRegenerateQRCode }
-                                            disabled= { isLoading }
+                                            disabled= { 
+                                                isLoading 
+                                                || (commonConfig.accountSecurityPage
+                                                    .mfa.totp.showRegenerateConfirmation && !isConfirmRegenerate) 
+                                            }
                                             data-testid={ `${ testId }-view-modal-actions-primary-button` }
                                         >
                                             { t(translateKey + "regenerate") }
@@ -753,7 +796,10 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                         <Button
                                             type="button"
-                                            onClick={ () => setIsViewTOTPModalOpen(false) }
+                                            onClick={ () => {
+                                                setIsConfirmRegenerate(false);
+                                                setIsViewTOTPModalOpen(false);
+                                            } }
                                             className="link-button totp-verify-action-button"
                                             data-testid={ `${ testId }-view-modal-actions-cancel-button` }>
                                             { t("common:cancel") }
@@ -839,8 +885,10 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                 className = "totp-verify-done-button"
                 data-testid={ `${ testId }-modal-actions-primary-button` }
                 onClick= { () => {
+                    setIsConfirmRegenerate(false);
                     setIsViewTOTPModalOpen(false);
                     setViewTOTPModalCurrentStep(0);
+                    handleSessionTerminationModalVisibility(true);
                 } }
             >
                 { t("common:done") }
@@ -849,7 +897,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     };
 
     /**
-     * Renders the TOTP wizard
+     * Renders the TOTP wizard.
      */
     const renderViewTOTPWizard = (): React.ReactElement => {
         return (
@@ -883,7 +931,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                 setIsTOTPConfigured(false);
                 handleUpdateEnabledAuthenticators(EnabledAuthenticatorUpdateAction.REMOVE);
 
-                // Deletes backup codes
+                // Deletes backup codes.
                 if (shouldContinueToBackupCodes) {
                     deleteBackupCode()
                         .then(() => {
@@ -892,6 +940,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                                 level: AlertLevels.SUCCESS,
                                 message: t(translateKey + "notifications.deleteSuccess.genericMessage")
                             });
+                            handleSessionTerminationModalVisibility(true);
                         })
                         .catch((errorMessage) => {
                             onAlertFired({
@@ -908,6 +957,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                         level: AlertLevels.SUCCESS,
                         message: t(translateKey + "notifications.deleteSuccess.genericMessage")
                     });
+                    handleSessionTerminationModalVisibility(true);
                 }
             })
             .catch((errorMessage) => {
@@ -932,7 +982,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     };
 
     /**
-     * This renders the TOTP Authenticator delete Modal
+     * This renders the TOTP Authenticator delete Modal.
      */
     const renderRevokeTOTPModal = () => {
         return (

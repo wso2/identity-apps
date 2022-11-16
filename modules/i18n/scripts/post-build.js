@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -57,7 +57,7 @@ if (!fs.existsSync(dist) || !fs.existsSync(translationsPath)) {
 // If the bundle folder exists, clean it first.
 if (fs.existsSync(outputPath)) {
     log("\nBundle already exists. Cleaning it first......");
-    execSync("npm run clean:bundle");
+    execSync("pnpm clean:bundle");
 }
 
 // Create the output directory if it doesn't exist.
@@ -139,7 +139,7 @@ log("\nSuccessfully generated the locale bundle.");
 
 log("\nRunning cleanup task......");
 
-execSync("npm run clean:translations");
+execSync("pnpm clean:translations");
 
 log("\nClean up task finished successfully......");
 

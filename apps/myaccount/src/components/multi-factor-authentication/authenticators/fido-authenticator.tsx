@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -45,10 +45,6 @@ import { EditSection, ModalComponent } from "../../shared";
 
 /**
  * FIDO key.
- *
- * @constant
- * @default
- * @type {string}
  */
 const FIDO = "fido-";
 
@@ -58,17 +54,20 @@ const FIDO = "fido-";
  */
 interface FIDOAuthenticatorProps extends TestableComponentInterface {
     onAlertFired: (alert: AlertInterface) => void;
+    /**
+     * This callback function handles the visibility of the
+     * session termination modal.
+     */
+     handleSessionTerminationModalVisibility: (visibility: boolean) => void;
 }
 
 /**
  * FIDO section.
- *
- * @return {JSX.Element}
  */
 export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> = (
     props: FIDOAuthenticatorProps
 ): JSX.Element => {
-    const { onAlertFired, [ "data-testid" ]: testId } = props;
+    const { onAlertFired, handleSessionTerminationModalVisibility, [ "data-testid" ]: testId } = props;
     const { t } = useTranslation();
     const [ deviceList, setDeviceList ] = useState<FIDODevice[]>([]);
     const [ isDeviceErrorModalVisible, setDeviceErrorModalVisibility ] = useState(false);
@@ -271,7 +270,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
 
     /**
      * Closes the edit form of the concerned FIDO device.
-     * @param id
+     * @param id - ID of the FIDO device.
      */
     const cancelEdit = (id: string) => {
         const tempEditFido: Map<string, boolean> = new Map(editFIDO);
@@ -288,6 +287,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                 getFidoMetaData();
                 setDeleteKey("");
                 fireDeletionSuccessNotification();
+                handleSessionTerminationModalVisibility(true);
             })
             .catch((error) => {
                 fireDeletionFailureNotification(error);
@@ -317,6 +317,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                     handleDeviceSuccessModalClose();
                     cancelEdit(id);
                     fireDeviceNameUpdateSuccessNotification();
+                    handleSessionTerminationModalVisibility(true);
                 })
                 .catch((error) => {
                     fireDeviceNameUpdateFailureNotification(error);
@@ -329,7 +330,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
     /**
      * This is the `onChange` handler of the device-name textbox that is displayed
      * in the modal following successful registration of a device.
-     * @param event
+     * @param event - onChange event of the input field.
      */
     const handleDeviceNameChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
         setRecentFIDOName(event.target.value);
@@ -346,7 +347,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
 
     /**
      * Shows the edit form for the clicked FIDO device
-     * @param id
+     * @param id - ID of the FIDO device.
      */
     const showEdit = (id: string) => {
         const tempEditFido: Map<string, boolean> = new Map(editFIDO);
@@ -359,7 +360,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
     /**
      * This methods generates and returns the delete confirmation modal.
      *
-     * @returns {ReactElement} Generates the delete confirmation modal.
+     * @returns ReactElement Generates the delete confirmation modal.
      */
     const generateDeleteConfirmationModal = (): ReactElement => (
         <ConfirmationModal
@@ -391,8 +392,6 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
 
     /**
      * Device registration error modal.
-     *
-     * @return {JSX.Element}
      */
     const deviceErrorModal = (): JSX.Element => {
         return (

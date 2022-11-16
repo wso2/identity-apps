@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,13 +19,14 @@
 import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import kebabCase from "lodash-es/kebabCase";
 import React, { FunctionComponent, ReactElement } from "react";
-import { Divider, Grid, GridColumn, HeaderProps, Responsive, SemanticWIDTHS } from "semantic-ui-react";
+import { Divider, Grid, GridColumn, HeaderProps, SemanticWIDTHS } from "semantic-ui-react";
 import { StatCountCard, StatCountCardPropsInterface } from "../card";
+import { Media } from "../media";
 import { Heading } from "../typography";
 
 /**
  *
- * Proptypes for the statistics overview widget.
+ * Prop-types for the statistics overview widget.
  */
 interface StatsOverviewWidgetPropsInterface extends IdentifiableComponentInterface, TestableComponentInterface {
     /**
@@ -57,9 +58,9 @@ interface StatsOverviewWidgetPropsInterface extends IdentifiableComponentInterfa
 /**
  * Statistics overview widget.
  *
- * @param {StatsOverviewWidgetPropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns Stats Overview Widget.
  */
 export const StatsOverviewWidget: FunctionComponent<StatsOverviewWidgetPropsInterface> = (
     props: StatsOverviewWidgetPropsInterface
@@ -153,23 +154,23 @@ export const StatsOverviewWidget: FunctionComponent<StatsOverviewWidgetPropsInte
                                 {
                                     stats.map((stat, index) => (
                                         <>
-                                            <Responsive
+                                            <GridColumn
                                                 key={ index }
-                                                as={ GridColumn }
+                                                as={ Media }
                                                 width={ 16 }
                                                 className="with-bottom-gutters"
-                                                maxWidth={ Responsive.onlyTablet.maxWidth }
+                                                lessThan="tablet"
                                             >
                                                 { resolveStatCountCard(stat) }
-                                            </Responsive>
+                                            </GridColumn>
 
-                                            <Responsive
+                                            <GridColumn
                                                 key={ index }
-                                                as={ GridColumn }
-                                                minWidth={ Responsive.onlyTablet.maxWidth }
+                                                as={ Media }
+                                                greaterThan="tablet"
                                             >
                                                 { resolveStatCountCard(stat) }
-                                            </Responsive>
+                                            </GridColumn>
                                         </>
                                     ))
                                 }

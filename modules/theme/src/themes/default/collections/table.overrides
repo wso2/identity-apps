@@ -27,6 +27,13 @@
     }
 }
 
+.ui.table {
+    .thead.user-attribute-table-header {
+        padding-top: 0.5em;
+        padding-bottom: 0.5em;
+    }
+}
+
 /*-------------------------------
           Data Table
 --------------------------------*/

@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2022, WSO2 Inc. (http://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,14 +17,14 @@
  */
 
 import { isFeatureEnabled } from "@wso2is/core/helpers";
-import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
-import { AlertLevels } from "@wso2is/core/src/models";
+import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { GenericIcon, PageLayout } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { RouteChildrenProps } from "react-router-dom";
+import { organizationConfigs } from "../../../extensions";
 import { AppConstants, FeatureConfigInterface, history } from "../../core";
 import { getOrganization } from "../api";
 import { EditOrganization } from "../components/edit-organization/edit-organization";
@@ -53,11 +53,12 @@ const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface
     const [ isReadOnly, setIsReadOnly ] = useState(true);
 
     useEffect(() => {
-        setIsReadOnly(!isFeatureEnabled(
-            featureConfig?.organizations,
-            OrganizationManagementConstants.FEATURE_DICTIONARY.get("ORGANIZATION_UPDATE")
-        ));
-    }, [ featureConfig ]);
+        setIsReadOnly(
+            !isFeatureEnabled(
+                featureConfig?.organizations,
+                OrganizationManagementConstants.FEATURE_DICTIONARY.get("ORGANIZATION_UPDATE")
+            ) || organization?.status !== "ACTIVE");
+    }, [ featureConfig, organization ]);
 
 
     const getOrganizationData = useCallback((organizationId: string) => {
@@ -113,7 +114,7 @@ const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface
                     icon={ OrganizationIcon }
                 />
             ) }
-            backButton={ {
+            backButton={ organizationConfigs.canCreateOrganization() && {
                 "data-testid": "org-mgt-edit-org-back-button",
                 onClick: goBackToOrganizationList,
                 text: t("console:manage.features.organizations.edit.back")

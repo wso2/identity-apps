@@ -1,10 +1,7 @@
-import { RolesInterface } from "@wso2is/core/models";
-import { ScimOperationsInterface } from "../../roles";
-
 /**
- * Copyright (c) 2022, WSO2 Inc. (http://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,10 +16,14 @@ import { ScimOperationsInterface } from "../../roles";
  * under the License.
  */
 
+import { RolesInterface } from "@wso2is/core/models";
+import { ScimOperationsInterface } from "../../roles";
+
 export interface OrganizationInterface {
     id: string;
     name: string;
     ref: string;
+    status: "ACTIVE" | "DISABLED"
 }
 
 export interface OrganizationLinkInterface {
@@ -99,4 +100,18 @@ export type PatchOrganizationRoleDataInterface = {
 export interface CreateOrganizationRoleMemberInterface {
     value: string;
     display?: string;
+}
+
+export interface BreadcrumbItem {
+    id: string;
+    name: string;
+}
+
+export type BreadcrumbList = BreadcrumbItem[];
+
+export type GenericOrganization = OrganizationInterface | OrganizationResponseInterface | BreadcrumbItem;
+
+export interface ShareApplicationRequestInterface {
+    shareWithAllChildren: boolean;
+    sharedOrganizations?: string[];
 }

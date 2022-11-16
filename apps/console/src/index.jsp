@@ -108,7 +108,7 @@
                 var isSignOutSuccess = userAccessedPath.includes("sign_out_success");
 
                 if (isSignOutSuccess) {
-                    window.location.href = applicationDomain + '/' + "<%= htmlWebpackPlugin.options.basename %>"
+                    window.location.href = userAccessedPath.split("?")[0];
                 }
 
                 if (isSilentSignInDisabled) {

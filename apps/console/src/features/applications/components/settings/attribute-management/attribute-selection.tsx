@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -98,9 +98,8 @@ interface AttributeSelectionPropsInterface extends TestableComponentInterface {
 /**
  * Attribute selection component.
  *
- * @param {AttributeSelectionPropsInterface} props - Props injected to the component.
- *
- * @return {React.ReactElement}
+ * @param props - Props injected to the component.
+ * @returns Attribute Selection component.
  */
 export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterface> = (
     props: AttributeSelectionPropsInterface
@@ -255,9 +254,10 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
     /**
      * Check whether claim is mandatory or not
      *
-     * @param uri Claim URI to be checked.
+     * @param uri - Claim URI to be checked.
+     * @returns If initially requested as mandatory.
      */
-    const checkInitialRequestMandatory = (uri: string) => {
+    const checkInitialRequestMandatory = (uri: string): boolean => {
         let requestURI = false;
 
         // If custom mapping there then retrieve the relevant uri and check for requested section.
@@ -284,7 +284,8 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
     /**
      * Check whether claim is requested or not.
      *
-     * @param uri Claim URI to be checked.
+     * @param uri - Claim URI to be checked.
+     * @returns If initially requested or not.
      */
     const checkInitialRequested = (uri: string): boolean => {
         if (claimConfigurations.dialect === "CUSTOM") {
@@ -325,7 +326,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                 item.claimURI.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1);
 
             setFilterSelectedExternalClaims(sortBy(
-                union(displayNameFilterClaims, uriFilterClaims), 
+                union(displayNameFilterClaims, uriFilterClaims),
                 "localClaimDisplayName"
             ));
         }
@@ -334,7 +335,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
     /**
      * Handle change event of the search input.
      *
-     * @param event change event.
+     * @param event - Change event.
      */
     const handleChange = (event) => {
         const changeValue = event.target.value;
@@ -460,10 +461,10 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                         };
 
                         if (!initialSelectedClaims.find(
-                            (selectedExternalClaim) => selectedExternalClaim?.mappedLocalClaimURI 
+                            (selectedExternalClaim) => selectedExternalClaim?.mappedLocalClaimURI
                             === claimMapping.localClaim.uri)){
                             initialSelectedClaims.push(option);
-                        }                          
+                        }
                     }
                 });
             });
@@ -648,9 +649,10 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                     <Trans
                         i18nKey={ "console:develop.features.applications.confirmations." +
                             "removeApplicationUserAttribute.content" }
+                        i18nOptions={ { default: defaultSubjectClaim?.displayName } }
                     >
                         If you remove this, the subject attribute will be set to
-                        the <strong>{ { default: defaultSubjectClaim?.displayName } }</strong>
+                        the <strong>{ defaultSubjectClaim?.displayName }</strong>
                     </Trans>
                 </ConfirmationModal.Content>
             </ConfirmationModal>
@@ -658,27 +660,29 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
     };
 
     /**
-     * Check if the claim has OIDC mapping
-     * @return {boolean}
+     * Check if the claim has OIDC mapping.
+     *
+     * @param claiminput - Input claim.
+     * @returns Is a mapping or not.
      */
-    const checkMapping = (claiminput): boolean => {
+    const checkMapping = (claiminput: ExtendedExternalClaimInterface): boolean => {
         let isMapping = false;
 
         openIDConnectClaims?.map((claim) => {
-            if (claim.mappedLocalClaimURI === claiminput.mappedLocalClaimURI || 
+            if (claim.mappedLocalClaimURI === claiminput.mappedLocalClaimURI ||
                 claiminput.mappedLocalClaimURI  === defaultSubjectAttribute){
                 isMapping = true;
             }
         });
 
-        return isMapping;   
+        return isMapping;
     };
 
     /**
      * Resolves the documentation link when a claim is selected.
-     * @return {React.ReactElement}
+     * @returns Documentation link.
      */
-    const resolveClaimDocumentationLink = (): ReactElement => { 
+    const resolveClaimDocumentationLink = (): ReactElement => {
         let docLink: string = undefined;
 
         if (selectedDialect.localDialect) {
@@ -688,7 +692,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
             docLink = getLink("develop.applications.editApplication.oidcApplication.attributes" +
                 ".learnMore");
         }
-        
+
         return (
             <DocumentationLink
                 link={ docLink }

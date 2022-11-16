@@ -5,23 +5,17 @@ A React component library for WSO2 Identity Server frontend apps implementing Se
 ![Storybook](https://cdn.jsdelivr.net/gh/storybookjs/brand@master/badge/badge-storybook.svg)
 
 ## Install
+
 Add following dependency in your package.json file.
 `"@wso2is/react-components": "<VERSION>"`
 
 ## Run Storybook
 
-Execute the following commands to run the storybook dev server.
-
+Execute the following command from the project root directory to run the Storybook dev server.
 
 ```bash
 
-# Make sure you are inside the `react-components` folder.
-
-cd modules/react-components
-
-# Start the dev server
-
-npm start
+pnpm nx run react-components:storybook
 
 ```
 
@@ -43,18 +37,6 @@ Use the component along with your other react components.
     size="tiny"
     image="https://avatars3.githubusercontent.com/u/25959096?s=460&v=4"
 />
-```
-
-## What's Available
-
-### Hooks
-
-#### useWindowDimensions
-
-`useWindowDimensions` hook automatically updates width and height values when screen size changes.
-
-```tsx
-    const { width, height } = useWindowDimensions();
 ```
 
 ## License

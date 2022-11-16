@@ -1,8 +1,7 @@
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -32,17 +31,16 @@ export class AccessControlUtils {
     /**
      * Util method to filter base routes based on user scopes retrieved via the token call.
      *
-     * @param routeArray Un authenticated routes array
-     * @param allowedScopes user scopes
-     * @param featureConfig feature scope configuration
-     * @param checkForUIResourceScopes Specifies if the UI resource scope should be considered
-     *
+     * @param routeArray - Un authenticated routes array
+     * @param allowedScopes - user scopes
+     * @param featureConfig - feature scope configuration
+     * @param checkForUIResourceScopes - Specifies if the UI resource scope should be considered
      * @returns filtered route array based on the user scopes
      */
-    public static getAuthenticatedRoutes(
+    public static getAuthenticatedRoutes<T = any>(
         routeArray: RouteInterface[],
         allowedScopes: string,
-        featureConfig: any, // TODO : Properly map FeatureConfigInterface type
+        featureConfig: T, // TODO : Properly map FeatureConfigInterface type
         checkForUIResourceScopes?: boolean
     ): RouteInterface[] {
 
@@ -80,19 +78,18 @@ export class AccessControlUtils {
     /**
      * Util method to retrieve if a single tab is disabled via iterating routes based on scopes.
      *
-     * @param manageRoutes routes related to manage section
-     * @param developRoutes routes related to develop section
-     * @param allowedScopes allowed scopes
-     * @param featureConfig feature config
-     * @param checkForUIResourceScopes Specifies if the UI resource scope should be considered
-     *
+     * @param manageRoutes - routes related to manage section
+     * @param developRoutes - routes related to develop section
+     * @param allowedScopes - allowed scopes
+     * @param featureConfig - feature config
+     * @param checkForUIResourceScopes - Specifies if the UI resource scope should be considered
      * @returns
      */
-    public static getDisabledTab(
+    public static getDisabledTab<T = any>(
         manageRoutes: RouteInterface[],
         developRoutes: RouteInterface[],
         allowedScopes: string,
-        featureConfig: any, // TODO : Properly map FeatureConfigInterface type
+        featureConfig: T, // TODO : Properly map FeatureConfigInterface type
         checkForUIResourceScopes?: boolean
     ): string {
 

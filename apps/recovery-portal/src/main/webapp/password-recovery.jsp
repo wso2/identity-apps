@@ -141,7 +141,7 @@
 <body class="login-portal layout recovery-layout">
     <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
         <layout:component componentName="ProductHeader" >
-            <!-- product-title -->
+            <%-- product-title --%>
             <%
                 File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
                 if (productTitleFile.exists()) {
@@ -153,7 +153,7 @@
         </layout:component>
         <layout:component componentName="MainSection" >
             <div class="ui segment">
-                <!-- page content -->
+                <%-- page content --%>
                 <h3 class="ui header">
                     <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Recover.password")%>
                 </h3>
@@ -283,8 +283,9 @@
                                     data-size="invisible"
                                     data-callback="onCompleted"
                                     data-action="passwordRecovery"
-                                    data-sitekey=
-                                            "<%=Encode.forHtmlContent(reCaptchaKey)%>">
+                                    data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>"
+                                    data-tabindex="-1"
+                                    >
                             </div>
                         </div>
                         <%
@@ -306,7 +307,7 @@
             </div>
         </layout:component>
         <layout:component componentName="ProductFooter" >
-            <!-- product-footer -->
+            <%-- product-footer --%>
             <%
                 File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
                 if (productFooterFile.exists()) {
@@ -318,7 +319,7 @@
         </layout:component>
     </layout:main>
 
-    <!-- footer -->
+    <%-- footer --%>
     <%
         File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
         if (footerFile.exists()) {
@@ -378,6 +379,20 @@
 
                 return true;
             });
+        });
+
+        // Removing the recaptcha UI from the keyboard tab order
+        Array.prototype.forEach.call(document.getElementsByClassName('g-recaptcha'), function (element) {
+            //Add a load event listener to each wrapper, using capture.
+            element.addEventListener('load', function (e) {
+                //Get the data-tabindex attribute value from the wrapper.
+                var tabindex = e.currentTarget.getAttribute('data-tabindex');
+                //Check if the attribute is set.
+                if (tabindex) {
+                    //Set the tabIndex on the iframe.
+                    e.target.tabIndex = "-1";
+                }
+            }, true);
         });
 
     </script>

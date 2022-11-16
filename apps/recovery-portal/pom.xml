@@ -211,12 +211,7 @@
         <dependency>
             <groupId>org.wso2.identity.apps</groupId>
             <artifactId>org.wso2.identity.apps.taglibs.layout.controller</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-api</artifactId>
-                </exclusion>
-            </exclusions>
+            <version>1.4.34</version>
         </dependency>
     </dependencies>
 
@@ -238,6 +233,9 @@
                         <resource>
                             <!-- this is relative to the pom.xml directory -->
                             <directory>src/main/resources/</directory>
+                            <excludes>
+                                <exclude>RecoveryEndpointConfig.properties</exclude>
+                            </excludes>
                         </resource>
                     </webResources>
                     <warName>accountrecoveryendpoint</warName>
@@ -248,5 +246,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>

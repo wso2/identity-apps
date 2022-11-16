@@ -1,4 +1,5 @@
 {
+    "extends": "../../tsconfig.base.json",
     "compilerOptions": {
         "experimentalDecorators": true,
         // Common JS is required for the TS to JSON transpilation.
@@ -27,6 +28,5 @@
         "**/*.spec.jsx",
         "**/*.spec.ts",
         "**/*.spec.tsx"
-    ],
-    "extends": "../../configs/common.tsconfig.json"
+    ]
 }

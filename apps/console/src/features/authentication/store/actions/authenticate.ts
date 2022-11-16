@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,7 +17,6 @@
  */
 
 import { AsgardeoSPAClient, DecodedIDTokenPayload } from "@asgardeo/auth-react";
-import { getProfileInfo, getProfileSchemas } from "@wso2is/core/api";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import {
     AlertInterface,
@@ -35,9 +34,9 @@ import {
 import { I18n } from "@wso2is/i18n";
 import isEmpty from "lodash-es/isEmpty";
 import { Dispatch } from "redux";
-import { commonConfig } from "../../../../extensions";
 import { Config } from "../../../core/configs";
 import { store } from "../../../core/store";
+import { getProfileInfo, getProfileSchemas } from "../../../users/api";
 
 /**
  *  Gets profile information by making an API call
@@ -49,7 +48,7 @@ export const getProfileInformation = (
 
     dispatch(setProfileInfoRequestLoadingStatus(true));
 
-    const getProfileInfoFromToken: boolean = store.getState().auth.isPrivilegedUser || 
+    const getProfileInfoFromToken: boolean = store.getState().auth.isPrivilegedUser ||
                                     (window[ "AppUtils" ].getConfig().getProfileInfoFromIDToken ?? false);
 
     const getProfileSchema = (): void => {
@@ -57,7 +56,7 @@ export const getProfileInformation = (
         if (isEmpty(store.getState().profile.profileSchemas)) {
             dispatch(setProfileSchemaRequestLoadingStatus(true));
 
-            getProfileSchemas(store.getState().config.endpoints?.schemas)
+            getProfileSchemas()
                 .then((response: ProfileSchemaInterface[]) => {
                     dispatch(setSCIMSchemas<ProfileSchemaInterface[]>(response));
                 })
@@ -100,7 +99,7 @@ export const getProfileInformation = (
                     familyName: decodedToken.family_name ?? "",
                     givenName: decodedToken.given_name ?? ""
                 },
-                profileUrl: "",
+                profileUrl: decodedToken.profile,
                 userName: decodedToken.username
             };
 
@@ -127,7 +126,6 @@ export const getProfileInformation = (
                     return;
                 }
                 dispatch(setProfileInfo<ProfileInfoInterface>(infoResponse));
-                commonConfig.hotjarTracking.tagAttributes();
                 getProfileSchema();
 
                 return;

@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -613,8 +613,11 @@ export const myAccount: MyAccountNS = {
                         heading: "Leia este QR Code usando um aplicativo Authenticator",
                         messageBody: "Você pode encontrar uma lista de aplicativos autenticadores disponíveis aqui.",
                         messageHeading: "Não tem um aplicativo autenticador instalado?",
-                        regenerateWarning: "Ao gerar um novo código QR, você deve digitalizá-lo e reconfigurar seu " + 
-                            "aplicativo autenticador. Sua configuração anterior não funcionará mais."
+                        regenerateConfirmLabel: "Confirme a regeneração de um novo código QR",
+                        regenerateWarning: {
+                            extended: "Quando você regenera um novo código QR, você deve digitalizá-lo e recriar o aplicativo Authenticator.Você não poderá mais fazer login com o código QR anterior.",
+                            generic: "Quando você regenera um novo código QR, você deve digitalizá-lo e recriar o aplicativo Authenticator.Sua configuração anterior não funcionará mais."
+                        }
                     },
                     toolTip: "Não tem um aplicativo? Baixe um aplicativo autenticador como o " +
                         "Google Authenticator na <1>App Store</1> ou <3>Google Play</3>",
@@ -677,13 +680,13 @@ export const myAccount: MyAccountNS = {
                 regenerate: "Regenerado"
             },
             backupCode: {
-                description: "Você pode usar códigos de backup para fazer login se não conseguir receber um código " 
+                description: "Você pode usar códigos de backup para fazer login se não conseguir receber um código "
                     + "de verificação por meio do aplicativo autenticador.",
                 download: {
                     heading: "SALVE SEUS CÓDIGOS DE BACKUP.",
                     info1: "Você só pode usar cada código de backup uma vez.",
                     info2: "Esses códigos foram gerados em ",
-                    subHeading: "Você pode usar esses códigos de backup para entrar no Asgardeo quando estiver " + 
+                    subHeading: "Você pode usar esses códigos de backup para entrar no Asgardeo quando estiver " +
                         "longe do telefone. Mantenha esses códigos de backup em algum lugar seguro, mas acessível."
                 },
                 heading: "Códigos de backup",
@@ -694,22 +697,22 @@ export const myAccount: MyAccountNS = {
                         download: "Códigos de download",
                         regenerate: "Regenerado"
                     },
-                    description: "Use os códigos de backup para fazer login quando estiver longe do telefone. " + 
+                    description: "Use os códigos de backup para fazer login quando estiver longe do telefone. " +
                         "Você pode gerar mais quando todos são usados",
                     generate: {
-                        description: "Todos os seus códigos de backup são usados. " + 
+                        description: "Todos os seus códigos de backup são usados. " +
                             "Permite gerar um novo conjunto de códigos de backup",
                         heading: "Gerar"
                     },
                     heading: "Códigos de backup",
                     info: "Cada código só pode ser usado uma vez",
                     regenerate: {
-                        description: "Depois de gerar novos códigos, seus códigos antigos não funcionarão mais. " 
+                        description: "Depois de gerar novos códigos, seus códigos antigos não funcionarão mais. "
                             + "Certifique-se de salvar os novos códigos assim que forem gerados.",
                         heading: "Confirmação"
                     },
                     subHeading: "Senhas de uso único que você pode usar para fazer login",
-                    warn: "Esses códigos aparecerão apenas uma vez. Certifique-se de salvá-los agora e armazená-los " 
+                    warn: "Esses códigos aparecerão apenas uma vez. Certifique-se de salvá-los agora e armazená-los "
                         + "em algum lugar seguro, mas acessível."
                 },
                 notifications: {
@@ -1380,6 +1383,15 @@ export const myAccount: MyAccountNS = {
             },
             lastAccessed: "Último acesso {{date}}",
             modals: {
+                terminateActiveUserSessionModal: {
+                    heading: "Encerrar sessões ativas atuais",
+                    message:
+                        "As alterações da opção de autenticação de segundo fator (2FA) não serão aplicadas às suas sessões ativas. " +
+                        "Recomendamos que você os encerre.",
+                    primaryAction: "Terminar tudo",
+                    secondaryAction: "Revisar e encerrar"    
+
+                },
                 terminateAllUserSessionsModal: {
                     heading: "Confirmação",
                     message: "A ação o desconectará desta sessão e de todas as outras sessões em todos os " +

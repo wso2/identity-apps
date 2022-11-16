@@ -566,6 +566,9 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                             <LinkButton
                                 className="pr-0"
                                 onClick={ () => {
+                                    eventPublisher.publish("application-revert-sign-in-method-default", {
+                                        "client-id": clientId
+                                    });
                                     handleSequenceUpdate(null, true);
                                     onReset();
                                 } }

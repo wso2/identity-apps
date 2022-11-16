@@ -1,0 +1,25 @@
+{
+    "$schema": "../node_modules/nx/schemas/project-schema.json",
+    "root": "tests",
+    "sourceRoot": "tests",
+    "projectType": "library",
+    "generators": {},
+    "prefix": "@wso2is",
+    "tags": [],
+    "targets": {
+        "build": {
+            "executor": "@nrwl/workspace:run-commands",
+            "outputs": [
+                "tests/dist"
+            ],
+            "options": {
+                "tsconfig": "tests/tsconfig.json",
+                "command": "pnpm build",
+                "cwd": "tests"
+            }
+        }
+    },
+    "outputs": [
+        "{options.outputPath}"
+    ]
+}

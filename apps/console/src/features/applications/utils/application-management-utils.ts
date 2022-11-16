@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,7 +14,6 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
 
 import { AlertLevels } from "@wso2is/core/models";
@@ -59,16 +58,14 @@ export class ApplicationManagementUtils {
     /**
      * Private constructor to avoid object instantiation from outside
      * the class.
-     *
-     * @hideconstructor
      */
     private constructor() { }
 
     /**
      * Gets the list of available inbound protocols list and sets them in the redux store.
      *
-     * @param {AuthProtocolMetaListItemInterface[]} meta - Meta data to filter.
-     * @param {boolean} customOnly - Whether to fetch just the custom protocols.
+     * @param meta - Meta data to filter.
+     * @param customOnly - Whether to fetch just the custom protocols.
      */
     public static getInboundProtocols(meta: AuthProtocolMetaListItemInterface[], customOnly = false): Promise<void> {
         return getAvailableInboundProtocols(customOnly)
@@ -107,8 +104,8 @@ export class ApplicationManagementUtils {
     /**
      * Gets the list of available custom inbound protocols list and sets them in the redux store.
      *
-     * @param {AuthProtocolMetaListItemInterface[]} meta - Meta data to filter.
-     * @param {boolean} customOnly - Whether to fetch just the custom protocols.
+     * @param meta - Meta data to filter.
+     * @param customOnly - Whether to fetch just the custom protocols.
      */
     public static getCustomInboundProtocols(
         meta: AuthProtocolMetaListItemInterface[], customOnly = true): Promise<void> {
@@ -151,9 +148,9 @@ export class ApplicationManagementUtils {
     /**
      * Finds the icon from the given object.
      *
-     * @param {string} imageName Name on the image to be found.
-     * @param {FunctionComponent<SVGProps<SVGSVGElement>> | string} illustrationObject Collection of images.
-     * @return {FunctionComponent<SVGProps<SVGSVGElement>> | string}
+     * @param imageName - Name on the image to be found.
+     * @param illustrationObject - Collection of images.
+     * @returns The icon from the given object.
      */
     public static findIcon(imageName: string,
         illustrationObject: Record<string, FunctionComponent<SVGProps<SVGSVGElement>> | string>
@@ -262,9 +259,9 @@ export class ApplicationManagementUtils {
     /**
      * Generate the application samples for the help panel.
      *
-     * @param {Record<string, unknown>} raw  - Object containing of samples/docs and their doc URLs.
+     * @param raw  - Object containing of samples/docs and their doc URLs.
      *
-     * @return {DocPanelUICardInterface[]} Generated application samples.
+     * @returns Generated application samples.
      */
     public static generateSamplesAndSDKDocs = (raw: Record<string, unknown>): DocPanelUICardInterface[] => {
 
@@ -289,8 +286,8 @@ export class ApplicationManagementUtils {
     /**
      * Get the docs key for the SDKs.
      *
-     * @param {string} template - Template id.
-     * @return {string}
+     * @param template - Template id.
+     * @returns The docs key of the SDK.
      */
     public static getSDKDocsKey = (template: string): string => `${
         ApplicationManagementConstants.APPLICATION_DOCS_KEY }["${ template }"].SDKs`;
@@ -298,8 +295,8 @@ export class ApplicationManagementUtils {
     /**
      * Get the docs key for the Samples.
      *
-     * @param {string} template - Template id.
-     * @return {string}
+     * @param template - Template id.
+     * @returns The docs key of the Samples.
      */
     public static getSampleDocsKey = (template: string): string => `${
         ApplicationManagementConstants.APPLICATION_DOCS_KEY }["${ template }"].Samples`;
@@ -307,8 +304,8 @@ export class ApplicationManagementUtils {
     /**
      * Get the docs key for the Configurations.
      *
-     * @param {string} template - Template id.
-     * @return {string}
+     * @param template - Template id.
+     * @returns The docs key of Configuration.
      */
     public static getConfigDocsKey = (template: string): string => `${
         ApplicationManagementConstants.APPLICATION_DOCS_KEY }["${ template }"].Configurations`;
@@ -316,8 +313,8 @@ export class ApplicationManagementUtils {
     /**
      * Separate out multiple origins in the passed string.
      *
-     * @param {string} origins - Allowed origins
-     * @return {string[]} Resolved allowed origins.
+     * @param origins - Allowed origins
+     * @returns Resolved allowed origins.
      */
     public static resolveAllowedOrigins = (origins: string): string[] => {
 
@@ -335,8 +332,8 @@ export class ApplicationManagementUtils {
     /**
      * Add regexp to multiple callbackUrls and update configs.
      *
-     * @param {string} urls - Callback URLs.
-     * @return {string} Prepared callback URL.
+     * @param urls - Callback URLs.
+     * @returns Prepared callback URL.
      */
     public static buildCallBackUrlWithRegExp = (urls: string): string => {
 
@@ -352,8 +349,8 @@ export class ApplicationManagementUtils {
     /**
      * Remove regexp from incoming data and show the callbackUrls.
      *
-     * @param {string} url - Callback URLs.
-     * @return {string} Prepared callback URL.
+     * @param url - Callback URLs.
+     * @returns Prepared callback URL.
      */
     public static buildCallBackURLWithSeparator = (url: string): string => {
 
@@ -368,10 +365,10 @@ export class ApplicationManagementUtils {
 
     /**
      * Resolves the display name of auth protocols.
-     * ex: oidc -> OpenID Connect
+     * ex: oidc to OpenID Connect
      *
-     * @param {SupportedAuthProtocolTypes} protocol - Auth Protocol.
-     * @return {string}
+     * @param protocol - Auth Protocol.
+     * @returns Display name of auth protocol.
      */
     public static resolveProtocolDisplayName(protocol: SupportedAuthProtocolTypes): string {
 
@@ -381,8 +378,8 @@ export class ApplicationManagementUtils {
     /**
      * Resolves the descriptions of auth protocols.
      *
-     * @param {SupportedAuthProtocolTypes} protocol - Auth Protocol.
-     * @return {string}
+     * @param protocol - Auth Protocol.
+     * @returns The descriptions of auth protocols.
      */
     public static resolveProtocolDescription(protocol: SupportedAuthProtocolTypes): string {
 
@@ -392,8 +389,8 @@ export class ApplicationManagementUtils {
     /**
      * Resolves the display name of SAML configuration mode.
      *
-     * @param {SAMLConfigModes} mode - Config mode.
-     * @return {string}
+     * @param mode - Config mode.
+     * @returns Display name of SAML configuration mode.
      */
     public static resolveSAMLConfigModeDisplayName(mode: SAMLConfigModes): string {
 

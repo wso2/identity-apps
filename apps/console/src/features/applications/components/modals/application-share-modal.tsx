@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,17 +16,58 @@
  * under the License.
  */
 
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import {
+    AlertLevels,
+    IdentifiableComponentInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { LinkButton, PrimaryButton } from "@wso2is/react-components";
-import React, { FunctionComponent, useCallback, useState } from "react";
+import {
+    Hint,
+    LinkButton,
+    PrimaryButton,
+    TransferComponent,
+    TransferList,
+    TransferListItem
+} from "@wso2is/react-components";
+import differenceBy from "lodash-es/differenceBy";
+import escapeRegExp from "lodash-es/escapeRegExp";
+import isEmpty from "lodash-es/isEmpty";
+import React, {
+    FunctionComponent,
+    useCallback,
+    useEffect,
+    useState
+} from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { DropdownItemProps, Form, Modal, ModalProps } from "semantic-ui-react";
+import {
+    Divider,
+    Modal,
+    ModalProps,
+    Radio,
+    Segment
+} from "semantic-ui-react";
 import { AppState, EventPublisher } from "../../../core";
-import { shareApplication } from "../../../organizations/api";
-import { OrganizationInterface } from "../../../organizations/models";
+import {
+    shareApplication,
+    stopSharingApplication,
+    unshareApplication
+} from "../../../organizations/api";
+import {
+    OrganizationInterface,
+    ShareApplicationRequestInterface
+} from "../../../organizations/models";
+import { ShareWithOrgStatus } from "../../constants";
 
-export interface ApplicationShareModalPropsInterface extends ModalProps, IdentifiableComponentInterface {
+enum ShareType {
+    SHARE_ALL,
+    SHARE_SELECTED,
+    UNSHARE
+}
+
+export interface ApplicationShareModalPropsInterface
+    extends ModalProps,
+    IdentifiableComponentInterface {
     /**
      * ID of the application to be shared
      */
@@ -38,64 +79,349 @@ export interface ApplicationShareModalPropsInterface extends ModalProps, Identif
     /**
      * Sub Organization list of the current organization.
      */
-    subOrganizationList: Array<OrganizationInterface>
+    subOrganizationList: Array<OrganizationInterface>;
+    /**
+     * List of organization that this application is shared with.
+     */
+    sharedOrganizationList: Array<OrganizationInterface>;
+    /**
+     * Callback when the application sharing completed.
+     */
+    onApplicationSharingCompleted: () => void;
+    /**
+     * Specifies if the application is shared with all suborganizations.
+     */
+    isSharedWithAll?: ShareWithOrgStatus;
 }
 
 export const ApplicationShareModal: FunctionComponent<ApplicationShareModalPropsInterface> = (
     props: ApplicationShareModalPropsInterface
 ) => {
-
     const {
         applicationId,
         subOrganizationList,
+        sharedOrganizationList,
         clientId,
         onClose,
-        ["data-componentid"]: componentId,
+        onApplicationSharingCompleted,
+        isSharedWithAll,
+        [ "data-componentid" ]: componentId,
         ...rest
     } = props;
 
     const dispatch = useDispatch();
-    const currentOrganization = useSelector((state: AppState) => state.organization.organization);
+    const { t } = useTranslation();
 
-    const [ selectedOrganization, setSelectedOrganization ] = useState<Array<string>>([]);
+    const currentOrganization = useSelector(
+        (state: AppState) => state.organization.organization
+    );
+
+    const [ tempOrganizationList, setTempOrganizationList ] = useState<
+        OrganizationInterface[]
+    >([]);
+    const [
+        checkedUnassignedListItems,
+        setCheckedUnassignedListItems
+    ] = useState<OrganizationInterface[]>([]);
+    const [ shareType, setShareType ] = useState<ShareType>(
+        ShareType.SHARE_SELECTED
+    );
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
-    const handleShareApplication = useCallback(() => {
-        if (!selectedOrganization) {
+    useEffect(() => {
+        if (isSharedWithAll === ShareWithOrgStatus.TRUE) {
+            setShareType(ShareType.SHARE_ALL);
+        } else if ((!sharedOrganizationList || sharedOrganizationList?.length === 0) &&
+            isSharedWithAll === ShareWithOrgStatus.FALSE
+        ) {
+            setShareType(ShareType.UNSHARE);
+        } else {
+            setShareType(ShareType.SHARE_SELECTED);
+        }
+    }, [ isSharedWithAll, sharedOrganizationList ]);
+
+    useEffect(() => setTempOrganizationList(subOrganizationList || []), [
+        subOrganizationList
+    ]);
+
+    useEffect(
+        () => setCheckedUnassignedListItems(sharedOrganizationList || []),
+        [ sharedOrganizationList ]
+    );
+
+    const handleShareApplication = useCallback(async () => {
+        let shareAppData: ShareApplicationRequestInterface;
+        let removedOrganization: OrganizationInterface[];
+
+        if (shareType === ShareType.SHARE_ALL) {
+            shareAppData = {
+                shareWithAllChildren: true
+            };
+        } else if (shareType === ShareType.SHARE_SELECTED) {
+            let addedOrganizations: string[];
+
+            if (isSharedWithAll === ShareWithOrgStatus.TRUE) {
+                addedOrganizations = checkedUnassignedListItems.map((org) => org.id);
+
+                await unshareApplication(applicationId, currentOrganization.id);
+
+            } else {
+                addedOrganizations = differenceBy(
+                    checkedUnassignedListItems,
+                    sharedOrganizationList,
+                    "id"
+                ).map(organization => organization.id);
+
+                removedOrganization = differenceBy(
+                    sharedOrganizationList,
+                    checkedUnassignedListItems,
+                    "id"
+                );
+            }
+
+            shareAppData = {
+                shareWithAllChildren: false,
+                sharedOrganizations: addedOrganizations
+            };
+        }
+
+        if(shareType === ShareType.SHARE_ALL || shareType === ShareType.SHARE_SELECTED) {
+            shareApplication(
+                currentOrganization.id,
+                applicationId,
+                shareAppData
+            )
+                .then(_response => {
+                    onClose(null, null);
+                    dispatch(
+                        addAlert({
+                            description: t(
+                                "console:develop.features.applications.edit.sections.shareApplication" +
+                                ".addSharingNotification.success.description"
+                            ),
+                            level: AlertLevels.SUCCESS,
+                            message: t(
+                                "console:develop.features.applications.edit.sections.shareApplication" +
+                                ".addSharingNotification.success.message"
+                            )
+                        })
+                    );
+                    eventPublisher.publish("application-share", {
+                        "client-id": clientId
+                    });
+                })
+                .catch(error => {
+                    onClose(null, null);
+                    if (error.response.data.message) {
+                        dispatch(
+                            addAlert({
+                                description: error.response.data.message,
+                                level: AlertLevels.ERROR,
+                                message: t(
+                                    "console:develop.features.applications.edit.sections.shareApplication" +
+                                    ".addSharingNotification.genericError.message"
+                                )
+                            })
+                        );
+                    } else {
+                        dispatch(
+                            addAlert({
+                                description: t(
+                                    "console:develop.features.applications.edit.sections.shareApplication" +
+                                    ".addSharingNotification.genericError.description"
+                                ),
+                                level: AlertLevels.ERROR,
+                                message: t(
+                                    "console:develop.features.applications.edit.sections.shareApplication" +
+                                    ".addSharingNotification.genericError.message"
+                                )
+                            })
+                        );
+                    }
+                    eventPublisher.publish("application-share-error", {
+                        "client-id": clientId
+                    });
+                })
+                .finally(() => onApplicationSharingCompleted());
+
+            removedOrganization?.forEach(removedOrganization => {
+                stopSharingApplication(
+                    currentOrganization.id,
+                    applicationId,
+                    removedOrganization.id
+                )
+                    .then(_response => {
+                        onClose(null, null);
+                        dispatch(
+                            addAlert({
+                                description: t(
+                                    "console:develop.features.applications.edit.sections.shareApplication" +
+                                    ".stopSharingNotification.success.description",
+                                    { organization: removedOrganization.name }
+                                ),
+                                level: AlertLevels.SUCCESS,
+                                message: t(
+                                    "console:develop.features.applications.edit.sections.shareApplication" +
+                                    ".stopSharingNotification.success.message"
+                                )
+                            })
+                        );
+                        eventPublisher.publish("application-share", {
+                            "client-id": clientId
+                        });
+                    })
+                    .catch(error => {
+                        onClose(null, null);
+                        if (error.response.data.message) {
+                            dispatch(
+                                addAlert({
+                                    description: error.response.data.message,
+                                    level: AlertLevels.ERROR,
+                                    message: t(
+                                        "console:develop.features.applications.edit.sections.shareApplication" +
+                                        ".stopSharingNotification.genericError.message"
+                                    )
+                                })
+                            );
+                        } else {
+                            dispatch(
+                                addAlert({
+                                    description: t(
+                                        "console:develop.features.applications.edit.sections.shareApplication" +
+                                        ".stopSharingNotification.genericError.description",
+                                        {
+                                            organization:
+                                                removedOrganization.name
+                                        }
+                                    ),
+                                    level: AlertLevels.ERROR,
+                                    message: t(
+                                        "console:develop.features.applications.edit.sections.shareApplication" +
+                                        ".stopSharingNotification.genericError.message"
+                                    )
+                                })
+                            );
+                        }
+                        eventPublisher.publish("application-share-error", {
+                            "client-id": clientId
+                        });
+                    });
+            });
+        } else if (shareType === ShareType.UNSHARE) {
+            unshareApplication(applicationId, currentOrganization.id)
+                .then(() => {
+                    onClose(null, null);
+                    dispatch(
+                        addAlert({
+                            description: t(
+                                "console:develop.features.applications.edit.sections.shareApplication" +
+                                ".addSharingNotification.success.description"
+                            ),
+                            level: AlertLevels.SUCCESS,
+                            message: t(
+                                "console:develop.features.applications.edit.sections.shareApplication" +
+                                ".addSharingNotification.success.message"
+                            )
+                        })
+                    );
+                    eventPublisher.publish("application-share", {
+                        "client-id": clientId
+                    });
+                })
+                .catch(error => {
+                    onClose(null, null);
+                    if (error.response.data.message) {
+                        dispatch(
+                            addAlert({
+                                description: error.response.data.message,
+                                level: AlertLevels.ERROR,
+                                message: t(
+                                    "console:develop.features.applications.edit.sections.shareApplication" +
+                                    ".addSharingNotification.genericError.message"
+                                )
+                            })
+                        );
+                    } else {
+                        dispatch(
+                            addAlert({
+                                description: t(
+                                    "console:develop.features.applications.edit.sections.shareApplication" +
+                                    ".addSharingNotification.genericError.description"
+                                ),
+                                level: AlertLevels.ERROR,
+                                message: t(
+                                    "console:develop.features.applications.edit.sections.shareApplication" +
+                                    ".addSharingNotification.genericError.message"
+                                )
+                            })
+                        );
+                    }
+                    eventPublisher.publish("application-share-error", {
+                        "client-id": clientId
+                    });
+                })
+                .finally(() => onApplicationSharingCompleted());
+        }
+    }, [
+        sharedOrganizationList,
+        checkedUnassignedListItems,
+        stopSharingApplication,
+        dispatch,
+        currentOrganization.id,
+        applicationId,
+        onClose,
+        shareType
+    ]);
+
+    const handleUnselectedListSearch = (e, { value }) => {
+        let isMatch = false;
+        const filteredOrganizationList = [];
+
+        if (!isEmpty(value)) {
+            const re = new RegExp(escapeRegExp(value), "i");
+
+            subOrganizationList &&
+                subOrganizationList.map(organization => {
+                    isMatch = re.test(organization.name);
+                    if (isMatch) {
+                        filteredOrganizationList.push(organization);
+                    }
+                });
+
+            setTempOrganizationList(filteredOrganizationList);
+        } else {
+            setTempOrganizationList(subOrganizationList);
+        }
+    };
+
+    const handleUnassignedItemCheckboxChange = organization => {
+        const checkedOrganizations = [ ...checkedUnassignedListItems ];
+        const index = checkedOrganizations.findIndex(
+            org => org.id === organization.id
+        );
+
+        if (index !== -1) {
+            checkedOrganizations.splice(index, 1);
+            setCheckedUnassignedListItems(checkedOrganizations);
+        } else {
+            checkedOrganizations.push(organization);
+            setCheckedUnassignedListItems(checkedOrganizations);
+        }
+    };
+
+    const handleHeaderCheckboxChange = useCallback(() => {
+        if (checkedUnassignedListItems.length === subOrganizationList.length) {
+            setCheckedUnassignedListItems([]);
+
             return;
         }
 
-        shareApplication(currentOrganization.id, applicationId, selectedOrganization)
-            .then((_response) => {
-                onClose(null, null);
-                dispatch(addAlert({
-                    description: "Application Shared with the organization(s) successfully",
-                    level: AlertLevels.SUCCESS,
-                    message: "Application shared!"
-                }));
-                eventPublisher.publish("application-share", {
-                    "client-id": clientId
-                });
-            }).catch((error) => {
-                onClose(null, null);
-                if (error.response.data.message) {
-                    dispatch(addAlert({
-                        description: error.response.data.message,
-                        level: AlertLevels.ERROR,
-                        message: "Application sharing failed!"
-                    }));
-                } else {
-                    dispatch(addAlert({
-                        description: "Application sharing failed. Please try again",
-                        level: AlertLevels.ERROR,
-                        message: "Application sharing failed!"
-                    }));
-                }
-                eventPublisher.publish("application-share-error", {
-                    "client-id": clientId
-                });
-            });
-    }, [ selectedOrganization ]);
+        setCheckedUnassignedListItems(subOrganizationList);
+    }, [
+        subOrganizationList,
+        setTempOrganizationList,
+        checkedUnassignedListItems
+    ]);
 
     return (
         <Modal
@@ -104,56 +430,152 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
             size="tiny"
             closeOnDocumentClick={ true }
             closeOnEscape={ true }
-            data-testid={ `${componentId}-view-certificate-modal` }
+            data-testid={ `${ componentId }-share-application-modal` }
             { ...rest }
         >
             <Modal.Header>
-                Share Application
+                { t(
+                    "console:develop.features.applications.edit.sections.shareApplication.heading"
+                ) }
             </Modal.Header>
             <Modal.Content>
-                <Form>
-                    <Form.Select
-                        options={ subOrganizationList?.map((subOrganization) => {
-                            return {
-                                key: subOrganization.id,
-                                text: subOrganization.name,
-                                value: subOrganization.id
-                            } as DropdownItemProps;
-                        }) }
-                        value={ selectedOrganization }
-                        placeholder={ "Select Organization(s)" }
-                        onChange={
-                            (event, data) => {
-                                setSelectedOrganization(data.value as string[]);
-                            }
-                        }
-                        search
-                        multiple
-                        fluid
-                        label={ "Select the list of organization to be shared with" }
-                        data-testid={ `${componentId}-role-select-dropdown` }
+                <Segment basic>
+                    <Radio
+                        label={ t(
+                            "console:manage.features.organizations.shareWithSelectedOrgsRadio"
+                        ) }
+                        onChange={ () => setShareType(ShareType.SHARE_SELECTED) }
+                        checked={ shareType === ShareType.SHARE_SELECTED }
+                        data-componentid={ `${ componentId }-share-with-all-checkbox` }
                     />
-                </Form>
+                    <TransferComponent
+                        disabled={ shareType !== ShareType.SHARE_SELECTED }
+                        selectionComponent
+                        searchPlaceholder={ t(
+                            "console:manage.features.transferList.searchPlaceholder",
+                            { type: "organizations" }
+                        ) }
+                        handleUnelectedListSearch={
+                            handleUnselectedListSearch
+                        }
+                        data-componentId="application-share-modal-organization-transfer-component"
+                        className="share-app-modal"
+                    >
+                        <TransferList
+                            disabled={
+                                shareType !== ShareType.SHARE_SELECTED
+                            }
+                            isListEmpty={
+                                !(tempOrganizationList?.length > 0)
+                            }
+                            handleHeaderCheckboxChange={
+                                handleHeaderCheckboxChange
+                            }
+                            isHeaderCheckboxChecked={
+                                checkedUnassignedListItems?.length ===
+                                    subOrganizationList?.length
+                            }
+                            listType="unselected"
+                            listHeaders={ [
+                                t(
+                                    "console:manage.features.transferList.list.headers.1"
+                                ),
+                                ""
+                            ] }
+                            emptyPlaceholderContent={ t(
+                                "console:manage.features.transferList.list.emptyPlaceholders." +
+                                    "groups.unselected",
+                                { type: "organizations" }
+                            ) }
+                            data-testid="application-share-modal-organization-transfer-component-all-items"
+                            emptyPlaceholderDefaultContent={ t(
+                                "console:manage.features.transferList.list." +
+                                    "emptyPlaceholders.default"
+                            ) }
+                        >
+                            { tempOrganizationList?.map(
+                                (organization, index) => {
+                                    const organizationName =
+                                            organization?.name;
+                                    const isChecked =
+                                            checkedUnassignedListItems.findIndex(
+                                                org =>
+                                                    org.id === organization.id
+                                            ) !== -1;
+
+                                    return (
+                                        <TransferListItem
+                                            disabled={
+                                                shareType !==
+                                                    ShareType.SHARE_SELECTED
+                                            }
+                                            handleItemChange={ () =>
+                                                handleUnassignedItemCheckboxChange(
+                                                    organization
+                                                )
+                                            }
+                                            key={ index }
+                                            listItem={ organizationName }
+                                            listItemId={ organization.id }
+                                            listItemIndex={ index }
+                                            isItemChecked={ isChecked }
+                                            showSecondaryActions={ false }
+                                            data-testid="application-share-modal-organization-transfer-component
+                                            -unselected-organizations"
+                                        />
+                                    );
+                                }
+                            ) }
+                        </TransferList>
+                    </TransferComponent>
+                    <Divider hidden />
+                    <Radio
+                        label={ t(
+                            "console:manage.features.organizations.shareApplicationRadio"
+                        ) }
+                        onChange={ () => setShareType(ShareType.SHARE_ALL) }
+                        checked={ shareType === ShareType.SHARE_ALL }
+                        data-componentid={ `${ componentId }-share-with-all-checkbox` }
+                    />
+                    <Hint>
+                        { t(
+                            "console:manage.features.organizations.shareApplicationInfo"
+                        ) }
+                    </Hint>
+                    <Divider hidden />
+                    <Radio
+                        label={ t(
+                            "console:manage.features.organizations.unshareApplicationRadio"
+                        ) }
+                        onChange={ () => setShareType(ShareType.UNSHARE) }
+                        checked={ shareType === ShareType.UNSHARE }
+                        data-componentid={ `${ componentId }-share-with-all-checkbox` }
+                    />
+                    <Hint>
+                        { t(
+                            "console:manage.features.organizations.unshareApplicationInfo"
+                        ) }
+                    </Hint>
+                </Segment>
             </Modal.Content>
             <Modal.Actions>
-                <LinkButton
-                    onClick={ () => onClose(null, null) }
-                >
-                    Cancel
+                <LinkButton onClick={ () => onClose(null, null) }>
+                    { t("common:cancel") }
                 </LinkButton>
                 <PrimaryButton
-                    disabled={ !selectedOrganization }
+                    disabled={ !checkedUnassignedListItems }
                     onClick={ () => {
                         handleShareApplication();
                     } }
-                    data-testid={ `${componentId}-save-button` }
+                    data-testid={ `${ componentId }-save-button` }
                 >
-                    Share Application
+                    { t(
+                        "console:develop.features.applications.edit.sections.shareApplication.shareApplication"
+                    ) }
                 </PrimaryButton>
             </Modal.Actions>
         </Modal>
     );
-
 };
 
 /**

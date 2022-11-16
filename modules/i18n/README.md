@@ -10,12 +10,12 @@ Add following dependency in your package.json file.
 
 ## Build
 ```bash
-npm run build
+pnpm build
 ```
 
 ## Running Tests
 ```bash
-npm run test
+pnpm test
 ```
 
 ## Usage
@@ -35,9 +35,9 @@ I18n.init(options, override, true, true)
 
 ```
 
-Init function arguments: 
+Init function arguments:
 
-| Parameter                 | Type                       | Default                           | Description                                       |   
+| Parameter                 | Type                       | Default                           | Description                                       |
 | :------------------------ |:--------------------------:| :---------------------------------| :-------------------------------------------------|
 | options 	                | i18next.InitOptions        | undefined                         | Passed in init options.
 | override                  | boolean                    | false                             | Should the passed in options replace the default.
@@ -132,7 +132,7 @@ export const EN_GB: LocaleBundle = {
         }
     }
 }
-``` 
+```
 
 ## License
 

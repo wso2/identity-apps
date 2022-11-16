@@ -22,7 +22,7 @@
     <target name="check-custom-layout-file">
         <available
             property="custom.layout.file.exists"
-            file="layouts/custom/body.html"
+            file="target/layouts/custom/body.ser"
             type="file"
         />
     </target>
@@ -47,7 +47,9 @@
     <target name="copy-default-layout-into-authentication-portal" depends="create-authentication-portal-includes-layouts-dir">
         <echo message="--- copying default layout to Authentication Portal ---"/>
         <copy todir="../../apps/authentication-portal/src/main/webapp/includes/layouts/" overwrite="true">
-            <fileset dir="layouts/" includes="default/**"/>
+            <fileset dir="target/layouts/">
+                <include name="default/**"/>
+            </fileset>
         </copy>
     </target>
 
@@ -56,7 +58,7 @@
         if= "${custom.layout.file.exists}"
     >
         <available
-            property="authentication-portal.extenions.layouts.dir.exists"
+            property="authentication-portal.extensions.layouts.dir.exists"
             file="../../apps/authentication-portal/src/main/webapp/extensions/layouts"
             type="dir"
         />
@@ -66,7 +68,7 @@
         name="create-authentication-portal-extensions-layouts-dir"
         depends="check-authentication-portal-extensions-layouts-dir"
         if= "${custom.layout.file.exists}"
-        unless="${authentication-portal.extenions.layouts.dir.exists}"
+        unless="${authentication-portal.extensions.layouts.dir.exists}"
     >
         <mkdir dir="../../apps/authentication-portal/src/main/webapp/extensions/layouts"/>
     </target>
@@ -78,7 +80,7 @@
     >
         <echo message="--- copying custom layouts to Authentication Portal ---"/>
         <copy todir="../../apps/authentication-portal/src/main/webapp/extensions/layouts/" overwrite="true">
-            <fileset dir="layouts/">
+            <fileset dir="target/layouts/">
                 <exclude name="default/**"/>
             </fileset>
         </copy>
@@ -112,7 +114,9 @@
     <target name="copy-default-layout-into-recovery-portal" depends="create-recovery-portal-includes-layouts-dir">
         <echo message="--- copying default layout to Recovery Portal ---"/>
         <copy todir="../../apps/recovery-portal/src/main/webapp/includes/layouts/" overwrite="true">
-            <fileset dir="layouts/" includes="default/**"/>
+            <fileset dir="target/layouts/">
+                <include name="default/**"/>
+            </fileset>
         </copy>
     </target>
 
@@ -143,7 +147,7 @@
     >
         <echo message="--- copying custom layouts to Recovery Portal ---"/>
         <copy todir="../../apps/recovery-portal/src/main/webapp/extensions/layouts/" overwrite="true">
-            <fileset dir="layouts/">
+            <fileset dir="target/layouts/">
                 <exclude name="default/**"/>
             </fileset>
         </copy>
@@ -177,7 +181,9 @@
     <target name="copy-default-layout-into-x509-certificate-authentication-portal" depends="create-x509-certificate-authentication-portal-includes-layouts-dir">
         <echo message="--- copying default layout to X509 Certificate Authentication Portal ---"/>
         <copy todir="../../apps/x509-certificate-authentication-portal/src/main/webapp/includes/layouts/" overwrite="true">
-            <fileset dir="layouts/" includes="default/**"/>
+            <fileset dir="target/layouts/">
+                <include name="default/**"/>
+            </fileset>
         </copy>
     </target>
 
@@ -208,7 +214,7 @@
     >
         <echo message="--- copying custom layouts to X509 Certificate Authentication Portal ---"/>
         <copy todir="../../apps/x509-certificate-authentication-portal/src/main/webapp/extensions/layouts/" overwrite="true">
-            <fileset dir="layouts/">
+            <fileset dir="target/layouts/">
                 <exclude name="default/**"/>
             </fileset>
         </copy>

@@ -141,4 +141,8 @@ export class ClaimManagementConstants {
 
     public static readonly EMPTY_STRING = "";
 
+    /**
+     * The error code that is returned when there is no item in the list
+     */
+     public static readonly RESOURCE_NOT_FOUND_ERROR_CODE: string = "CMT-50017";
 }

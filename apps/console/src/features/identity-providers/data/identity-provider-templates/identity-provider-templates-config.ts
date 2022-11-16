@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -28,6 +28,7 @@ import ExpertModeIdentityProviderTemplate from "./templates/expert-mode/expert-m
 import FacebookIDPTemplate from "./templates/facebook/facebook.json";
 import GitHubIDPTemplate from "./templates/github/github.json";
 import GoogleIDPTemplate from "./templates/google/google.json";
+import MicrosoftIDPTemplate from "./templates/microsoft/microsoft.json";
 import EnterpriseOIDCIdentityProviderTemplate
     from "./templates/oidc-identity-provider/enterprise-oidc-identity-provider.json";
 import OrganizationEnterpriseIDPTemplate from
@@ -38,6 +39,7 @@ import { ExtensionsManager, identityProviderConfig } from "../../../../extension
 import {
     EnterpriseIdentityProviderTemplateExtension
 } from "../../../../extensions/configs/identity-providers-templates";
+import { AppConstants, store } from "../../../core";
 import { IdentityProviderTemplateCategoryInterface, IdentityProviderTemplateGroupInterface } from "../../models";
 
 /**
@@ -45,8 +47,8 @@ import { IdentityProviderTemplateCategoryInterface, IdentityProviderTemplateGrou
  * you override the template from extensions, this will merge
  * the enterprise idp configuration with yours.
  *
- * @unused Keeping as a reference.
  */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const EnterpriseIdentityProviderTemplateExtended = {
     ...EnterpriseIdentityProviderTemplate,
     ...EnterpriseIdentityProviderTemplateExtension
@@ -142,12 +144,30 @@ export const getIdentityProviderTemplatesConfig = (): IdentityProviderTemplatesC
                         },
                         {
                             content: {
+                                wizardHelp: lazy(() => import("./templates/microsoft/create-wizard-help"))
+                            },
+                            enabled: window["AppUtils"].getConfig().ui.identityProviderTemplates?.microsoft?.enabled
+                                ?? identityProviderConfig.templates.microsoft,
+                            id: MicrosoftIDPTemplate.id,
+                            resource: MicrosoftIDPTemplate
+                        },
+                        {
+                            content: {
                                 wizardHelp: lazy(() => import("./templates/" +
                                 "organization-enterprise-identity-provider/create-wizard-help"))
                             },
-                            enabled: window["AppUtils"].getConfig().ui.identityProviderTemplates
-                                ?.organizationEnterprise?.enabled
-                                ?? identityProviderConfig.templates.organizationEnterprise,
+                            enabled:
+                                (window[ "AppUtils" ].getConfig().ui
+                                    ?.identityProviderTemplates
+                                    ?.organizationEnterprise?.enabled ||
+                                    identityProviderConfig?.templates
+                                        ?.organizationEnterprise) &&
+                                (store.getState()?.organization
+                                    ?.isFirstLevelOrganization ||
+                                    window[ "AppUtils" ].getConfig()
+                                        ?.organizationName ||
+                                    store.getState()?.auth?.tenantDomain ===
+                                    AppConstants.getSuperTenant()),
                             id: OrganizationEnterpriseIDPTemplate.id,
                             resource: OrganizationEnterpriseIDPTemplate
                         },
@@ -165,11 +185,11 @@ export const getIdentityProviderTemplatesConfig = (): IdentityProviderTemplatesC
                         },
                         {
                             content: {
-                                wizardHelp: lazy(() => (
-                                    import("./templates/saml-identity-provider/saml-idp-wizard-help")
-                                )),
                                 fileBasedHelpPanel: lazy(() => (
                                     import("./templates/saml-identity-provider/saml-idp-wizard-file-based-help")
+                                )),
+                                wizardHelp: lazy(() => (
+                                    import("./templates/saml-identity-provider/saml-idp-wizard-help")
                                 ))
                             },
                             enabled: window["AppUtils"].getConfig()

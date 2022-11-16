@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -39,9 +39,9 @@ interface NetworkErrorModalPropTypes extends IdentifiableComponentInterface {
  * This is used to show an error message when an API call fails due to a `401` error
  * or a network-timeout error.
  *
- * @param {NetworkErrorModalPropTypes} props - The props passed into the component.
+ * @param props - The props passed into the component.
  *
- * @return {ReactElement} - The component that pops up a modal when there is a network error.
+ * @returns the component that pops up a modal when there is a network error.
  */
 export const NetworkErrorModal: FunctionComponent<NetworkErrorModalPropTypes> = (
     props: NetworkErrorModalPropTypes

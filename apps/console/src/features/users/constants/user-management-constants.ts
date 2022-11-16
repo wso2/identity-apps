@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -28,41 +28,36 @@ export class UserManagementConstants {
      * Private constructor to avoid object instantiation from outside
      * the class.
      *
-     * @hideconstructor
      */
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     private constructor() { }
 
     /**
      * Default role list item limit.
-     * @constant
-     * @type {number}
-     * @default
+     * @typeparam DEFAULT_ROLE_LIST_ITEM_LIMIT - number
+     * @defaultValue
      */
     public static readonly DEFAULT_ROLE_LIST_ITEM_LIMIT = 10;
 
     /**
      * Default email template type list item limit.
-     * @constant
-     * @type {number}
-     * @default
+     * @typeparam DEFAULT_EMAIL_TEMPLATE_TYPE_ITEM_LIMIT - number
+     * @defaultValue
      */
     public static readonly DEFAULT_EMAIL_TEMPLATE_TYPE_ITEM_LIMIT = 10;
 
     /**
      * Default user list attributes.
-     * @constant
-     * @type {string[]}
-     * @default
+     * @typeparam DEFAULT_USER_LIST_ATTRIBUTES - string[]
+     * @defaultValue
      */
     public static readonly DEFAULT_USER_LIST_ATTRIBUTES = [ "name", "emails", "userName", "profileUrl",
         "meta.lastModified" ];
 
     /**
      * Set of keys used to enable/disable features.
-     * @constant
-     * @type {Map<string, string>}
-     * @default
+     * @typeparam FEATURE_DICTIONARY - `Map<string, string>`
+     * @defaultValue
      */
     public static readonly FEATURE_DICTIONARY: Map<string, string> = new Map<string, string>()
         .set("USER_CREATE", "users.create")
@@ -74,37 +69,61 @@ export class UserManagementConstants {
     public static readonly USER_INFO_UPDATE_ERROR: string = "Could not update the user information.";
     public static readonly GET_USER_SESSIONS_REQUEST_INVALID_STATUS_CODE_ERROR: string = "Received an invalid " +
         "status code while retrieving the user sessions.";
+
     public static readonly GET_USER_SESSIONS_REQUEST_ERROR: string = "Could not retrieve the user sessions " +
         "due to some error.";
+
     public static readonly TERMINATE_USER_SESSION_REQUEST_INVALID_STATUS_CODE_ERROR: string = "Received an invalid " +
         "status code while terminating the user sessions.";
+
     public static readonly TERMINATE_USER_SESSION_REQUEST_ERROR: string = "Could not terminate the user session " +
         "due to some error.";
+
     public static readonly TERMINATE_ALL_USER_SESSIONS_REQUEST_INVALID_STATUS_CODE_ERROR: string = "Received an " +
         "invalid status code while terminating all the user sessions.";
+        
     public static readonly TERMINATE_ALL_USER_SESSIONS_ERROR: string = "Could not terminate all the user sessions " +
         "due to some error.";
 
     /**
      * Set of SCIM2 schema names.apps/myaccount/src/store/actions/authenticate.ts
-     * @constant
-     * @type {Map<string, string>}
-     * @default
+     * @typeparam SCIM2_SCHEMA_DICTIONARY - `Map<string, string>`
+     * @defaultValue
      */
     public static readonly SCIM2_SCHEMA_DICTIONARY: Map<string, string> = new Map<string, string>()
         .set("EMAILS", "emails")
         .set("USERNAME", "userName")
-        .set("NAME", "name");
+        .set("NAME", "name")
+        .set("DISPLAY_NAME", "displayName");
 
     /**
      * Set of SCIM2 enterprise attributes.
-     *
-     * @constant
-     * @type {Map<string, string>}
-     * @default
+     * @typeparam SCIM2_ATTRIBUTES_DICTIONARY - `Map<string, string>`
+     * @defaultValue
      */
     public static readonly SCIM2_ATTRIBUTES_DICTIONARY: Map<string, string> = new Map<string, string>()
         .set("ACCOUNT_LOCKED", SCIMConfigs.scimEnterpriseUserClaimUri.accountLocked)
         .set("ACCOUNT_DISABLED", SCIMConfigs.scimEnterpriseUserClaimUri.accountDisabled)
         .set("ONETIME_PASSWORD", SCIMConfigs.scimEnterpriseUserClaimUri.oneTimePassword);
+}
+
+/**
+ * @readonly
+ * @typeParam string - types of the admin accounts.
+ */
+export enum AdminAccountTypes {
+    INTERNAL = "internal",
+    EXTERNAL = "external"
+}
+
+/**
+ * @readonly
+ * @typeParam string - types of the user accounts.
+ */
+export enum UserAccountTypes {
+    OWNER = "Owner",
+    ADMINISTRATOR = "Administrator",
+    USER = "User",
+    CUSTOMER = "Customer",
+    COLLABORATOR = "Collaborator"
 }

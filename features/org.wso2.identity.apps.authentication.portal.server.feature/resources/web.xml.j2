@@ -152,6 +152,15 @@
     {% endif %}
     <!-- *************** End of Authentication Portal Context Parameters ********************** -->
 
+    <!-- *************** Layout Store URL Configuration ********************** -->
+    {% if webappscommon.layout_store_url is defined %}
+    <context-param>
+        <param-name>LayoutStoreURL</param-name>
+        <param-value>{{ webappscommon.layout_store_url }}</param-value>
+    </context-param>
+    {% endif %}
+    <!-- *************** End of Layout Store URL Configuration ********************** -->
+
     <filter>
         <filter-name>HttpHeaderSecurityFilter</filter-name>
         <filter-class>org.apache.catalina.filters.HttpHeaderSecurityFilter</filter-class>
@@ -164,6 +173,20 @@
     <filter-mapping>
         <filter-name>HttpHeaderSecurityFilter</filter-name>
         <url-pattern>*</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>AuthenticationParameterFilter</filter-name>
+        <filter-class>
+            org.wso2.carbon.identity.application.authentication.endpoint.util.filter.AuthParameterFilter
+        </filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>AuthenticationParameterFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>REQUEST</dispatcher>
     </filter-mapping>
 
     <filter>

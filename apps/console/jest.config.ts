@@ -17,9 +17,10 @@
  */
 
 module.exports = {
+    displayName: "console",
     globals: {
         "ts-jest": {
-            tsconfig: "tsconfig.json"
+            tsconfig: "<rootDir>/tsconfig.json"
         }
     },
     moduleDirectories: [
@@ -42,7 +43,10 @@ module.exports = {
         "\\.svg": "<rootDir>/test-configs/__mocks__/svgr.ts",
         "^@unit-testing(.*)$": "<rootDir>/test-configs/utils",
         "^lodash-es/(.*)$": "<rootDir>/../../node_modules/lodash/$1",
-        "^react($|/.+)": "<rootDir>/../../node_modules/react$1"
+        "^react($|/.+)": "<rootDir>/../../node_modules/react$1",
+        "@wso2is/form": "<rootDir>/../../modules/form/dist",
+        "@wso2is/forms": "<rootDir>/../../modules/forms/dist",
+        "@wso2is/react-components": "<rootDir>/../../modules/react-components/dist",
     },
     modulePaths: [
         "<rootDir>"

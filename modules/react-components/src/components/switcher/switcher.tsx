@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -36,7 +36,7 @@ interface StrictSwitcher {
      * This function callback will trigger each time when the value
      * changes in the toggle group.
      *
-     * @param selectedValue will return all the props you have passed
+     * @param selectedValue - will return all the props you have passed
      * to this interface and the current state of the option itself.
      */
     onChange?: (selectedValue: SwitcherOptionProps) => void;
@@ -71,7 +71,7 @@ interface StrictSwitcherOption {
      * {@link onSelect} will be triggered when this button
      * state has been changed to active.
      *
-     * @param self
+     * @param self - switcher options
      */
     onSelect?: (self: StrictSwitcherOption) => void;
     /**
@@ -99,20 +99,20 @@ export type SwitcherProps = PropsWithChildren<StrictSwitcher & ButtonGroupProps 
  * this property is explicitly added to this interface to
  * give more clarity. Same goes to {@link color} as well.
  *
- * Example: { ... icon: 'file' }
+ * Example: `{ ... icon: 'file' }`
  *
  * Optionally specify the color to each of the {@link StrictSwitcherOption}
  * to distinguish from other options. For a color palette refer:
  * {@link https://react.semantic-ui.com/elements/button/#types-basic-shorthand}
  *
- * Example: { ... color: 'grey' }
+ * Example: `{ ... color: 'grey' }`
  *
  * Optionally specify the label position of the labeled
  * icon button. It can be either left or right depending on the
  * option. By default {@link Switcher} has enabled the
- * {@link StrictButtonGroupProps.labeled} property to {@code true}.
+ * {@link StrictButtonGroupProps.labeled} property to true.
  *
- * Example: { ... labelPosition?: 'right' | 'left' }
+ * Example: `{ ... labelPosition?: 'right' | 'left' }`
  */
 export type SwitcherOptionProps = StrictSwitcherOption & ButtonProps & IdentifiableComponentInterface;
 
@@ -122,8 +122,8 @@ const FIRST_ELEMENT_INDEX: number = 0;
 const EMPTY_OBJECT: Record<string, any> = {};
 
 /**
- * @pure check every option has icon value in place.
- * @param options {SwitcherOptionProps[]}
+ * Check every option has icon value in place.
+ * @param options - switcher props
  */
 const canButtonGroupHaveIcons = (options: SwitcherOptionProps[]): boolean => {
     return options.every((optionHas) => Boolean(optionHas?.icon));
@@ -152,13 +152,14 @@ const canButtonGroupHaveIcons = (options: SwitcherOptionProps[]): boolean => {
  *
  * How can I use this interface? As a example refer below block.
  *
+ * ```
  *  <Switcher
  *      defaultOptionValue="option2"
  *      onChange={ (selectedOption: SwitcherOptionProps) => {
  *          // Will be triggered initially and on value change.
  *          console.log(selectedOption.value);
  *      } }
- *      options={ [
+ *      options=\{ [
  *          {
  *              value: "option1",
  *              label: "My option 1",
@@ -171,9 +172,8 @@ const canButtonGroupHaveIcons = (options: SwitcherOptionProps[]): boolean => {
  *          }
  *      ] }
  *  />
- *
- * @param props {SwitcherProps}
- * @constructor
+ *```
+ * @param props - props injected to the component
  */
 export const Switcher: FC<SwitcherProps> = (props: SwitcherProps): ReactElement => {
 
@@ -222,11 +222,11 @@ export const Switcher: FC<SwitcherProps> = (props: SwitcherProps): ReactElement 
     /**
      * On {@link SwitcherOptionProps} button click this function will
      * be triggered with the event and the data passed to the
-     * {@link Button} element. It uses the {@code data.value}
+     * {@link Button} element. It uses the `data.value`
      * to access the event source value.
      *
-     * @param event {OptionMouseEventAlias} alias for {@link React.MouseEvent}
-     * @param data {ButtonProps} passed props for the button element.
+     * @param event - alias for {@link React.MouseEvent}
+     * @param data - passed props for the button element.
      */
     const onSwitchOptionButtonClick = (event: OptionMouseEventAlias, data: SwitcherOptionProps) => {
         if (event) {
@@ -270,6 +270,7 @@ export const Switcher: FC<SwitcherProps> = (props: SwitcherProps): ReactElement 
                 if (disabled) {
                     return (
                         <Popup
+                            key={ index }
                             content={ disabledMessage ?? DEFAULT_DISABLED_MESSAGE }
                             // Why a <div> wrapping the button? Well, buttons doesn't
                             // trigger hovers when they're disabled...

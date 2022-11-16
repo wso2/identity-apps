@@ -227,11 +227,7 @@ export const ExpertModeAuthenticationProviderCreateWizard: FunctionComponent<
         *
         * @param {ExpertModeAuthenticationProviderCreateWizardFormValuesInterface} values - Form values.
         */
-        const onSubmitWizard = async (
-            values: ExpertModeAuthenticationProviderCreateWizardFormValuesInterface
-        ): Promise<void> => {
-
-            await identityProviderConfig.overrideTemplate(template);
+        const onSubmitWizard = (values: ExpertModeAuthenticationProviderCreateWizardFormValuesInterface): void => {
 
             const identityProvider: IdentityProviderInterface = { ...template.idp };
 

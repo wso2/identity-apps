@@ -53,6 +53,10 @@ export interface ProfileInfoInterface {
     /**
      * Emails ex.work, mobile
      */
+     active?: boolean;
+    /**
+     * Emails ex.work, mobile
+     */
     emails: string[] | MultiValueAttributeInterface[];
     /**
      * Default email address of the user.

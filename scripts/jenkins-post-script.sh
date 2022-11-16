@@ -18,7 +18,7 @@
 # under the License.
 #
 
-npm i
+pnpm install
 
 # Update package version to parent pom version
-npm run update-version -- jenkins=true build="${BUILD_DISPLAY_NAME}" pom="${POM_VERSION/-SNAPSHOT/}"
+pnpm update-version -- jenkins=true build="${BUILD_DISPLAY_NAME}" pom="${POM_VERSION/-SNAPSHOT/}"

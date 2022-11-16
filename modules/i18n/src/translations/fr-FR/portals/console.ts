@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -23,6 +23,7 @@ import { ConsoleNS } from "../../../models";
  * translate the strings to other languages easily with editor translation tools.
  */
 /* eslint-disable max-len */
+/* eslint-disable sort-keys */
 export const console: ConsoleNS = {
     common: {
         advancedSearch: {
@@ -74,6 +75,9 @@ export const console: ConsoleNS = {
                 "fluides et personnalisés. Pour En savoir plus sur la façon dont nous utilisons les cookies, " +
                 "reportez-vous à notre <1>Politique relative aux cookies</1>."
         },
+        dateTime: {
+            humanizedDateString: "Dernière modification {{date}} depuis"
+        },
         header: {
             appSwitch: {
                 console: {
@@ -87,6 +91,10 @@ export const console: ConsoleNS = {
                 tooltip: "Apps"
             },
             organizationSwitch: {
+                breadcrumbError: {
+                    description: "Une erreur s'est produite lors de la récupération de la hiérarchie de l'organisation.",
+                    message: "Quelque chose s'est mal passé"
+                },
                 emptyOrgListMessage: "Aucune organisation disponible",
                 orgSearchPlaceholder: "Rechercher par nom d'organisation"
             }
@@ -571,7 +579,7 @@ export const console: ConsoleNS = {
                             }
                         }
                     },
-                    placeholder: "Chercher par nom d'application"
+                    placeholder: "Chercher des applications par nom, clientId, ou émetteur"
                 },
                 confirmations: {
                     addSocialLogin: {
@@ -763,6 +771,13 @@ export const console: ConsoleNS = {
                                     message: "Mappage d'attributs modifié"
                                 }
                             },
+                            emptySearchResults: {
+                                subtitles: {
+                                    0: "Nous n'avons trouvé aucun résultat pour '{{ searchQuery }}'",
+                                    1: "Veuillez essayer un autre terme de recherche."
+                                },
+                                title: "Aucun résultat trouvé"
+                            },
                             forms: {
                                 fields: {
                                     dynamic: {
@@ -807,12 +822,18 @@ export const console: ConsoleNS = {
                                 },
                                 attributeComponentHint: "Gérez les attributs utilisateur que vous souhaitez partager" +
                                     " avec cette application.",
-                                attributeComponentHintAlt: "Gérez les attributs utilisateur que vous souhaitez" +
-                                    " partager avec cette application. Vous pouvez ajouter de nouveaux attributs et " +
-                                    "mappages en accédant à <1>Attributs</1>",
-                                description: "Ajoutez les attributs utilisateur autorisés à être partagés avec cette " +
-                                    "application.",
+                                attributeComponentHintAlt: "Utilisez les étendues <1>OpenID Connect</1> pour ajouter/supprimer un attribut utilisateur " +
+                                    "à une étendue. Vous pouvez ajouter de nouveaux attributs en accédant à <3>Attributs.</3>",
+                                description: "Sélectionnez les étendues, c'est-à-dire les attributs utilisateur groupés qui sont autorisés à être " +
+                                    "partagés avec cette application.",
                                 heading: "Sélection des attributs utilisateur",
+                                scopelessAttributes: {
+                                    description: "Afficher les attributs sans étendue",
+                                    displayName: "Attributs sans portée",
+                                    name: "",
+                                    hint: "Impossible de récupérer ces attributs utilisateur en demandant " +
+                                        "des étendues OIDC. Pour récupérer, ajoutez les attributs requis à une étendue pertinente."
+                                },
                                 mandatoryAttributeHint: "Marquez les attributs utilisateur qui doivent " +
                                     "obligatoirement être partagés avec l'application. Lors de la connexion, " +
                                     "{{productName}} invite l'utilisateur à saisir ces valeurs d'attribut, si elles " +
@@ -831,8 +852,10 @@ export const console: ConsoleNS = {
                                         actions: {
                                             makeMandatory: "Rendre obligatoire",
                                             makeRequested: "Rendre demandable",
+                                            makeScopeRequested: "Rendre la portée demandée",
                                             removeMandatory: "Retirer l'obligation",
                                             removeRequested: "Retirer la demandabilité",
+                                            removeScopeRequested: "Supprimer l'étendue demandée",
                                             subjectDisabledSelection: "Cet attribut est obligatoire car il " +
                                                 "s'agit de l'attribut sujet."
                                         },
@@ -860,7 +883,7 @@ export const console: ConsoleNS = {
                                         confirmationMessage: "Cette action rétablira les valeurs mappées aux " +
                                             "valeurs par défaut."
                                     },
-                                    searchPlaceholder: "Attributs de recherche"
+                                    searchPlaceholder: "Rechercher des attributs d'utilisateur par nom, nom d'affichage ou détails de portée"
                                 },
                                 selectAll: "Sélectionnez tous les attributs"
                             },
@@ -906,6 +929,36 @@ export const console: ConsoleNS = {
                                     "sortant des utilisateurs de cette application."
                             },
                             tabName: "Provisionnement"
+                        },
+                        shareApplication: {
+                            addSharingNotification: {
+                                genericError: {
+                                    description: "Le partage d'application a échoué. Veuillez réessayer",
+                                    message: "Le partage d'application a échoué!"
+                                },
+                                success: {
+                                    description: "Application partagée avec succès avec l'organisation ou les organisations",
+                                    message: "Application partagée!"
+                                }
+                            },
+                            getSharedOrganizations: {
+                                genericError: {
+                                    description: "Échec de l'obtention de la liste des organisations partagées!",
+                                    message: "Échec de l'obtention de la liste des organisations partagées!"
+                                }
+                            },
+                            heading: "Partager l'application",
+                            shareApplication: "Partager l'application",
+                            stopSharingNotification: {
+                                genericError: {
+                                    description: "Échec de l'arrêt du partage d'application pour {{organization}}",
+                                    message: "Échec de l'arrêt du partage d'application!"
+                                },
+                                success: {
+                                    description: "Le partage d'application s'est arrêté avec succès avec l'{{organisation}}",
+                                    message: "L'application partagée s'est arrêtée avec succès!"
+                                }
+                            }
                         },
                         signOnMethod: {
                             sections: {
@@ -1172,6 +1225,10 @@ export const console: ConsoleNS = {
                                                     "comportement inattendu."
 
                                             },
+                                            microsoft: {
+                                                description: "Autoriser les utilisateurs à se connecter avec Microsoft.",
+                                                heading: "Ajouter une connexion Microsoft"
+                                            },
                                             totp: {
                                                 description: "Activez une couche d'authentification supplémentaire " +
                                                     "avec OTP basé sur le temps.",
@@ -1180,12 +1237,20 @@ export const console: ConsoleNS = {
                                             usernameless: {
                                                 description: "Permettre aux utilisateurs de se connecter à " +
                                                     "l'aidAjouter une connexion sans nom d'utilisateuré " +
-                                                    "FIDO2 ou de la biométrie.",
+                                                    "FIDO2, de la biométrie ou de clés d'accès.",
                                                 heading: "Ajouter une clé de sécurité/connexion biométrique",
                                                 info: "Pour vous connecter avec une authentification sans mot " +
                                                     "de passe, vos utilisateurs doivent avoir leurs clés de " +
                                                     "sécurité FIDO2 ou leurs données biométriques enregistrées " +
                                                     "via Mon compte."
+                                            },
+                                            emailOTP: {
+                                                description: "Activez une couche supplémentaire d'authentification avec OTP basé sur Email.",
+                                                heading: "Ajouter Email OTP comme deuxième facteur"
+                                            },
+                                            smsOTP: {
+                                                description: "Activez une couche supplémentaire d'authentification avec OTP basé sur SMS.",
+                                                heading: "Ajouter SMS OTP comme deuxième facteur"
                                             }
                                         }
                                     }
@@ -1388,8 +1453,8 @@ export const console: ConsoleNS = {
                                 invalidOperationModal: {
                                     header: "Opération invalide",
                                     message: "Vous devez désactiver la validation de la signature de la demande pour"+
-                                        " supprimer le certificat. Si la signature de requête ou de réponse est" + 
-                                        " activée, il est essentiel de disposer d'un certificat valide" + 
+                                        " supprimer le certificat. Si la signature de requête ou de réponse est" +
+                                        " activée, il est essentiel de disposer d'un certificat valide" +
                                         " pour vérifier la signature."
                                 }
                             }
@@ -1569,6 +1634,12 @@ export const console: ConsoleNS = {
                                     "aux utilisateurs de se connecter.",
                                 heading: "La demande est révoquée"
                             }
+                        },
+                        mobileApp: {
+                            discoverableHint: "Si cette option est activée et qu'une URL accessible sur le " +
+                                "Web (lien profond) est fournie, les clients peuvent accéder à cette " +
+                                "application à partir du portail <1>{{ myAccount }}</1>.",
+                            mobileAppPlaceholder: "myapp://oauth2"
                         },
                         sections: {
                             accessToken: {
@@ -1955,7 +2026,12 @@ export const console: ConsoleNS = {
                             },
                             certificates: {
                                 disabledPopup: "Assurez-vous que la validation de la signature de la " +
-                                    "demande et le chiffrement des assertions sont désactivés pour continuer."
+                                    "demande et le chiffrement des assertions sont désactivés pour continuer.",
+                                certificateRemoveConfirmation: {
+                                    header: "Supprimer le certificat actuel?",
+                                    content: "Définir le type de certificat sur aucun supprimera le certificat " +
+                                        "actuel fourni pour cette application. Procéder avec prudence."
+                                }
                             },
                             encryption: {
                                 fields: {
@@ -2178,7 +2254,8 @@ export const console: ConsoleNS = {
                                 validations: {
                                     invalid: "The application name should contain letters, numbers."
                                 }
-                            }
+                            },
+                            urlDeepLinkError: "L'URL saisie n'est pas un lien profond."
                         }
                     }
                 },
@@ -2301,15 +2378,62 @@ export const console: ConsoleNS = {
                         predefined: "Utiliser prédéfini"
                     },
                     columns: {
-                        actions: "Actions",
-                        name: "Nom"
+                        actions: "",
+                        name: "Nom",
+                        inboundKey: "Clé entrante"
+                    },
+                    labels: {
+                        fragment: "Fragmenter App"
                     }
                 },
                 myaccount: {
                     description: "Portail libre-service pour les utilisateurs d'Asgardeo",
                     popup: "Partagez ce lien avec vos utilisateurs pour autoriser" +
                     " l'accès à Mon compte et gérer leurs comptes.",
-                    title: "Mon compte"
+                    title: "Mon compte",
+                    enable: {
+                        0: "Activé",
+                        1: "Désactivé"
+                    },
+                    Confirmation: {
+                        enableConfirmation: {
+                            content: "Le portail Mon compte est en mode aperçu et il est recommandé de le désactiver " +
+                                "lorsque votre organisation passe en production.",
+                            heading: "Êtes-vous sûr?",
+                            message: "Activer le portail Mon compte."
+                        },
+                        disableConfirmation: {
+                            content: "Le portail Mon compte est en mode aperçu et il est recommandé de le désactiver " +
+                                "lorsque votre organisation passe en production. Lorsque le portail Mon compte est " +
+                                "désactivé, les utilisateurs de votre organisation ne pourront pas y accéder.",
+                            heading: "Êtes-vous sûr?",
+                            message: "Désactiver le portail Mon compte."
+                        }
+                    },
+                    notifications: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Erreur de mise à jour"
+                        },
+                        genericError: {
+                            description: "Échec de la mise à jour de l'état du portail Mon compte.",
+                            message: "Quelque chose s'est mal passé"
+                        },
+                        success: {
+                            description: "Le statut du portail Mon compte a été mis à jour avec succès",
+                            message: "Mise à jour réussie"
+                        }
+                    },
+                    fetchMyAccountStatus: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Erreur de récupération"
+                        },
+                        genericError: {
+                            description: "Impossible de récupérer l'état du portail Mon compte.",
+                            message: "Quelque chose s'est mal passé"
+                        }
+                    }
                 },
                 notifications: {
                     addApplication: {
@@ -4374,8 +4498,8 @@ export const console: ConsoleNS = {
                         hint: "Veuillez saisir <1>{{ name }}</1> pour confirmer.",
                         message: "Cette action est irréversible et supprimera définitivement le certificat.",
                         primaryAction: "Confirmer",
-                        tenantContent: "Cela supprimera définitivement le certificat d'organisation. Une fois" +
-                            " supprimé, à moins que vous n'importiez un nouveau certificat d'organisation, vous ne" +
+                        tenantContent: "Cela supprimera définitivement le certificat d'locataire. Une fois" +
+                            " supprimé, à moins que vous n'importiez un nouveau certificat d'locataire, vous ne" +
                             " pourrez pas accéder aux applications du portail.Pour continuer la suppression, entrez" +
                             " l'alias du certificat et cliquez sur supprimer."
                     },
@@ -5096,7 +5220,8 @@ export const console: ConsoleNS = {
                         header: "Êtes-vous sûr?",
                         message: "Cette action est irréversible et supprimera définitivement le mappage " +
                             "de revendication de champ d'application"
-                    }
+                    },
+                    saveChangesButton: "Sauvegarder les modifications"
                 }
             },
             emailLocale: {
@@ -5407,12 +5532,567 @@ export const console: ConsoleNS = {
             governanceConnectors: {
                 categories: "Catégories",
                 connectorSubHeading: "Configurer les paramètre {{ name }}.",
-                connectors: {
-                    "analytics-engine": {
-                        messages: {
-                            deprecation: {
-                                description: "WSO2 Identity Server Analytics est désormais obsolète.Utilisez <1>Elk Analytics</1> à la place.",
-                                heading: "Décousue"
+                connectorCategories: {
+                    passwordPolicies : {
+                        name: "Politiques de mot de passe",
+                        connectors: {
+                            passwordHistory: {
+                                friendlyName: "Historique du mot de passe",
+                                properties: {
+                                    passwordHistoryEnable: {
+                                        hint: "L'utilisateur ne sera pas autorisé à utiliser les mots de passe précédemment utilisés.",
+                                        label: "Valider l'historique des mots de passe"
+                                    },
+                                    passwordHistoryCount: {
+                                        hint: "Restreindre l'utilisation de ce nombre de derniers mots de passe utilisés pendant la mise à jour du mot de passe.",
+                                        label: "Compte de validation de l'historique des mots de passe"
+                                    }
+                                }
+                            },
+                            passwordPolicy: {
+                                friendlyName: "Modèles de mot de passe",
+                                properties: {
+                                    passwordPolicyEnable: {
+                                        hint: "Valider les mots de passe utilisateur contre une politique",
+                                        label: "Valider les mots de passe en fonction d'un modèle de stratégie"
+                                    },
+                                    passwordPolicyMinLength: {
+                                        hint: "Nombre minimum de caractères dans le mot de passe.",
+                                        label: "Nombre minimum de caractères"
+                                    },
+                                    passwordPolicyMaxLength: {
+                                        hint: "Nombre maximum de caractères dans le mot de passe.",
+                                        label: "Nombre maximum de caractères"
+                                    },
+                                    passwordPolicyPattern: {
+                                        hint: "Le modèle d'expression régulière pour valider le mot de passe.",
+                                        label: "Motif de mot de passe regex"
+                                    },
+                                    passwordPolicyErrorMsg: {
+                                        hint: "Ce message d'erreur sera affiché lorsqu'une violation de modèle est détectée.",
+                                        label: "Message d'erreur sur la violation du modèle"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    userOnboarding : {
+                        name: "Intégration de l'utilisateur",
+                        connectors: {
+                            selfSignUp: {
+                                friendlyName: "Auto-inscription",
+                                properties: {
+                                    selfRegistrationEnable: {
+                                        hint: "Autoriser les utilisateurs à s'inscrire au système.",
+                                        label: "Auto-inscription utilisateur"
+                                    },
+                                    selfRegistrationLockOnCreation: {
+                                        hint: "Verrouillez le compte d'utilisateur auto-enregistré jusqu'à la vérification par e-mail.",
+                                        label: "Verrouiller le compte d'utilisateur sur la création"
+                                    },
+                                    selfRegistrationSendConfirmationOnCreation: {
+                                        hint: "Activer la confirmation du compte utilisateur lorsque le compte d'utilisateur n'est pas verrouillé sur la création",
+                                        label: "Activer la confirmation du compte sur la création"
+                                    },
+                                    selfRegistrationNotificationInternallyManage: {
+                                        hint: "Désactiver si la demande client gère la notification envoyée",
+                                        label: "Gérer les notifications envoyées en interne"
+                                    },
+                                    selfRegistrationReCaptcha: {
+                                        hint: "Activer la vérification de recaptcha pendant l'auto-enregistrement.",
+                                        label: "Recaptcha rapide"
+                                    },
+                                    selfRegistrationVerificationCodeExpiryTime: {
+                                        hint: "Spécifiez le temps d'expiration en quelques minutes pour le lien de vérification.",
+                                        label: "Lien de vérification de l'auto-enregistrement des utilisateurs Temps d'expiration"
+                                    },
+                                    selfRegistrationVerificationCodeSmsotpExpiryTime: {
+                                        hint: "Spécifiez le temps d'expiration en quelques minutes pour le SMS OTP.",
+                                        label: "SMS d'auto-enregistrement des utilisateurs OTP Temps d'expiration"
+                                    },
+                                    selfRegistrationSmsotpRegex: {
+                                        hint: "Regex pour SMS OTP au format [caractères autorisés] {longueur}.Les gammes de caractères prises en charge sont A-Z, A-Z, 0-9.La longueur minimale de OTP est 4",
+                                        label: "SMS d'auto-enregistrement des utilisateurs otp regex"
+                                    },
+                                    selfRegistrationCallbackRegex: {
+                                        hint: "Ce préfixe sera utilisé pour valider l'URL de rappel.",
+                                        label: "URL de rappel d'auto-enregistrement utilisateur Regex"
+                                    },
+                                    urlListPurposeSelfSignUp: {
+                                        hint: "Cliquez ici pour gérer les objectifs d'auto-signature",
+                                        label: "Gérer les objectifs d'auto-signature"
+                                    },
+                                    selfRegistrationNotifyAccountConfirmation: {
+                                        hint: "Activer l'envoi de notification pour la confirmation d'auto-inscription.",
+                                        label: "Envoyer un e-mail de confirmation d'inscription"
+                                    },
+                                    selfRegistrationResendConfirmationReCaptcha: {
+                                        hint: "Vérification RecaptCha rapide pour la confirmation de renvoi",
+                                        label: "Recaptcha rapide sur la confirmation de re-end"
+                                    },
+                                    selfRegistrationAutoLoginEnable: {
+                                        hint: "L'utilisateur sera connecté automatiquement après avoir terminé la confirmation du compte",
+                                        label: "Activer la connexion automatique après la confirmation du compte"
+                                    },
+                                    selfRegistrationAutoLoginAliasName: {
+                                        hint: "Alias de la clé utilisée pour signer au cookie.La clé publique doit être importée sur le stade de clés.",
+                                        label: "Alias de la clé utilisée pour signer au cookie"
+                                    }
+                                }
+                            },
+                            liteUserSignUp: {
+                                friendlyName: "Enregistrement de l'utilisateur Lite",
+                                properties: {
+                                    liteRegistrationEnable: {
+                                        hint: "Autoriser les utilisateurs à s'inscrire au système sans mot de passe.",
+                                        label: "Enregistrement de l'utilisateur Lite"
+                                    },
+                                    liteRegistrationLockOnCreation: {
+                                        hint: "Verrouillez le compte d'utilisateur auto-enregistré jusqu'à la vérification par e-mail.",
+                                        label: "Verrouiller le compte d'utilisateur sur la création"
+                                    },
+                                    liteRegistrationNotificationInternallyManage: {
+                                        hint: "Désactiver si la demande client gère la notification envoyée",
+                                        label: "Gérer les notifications envoyées en interne"
+                                    },
+                                    liteRegistrationReCaptcha: {
+                                        hint: "Activer la vérification de Recaptcha pendant l'auto-enregistrement.",
+                                        label: "Recaptcha rapide"
+                                    },
+                                    liteRegistrationVerificationCodeExpiryTime: {
+                                        hint: "Spécifiez le temps d'expiration en quelques minutes pour le lien de vérification.",
+                                        label: "Lite des utilisateurs d'enregistrement des utilisateurs lien d'expiration du lien d'expiration"
+                                    },
+                                    liteRegistrationVerificationCodeSmsotpExpiryTime: {
+                                        hint: "Spécifiez le temps d'expiration en quelques minutes pour le SMS OTP.",
+                                        label: "Enregistrement des utilisateurs Lite SMS OTP Temps d'expiration"
+                                    },
+                                    liteRegistrationSmsotpRegex: {
+                                        hint: "Regex pour SMS OTP au format [caractères autorisés] {longueur}.Les gammes de caractères prises en charge sont A-Z, A-Z, 0-9.La longueur minimale de OTP est 4",
+                                        label: "Enregistrement des utilisateurs Lite SMS OTP Regex"
+                                    },
+                                    liteRegistrationCallbackRegex: {
+                                        hint: "Ce préfixe sera utilisé pour valider l'URL de rappel.",
+                                        label: "URL de rappel d'enregistrement de l'utilisateur Lite Regex"
+                                    },
+                                    urlListPurposeLiteUserSignUp: {
+                                        hint: "Cliquez ici pour gérer les objectifs de sign",
+                                        label: "Gérer les objectifs lite-sign"
+                                    }
+                                }
+                            },
+                            userEmailVerification: {
+                                friendlyName: "Demander le mot de passe",
+                                properties: {
+                                    emailVerificationEnable: {
+                                        hint: "Une notification de vérification sera déclenchée pendant la création d'utilisateurs.",
+                                        label: "Activer la vérification de l'e-mail utilisateur"
+                                    },
+                                    emailVerificationLockOnCreation: {
+                                        hint: "Le compte d'utilisateur sera verrouillé pendant la création d'utilisateurs.",
+                                        label: "Activer le verrouillage du compte sur la création"
+                                    },
+                                    emailVerificationNotificationInternallyManage: {
+                                        hint: "Désactiver si la demande client gère la notification envoyée.",
+                                        label: "Gérer les notifications envoyées en interne"
+                                    },
+                                    emailVerificationExpiryTime: {
+                                        hint: "Réglez la durée que l'e-mail de vérification serait valide, en quelques minutes.(Pour une période de validité infinie, réglé -1)",
+                                        label: "Code de vérification par e-mail Heure d'expiration"
+                                    },
+                                    emailVerificationAskPasswordExpiryTime: {
+                                        hint: "Définissez la durée de l'e-mail de mot de passe de demande serait valide, en quelques minutes.(Pour une période de validité infinie, réglé -1)",
+                                        label: "Demandez l'heure d'expiration du code de mot de passe"
+                                    },
+                                    emailVerificationAskPasswordPasswordGenerator: {
+                                        hint: "Point d'extension de génération de mots de passe temporaire dans la fonction de mot de passe de demande.",
+                                        label: "Classe d'extension de génération de mots de passe temporaire"
+                                    },
+                                    urlListPurposeJitProvisioning: {
+                                        hint: "Cliquez ici pour gérer juste les fins de provisioning à temps.",
+                                        label: "Gérer les objectifs de l'approvisionnement JIT"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    loginAttemptsSecurity : {
+                        name: "La connexion tente la sécurité",
+                        connectors: {
+                            accountLockHandler: {
+                                friendlyName: "Verrouillage du compte",
+                                properties: {
+                                    accountLockHandlerLockOnMaxFailedAttemptsEnable: {
+                                        hint: "Verrouiller les comptes d'utilisateurs sur les tentatives de connexion ratées",
+                                        label: "Lock user accounts on maximum failed attempts"
+                                    },
+                                    accountLockHandlerOnFailureMaxAttempts: {
+                                        hint: "Le nombre de tentatives de connexion échouées autorisées jusqu'à verrouillage du compte.",
+                                        label: "Tentatives de connexion échoue maximale"
+                                    },
+                                    accountLockHandlerTime: {
+                                        hint: "Période de verrouillage du compte initial en quelques minutes.Le compte sera automatiquement déverrouillé après cette période.",
+                                        label: "Durée initiale du verrouillage du compte"
+                                    },
+                                    accountLockHandlerLoginFailTimeoutRatio: {
+                                        hint: "La durée du verrouillage du compte sera augmentée de ce facteur.Ex: Durée initiale: 5m;Facteur d'incrément: 2;Durée du verrouillage suivant: 5 x 2 = 10m",
+                                        label: "Facteur d'incrément de durée de verrouillage du compte"
+                                    },
+                                    accountLockHandlerNotificationManageInternally: {
+                                        hint: "Désactiver si la demande client gère la notification envoyée",
+                                        label: "Gérer la notification Envoi en interne"
+                                    },
+                                    accountLockHandlerNotificationNotifyOnLockIncrement: {
+                                        hint: "Informer l'utilisateur lorsque la durée de verrouillage du compte est augmentée en raison des tentatives de connexion en échec continu.",
+                                        label: "Informer l'utilisateur lorsque le temps de verrouillage est augmenté"
+                                    }
+                                }
+                            },
+                            ssoLoginRecaptcha: {
+                                friendlyName: "recaptcha pour la connexion SSO",
+                                properties: {
+                                    ssoLoginRecaptchaEnableAlways: {
+                                        hint: "Toujours une vérification de recaptcha rapide pendant le flux de connexion SSO.",
+                                        label: "Toujours recaptcha rapide"
+                                    },
+                                    ssoLoginRecaptchaEnable: {
+                                        hint: "Vérification rapide du recaptcha pendant le flux de connexion SSO uniquement après que les tentatives d'échec max ont dépassé.",
+                                        label: "Recaptcha rapide après les tentatives d'échec max"
+                                    },
+                                    ssoLoginRecaptchaOnMaxFailedAttempts: {
+                                        hint: "Nombre de tentatives infructueuses autorisées sans inciter à la vérification de RECAPTCHA.",
+                                        label: "Max Échec des tentatives pour recaptcha"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    accountManagement : {
+                        name: "Gestion de compte",
+                        connectors: {
+                            suspensionNotification: {
+                                friendlyName: "Suspende du compte inactif",
+                                properties: {
+                                    suspensionNotificationEnable: {
+                                        hint: "Verrouiller le compte d'utilisateur après une période d'inactivité donnée.",
+                                        label: "Suspendre les comptes d'utilisateurs inactifs"
+                                    },
+                                    suspensionNotificationAccountDisableDelay: {
+                                        hint: "Période dans des jours avant de verrouiller le compte d'utilisateur.",
+                                        label: "Autorisation du temps inactif dans les jours"
+                                    },
+                                    suspensionNotificationDelays: {
+                                        hint: "Envoyez des alertes d'avertissement aux utilisateurs avant de verrouiller le compte, après chaque période.La virgule séparée plusieurs valeurs acceptées.",
+                                        label: "Alerte d'envoi de périodes en jours"
+                                    }
+                                }
+                            },
+                            accountDisableHandler: {
+                                friendlyName: "Compte désactiver",
+                                properties: {
+                                    accountDisableHandlerEnable: {
+                                        hint: "Allow an administrative user to disable user accounts",
+                                        label: "Activer la désactivation du compte"
+                                    },
+                                    accountDisableHandlerNotificationManageInternally: {
+                                        hint: "Désactiver, si la demande client gère la notification",
+                                        label: "Gérer la notification Envoi en interne"
+                                    }
+                                }
+                            },
+                            multiattributeLoginHandler: {
+                                friendlyName: "Connexion multi-attribut",
+                                properties: {
+                                    accountMultiattributeloginHandlerEnable: {
+                                        hint: "Activer l'utilisation de plusieurs attributs comme identifiant de connexion",
+                                        label: "Activer la connexion multi-attribut"
+                                    },
+                                    accountMultiattributeloginHandlerAllowedattributes: {
+                                        hint: "Liste des réclamations autorisées séparées par des virgules",
+                                        label: "Liste des réclamations d'attribut autorisée"
+                                    }
+                                }
+                            },
+                            accountRecovery: {
+                                friendlyName: "Gestion de compte",
+                                properties: {
+                                    recoveryNotificationPasswordEnable: {
+                                        label: "Récupération de mot de passe basée sur la notification"
+                                    },
+                                    recoveryReCaptchaPasswordEnable: {
+                                        label: "Activer RecaptCha pour la récupération de mot de passe"
+                                    },
+                                    recoveryQuestionPasswordEnable: {
+                                        label: "Récupération de mot de passe basée sur les questions de sécurité"
+                                    },
+                                    recoveryQuestionPasswordMinAnswers: {
+                                        label: "Nombre de questions requises pour la récupération du mot de passe"
+                                    },
+                                    recoveryQuestionAnswerRegex: {
+                                        hint: "Security question answer regex",
+                                        label: "Question de sécurité Réponse Regex"
+                                    },
+                                    recoveryQuestionAnswerUniqueness: {
+                                        hint: "Enforce security question answer uniqueness",
+                                        label: "Appliquer la question de sécurité Réponse l'unicité"
+                                    },
+                                    recoveryQuestionPasswordReCaptchaEnable: {
+                                        hint: "Prompt reCaptcha for security question based password recovery",
+                                        label: "Activer RecaptCha pour la récupération de mot de passe basée sur les questions de sécurité"
+                                    },
+                                    recoveryQuestionPasswordReCaptchaMaxFailedAttempts: {
+                                        label: "Max Échec des tentatives pour recaptcha"
+                                    },
+                                    recoveryNotificationUsernameEnable: {
+                                        label: "Récupération du nom d'utilisateur"
+                                    },
+                                    recoveryReCaptchaUsernameEnable: {
+                                        label: "Activer RecaptCha pour la récupération du nom d'utilisateur"
+                                    },
+                                    recoveryNotificationInternallyManage: {
+                                        hint: "Désactiver si la demande client gère la notification envoyée",
+                                        label: "Gérer les notifications envoyées en interne"
+                                    },
+                                    recoveryNotifySuccess: {
+                                        label: "Aviser quand le succès de la récupération"
+                                    },
+                                    recoveryQuestionPasswordNotifyStart: {
+                                        label: "Informer quand la récupération basée sur les questions de sécurité commence"
+                                    },
+                                    recoveryExpiryTime: {
+                                        label: "Lien de récupération Expiration Temps en quelques minutes"
+                                    },
+                                    recoveryNotificationPasswordExpiryTimeSmsOtp: {
+                                        hint: "Temps d'expiration du code OTP SMS pour la récupération de mot de passe",
+                                        label: "Temps d'expiration SMS OTP"
+                                    },
+                                    recoveryNotificationPasswordSmsOtpRegex: {
+                                        hint: "Regex pour SMS OTP au format [caractères autorisés] {longueur}.Les gammes de caractères prises en charge sont A-Z, A-Z, 0-9.La longueur minimale de OTP est 4",
+                                        label: "smsOtpRegex"
+                                    },
+                                    recoveryQuestionPasswordForcedEnable: {
+                                        hint: "Force les utilisateurs à fournir des réponses aux questions de sécurité pendant la connexion",
+                                        label: "Enable forced security questions"
+                                    },
+                                    recoveryQuestionMinQuestionsToAnswer: {
+                                        hint: "Forcer les utilisateurs à fournir des réponses aux questions de sécurité pendant la connexion si l'utilisateur a répondu moins que cette valeur",
+                                        label: "Nombre minimum de questions de sécurité forcées à répondre"
+                                    },
+                                    recoveryCallbackRegex: {
+                                        hint: "URL de rappel de récupération Regex",
+                                        label: "URL de rappel de récupération Regex"
+                                    },
+                                    recoveryAutoLoginEnable: {
+                                        hint: "L'utilisateur sera connecté automatiquement après avoir terminé l'assistant de réinitialisation du mot de passe",
+                                        label: "Activer la connexion automatique après réinitialisation du mot de passe"
+                                    }
+                                }
+                            },
+                            adminForcedPasswordReset: {
+                                friendlyName: "Réinitialisation du mot de passe",
+                                properties: {
+                                    recoveryAdminPasswordResetRecoveryLink: {
+                                        hint: "L'utilisateur est averti avec un lien pour réinitialiser le mot de passe",
+                                        label: "Activer la réinitialisation du mot de passe via l'e-mail de récupération"
+                                    },
+                                    recoveryAdminPasswordResetOtp: {
+                                        hint: "L'utilisateur est averti avec un mot de passe unique pour essayer avec la connexion SSO",
+                                        label: "Activer la réinitialisation du mot de passe via OTP"
+                                    },
+                                    recoveryAdminPasswordResetOffline: {
+                                        hint: "Un OTP généré et stocké dans les revendications des utilisateurs",
+                                        label: "Activer la réinitialisation du mot de passe hors ligne"
+                                    },
+                                    recoveryAdminPasswordResetExpiryTime: {
+                                        hint: "Le temps de validité de l'administrateur de réinitialisation du mot de passe forcé en quelques minutes",
+                                        label: "Administrateur de réinitialisation de mot de passe forcé le code d'expiration du code"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    otherSettings : {
+                        name: "Autres réglages",
+                        connectors: {
+                            piiController: {
+                                friendlyName: "Contrôleur d'information sur le consentement",
+                                properties: {
+                                    piiController: {
+                                        hint: "Nom du premier contrôleur qui collecte les données",
+                                        label: "Nom du contrôleur"
+                                    },
+                                    contact: {
+                                        hint: "Nom de contact du contrôleur",
+                                        label: "Nom du contact"
+                                    },
+                                    email: {
+                                        hint: "Adresse e-mail de contact du contrôleur",
+                                        label: "Adresse e-mail"
+                                    },
+                                    phone: {
+                                        hint: "Numéro de téléphone de contact du contrôleur",
+                                        label: "Numéro de téléphone"
+                                    },
+                                    onBehalf: {
+                                        hint: "Un processeur d'informations utilisateur (PII) agissant au nom d'un contrôleur ou d'un processeur PII",
+                                        label: "De la part de"
+                                    },
+                                    piiControllerUrl: {
+                                        hint: "Une URL pour contacter le contrôleur",
+                                        label: "URL"
+                                    },
+                                    addressCountry: {
+                                        hint: "Pays du contrôleur",
+                                        label: "Pays"
+                                    },
+                                    addressLocality: {
+                                        hint: "Localité du contrôleur",
+                                        label: "Localité"
+                                    },
+                                    addressRegion: {
+                                        hint: "Région du contrôleur",
+                                        label: "Région"
+                                    },
+                                    postOfficeBoxNumber: {
+                                        hint: "Numéro de boîte de bureau du contrôleur",
+                                        label: "Numéro de boîte de bureau"
+                                    },
+                                    postalCode: {
+                                        hint: "Code postal du contrôleur",
+                                        label: "code postal"
+                                    },
+                                    streetAddress: {
+                                        hint: "Adresse de rue du contrôleur",
+                                        label: "Adresse de rue"
+                                    }
+                                }
+                            },
+                            analyticsEngine: {
+                                friendlyName: "Analyse des serveurs d'identité [dépréciés]",
+                                messages: {
+                                    deprecation: {
+                                        description: "WSO2 Identity Server Analytics est désormais obsolète. Utilisez <1> ELK Analytics </1> à la place.",
+                                        heading: "Décousue"
+                                    }
+                                },
+                                properties: {
+                                    adaptiveAuthenticationAnalyticsReceiver: {
+                                        hint: "Hôte cible",
+                                        label: "Hôte cible"
+                                    },
+                                    adaptiveAuthenticationAnalyticsBasicAuthEnabled: {
+                                        hint: "Activer l'authentification de base",
+                                        label: "Activer l'authentification de base"
+                                    },
+                                    adaptiveAuthenticationAnalyticsBasicAuthUsername: {
+                                        hint: "Target Host Secured User ID",
+                                        label: "Identifiant d'utilisateur"
+                                    },
+                                    secretAdaptiveAuthenticationAnalyticsBasicAuthPassword: {
+                                        hint: "Secret sécurisé l'hôte cible",
+                                        label: "Secrète"
+                                    },
+                                    adaptiveAuthenticationAnalyticsHttpConnectionTimeout: {
+                                        hint: "Délai de connexion HTTP en millisecondes",
+                                        label: "Délai d'expiration de la connexion HTTP"
+                                    },
+                                    adaptiveAuthenticationAnalyticsHttpReadTimeout: {
+                                        hint: "HTTP Read Timeout en millisecondes",
+                                        label: "httpReadTimeout"
+                                    },
+                                    adaptiveAuthenticationAnalyticsHttpConnectionRequestTimeout: {
+                                        hint: "Timeout de demande de connexion HTTP en millisecondes",
+                                        label: "Timeout de demande de connexion HTTP"
+                                    },
+                                    adaptiveAuthenticationAnalyticsHostnameVerfier: {
+                                        hint: "Vérification du nom d'hôte.(Strict, perte_all)",
+                                        label: "Vérification du nom d'hôte"
+                                    }
+                                }
+                            },
+                            elasticAnalyticsEngine: {
+                                friendlyName: "Analytique des wapitis",
+                                properties: {
+                                    adaptiveAuthenticationElasticReceiver: {
+                                        hint: "Hôte elasticsearch",
+                                        label: "Hôte elasticsearch"
+                                    },
+                                    adaptiveAuthenticationElasticBasicAuthEnabled: {
+                                        hint: "Activer l'authentification de base",
+                                        label: "Activer l'authentification de base"
+                                    },
+                                    adaptiveAuthenticationElasticBasicAuthUsername: {
+                                        hint: "Nom d'utilisateur Elasticsearch",
+                                        label: "Nom d'utilisateur Elasticsearch"
+                                    },
+                                    secretAdaptiveAuthenticationElasticBasicAuthPassword: {
+                                        hint: "Mot de passe de l'utilisateur Elasticsearch",
+                                        label: "Mot de passe Elasticsearch"
+                                    },
+                                    adaptiveAuthenticationElasticHttpConnectionTimeout: {
+                                        hint: "Délai de connexion HTTP en millisecondes",
+                                        label: "Délai d'expiration de la connexion HTTP"
+                                    },
+                                    adaptiveAuthenticationElasticHttpReadTimeout: {
+                                        hint: "HTTP Read Timeout en millisecondes",
+                                        label: "httpReadTimeout"
+                                    },
+                                    adaptiveAuthenticationElasticHttpConnectionRequestTimeout: {
+                                        hint: "Timeout de demande de connexion HTTP en millisecondes",
+                                        label: "Timeout de demande de connexion HTTP"
+                                    },
+                                    adaptiveAuthenticationElasticHostnameVerfier: {
+                                        hint: "Vérification du nom d'hôte.(Strict, perte_all)",
+                                        label: "Vérification du nom d'hôte"
+                                    }
+                                }
+                            },
+                            userClaimUpdate: {
+                                friendlyName: "Mise à jour de la réclamation des utilisateurs",
+                                properties: {
+                                    userClaimUpdateEmailEnableVerification: {
+                                        hint: "Déclencher une notification de vérification lorsque l'adresse e-mail de l'utilisateur est mise à jour.",
+                                        label: "Activer la vérification des e-mails utilisateur lors de la mise à jour"
+                                    },
+                                    userClaimUpdateEmailVerificationCodeExpiryTime: {
+                                        hint: "Temps de validité du lien de confirmation par e-mail en quelques minutes.",
+                                        label: "Vérification par e-mail sur le lien de mise à jour Temps d'expiration"
+                                    },
+                                    userClaimUpdateEmailEnableNotification: {
+                                        hint: "Déclenchez une notification à l'adresse e-mail existante lorsque l'utilisateur tente de mettre à jour l'adresse e-mail existante.",
+                                        label: "Activer la notification par e-mail utilisateur lors de la mise à jour"
+                                    },
+                                    userClaimUpdateMobileNumberEnableVerification: {
+                                        hint: "Déclencher une vérification SMS OTP lorsque le numéro de mobile de l'utilisateur est mis à jour.",
+                                        label: "Activer la vérification du numéro de mobile de l'utilisateur lors de la mise à jour"
+                                    },
+                                    userClaimUpdateMobileNumberVerificationCodeExpiryTime: {
+                                        hint: "Temps de validité de la confirmation du numéro de mobile OTP en quelques minutes.",
+                                        label: "Vérification du numéro de mobile sur la mise à jour du temps d'expiration SMS OTP"
+                                    },
+                                    userClaimUpdateMobileNumberEnableVerificationByPrivilegedUser: {
+                                        hint: "Permettez aux utilisateurs privilégiés d'initier la vérification du numéro de mobile lors de la mise à jour.",
+                                        label: "Enable mobile number verification by privileged users"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    multiFactorAuthenticators : {
+                        name: "Authentificateurs multi-facteurs",
+                        connectors: {
+                            backupCodeAuthenticator: {
+                                friendlyName: "Authentificateur de code de sauvegarde",
+                                properties: {
+                                    backupCodeBackupCodeLength: {
+                                        hint: "Longueur d'un code de sauvegarde",
+                                        label: "Longueur de code de sauvegarde"
+                                    },
+                                    backupCodeBackupCodeSize: {
+                                        hint: "Nombre maximum de codes de sauvegarde",
+                                        label: "Taille du code de sauvegarde"
+                                    }
+                                }
                             }
                         }
                     }
@@ -5813,7 +6493,7 @@ export const console: ConsoleNS = {
                             message: "Erreur de mise à jour"
                         },
                         genericError: {
-                            description: "Une erreur s'est produite lors de la mise à jour du scope OIDC.",
+                            description: "Une erreur s'est produite lors de la mise à jour du scope OIDC {{ scope }}.",
                             message: "Quelque chose s'est mal passé"
                         },
                         success: {
@@ -5902,6 +6582,12 @@ export const console: ConsoleNS = {
                     },
                     back: "Retour",
                     dangerZone: {
+                        disableOrganization: {
+                            disableActionTitle: "Désactiver l'organisation",
+                            enableActionTitle: "Activer l'organisation",
+                            subheader: "La désactivation d'une organisation peut vous faire perdre l'accès à" +
+                                " l'organisation associée. Procéder avec prudence."
+                        },
                         subHeader: "Voulez-vous vraiment supprimer cette organisation?",
                         title: "Supprimer l'organisation"
                     },
@@ -6021,6 +6707,36 @@ export const console: ConsoleNS = {
                     },
                     deleteOrganizationWithSubOrganizationError: "L'organisation {{ organizationName }} ne peut pas" +
                         " être supprimée car elle possède une ou plusieurs sous-organisations.",
+                    disableOrganization: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Erreur lors de la désactivation de l'organisation"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la désactivation de l'organisation",
+                            message: "Quelque chose s'est mal passé"
+                        },
+                        success: {
+                            description: "L'organisation a bien été désactivée",
+                            message: "Organisation désactivée avec succès"
+                        }
+                    },
+                    disableOrganizationWithSubOrganizationError: "L'organisation {{ organizationName }} ne peut pas" +
+                        " être désactivée car elle possède une ou plusieurs sous-organisations.",
+                    enableOrganization: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Erreur lors de l'activation de l'organisation"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de l'activation de l'organisation",
+                            message: "Quelque chose s'est mal passé"
+                        },
+                        success: {
+                            description: "L'organisation a bien été activée",
+                            message: "Organisation activée avec succès"
+                        }
+                    },
                     fetchOrganization: {
                         error: {
                             description: "{{description}}",
@@ -6087,12 +6803,23 @@ export const console: ConsoleNS = {
                         title: "Ajouter une nouvelle organisation"
                     }
                 },
+                shareApplicationRadio: "Partager avec toutes les sous-organisations",
+                shareApplicationInfo: "Sélectionnez cette option pour partager l'application avec toutes " +
+                    "les sous-organisations existantes et toutes les nouvelles sous-organisations que vous " +
+                    "créez sous votre organisation actuelle.",
+                unshareApplicationRadio: "Annuler le partage avec toutes les sous-organisations",
+                shareWithSelectedOrgsRadio: "Partager uniquement avec les sous-organisations sélectionnées",
+                unshareApplicationInfo: "Sélectionnez cette option pour annuler le partage de l'application " +
+                    "avec toutes les sous-organisations existantes et toutes les nouvelles sous-organisations " +
+                    "que vous créez sous vos organisations actuelles.",
                 subTitle: "Créer et gérer des organisations.",
                 switching: {
                     emptyList: "Il n'y a aucune organisation à afficher.",
                     search: {
                         placeholder: "Rechercher par nom"
-                    }
+                    },
+                    goBack: "Retourner",
+                    subOrganizations: "Sous-organisations"
                 },
                 title: "Organisations"
             },
@@ -6695,6 +7422,7 @@ export const console: ConsoleNS = {
                 }
             },
             sidePanel: {
+                accountManagement: "Gestion de compte",
                 addEmailTemplate: "Ajouter un modèle d'e-mail",
                 addEmailTemplateLocale: "Ajouter une langue de modèle d'e-mail",
                 approvals: "Approbations",
@@ -6704,7 +7432,7 @@ export const console: ConsoleNS = {
                     certificates: "Certificats",
                     configurations: "Configurations",
                     general: "Général",
-                    organizations: "Organisations",
+                    organizations: "Gestion de l'organisation",
                     users: "Utilisateurs",
                     userstores: "Annuaires"
                 },
@@ -6722,9 +7450,15 @@ export const console: ConsoleNS = {
                 generalConfigurations: "Général",
                 groups: "Groupes",
                 localDialect: "Dialecte local",
+                loginAttemptsSecurity: "Sécurité des tentatives de connexion",
+                multiFactorAuthenticators: "Authentificateurs multi-facteurs",
                 organizations: "Organisations",
+                otherSettings: "Autres réglages",
                 overview: "Vue d'ensemble",
+                passwordPolicies: "Politiques de mot de passe",
+                remoteFetchConfig: "Configurations à distance",
                 roles: "Rôles",
+                userOnboarding: "Intégration des utilisateurs",
                 users: "Utilisateurs",
                 userstoreTemplates: "Modèles d'annuaires",
                 userstores: "Annuaires"
@@ -6813,6 +7547,12 @@ export const console: ConsoleNS = {
                             header: "Réinitialiser le mot de passe",
                             subheader: "Une fois le mot de passe modifié, l'utilisateur ne pourra plus se connecter " +
                                 "à aucune application en utilisant le mot de passe actuel."
+                        },
+                        deleteAdminPriviledgeZone: {
+                            actionTitle: "Révoquer les privilèges",
+                            header: "Révoquer les privilèges d'administrateur",
+                            subheader: "Cette action supprimera les privilèges d'administrateur de l'utilisateur, " +
+                                "mais l'utilisateur continuera d'être dans l'organisation."
                         }
                     },
                     dateOfBirth: {
@@ -6829,7 +7569,7 @@ export const console: ConsoleNS = {
                                 label: "Sélectionnez la méthode pour réinitialiser le mot de passe utilisateur",
                                 options: {
                                     askPassword: "Invitez l'utilisateur à définir son propre mot de passe",
-                                    createPassword: "Définissez un mot de passe temporaire pour l'utilisateur"
+                                    createPassword: "Définissez un mot de passe pour l'utilisateur"
 
                                 }
                             }
@@ -7202,6 +7942,16 @@ export const console: ConsoleNS = {
                         }
                     }
                 },
+                revokeAdmin: {
+                    confirmationModal: {
+                        assertionHint: "Veuillez confirmer votre action.",
+                        content: "Si vous révoquez les privilèges d'administrateur de cet utilisateur, l'utilisateur " +
+                            "ne pourra pas se connecter à la console Asgardeo et ne pourra pas " +
+                            "effectuer d'opérations d'administration. Veuillez procéder avec prudence.",
+                        header: "Êtes-vous sûr?",
+                        message: "Cette action révoquera les privilèges d'administrateur de l'utilisateur."
+                    }
+                },
                 updateUser: {
                     groups: {
                         addGroupsModal: {
@@ -7554,6 +8304,34 @@ export const console: ConsoleNS = {
                         success: {
                             description: "Les utilisateurs ont été récupérés avec succès.",
                             message: "Récupération des utilisateurs réussie"
+                        }
+                    },
+                    getAdminRole: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Erreur lors de la récupération du rôle d'administrateur"
+                        },
+                        genericError: {
+                            description: "Impossible de récupérer les rôles d'administrateur.",
+                            message: "Quelque chose s'est mal passé"
+                        },
+                        success: {
+                            description: "Récupération réussie des rôles d'administrateur.",
+                            message: "Récupération du rôle d'administrateur réussie"
+                        }
+                    },
+                    revokeAdmin: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Erreur lors de la révocation des privilèges d'administrateur"
+                        },
+                        genericError: {
+                            description: "Impossible de révoquer les privilèges d'administrateur.",
+                            message: "Quelque chose s'est mal passé"
+                        },
+                        success: {
+                            description: "Révocation réussie des privilèges d'administrateur.",
+                            message: "Les privilèges d'administrateur ont bien été révoqués"
                         }
                     }
                 },

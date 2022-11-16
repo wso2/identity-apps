@@ -25,7 +25,6 @@ import {
     RolesInterface,
     TestableComponentInterface
 } from "@wso2is/core/models";
-import { CommonUtils } from "@wso2is/core/utils";
 import {
     AnimatedAvatar,
     AppAvatar,
@@ -38,6 +37,7 @@ import {
     TableActionsInterface,
     TableColumnInterface
 } from "@wso2is/react-components";
+import moment from "moment";
 import React, { ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -308,7 +308,14 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                 hidden: !showMetaContent,
                 id: "lastModified",
                 key: "lastModified",
-                render: (role: RolesInterface) => CommonUtils.humanizeDateDifference(role?.meta?.created),
+                render: (role: RolesInterface) => {
+                    const now = moment(new Date());
+                    const receivedDate = moment(role?.meta?.created);
+
+                    return t("console:common.dateTime.humanizedDateString", {
+                        date: moment.duration(now.diff(receivedDate)).humanize()
+                    });
+                },
                 title: t("console:manage.features.roles.list.columns.lastModified")
             },
             {

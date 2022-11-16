@@ -1,7 +1,7 @@
 <%--
-  ~ Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+  ~ Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
   ~
-  ~ WSO2 Inc. licenses this file to you under the Apache License,
+  ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
   ~ in compliance with the License.
   ~ You may obtain a copy of the License at
@@ -18,8 +18,10 @@
 
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
+<%@ page import="org.wso2.carbon.identity.core.util.IdentityCoreConstants" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.Map" %>
+<%@ page import="org.wso2.carbon.identity.application.authenticator.totp.TOTPAuthenticatorConstants" %>
 <%@ page import="org.wso2.carbon.identity.application.authenticator.totp.util.TOTPUtil" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
@@ -45,8 +47,24 @@
 
     if (Boolean.parseBoolean(request.getParameter(Constants.AUTH_FAILURE))) {
         authenticationFailed = "true";
+        boolean isErrorMessageFromErrorCodeAdded = false;
+        String errorCode = request.getParameter(TOTPAuthenticatorConstants.ERROR_CODE);
 
-        if (request.getParameter(Constants.AUTH_FAILURE_MSG) != null) {
+        if (errorCode != null) {
+            if (errorCode.equals(IdentityCoreConstants.USER_ACCOUNT_LOCKED_ERROR_CODE)) {
+                String lockedReason = request.getParameter(TOTPAuthenticatorConstants.LOCKED_REASON);
+                if (lockedReason != null) {
+                    if (lockedReason.equals(TOTPAuthenticatorConstants.MAX_TOTP_ATTEMPTS_EXCEEDED)) {
+                        errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.user.account.locked.incorrect.login.attempts");
+                        isErrorMessageFromErrorCodeAdded = true;
+                    } else if (lockedReason.equals(TOTPAuthenticatorConstants.ADMIN_INITIATED)) {
+                        errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.user.account.locked.admin.initiated");
+                        isErrorMessageFromErrorCodeAdded = true;
+                    }
+                }
+            }
+        }
+        if (!isErrorMessageFromErrorCodeAdded && request.getParameter(Constants.AUTH_FAILURE_MSG) != null) {
             errorMessage = Encode.forHtmlAttribute(request.getParameter(Constants.AUTH_FAILURE_MSG));
 
                 if (errorMessage.equalsIgnoreCase("authentication.fail.message") ||
@@ -64,7 +82,7 @@
 
 <html>
     <head>
-        <!-- header -->
+        <%-- header --%>
         <%
             File headerFile = new File(getServletContext().getRealPath("extensions/header.jsp"));
             if (headerFile.exists()) {
@@ -130,7 +148,7 @@
 
         <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
             <layout:component componentName="ProductHeader" >
-                <!-- product-title -->
+                <%-- product-title --%>
                 <%
                     File productTitleFile = new File(getServletContext()
                                             .getRealPath("extensions/product-title.jsp"));
@@ -143,7 +161,7 @@
             </layout:component>
             <layout:component componentName="MainSection" >
                 <div class="ui segment">
-                    <!-- page content -->
+                    <%-- page content --%>
                     <h2><%=AuthenticationEndpointUtil.i18n(resourceBundle, "auth.totp")%></h2>
                     <div class="uii divider hidden"></div>
                     <%
@@ -154,7 +172,7 @@
                     <% } %>
 
                     <div class="ui segment">
-                        <!-- page content -->
+                        <%-- page content --%>
                         <div class="uii divider hidden"></div>
 
                         <input id="username" type="hidden"
@@ -209,7 +227,7 @@
                     </div>
             </layout:component>
             <layout:component componentName="ProductFooter" >
-                <!-- product-footer -->
+                <%-- product-footer --%>
                 <%
                     File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
                     if (productFooterFile.exists()) {
@@ -221,7 +239,7 @@
             </layout:component>
         </layout:main>
 
-        <!-- footer -->
+        <%-- footer --%>
         <%
             File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
             if (footerFile.exists()) {

@@ -16,11 +16,11 @@
  * under the License.
  */
 
-import { getUserStoreList } from "@wso2is/core/api";
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
 import isEmpty from "lodash-es/isEmpty";
+import { getUserStoreList } from "../../userstores/api";
 import { UserStoreListItem, UserStoreProperty } from "../../userstores/models";
 import { getAUserStore, getPrimaryUserStore } from "../api";
 import { SharedUserStoreConstants } from "../constants";
@@ -50,7 +50,7 @@ export class SharedUserStoreUtils {
     public static async getUserStoreRegEx(userstore: string, regExName: string): Promise<string> {
         let usernameRegEx: UserStoreProperty = null;
 
-        return getUserStoreList(store.getState().config.endpoints.userStores)
+        return getUserStoreList()
             .then((response) => {
                 const store = response?.data?.find(item => item.name === userstore);
 
@@ -99,7 +99,7 @@ export class SharedUserStoreUtils {
             return getIds(userstores);
         }
 
-        return getUserStoreList(store.getState().config.endpoints.userStores)
+        return getUserStoreList()
             .then((response) => {
                 return getIds(response.data);
             })

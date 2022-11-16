@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -85,9 +85,9 @@ export interface IframeProps extends IframeHTMLAttributes<HTMLIFrameElement>, Id
 /**
  * React Wrapper for HTML iframe element.
  *
- * @param {IframeProps} props - Props injected to the danger zone component.
+ * @param props - Props injected to the danger zone component.
  *
- * @return {React.ReactElement}
+ * @returns the React Wrapper component for HTML iframe element.
  */
 export const Iframe: FunctionComponent<PropsWithChildren<IframeProps>> = (
     props: PropsWithChildren<IframeProps>
@@ -123,8 +123,8 @@ export const Iframe: FunctionComponent<PropsWithChildren<IframeProps>> = (
         "ui",
         "iframe",
         {
-            responsive,
-            [ "loading" ]: isLoading
+            [ "loading" ]: isLoading,
+            responsive
         },
         className
     );
@@ -302,9 +302,9 @@ export const Iframe: FunctionComponent<PropsWithChildren<IframeProps>> = (
     /**
      * Injects the passed in stylesheet to the Head element of the document passed in as an argument.
      *
-     * @param {Partial<StyleSheet>} styleSheet - Stylesheet object.
-     * @param {Document} document - Document.
-     * @return {Promise<HTMLLinkElement>}
+     * @param styleSheet - Stylesheet object.
+     * @param document - Document.
+     * @returns a promise that resolves with a html link.
      */
     const injectStyleSheetToDOM = (styleSheet: Partial<StyleSheet>, document: Document): Promise<HTMLLinkElement> => {
 
@@ -324,8 +324,8 @@ export const Iframe: FunctionComponent<PropsWithChildren<IframeProps>> = (
     /**
      * Renders the iframe element.
      *
-     * @param {boolean} isWrapped - Is the iframe wrapped with a div.
-     * @return {ReactElement}
+     * @param isWrapped - Is the iframe wrapped with a div.
+     * @returns the iframe element.
      */
     const _iframe = (isWrapped: boolean = responsive): ReactElement => {
         return (

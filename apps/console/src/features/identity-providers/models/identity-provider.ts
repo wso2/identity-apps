@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -304,17 +304,14 @@ export interface IdentityProviderTemplateCategoryViewConfigInterface {
  * Enum for IDP template loading strategies.
  *
  * @readonly
- * @enum {string}
  */
 export enum IdentityProviderTemplateLoadingStrategies {
     /**
      * App will resort to in-app templates.
-     * @type {string}
      */
     LOCAL = "LOCAL",
     /**
      * App will fetch templates from the template management REST API.
-     * @type {string}
      */
     REMOTE = "REMOTE"
 }
@@ -323,7 +320,6 @@ export enum IdentityProviderTemplateLoadingStrategies {
  * Enum for the supported quick start template types.
  *
  * @readonly
- * @enum {string}
  */
 export enum SupportedQuickStartTemplateTypes {
     GOOGLE = "Google"
@@ -333,13 +329,13 @@ export enum SupportedQuickStartTemplateTypes {
  * Enum for the supported authenticator types.
  *
  * @readonly
- * @enum {string}
- */
+**/
 export enum SupportedAuthenticators {
     NONE = "none",
     FACEBOOK = "FacebookAuthenticator",
     GOOGLE = "GoogleOIDCAuthenticator",
     TWITTER = "TwitterAuthenticator",
+    MICROSOFT= "MicrosoftAuthenticator",
     OIDC = "OpenIDConnectAuthenticator",
     SAML = "SAMLSSOAuthenticator"
 }
@@ -348,7 +344,6 @@ export enum SupportedAuthenticators {
  * Enum for the supported provisioning connector types.
  *
  * @readonly
- * @enum {string}
  */
 export enum SupportedProvisioningConnectors {
     NONE = "none",
@@ -372,6 +367,7 @@ export interface JITProvisioningResponseInterface {
     isEnabled?: boolean;
     scheme?: SupportedJITProvisioningSchemes;
     userstore?: string;
+    associateLocalUser?: boolean;
 }
 
 export enum SupportedJITProvisioningSchemes {
@@ -521,7 +517,6 @@ export interface SupportedServicesInterface {
  * Enum for supported services.
  *
  * @readonly
- * @enum {string}
  */
 export enum SupportedServices {
     AUTHENTICATION = "authentication",
@@ -532,7 +527,6 @@ export enum SupportedServices {
  * Enum for supported identity provider template categories.
  *
  * @readonly
- * @enum {string}
  */
 export enum SupportedIdentityProviderTemplateCategories {
     QUICK_START = "quick_start"
@@ -638,7 +632,7 @@ export interface AuthenticatorInterface {
     tags: string[];
     /**
      * Details endpoint.
-     * @ex: `/t/carbon.super/api/server/v1/configs/authenticators/eDUwOUNlcnRpZmljYXRlQXV0aGVudGljYXRvcg`
+     * @example  `/t/carbon.super/api/server/v1/configs/authenticators/eDUwOUNlcnRpZmljYXRlQXV0aGVudGljYXRvcg`
      */
     self: string;
 }
@@ -753,7 +747,6 @@ export interface GenericIdentityProviderCreateWizardPropsInterface {
 /**
  * Authenticator Labels.
  * @readonly
- * @enum {string}
  */
 export enum AuthenticatorLabels {
     SOCIAL = "Social-Login",
@@ -770,7 +763,6 @@ export enum AuthenticatorLabels {
 /**
  * Authenticator Categories.
  * @readonly
- * @enum {string}
  */
 export enum AuthenticatorCategories {
     ENTERPRISE = "ENTERPRISE",
@@ -782,7 +774,6 @@ export enum AuthenticatorCategories {
 /**
  * Enum for Authenticator Types.
  * @readonly
- * @enum {string}
  */
 export enum AuthenticatorTypes {
     FEDERATED = "FEDERATED",
@@ -793,7 +784,6 @@ export enum AuthenticatorTypes {
  * Enum for the supported auth protocol types.
  *
  * @readonly
- * @enum {string}
  */
 export enum AuthProtocolTypes {
     SAML = "saml",

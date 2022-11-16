@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -39,7 +39,6 @@ import { AuthenticatorAccordion } from "../../../core/components";
 import {
     getFederatedAuthenticatorDetails,
     getFederatedAuthenticatorMeta,
-    getIdentityProviderTemplate,
     updateFederatedAuthenticator,
     updateFederatedAuthenticators
 } from "../../api";
@@ -56,15 +55,13 @@ import {
     IdentityProviderInterface,
     IdentityProviderTemplateInterface,
     IdentityProviderTemplateItemInterface,
-    IdentityProviderTemplateListItemInterface,
     IdentityProviderTemplateLoadingStrategies
 } from "../../models";
 import { IdentityProviderManagementUtils, IdentityProviderTemplateManagementUtils } from "../../utils";
 import { AuthenticatorFormFactory } from "../forms";
 import { getConnectorMetadata } from "../meta";
 import {
-    handleGetFederatedAuthenticatorMetadataAPICallError,
-    handleGetIDPTemplateAPICallError
+    handleGetFederatedAuthenticatorMetadataAPICallError
 } from "../utils";
 import { AuthenticatorCreateWizard } from "../wizards/authenticator-create-wizard";
 
@@ -101,8 +98,8 @@ const AUTHORIZED_REDIRECT_URL: string = "callbackUrl";
 /**
  *  Identity Provider and advance settings component.
  *
- * @param {IdentityProviderSettingsPropsInterface} props - Props injected to the component.
- * @return {ReactElement}
+ * @param props - Props injected to the component.
+ * @returns Functional component.
  */
 export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPropsInterface> = (
     props: IdentityProviderSettingsPropsInterface
@@ -181,7 +178,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                 IdentityProviderTemplateLoadingStrategies.REMOTE);
 
         /**
-         * With {@link skipGrouping} being {@code false} we say
+         * With {@link skipGrouping} being `false` we say
          * we need to group the existing templates based on their
          * template-group.
          */
@@ -209,7 +206,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
      *
      * @param values - Form values.
      */
-    const handleAuthenticatorConfigFormSubmit = (values: FederatedAuthenticatorListItemInterface, 
+    const handleAuthenticatorConfigFormSubmit = (values: FederatedAuthenticatorListItemInterface,
         isDefaultAuthSet: boolean = true): void => {
 
         addCallbackUrl(values);
@@ -296,7 +293,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
      *
      * Add callback URL to the values.
      *
-     * @param values
+     * @param values - Federated Authenticators.
      */
     const addCallbackUrl = (values: FederatedAuthenticatorListItemInterface) => {
 
@@ -338,7 +335,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
     /**
      * Fetch data and metadata of a given authenticatorId and return a promise.
      *
-     * @param authenticatorId ID of the authenticator.
+     * @param authenticatorId - ID of the authenticator.
      */
     const fetchAuthenticator = (authenticatorId: string) => {
         return new Promise(resolve => {
@@ -413,9 +410,9 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
     /**
      * Handles default authenticator change event.
      *
-     * @param {React.FormEvent<HTMLInputElement>} e - Event.
-     * @param {CheckboxProps} data - Checkbox data.
-     * @param {string} id - Id of the authenticator.
+     * @param e - Event.
+     * @param data - Checkbox data.
+     * @param id - Id of the authenticator.
      */
     const handleDefaultAuthenticatorChange = (e: FormEvent<HTMLInputElement>, data: CheckboxProps, id: string):
         void => {
@@ -428,9 +425,9 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
     /**
      * Handles authenticator enable toggle.
      *
-     * @param {React.FormEvent<HTMLInputElement>} e - Event.
-     * @param {CheckboxProps} data - Checkbox data.
-     * @param {string} id - Id of the authenticator.
+     * @param e -  Event.
+     * @param data - Checkbox data.
+     * @param id - Id of the authenticator.
      */
     const handleAuthenticatorEnableToggle = (e: FormEvent<HTMLInputElement>, data: CheckboxProps, id: string): void => {
         const authenticator = availableAuthenticators.find(authenticator => (authenticator.id === id)).data;
@@ -454,7 +451,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
     /**
      * Handles Authenticator delete action.
      *
-     * @param {string} id - Id of the authenticator.
+     * @param id - Id of the authenticator.
      */
     const handleAuthenticatorDelete = (id: string): void => {
         const authenticatorsList = [];
@@ -516,8 +513,8 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
     /**
      * Handles Authenticator delete button on click action.
      *
-     * @param {React.MouseEvent<HTMLDivElement>} e - Click event.
-     * @param {string} id - Id of the authenticator.
+     * @param e - Click event.
+     * @param id - Id of the authenticator.
      */
     const handleAuthenticatorDeleteOnClick = (e: MouseEvent<HTMLDivElement>, id: string): void => {
         if (!id) {
@@ -567,7 +564,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
 
         // sort templateList based on display Order
         filteredTemplates?.sort((a, b) => (a?.displayOrder > b?.displayOrder) ? 1 : -1);
-        
+
         const flattenedConnectorMetadata: ({ [ key: string ]: FederatedAuthenticatorMetaDataInterface }) = keyBy(
             getConnectorMetadata(), "authenticatorId"
         );
@@ -590,43 +587,11 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
     };
 
     /**
-     * Asynchronous function to loop through IDP templates list and fetch templates.
-     *
-     * @param templatesList List of templates.
-     */
-    async function fetchIDPTemplates(templatesList: IdentityProviderTemplateListItemInterface[]) {
-        const templates: IdentityProviderTemplateInterface[] = [];
-
-        for (const template of templatesList) {
-            templates.push(await fetchIDPTemplate(template.id));
-        }
-
-        return templates;
-    }
-
-    /**
-     * Fetch IDP template corresponds to the given tempalte ID.
-     *
-     * @param templateId ID of the authenticator.
-     */
-    const fetchIDPTemplate = (templateId: string): Promise<IdentityProviderTemplateInterface> => {
-        return new Promise(resolve => {
-            getIdentityProviderTemplate(templateId)
-                .then(response => {
-                    resolve(response);
-                })
-                .catch(error => {
-                    handleGetIDPTemplateAPICallError(error);
-                });
-        });
-    };
-
-    /**
      * A predicate that checks whether a give federated authenticator
      * is a default authenticator.
      *
-     * @param {FederatedAuthenticatorWithMetaInterface} auth - Authenticator.
-     * @returns true if {@code auth.data.isDefault} is truthy
+     * @param auth -  Authenticator.
+     * @returns true if `auth.data.isDefault` is truthy
      */
     const isDefaultAuthenticatorPredicate = (
         auth: FederatedAuthenticatorWithMetaInterface
@@ -636,11 +601,11 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
 
     /**
      * A helper function that generates {@link SegmentedAccordionTitleActionInterface}
-     * accordion actions foreach {@code availableAuthenticators} when rendering a
+     * accordion actions foreach `availableAuthenticators` when rendering a
      * {@link AuthenticatorAccordion}
      *
      * @see AuthenticatorAccordionItemInterface.actions
-     * @param authenticator
+     * @param authenticator - Authenticator.
      * @returns SegmentedAccordionTitleActionInterface
      */
     const createAccordionActions = (
@@ -691,8 +656,8 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
     /**
      * Handles accordion title click.
      *
-     * @param {React.SyntheticEvent} e - Click event.
-     * @param {AccordionTitleProps} SegmentedAuthenticatedAccordion - Clicked title.
+     * @param e - Click event.
+     * @param SegmentedAuthenticatedAccordion - Clicked title.
      */
     const handleAccordionOnClick = (e: MouseEvent<HTMLDivElement>,
         SegmentedAuthenticatedAccordion: AccordionTitleProps): void => {
@@ -715,7 +680,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
     /**
      * Shows the authenticator list.
      *
-     * @returns {ReactElement}
+     * @returns Functional component.
      */
     const showAuthenticatorList = (): ReactElement => {
 
@@ -862,7 +827,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
             if (!authenticator) {
                 return;
             }
-                
+
             // TODO: Need to update below values in the OIDC authenticator metadata API
             // Set additional meta data if the authenticator is OIDC
             if (authenticator.id === IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_ID) {
@@ -910,26 +875,30 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                 //Temporarily removed until sub attributes are available
                 removeElementFromProps(authenticator.meta.properties, "IsUserIdInClaims" );
 
-                // Inject logout url
-                const logoutUrlData = {
-                    key: "OIDCLogoutEPUrl"
-                };
+                if (!authenticator.meta.properties?.find(prop => prop.key === "OIDCLogoutEPUrl")) {
 
-                authenticator.data.properties.push(logoutUrlData);
-                const logoutUrlMeta: CommonPluggableComponentMetaPropertyInterface = {
-                    description: `The URL of the identity provider to which ${ config.ui.productName } will send session
-                        invalidation requests.`,
-                    displayName: "Logout URL",
-                    displayOrder: 7,
-                    isConfidential: false,
-                    isMandatory: false,
-                    key: "OIDCLogoutEPUrl",
-                    options: [],
-                    subProperties: [],
-                    type: "URL"
-                };
+                    const logoutUrlData: CommonPluggableComponentPropertyInterface = {
+                        key: "OIDCLogoutEPUrl"
+                    };
 
-                authenticator.meta.properties.push(logoutUrlMeta);
+                    authenticator.data.properties.push(logoutUrlData);
+
+                    const logoutUrlMeta: CommonPluggableComponentMetaPropertyInterface = {
+                        description: `The URL of the identity provider to which
+                         ${ config.ui.productName } will send session
+                            invalidation requests.`,
+                        displayName: "Logout URL",
+                        displayOrder: 7,
+                        isConfidential: false,
+                        isMandatory: false,
+                        key: "OIDCLogoutEPUrl",
+                        options: [],
+                        subProperties: [],
+                        type: "URL"
+                    };
+
+                    authenticator.meta.properties.push(logoutUrlMeta);
+                }
             }
 
             return (

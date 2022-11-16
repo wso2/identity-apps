@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -21,6 +21,7 @@ import React, { ReactElement } from "react";
 import { Button, Divider, Form, Icon, Popup, Radio } from "semantic-ui-react";
 import { Password } from "./password";
 import { QueryParameters } from "./query-parameters";
+import { Scopes } from "./scopes";
 import {
     isButtonField,
     isCheckBoxField,
@@ -31,6 +32,7 @@ import {
     isQueryParamsField,
     isRadioField,
     isResetField,
+    isScopesField,
     isSubmitField,
     isTextField,
     isToggleField
@@ -40,8 +42,6 @@ import { filterPassedProps } from "../utils";
 
 /**
  * The enter key.
- * @constant
- * @type {string}
  */
 const ENTER_KEY = "Enter";
 
@@ -62,8 +62,9 @@ interface InnerFieldPropsInterface {
 }
 
 /**
- * This produces a InnerField component
- * @param props
+ * This produces a InnerField component.
+ * 
+ * @param props - The props for the InnerField component.
  */
 export const InnerField = React.forwardRef((props: InnerFieldPropsInterface, ref: React.Ref<any>): JSX.Element => {
 
@@ -84,8 +85,9 @@ export const InnerField = React.forwardRef((props: InnerFieldPropsInterface, ref
     }, formField.className);
 
     /**
-     * Generates a semantic Form element
-     * @param inputField
+     * Generates a semantic Form element.
+     * 
+     * @param inputField - The input field to be generated to a semantic Form element.
      */
     const formFieldGenerator = (inputField: FormField): JSX.Element => {
 
@@ -383,6 +385,33 @@ export const InnerField = React.forwardRef((props: InnerFieldPropsInterface, ref
                     }) }
                 </Form.Group>
             );
+        } else if (isScopesField(inputField)) {
+            return (
+                <Form.Group grouped={ true }>
+                    <label>
+                        { inputField.label }
+                        {
+                            inputField.label && inputField.required
+                                ? <span className="ui text color red">*</span>
+                                : null
+                        }
+                    </label>
+                    <Scopes
+                        value={ inputField.value }
+                        defaultValue={ inputField.defaultValue }
+                        error={
+                            isError
+                                ? errorMessages[0] : ""
+                        }
+                        onBlur={ (event: React.KeyboardEvent) => {
+                            handleBlur(event, inputField.name);
+                        } }
+                        onChange={ (event: React.ChangeEvent<HTMLInputElement>) => {
+                            handleChange(event.target.value, inputField.name);
+                        } }
+                    />
+                </Form.Group>
+            );
         } else if (isQueryParamsField(inputField)) {
             return (
                 <Form.Group grouped={ true }>
@@ -503,8 +532,7 @@ export const InnerField = React.forwardRef((props: InnerFieldPropsInterface, ref
  * form fields. To see usages see {@link Checkbox} and {@link Radio}
  * conditional rendering sections in {@link InnerField}.
  *
- * @param hint {string}
- * @constructor
+ * @param hint - The hint text.
  */
 export const FieldHint: React.FC<{ hint: string }> = ({ hint }: { hint: string }): ReactElement => {
     return (

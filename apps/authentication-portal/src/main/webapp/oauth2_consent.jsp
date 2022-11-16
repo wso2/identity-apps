@@ -1,7 +1,7 @@
 <%--
-  ~ Copyright (c) 2014, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+  ~ Copyright (c) 2014, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
   ~
-  ~ WSO2 Inc. licenses this file to you under the Apache License,
+  ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
   ~ in compliance with the License.
   ~ You may obtain a copy of the License at
@@ -90,9 +90,9 @@
 %>
 
 <!doctype html>
-<html>
+<html lang="en-US">
 <head>
-    <!-- header -->
+    <%-- header --%>
     <%
         File headerFile = new File(getServletContext().getRealPath("extensions/header.jsp"));
         if (headerFile.exists()) {
@@ -112,7 +112,7 @@
 
     <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
         <layout:component componentName="ProductHeader" >
-            <!-- product-title -->
+            <%-- product-title --%>
             <%
                 File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
                 if (productTitleFile.exists()) {
@@ -150,10 +150,10 @@
 
                     <div class="segment-form">
 
-                        <!-- Prompting for consent is only needed if we have mandatory or requested claims without any consent -->
+                        <%-- Prompting for consent is only needed if we have mandatory or requested claims without any consent --%>
                         <% if (ArrayUtils.isNotEmpty(mandatoryClaimList) || ArrayUtils.isNotEmpty(requestedClaimList)) { %>
                             <input type="hidden" name="user_claims_consent" id="user_claims_consent" value="true"/>
-                            <!-- validation -->
+                            <%-- validation --%>
                             <div class="ui secondary segment" style="text-align: left;">
                                 <h5><%=AuthenticationEndpointUtil.i18n(resourceBundle, "requested.attributes")%>:</h5>
 
@@ -186,7 +186,7 @@
                                             %>
                                             <div class="field required">
                                                 <div class="ui checkbox checked read-only disabled claim-cb">
-                                                    <input type="checkbox" class="mandatory-claim hidden" name="consent_<%=Encode.forHtmlAttribute(claimId)%>" id="consent_<%=Encode.forHtmlAttribute(claimId)%>" required checked readonly />
+                                                    <input tabindex="-1" type="checkbox" class="mandatory-claim hidden" name="consent_<%=Encode.forHtmlAttribute(claimId)%>" id="consent_<%=Encode.forHtmlAttribute(claimId)%>" required checked readonly />
                                                     <label for="consent_<%=Encode.forHtmlAttribute(claimId)%>"><%=Encode.forHtml(displayName)%></label>
                                                 </div>
                                             </div>
@@ -313,7 +313,6 @@
                                 <div class="field">
                                     <div class="ui checkbox">
                                         <input
-                                            tabindex="3"
                                             type="checkbox"
                                             id="rememberApproval"
                                             name="rememberApproval"
@@ -346,7 +345,7 @@
             </div>
         </layout:component>
         <layout:component componentName="ProductFooter" >
-            <!-- product-footer -->
+            <%-- product-footer --%>
             <%
                 File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
                 if (productFooterFile.exists()) {
@@ -358,7 +357,7 @@
         </layout:component>
     </layout:main>
 
-    <!-- footer -->
+    <%-- footer --%>
     <%
         File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
         if (footerFile.exists()) {

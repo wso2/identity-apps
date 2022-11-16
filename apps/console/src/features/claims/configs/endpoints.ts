@@ -22,12 +22,16 @@ import { ClaimResourceEndpointsInterface } from "../models";
  * Get the resource endpoints for the Claim Management feature.
  *
  * @param {string} serverHost - Server Host.
+ * @param {string }serverHostWithOrgPath - Server Host with the Organization Path.
  * @return {ClaimResourceEndpointsInterface}
  */
-export const getClaimResourceEndpoints = (serverHost: string): ClaimResourceEndpointsInterface => {
+export const getClaimResourceEndpoints = (
+    serverHost: string,
+    serverHostWithOrgPath: string
+): ClaimResourceEndpointsInterface => {
     return {
         claims: `${ serverHost }/api/server/v1/claim-dialects`,
         externalClaims:`${ serverHost }/api/server/v1/claim-dialects/{}/claims`,
-        localClaims: `${ serverHost }/api/server/v1/claim-dialects/local/claims`
+        localClaims: `${ serverHostWithOrgPath }/api/server/v1/claim-dialects/local/claims`
     };
 };

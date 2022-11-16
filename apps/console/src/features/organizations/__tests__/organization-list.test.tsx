@@ -16,9 +16,9 @@
  * under the License.
  */
 
-import { fireEvent, render, screen, waitFor, within } from "@unit-testing";
 import { AccessControlProvider } from "@wso2is/access-control";
 import React from "react";
+import { fireEvent, render, screen, waitFor, within } from "../../../../test-configs";
 import ReduxStoreStateMock from "../../../../test-configs/__mocks__/redux/redux-store-state";
 import { getOrganizationsEmptyMockResponse, getOrganizationsPageOneMockResponse } from "../__mocks__/organization";
 import * as api from "../api/organization";
@@ -138,5 +138,24 @@ describe("UTC-1.0 - [Organization Management Feature] - Organization List Compon
         fireEvent.click(screen.getByTestId("organization-list-delete-confirmation-modal-confirm-button"));
         await waitFor(() => expect(deleteOrganizationMock).toHaveBeenCalledTimes(1));
         await waitFor(() => expect(onOrganizationDeleteMock.mock.calls.length).toBe(1));
+    });
+
+    test("UTC-1.8 - Test if disabled organization's indicator shows correctly", async () => {
+        render(
+            <AccessControlProvider
+                allowedScopes={ ReduxStoreStateMock.auth.scope }
+                featureConfig={ ReduxStoreStateMock.config.ui }
+            >
+                <OrganizationList { ...organizationListProps } />
+            </AccessControlProvider>
+        );
+
+        screen.getAllByTestId("data-table-row").forEach(((orgListItem, index) => {
+            const organization = organizationListProps.list.organizations[index];
+            const isDisabled = organization.status === "DISABLED";
+
+            expect(within(orgListItem).getByTestId("organization-list-org-status-icon"))
+                .toHaveClass(isDisabled ? "orange" : "green");
+        }));
     });
 });

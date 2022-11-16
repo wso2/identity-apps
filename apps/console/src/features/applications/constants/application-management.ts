@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -36,8 +36,6 @@ export class ApplicationManagementConstants {
     /**
      * Private constructor to avoid object instantiation from outside
      * the class.
-     *
-     * @hideconstructor
      */
     /* eslint-disable @typescript-eslint/no-empty-function */
     private constructor() { }
@@ -53,9 +51,6 @@ export class ApplicationManagementConstants {
 
     /**
      * Set of keys used to enable/disable features.
-     * @constant
-     * @type {Map<string, string>}
-     * @default
      */
     public static readonly FEATURE_DICTIONARY: Map<string, string> = new Map<string, string>()
         .set("APPLICATION_ADD", "application.add")
@@ -70,90 +65,67 @@ export class ApplicationManagementConstants {
 
     /**
      * Key for the `Edit Application` tag in the docs structure object.
-     * @constant
-     * @type {string}
      */
     public static readonly EDIT_APPLICATIONS_DOCS_KEY = `${
         DocumentationConstants.PORTAL_DOCS_KEY }.Applications["Edit Application"]`;
 
     /**
      * Key for the application samples tag in the docs structure object.
-     * @constant
-     * @type {string}
      */
     public static readonly APPLICATION_SAMPLES_DOCS_KEY = "Quick Starts[\"Choose a Sample Type\"]";
 
     /**
      * Key for the application docs tag in the docs structure object.
-     * @constant
-     * @type {string}
      */
     public static readonly APPLICATION_DOCS_KEY = "[\"Developer Portal\"].Applications[\"Edit Application\"]";
 
     /**
      * Key for the overview tag in the docs structure object.
-     * @constant
-     * @type {string}
      */
     public static readonly APPLICATION_DOCS_OVERVIEW = "Overview";
 
     /**
      * Key for the URL search param for application state.
-     * @constant
-     * @type {string}
      */
     public static readonly APP_STATE_URL_SEARCH_PARAM_KEY = "state";
 
     /**
      * Value for sign on authentication param for application state.
-     * @constant
-     * @type {string}
      */
     public static readonly APP_STATE_STRONG_AUTH_PARAM_KEY = "isSignOn";
 
     /**
      * Key for the URL search param for application readonly state.
-     * @constant
-     * @type {string}
      */
     public static readonly APP_READ_ONLY_STATE_URL_SEARCH_PARAM_KEY = "readOnly";
 
     /**
      * Key for the URL search param for client secret hashing enabled flag.
-     * @constant
-     * @type {string}
      */
     public static readonly CLIENT_SECRET_HASH_ENABLED_URL_SEARCH_PARAM_KEY = "isClientSecretHashEnabled";
 
     /**
      * Value for the URL search param for application state.
-     * @constant
-     * @type {string}
      */
     public static readonly APP_STATE_URL_SEARCH_PARAM_VALUE = "new";
 
     /**
      * Value for sign on authentication param for application state.
-     * @constant
-     * @type {string}
      */
     public static readonly APP_STATE_STRONG_AUTH_PARAM_VALUE = "true";
 
     /**
      * Default application template loading strategy.
-     * @constant
-     * @type {ApplicationTemplateLoadingStrategies}
      */
     public static readonly DEFAULT_APP_TEMPLATE_LOADING_STRATEGY: ApplicationTemplateLoadingStrategies =
         ApplicationTemplateLoadingStrategies.LOCAL;
 
     /**
      * Map to access the template ids.
-     * @type {Map<string, any>}
      */
     public static readonly TEMPLATE_IDS: Map<string, any> = new Map<string, any>()
         .set("box", "h9c5e23e-fc78-484b-9bec-015d242361b8")
-        .set("oidcMobile", "44a2d9d9-bc0c-4b54-85df-1cf08f4002ec")
+        .set("mobile", "mobile-application")
         .set("oidcWeb", "b9c5e11e-fc78-484b-9bec-015d247561b8")
         .set("samlWeb", "776a73da-fd8e-490b-84ff-93009f8ede85")
         .set("spa", "6a90e4b0-fbff-42d7-bfde-1efd98f07cd7")
@@ -164,12 +136,10 @@ export class ApplicationManagementConstants {
 
     /**
      * Mapping for template and template DOC in the doc structure. i.e `<"TEMPLATE_NAME", "TAG_NAME_IN_DOC_STRUCTURE">`
-     * @constant
-     * @type {Map<string, string>}
      */
     public static readonly APPLICATION_TEMPLATE_DOC_MAPPING: Map<string, string> = new Map<string, string>()
         .set(ApplicationManagementConstants.TEMPLATE_IDS.get("box"), "OIDC Web Application")
-        .set(ApplicationManagementConstants.TEMPLATE_IDS.get("oidcMobile"), "OIDC Mobile Application")
+        .set(ApplicationManagementConstants.TEMPLATE_IDS.get("mobile"), "Mobile Application")
         .set(ApplicationManagementConstants.TEMPLATE_IDS.get("oidcWeb"), "OIDC Web Application")
         .set(ApplicationManagementConstants.TEMPLATE_IDS.get("spa"), "Single Page Application")
         .set(ApplicationManagementConstants.TEMPLATE_IDS.get("slack"), "OIDC Web Application")
@@ -179,7 +149,6 @@ export class ApplicationManagementConstants {
 
     /**
      * Template categories to be used to extract the filter types.
-     * @type {ApplicationTemplateCategories[]}
      */
     public static readonly FILTERABLE_TEMPLATE_CATEGORIES: ApplicationTemplateCategories[] = [
         ApplicationTemplateCategories.VENDOR
@@ -187,8 +156,6 @@ export class ApplicationManagementConstants {
 
     /**
      * Set of grant types to hide from the UI.
-     * @constant
-     * @type {string[]}
      */
     public static readonly HIDDEN_GRANT_TYPES: string[] = [ "account_switch" ];
 
@@ -220,22 +187,22 @@ export class ApplicationManagementConstants {
 
     /**
      * Set of grant types allowed for certain templates.
-     * @constant
-     * @type {string[]}
      */
     public static readonly TEMPLATE_WISE_ALLOWED_GRANT_TYPES: Record<string, string[]> = {
         [ "6a90e4b0-fbff-42d7-bfde-1efd98f07cd7" ]: [
             ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
             ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
-            ApplicationManagementConstants.IMPLICIT_GRANT
+            ApplicationManagementConstants.IMPLICIT_GRANT,
+            ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT
         ],
-        ["b9c5e11e-fc78-484b-9bec-015d247561b8"]: [
+        [ "b9c5e11e-fc78-484b-9bec-015d247561b8" ]: [
             ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
             ApplicationManagementConstants.IMPLICIT_GRANT,
             ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT,
-            ApplicationManagementConstants.REFRESH_TOKEN_GRANT
+            ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
+            ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT
         ],
-        ["custom-application"] : [
+        [ "custom-application" ]: [
             ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
             ApplicationManagementConstants.IMPLICIT_GRANT,
             ApplicationManagementConstants.PASSWORD,
@@ -243,19 +210,22 @@ export class ApplicationManagementConstants {
             ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
             ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT,
             ApplicationManagementConstants.DEVICE_GRANT
+        ],
+        [ "mobile-application" ]: [
+            ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
+            ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
+            ApplicationManagementConstants.IMPLICIT_GRANT,
+            ApplicationManagementConstants.PASSWORD,
+            ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT,
+            ApplicationManagementConstants.DEVICE_GRANT
         ]
     };
 
     /**
      * Holds metadata on how to arrange the values when rendering above
-     * {@link TEMPLATE_WISE_ALLOWED_GRANT_TYPES} values in the UI.
-     *
-     * Usage: Map the index => key to rearrange the values.
-     *
-     * @constant
-     * @type { {[ key: string ]: Map<number, string>} }
+     * Usage: Map the index to key to rearrange the values.
      */
-    public static readonly TEMPLATE_WISE_ALLOWED_GRANT_TYPE_ARRANGE_ORDER: { [ key: string ]: Map<string, number> } = {
+    public static readonly TEMPLATE_WISE_ALLOWED_GRANT_TYPE_ARRANGE_ORDER: { [ key: string ]: Map<string, number>; } = {
         [ "6a90e4b0-fbff-42d7-bfde-1efd98f07cd7" ]: new Map<string, number>([
             [ ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT, 0 ],
             [ ApplicationManagementConstants.IMPLICIT_GRANT, 1 ],
@@ -275,12 +245,10 @@ export class ApplicationManagementConstants {
             [ ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT, 1 ],
             [ ApplicationManagementConstants.REFRESH_TOKEN_GRANT, 2 ]
         ])
-    }
+    };
 
     /**
      * Key for the SPA template.
-     * @constant
-     * @type {string}
      */
     public static readonly SPA = "Single Page Application";
 
@@ -344,6 +312,12 @@ export class ApplicationManagementConstants {
     public static readonly IDENTIFIER_FIRST_AUTHENTICATOR_ID = IdentityProviderManagementConstants.LOCAL_IDP_IDENTIFIER
         + "-" + "SWRlbnRpZmllckV4ZWN1dG9y";
 
+    public static readonly MYACCOUNT_STATUS_UPDATE_ERROR: string = "An error occurred while updating " +
+        "status of the My Account Portal.";
+
+    public static readonly MYACCOUNT_STATUS_UPDATE_INVALID_STATUS_CODE_ERROR: string = "Received an " +
+        "invalid status code while updating status of the My Account Portal.";
+
     public static readonly SECOND_FACTOR_AUTHENTICATORS_DROPPABLE_ID = "second-factor-authenticators";
     public static readonly EXTERNAL_AUTHENTICATORS_DROPPABLE_ID = "external-authenticators";
     public static readonly SOCIAL_LOGIN_HEADER: string = "Social Login";
@@ -373,6 +347,8 @@ export class ApplicationManagementConstants {
         IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_NAME,
         IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_ID,
         IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_NAME,
+        IdentityProviderManagementConstants.MICROSOFT_AUTHENTICATOR_ID,
+        IdentityProviderManagementConstants.MICROSOFT_AUTHENTICATOR_NAME,
         IdentityProviderManagementConstants.TWITTER_AUTHENTICATOR_ID,
         IdentityProviderManagementConstants.TWITTER_AUTHENTICATOR_NAME,
         IdentityProviderManagementConstants.GITHUB_AUTHENTICATOR_ID,
@@ -408,10 +384,9 @@ export class ApplicationManagementConstants {
 
     /**
      * Form element constraints.
-     * @type {{APP_NAME_MAX_LENGTH: number}}
      */
     public static readonly FORM_FIELD_CONSTRAINTS = {
-        APP_DESCRIPTION_PATTERN: new RegExp("^[a-zA-Z0-9.+=!$#()@&%*~_-]+(?: [a-zA-Z0-9.+=!$#()@&%*~_-]+)*$"),
+        APP_DESCRIPTION_PATTERN: new RegExp("^[a-zA-Z0-9.+=!$#()@&%*~_-]+(?: [a-zA-Z0-9.+=!$#()@&%*~_-]+)*$", "gm"),
         APP_NAME_MAX_LENGTH: 50,
         APP_NAME_PATTERN: new RegExp("^[a-zA-Z0-9._-]+(?: [a-zA-Z0-9._-]+)*$")
     };
@@ -424,18 +399,17 @@ export class ApplicationManagementConstants {
 
     public static readonly CUSTOM_APPLICATION = "custom-application";
 
+    public static readonly MOBILE = "mobile-application";
+
     /**
      * Application create limit reached error.
-     * @constant
-     * @type IdentityAppsError
-     * @default
      */
     public static readonly ERROR_CREATE_LIMIT_REACHED = new IdentityAppsError(
         "APP-60503",
         "console:develop.features.applications.notifications.apiLimitReachedError.error.description",
         "console:develop.features.applications.notifications.apiLimitReachedError.error.message",
         "cdaefcee-ecdb-47af-8538-174ec13292db"
-    )
+    );
 
     /**
      * Error code for Issuer already exists.
@@ -445,4 +419,15 @@ export class ApplicationManagementConstants {
      * Error code for invalid metadata URL.
      */
     public static readonly ERROR_CODE_INVALID_METADATA_URL: string = "SAML-60003";
+
+    /**
+     * Application state param to be sent in the routing.
+     */
+    public static readonly APPLICATION_STATE: string = "application";
+}
+
+export enum ShareWithOrgStatus {
+    TRUE,
+    FALSE,
+    UNDEFINED
 }

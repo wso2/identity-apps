@@ -1,5 +1,6 @@
 node_modules/
 build/
+dist/
 target/
 src/main/
 themes/
