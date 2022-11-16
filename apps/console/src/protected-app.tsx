@@ -65,6 +65,8 @@ import has from "lodash-es/has";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
     FunctionComponent,
+    LazyExoticComponent,
+    MutableRefObject,
     ReactElement,
     lazy,
     useCallback,
@@ -74,6 +76,7 @@ import React, {
 } from "react";
 import { I18nextProvider, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { commonConfig, organizationConfigs, serverConfigurationConfig } from "./extensions";
 import {
     AuthenticateUtils,
@@ -110,17 +113,17 @@ import { OrganizationManagementConstants, OrganizationType } from "./features/or
 import { OrganizationResponseInterface } from "./features/organizations/models";
 import { OrganizationUtils } from "./features/organizations/utils";
 import {
-    GovernanceConnectorCategoryInterface,
+    GovernanceConnectorCategoryInterface, GovernanceConnectorInterface,
     GovernanceConnectorUtils,
     ServerConfigurationsConstants
 } from "./features/server-configurations";
 
-const AUTHORIZATION_ENDPOINT = "authorization_endpoint";
-const TOKEN_ENDPOINT = "token_endpoint";
-const OIDC_SESSION_IFRAME_ENDPOINT = "oidc_session_iframe_endpoint";
-const LOGOUT_URL = "sign_out_url";
+const AUTHORIZATION_ENDPOINT: string = "authorization_endpoint";
+const TOKEN_ENDPOINT: string = "token_endpoint";
+const OIDC_SESSION_IFRAME_ENDPOINT: string = "oidc_session_iframe_endpoint";
+const LOGOUT_URL: string = "sign_out_url";
 
-const App = lazy(() => import("./app"));
+const App: LazyExoticComponent<FunctionComponent> = lazy(() => import("./app"));
 
 type AppPropsInterface = IdentifiableComponentInterface;
 
@@ -140,7 +143,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
         state: { isAuthenticated }
     } = useAuthContext();
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch<any> = useDispatch();
 
     const { t } = useTranslation();
 
@@ -166,7 +169,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
         (state: AppState) => state.organization.isFirstLevelOrganization
     );
 
-    const governanceConnectorsLoaded = useRef(false);
+    const governanceConnectorsLoaded: MutableRefObject<boolean> = useRef(false);
 
     const [ tenant, setTenant ] = useState<string>("");
 
@@ -194,13 +197,13 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
 
         on(Hooks.SignIn, async (signInResponse: BasicUserInfo) => {
             let response: BasicUserInfo = { ...signInResponse };
-            let logoutUrl;
-            let logoutRedirectUrl;
+            let logoutUrl: string;
+            let logoutRedirectUrl: string;
             let isPrivilegedUser: boolean = false;
 
-            const idToken = await getDecodedIDToken();
+            const idToken: DecodedIDTokenPayload = await getDecodedIDToken();
 
-            const event = new Event(
+            const event: Event = new Event(
                 CommonConstantsCore.AUTHENTICATION_SUCCESSFUL_EVENT
             );
 
@@ -239,7 +242,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                 isFirstLevelOrg
             ) {
                 // We are actually getting the orgId here rather than orgName
-                const orgId = isFirstLevelOrg
+                const orgId: string = isFirstLevelOrg
                     ? orgIdIdToken
                     : window[ "AppUtils" ].getConfig().organizationName;
 
@@ -299,7 +302,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                             dispatch(setOrganization(orgResponse));
                         }
                     )
-                    .catch(error => {
+                    .catch((error: any) => {
                         if (error?.description) {
                             dispatch(
                                 addAlert({
@@ -422,7 +425,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
 
                     window[ "AppUtils" ].updateCustomServerHost(serverHost);
                 })
-                .catch(error => {
+                .catch((error: any) => {
                     // In case of failure customServerHost is set to the serverHost.
                     window[ "AppUtils" ].updateCustomServerHost(
                         Config.getDeploymentConfig().serverHost
@@ -446,9 +449,9 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                 idToken?.amr?.length > 0
                     ? idToken?.amr[ 0 ] === "EnterpriseIDPAuthenticator"
                     : false;
-            const firstName = idToken?.given_name;
-            const lastName = idToken?.family_name;
-            const fullName = firstName
+            const firstName: string = idToken?.given_name;
+            const lastName: string = idToken?.family_name;
+            const fullName: string = firstName
                 ? firstName + (lastName ? " " + lastName : "")
                 : response.email;
 
@@ -547,7 +550,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                         signOutRedirectURL: logoutRedirectUrl
                     });
                 })
-                .catch(error => {
+                .catch((error: any) => {
                     throw error;
                 });
 
@@ -561,7 +564,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
     }, []);
 
     const loginSuccessRedirect = (): void => {
-        let AuthenticationCallbackUrl = CommonAuthenticateUtils.getAuthenticationCallbackUrl(
+        let AuthenticationCallbackUrl: string = CommonAuthenticateUtils.getAuthenticationCallbackUrl(
             CommonAppConstants.CONSOLE_APP
         );
 
@@ -578,7 +581,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
              */
             getDecodedIDToken()
                 .then((idToken: DecodedIDTokenPayload) => {
-                    const isPrivilegedUser =
+                    const isPrivilegedUser: boolean =
                         idToken?.amr?.length > 0
                             ? idToken?.amr[ 0 ] === "EnterpriseIDPAuthenticator"
                             : false;
@@ -588,7 +591,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                         isPrivilegedUser
                     ) {
                         // If there is an association, the user should be redirected to console landing page.
-                        const location =
+                        const location: string =
                             !AuthenticationCallbackUrl ||
                                 AuthenticationCallbackUrl ===
                                 AppConstants.getAppLoginPath()
@@ -611,7 +614,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                     // Tracked here https://github.com/wso2/product-is/issues/11650.
                 });
         } else {
-            const location =
+            const location: string =
                 !AuthenticationCallbackUrl ||
                     AuthenticationCallbackUrl === AppConstants.getAppLoginPath()
                     ? AppConstants.getAppHomePath()
@@ -621,7 +624,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
         }
     };
 
-    const filterRoutes = useCallback((): void => {
+    const filterRoutes: () => void = useCallback((): void => {
         if (
             isEmpty(allowedScopes) ||
             !featureConfig.applications ||
@@ -705,13 +708,13 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
         if (
             devRoutes.length === 2 &&
             devRoutes.filter(
-                route =>
+                (route: RouteInterface) =>
                     route.id ===
                     AccessControlUtils.DEVELOP_GETTING_STARTED_ID ||
                     route.id === "404"
             ).length === 2
         ) {
-            devRoutes[ 0 ] = devRoutes[ 0 ].filter(route => route.id === "404");
+            devRoutes[ 0 ] = devRoutes[ 0 ].filter((route: RouteInterface) => route.id === "404");
         }
 
         dispatch(setFilteredDevelopRoutes(devRoutes));
@@ -755,8 +758,8 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             return;
         }
 
-        const manageRoutes = [ ...filteredManageRoutes ];
-        const sanitizedRoutes = [ ...sanitizedManageRoutes ];
+        const manageRoutes: RouteInterface[] = [ ...filteredManageRoutes ];
+        const sanitizedRoutes: RouteInterface[] = [ ...sanitizedManageRoutes ];
 
         if (!OrganizationUtils.isCurrentOrganizationRoot()) {
             governanceConnectorCategories = AppConstants.filterGoverananceConnectors(
@@ -770,9 +773,9 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                     category: GovernanceConnectorCategoryInterface,
                     index: number
                 ) => {
-                    let subCategoryExists = false;
+                    let subCategoryExists: boolean = false;
 
-                    category.connectors?.map(connector => {
+                    category.connectors?.map((connector: GovernanceConnectorInterface) => {
                         if (connector.subCategory !== "DEFAULT") {
                             subCategoryExists = true;
 
@@ -783,14 +786,14 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                         // TODO: Implement sub category handling logic here.
                     }
 
-                    const categoryName =
+                    const categoryName: string =
                         t(
                             `console:manage.features.sidePanel.${ camelCase(
                                 category.name
                             ) }`
                         ) ?? category.name;
 
-                    const route = {
+                    const route: RouteInterface = {
                         category:
                             "console:manage.features.sidePanel.categories.configurations",
                         component: lazy(() =>
@@ -859,7 +862,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
     }, [ governanceConnectorCategories, featureConfig, allowedScopes ]);
 
     useEffect(() => {
-        const error = new URLSearchParams(location.search).get(
+        const error: string = new URLSearchParams(location.search).get(
             "error_description"
         );
 
@@ -892,21 +895,21 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             ) }`
             : "";
 
-        const metaFileNames = I18nModuleConstants.META_FILENAME.split(".");
-        const metaFileName = `${ metaFileNames[ 0 ] }.${ process.env.metaHash }.${ metaFileNames[ 1 ] }`;
+        const metaFileNames: string[] = I18nModuleConstants.META_FILENAME.split(".");
+        const metaFileName: string = `${ metaFileNames[ 0 ] }.${ process.env.metaHash }.${ metaFileNames[ 1 ] }`;
 
         // Since the portals are not deployed per tenant, looking for static resources in tenant qualified URLs
         // will fail. This constructs the path without the tenant, therefore it'll look for the file in
         // `https://localhost:9443/<PORTAL>/resources/i18n/meta.json` rather than looking for the file in
         // `https://localhost:9443/t/wso2.com/<PORTAL>/resources/i18n/meta.json`.
-        const metaPath = `${ resolvedAppBaseNameWithoutTenant }/${ StringUtils.removeSlashesFromPath(
+        const metaPath: string = `${ resolvedAppBaseNameWithoutTenant }/${ StringUtils.removeSlashesFromPath(
             Config.getI18nConfig().resourcePath
         ) }/${ metaFileName }`;
 
         // Fetch the meta file to get the supported languages and paths.
         axios
             .get(metaPath)
-            .then(response => {
+            .then((response: AxiosResponse) => {
                 // Set up the i18n module.
                 I18n.init(
                     {
@@ -920,7 +923,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                     // Set the supported languages in redux store.
                     store.dispatch(setSupportedI18nLanguages(response?.data));
 
-                    const isSupported = isLanguageSupported(
+                    const isSupported: boolean = isLanguageSupported(
                         I18n.instance.language,
                         null,
                         response?.data
@@ -931,7 +934,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                             .changeLanguage(
                                 I18nModuleConstants.DEFAULT_FALLBACK_LANGUAGE
                             )
-                            .catch(error => {
+                            .catch((error: any) => {
                                 throw new LanguageChangeException(
                                     I18nModuleConstants.DEFAULT_FALLBACK_LANGUAGE,
                                     error
@@ -940,7 +943,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                     }
                 });
             })
-            .catch(error => {
+            .catch((error: any) => {
                 throw new I18nInstanceInitException(error);
             });
     }, [ isAuthenticated ]);
