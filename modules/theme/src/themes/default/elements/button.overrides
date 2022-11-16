@@ -223,6 +223,9 @@
             }
         }
     }
+    &:focus-visible{
+        outline: 2px solid blue;
+    }
 }
 
 .ui.labeled.icon.button {
@@ -338,5 +341,17 @@
                 float: left;
                 fontSize: medium;
           }
+    }
+}
+
+.ui.primary.button{
+    &:focus-visible{
+        outline: 2px solid blue;
+    }
+}
+
+.ui.button.secondary{
+    &:focus-visible{
+        outline: 2px solid blue;
     }
 }
