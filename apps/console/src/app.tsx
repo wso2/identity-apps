@@ -16,11 +16,11 @@
  * under the License.
  */
 
-import { DecodedIDTokenPayload, useAuthContext } from "@asgardeo/auth-react";
+import { BasicUserInfo, DecodedIDTokenPayload, useAuthContext } from "@asgardeo/auth-react";
 import { AccessControlProvider } from "@wso2is/access-control";
 import { AppConstants as CommonAppConstants } from "@wso2is/core/constants";
 import { CommonHelpers, isPortalAccessGranted } from "@wso2is/core/helpers";
-import { RouteInterface, emptyIdentityAppsSettings } from "@wso2is/core/models";
+import { RouteInterface, StorageIdentityAppsSettingsInterface, emptyIdentityAppsSettings } from "@wso2is/core/models";
 import {
     setI18nConfigs,
     setServiceResourceEndpoints
@@ -45,7 +45,9 @@ import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState }
 import { Helmet } from "react-helmet";
 import { Trans } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Redirect, Route, Router, Switch } from "react-router-dom";
+import { StaticContext } from "react-router";
+import { Redirect, Route, RouteComponentProps, Router, Switch } from "react-router-dom";
+import { Dispatch } from "redux";
 import { applicationConfig, commonConfig } from "./extensions";
 import { EventPublisher, PreLoader } from "./features/core";
 import { ProtectedRoute } from "./features/core/components";
@@ -69,7 +71,7 @@ import "moment/locale/fr";
  * @returns App Root component.
  */
 export const App: FunctionComponent<Record<string, never>> = (): ReactElement => {
-    const dispatch = useDispatch();
+    const dispatch: Dispatch<any> = useDispatch();
 
     const userName: string = useSelector((state: AppState) => state.auth.username);
     const loginInit: boolean = useSelector((state: AppState) => state.auth.loginInit);
@@ -136,9 +138,11 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
             return;
         }
 
-        const tenant = config.deployment.tenant;
-        const tenantAppSettings = JSON.parse(LocalStorageUtils.getValueFromLocalStorage(tenant));
-        const appSettings = {};
+        const tenant: string = config.deployment.tenant;
+        const tenantAppSettings: Record<string, unknown> = JSON.parse(
+            LocalStorageUtils.getValueFromLocalStorage(tenant)
+        );
+        const appSettings: Record<string, StorageIdentityAppsSettingsInterface> = {};
 
         appSettings[ userName ] = emptyIdentityAppsSettings();
 
@@ -146,7 +150,7 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
             LocalStorageUtils.setValueInLocalStorage(tenant, JSON.stringify(appSettings));
         } else {
             if (CommonHelpers.lookupKey(tenantAppSettings, userName) === null) {
-                const newUserSettings = {
+                const newUserSettings: Record<string, unknown> = {
                     ...tenantAppSettings,
                     [ userName ]: emptyIdentityAppsSettings()
                 };
@@ -233,7 +237,7 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
 
     const sessionStorageDisabled = () => {
         try {
-            const storage = sessionStorage;
+            const storage: Storage = sessionStorage;
 
             if (!storage && location.pathname !== AppConstants.getPaths().get("STORING_DATA_DISABLED")) {
                 history.push(AppConstants.getPaths().get("STORING_DATA_DISABLED"));
@@ -252,7 +256,7 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
      */
     const handleStayLoggedIn = (): void => {
         trySignInSilently()
-            .then((response) => {
+            .then((response: boolean | BasicUserInfo) => {
                 if (response === false) {
                     history.push(AppConstants.getAppLogoutPath());
                 } else {
@@ -433,7 +437,7 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
                                                 to={ AppConstants.getAppHomePath() }
                                             />
                                             {
-                                                baseRoutes.map((route, index) => {
+                                                baseRoutes.map((route: RouteInterface, index: number) => {
                                                     return (
                                                         route.protected ?
                                                             (
@@ -448,10 +452,15 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
                                                             (
                                                                 <Route
                                                                     path={ route.path }
-                                                                    render={ (props) =>
-                                                                        (<route.component
-                                                                            { ...props }
-                                                                        />)
+                                                                    render={
+                                                                        (props:  RouteComponentProps<
+                                                                            { [p: string]: string },
+                                                                            StaticContext, unknown
+                                                                        >) => {
+                                                                            return (<route.component
+                                                                                { ...props }
+                                                                            />);
+                                                                        }
                                                                     }
                                                                     key={ index }
                                                                     exact={ route.exact }
