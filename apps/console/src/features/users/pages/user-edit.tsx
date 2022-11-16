@@ -29,6 +29,7 @@ import { EditAvatarModal, TabPageLayout, UserAvatar } from "@wso2is/react-compon
 import React, { MouseEvent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { Icon, Popup } from "semantic-ui-react";
 import { getProfileInformation } from "../../authentication/store";
 import { AppConstants, AppState, FeatureConfigInterface, SharedUserStoreUtils, history } from "../../core";
@@ -49,7 +50,7 @@ const UserEditPage = (): ReactElement => {
 
     const { t } = useTranslation();
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch<any> = useDispatch();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
@@ -72,10 +73,10 @@ const UserEditPage = (): ReactElement => {
 
         getGovernanceConnectors(ServerConfigurationsConstants.ACCOUNT_MANAGEMENT_CATEGORY_ID)
             .then((response: GovernanceConnectorInterface[]) => {
-                response.map((connector) => {
+                response.map((connector: GovernanceConnectorInterface) => {
                     if (connector.id === ServerConfigurationsConstants.ACCOUNT_DISABLING_CONNECTOR_ID
                         || connector.id === ServerConfigurationsConstants.ADMIN_FORCE_PASSWORD_RESET_CONNECTOR_ID) {
-                        connector.properties.map((property) => {
+                        connector.properties.map((property: ConnectorPropertyInterface) => {
                             properties.push(property);
                         });
                     }
@@ -83,9 +84,9 @@ const UserEditPage = (): ReactElement => {
 
                 getGovernanceConnectors(ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID)
                     .then((response: GovernanceConnectorInterface[]) => {
-                        response.map((connector) => {
+                        response.map((connector: GovernanceConnectorInterface) => {
                             if (connector.id === ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID) {
-                                connector.properties.map((property) => {
+                                connector.properties.map((property: ConnectorPropertyInterface) => {
                                     if (property.name === ServerConfigurationsConstants.ACCOUNT_LOCK_ON_CREATION) {
                                         properties.push(property);
                                     }
@@ -100,8 +101,8 @@ const UserEditPage = (): ReactElement => {
     }, []);
 
     useEffect(() => {
-        const path = history.location.pathname.split("/");
-        const id = path[ path.length - 1 ];
+        const path: string[] = history.location.pathname.split("/");
+        const id: string = path[ path.length - 1 ];
 
         getUser(id);
     }, []);
@@ -112,18 +113,20 @@ const UserEditPage = (): ReactElement => {
         }
 
         setReadOnlyUserStoresLoading(true);
-        SharedUserStoreUtils.getReadOnlyUserStores().then((response) => {
-            setReadOnlyUserStoresList(response);
-        }).finally(() => {
-            setReadOnlyUserStoresLoading(false);
-        });
+        SharedUserStoreUtils.getReadOnlyUserStores()
+            .then((response: string[]) => {
+                setReadOnlyUserStoresList(response);
+            })
+            .finally(() => {
+                setReadOnlyUserStoresLoading(false);
+            });
     }, [ user ]);
 
     const getUser = (id: string) => {
         setIsUserDetailsRequestLoading(true);
 
         getUserDetails(id, null)
-            .then((response) => {
+            .then((response: ProfileInfoInterface) => {
                 setUserProfile(response);
             })
             .catch(() => {
@@ -153,7 +156,15 @@ const UserEditPage = (): ReactElement => {
      * @param url - Selected image URL.
      */
     const handleAvatarEditModalSubmit = (e: MouseEvent<HTMLButtonElement>, url: string): void => {
-        const data = {
+        const data: {
+            Operations: {
+                op: string;
+                value: {
+                    profileUrl: string;
+                };
+            }[];
+            schemas: string[];
+        } = {
             Operations: [
                 {
                     op: "replace",
@@ -181,7 +192,7 @@ const UserEditPage = (): ReactElement => {
 
                 handleUserUpdate(user?.id);
             })
-            .catch((error) => {
+            .catch((error: any) => {
                 if (error.response
                     && error.response.data
                     && (error.response.data.description || error.response.data.detail)) {
@@ -222,7 +233,7 @@ const UserEditPage = (): ReactElement => {
         let primaryEmail: string | MultiValueAttributeInterface = "";
 
         if (emails && Array.isArray(emails) && emails.length > 0) {
-            primaryEmail = emails.find((value) => typeof value === "string");
+            primaryEmail = emails.find((value: string | MultiValueAttributeInterface) => typeof value === "string");
         }
 
         return primaryEmail as string;
@@ -296,6 +307,7 @@ const UserEditPage = (): ReactElement => {
                 />
             ) }
             loadingStateOptions={ {
+                count: 5,
                 imageType: "circular"
             } }
             backButton={ {
