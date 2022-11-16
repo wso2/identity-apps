@@ -293,8 +293,8 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                                     }
                                     content={
                                         organization.status === "ACTIVE"
-                                            ? t("console:common.status.active")
-                                            : t("console:common.status.disabled")
+                                            ? t("common:active")
+                                            : t("common:disabled")
                                     }
                                     inverted
                                 />

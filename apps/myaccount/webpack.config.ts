@@ -320,7 +320,6 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                 ...existingDefinePlugin["definitions"],
                 "process.env": {
                     ...existingDefinePlugin["definitions"]["process.env"],
-                    NODE_ENV: JSON.stringify(process.env.NODE_ENV),
                     metaHash: JSON.stringify(getI18nConfigs().metaFileHash)
                 },
                 "typeof window": JSON.stringify("object")

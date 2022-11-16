@@ -16,7 +16,11 @@
  * under the License.
  */
 
-import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { 
+    IdentifiableComponentInterface,
+    LoadingStateOptionsInterface,
+    TestableComponentInterface 
+} from "@wso2is/core/models";
 import classNames from "classnames";
 import get from "lodash-es/get";
 import isEqual from "lodash-es/isEqual";
@@ -116,7 +120,7 @@ export interface DataTablePropsInterface<T = Record<string, any>> extends Omit<T
     /**
      * Optional meta for the loading state.
      */
-    loadingStateOptions?: TableLoadingStateOptionsInterface;
+    loadingStateOptions?: LoadingStateOptionsInterface;
     /**
      * Callback to inform the new set of visible columns.
      * @param columns - New columns.
@@ -311,21 +315,6 @@ export interface TableActionsInterface<T = Record<string, any>>
      * Specifies if the action should be a link or not.
      */
     link?: (item: TableDataInterface<T>) => boolean;
-}
-
-
-/**
- * Interface for loading state options.
- */
-export interface TableLoadingStateOptionsInterface {
-    /**
-     * Number of loading rows.
-     */
-    count: number;
-    /**
-     * Loading state image type.
-     */
-    imageType?: "circular" | "square";
 }
 
 export interface TableExtensionInterface {
@@ -676,22 +665,22 @@ export const DataTable = <T extends Record<string, any> = Record<string, any>>(
 
         const placeholders: ReactElement[] = [];
 
-        for (let i = 0; i < loadingStateOptions.count; i++) {
+        for (let i = 0; i < loadingStateOptions?.count; i++) {
             placeholders.push(
                 <DataTable.Row key={ i }>
                     <DataTable.Cell>
                         <Header as="h6" image>
                             {
-                                loadingStateOptions.imageType && (
+                                loadingStateOptions?.imageType && (
                                     <Avatar
                                         image={ (
                                             <Placeholder style={ { height: 35, width: 35 } }>
                                                 <Placeholder.Image />
                                             </Placeholder>
                                         ) }
-                                        shape={ loadingStateOptions.imageType }
+                                        shape={ loadingStateOptions?.imageType }
                                         isLoading={ true }
-                                        avatarType={ loadingStateOptions.imageType === "circular" ? "user" : "app" }
+                                        avatarType={ loadingStateOptions?.imageType === "circular" ? "user" : "app" }
                                         size="mini"
                                         floated="left"
                                     />

@@ -83,7 +83,10 @@ interface EditApplicationPropsInterface extends SBACInterface<FeatureConfigInter
     /**
      * Is the data still loading.
      */
-    isLoading?: boolean;
+    isLoading: boolean;
+    /**
+     * Set is loading.
+     */
     setIsLoading?: any;
     /**
      * Callback to be triggered after deleting the application.
@@ -168,7 +171,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
-    const isFragmentApp = application.advancedConfigurations?.fragment || false;
+    const isFragmentApp: boolean = application.advancedConfigurations?.fragment || false;
 
     /**
      * Called when an application updates.
@@ -644,9 +647,9 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 onlyOIDCConfigured={
                     (application?.templateId === CustomApplicationTemplate.id
                         || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC)
-                    && inboundProtocolList.length === 0
+                    && inboundProtocolList?.length === 0
                         ? true
-                        : inboundProtocolList.length === 1
+                        : inboundProtocolList?.length === 1
                         && (inboundProtocolList[ 0 ] === SupportedAuthProtocolTypes.OIDC)
                 }
                 onUpdate={ handleApplicationUpdate }
@@ -922,7 +925,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
     /**
      * Renders the client secret hash disclaimer modal.
-     * @returns Client Secret Hash Disclaimer Modal
+     * @returns Client Secret Hash Disclaimer Modal.
      */
     const renderClientSecretHashDisclaimerModal = (): ReactElement => {
 
@@ -1039,24 +1042,24 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         && (tabPaneExtensions || !applicationConfig.editApplication.extendTabs
             || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
             || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS
-            || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_SAML 
+            || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_SAML
             || application?.templateId === ApplicationManagementConstants.MOBILE)
             ? (
                 <>
                     <ResourceTab
-                        activeIndex= { activeTabIndex }
-                        data-testid= { `${testId}-resource-tabs` }
+                        isLoading={ isLoading }
+                        activeIndex={ activeTabIndex }
+                        data-testid={ `${testId}-resource-tabs` }
                         defaultActiveIndex={ defaultActiveIndex }
                         onTabChange={ handleTabChange }
-                        panes= { resolveTabPanes() }
+                        panes={ resolveTabPanes() }
                         onInitialize={ ({ panesLength }) => {
                             setTotalTabs(panesLength);
                         } }
                     />
                     { showClientSecretHashDisclaimerModal && renderClientSecretHashDisclaimerModal() }
                 </>
-            )
-            : <ContentLoader />
+            ) : <ContentLoader />
     );
 };
 

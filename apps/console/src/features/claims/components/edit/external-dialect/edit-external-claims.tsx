@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -81,9 +81,9 @@ interface EditExternalClaimsPropsInterface extends TestableComponentInterface {
 /**
  * This lists the external claims.
  *
- * @param {EditExternalClaimsPropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {ReactElement}
+ * @returns EditExternalClaims component.
  */
 export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterface> = (
     props: EditExternalClaimsPropsInterface
@@ -153,11 +153,11 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
     /**
      * Slices and returns a portion of the list.
      *
-     * @param {ExternalClaim[]} list.
-     * @param {number} limit.
-     * @param {number} offset.
+     * @param list - List to be paginated.
+     * @param limit - Pagination limit.
+     * @param offset - Pagination offset.
      *
-     * @return {ExternalClaim[]}
+     * @returns paginated list.
      */
     const paginate = (list: ExternalClaim[], limit: number, offset: number): ExternalClaim[] => {
         return list?.slice(offset, offset + limit);
@@ -166,8 +166,8 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
     /**
      * Handles change in the number of items to show.
      *
-     * @param {React.MouseEvent<HTMLAnchorElement>} event.
-     * @param {data} data.
+     * @param event - Dropdown changed event.
+     * @param data - Dropdown data.
      */
     const handleItemsPerPageDropdownChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
         setListItemLimit(data.value as number);
@@ -175,8 +175,8 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
 
     /**
     * Paginates.
-    * @param {React.MouseEvent<HTMLAnchorElement>} event.
-    * @param {PaginationProps} data.
+    * @param event - Pagination changed event.
+    * @param data - Pagination data.
     */
     const handlePaginationChange = (event: React.MouseEvent<HTMLAnchorElement>, data: PaginationProps) => {
         setOffset((data.activePage as number - 1) * listItemLimit);
@@ -185,8 +185,8 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
     /**
      * Handle sort strategy change.
      *
-     * @param {React.SyntheticEvent<HTMLElement>} event.
-     * @param {DropdownProps} data.
+     * @param event - Sort strategy changed event.
+     * @param data - Dropdown data.
      */
     const handleSortStrategyChange = (event: React.SyntheticEvent<HTMLElement>, data: DropdownProps) => {
         setSortBy(SORT_BY.filter(option => option.value === data.value)[ 0 ]);
@@ -195,7 +195,7 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
     /**
     * Handles sort order change.
      *
-    * @param {boolean} isAscending.
+    * @param isAscending - Is sort oder ascending or not.
     */
     const handleSortOrderChange = (isAscending: boolean) => {
         setSortOrder(isAscending);
@@ -205,7 +205,7 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
      * Handles the `onFilter` callback action from the
      * advanced search component.
      *
-     * @param {string} query - Search query.
+     * @param query - Search query.
      */
     const handleExternalClaimFilter = (query: string): void => {
         try {
@@ -249,7 +249,9 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
             dispatch(addAlert(
                 {
                     description: t("console:manage.features.claims.external.notifications." +
-                        "addExternalAttribute.success.description"),
+                        "addExternalAttribute.success.description", {
+                        type: resolveType(attributeType)
+                    }),
                     level: AlertLevels.SUCCESS,
                     message: t("console:manage.features.claims.external.notifications." +
                         "addExternalAttribute.success.message")
@@ -340,7 +342,7 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
                 ) && (
                     /**
                      * `loading` property is used to check whether the current selected
-                     * dialect is same as the dialect which the claims are loaded. 
+                     * dialect is same as the dialect which the claims are loaded.
                      * If it's different, this condition will wait until the correct
                      * dialects are loaded onto the view.
                      */
@@ -350,7 +352,7 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
                             if (attributeUri !== claims[0]?.claimDialectURI ) {
                                 return;
                             }
-                            setShowAddExternalClaim(true); 
+                            setShowAddExternalClaim(true);
                         } }
                         disabled={ showAddExternalClaim || (claims && attributeUri !== claims[0]?.claimDialectURI) }
                         data-testid={ `${ testId }-list-layout-add-button` }

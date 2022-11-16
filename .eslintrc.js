@@ -166,6 +166,19 @@ module.exports = {
                     }
                 ],
                 "@typescript-eslint/padding-line-between-statements": [ ...LINE_PADDING_RULES ],
+                "@typescript-eslint/typedef": [
+                    "warn",
+                    {
+                        "arrayDestructuring": false,
+                        "arrowParameter": true,
+                        "memberVariableDeclaration": true,
+                        "objectDestructuring": false,
+                        "parameter": true,
+                        "propertyDeclaration": true,
+                        "variableDeclaration": true,
+                        "variableDeclarationIgnoreFunction": true
+                    }
+                ],
                 "eol-last": "error",
                 // In development, error level is set to `warn`. This will be overridden
                 // by the production env linting config.
@@ -180,6 +193,13 @@ module.exports = {
                 react: {
                     version: "detect"
                 }
+            }
+        },
+        {
+            "files": "*.json",
+            "parser": "jsonc-eslint-parser",
+            "rules": {
+                "header/header": "off"
             }
         }
     ],

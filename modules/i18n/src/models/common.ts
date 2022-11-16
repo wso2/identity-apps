@@ -58,6 +58,7 @@ export interface Notification {
 export interface NotificationItem {
     message: string;
     description: string;
+    genericMessage?: string;
 }
 
 /**

@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2022, WSO2 Inc. (http://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { RoleConstants } from "@wso2is/core/constants";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { SBACInterface } from "@wso2is/core/models";
 import { ResourceTab } from "@wso2is/react-components";
@@ -44,7 +43,7 @@ interface EditRoleProps extends SBACInterface<FeatureConfigInterface> {
 /**
  * Component which will allow editing of a selected role.
  *
- * @param props contains role details to be edited.
+ * @param props - contains role details to be edited.
  */
 export const EditOrganizationRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps): ReactElement => {
 
@@ -59,13 +58,11 @@ export const EditOrganizationRole: FunctionComponent<EditRoleProps> = (props: Ed
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const [ isGroup, setIsGroup ] = useState<boolean>(false);
-    const [ isAdminRole, setIsAdminRole ] = useState<boolean>(false);
 
     const isReadOnly = useMemo(() => {
-        return isAdminRole
-            || !hasRequiredScopes(featureConfig?.roles, featureConfig?.roles?.scopes?.update, allowedScopes)
+        return !hasRequiredScopes(featureConfig?.roles, featureConfig?.roles?.scopes?.update, allowedScopes)
                 || roleObject?.displayName === OrganizationRoleManagementConstants.ORG_CREATOR_ROLE_NAME;
-    }, [ isAdminRole, featureConfig?.roles, roleObject,
+    }, [ featureConfig?.roles, roleObject,
         OrganizationRoleManagementConstants.ORG_CREATOR_ROLE_NAME ] );
 
     /**
@@ -77,19 +74,6 @@ export const EditOrganizationRole: FunctionComponent<EditRoleProps> = (props: Ed
         }
 
         setIsGroup(history.location.pathname.includes("/groups/"));
-
-    }, [ roleObject ]);
-
-    /**
-     * Set the if the role is `Internal/admin`.
-     */
-    useEffect(() => {
-        if(!roleObject) {
-            return;
-        }
-
-        setIsAdminRole(roleObject.displayName === RoleConstants.ADMIN_ROLE ||
-            roleObject.displayName === RoleConstants.ADMIN_GROUP);
 
     }, [ roleObject ]);
 
