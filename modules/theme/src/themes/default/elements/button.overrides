@@ -355,3 +355,7 @@
         outline: 2px solid blue;
     }
 }
+
+.align-right.buttons{
+    text-align: right;
+}
