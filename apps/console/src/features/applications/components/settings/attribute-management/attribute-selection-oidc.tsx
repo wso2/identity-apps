@@ -34,7 +34,7 @@ import {
 import { OIDCScopesClaimsListInterface } from "apps/console/src/features/oidc-scopes";
 import { IdentifiableComponentInterface } from "modules/core/src/models";
 import React, { 
-    ChangeEvent, Fragment, FunctionComponent, ReactElement, SyntheticEvent, useEffect, useRef, useState 
+    ChangeEvent, Fragment, FunctionComponent, MutableRefObject, ReactElement, SyntheticEvent, useEffect, useRef, useState 
 } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -136,7 +136,7 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
 
     const [ initializationFinished, setInitializationFinished ] = useState<boolean>(false);
 
-    const initValue = useRef<boolean>(false);
+    const initValue: MutableRefObject<boolean> = useRef<boolean>(false);
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
@@ -251,9 +251,9 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
         = [ ...unfilteredExternalClaimsGroupedByScopes ];
 
         tempFilterSelectedExternalScopeClaims.forEach((scope: OIDCScopesClaimsListInterface) => {
-            let scopeSelected = false;
+            let scopeSelected: boolean = false;
 
-            scope.claims.forEach((claim) => {
+            scope.claims.forEach((claim: ExtendedExternalClaimInterface) => {
                 if (claim.claimURI === claimURI) {
                     claim.requested = requested;
                 }
