@@ -34,7 +34,15 @@ import {
 import { OIDCScopesClaimsListInterface } from "apps/console/src/features/oidc-scopes";
 import { IdentifiableComponentInterface } from "modules/core/src/models";
 import React, { 
-    ChangeEvent, Fragment, FunctionComponent, MutableRefObject, ReactElement, SyntheticEvent, useEffect, useRef, useState 
+    ChangeEvent, 
+    Fragment, 
+    FunctionComponent, 
+    MutableRefObject, 
+    ReactElement, 
+    SyntheticEvent, 
+    useEffect, 
+    useRef, 
+    useState
 } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
