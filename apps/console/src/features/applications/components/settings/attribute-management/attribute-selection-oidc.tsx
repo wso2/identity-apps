@@ -32,7 +32,10 @@ import {
     useDocumentation
 } from "@wso2is/react-components";
 import { OIDCScopesClaimsListInterface } from "apps/console/src/features/oidc-scopes";
-import React, { Fragment, FunctionComponent, ReactElement, SyntheticEvent, useEffect, useRef, useState } from "react";
+import { IdentifiableComponentInterface } from "modules/core/src/models";
+import React, { 
+    ChangeEvent, Fragment, FunctionComponent, ReactElement, SyntheticEvent, useEffect, useRef, useState 
+} from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Form, Grid, Header, Icon, Input, Table } from "semantic-ui-react";
@@ -58,7 +61,7 @@ import {
     RequestedClaimConfigurationInterface
 } from "../../../models";
 
-interface AttributeSelectionOIDCPropsInterface extends TestableComponentInterface {
+interface AttributeSelectionOIDCPropsInterface extends TestableComponentInterface, IdentifiableComponentInterface {
     claims: ExtendedClaimInterface[];
     externalClaims: ExtendedExternalClaimInterface[];
     externalClaimsGroupedByScopes: OIDCScopesClaimsListInterface[];
@@ -114,7 +117,7 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
         setUserAttributesLoading,
         onlyOIDCConfigured,
         [ "data-testid" ]: testId,
-        [ "data-testid" ]: componentId
+        [ "data-componentid" ]: componentId
     } = props;
 
     const { t } = useTranslation();
@@ -133,25 +136,27 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
 
     const [ initializationFinished, setInitializationFinished ] = useState<boolean>(false);
 
-    const initValue = useRef(false);
+    const initValue = useRef<boolean>(false);
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
     const [ openIDConnectClaims ] = useState<ExtendedExternalClaimInterface[]>(externalClaims);
 
-    const [ selectedScopes, setSelectedScopes ] = useState([ "openid" ]);
+    const [ selectedScopes, setSelectedScopes ] = useState([ 
+        t("console:develop.features.applications.edit.sections.attributes.selection.constants.openid")
+    ]);
 
     useEffect(() => {
-        const tempFilterSelectedExternalClaims = [ ...filterSelectedExternalClaims ];
+        const tempFilterSelectedExternalClaims: ExtendedExternalClaimInterface[] = [ ...filterSelectedExternalClaims ];
 
         claimConfigurations?.claimMappings?.map((claim: ClaimMappingInterface) => {
             if (
-                !filterSelectedExternalClaims.find(
-                    (selectedExternalClaim) => selectedExternalClaim?.mappedLocalClaimURI === claim.localClaim.uri
-                )
+                !filterSelectedExternalClaims.find((selectedExternalClaim: ExtendedExternalClaimInterface) => 
+                    selectedExternalClaim?.mappedLocalClaimURI === claim.localClaim.uri)
             ) {
-                const availableExternalClaim = availableExternalClaims.find(
-                    (availableClaim) => availableClaim?.mappedLocalClaimURI === claim.localClaim.uri
+                const availableExternalClaim: ExtendedExternalClaimInterface = availableExternalClaims.find(
+                    (availableClaim: ExtendedExternalClaimInterface) => 
+                        availableClaim?.mappedLocalClaimURI === claim.localClaim.uri
                 );
 
                 if (availableExternalClaim) {
@@ -166,9 +171,11 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
 
     useEffect(() => {
         if (unfilteredExternalClaimsGroupedByScopes.length != 0) {
-            const initialSelectedScopes = [ "openid" ];
+            const initialSelectedScopes: string[] = [
+                t("console:develop.features.applications.edit.sections.attributes.selection.constants.openid")
+            ];
 
-            unfilteredExternalClaimsGroupedByScopes.map((scope) => {
+            unfilteredExternalClaimsGroupedByScopes.map((scope: OIDCScopesClaimsListInterface) => {
                 if (scope.selected && scope.name !== "") {
                     initialSelectedScopes.push(scope.name);
                 }
@@ -221,8 +228,8 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
         const tempFilterSelectedExternalScopeClaims: OIDCScopesClaimsListInterface[]
         = [ ...unfilteredExternalClaimsGroupedByScopes ];
 
-        tempFilterSelectedExternalScopeClaims.forEach((scope) => {
-            scope.claims.forEach((claim) => {
+        tempFilterSelectedExternalScopeClaims.forEach((scope: OIDCScopesClaimsListInterface) => {
+            scope.claims.forEach((claim: ExtendedExternalClaimInterface) => {
                 if (claim.claimURI === claimURI) {
                     claim.mandatory = mandatory;
                 }
@@ -243,7 +250,7 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
         const tempFilterSelectedExternalScopeClaims: OIDCScopesClaimsListInterface[]
         = [ ...unfilteredExternalClaimsGroupedByScopes ];
 
-        tempFilterSelectedExternalScopeClaims.forEach((scope) => {
+        tempFilterSelectedExternalScopeClaims.forEach((scope: OIDCScopesClaimsListInterface) => {
             let scopeSelected = false;
 
             scope.claims.forEach((claim) => {
@@ -273,7 +280,7 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
         const tempExternalClaimsGroupedByScopes: OIDCScopesClaimsListInterface[]
         = [ ...unfilteredExternalClaimsGroupedByScopes ];
 
-        tempExternalClaimsGroupedByScopes.find((scope) => {
+        tempExternalClaimsGroupedByScopes.find((scope: OIDCScopesClaimsListInterface) => {
             if (scope.name === value.value) {
                 scope.selected = value.checked;
 
@@ -314,16 +321,16 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
      * @returns If initially requested as mandatory.
      */
     const checkInitialRequestMandatory = (uri: string): boolean => {
-        let requestURI = false;
+        let requestURI: boolean = false;
 
         // If custom mapping there then retrieve the relevant uri and check for requested section.
         if (claimConfigurations.dialect === "CUSTOM") {
-            const requestURI = claimConfigurations.claimMappings.find(
-                (mapping) => mapping?.localClaim?.uri === uri)?.applicationClaim;
+            const requestURI: string = claimConfigurations.claimMappings.find(
+                (mapping: ClaimMappingInterface) => mapping?.localClaim?.uri === uri)?.applicationClaim;
 
             if (requestURI) {
-                const checkInRequested = claimConfigurations.requestedClaims.find(
-                    (requestClaims) => requestClaims?.claim?.uri === requestURI);
+                const checkInRequested: RequestedClaimConfigurationInterface = claimConfigurations.requestedClaims.find(
+                    (requestClaims: RequestedClaimConfigurationInterface) => requestClaims?.claim?.uri === requestURI);
 
                 if (checkInRequested) {
                     return checkInRequested.mandatory;
@@ -332,7 +339,7 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
         }
         // If it is mapped directly check the requested section
         requestURI = claimConfigurations.requestedClaims.find(
-            (requestClaims) => requestClaims?.claim?.uri === uri)?.mandatory;
+            (requestClaims: RequestedClaimConfigurationInterface) => requestClaims?.claim?.uri === uri)?.mandatory;
 
         return requestURI;
     };
@@ -354,18 +361,19 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
             const userAttributesFiltered: OIDCScopesClaimsListInterface[] = [];
 
             unfilteredClaims.forEach((scope: OIDCScopesClaimsListInterface) => {
-                const matchedClaims = scope.claims.filter((claim: ExtendedExternalClaimInterface) =>
-                    (claim.claimURI?.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1 ||
-                    claim.claimDialectURI?.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1 ||
-                    claim.localClaimDisplayName?.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1 ||
-                    claim.mappedLocalClaimURI?.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1));
+                const matchedClaims: ExtendedExternalClaimInterface[] = scope.claims
+                    .filter((claim: ExtendedExternalClaimInterface) =>
+                        (claim.claimURI?.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1 ||
+                        claim.claimDialectURI?.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1 ||
+                        claim.localClaimDisplayName?.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1 ||
+                        claim.mappedLocalClaimURI?.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1));
 
                 if (matchedClaims !== undefined && matchedClaims.length !== 0) {
                     // expand the scope item if the searched term matches any claims/user attributes
                     if (!tempExpandedScopes.includes(scope.name)) {
                         tempExpandedScopes.push(scope.name);
                     }
-                    const updatedScope = { 
+                    const updatedScope: OIDCScopesClaimsListInterface = { 
                         ...scope,
                         claims: matchedClaims
                     };
@@ -389,8 +397,8 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
      *
      * @param event - Change event.
      */
-    const handleChange = (event) => {
-        const changeValue = event.target.value;
+    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+        const changeValue: string = event.target.value;
 
         setSearchValue(changeValue);
         if (changeValue.length > 0) {
@@ -407,7 +415,7 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
     const setInitialValues = () => {
         setUserAttributesLoading(true);
 
-        const initialRequest = getInitiallySelectedClaimsURI();
+        const initialRequest: string[] = getInitiallySelectedClaimsURI();
         const initialSelectedClaims: ExtendedExternalClaimInterface[] = [];
         const initialAvailableClaims: ExtendedExternalClaimInterface[] = [];
 
@@ -427,10 +435,10 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                 }
             });
 
-        const tempFilterSelectedExternalClaims = [ ...filterSelectedExternalClaims ];
+        const tempFilterSelectedExternalClaims: ExtendedExternalClaimInterface[] = [ ...filterSelectedExternalClaims ];
 
         claimConfigurations?.claimMappings?.map((claimMapping: ClaimMappingInterface) => {
-            claims?.map((claim) => {
+            claims?.map((claim: ExtendedClaimInterface) => {
                 if (claimMapping.localClaim.uri === claim.claimURI){
                     const option: ExtendedExternalClaimInterface = {
                         claimDialectURI: claim.dialectURI,
@@ -442,9 +450,8 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                         requested: claim.requested
                     };
 
-                    if (!initialSelectedClaims.find(
-                        (selectedExternalClaim) => selectedExternalClaim?.mappedLocalClaimURI
-                        === claimMapping.localClaim.uri)){
+                    if (!initialSelectedClaims.find((selectedExternalClaim: ExtendedExternalClaimInterface) => 
+                        selectedExternalClaim?.mappedLocalClaimURI === claimMapping.localClaim.uri)){
                         initialSelectedClaims.push(option);
                     }
                 }
@@ -466,7 +473,7 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
      * @returns Is a mapping or not.
      */
     const checkMapping = (claiminput: ExtendedExternalClaimInterface): boolean => {
-        let isMapping = false;
+        let isMapping: boolean = false;
 
         openIDConnectClaims?.map((claim: ExtendedExternalClaimInterface) => {
             if (claim.mappedLocalClaimURI === claiminput.mappedLocalClaimURI ||
@@ -670,7 +677,7 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
     };
 
     const handleAccordionTitleClick = (scope: OIDCScopesClaimsListInterface) => {
-        let tempExpandedScopes = [ ...expandedScopes ];
+        let tempExpandedScopes: string[] = [ ...expandedScopes ];
 
         if (!expandedScopes?.includes(scope.name)) {
             tempExpandedScopes.push(scope.name);
@@ -915,20 +922,18 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                         </Grid.Column>
                     </Grid.Row>
                     <Grid.Row className="mt-5">
-                        <Grid.Column computer={ 16 } tablet={ 16 } largeScreen={ 12 } widescreen={ 12 }>
+                        <Grid.Column>
                             <Grid.Row>
                                 <Form>
-                                    <Grid.Column>
-                                        <Form.Field>
-                                            <div className="display-flex">
-                                                <CopyInputField
-                                                    className="copy-input spaced"
-                                                    value={ selectedScopes.join(" ") }
-                                                    data-testid={ `${ testId }-client-id-readonly-input` }
-                                                />
-                                            </div>
-                                        </Form.Field>
-                                    </Grid.Column>
+                                    <Form.Field>
+                                        <div className="display-flex">
+                                            <CopyInputField
+                                                className="copy-input spaced"
+                                                value={ selectedScopes.join(" ") }
+                                                data-componentid={ `${ componentId }-selected-scope-area` }
+                                            />
+                                        </div>
+                                    </Form.Field>
                                 </Form>
                             </Grid.Row>
                         </Grid.Column>
@@ -944,23 +949,22 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                             you selected.
                         </Trans>
                         {
-                            applicationConfig.attributeSettings.advancedAttributeSettings
-                                .showHowToUseScopesDocLink
-                                ? ( <Trans
-                                    i18nKey={
-                                        "console:develop.features.applications.edit.sections.attributes." +
-                                                "selection.howToUseScopesHint"
-                                    }
-                                >
-                                    <DocumentationLink
-                                        link={ 
-                                            getLink("develop.connections.editApplication.attributeManagement" +
-                                                    ".manageOIDCScopes")
-                                        }>
-                                            How to use Scopes
-                                    </DocumentationLink>
-                                </Trans> )
-                                : ( null )
+                            getLink("develop.connections.editApplication.attributeManagement" +
+                            ".manageOIDCScopes") !== undefined
+                            ?? ( <Trans
+                                i18nKey={
+                                    "console:develop.features.applications.edit.sections.attributes." +
+                                "selection.howToUseScopesHint"
+                                }
+                            >
+                                <DocumentationLink
+                                    link={ 
+                                        getLink("develop.connections.editApplication.attributeManagement" +
+                                    ".manageOIDCScopes")
+                                    }>
+                                    How to use Scopes
+                                </DocumentationLink>
+                            </Trans> )
                         }
                     </Hint>
                 </>
@@ -973,5 +977,6 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
  * Default props for the application attribute selection component.
  */
 AttributeSelectionOIDC.defaultProps = {
+    "data-componentid": "application-attribute-selection-oidc",
     "data-testid": "application-attribute-selection-oidc"
 };

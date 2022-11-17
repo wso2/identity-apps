@@ -475,6 +475,9 @@ export interface ConsoleNS {
                                     name: string;
                                     hint: string;
                                 },
+                                constants: {
+                                    openid: string
+                                },
                                 selectedScopesComponentHint: string;
                                 howToUseScopesHint: string;
                                 attributeComponentHint: string;

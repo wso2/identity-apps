@@ -25,9 +25,6 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
         develop: {
             applications: {
                 editApplication: {
-                    attributeManagement: {
-                        manageOIDCScopes: `${documentationBaseUrl}/guides/login/oidc-scopes-claims/`
-                    },
                     signInMethod: {
                         fido: `${documentationBaseUrl}/learn/multi-factor-authentication-using-fido/`
                     }

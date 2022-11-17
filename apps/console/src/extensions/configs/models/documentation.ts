@@ -27,9 +27,6 @@ export type DocumentationLinksExtensionInterface = Record<string, unknown> & {
         };
         applications: {
             editApplication: {
-                attributeManagement: {
-                    manageOIDCScopes: string;
-                }
                 signInMethod: {
                     fido: string;
                 };

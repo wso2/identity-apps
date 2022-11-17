@@ -830,6 +830,9 @@ export const console: ConsoleNS = {
                                     hint: "Cannot retrieve these user attributes by requesting " +
                                             "OIDC scopes. To retrieve, add the required attributes to a relevant scope."
                                 },
+                                constants: {
+                                    openid: "openid"
+                                },
                                 selectedScopesComponentHint: "Request these scopes from your application to retrieve the user " +
                                     "attributes you selected.",
                                 howToUseScopesHint: "<1>How to use Scopes</1>",

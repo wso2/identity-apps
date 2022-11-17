@@ -834,6 +834,9 @@ export const console: ConsoleNS = {
                                     hint: "OpenID Connect විෂය පථයන් ඉල්ලීමෙන් මෙම පරිශීලක " +
                                         "ගුණාංග ලබා ගත නොහැක. නැවත ලබා ගැනීමට, අදාළ විෂය පථයකට අවශ්‍ය ගුණාංග එක් කරන්න."
                                 },
+                                constants: {
+                                    openid: "openid"
+                                },
                                 selectedScopesComponentHint: "ඔබ තෝරාගත් පරිශීලක ගුණාංග ලබා ගැනීමට ඔබගේ යෙදුමෙන් මෙම විෂය පථයන් " +
                                     "ඉල්ලන්න.",
                                 howToUseScopesHint: "<1>Scopes භාවිතා කරන්නේ කෙසේද</1>",
