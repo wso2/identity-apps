@@ -457,7 +457,7 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                     };
 
                     if (!initialSelectedClaims.find((selectedExternalClaim: ExtendedExternalClaimInterface) => 
-                        selectedExternalClaim?.mappedLocalClaimURI === claimMapping.localClaim.uri)){
+                        selectedExternalClaim?.mappedLocalClaimURI === claimMapping?.localClaim?.uri)){
                         initialSelectedClaims.push(option);
                     }
                 }
