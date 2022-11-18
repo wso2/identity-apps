@@ -35,7 +35,8 @@ import React, {
 } from "react";
 import { System } from "react-notification-system";
 import { useDispatch, useSelector } from "react-redux";
-import { Redirect, Route, Switch } from "react-router-dom";
+import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
+import { Dispatch } from "redux";
 import { Footer, Header, ProtectedRoute } from "../components";
 import { getDefaultLayoutRoutes } from "../configs";
 import { AppConstants, UIConstants } from "../constants";
@@ -65,7 +66,7 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = (
 
     const { fluid } = props;
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
     const { headerHeight, footerHeight } = useUIElementSizes({
         footerHeight: UIConstants.DEFAULT_FOOTER_HEIGHT,
         headerHeight: UIConstants.DEFAULT_HEADER_HEIGHT,
@@ -86,7 +87,7 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = (
         setDefaultLayoutRoutes(getDefaultLayoutRoutes());
     }, [ AppConstants.getTenantQualifiedAppBasename() ]);
 
-    const handleAlertSystemInitialize = (system) => {
+    const handleAlertSystemInitialize = (system: System) => {
         dispatch(initializeAlertSystem(system));
     };
 
@@ -133,7 +134,7 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = (
             <Suspense fallback={ <ContentLoader dimmer={ false } /> }>
                 <Switch>
                     {
-                        defaultLayoutRoutes.map((route, index) => (
+                        defaultLayoutRoutes.map((route: RouteInterface, index: number) => (
                             route.redirectTo
                                 ? <Redirect to={ route.redirectTo }/>
                                 : route.protected
@@ -148,7 +149,7 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = (
                                     : (
                                         <Route
                                             path={ route.path }
-                                            render={ (renderProps) =>
+                                            render={ (renderProps: RouteComponentProps) =>
                                                 route.component
                                                     ? <route.component { ...renderProps } />
                                                     : null
