@@ -37,7 +37,7 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
-import { Dispatch, AnyAction } from "redux";
+import { AnyAction, Dispatch } from "redux";
 import { commonConfig } from "../extensions";
 import { getProfileInformation } from "../features/authentication/store";
 import {
