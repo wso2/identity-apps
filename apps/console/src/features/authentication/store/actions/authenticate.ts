@@ -33,7 +33,7 @@ import {
 } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
 import isEmpty from "lodash-es/isEmpty";
-import { Dispatch } from "redux";
+import { Dispatch, AnyAction } from "redux";
 import { Config } from "../../../core/configs";
 import { store } from "../../../core/store";
 import { getProfileInfo, getProfileSchemas } from "../../../users/api";
@@ -44,7 +44,7 @@ import { getProfileInfo, getProfileSchemas } from "../../../users/api";
 export const getProfileInformation = (
     meEndpoint: string = Config.getServiceResourceEndpoints().me,
     clientOrigin: string = window["AppUtils"].getConfig().clientOriginWithTenant
-) => (dispatch: Dispatch): void => {
+) => (dispatch: Dispatch<AnyAction>): void | AnyAction => {
 
     dispatch(setProfileInfoRequestLoadingStatus(true));
 
