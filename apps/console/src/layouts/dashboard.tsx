@@ -36,7 +36,8 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Redirect, Route, Switch } from "react-router-dom";
+import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
+import { Dispatch } from "redux";
 import { commonConfig } from "../extensions";
 import { getProfileInformation } from "../features/authentication/store";
 import {
@@ -76,7 +77,7 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
         fluid
     } = props;
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
     const { isMobileViewport } = useMediaContext();
     const { headerHeight, footerHeight } = useUIElementSizes({
@@ -210,7 +211,7 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
             <Suspense fallback={ <ContentLoader dimmer={ false } /> }>
                 <Switch>
                     {
-                        dashboardLayoutRoutes.map((route, index) => (
+                        dashboardLayoutRoutes.map((route: RouteInterface, index: number) => (
                             route.redirectTo
                                 ? <Redirect to={ route.redirectTo }/>
                                 : route.protected
@@ -225,7 +226,7 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
                                     : (
                                         <Route
                                             path={ route.path }
-                                            render={ (renderProps) =>
+                                            render={ (renderProps: RouteComponentProps) =>
                                                 route.component
                                                     ? <route.component { ...renderProps } />
                                                     : null

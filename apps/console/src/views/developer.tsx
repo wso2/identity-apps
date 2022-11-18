@@ -37,6 +37,7 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
+import { Dispatch } from "redux";
 import {
     AppConstants,
     AppState,
@@ -68,7 +69,7 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
         location
     } = props;
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
 
     const activeView: AppViewTypes = useSelector((state: AppState) => state.global.activeView);
@@ -119,7 +120,7 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
      * @param key - Index of the route.
      * @returns Resolved route to be rendered.
      */
-    const renderRoute = (route, key): ReactNode => (
+    const renderRoute = (route: RouteInterface, key: number): ReactNode => (
         route.redirectTo
             ? <Redirect key={ key } to={ route.redirectTo }/>
             : route.protected
@@ -134,7 +135,7 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
                 : (
                     <Route
                         path={ route.path }
-                        render={ (renderProps): ReactNode =>
+                        render={ (renderProps: RouteComponentProps): ReactNode =>
                             route.component
                                 ? <route.component { ...renderProps } />
                                 : null
@@ -152,10 +153,10 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
      *
      * @returns Set of resolved routes.
      */
-    const resolveRoutes = useCallback((): RouteInterface[] | ReactNode[] => {
+    const resolveRoutes: () => RouteInterface[] | ReactNode[] = useCallback((): RouteInterface[] | ReactNode[] => {
         const resolvedRoutes: ReactNode[] = [];
 
-        filteredRoutes.forEach((route, key) => {
+        filteredRoutes.forEach((route: RouteInterface, key: number) => {
             resolvedRoutes.push(renderRoute(route, key));
         });
 
