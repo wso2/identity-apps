@@ -957,16 +957,18 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                         </Trans>
                         {
                             getLink("develop.applications.editApplication.attributeManagement" +
-                            ".manageOIDCScopes") 
-                                && ( <DocumentationLink
-                                    link={ 
-                                        getLink("develop.applications.editApplication.attributeManagement" +
-                                        ".manageOIDCScopes")
-                                    }
-                                >
-                                    { t("console:develop.features.applications.edit.sections.attributes." +
-                                        "selection.howToUseScopesHint") }
-                                </DocumentationLink> )
+                            ".manageOIDCScopes")
+                                && (
+                                    <DocumentationLink
+                                        link={
+                                            getLink("develop.applications.editApplication.attributeManagement" +
+                                                ".manageOIDCScopes")
+                                        }
+                                    >
+                                        { t("console:develop.features.applications.edit.sections.attributes." +
+                                            "selection.howToUseScopesHint") }
+                                    </DocumentationLink>
+                                )
                         }
                     </Hint>
                 </>
