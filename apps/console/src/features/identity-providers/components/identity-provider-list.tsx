@@ -298,7 +298,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                 id: "name",
                 key: "name",
                 render: (idp: IdentityProviderInterface): ReactNode => {
-                    const isOrgIdp = (idp.federatedAuthenticators.defaultAuthenticatorId ===
+                    const isOrgIdp: boolean = (idp.federatedAuthenticators.defaultAuthenticatorId ===
                         IdentityProviderManagementConstants.ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID);
 
                     return (

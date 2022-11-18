@@ -21,6 +21,7 @@ module.exports = {
         "../../.eslintrc.js"
     ],
     rules: {
+        "@typescript-eslint/typedef": "off",
         "tsdoc/syntax": "off"
     }
 };

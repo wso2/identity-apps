@@ -40,4 +40,9 @@ export class UIConstants {
      * Error message to be shown in the alerting component on API retrieval errors.
      */
     public static readonly API_RETRIEVAL_ERROR_ALERT_MESSAGE: string = "Retrieval Error";
+
+    /**
+     * Default list item size for resources such as applications, IdPs etc.
+     */
+    public static readonly DEFAULT_RESOURCE_LIST_ITEM_LIMIT: number = 10;
 }

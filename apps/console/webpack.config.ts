@@ -148,11 +148,6 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                     "authentication.framework.util.FrameworkUtils.isOrganizationManagementEnabled\"%>"
                     : "",
                 hash: true,
-                // eslint-disable-next-line max-len
-                hotjarSystemVariable: "<% String hotjar_track_code_system_var = System.getenv().getOrDefault(\"hotjar_tracking_code\", null); %>",
-                // eslint-disable-next-line max-len
-                hotjarSystemVariableNullCheck: "<% String hotjar_track_code = StringUtils.isNotBlank(hotjar_track_code_system_var) ? hotjar_track_code_system_var : null; %>",
-                hotjarTrackingCode: "<%= hotjar_track_code %>",
                 importStringUtils: "<%@ page import=\"org.apache.commons.lang.StringUtils\" %>",
                 importSuperTenantConstant: !isDeployedOnExternalTomcatServer
                     ? "<%@ page import=\"static org.wso2.carbon.utils.multitenancy." +
@@ -189,12 +184,7 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                     ? "<%=TENANT_AWARE_URL_PREFIX%>"
                     : "",
                 theme: theme,
-                themeHash: getThemeConfigs(theme).styleSheetHash,
-                vwoScriptVariable: "<%= vwo_ac_id %>",
-                // eslint-disable-next-line max-len
-                vwoSystemVariable: "<% String vwo_ac_id_system_var = System.getenv().getOrDefault(\"vwo_account_id\", null); %>",
-                // eslint-disable-next-line max-len
-                vwoSystemVariableNullCheck: "<% String vwo_ac_id = StringUtils.isNotBlank(vwo_ac_id_system_var) ? vwo_ac_id_system_var : null; %>"
+                themeHash: getThemeConfigs(theme).styleSheetHash
             }) as unknown as WebpackPluginInstance
         );
 
@@ -337,7 +327,6 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                 ...existingDefinePlugin["definitions"],
                 "process.env": {
                     ...existingDefinePlugin["definitions"]["process.env"],
-                    NODE_ENV: JSON.stringify(process.env.NODE_ENV),
                     metaHash: JSON.stringify(getI18nConfigs().metaFileHash)
                 },
                 "typeof window": JSON.stringify("object")

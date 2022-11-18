@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,6 +19,7 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Heading } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
+import { useTranslation } from "react-i18next";
 import { Divider } from "semantic-ui-react";
 
 /**
@@ -29,8 +30,8 @@ type OrganizationEnterpriseIdentityProviderCreateWizardHelpPropsInterface = Test
 /**
  * Help content for the custom IDP template creation wizard.
  *
- * @param {OrganizationEnterpriseIdentityProviderCreateWizardHelpPropsInterface} props - Props injected into the component.
- * @return {React.ReactElement}
+ * @param props - Props injected into the component.
+ * @returns OrganizationEnterpriseIdentityProviderCreateWizardHelp component.
  */
 const OrganizationEnterpriseIdentityProviderCreateWizardHelp:
     FunctionComponent<OrganizationEnterpriseIdentityProviderCreateWizardHelpPropsInterface> = (
@@ -41,21 +42,47 @@ const OrganizationEnterpriseIdentityProviderCreateWizardHelp:
             ["data-testid"]: testId
         } = props;
 
+        const { t } = useTranslation();
+
         return (
             <>
                 <div data-testid={ testId }>
-                    <Heading as="h5">Name</Heading>
-                    <p>Provide a unique name for the enterprise authentication provider so that it can be
-                    easily identified.</p>
+                    <Heading as="h5">
+                        {
+                            t("console:develop.features.authenticationProvider.templates.organizationIDP" +
+                                ".wizardHelp.name.heading")
+                        }
+                    </Heading>
+                    <p>
+                        {
+                            t("console:develop.features.authenticationProvider.templates.organizationIDP" +
+                                ".wizardHelp.name.description")
+                        }
+                    </p>
                     <p>E.g., MyOrgEnterpriseAuthProvider.</p>
                 </div>
 
                 <Divider/>
 
                 <div data-testid={ testId }>
-                    <Heading as="h5">Description</Heading>
-                    <p>Provide a description for the enterprise authentication provider to explain more about it.</p>
-                    <p>E.g., This is the authenticator for MyOrg, which acts as the IDP for MyApp.</p>
+                    <Heading as="h5">
+                        {
+                            t("console:develop.features.authenticationProvider.templates.organizationIDP" +
+                                ".wizardHelp.description.heading")
+                        }
+                    </Heading>
+                    <p>
+                        {
+                            t("console:develop.features.authenticationProvider.templates.organizationIDP" +
+                                ".wizardHelp.description.description")
+                        }
+                    </p>
+                    <p>
+                        {
+                            t("console:develop.features.authenticationProvider.templates.organizationIDP" +
+                                ".wizardHelp.description.example")
+                        }
+                    </p>
                 </div>
             </>
         );

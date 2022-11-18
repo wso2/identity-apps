@@ -1225,6 +1225,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             </Grid.Row>
             {
                 !isSPAApplication
+                && !isMobileApplication
                 && (
                     selectedGrantTypes?.includes(ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT)
                     || selectedGrantTypes?.includes(ApplicationManagementConstants.DEVICE_GRANT)
@@ -1297,7 +1298,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     }
                                     placeholder={
                                         isMobileApplication
-                                            ? "wso2sample://oauth2"
+                                            ? t("console:develop.features.applications.forms.inboundOIDC.mobileApp" +
+                                                ".mobileAppPlaceholder")
                                             : t("console:develop.features.applications.forms.inboundOIDC.fields." +
                                                 "callBackUrls.placeholder")
                                     }
@@ -1485,7 +1487,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     type="checkbox"
                                     value={ initialValues?.pkce && findPKCE(initialValues.pkce) }
                                     listen={ pkceValuesChangeListener }
-                                    children={ !isSPAApplication
+                                    children={ (!isSPAApplication && !isMobileApplication)
                                         ? [
                                             {
                                                 label: t("console:develop.features.applications.forms.inboundOIDC" +
@@ -1959,9 +1961,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 </Grid.Column>
             </Grid.Row>
             {
-                applicationConfig.inboundOIDCForm.showIdTokenEncryption &&
-                    ApplicationTemplateIdTypes.SPA !== template?.templateId &&
-                (
+                applicationConfig.inboundOIDCForm.showIdTokenEncryption
+                && ApplicationTemplateIdTypes.SPA !== template?.templateId
+                && !isMobileApplication
+                && (
                     <>
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
@@ -2850,6 +2853,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             initialValues?.clientSecret
                             && (initialValues?.state !== State.REVOKED)
                             && (!isSPAApplication))
+                            && (!isMobileApplication)
                             && (
                                 <Grid.Row columns={ 2 }>
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>

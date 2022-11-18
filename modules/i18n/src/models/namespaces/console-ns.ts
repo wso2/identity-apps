@@ -834,6 +834,10 @@ export interface ConsoleNS {
                             grant: FormAttributes;
                             public: FormAttributes;
                         };
+                        mobileApp: {
+                            discoverableHint: string;
+                            mobileAppPlaceholder: string;
+                        },
                         sections: {
                             accessToken: {
                                 heading: string;
@@ -1683,6 +1687,19 @@ export interface ConsoleNS {
                             subHeading: string;
                         }
                     };
+                    organizationIDP?: {
+                        wizardHelp: {
+                            name: {
+                                description: string;
+                                heading: string;
+                            };
+                            description: {
+                                description: string;
+                                heading: string;
+                                example: string;
+                            };
+                        }
+                    },
                     microsoft?: {
                         wizardHelp: {
                             clientId: {

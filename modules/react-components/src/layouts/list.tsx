@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { UIConstants } from "@wso2is/core/constants";
 import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, PropsWithChildren, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
@@ -28,7 +29,7 @@ import {
     Icon,
     PaginationProps
 } from "semantic-ui-react";
-import { Pagination, PaginationPropsInterface } from "../components";
+import { DataTable, Pagination, PaginationPropsInterface } from "../components";
 
 /**
  * List layout component Prop types.
@@ -49,6 +50,10 @@ export interface ListLayoutPropsInterface extends PaginationProps, IdentifiableC
      */
     className?: string;
     /**
+     * Default list item limit.
+     */
+    defaultListItemLimit?: number;
+    /**
      * Disables Left action panel component.
      */
     disableLeftActionPanel?: boolean;
@@ -56,6 +61,10 @@ export interface ListLayoutPropsInterface extends PaginationProps, IdentifiableC
      * Disables Right action panel component.
      */
     disableRightActionPanel?: boolean;
+    /**
+     * Check if the list is loading
+     */
+    isLoading?: boolean;
     /**
      * Left action panel component.
      */
@@ -149,8 +158,10 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
         advancedSearchPosition,
         children,
         className,
+        defaultListItemLimit,
         disableLeftActionPanel,
         disableRightActionPanel,
+        isLoading,
         leftActionPanel,
         minimalPagination,
         onItemsPerPageDropdownChange,
@@ -280,7 +291,20 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
                 )
             }
             <div className="list-container">
-                { children }
+                {
+                    isLoading ? (
+                        <DataTable
+                            isLoading={ true }
+                            loadingStateOptions={ {
+                                count: defaultListItemLimit ?? UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
+                                imageType: "square"
+                            } }
+                            columns={ [] }
+                            data={ [] }
+                            onRowClick={ null }
+                        />
+                    ) : children
+                }
                 {
                     (showPagination)
                         ? (

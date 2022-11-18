@@ -1602,6 +1602,11 @@ export const console: ConsoleNS = {
                                 heading: "යෙදුම අවලංගු කර ඇත"
                             }
                         },
+                        mobileApp: {
+                            discoverableHint: "සබල කර ඇති නම් සහ වෙබ් ප්‍රවේශ විය හැකි url (ගැඹුරු සබැඳියක්) ලබා දී " +
+                                "ඇත්නම්, පාරිභෝගිකයින්ට <1>{{ myAccount }}</1> ද්වාරයෙන් මෙම යෙදුමට ප්‍රවේශ විය හැක.",
+                            mobileAppPlaceholder: "myapp://oauth2"
+                        },
                         sections: {
                             accessToken: {
                                 fields: {
@@ -2993,6 +2998,20 @@ export const console: ConsoleNS = {
                                 idpDescription: "අනන්යතා සැපයුම්කරු ඒ ගැන වැඩි විස්තර විස්තර කිරීමට විස්තරයක් සපයන්න."
                             },
                             subHeading: "පහත මාර්ගෝපදේශය භාවිතා කරන්න"
+                        }
+                    },
+                    organizationIDP: {
+                        wizardHelp: {
+                            name: {
+                                description: "එය පහසුවෙන් හඳුනාගත හැකි වන පරිදි ව්‍යවසාය සත්‍යාපන සැපයුම්කරු සඳහා අද්විතීය නමක්" +
+                                    " ලබා දෙන්න.",
+                                heading: "නම"
+                            },
+                            description: {
+                                description: "ඒ ගැන වැඩි විස්තර සඳහා ව්‍යවසාය සත්‍යාපන සැපයුම්කරු සඳහා විස්තරයක් සපයන්න.",
+                                heading: "විස්තර",
+                                example: "උදා., MyApp සඳහා IDP ලෙස ක්‍රියා කරන MyOrg සඳහා සත්‍යාපනය සැපයුම්කරු මෙයයි."
+                            }
                         }
                     }
                 },
@@ -7723,6 +7742,7 @@ export const console: ConsoleNS = {
                             },
                             success: {
                                 description: "පරිශීලක ගිණුම සාර්ථකව අක්‍රීය කර ඇත",
+                                genericMessage: "ගිණුම අක්‍රීය කරන ලදි",
                                 message: "{{name}} ගිණුම අක්‍රීය කර ඇත"
                             }
                         },
@@ -7737,6 +7757,7 @@ export const console: ConsoleNS = {
                             },
                             success: {
                                 description: "පරිශීලක ගිණුම සාර්ථකව සක්‍රීය කර ඇත",
+                                genericMessage: "ගිණුම සක්‍රීය කරන ලදි",
                                 message: "{{name}} ගිණුම සක්‍රීය කර ඇත"
                             }
                         },
@@ -7779,6 +7800,7 @@ export const console: ConsoleNS = {
                             },
                             success: {
                                 description: "පරිශීලක ගිණුම සාර්ථකව අගුළු දමා ඇත.",
+                                genericMessage: "ගිණුම අගුළු දමා ඇත",
                                 message: "{{name}} ගිණුම අගුළු දමා ඇත"
                             }
                         },
@@ -7799,6 +7821,7 @@ export const console: ConsoleNS = {
                             },
                             success: {
                                 description: "පරිශීලක ගිණුම සාර්ථකව අගුළු හරින ලදි.",
+                                genericMessage: "ගිණුම අගුළු ඇරීම සාර්ථකව සම්පූර්ණ විය",
                                 message: "{{name}} ගිණුම අගුළු හරිනු ලැබේ"
                             }
                         },

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -25,7 +25,7 @@ import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Grid } from "semantic-ui-react";
 import {
     OrganizationEnterpriseAuthenticationProviderCreateWizardContent
@@ -33,8 +33,6 @@ import {
 import { identityProviderConfig } from "../../../../../extensions/configs";
 import {
     AppConstants,
-    AppState,
-    ConfigReducerStateInterface,
     EventPublisher,
     ModalWithSidePanel,
     TierLimitReachErrorModal
@@ -86,12 +84,13 @@ export interface OrganizationEnterpriseAuthenticationProviderCreateWizardFormErr
 /**
  * Facebook Authentication Provider Create Wizard Component.
  *
- * @param { OrganizationEnterpriseAuthenticationProviderCreateWizardPropsInterface } props - Props injected to
- * the component.
+ * @param props - Props injected to the component.
  *
- * @return { React.ReactElement }
+ * @returns OrganizationEnterpriseAuthenticationProviderCreateWizard component.
  */
-export const OrganizationEnterpriseAuthenticationProviderCreateWizard: FunctionComponent<OrganizationEnterpriseAuthenticationProviderCreateWizardPropsInterface> = (
+export const OrganizationEnterpriseAuthenticationProviderCreateWizard: FunctionComponent<
+    OrganizationEnterpriseAuthenticationProviderCreateWizardPropsInterface
+> = (
     props: OrganizationEnterpriseAuthenticationProviderCreateWizardPropsInterface
 ): ReactElement => {
 
@@ -111,8 +110,6 @@ export const OrganizationEnterpriseAuthenticationProviderCreateWizard: FunctionC
 
     const [ alert, setAlert, alertComponent ] = useWizardAlert();
 
-    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
-
     const [ currentWizardStep, setCurrentWizardStep ] = useState<number>(currentStep);
     const [ wizStep, setWizStep ] = useState<number>(0);
     const [ totalStep, setTotalStep ] = useState<number>(0);
@@ -131,7 +128,7 @@ export const OrganizationEnterpriseAuthenticationProviderCreateWizard: FunctionC
     /**
      * Creates a new identity provider.
      *
-     * @param identityProvider Identity provider object.
+     * @param identityProvider - Identity provider object.
      */
     const createNewIdentityProvider = (identityProvider: IdentityProviderInterface): void => {
 
@@ -250,16 +247,18 @@ export const OrganizationEnterpriseAuthenticationProviderCreateWizard: FunctionC
      */
     const handleLimitReachedModalClose = (): void => {
         setOpenLimitReachedModal(false);
+
         handleWizardClose();
     };
 
     /**
      * Callback triggered when the form is submitted.
      *
-     * @param {OrganizationEnterpriseAuthenticationProviderCreateWizardFormValuesInterface} values - Form values.
+     * @param values - Form values.
      */
-    const onSubmitWizard = (values: OrganizationEnterpriseAuthenticationProviderCreateWizardFormValuesInterface
-        ): void => {
+    const onSubmitWizard = (
+        values: OrganizationEnterpriseAuthenticationProviderCreateWizardFormValuesInterface
+    ): void => {
 
         const identityProvider: IdentityProviderInterface = { ...template.idp };
 
@@ -286,7 +285,7 @@ export const OrganizationEnterpriseAuthenticationProviderCreateWizard: FunctionC
     /**
      * Resolve the step wizard actions.
      *
-     * @return {React.ReactElement}
+     * @returns Resolved step wizard actions.
      */
     const resolveStepActions = (): ReactElement => {
 
@@ -351,7 +350,7 @@ export const OrganizationEnterpriseAuthenticationProviderCreateWizard: FunctionC
     /**
      * Renders the help panel containing wizard help.
      *
-     * @return {React.ReactElement}
+     * @returns Help panel component.
      */
     const renderHelpPanel = (): ReactElement => {
 

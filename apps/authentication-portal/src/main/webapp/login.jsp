@@ -396,19 +396,31 @@
 
                                             <script src="https://accounts.google.com/gsi/client" async defer></script>
 
-                                            <div id="google_parent" class="google-one-tap-container">
-                                                <div id="g_id_onload"
-                                                    data-client_id="<%=Encode.forHtmlAttribute(GOOGLE_CLIENT_ID)%>"
-                                                    data-login_uri="<%=Encode.forHtmlAttribute(GOOGLE_CALLBACK_URL)%>"
-                                                    data-prompt_parent_id="google_parent"
-                                                    data-state="<%=request.getParameter("sessionDataKey")%>"
-                                                    data-cancel_on_tap_outside="false"
-                                                    data-authenticator="<%=Encode.forHtmlAttribute(idpEntry.getValue())%>"
-                                                    data-idp="<%=Encode.forHtmlAttribute(idpName)%>"
-                                                    data-one_tap_enabled="true"
-                                                    data-moment_callback="onMoment">
-                                                </div>
-                                            </div>
+                                            <div id="google_parent" class="google-one-tap-container"></div>
+
+                                            <form action="<%=GOOGLE_CALLBACK_URL%>" method="post" id="googleOneTapForm" style="display: none;">
+                                                <input type="hidden" name="state" value="<%=Encode.forHtmlAttribute(request.getParameter("sessionDataKey"))%>"/>
+                                                <input type="hidden" name="idp" value="<%=idpName%>"/>
+                                                <input type="hidden" name="authenticator"  value="<%=idpEntry.getValue()%>"/>
+                                                <input type="hidden" name="one_tap_enabled"  value="true"/>
+                                                <input type="hidden" name="internal_submission"  value="true"/>
+                                                <input type="hidden" name="credential" id="credential"/>
+                                            </form>
+
+                                            <script>
+                                                window.onload = function callGoogleOneTap() {
+                                                    google.accounts.id.initialize({
+                                                        client_id: "<%=Encode.forJavaScriptAttribute(GOOGLE_CLIENT_ID)%>",
+                                                        prompt_parent_id: "google_parent",
+                                                        cancel_on_tap_outside: false,
+                                                        nonce: "<%=Encode.forJavaScriptAttribute(request.getParameter("sessionDataKey"))%>",
+                                                        callback: handleCredentialResponse
+                                                    });
+                                                    google.accounts.id.prompt((notification) => {
+                                                        onMoment(notification);
+                                                    });
+                                                }
+                                            </script>
                                         <% } else { %>
                                             <script>
                                                 document.getElementById("googleSignIn").style.display = "block";
@@ -492,12 +504,12 @@
                                         '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpEntry.getKey()))%>',
                                         '<%=MAGIC_LINK_AUTHENTICATOR%>')" id="icon-<%=iconId%>"
                                         title="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%>
-                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "magic.link" )%>"
+                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "magic.link")%>"
                                         data-componentid="login-page-sign-in-with-magic-link">
                                         <img class="ui image" src="libs/themes/default/assets/images/icons/magic-link-icon.svg" alt="Magic Link Logo" />
                                         <span>
-                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with" )%>
-                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "magic.link" )%>
+                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%>
+                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "magic.link")%>
                                         </span>
                                     </button>
                                 </div>
@@ -579,6 +591,11 @@
                     element.style.display = "none";
                 }
             }
+        }
+
+        function handleCredentialResponse(response) {
+           $('#credential').val(response.credential);
+           $('#googleOneTapForm').submit();
         }
 
         function checkSessionKey() {

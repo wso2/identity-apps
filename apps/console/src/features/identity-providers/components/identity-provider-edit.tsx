@@ -407,6 +407,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
 
     return (
         <ResourceTab
+            isLoading={ isLoading }
             data-testid={ `${ testId }-resource-tabs` }
             panes={ getPanes() }
             defaultActiveIndex={ defaultActiveIndex }

@@ -1635,6 +1635,12 @@ export const console: ConsoleNS = {
                                 heading: "La demande est révoquée"
                             }
                         },
+                        mobileApp: {
+                            discoverableHint: "Si cette option est activée et qu'une URL accessible sur le " +
+                                "Web (lien profond) est fournie, les clients peuvent accéder à cette " +
+                                "application à partir du portail <1>{{ myAccount }}</1>.",
+                            mobileAppPlaceholder: "myapp://oauth2"
+                        },
                         sections: {
                             accessToken: {
                                 fields: {
@@ -3076,6 +3082,22 @@ export const console: ConsoleNS = {
                                 idpDescription: "Fournir une description au fournisseur d'identité pour en expliquer davantage."
                             },
                             subHeading: "Utilisez le guide ci-dessous"
+                        }
+                    },
+                    organizationIDP: {
+                        wizardHelp: {
+                            name: {
+                                description: "Fournissez un nom unique au fournisseur d'authentification d'entreprise" +
+                                    " afin qu'il puisse être facilement identifié.",
+                                heading: "Nom"
+                            },
+                            description: {
+                                description: "Fournissez une description du fournisseur d'authentification" +
+                                    " d'entreprise pour en savoir plus à ce sujet.",
+                                heading: "La description",
+                                example: "Par exemple, il s'agit de l'authentificateur pour MyOrg, qui agit en tant" +
+                                    " qu'IDP pour MyApp."
+                            }
                         }
                     }
                 },
@@ -7881,6 +7903,7 @@ export const console: ConsoleNS = {
                             },
                             success: {
                                 description: "Le compte utilisateur a bien été désactivé",
+                                genericMessage: "Le compte utilisateur a bien été désactivé",
                                 message: "Le compte de {{name}} est désactivé"
                             }
                         },
@@ -7895,6 +7918,7 @@ export const console: ConsoleNS = {
                             },
                             success: {
                                 description: "Le compte d'utilisateur a bien été activé",
+                                genericMessage: "Le compte de l'utilisateur a bien été activé",
                                 message: "Le compte de {{name}} est activé"
                             }
                         },
@@ -7942,6 +7966,7 @@ export const console: ConsoleNS = {
                             },
                             success: {
                                 description: "Le compte d'utilisateur a été verrouillé avec succès.",
+                                genericMessage: "Le compte d'utilisateur a été verrouillé avec succès.",
                                 message: "Le compte de {{name}} est verrouillé"
                             }
                         },
@@ -7962,6 +7987,7 @@ export const console: ConsoleNS = {
                             },
                             success: {
                                 description: "Le compte utilisateur a été déverrouillé avec succès.",
+                                genericMessage: "Le compte utilisateur a été déverrouillé avec succès.",
                                 message: "Le compte de {{name}} est déverrouillé"
                             }
                         },

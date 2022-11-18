@@ -1596,6 +1596,11 @@ export const console: ConsoleNS = {
                                 heading: "Application is inactive"
                             }
                         },
+                        mobileApp: {
+                            discoverableHint: "If enabled and a web accessible url(deep link) is given, customers " +
+                                "can access this application from the <1>{{ myAccount }}</1> portal.",
+                            mobileAppPlaceholder: "myapp://oauth2"
+                        },
                         sections: {
                             accessToken: {
                                 fields: {
@@ -4426,6 +4431,21 @@ export const console: ConsoleNS = {
                                 heading: "Prerequisite"
                             },
                             subHeading: "Use the guide below"
+                        }
+                    },
+                    organizationIDP: {
+                        wizardHelp: {
+                            name: {
+                                description: "Provide a unique name for the enterprise authentication provider so" +
+                                    " that it can be easily identified.",
+                                heading: "Name"
+                            },
+                            description: {
+                                description: "Provide a description for the enterprise authentication provider to" +
+                                    " explain more about it.",
+                                heading: "Description",
+                                example: "E.g., This is the authenticator for MyOrg, which acts as the IDP for MyApp."
+                            }
                         }
                     },
                     microsoft: {
@@ -9373,6 +9393,7 @@ export const console: ConsoleNS = {
                             },
                             success: {
                                 description: "The user account disabled successfully.",
+                                genericMessage: "Account is disabled",
                                 message: "{{name}}'s account is disabled"
                             }
                         },
@@ -9387,6 +9408,7 @@ export const console: ConsoleNS = {
                             },
                             success: {
                                 description: "The user account enabled successfully.",
+                                genericMessage: "Account is enabled",
                                 message: "{{name}}'s account is enabled"
                             }
                         },
@@ -9429,6 +9451,7 @@ export const console: ConsoleNS = {
                             },
                             success: {
                                 description: "The user account locked successfully.",
+                                genericMessage: "Account is locked",
                                 message: "{{name}}'s account is locked"
                             }
                         },
@@ -9449,6 +9472,7 @@ export const console: ConsoleNS = {
                             },
                             success: {
                                 description: "The user account unlocked successfully.",
+                                genericMessage: "Account is unlocked",
                                 message: "{{name}}'s account is unlocked"
                             }
                         },

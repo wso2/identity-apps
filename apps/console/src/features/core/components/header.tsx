@@ -151,6 +151,10 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     ]);
 
     useEffect(() => {
+        if (isPrivilegedUser) {
+            return;
+        }
+        
         commonConfig
             ?.header
             ?.getUserDropdownLinkExtensions(tenantDomain, associatedTenants)
@@ -435,7 +439,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                         component: renderAppSwitcher(),
                         floated: "right"
                     },
-                    isOrgSwitcherEnabled && {
+                    isOrgSwitcherEnabled && !isPrivilegedUser && {
                         component: <OrganizationSwitchBreadcrumb />,
                         floated: "left"
                     }

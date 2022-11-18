@@ -176,10 +176,10 @@
 --------------------*/
 
 /* Used on inputs, textarea etc */
-@focusedFormBorderColor: lighten(@primaryColor, 30);
+@focusedFormBorderColor: @primaryColor;
 
 /* Used on dropdowns, other larger blocks */
-@focusedFormMutedBorderColor: lighten(@primaryColor, 30);
+@focusedFormMutedBorderColor: @primaryColor;
 
 /*-------------------
    Advanced search
