@@ -815,7 +815,7 @@ export const console: ConsoleNS = {
                                     },
                                     subHeading: "Select which user attributes you want to share with the application."
                                 },
-                                attributeComponentHint: "Use <1>OpenID Connect Scopes</1> to add/remove user attribute to a scope. " +
+                                attributeComponentHint: "Use <1>OpenID Connect Scopes</1> to manage user attribute in a scope. " +
                                     "You can add new attributes by navigating to <3>Attributes.</3>",
                                 attributeComponentHintAlt: "Manage the user attributes you want to share with this" +
                                     " application. You can add new attributes and mappings by navigating to " +
@@ -830,6 +830,9 @@ export const console: ConsoleNS = {
                                     hint: "Cannot retrieve these user attributes by requesting " +
                                             "OIDC scopes. To retrieve, add the required attributes to a relevant scope."
                                 },
+                                selectedScopesComponentHint: "Request these scopes from your application to retrieve " +
+                                    "the selected user attributes.",
+                                howToUseScopesHint: "How to use Scopes",
                                 mandatoryAttributeHint: "Mark which user attributes are mandatory to be shared " +
                                     "with the application. At login, {{productName}} prompts the user to enter these " +
                                     "attribute values, if not already provided in the user's profile.",
