@@ -27,11 +27,11 @@ import { ApplicationTemplateCategories, ApplicationTemplateLoadingStrategies } f
  */
 export class ApplicationManagementConstants {
 
-    public static readonly EMPTY_STRING = "";
-    public static readonly LINE_BREAK = "\n";
-    public static readonly MAXIMUM_NUMBER_OF_LIST_ITEMS_TO_SHOW_INSIDE_POPUP = 3;
-    public static readonly AUTHENTICATORS_LOCAL_STORAGE_KEY = btoa("Authenticators");
-    public static readonly EMPTY_JSON_ARRAY = "[]";
+    public static readonly EMPTY_STRING: string = "";
+    public static readonly LINE_BREAK: string = "\n";
+    public static readonly MAXIMUM_NUMBER_OF_LIST_ITEMS_TO_SHOW_INSIDE_POPUP: number = 3;
+    public static readonly AUTHENTICATORS_LOCAL_STORAGE_KEY: string = btoa("Authenticators");
+    public static readonly EMPTY_JSON_ARRAY: string = "[]";
 
     /**
      * Private constructor to avoid object instantiation from outside
@@ -66,53 +66,53 @@ export class ApplicationManagementConstants {
     /**
      * Key for the `Edit Application` tag in the docs structure object.
      */
-    public static readonly EDIT_APPLICATIONS_DOCS_KEY = `${
+    public static readonly EDIT_APPLICATIONS_DOCS_KEY: string = `${
         DocumentationConstants.PORTAL_DOCS_KEY }.Applications["Edit Application"]`;
 
     /**
      * Key for the application samples tag in the docs structure object.
      */
-    public static readonly APPLICATION_SAMPLES_DOCS_KEY = "Quick Starts[\"Choose a Sample Type\"]";
+    public static readonly APPLICATION_SAMPLES_DOCS_KEY: string = "Quick Starts[\"Choose a Sample Type\"]";
 
     /**
      * Key for the application docs tag in the docs structure object.
      */
-    public static readonly APPLICATION_DOCS_KEY = "[\"Developer Portal\"].Applications[\"Edit Application\"]";
+    public static readonly APPLICATION_DOCS_KEY: string = "[\"Developer Portal\"].Applications[\"Edit Application\"]";
 
     /**
      * Key for the overview tag in the docs structure object.
      */
-    public static readonly APPLICATION_DOCS_OVERVIEW = "Overview";
+    public static readonly APPLICATION_DOCS_OVERVIEW: string = "Overview";
 
     /**
      * Key for the URL search param for application state.
      */
-    public static readonly APP_STATE_URL_SEARCH_PARAM_KEY = "state";
+    public static readonly APP_STATE_URL_SEARCH_PARAM_KEY: string = "state";
 
     /**
      * Value for sign on authentication param for application state.
      */
-    public static readonly APP_STATE_STRONG_AUTH_PARAM_KEY = "isSignOn";
+    public static readonly APP_STATE_STRONG_AUTH_PARAM_KEY: string = "isSignOn";
 
     /**
      * Key for the URL search param for application readonly state.
      */
-    public static readonly APP_READ_ONLY_STATE_URL_SEARCH_PARAM_KEY = "readOnly";
+    public static readonly APP_READ_ONLY_STATE_URL_SEARCH_PARAM_KEY: string = "readOnly";
 
     /**
      * Key for the URL search param for client secret hashing enabled flag.
      */
-    public static readonly CLIENT_SECRET_HASH_ENABLED_URL_SEARCH_PARAM_KEY = "isClientSecretHashEnabled";
+    public static readonly CLIENT_SECRET_HASH_ENABLED_URL_SEARCH_PARAM_KEY: string = "isClientSecretHashEnabled";
 
     /**
      * Value for the URL search param for application state.
      */
-    public static readonly APP_STATE_URL_SEARCH_PARAM_VALUE = "new";
+    public static readonly APP_STATE_URL_SEARCH_PARAM_VALUE: string = "new";
 
     /**
      * Value for sign on authentication param for application state.
      */
-    public static readonly APP_STATE_STRONG_AUTH_PARAM_VALUE = "true";
+    public static readonly APP_STATE_STRONG_AUTH_PARAM_VALUE: string = "true";
 
     /**
      * Default application template loading strategy.
@@ -176,7 +176,7 @@ export class ApplicationManagementConstants {
      * We need to get information from backend rather than hard code.
      * This issue is tracked via https://github.com/wso2/product-is/issues/12397.
      */
-    public static readonly IS_REFRESH_TOKEN_GRANT_TYPE_ALLOWED = [
+    public static readonly IS_REFRESH_TOKEN_GRANT_TYPE_ALLOWED: string[] = [
         ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
         ApplicationManagementConstants.PASSWORD,
         ApplicationManagementConstants.SAML2_BEARER,
@@ -249,7 +249,7 @@ export class ApplicationManagementConstants {
     /**
      * Key for the SPA template.
      */
-    public static readonly SPA = "Single Page Application";
+    public static readonly SPA: string = "Single Page Application";
 
     // API errors
     public static readonly AUTH_PROTOCOL_METADATA_INVALID_STATUS_CODE_ERROR: string = "Received an invalid status " +
@@ -308,8 +308,8 @@ export class ApplicationManagementConstants {
 
     public static readonly UNABLE_FETCH_APPLICATIONS: string = "An error occurred while fetching applications.";
 
-    public static readonly IDENTIFIER_FIRST_AUTHENTICATOR_ID = IdentityProviderManagementConstants.LOCAL_IDP_IDENTIFIER
-        + "-" + "SWRlbnRpZmllckV4ZWN1dG9y";
+    public static readonly IDENTIFIER_FIRST_AUTHENTICATOR_ID: string =
+        IdentityProviderManagementConstants.LOCAL_IDP_IDENTIFIER + "-" + "SWRlbnRpZmllckV4ZWN1dG9y";
 
     public static readonly MYACCOUNT_STATUS_UPDATE_ERROR: string = "An error occurred while updating " +
         "status of the My Account Portal.";
@@ -317,23 +317,23 @@ export class ApplicationManagementConstants {
     public static readonly MYACCOUNT_STATUS_UPDATE_INVALID_STATUS_CODE_ERROR: string = "Received an " +
         "invalid status code while updating status of the My Account Portal.";
 
-    public static readonly SECOND_FACTOR_AUTHENTICATORS_DROPPABLE_ID = "second-factor-authenticators";
-    public static readonly EXTERNAL_AUTHENTICATORS_DROPPABLE_ID = "external-authenticators";
+    public static readonly SECOND_FACTOR_AUTHENTICATORS_DROPPABLE_ID: string = "second-factor-authenticators";
+    public static readonly EXTERNAL_AUTHENTICATORS_DROPPABLE_ID: string = "external-authenticators";
     public static readonly SOCIAL_LOGIN_HEADER: string = "Social Login";
 
     // Authenticators that are only handlers.
-    public static readonly HANDLER_AUTHENTICATORS = [
+    public static readonly HANDLER_AUTHENTICATORS: string[] = [
         ApplicationManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID
     ];
 
     // First factor authenticators.
-    public static readonly FIRST_FACTOR_AUTHENTICATORS = [
+    public static readonly FIRST_FACTOR_AUTHENTICATORS: string[] = [
         IdentityProviderManagementConstants.BASIC_AUTHENTICATOR,
         IdentityProviderManagementConstants.FIDO_AUTHENTICATOR
     ];
 
     // Second factor authenticators.
-    public static readonly SECOND_FACTOR_AUTHENTICATORS = [
+    public static readonly SECOND_FACTOR_AUTHENTICATORS: string[] = [
         IdentityProviderManagementConstants.TOTP_AUTHENTICATOR,
         IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID,
         IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR,
@@ -341,7 +341,7 @@ export class ApplicationManagementConstants {
     ];
 
     // Known social authenticators.
-    public static readonly SOCIAL_AUTHENTICATORS = [
+    public static readonly SOCIAL_AUTHENTICATORS: string[] = [
         IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID,
         IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_NAME,
         IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_ID,
@@ -355,13 +355,13 @@ export class ApplicationManagementConstants {
     ];
 
     // Authenticators that can handle TOTP.
-    public static readonly TOTP_HANDLERS = [
+    public static readonly TOTP_HANDLERS: string[] = [
         ...ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS,
         ...ApplicationManagementConstants.SOCIAL_AUTHENTICATORS
     ];
 
     // Authenticators that can handle Email OTP.
-    public static readonly EMAIL_OTP_HANDLERS = [
+    public static readonly EMAIL_OTP_HANDLERS: string[] = [
         ...ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS,
         ...ApplicationManagementConstants.SOCIAL_AUTHENTICATORS
     ];
@@ -375,7 +375,7 @@ export class ApplicationManagementConstants {
     /**
      * PEM certificate field default placeholder.
      */
-    public static readonly PEM_CERTIFICATE_PLACEHOLDER = "-----BEGIN CERTIFICATE-----\n" +
+    public static readonly PEM_CERTIFICATE_PLACEHOLDER: string = "-----BEGIN CERTIFICATE-----\n" +
         "MIIFaDCCBFCgAwIBAgISESHkvZFwK9Qz0KsXD3x8p44aMA0GCSqGSIb3DQEBCwUA\n" +
         "...\n" +
         "lffygD5IymCSuuDim4qB/9bh7oi37heJ4ObpBIzroPUOthbG4gv/5blW3Dc=\n" +
@@ -384,23 +384,27 @@ export class ApplicationManagementConstants {
     /**
      * Form element constraints.
      */
-    public static readonly FORM_FIELD_CONSTRAINTS = {
+    public static readonly FORM_FIELD_CONSTRAINTS: {
+        APP_DESCRIPTION_PATTERN: RegExp,
+        APP_NAME_MAX_LENGTH: number,
+        APP_NAME_PATTERN: RegExp
+    } = {
         APP_DESCRIPTION_PATTERN: new RegExp("^[a-zA-Z0-9.+=!$#()@&%*~_-]+(?: [a-zA-Z0-9.+=!$#()@&%*~_-]+)*$", "gm"),
         APP_NAME_MAX_LENGTH: 50,
         APP_NAME_PATTERN: new RegExp("^[a-zA-Z0-9._-]+(?: [a-zA-Z0-9._-]+)*$")
     };
 
-    public static readonly CONDITIONAL_AUTH_TOUR_STATUS_STORAGE_KEY = "isConditionalAuthTourViewed";
+    public static readonly CONDITIONAL_AUTH_TOUR_STATUS_STORAGE_KEY: string = "isConditionalAuthTourViewed";
 
-    public static readonly CUSTOM_APPLICATION_OIDC = "custom-application-oidc";
+    public static readonly CUSTOM_APPLICATION_OIDC: string = "custom-application-oidc";
 
-    public static readonly CUSTOM_APPLICATION_SAML = "custom-application-saml";
+    public static readonly CUSTOM_APPLICATION_SAML: string = "custom-application-saml";
 
-    public static readonly CUSTOM_APPLICATION_PASSIVE_STS = "custom-application-passive-sts";
+    public static readonly CUSTOM_APPLICATION_PASSIVE_STS: string = "custom-application-passive-sts";
 
-    public static readonly CUSTOM_APPLICATION = "custom-application";
+    public static readonly CUSTOM_APPLICATION: string = "custom-application";
 
-    public static readonly MOBILE = "mobile-application";
+    public static readonly MOBILE: string = "mobile-application";
 
     public static readonly CUSTOM_APPLICATION_PROTOCOL_ORDER: Map<string, number> =
         new Map<string, number>([
@@ -412,13 +416,17 @@ export class ApplicationManagementConstants {
     /**
      * Application create limit reached error.
      */
-    public static readonly ERROR_CREATE_LIMIT_REACHED = new IdentityAppsError(
+    public static readonly ERROR_CREATE_LIMIT_REACHED: IdentityAppsError = new IdentityAppsError(
         "APP-60503",
         "console:develop.features.applications.notifications.apiLimitReachedError.error.description",
         "console:develop.features.applications.notifications.apiLimitReachedError.error.message",
         "cdaefcee-ecdb-47af-8538-174ec13292db"
     );
 
+    /**
+     * Error code for application already exists.
+     */
+    public static readonly ERROR_CODE_APPLICATION_ALREADY_EXISTS: string = "OAUTH-60008";
     /**
      * Error code for Issuer already exists.
      */
