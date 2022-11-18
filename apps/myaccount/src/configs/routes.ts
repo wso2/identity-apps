@@ -38,6 +38,15 @@ export const getDefaultLayoutRoutes = (): RouteInterface[] => {
             path: AppConstants.getPaths().get("PRIVACY"),
             protected: true,
             showOnSidePanel: false
+        },
+        {
+            component: DashboardLayout,
+            icon: null,
+            id: "dashboardLayout",
+            name: "Dashboard Layout",
+            path: AppConstants.getMainViewBasePath(),
+            protected: false,
+            showOnSidePanel: false
         }
     ];
 };
@@ -164,7 +173,7 @@ export const getDashboardLayoutRoutes = (): RouteInterface[] => {
             exact: true,
             id: "index",
             name: "Index",
-            path: "/",
+            path: AppConstants.getMainViewBasePath(),
             protected: true,
             redirectTo: AppConstants.getPaths().get("OVERVIEW"),
             showOnSidePanel: false
@@ -181,14 +190,13 @@ export const getAppLayoutRoutes = (): RouteInterface[] => {
 
     return [
         ...getLayoutAssignedToRoutes(getAuthLayoutRoutes(), AuthLayout),
-        ...getLayoutAssignedToRoutes(getDefaultLayoutRoutes(), DefaultLayout),
         ...getLayoutAssignedToRoutes(getErrorLayoutRoutes(), ErrorLayout),
         {
-            component: DashboardLayout,
+            component: DefaultLayout,
             icon: null,
-            id: "dashboardLayout",
-            name: "Dashboard Layout",
-            path: "/",
+            id: "dashboard",
+            name: "Dashboard",
+            path: AppConstants.getMainViewBasePath(),
             protected: false,
             showOnSidePanel: false
         },
