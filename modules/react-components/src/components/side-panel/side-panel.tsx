@@ -160,11 +160,6 @@ export const SidePanel: React.FunctionComponent<PropsWithChildren<SidePanelProps
         }
     );
 
-    const mainLayoutStyles = {
-        paddingBottom: `${ footerHeight }px`,
-        paddingTop: `${ headerHeight }px`
-    };
-
     const desktopContentStyle = {
         minHeight: `calc(100vh - ${ headerHeight + footerHeight }px`,
         paddingTop: `${ desktopContentTopSpacing }px`
@@ -247,7 +242,7 @@ export const SidePanel: React.FunctionComponent<PropsWithChildren<SidePanelProps
     };
 
     return (
-        <div style={ mainLayoutStyles } className="layout-content">
+        <div className="dashboard-layout-content">
             <Media lessThan="tablet" className="mobile-container">
                 <Sidebar.Pushable>
                     <Sidebar

@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (http://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -22,7 +22,8 @@ export enum RoutesActionTypes {
     SET_FILTERED_MANAGE_ROUTES = "SET_FILTERED_MANAGE_ROUTES",
     SET_SANITIZED_MANAGE_ROUTES = "SET_SANITIZED_MANAGE_ROUTES",
     SET_FILTERED_DEVELOP_ROUTES = "SET_FILTERED_DEVELOP_ROUTES",
-    SET_SANITIZED_DEVELOP_ROUTES = "SET_SANITIZED_DEVELOP_ROUTES"
+    SET_SANITIZED_DEVELOP_ROUTES = "SET_SANITIZED_DEVELOP_ROUTES",
+    SET_SELECTED_ROUTE = "SET_SELECTED_ROUTE"
 }
 
 export interface SetFilteredManageRoutesActionInterface {
@@ -45,7 +46,16 @@ export interface SetSanitizedDevelopRoutesActionInterface {
     type: RoutesActionTypes.SET_SANITIZED_DEVELOP_ROUTES;
 }
 
+/**
+ * Action interface for the selected route action.
+ */
+export interface SetSelectedRouteActionInterface {
+    payload: RouteInterface;
+    type: RoutesActionTypes.SET_SELECTED_ROUTE;
+}
+
 export type RoutesAction = SetFilteredDevelopRoutesActionInterface |
     SetFilteredManageRoutesActionInterface |
     SetSanitizedDevelopRoutesActionInterface |
-    SetSanitizedManageRoutesActionInterface;
+    SetSanitizedManageRoutesActionInterface |
+    SetSelectedRouteActionInterface;
