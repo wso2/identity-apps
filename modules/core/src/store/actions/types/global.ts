@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -22,34 +22,32 @@
 export enum CommonGlobalActionTypes {
     /**
      * Action type to show the top AJAX loading bar.
-     *
-     * @type {string}
      */
     SHOW_AJAX_TOP_LOADING_BAR = "SHOW_AJAX_TOP_LOADING_BAR",
     /**
      * Action type to hide the top AJAX loading bar.
-     *
-     * @type {string}
      */
     HIDE_AJAX_TOP_LOADING_BAR = "HIDE_GLOBAL_LOADER",
     /**
      * Action type to initialize the alert system.
-     *
-     * @type {string}
      */
     INITIALIZE_ALERT_SYSTEM = "INITIALIZE_ALERT_SYSTEM",
     /**
      * Action type to add an alert.
-     *
-     * @type {string}
      */
     ADD_ALERT = "ADD_ALERT",
     /**
      * Action type to set the supported languages.
-     *
-     * @type {string}
      */
-    SET_SUPPORTED_I18N_LANGUAGES = "SET_SUPPORTED_I18N_LANGUAGES"
+    SET_SUPPORTED_I18N_LANGUAGES = "SET_SUPPORTED_I18N_LANGUAGES",
+    /**
+     * Action type to set the mobile side panel visibility.
+     */
+    SET_MOBILE_SIDE_PANEL_VISIBILITY = "SET_MOBILE_SIDE_PANEL_VISIBILITY",
+    /**
+     * Action type to set the mobile side panel toggle(hamburger) visibility.
+     */
+    SET_MOBILE_SIDE_PANEL_TOGGLE_VISIBILITY = "SET_MOBILE_SIDE_PANEL_TOGGLE_VISIBILITY"
 }
 
 /**
@@ -76,7 +74,7 @@ export interface HideAJAXTopLoadingBarAction extends CommonGlobalBaseAction {
 /**
  * Alert system initialize action interface.
  */
-export interface InitializeAlertSystemAction<S = {}> extends CommonGlobalBaseAction {
+export interface InitializeAlertSystemAction<S = Record<string, unknown>> extends CommonGlobalBaseAction {
     payload: S;
     type: CommonGlobalActionTypes.INITIALIZE_ALERT_SYSTEM;
 }
@@ -84,7 +82,7 @@ export interface InitializeAlertSystemAction<S = {}> extends CommonGlobalBaseAct
 /**
  * Add alert action interface.
  */
-export interface AddAlertAction<T = {}> extends CommonGlobalBaseAction {
+export interface AddAlertAction<T = Record<string, unknown>> extends CommonGlobalBaseAction {
     payload: T;
     type: CommonGlobalActionTypes.ADD_ALERT;
 }
@@ -92,9 +90,25 @@ export interface AddAlertAction<T = {}> extends CommonGlobalBaseAction {
 /**
  * Set supported i18n languages action interface.
  */
-export interface SetSupportedI18nLanguagesActionInterface <U = {}>extends CommonGlobalBaseAction {
+export interface SetSupportedI18nLanguagesActionInterface <U = Record<string, unknown>>extends CommonGlobalBaseAction {
     payload: U;
     type: CommonGlobalActionTypes.SET_SUPPORTED_I18N_LANGUAGES;
+}
+
+/**
+ * Set mobile side panel visibility action interface.
+ */
+export interface SetMobileSidePanelVisibility extends CommonGlobalBaseAction {
+    payload: boolean,
+    type: CommonGlobalActionTypes.SET_MOBILE_SIDE_PANEL_VISIBILITY;
+}
+
+/**
+ * Set mobile side panel toggle(hamburger) visibility action interface.
+ */
+export interface SetMobileSidePanelToggleVisibility extends CommonGlobalBaseAction {
+    payload: boolean,
+    type: CommonGlobalActionTypes.SET_MOBILE_SIDE_PANEL_TOGGLE_VISIBILITY;
 }
 
 /**
@@ -104,4 +118,6 @@ export type CommonGlobalActions<T, S, U> = ShowAJAXTopLoadingBarAction
     | HideAJAXTopLoadingBarAction
     | AddAlertAction<T>
     | InitializeAlertSystemAction<S>
-    | SetSupportedI18nLanguagesActionInterface<U>;
+    | SetSupportedI18nLanguagesActionInterface<U>
+    | SetMobileSidePanelVisibility
+    | SetMobileSidePanelToggleVisibility;
