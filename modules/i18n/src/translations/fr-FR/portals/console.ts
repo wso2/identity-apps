@@ -834,12 +834,9 @@ export const console: ConsoleNS = {
                                     hint: "Impossible de récupérer ces attributs utilisateur en demandant " +
                                         "des étendues OIDC. Pour récupérer, ajoutez les attributs requis à une étendue pertinente."
                                 },
-                                constants: {
-                                    openid: "openid"
-                                },
-                                selectedScopesComponentHint: "Demandez ces étendues à partir de votre application pour récupérer les attributs " +
-                                    "utilisateur que vous avez sélectionnés.",
-                                howToUseScopesHint: "<1>Comment utiliser les portées</1>",
+                                selectedScopesComponentHint: "Demandez ces étendues à partir de votre application pour récupérer " +
+                                    "les attributs utilisateur sélectionnés.",
+                                howToUseScopesHint: "Comment utiliser les portées",
                                 mandatoryAttributeHint: "Marquez les attributs utilisateur qui doivent " +
                                     "obligatoirement être partagés avec l'application. Lors de la connexion, " +
                                     "{{productName}} invite l'utilisateur à saisir ces valeurs d'attribut, si elles " +

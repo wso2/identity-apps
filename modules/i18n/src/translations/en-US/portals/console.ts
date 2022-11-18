@@ -830,12 +830,9 @@ export const console: ConsoleNS = {
                                     hint: "Cannot retrieve these user attributes by requesting " +
                                             "OIDC scopes. To retrieve, add the required attributes to a relevant scope."
                                 },
-                                constants: {
-                                    openid: "openid"
-                                },
-                                selectedScopesComponentHint: "Request these scopes from your application to retrieve the user " +
-                                    "attributes you selected.",
-                                howToUseScopesHint: "<1>How to use Scopes</1>",
+                                selectedScopesComponentHint: "Request these scopes from your application to retrieve " +
+                                    "the selected user attributes.",
+                                howToUseScopesHint: "How to use Scopes",
                                 mandatoryAttributeHint: "Mark which user attributes are mandatory to be shared " +
                                     "with the application. At login, {{productName}} prompts the user to enter these " +
                                     "attribute values, if not already provided in the user's profile.",

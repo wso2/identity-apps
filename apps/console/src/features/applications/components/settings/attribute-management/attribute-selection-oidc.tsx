@@ -131,6 +131,8 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
 
+    const OPENID = "openid";
+
     const [ availableExternalClaims, setAvailableExternalClaims ] = useState<ExtendedExternalClaimInterface[]>([]);
 
     const [
@@ -150,9 +152,7 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
 
     const [ openIDConnectClaims ] = useState<ExtendedExternalClaimInterface[]>(externalClaims);
 
-    const [ selectedScopes, setSelectedScopes ] = useState([ 
-        t("console:develop.features.applications.edit.sections.attributes.selection.constants.openid")
-    ]);
+    const [ selectedScopes, setSelectedScopes ] = useState([ OPENID ]);
 
     useEffect(() => {
         const tempFilterSelectedExternalClaims: ExtendedExternalClaimInterface[] = [ ...filterSelectedExternalClaims ];
@@ -179,9 +179,7 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
 
     useEffect(() => {
         if (unfilteredExternalClaimsGroupedByScopes.length != 0) {
-            const initialSelectedScopes: string[] = [
-                t("console:develop.features.applications.edit.sections.attributes.selection.constants.openid")
-            ];
+            const initialSelectedScopes: string[] = [ OPENID ];
 
             unfilteredExternalClaimsGroupedByScopes.map((scope: OIDCScopesClaimsListInterface) => {
                 if (scope.selected && scope.name !== "") {
@@ -923,7 +921,8 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                                                     .replace(":type", ClaimManagementConstants.OIDC)
                                             );
                                         } }
-                                    > Attributes.
+                                    > 
+                                        Attributes.
                                     </Link>
                                 </Trans>
                             </Hint>
@@ -957,22 +956,17 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                             you selected.
                         </Trans>
                         {
-                            getLink("develop.connections.editApplication.attributeManagement" +
-                            ".manageOIDCScopes") !== undefined
-                            ?? ( <Trans
-                                i18nKey={
-                                    "console:develop.features.applications.edit.sections.attributes." +
-                                "selection.howToUseScopesHint"
-                                }
-                            >
-                                <DocumentationLink
+                            getLink("develop.applications.editApplication.attributeManagement" +
+                            ".manageOIDCScopes") 
+                                && ( <DocumentationLink
                                     link={ 
-                                        getLink("develop.connections.editApplication.attributeManagement" +
-                                    ".manageOIDCScopes")
-                                    }>
-                                    How to use Scopes
-                                </DocumentationLink>
-                            </Trans> )
+                                        getLink("develop.applications.editApplication.attributeManagement" +
+                                        ".manageOIDCScopes")
+                                    }
+                                >
+                                    { t("console:develop.features.applications.edit.sections.attributes." +
+                                        "selection.howToUseScopesHint") }
+                                </DocumentationLink> )
                         }
                     </Hint>
                 </>
