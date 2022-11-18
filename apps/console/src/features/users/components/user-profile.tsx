@@ -245,7 +245,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      * This will add role attribute to countries search input to prevent autofill suggestions.
      */
     const onCountryRefChange = useCallback(node => {
-        if (node !== null) { 
+        if (node !== null) {
             node.children[0].children[1].children[0].role = "presentation";
         }
     }, []);
@@ -475,12 +475,17 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     };
 
     /**
-     * This function returns the username of the current user.
+     * This function returns the username or the default email of the current user (if the username is empty).
      *
      * @param user - user that the username will be extracted from.
+     * @param setDefaultEmail - whether to return the default email address when the username is empty.
      */
-    const resolveUsername = (user: ProfileInfoInterface): string => {
+    const resolveUsernameOrDefaultEmail = (user: ProfileInfoInterface, setDefaultEmail: boolean): string => {
         let username = user?.userName;
+
+        if (username.length === 0 && setDefaultEmail) {
+            return user.email;
+        }
 
         if (username.split("/").length > 1) {
             username = username.split("/")[1];
@@ -962,19 +967,19 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             ? (
                                 attributeValue
                                     ? t("console:manage.features.user.profile.notifications.lockUserAccount." +
-                                        "success.message", { name: user.emails && user.emails !== undefined ? 
-                                        resolveUserEmails(user?.emails) : resolveUsername(user) })
+                                        "success.message", { name: user.emails && user.emails !== undefined ?
+                                        resolveUserEmails(user?.emails) : resolveUsernameOrDefaultEmail(user, true) })
                                     : t("console:manage.features.user.profile.notifications.unlockUserAccount." +
-                                        "success.message", { name: user.emails && user.emails !== undefined ? 
-                                        resolveUserEmails(user?.emails) : resolveUsername(user) })
+                                        "success.message", { name: user.emails && user.emails !== undefined ?
+                                        resolveUserEmails(user?.emails) : resolveUsernameOrDefaultEmail(user, true) })
                             ) : (
                                 attributeValue
                                     ? t("console:manage.features.user.profile.notifications.disableUserAccount." +
-                                        "success.message", { name: user.emails && user.emails !== undefined ? 
-                                        resolveUserEmails(user?.emails) : resolveUsername(user) })
+                                        "success.message", { name: user.emails && user.emails !== undefined ?
+                                        resolveUserEmails(user?.emails) : resolveUsernameOrDefaultEmail(user, false) })
                                     : t("console:manage.features.user.profile.notifications.enableUserAccount." +
-                                        "success.message", { name: user.emails && user.emails !== undefined ? 
-                                        resolveUserEmails(user?.emails) : resolveUsername(user) })
+                                        "success.message", { name: user.emails && user.emails !== undefined ?
+                                        resolveUserEmails(user?.emails) : resolveUsernameOrDefaultEmail(user, false) })
                             )
                 });
                 setShowLockDisableConfirmationModal(false);
@@ -1028,8 +1033,9 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                 {
                     (hasRequiredScopes(featureConfig?.users, featureConfig?.users?.scopes?.delete,
                         allowedScopes) && (!isReadOnly || allowDeleteOnly) &&
-                        !(resolveUsername(user) === tenantAdmin || resolveUsername(user) === "admin") &&
-                        !authenticatedUser.includes(resolveUsername(user))) && (
+                        !(resolveUsernameOrDefaultEmail(user, false) === tenantAdmin ||
+                            resolveUsernameOrDefaultEmail(user, false) === "admin") &&
+                        !authenticatedUser.includes(resolveUsernameOrDefaultEmail(user, false))) && (
                         <DangerZoneGroup
                             sectionHeader={ t("console:manage.features.user.editUser.dangerZoneGroup.header") }
                         >
@@ -1156,7 +1162,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                         text: "Select your country" as string,
                         value: "" as string
                     } ].concat(
-                        countryList 
+                        countryList
                             ? countryList.map(list => {
                                 return {
                                     "data-testid": `${ testId }-profile-form-country-dropdown-` +  list.value as string,
@@ -1165,8 +1171,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     text: list.text as string,
                                     value: list.value as string
                                 };
-                            }) 
-                            : [] 
+                            })
+                            : []
                     ) }
                     key={ key }
                     disabled={ false }
@@ -1205,8 +1211,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 }));
                         }
                     } }
-                    maxLength={ 
-                        fieldName.toLowerCase().includes("uri") || fieldName.toLowerCase().includes("url") ? -1 : 30 
+                    maxLength={
+                        fieldName.toLowerCase().includes("uri") || fieldName.toLowerCase().includes("url") ? -1 : 30
                     }
                 />
             );
@@ -1313,7 +1319,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 {
                                     (hasRequiredScopes(featureConfig?.users,
                                         featureConfig?.users?.scopes?.update, allowedScopes) &&
-                                        !isReadOnly && resolveUsername(user) !== "admin" &&
+                                        !isReadOnly && resolveUsernameOrDefaultEmail(user, false) !== "admin" &&
                                         adminUserType === "None") && (
                                         <Button
                                             basic
@@ -1537,7 +1543,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             onPrimaryActionClick={ (): void => handleUserAdminRevoke(deletingUser) }
                             closeOnDimmerClick={ false }
                         >
-                            <ConfirmationModal.Header 
+                            <ConfirmationModal.Header
                                 data-testid={ `${testId}-admin-privilege-revoke-confirmation-modal-header` }
                             >
                                 { t("console:manage.features.user.revokeAdmin.confirmationModal.header") }
@@ -1559,7 +1565,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             } }
                             type="warning"
                             open={ showLockDisableConfirmationModal }
-                            assertion={ resolveUsername(user) }
+                            assertion={ resolveUsernameOrDefaultEmail(user, false) }
                             assertionHint={ editingAttribute.name === ProfileConstants
                                 .SCIM2_SCHEMA_DICTIONARY.get("ACCOUNT_LOCKED")
                                 ? t("console:manage.features.user.lockUser.confirmationModal.assertionHint")
