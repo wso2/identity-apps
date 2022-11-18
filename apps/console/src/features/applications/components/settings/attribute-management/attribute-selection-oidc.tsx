@@ -949,7 +949,7 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                         <Trans
                             i18nKey={
                                 "console:develop.features.applications.edit.sections.attributes." +
-                                                "selection.selectedScopesComponentHint"
+                                           "selection.selectedScopesComponentHint"
                             }
                         >
                             Request these scopes from your application to retrieve the user attributes 
