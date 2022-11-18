@@ -36,6 +36,7 @@ import sortBy from "lodash-es/sortBy";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { Container, Menu } from "semantic-ui-react";
 import { commonConfig, organizationConfigs } from "../../../extensions";
 import { getApplicationList } from "../../applications/api";
@@ -95,7 +96,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     } = props;
 
     const { t } = useTranslation();
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const profileInfo: ProfileInfoInterface = useSelector((state: AppState) => state.profile.profileInfo);
     const isProfileInfoLoading: boolean = useSelector(
@@ -118,7 +119,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     const isManageAllowed: boolean =
         useSelector((state: AppState) => state.accessControl.isManageAllowed);
     const feature: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const scopes = useSelector((state: AppState) => state.auth.allowedScopes);
+    const scopes: string = useSelector((state: AppState) => state.auth.allowedScopes);
 
     const [ announcement, setAnnouncement ] = useState<AnnouncementBannerInterface>(undefined);
     const [ headerLinks, setHeaderLinks ] = useState<HeaderLinkCategoryInterface[]>([]);
@@ -132,7 +133,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
      *  - the organization management feature is enabled by the backend
      *  - the user is logged in to a non-super-tenant account
      */
-    const isOrgSwitcherEnabled = useMemo(() => {
+    const isOrgSwitcherEnabled: boolean = useMemo(() => {
         return (
             isOrganizationManagementEnabled &&
             // The `tenantDomain` takes the organization id when you log in to a sub-organization.
@@ -223,8 +224,8 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     const handleAnnouncementDismiss = () => {
         CommonUtils.setSeenAnnouncements(announcement.id);
 
-        const validAnnouncement = ReusableCommonUtils.getValidAnnouncement(config.ui.announcements,
-            CommonUtils.getSeenAnnouncements());
+        const validAnnouncement: AnnouncementBannerInterface = ReusableCommonUtils
+            .getValidAnnouncement(config.ui.announcements, CommonUtils.getSeenAnnouncements());
 
         if (!validAnnouncement) {
             setAnnouncement(null);
