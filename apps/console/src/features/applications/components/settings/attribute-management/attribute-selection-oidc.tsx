@@ -131,7 +131,7 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
 
-    const OPENID = "openid";
+    const OPENID: string = "openid";
 
     const [ availableExternalClaims, setAvailableExternalClaims ] = useState<ExtendedExternalClaimInterface[]>([]);
 
