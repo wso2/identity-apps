@@ -439,9 +439,15 @@ export const MicrosoftAuthenticatorForm: FunctionComponent<MicrosoftAuthenticato
                 data-testid={ `${ testId }-authorized-redirect-url` }
             />
             <Field.Scopes
-                ariaLabel="Scopes provided by Microsoft Authenticator"
+                ariaLabel={
+                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                        ".microsoft.scopes.ariaLabel")
+                }
                 inputType="default"
-                name="Scopes"
+                name={
+                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                        ".microsoft.scopes.heading")
+                }
                 label={
                     t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                         ".microsoft.scopes.label")

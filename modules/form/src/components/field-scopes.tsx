@@ -66,6 +66,10 @@ export interface FieldInputPropsInterface extends FormFieldPropsInterface {
     listen?: (values) => void;
 }
 
+/**
+ * Implementation of the Scopes Field component.
+ * @param props
+ */
 export const FieldScopes = (props: FieldInputPropsInterface): ReactElement => {
     const {
         defaultValue,

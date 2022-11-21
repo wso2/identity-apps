@@ -23,12 +23,33 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { Button, Form, Icon, Label, Message, Popup } from "semantic-ui-react";
 
 interface ScopesPropsInterface {
+    /**
+     * Default Scope values.
+     */
     defaultValue: string;
+    /**
+     * Scope label.
+     */
     label?: string | ReactElement;
+    /**
+     * Scope values.
+     */    
     value: string;
+    /**
+     * Are scopes mandatory.
+     */    
     required: boolean;
+    /**
+     * Callback for onChange
+     */
     onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    /**
+     * Callback for onBlue
+     */
     onBlur: (event: React.FocusEvent<HTMLElement, Element>) => void;
+    /**
+     * placeholder value.
+     */
     placeholder: string;
 }
 
@@ -39,6 +60,11 @@ interface ScopeInterface {
     */
     value: string;
 }
+
+/**
+ * Implementation of the Scopes component.
+ * @param props- ScopesPropsInterface
+ */
 
 export const Scopes: FunctionComponent<ScopesPropsInterface> = (
     props: ScopesPropsInterface
@@ -92,7 +118,7 @@ export const Scopes: FunctionComponent<ScopesPropsInterface> = (
     /**
       * Build scope string value, from it's object form.
       */
-    const buildScopeString = (scope: ScopeInterface) => scope.value;
+    const buildScopeString = (scope: ScopeInterface): string => scope.value;
  
     /**
       * Build scopes string value, from scopes object list.
@@ -107,7 +133,7 @@ export const Scopes: FunctionComponent<ScopesPropsInterface> = (
       * @param onChange - onChange handler. 
       */
     const fireOnChangeEvent = (scopes: ScopeInterface[], onChange: (event: React.ChangeEvent<HTMLInputElement>) 
-         => void) => {
+         => void): void => {
             
         onChange(
              {
@@ -123,7 +149,7 @@ export const Scopes: FunctionComponent<ScopesPropsInterface> = (
       * 
       * @param scope - Scope.
       */
-    const updateScopeInputFields = (scope: ScopeInterface) => {
+    const updateScopeInputFields = (scope: ScopeInterface): void => {
         setScopeValue(scope?.value);
     };
 
@@ -138,7 +164,8 @@ export const Scopes: FunctionComponent<ScopesPropsInterface> = (
         }
     };
 
-    const handleScopeAdd = (event) => {
+    const handleScopeAdd = (event: React.MouseEvent<HTMLButtonElement, MouseEvent> 
+        | React.KeyboardEvent<HTMLInputElement>): void => {
         event.preventDefault();
         if (isEmpty(scopeValue)) {
             return;
@@ -149,7 +176,7 @@ export const Scopes: FunctionComponent<ScopesPropsInterface> = (
             value: scopeValue
         } ];
  
-        scopes.forEach(function(scope) {
+        scopes.forEach(function(scope: ScopeInterface) {
             const existing = output.filter((item) => {
                 return item.value == scope.value;
             });
@@ -167,7 +194,7 @@ export const Scopes: FunctionComponent<ScopesPropsInterface> = (
         });
     };
  
-    const handleLabelRemove = (scopeParam: string) => {
+    const handleLabelRemove = (scopeParam: string): void => {
 
         if (isEmpty(scopeParam)) {
             return;
@@ -177,73 +204,71 @@ export const Scopes: FunctionComponent<ScopesPropsInterface> = (
     };
 
     return (
-        <>
-            <Form.Group grouped={ true }>
-                {
-                    label && (
-                        <div className={ `field ${ required ? "required" : "" }` }>
-                            <label>{ label }</label>
-                        </div>
-                    )
-                }
-                <Form.Group inline widths="equal" unstackable={ true }> 
-                    <Form.Input
-                        fluid
-                        value={ scopeValue }
-                        onBlur={ onBlur }
-                        focus
-                        onChange={ (event, data) => {
-                            setScopeValue(data.value.trim());
-                        } }
-                        onKeyDown={ keyPressed }
-                        placeholder = { placeholder }
+        <Form.Group grouped={ true }>
+            {
+                label && (
+                    <div className={ `field ${ required ? "required" : "" }` }>
+                        <label>{ label }</label>
+                    </div>
+                )
+            }
+            <Form.Group inline widths="equal" unstackable={ true }> 
+                <Form.Input
+                    fluid
+                    value={ scopeValue }
+                    onBlur={ onBlur }
+                    focus
+                    onChange={ (event, data) => {
+                        setScopeValue(data.value.trim());
+                    } }
+                    onKeyDown={ keyPressed }
+                    placeholder = { placeholder }
 
-                    />
-                    <Popup
-                        trigger={
-                            (
-                                <Button
-                                    onClick={ (e) => handleScopeAdd(e) }
-                                    icon="add"
-                                    type="button"
-                                    disabled={ false }
-                                />
-                            )
-                        }
-                        position="top center"
-                        content="Add scope"
-                        inverted
-                    />
-                </Form.Group>
-                <Message visible={ errorMessage !="" } error content={ errorMessage } />
-                {
-                    scopes && scopes?.map((eachScope, index) => {
-                        const scope = eachScope.value;
-
-                        if (scope == defaultValue) {
-                            return (
-                                <Label
-                                    key={ index }
-                                >
-                                    { scope } 
-                                </Label>
-                            );
-                        } else {
-                            return (
-                                <Label
-                                    key={ index }
-                                >
-                                    { scope }
-                                    <Icon
-                                        name="delete"
-                                        onClick={ () => handleLabelRemove(scope) }
-                                    />
-                                </Label>
-                            );
-                        }
-                    })
-                }
+                />
+                <Popup
+                    trigger={
+                        (
+                            <Button
+                                onClick={ (e) => handleScopeAdd(e) }
+                                icon="add"
+                                type="button"
+                                disabled={ false }
+                            />
+                        )
+                    }
+                    position="top center"
+                    content="Add scope"
+                    inverted
+                />
             </Form.Group>
-        </>
+            <Message visible={ errorMessage !="" } error content={ errorMessage } />
+            {
+                scopes && scopes?.map((eachScope, index) => {
+                    const scope = eachScope.value;
+
+                    if (scope === defaultValue) {
+                        return (
+                            <Label
+                                key={ index }
+                            >
+                                { scope } 
+                            </Label>
+                        );
+                    } else {
+                        return (
+                            <Label
+                                key={ index }
+                            >
+                                { scope }
+                                <Icon
+                                    name="delete"
+                                    onClick={ () => handleLabelRemove(scope) }
+                                />
+                            </Label>
+                        );
+                    }
+                })
+            }
+        </Form.Group>
     );
 };

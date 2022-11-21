@@ -3457,6 +3457,7 @@ export const console: ConsoleNS = {
                                 }
                             },
                             scopes: {
+                                ariaLabel: "Scopes provided by Microsoft Authenticator",
                                 heading: "Scopes",
                                 hint: "The type of access provided for the connected apps to access data " +
                                     "from Microsoft. Click <1>here</1> to learn more.",

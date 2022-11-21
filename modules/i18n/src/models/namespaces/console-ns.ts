@@ -1471,6 +1471,7 @@ export interface ConsoleNS {
                             clientSecret: FormAttributes;
                             commonAuthQueryParams: FormAttributes;
                             scopes: {
+                                ariaLabel: string,
                                 heading: string;
                                 hint: string;
                                 label: string;
