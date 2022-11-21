@@ -20,7 +20,7 @@ import "core-js/stable";
 import "regenerator-runtime/runtime";
 import { AuthParams, AuthProvider, SPAUtils } from "@asgardeo/auth-react";
 import { ContextUtils, StringUtils } from "@wso2is/core/utils";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import * as React from "react";
 import { ReactElement } from "react";
 import * as ReactDOM from "react-dom";
@@ -40,7 +40,7 @@ const getAuthParams = (): Promise<AuthParams> => {
             ? `/${ StringUtils.removeSlashesFromPath(window[ "AppUtils" ].getConfig().appBase) }`
             : "";
 
-        return axios.get(contextPath + "/auth").then((response) => {
+        return axios.get(contextPath + "/auth").then((response: AxiosResponse ) => {
             return Promise.resolve({
                 authorizationCode: response?.data?.authCode,
                 sessionState: response?.data?.sessionState,
@@ -90,7 +90,7 @@ const RootWithConfig = (): ReactElement => {
     );
 };
 
-const rootElement = document.getElementById("root");
+const rootElement: HTMLElement = document.getElementById("root");
 
 // Moved back to the legacy mode due to unpredictable state update issue.
 // Tracked here: https://github.com/wso2/product-is/issues/14912

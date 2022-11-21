@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -179,11 +179,28 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
             getRolesList(null)
                 .then((response) => {
                     setPrimaryRoles(response.data.Resources);
+                })
+                .catch(() => {
+                    dispatch(addAlert({
+                        description: t("console:manage.features.roles.notifications.fetchRoles." +
+                            "genericError.description"),
+                        level: AlertLevels.ERROR,
+                        message: t("console:manage.features.roles.notifications.fetchRoles.genericError.message")
+                    }));
                 });
         } else {
             getOrganizationRoles(currentOrganization.id, null, 100, null)
                 .then((response) => {
                     setPrimaryRoles(response.Resources);
+                })
+                .catch(() => {
+                    dispatch(addAlert({
+                        description: t("console:manage.features.roles.notifications." +
+                            "fetchRoles.genericError.description"),
+                        level: AlertLevels.ERROR,
+                        message: t("console:manage.features.roles.notifications." +
+                            "fetchRoles.genericError.message")
+                    }));
                 });
         }
     }, []);
@@ -501,7 +518,7 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
     /**
      * The following method handles creating a label for the list item.
      *
-     * @param roleName: string
+     * @param roleName - Role Name to create item label
      */
     const createItemLabel = (roleName: string) => {
         const role = roleName.split("/");

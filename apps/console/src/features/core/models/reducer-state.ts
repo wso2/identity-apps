@@ -92,7 +92,6 @@ export interface RoutesReducerStateInterface {
         filteredRoutes: RouteInterface[];
         sanitizedRoutes: RouteInterface[];
     };
-    selectedRoute: RouteInterface;
 }
 
 export interface AuthReducerStateInterface extends CommonAuthReducerStateInterface, AuthenticatedUserInfo { }

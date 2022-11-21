@@ -71,10 +71,10 @@ export const ProtectedRoute: FunctionComponent<ProtectedRoutePropsInterface> = (
      * Checks if the users have the required scope and direct them to the relevant
      *
      * @param props - Route props.
-     * @returns Resolved Component
+     * @returns Resolved component.
      */
     const resolveComponents = (props: RouteComponentProps<any>): ReactElement => {
-        const scopes = allowedScopes?.split(" ");
+        const scopes: string[] = allowedScopes?.split(" ");
 
         if (!route?.scope) {
             return (<Component { ...props } />);

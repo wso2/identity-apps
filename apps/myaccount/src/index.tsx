@@ -18,7 +18,7 @@
 
 import { AuthParams, AuthProvider, SPAUtils } from "@asgardeo/auth-react";
 import { ContextUtils, StringUtils } from "@wso2is/core/utils";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import * as React from "react";
 import "react-app-polyfill/ie11";
 import "react-app-polyfill/ie9";
@@ -44,7 +44,7 @@ const getAuthParams = (): Promise<AuthParams> => {
             ? `/${ StringUtils.removeSlashesFromPath(window[ "AppUtils" ].getConfig().appBase) }`
             : "";
 
-        return axios.get(contextPath + "/auth").then((response) => {
+        return axios.get(contextPath + "/auth").then((response: AxiosResponse) => {
             return Promise.resolve({
                 authorizationCode: response?.data?.authCode,
                 sessionState: response?.data?.sessionState,
