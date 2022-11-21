@@ -73,12 +73,13 @@ export const Field: FieldType = (props: PropsWithChildren<FormFieldPropsInterfac
         style
     } = props;
 
-    const classes = classNames(
+    const classes: string = classNames(
         "fields",
         className
     );
 
-    const childNodes = React.Children.toArray(children);
+    const childNodes: (string | number | React.ReactElement<any, string | React.JSXElementConstructor<any>> 
+        | React.ReactFragment | React.ReactPortal)[] = React.Children.toArray(children);
 
     return (
         <div className={ classes } style={ style }>
@@ -88,7 +89,7 @@ export const Field: FieldType = (props: PropsWithChildren<FormFieldPropsInterfac
                         return null;
                     }
 
-                    const childProps = {
+                    const childProps: any = {
                         ...child.props
                     };
 

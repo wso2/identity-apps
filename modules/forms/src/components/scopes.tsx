@@ -222,6 +222,7 @@ export const Scopes: FunctionComponent<ScopesPropsInterface> = (
                         )
                     }
                     position="top center"
+                    /** TODO : Add this value from a translation */
                     content="Add scope"
                     inverted
                 />

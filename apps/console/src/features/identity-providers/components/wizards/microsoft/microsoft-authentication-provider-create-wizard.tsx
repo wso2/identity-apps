@@ -34,6 +34,7 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { Grid } from "semantic-ui-react";
 import {
     MicrosoftAuthenticationProviderCreateWizardContent
@@ -127,7 +128,7 @@ export const MicrosoftAuthenticationProviderCreateWizard: FunctionComponent<
             [ "data-componentid" ]: componentId
         } = props;
 
-        const dispatch = useDispatch();
+        const dispatch: Dispatch<any> = useDispatch();
 
         const { t } = useTranslation();
         const { getLink } = useDocumentation();
@@ -161,7 +162,7 @@ export const MicrosoftAuthenticationProviderCreateWizard: FunctionComponent<
             setIsSubmitting(true);
 
             createIdentityProvider(identityProvider)
-                .then((response) => {
+                .then((response: any) => {
                     eventPublisher.publish("connections-finish-adding-connection", {
                         type: componentId
                     });
@@ -177,8 +178,8 @@ export const MicrosoftAuthenticationProviderCreateWizard: FunctionComponent<
                     // The created resource's id is sent as a location header.
                     // If that's available, navigate to the edit page.
                     if (!isEmpty(response.headers.location)) {
-                        const location = response.headers.location;
-                        const createdIdpID = location.substring(location.lastIndexOf("/") + 1);
+                        const location: any = response.headers.location;
+                        const createdIdpID: any = location.substring(location.lastIndexOf("/") + 1);
 
                         onIDPCreate(createdIdpID);
 
@@ -188,7 +189,7 @@ export const MicrosoftAuthenticationProviderCreateWizard: FunctionComponent<
                     // Since the location header is not present, trigger callback without the id.
                     onIDPCreate();
                 })
-                .catch((error) => {
+                .catch((error: any) => {
 
                     const identityAppsError: IdentityAppsError = identityProviderConfig.useNewConnectionsView
                         ? IdentityProviderManagementConstants.ERROR_CREATE_LIMIT_REACHED

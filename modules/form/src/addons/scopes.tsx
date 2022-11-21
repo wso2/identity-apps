@@ -20,7 +20,7 @@ import filter from "lodash-es/filter";
 import isEmpty from "lodash-es/isEmpty";
 import isEqual from "lodash-es/isEqual";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { Button, Form, Icon, Label, Message, Popup } from "semantic-ui-react";
+import { Button, Form, Icon, InputOnChangeData, Label, Message, Popup } from "semantic-ui-react";
 
 interface ScopesPropsInterface {
     /**
@@ -177,7 +177,7 @@ export const Scopes: FunctionComponent<ScopesPropsInterface> = (
         } ];
  
         scopes.forEach(function(scope: ScopeInterface) {
-            const existing = output.filter((item) => {
+            const existing: ScopeInterface[] = output.filter((item: any) => {
                 return item.value == scope.value;
             });
  
@@ -199,7 +199,7 @@ export const Scopes: FunctionComponent<ScopesPropsInterface> = (
         if (isEmpty(scopeParam)) {
             return;
         }
-        setScopes(filter(scopes, scope => !isEqual(scope,
+        setScopes(filter(scopes, (scope: ScopeInterface) => !isEqual(scope,
             buildScope(scopeParam))));
     };
 
@@ -218,7 +218,7 @@ export const Scopes: FunctionComponent<ScopesPropsInterface> = (
                     value={ scopeValue }
                     onBlur={ onBlur }
                     focus
-                    onChange={ (event, data) => {
+                    onChange={ (_event: React.ChangeEvent<HTMLInputElement>, data: InputOnChangeData) => {
                         setScopeValue(data.value.trim());
                     } }
                     onKeyDown={ keyPressed }
@@ -229,7 +229,7 @@ export const Scopes: FunctionComponent<ScopesPropsInterface> = (
                     trigger={
                         (
                             <Button
-                                onClick={ (e) => handleScopeAdd(e) }
+                                onClick={ (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => handleScopeAdd(e) }
                                 icon="add"
                                 type="button"
                                 disabled={ false }
@@ -243,8 +243,8 @@ export const Scopes: FunctionComponent<ScopesPropsInterface> = (
             </Form.Group>
             <Message visible={ errorMessage !="" } error content={ errorMessage } />
             {
-                scopes && scopes?.map((eachScope, index) => {
-                    const scope = eachScope.value;
+                scopes && scopes?.map((eachScope: ScopeInterface, index: number) => {
+                    const scope: string = eachScope.value;
 
                     if (scope === defaultValue) {
                         return (

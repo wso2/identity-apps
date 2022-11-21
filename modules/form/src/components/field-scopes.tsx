@@ -68,7 +68,7 @@ export interface FieldInputPropsInterface extends FormFieldPropsInterface {
 
 /**
  * Implementation of the Scopes Field component.
- * @param props
+ * @param props- FieldInputPropsInterface
  */
 export const FieldScopes = (props: FieldInputPropsInterface): ReactElement => {
     const {
@@ -87,9 +87,9 @@ export const FieldScopes = (props: FieldInputPropsInterface): ReactElement => {
                 key={ testId }
                 type="text"
                 name={ props.name }
-                parse={ value => value }
+                parse={ <T = any>(value: T) => value }
                 component={ ScopeFieldAdapter }
-                validate={ (value, allValues, meta) =>
+                validate={ (value: any, meta: Record<string, unknown>) =>
                     getValidation(value, meta, "text", props.required, inputType, validation)
                 }
                 defaultValue={ defaultValue }

@@ -30,7 +30,8 @@ import {
     CommonAuthenticatorFormFieldMetaInterface,
     CommonAuthenticatorFormInitialValuesInterface,
     CommonAuthenticatorFormMetaInterface,
-    CommonAuthenticatorFormPropertyInterface
+    CommonAuthenticatorFormPropertyInterface,
+    CommonPluggableComponentMetaPropertyInterface
 } from "../../../models";
 
 /**
@@ -190,7 +191,7 @@ export const MicrosoftAuthenticatorForm: FunctionComponent<MicrosoftAuthenticato
 
         originalInitialValues.properties.map((value: CommonAuthenticatorFormPropertyInterface) => {
             const meta: CommonAuthenticatorFormFieldMetaInterface = metadata?.properties
-                .find((meta) => meta.key === value.key);
+                .find((meta: CommonPluggableComponentMetaPropertyInterface) => meta.key === value.key);
 
             resolvedFormFields = {
                 ...resolvedFormFields,
@@ -220,7 +221,7 @@ export const MicrosoftAuthenticatorForm: FunctionComponent<MicrosoftAuthenticato
     const getUpdatedConfigurations = (values: MicrosoftAuthenticatorFormInitialValuesInterface)
         : CommonAuthenticatorFormInitialValuesInterface => {
 
-        const properties = [];
+        const properties: any[] = [];
 
         for (const [ key, value ] of Object.entries(values)) {
             if (key !== undefined) {
@@ -321,7 +322,7 @@ export const MicrosoftAuthenticatorForm: FunctionComponent<MicrosoftAuthenticato
         <Form
             id={ FORM_ID }
             uncontrolledForm={ false }
-            onSubmit={ (values) => onSubmit(getUpdatedConfigurations(values as any)) }
+            onSubmit={ (values: Record<string, any>) => onSubmit(getUpdatedConfigurations(values as any)) }
             initialValues={ initialValues }
         >
             <Field.Input
