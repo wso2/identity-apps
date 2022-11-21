@@ -475,6 +475,8 @@ export interface ConsoleNS {
                                     name: string;
                                     hint: string;
                                 },
+                                selectedScopesComponentHint: string;
+                                howToUseScopesHint: string;
                                 attributeComponentHint: string;
                                 attributeComponentHintAlt: string;
                                 description: string;
