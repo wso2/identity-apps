@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -33,6 +33,10 @@ import { AppState, FeatureConfigInterface, history } from "../../../core";
  * Captures props needed for edit role component
  */
 interface EditRoleProps extends SBACInterface<FeatureConfigInterface> {
+    /**
+     * Is the data loading.
+     */
+    isLoading?: boolean;
     roleId: string;
     roleObject: RolesInterface;
     onRoleUpdate: () => void;
@@ -42,11 +46,12 @@ interface EditRoleProps extends SBACInterface<FeatureConfigInterface> {
 /**
  * Component which will allow editing of a selected role.
  *
- * @param props contains role details to be edited.
+ * @param props - contains role details to be edited.
  */
 export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps): ReactElement => {
 
     const {
+        isLoading,
         roleId,
         roleObject,
         onRoleUpdate
@@ -153,6 +158,8 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
     };
 
     return (
-        <ResourceTab panes={ resolveResourcePanes() } />
+        <ResourceTab
+            isLoading={ isLoading }
+            panes={ resolveResourcePanes() } />
     );
 };

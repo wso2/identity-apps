@@ -19,7 +19,7 @@
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, StorageIdentityAppsSettingsInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { AnimatedAvatar, AppAvatar, LabelWithPopup, PageLayout, PrimaryButton } from "@wso2is/react-components";
+import { AnimatedAvatar, AppAvatar, LabelWithPopup, PrimaryButton, TabPageLayout } from "@wso2is/react-components";
 import cloneDeep from "lodash-es/cloneDeep";
 import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
@@ -100,7 +100,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
 
     const [ application, setApplication ] = useState<ApplicationInterface>(emptyApplication);
     const [ applicationTemplate, setApplicationTemplate ] = useState<ApplicationTemplateListItemInterface>(undefined);
-    const [ isApplicationRequestLoading, setApplicationRequestLoading ] = useState<boolean>(false);
+    const [ isApplicationRequestLoading, setApplicationRequestLoading ] = useState<boolean>(undefined);
     const [ inboundProtocolList, setInboundProtocolList ] = useState<string[]>(undefined);
     const [ inboundProtocolConfigs, setInboundProtocolConfigs ] = useState<Record<string, any>>(undefined);
     const [ isDescTruncated, setIsDescTruncated ] = useState<boolean>(false);
@@ -548,7 +548,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     };
 
     return (
-        <PageLayout
+        <TabPageLayout
             pageTitle="Edit Application"
             title={ (
                 <>
@@ -598,6 +598,11 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                         )
                 )
             }
+            loadingStateOptions={ {
+                count: 5,
+                imageType: "square"
+            } }
+            isLoading={ isApplicationRequestLoading }
             backButton={ {
                 "data-testid": `${testId}-page-back-button`,
                 onClick: handleBackButtonClick,
@@ -663,7 +668,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                     isSharedWithAll={ sharedWithAll }
                 />
             ) }
-        </PageLayout>
+        </TabPageLayout>
     );
 };
 

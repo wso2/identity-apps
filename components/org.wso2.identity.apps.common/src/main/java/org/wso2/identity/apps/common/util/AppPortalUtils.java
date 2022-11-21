@@ -191,7 +191,7 @@ public class AppPortalUtils {
         if (CONSOLE_APP.equals(appName) && AppsCommonDataHolder.getInstance().isOrganizationManagementEnabled()) {
             AuthenticationStep authenticationStep1 = new AuthenticationStep();
             LocalAuthenticatorConfig identifierFirst = new LocalAuthenticatorConfig();
-            identifierFirst.setName("IdentifierExecutor");
+            identifierFirst.setName(FrameworkConstants.RequestAttribute.IDENTIFIER_FIRST_AUTHENTICATOR);
             identifierFirst.setDisplayName("identifier-first");
             authenticationStep1.setLocalAuthenticatorConfigs(new LocalAuthenticatorConfig[]{identifierFirst});
             authenticationStep1.setSubjectStep(false);
@@ -200,8 +200,8 @@ public class AppPortalUtils {
 
             AuthenticationStep authenticationStep2 = new AuthenticationStep();
             LocalAuthenticatorConfig basic = new LocalAuthenticatorConfig();
-            basic.setName("BasicAuthenticator");
-            basic.setDisplayName("basic");
+            basic.setName(FrameworkConstants.BASIC_AUTHENTICATOR_CLASS);
+            basic.setDisplayName(FrameworkConstants.BASIC_AUTH_MECHANISM);
             authenticationStep2.setLocalAuthenticatorConfigs(new LocalAuthenticatorConfig[]{basic});
             authenticationStep2.setAttributeStep(true);
             authenticationStep2.setSubjectStep(true);

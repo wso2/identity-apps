@@ -20,7 +20,8 @@ import classNames from "classnames";
 import React, {
     FunctionComponent,
     PropsWithChildren,
-    ReactElement
+    ReactElement,
+    ReactNode
 } from "react";
 import { BaseLayout, BaseLayoutInterface } from "./base";
 
@@ -29,9 +30,17 @@ import { BaseLayout, BaseLayoutInterface } from "./base";
  */
 export interface DashboardLayoutPropsInterface extends BaseLayoutInterface {
     /**
+     * App footer component.
+     */
+    footer?: ReactNode;
+    /**
      * Is layout fluid.
      */
     fluid?: boolean;
+    /**
+     * App header component.
+     */
+    header?: ReactNode;
     /**
      * App side navigation component.
      */
@@ -52,7 +61,9 @@ export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayou
         alert,
         children,
         className,
+        footer,
         fluid,
+        header,
         sidePanel,
         topLoadingBar
     } = props;
@@ -72,7 +83,9 @@ export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayou
             topLoadingBar={ topLoadingBar }
         >
             <div className={ classes }>
+                { header }
                 { React.cloneElement(sidePanel, { children: children }) }
+                { footer }
             </div>
         </BaseLayout>
     );

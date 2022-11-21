@@ -18,7 +18,6 @@
 
 import { hasRequiredScopes, resolveAppLogoFilePath } from "@wso2is/core/helpers";
 import { AnnouncementBannerInterface, ProfileInfoInterface } from "@wso2is/core/models";
-import { setMobileSidePanelToggleVisibility } from "@wso2is/core/store";
 import { LocalStorageUtils, CommonUtils as ReusableCommonUtils, StringUtils } from "@wso2is/core/utils";
 import {
     Announcement,
@@ -155,7 +154,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         if (isPrivilegedUser) {
             return;
         }
-
+        
         commonConfig
             ?.header
             ?.getUserDropdownLinkExtensions(tenantDomain, associatedTenants)
@@ -312,7 +311,6 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                             eventPublisher.publish("console-click-develop-menu-item");
                             history.push(config.deployment.developerApp.path);
                             dispatch(setActiveView(StrictAppViewTypes.DEVELOP));
-                            dispatch(setMobileSidePanelToggleVisibility(true));
                         } }
                         data-testid={ `${ testId }-developer-portal-switch` }
                     />
@@ -330,7 +328,6 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                             eventPublisher.publish("console-click-manage-menu-item");
                             history.push(config.deployment.adminApp.path);
                             dispatch(setActiveView(StrictAppViewTypes.MANAGE));
-                            dispatch(setMobileSidePanelToggleVisibility(true));
                         } }
                         data-testid={ `${ testId }-admin-portal-switch` }
                     />
@@ -352,7 +349,6 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                         history.push(`${ AppConstants.getMainViewBasePath() }/getting-started`);
                         onClickCb &&
                         onClickCb(commonConfig.header.headerQuickstartMenuItem as AppViewTypes);
-                        dispatch(setMobileSidePanelToggleVisibility(false));
                     } }
                     data-testid="app-header-quick-start-switch"
                 >
@@ -443,7 +439,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                         component: renderAppSwitcher(),
                         floated: "right"
                     },
-                    isOrgSwitcherEnabled && {
+                    isOrgSwitcherEnabled && !isPrivilegedUser && {
                         component: <OrganizationSwitchBreadcrumb />,
                         floated: "left"
                     }

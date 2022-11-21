@@ -201,9 +201,7 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
                 return;
             }
 
-            const scope = scopeName;
-
-            getScope(scope);
+            getScope(scopeName);
         }, [ scopeName ]);
 
         const getOIDCAttributes = (claimId: string) => {
@@ -358,17 +356,23 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
         const onSubmit = (values: any): void => {
             setIsSubmitting(true);
 
+            const displayName: string = values?.displayName !== undefined
+                ? values?.displayName?.toString()
+                : scope.displayName;
+
             updateOIDCScopeDetails(scope.name, {
                 claims: scope.claims,
                 description: values?.description !== undefined ?  values?.description?.toString() : scope.description,
-                displayName: values?.displayName !== undefined ? values?.displayName?.toString() : scope.displayName
+                displayName: displayName
             })
                 .then(() => {
                     dispatch(
                         addAlert({
                             description: t(
                                 "console:manage.features.oidcScopes.notifications." +
-                                "updateOIDCScope.success.description"
+                                "updateOIDCScope.success.description", {
+                                    scope: displayName
+                                }
                             ),
                             level: AlertLevels.SUCCESS,
                             message: t(

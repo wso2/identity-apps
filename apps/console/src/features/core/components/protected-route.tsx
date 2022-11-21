@@ -40,15 +40,18 @@ export const ProtectedRoute: FunctionComponent<RouteProps> = (props: RouteProps)
     const isAuthenticated: boolean = useSelector((state: AppState) => state.auth.isAuthenticated);
 
     /**
-     * Update existing location path (auth_callback_url) in the state to home route if the current page is either login
-     * page, unauthorized page, 404 page or storing_data_disabled page. For other pages, auth_callback_url will be
-     * updated in index.jsp for every page reload
+     * Update existing location path in the state to recall upon page refresh or authentication callback.
+     * The login path and the login error path have been skipped.
      */
     if ((window.location.pathname === AppConstants.getAppLoginPath())
         || (window.location.pathname === AppConstants.getPaths().get("UNAUTHORIZED"))
         || (window.location.pathname === AppConstants.getPaths().get("PAGE_NOT_FOUND")
             || (window.location.pathname === AppConstants.getPaths().get("STORING_DATA_DISABLED")))) {
         AuthenticateUtils.updateAuthenticationCallbackUrl(AppConstantsCore.CONSOLE_APP, AppConstants.getAppHomePath());
+    } else {
+        const authCallbackUrl: string = window.location.pathname + window.location.hash;
+
+        AuthenticateUtils.updateAuthenticationCallbackUrl(AppConstantsCore.CONSOLE_APP, authCallbackUrl);
     }
 
     return (

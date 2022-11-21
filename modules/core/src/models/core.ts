@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -33,39 +33,31 @@ export interface AlertInterface extends Notification {
  * Enum for Alert levels.
  *
  * @readonly
- * @enum {string}
  */
 export enum AlertLevels {
     /**
      * Success alert level.
-     *
-     * @type {string}
      */
     SUCCESS = "success",
     /**
      * Error alert level.
-     *
-     * @type {string}
      */
     ERROR = "error",
     /**
      * Info alert level.
-     *
-     * @type {string}
      */
     INFO = "info",
     /**
      * Warning alert level.
-     *
-     * @type {string}
      */
     WARNING = "warning"
 }
 
 /**
  * Interface for the runtime config.
+ * 
  * TODO: Remove this and use the ones passed from portals.
- * @deprecated
+ * @deprecated Maintain this on the app side.
  */
 export interface RuntimeConfigInterface {
     /**
@@ -100,7 +92,8 @@ export interface RuntimeConfigInterface {
 
 /**
  * Common interface to extend testable components.
- * @deprecated
+ * 
+ * @deprecated Use IdentifiableComponentInterface instead.
  */
 export interface TestableComponentInterface {
     /**
@@ -111,12 +104,26 @@ export interface TestableComponentInterface {
 
 /**
  * Common interface to extend identifiable components.
-*/
+ */
 export interface IdentifiableComponentInterface {
     /**
      * Unique component id.
-    */
+     */
    "data-componentid"?: string;
+}
+
+/**
+ * Interface for loading state options.
+ */
+export interface LoadingStateOptionsInterface {
+    /**
+     * Number of loading rows.
+     */
+    count?: number;
+    /**
+     * Loading state image type.
+     */
+    imageType?: "circular" | "square";
 }
 
 /**
@@ -132,7 +139,7 @@ export interface LoadableComponentInterface {
 /**
  * Common interface to be extended to have the `ref` attribute.
  */
-export interface ReferableComponentInterface<T = {}> {
+export interface ReferableComponentInterface<T = Record<string, any>> {
     /**
      *
      */
@@ -143,27 +150,22 @@ export interface ReferableComponentInterface<T = {}> {
  * Enum for Product release types.
  *
  * @readonly
- * @enum {string}
  */
 export enum ProductReleaseTypes {
     /**
      * Milestone release.
-     * @type {string}
      */
     MILESTONE = "milestone",
     /**
      * Alpha release.
-     * @type {string}
      */
     ALPHA = "alpha",
     /**
      * Beta Release.
-     * @type {string}
      */
     BETA = "beta",
     /**
      * Release candidate.
-     * @type {string}
      */
     RC = "rc"
 }

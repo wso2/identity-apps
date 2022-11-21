@@ -475,6 +475,8 @@ export interface ConsoleNS {
                                     name: string;
                                     hint: string;
                                 },
+                                selectedScopesComponentHint: string;
+                                howToUseScopesHint: string;
                                 attributeComponentHint: string;
                                 attributeComponentHintAlt: string;
                                 description: string;
@@ -1690,6 +1692,19 @@ export interface ConsoleNS {
                             subHeading: string;
                         }
                     };
+                    organizationIDP?: {
+                        wizardHelp: {
+                            name: {
+                                description: string;
+                                heading: string;
+                            };
+                            description: {
+                                description: string;
+                                heading: string;
+                                example: string;
+                            };
+                        }
+                    },
                     microsoft?: {
                         wizardHelp: {
                             clientId: {

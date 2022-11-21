@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
- * WSO2 LLC. licenses this file to you under the Apache License,
+ * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -29,8 +29,7 @@ export enum GlobalActionTypes {
     INITIALIZE_ALERT_SYSTEM = "INITIALIZE_ALERT_SYSTEM",
     ADD_ALERT = "ADD_ALERT",
     SET_SUPPORTED_I18N_LANGUAGES = "SET_SUPPORTED_I18N_LANGUAGES",
-    SET_OPEN_ACTION = "SET_OPEN_ACTION",
-    SET_MOBILE_SIDE_PANEL_VISIBILITY = "SET_MOBILE_SIDE_PANEL_VISIBILITY"
+    SET_OPEN_ACTION = "SET_OPEN_ACTION"
 }
 
 /**
@@ -95,15 +94,6 @@ export interface SetOpenAction extends GlobalBaseAction {
     type: GlobalActionTypes.SET_OPEN_ACTION;
 }
 
-
-/**
- * Set mobile side panel visibility action interface.
- */
-export interface SetMobileSidePanelVisibility extends GlobalBaseAction {
-    payload: boolean,
-    type: GlobalActionTypes.SET_MOBILE_SIDE_PANEL_VISIBILITY;
-}
-
 /**
  * Export action interfaces.
  */
@@ -113,5 +103,4 @@ export type GlobalActions = ShowGlobalLoaderAction
     | InitializeAlertSystemAction
     | AddAlertAction
     | SetSupportedI18nLanguagesActionInterface
-    | SetOpenAction
-    | SetMobileSidePanelVisibility;
+    | SetOpenAction;
