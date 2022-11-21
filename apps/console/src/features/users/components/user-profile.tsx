@@ -251,7 +251,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     /**
      * This will add role attribute to countries search input to prevent autofill suggestions.
      */
-    const onCountryRefChange: (element: HTMLElement) => void = useCallback((node: HTMLElement) => {
+    const onCountryRefChange: (element: any) => void = useCallback((node: any) => {
         if (node !== null) {
             node.children[0].children[1].children[0].role = "presentation";
         }
