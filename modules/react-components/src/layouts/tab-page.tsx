@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { LoadingStateOptionsInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
 import { PageLayout, PageLayoutPropsInterface } from "../";
 import { ResourceTab } from "../components";
@@ -27,17 +26,9 @@ import { ResourceTab } from "../components";
 export interface TabPageLayoutPropsInterface extends Omit<PageLayoutPropsInterface, "isLoading"> {
 
     /**
-     * This injects teh passed component above the page header.
-     */
-    componentAbovePageHeader?: ReactElement;
-    /**
-     * Is page loading.
+     * Flag for request loading status.
      */
     isLoading: boolean;
-    /**
-     * Optional meta for the loading state.
-     */
-    loadingStateOptions?: LoadingStateOptionsInterface;
 }
 
 /**
@@ -53,17 +44,18 @@ export const TabPageLayout: FunctionComponent<PropsWithChildren<TabPageLayoutPro
 
     const {
         isLoading,
-        loadingStateOptions,
         children,
         ...rest
     } = props;
 
     if (isLoading) {
         return (
-            <PageLayout isLoading={ true } { ...rest }>
+            <PageLayout 
+                isLoading={ true }
+                { ...rest }
+            >
                 <ResourceTab
                     isLoading={ true }
-                    tabCount={ loadingStateOptions?.count }
                     { ...rest }
                 />
             </PageLayout>
@@ -75,4 +67,14 @@ export const TabPageLayout: FunctionComponent<PropsWithChildren<TabPageLayoutPro
             { children }
         </PageLayout>
     );
+};
+
+/**
+ * Default props for the tab page layout.
+ */
+TabPageLayout.defaultProps = {
+    loadingStateOptions: {
+        count: 5,
+        imageType: "square"
+    }
 };
