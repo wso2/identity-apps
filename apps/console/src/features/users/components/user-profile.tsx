@@ -45,6 +45,7 @@ import moment from "moment";
 import React, { FunctionComponent, ReactElement, ReactNode, useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { Button, CheckboxProps, Divider, DropdownItemProps, Form, Grid, Icon, Input } from "semantic-ui-react";
 import { ChangePasswordComponent } from "./user-change-password";
 import { commonConfig,userConfig } from "../../../extensions";
@@ -141,7 +142,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
     const { t } = useTranslation();
 
-    const dispatch: any = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const profileSchemas: ProfileSchemaInterface[] = useSelector((state: AppState) => state.profile.profileSchemas);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
