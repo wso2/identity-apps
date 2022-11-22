@@ -173,6 +173,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
                 userStores: null,
                 users: null
             },
+            googleOneTapEnabledTenants: [],
             gravatarConfig: {
                 defaultImage: "",
                 fallback: null,
@@ -206,7 +207,6 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             isCookieConsentBannerEnabled: undefined,
             isDefaultDialectEditingEnabled: undefined,
             isDialectAddingEnabled: undefined,
-            isGOTEnabledForSuperTenantOnly: undefined,
             isGroupAndRoleSeparationEnabled: undefined,
             isHeaderAvatarLabelAllowed: undefined,
             isLeftNavigationCategorized: undefined,

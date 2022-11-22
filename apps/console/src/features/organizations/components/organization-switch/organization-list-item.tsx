@@ -106,7 +106,8 @@ const OrganizationListItem = (
                                 size="small"
                                 color="grey"
                                 name="exchange"
-                                onClick={ () => {
+                                onClick={ (event: SyntheticEvent) => {
+                                    event.stopPropagation();
                                     handleOrganizationSwitch &&
                                         handleOrganizationSwitch(organization);
                                 } }
@@ -135,6 +136,7 @@ const OrganizationListItem = (
                                     color="grey"
                                     name="pencil alternate"
                                     onClick={ (event: SyntheticEvent) => {
+                                        event.stopPropagation();
                                         history.push({
                                             pathname: AppConstants.getPaths()
                                                 .get("ORGANIZATION_UPDATE")
@@ -144,7 +146,6 @@ const OrganizationListItem = (
                                                 )
                                         });
                                         setShowDropdown(false);
-                                        event.stopPropagation();
                                     } }
                                     data-componentid={ `${ componentId }-organization-edit` }
                                 />)

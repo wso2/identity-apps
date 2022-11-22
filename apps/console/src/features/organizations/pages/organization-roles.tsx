@@ -183,7 +183,6 @@ const OrganizationRoles: FunctionComponent<OrganizationRolesPageInterface> = (
     };
 
     /**
-     *
      * Sets the Next button visibility.
      *
      * @param nextCursor - Next item.

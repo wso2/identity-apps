@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2022, WSO2 Inc. (http://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,7 +13,7 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
- * under the License
+ * under the License.
  */
 
 import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
@@ -24,7 +24,7 @@ import React, { ChangeEvent, FunctionComponent, ReactElement, useEffect, useStat
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Divider, Form, Grid, InputOnChangeData } from "semantic-ui-react";
-import { AppConstants, AppState, SharedUserStoreConstants, SharedUserStoreUtils, history } from "../../../core";
+import { AppConstants, AppState, SharedUserStoreUtils, history } from "../../../core";
 import { PRIMARY_USERSTORE_PROPERTY_VALUES } from "../../../userstores";
 import { deleteOrganizationRole, getOrganizationRoles, patchOrganizationRoleDetails } from "../../api";
 import { OrganizationRoleManagementConstants } from "../../constants";
@@ -63,7 +63,7 @@ interface BasicRoleProps extends TestableComponentInterface {
 /**
  * Component to edit basic role details.
  *
- * @param props Role object containing details which needs to be edited.
+ * @param props - Role object containing details which needs to be edited.
  */
 export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: BasicRoleProps): ReactElement => {
     const { t } = useTranslation();
@@ -84,7 +84,6 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
     const [ userStoreRegEx, setUserStoreRegEx ] = useState<string>("");
     const [ isRoleNamePatternValid, setIsRoleNamePatternValid ] = useState<boolean>(true);
     const [ isRegExLoading, setRegExLoading ] = useState<boolean>(false);
-    const [ userStore ] = useState<string>(SharedUserStoreConstants.PRIMARY_USER_STORE);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const currentOrganization: OrganizationResponseInterface = useSelector(
         (state: AppState) => state.organization.organization
@@ -128,46 +127,10 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
     };
 
     /**
-     * The following function validates role name against the user store regEx.
-     */
-    const validateRoleNamePattern = async (): Promise<string> => {
-        let userStoreRegEx = "";
-
-        if (userStore !== SharedUserStoreConstants.PRIMARY_USER_STORE) {
-            await SharedUserStoreUtils.getUserStoreRegEx(userStore,
-                SharedUserStoreConstants.USERSTORE_REGEX_PROPERTIES.RolenameRegEx)
-                .then((response) => {
-                    setRegExLoading(true);
-                    userStoreRegEx = response;
-                });
-        } else {
-            await SharedUserStoreUtils.getPrimaryUserStore().then((response) => {
-                setRegExLoading(true);
-                if (response && response.properties) {
-                    userStoreRegEx = response?.properties?.filter(property => {
-                        return property.name === "RolenameJavaScriptRegEx";
-                    })[ 0 ].value;
-                }
-            });
-        }
-
-        setRegExLoading(false);
-
-        return new Promise((resolve, reject) => {
-            if (userStoreRegEx !== "") {
-                resolve(userStoreRegEx);
-            } else {
-                reject("");
-            }
-        });
-
-    };
-
-    /**
      * The following function handles the role name change.
      *
-     * @param event
-     * @param data
+     * @param event - Role name changed event
+     * @param data - Field data
      */
     const handleRoleNameChange = (event: ChangeEvent, data: InputOnChangeData): void => {
         setIsRoleNamePatternValid(SharedUserStoreUtils.validateInputAgainstRegEx(data?.value, userStoreRegEx));
@@ -176,7 +139,7 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
     /**
      * Dispatches the alert object to the redux store.
      *
-     * @param {AlertInterface} alert - Alert object.
+     * @param alert - Alert object.
      */
     const handleAlerts = (alert: AlertInterface): void => {
         dispatch(addAlert(alert));
@@ -206,7 +169,6 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
 
     /**
      * Method to update role name for the selected role.
-     *
      */
     const updateRoleName = (values: Map<string, FormValue>): void => {
         const newRoleName: string = values?.get("roleName")?.toString();

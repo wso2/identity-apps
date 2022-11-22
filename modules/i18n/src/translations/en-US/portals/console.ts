@@ -815,7 +815,7 @@ export const console: ConsoleNS = {
                                     },
                                     subHeading: "Select which user attributes you want to share with the application."
                                 },
-                                attributeComponentHint: "Use <1>OpenID Connect Scopes</1> to add/remove user attribute to a scope. " +
+                                attributeComponentHint: "Use <1>OpenID Connect Scopes</1> to manage user attribute in a scope. " +
                                     "You can add new attributes by navigating to <3>Attributes.</3>",
                                 attributeComponentHintAlt: "Manage the user attributes you want to share with this" +
                                     " application. You can add new attributes and mappings by navigating to " +
@@ -830,6 +830,9 @@ export const console: ConsoleNS = {
                                     hint: "Cannot retrieve these user attributes by requesting " +
                                             "OIDC scopes. To retrieve, add the required attributes to a relevant scope."
                                 },
+                                selectedScopesComponentHint: "Request these scopes from your application to retrieve " +
+                                    "the selected user attributes.",
+                                howToUseScopesHint: "How to use Scopes",
                                 mandatoryAttributeHint: "Mark which user attributes are mandatory to be shared " +
                                     "with the application. At login, {{productName}} prompts the user to enter these " +
                                     "attribute values, if not already provided in the user's profile.",
@@ -3423,7 +3426,7 @@ export const console: ConsoleNS = {
                             }
                         },
                         microsoft: {
-                            AdditionalQueryParameters: {
+                            commonAuthQueryParams: {
                                 ariaLabel: "Microsoft authenticator additional query parameters",
                                 hint: "Additional query parameters to be sent to Microsoft.",
                                 label: "Additional Query Parameters",
@@ -3457,9 +3460,11 @@ export const console: ConsoleNS = {
                                 }
                             },
                             scopes: {
+                                ariaLabel: "Scopes provided by Microsoft Authenticator",
                                 heading: "Scopes",
                                 hint: "The type of access provided for the connected apps to access data " +
                                     "from Microsoft. Click <1>here</1> to learn more.",
+                                label: "Scopes",
                                 list: {
                                     email: {
                                         description: "Allows to view user's email address."
@@ -3470,7 +3475,8 @@ export const console: ConsoleNS = {
                                     profile: {
                                         description: "Allows to view user's basic profile data."
                                     }
-                                }
+                                },
+                                placeholder: "e.g: openid"
                             }
                         },
                         saml: {
@@ -4431,6 +4437,21 @@ export const console: ConsoleNS = {
                                 heading: "Prerequisite"
                             },
                             subHeading: "Use the guide below"
+                        }
+                    },
+                    organizationIDP: {
+                        wizardHelp: {
+                            name: {
+                                description: "Provide a unique name for the enterprise authentication provider so" +
+                                    " that it can be easily identified.",
+                                heading: "Name"
+                            },
+                            description: {
+                                description: "Provide a description for the enterprise authentication provider to" +
+                                    " explain more about it.",
+                                heading: "Description",
+                                example: "E.g., This is the authenticator for MyOrg, which acts as the IDP for MyApp."
+                            }
                         }
                     },
                     microsoft: {
@@ -9362,6 +9383,7 @@ export const console: ConsoleNS = {
                             },
                             success: {
                                 description: "The user account disabled successfully.",
+                                genericMessage: "Account is disabled",
                                 message: "{{name}}'s account is disabled"
                             }
                         },
@@ -9376,6 +9398,7 @@ export const console: ConsoleNS = {
                             },
                             success: {
                                 description: "The user account enabled successfully.",
+                                genericMessage: "Account is enabled",
                                 message: "{{name}}'s account is enabled"
                             }
                         },
@@ -9418,6 +9441,7 @@ export const console: ConsoleNS = {
                             },
                             success: {
                                 description: "The user account locked successfully.",
+                                genericMessage: "Account is locked",
                                 message: "{{name}}'s account is locked"
                             }
                         },
@@ -9438,6 +9462,7 @@ export const console: ConsoleNS = {
                             },
                             success: {
                                 description: "The user account unlocked successfully.",
+                                genericMessage: "Account is unlocked",
                                 message: "{{name}}'s account is unlocked"
                             }
                         },

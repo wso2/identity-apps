@@ -24,7 +24,7 @@ import {
     AnimatedAvatar,
     AppAvatar,
     LabelWithPopup,
-    PageLayout
+    TabPageLayout
 } from "@wso2is/react-components";
 import get from "lodash-es/get";
 import React, {
@@ -564,9 +564,13 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
     };
 
     return (
-        <PageLayout
+        <TabPageLayout
             pageTitle={ "Edit Connection" }
-            isLoading={ isConnectorDetailsFetchRequestLoading || useNewConnectionsView === undefined }
+            isLoading={ isConnectorDetailsFetchRequestLoading }
+            loadingStateOptions={ {
+                count: 5,
+                imageType: "square"
+            } }
             title={ resolveConnectorName(connector) }
             contentTopMargin={ true }
             description={ resolveConnectorDescription(connector) }
@@ -626,7 +630,7 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
                         />
                     )
             }
-        </PageLayout>
+        </TabPageLayout>
     );
 };
 

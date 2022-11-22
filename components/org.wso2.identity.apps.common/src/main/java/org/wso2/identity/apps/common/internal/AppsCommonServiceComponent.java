@@ -216,13 +216,13 @@ public class AppsCommonServiceComponent {
             OrganizationManagementInitialize organizationManagementInitializeService) {
 
         AppsCommonDataHolder.getInstance()
-                .setOrganizationManagementEnable(organizationManagementInitializeService);
+                .setOrganizationManagementEnabled(organizationManagementInitializeService);
     }
 
     protected void unsetOrganizationManagementEnablingService(
             OrganizationManagementInitialize organizationManagementInitializeInstance) {
 
-        AppsCommonDataHolder.getInstance().setOrganizationManagementEnable(null);
+        AppsCommonDataHolder.getInstance().setOrganizationManagementEnabled(null);
     }
 
     private boolean skipPortalInitialization() {

@@ -475,6 +475,8 @@ export interface ConsoleNS {
                                     name: string;
                                     hint: string;
                                 },
+                                selectedScopesComponentHint: string;
+                                howToUseScopesHint: string;
                                 attributeComponentHint: string;
                                 attributeComponentHintAlt: string;
                                 description: string;
@@ -1469,10 +1471,12 @@ export interface ConsoleNS {
                             callbackUrl: FormAttributes;
                             clientId: FormAttributes;
                             clientSecret: FormAttributes;
-                            AdditionalQueryParameters: FormAttributes;
+                            commonAuthQueryParams: FormAttributes;
                             scopes: {
+                                ariaLabel: string,
                                 heading: string;
                                 hint: string;
+                                label: string;
                                 list: {
                                     email: {
                                         description: string;
@@ -1484,6 +1488,7 @@ export interface ConsoleNS {
                                         description: string;
                                     }
                                 }
+                                placeholder: string;
                             };
                         };
                         saml: {
@@ -1687,6 +1692,19 @@ export interface ConsoleNS {
                             subHeading: string;
                         }
                     };
+                    organizationIDP?: {
+                        wizardHelp: {
+                            name: {
+                                description: string;
+                                heading: string;
+                            };
+                            description: {
+                                description: string;
+                                heading: string;
+                                example: string;
+                            };
+                        }
+                    },
                     microsoft?: {
                         wizardHelp: {
                             clientId: {

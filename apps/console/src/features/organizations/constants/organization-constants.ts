@@ -52,7 +52,9 @@ export enum ORGANIZATION_TYPE {
     TENANT = "TENANT"
 }
 
-// Role constants
+/**
+ * Role constants
+ */
 export class OrganizationRoleManagementConstants {
     /**
      * Set of keys used to enable/disable features.

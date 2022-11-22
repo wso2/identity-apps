@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -38,8 +38,8 @@ interface ProtectedRoutePropsInterface extends RouteProps {
 /**
  * Protected route component.
  *
- * @param {RouteProps} props - Props injected to the component.
- * @return {React.ReactElement}
+ * @param props - Props injected to the component.
+ * @returns ProtectedRoute component.
  */
 export const ProtectedRoute: FunctionComponent<ProtectedRoutePropsInterface> = (
     props: ProtectedRoutePropsInterface
@@ -55,30 +55,26 @@ export const ProtectedRoute: FunctionComponent<ProtectedRoutePropsInterface> = (
     const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
 
     /**
-     * Update existing location path in the state to recall upon page refresh or authentication callback.
-     * The login path and the login error path have been skipped.
+     * Update existing location path (auth_callback_url) in the state to home route if the current page is either login
+     * page, unauthorized page, 404 page or storing_data_disabled page. For other pages, auth_callback_url will be
+     * updated in index.jsp for every page reload
      */
-    if ((window.location.pathname !== AppConstants.getAppLoginPath())
-        && (window.location.pathname !== AppConstants.getPaths().get("UNAUTHORIZED"))
-        && (window.location.pathname !== AppConstants.getPaths().get("PAGE_NOT_FOUND")
-        && (window.location.pathname !== AppConstants.getPaths().get("STORING_DATA_DISABLED")))) {
+    if ((window.location.pathname === AppConstants.getAppLoginPath())
+        || (window.location.pathname === AppConstants.getPaths().get("UNAUTHORIZED"))
+        || (window.location.pathname === AppConstants.getPaths().get("PAGE_NOT_FOUND")
+            || (window.location.pathname === AppConstants.getPaths().get("STORING_DATA_DISABLED")))) {
         AuthenticateUtils.updateAuthenticationCallbackUrl(AppConstantsCore.MY_ACCOUNT_APP,
-            window.location.pathname);
-    } else {
-        AuthenticateUtils.updateAuthenticationCallbackUrl(
-            AppConstantsCore.MY_ACCOUNT_APP, 
-            AppConstants.getAppHomePath()
-        );
+            AppConstants.getAppHomePath());
     }
 
     /**
      * Checks if the users have the required scope and direct them to the relevant
      *
-     * @param {RouteComponentProps<any>} props - Route props.
-     * @return {React.ReactElement}
+     * @param props - Route props.
+     * @returns Resolved component.
      */
     const resolveComponents = (props: RouteComponentProps<any>): ReactElement => {
-        const scopes = allowedScopes?.split(" ");
+        const scopes: string[] = allowedScopes?.split(" ");
 
         if (!route?.scope) {
             return (<Component { ...props } />);
