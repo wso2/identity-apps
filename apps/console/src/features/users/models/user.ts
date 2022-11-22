@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -254,4 +254,29 @@ export interface ApplicationSessionInterface {
      * @example 012
      */
     appId: string;
+}
+
+/**
+ * Interface for the Account Configurations.
+ */
+export interface AccountConfigSettingsInterface {
+    accountDisable: string;
+    accountLock: string;
+    forcePasswordReset: string;
+}
+
+/**
+ * Interface for the User Schema Sub Value.
+ */
+export interface SubValueInterface {
+    formatted?: string;
+    value?: string;
+}
+
+/**
+ * Interface for the Schema Attribute Value.
+ */
+export interface SchemaAttributeValueInterface {
+    type?: string;
+    value?: string | string[];
 }
