@@ -1471,10 +1471,12 @@ export interface ConsoleNS {
                             callbackUrl: FormAttributes;
                             clientId: FormAttributes;
                             clientSecret: FormAttributes;
-                            AdditionalQueryParameters: FormAttributes;
+                            commonAuthQueryParams: FormAttributes;
                             scopes: {
+                                ariaLabel: string,
                                 heading: string;
                                 hint: string;
+                                label: string;
                                 list: {
                                     email: {
                                         description: string;
@@ -1486,6 +1488,7 @@ export interface ConsoleNS {
                                         description: string;
                                     }
                                 }
+                                placeholder: string;
                             };
                         };
                         saml: {

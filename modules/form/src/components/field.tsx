@@ -28,6 +28,7 @@ import { FieldDropdown } from "./field-dropdown";
 import { FieldInput } from "./field-input";
 import { FieldQueryParams } from "./field-query-params";
 import { FieldRadio } from "./field-radio";
+import { FieldScopes } from "./field-scopes";
 import { FieldTextarea } from "./field-textarea";
 
 export interface FormFieldPropsInterface extends FieldProps<any, any, any>, TestableComponentInterface,
@@ -57,6 +58,7 @@ type FieldType = FC<FormFieldPropsInterface> & {
     QueryParams: typeof FieldQueryParams;
     ColorPicker: typeof FieldColorPicker;
     Radio: typeof FieldRadio;
+    Scopes: typeof FieldScopes;
 }
 
 /**
@@ -71,12 +73,13 @@ export const Field: FieldType = (props: PropsWithChildren<FormFieldPropsInterfac
         style
     } = props;
 
-    const classes = classNames(
+    const classes: string = classNames(
         "fields",
         className
     );
 
-    const childNodes = React.Children.toArray(children);
+    const childNodes: (string | number | React.ReactElement<any, string | React.JSXElementConstructor<any>> 
+        | React.ReactFragment | React.ReactPortal)[] = React.Children.toArray(children);
 
     return (
         <div className={ classes } style={ style }>
@@ -86,7 +89,7 @@ export const Field: FieldType = (props: PropsWithChildren<FormFieldPropsInterfac
                         return null;
                     }
 
-                    const childProps = {
+                    const childProps: any = {
                         ...child.props
                     };
 
@@ -106,3 +109,4 @@ Field.Dropdown = FieldDropdown;
 Field.QueryParams = FieldQueryParams;
 Field.ColorPicker = FieldColorPicker;
 Field.Radio = FieldRadio;
+Field.Scopes = FieldScopes;
