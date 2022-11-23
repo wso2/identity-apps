@@ -20,7 +20,8 @@ import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso
 import classNames from "classnames";
 import isObject from "lodash-es/isObject";
 import React, { PropsWithChildren, ReactElement } from "react";
-import { Icon, Popup, PopupProps, SemanticCOLORS, SemanticICONS } from "semantic-ui-react";
+import { Icon, PopupProps, SemanticCOLORS, SemanticICONS } from "semantic-ui-react";
+import { Popup } from "../popup";
 
 /**
  * Heading component prop types.
@@ -117,7 +118,7 @@ export const Hint: React.FunctionComponent<PropsWithChildren<HintPropsInterface>
      * @returns Popup props.
      */
     const resolvePopupOptions = (): PopupProps => {
-        
+
         // If `popupOptions` are externally propvided, merge it with the default.
         if (popupOptions && isObject(popupOptions)) {
             return {

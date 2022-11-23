@@ -29,9 +29,10 @@ import React, {
     useRef,
     useState
 } from "react";
-import { Button, Divider, Icon, Input, InputProps, Popup, PopupProps } from "semantic-ui-react";
+import { Button, Divider, Icon, Input, InputProps, PopupProps } from "semantic-ui-react";
 import { ReactComponent as CrossIcon } from "../../assets/images/cross-icon.svg";
 import { GenericIcon } from "../icon";
+import { Popup } from "../popup";
 import { Heading } from "../typography";
 
 /**

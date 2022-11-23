@@ -26,12 +26,12 @@ import {
     Icon,
     List,
     ListItemProps,
-    Popup,
     SemanticFLOATS,
     SemanticICONS,
     SemanticWIDTHS,
     StrictGridRowProps
 } from "semantic-ui-react";
+import { Popup } from "../../popup";
 
 /**
  * Proptypes for the resource list item component.
