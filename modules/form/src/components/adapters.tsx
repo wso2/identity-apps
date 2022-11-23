@@ -30,8 +30,17 @@ import {
 import omit from "lodash-es/omit";
 import React, { ClipboardEvent, FormEvent, KeyboardEvent, ReactElement } from "react";
 import { FieldRenderProps } from "react-final-form";
-// eslint-disable-next-line max-len
-import { Checkbox, CheckboxProps, DropdownProps, Form, Icon, Input, InputOnChangeData, Popup, Select, TextAreaProps } from "semantic-ui-react";
+import {
+    Checkbox,
+    CheckboxProps,
+    DropdownProps,
+    Form,
+    Icon,
+    Input,
+    InputOnChangeData,
+    Select,
+    TextAreaProps
+} from "semantic-ui-react";
 import { QueryParameters, Scopes } from "../addons";
 import {
     CheckboxAdapterPropsInterface,

@@ -30,7 +30,7 @@ import React, { MouseEvent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Icon, Popup } from "semantic-ui-react";
+import { Icon } from "semantic-ui-react";
 import { getProfileInformation } from "../../authentication/store";
 import { AppConstants, AppState, FeatureConfigInterface, SharedUserStoreUtils, history } from "../../core";
 import { OrganizationUtils } from "../../organizations/utils";
