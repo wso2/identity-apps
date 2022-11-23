@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,7 +14,6 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
 
 import flatten from "lodash-es/flatten";
@@ -206,33 +205,6 @@ export class SignInMethodUtils {
 
         return this.hasSpecificFactorsInSteps(ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS,
             leftSideSteps);
-    }
-
-    /**
-     * This method decides if the magic-link authenticator can be added to the current step.
-     *
-     * @param {number} currentStep The current step.
-     * @param {AuthenticationStepInterface} authenticationSteps The authentication steps.
-     *
-     * @returns {boolean}
-     */
-    public static isMagicLinkAuthenticatorValid(currentStep: number,
-        authenticationSteps: AuthenticationStepInterface[]): boolean {
-        // The magic link authenticator can only be added to the second step.
-        if (currentStep !== 1) {
-            return false;
-        }
-
-        const identifierFirst = authenticationSteps[ 0 ].options.find(
-            authenticator =>
-                authenticator.authenticator === IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR);
-
-        // The first step should have the identifier first authenticator.
-        if (authenticationSteps.length > 1 && !identifierFirst) {
-            return false;
-        }
-
-        return true;
     }
 
     /**

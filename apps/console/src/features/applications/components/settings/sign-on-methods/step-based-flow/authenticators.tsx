@@ -137,11 +137,6 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
             );
         }
 
-        // Check if the authenticator is a magic link authenticator
-        if (authenticator.id === IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID) {
-            return SignInMethodUtils.isMagicLinkAuthenticatorValid(currentStep, authenticationSteps);
-        }
-
         if ([
             IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID,
             IdentityProviderManagementConstants.BASIC_AUTHENTICATOR_ID ].includes(authenticator.id)) {
@@ -216,22 +211,6 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                             "console:develop.features.applications.edit.sections.signOnMethod.sections." +
                             "authenticationFlow.sections.stepBased.authenticatorDisabled"
                         ) }
-                    </Text>
-                </Fragment>
-            );
-        } else if (authenticator.id === IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID
-            && !SignInMethodUtils.isMagicLinkAuthenticatorValid(currentStep, authenticationSteps)) {
-            return (
-                <Fragment>
-                    { InfoLabel }
-                    <Text>
-                        {
-                            t(
-                                "console:develop.features.applications.edit.sections" +
-                                ".signOnMethod.sections.authenticationFlow.sections.stepBased" +
-                                ".magicLinkDisabled"
-                            )
-                        }
                     </Text>
                 </Fragment>
             );

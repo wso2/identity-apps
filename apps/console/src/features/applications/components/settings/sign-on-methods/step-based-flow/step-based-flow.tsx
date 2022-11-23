@@ -419,20 +419,6 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
             rightSideSteps
         ]: AuthenticationStepInterface[][] = SignInMethodUtils.getLeftAndRightSideSteps(stepIndex, steps);
 
-        // Checks if identifier first can be deleted.
-        if (
-            stepIndex === 0 &&
-            steps[0].options[optionIndex].authenticator ===
-                IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR &&
-            steps[1]?.options?.find(
-                (option) => option.authenticator === IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR
-            )
-        ) {
-            dispatchDeleteErrorNotification();
-
-            return;
-        }
-
         const containSecondFactorOnRight: boolean = SignInMethodUtils.hasSpecificFactorsInSteps(
             [ ...ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS ], rightSideSteps);
 
