@@ -24,6 +24,7 @@ import {
     DangerButton,
     LinkButton,
     Password,
+    Popup,
     PrimaryButton
 } from "@wso2is/react-components";
 import omit from "lodash-es/omit";
