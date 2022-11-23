@@ -20,8 +20,8 @@ import { FormInputLabel, Popup } from "@wso2is/react-components";
 import filter from "lodash-es/filter";
 import isEmpty from "lodash-es/isEmpty";
 import isEqual from "lodash-es/isEqual";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { Button, Form, Icon, Label, Message } from "semantic-ui-react";
+import React, { ChangeEvent, FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
+import { Button, Form, Icon, InputOnChangeData, Label, Message } from "semantic-ui-react";
 
 interface QueryParametersPropsInterface {
     label?: string | ReactElement;
@@ -41,8 +41,8 @@ export const QueryParameters: FunctionComponent<QueryParametersPropsInterface> =
 
     const { label, name, value, onChange } = props;
 
-    const QUERY_PARAMETER_SEPARATOR = "&";
-    const SPECIAL_CHARACTERS = [ ",", "&", "=", "?" ];
+    const QUERY_PARAMETER_SEPARATOR: string = "&";
+    const SPECIAL_CHARACTERS: string[] = [ ",", "&", "=", "?" ];
 
     const [ queryParamName, setQueryParamName ] = useState<string>("");
     const [ queryParamValue, setQueryParamValue ] = useState<string>("");
@@ -118,23 +118,23 @@ export const QueryParameters: FunctionComponent<QueryParametersPropsInterface> =
      *
      * @param e - keypress event.
      */
-    const keyPressed = (e) => {
-        const key = e.which || e.charCode || e.keyCode;
+    const keyPressed = (e: KeyboardEvent) => {
+        const key: number = e.which || e.charCode || e.keyCode;
 
         if (key === 13) {
             handleQueryParameterAdd(e);
         }
     };
 
-    const handleQueryParameterAdd = (event) => {
+    const handleQueryParameterAdd = (event: KeyboardEvent | SyntheticEvent) => {
         event.preventDefault();
         if (isEmpty(queryParamName) || isEmpty(queryParamValue)) {
             return;
         }
         setErrorMessage("");
-        let isError = false;
+        let isError: boolean = false;
 
-        SPECIAL_CHARACTERS.map((c) => {
+        SPECIAL_CHARACTERS.map((c: string) => {
             if (queryParamValue.includes(c) || queryParamName.includes(c)) {
                 setErrorMessage("Cannot include \"" + c + "\" as a query parameter.");
                 isError = true;
@@ -146,13 +146,13 @@ export const QueryParameters: FunctionComponent<QueryParametersPropsInterface> =
             value: queryParamValue
         } ];
 
-        queryParams.forEach(function (queryParam) {
-            const existing = output.filter((item) => {
+        queryParams.forEach(function (queryParam: QueryParameter) {
+            const existing: QueryParameter[] = output.filter((item: QueryParameter) => {
                 return item.name == queryParam.name;
             });
 
             if (existing.length) {
-                const existingIndex = output.indexOf(existing[0]);
+                const existingIndex: number = output.indexOf(existing[0]);
 
                 output[existingIndex].value = queryParam.value + " " + output[existingIndex].value;
             } else {
@@ -170,7 +170,7 @@ export const QueryParameters: FunctionComponent<QueryParametersPropsInterface> =
         if (isEmpty(queryParameter)) {
             return;
         }
-        setQueryParams(filter(queryParams, queryParam => !isEqual(queryParam,
+        setQueryParams(filter(queryParams, (queryParam: QueryParameter) => !isEqual(queryParam,
             buildQueryParameter(queryParameter))));
     };
 
@@ -190,7 +190,7 @@ export const QueryParameters: FunctionComponent<QueryParametersPropsInterface> =
                     value={ queryParamName }
                     focus
                     placeholder="name"
-                    onChange={ (event, data) => setQueryParamName(data.value) }
+                    onChange={ (_event: ChangeEvent, data: InputOnChangeData) => setQueryParamName(data.value) }
                     onKeyDown={ keyPressed }
                 />
                 <Form.Input
@@ -198,13 +198,13 @@ export const QueryParameters: FunctionComponent<QueryParametersPropsInterface> =
                     value={ queryParamValue }
                     focus
                     placeholder="value"
-                    onChange={ (event, data) => setQueryParamValue(data.value) }
+                    onChange={ (_event: ChangeEvent, data: InputOnChangeData) => setQueryParamValue(data.value) }
                     onKeyDown={ keyPressed }
                 />
                 <Popup
                     trigger={
                         (<Button
-                            onClick={ (e) => handleQueryParameterAdd(e) }
+                            onClick={ (e: SyntheticEvent) => handleQueryParameterAdd(e) }
                             icon="add"
                             type="button"
                             disabled={ false }
@@ -217,7 +217,7 @@ export const QueryParameters: FunctionComponent<QueryParametersPropsInterface> =
             </Form.Group>
             <Message visible={ errorMessage !== "" } error content={ errorMessage } />
             {
-                queryParams && queryParams?.map((eachQueryParam, index) => {
+                queryParams && queryParams?.map((eachQueryParam: QueryParameter, index: number) => {
                     const queryParameter: string = eachQueryParam.name + "=" + eachQueryParam.value;
 
                     return (
