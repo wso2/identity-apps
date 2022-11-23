@@ -28,7 +28,7 @@ import React, {
     ReactElement,
     ReactNode
 } from "react";
-import { Card, CardGroupProps, Loader } from "semantic-ui-react";
+import { Card, CardGroupProps, Loader, Placeholder } from "semantic-ui-react";
 import { ResourceGridCard } from "./resource-grid-card";
 
 /**
@@ -96,6 +96,27 @@ export const ResourceGrid: FunctionComponent<
             "resource-grid-wrapper",
             wrapperClassName
         );
+
+        if (isLoading) {
+            return (
+                <Card.Group style={ { marginBottom: "3rem" } }>
+                    {
+                        [ ...Array(4) ].map(() => {
+                            return (
+                                //TODO: Add style classes
+                                <>
+                                    <Card style={ { boxShadow: "none", width: "220px" } }>
+                                        <Placeholder>
+                                            <Placeholder.Image style={ { height: "230px" } } />
+                                        </Placeholder>
+                                    </Card>
+                                </>
+                            );
+                        })
+                    }
+                </Card.Group>
+            );
+        }
 
         return (
             <div

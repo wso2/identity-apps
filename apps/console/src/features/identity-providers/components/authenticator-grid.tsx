@@ -27,6 +27,7 @@ import {
     PrimaryButton,
     ResourceGrid
 } from "@wso2is/react-components";
+import { AxiosError } from "axios";
 import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
@@ -39,6 +40,7 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { Divider, Icon, List } from "semantic-ui-react";
 import { handleIDPDeleteError } from "./utils";
 import { AuthenticatorExtensionsConfigInterface, identityProviderConfig } from "../../../extensions/configs";
@@ -118,6 +120,15 @@ interface AuthenticatorGridPropsInterface extends LoadableComponentInterface, Te
 }
 
 /**
+ * Interface for the alert state.
+ */
+interface AlertState {
+    message: string;
+    description: string;
+    level: AlertLevels;
+}
+
+/**
  * Authenticators Grid component.
  *
  * @param props - Props injected to the component.
@@ -143,7 +154,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
 
     const { t } = useTranslation();
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingIDP, setDeletingIDP ] = useState<StrictIdentityProviderInterface>(undefined);
@@ -182,7 +193,9 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
         getIDPConnectedApps(idpId)
             .then(async (response: ConnectedAppsInterface) => {
                 if (response.count === 0) {
-                    setDeletingIDP(authenticators.find(idp => idp.id === idpId));
+                    setDeletingIDP(authenticators.find(
+                        (idp: IdentityProviderInterface | AuthenticatorInterface) => idp.id === idpId)
+                    );
                     setShowDeleteConfirmationModal(true);
                 } else {
                     setShowDeleteErrorDueToConnectedAppsModal(true);
@@ -192,26 +205,27 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                     });
 
                     const results: ApplicationBasicInterface[] = await Promise.all(
-                        appRequests.map(response => response.catch(error => {
-                            dispatch(addAlert({
-                                description: error?.description
-                                    || "Error occurred while trying to retrieve connected applications.",
-                                level: AlertLevels.ERROR,
-                                message: error?.message || "Error Occurred."
-                            }));
-                        }))
+                        appRequests.map((response: Promise<any>) => response
+                            .catch((error: AlertState) => {
+                                dispatch(addAlert({
+                                    description: error?.description
+                                        || "Error occurred while trying to retrieve connected applications.",
+                                    level: AlertLevels.ERROR,
+                                    message: error?.message || "Error Occurred."
+                                }));
+                            }))
                     );
 
                     const appNames: string[] = [];
 
-                    results.forEach((app) => {
+                    results.forEach((app: ApplicationBasicInterface) => {
                         appNames.push(app.name);
                     });
 
                     setConnectedApps(appNames);
                 }
             })
-            .catch((error) => {
+            .catch((error: AlertState) => {
                 dispatch(addAlert({
                     description: error?.description
                         || "Error occurred while trying to retrieve connected applications.",
@@ -245,7 +259,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                         "deleteConnection.success.message")
                 }));
             })
-            .catch((error) => {
+            .catch((error: AxiosError) => {
                 handleIDPDeleteError(error);
             })
             .finally(() => {
@@ -342,7 +356,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
             >
                 {
                     authenticators?.map((authenticator: IdentityProviderInterface
-                        | AuthenticatorInterface, index) => {
+                        | AuthenticatorInterface, index: number) => {
 
                         const authenticatorConfig: AuthenticatorExtensionsConfigInterface = get(identityProviderConfig
                             .authenticators, authenticator.id);
@@ -494,7 +508,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                                     isAppsLoading ? (
                                         <ContentLoader/>
                                     ) :
-                                        connectedApps?.map((app, index) => {
+                                        connectedApps?.map((app: string, index: number) => {
                                             return (
                                                 <List.Item key={ index }>{ app }</List.Item>
                                             );

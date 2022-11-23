@@ -29,7 +29,7 @@ import React, {
     ReactElement,
     useState
 } from "react";
-import { Icon, Input, InputProps, Label } from "semantic-ui-react";
+import { Card, Icon, Input, InputProps, Label, Placeholder } from "semantic-ui-react";
 
 /**
  *
@@ -154,7 +154,27 @@ export const SearchWithFilterLabels: FunctionComponent<PropsWithChildren<SearchW
                     )
             }
             {
-                (filterLabels && Array.isArray(filterLabels) && filterLabels.length > 0) && (
+                isLoading ? (
+                    <Card.Group style={ { borderRadius: "50px" } }>
+                        {
+                            [ ...Array(4) ].map(() => {
+                                return (
+                                    <>
+                                        <Card style={ { borderRadius: "50px", boxShadow: "none",  width: "65px" } }>
+                                            <Placeholder
+                                                className="testPlaceholder"
+                                                style={ { borderRadius: "10px" } }>
+                                                <Placeholder.Image
+                                                    style={ { borderRadius: "10px!important", height: "25px" } } />
+                                            </Placeholder>
+                                        </Card>
+                                    </>
+                                );
+                            })
+                        }
+                    </Card.Group>
+                ) : (
+                    filterLabels && Array.isArray(filterLabels) && filterLabels.length > 0) && (
                     <Label.Group>
                         {
                             filterLabels.map((label, index: number) => {
