@@ -27,6 +27,7 @@ import {
     EmphasizedSegment,
     GenericIcon,
     Message,
+    Popup,
     useDocumentation
 } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
@@ -35,7 +36,7 @@ import sortBy from "lodash-es/sortBy";
 import React, { Fragment, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Divider, Grid, Header, Popup, Button as SemButton } from "semantic-ui-react";
+import { Divider, Grid, Header, Button as SemButton } from "semantic-ui-react";
 import { SAMLSelectionLanding } from "./protocols";
 import { applicationConfig } from "../../../../extensions";
 import { AppState, FeatureConfigInterface, store } from "../../../core";

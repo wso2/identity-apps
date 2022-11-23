@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -25,6 +25,7 @@ import {
     EmptyPlaceholder,
     Heading,
     LinkButton,
+    Popup,
     PrimaryButton,
     TransferComponent,
     TransferList,
@@ -45,7 +46,7 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Grid, Header, Icon, Input, Modal, Popup, Table } from "semantic-ui-react";
+import { Grid, Header, Icon, Input, Modal, Table } from "semantic-ui-react";
 import { getEmptyPlaceholderIllustrations } from "../../../core";
 import { UserBasicInterface } from "../../../users";
 import { updateGroupDetails } from "../../api";
@@ -110,7 +111,7 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
     };
 
     const handleSearchFieldChange = (e: FormEvent<HTMLInputElement>, query: string, list: UserBasicInterface[],
-                                     stateAction: Dispatch<SetStateAction<any>>) => {
+        stateAction: Dispatch<SetStateAction<any>>) => {
 
         let isMatch: boolean = false;
         const filteredRoleList: UserBasicInterface[] = [];
@@ -185,6 +186,7 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
 
     const updateGroupUsersList = (selectedUsers: UserBasicInterface[]) => {
         const newUsers: CreateGroupMemberInterface[] = [];
+
         for (const selectedUser of selectedUsers) {
             newUsers.push({
                 display: selectedUser.userName,
@@ -382,20 +384,20 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                         <Popup
                             trigger={ (
                                 <Icon
-                                link={ true }
-                                data-testid={ `${ testId }-user-delete-button` }
-                                className="list-icon pr-4"
-                                size="large"
-                                color="grey"
-                                name="trash alternate"
-                                onClick={ () => {
-                                    deleteGroupUser(user);
-                                } }
+                                    link={ true }
+                                    data-testid={ `${ testId }-user-delete-button` }
+                                    className="list-icon pr-4"
+                                    size="large"
+                                    color="grey"
+                                    name="trash alternate"
+                                    onClick={ () => {
+                                        deleteGroupUser(user);
+                                    } }
                                 />
                             ) }
                             position="top right"
                             content={ t("common:remove") }
-                        inverted
+                            inverted
                         />
                     </Show>
                 </Table.Cell>
@@ -415,7 +417,7 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                                         data-testid={ `${ testId }-users-list-search-input` }
                                         icon={ <Icon name="search"/> }
                                         onChange={ (e: FormEvent<HTMLInputElement>,
-                                                    { value }: { value: string }) => {
+                                            { value }: { value: string }) => {
                                             handleSearchFieldChange(e, value, selectedUsers,
                                                 setSelectedUserList);
                                         } }

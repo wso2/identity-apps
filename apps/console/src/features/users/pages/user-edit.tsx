@@ -25,7 +25,7 @@ import {
     emptyProfileInfo
 }from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { EditAvatarModal, TabPageLayout, UserAvatar } from "@wso2is/react-components";
+import { EditAvatarModal, Popup, TabPageLayout, UserAvatar } from "@wso2is/react-components";
 import React, { MouseEvent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -276,10 +276,10 @@ const UserEditPage = (): ReactElement => {
                                                     content={ t("common:disabled") }
                                                     inverted
                                                 />
-                                            ) 
+                                            )
                                     }
                                     { resolveUserDisplayName(user, null, "Administrator") }
-                                    
+
                                 </>
                             ) : (
                                 <>
@@ -287,7 +287,7 @@ const UserEditPage = (): ReactElement => {
                                 </>
                             )
                     }
-                </> 
+                </>
             ) }
             pageTitle="Edit User"
             description={ t("" + user.emails && user.emails !== undefined ? resolvePrimaryEmail(user?.emails) :

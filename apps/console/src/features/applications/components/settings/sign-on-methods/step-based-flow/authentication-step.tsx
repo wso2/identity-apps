@@ -17,11 +17,11 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { EmptyPlaceholder, GenericIcon, Heading, LinkButton } from "@wso2is/react-components";
+import { EmptyPlaceholder, GenericIcon, Heading, LinkButton, Popup } from "@wso2is/react-components";
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Card, Checkbox, Form, Icon, Label, Popup, Radio } from "semantic-ui-react";
+import { Card, Checkbox, Form, Icon, Label, Radio } from "semantic-ui-react";
 import { getGeneralIcons } from "../../../../../core";
 import {
     FederatedAuthenticatorInterface,
@@ -153,15 +153,15 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
     }, [ JSON.stringify(step.options) ]);
 
     const isSubjectIdentifierChecked = useMemo(
-        () => (subjectStepId === (stepIndex + 1)), 
+        () => (subjectStepId === (stepIndex + 1)),
         [ subjectStepId, stepIndex ]
     );
 
     const isAttributeIdentifierChecked = useMemo(
-        () => (attributeStepId === (stepIndex + 1)), 
+        () => (attributeStepId === (stepIndex + 1)),
         [ attributeStepId, stepIndex ]
     );
-    
+
     /**
      * Resolves the authenticator step option.
      *
