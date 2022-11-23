@@ -39,7 +39,7 @@
                     "isEnabled": true,
                     "properties": [
                         {
-                            "key": "AdditionalQueryParameters",
+                            "key": "commonAuthQueryParams",
                             "displayName": "Additional Query Parameters",
                             "description": "Additional query parameters. e.g: paramName1=value1",
                             "type": "STRING",
@@ -49,6 +49,19 @@
                             "isConfidential": false,
                             "options": [],
                             "defaultValue": "",
+                            "subProperties": []
+                        },
+                        {
+                            "key": "Scopes",
+                            "displayName": "Scope",
+                            "description": "Enter scope for the user access",
+                            "type": "STRING",
+                            "displayOrder": 3,
+                            "regex": ".*",
+                            "isMandatory": false,
+                            "isConfidential": false,
+                            "options": [],
+                            "defaultValue": "openid",
                             "subProperties": []
                         },
                         {

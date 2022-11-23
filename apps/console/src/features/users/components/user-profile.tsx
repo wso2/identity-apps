@@ -17,10 +17,12 @@
  */
 
 import { ProfileConstants } from "@wso2is/core/constants";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { hasRequiredScopes, resolveUserEmails } from "@wso2is/core/helpers";
 import {
     AlertInterface,
     AlertLevels,
+    MultiValueAttributeInterface,
     ProfileInfoInterface,
     ProfileSchemaInterface,
     SBACInterface,
@@ -37,21 +39,30 @@ import {
     EmphasizedSegment,
     useConfirmationModalAlert
 } from "@wso2is/react-components";
-import { AxiosError } from "axios";
+import { AxiosError, AxiosResponse } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import moment from "moment";
 import React, { FunctionComponent, ReactElement, ReactNode, useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { Button, CheckboxProps, Divider, DropdownItemProps, Form, Grid, Icon, Input } from "semantic-ui-react";
 import { ChangePasswordComponent } from "./user-change-password";
 import { commonConfig,userConfig } from "../../../extensions";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "../../core";
 import { OrganizationUtils } from "../../organizations/utils";
-import { SearchRoleInterface ,searchRoleList, updateRoleDetails } from "../../roles";
+import {
+    OperationValueInterface,
+    PatchRoleDataInterface,
+    ScimOperationsInterface,
+    SearchRoleInterface,
+    searchRoleList,
+    updateRoleDetails
+} from "../../roles";
 import { ConnectorPropertyInterface, ServerConfigurationsConstants  } from "../../server-configurations";
 import { getUserDetails, updateUserInfo } from "../api";
 import { AdminAccountTypes, UserAccountTypes, UserManagementConstants } from "../constants";
+import { AccountConfigSettingsInterface, SchemaAttributeValueInterface, SubValueInterface } from "../models";
 
 /**
  * Prop types for the basic details component.
@@ -131,7 +142,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
     const { t } = useTranslation();
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const profileSchemas: ProfileSchemaInterface[] = useSelector((state: AppState) => state.profile.profileSchemas);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
@@ -146,7 +157,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const [ editingAttribute, setEditingAttribute ] = useState(undefined);
     const [ showLockDisableConfirmationModal, setShowLockDisableConfirmationModal ] = useState<boolean>(false);
     const [ openChangePasswordModal, setOpenChangePasswordModal ] = useState<boolean>(false);
-    const [ configSettings, setConfigSettings ] = useState({
+    const [ configSettings, setConfigSettings ] = useState<AccountConfigSettingsInterface>({
         accountDisable: "false",
         accountLock: "false",
         forcePasswordReset: "false"
@@ -160,8 +171,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ adminRoleId, setAdminRoleId ] = useState<string>("");
 
-    const createdDate = user?.meta?.created;
-    const modifiedDate = user?.meta?.lastModified;
+    const createdDate: string = user?.meta?.created;
+    const modifiedDate: string = user?.meta?.lastModified;
 
     useEffect(() => {
         if (!OrganizationUtils.isCurrentOrganizationRoot()) {
@@ -170,7 +181,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
         if (connectorProperties && Array.isArray(connectorProperties) && connectorProperties?.length > 0) {
 
-            let configurationStatuses = { ...configSettings } ;
+            let configurationStatuses: AccountConfigSettingsInterface = { ...configSettings } ;
 
             for (const property of connectorProperties) {
                 if (property.name === ServerConfigurationsConstants.ACCOUNT_DISABLING_ENABLE) {
@@ -205,10 +216,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             return;
         }
 
-        const attributes = UserManagementConstants.SCIM2_ATTRIBUTES_DICTIONARY.get("ONETIME_PASSWORD");
+        const attributes: string = UserManagementConstants.SCIM2_ATTRIBUTES_DICTIONARY.get("ONETIME_PASSWORD");
 
         getUserDetails(user?.id, attributes)
-            .then((response) => {
+            .then((response: ProfileInfoInterface) => {
                 setOneTimePassword(response[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.oneTimePassword);
             });
     }, [ forcePasswordTriggered ]);
@@ -218,12 +229,12 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             return;
         }
 
-        const attributes = UserManagementConstants.SCIM2_ATTRIBUTES_DICTIONARY.get("ACCOUNT_LOCKED") + "," +
+        const attributes: string = UserManagementConstants.SCIM2_ATTRIBUTES_DICTIONARY.get("ACCOUNT_LOCKED") + "," +
             UserManagementConstants.SCIM2_ATTRIBUTES_DICTIONARY.get("ACCOUNT_DISABLED") + "," +
             UserManagementConstants.SCIM2_ATTRIBUTES_DICTIONARY.get("ONETIME_PASSWORD");
 
         getUserDetails(user?.id, attributes)
-            .then((response) => {
+            .then((response: ProfileInfoInterface) => {
                 setAccountLock(response[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.accountLocked ?? false);
                 setAccountDisable(response[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.accountDisabled ?? false);
                 setOneTimePassword(response[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.oneTimePassword);
@@ -244,7 +255,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     /**
      * This will add role attribute to countries search input to prevent autofill suggestions.
      */
-    const onCountryRefChange = useCallback(node => {
+    const onCountryRefChange: any = useCallback((node: any) => {
         if (node !== null) { 
             node.children[0].children[1].children[0].role = "presentation";
         }
@@ -262,7 +273,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
             if (adminUserType === "internal") {
                 proSchema.forEach((schema: ProfileSchemaInterface) => {
-                    const schemaNames = schema.name.split(".");
+                    const schemaNames: string[] = schema.name.split(".");
 
                     if (schemaNames.length === 1) {
                         if (schemaNames[0] === "emails") {
@@ -270,7 +281,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
                             if(ProfileUtils.isStringArray(userInfo[emailSchema])) {
                                 const emails: any[] = userInfo[emailSchema];
-                                const primaryEmail = emails.find((subAttribute) => typeof subAttribute === "string");
+                                const primaryEmail: string = emails.find((subAttribute: any) => 
+                                    typeof subAttribute === "string");
 
                                 // Set the primary email value.
                                 tempProfileInfo.set(schema.name, primaryEmail);
@@ -289,16 +301,16 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                         }
                     } else {
                         if (schemaNames[0] === "name") {
-                            const nameSchema = schemaNames[0];
-                            const givenNameSchema = schemaNames[1];
+                            const nameSchema: string = schemaNames[0];
+                            const givenNameSchema: string = schemaNames[1];
 
                             givenNameSchema && userInfo[nameSchema] &&
                                 userInfo[nameSchema][givenNameSchema] && (
                                 tempProfileInfo.set(schema.name, userInfo[nameSchema][givenNameSchema])
                             );
                         } else {
-                            const schemaName = schemaNames[0];
-                            const schemaSecondaryProperty = schemaNames[1];
+                            const schemaName: string = schemaNames[0];
+                            const schemaSecondaryProperty: string = schemaNames[1];
 
                             if (schema.extended && userInfo[ProfileConstants.SCIM2_WSO2_USER_SCHEMA]) {
                                 schemaName && schemaSecondaryProperty &&
@@ -311,10 +323,11 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                             .SCIM2_WSO2_USER_SCHEMA][schemaName][schemaSecondaryProperty])
                                 );
                             } else {
-                                const subValue = userInfo[schemaName] &&
+                                const subValue: SubValueInterface = userInfo[schemaName] &&
                                     Array.isArray(userInfo[schemaName]) &&
                                     userInfo[schemaName]
-                                        .find((subAttribute) => subAttribute.type === schemaSecondaryProperty);
+                                        .find((subAttribute: MultiValueAttributeInterface) => 
+                                            subAttribute.type === schemaSecondaryProperty);
 
                                 if (schemaName === "addresses") {
                                     tempProfileInfo.set(
@@ -333,15 +346,17 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                 });
             } else {
                 proSchema.forEach((schema: ProfileSchemaInterface) => {
-                    const schemaNames = schema.name.split(".");
+                    const schemaNames: string[] = schema.name.split(".");
 
                     if (schemaNames.length === 1) {
                         if (schemaNames[0] === "emails") {
                             const emailSchema:string = schemaNames[0];
 
                             if(ProfileUtils.isStringArray(userInfo[emailSchema])) {
-                                const emails: any[] = userInfo[emailSchema];
-                                const primaryEmail = emails.find((subAttribute) => typeof subAttribute === "string");
+                                const emails: string[] | MultiValueAttributeInterface[] = userInfo[emailSchema];
+                                const primaryEmail: string = emails.find(
+                                    (subAttribute: string | MultiValueAttributeInterface ) => 
+                                        typeof subAttribute === "string");
 
                                 // Set the primary email value.
                                 tempProfileInfo.set(schema.name, primaryEmail);
@@ -360,16 +375,16 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                         }
                     } else {
                         if (schemaNames[0] === "name") {
-                            const nameSchema = schemaNames[0];
-                            const givenNameSchema = schemaNames[1];
+                            const nameSchema: string = schemaNames[0];
+                            const givenNameSchema: string = schemaNames[1];
 
                             givenNameSchema && userInfo[nameSchema] &&
                                 userInfo[nameSchema][givenNameSchema] && (
                                 tempProfileInfo.set(schema.name, userInfo[nameSchema][givenNameSchema])
                             );
                         } else {
-                            const schemaName = schemaNames[0];
-                            const schemaSecondaryProperty = schemaNames[1];
+                            const schemaName: string = schemaNames[0];
+                            const schemaSecondaryProperty: string = schemaNames[1];
 
                             if (schema.extended && userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA]) {
                                 schemaName && schemaSecondaryProperty &&
@@ -381,10 +396,11 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                             .SCIM2_ENT_USER_SCHEMA][schemaName][schemaSecondaryProperty])
                                 );
                             } else {
-                                const subValue = userInfo[schemaName] &&
+                                const subValue: SubValueInterface = userInfo[schemaName] &&
                                     Array.isArray(userInfo[schemaName]) &&
                                     userInfo[schemaName]
-                                        .find((subAttribute) => subAttribute.type === schemaSecondaryProperty);
+                                        .find((subAttribute: MultiValueAttributeInterface) =>
+                                            subAttribute.type === schemaSecondaryProperty);
 
                                 if (schemaName === "addresses") {
                                     tempProfileInfo.set(
@@ -411,8 +427,9 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      * Sort the elements of the profileSchema state according by the displayOrder attribute in the ascending order.
      */
     useEffect(() => {
-        const sortedSchemas = ProfileUtils.flattenSchemas([ ...profileSchemas ])
-            .filter(item => item.name !== ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("META_VERSION"))
+        const sortedSchemas: ProfileSchemaInterface[] = ProfileUtils.flattenSchemas([ ...profileSchemas ])
+            .filter((item: ProfileSchemaInterface) => 
+                item.name !== ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("META_VERSION"))
             .sort((a: ProfileSchemaInterface, b: ProfileSchemaInterface) => {
                 if (!a.displayOrder) {
                     return -1;
@@ -454,7 +471,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     history.push(AppConstants.getPaths().get("USERS"));
                 }
             })
-            .catch((error) => {
+            .catch((error: IdentityAppsApiException) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     setAlert({
                         description: error.response.data.description,
@@ -480,7 +497,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      * @param user - user that the username will be extracted from.
      */
     const resolveUsername = (user: ProfileInfoInterface): string => {
-        let username = user?.userName;
+        let username: string = user?.userName;
 
         if (username.split("/").length > 1) {
             username = username.split("/")[1];
@@ -501,13 +518,13 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         };
 
         searchRoleList(searchData)
-            .then((response) => {
+            .then((response: AxiosResponse) => {                
                 if (response?.data?.Resources.length > 0) {
-                    const adminId = response?.data?.Resources[0]?.id;
+                    const adminId: string = response?.data?.Resources[0]?.id;
 
                     setAdminRoleId(adminId);
                 }
-            }).catch((error) => {
+            }).catch((error: IdentityAppsApiException) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
                         description: error.response.data.description,
@@ -534,7 +551,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      */
     const handleUserAdminRevoke = (deletingUser: ProfileInfoInterface): void => {
         // Payload for the update role request.
-        const roleData = {
+        const roleData: PatchRoleDataInterface = {
             Operations: [
                 {
                     op: "remove",
@@ -558,7 +575,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                 }));
                 history.push(AppConstants.getPaths().get("ADMINISTRATORS"));
             })
-            .catch((error) => {
+            .catch((error: IdentityAppsApiException) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
                         description: error.response.data.description,
@@ -585,12 +602,12 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      */
     const handleSubmit = (values: Map<string, string | string[]>): void => {
 
-        const data = {
+        const data: PatchRoleDataInterface = {
             Operations: [],
             schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
         };
 
-        let operation = {
+        let operation: ScimOperationsInterface = {
             op: "replace",
             value: {}
         };
@@ -602,9 +619,9 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     return;
                 }
 
-                let opValue = {};
+                let opValue: OperationValueInterface = {};
 
-                const schemaNames = schema.name.split(".");
+                const schemaNames: string[] = schema.name.split(".");
 
                 if (schema.name !== "roles.default") {
                     if (values.get(schema.name) !== undefined && values.get(schema.name).toString() !== undefined) {
@@ -612,14 +629,14 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                         if (ProfileUtils.isMultiValuedSchemaAttribute(profileSchema, schemaNames[0]) ||
                             schemaNames[0] === "phoneNumbers") {
 
-                            const attributeValues = [];
+                            const attributeValues: (string | string[] | SchemaAttributeValueInterface)[] = [];
                             const attValues: Map<string, string | string []> = new Map();
 
                             if (schemaNames.length === 1 || schema.name === "phoneNumbers.mobile") {
 
                                 // Extract the sub attributes from the form values.
                                 for (const value of values.keys()) {
-                                    const subAttribute = value.split(".");
+                                    const subAttribute: string[] = value.split(".");
 
                                     if (subAttribute[0] === schemaNames[0]) {
                                         attValues.set(value, values.get(value));
@@ -627,7 +644,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 }
 
                                 for (const [ key, value ] of attValues) {
-                                    const attribute = key.split(".");
+                                    const attribute: string[] = key.split(".");
 
                                     if (value && value !== "") {
                                         if (attribute.length === 1) {
@@ -726,9 +743,9 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     return;
                 }
 
-                let opValue = {};
+                let opValue: OperationValueInterface = {};
 
-                const schemaNames = schema.name.split(".");
+                const schemaNames: string[] = schema.name.split(".");
 
                 if (schema.name !== "roles.default") {
                     if (values.get(schema.name) !== undefined && values.get(schema.name).toString() !== undefined) {
@@ -736,14 +753,14 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                         if (ProfileUtils.isMultiValuedSchemaAttribute(profileSchema, schemaNames[0]) ||
                             schemaNames[0] === "phoneNumbers") {
 
-                            const attributeValues = [];
+                            const attributeValues: (string | string[] | SchemaAttributeValueInterface)[] = [];
                             const attValues: Map<string, string | string []> = new Map();
 
                             if (schemaNames.length === 1 || schema.name === "phoneNumbers.mobile") {
 
                                 // Extract the sub attributes from the form values.
                                 for (const value of values.keys()) {
-                                    const subAttribute = value.split(".");
+                                    const subAttribute: string[] = value.split(".");
 
                                     if (subAttribute[0] === schemaNames[0]) {
                                         attValues.set(value, values.get(value));
@@ -751,7 +768,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 }
 
                                 for (const [ key, value ] of attValues) {
-                                    const attribute = key.split(".");
+                                    const attribute: string[] = key.split(".");
 
                                     if (value && value !== "") {
                                         if (attribute.length === 1) {
@@ -908,7 +925,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      * The method handles the locking and disabling of user account.
      */
     const handleDangerActions = (attributeName: string, attributeValue: boolean): void => {
-        let data = {
+        let data: PatchRoleDataInterface = {
             "Operations": [
                 {
                     "op": "replace",
@@ -981,7 +998,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                 handleUserUpdate(user.id);
                 setEditingAttribute(undefined);
             })
-            .catch((error) => {
+            .catch((error: IdentityAppsApiException) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     onAlertFired({
                         description: error.response.data.description,
@@ -1026,10 +1043,11 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         return (
             <>
                 {
-                    (hasRequiredScopes(featureConfig?.users, featureConfig?.users?.scopes?.delete,
-                        allowedScopes) && (!isReadOnly || allowDeleteOnly) &&
-                        !(resolveUsername(user) === tenantAdmin || resolveUsername(user) === "admin") &&
-                        !authenticatedUser.includes(resolveUsername(user))) && (
+                    (hasRequiredScopes(featureConfig?.users, featureConfig?.users?.scopes?.delete, allowedScopes)
+                    && (!isReadOnly || allowDeleteOnly) 
+                    && (adminUserType === AdminAccountTypes.INTERNAL
+                        || (!(resolveUsername(user) === tenantAdmin || resolveUsername(user) === "admin") 
+                        && !authenticatedUser.includes(resolveUsername(user))))) && (
                         <DangerZoneGroup
                             sectionHeader={ t("console:manage.features.user.editUser.dangerZoneGroup.header") }
                         >
@@ -1157,7 +1175,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                         value: "" as string
                     } ].concat(
                         countryList 
-                            ? countryList.map(list => {
+                            ? countryList.map((list: DropdownItemProps) => {
                                 return {
                                     "data-testid": `${ testId }-profile-form-country-dropdown-` +  list.value as string,
                                     flag: list.flag,
@@ -1234,11 +1252,11 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      * @returns the form field for the profile schema.
      */
     const generateProfileEditForm = (schema: ProfileSchemaInterface, key: number): JSX.Element => {
-        const fieldName = t("console:manage.features.user.profile.fields." +
+        const fieldName: string = t("console:manage.features.user.profile.fields." +
             schema.name.replace(".", "_"), { defaultValue: schema.displayName }
         );
 
-        const domainName = profileInfo?.get(schema.name)?.toString().split("/");
+        const domainName: string[] = profileInfo?.get(schema.name)?.toString().split("/");
 
         return (
             <Grid.Row columns={ 1 } key={ key }>
@@ -1338,7 +1356,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             }
                             <Forms
                                 data-testid={ `${ testId }-form` }
-                                onSubmit={ (values) => handleSubmit(values) }
+                                onSubmit={ (values: Map<string, string | string[]>) => handleSubmit(values) }
                             >
                                 <Grid>
                                     {
