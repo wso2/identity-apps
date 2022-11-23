@@ -37,15 +37,6 @@ import { OIDCScopesListInterface } from "../models";
 type OIDCScopesPageInterface = TestableComponentInterface;
 
 /**
- * Interface for sort by options.
- */
-interface SortByOptionsInterface {
-    key: number;
-    text: string;
-    value: string;
-}
-
-/**
  * OIDC Scopes page.
  *
  * @param props - Props injected to the component.
@@ -66,7 +57,11 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
     /**
      * Sets the scopes by which the list can be sorted
      */
-    const SORT_BY: SortByOptionsInterface[] = [
+    const SORT_BY: {
+        key: number;
+        text: string;
+        value: string;
+    }[] = [
         {
             key: 0,
             text: t("common:name"),
@@ -178,7 +173,11 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
     * @param data - Dropdown data.
     */
     const handleSortStrategyChange = (event: React.SyntheticEvent<HTMLElement>, data: DropdownProps) => {
-        setSortByStrategy(SORT_BY.filter((option: SortByOptionsInterface) => option.value === data.value)[ 0 ]);
+        setSortByStrategy(SORT_BY.filter((option: {
+            key: number;
+            text: string;
+            value: string;
+        }) => option.value === data.value)[ 0 ]);
     };
 
     return (
