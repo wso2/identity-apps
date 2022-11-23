@@ -16,7 +16,7 @@
  * under the License.
  */
 
-
+import { IdentityAppsError } from "@wso2is/core/errors";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -41,6 +41,7 @@ import React,
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import {  
     Divider,
     Header, 
@@ -144,7 +145,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
         [ "data-componentid" ]: testId
     } = props;
     
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const [ connectedApps, setConnectedApps ] = useState<ConnectedAppInterface[]>();
     const [ filterSelectedApps, setFilterSelectedApps ] = useState<ConnectedAppInterface[]>([]);
@@ -176,7 +177,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                     });
 
                     const results: ApplicationBasicInterface[] = await Promise.all(
-                        appRequests.map(response => response.catch(error => {
+                        appRequests.map((response: Promise<any>) => response.catch((error: IdentityAppsError) => {
                             dispatch(addAlert({
                                 description: error?.description
                                     || t("console:develop.features.idp.connectedApps.genericError.description"),
@@ -191,7 +192,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                     setFilterSelectedApps(results);
                 }
             })
-            .catch((error) => {
+            .catch((error: IdentityAppsError) => {
                 dispatch(addAlert({
                     description: error?.description
                         || t("console:develop.features.idp.connectedApps.genericError.description"),
@@ -215,7 +216,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
         setApplicationTemplateRequestLoadingStatus(true);
     
         ApplicationTemplateManagementUtils.getApplicationTemplates()
-            .catch((error) => {
+            .catch((error: IdentityAppsError) => {
                 dispatch(addAlert({
                     description: error?.description
                     || t("console:develop.features.applications.notifications.fetchTemplates.genericError.description"),
@@ -263,7 +264,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                         templateDisplayName = applicationTemplates
                             && applicationTemplates instanceof Array
                             && applicationTemplates.length > 0
-                            && applicationTemplates.find((template) => {
+                            && applicationTemplates.find((template: ApplicationTemplateListItemInterface) => {
                                 return template.id === ApplicationManagementConstants.CUSTOM_APPLICATION;
                             }).name;
                     } else {
@@ -271,7 +272,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                             applicationTemplates
                             && applicationTemplates instanceof Array
                             && applicationTemplates.length > 0
-                            && applicationTemplates.find((template) => {
+                            && applicationTemplates.find((template: ApplicationTemplateListItemInterface) => {
                                 return template.id === app.templateId;
                             });
 
@@ -281,7 +282,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                             templateDisplayName = groupedApplicationTemplates
                                 && groupedApplicationTemplates instanceof Array
                                 && groupedApplicationTemplates.length > 0
-                                && groupedApplicationTemplates.find((group) => {
+                                && groupedApplicationTemplates.find((group: ApplicationTemplateListItemInterface) => {
                                     return (group.id === templateGroupId || group.templateGroup === templateGroupId);
                                 }).name;
                         }
@@ -457,8 +458,8 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
      *
      * @param event-change event.
      */
-    const handleChange = (event) => {
-        const changeValue = event.target.value.trim();
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const changeValue: string = event.target.value.trim();
         
         setSearchQuery(changeValue);
 
@@ -474,8 +475,8 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
      *
      * @param changevalue-search query.
      */
-    const searchFilter = (changeValue) => {
-        const appNameFilter = connectedApps.filter((item) => 
+    const searchFilter = (changeValue: string) => {
+        const appNameFilter: ConnectedAppInterface[] = connectedApps.filter((item: ConnectedAppInterface) => 
             item.name.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1); 
         
         setFilterSelectedApps(appNameFilter); 

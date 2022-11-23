@@ -117,7 +117,7 @@ export class ApplicationManagementConstants {
     /**
      * Value for sign in method tab url.
      */
-    public static readonly SIGN_IN_METHOD_TAB_URL_FRAG = "sign-in-method";
+    public static readonly SIGN_IN_METHOD_TAB_URL_FRAG: string = "sign-in-method";
 
     /**
      * Default application template loading strategy.

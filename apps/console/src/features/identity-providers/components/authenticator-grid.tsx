@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { IdentityAppsError } from "@wso2is/core/errors";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, LoadableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -39,6 +41,7 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { Divider, Icon, List } from "semantic-ui-react";
 import { handleIDPDeleteError } from "./utils";
 import { AuthenticatorExtensionsConfigInterface, identityProviderConfig } from "../../../extensions/configs";
@@ -143,7 +146,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
 
     const { t } = useTranslation();
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingIDP, setDeletingIDP ] = useState<StrictIdentityProviderInterface>(undefined);
@@ -182,7 +185,8 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
         getIDPConnectedApps(idpId)
             .then(async (response: ConnectedAppsInterface) => {
                 if (response.count === 0) {
-                    setDeletingIDP(authenticators.find(idp => idp.id === idpId));
+                    setDeletingIDP(authenticators.find((idp: IdentityProviderInterface | AuthenticatorInterface) => 
+                        idp.id === idpId));
                     setShowDeleteConfirmationModal(true);
                 } else {
                     setShowDeleteErrorDueToConnectedAppsModal(true);
@@ -192,7 +196,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                     });
 
                     const results: ApplicationBasicInterface[] = await Promise.all(
-                        appRequests.map(response => response.catch(error => {
+                        appRequests.map((response: Promise<any>) => response.catch((error: IdentityAppsError) => {
                             dispatch(addAlert({
                                 description: error?.description
                                     || t("console:develop.features.idp.connectedApps.genericError.description"),
@@ -205,14 +209,14 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
 
                     const appNames: string[] = [];
 
-                    results.forEach((app) => {
+                    results.forEach((app: ApplicationBasicInterface) => {
                         appNames.push(app.name);
                     });
 
                     setConnectedApps(appNames);
                 }
             })
-            .catch((error) => {
+            .catch((error: IdentityAppsError) => {
                 dispatch(addAlert({
                     description: error?.description
                         || t("console:develop.features.idp.connectedApps.genericError.description"),
@@ -246,7 +250,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                         "deleteConnection.success.message")
                 }));
             })
-            .catch((error) => {
+            .catch((error: IdentityAppsApiException) => {
                 handleIDPDeleteError(error);
             })
             .finally(() => {
@@ -343,7 +347,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
             >
                 {
                     authenticators?.map((authenticator: IdentityProviderInterface
-                        | AuthenticatorInterface, index) => {
+                        | AuthenticatorInterface, index: number) => {
 
                         const authenticatorConfig: AuthenticatorExtensionsConfigInterface = get(identityProviderConfig
                             .authenticators, authenticator.id);
@@ -495,7 +499,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                                     isAppsLoading ? (
                                         <ContentLoader/>
                                     ) :
-                                        connectedApps?.map((app, index) => {
+                                        connectedApps?.map((app: string, index: number) => {
                                             return (
                                                 <List.Item key={ index }>{ app }</List.Item>
                                             );

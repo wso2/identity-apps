@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -26,6 +27,7 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { Form, Grid, Menu, TabProps } from "semantic-ui-react";
 import { InboundProtocolsMeta } from "./meta";
 import {
@@ -62,6 +64,7 @@ import {
     SupportedAuthProtocolTypes,
     URLFragmentTypes
 } from "../models";
+import { InboundProtocolListItemInterface } from "../models/application";
 import { ApplicationManagementUtils } from "../utils";
 
 /**
@@ -138,7 +141,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
     const { t } = useTranslation();
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const availableInboundProtocols: AuthProtocolMetaListItemInterface[] =
         useSelector((state: AppState) => state.application.meta.inboundProtocols);
@@ -250,8 +253,9 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         } else if (window.location.hash.includes(ApplicationManagementConstants.SIGN_IN_METHOD_TAB_URL_FRAG)) {
             // Handle loading sign-in method tab when redirecting from the "Connected Apps" Tab of an IdP.
             const renderedTabPanes: any[] = resolveTabPanes();
-            const SignInMethodtabIndex: number = renderedTabPanes.indexOf(renderedTabPanes.find(element => 
-                element.componentId === ApplicationManagementConstants.SIGN_IN_METHOD_TAB_URL_FRAG));
+            const SignInMethodtabIndex: number = renderedTabPanes.indexOf(renderedTabPanes.
+                find((element: {"componentId": string}) => 
+                    element.componentId === ApplicationManagementConstants.SIGN_IN_METHOD_TAB_URL_FRAG));
             
             handleActiveTabIndexChange(SignInMethodtabIndex);
         } else {
@@ -264,17 +268,17 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
      * Fetch the allowed origins list whenever there's an update.
      */
     useEffect(() => {
-        const allowedCORSOrigins = [];
+        const allowedCORSOrigins: string[] = [];
 
         if (OrganizationUtils.isCurrentOrganizationRoot()) {
             getCORSOrigins()
                 .then((response: CORSOriginsListInterface[]) => {
-                    response.map((origin) => {
+                    response.map((origin: CORSOriginsListInterface) => {
                         allowedCORSOrigins.push(origin.url);
                     });
                     setAllowedOrigins(allowedCORSOrigins);
                 })
-                .catch((error) => {
+                .catch((error: IdentityAppsApiException) => {
                     if (error?.response?.data?.description) {
                         dispatch(addAlert({
                             description: error.response.data.description,
@@ -450,7 +454,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
      * Todo Remove this mapping and fix the backend.
      */
     const mapProtocolTypeToName = ((type: string): string => {
-        let protocolName = type;
+        let protocolName: string = type;
 
         if (protocolName === "oauth2") {
             protocolName = SupportedAuthProtocolTypes.OIDC;
@@ -472,13 +476,13 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
      * @param protocolConfigs - Protocol config object
      */
     const normalizeSAMLNameIDFormat = (protocolConfigs: any): void => {
-        const key = "saml";
+        const key: string = "saml";
 
         if (protocolConfigs[ key ]) {
-            const assertion = protocolConfigs[ key ].singleSignOnProfile?.assertion;
+            const assertion: any = protocolConfigs[ key ].singleSignOnProfile?.assertion;
 
             if (assertion) {
-                const ref = assertion.nameIdFormat as string;
+                const ref: string = assertion.nameIdFormat as string;
 
                 assertion.nameIdFormat = ref.replace(/\//g, ":");
             }
@@ -488,20 +492,20 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     /**
      * Finds the configured inbound protocol.
      */
-    const findConfiguredInboundProtocol = (appId): void => {
+    const findConfiguredInboundProtocol = (appId: string): void => {
         let protocolConfigs: any = {};
         const selectedProtocolList: string[] = [];
         const inboundProtocolRequests: Promise<any>[] = [];
         const protocolNames: string[] = [];
 
         if (application?.inboundProtocols?.length > 0) {
-            application.inboundProtocols.forEach((protocol) => {
+            application.inboundProtocols.forEach((protocol: InboundProtocolListItemInterface) => {
 
                 if (protocol.type === "openid") {
                     return;
                 }
 
-                const protocolName = mapProtocolTypeToName(protocol.type);
+                const protocolName: string = mapProtocolTypeToName(protocol.type);
 
                 protocolNames.push(protocolName);
 
@@ -509,8 +513,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             });
 
             setIsInboundProtocolConfigRequestLoading(true);
-            Axios.all(inboundProtocolRequests).then(Axios.spread((...responses) => {
-                responses.forEach((response, index: number) => {
+            Axios.all(inboundProtocolRequests).then(Axios.spread((...responses: any) => {
+                responses.forEach((response: any, index: number) => {
                     protocolConfigs = {
                         ...protocolConfigs,
                         [ protocolNames[ index ] ]: response
@@ -520,7 +524,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 });
 
             }))
-                .catch((error) => {
+                .catch((error: IdentityAppsApiException) => {
                     if (error?.response?.status === 404) {
                         return;
                     }
@@ -1060,7 +1064,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                         defaultActiveIndex={ defaultActiveIndex }
                         onTabChange={ handleTabChange }
                         panes={ resolveTabPanes() }
-                        onInitialize={ ({ panesLength }) => {
+                        onInitialize={ ({ panesLength }: { panesLength: number }) => {
                             setTotalTabs(panesLength);
                         } }
                     />

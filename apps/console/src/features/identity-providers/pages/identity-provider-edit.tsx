@@ -40,6 +40,7 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
+import { Dispatch } from "redux";
 import { Label, Popup } from "semantic-ui-react";
 import { AuthenticatorExtensionsConfigInterface, identityProviderConfig } from "../../../extensions/configs";
 import {
@@ -84,7 +85,7 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
         [ "data-testid" ]: testId
     } = props;
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const { t } = useTranslation();
 
@@ -92,7 +93,7 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
     const identityProviderTemplates: IdentityProviderTemplateItemInterface[] = useSelector(
         (state: AppState) => state.identityProvider.templates);
 
-    const idpDescElement = useRef<HTMLDivElement>(null);
+    const idpDescElement: React.MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
 
     const [
         identityProviderTemplate,
@@ -116,7 +117,7 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
     const [ isAutomaticTabRedirectionEnabled, setIsAutomaticTabRedirectionEnabled ] = useState<boolean>(false);
 
 
-    const isReadOnly = useMemo(() => (
+    const isReadOnly: boolean = useMemo(() => (
         !hasRequiredScopes(
             featureConfig?.identityProviders, featureConfig?.identityProviders?.scopes?.update, allowedScopes)
     ), [ featureConfig, allowedScopes ]);
@@ -130,7 +131,7 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
          * in a similar {@link useEffect}.
          */
         if (idpDescElement || isConnectorDetailsFetchRequestLoading) {
-            const nativeElement = idpDescElement.current;
+            const nativeElement: HTMLDivElement = idpDescElement.current;
 
             if (nativeElement && (nativeElement.offsetWidth < nativeElement.scrollWidth)) {
                 setIsDescTruncated(true);
@@ -272,10 +273,10 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
         setConnectorDetailFetchRequestLoading(true);
 
         getIdentityProviderDetail(id)
-            .then((response) => {
+            .then((response: any) => {
                 setConnector(response);
             })
-            .catch((error) => {
+            .catch((error: IdentityAppsApiException) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
                         description: t("console:develop.features.authenticationProvider." +
@@ -630,7 +631,7 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
                             }
                             data-testid={ testId }
                             template={ identityProviderTemplate }
-                            isTabExtensionsAvailable={ (isAvailable) => setIsExtensionsAvailable(isAvailable) }
+                            isTabExtensionsAvailable={ (isAvailable: boolean) => setIsExtensionsAvailable(isAvailable) }
                             type={ identityProviderTemplate?.id }
                             isReadOnly={ isReadOnly }
                             isAutomaticTabRedirectionEnabled={ isAutomaticTabRedirectionEnabled }
@@ -643,7 +644,7 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
                             isLoading={ isConnectorDetailsFetchRequestLoading }
                             onDelete={ handleIdentityProviderDelete }
                             onUpdate={ handleMultiFactorAuthenticatorUpdate }
-                            isTabExtensionsAvailable={ (isAvailable) => setIsExtensionsAvailable(isAvailable) }
+                            isTabExtensionsAvailable={ (isAvailable: boolean) => setIsExtensionsAvailable(isAvailable) }
                             type={ connector?.id }
                             isReadOnly={ isReadOnly }
                         />

@@ -20,13 +20,13 @@
  * Identity provider settings key in local storage.
  * @defaultValue
  */
-export const IDENTITY_PROVIDER_SETTINGS_STORAGE_KEY = "identity_provider_settings";
+export const IDENTITY_PROVIDER_SETTINGS_STORAGE_KEY: string = "identity_provider_settings";
 
 /**
  * Path to the identity provider page.
  * @defaultValue
  */
-export const IDENTITY_PROVIDER_PAGE_PATH = "/identity-providers";
+export const IDENTITY_PROVIDER_PAGE_PATH: string  = "/identity-providers";
 
 /**
  * Class containing app constants.
@@ -53,30 +53,30 @@ export class IdentityProviderConstants {
      * Internal domain name.
      *
      */
-    public static readonly INTERNAL_DOMAIN = "Internal/";
+    public static readonly INTERNAL_DOMAIN: string  = "Internal/";
 
     /**
      * Application domain name.
      *
      */
-    public static readonly APPLICATION_DOMAIN = "Application/";
+    public static readonly APPLICATION_DOMAIN: string  = "Application/";
 
     /**
      * data-tabIds of the panes in the IdP settings
      * 
      */
-    public static readonly ADVANCED_TAB_ID = "advanced";
-    public static readonly ATTRIBUTES_TAB_ID = "attributes";
-    public static readonly CONNECTED_APPS_TAB_ID = "connected-apps";
-    public static readonly GENERAL_TAB_ID = "general";
-    public static readonly JIT_PROVISIONING_TAB_ID = "jit-provisioning";
-    public static readonly OUTBOUND_PROVISIONING_TAB_ID = "outbound-provisioning";
-    public static readonly SETTINGS_TAB_ID = "settings";
+    public static readonly ADVANCED_TAB_ID: string  = "advanced";
+    public static readonly ATTRIBUTES_TAB_ID: string  = "attributes";
+    public static readonly CONNECTED_APPS_TAB_ID: string  = "connected-apps";
+    public static readonly GENERAL_TAB_ID: string  = "general";
+    public static readonly JIT_PROVISIONING_TAB_ID: string  = "jit-provisioning";
+    public static readonly OUTBOUND_PROVISIONING_TAB_ID: string  = "outbound-provisioning";
+    public static readonly SETTINGS_TAB_ID: string  = "settings";
 
 }
 
-export const GOOGLE_IDP_NAME = "Google";
+export const GOOGLE_IDP_NAME: string  = "Google";
 
-export const GOOGLE_IDP_ID = "8ea23303-49c0-4253-b81f-82c0fe6fb4a0";
-export const OIDC_IDP_ID = "oidc-idp";
-export const ENTERPRISE_IDP_ID = "enterprise-idp";
+export const GOOGLE_IDP_ID: string  = "8ea23303-49c0-4253-b81f-82c0fe6fb4a0";
+export const OIDC_IDP_ID: string  = "oidc-idp";
+export const ENTERPRISE_IDP_ID: string  = "enterprise-idp";

@@ -331,16 +331,16 @@ export class AppConstants {
     public static filterGoverananceConnectors(
         governanceConnectorCategories: GovernanceConnectorCategoryInterface[]
     ) : GovernanceConnectorCategoryInterface[] {
-        const showGovernanceConnectorsIdOfSuborgs = [];
+        const showGovernanceConnectorsIdOfSuborgs: string[] = [];
 
         GovernanceConnectorUtils.SHOW_GOVERNANCE_CONNECTORS_FOR_SUBORGS
             .forEach(connector => {
                 showGovernanceConnectorsIdOfSuborgs.push(connector.id);
             });
 
-        for (let i = governanceConnectorCategories.length-1; i >=0 ; i--) {
+        for (let i: number = governanceConnectorCategories.length-1; i >=0 ; i--) {
 
-            const connector = governanceConnectorCategories[i];
+            const connector: GovernanceConnectorCategoryInterface = governanceConnectorCategories[i];
 
             if(!showGovernanceConnectorsIdOfSuborgs.includes(connector.id)) {
                 governanceConnectorCategories.splice(i,1);
@@ -358,7 +358,7 @@ export class AppConstants {
     /**
      * Error given by server when the user has denied consent.
      */
-    public static readonly USER_DENIED_CONSENT_SERVER_ERROR = "User denied the consent";
+    public static readonly USER_DENIED_CONSENT_SERVER_ERROR: string = "User denied the consent";
 
     /**
      * Set of login errors to be used as search params to toggle unauthorized page appearance.

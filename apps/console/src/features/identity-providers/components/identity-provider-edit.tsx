@@ -130,7 +130,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
     const [ tabPaneExtensions, setTabPaneExtensions ] = useState<any>(undefined);
     const [ defaultActiveIndex, setDefaultActiveIndex ] = useState<any>(0);
 
-    const isOrganizationEnterpriseAuthenticator = identityProvider.federatedAuthenticators
+    const isOrganizationEnterpriseAuthenticator: boolean = identityProvider.federatedAuthenticators
         .defaultAuthenticatorId === IdentityProviderManagementConstants.ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID;
 
     const urlSearchParams: URLSearchParams = new URLSearchParams(location.search);
@@ -309,7 +309,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
     ]);
 
     const getPanes = () => {
-        const panes = [];
+        const panes: any[] = [];
 
         if (tabPaneExtensions && tabPaneExtensions.length > 0) {
             panes.push(...tabPaneExtensions);
@@ -335,7 +335,8 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
          * {@link apps/console/src/extensions#} configs folder and
          * models folder for types. identity-provider.ts
          */
-        const attributesForSamlEnabled = isSaml && identityProviderConfig.editIdentityProvider.attributesSettings;
+        const attributesForSamlEnabled: boolean = isSaml && 
+            identityProviderConfig.editIdentityProvider.attributesSettings;
 
         // Evaluate whether to Show/Hide `Attributes`.
         if ((attributesForSamlEnabled || shouldShowAttributeSettings(type))
@@ -411,7 +412,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
             data-testid={ `${ testId }-resource-tabs` }
             panes={ getPanes() }
             defaultActiveIndex={ defaultActiveIndex }
-            onTabChange={ (e, data: TabProps ) => {
+            onTabChange={ (e: React.MouseEvent<HTMLDivElement, MouseEvent>, data: TabProps ) => {
                 setDefaultActiveIndex(data.activeIndex);
             } }
             isAutomaticTabRedirectionEnabled={ isAutomaticTabRedirectionEnabled }
