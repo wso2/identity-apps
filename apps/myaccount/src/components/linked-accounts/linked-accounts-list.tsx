@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,9 +17,10 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
+import { Popup } from "@wso2is/react-components";
 import React, { FunctionComponent, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, Grid, Icon, List, Modal, Popup } from "semantic-ui-react";
+import { Button, Grid, Icon, List, Modal } from "semantic-ui-react";
 import { getGravatarImage } from "../../api";
 import { resolveUsername } from "../../helpers";
 import { LinkedAccountInterface } from "../../models";
@@ -38,21 +39,22 @@ interface LinkedAccountsListProps extends TestableComponentInterface {
 /**
  * Linked accounts list component.
  *
- * @param {LinkedAccountsListProps} props - Props injected to the component.
- * @return {React.ReactElement}
+ * @param props - Props injected to the component.
+ *
+ * @returns
  */
 export const LinkedAccountsList: FunctionComponent<LinkedAccountsListProps> = (
     props: LinkedAccountsListProps
 ): React.ReactElement => {
-    
+
     const {
         linkedAccounts,
         onLinkedAccountRemove,
         onLinkedAccountSwitch,
         ["data-testid"]: testId
     } = props;
-    const [confirmDelete, setConfirmDelete] = useState(false);
-    const [userID, setUserID] = useState(null);
+    const [ confirmDelete, setConfirmDelete ] = useState(false);
+    const [ userID, setUserID ] = useState(null);
 
     const { t } = useTranslation();
 

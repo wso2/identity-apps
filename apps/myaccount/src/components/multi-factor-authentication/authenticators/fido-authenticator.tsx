@@ -18,12 +18,12 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Forms } from "@wso2is/forms";
-import { ConfirmationModal, GenericIcon } from "@wso2is/react-components";
+import { ConfirmationModal, GenericIcon, Popup } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, { ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Divider, Form, Grid, Icon, List, ModalContent, Popup } from "semantic-ui-react";
+import { Button, Divider, Form, Grid, Icon, List, ModalContent } from "semantic-ui-react";
 import UAParser from "ua-parser-js";
 import {
     connectToDevice,
