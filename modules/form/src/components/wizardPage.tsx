@@ -22,7 +22,7 @@ import React, { PropsWithChildren, ReactElement } from "react";
  * Implementation of the WizardPage component.
  * @param props - Props injected to the component.
  */
-export const WizardPage = (props: PropsWithChildren): ReactElement => {
+export const WizardPage = (props: PropsWithChildren<Record<string, any>>): ReactElement => {
 
     const { children } = props;
 
