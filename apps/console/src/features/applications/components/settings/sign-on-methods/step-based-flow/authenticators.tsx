@@ -108,7 +108,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
 
     const [ selectedAuthenticators, setSelectedAuthenticators ] = useState<GenericAuthenticatorInterface[]>(undefined);
 
-    const authenticatorCardClasses = classNames("authenticator", {
+    const authenticatorCardClasses: string = classNames("authenticator", {
         "with-labels": showLabels
     });
 
@@ -154,7 +154,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
      * @returns React element.
      */
     const resolvePopupContent = (authenticator: GenericAuthenticatorInterface): ReactElement => {
-        const InfoLabel = (
+        const InfoLabel: JSX.Element = (
             <Label attached="top">
                 <Icon name="info circle" /> Info
             </Label>
@@ -244,10 +244,12 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
             return;
         }
 
-        if (selectedAuthenticators.some((authenticator) => authenticator.id === selectedAuthenticator.id)) {
-            const filtered = selectedAuthenticators.filter((authenticator) => {
-                return authenticator.id !== selectedAuthenticator.id;
-            });
+        if (selectedAuthenticators.some((authenticator: GenericAuthenticatorInterface) => 
+            authenticator.id === selectedAuthenticator.id)) {
+            const filtered: GenericAuthenticatorInterface[] = selectedAuthenticators
+                .filter((authenticator: GenericAuthenticatorInterface) => {
+                    return authenticator.id !== selectedAuthenticator.id;
+                });
 
             onAuthenticatorSelect(filtered);
             setSelectedAuthenticators(filtered);
@@ -277,9 +279,9 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
     return (
         <Fragment data-testid={ testId }>
             { heading && <Heading as="h6">{ heading }</Heading> }
-            { authenticators.filter(authenticator => {
+            { authenticators.filter((authenticator: GenericAuthenticatorInterface) => {
                 return !authenticator?.name.includes(IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR);
-            }).map((authenticator: GenericAuthenticatorInterface, index) => (
+            }).map((authenticator: GenericAuthenticatorInterface, index: number) => (
                 <Popup
                     hoverable
                     hideOnScroll
@@ -301,7 +303,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                             selected={
                                 isFactorEnabled(authenticator) &&
                                 Array.isArray(selectedAuthenticators) &&
-                                selectedAuthenticators.some((evalAuthenticator) => {
+                                selectedAuthenticators.some((evalAuthenticator: GenericAuthenticatorInterface) => {
                                     return evalAuthenticator.id === authenticator.id;
                                 })
                             }
