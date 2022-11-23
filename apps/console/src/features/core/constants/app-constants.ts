@@ -19,7 +19,11 @@
 import { AppThemeConfigInterface } from "@wso2is/core/models";
 import { StringUtils } from "@wso2is/core/utils";
 import { identityProviderConfig } from "../../../extensions/configs";
-import { GovernanceConnectorCategoryInterface, GovernanceConnectorUtils } from "../../server-configurations";
+import { 
+    GovernanceCategoryForOrgsInterface, 
+    GovernanceConnectorCategoryInterface, 
+    GovernanceConnectorUtils 
+} from "../../server-configurations";
 
 /**
  * Class containing app constants.
@@ -334,7 +338,7 @@ export class AppConstants {
         const showGovernanceConnectorsIdOfSuborgs: string[] = [];
 
         GovernanceConnectorUtils.SHOW_GOVERNANCE_CONNECTORS_FOR_SUBORGS
-            .forEach(connector => {
+            .forEach((connector: GovernanceCategoryForOrgsInterface) => {
                 showGovernanceConnectorsIdOfSuborgs.push(connector.id);
             });
 
