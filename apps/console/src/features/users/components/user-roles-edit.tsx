@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -28,6 +28,7 @@ import {
     EmptyPlaceholder,
     Heading,
     LinkButton,
+    Popup,
     PrimaryButton,
     TransferComponent,
     TransferList,
@@ -39,7 +40,7 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Button, Divider, Grid, Icon, Input, Label, Modal, Popup, Table } from "semantic-ui-react";
+import { Button, Divider, Grid, Icon, Input, Label, Modal, Table } from "semantic-ui-react";
 import { UserRolePermissions } from "./user-role-permissions";
 import { RolePermissions } from "./wizard";
 import { AppState, getEmptyPlaceholderIllustrations, updateResources } from "../../core";
@@ -528,7 +529,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
     /**
      * The following method handles creating a label for the list item.
      *
-     * @param roleName: string
+     * @param roleName - Name of the role.
      */
     const createItemLabel = (roleName: string) => {
         const role = roleName?.split("/");
@@ -901,6 +902,6 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
  * Default props for the component.
  */
 UserRolesList.defaultProps = {
-    showDomain: true,
-    hideApplicationRoles: false
+    hideApplicationRoles: false,
+    showDomain: true
 };

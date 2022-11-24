@@ -19,9 +19,10 @@
 import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, MouseEvent, PropsWithChildren, ReactElement, ReactNode } from "react";
-import { Card, CardProps, Icon, Label, Popup } from "semantic-ui-react";
+import { Card, CardProps, Icon, Label } from "semantic-ui-react";
 import { LinkButton } from "../button";
 import { GenericIcon, GenericIconProps, GenericIconSizes } from "../icon";
+import { Popup } from "../popup";
 import { Tooltip } from "../typography";
 
 /**

@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,6 +17,7 @@
  */
 
 import { Hint, Message } from "@wso2is/react-components";
+import { FieldState } from "final-form";
 import React, { ReactElement } from "react";
 import { Field as FinalFormField } from "react-final-form";
 import { CopyFieldAdapter, PasswordFieldAdapter, TextFieldAdapter } from "./adapters";
@@ -68,20 +69,17 @@ export interface FieldInputPropsInterface extends FormFieldPropsInterface {
 
 /**
  * Implementation of the Input Field component.
- * @param props
+ * @param props - Props injected to the component.
  */
 export const FieldInput = (props: FieldInputPropsInterface): ReactElement => {
-    
+
     const {
         inputType,
-        hint,
-        maxLength,
-        message,
         validation,
         [ "data-testid" ]: testId,
         ...rest
     } = props;
-    
+
     const inputFieldGenerator = () => {
         if (inputType == FieldInputTypes.INPUT_PASSWORD) {
             return (
@@ -89,9 +87,9 @@ export const FieldInput = (props: FieldInputPropsInterface): ReactElement => {
                     key={ testId }
                     type="password"
                     name={ props.name }
-                    parse={ value => value }
+                    parse={ (value: any) => value }
                     component={ PasswordFieldAdapter }
-                    validate={ (value, allValues, meta) =>
+                    validate={ (value: any, _allValues: Record<string, unknown>, meta: FieldState<any>) =>
                         getValidation(value, meta, "password", props.required, inputType, validation)
                     }
                     { ...rest }
@@ -103,9 +101,9 @@ export const FieldInput = (props: FieldInputPropsInterface): ReactElement => {
                     key={ testId }
                     type="text"
                     name={ props.name }
-                    parse={ value => value }
+                    parse={ (value: any) => value }
                     component={ CopyFieldAdapter }
-                    validate={ (value, allValues, meta) =>
+                    validate={ (value: any, _allValues: Record<string, unknown>, meta: FieldState<any>) =>
                         getValidation(value, meta, "text", props.required, inputType, validation)
                     }
                     { ...rest }
@@ -117,9 +115,9 @@ export const FieldInput = (props: FieldInputPropsInterface): ReactElement => {
                     key={ testId }
                     type="number"
                     name={ props.name }
-                    parse={ value => value }
+                    parse={ (value: any) => value }
                     component={ TextFieldAdapter }
-                    validate={ (value, allValues, meta) =>
+                    validate={ (value: any, _allValues: Record<string, unknown>, meta: FieldState<any>) =>
                         getValidation(value, meta, "text", props.required, inputType, validation)
                     }
                     { ...rest }
@@ -131,9 +129,9 @@ export const FieldInput = (props: FieldInputPropsInterface): ReactElement => {
                     key={ testId }
                     type="text"
                     name={ props.name }
-                    parse={ value => value }
+                    parse={ (value: any) => value }
                     component={ TextFieldAdapter }
-                    validate={ (value, allValues, meta) =>
+                    validate={ (value: any, _allValues: Record<string, unknown>, meta: FieldState<any>) =>
                         getValidation(value, meta, "text", props.required, inputType, validation)
                     }
                     { ...props }

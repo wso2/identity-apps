@@ -19,10 +19,11 @@
 import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import cloneDeep from "lodash-es/cloneDeep";
 import React, { FormEvent, FunctionComponent, ReactElement } from "react";
-import { Checkbox, Form, Popup } from "semantic-ui-react";
+import { Checkbox, Form } from "semantic-ui-react";
 import { TableColumnInterface } from "./data-table";
 import { ReactComponent as ColumnIcon } from "../../../assets/images/column-icon.svg";
 import { GenericIcon, GenericIconProps } from "../../icon";
+import { Popup } from "../../popup";
 import { Heading } from "../../typography";
 
 export interface DataTableColumnSelectorInterface extends IdentifiableComponentInterface,
@@ -85,7 +86,7 @@ export const DataTableColumnSelector: FunctionComponent<DataTableColumnSelectorI
      * Checks if the column selector should be rendered or not.
      *
      * @param columns - Table columns.
-     * @returns whether the column selector should be rendered 
+     * @returns whether the column selector should be rendered
      */
     const isColumnSelectorValid = (columns: TableColumnInterface[]): boolean => {
         return columns.some((column: TableColumnInterface) => column.allowToggleVisibility)
@@ -100,12 +101,12 @@ export const DataTableColumnSelector: FunctionComponent<DataTableColumnSelectorI
      */
     const handleColumnVisibilityChange = (e: FormEvent<HTMLInputElement>, { uniqueId }: { uniqueId: string }): void => {
         const clone: TableColumnInterface[] = cloneDeep(columns);
-        
+
         clone.forEach((column: TableColumnInterface) => {
             if (column.id !== uniqueId) {
                 return;
             }
-            
+
             column.hidden = !column.hidden;
         });
 
