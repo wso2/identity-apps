@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -62,7 +62,7 @@ export interface AlertPropsInterface extends TestableComponentInterface, Identif
     dismissInterval?: number;
     /**
      * Callback to be triggered to initialize the alert system.
-     * @param ref
+     * @param ref - reference on top of which the alert system should be initialized
      */
     onAlertSystemInitialize: (ref: any) => void;
     /**
@@ -73,7 +73,6 @@ export interface AlertPropsInterface extends TestableComponentInterface, Identif
 
 /**
  * Icons for different alert states.
- * @type {{success: any; warning: any; error: any; info: any}}
  */
 const AlertIcons = {
     error: ErrorIcon,
@@ -85,9 +84,9 @@ const AlertIcons = {
 /**
  * Alert component to show success, error, warning and info notifications on the front end dashboards.
  *
- * @param {AlertPropsInterface} props - Props injected in to the alert component.
+ * @param props - Props injected in to the alert component.
  *
- * @return {React.ReactElement}
+ * @returns the Alert component
  */
 export const Alert: FunctionComponent<AlertPropsInterface> = (
     props: AlertPropsInterface

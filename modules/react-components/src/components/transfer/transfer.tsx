@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -70,14 +70,15 @@ export interface TransferComponentPropsInterface extends IdentifiableComponentIn
      * Select all checkbox label.
      */
     selectAllCheckboxLabel?: ReactNode;
+    disabled?: boolean;
 }
 
 /**
  * Transfer list component.
  *
- * @param {TransferComponentPropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns
  */
 export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComponentPropsInterface>> = (
     props: PropsWithChildren<TransferComponentPropsInterface>
@@ -102,6 +103,7 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
         isHeaderCheckboxChecked,
         showSelectAllCheckbox,
         showListSearch,
+        disabled,
         [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId
     } = props;
@@ -132,7 +134,7 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
                                                 >
                                                     <Segment
                                                         basic={ basic }
-                                                        disabled={ isLoading }
+                                                        disabled={ isLoading || disabled }
                                                         data-componentid={
                                                             `${ componentId }-unselected-groups`
                                                         }
@@ -153,6 +155,7 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
                                                                     handleListSearch={ handleUnelectedListSearch }
                                                                     iconPosition={ iconPosition }
                                                                     placeholder={ searchPlaceholder }
+                                                                    disabled={ disabled }
                                                                 />
                                                             )
                                                         }
@@ -165,11 +168,14 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
                                                                     label={ selectAllCheckboxLabel }
                                                                     checked={ isHeaderCheckboxChecked }
                                                                     onChange={ handleHeaderCheckboxChange }
-                                                                    disabled={ isLoading }
+                                                                    disabled={ isLoading || disabled }
                                                                 />
                                                             )
                                                         }
-                                                        <Segment className="transfer-list-segment">
+                                                        <Segment
+                                                            className="transfer-list-segment"
+                                                            disabled={ disabled }
+                                                        >
                                                             { list }
                                                         </Segment>
                                                     </Segment>
@@ -195,6 +201,7 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
                                                             basic
                                                             size="mini"
                                                             onClick={ addItems }
+                                                            disabled={ disabled }
                                                         >
                                                             <Icon name="chevron right" />
                                                         </Button>
@@ -209,6 +216,7 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
                                                             basic
                                                             size="mini"
                                                             onClick={ removeItems }
+                                                            disabled={ disabled }
                                                         >
                                                             <Icon name="chevron left" />
                                                         </Button>
@@ -224,7 +232,7 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
                                                 >
                                                     <Segment
                                                         basic={ basic }
-                                                        disabled={ isLoading }
+                                                        disabled={ isLoading || disabled }
                                                         data-componentid={ `${ componentId }-selected-groups` }
                                                         data-testid={ `${ testId }-selected-groups` }
                                                         className="transfer-segment"
@@ -237,8 +245,12 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
                                                             handleListSearch={ handleSelectedListSearch }
                                                             iconPosition={ iconPosition }
                                                             placeholder={ searchPlaceholder }
+                                                            disabled={ disabled }
                                                         />
-                                                        <Segment className="transfer-list-segment">
+                                                        <Segment
+                                                            className="transfer-list-segment"
+                                                            disabled={ disabled }
+                                                        >
                                                             { list }
                                                         </Segment>
                                                     </Segment>
@@ -264,6 +276,7 @@ TransferComponent.defaultProps = {
     bordered: true,
     "data-componentid": "transfer-component",
     "data-testid": "transfer-component",
+    disabled: false,
     isLoading: false,
     selectAllCheckboxLabel: "Select all",
     showListSearch: true

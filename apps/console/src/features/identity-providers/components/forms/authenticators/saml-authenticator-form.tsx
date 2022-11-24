@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -95,11 +95,13 @@ export interface SamlPropertiesInterface {
     IsUserIdInClaims?: boolean;
 }
 
+const FORM_ID: string = "saml-authenticator-form";
+
 /**
  * SAML Authenticator settings form.
  *
- * @param props
- * @constructor
+ * @param props - Props injected to the component.
+ * @returns Functional component.
  */
 export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPropsInterface> = (
     props: SamlSettingsFormPropsInterface
@@ -146,7 +148,20 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
         return {
             AuthRedirectUrl: findPropVal<string>({ defaultValue: authorizedRedirectURL, key: "AuthRedirectUrl" }),
             DigestAlgorithm: findPropVal<string>({ defaultValue: "SHA1", key: "DigestAlgorithm" }),
+            ISAuthnReqSigned: findPropVal<boolean>({ defaultValue: false, key: "ISAuthnReqSigned" }),
             IdPEntityId: findPropVal<string>({ defaultValue: "", key: "IdPEntityId" }),
+            IncludeProtocolBinding: findPropVal<boolean>({ defaultValue: false, key: "IncludeProtocolBinding" }),
+            /**
+             * `IsAuthnRespSigned` is by default set to true when creating the SAML IdP so,
+             * always the value will be true. Keeping this here to indicate for the user and
+             * to enable this if requirements gets changed.
+             */
+            IsAuthnRespSigned: findPropVal<boolean>({ defaultValue: false, key: "IsAuthnRespSigned" }),
+            IsLogoutEnabled: findPropVal<boolean>({ defaultValue: false, key: "IsLogoutEnabled" }),
+            IsLogoutReqSigned: findPropVal<boolean>({ defaultValue: false, key: "IsLogoutReqSigned" }),
+            IsSLORequestAccepted: findPropVal<boolean>({ defaultValue: false, key: "IsSLORequestAccepted" }),
+            IsUserIdInClaims: findPropVal<boolean>({ defaultValue: false, key: "IsUserIdInClaims" }),
+            LogoutReqUrl: findPropVal<string>({ defaultValue: "", key: "LogoutReqUrl" }),
             NameIDType: findPropVal<string>({
                 defaultValue: findMeta({ key: "NameIDType" })?.defaultValue ?? DEFAULT_NAME_ID_FORMAT,
                 key: "NameIDType"
@@ -158,20 +173,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
             SPEntityId: findPropVal<string>({ defaultValue: "", key: "SPEntityId" }),
             SSOUrl: findPropVal<string>({ defaultValue: "", key: "SSOUrl" }),
             SignatureAlgorithm: findPropVal<string>({ defaultValue: "RSA with SHA1", key: "SignatureAlgorithm" }),
-            commonAuthQueryParams: findPropVal<string>({ defaultValue: "", key: "commonAuthQueryParams" }),
-            LogoutReqUrl: findPropVal<string>({ defaultValue: "", key: "LogoutReqUrl" }),
-            IncludeProtocolBinding: findPropVal<boolean>({ defaultValue: false, key: "IncludeProtocolBinding" }),
-            ISAuthnReqSigned: findPropVal<boolean>({ defaultValue: false, key: "ISAuthnReqSigned" }),
-            /**
-             * `IsAuthnRespSigned` is by default set to true when creating the SAML IdP so,
-             * always the value will be true. Keeping this here to indicate for the user and
-             * to enable this if requirements gets changed.
-             */
-            IsAuthnRespSigned: findPropVal<boolean>({ defaultValue: false, key: "IsAuthnRespSigned" }),
-            IsLogoutEnabled: findPropVal<boolean>({ defaultValue: false, key: "IsLogoutEnabled" }),
-            IsLogoutReqSigned: findPropVal<boolean>({ defaultValue: false, key: "IsLogoutReqSigned" }),
-            IsSLORequestAccepted: findPropVal<boolean>({ defaultValue: false, key: "IsSLORequestAccepted" }),
-            IsUserIdInClaims: findPropVal<boolean>({ defaultValue: false, key: "IsUserIdInClaims" })
+            commonAuthQueryParams: findPropVal<string>({ defaultValue: "", key: "commonAuthQueryParams" })
         } as SamlPropertiesInterface;
 
     }, []);
@@ -188,7 +190,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
 
     useEffect(() => {
         const ifEitherOneOfThemIsChecked = isLogoutReqSigned || isAuthnReqSigned;
-        
+
         setIsAlgorithmsEnabled(ifEitherOneOfThemIsChecked);
     }, [ isLogoutReqSigned, isAuthnReqSigned ]);
 
@@ -225,11 +227,12 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
     };
 
     return (
-        <Form 
+        <Form
+            id={ FORM_ID }
             onSubmit={ onFormSubmit }
             uncontrolledForm={ true }
-            initialValues={ formValues }>
-
+            initialValues={ formValues }
+        >
             <Field.Input
                 required={ true }
                 name="SPEntityId"
@@ -590,6 +593,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
             </FormSection>
 
             <Field.Button
+                form={ FORM_ID }
                 size="small"
                 buttonType="primary_btn"
                 ariaLabel="SAML authenticator update button"
@@ -613,7 +617,7 @@ SamlAuthenticatorSettingsForm.defaultProps = {
     "data-testid": "saml-authenticator-settings-form"
 };
 
-const SectionRow: FunctionComponent<{ width?: SemanticWIDTHS }> = (
+const SectionRow: FunctionComponent<PropsWithChildren<{ width?: SemanticWIDTHS }>> = (
     { width = 16, children }: PropsWithChildren<{ width?: SemanticWIDTHS }>
 ): ReactElement => {
     return (

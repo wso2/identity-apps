@@ -130,7 +130,7 @@
         </div>
     </div>
 
-    <!-- footer -->
+    <%-- footer --%>
     <%
         File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
         if (footerFile.exists()) {

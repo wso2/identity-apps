@@ -1,7 +1,7 @@
-/*
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+/**
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,6 +19,7 @@
 import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, {
+    CSSProperties,
     ChangeEvent,
     FunctionComponent,
     MutableRefObject,
@@ -59,6 +60,10 @@ export interface AdvancedSearchPropsInterface extends IdentifiableComponentInter
      */
     defaultSearchStrategy: string;
     /**
+     * Disables the dropdown filter for search
+     */
+    disableSearchFilterDropdown?: boolean;
+    /**
      * Dropdown appearing position.
      */
     dropdownPosition?: PopupProps["position"];
@@ -92,8 +97,8 @@ export interface AdvancedSearchPropsInterface extends IdentifiableComponentInter
     onExternalSearchQueryClear?: () => void;
     /**
      * Callback for search query submit.
-     * @param {boolean} processQuery - process flag.
-     * @param {string} query - Search query.
+     * @param processQuery - process flag.
+     * @param query - Search query.
      */
     onSearchQuerySubmit: (processQuery: boolean, query: string) => void;
     /**
@@ -112,6 +117,10 @@ export interface AdvancedSearchPropsInterface extends IdentifiableComponentInter
      * Session Timed Out status.
      */
     sessionTimedOut?: boolean;
+    /**
+     * Custom CSS styles for text input box.
+     */
+    style?: CSSProperties | undefined;
     /**
      * Is form submitted.
      */
@@ -137,9 +146,9 @@ export interface AdvancedSearchPropsInterface extends IdentifiableComponentInter
 /**
  * Advanced search component.
  *
- * @param {React.PropsWithChildren<AdvancedSearchPropsInterface>} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns React element.
  */
 export const AdvancedSearch: FunctionComponent<PropsWithChildren<AdvancedSearchPropsInterface>> = (
     props: PropsWithChildren<AdvancedSearchPropsInterface>
@@ -147,16 +156,19 @@ export const AdvancedSearch: FunctionComponent<PropsWithChildren<AdvancedSearchP
 
     const {
         aligned,
+        clearIcon,
         className,
         children,
         clearButtonPopupLabel,
         defaultSearchStrategy,
+        disableSearchFilterDropdown,
         dropdownPosition,
         dropdownTriggerPopupLabel,
         enableQuerySearch,
         externalSearchQuery,
         fill,
-        clearIcon,
+        filterAttributeOptions,
+        filterConditionOptions,
         inputSize,
         onExternalSearchQueryClear,
         onSearchQuerySubmit,
@@ -164,12 +176,11 @@ export const AdvancedSearch: FunctionComponent<PropsWithChildren<AdvancedSearchP
         resetSubmittedState,
         searchOptionsHeader,
         sessionTimedOut,
+        style,
         submitted,
         [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId,
-        triggerClearQuery,
-        filterConditionOptions,
-        filterAttributeOptions
+        triggerClearQuery
     } = props;
 
     const searchInputRef: MutableRefObject<HTMLDivElement> = useRef();
@@ -245,7 +256,7 @@ export const AdvancedSearch: FunctionComponent<PropsWithChildren<AdvancedSearchP
     /**
      * Handles the search input field `onChange` event.
      *
-     * @param {React.ChangeEvent<HTMLInputElement>} e - Input change event.
+     * @param e - Input change event.
      */
     const handleSearchQueryChange = (e: ChangeEvent<HTMLInputElement>): void => {
         const { value } = e.target;
@@ -272,7 +283,7 @@ export const AdvancedSearch: FunctionComponent<PropsWithChildren<AdvancedSearchP
     /**
      * Handles search query submit by keyboard events.
      *
-     * @param {KeyboardEvent} e - Keyboard event.
+     * @param e - Keyboard event.
      */
     const handleSearchQuerySubmit = (e: KeyboardEvent): void => {
         const { key, shiftKey } = e;
@@ -376,30 +387,35 @@ export const AdvancedSearch: FunctionComponent<PropsWithChildren<AdvancedSearchP
                                     )
                                     : null
                             }
-                            <Popup
-                                disabled={ !dropdownTriggerPopupLabel || isDropdownVisible }
-                                trigger={
-                                    (
-                                        <Button
-                                            data-componentid={ `${ componentId }-options-button` }
-                                            data-testid={ `${ testId }-options-button` }
-                                            basic
-                                            compact
-                                            className="input-add-on"
-                                            onClick={ handleShowOptionsClick }
-                                        >
-                                            <Icon name="caret down"/>
-                                        </Button>
-                                    )
-                                }
-                                position="top center"
-                                content={ dropdownTriggerPopupLabel }
-                                inverted={ true }
-                            />
+                            {
+                                !disableSearchFilterDropdown && (
+                                    <Popup
+                                        disabled={ !dropdownTriggerPopupLabel || isDropdownVisible }
+                                        trigger={
+                                            (
+                                                <Button
+                                                    data-componentid={ `${ componentId }-options-button` }
+                                                    data-testid={ `${ testId }-options-button` }
+                                                    basic
+                                                    compact
+                                                    className="input-add-on"
+                                                    onClick={ handleShowOptionsClick }
+                                                >
+                                                    <Icon name="caret down"/>
+                                                </Button>
+                                            )
+                                        }
+                                        position="top center"
+                                        content={ dropdownTriggerPopupLabel }
+                                        inverted={ true }
+                                    />
+                                )
+                            }
                         </>
                     ) }
                     className={ `advanced-search with-add-on ${ searchFieldClasses }` }
                     size={ inputSize }
+                    style={ style }
                     icon="search"
                     iconPosition="left"
                     placeholder={ placeholder }
@@ -456,6 +472,7 @@ AdvancedSearch.defaultProps = {
     clearButtonPopupLabel: null,
     "data-componentid": "advanced-search",
     "data-testid": "advanced-search",
+    disableSearchFilterDropdown: false,
     dropdownPosition: "bottom left",
     dropdownTriggerPopupLabel: null,
     enableQuerySearch: true,

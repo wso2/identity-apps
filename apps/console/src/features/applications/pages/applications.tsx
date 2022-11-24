@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,7 +17,6 @@
  */
 
 import { AccessControlConstants, Show } from "@wso2is/access-control";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
@@ -26,7 +25,6 @@ import {
     DocumentationLink,
     EmphasizedSegment,
     GenericIcon,
-    GridLayout,
     ListLayout,
     PageLayout,
     PrimaryButton,
@@ -37,6 +35,7 @@ import React, {
     FunctionComponent,
     MouseEvent,
     ReactElement,
+    ReactNode,
     SyntheticEvent,
     useEffect,
     useState
@@ -44,6 +43,7 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import {
+    Button,
     DropdownItemProps,
     DropdownProps,
     Grid,
@@ -65,8 +65,9 @@ import {
     getGeneralIcons,
     history
 } from "../../core";
-import { RemoteFetchStatus } from "../../remote-repository-configuration";
-import { useApplicationList } from "../api";
+import { OrganizationType } from "../../organizations/constants";
+import { useGetOrganizationType } from "../../organizations/hooks/use-get-organization-type";
+import { useApplicationList, useMyAccountStatus } from "../api";
 import { ApplicationList, MinimalAppCreateWizard } from "../components";
 import { ApplicationManagementConstants } from "../constants";
 import CustomApplicationTemplate
@@ -76,22 +77,22 @@ import { ApplicationListInterface } from "../models";
 const APPLICATIONS_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
     {
         key: 1,
-        text: I18n.instance.t("common:name"),
+        text: I18n.instance.t("common:name") as ReactNode,
         value: "name"
     },
     {
         key: 2,
-        text: I18n.instance.t("common:type"),
+        text: I18n.instance.t("common:type") as ReactNode,
         value: "type"
     },
     {
         key: 3,
-        text: I18n.instance.t("common:createdOn"),
+        text: I18n.instance.t("common:createdOn") as ReactNode,
         value: "createdDate"
     },
     {
         key: 4,
-        text: I18n.instance.t("common:lastUpdatedOn"),
+        text: I18n.instance.t("common:lastUpdatedOn") as ReactNode,
         value: "lastUpdated"
     }
 ];
@@ -104,9 +105,8 @@ type ApplicationsPageInterface = TestableComponentInterface;
 /**
  * Applications page.
  *
- * @param {ApplicationsPageInterface} props - Props injected to the component.
- *
- * @return {React.ReactElement}
+ * @param props - Props injected to the component.
+ * @returns Applications listing page.
  */
 const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     props: ApplicationsPageInterface
@@ -122,11 +122,10 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     const dispatch = useDispatch();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ listSortingStrategy, setListSortingStrategy ] = useState<DropdownItemProps>(
-        APPLICATIONS_LIST_SORTING_OPTIONS[ 0 ]
+        APPLICATIONS_LIST_SORTING_OPTIONS[0]
     );
     const [ listOffset, setListOffset ] = useState<number>(0);
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
@@ -135,7 +134,9 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const consumerAccountURL: string = useSelector((state: AppState) =>
         state?.config?.deployment?.accountApp?.tenantQualifiedPath);
-    const [ isLoadingForTheFirstTime, setIsLoadingForTheFirstTime ] = useState<boolean>(true);
+    const [ isMyAccountEnabled, setMyAccountStatus ] = useState<boolean>(AppConstants.DEFAULT_MY_ACCOUNT_STATUS);
+
+    const orgType: OrganizationType = useGetOrganizationType();
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -144,17 +145,34 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
         isLoading: isApplicationListFetchRequestLoading,
         error: applicationListFetchRequestError,
         mutate: mutateApplicationListFetchRequest
-    } = useApplicationList("advancedConfigurations,templateId", listItemLimit, listOffset, searchQuery);
+    } = useApplicationList("advancedConfigurations,templateId,clientId,issuer", listItemLimit, listOffset, searchQuery);
+
+    const isSubOrg: boolean = window[ "AppUtils" ].getConfig().organizationName;
+
+    const {
+        data: myAccountStatus,
+        isLoading: isMyAccountStatusLoading,
+        error: myAccountStatusFetchRequestError
+    } = useMyAccountStatus(!isSubOrg);
 
     /**
      * Sets the initial spinner.
      * TODO: Remove this once the loaders are finalized.
      */
     useEffect(() => {
-        if (isApplicationListFetchRequestLoading === false && isLoadingForTheFirstTime === true) {
-            setIsLoadingForTheFirstTime(false);
+        if (isApplicationListFetchRequestLoading === false && isMyAccountStatusLoading === false) {
+            let status: boolean = AppConstants.DEFAULT_MY_ACCOUNT_STATUS;
+
+            if (myAccountStatus) {
+                const enableProperty = myAccountStatus["value"];
+
+                if (enableProperty && enableProperty === "false") {
+                    status = false;
+                }
+            }
+            setMyAccountStatus(status);
         }
-    }, [ isApplicationListFetchRequestLoading, isLoadingForTheFirstTime ]);
+    }, [ isApplicationListFetchRequestLoading, isMyAccountStatusLoading ]);
 
     /**
      * Handles the application list fetch request error.
@@ -188,10 +206,44 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     }, [ applicationListFetchRequestError ]);
 
     /**
+     * Handles the application list fetch request error.
+     */
+    useEffect(() => {
+
+        if (!myAccountStatusFetchRequestError) {
+            return;
+        }
+
+        if (myAccountStatusFetchRequestError.response
+            && myAccountStatusFetchRequestError.response.data
+            && myAccountStatusFetchRequestError.response.data.description) {
+            if (myAccountStatusFetchRequestError.response.status === 404) {
+                return;
+            }
+            dispatch(addAlert({
+                description: myAccountStatusFetchRequestError.response.data.description ??
+                    t("console:develop.features.applications.myaccount.fetchMyAccountStatus.error.description"),
+                level: AlertLevels.ERROR,
+                message: t("console:develop.features.applications.myaccount.fetchMyAccountStatus.error.message")
+            }));
+
+            return;
+        }
+
+        dispatch(addAlert({
+            description: t("console:develop.features.applications.myaccount.fetchMyAccountStatus" +
+                ".genericError.description"),
+            level: AlertLevels.ERROR,
+            message: t("console:develop.features.applications.myaccount.fetchMyAccountStatus" +
+                ".genericError.message")
+        }));
+    }, [ myAccountStatusFetchRequestError ]);
+
+    /**
      * Sets the list sorting strategy.
      *
-     * @param {React.SyntheticEvent<HTMLElement>} event - The event.
-     * @param {DropdownProps} data - Dropdown data.
+     * @param event - The event.
+     * @param data - Dropdown data.
      */
     const handleListSortingStrategyOnChange = (event: SyntheticEvent<HTMLElement>,
         data: DropdownProps): void => {
@@ -201,35 +253,32 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     };
 
     /**
-     * Checks if `Next` page nav button should be shown.
+     * Checks if the `Next` page nav button should be shown.
      *
      * @param appList - List of applications.
-     * @returns {boolean} - `true` if `Next` page nav button should be shown.
+     * @returns `true` if `Next` page nav button should be shown.
      */
     const shouldShowNextPageNavigation = (appList: ApplicationListInterface): boolean => {
 
-        if (appList?.startIndex + appList?.count === appList?.totalResults + 1) {
-            return false;
-        }
-
-        return true;
+        return appList?.startIndex + appList?.count !== appList?.totalResults + 1;
     };
 
     /**
      * Handles the `onFilter` callback action from the
      * application search component.
      *
-     * @param {string} query - Search query.
+     * @param query - Search query.
      */
     const handleApplicationFilter = (query: string): void => {
         setSearchQuery(query);
+        setListOffset(0);
     };
 
     /**
      * Handles the pagination change.
      *
-     * @param {React.MouseEvent<HTMLAnchorElement>} event - Mouse event.
-     * @param {PaginationProps} data - Pagination component data.
+     * @param event - Mouse event.
+     * @param data - Pagination component data.
      */
     const handlePaginationChange = (event: MouseEvent<HTMLAnchorElement>, data: PaginationProps): void => {
         setListOffset((data.activePage as number - 1) * listItemLimit);
@@ -238,8 +287,8 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     /**
      * Handles per page dropdown page.
      *
-     * @param {React.MouseEvent<HTMLAnchorElement>} event - Mouse event.
-     * @param {DropdownProps} data - Dropdown data.
+     * @param event - Mouse event.
+     * @param data - Dropdown data.
      */
     const handleItemsPerPageDropdownChange = (event: MouseEvent<HTMLAnchorElement>,
         data: DropdownProps): void => {
@@ -262,26 +311,19 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     };
 
     /**
-     * Renders the Remote Fetch status bar.
-     *
-     * @return {React.ReactElement}
+     * Navigate to the my account edit page.
      */
-    const renderRemoteFetchStatus = (): ReactElement => {
-
-        if (!hasRequiredScopes(featureConfig?.remoteFetchConfig,
-            featureConfig?.remoteFetchConfig?.scopes?.read,
-            allowedScopes)) {
-
-            return null;
-        }
-
-        return <RemoteFetchStatus data-testid={ "remote-fetch" } />;
+    const navigateToMyAccountSettings = (): void => {
+        history.push({
+            pathname: AppConstants.getPaths().get("MY_ACCOUNT_EDIT"),
+            state: ApplicationManagementConstants.APPLICATION_STATE
+        });
     };
 
     /**
      * Renders the URL for the tenanted my account login.
      *
-     * @return {React.ReactElement}
+     * @returns My Account link.
      */
     const renderTenantedMyAccountLink = (): ReactElement => {
         if (AppConstants.getTenant() === AppConstants.getSuperTenant() ||
@@ -299,7 +341,8 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                         <Grid verticalAlign="middle">
                             <Grid.Column
                                 floated="left"
-                                width={ 10 }
+                                mobile={ 16 }
+                                computer={ 9 }
                             >
                                 <GenericIcon
                                     icon={ getGeneralIcons().myAccountSolidIcon }
@@ -320,6 +363,11 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                                     <Label size="tiny" className="preview-label ml-2">
                                         { t("common:preview") }
                                     </Label>
+                                    <Icon
+                                        color={ isMyAccountEnabled ? "green":"grey" }
+                                        name={ isMyAccountEnabled ? "check circle" : "minus circle" }
+                                        className="middle aligned ml-1"
+                                    />
                                 </List.Header>
                                 <List.Description
                                     data-componentid="application-consumer-account-link-description"
@@ -332,24 +380,48 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                                     </DocumentationLink>
                                 </List.Description>
                             </Grid.Column>
-                            <Popup
-                                trigger={
-                                    (<Grid.Column
-                                        floated="right"
-                                        width={ 6 }
-                                    >
-                                        <CopyInputField
-                                            value={ consumerAccountURL }
-                                            data-componentid={ "application-consumer-account-link-copy-field" }
-                                        />
-                                    </Grid.Column>)
-                                }
-                                content={ t("console:develop.features.applications.myaccount.popup") }
-                                position="top center"
-                                size="mini"
-                                hideOnScroll
-                                inverted
-                            />
+                            { isMyAccountEnabled || isSubOrg ? (
+                                <Popup
+                                    trigger={ (
+                                        <Grid.Column
+                                            mobile={ 16 }
+                                            computer={ 6 }
+                                            className="pr-0"
+                                        >
+                                            <CopyInputField
+                                                value={ consumerAccountURL }
+                                                data-componentid={ "application-consumer-account-link-copy-field" }
+                                            />
+                                        </Grid.Column>
+                                    ) }
+                                    content={ t("console:develop.features.applications.myaccount.popup") }
+                                    position="top center"
+                                    size="mini"
+                                    hideOnScroll
+                                    inverted
+                                />
+                            ) : null 
+                            } 
+                            <Grid.Column
+                                mobile={ 16 }
+                                computer={ 1 }
+                            >
+                                { !isSubOrg && (
+                                    <Popup
+                                        trigger={ (
+                                            <Button 
+                                                icon="setting"
+                                                onClick={ (): void => navigateToMyAccountSettings() }
+                                            />
+                                        ) }
+                                        content={ t("common:settings") }
+                                        position="top center"
+                                        size="mini"
+                                        hideOnScroll
+                                        inverted
+                                    />
+                                ) }
+                            </Grid.Column>
                         </Grid>
                     </List.Item>
                 </List>
@@ -360,25 +432,20 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     return (
         <PageLayout
             pageTitle="Applications"
-            action={
-                (!isApplicationListFetchRequestLoading && !(!searchQuery && applicationList?.totalResults <= 0))
-                && (
-                    <Show when={ AccessControlConstants.APPLICATION_WRITE }>
-                        <PrimaryButton
-                            disabled={ isApplicationListFetchRequestLoading }
-                            loading={ isApplicationListFetchRequestLoading }
-                            onClick={ (): void => {
-                                eventPublisher.publish("application-click-new-application-button");
-                                history.push(AppConstants.getPaths().get("APPLICATION_TEMPLATES"));
-                            } }
-                            data-testid={ `${ testId }-list-layout-add-button` }
-                        >
-                            <Icon name="add"/>
-                            { t("console:develop.features.applications.list.actions.add") }
-                        </PrimaryButton>
-                    </Show>
-                )
-            }
+            action={ (
+                <Show when={ AccessControlConstants.APPLICATION_WRITE }>
+                    <PrimaryButton
+                        onClick={ (): void => {
+                            eventPublisher.publish("application-click-new-application-button");
+                            history.push(AppConstants.getPaths().get("APPLICATION_TEMPLATES"));
+                        } }
+                        data-testid={ `${ testId }-list-layout-add-button` }
+                    >
+                        <Icon name="add" />
+                        { t("console:develop.features.applications.list.actions.add") }
+                    </PrimaryButton>
+                </Show>
+            ) }
             title={ t("console:develop.pages.applications.title") }
             description={ (
                 <p>
@@ -393,142 +460,148 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
             contentTopMargin={ (AppConstants.getTenant() === AppConstants.getSuperTenant()) }
             data-testid={ `${ testId }-page-layout` }
         >
-            { !isLoadingForTheFirstTime? (
-                <>
-                    { renderTenantedMyAccountLink() }
-                    { /* renderRemoteFetchStatus() */ }
-                    <ListLayout
-                        advancedSearch={ (
-                            <AdvancedSearchWithBasicFilters
-                                onFilter={ handleApplicationFilter }
-                                filterAttributeOptions={ [
-                                    {
-                                        key: 0,
-                                        text: t("common:name"),
-                                        value: "name"
-                                    },
-                                    {
-                                        key: 1,
-                                        text: "ClientId",
-                                        value: "clientId"
-                                    }
-                                ] }
-                                filterAttributePlaceholder={
-                                    t("console:develop.features.applications.advancedSearch.form" +
-                                        ".inputs.filterAttribute.placeholder")
-                                }
-                                filterConditionsPlaceholder={
-                                    t("console:develop.features.applications.advancedSearch.form" +
-                                        ".inputs.filterCondition.placeholder")
-                                }
-                                filterValuePlaceholder={
-                                    t("console:develop.features.applications.advancedSearch.form.inputs.filterValue" +
-                                    ".placeholder")
-                                }
-                                placeholder={ t("console:develop.features.applications.advancedSearch.placeholder") }
-                                defaultSearchAttribute="name"
-                                defaultSearchOperator="co"
-                                predefinedDefaultSearchStrategy="name co %search-value% or clientId co %search-value%"
-                                triggerClearQuery={ triggerClearQuery }
-                                data-testid={ `${ testId }-list-advanced-search` }
-                            />
-                        ) }
-                        currentListSize={ applicationList?.count }
-                        listItemLimit={ listItemLimit }
-                        onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
-                        onPageChange={ handlePaginationChange }
-                        onSortStrategyChange={ handleListSortingStrategyOnChange }
-                        showPagination={ true }
-                        showTopActionPanel={
-                            isApplicationListFetchRequestLoading
-                        || !(!searchQuery && applicationList?.totalResults <= 0) }
-                        sortOptions={ APPLICATIONS_LIST_SORTING_OPTIONS }
-                        sortStrategy={ listSortingStrategy }
-                        totalPages={ Math.ceil(applicationList?.totalResults / listItemLimit) }
-                        totalListSize={ applicationList?.totalResults  }
-                        paginationOptions={ {
-                            disableNextButton: !shouldShowNextPageNavigation(applicationList)
-                        } }
-                        data-testid={ `${ testId }-list-layout` }
-                    >
-                        <ApplicationList
-                            advancedSearch={ (
-                                <AdvancedSearchWithBasicFilters
-                                    onFilter={ handleApplicationFilter }
-                                    filterAttributeOptions={ [
-                                        {
-                                            key: 0,
-                                            text: t("common:name"),
-                                            value: "name"
-                                        },
-                                        {
-                                            key: 1,
-                                            text: "ClientId",
-                                            value: "clientId"
-                                        }
-                                    ] }
-                                    filterAttributePlaceholder={
-                                        t("console:develop.features.applications.advancedSearch." +
-                                        "form.inputs.filterAttribute.placeholder")
-                                    }
-                                    filterConditionsPlaceholder={
-                                        t("console:develop.features.applications.advancedSearch." +
-                                        "form.inputs.filterCondition.placeholder")
-                                    }
-                                    filterValuePlaceholder={
-                                        t("console:develop.features.applications.advancedSearch." +
-                                        "form.inputs.filterValue.placeholder")
-                                    }
-                                    placeholder={
-                                        t("console:develop.features.applications.advancedSearch.placeholder")
-                                    }
-                                    defaultSearchAttribute="name"
-                                    defaultSearchOperator="co"
-                                    predefinedDefaultSearchStrategy={
-                                        "name co %search-value% or clientId co %search-value%"
-                                    }
-                                    triggerClearQuery={ triggerClearQuery }
-                                    data-testid={ `${ testId }-list-advanced-search` }
-                                />
-                            ) }
-                            featureConfig={ featureConfig }
-                            isLoading={ isApplicationListFetchRequestLoading }
-                            list={ applicationList }
-                            onApplicationDelete={ handleApplicationDelete }
-                            onEmptyListPlaceholderActionClick={
-                                () => {
-                                    history.push(AppConstants.getPaths().get("APPLICATION_TEMPLATES"));
-                                }
+            { orgType !== OrganizationType.SUBORGANIZATION && renderTenantedMyAccountLink() }
+            <ListLayout
+                advancedSearch={ (
+                    <AdvancedSearchWithBasicFilters
+                        onFilter={ handleApplicationFilter }
+                        filterAttributeOptions={ [
+                            {
+                                key: 0,
+                                text: t("common:name"),
+                                value: "name"
+                            },
+                            {
+                                key: 1,
+                                text: t("common:clientId"),
+                                value: "clientId"
+                            },
+                            {
+                                key: 2,
+                                text: t("common:issuer"),
+                                value: "issuer"
                             }
-                            onSearchQueryClear={ handleSearchQueryClear }
-                            searchQuery={ searchQuery }
-                            data-testid={ `${ testId }-list` }
-                            data-componentid="application"
-                        />
-                    </ListLayout>
-                    { showWizard && (
-                        <MinimalAppCreateWizard
-                            title={ CustomApplicationTemplate?.name }
-                            subTitle={ CustomApplicationTemplate?.description }
-                            closeWizard={ (): void => setShowWizard(false) }
-                            template={ CustomApplicationTemplate }
-                            showHelpPanel={ true }
-                            subTemplates={ CustomApplicationTemplate?.subTemplates }
-                            subTemplatesSectionTitle={ CustomApplicationTemplate?.subTemplatesSectionTitle }
-                            addProtocol={ false }
-                            templateLoadingStrategy={
-                                config.ui.applicationTemplateLoadingStrategy
-                            ?? ApplicationManagementConstants.DEFAULT_APP_TEMPLATE_LOADING_STRATEGY
+                        ] }
+                        filterAttributePlaceholder={
+                            t("console:develop.features.applications.advancedSearch.form" +
+                                ".inputs.filterAttribute.placeholder")
+                        }
+                        filterConditionsPlaceholder={
+                            t("console:develop.features.applications.advancedSearch.form" +
+                                ".inputs.filterCondition.placeholder")
+                        }
+                        filterValuePlaceholder={
+                            t("console:develop.features.applications.advancedSearch.form.inputs.filterValue" +
+                                ".placeholder")
+                        }
+                        placeholder={ t("console:develop.features.applications.advancedSearch.placeholder") }
+                        style={ { minWidth: "425px" } }
+                        defaultSearchAttribute="name"
+                        defaultSearchOperator="co"
+                        predefinedDefaultSearchStrategy={
+                            "name co %search-value% or clientId co %search-value% or issuer co %search-value%"
+                        }
+                        triggerClearQuery={ triggerClearQuery }
+                        data-testid={ `${ testId }-list-advanced-search` }
+                    />
+                ) }
+                currentListSize={ applicationList?.count }
+                isLoading={ isApplicationListFetchRequestLoading }
+                listItemLimit={ listItemLimit }
+                onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
+                onPageChange={ handlePaginationChange }
+                onSortStrategyChange={ handleListSortingStrategyOnChange }
+                showPagination={ true }
+                showTopActionPanel={
+                    isApplicationListFetchRequestLoading
+                    || !(!searchQuery && applicationList?.totalResults <= 0) }
+                sortOptions={ APPLICATIONS_LIST_SORTING_OPTIONS }
+                sortStrategy={ listSortingStrategy }
+                totalPages={ Math.ceil(applicationList?.totalResults / listItemLimit) }
+                totalListSize={ applicationList?.totalResults }
+                paginationOptions={ {
+                    disableNextButton: !shouldShowNextPageNavigation(applicationList)
+                } }
+                data-testid={ `${ testId }-list-layout` }
+            >
+                <ApplicationList
+                    advancedSearch={ (
+                        <AdvancedSearchWithBasicFilters
+                            onFilter={ handleApplicationFilter }
+                            filterAttributeOptions={ [
+                                {
+                                    key: 0,
+                                    text: t("common:name"),
+                                    value: "name"
+                                },
+                                {
+                                    key: 1,
+                                    text: t("common:clientId"),
+                                    value: "clientId"
+                                },
+                                {
+                                    key: 2,
+                                    text: t("common:issuer"),
+                                    value: "issuer"
+                                }
+                            ] }
+                            filterAttributePlaceholder={
+                                t("console:develop.features.applications.advancedSearch." +
+                                    "form.inputs.filterAttribute.placeholder")
                             }
+                            filterConditionsPlaceholder={
+                                t("console:develop.features.applications.advancedSearch." +
+                                    "form.inputs.filterCondition.placeholder")
+                            }
+                            filterValuePlaceholder={
+                                t("console:develop.features.applications.advancedSearch." +
+                                    "form.inputs.filterValue.placeholder")
+                            }
+                            placeholder={
+                                t("console:develop.features.applications.advancedSearch.placeholder")
+                            }
+                            style={ { minWidth: "425px" } }
+                            defaultSearchAttribute="name"
+                            defaultSearchOperator="co"
+                            predefinedDefaultSearchStrategy={
+                                "name co %search-value% or clientId co %search-value% or " +
+                                "issuer co %search-value%"
+                            }
+                            triggerClearQuery={ triggerClearQuery }
+                            data-testid={ `${ testId }-list-advanced-search` }
                         />
                     ) }
-                </>
-            ) : (
-                <GridLayout
-                    isLoading={ isLoadingForTheFirstTime }
+                    featureConfig={ featureConfig }
+                    isLoading={ isApplicationListFetchRequestLoading }
+                    list={ applicationList }
+                    onApplicationDelete={ handleApplicationDelete }
+                    onEmptyListPlaceholderActionClick={
+                        () => {
+                            history.push(AppConstants.getPaths().get("APPLICATION_TEMPLATES"));
+                        }
+                    }
+                    onSearchQueryClear={ handleSearchQueryClear }
+                    searchQuery={ searchQuery }
+                    data-testid={ `${ testId }-list` }
+                    data-componentid="application"
                 />
-            )
-            }
+            </ListLayout>
+            { showWizard && (
+                <MinimalAppCreateWizard
+                    title={ CustomApplicationTemplate?.name }
+                    subTitle={ CustomApplicationTemplate?.description }
+                    closeWizard={ (): void => setShowWizard(false) }
+                    template={ CustomApplicationTemplate }
+                    showHelpPanel={ true }
+                    subTemplates={ CustomApplicationTemplate?.subTemplates }
+                    subTemplatesSectionTitle={ CustomApplicationTemplate?.subTemplatesSectionTitle }
+                    addProtocol={ false }
+                    templateLoadingStrategy={
+                        config.ui.applicationTemplateLoadingStrategy
+                        ?? ApplicationManagementConstants.DEFAULT_APP_TEMPLATE_LOADING_STRATEGY
+                    }
+                />
+            ) }
         </PageLayout>
     );
 };

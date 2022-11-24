@@ -22,7 +22,7 @@
 
 <jsp:directive.include file="layout-resolver.jsp"/>
 
-<!-- Extract the name of the stylesheet-->
+<%-- Extract the name of the stylesheet--%>
 <%
     String themeName = "default";
     File themeDir = new File(request.getSession().getServletContext().getRealPath("/")
@@ -44,7 +44,7 @@
 <link rel="icon" href="libs/themes/default/assets/images/branding/favicon.ico" type="image/x-icon"/>
 <link href="libs/themes/default/<%= themeFileName %>" rel="stylesheet">
 
-<!-- Layout specific style sheet -->
+<%-- Layout specific style sheet --%>
 <%
     String styleFilePath = "extensions/layouts/" + layout + "/styles.css";
     if (config.getServletContext().getResource(styleFilePath) != null) {

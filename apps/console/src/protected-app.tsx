@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -32,7 +32,12 @@ import {
     TokenConstants
 } from "@wso2is/core/constants";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
-import { AlertLevels, IdentifiableComponentInterface, RouteInterface, TenantListInterface } from "@wso2is/core/models";
+import {
+    AlertLevels,
+    IdentifiableComponentInterface,
+    RouteInterface,
+    TenantListInterface
+} from "@wso2is/core/models";
 import {
     addAlert,
     setDeploymentConfigs,
@@ -58,11 +63,25 @@ import axios, { AxiosResponse } from "axios";
 import camelCase from "lodash-es/camelCase";
 import has from "lodash-es/has";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, lazy, useCallback, useEffect, useRef, useState } from "react";
+import React, {
+    FunctionComponent,
+    LazyExoticComponent,
+    MutableRefObject,
+    ReactElement,
+    lazy,
+    useCallback,
+    useEffect,
+    useRef,
+    useState
+} from "react";
 import { I18nextProvider, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { commonConfig, serverConfigurationConfig } from "./extensions";
-import { AuthenticateUtils, getProfileInformation } from "./features/authentication";
+import { Dispatch } from "redux";
+import { commonConfig, organizationConfigs, serverConfigurationConfig } from "./extensions";
+import {
+    AuthenticateUtils,
+    getProfileInformation
+} from "./features/authentication";
 import {
     AppState,
     AppUtils,
@@ -79,8 +98,10 @@ import {
     setFilteredDevelopRoutes,
     setFilteredManageRoutes,
     setGetOrganizationLoading,
+    setIsFirstLevelOrganization,
     setManageVisibility,
     setOrganization,
+    setOrganizationType,
     setSanitizedDevelopRoutes,
     setSanitizedManageRoutes,
     store
@@ -88,27 +109,28 @@ import {
 import { AppConstants, CommonConstants } from "./features/core/constants";
 import { history } from "./features/core/helpers";
 import { getOrganization } from "./features/organizations/api";
+import { OrganizationManagementConstants, OrganizationType } from "./features/organizations/constants";
 import { OrganizationResponseInterface } from "./features/organizations/models";
 import { OrganizationUtils } from "./features/organizations/utils";
 import {
-    GovernanceConnectorCategoryInterface,
+    GovernanceConnectorCategoryInterface, GovernanceConnectorInterface,
     GovernanceConnectorUtils,
     ServerConfigurationsConstants
 } from "./features/server-configurations";
 
-const AUTHORIZATION_ENDPOINT = "authorization_endpoint";
-const TOKEN_ENDPOINT = "token_endpoint";
-const OIDC_SESSION_IFRAME_ENDPOINT = "oidc_session_iframe_endpoint";
-const LOGOUT_URL = "sign_out_url";
+const AUTHORIZATION_ENDPOINT: string = "authorization_endpoint";
+const TOKEN_ENDPOINT: string = "token_endpoint";
+const OIDC_SESSION_IFRAME_ENDPOINT: string = "oidc_session_iframe_endpoint";
+const LOGOUT_URL: string = "sign_out_url";
 
-const App = lazy(() => import("./app"));
+const App: LazyExoticComponent<FunctionComponent> = lazy(() => import("./app"));
 
 type AppPropsInterface = IdentifiableComponentInterface;
 
 /**
  * This component warps the `App` component with the `SecureApp` component to provide automatic authentication.
  *
- * @returns {ReactElement} ProtectedApp component
+ * @returns ProtectedApp component (React Element)
  */
 export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactElement => {
     const {
@@ -121,28 +143,45 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
         state: { isAuthenticated }
     } = useAuthContext();
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch<any> = useDispatch();
 
     const { t } = useTranslation();
 
     const [ renderApp, setRenderApp ] = useState<boolean>(false);
     const [ routesFiltered, setRoutesFiltered ] = useState<boolean>(false);
 
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
-    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const governanceConnectorCategories: GovernanceConnectorCategoryInterface[] = useSelector(
-        (state: AppState) => state.governanceConnector.categories);
+    const allowedScopes: string = useSelector(
+        (state: AppState) => state?.auth?.allowedScopes
+    );
+    const featureConfig: FeatureConfigInterface = useSelector(
+        (state: AppState) => state.config.ui.features
+    );
+    let governanceConnectorCategories: GovernanceConnectorCategoryInterface[] = useSelector(
+        (state: AppState) => state.governanceConnector.categories
+    );
     const filteredManageRoutes: RouteInterface[] = useSelector(
         (state: AppState) => state.routes.manageRoutes.filteredRoutes
     );
     const sanitizedManageRoutes: RouteInterface[] = useSelector(
         (state: AppState) => state.routes.manageRoutes.sanitizedRoutes
     );
+    const isFirstLevelOrg: boolean = useSelector(
+        (state: AppState) => state.organization.isFirstLevelOrganization
+    );
+    const isPrivilegedUser: boolean = useSelector(
+        (state: AppState) => state?.auth?.isPrivilegedUser
+    );
 
-    const governanceConnectorsLoaded = useRef(false);
+    const governanceConnectorsLoaded: MutableRefObject<boolean> = useRef(false);
+
+    const [ tenant, setTenant ] = useState<string>("");
 
     useEffect(() => {
-        dispatch(setDeploymentConfigs<DeploymentConfigInterface>(Config.getDeploymentConfig()));
+        dispatch(
+            setDeploymentConfigs<DeploymentConfigInterface>(
+                Config.getDeploymentConfig()
+            )
+        );
         dispatch(setUIConfigs<UIConfigInterface>(Config.getUIConfig()));
     }, []);
 
@@ -161,62 +200,114 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
 
         on(Hooks.SignIn, async (signInResponse: BasicUserInfo) => {
             let response: BasicUserInfo = { ...signInResponse };
-            let logoutUrl;
-            let logoutRedirectUrl;
-            let isPrivilegedUser: boolean = false;
+            let logoutUrl: string;
+            let logoutRedirectUrl: string;
 
-            const event = new Event(CommonConstantsCore.AUTHENTICATION_SUCCESSFUL_EVENT);
+            const idToken: DecodedIDTokenPayload = await getDecodedIDToken();
+            const isPrivilegedUser: boolean =
+                idToken?.amr?.length > 0
+                    ? idToken?.amr[ 0 ] === "EnterpriseIDPAuthenticator"
+                    : false;
+            const event: Event = new Event(
+                CommonConstantsCore.AUTHENTICATION_SUCCESSFUL_EVENT
+            );
 
             dispatchEvent(event);
 
-            let tenantDomain: string = "";
+            const orgIdIdToken: string = idToken.org_id;
+
+            const tenantDomain: string = CommonAuthenticateUtils.deriveTenantDomainFromSubject(
+                response.sub
+            );
+
+            setTenant(tenantDomain);
+
+            let orgType: OrganizationType;
 
             if (window[ "AppUtils" ].getConfig().organizationName) {
+                orgType = OrganizationType.SUBORGANIZATION;
+            } else if (tenantDomain === AppConstants.getSuperTenant()) {
+                orgType = OrganizationType.SUPER_ORGANIZATION;
+            } else if (orgIdIdToken) {
+                orgType = OrganizationType.FIRST_LEVEL_ORGANIZATION;
+            } else {
+                orgType = OrganizationType.TENANT;
+            }
+
+            dispatch(setOrganizationType(orgType));
+
+            const isFirstLevelOrg: boolean =
+                !window[ "AppUtils" ].getConfig().organizationName &&
+                !!orgIdIdToken;
+
+            dispatch(setIsFirstLevelOrganization(isFirstLevelOrg));
+
+            if (
+                window[ "AppUtils" ].getConfig().organizationName ||
+                (isFirstLevelOrg && !isPrivilegedUser)
+            ) {
                 // We are actually getting the orgId here rather than orgName
-                const orgId = window[ "AppUtils" ].getConfig().organizationName;
+                const orgId: string = isFirstLevelOrg
+                    ? orgIdIdToken
+                    : window[ "AppUtils" ].getConfig().organizationName;
 
                 // Setting a dummy object until real data comes from the API
-                dispatch(setOrganization({
-                    attributes: [],
-                    created: new Date().toString(),
-                    description: "",
-                    domain: "",
-                    id: orgId,
-                    lastModified: new Date().toString(),
-                    name: orgId,
-                    parent: {
-                        id: "",
-                        ref: ""
-                    },
-                    status: "",
-                    type: ""
-                }));
+                dispatch(
+                    setOrganization({
+                        attributes: [],
+                        created: new Date().toString(),
+                        description: "",
+                        domain: "",
+                        id: orgId,
+                        lastModified: new Date().toString(),
+                        name: orgId,
+                        parent: {
+                            id: "",
+                            ref: ""
+                        },
+                        status: "",
+                        type: ""
+                    })
+                );
 
                 // This is to make sure the endpoints are generated with the organization path.
-                await dispatch(setServiceResourceEndpoints(Config.getServiceResourceEndpoints()));
+                await dispatch(
+                    setServiceResourceEndpoints(
+                        Config.getServiceResourceEndpoints()
+                    )
+                );
 
-                await requestCustomGrant({
-                    attachToken: false,
-                    data: {
-                        client_id: "{{clientID}}",
-                        grant_type: "organization_switch",
-                        scope: window["AppUtils"].getConfig().idpConfigs?.scope.join(" ")
-                            ?? TokenConstants.SYSTEM_SCOPE,
-                        switching_organization: orgId,
-                        token: "{{token}}"
+                await requestCustomGrant(
+                    {
+                        attachToken: false,
+                        data: {
+                            client_id: "{{clientID}}",
+                            grant_type: "organization_switch",
+                            scope:
+                                window[ "AppUtils" ]
+                                    .getConfig()
+                                    .idpConfigs?.scope.join(" ") ??
+                                TokenConstants.SYSTEM_SCOPE,
+                            switching_organization: orgId,
+                            token: "{{token}}"
+                        },
+                        id: "orgSwitch",
+                        returnsSession: true,
+                        signInRequired: true
                     },
-                    id: "orgSwitch",
-                    returnsSession: true,
-                    signInRequired: true
-                }, async (grantResponse: BasicUserInfo) => {
-                    response = { ...grantResponse };
-                });
+                    async (grantResponse: BasicUserInfo) => {
+                        response = { ...grantResponse };
+                    }
+                );
 
                 dispatch(setGetOrganizationLoading(true));
                 await getOrganization(orgId)
-                    .then(async (orgResponse: OrganizationResponseInterface) => {
-                        dispatch(setOrganization(orgResponse));
-                    }).catch((error) => {
+                    .then(
+                        async (orgResponse: OrganizationResponseInterface) => {
+                            dispatch(setOrganization(orgResponse));
+                        }
+                    )
+                    .catch((error: any) => {
                         if (error?.description) {
                             dispatch(
                                 addAlert({
@@ -224,7 +315,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                                     level: AlertLevels.ERROR,
                                     message: t(
                                         "console:manage.features.organizations.notifications." +
-                                "fetchOrganization.error.message"
+                                        "fetchOrganization.error.message"
                                     )
                                 })
                             );
@@ -236,27 +327,31 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                             addAlert({
                                 description: t(
                                     "console:manage.features.organizations.notifications.fetchOrganization" +
-                            ".genericError.description"
+                                    ".genericError.description"
                                 ),
                                 level: AlertLevels.ERROR,
                                 message: t(
                                     "console:manage.features.organizations.notifications." +
-                            "fetchOrganization.genericError.message"
+                                    "fetchOrganization.genericError.message"
                                 )
                             })
                         );
-                    }).finally(() => {
+                    })
+                    .finally(() => {
                         dispatch(setGetOrganizationLoading(false));
                     });
             } else {
                 dispatch(setGetOrganizationLoading(false));
-                tenantDomain = CommonAuthenticateUtils.deriveTenantDomainFromSubject(response.sub);
             }
 
             // Update the app base name with the newly resolved tenant.
             window[ "AppUtils" ].updateTenantQualifiedBaseName(tenantDomain);
             // Update the endpoints with tenant path.
-            await dispatch(setServiceResourceEndpoints(Config.getServiceResourceEndpoints()));
+            await dispatch(
+                setServiceResourceEndpoints(
+                    Config.getServiceResourceEndpoints()
+                )
+            );
 
             // When the tenant domain changes, we have to reset the auth callback in session storage.
             // If not, it will hang and the app will be unresponsive with in the tab.
@@ -269,7 +364,9 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                         AppConstants.getTenantPath()
                     )
                 ) {
-                    CommonAuthenticateUtils.removeAuthenticationCallbackUrl(CommonAppConstants.CONSOLE_APP);
+                    CommonAuthenticateUtils.removeAuthenticationCallbackUrl(
+                        CommonAppConstants.CONSOLE_APP
+                    );
                 }
             }
 
@@ -280,7 +377,10 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             if (sessionStorage.getItem(LOGOUT_URL)) {
                 logoutUrl = sessionStorage.getItem(LOGOUT_URL);
 
-                if (!window[ "AppUtils" ].getConfig().accountApp.commonPostLogoutUrl) {
+                if (
+                    !window[ "AppUtils" ].getConfig().accountApp
+                        .commonPostLogoutUrl
+                ) {
                     // If there is a base name, replace the `post_logout_redirect_uri` with the tenanted base name.
                     if (window[ "AppUtils" ].getConfig().appBase) {
                         logoutUrl = logoutUrl.replace(
@@ -296,19 +396,23 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                     } else {
                         logoutUrl = logoutUrl.replace(
                             window[ "AppUtils" ].getConfig().logoutCallbackURL,
-                            window[ "AppUtils" ].getConfig().clientOrigin
-                            + window[ "AppUtils" ].getConfig().routes.login
+                            window[ "AppUtils" ].getConfig().clientOrigin +
+                            window[ "AppUtils" ].getConfig().routes.login
                         );
-                        logoutRedirectUrl = window[ "AppUtils" ].getConfig().clientOrigin
-                            + window[ "AppUtils" ].getConfig().routes.login;
+                        logoutRedirectUrl =
+                            window[ "AppUtils" ].getConfig().clientOrigin +
+                            window[ "AppUtils" ].getConfig().routes.login;
                     }
                 }
 
                 // If an override URL is defined in config, use that instead.
-                if (window[ "AppUtils" ].getConfig().idpConfigs?.logoutEndpointURL) {
+                if (
+                    window[ "AppUtils" ].getConfig().idpConfigs?.logoutEndpointURL
+                ) {
                     logoutUrl = AuthenticateUtils.resolveIdpURLSAfterTenantResolves(
                         logoutUrl,
-                        window[ "AppUtils" ].getConfig().idpConfigs.logoutEndpointURL
+                        window[ "AppUtils" ].getConfig().idpConfigs
+                            .logoutEndpointURL
                     );
                 }
 
@@ -320,92 +424,121 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                 .get(Config.getServiceResourceEndpoints().wellKnown)
                 .then((response: AxiosResponse) => {
                     // Use token endpoint to extract the host url.
-                    const splitted: string[] = response?.data?.token_endpoint?.split("/") ?? [];
+                    const splitted: string[] =
+                        response?.data?.token_endpoint?.split("/") ?? [];
                     const serverHost: string = splitted.slice(0, -2).join("/");
 
                     window[ "AppUtils" ].updateCustomServerHost(serverHost);
                 })
-                .catch((error) => {
-                    // In case of failure customServerHost is set to the serverHost
-                    window[ "AppUtils" ].updateCustomServerHost(Config.getDeploymentConfig().serverHost);
+                .catch((error: any) => {
+                    // In case of failure customServerHost is set to the serverHost.
+                    window[ "AppUtils" ].updateCustomServerHost(
+                        Config.getDeploymentConfig().serverHost
+                    );
 
                     throw error;
                 })
                 .finally(() => {
                     // Update store with custom server host.
-                    dispatch(setDeploymentConfigs<DeploymentConfigInterface>(Config.getDeploymentConfig()));
+                    dispatch(
+                        setDeploymentConfigs<DeploymentConfigInterface>(
+                            Config.getDeploymentConfig()
+                        )
+                    );
 
                     // Update runtime configurations.
                     ContextUtils.setRuntimeConfig(Config.getDeploymentConfig());
                 });
 
-            await getDecodedIDToken()
-                .then((idToken) => {
-                    const tenantDomain: string = CommonAuthenticateUtils.deriveTenantDomainFromSubject(idToken?.sub);
+            const firstName: string = idToken?.given_name;
+            const lastName: string = idToken?.family_name;
+            const fullName: string = firstName
+                ? firstName + (lastName ? " " + lastName : "")
+                : response.email;
 
-                    isPrivilegedUser = idToken?.amr?.length > 0
-                        ? idToken?.amr[0] === "EnterpriseIDPAuthenticator"
-                        : false;
-                    const firstName = idToken?.given_name;
-                    const lastName = idToken?.family_name;
-                    const fullName = firstName ? (firstName + (lastName ? (" " + lastName) : "")) : response.email;
+            dispatch(
+                setSignIn<AuthenticatedUserInfo & TenantListInterface>(
+                    Object.assign(
+                        CommonAuthenticateUtils.getSignInState(response),
+                        {
+                            associatedTenants: isPrivilegedUser
+                                ? tenantDomain
+                                : idToken?.associated_tenants,
+                            defaultTenant: isPrivilegedUser
+                                ? tenantDomain
+                                : idToken?.default_tenant,
+                            fullName: fullName,
+                            isPrivilegedUser: isPrivilegedUser
+                        }
+                    )
+                )
+            );
 
-                    dispatch(
-                        setSignIn<AuthenticatedUserInfo & TenantListInterface>(
-                            Object.assign(CommonAuthenticateUtils.getSignInState(response), {
-                                associatedTenants:  isPrivilegedUser ? tenantDomain : idToken?.associated_tenants,
-                                defaultTenant: isPrivilegedUser ? tenantDomain : idToken?.default_tenant,
-                                fullName: fullName,
-                                isPrivilegedUser: isPrivilegedUser
-                            })
-                        )
-                    );
+            setRenderApp(true);
 
-                    setRenderApp(true);
-                })
-                .catch((error) => {
-                    throw error;
-                });
-
-            sessionStorage.setItem(CommonConstants.SESSION_STATE, response?.sessionState);
+            sessionStorage.setItem(
+                CommonConstants.SESSION_STATE,
+                response?.sessionState
+            );
 
             getOIDCServiceEndpoints()
                 .then((response: OIDCEndpoints) => {
-                    let authorizationEndpoint: string = response.authorizationEndpoint;
-                    let oidcSessionIframeEndpoint: string = response.checkSessionIframe;
+                    let authorizationEndpoint: string =
+                        response.authorizationEndpoint;
+                    let oidcSessionIframeEndpoint: string =
+                        response.checkSessionIframe;
                     let tokenEndpoint: string = response.tokenEndpoint;
 
                     // If `authorize` endpoint is overridden, save that in the session.
-                    if (window[ "AppUtils" ].getConfig().idpConfigs?.authorizeEndpointURL) {
+                    if (
+                        window[ "AppUtils" ].getConfig().idpConfigs
+                            ?.authorizeEndpointURL
+                    ) {
                         authorizationEndpoint = AuthenticateUtils.resolveIdpURLSAfterTenantResolves(
                             authorizationEndpoint,
-                            window[ "AppUtils" ].getConfig().idpConfigs.authorizeEndpointURL
+                            window[ "AppUtils" ].getConfig().idpConfigs
+                                .authorizeEndpointURL
                         );
                     }
 
                     // If `oidc session iframe` endpoint is overridden, save that in the session.
-                    if (window[ "AppUtils" ].getConfig().idpConfigs?.oidcSessionIFrameEndpointURL) {
+                    if (
+                        window[ "AppUtils" ].getConfig().idpConfigs
+                            ?.oidcSessionIFrameEndpointURL
+                    ) {
                         oidcSessionIframeEndpoint = AuthenticateUtils.resolveIdpURLSAfterTenantResolves(
                             oidcSessionIframeEndpoint,
-                            window[ "AppUtils" ].getConfig().idpConfigs.oidcSessionIFrameEndpointURL
+                            window[ "AppUtils" ].getConfig().idpConfigs
+                                .oidcSessionIFrameEndpointURL
                         );
                     }
 
                     // If `token` endpoint is overridden, save that in the session.
-                    if (window[ "AppUtils" ].getConfig().idpConfigs?.tokenEndpointURL) {
+                    if (
+                        window[ "AppUtils" ].getConfig().idpConfigs
+                            ?.tokenEndpointURL
+                    ) {
                         tokenEndpoint = AuthenticateUtils.resolveIdpURLSAfterTenantResolves(
                             tokenEndpoint,
-                            window[ "AppUtils" ].getConfig().idpConfigs.tokenEndpointURL
+                            window[ "AppUtils" ].getConfig().idpConfigs
+                                .tokenEndpointURL
                         );
                     }
 
                     if (isPrivilegedUser) {
-                        logoutRedirectUrl = window[ "AppUtils" ].getConfig().clientOrigin
-                            + window[ "AppUtils" ].getConfig().routes.login;
+                        logoutRedirectUrl =
+                            window[ "AppUtils" ].getConfig().clientOrigin +
+                            window[ "AppUtils" ].getConfig().routes.login;
                     }
 
-                    sessionStorage.setItem(AUTHORIZATION_ENDPOINT, authorizationEndpoint);
-                    sessionStorage.setItem(OIDC_SESSION_IFRAME_ENDPOINT, oidcSessionIframeEndpoint);
+                    sessionStorage.setItem(
+                        AUTHORIZATION_ENDPOINT,
+                        authorizationEndpoint
+                    );
+                    sessionStorage.setItem(
+                        OIDC_SESSION_IFRAME_ENDPOINT,
+                        oidcSessionIframeEndpoint
+                    );
                     sessionStorage.setItem(TOKEN_ENDPOINT, tokenEndpoint);
 
                     updateConfig({
@@ -418,7 +551,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                         signOutRedirectURL: logoutRedirectUrl
                     });
                 })
-                .catch((error) => {
+                .catch((error: any) => {
                     throw error;
                 });
 
@@ -428,29 +561,46 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                     window[ "AppUtils" ].getConfig().clientOriginWithTenant
                 )
             );
-
         });
     }, []);
 
     const loginSuccessRedirect = (): void => {
-        const AuthenticationCallbackUrl = CommonAuthenticateUtils.getAuthenticationCallbackUrl(
+        let AuthenticationCallbackUrl: string = CommonAuthenticateUtils.getAuthenticationCallbackUrl(
             CommonAppConstants.CONSOLE_APP
         );
 
-        if(commonConfig?.enableOrganizationAssociations) {
+        // Setting fallback value for auth_callback if the value is not set in the session.
+        if (!AuthenticationCallbackUrl ||  AuthenticationCallbackUrl === "") {
+            CommonAuthenticateUtils.updateAuthenticationCallbackUrl(CommonAppConstants.CONSOLE_APP, "/");
+
+            AuthenticationCallbackUrl = "/";
+        }
+
+        if (commonConfig?.enableOrganizationAssociations) {
             /**
              * Prevent redirect to landing page when there is no association.
              */
             getDecodedIDToken()
                 .then((idToken: DecodedIDTokenPayload) => {
-                    const isPrivilegedUser = idToken?.amr?.length > 0
-                        ? idToken?.amr[0] === "EnterpriseIDPAuthenticator"
-                        : false;
+                    const isPrivilegedUser: boolean =
+                        idToken?.amr?.length > 0
+                            ? idToken?.amr[ 0 ] === "EnterpriseIDPAuthenticator"
+                            : false;
 
-                    if(has(idToken, "associated_tenants") || isPrivilegedUser) {
+                    if (
+                        has(idToken, "associated_tenants") ||
+                        isPrivilegedUser
+                    ) {
                         // If there is an association, the user should be redirected to console landing page.
-                        const location =
-                            !AuthenticationCallbackUrl || AuthenticationCallbackUrl === AppConstants.getAppLoginPath()
+                        const location: string =
+                            !AuthenticationCallbackUrl ||
+                            AuthenticationCallbackUrl ===
+                                AppConstants.getAppLoginPath() ||
+                                (window[ "AppUtils" ].getConfig().organizationName &&
+                                    AuthenticationCallbackUrl ===
+                                    `${ window[ "AppUtils" ].getConfig()
+                                        .appBaseWithTenant
+                                    }/`)
                                 ? AppConstants.getAppHomePath()
                                 : AuthenticationCallbackUrl;
 
@@ -458,7 +608,9 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                     } else {
                         // If there is no assocation, the user should be redirected to creation flow.
                         history.push({
-                            pathname: AppConstants.getPaths().get("CREATE_TENANT")
+                            pathname: AppConstants.getPaths().get(
+                                "CREATE_TENANT"
+                            )
                         });
                     }
                 })
@@ -468,50 +620,110 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                     // Tracked here https://github.com/wso2/product-is/issues/11650.
                 });
         } else {
-            const location =
-                        !AuthenticationCallbackUrl || AuthenticationCallbackUrl === AppConstants.getAppLoginPath()
-                            ? AppConstants.getAppHomePath()
-                            : AuthenticationCallbackUrl;
+            const location: string =
+                !AuthenticationCallbackUrl ||
+                    AuthenticationCallbackUrl === AppConstants.getAppLoginPath() ||
+                    (window[ "AppUtils" ].getConfig().organizationName &&
+                        AuthenticationCallbackUrl ===
+                        `${ window[ "AppUtils" ].getConfig().appBaseWithTenant }/`)
+                    ? AppConstants.getAppHomePath()
+                    : AuthenticationCallbackUrl;
 
             history.push(location);
         }
     };
 
-    const filterRoutes = useCallback((): void => {
-        if (isEmpty(allowedScopes) || !featureConfig.applications || !featureConfig.users) {
+    const filterRoutes: () => void = useCallback((): void => {
+        if (
+            isEmpty(allowedScopes) ||
+            !featureConfig.applications ||
+            !featureConfig.users
+        ) {
             return;
         }
 
-        const [ devRoutes, sanitizedDevRoutes ] = CommonRouteUtils.filterEnabledRoutes<FeatureConfigInterface>(
+        const [
+            devRoutes,
+            sanitizedDevRoutes
+        ] = CommonRouteUtils.filterEnabledRoutes<FeatureConfigInterface>(
             getDeveloperViewRoutes(),
             featureConfig,
             allowedScopes,
-            commonConfig.checkForUIResourceScopes,
-            AppUtils.getHiddenRoutes(),
-            !OrganizationUtils.isCurrentOrganizationRoot() && AppConstants.ORGANIZATION_ENABLED_ROUTES);
+            window[ "AppUtils" ].getConfig().organizationName ? false : commonConfig.checkForUIResourceScopes,
+            isOrganizationManagementEnabled && !isPrivilegedUser
+                ? (OrganizationUtils.isCurrentOrganizationRoot() &&
+                    AppConstants.getSuperTenant() === tenant) ||
+                    isFirstLevelOrg
+                    ? [
+                        ...AppUtils.getHiddenRoutes(),
+                        ...AppConstants.ORGANIZATION_ONLY_ROUTES
+                    ]
+                    : window[ "AppUtils" ].getConfig().organizationName
+                        ? organizationConfigs.canCreateOrganization()
+                            ? AppUtils.getHiddenRoutes()
+                            : [ ...AppUtils.getHiddenRoutes(), OrganizationManagementConstants.ORGANIZATION_ROUTES ]
+                        : [
+                            ...AppUtils.getHiddenRoutes(),
+                            ...AppConstants.ORGANIZATION_ROUTES
+                        ]
+                : [
+                    ...AppUtils.getHiddenRoutes(),
+                    ...AppConstants.ORGANIZATION_ROUTES
+                ],
+            !OrganizationUtils.isCurrentOrganizationRoot() &&
+            !isFirstLevelOrg &&
+            AppConstants.ORGANIZATION_ENABLED_ROUTES
+        );
 
-        const [ manageRoutes, sanitizedManageRoutes ] = CommonRouteUtils.filterEnabledRoutes<FeatureConfigInterface>(
+        const [
+            manageRoutes,
+            sanitizedManageRoutes
+        ] = CommonRouteUtils.filterEnabledRoutes<FeatureConfigInterface>(
             getAdminViewRoutes(),
             featureConfig,
             allowedScopes,
-            commonConfig.checkForUIResourceScopes,
-            isOrganizationManagementEnabled
-                ? OrganizationUtils.isCurrentOrganizationRoot()
-                    ? [ ...AppUtils.getHiddenRoutes(), ...AppConstants.ORGANIZATION_ONLY_ROUTES ]
-                    : AppUtils.getHiddenRoutes()
-                : [ ...AppUtils.getHiddenRoutes(), ...AppConstants.ORGANIZATION_ROUTES ],
-            !OrganizationUtils.isCurrentOrganizationRoot() && AppConstants.ORGANIZATION_ENABLED_ROUTES,
+            window[ "AppUtils" ].getConfig().organizationName ? false : commonConfig.checkForUIResourceScopes,
+            isOrganizationManagementEnabled && !isPrivilegedUser
+                ? (OrganizationUtils.isCurrentOrganizationRoot() &&
+                    AppConstants.getSuperTenant() === tenant) ||
+                    isFirstLevelOrg
+                    ? [
+                        ...AppUtils.getHiddenRoutes(),
+                        ...AppConstants.ORGANIZATION_ONLY_ROUTES
+                    ]
+                    : window[ "AppUtils" ].getConfig().organizationName
+                        ? organizationConfigs.canCreateOrganization()
+                            ? AppUtils.getHiddenRoutes()
+                            : [ ...AppUtils.getHiddenRoutes(), OrganizationManagementConstants.ORGANIZATION_ROUTES ]
+                        : [
+                            ...AppUtils.getHiddenRoutes(),
+                            ...AppConstants.ORGANIZATION_ROUTES
+                        ]
+                : [
+                    ...AppUtils.getHiddenRoutes(),
+                    ...AppConstants.ORGANIZATION_ROUTES
+                ],
+            !OrganizationUtils.isCurrentOrganizationRoot() &&
+            !isFirstLevelOrg &&
+            AppConstants.ORGANIZATION_ENABLED_ROUTES,
             (route: RouteInterface) => {
                 if (route.id === "organization-roles") {
                     route.name = "Roles";
                 }
-            });
+            }
+        );
 
         // TODO : Remove this logic once getting started pages are removed.
-        if (devRoutes.length === 2
-            && devRoutes.filter(route => route.id === AccessControlUtils.DEVELOP_GETTING_STARTED_ID
-                || route.id === "404").length === 2) {
-            devRoutes[0] = devRoutes[0].filter(route => route.id === "404");
+        if (
+            devRoutes.length === 2 &&
+            devRoutes.filter(
+                (route: RouteInterface) =>
+                    route.id ===
+                    AccessControlUtils.DEVELOP_GETTING_STARTED_ID ||
+                    route.id === "404"
+            ).length === 2
+        ) {
+            devRoutes[ 0 ] = devRoutes[ 0 ].filter((route: RouteInterface) => route.id === "404");
         }
 
         dispatch(setFilteredDevelopRoutes(devRoutes));
@@ -532,10 +744,11 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
         if (sanitizedDevRoutes.length < 1 && sanitizedManageRoutes.length < 1) {
             history.push({
                 pathname: AppConstants.getPaths().get("UNAUTHORIZED"),
-                search: "?error=" + AppConstants.LOGIN_ERRORS.get("ACCESS_DENIED")
+                search:
+                    "?error=" + AppConstants.LOGIN_ERRORS.get("ACCESS_DENIED")
             });
         }
-    }, [ allowedScopes, dispatch, featureConfig ]);
+    }, [ allowedScopes, dispatch, featureConfig, isFirstLevelOrg ]);
 
     useEffect(() => {
         if (!isAuthenticated) {
@@ -546,20 +759,32 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
     }, [ filterRoutes, isAuthenticated ]);
 
     useEffect(() => {
-        if (!governanceConnectorCategories ||
+        if (
+            !governanceConnectorCategories ||
             governanceConnectorCategories.length === 0 ||
-            governanceConnectorsLoaded.current) {
+            governanceConnectorsLoaded.current
+        ) {
             return;
         }
 
-        const manageRoutes = [ ...filteredManageRoutes ];
-        const sanitizedRoutes = [ ...sanitizedManageRoutes ];
+        const manageRoutes: RouteInterface[] = [ ...filteredManageRoutes ];
+        const sanitizedRoutes: RouteInterface[] = [ ...sanitizedManageRoutes ];
+
+        if (!OrganizationUtils.isCurrentOrganizationRoot()) {
+            governanceConnectorCategories = AppConstants.filterGoverananceConnectors(
+                governanceConnectorCategories
+            );
+        }
 
         serverConfigurationConfig.showConnectorsOnTheSidePanel &&
-                governanceConnectorCategories?.map((category: GovernanceConnectorCategoryInterface, index: number) => {
-                    let subCategoryExists = false;
+            governanceConnectorCategories?.map(
+                (
+                    category: GovernanceConnectorCategoryInterface,
+                    index: number
+                ) => {
+                    let subCategoryExists: boolean = false;
 
-                    category.connectors?.map((connector) => {
+                    category.connectors?.map((connector: GovernanceConnectorInterface) => {
                         if (connector.subCategory !== "DEFAULT") {
                             subCategoryExists = true;
 
@@ -570,23 +795,34 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                         // TODO: Implement sub category handling logic here.
                     }
 
-                    const categoryName = 
-                        t(`console:manage.features.sidePanel.${camelCase(category.name)}`) 
-                            ?? category.name;
+                    const categoryName: string =
+                        t(
+                            `console:manage.features.sidePanel.${ camelCase(
+                                category.name
+                            ) }`
+                        ) ?? category.name;
 
-                    const route = {
-                        category: "console:manage.features.sidePanel.categories.configurations",
-                        component: lazy(() => import("./features/server-configurations/pages/governance-connectors")),
+                    const route: RouteInterface = {
+                        category:
+                            "console:manage.features.sidePanel.categories.configurations",
+                        component: lazy(() =>
+                            import(
+                                "./features/server-configurations/pages/governance-connectors"
+                            )
+                        ),
                         exact: true,
                         icon: {
-                            icon: getSidePanelIcons().connectors[ category.id ]
-                                ?? getSidePanelIcons().connectors.default
+                            icon:
+                                getSidePanelIcons().connectors[ category.id ] ??
+                                getSidePanelIcons().connectors.default
                         },
                         id: category.id,
                         name: categoryName,
                         order:
-                            category.id === ServerConfigurationsConstants.OTHER_SETTINGS_CONNECTOR_CATEGORY_ID
-                                ? manageRoutes.length + governanceConnectorCategories.length
+                            category.id ===
+                                ServerConfigurationsConstants.OTHER_SETTINGS_CONNECTOR_CATEGORY_ID
+                                ? manageRoutes.length +
+                                governanceConnectorCategories.length
                                 : manageRoutes.length + index,
                         path: AppConstants.getPaths()
                             .get("GOVERNANCE_CONNECTORS")
@@ -597,30 +833,36 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
 
                     manageRoutes.unshift(route);
                     sanitizedRoutes.unshift(route);
-                });
+                }
+            );
 
         dispatch(setFilteredManageRoutes(manageRoutes));
         dispatch(setSanitizedManageRoutes(sanitizedRoutes));
         governanceConnectorsLoaded.current = true;
-
-    }, [ governanceConnectorCategories, filteredManageRoutes, sanitizedManageRoutes ]);
+    }, [
+        governanceConnectorCategories,
+        filteredManageRoutes,
+        sanitizedManageRoutes
+    ]);
 
     useEffect(() => {
         if (!allowedScopes) {
             return;
         }
 
-        if (!(governanceConnectorCategories !== undefined && governanceConnectorCategories.length > 0)) {
+        if (
+            !(
+                governanceConnectorCategories !== undefined &&
+                governanceConnectorCategories.length > 0
+            )
+        ) {
             if (
-                (
-                    featureConfig?.governanceConnectors?.enabled  &&
-                    serverConfigurationConfig.showConnectorsOnTheSidePanel &&
-                    hasRequiredScopes(
-                        featureConfig.governanceConnectors,
-                        featureConfig.governanceConnectors.scopes.read,
-                        allowedScopes
-                    ) &&
-                    OrganizationUtils.isCurrentOrganizationRoot()
+                featureConfig?.governanceConnectors?.enabled &&
+                serverConfigurationConfig.showConnectorsOnTheSidePanel &&
+                hasRequiredScopes(
+                    featureConfig.governanceConnectors,
+                    featureConfig.governanceConnectors.scopes.read,
+                    allowedScopes
                 )
             ) {
                 GovernanceConnectorUtils.getGovernanceConnectors();
@@ -629,12 +871,16 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
     }, [ governanceConnectorCategories, featureConfig, allowedScopes ]);
 
     useEffect(() => {
-        const error = new URLSearchParams(location.search).get("error_description");
+        const error: string = new URLSearchParams(location.search).get(
+            "error_description"
+        );
 
         if (error === AppConstants.USER_DENIED_CONSENT_SERVER_ERROR) {
             history.push({
                 pathname: AppConstants.getPaths().get("UNAUTHORIZED"),
-                search: "?error=" + AppConstants.LOGIN_ERRORS.get("USER_DENIED_CONSENT")
+                search:
+                    "?error=" +
+                    AppConstants.LOGIN_ERRORS.get("USER_DENIED_CONSENT")
             });
 
             return;
@@ -653,24 +899,26 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
         const resolvedAppBaseNameWithoutTenant: string = StringUtils.removeSlashesFromPath(
             Config.getDeploymentConfig().appBaseNameWithoutTenant
         )
-            ? `/${ StringUtils.removeSlashesFromPath(Config.getDeploymentConfig().appBaseNameWithoutTenant) }`
+            ? `/${ StringUtils.removeSlashesFromPath(
+                Config.getDeploymentConfig().appBaseNameWithoutTenant
+            ) }`
             : "";
 
-        const metaFileNames = I18nModuleConstants.META_FILENAME.split(".");
-        const metaFileName = `${ metaFileNames[ 0 ] }.${ process.env.metaHash }.${ metaFileNames[ 1 ] }`;
+        const metaFileNames: string[] = I18nModuleConstants.META_FILENAME.split(".");
+        const metaFileName: string = `${ metaFileNames[ 0 ] }.${ process.env.metaHash }.${ metaFileNames[ 1 ] }`;
 
         // Since the portals are not deployed per tenant, looking for static resources in tenant qualified URLs
         // will fail. This constructs the path without the tenant, therefore it'll look for the file in
         // `https://localhost:9443/<PORTAL>/resources/i18n/meta.json` rather than looking for the file in
         // `https://localhost:9443/t/wso2.com/<PORTAL>/resources/i18n/meta.json`.
-        const metaPath = `${ resolvedAppBaseNameWithoutTenant }/${ StringUtils.removeSlashesFromPath(
+        const metaPath: string = `${ resolvedAppBaseNameWithoutTenant }/${ StringUtils.removeSlashesFromPath(
             Config.getI18nConfig().resourcePath
         ) }/${ metaFileName }`;
 
         // Fetch the meta file to get the supported languages and paths.
         axios
             .get(metaPath)
-            .then((response) => {
+            .then((response: AxiosResponse) => {
                 // Set up the i18n module.
                 I18n.init(
                     {
@@ -684,16 +932,27 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                     // Set the supported languages in redux store.
                     store.dispatch(setSupportedI18nLanguages(response?.data));
 
-                    const isSupported = isLanguageSupported(I18n.instance.language, null, response?.data);
+                    const isSupported: boolean = isLanguageSupported(
+                        I18n.instance.language,
+                        null,
+                        response?.data
+                    );
 
                     if (!isSupported) {
-                        I18n.instance.changeLanguage(I18nModuleConstants.DEFAULT_FALLBACK_LANGUAGE).catch((error) => {
-                            throw new LanguageChangeException(I18nModuleConstants.DEFAULT_FALLBACK_LANGUAGE, error);
-                        });
+                        I18n.instance
+                            .changeLanguage(
+                                I18nModuleConstants.DEFAULT_FALLBACK_LANGUAGE
+                            )
+                            .catch((error: any) => {
+                                throw new LanguageChangeException(
+                                    I18nModuleConstants.DEFAULT_FALLBACK_LANGUAGE,
+                                    error
+                                );
+                            });
                     }
                 });
             })
-            .catch((error) => {
+            .catch((error: any) => {
                 throw new I18nInstanceInitException(error);
             });
     }, [ isAuthenticated ]);

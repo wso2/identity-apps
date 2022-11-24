@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2022, WSO2 Inc. (http://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -54,6 +54,11 @@ interface BackupCodeProps extends IdentifiableComponentInterface {
     onAlertFired: (alert: AlertInterface) => void;
     initBackupCodeFlow: boolean;
     onBackupFlowCompleted: () => void;
+    /**
+     * This callback function handles the visibility of the
+     * session termination modal.
+     */
+     handleSessionTerminationModalVisibility: (visibility: boolean) => void;
 }
 
 export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
@@ -64,6 +69,7 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
         onAlertFired,
         initBackupCodeFlow,
         onBackupFlowCompleted,
+        handleSessionTerminationModalVisibility,
         ["data-componentid"]: componentid 
     } = props;
 
@@ -329,6 +335,7 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
                             onBackupFlowCompleted();
                             getRemainingCount();
                             setIsModalOpen(false);
+                            handleSessionTerminationModalVisibility(true);
                         } }
                         data-componentid={ `${componentid}-modal-actions-done-button` }
                     >

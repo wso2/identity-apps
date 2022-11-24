@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -67,9 +67,9 @@ interface InboundSAMLFormPropsInterface extends TestableComponentInterface {
 /**
  * Inbound SAML configurations.
  *
- * @param {InboundSAMLFormPropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns React.ReactElement
  */
 export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> = (
     props: InboundSAMLFormPropsInterface
@@ -323,7 +323,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
     /**
      * Scrolls to the first field that throws an error.
      *
-     * @param {string} field The name of the field.
+     * @param field - The name of the field.
      */
     const scrollToInValidField = (field: string): void => {
         const options: ScrollIntoViewOptions = {
@@ -477,7 +477,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                         } else {
                             if (selectedCertType === CertificateTypeInterface.NONE) {
                                 setFinalCertValue("");
-                            } 
+                            }
                             onSubmit(updateConfiguration(values));
                         }
                     } }
@@ -773,7 +773,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     }
                                     value={
                                         (initialValues?.requestValidation.enableSignatureValidation)
-                                            ? [ "enableSignatureValidation" ] 
+                                            ? [ "enableSignatureValidation" ]
                                             : []
                                     }
                                     children={ [
@@ -1238,7 +1238,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     }
                                     value={
                                         (initialValues?.singleSignOnProfile.assertion.encryption.enabled)
-                                            ? [ "enableAssertionEncryption" ] 
+                                            ? [ "enableAssertionEncryption" ]
                                             : []
                                     }
                                     type="checkbox"

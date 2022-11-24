@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,7 +14,6 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
 
 import React, { ReactElement } from "react";
@@ -32,7 +31,7 @@ export default {
 /**
  * Story to display all the app avatar variations.
  *
- * @return {React.ReactElement}
+ * @returns the story for displaying all the app avatar variations.
  */
 export const AllAppAvatarVariations = (): ReactElement => {
     return (
@@ -65,7 +64,7 @@ AllAppAvatarVariations.story = {
 /**
  * Story to display the app avatar with initials.
  *
- * @return {React.ReactElement}
+ * @returns the story for displaying the app avatar with initials.
  */
 export const AppAvatarWithInitials = (): ReactElement => (
     <AppAvatar
@@ -86,7 +85,7 @@ AppAvatarWithInitials.story = {
 /**
  * Story to display the app avatar from image.
  *
- * @return {React.ReactElement}
+ * @returns the story for displaying the app avatar from image.
  */
 export const AppAvatarFromImage = (): ReactElement => (
     <AppAvatar
@@ -110,7 +109,7 @@ AppAvatarFromImage.story = {
 /**
  * Story to display the app avatar loading status.
  *
- * @return {React.ReactElement}
+ * @returns the story for displaying the app avatar loading status.
  */
 export const AppAvatarPlaceholder = (): ReactElement => (
     <AppAvatar
@@ -132,7 +131,7 @@ AppAvatarPlaceholder.story = {
 /**
  * Story to display the app avatar sizes.
  *
- * @return {React.ReactElement}
+ * @returns the story for displaying the app avatar sizes.
  */
 export const AppAvatarSizes = (): ReactElement => (
     <>

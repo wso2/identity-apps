@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -21,8 +21,9 @@ import { useState } from "react";
 /**
  * This is a custom React Hook that returns a function that toggles the state and
  * thereby triggers either a reset or a submit event.
- * @param useState Call the React useState hook
- * @returns The state, A function that can be called to trigger a reset or submit event
+ * 
+ * @param useState - Call the React useState hook.
+ * @returns The state, A function that can be called to trigger a reset or submit event.
  */
 export const useTrigger = (): [boolean, () => void] => {
     const [ state, setState ] = useState(false);

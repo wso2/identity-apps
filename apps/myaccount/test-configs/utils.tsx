@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -18,7 +18,7 @@
 
 import { RenderResult, render as rtlRender } from "@testing-library/react";
 import { AccessControlProvider } from "@wso2is/access-control";
-import React, { ComponentType, PropsWithChildren, ReactElement } from "react";
+import React, { PropsWithChildren, ReactElement } from "react";
 import { Provider } from "react-redux";
 import { mockStore } from "./__mocks__/redux/redux-store";
 import ReduxStoreStateMock from "./__mocks__/redux/redux-store-state";
@@ -27,14 +27,13 @@ import ReduxStoreStateMock from "./__mocks__/redux/redux-store-state";
  * Custom render method to includes things like global context providers, data stores, etc.
  * @see {@link https://testing-library.com/docs/react-testing-library/setup#custom-render} for more info.
  *
- * @param {React.ReactElement} ui - Component to render.
- * @param {string} allowedScopes - Set of allowed scopes for the logged in user.
- * @param {Record<string, unknown>} featureConfig - UI Features configuration i.e permissions etc.
- * @param {Record<string, unknown>} initialState - Redux store initial state.
- * @param {MockStoreEnhanced<any, Record<string, unknown>>} store - Mocked store.
- * @param {{}} renderOptions - Render options.
- *
- * @return {RenderResult}
+ * @param ui - Component to render.
+ * @param allowedScopes - Set of allowed scopes for the logged in user.
+ * @param featureConfig - UI Features configuration i.e permissions etc.
+ * @param initialState - Redux store initial state.
+ * @param store - Mocked store.
+ * @param renderOptions - Render options.
+ * @returns Custom renderer.
  */
 const render = (
     ui: ReactElement,
@@ -47,7 +46,7 @@ const render = (
     } = {}
 ): RenderResult => {
 
-    const Wrapper = (props: PropsWithChildren<ComponentType>): ReactElement => {
+    const Wrapper = (props: PropsWithChildren<Record<string, unknown>>): ReactElement => {
 
         const { children } = props;
 

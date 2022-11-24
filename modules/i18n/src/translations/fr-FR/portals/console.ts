@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -91,6 +91,10 @@ export const console: ConsoleNS = {
                 tooltip: "Apps"
             },
             organizationSwitch: {
+                breadcrumbError: {
+                    description: "Une erreur s'est produite lors de la récupération de la hiérarchie de l'organisation.",
+                    message: "Quelque chose s'est mal passé"
+                },
                 emptyOrgListMessage: "Aucune organisation disponible",
                 orgSearchPlaceholder: "Rechercher par nom d'organisation"
             }
@@ -575,7 +579,7 @@ export const console: ConsoleNS = {
                             }
                         }
                     },
-                    placeholder: "Chercher par nom d'application ou clientId"
+                    placeholder: "Chercher des applications par nom, clientId, ou émetteur"
                 },
                 confirmations: {
                     addSocialLogin: {
@@ -767,6 +771,13 @@ export const console: ConsoleNS = {
                                     message: "Mappage d'attributs modifié"
                                 }
                             },
+                            emptySearchResults: {
+                                subtitles: {
+                                    0: "Nous n'avons trouvé aucun résultat pour '{{ searchQuery }}'",
+                                    1: "Veuillez essayer un autre terme de recherche."
+                                },
+                                title: "Aucun résultat trouvé"
+                            },
                             forms: {
                                 fields: {
                                     dynamic: {
@@ -811,12 +822,21 @@ export const console: ConsoleNS = {
                                 },
                                 attributeComponentHint: "Gérez les attributs utilisateur que vous souhaitez partager" +
                                     " avec cette application.",
-                                attributeComponentHintAlt: "Gérez les attributs utilisateur que vous souhaitez" +
-                                    " partager avec cette application. Vous pouvez ajouter de nouveaux attributs et " +
-                                    "mappages en accédant à <1>Attributs</1>",
-                                description: "Ajoutez les attributs utilisateur autorisés à être partagés avec cette " +
-                                    "application.",
+                                attributeComponentHintAlt: "Utilisez les étendues <1>OpenID Connect</1> pour ajouter/supprimer un attribut utilisateur " +
+                                    "à une étendue. Vous pouvez ajouter de nouveaux attributs en accédant à <3>Attributs.</3>",
+                                description: "Sélectionnez les étendues, c'est-à-dire les attributs utilisateur groupés qui sont autorisés à être " +
+                                    "partagés avec cette application.",
                                 heading: "Sélection des attributs utilisateur",
+                                scopelessAttributes: {
+                                    description: "Afficher les attributs sans étendue",
+                                    displayName: "Attributs sans portée",
+                                    name: "",
+                                    hint: "Impossible de récupérer ces attributs utilisateur en demandant " +
+                                        "des étendues OIDC. Pour récupérer, ajoutez les attributs requis à une étendue pertinente."
+                                },
+                                selectedScopesComponentHint: "Demandez ces étendues à partir de votre application pour récupérer " +
+                                    "les attributs utilisateur sélectionnés.",
+                                howToUseScopesHint: "Comment utiliser les portées",
                                 mandatoryAttributeHint: "Marquez les attributs utilisateur qui doivent " +
                                     "obligatoirement être partagés avec l'application. Lors de la connexion, " +
                                     "{{productName}} invite l'utilisateur à saisir ces valeurs d'attribut, si elles " +
@@ -835,8 +855,10 @@ export const console: ConsoleNS = {
                                         actions: {
                                             makeMandatory: "Rendre obligatoire",
                                             makeRequested: "Rendre demandable",
+                                            makeScopeRequested: "Rendre la portée demandée",
                                             removeMandatory: "Retirer l'obligation",
                                             removeRequested: "Retirer la demandabilité",
+                                            removeScopeRequested: "Supprimer l'étendue demandée",
                                             subjectDisabledSelection: "Cet attribut est obligatoire car il " +
                                                 "s'agit de l'attribut sujet."
                                         },
@@ -864,7 +886,7 @@ export const console: ConsoleNS = {
                                         confirmationMessage: "Cette action rétablira les valeurs mappées aux " +
                                             "valeurs par défaut."
                                     },
-                                    searchPlaceholder: "Attributs de recherche"
+                                    searchPlaceholder: "Rechercher des attributs d'utilisateur par nom, nom d'affichage ou détails de portée"
                                 },
                                 selectAll: "Sélectionnez tous les attributs"
                             },
@@ -1206,6 +1228,10 @@ export const console: ConsoleNS = {
                                                     "comportement inattendu."
 
                                             },
+                                            microsoft: {
+                                                description: "Autoriser les utilisateurs à se connecter avec Microsoft.",
+                                                heading: "Ajouter une connexion Microsoft"
+                                            },
                                             totp: {
                                                 description: "Activez une couche d'authentification supplémentaire " +
                                                     "avec OTP basé sur le temps.",
@@ -1224,6 +1250,10 @@ export const console: ConsoleNS = {
                                             emailOTP: {
                                                 description: "Activez une couche supplémentaire d'authentification avec OTP basé sur Email.",
                                                 heading: "Ajouter Email OTP comme deuxième facteur"
+                                            },
+                                            smsOTP: {
+                                                description: "Activez une couche supplémentaire d'authentification avec OTP basé sur SMS.",
+                                                heading: "Ajouter SMS OTP comme deuxième facteur"
                                             }
                                         }
                                     }
@@ -1607,6 +1637,12 @@ export const console: ConsoleNS = {
                                     "aux utilisateurs de se connecter.",
                                 heading: "La demande est révoquée"
                             }
+                        },
+                        mobileApp: {
+                            discoverableHint: "Si cette option est activée et qu'une URL accessible sur le " +
+                                "Web (lien profond) est fournie, les clients peuvent accéder à cette " +
+                                "application à partir du portail <1>{{ myAccount }}</1>.",
+                            mobileAppPlaceholder: "myapp://oauth2"
                         },
                         sections: {
                             accessToken: {
@@ -1993,7 +2029,12 @@ export const console: ConsoleNS = {
                             },
                             certificates: {
                                 disabledPopup: "Assurez-vous que la validation de la signature de la " +
-                                    "demande et le chiffrement des assertions sont désactivés pour continuer."
+                                    "demande et le chiffrement des assertions sont désactivés pour continuer.",
+                                certificateRemoveConfirmation: {
+                                    header: "Supprimer le certificat actuel?",
+                                    content: "Définir le type de certificat sur aucun supprimera le certificat " +
+                                        "actuel fourni pour cette application. Procéder avec prudence."
+                                }
                             },
                             encryption: {
                                 fields: {
@@ -2258,7 +2299,8 @@ export const console: ConsoleNS = {
                                 validations: {
                                     invalid: "The application name should contain letters, numbers."
                                 }
-                            }
+                            },
+                            urlDeepLinkError: "L'URL saisie n'est pas un lien profond."
                         }
                     }
                 },
@@ -2383,7 +2425,7 @@ export const console: ConsoleNS = {
                     columns: {
                         actions: "",
                         name: "Nom",
-                        templateId: "taper"
+                        inboundKey: "Clé entrante"
                     },
                     labels: {
                         fragment: "Fragmenter App"
@@ -2393,7 +2435,50 @@ export const console: ConsoleNS = {
                     description: "Portail libre-service pour les utilisateurs d'Asgardeo",
                     popup: "Partagez ce lien avec vos utilisateurs pour autoriser" +
                     " l'accès à Mon compte et gérer leurs comptes.",
-                    title: "Mon compte"
+                    title: "Mon compte",
+                    enable: {
+                        0: "Activé",
+                        1: "Désactivé"
+                    },
+                    Confirmation: {
+                        enableConfirmation: {
+                            content: "Le portail Mon compte est en mode aperçu et il est recommandé de le désactiver " +
+                                "lorsque votre organisation passe en production.",
+                            heading: "Êtes-vous sûr?",
+                            message: "Activer le portail Mon compte."
+                        },
+                        disableConfirmation: {
+                            content: "Le portail Mon compte est en mode aperçu et il est recommandé de le désactiver " +
+                                "lorsque votre organisation passe en production. Lorsque le portail Mon compte est " +
+                                "désactivé, les utilisateurs de votre organisation ne pourront pas y accéder.",
+                            heading: "Êtes-vous sûr?",
+                            message: "Désactiver le portail Mon compte."
+                        }
+                    },
+                    notifications: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Erreur de mise à jour"
+                        },
+                        genericError: {
+                            description: "Échec de la mise à jour de l'état du portail Mon compte.",
+                            message: "Quelque chose s'est mal passé"
+                        },
+                        success: {
+                            description: "Le statut du portail Mon compte a été mis à jour avec succès",
+                            message: "Mise à jour réussie"
+                        }
+                    },
+                    fetchMyAccountStatus: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Erreur de récupération"
+                        },
+                        genericError: {
+                            description: "Impossible de récupérer l'état du portail Mon compte.",
+                            message: "Quelque chose s'est mal passé"
+                        }
+                    }
                 },
                 notifications: {
                     addApplication: {
@@ -3000,6 +3085,22 @@ export const console: ConsoleNS = {
                                 idpDescription: "Fournir une description au fournisseur d'identité pour en expliquer davantage."
                             },
                             subHeading: "Utilisez le guide ci-dessous"
+                        }
+                    },
+                    organizationIDP: {
+                        wizardHelp: {
+                            name: {
+                                description: "Fournissez un nom unique au fournisseur d'authentification d'entreprise" +
+                                    " afin qu'il puisse être facilement identifié.",
+                                heading: "Nom"
+                            },
+                            description: {
+                                description: "Fournissez une description du fournisseur d'authentification" +
+                                    " d'entreprise pour en savoir plus à ce sujet.",
+                                heading: "La description",
+                                example: "Par exemple, il s'agit de l'authentificateur pour MyOrg, qui agit en tant" +
+                                    " qu'IDP pour MyApp."
+                            }
                         }
                     }
                 },
@@ -6763,12 +6864,23 @@ export const console: ConsoleNS = {
                         title: "Ajouter une nouvelle organisation"
                     }
                 },
+                shareApplicationRadio: "Partager avec toutes les sous-organisations",
+                shareApplicationInfo: "Sélectionnez cette option pour partager l'application avec toutes " +
+                    "les sous-organisations existantes et toutes les nouvelles sous-organisations que vous " +
+                    "créez sous votre organisation actuelle.",
+                unshareApplicationRadio: "Annuler le partage avec toutes les sous-organisations",
+                shareWithSelectedOrgsRadio: "Partager uniquement avec les sous-organisations sélectionnées",
+                unshareApplicationInfo: "Sélectionnez cette option pour annuler le partage de l'application " +
+                    "avec toutes les sous-organisations existantes et toutes les nouvelles sous-organisations " +
+                    "que vous créez sous vos organisations actuelles.",
                 subTitle: "Créer et gérer des organisations.",
                 switching: {
                     emptyList: "Il n'y a aucune organisation à afficher.",
                     search: {
                         placeholder: "Rechercher par nom"
-                    }
+                    },
+                    goBack: "Retourner",
+                    subOrganizations: "Sous-organisations"
                 },
                 title: "Organisations"
             },
@@ -7381,7 +7493,7 @@ export const console: ConsoleNS = {
                     certificates: "Certificats",
                     configurations: "Configurations",
                     general: "Général",
-                    organizations: "Organisations",
+                    organizations: "Gestion de l'organisation",
                     users: "Utilisateurs",
                     userstores: "Annuaires"
                 },
@@ -7518,7 +7630,7 @@ export const console: ConsoleNS = {
                                 label: "Sélectionnez la méthode pour réinitialiser le mot de passe utilisateur",
                                 options: {
                                     askPassword: "Invitez l'utilisateur à définir son propre mot de passe",
-                                    createPassword: "Définissez un mot de passe temporaire pour l'utilisateur"
+                                    createPassword: "Définissez un mot de passe pour l'utilisateur"
 
                                 }
                             }
@@ -7778,6 +7890,7 @@ export const console: ConsoleNS = {
                             },
                             success: {
                                 description: "Le compte utilisateur a bien été désactivé",
+                                genericMessage: "Le compte utilisateur a bien été désactivé",
                                 message: "Le compte de {{name}} est désactivé"
                             }
                         },
@@ -7792,6 +7905,7 @@ export const console: ConsoleNS = {
                             },
                             success: {
                                 description: "Le compte d'utilisateur a bien été activé",
+                                genericMessage: "Le compte de l'utilisateur a bien été activé",
                                 message: "Le compte de {{name}} est activé"
                             }
                         },
@@ -7839,6 +7953,7 @@ export const console: ConsoleNS = {
                             },
                             success: {
                                 description: "Le compte d'utilisateur a été verrouillé avec succès.",
+                                genericMessage: "Le compte d'utilisateur a été verrouillé avec succès.",
                                 message: "Le compte de {{name}} est verrouillé"
                             }
                         },
@@ -7859,6 +7974,7 @@ export const console: ConsoleNS = {
                             },
                             success: {
                                 description: "Le compte utilisateur a été déverrouillé avec succès.",
+                                genericMessage: "Le compte utilisateur a été déverrouillé avec succès.",
                                 message: "Le compte de {{name}} est déverrouillé"
                             }
                         },

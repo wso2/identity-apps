@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,7 +17,7 @@
  */
 
 import { AuthReactConfig, ResponseMode, Storage } from "@asgardeo/auth-react";
-import { AppConstants, TokenConstants } from "@wso2is/core/constants";
+import { TokenConstants } from "@wso2is/core/constants";
 import UAParser from "ua-parser-js";
 
 /**
@@ -34,7 +34,6 @@ export class AuthenticateUtils {
      * Private constructor to avoid object instantiation from outside
      * the class.
      *
-     * @hideconstructor
      */
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     private constructor() {}
@@ -50,7 +49,8 @@ export class AuthenticateUtils {
             clientID: window["AppUtils"]?.getConfig()?.clientID,
             clockTolerance: window[ "AppUtils" ]?.getConfig().idpConfigs?.clockTolerance,
             disableTrySignInSilently: new URL(location.href).searchParams.get("disable_silent_sign_in") === "true",
-            enableOIDCSessionManagement: true,
+            enableOIDCSessionManagement: window["AppUtils"]?.getConfig().idpConfigs?.enableOIDCSessionManagement
+                ?? true,
             enablePKCE: window["AppUtils"]?.getConfig()?.idpConfigs?.enablePKCE ?? true,
             endpoints: {
                 authorizationEndpoint: window["AppUtils"]?.getConfig()?.idpConfigs?.authorizeEndpointURL,
@@ -74,20 +74,17 @@ export class AuthenticateUtils {
     /**
      * Determines what storage type should be used to store session information.
      *
-     * @returns {Storage}
+     * @returns Storage
      */
     public static resolveStorage(): Storage {
 
-        const activeBrowser: string = new UAParser()?.getBrowser()?.name;
-
-        const storageFallback: Storage = AppConstants.WEB_WORKER_UNSUPPORTED_AGENTS.includes(activeBrowser)
-            ? Storage.SessionStorage
-            : Storage.WebWorker;
+        const storageFallback: Storage =
+            new UAParser().getBrowser().name === "IE" ? Storage.SessionStorage : Storage.WebWorker;
 
         if (window["AppUtils"]?.getConfig()?.idpConfigs?.storage) {
             if (
                 window["AppUtils"].getConfig().idpConfigs.storage === Storage.WebWorker &&
-                storageFallback !== Storage.WebWorker
+                new UAParser().getBrowser().name === "IE"
             ) {
                 return Storage.SessionStorage;
             }
@@ -103,7 +100,7 @@ export class AuthenticateUtils {
      * So, an attacker can't obtain the token by sending a request to their endpoint. This is mandatory
      * when the storage is set to Web Worker.
      *
-     * @return {string[]}
+     * @returns string[]
      */
     public static resolveBaseUrls(): string[] {
         let baseUrls = window["AppUtils"]?.getConfig()?.idpConfigs?.baseUrls;
@@ -124,9 +121,9 @@ export class AuthenticateUtils {
     /**
      * Resolves IDP URLs when the tenant resolves. Returns
      *
-     * @param {string} originalURL - Original URL.
-     * @param {string} overriddenURL - Overridden URL from config.
-     * @return {string}
+     * @param originalURL - Original URL.
+     * @param overriddenURL - Overridden URL from config.
+     * @returns string
      */
     public static resolveIdpURLSAfterTenantResolves(originalURL: string, overriddenURL: string): string {
         const parsedOriginalURL: URL = new URL(originalURL);

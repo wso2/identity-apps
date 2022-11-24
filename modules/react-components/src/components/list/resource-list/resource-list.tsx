@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,7 +16,11 @@
  * under the License.
  */
 
-import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { 
+    IdentifiableComponentInterface, 
+    LoadingStateOptionsInterface, 
+    TestableComponentInterface 
+} from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement } from "react";
 import { List, ListProps, Placeholder } from "semantic-ui-react";
@@ -51,7 +55,7 @@ export interface ResourceListPropsInterface extends ListProps, IdentifiableCompo
     /**
      * Optional meta for the loading state.
      */
-    loadingStateOptions?: ListLoadingStateOptionsInterface;
+    loadingStateOptions?: LoadingStateOptionsInterface;
     /**
      * Should the list appear on a transparent background.
      */
@@ -59,25 +63,11 @@ export interface ResourceListPropsInterface extends ListProps, IdentifiableCompo
 }
 
 /**
- * Interface for loading state options.
- */
-interface ListLoadingStateOptionsInterface {
-    /**
-     * Number of loading rows.
-     */
-    count: number;
-    /**
-     * Loading state image type.
-     */
-    imageType: "circular" | "square";
-}
-
-/**
  * Resource list component.
  *
- * @param {ResourceListPropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns the resource list component.
  */
 export const ResourceList: FunctionComponent<ResourceListPropsInterface> & ResourceListSubComponentsInterface = (
     props: ResourceListPropsInterface
@@ -108,7 +98,7 @@ export const ResourceList: FunctionComponent<ResourceListPropsInterface> & Resou
     /**
      * Shows the loading state placeholder rows.
      *
-     * @return {React.ReactElement[]}
+     * @returns an array of placeholders
      */
     const showPlaceholders = (): ReactElement[] => {
 

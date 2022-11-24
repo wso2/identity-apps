@@ -57,6 +57,7 @@ import static org.wso2.identity.apps.common.util.AppPortalConstants.GRANT_TYPE_A
 import static org.wso2.identity.apps.common.util.AppPortalConstants.GRANT_TYPE_ORGANIZATION_SWITCH;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.INBOUND_AUTH2_TYPE;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.INBOUND_CONFIG_TYPE;
+import static org.wso2.identity.apps.common.util.AppPortalConstants.PROFILE_CLAIM_URI;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.USERNAME_CLAIM_URI;
 
 /**
@@ -190,7 +191,7 @@ public class AppPortalUtils {
         if (CONSOLE_APP.equals(appName) && AppsCommonDataHolder.getInstance().isOrganizationManagementEnabled()) {
             AuthenticationStep authenticationStep1 = new AuthenticationStep();
             LocalAuthenticatorConfig identifierFirst = new LocalAuthenticatorConfig();
-            identifierFirst.setName("IdentifierExecutor");
+            identifierFirst.setName(FrameworkConstants.RequestAttribute.IDENTIFIER_FIRST_AUTHENTICATOR);
             identifierFirst.setDisplayName("identifier-first");
             authenticationStep1.setLocalAuthenticatorConfigs(new LocalAuthenticatorConfig[]{identifierFirst});
             authenticationStep1.setSubjectStep(false);
@@ -199,8 +200,8 @@ public class AppPortalUtils {
 
             AuthenticationStep authenticationStep2 = new AuthenticationStep();
             LocalAuthenticatorConfig basic = new LocalAuthenticatorConfig();
-            basic.setName("BasicAuthenticator");
-            basic.setDisplayName("basic");
+            basic.setName(FrameworkConstants.BASIC_AUTHENTICATOR_CLASS);
+            basic.setDisplayName(FrameworkConstants.BASIC_AUTH_MECHANISM);
             authenticationStep2.setLocalAuthenticatorConfigs(new LocalAuthenticatorConfig[]{basic});
             authenticationStep2.setAttributeStep(true);
             authenticationStep2.setSubjectStep(true);
@@ -250,7 +251,15 @@ public class AppPortalUtils {
         usernameClaimMapping.setLocalClaim(usernameClaim);
         usernameClaimMapping.setRemoteClaim(usernameClaim);
 
-        return new ClaimMapping[] { emailClaimMapping, displayNameClaimMapping, usernameClaimMapping };
+        Claim profileUrlClaim = new Claim();
+        profileUrlClaim.setClaimUri(PROFILE_CLAIM_URI);
+        ClaimMapping profileUrlClaimMapping = new ClaimMapping();
+        profileUrlClaimMapping.setRequested(true);
+        profileUrlClaimMapping.setLocalClaim(profileUrlClaim);
+        profileUrlClaimMapping.setRemoteClaim(profileUrlClaim);
+
+        return new ClaimMapping[] { emailClaimMapping, displayNameClaimMapping, usernameClaimMapping,
+            profileUrlClaimMapping };
     }
 
     /**

@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,7 +14,6 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
 
 import React, { ReactElement } from "react";
@@ -32,7 +31,7 @@ export default {
 /**
  * Story to display the default code editor.
  *
- * @return {React.ReactElement}
+ * @returns the story for displaying the default code editor.
  */
 export const DefaultCodeEditor = (): ReactElement => (
     <CodeEditor
@@ -52,7 +51,7 @@ DefaultCodeEditor.story = {
 /**
  * Story to display a code editor with linting.
  *
- * @return {React.ReactElement}
+ * @returns the story for displaying code editor with linting.
  */
 export const EditorWithLinting = (): ReactElement => (
     <CodeEditor
@@ -73,7 +72,7 @@ EditorWithLinting.story = {
 /**
  * Story to display a readonly code editor.
  *
- * @return {React.ReactElement}
+ * @returns the story for displaying a readonly code editor.
  */
 export const ReadOnlyEditor = (): ReactElement => (
     <CodeEditor
@@ -94,7 +93,7 @@ ReadOnlyEditor.story = {
 /**
  * Story to display a smart code editor.
  *
- * @return {React.ReactElement}
+ * @returns the story for displaying a smart code editor.
  */
 export const SmartEditor = (): ReactElement => (
     <CodeEditor
@@ -116,7 +115,7 @@ SmartEditor.story = {
 /**
  * Story to display a JSON code editor.
  *
- * @return {React.ReactElement}
+ * @returns the story for displaying JSON code editor.
  */
 export const JSONEditor = (): ReactElement => (
     <CodeEditor
@@ -138,7 +137,7 @@ JSONEditor.story = {
 /**
  * Story to display a Typescript code editor.
  *
- * @return {React.ReactElement}
+ * @returns the story for displaying TypeScript code editor
  */
 export const TypescriptEditor = (): ReactElement => (
     <CodeEditor
@@ -159,7 +158,7 @@ TypescriptEditor.story = {
 /**
  * Story to display the code editor themes.
  *
- * @return {React.ReactElement}
+ * @returns the story for displaying the code editor themes.
  */
 export const CodeEditorThemes = (): ReactElement => (
     <CodeEditor

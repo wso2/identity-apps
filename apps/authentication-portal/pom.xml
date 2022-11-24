@@ -19,7 +19,7 @@
     <parent>
         <groupId>org.wso2.identity.apps</groupId>
         <artifactId>identity-apps</artifactId>
-        <version>1.4.86-SNAPSHOT</version>
+        <version>1.6.126-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
@@ -246,6 +246,11 @@
             </exclusions>
         </dependency>
         <dependency>
+            <groupId>org.wso2.carbon.extension.identity.authenticator.outbound.backupcode</groupId>
+            <artifactId>org.wso2.carbon.extension.identity.authenticator.backupcode.connector</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>org.wso2.carbon.identity.governance</groupId>
             <artifactId>org.wso2.carbon.identity.captcha</artifactId>
             <scope>provided</scope>
@@ -275,6 +280,9 @@
                         <resource>
                             <!-- this is relative to the pom.xml directory -->
                             <directory>src/main/resources/</directory>
+                            <excludes>
+                                <exclude>EndpointConfig.properties</exclude>
+                            </excludes>
                         </resource>
                     </webResources>
                     <warName>authenticationendpoint</warName>

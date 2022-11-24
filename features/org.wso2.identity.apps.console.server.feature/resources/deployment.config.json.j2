@@ -181,6 +181,13 @@
         "identityProviderTemplateLoadingStrategy": "{{ console.ui.identity_provider_template_loading_strategy }}",
         {% endif %}
         "appLogoPath": "{{ console.ui.app_logo_path }}",
+        "googleOneTapEnabledTenants": [
+            {% if console.ui.google_one_tap_enabled_tenants is defined %}
+                {% for value in console.ui.google_one_tap_enabled_tenants %}
+                    "{{ value }}"{{ "," if not loop.last }}
+                {% endfor %}
+            {% endif %}
+        ],
         {% if console.ui.show_app_switch_button is defined %}
         "showAppSwitchButton": "{{ console.ui.show_app_switch_button }}",
         {% endif %}
@@ -827,6 +834,9 @@
         {% endif %}
         {% if console.ui.is_cookie_consent_banner_enabled is defined %}
         "isCookieConsentBannerEnabled": {{ console.ui.is_cookie_consent_banner_enabled }},
+        {% endif %}
+        {% if console.ui.is_marketing_consent_banner_enabled is defined %}
+        "isMarketingConsentBannerEnabled": {{ console.ui.is_marketing_consent_banner_enabled }},
         {% endif %}
         {% if oauth.hash_tokens_and_secrets is defined %}
         "isClientSecretHashEnabled": {{ oauth.hash_tokens_and_secrets }},

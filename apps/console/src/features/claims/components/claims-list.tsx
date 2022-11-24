@@ -1,20 +1,20 @@
 /**
-* Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
-*
-* WSO2 Inc. licenses this file to you under the Apache License,
-* Version 2.0 (the 'License'); you may not use this file except
-* in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing,
-* software distributed under the License is distributed on an
-* 'AS IS' BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-* KIND, either express or implied. See the License for the
-* specific language governing permissions and limitations
-* under the License.
-*/
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 
 import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
@@ -66,8 +66,7 @@ import {
     FeatureConfigInterface,
     UIConstants,
     getEmptyPlaceholderIllustrations,
-    history,
-    store
+    history
 } from "../../core";
 import { getProfileSchemas } from "../../users/api";
 import { UserStoreListItem, getUserStores } from "../../userstores";
@@ -82,7 +81,7 @@ interface ListItem {
     assertion: string;
     message: string;
     name: string;
-    delete: (id: string, claimId?: string) => void;
+    delete: (id: string, claim?: ExternalClaim) => void;
 }
 
 /**
@@ -182,9 +181,9 @@ interface ClaimsListPropsInterface extends SBACInterface<FeatureConfigInterface>
 /**
  * This component renders claims/dialects list
  *
- * @param {ClaimsListPropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns ClaimsList component.
  */
 export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
     props: ClaimsListPropsInterface
@@ -260,9 +259,9 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
     /**
      * This check if the input claim is mapped to attribute from every userstore.
      *
-     * @param {Claim} claim The claim to be checked.
+     * @param claim - The claim to be checked.
      *
-     * @returns {string[]} The array of userstore names without a mapped attribute.
+     * @returns The array of userstore names without a mapped attribute.
      */
     const checkUserStoreMapping = (claim: Claim): string[] => {
         const userStoresNotSet = [];
@@ -283,9 +282,9 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
     /**
      * This checks if the list data is a local claim.
      *
-     * @param {Claim[] | ExternalClaim[] | ClaimDialect[] | AddExternalClaim[]} toBeDetermined Type to be checked.
+     * @param toBeDetermined - Type to be checked.
      *
-     * @return {boolean} `true` if the data is a local claim.
+     * @returns Whether the data is a local claim.
      */
     const isLocalClaim = (
         toBeDetermined: Claim[] | ExternalClaim[] | ClaimDialect[] | AddExternalClaim[]
@@ -297,9 +296,9 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
     /**
      * This checks if the list data is a dialect.
      *
-     * @param {Claim[] | ExternalClaim[] | ClaimDialect[] | AddExternalClaim[]} toBeDetermined
+     * @param toBeDetermined - Claim to be checked
      *
-     * @return {boolean} `true` if the data is a dialect.
+     * @returns whether the data is a dialect.
      */
     const isDialect = (
         toBeDetermined: Claim[] | ExternalClaim[] | ClaimDialect[] | AddExternalClaim[]
@@ -311,9 +310,9 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
     /**
      * This checks if the list data is an external claim.
      *
-     * @param {Claim[] | ExternalClaim[] | ClaimDialect[] | AddExternalClaim[]} toBeDetermined
+     * @param toBeDetermined - Claim to be checked
      *
-     * @return {boolean} `true` if the data is a an external claim.
+     * @returns whether the data is an external claim.
      */
     const isExternalClaim = (
         toBeDetermined: Claim[] | ExternalClaim[] | ClaimDialect[] | AddExternalClaim[]
@@ -333,7 +332,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
 
     /**
      * This deletes a local claim
-     * @param {string} id
+     * @param id - Local claim id
      */
     const deleteLocalClaim = (id: string) => {
         deleteAClaim(id).then(() => {
@@ -363,11 +362,11 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
 
     /**
      * This deletes an external claim
-     * @param {string} dialectID
-     * @param {string} claimID
+     * @param dialectID - The id of the dialect to be deleted.
+     * @param claim - The claim to be deleted.
      */
-    const deleteExternalClaim = (dialectID: string, claimID: string) => {
-        deleteAnExternalClaim(dialectID, claimID).then(() => {
+    const deleteExternalClaim = (dialectID: string, claim: ExternalClaim) => {
+        deleteAnExternalClaim(dialectID, claim.id).then(() => {
             update();
             attributeConfig.localAttributes.isSCIMCustomDialectAvailable().then(() => {
                 fetchUpdatedSchemaList();
@@ -378,7 +377,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
             dispatch(addAlert(
                 {
                     description: t("console:manage.features.claims.external.notifications." +
-                        "deleteExternalClaim.success.description"),
+                        "deleteExternalClaim.success.description", { type: claim.claimURI }),
                     level: AlertLevels.SUCCESS,
                     message: t("console:manage.features.claims.external.notifications." +
                         "deleteExternalClaim.success.message")
@@ -438,7 +437,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
 
     /**
      * This deletes a dialect
-     * @param {string} dialectID
+     * @param dialectID - to delete
      */
     const deleteDialect = (dialectID: string) => {
         deleteADialect(dialectID).then(() => {
@@ -470,7 +469,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
 
     /**
      * This shows the delete confirmation modal
-     * @return {ReactElement} Modal
+     * @returns Delete Confirm Modal
      */
     const showDeleteConfirm = (): ReactElement => {
         let listItem: ListItem;
@@ -493,14 +492,19 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
             listItem = {
                 assertion: deleteItem.claimURI,
                 delete: deleteExternalClaim,
-                message: ( t("console:manage.features.claims.list.confirmation.external.message") +
+                message: (
+                    t("console:manage.features.claims.list.confirmation.external.message", {
+                        type: deleteItem.claimURI
+                    }) +
                     (attributeType && attributeType === OIDC
                         ?
                         "If this attribute is attached to any scope, this action will also remove " +
                         "the attribute from the relevant scope."
                         : ClaimManagementConstants.EMPTY_STRING
                     )),
-                name: t("console:manage.features.claims.list.confirmation.external.name")
+                name: t("console:manage.features.claims.list.confirmation.external.name", {
+                    type: deleteItem.claimURI
+                })
             };
         }
 
@@ -519,7 +523,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                 } }
                 onPrimaryActionClick={ () => {
                     deleteType === ListType.EXTERNAL
-                        ? listItem.delete(dialectID, deleteItem.id)
+                        ? listItem.delete(dialectID, deleteItem as ExternalClaim)
                         : listItem.delete(deleteItem.id);
                 } }
                 data-testid={ `${ testId }-delete-confirmation-modal` }
@@ -553,8 +557,8 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
 
     /**
      * This initiates the delete process
-     * @param {ListType} type The type of the list item.
-     * @param {Claim | ExternalClaim | ClaimDialect} item The list item to be deleted.
+     * @param type -  The type of the list item.
+     * @param item - The list item to be deleted.
      */
     const initDelete = (type: ListType, item: Claim | ExternalClaim | ClaimDialect) => {
         setDeleteType(type);
@@ -565,7 +569,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
     /**
      * Resolve the relevant placeholder.
      *
-     * @return {React.ReactElement}
+     * @returns Resolved Placeholder
      */
     const showPlaceholders = (): ReactElement => {
         // When the search returns empty.
@@ -635,9 +639,9 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
     /**
      * Generates the initial for an attribute.
      *
-     * @param {Claim} - An attribute.
+     * @param claim - An attribute.
      *
-     * @return {string} - The last word.
+     * @returns The last word.
      */
     const generateInitialLetter = (claim: Claim): string => {
         const parts = claim.claimURI.split("/");
@@ -648,7 +652,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
     /**
      * Resolves data table columns.
      *
-     * @return {TableColumnInterface[]}
+     * @returns Resolved table columns.
      */
     const resolveTableColumns = (): TableColumnInterface[] => {
         if (isLocalClaim(list)) {
@@ -781,10 +785,10 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
 
             /**
              * A predicate that tells whether table action column should render or not.
-             * Currently we only have "edit" and "delete". This will only check whether
+             * Currently, we only have "edit" and "delete". This will only check whether
              * one of the targeted action is enabled for all rows.
              *
-             * @return {boolean} show it or hide
+             * @returns should render actions column or hide
              */
             const shouldRenderActionsColumn = (): boolean => {
                 const showEditAction =
@@ -956,7 +960,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
     /**
      * Resolves data table actions.
      *
-     * @return {TableActionsInterface[]}
+     * @returns Resolved data table actions.
      */
     const resolveTableActions = (): TableActionsInterface[] => {
         if (!showListItemActions) {
@@ -1104,8 +1108,8 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
     /**
      * Resolves table row on click action.
      *
-     * @param {React.SyntheticEvent} e - Click Event.
-     * @param {Claim | ExternalClaim | ClaimDialect | any} item - Row item.
+     * @param e - Click Event.
+     * @param item - Row item.
      */
     const resolveTableRowClick = (e: SyntheticEvent, item: Claim | ExternalClaim | ClaimDialect | any): void => {
 

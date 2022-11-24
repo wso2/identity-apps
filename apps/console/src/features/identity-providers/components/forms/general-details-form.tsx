@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -102,11 +102,13 @@ interface GeneralDetailsFormPopsInterface extends TestableComponentInterface {
 const IDP_NAME_MAX_LENGTH: number = 50;
 const IDP_DESCRIPTION_MAX_LENGTH: number = 300;
 
+const FORM_ID: string = "idp-general-details-form";
+
 /**
  * Form to edit general details of the identity provider.
  *
- * @param props GeneralDetailsFormPopsInterface.
- * @return {React.ReactElement}.
+ * @param props - Props injected to the component.
+ * @returns Functional component.
  */
 export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterface> = (
     props: GeneralDetailsFormPopsInterface): ReactElement => {
@@ -122,7 +124,6 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
         hideIdPLogoEditField,
         isReadOnly,
         isSaml,
-        isOidc,
         isSubmitting,
         [ "data-testid" ]: testId
     } = props;
@@ -140,7 +141,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
 
     /**
      * Check whether IDP name is already exist or not.
-     * @param value IDP name
+     * @param value - IDP name
      * @returns error msg if name is already taken.
      */
     const idpNameValidation = (value: string): string => {
@@ -193,7 +194,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
      * Prepare form values for submitting.
      *
      * @param values - Form values.
-     * @return {any} Sanitized form values.
+     * @returns Sanitized form values.
      */
     const updateConfigurations = (values): void => {
         onSubmit({
@@ -206,7 +207,8 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
 
     /**
      * Checks if the certificates section should be shown.
-     * @returns {boolean}
+     *
+     * @returns Should show/hide certificates.
      */
     const shouldShowCertificates = (): boolean => {
 
@@ -225,6 +227,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
         <React.Fragment>
             <EmphasizedSegment padded="very">
                 <Form
+                    id={ FORM_ID }
                     uncontrolledForm={ false }
                     onSubmit={ (values): void => {
                         updateConfigurations(values);
@@ -279,11 +282,11 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                 "placeholder") }
                             value={ imageUrl }
                             data-testid={ `${ testId }-idp-image` }
-                            maxLength={ 
+                            maxLength={
                                 IdentityProviderManagementConstants
                                     .GENERAL_FORM_CONSTRAINTS.IMAGE_URL_MAX_LENGTH as number
                             }
-                            minLength={ 
+                            minLength={
                                 IdentityProviderManagementConstants
                                     .GENERAL_FORM_CONSTRAINTS.IMAGE_URL_MIN_LENGTH as number
                             }
@@ -294,6 +297,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     ) }
                     { !isReadOnly && (
                         <Field.Button
+                            form={ FORM_ID }
                             ariaLabel="Update General Details"
                             size="small"
                             buttonType="primary_btn"

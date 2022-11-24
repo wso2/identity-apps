@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -105,8 +105,8 @@ interface GeneralSettingsInterface extends TestableComponentInterface {
 /**
  * Component to edit general details of the identity provider.
  *
- * @param {GeneralSettingsInterface} props - Props injected to the component.
- * @return {ReactElement}
+ * @param props - Props injected to the component.
+ * @returns General Settings component.
  */
 export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
     props: GeneralSettingsInterface
@@ -134,6 +134,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
     const { t } = useTranslation();
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
+    const [ loading, setLoading ] = useState(false);
     const [ connectedApps, setConnectedApps ] = useState<string[]>(undefined);
     const [ showDeleteErrorDueToConnectedAppsModal, setShowDeleteErrorDueToConnectedAppsModal ] =
         useState<boolean>(false);
@@ -213,6 +214,8 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
      * Deletes an identity provider.
      */
     const handleIdentityProviderDelete = (): void => {
+
+        setLoading(true);
         deleteIdentityProvider(editingIDP.id)
             .then(() => {
                 dispatch(addAlert({
@@ -228,13 +231,16 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
             })
             .catch((error) => {
                 handleIDPDeleteError(error);
+            })
+            .finally(() => {
+                setLoading(false);
             });
     };
 
     /**
      * Handles form submit action.
      *
-     * @param {IdentityProviderInterface} updatedDetails - Form values.
+     * @param updatedDetails - Form values.
      */
     const handleFormSubmit = (updatedDetails: IdentityProviderInterface): void => {
         setIsSubmitting(true);
@@ -352,6 +358,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                     {
                         showDeleteConfirmationModal && (
                             <ConfirmationModal
+                                primaryActionLoading={ loading }
                                 onClose={ (): void => setShowDeleteConfirmationModal(false) }
                                 type="negative"
                                 open={ showDeleteConfirmationModal }
@@ -362,9 +369,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                                 primaryAction={ t("common:confirm") }
                                 secondaryAction={ t("common:cancel") }
                                 onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
-                                onPrimaryActionClick={
-                                    (): void => handleIdentityProviderDelete()
-                                }
+                                onPrimaryActionClick={ (): void => handleIdentityProviderDelete() }
                                 data-testid={ `${ testId }-delete-idp-confirmation` }
                                 closeOnDimmerClick={ false }
                             >
@@ -374,7 +379,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                                 </ConfirmationModal.Header>
                                 <ConfirmationModal.Message
                                     attached
-                                    warning
+                                    negative
                                     data-testid={ `${ testId }-delete-idp-confirmation` }>
                                     { t("console:develop.features.authenticationProvider." +
                                         "confirmations.deleteIDP.message") }
@@ -403,7 +408,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                                 </ConfirmationModal.Header>
                                 <ConfirmationModal.Message
                                     attached
-                                    warning
+                                    negative
                                     data-testid={ `${ testId }-delete-idp-confirmation` }>
                                     { t("console:develop.features.authenticationProvider.confirmations." +
                                         "deleteIDPWithConnectedApps.message") }

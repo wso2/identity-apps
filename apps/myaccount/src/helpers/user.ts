@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,15 +17,17 @@
  */
 
 import { getUserNameWithoutDomain } from "@wso2is/core/helpers";
+import { ProfileSchemaInterface } from "@wso2is/core/models";
 import isEmpty from "lodash-es/isEmpty";
 import { AppConstants } from "../constants";
+import { UserManagementConstants } from "../constants/user-management-constants";
 import { AuthStateInterface } from "../models";
 
 /**
  * Resolves the user's display name.
  *
- * @param {AuthStateInterface} state - auth state.
- * @return {string} - Resolved display name.
+ * @param state - auth state.
+ * @returns Resolved display name.
  */
 export const resolveUserDisplayName = (state: AuthStateInterface): string => {
 
@@ -50,13 +52,15 @@ export const resolveUserDisplayName = (state: AuthStateInterface): string => {
 /**
  * Resolves the user's profile name.
  *
- * @param {AuthStateInterface} state - auth state.
+ * @param state - auth state.
  * @param isProfileInfoLoading - SCIM user profile loader status.
- * @return {string} - Resolved profile name.
+ * @returns Resolved profile name.
  */
 export const resolveUserProfileName = (state: AuthStateInterface, isProfileInfoLoading: boolean): string => {
 
-    if (state.profileInfo.name.givenName || state.profileInfo.name.familyName) {
+    if (isDisplayNameEnabled(state.profileSchemas, state.profileInfo.displayName)) {
+        return state.profileInfo.displayName;
+    } else if (state.profileInfo.name.givenName || state.profileInfo.name.familyName) {
         const givenName = isEmpty(state.profileInfo.name.givenName) ? "" : state.profileInfo.name.givenName + " ";
         const familyName = isEmpty(state.profileInfo.name.familyName) ? "" : state.profileInfo.name.familyName;
 
@@ -74,9 +78,9 @@ export const resolveUserProfileName = (state: AuthStateInterface, isProfileInfoL
  * have just the username and the other user store users will have their
  * corresponding user store prefixed to their username.
  *
- * @param {string} username - Username of the user.
- * @param {string} userStoreDomain - User store domain of the user.
- * @return {string}
+ * @param username - Username of the user.
+ * @param userStoreDomain - User store domain of the user.
+ * @returns Resolved username.
  */
 export const resolveUsername = (username: string, userStoreDomain: string): string => {
     // check if the user store is `PRIMARY`.
@@ -93,8 +97,8 @@ export const resolveUsername = (username: string, userStoreDomain: string): stri
  * and the other user store users will have their corresponding
  * user store prefixed to their username.
  *
- * @param {string} username - Username of the user with user store embedded.
- * @return {string}
+ * @param username - Username of the user with user store embedded.
+ * @returns Resolved user store embedded username.
  */
 export const resolveUserStoreEmbeddedUsername = (username: string): string => {
     const parts = username.split("/");
@@ -114,8 +118,8 @@ export const resolveUserStoreEmbeddedUsername = (username: string): string => {
 /**
  * Resolves the user's userstore from the username
  *
- * @param {string} username - Username of the user with user store embedded.
- * @return {string}
+ * @param username - Username of the user with user store embedded.
+ * @returns Resolved user store
  */
 export const resolveUserstore= (username: string): string => {
     // Userstore is index 0 and index 1 is username
@@ -123,4 +127,21 @@ export const resolveUserstore= (username: string): string => {
     const parts = username?.split("/");
 
     return parts[USERSTORE];
+};
+
+/**
+ * Checks if the display name attribute is enabled or not
+ *
+ * @param profileSchema - The schema
+ * @param displayName - displayName
+ * @returns if the display name attribute is enabled or not
+ */
+const isDisplayNameEnabled = (profileSchema: ProfileSchemaInterface[], displayName?: string): boolean => {
+    if (!displayName) {
+        return false;
+    }
+
+    return profileSchema
+        .some((schemaItem: ProfileSchemaInterface) =>
+            schemaItem.name === UserManagementConstants.SCIM2_SCHEMA_DICTIONARY.get("DISPLAY_NAME"));
 };

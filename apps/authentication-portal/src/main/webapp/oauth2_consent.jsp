@@ -1,7 +1,7 @@
 <%--
-  ~ Copyright (c) 2014, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+  ~ Copyright (c) 2014, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
   ~
-  ~ WSO2 Inc. licenses this file to you under the Apache License,
+  ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
   ~ in compliance with the License.
   ~ You may obtain a copy of the License at
@@ -90,7 +90,7 @@
 %>
 
 <!doctype html>
-<html>
+<html lang="en-US">
 <head>
     <%-- header --%>
     <%
@@ -186,7 +186,7 @@
                                             %>
                                             <div class="field required">
                                                 <div class="ui checkbox checked read-only disabled claim-cb">
-                                                    <input type="checkbox" class="mandatory-claim hidden" name="consent_<%=Encode.forHtmlAttribute(claimId)%>" id="consent_<%=Encode.forHtmlAttribute(claimId)%>" required checked readonly />
+                                                    <input tabindex="-1" type="checkbox" class="mandatory-claim hidden" name="consent_<%=Encode.forHtmlAttribute(claimId)%>" id="consent_<%=Encode.forHtmlAttribute(claimId)%>" required checked readonly />
                                                     <label for="consent_<%=Encode.forHtmlAttribute(claimId)%>"><%=Encode.forHtml(displayName)%></label>
                                                 </div>
                                             </div>
@@ -313,7 +313,6 @@
                                 <div class="field">
                                     <div class="ui checkbox">
                                         <input
-                                            tabindex="3"
                                             type="checkbox"
                                             id="rememberApproval"
                                             name="rememberApproval"

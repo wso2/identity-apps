@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -33,8 +33,8 @@ type GoogleIDPCreateWizardHelpPropsInterface = TestableComponentInterface
 /**
  * Help content for the custom IDP template creation wizard.
  *
- * @param {GoogleIDPCreateWizardHelpPropsInterface} props - Props injected into the component.
- * @return {React.ReactElement}
+ * @param props - Props injected into the component.
+ * @returns React Element for Google Create Wizard
  */
 const GoogleIDPCreateWizardHelp: FunctionComponent<GoogleIDPCreateWizardHelpPropsInterface> = (
     props: GoogleIDPCreateWizardHelpPropsInterface
@@ -71,7 +71,7 @@ const GoogleIDPCreateWizardHelp: FunctionComponent<GoogleIDPCreateWizardHelpProp
                         "preRequisites.heading")
                 }
                 content={
-                    <>
+                    (<>
                         <p>
                             <Trans
                                 i18nKey={
@@ -80,10 +80,10 @@ const GoogleIDPCreateWizardHelp: FunctionComponent<GoogleIDPCreateWizardHelpProp
                                 }
                             >
                                 Before you begin, create an <strong>OAuth credential</strong> on the <a
-                                href="https://console.developers.google.com"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            > Google developer console</a>, and obtain a <strong>Client ID & secret</strong>.
+                                    href="https://console.developers.google.com"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                > Google developer console</a>, and obtain a <strong>Client ID & secret</strong>.
                             </Trans>
                         </p>
                         <p>
@@ -112,7 +112,7 @@ const GoogleIDPCreateWizardHelp: FunctionComponent<GoogleIDPCreateWizardHelpProp
                                 }
                             </a>
                         </p>
-                    </>
+                    </>)
                 }
             />
 

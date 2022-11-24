@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -46,6 +46,8 @@ import { getGeneralIcons } from "../../configs";
 import { ApplicationManagementConstants } from "../../constants";
 import CustomApplicationTemplate
     from "../../data/application-templates/templates/custom-application/custom-application.json";
+import MobileTemplate
+    from "../../data/application-templates/templates/mobile-application/mobile-application.json";
 import OIDCWebApplicationTemplate
     from "../../data/application-templates/templates/oidc-web-application/oidc-web-application.json";
 import SinglePageApplicationTemplate
@@ -120,9 +122,9 @@ interface GrantIconInterface {
 /**
  * Inbound OIDC protocol configurations form.
  *
- * @param {InboundOIDCFormPropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns InboundOIDCForm component.
  */
 export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> = (
     props: InboundOIDCFormPropsInterface
@@ -207,6 +209,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const scopeValidator = useRef<HTMLElement>();
     const [ isSPAApplication, setSPAApplication ] = useState<boolean>(false);
     const [ isOIDCWebApplication, setOIDCWebApplication ] = useState<boolean>(false);
+    const [ isMobileApplication, setMobileApplication ] = useState<boolean>(false);
 
     const [ finalCertValue, setFinalCertValue ] = useState<string>(undefined);
     const [ selectedCertType, setSelectedCertType ] = useState<CertificateTypeInterface>(CertificateTypeInterface.NONE);
@@ -234,15 +237,16 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
      * We use this hook to maintain the toggle state of the PKCE checkbox in the
      * OIDC form.
      *
-     * @description Purpose is to enable "Support 'Plain' PKCE Algorithm" checkbox
-     *              field if and only if "Enabled" is checked. Otherwise the 'Plain'
-     *              will be disabled and stay in the unchecked state.
+     * @remarks 
+     * Purpose is to enable "Support 'Plain' PKCE Algorithm" checkbox
+     * field if and only if "Enabled" is checked. Otherwise the 'Plain' 
+     * will be disabled and stay in the unchecked state.
      */
     const [ enablePKCE, setEnablePKCE ] = useState<boolean>(false);
 
     /**
-     * The {@code PKCE_KEY}, {@code ENABLE_PKCE_CHECKBOX_VALUE and
-     * {@code SUPPORT_PKCE_PLAIN_ALGORITHM_VALUE} values are sensitive.
+     * The {@link PKCE_KEY}, {@link ENABLE_PKCE_CHECKBOX_VALUE} and
+     * {@link SUPPORT_PKCE_PLAIN_ALGORITHM_VALUE} values are sensitive.
      * If you inspect the relevant field you will see that those value should
      * be the same when we are passing it down to the component.
      */
@@ -253,15 +257,15 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     /**
      * The listener handler for the enable PKCE toggle form field. This function
      * check if the "mandatory" value is present in the values array under "PKCE"
-     * field and toggles the {@code enablePKCE} boolean on/off.
+     * field and toggles the {@link enablePKCE} boolean on/off.
      *
-     * @param tempForm {Map<string, FormValue>} a mutable map of form values
+     * @param tempForm - a mutable map of form values
      */
     const pkceValuesChangeListener = (tempForm: Map<string, FormValue>): void => {
         /**
          * A predicate that checks whether the given value is
          * matching ENABLE_PKCE_CHECKBOX_VALUE
-         * @param val {string} checkbox value
+         * @param val - checkbox value
          */
         const withPredicate = (val: string): boolean => val === ENABLE_PKCE_CHECKBOX_VALUE;
 
@@ -310,6 +314,22 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         if (template.id == OIDCWebApplicationTemplate.id) {
             setOIDCWebApplication(true);
         }
+    }, [ template ]);
+
+    /**
+     * Check whether the application is a Mobile Application
+     */
+    useEffect(() => {
+        if (!template?.id || !MobileTemplate?.id) {
+            setIsLoading(false);
+
+            return;
+        }
+
+        if (template?.id == MobileTemplate?.id) {
+            setMobileApplication(true);
+        }
+        setIsLoading(false);
     }, [ template ]);
 
     /**
@@ -441,7 +461,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     /**
      * Handle grant type change.
      *
-     * @param {Map<string, FormValue>} values - Form values
+     * @param values - Form values.
      */
     const handleGrantTypeChange = (values: Map<string, FormValue>) => {
         let grants: string[] = values.get("grant") as string[];
@@ -482,8 +502,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     /**
      * Moderates the metadata labels.
      *
-     * @param {string} label - Raw label.
-     * @return {string}
+     * @param label - Raw label.
+     * @returns moderated metadata labels.
      */
     const moderateMetadataLabels = (label: string): string => {
 
@@ -499,9 +519,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     /**
      * Creates options for Radio & dropdown using MetadataPropertyInterface options.
      *
-     * @param {MetadataPropertyInterface} metadataProp - Metadata.
-     * @param {boolean} isLabel - Flag to determine if label.
-     * @return {any[]}
+     * @param metadataProp - Metadata.
+     * @param isLabel - Flag to determine if label.
+     * @returns the list of options for radio & dropdown.
      */
     const getAllowedList = (metadataProp: MetadataPropertyInterface, isLabel?: boolean): any[] => {
         const allowedList = [];
@@ -540,9 +560,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     /**
      * Creates options for Radio using MetadataPropertyInterface options.
      *
-     * @param {MetadataPropertyInterface} metadataProp - Metadata.
-     * @param {boolean} isBinding - Indicate whether binding is true or false.
-     * @return {any[]}
+     * @param metadataProp - Metadata.
+     * @param isBinding - Indicate whether binding is true or false.
+     * @returns a list of options for radio.
      */
     const getAllowedListForAccessToken = (metadataProp: MetadataPropertyInterface, isBinding?: boolean): any[] => {
         const allowedList = [];
@@ -585,8 +605,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
      * Modifies the grant type label. For `implicit`, `password` and `client credentials` fields,
      * a warning icon is concatenated with the label.
      *
-     * @param value {string} checkbox key {@link TEMPLATE_WISE_ALLOWED_GRANT_TYPES}
-     * @param label {string} mapping label for value
+     * @param value - checkbox key {@link TEMPLATE_WISE_ALLOWED_GRANT_TYPES}
+     * @param label - mapping label for value
      */
     const modifyGrantTypeLabels = (value: string, label: string) => {
         if (value === ApplicationManagementConstants.IMPLICIT_GRANT ||
@@ -614,10 +634,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     };
 
     /**
-     * Generates a string description/hint for the target {@code value} checkbox.
-     * {@see TEMPLATE_WISE_ALLOWED_GRANT_TYPES} for different types.
+     * Generates a string description/hint for the target checkbox.
+     * @see TEMPLATE_WISE_ALLOWED_GRANT_TYPES for different types.
      *
-     * @param value {string}
+     * @param value - target checkbox value.
      */
     const getGrantTypeHintDescription = (value: string): string => {
         switch (value) {
@@ -641,9 +661,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     /**
      * Creates options for Radio GrantTypeMetaDataInterface options.
      *
-     * @param {GrantTypeMetaDataInterface} metadataProp - Metadata.
+     * @param metadataProp - Metadata.
      *
-     * @return {any[]}
+     * @returns a list of options for radio.
      */
     const getAllowedGranTypeList = (metadataProp: GrantTypeMetaDataInterface): any[] => {
 
@@ -675,9 +695,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 }
 
                 /**
-                 * Create the checkbox children object. {@code hint} is marked
+                 * Create the checkbox children object. hint is marked
                  * as optional because not all children have hint/description
-                 * popups. {@see modules > forms > CheckboxChild}
+                 * popups. 
+                 * @see modules \> forms \> CheckboxChild
                  */
                 const grant: GrantIconInterface = {
                     label: modifyGrantTypeLabels(name, displayName),
@@ -748,8 +769,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     /**
      * Checks the PKCE options.
      *
-     * @param {OAuth2PKCEConfigurationInterface} pckeConfig - PKCE config.
-     * @return {string[]}
+     * @param pckeConfig - PKCE config.
+     * @returns a list of PKCE options.
      */
     const findPKCE = (pckeConfig: OAuth2PKCEConfigurationInterface): string[] => {
         const selectedValues = [];
@@ -767,7 +788,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     /**
      * Show Regenerate confirmation.
      *
-     * @param event Button click event.
+     * @param event - button click event.
      */
     const handleRegenerateButton = (event: MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
@@ -777,7 +798,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     /**
      * Show Reactivate confirmation.
      *
-     * @param event Button click event.
+     * @param event - button click event.
      */
     const handleReactivateButton = (event: MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
@@ -785,9 +806,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     };
 
     /**
-     * Find the status of revokeTokensWhenIDPSessionTerminated using form values for SPA
+     * Find the status of revokeTokensWhenIDPSessionTerminated using form values for SPA.
      *
-     * @param values Form values
+     * @param values - Form values.
      */
     const getRevokeStateForSPA = (values: any): boolean => {
         return values.get("RevokeAccessToken") ? values.get("RevokeAccessToken")?.length > 0 :
@@ -798,10 +819,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
      * Prepares form values for submit.
      *
      * @param values - Form values.
-     * @param {string} url - Callback URLs.
-     * @param {string} origin - Allowed origins.
+     * @param url - Callback URLs.
+     * @param origin - Allowed origins.
      *
-     * @return {any} Sanitized form values.
+     * @returns Sanitized form values.
      */
     const updateConfiguration = (values: any, url?: string, origin?: string): any => {
         let inboundConfigFormValues: any = {
@@ -924,10 +945,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
      * Prepares form values for submit.
      *
      * @param values - Form values.
-     * @param {string} url - Callback URLs.
-     * @param {string} origin - Allowed origins.
+     * @param url - Callback URLs.
+     * @param origin - Allowed origins.
      *
-     * @return {any} Sanitized form values.
+     * @returns Sanitized form values.
      */
     const updateConfigurationForSPA = (values: any, url?: string, origin?: string): any => {
         let inboundConfigFormValues: any = {
@@ -988,7 +1009,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             };
         }
 
-        // Add `scope validators` only if `scope validators` are visible
+        // Add `scope validators` only if `scope validators` are visible.
         if (applicationConfig.inboundOIDCForm.showScopeValidators) {
             inboundConfigFormValues = {
                 ...inboundConfigFormValues,
@@ -1021,7 +1042,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     /**
      * The following function handles allowing CORS for a new origin.
      *
-     * @param {string} url - Allowed origin
+     * @param url - Allowed origin.
      */
     const handleAllowOrigin = (url: string): void => {
         let allowedURLs = allowedOrigins;
@@ -1038,7 +1059,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     /**
      * Scrolls to the first field that throws an error.
      *
-     * @param {string} field The name of the field.
+     * @param field - The name of the field.
      */
     const scrollToInValidField = (field: string): void => {
         const options: ScrollIntoViewOptions = {
@@ -1149,8 +1170,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     let submitOrigin: (callback: (origin?: string) => void) => void;
 
     /**
-     * Check if a given expiry time is valid
-     * @param value expiry time as a string
+     * Check if a given expiry time is valid.
+     * 
+     * @param value - expiry time as a string.
      */
     const isValidExpiryTime = (value: string) => {
         const numberValue = Math.floor(Number(value.toString()));
@@ -1160,7 +1182,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
     /**
      * Renders the list of main OIDC config fields.
-     * @return {ReactElement}
+     * 
+     * @returns OIDC config fields.
      */
     const renderOIDCConfigFields = (): ReactElement => (
         <>
@@ -1202,6 +1225,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             </Grid.Row>
             {
                 !isSPAApplication
+                && !isMobileApplication
                 && (
                     selectedGrantTypes?.includes(ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT)
                     || selectedGrantTypes?.includes(ApplicationManagementConstants.DEVICE_GRANT)
@@ -1260,8 +1284,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     urlState={ callBackUrls }
                                     setURLState={ setCallBackUrls }
                                     labelName={
-                                        t("console:develop.features.applications.forms.inboundOIDC.fields." +
-                                            "callBackUrls.label")
+                                        isMobileApplication
+                                            ? "Authorized redirect URIs"
+                                            : t("console:develop.features.applications.forms.inboundOIDC.fields." +
+                                                "callBackUrls.label")
                                     }
                                     required={ true }
                                     value={
@@ -1271,11 +1297,14 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             : ""
                                     }
                                     placeholder={
-                                        t("console:develop.features.applications.forms.inboundOIDC.fields." +
-                                            "callBackUrls.placeholder")
+                                        isMobileApplication
+                                            ? t("console:develop.features.applications.forms.inboundOIDC.mobileApp" +
+                                                ".mobileAppPlaceholder")
+                                            : t("console:develop.features.applications.forms.inboundOIDC.fields." +
+                                                "callBackUrls.placeholder")
                                     }
                                     validationErrorMsg={
-                                        CustomApplicationTemplate?.id !== template?.id
+                                        CustomApplicationTemplate?.id !== template?.id && !isMobileApplication
                                             ? t("console:develop.features.applications.forms.inboundOIDC.fields." +
                                             "callBackUrls.validations.invalid")
                                             : t("console:develop.features.applications.forms.inboundOIDC.messages." +
@@ -1285,11 +1314,17 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         t("console:develop.features.applications.forms.inboundOIDC.fields." +
                                             "callBackUrls.validations.empty")
                                     }
+                                    skipInternalValidation= {
+                                        template.templateId === ApplicationManagementConstants.MOBILE
+                                    }
                                     validation={ (value: string) => {
-                                        if (CustomApplicationTemplate?.id !== template?.id
+                                        if (
+                                            !(isMobileApplication) 
+                                            && CustomApplicationTemplate?.id !== template?.id
                                             && !(URLUtils.isURLValid(value, true) &&
-                                                (URLUtils.isHttpUrl(value) ||
-                                                    URLUtils.isHttpsUrl(value)))) {
+                                                (URLUtils.isHttpUrl(value)
+                                                || URLUtils.isHttpsUrl(value)))
+                                        ) {
 
                                             return false;
                                         }
@@ -1305,10 +1340,17 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     showError={ showURLError }
                                     setShowError={ setShowURLError }
                                     hint={
-                                        t("console:develop.features.applications." +
-                                            "forms.inboundOIDC.fields.callBackUrls.hint", {
-                                            productName: config.ui.productName
-                                        })
+                                        isMobileApplication
+                                            ? "The authorized redirect URI determines where the authorization code " +
+                                                "is sent to upon user authentication, and where the user is " +
+                                                "redirected to upon user logout. The client app should specify the " +
+                                                "authorized redirect URI in the authorization or logout request and " +
+                                                config.ui.productName + " will validate it " +
+                                                "against the authorized redirect URLs entered here."
+                                            : t("console:develop.features.applications." +
+                                                "forms.inboundOIDC.fields.callBackUrls.hint", {
+                                                productName: config.ui.productName
+                                            })
                                     }
                                     readOnly={ readOnly }
                                     addURLTooltip={ t("common:addURL") }
@@ -1406,7 +1448,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     showMoreContent={ t("common:showMore") }
                                 />
                                 <Hint>
-                                    The HTTP origins that host your web application. You can define multiple web
+                                    The HTTP origins that host your { !isMobileApplication && "web" } application.
+                                    You can define multiple web
                                     origins by adding them separately.
                                     <p className={ "mt-0" }>(E.g.,&nbsp;&nbsp;
                                         <Code>https://myapp.io, https://localhost:3000</Code>)
@@ -1444,7 +1487,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     type="checkbox"
                                     value={ initialValues?.pkce && findPKCE(initialValues.pkce) }
                                     listen={ pkceValuesChangeListener }
-                                    children={ !isSPAApplication
+                                    children={ (!isSPAApplication && !isMobileApplication)
                                         ? [
                                             {
                                                 label: t("console:develop.features.applications.forms.inboundOIDC" +
@@ -1557,7 +1600,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 </Grid.Column>
             </Grid.Row>
             {
-                (!isSPAApplication) && isTokenBindingTypeSelected && (
+                (!isSPAApplication)
+                && !isMobileApplication
+                && isTokenBindingTypeSelected
+                && (
                     <>
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
@@ -1915,9 +1961,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 </Grid.Column>
             </Grid.Row>
             {
-                applicationConfig.inboundOIDCForm.showIdTokenEncryption &&
-                    ApplicationTemplateIdTypes.SPA !== template?.templateId &&
-                (
+                applicationConfig.inboundOIDCForm.showIdTokenEncryption
+                && ApplicationTemplateIdTypes.SPA !== template?.templateId
+                && !isMobileApplication
+                && (
                     <>
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
@@ -2338,7 +2385,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
     /**
      * Renders the application secret regenerate confirmation modal.
-     * @return {ReactElement}
+     * 
+     * @returns the modal for confirming regenerating app secret.
      */
     const renderRegenerateConfirmationModal = (): ReactElement => (
         <ConfirmationModal
@@ -2397,7 +2445,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
     /**
      * Renders the application revoke confirmation modal.
-     * @return {ReactElement}
+     * 
+     * @returns Revoke confirmation modal.
      */
     const renderRevokeConfirmationModal = (): ReactElement => (
         <ConfirmationModal
@@ -2459,7 +2508,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
     /**
      * Renders the application reactivate confirmation modal.
-     * @return {ReactElement}
+     * 
+     * @returns Reactivate confirmation modal.
      */
     const renderReactivateConfirmationModal = (): ReactElement => {
         return (
@@ -2555,10 +2605,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     /**
      * Validates if a confirmation modal to warn users regarding low expiration times.
      *
-     * @param {Map<string, FormValue>} values - Form values.
-     * @param {string} url - URL.
-     * @param {string} origin - Origin.
-     * @return {boolean}
+     * @param values - Form values.
+     * @param url - URL.
+     * @param origin - Origin.
+     * @returns whether the expiry time is too low or not.
      */
     const isExpiryTimesTooLow = (values: Map<string, FormValue>, url?: string, origin?: string): boolean => {
 
@@ -2654,7 +2704,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
     /**
      * Handle form submit.
-     * @param {Map<string, >} values - Form values.
+     * 
+     * @param values - Form values.
      */
     const handleFormSubmit = (values: Map<string, FormValue>): void => {
 
@@ -2798,9 +2849,12 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 </Grid.Row>
                             )
                         }
-                        {
-                            (initialValues?.clientSecret && (initialValues?.state !== State.REVOKED) &&
-                                (!isSPAApplication)) && (
+                        { (
+                            initialValues?.clientSecret
+                            && (initialValues?.state !== State.REVOKED)
+                            && (!isSPAApplication))
+                            && (!isMobileApplication)
+                            && (
                                 <Grid.Row columns={ 2 }>
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                         <Form.Field>

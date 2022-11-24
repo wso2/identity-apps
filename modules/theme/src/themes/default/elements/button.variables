@@ -70,7 +70,7 @@
 ------------------------------*/
 
 @OIDCActionButtonMarginLeft: 10px;
-@OIDCActionButtonMinWidth: 100px;
+@OIDCActionButtonMinWidth: auto;
 @OIDCActionButtonPadding: 10px 15px;
 @OIDCActionButtonFontSize: 0.9em;
 

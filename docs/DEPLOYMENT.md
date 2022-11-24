@@ -4,64 +4,83 @@
 
 It is possible to deploy the Console and My Account applications on an external server. To do so, the following steps has to be followed in order to build the applications.
 
-### Method 1 - Build using Maven
+### Build
 
-Follow the steps in listed [here](#build) in-order to build the project with maven.
+#### Prepare the source
 
-Once the build is complete, execute the following commands in-order to build the Console & My Account applications for external deployment.
+Execute the following commands from the project root in order to build the repo.
 
-#### Console
+```bash
+pnpm install
+pnpm build
+```
+
+#### Build Console
 
 ##### Deploy on a Java EE server (ex: Tomcat)
 
+Go inside `apps/console` and change the `.env.local` file as follows.
+
+```env
+SERVER_TYPE="tomcat"
+```
+
+And then build the application.
+
+
 ```bash
-cd apps/console
-pnpm build:external
+pnpm build
 ```
 
 ##### Deploy on a static server.
 
-```bash
-cd apps/console
-pnpm  build:external:static
+Go inside `apps/console` and change the `.env.local` file as follows.
+
+```env
+SERVER_TYPE="static"
 ```
 
-Once the build is completed, you can find the build artifacts inside the build folder i.e `apps/console/build`.
+And then build the application.
 
-#### My Account
+
+```bash
+pnpm build
+```
+
+> **Note**
+> Once the build is completed, you can find the build artifacts inside the build folder i.e `apps/console/build`.
+
+#### Build My Account
 
 ##### Deploy on a Java EE server (ex: Tomcat)
 
+Go inside `apps/myaccount` and change the `.env.local` file as follows.
+
+```env
+SERVER_TYPE="tomcat"
+```
+
+And then build the application.
+
+
 ```bash
-cd apps/myaccount
-pnpm build:external
+pnpm build
 ```
 
 ##### Deploy on a static server.
 
-```bash
-cd apps/myaccount
-pnpm build:external:static
+Go inside `apps/myaccount` and change the `.env.local` file as follows.
+
+```env
+SERVER_TYPE="static"
 ```
 
-Once the build is completed, you can find the build artifacts inside the build folder i.e `apps/myaccount/build`.
+And then build the application.
 
-### Method 2 - Build using pnpm
-
-You can simply use pnpm to build the Console and My Account applications for external deployment by just executing the following script.
-
-#### Deploy on a Java EE server (ex: Tomcat)
 
 ```bash
-# From project root
-pnpm build:external
+pnpm build
 ```
 
-#### Deploy on a static server.
-
-```bash
-# From project root
-pnpm build:external:static
-```
-
-The respective build artifacts could be found inside the build folder. (`apps/(myaccount|console)/build`)
+> **Note**
+> Once the build is completed, you can find the build artifacts inside the build folder i.e `apps/myaccount/build`.

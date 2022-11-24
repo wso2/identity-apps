@@ -24,6 +24,8 @@
 <%@ page import="static org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil.*" %>
 <%@ page import="static org.apache.commons.lang.StringUtils.isNotBlank" %>
 
+<%@ page import="java.net.MalformedURLException" %>
+
 <%--Include timeout JS functions--%>
 <jsp:include page="countdown.jsp"/>
 
@@ -125,7 +127,7 @@
             appAccessUrlEncoded = encodeURL(url);
         }
 
-    } catch (ApplicationDataRetrievalClientException e) {
+    } catch (ApplicationDataRetrievalClientException | MalformedURLException e) {
         // Ignored and fallback to login page url.
     }
 

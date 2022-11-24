@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,7 +14,6 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
 
 import { action } from "@storybook/addon-actions";
@@ -34,7 +33,7 @@ export default {
 /**
  * Story to display all the user avatar variations.
  *
- * @return {React.ReactElement}
+ * @returns the story for displaying all the user avatar variations.
  */
 export const AllUserAvatarVariations = (): ReactElement => {
     return (
@@ -97,7 +96,7 @@ AllUserAvatarVariations.story = {
 /**
  * Story to display the default user avatar variation.
  *
- * @return {React.ReactElement}
+ * @returns the story for displaying the default user avatar variation.
  */
 export const DefaultUserAvatar = (): ReactElement => (
     <UserAvatar
@@ -117,7 +116,7 @@ DefaultUserAvatar.story = {
 /**
  * Story to display the user avatar with initials.
  *
- * @return {React.ReactElement}
+ * @returns the story for displaying the user avatar with initials.
  */
 export const UserAvatarWithInitials = (): ReactElement => (
     <>
@@ -146,7 +145,7 @@ UserAvatarWithInitials.story = {
 /**
  * Story to display the user avatar from image.
  *
- * @return {React.ReactElement}
+ * @returns the story for displaying the user avatar from image.
  */
 export const UserAvatarWithImage = (): ReactElement => (
     <UserAvatar
@@ -167,7 +166,7 @@ UserAvatarWithImage.story = {
 /**
  * Story to display the user avatar with gravatar URL.
  *
- * @return {React.ReactElement}
+ * @returns the story for displaying the user avatar with gravatar URL.
  */
 export const UserAvatarWithGravatar = (): ReactElement => (
     <UserAvatar
@@ -206,7 +205,7 @@ UserAvatarWithGravatar.story = {
 /**
  * Story to display the user avatar loading status.
  *
- * @return {React.ReactElement}
+ * @returns the story for displaying the user avatar loading status.
  */
 export const UserAvatarPlaceholder = (): ReactElement => (
     <UserAvatar
@@ -227,7 +226,7 @@ UserAvatarPlaceholder.story = {
 /**
  * Story to display the editable user avatar.
  *
- * @return {React.ReactElement}
+ * @returns the story for displaying the editable user avatar
  */
 export const EditableUserAvatar = (): ReactElement => (
     <UserAvatar
@@ -259,7 +258,7 @@ EditableUserAvatar.story = {
 /**
  * Story to display the user avatar sizes.
  *
- * @return {React.ReactElement}
+ * @returns the story for displaying the user avatar sizes
  */
 export const UserAvatarSizes = (): ReactElement => (
     <>

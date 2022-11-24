@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -56,15 +56,19 @@ interface EditUserPropsInterface extends SBACInterface<FeatureConfigInterface> {
      */
     connectorProperties: ConnectorPropertyInterface[];
     /**
+     * Is the page loading
+     */
+    isLoading: boolean
+    /**
      * Is read only user stores loading.
      */
     isReadOnlyUserStoresLoading?: boolean;
 }
 
 /**
- * Application edit component.
+ * User edit component.
  *
- * @return {JSX.Element}
+ * @returns User edit component.
  */
 export const EditUser: FunctionComponent<EditUserPropsInterface> = (
     props: EditUserPropsInterface
@@ -76,6 +80,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
         featureConfig,
         readOnlyUserStores,
         connectorProperties,
+        isLoading,
         isReadOnlyUserStoresLoading
     } = props;
 
@@ -103,7 +108,8 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
     useEffect(() => {
         //Since the parent component is refreshing twice we are doing a deep equals operation on the user object to
         //see if they are the same values. If they are the same values we do not do anything.
-        //This makes sure the child components or side effects depending on the user object won't re-render or re-trigger.
+        //This makes sure the child components or side effects depending on the user object won't 
+        //re-render or re-trigger.
         if (!selectedUser || isEqual(user, selectedUser)) {
             return;
         }
@@ -252,6 +258,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
 
     return (
         <ResourceTab
+            isLoading={ isLoading }
             panes={ panes() }
         />
     );

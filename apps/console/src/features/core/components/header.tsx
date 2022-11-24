@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -23,6 +23,7 @@ import {
     Announcement,
     AppSwitcher,
     GenericIcon,
+    HeaderLinkCategoryInterface,
     Logo,
     ProductBrand,
     Header as ReusableHeader,
@@ -38,8 +39,7 @@ import { Container, Menu } from "semantic-ui-react";
 import { commonConfig, organizationConfigs } from "../../../extensions";
 import { getApplicationList } from "../../applications/api";
 import { ApplicationListInterface } from "../../applications/models";
-import OrganizationSwitchDropdown
-    from "../../organizations/components/organization-switch/organization-switch-dropdown";
+import { OrganizationSwitchBreadcrumb } from "../../organizations/components/organization-switch";
 import { AppSwitcherIcons, getAppHeaderIcons } from "../configs";
 import { AppConstants } from "../constants";
 import { history } from "../helpers";
@@ -78,8 +78,8 @@ export interface HeaderSubPanelItemInterface {
 /**
  * Implementation of the Reusable Header component.
  *
- * @param {HeaderPropsInterface} props - Props injected to the component.
- * @return {React.ReactElement}
+ * @param props - Props injected to the component.
+ * @returns react element containing the Reusable Header component.
  */
 export const Header: FunctionComponent<HeaderPropsInterface> = (
     props: HeaderPropsInterface
@@ -120,6 +120,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     const scopes = useSelector((state: AppState) => state.auth.allowedScopes);
 
     const [ announcement, setAnnouncement ] = useState<AnnouncementBannerInterface>(undefined);
+    const [ headerLinks, setHeaderLinks ] = useState<HeaderLinkCategoryInterface[]>([]);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -137,7 +138,9 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             // So, we cannot use `tenantDomain` to check
             // if the user is logged in to a non-super-tenant account reliably.
             // So, we check if the organization id is there in the URL to see if the user is in a sub-organization.
-            (tenantDomain === AppConstants.getSuperTenant() || window[ "AppUtils" ].getConfig().organizationName) &&
+            (tenantDomain === AppConstants.getSuperTenant() ||
+                window[ "AppUtils" ].getConfig().organizationName ||
+                organizationConfigs.showSwitcherInTenants) &&
             hasRequiredScopes(feature?.organizations, feature?.organizations?.scopes?.read, scopes) &&
             organizationConfigs.showOrganizationDropdown
         );
@@ -146,6 +149,19 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         tenantDomain,
         feature.organizations
     ]);
+
+    useEffect(() => {
+        if (isPrivilegedUser) {
+            return;
+        }
+        
+        commonConfig
+            ?.header
+            ?.getUserDropdownLinkExtensions(tenantDomain, associatedTenants)
+            .then((response: HeaderLinkCategoryInterface[]) => {
+                setHeaderLinks(response);
+            } );
+    }, [ tenantDomain, associatedTenants ]);
 
     /**
      * Check if there are applications registered and set the value to local storage.
@@ -221,7 +237,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     /**
      * Renders the app switcher dropdown.
      *
-     * @return {React.ReactElement}
+     * @returns The app switcher dropdown.
      */
     const renderAppSwitcher = (): ReactElement => {
 
@@ -276,9 +292,9 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     /**
      * Renders the sub header panel items merging extended ones.
      *
-     * @param {HeaderSubPanelItemInterface["floated"]} floated - Floated direction.
+     * @param floated - Floated direction.
      *
-     * @return {React.ReactElement}
+     * @returns The sub header panel items.
      */
     const renderSubHeaderPanelItems = (floated: HeaderSubPanelItemInterface[ "floated" ]): ReactElement => {
 
@@ -423,14 +439,15 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                         component: renderAppSwitcher(),
                         floated: "right"
                     },
-                    isOrgSwitcherEnabled && {
-                        component: <OrganizationSwitchDropdown />,
+                    isOrgSwitcherEnabled && !isPrivilegedUser && {
+                        component: <OrganizationSwitchBreadcrumb />,
                         floated: "left"
                     }
                 ])
             }
             fluid={ fluid }
             isProfileInfoLoading={ isProfileInfoLoading }
+            isPrivilegedUser={ isPrivilegedUser }
             userDropdownLinks={
                 compact([
                     !commonConfig?.header?.renderAppSwitcherAsDropdown && {
@@ -449,7 +466,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                             }
                         ]
                     },
-                    ...commonConfig?.header?.getUserDropdownLinkExtensions(tenantDomain, associatedTenants),
+                    ...headerLinks,
                     {
                         category: "GENERAL",
                         categoryLabel: null,

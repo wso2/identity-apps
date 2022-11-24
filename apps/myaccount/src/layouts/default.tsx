@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,45 +16,150 @@
  * under the License.
  */
 
-import * as React from "react";
-import { Container, Divider } from "semantic-ui-react";
-import { AppFooter, Header, PageHeader } from "../components";
+import { AlertInterface, RouteInterface } from "@wso2is/core/models";
+import { initializeAlertSystem } from "@wso2is/core/store";
+import {
+    Alert,
+    ContentLoader,
+    DefaultLayout as DefaultLayoutSkeleton,
+    Media,
+    TopLoadingBar,
+    useUIElementSizes
+} from "@wso2is/react-components";
+import React, {
+    FunctionComponent,
+    ReactElement,
+    Suspense,
+    useEffect,
+    useState
+} from "react";
+import { System } from "react-notification-system";
+import { useDispatch, useSelector } from "react-redux";
+import { Redirect, Route, Switch } from "react-router-dom";
+import { Footer, Header, ProtectedRoute } from "../components";
+import { getDefaultLayoutRoutes } from "../configs";
+import { AppConstants, UIConstants } from "../constants";
+import { AppState } from "../store";
 
 /**
  * Default page layout component Prop types.
  */
-interface DefaultPageLayoutProps {
-    children?: React.ReactNode;
-    pageTitle: string;
-    pageDescription?: string;
-    pageTitleTextAlign?: "left" | "center" | "right" | "justified";
+export interface DefaultLayoutPropsInterface {
+    /**
+     * Is layout fluid.
+     */
+    fluid?: boolean;
 }
 
 /**
  * Default page layout.
  *
- * @param {DefaultPageLayoutProps} props - Props injected to the default page layout component.
- * @return {JSX.Element}
+ * @param props - Props injected to the default page layout component.
+ *
+ * @returns Dashboard Layout.
  */
-export const DefaultPageLayout: React.FunctionComponent<DefaultPageLayoutProps> = (
-    props: DefaultPageLayoutProps
-): JSX.Element => {
-    const { children, pageTitle, pageDescription, pageTitleTextAlign } = props;
+export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = (
+    props: DefaultLayoutPropsInterface
+): ReactElement => {
+
+    const { fluid } = props;
+
+    const dispatch = useDispatch();
+    const { headerHeight, footerHeight } = useUIElementSizes({
+        footerHeight: UIConstants.DEFAULT_FOOTER_HEIGHT,
+        headerHeight: UIConstants.DEFAULT_HEADER_HEIGHT,
+        topLoadingBarHeight: UIConstants.AJAX_TOP_LOADING_BAR_HEIGHT
+    });
+
+    const alert: AlertInterface = useSelector((state: AppState) => state.global.alert);
+    const alertSystem: System = useSelector((state: AppState) => state.global.alertSystem);
+    const isAJAXTopLoaderVisible: boolean = useSelector((state: AppState) => state.global.isGlobalLoaderVisible);
+
+    const [ defaultLayoutRoutes, setDefaultLayoutRoutes ] = useState<RouteInterface[]>(getDefaultLayoutRoutes());
+
+    /**
+     * Listen for base name changes and updated the layout routes.
+     */
+    useEffect(() => {
+        setDefaultLayoutRoutes(getDefaultLayoutRoutes());
+    }, [ AppConstants.getTenantQualifiedAppBasename() ]);
+
+    const handleAlertSystemInitialize = (system) => {
+        dispatch(initializeAlertSystem(system));
+    };
 
     return (
-        <>
-            <Header showSidePanelToggle={ false }/>
-            <Container className="layout-content default-layout">
-                <Divider className="x2" hidden/>
-                <PageHeader
-                    title={ pageTitle }
-                    description={ pageDescription }
-                    titleTextAlign={ pageTitleTextAlign }
+        <DefaultLayoutSkeleton
+            fluid={ fluid }
+            alert={ (
+                <Alert
+                    dismissInterval={ UIConstants.ALERT_DISMISS_INTERVAL }
+                    alertsPosition="br"
+                    alertSystem={ alertSystem }
+                    alert={ alert }
+                    onAlertSystemInitialize={ handleAlertSystemInitialize }
+                    withIcon={ true }
                 />
-                { children }
-                <Divider className="x3" hidden/>
-            </Container>
-            <AppFooter/>
-        </>
+            ) }
+            topLoadingBar={ (
+                <TopLoadingBar
+                    height={ UIConstants.AJAX_TOP_LOADING_BAR_HEIGHT }
+                    visibility={ isAJAXTopLoaderVisible }
+                />
+            ) }
+            footerHeight={ footerHeight }
+            headerHeight={ headerHeight }
+            desktopContentTopSpacing={ UIConstants.DASHBOARD_LAYOUT_DESKTOP_CONTENT_TOP_SPACING }
+            header={ (
+                <Header
+                    fluid={ false }
+                    showSidePanelToggle={ false }
+                />
+            ) }
+            footer={ (
+                <Media greaterThan="mobile">
+                    <Footer fluid={ false } />
+                </Media>
+            ) }
+        >
+            <Suspense fallback={ <ContentLoader dimmer={ false } /> }>
+                <Switch>
+                    {
+                        defaultLayoutRoutes.map((route, index) => (
+                            route.redirectTo
+                                ? <Redirect to={ route.redirectTo }/>
+                                : route.protected
+                                    ? (
+                                        <ProtectedRoute
+                                            component={ route.component ? route.component : null }
+                                            path={ route.path }
+                                            key={ index }
+                                            exact={ route.exact }
+                                        />
+                                    )
+                                    : (
+                                        <Route
+                                            path={ route.path }
+                                            render={ (renderProps) =>
+                                                route.component
+                                                    ? <route.component { ...renderProps } />
+                                                    : null
+                                            }
+                                            key={ index }
+                                            exact={ route.exact }
+                                        />
+                                    )
+                        ))
+                    }
+                </Switch>
+            </Suspense>
+        </DefaultLayoutSkeleton>
     );
+};
+
+/**
+ * Default props for the default layout.
+ */
+DefaultLayout.defaultProps = {
+    fluid: false
 };
