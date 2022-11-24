@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,7 +14,6 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
 
 import React, { ReactElement, useEffect, useState } from "react";
@@ -32,7 +31,7 @@ export default {
 /**
  * Story to display the global loader component.
  *
- * @return {React.ReactElement}
+ * @returns the story for displaying the global loader component.
  */
 export const DefaultTopLoadingBar = (): ReactElement=> {
 
@@ -60,7 +59,7 @@ DefaultTopLoadingBar.story = {
 /**
  * Story to enable user to dynamically interact with the avatar component.
  *
- * @return {React.ReactElement}
+ * @returns the story for enabling user to dynamically interact with the avatar component.
  */
 export const TopLoadingBarPlayground = (): ReactElement => (
     <TopLoadingBar

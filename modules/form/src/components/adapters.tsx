@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -28,8 +28,10 @@ import {
 } from "@wso2is/react-components";
 import omit from "lodash-es/omit";
 import React, { ClipboardEvent, FormEvent, KeyboardEvent, ReactElement } from "react";
-import { Checkbox, Form, Icon, Input, Popup, Select } from "semantic-ui-react";
-import { QueryParameters } from "../addons";
+import { FieldRenderProps } from "react-final-form";
+// eslint-disable-next-line max-len
+import { Checkbox, CheckboxProps, DropdownProps, Form, Icon, Input, InputOnChangeData, Popup, Select, TextAreaProps } from "semantic-ui-react";
+import { QueryParameters, Scopes } from "../addons";
 import {
     CheckboxAdapterPropsInterface,
     ColorPickerAdapterPropsInterface,
@@ -39,12 +41,10 @@ import {
 
 /**
  * The enter key.
- * @constant
- * @type {string}
  */
-const ENTER_KEY = "Enter";
+const ENTER_KEY: string = "Enter";
 
-export const TextFieldAdapter = (props): ReactElement => {
+export const TextFieldAdapter = (props:FieldRenderProps<any> ): ReactElement => {
 
     const { childFieldProps, input, meta, parentFormProps } = props;
 
@@ -55,22 +55,26 @@ export const TextFieldAdapter = (props): ReactElement => {
             required={ childFieldProps.required }
             data-testid={ childFieldProps.testId }
             label={ childFieldProps.label !== "" ? childFieldProps.label : null }
-            onKeyPress={ (event: React.KeyboardEvent, data) => {
+            onKeyPress={ (event: React.KeyboardEvent, data: any) => {
                 event.key === ENTER_KEY && input.onBlur(data?.name);
             } }
-            onChange={ (event, data) => {
+            onChange={ (_event: React.ChangeEvent<HTMLInputElement>, data: InputOnChangeData) => {
                 if (childFieldProps.listen && typeof childFieldProps.listen === "function") {
                     childFieldProps.listen(data?.value);
                 }
 
                 input.onChange(data?.value);
             } }
-            onBlur={ (event) => input.onBlur(event) }
+            onBlur={ (event: any) => input.onBlur(event) }
             control={ Input }
             autoFocus={ childFieldProps.autoFocus || false }
-            value={ meta.modified ? input.value
-                : (childFieldProps?.value ? childFieldProps?.value
-                    : (parentFormProps?.values[ childFieldProps?.name ] ? parentFormProps?.values[ childFieldProps?.name ] : "")) }
+            value={ meta.modified
+                ? input.value
+                : (childFieldProps?.value
+                    ? childFieldProps?.value
+                    : (parentFormProps?.values[ childFieldProps?.name ]
+                        ? parentFormProps?.values[ childFieldProps?.name ]
+                        : "")) }
             { ...omit(childFieldProps, [ "value", "listen" ]) }
             type={
                 childFieldProps.inputType === "number"
@@ -78,8 +82,8 @@ export const TextFieldAdapter = (props): ReactElement => {
                     : "text"
             }
             error={
-                (meta.error && meta.touched)
-                    ? meta.error
+                ((meta.error || meta.submitError) && meta.touched)
+                    ? meta.error || meta.submitError
                     : null
             }
             onKeyDown={
@@ -125,7 +129,27 @@ export const TextFieldAdapter = (props): ReactElement => {
     );
 };
 
-export const PasswordFieldAdapter = (props): ReactElement => {
+export const ScopeFieldAdapter = (props:FieldRenderProps<any> ): ReactElement => {
+
+    const { childFieldProps, input } = props;
+
+    return (
+        <>
+            <Scopes
+                defaultValue={ childFieldProps?.defaultValue }
+                label = { childFieldProps?.label }
+                value = { childFieldProps?.value }
+                required = { childFieldProps?.required }
+                onChange = { input?.onChange }
+                onBlur = { input?.onBlur }
+                placeholder = { childFieldProps?.placeholder }
+            />
+
+        </>
+    );
+};
+
+export const PasswordFieldAdapter = (props: FieldRenderProps<any>): ReactElement => {
 
     const { childFieldProps, input, meta, parentFormProps } = props;
 
@@ -138,26 +162,32 @@ export const PasswordFieldAdapter = (props): ReactElement => {
             name="newPassword"
             required={ true }
             showPassword="Show password"
-            onKeyPress={ (event: React.KeyboardEvent, data) => {
+            onKeyPress={ (event: React.KeyboardEvent, data: any) => {
                 event.key === ENTER_KEY && input.onBlur(data?.name);
             } }
-            onChange={ (event, data) => input.onChange(data?.value) }
-            onBlur={ (event) => input.onBlur(event) }
+            onChange={ (event: any, data: any) => input.onChange(data?.value) }
+            onBlur={ (event: any) => input.onBlur(event) }
             error={
-                (meta.error && meta.touched)
-                    ? meta.error
+                ((meta.error || meta.submitError) && meta.touched)
+                    ? meta.error || meta.submitError
                     : null
             }
             autoFocus={ childFieldProps.autoFocus || false }
             { ...childFieldProps }
-            value={ meta.modified ? input.value
-                : (childFieldProps?.value ? childFieldProps?.value
-                    : (parentFormProps?.values[ childFieldProps?.name ] ? parentFormProps?.values[ childFieldProps?.name ] : "")) }
+            value={ meta.modified
+                ? input.value
+                : (childFieldProps?.value
+                    ? childFieldProps?.value
+                    : (parentFormProps?.values[ childFieldProps?.name ]
+                        ? parentFormProps?.values[ childFieldProps?.name ]
+                        : "")
+                )
+            }
         />
     );
 };
 
-export const CopyFieldAdapter = (props): ReactElement => {
+export const CopyFieldAdapter = (props: FieldRenderProps<any>): ReactElement => {
 
     const { childFieldProps, parentFormProps } = props;
     const {
@@ -193,7 +223,7 @@ export const CopyFieldAdapter = (props): ReactElement => {
     );
 };
 
-export const TextAreaAdapter = (props): ReactElement => {
+export const TextAreaAdapter = (props: FieldRenderProps<any>): ReactElement => {
 
     const { childFieldProps, input, meta, parentFormProps } = props;
 
@@ -203,8 +233,8 @@ export const TextAreaAdapter = (props): ReactElement => {
             width={ input.width }
             placeholder={ input.placeholder }
             name={ input.name }
-            onBlur={ (event) => input.onBlur(event) }
-            onChange={ (event, data) => {
+            onBlur={ (event: any) => input.onBlur(event) }
+            onChange={ (_event: React.ChangeEvent<HTMLTextAreaElement>, data: TextAreaProps) => {
                 if (childFieldProps.listen && typeof childFieldProps.listen === "function") {
                     childFieldProps.listen(data?.value);
                 }
@@ -215,16 +245,21 @@ export const TextAreaAdapter = (props): ReactElement => {
             readOnly={ input.readOnly }
             disabled={ input.disabled }
             required={ input.required }
-            onKeyPress={ (event: React.KeyboardEvent, data) => {
+            onKeyPress={ (event: React.KeyboardEvent, data: any) => {
                 event.key === ENTER_KEY && input.onBlur(data.name);
             } }
             type="textarea"
             { ...omit(childFieldProps, [ "value", "listen" ]) }
-            value={ meta.modified ? input.value : (childFieldProps?.value ? childFieldProps?.value
-                : (parentFormProps?.values[ childFieldProps?.name ] ? parentFormProps?.values[ childFieldProps?.name ] : "")) }
+            value={ meta.modified
+                ? input.value
+                : (childFieldProps?.value
+                    ? childFieldProps?.value
+                    : (parentFormProps?.values[ childFieldProps?.name ]
+                        ? parentFormProps?.values[ childFieldProps?.name ]
+                        : "")) }
             error={
-                (meta.error && meta.touched)
-                    ? meta.error
+                ((meta.error || meta.submitError) && meta.touched)
+                    ? meta.error || meta.submitError
                     : null
             }
         />
@@ -237,18 +272,18 @@ export const TextAreaAdapter = (props): ReactElement => {
  *
  * @param props - Props injected to the component. props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns
  */
-export const ToggleAdapter = (props): ReactElement => {
+export const ToggleAdapter = (props: FieldRenderProps<any>): ReactElement => {
 
-    const { childFieldProps, input, meta } = props;
+    const { childFieldProps, input } = props;
 
     return (
         <Form.Checkbox
             label={ childFieldProps.label }
             name={ childFieldProps.name }
             children={ childFieldProps.children }
-            onChange={ (event, data) => {
+            onChange={ (event: React.FormEvent<HTMLInputElement>, data: CheckboxProps) => {
                 if (childFieldProps.listen && typeof childFieldProps.listen === "function") {
                     childFieldProps.listen(data?.checked);
                 }
@@ -269,9 +304,9 @@ export const ToggleAdapter = (props): ReactElement => {
  * Semantic Checkbox adapter.
  * @see {@link https://codesandbox.io/s/react-final-form-simple-example-3we74?fontsize=14&file=/index.js}
  *
- * @param {CheckboxAdapterPropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns
  */
 export const CheckboxAdapter = (props: CheckboxAdapterPropsInterface): ReactElement => {
 
@@ -301,7 +336,7 @@ export const CheckboxAdapter = (props: CheckboxAdapterPropsInterface): ReactElem
             { ...filteredRest }
             label={ childFieldProps?.label }
             name={ childFieldProps?.name }
-            onChange={ (event, { checked }) => {
+            onChange={ (event: React.FormEvent<HTMLInputElement>, { checked }:any ) => {
                 if (childFieldProps?.listen && typeof childFieldProps.listen === "function") {
                     childFieldProps.listen(checked);
                 }
@@ -321,9 +356,9 @@ export const CheckboxAdapter = (props: CheckboxAdapterPropsInterface): ReactElem
 /**
  * Semantic UI Radio Adapter.
  *
- * @param {RadioAdapterPropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns
  */
 export const RadioAdapter = (props: RadioAdapterPropsInterface): ReactElement => {
 
@@ -370,7 +405,7 @@ export const RadioAdapter = (props: RadioAdapterPropsInterface): ReactElement =>
     );
 };
 
-export const SelectAdapter = (props): ReactElement => {
+export const SelectAdapter = (props: FieldRenderProps<any>): ReactElement => {
 
     const { childFieldProps, input, meta } = props;
 
@@ -379,25 +414,25 @@ export const SelectAdapter = (props): ReactElement => {
             label={ childFieldProps.label }
             name={ childFieldProps.name }
             options={ childFieldProps.children }
-            onChange={ (event: React.ChangeEvent<HTMLInputElement>, data) => {
+            onChange={ (event: React.ChangeEvent<HTMLInputElement>, data: DropdownProps) => {
                 if (childFieldProps.listen && typeof childFieldProps.listen === "function") {
                     childFieldProps.listen(data.value.toString());
                 }
 
                 input.onChange(data.value.toString());
             } }
-            onBlur={ (event: React.SyntheticEvent) => input.onBlur(event) }
+            onBlur={ (event: React.FocusEvent<HTMLElement, Element>) => input.onBlur(event) }
             autoFocus={ childFieldProps.autoFocus || false }
             disabled={ childFieldProps.disabled }
             required={ childFieldProps.required }
-            onKeyPress={ (event: React.KeyboardEvent, data) => {
+            onKeyPress={ (event: React.KeyboardEvent, data: any) => {
                 event.key === ENTER_KEY && input.onBlur(data?.name);
             } }
             control={ Select }
             { ...omit(childFieldProps, [ "value", "children" ]) }
             error={
-                (meta.error && meta.touched)
-                    ? meta.error
+                ((meta.error || meta.submitError) && meta.touched)
+                    ? meta.error || meta.submitError
                     : null
             }
             value={ meta.modified ? input.value : (childFieldProps?.value ? childFieldProps?.value : "") }
@@ -405,7 +440,7 @@ export const SelectAdapter = (props): ReactElement => {
     );
 };
 
-export const ButtonAdapter = ({ childFieldProps }): ReactElement => {
+export const ButtonAdapter = ({ childFieldProps }: FieldRenderProps<any>): ReactElement => {
     if (childFieldProps.buttonType === FieldButtonTypes.BUTTON_PRIMARY) {
         return (
             <PrimaryButton
@@ -460,7 +495,7 @@ export const ButtonAdapter = ({ childFieldProps }): ReactElement => {
     }
 };
 
-export const QueryParamsAdapter = ({ input, childFieldProps }): ReactElement => {
+export const QueryParamsAdapter = ({ input, childFieldProps }: FieldRenderProps<any>): ReactElement => {
 
     const { label, name } = childFieldProps;
 
@@ -483,9 +518,9 @@ export const QueryParamsAdapter = ({ input, childFieldProps }): ReactElement => 
 /**
  * Color Picker Adapter implemented with `react-color`.
  *
- * @param {ColorPickerAdapterPropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns
  */
 export const ColorPickerAdapter = (props: ColorPickerAdapterPropsInterface): ReactElement => {
 
@@ -528,7 +563,7 @@ export const ColorPickerAdapter = (props: ColorPickerAdapterPropsInterface): Rea
                         key={ childFieldProps.testId }
                         required={ childFieldProps.required }
                         data-componentid={ childFieldProps.componentId }
-                        onChange={ (event, data) => {
+                        onChange={ (_event: React.ChangeEvent<HTMLInputElement>, data: InputOnChangeData) => {
                             if (!editableInput) {
                                 return;
                             }
@@ -539,7 +574,7 @@ export const ColorPickerAdapter = (props: ColorPickerAdapterPropsInterface): Rea
 
                             input.onChange(data?.value);
                         } }
-                        onBlur={ (event) => input.onBlur(event) }
+                        onBlur={ (event: any) => input.onBlur(event) }
                         control={ Input }
                         autoFocus={ childFieldProps.autoFocus || false }
                         value={
@@ -554,8 +589,8 @@ export const ColorPickerAdapter = (props: ColorPickerAdapterPropsInterface): Rea
                         { ...omit(childFieldProps, [ "value", "listen", "label" ]) }
                         type="text"
                         error={
-                            (meta.error && meta.touched)
-                                ? meta.error
+                            ((meta.error || meta.submitError) && meta.touched)
+                                ? meta.error || meta.submitError
                                 : null
                         }
                     >
@@ -580,7 +615,7 @@ export const ColorPickerAdapter = (props: ColorPickerAdapterPropsInterface): Rea
 
                         // Workaround for https://github.com/casesandberg/react-color/issues/655
                         // TODO: Remove once the issue is resolved on the lib.
-                        const a = Math.round(color.rgb.a * 255);
+                        const a: number = Math.round(color.rgb.a * 255);
 
                         const moderatedHex: string = color.hex + (
                             a === 255

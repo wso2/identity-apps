@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (http://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -49,7 +49,6 @@ interface AddOrganizationRoleProps extends TestableComponentInterface {
 /**
  * Enum for wizard steps form types.
  * @readonly
- * @enum {string}
  */
 enum WizardStepsFormTypes {
     BASIC_DETAILS = "BasicDetails",
@@ -69,7 +68,7 @@ interface WizardStateInterface {
 /**
  * Component to handle addition of a new role to the system.
  *
- * @param props props related to the create role wizard
+ * @param props - props related to the create role wizard
  */
 export const AddOrganizationRoleWizard: FunctionComponent<AddOrganizationRoleProps> = (
     props: AddOrganizationRoleProps
@@ -122,7 +121,7 @@ export const AddOrganizationRoleWizard: FunctionComponent<AddOrganizationRolePro
         if (groupList.length < 1) {
             getGroupList(null)
                 .then((response) => {
-                    const groups = response.data.Resources.filter(
+                    const groups: GroupsInterface[] = response?.data?.Resources?.filter(
                         (group) => group.displayName.split("/").length === 1);
 
                     setGroupList(groups);
@@ -193,7 +192,7 @@ export const AddOrganizationRoleWizard: FunctionComponent<AddOrganizationRolePro
     };
 
     /**
-     * Method to handle the create role wizard finish action.
+     * Method to handle the creation role wizard finish action.
      *
      */
     const handleRoleWizardFinish = () => {
@@ -203,7 +202,7 @@ export const AddOrganizationRoleWizard: FunctionComponent<AddOrganizationRolePro
     /**
      * Generates a summary of the wizard.
      *
-     * @return {any}
+     * @returns
      */
     const generateWizardSummary = () => {
         if (!wizardState) {
@@ -217,7 +216,7 @@ export const AddOrganizationRoleWizard: FunctionComponent<AddOrganizationRolePro
      * Handles wizard step submit.
      *
      * @param values - Forms values to be stored in state.
-     * @param {WizardStepsFormTypes} formType - Type of the form.
+     * @param formType - Type of the form.
      */
     const handleWizardSubmit = (values: any, formType: WizardStepsFormTypes) => {
         if (WizardStepsFormTypes.BASIC_DETAILS === formType) {
@@ -227,10 +226,8 @@ export const AddOrganizationRoleWizard: FunctionComponent<AddOrganizationRolePro
         setWizardState({ ...wizardState, [formType]: values });
     };
 
-    const handleGroupUserSubmit = (value: {
-                                       [WizardStepsFormTypes.USER_LIST]: any;
-                                       [WizardStepsFormTypes.GROUP_LIST]: any;
-                                   }
+    const handleGroupUserSubmit = (
+        value: { [WizardStepsFormTypes.USER_LIST]: any; [WizardStepsFormTypes.GROUP_LIST]: any; }
     ): void => {
         setCurrentWizardStep(currentStep + 1);
         setWizardState({ ...wizardState, ...value });

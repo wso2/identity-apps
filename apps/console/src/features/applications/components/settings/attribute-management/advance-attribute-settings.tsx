@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -53,12 +53,13 @@ interface AdvanceAttributeSettingsPropsInterface extends TestableComponentInterf
 
 export const SubjectAttributeFieldName = "subjectAttribute";
 
+const FORM_ID: string = "application-attributes-advance-settings-form";
+
 /**
  * Advanced attribute settings component.
  *
- * @param {AdvanceAttributeSettingsPropsInterface} props - Props injected to the component.
- *
- * @return {React.ReactElement}
+ * @param props - Props injected to the component.
+ * @returns Functional component.
  */
 export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSettingsPropsInterface> = (
     props: AdvanceAttributeSettingsPropsInterface
@@ -258,6 +259,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
         (initialRole && initialSubject)
             ? (
                 <Form
+                    id={ FORM_ID }
                     uncontrolledForm={ false }
                     initialValues={
                         !onlyOIDCConfigured &&

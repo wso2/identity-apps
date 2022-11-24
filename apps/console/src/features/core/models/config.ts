@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -192,6 +192,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     applicationTemplateLoadingStrategy?: ApplicationTemplateLoadingStrategies;
     /**
+     * Configuration to enable Google One Tap for specific tenants.
+     */
+    googleOneTapEnabledTenants?: string[];
+    /**
      * Set of authenticators to be hidden in application sign on methods.
      */
     hiddenAuthenticators?: string[];
@@ -229,6 +233,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Flag to check whether to list all the attribute dialects
      */
     listAllAttributeDialects?: boolean;
+    /**
+     * Should show/hide marketing consent banner.
+     */
+    isMarketingConsentBannerEnabled: boolean;
     /**
      * Enable signature validation certificate alias.
      */
@@ -275,6 +283,10 @@ interface IdentityProviderTemplatesConfigInterface {
      * GitHub template config.
      */
     github: IdentityProviderTemplateConfigInterface;
+    /**
+     * Microsoft template config.
+     */
+    microsoft: IdentityProviderTemplateConfigInterface;
 }
 
 /**

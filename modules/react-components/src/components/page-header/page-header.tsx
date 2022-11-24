@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,6 +19,7 @@
 import {
     IdentifiableComponentInterface,
     LoadableComponentInterface,
+    LoadingStateOptionsInterface,
     TestableComponentInterface
 } from "@wso2is/core/models";
 import classNames from "classnames";
@@ -92,6 +93,10 @@ export interface PageHeaderPropsInterface extends LoadableComponentInterface, Te
      * Truncate content
      */
     truncateContent?: boolean;
+    /**
+     * Optional meta for the loading state.
+     */
+    loadingStateOptions?: LoadingStateOptionsInterface;
 }
 
 /**
@@ -111,9 +116,9 @@ export interface BackButtonInterface extends TestableComponentInterface, Identif
 /**
  * Page header component.
  *
- * @param {PageHeaderPropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns the page header component
  */
 export const PageHeader: React.FunctionComponent<PageHeaderPropsInterface> = (
     props: PageHeaderPropsInterface
@@ -130,6 +135,7 @@ export const PageHeader: React.FunctionComponent<PageHeaderPropsInterface> = (
         image,
         isLoading,
         imageSpaced,
+        loadingStateOptions,
         showBottomDivider,
         title,
         titleAs,
@@ -185,8 +191,14 @@ export const PageHeader: React.FunctionComponent<PageHeaderPropsInterface> = (
                         isLoading ?
                             (
                                 <div className="fluid">
-                                    <Placeholder style={ { height: 100, width: 100 } }>
-                                        <Placeholder.Image square/>
+                                    <Placeholder
+                                        style={
+                                            loadingStateOptions?.imageType === "circular"
+                                                ? { borderRadius: "100%", height: 85, width: 85 }
+                                                : { height: 85, width: 85 }
+                                        }
+                                    >
+                                        <Placeholder.Image square />
                                     </Placeholder>
                                 </div>
                             )

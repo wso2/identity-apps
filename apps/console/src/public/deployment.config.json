@@ -396,6 +396,7 @@
                 }
             }
         },
+        "googleOneTapEnabledTenants": [],
         "hiddenUserStores": [ ],
         "identityProviderTemplates": {
             "enterpriseOIDC": {
@@ -412,6 +413,9 @@
             },
             "github": {
                 "enabled": false
+            },
+            "microsoft": {
+                "enabled": true
             }
         },
         "gravatarConfig": {
@@ -423,6 +427,7 @@
             "langAutoDetectEnabled":false
         },
         "isCookieConsentBannerEnabled": false,
+        "isMarketingConsentBannerEnabled": false,
         "isGroupAndRoleSeparationEnabled": true,
         "isSignatureValidationCertificateAliasEnabled" : false,
         "isClientSecretHashEnabled": false,

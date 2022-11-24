@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,13 +17,15 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
+import { useMediaContext } from "@wso2is/react-components";
 import React, { FunctionComponent, PropsWithChildren, ReactElement, SyntheticEvent  } from "react";
-import { Button, Header, Responsive, Segment } from "semantic-ui-react";
+import { Button, Header, Segment } from "semantic-ui-react";
 
 /**
  * Danger zone component Prop types.
+ * @deprecated Use the `DangerZoneProps` from {@link @wso2is/react-components#DangerZoneProps}.
  */
- export interface DangerZoneProps extends TestableComponentInterface {
+export interface DangerZoneProps extends TestableComponentInterface {
     /**
      * Title for the danger zone action.
      */
@@ -38,7 +40,7 @@ import { Button, Header, Responsive, Segment } from "semantic-ui-react";
      subheader: string;
      /**
       * OnClick callback for the danger zone action.
-      * @param {React.SyntheticEvent<HTMLButtonElement>} e - Click event.
+      * @param e - Click event.
       */
      onActionClick: (e: SyntheticEvent<HTMLButtonElement>) => void;
 }
@@ -46,19 +48,23 @@ import { Button, Header, Responsive, Segment } from "semantic-ui-react";
 /**
  * Danger zone component.
  *
- * @param {DangerZoneProps} props - Props injected to the danger zone component.
- * @return {JSX.Element}
+ * @deprecated Use the `DangerZone` from {@link @wso2is/react-components#DangerZone}.
+ * @param props - Props injected to the danger zone component.
+ * @returns Danger Zone component.
  */
 export const DangerZone: FunctionComponent<DangerZoneProps> = (
     props: DangerZoneProps
 ): ReactElement => {
-    const { 
-        actionTitle, 
-        header, 
-        subheader, 
+
+    const {
+        actionTitle,
+        header,
+        subheader,
         onActionClick,
         [ "data-testid" ]: testId
     } = props;
+
+    const { isMobileViewport } = useMediaContext();
 
     return (
         <Segment data-testid={ testId } className="danger-zone" padded clearing>
@@ -69,11 +75,11 @@ export const DangerZone: FunctionComponent<DangerZoneProps> = (
                 </Header.Subheader>
             </Header>
             <Button
-                fluid={ window.innerWidth <= Responsive.onlyTablet.maxWidth }
+                fluid={ isMobileViewport }
                 data-testid={ testId + "-delete-button" }
                 negative
                 className={
-                    (window.innerWidth <= Responsive.onlyTablet.maxWidth)
+                    isMobileViewport
                         ? "mb-1x mt-1x"
                         : ""
                 }
@@ -96,8 +102,9 @@ interface DangerZoneGroupProps {
 /**
  * Danger zone group component.
  *
- * @param {DangerZoneGroupProps} props - Props injected to the danger zone group component.
- * @return {JSX.Element}
+ * @deprecated Use the `DangerZoneGroup` from {@link @wso2is/react-components#DangerZoneGroup}.
+ * @param props - Props injected to the danger zone group component.
+ * @returns Danger Zone Group component.
  */
 export const DangerZoneGroup: React.FunctionComponent<PropsWithChildren<DangerZoneGroupProps>> = (
     props: PropsWithChildren<DangerZoneGroupProps>
@@ -117,6 +124,6 @@ export const DangerZoneGroup: React.FunctionComponent<PropsWithChildren<DangerZo
 /**
  * Default props for the danger zone component.
  */
- DangerZone.defaultProps = {
+DangerZone.defaultProps = {
     "data-testid": "danger-zone"
 };

@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
+/**
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -59,6 +59,10 @@ export interface AdvancedSearchPropsInterface extends IdentifiableComponentInter
      * Search strategy ex: name co %search-value%.
      */
     defaultSearchStrategy: string;
+    /**
+     * Disables the dropdown filter for search
+     */
+    disableSearchFilterDropdown?: boolean;
     /**
      * Dropdown appearing position.
      */
@@ -157,6 +161,7 @@ export const AdvancedSearch: FunctionComponent<PropsWithChildren<AdvancedSearchP
         children,
         clearButtonPopupLabel,
         defaultSearchStrategy,
+        disableSearchFilterDropdown,
         dropdownPosition,
         dropdownTriggerPopupLabel,
         enableQuerySearch,
@@ -382,26 +387,30 @@ export const AdvancedSearch: FunctionComponent<PropsWithChildren<AdvancedSearchP
                                     )
                                     : null
                             }
-                            <Popup
-                                disabled={ !dropdownTriggerPopupLabel || isDropdownVisible }
-                                trigger={
-                                    (
-                                        <Button
-                                            data-componentid={ `${ componentId }-options-button` }
-                                            data-testid={ `${ testId }-options-button` }
-                                            basic
-                                            compact
-                                            className="input-add-on"
-                                            onClick={ handleShowOptionsClick }
-                                        >
-                                            <Icon name="caret down"/>
-                                        </Button>
-                                    )
-                                }
-                                position="top center"
-                                content={ dropdownTriggerPopupLabel }
-                                inverted={ true }
-                            />
+                            {
+                                !disableSearchFilterDropdown && (
+                                    <Popup
+                                        disabled={ !dropdownTriggerPopupLabel || isDropdownVisible }
+                                        trigger={
+                                            (
+                                                <Button
+                                                    data-componentid={ `${ componentId }-options-button` }
+                                                    data-testid={ `${ testId }-options-button` }
+                                                    basic
+                                                    compact
+                                                    className="input-add-on"
+                                                    onClick={ handleShowOptionsClick }
+                                                >
+                                                    <Icon name="caret down"/>
+                                                </Button>
+                                            )
+                                        }
+                                        position="top center"
+                                        content={ dropdownTriggerPopupLabel }
+                                        inverted={ true }
+                                    />
+                                )
+                            }
                         </>
                     ) }
                     className={ `advanced-search with-add-on ${ searchFieldClasses }` }
@@ -463,6 +472,7 @@ AdvancedSearch.defaultProps = {
     clearButtonPopupLabel: null,
     "data-componentid": "advanced-search",
     "data-testid": "advanced-search",
+    disableSearchFilterDropdown: false,
     dropdownPosition: "bottom left",
     dropdownTriggerPopupLabel: null,
     enableQuerySearch: true,

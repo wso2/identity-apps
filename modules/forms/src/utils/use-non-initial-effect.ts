@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -20,9 +20,10 @@ import { EffectCallback, useEffect, useRef } from "react";
 
 /**
  * This is a custom React hook that calls the the useEffect hook whenever the passed deps change
- * EXCEPT during initial render
- * @param {React.EffectCallback} effect The callback function passed into the useEffect hook
- * @param deps states or props based on which the callback function should be conditionally called
+ * EXCEPT during initial render.
+ * 
+ * @param effect - The callback function passed into the useEffect hook.
+ * @param deps - states or props based on which the callback function should be conditionally called.
  */
 export const useNonInitialEffect = (effect: EffectCallback, deps?: readonly any[]): void => {
 

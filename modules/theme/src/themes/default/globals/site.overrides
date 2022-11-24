@@ -18,7 +18,7 @@
  */
 
 p.inline-paragraph,
-.inline-paragraph > p { 
+.inline-paragraph > p {
     display: inline;
 }
 
@@ -28,4 +28,8 @@ span.ui.text.color.red{
 
 .password-policy-description i {
     float: left
+}
+
+div.organization-back-button {
+    cursor: pointer;
 }

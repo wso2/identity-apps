@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -22,7 +22,9 @@ import { Code, FormSection, GenericIcon, Hint } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Icon, SemanticICONS } from "semantic-ui-react";
+import { AppConstants, AppState } from "../../../../core";
 import { IdentityProviderManagementConstants } from "../../../constants";
 import {
     AuthenticatorSettingsFormModes,
@@ -53,7 +55,7 @@ interface GoogleAuthenticatorFormPropsInterface extends TestableComponentInterfa
     initialValues: CommonAuthenticatorFormInitialValuesInterface;
     /**
      * Callback for form submit.
-     * @param {CommonAuthenticatorFormInitialValuesInterface} values - Resolved Form Values.
+     * @param values - Resolved Form Values.
      */
     onSubmit: (values: CommonAuthenticatorFormInitialValuesInterface) => void;
     /**
@@ -84,7 +86,7 @@ interface GoogleAuthenticatorFormPropsInterface extends TestableComponentInterfa
  */
 interface GoogleAuthenticatorFormInitialValuesInterface {
     /**
-     * Google Authenticator client secret field value.
+     * Google Authenticator query parameters field value.
      */
     AdditionalQueryParameters: string;
     /**
@@ -99,6 +101,10 @@ interface GoogleAuthenticatorFormInitialValuesInterface {
      * Google Authenticator client id field value.
      */
     ClientId: string;
+    /**
+    * Google Authenticator Google One Tap field value.
+    */
+    IsGoogleOneTapEnabled: boolean;
 }
 
 /**
@@ -106,7 +112,7 @@ interface GoogleAuthenticatorFormInitialValuesInterface {
  */
 interface GoogleAuthenticatorFormFieldsInterface {
     /**
-     * Google Authenticator client secret field value.
+     * Google Authenticator query parameters field value.
      */
     AdditionalQueryParameters: CommonAuthenticatorFormFieldInterface;
     /**
@@ -121,6 +127,10 @@ interface GoogleAuthenticatorFormFieldsInterface {
      * Google Authenticator client id field value.
      */
     ClientId: CommonAuthenticatorFormFieldInterface;
+    /**
+     * Google Authenticator Google One Tap field value.
+     */
+     IsGoogleOneTapEnabled: CommonAuthenticatorFormFieldInterface;
 }
 
 /**
@@ -141,12 +151,13 @@ interface ScopeMetaInterface {
     icon: SemanticICONS
 }
 
+const FORM_ID: string = "google-authenticator-form";
+
 /**
  * Google Authenticator Form.
  *
- * @param {GoogleAuthenticatorFormPropsInterface} props - Props injected to the component.
- *
- * @return {React.ReactElement}
+ * @param props - Props injected to the component.
+ * @returns Functional component.
  */
 export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormPropsInterface> = (
     props: GoogleAuthenticatorFormPropsInterface
@@ -166,6 +177,11 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
 
     const [ formFields, setFormFields ] = useState<GoogleAuthenticatorFormFieldsInterface>(undefined);
     const [ initialValues, setInitialValues ] = useState<GoogleAuthenticatorFormInitialValuesInterface>(undefined);
+    /**
+    * Importing all UI configurations.
+    */
+    const googleOneTapEnabledTenants: string[] = useSelector((state: AppState) =>
+        state?.config?.ui?.googleOneTapEnabledTenants);
 
     /**
      * Flattens and resolved form initial values and field metadata.
@@ -183,17 +199,32 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
             const meta: CommonAuthenticatorFormFieldMetaInterface = metadata?.properties
                 .find((meta) => meta.key === value.key);
 
+            /**
+            * Parsing string  to boolean only for Google One Tap value
+            */
+            let localValue : any;
+
+            if (value.key === IdentityProviderManagementConstants.GOOGLE_ONE_TAP_ENABLED) {
+                if (value.value === "true") {
+                    localValue = true;
+                } else {
+                    localValue = false;
+                }
+            } else {
+                localValue = value.value;
+            }
+
             resolvedFormFields = {
                 ...resolvedFormFields,
                 [ value.key ]: {
                     meta,
-                    value: value.value
+                    value: localValue
                 }
             };
 
             resolvedInitialValues = {
                 ...resolvedInitialValues,
-                [ value.key ]: value.value
+                [ value.key ]: localValue
             };
         });
 
@@ -202,11 +233,28 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
     }, [ originalInitialValues ]);
 
     /**
+     * Checking ability to enable Google One Tap.
+     *
+     * @returns Whether enable Google One Tap or not.
+     */
+    const isEnableGoogleOneTap = (): boolean => {
+        if (googleOneTapEnabledTenants?.length > 0) {
+            return googleOneTapEnabledTenants.includes(AppConstants.getTenant());
+        }
+
+        /**
+         * To enable Google One Tap for all tenants
+         * if this configuration is not defined or empty.
+         */
+        return true;
+    };
+
+    /**
      * Prepare form values for submitting.
      *
      * @param values - Form values.
      *
-     * @return {CommonAuthenticatorFormInitialValuesInterface} Sanitized form values.
+     * @returns Sanitized form values.
      */
     const getUpdatedConfigurations = (values: GoogleAuthenticatorFormInitialValuesInterface)
         : CommonAuthenticatorFormInitialValuesInterface => {
@@ -231,9 +279,9 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
     /**
      * Resolve metadata for UI rendering of scopes.
      *
-     * @param {string} scope - Input scope.
+     * @param scope - Input scope.
      *
-     * @return {ScopeMetaInterface}
+     * @returns resolved Scope Metadata
      */
     const resolveScopeMetadata = (scope: string): ScopeMetaInterface => {
 
@@ -289,16 +337,16 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
      * Input - "scope=openid email profile"
      * Output - [ "openid", "email", "profile" ]
      *
-     * @param {string} rawScopes - Raw String.
+     * @param rawScopes - Raw String.
      *
-     * @return {string[]}
+     * @returns list of scopes
      */
     const extractScopes = (rawScopes: string): string[] => {
 
         let scopes: string[] = [];
 
         try {
-            scopes = rawScopes.split("scope=")[1].split(" ");
+            scopes = rawScopes.trim().split("scope=")[1].split(" ");
         } catch(e) {
             // Silent any issues occurred when trying to scroll.
             // Add debug logs here one a logger is added.
@@ -310,6 +358,7 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
 
     return (
         <Form
+            id={ FORM_ID }
             uncontrolledForm={ false }
             onSubmit={ (values) => onSubmit(getUpdatedConfigurations(values as any)) }
             initialValues={ initialValues }
@@ -368,7 +417,7 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
                     t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                         ".google.clientSecret.placeholder")
                 }
-                hint={
+                hint={ (
                     <Trans
                         i18nKey={
                             "console:develop.features.authenticationProvider.forms.authenticatorSettings" +
@@ -377,7 +426,7 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
                     >
                         The <Code>App secret</Code> value of the Google application.
                     </Trans>
-                }
+                ) }
                 required={ formFields?.ClientSecret?.meta?.isMandatory }
                 readOnly={
                     readOnly || (
@@ -467,6 +516,30 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
                 width={ 16 }
                 data-testid={ `${ testId }-additional-query-parameters` }
             />
+            { isEnableGoogleOneTap()
+                ? (
+                    <Field.Checkbox
+                        ariaLabel="Enable Google One Tap as a sign in option"
+                        name={ IdentityProviderManagementConstants.GOOGLE_ONE_TAP_ENABLED }
+                        required={ false }
+                        toggle
+                        label={
+                            t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                               ".google.enableGoogleOneTap.label")
+                        }
+                        placeholder={
+                            t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                               ".google.enableGoogleOneTap.placeholder")
+                        }
+                        hint={
+                            t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                               ".google.enableGoogleOneTap.hint")
+                        }
+                        readOnly={ readOnly }
+                        data-testid={ `${ testId }-google-one-tap` }
+                    />
+                ) : null
+            }
             {
                 (formFields?.AdditionalQueryParameters?.value
                     && !isEmpty(extractScopes(formFields.AdditionalQueryParameters.value))) && (
@@ -524,19 +597,20 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
                             >
                                 Scopes provide a way for connected apps to access data from Google.
                                 Click <a
-                                href={
-                                    "https://developers.google.com/identity/protocols/oauth2/" +
-                                    "openid-connect#scope-param"
-                                }
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >here</a> to learn more.
+                                    href={
+                                        "https://developers.google.com/identity/protocols/oauth2/" +
+                                        "openid-connect#scope-param"
+                                    }
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >here</a> to learn more.
                             </Trans>
                         </Hint>
                     </FormSection>
                 )
             }
             <Field.Button
+                form={ FORM_ID }
                 size="small"
                 buttonType="primary_btn"
                 ariaLabel="Google authenticator update button"
@@ -558,3 +632,4 @@ GoogleAuthenticatorForm.defaultProps = {
     "data-testid": "google-authenticator-form",
     enableSubmitButton: true
 };
+

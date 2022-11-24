@@ -1,7 +1,7 @@
 <%--
-  ~ Copyright (c) 2014, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+  ~ Copyright (c) 2014, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
   ~
-  ~ WSO2 Inc. licenses this file to you under the Apache License,
+  ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
   ~ in compliance with the License.
   ~ You may obtain a copy of the License at
@@ -16,10 +16,10 @@
   ~ under the License.
   --%>
 
-<%@ page import="com.google.gson.Gson" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="java.io.File" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthContextAPIClient" %>
+<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.client.model.AuthenticationRequestWrapper" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
 <%@ page import="org.wso2.carbon.identity.core.util.IdentityUtil" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApplicationDataRetrievalClient" %>
@@ -40,54 +40,54 @@
     private static final String REQUEST_PARAM_ERROR_KEY = "errorKey";
 %>
 <%
-    String stat = request.getParameter("status");
-    String statusMessage = request.getParameter("statusMsg");
+    String stat = request.getParameter(Constants.STATUS);
+    String statusMessage = request.getParameter(Constants.STATUS_MSG);
     String sp = request.getParameter("sp");
     String applicationAccessURLWithoutEncoding = null;
-    // Check the error is null or whether there is no corresponding value in the resource bundle.
-    if (stat == null || statusMessage == null) {
-        String errorKey = request.getParameter(REQUEST_PARAM_ERROR_KEY);
-        if (errorKey != null) {
-            String authAPIURL = application.getInitParameter(Constants.AUTHENTICATION_REST_ENDPOINT_URL);
-            if (StringUtils.isBlank(authAPIURL)) {
-                authAPIURL = IdentityUtil.getServerURL(SERVER_AUTH_URL, true, true);
-            }
-            if (!authAPIURL.endsWith("/")) {
-                authAPIURL += "/";
-            }
-            authAPIURL += DATA_AUTH_ERROR_URL + errorKey;
-            String contextProperties = AuthContextAPIClient.getContextProperties(authAPIURL);
-            Gson gson = new Gson();
-            Map<String, Object> parameters = gson.fromJson(contextProperties, Map.class);
-            if (parameters != null) {
-                String statusParam = (String) parameters.get("status");
-                String statusMessageParam = (String) parameters.get("statusMsg");
-                if (StringUtils.isNotEmpty(statusParam)) {
-                    stat = AuthenticationEndpointUtil.customi18n(resourceBundle, statusParam);
-                }
-                if (StringUtils.isNotEmpty(statusMessageParam)) {
-                    statusMessage = AuthenticationEndpointUtil.customi18n(resourceBundle, statusMessageParam);
-                }
-            }
-        }
-        if (StringUtils.isEmpty(stat)) {
-            stat = AuthenticationEndpointUtil.i18n(resourceBundle, "authentication.error");
-        }
-        if (StringUtils.isEmpty(statusMessage)) {
-            statusMessage =  AuthenticationEndpointUtil.i18n(resourceBundle,
-                    "something.went.wrong.during.authentication");
-        }
-    } else {
-        String i18nErrorMapping = AuthenticationEndpointUtil.getErrorCodeToi18nMapping(
-            stat, statusMessage);
-        if (!(Constants.ErrorToi18nMappingConstants.INCORRECT_ERROR_MAPPING_KEY).equals(i18nErrorMapping)) {
+
+    String errorKey = request.getParameter(REQUEST_PARAM_ERROR_KEY);
+    String statAuthParam = null;
+    String statusMsgAuthParam = null;
+
+    if (StringUtils.isNotEmpty(errorKey)) {
+        AuthenticationRequestWrapper authRequest = (AuthenticationRequestWrapper) request;
+        statAuthParam = authRequest.getAuthParameter(Constants.STATUS);
+        statusMsgAuthParam = authRequest.getAuthParameter(Constants.STATUS_MSG);
+    }
+
+    // If auth params are available, can skip i18n mapping validations. This is to allow displaying
+    // custom error messages.
+    if (StringUtils.isNotEmpty(statAuthParam) || StringUtils.isNotEmpty(statusMsgAuthParam)) {
+        stat = statAuthParam;
+        statusMessage = statusMsgAuthParam;
+        if (StringUtils.isNotEmpty(stat)) {
             stat = AuthenticationEndpointUtil.customi18n(resourceBundle, stat);
-            statusMessage = AuthenticationEndpointUtil.customi18n(resourceBundle, statusMessage);
-        } else {
-            stat = AuthenticationEndpointUtil.i18n(resourceBundle, "authentication.error");
-            statusMessage =  AuthenticationEndpointUtil.i18n(resourceBundle,
-                "something.went.wrong.during.authentication");
         }
+        if (StringUtils.isNotEmpty(statusMessage)) {
+            statusMessage = AuthenticationEndpointUtil.customi18n(resourceBundle, statusMessage);
+        }
+    } else if (StringUtils.isNotEmpty(stat) || StringUtils.isNotEmpty(statusMessage)) {
+        String i18nErrorMapping = AuthenticationEndpointUtil.getErrorCodeToi18nMapping(stat, statusMessage);
+        if (Constants.ErrorToi18nMappingConstants.INCORRECT_ERROR_MAPPING_KEY.equals(i18nErrorMapping)) {
+            stat = AuthenticationEndpointUtil.i18n(resourceBundle, "authentication.error");
+            statusMessage = AuthenticationEndpointUtil.i18n(resourceBundle, 
+                    "something.went.wrong.during.authentication");
+        } else {
+            if (StringUtils.isNotEmpty(stat)) {
+                stat = AuthenticationEndpointUtil.customi18n(resourceBundle, stat);
+            }
+            if (StringUtils.isNotEmpty(statusMessage)) {
+                statusMessage = AuthenticationEndpointUtil.customi18n(resourceBundle, statusMessage);
+            }
+        }
+    }
+
+    if (StringUtils.isEmpty(stat)) {
+        stat = AuthenticationEndpointUtil.i18n(resourceBundle, "authentication.error");
+    }
+    if (StringUtils.isEmpty(statusMessage)) {
+        statusMessage = AuthenticationEndpointUtil.i18n(resourceBundle,
+                "something.went.wrong.during.authentication");
     }
     session.invalidate();
 

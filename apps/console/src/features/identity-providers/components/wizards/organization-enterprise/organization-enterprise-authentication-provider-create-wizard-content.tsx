@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -36,17 +36,17 @@ interface OrganizationEnterpriseAuthenticationProviderCreateWizardContentPropsIn
     extends IdentifiableComponentInterface {
     /**
      * Trigger form submit.
-     * @param {() => void} submitFunctionCb - Callback.
+     * @param submitFunctionCb - Callback.
      */
     triggerSubmission: (submitFunctionCb: () => void) => void;
     /**
      * Trigger previous page.
-     * @param {() => void} previousFunctionCb - Callback.
+     * @param previousFunctionCb - Callback.
      */
     triggerPrevious: (previousFunctionCb: () => void) => void;
     /**
      * Callback to change the wizard page,
-     * @param {number} pageNo - Page Number.
+     * @param pageNo - Page Number.
      */
     changePageNumber: (pageNo: number) => void;
     /**
@@ -55,22 +55,23 @@ interface OrganizationEnterpriseAuthenticationProviderCreateWizardContentPropsIn
     template: IdentityProviderTemplateInterface;
     /**
      * Total wizard page count.
-     * @param {number} pageCount - Page number.
+     * @param pageCount - Page number.
      */
     setTotalPage: (pageCount: number) => void;
     /**
      * Callback to be triggered for form submit.
-     * @param values
+     * @param values - Form values.
      */
     onSubmit: (values: OrganizationEnterpriseAuthenticationProviderCreateWizardFormErrorValidationsInterface) => void;
 }
 
+const FORM_ID: string = "organization-enterprise-authenticator-wizard-form";
+
 /**
  * Authentication Provider Create Wizard content component.
  *
- * @param {OrganizationEnterpriseAuthenticationProviderCreateWizardContentPropsInterface} props - Props injected to the component.
- *
- * @return {React.ReactElement}
+ * @param props - Props injected to the component.
+ * @returns Functional component.
  */
 export const OrganizationEnterpriseAuthenticationProviderCreateWizardContent:
     FunctionComponent<OrganizationEnterpriseAuthenticationProviderCreateWizardContentPropsInterface> = (
@@ -93,16 +94,16 @@ export const OrganizationEnterpriseAuthenticationProviderCreateWizardContent:
         const [ isIdPListRequestLoading, setIdPListRequestLoading ] = useState<boolean>(undefined);
 
         /**
-     * Loads the identity provider authenticators on initial component load.
-     */
+         * Loads the identity provider authenticators on initial component load.
+         */
         useEffect(() => {
 
             getIDPlist();
         }, []);
 
         /**
-     * Get Idp List.
-     */
+         * Get Idp List.
+         */
         const getIDPlist = (): void => {
 
             setIdPListRequestLoading(true);
@@ -120,15 +121,14 @@ export const OrganizationEnterpriseAuthenticationProviderCreateWizardContent:
         };
 
         /**
-     * Check whether IDP name is already exist or not.
-     *
-     * @param value IDP name - IDP Name.
-     *
-     * @returns error msg if name is already taken.
-     */
+         * Check whether IDP name is already exist or not.
+         *
+         * @param value - IDP name.
+         * @returns error msg if name is already taken.
+         */
         const idpNameValidation = (value): string => {
 
-            let nameExist = false;
+            let nameExist: boolean = false;
 
             if (idpList?.count > 0) {
                 idpList?.identityProviders.map((idp) => {
@@ -146,12 +146,11 @@ export const OrganizationEnterpriseAuthenticationProviderCreateWizardContent:
         };
 
         /**
-     * Validates the Form.
-     *
-     * @param {FacebookAuthenticationProviderCreateWizardFormValuesInterface} values - Form Values.
-     *
-     * @return {GithubAuthenticationProviderCreateWizardFormErrorValidationsInterface}
-     */
+         * Validates the Form.
+         *
+         * @param values - Form Values.
+         * @returns Form validation.
+         */
         const validateForm = (values: OrganizationEnterpriseAuthenticationProviderCreateWizardFormValuesInterface):
         OrganizationEnterpriseAuthenticationProviderCreateWizardFormErrorValidationsInterface => {
 
@@ -169,9 +168,10 @@ export const OrganizationEnterpriseAuthenticationProviderCreateWizardContent:
         };
 
         return (
-            (isIdPListRequestLoading !== undefined && isIdPListRequestLoading === false)
+            isIdPListRequestLoading === false
                 ? (
                     <Wizard
+                        id={ FORM_ID }
                         initialValues={ { name: template?.idp?.name } }
                         onSubmit={
                             (values: OrganizationEnterpriseAuthenticationProviderCreateWizardFormValuesInterface) =>

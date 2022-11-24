@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -83,7 +83,10 @@ interface EditApplicationPropsInterface extends SBACInterface<FeatureConfigInter
     /**
      * Is the data still loading.
      */
-    isLoading?: boolean;
+    isLoading: boolean;
+    /**
+     * Set is loading.
+     */
     setIsLoading?: any;
     /**
      * Callback to be triggered after deleting the application.
@@ -110,9 +113,9 @@ interface EditApplicationPropsInterface extends SBACInterface<FeatureConfigInter
 /**
  * Application edit component.
  *
- * @param {EditApplicationPropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {ReactElement}
+ * @returns EditApplication component
  */
 export const EditApplication: FunctionComponent<EditApplicationPropsInterface> = (
     props: EditApplicationPropsInterface
@@ -168,12 +171,12 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
-    const isFragmentApp = application.advancedConfigurations?.fragment || false;
+    const isFragmentApp: boolean = application.advancedConfigurations?.fragment || false;
 
     /**
      * Called when an application updates.
      *
-     * @param {string} id - Application id.
+     * @param id - Application id.
      */
     const handleApplicationUpdate = (id: string): void => {
         setIsApplicationUpdated(true);
@@ -207,11 +210,14 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             }
 
             // When application selection is done through the strong authentication flow.
-            if(template.id === CustomApplicationTemplate.id) {
-                handleActiveTabIndexChange(3);
-            } else {
-                handleActiveTabIndexChange(4);
-            }
+            const tabIndex: number = applicationConfig.editApplication.getStrongAuthenticationFlowTabIndex(
+                application.clientId,
+                tenantDomain,
+                template.id,
+                CustomApplicationTemplate.id
+            );
+
+            handleActiveTabIndexChange(tabIndex);
         }
     },[ template ]);
 
@@ -406,7 +412,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     /**
      * Handles the activeTabIndex change.
      *
-     * @param {number} tabIndex - Active tab index.
+     * @param tabIndex - Active tab index.
      */
     const handleActiveTabIndexChange = (tabIndex:number): void => {
 
@@ -420,8 +426,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     /**
      * Handles the tab change.
      *
-     * @param {React.SyntheticEvent} e - Click event.
-     * @param {TabProps} data - Tab properties.
+     * @param e - Click event.
+     * @param data - Tab properties.
      */
     const handleTabChange = (e: SyntheticEvent, data: TabProps): void => {
         eventPublisher.compute(() => {
@@ -456,7 +462,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
      * This function will normalize the SAML name ID format
      * returned by the API.
      *
-     * @param {any} protocolConfigs
+     * @param protocolConfigs - Protocol config object
      */
     const normalizeSAMLNameIDFormat = (protocolConfigs: any): void => {
         const key = "saml";
@@ -552,8 +558,6 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
     /**
      * Called when an application updates.
-     *
-     * @param {string} id - Application id.
      */
     const handleProtocolUpdate = (): void => {
         if (!application?.id) {
@@ -565,7 +569,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
     /**
      * Handles application secret regenerate.
-     * @param {OIDCDataInterface} config - Config response.
+     * @param config - Config response.
      */
     const handleApplicationSecretRegenerate = (config: OIDCDataInterface): void => {
 
@@ -643,9 +647,9 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 onlyOIDCConfigured={
                     (application?.templateId === CustomApplicationTemplate.id
                         || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC)
-                    && inboundProtocolList.length === 0
+                    && inboundProtocolList?.length === 0
                         ? true
-                        : inboundProtocolList.length === 1
+                        : inboundProtocolList?.length === 1
                         && (inboundProtocolList[ 0 ] === SupportedAuthProtocolTypes.OIDC)
                 }
                 onUpdate={ handleApplicationUpdate }
@@ -719,7 +723,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     /**
      * Resolves the tab panes based on the application config.
      *
-     * @return {any[]} Resolved tab panes.
+     * @returns Resolved tab panes.
      */
     const resolveTabPanes = (): any[] => {
         const panes: any[] = [];
@@ -727,7 +731,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         if (!tabPaneExtensions && applicationConfig.editApplication.extendTabs
             && application?.templateId !== ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
             && application?.templateId !== ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS
-            && application?.templateId !== ApplicationManagementConstants.CUSTOM_APPLICATION_SAML) {
+            && application?.templateId !== ApplicationManagementConstants.CUSTOM_APPLICATION_SAML
+            && application?.templateId !== ApplicationManagementConstants.MOBILE) {
             return [];
         }
 
@@ -735,7 +740,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             && application?.templateId !== CustomApplicationTemplate.id
             && application?.templateId !== ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
             && application?.templateId !== ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS
-            && application?.templateId !== ApplicationManagementConstants.CUSTOM_APPLICATION_SAML) {
+            && application?.templateId !== ApplicationManagementConstants.CUSTOM_APPLICATION_SAML
+            && application?.templateId !== ApplicationManagementConstants.MOBILE) {
             panes.push(...tabPaneExtensions);
         }
 
@@ -919,7 +925,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
     /**
      * Renders the client secret hash disclaimer modal.
-     * @return {React.ReactElement}
+     * @returns Client Secret Hash Disclaimer Modal.
      */
     const renderClientSecretHashDisclaimerModal = (): ReactElement => {
 
@@ -1036,23 +1042,24 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         && (tabPaneExtensions || !applicationConfig.editApplication.extendTabs
             || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
             || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS
-            || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_SAML )
+            || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_SAML
+            || application?.templateId === ApplicationManagementConstants.MOBILE)
             ? (
                 <>
                     <ResourceTab
-                        activeIndex= { activeTabIndex }
-                        data-testid= { `${testId}-resource-tabs` }
+                        isLoading={ isLoading }
+                        activeIndex={ activeTabIndex }
+                        data-testid={ `${testId}-resource-tabs` }
                         defaultActiveIndex={ defaultActiveIndex }
                         onTabChange={ handleTabChange }
-                        panes= { resolveTabPanes() }
+                        panes={ resolveTabPanes() }
                         onInitialize={ ({ panesLength }) => {
                             setTotalTabs(panesLength);
                         } }
                     />
                     { showClientSecretHashDisclaimerModal && renderClientSecretHashDisclaimerModal() }
                 </>
-            )
-            : <ContentLoader />
+            ) : <ContentLoader />
     );
 };
 

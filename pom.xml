@@ -24,7 +24,7 @@
     <groupId>org.wso2.identity.apps</groupId>
     <artifactId>identity-apps</artifactId>
     <packaging>pom</packaging>
-    <version>1.4.91-SNAPSHOT</version>
+    <version>1.6.126-SNAPSHOT</version>
     <name>WSO2 Identity Server Apps - Parent</name>
     <description>WSO2 Identity Server Web Apps</description>
 
@@ -198,6 +198,11 @@
                 <groupId>org.wso2.carbon.extension.identity.authenticator.outbound.totp</groupId>
                 <artifactId>org.wso2.carbon.extension.identity.authenticator.totp.connector</artifactId>
                 <version>${totp.authenticator.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.extension.identity.authenticator.outbound.backupcode</groupId>
+                <artifactId>org.wso2.carbon.extension.identity.authenticator.backupcode.connector</artifactId>
+                <version>${backupcode.authenticator.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.wso2.carbon.identity.organization.management.core</groupId>
@@ -466,7 +471,7 @@
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-databind</artifactId>
-                <version>${com.fasterxml.jackson.annotation.version}</version>
+                <version>${com.fasterxml.jackson.databind.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.sun.jersey.contribs</groupId>
@@ -671,7 +676,7 @@
         <carbon.extension.identity.authenticator.version>3.0.0</carbon.extension.identity.authenticator.version>
         <org.wso2.carbon.identity.association.account>5.1.5</org.wso2.carbon.identity.association.account>
         <identity.extension.utils>1.0.8</identity.extension.utils>
-        <carbon.identity.framework.version>5.23.25</carbon.identity.framework.version>
+        <carbon.identity.framework.version>5.25.38</carbon.identity.framework.version>
         <carbon.identity.framework.imp.pkg.version.range>[5.0.0, 6.0.0)</carbon.identity.framework.imp.pkg.version.range>
         <identity.organization.management.core.service.version>1.0.0
         </identity.organization.management.core.service.version>
@@ -679,7 +684,8 @@
         <carbon.identity.oauth.version>6.7.130</carbon.identity.oauth.version>
         <carbon.identity.oauth.imp.pkg.version.range>[6.1.0, 7.0.0)</carbon.identity.oauth.imp.pkg.version.range>
         <identity.governance.version>1.5.48</identity.governance.version>
-        <totp.authenticator.version>3.0.18</totp.authenticator.version>
+        <totp.authenticator.version>3.2.2</totp.authenticator.version>
+        <backupcode.authenticator.version>0.0.12</backupcode.authenticator.version>
 
         <commons-io.wso2.version>2.7.0.wso2v1</commons-io.wso2.version>
         <commons-lang.wso2.version>2.6.0.wso2v1</commons-lang.wso2.version>
@@ -688,6 +694,7 @@
         <jersey-version>1.19.1</jersey-version>
         <com.fasterxml.jackson.version>2.10.5</com.fasterxml.jackson.version>
         <com.fasterxml.jackson.annotation.version>2.13.2</com.fasterxml.jackson.annotation.version>
+        <com.fasterxml.jackson.databind.version>2.13.4.2</com.fasterxml.jackson.databind.version>
         <com.fasterxml.jackson.jaxrs-json-provider-version>2.10.5</com.fasterxml.jackson.jaxrs-json-provider-version>
         <com.google.code.gson.version>2.9.0</com.google.code.gson.version>
         <commons-codec.wso2.version>1.14.0.wso2v1</commons-codec.wso2.version>

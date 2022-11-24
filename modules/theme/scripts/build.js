@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,7 +14,6 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
 
 require("@babel/register");
@@ -61,13 +60,13 @@ const skipHashing = process.argv.indexOf("--skipHashing") > -1;   // CLI arg to 
  * Generate Default Site Variables JSON files.
  *
  * @param theme - Theme to generate variables.
- * @return {Promise<void>}
+ * @returns a Promise.
  */
 const createVariablesLessJson = async (theme) => {
 
     const exportJsFileName = "theme-variables.json";
     const exportMergeLessFileName = "theme-variables.less";
-    
+
     const themeDistDir = path.join(distDir, "lib", "themes", theme);
 
     const exportMergeLessFile = path.join(themeDistDir, exportMergeLessFileName);
@@ -78,7 +77,7 @@ const createVariablesLessJson = async (theme) => {
      * `mergeFiles` has a limitation when merging more than 2 files at once. Hence, temp files should be maintained.
      *
      * @param files - Files to be merge.
-     * @return {Promise<void>}
+     * @returns a Promise.
      */
     const mergeVariableFiles = async (files) => {
 
@@ -190,7 +189,7 @@ const copyAssets = (theme, filePath) => {
  *
  * @param theme - Theme name.
  * @param themePath - Path for the theme in "src".
- * @return {Promise<void>}
+ * @returns a Promise.
  */
 const createAssetManifest = async (theme, themePath) => {
 

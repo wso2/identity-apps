@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -90,6 +90,10 @@ export const console: ConsoleNS = {
                 tooltip: "Apps"
             },
             organizationSwitch: {
+                breadcrumbError: {
+                    description: "An error occurred while fetching the organization hierarchy.",
+                    message: "Something went wrong"
+                },
                 emptyOrgListMessage: "No organizations available",
                 orgSearchPlaceholder: "Search by organization name"
             }
@@ -577,7 +581,7 @@ export const console: ConsoleNS = {
                             }
                         }
                     },
-                    placeholder: "Search applications by name, clientId, or issuer"
+                    placeholder: "Search applications by name, client ID, or issuer"
                 },
                 confirmations: {
                     addSocialLogin: {
@@ -764,6 +768,13 @@ export const console: ConsoleNS = {
                                     message: "User Attribute Mapping Changed"
                                 }
                             },
+                            emptySearchResults: {
+                                subtitles: {
+                                    0: "We couldn't find any results for '{{ searchQuery }}'",
+                                    1: "Please try a different search term."
+                                },
+                                title: "No results found"
+                            },
                             forms: {
                                 fields: {
                                     dynamic: {
@@ -804,15 +815,24 @@ export const console: ConsoleNS = {
                                     },
                                     subHeading: "Select which user attributes you want to share with the application."
                                 },
-                                attributeComponentHint: "Manage the user attributes you want to share with this " +
-                                    "application via <1>OpenID Connect Scopes.</1> You can add new attributes " +
-                                    "and mappings by navigating to <3>Attributes.</3>",
+                                attributeComponentHint: "Use <1>OpenID Connect Scopes</1> to manage user attribute in a scope. " +
+                                    "You can add new attributes by navigating to <3>Attributes.</3>",
                                 attributeComponentHintAlt: "Manage the user attributes you want to share with this" +
                                     " application. You can add new attributes and mappings by navigating to " +
                                     "<1>Attributes.</1>",
-                                description: "Add the user attributes that are allowed to be shared with this " +
+                                description: "Select scopes, i.e grouped user attributes that are allowed to be shared with this " +
                                     "application.",
                                 heading: "User Attribute Selection",
+                                scopelessAttributes: {
+                                    description: "View attributes without a scope",
+                                    displayName: "Attributes without a scope",
+                                    name: "",
+                                    hint: "Cannot retrieve these user attributes by requesting " +
+                                            "OIDC scopes. To retrieve, add the required attributes to a relevant scope."
+                                },
+                                selectedScopesComponentHint: "Request these scopes from your application to retrieve " +
+                                    "the selected user attributes.",
+                                howToUseScopesHint: "How to use Scopes",
                                 mandatoryAttributeHint: "Mark which user attributes are mandatory to be shared " +
                                     "with the application. At login, {{productName}} prompts the user to enter these " +
                                     "attribute values, if not already provided in the user's profile.",
@@ -830,8 +850,10 @@ export const console: ConsoleNS = {
                                         actions: {
                                             makeMandatory: "Make mandatory",
                                             makeRequested: "Make requested",
+                                            makeScopeRequested: "Make Scope requested",
                                             removeMandatory: "Remove mandatory",
                                             removeRequested: "Remove requested",
+                                            removeScopeRequested: "Remove Scope Requested",
                                             subjectDisabledSelection: "This attribute is mandatory because it " +
                                                 "is the subject attribute."
                                         },
@@ -858,7 +880,7 @@ export const console: ConsoleNS = {
                                         confirmationMessage: "This action will revert mapped custom attribute " +
                                             "values to default values."
                                     },
-                                    searchPlaceholder: "Search user attributes"
+                                    searchPlaceholder: "Search user attributes by name, display name or scope details"
                                 },
                                 selectAll: "Select all attributes"
                             },
@@ -1173,6 +1195,10 @@ export const console: ConsoleNS = {
                                                     "Magic Link authenticator. Using it with any other authenticator " +
                                                     "can lead to unexpected behavior."
                                             },
+                                            microsoft: {
+                                                description: "Enable users to login with Microsoft.",
+                                                heading: "Add Microsoft login"
+                                            },
                                             totp: {
                                                 description: "Enable additional authentication layer with Time "
                                                     + "based OTP.",
@@ -1189,6 +1215,10 @@ export const console: ConsoleNS = {
                                             emailOTP: {
                                                 description: "Enable additional authentication layer with Email based OTP.",
                                                 heading: "Add Email OTP as a second factor"
+                                            },
+                                            smsOTP: {
+                                                description: "Enable additional authentication layer with SMS based OTP.",
+                                                heading: "Add SMS OTP as a second factor"
                                             }
                                         }
                                     }
@@ -1568,6 +1598,11 @@ export const console: ConsoleNS = {
                                     "users to log in.",
                                 heading: "Application is inactive"
                             }
+                        },
+                        mobileApp: {
+                            discoverableHint: "If enabled and a web accessible url(deep link) is given, customers " +
+                                "can access this application from the <1>{{ myAccount }}</1> portal.",
+                            mobileAppPlaceholder: "myapp://oauth2"
                         },
                         sections: {
                             accessToken: {
@@ -1951,7 +1986,12 @@ export const console: ConsoleNS = {
                             },
                             certificates: {
                                 disabledPopup: "Make sure request signature validation and" +
-                                    " assertion encryption are disabled to proceed."
+                                    " assertion encryption are disabled to proceed.",
+                                certificateRemoveConfirmation: {
+                                    header: "Remove current certificate?",
+                                    content: "Setting the certificate type to none will remove the current " +
+                                        "certificate provided for this application. Proceed with caution."
+                                }
                             },
                             encryption: {
                                 fields: {
@@ -2226,7 +2266,8 @@ export const console: ConsoleNS = {
                                         "{{characterLimit}} characters, including alphanumerics, periods (.), " +
                                         "dashes (-), underscores (_) and spaces."
                                 }
-                            }
+                            },
+                            urlDeepLinkError: "The entered URL is not a deep link."
                         }
                     }
                 },
@@ -2350,7 +2391,7 @@ export const console: ConsoleNS = {
                     columns: {
                         actions: "",
                         name: "Name",
-                        templateId: "Type"
+                        inboundKey: "Inbound Key"
                     },
                     labels: {
                         fragment: "Fragment App"
@@ -2360,7 +2401,50 @@ export const console: ConsoleNS = {
                     description: "Self-service portal for your users.",
                     popup: "Share this link with your users to allow access to My Account" +
                     " and to manage their accounts.",
-                    title: "My Account"
+                    title: "My Account",
+                    enable: {
+                        0: "Enabled",
+                        1: "Disabled"
+                    },
+                    Confirmation: {
+                        enableConfirmation: {
+                            content: "The My Account portal is in preview mode and it is recommended to disable it " +
+                                "when your organization goes into production.",
+                            heading: "Are you sure?",
+                            message: "Enable My Account portal."
+                        },
+                        disableConfirmation: {
+                            content: "The My Account portal is in preview mode and it is recommended to disable it " +
+                                "when your organization goes into production. When My Account portal is disabled, " +
+                                "users of your organization will not be able to access it.",
+                            heading: "Are you sure?",
+                            message: "Disable My Account portal."
+                        }
+                    },
+                    notifications: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Update error"
+                        },
+                        genericError: {
+                            description: "Failed to update My Account portal status.",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Successfully updated My Account portal status.",
+                            message: "Update successful"
+                        }
+                    },
+                    fetchMyAccountStatus: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Retrieval error"
+                        },
+                        genericError: {
+                            description: "Couldn't retrieve My Account portal status.",
+                            message: "Something went wrong"
+                        }
+                    }
                 },
                 notifications: {
                     addApplication: {
@@ -3001,6 +3085,11 @@ export const console: ConsoleNS = {
                         emailTemplate: {
                             tabName: "Email Template <1>(Coming Soon)</1>"
                         }
+                    },
+                    smsOTP: {
+                        smsProvider:{
+                            tabName: "SMS Provider <1>(Coming Soon)</1>"
+                        }
                     }
                 },
                 forms: {
@@ -3123,6 +3212,58 @@ export const console: ConsoleNS = {
                                 label: "Use only numeric characters for OTP",
                                 validations: {
                                     required: "Use only numeric characters for OTP is a required field."
+                                }
+                            }
+                        },
+                        smsOTP: {
+                            forTestingOnlyNotice: {
+                                firstLine: "Test SMS OTP two-factor authentication using our default SMS provider.",
+                                secondLine: "(Limited to 15 messages per month)"
+                            },
+                            expiryTime: {
+                                hint: "Please pick a value between <1>1 minute</1> & <3> 1440 minutes (1 day)</3>.",
+                                label: "SMS OTP expiry time",
+                                placeholder: "Enter SMS OTP expiry time.",
+                                unit: "minutes",
+                                validations: {
+                                    invalid: "SMS OTP expiry time should be an integer.",
+                                    range: "SMS OTP expiry time should be between 1 minutes & 1440 minutes (1 day).",
+                                    required: "SMS OTP expiry time is a required field."
+                                }
+                            },
+                            tokenLength: {
+                                hint: "The number of allowed characters in the OTP. Please " +
+                                    "pick a value between <1>4-10</1>.",
+                                label: "SMS OTP length",
+                                placeholder: "Enter SMS OTP length.",
+                                validations: {
+                                    invalid: "SMS OTP length should be an integer.",
+                                    range: {
+                                        digits: "SMS OTP length should be between 4 & 10 digits.",
+                                        characters: "SMS OTP length should be between 4 & 10 characters."
+                                    },
+                                    required: "SMS OTP length is a required field."
+                                },
+                                unit: {
+                                    digits: "digits",
+                                    characters: "characters"
+                                }
+                            },
+                            useNumericChars: {
+                                hint: "Please clear this checkbox to enable alphanumeric characters.",
+                                label: "Use only numeric characters for OTP",
+                                validations: {
+                                    required: "Use only numeric characters for OTP token is a required field."
+                                }
+                            },
+                            allowedResendAttemptCount: {
+                                hint: "The number of allowed OTP resend attempts.",
+                                label: "Allowed OTP resend attempt count",
+                                placeholder: "Enter allowed resend attempt count.",
+                                validations: {
+                                    required: "Allowed OTP resend attempt count is a required field.",
+                                    invalid: "Allowed OTP resend attempt count should be an integer.",
+                                    range: "Allowed OTP resend attempt count should be between 0 & 100."
                                 }
                             }
                         },
@@ -3273,6 +3414,11 @@ export const console: ConsoleNS = {
                                     required: "Client secret is a required field."
                                 }
                             },
+                            enableGoogleOneTap: {
+                                hint: "Enabling Google One Tap as a sign in option",
+                                label: "Google One Tap",
+                                placeholder: "Google one tap as a sign in option"
+                            },
                             scopes: {
                                 heading: "Scopes",
                                 hint: "The type of access provided for the connected apps to access data " +
@@ -3288,6 +3434,60 @@ export const console: ConsoleNS = {
                                         description: "Allows to view user's basic profile data."
                                     }
                                 }
+                            }
+                        },
+                        microsoft: {
+                            commonAuthQueryParams: {
+                                ariaLabel: "Microsoft authenticator additional query parameters",
+                                hint: "Additional query parameters to be sent to Microsoft.",
+                                label: "Additional Query Parameters",
+                                placeholder: "Enter additional query parameters.",
+                                validations: {
+                                    required: "Client secret is not a required field."
+                                }
+                            },
+                            callbackUrl: {
+                                hint: "The authorized redirect URI used to obtain Microsoft credentials.",
+                                label: "Authorized redirect URI",
+                                placeholder: "Enter Authorized redirect URI.",
+                                validations: {
+                                    required: "Authorized redirect URI is a required field."
+                                }
+                            },
+                            clientId: {
+                                hint: "The <1>Client ID</1> you received from Microsoft for your OAuth app.",
+                                label: "Client ID",
+                                placeholder: "Enter Client ID from Microsoft application.",
+                                validations: {
+                                    required: "Client ID is a required field."
+                                }
+                            },
+                            clientSecret: {
+                                hint: "The <1>Client secret</1> you received from Microsoft for your OAuth app.",
+                                label: "Client secret",
+                                placeholder: "Enter Client secret from Microsoft application.",
+                                validations: {
+                                    required: "Client secret is a required field."
+                                }
+                            },
+                            scopes: {
+                                ariaLabel: "Scopes provided by Microsoft Authenticator",
+                                heading: "Scopes",
+                                hint: "The type of access provided for the connected apps to access data " +
+                                    "from Microsoft. Click <1>here</1> to learn more.",
+                                label: "Scopes",
+                                list: {
+                                    email: {
+                                        description: "Allows to view user's email address."
+                                    },
+                                    openid: {
+                                        description: "Allows to authenticate using OpenID Connect."
+                                    },
+                                    profile: {
+                                        description: "Allows to view user's basic profile data."
+                                    }
+                                },
+                                placeholder: "e.g: openid"
                             }
                         },
                         saml: {
@@ -3407,6 +3607,7 @@ export const console: ConsoleNS = {
                     common: {
                         customProperties: "Custom Properties",
                         invalidQueryParamErrorMessage: "These are not valid query parameters",
+                        invalidScopesErrorMessage: "Scopes must contain 'openid'",
                         invalidURLErrorMessage: "Enter a valid URL",
                         requiredErrorMessage: "This field cannot be empty"
                     },
@@ -3435,6 +3636,12 @@ export const console: ConsoleNS = {
                         }
                     },
                     jitProvisioning: {
+                        associateLocalUser: {
+                            label: "Associate provisioned users with existing local users",
+                            hint: "When enabled, users that are provisioned with this identity " +
+                                "provider will be linked to the local users who are already registered " +
+                                "with the same email address."
+                        },
                         enableJITProvisioning: {
                             disabledMessageContent: "You cannot disable the Just-in-Time User" +
                                 " Provisioning setting because the following applications" +
@@ -4238,6 +4445,49 @@ export const console: ConsoleNS = {
                                 configureRedirectURL: "Add the following URL as the <1>Authorized Redirect URI</1>.",
                                 getCredentials: "Before you begin, create an <1>OAuth application</1> " +
                                     "<3>on Google</3>, and obtain a <5>client ID & secret</5>.",
+                                heading: "Prerequisite"
+                            },
+                            subHeading: "Use the guide below"
+                        }
+                    },
+                    organizationIDP: {
+                        wizardHelp: {
+                            name: {
+                                description: "Provide a unique name for the enterprise authentication provider so" +
+                                    " that it can be easily identified.",
+                                heading: "Name"
+                            },
+                            description: {
+                                description: "Provide a description for the enterprise authentication provider to" +
+                                    " explain more about it.",
+                                heading: "Description",
+                                example: "E.g., This is the authenticator for MyOrg, which acts as the IDP for MyApp."
+                            }
+                        }
+                    },
+                    microsoft: {
+                        wizardHelp: {
+                            clientId: {
+                                description: "Provide the <1>Client ID</1> you received from Microsoft when you " +
+                                    "registered the OAuth app.",
+                                heading: "Client ID"
+                            },
+                            clientSecret: {
+                                description: "Provide the <1>Client secret</1> you received from Microsoft when you " +
+                                    "registered the OAuth app.",
+                                heading: "Client secret"
+                            },
+                            heading: "Help",
+                            name: {
+                                connectionDescription: "Provide a unique name for the connection.",
+                                heading: "Name",
+                                idpDescription: "Provide a unique name for the identity provider."
+                            },
+                            preRequisites: {
+                                configureOAuthApps: "See Microsoft's guide on configuring OAuth Apps.",
+                                configureRedirectURL: "Add the following URL as the <1>Authorized Redirect URI</1>.",
+                                getCredentials: "Before you begin, create an <1>OAuth application</1> " +
+                                    "<3>on Microsoft</3>, and obtain a <5>client ID & secret</5>.",
                                 heading: "Prerequisite"
                             },
                             subHeading: "Use the guide below"
@@ -8151,12 +8401,21 @@ export const console: ConsoleNS = {
                         title: "Add a new Organization"
                     }
                 },
+                shareApplicationRadio: "Share with all sub-organizations",
+                shareApplicationInfo: "Select this to share the application with all the existing sub-organizations " +
+                    "and all new sub-organizations that you create under your current organization.",
+                unshareApplicationRadio: "Unshare with all sub-organizations",
+                shareWithSelectedOrgsRadio: "Share with only selected sub-organizations",
+                unshareApplicationInfo: "Select this to unshare the application with all the existing " +
+                    "sub-organizations and all new sub-organizations that you create under your current organizations.",
                 subTitle: "Create and manage organizations.",
                 switching: {
-                    emptyList: "There is no organization to show.",
+                    emptyList: "There are no sub-organizations to show.",
+                    goBack: "Go back",
                     search: {
                         placeholder: "Search by Name"
-                    }
+                    },
+                    subOrganizations: "Sub-organizations"
                 },
                 title: "Organizations"
             },
@@ -8751,7 +9010,7 @@ export const console: ConsoleNS = {
                     certificates: "Certificates",
                     configurations: "Configurations",
                     general: "General",
-                    organizations: "Organizations",
+                    organizations: "Organization Management",
                     users: "Users",
                     userstores: "User Stores"
                 },
@@ -8883,7 +9142,7 @@ export const console: ConsoleNS = {
                                 label: "Select the method to set the user password",
                                 options: {
                                     askPassword: "Invite the user to set their own password",
-                                    createPassword: "Set a temporary password for the user"
+                                    createPassword: "Set a password for the user"
 
                                 }
                             }
@@ -9135,6 +9394,7 @@ export const console: ConsoleNS = {
                             },
                             success: {
                                 description: "The user account disabled successfully.",
+                                genericMessage: "Account is disabled",
                                 message: "{{name}}'s account is disabled"
                             }
                         },
@@ -9149,6 +9409,7 @@ export const console: ConsoleNS = {
                             },
                             success: {
                                 description: "The user account enabled successfully.",
+                                genericMessage: "Account is enabled",
                                 message: "{{name}}'s account is enabled"
                             }
                         },
@@ -9191,6 +9452,7 @@ export const console: ConsoleNS = {
                             },
                             success: {
                                 description: "The user account locked successfully.",
+                                genericMessage: "Account is locked",
                                 message: "{{name}}'s account is locked"
                             }
                         },
@@ -9211,6 +9473,7 @@ export const console: ConsoleNS = {
                             },
                             success: {
                                 description: "The user account unlocked successfully.",
+                                genericMessage: "Account is unlocked",
                                 message: "{{name}}'s account is unlocked"
                             }
                         },

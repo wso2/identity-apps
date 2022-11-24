@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,26 +16,40 @@
  * under the License.
  */
 
+import React, { ReactElement, forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
 import { FormProps } from "react-final-form";
-import React, { forwardRef, ReactElement, useEffect, useImperativeHandle, useRef, useState } from "react";
 import { Form } from "./form";
 import { WizardPage } from "./wizardPage";
 
 interface ImperativeWizardProps extends FormProps {
+    /**
+     * Unique id for the form.
+     * Required for event propagation.
+     * @see {@link https://github.com/final-form/react-final-form/issues/878}
+     */
+    id: string;
     children: any;
     pageChanged?: (currentPageIndex: number) => void;
     setTotalPages?: (pageCount: number) => void;
     uncontrolledForm?: boolean;
 }
 
+/**
+ * Wizard Component.
+ * TODO: If working on a refactor, consider exporting one wizard type.
+ *
+ * @param props - Props injected to the component.
+ * @param ref - Component ref.
+ * @returns Functional component.
+ */
 const ImperativeWizard = (props: ImperativeWizardProps, ref): ReactElement => {
 
     const {
+        id,
         children,
         onSubmit,
         setTotalPages,
         pageChanged,
-        getController,
         initialValues,
         uncontrolledForm,
         ...rest
@@ -52,10 +66,10 @@ const ImperativeWizard = (props: ImperativeWizardProps, ref): ReactElement => {
     const [ values, setValues ] = useState<any>();
 
     useImperativeHandle(ref, () => ({
-        gotoNextPage: gotoNextPage,
-        gotoPreviousPage: gotoPreviousPage,
         getCurrentPageNumber: getCurrentPageNumber,
-        getValues: getValues
+        getValues: getValues,
+        gotoNextPage: gotoNextPage,
+        gotoPreviousPage: gotoPreviousPage
     }));
 
     useEffect(() => {
@@ -75,6 +89,7 @@ const ImperativeWizard = (props: ImperativeWizardProps, ref): ReactElement => {
 
     const gotoNextPage = (): void => {
         const nextIndex = Math.min(currentPageIndex + 1, lastPageIndex);
+
         setCurrentPageIndex(nextIndex);
         if (formRef) {
             formRef.current.triggerSubmit();
@@ -89,7 +104,7 @@ const ImperativeWizard = (props: ImperativeWizardProps, ref): ReactElement => {
 
     const handleSubmit = (values, form) => {
         if (currentPageIndex === lastPageIndex) {
-            return onSubmit(values, form)
+            return onSubmit(values, form);
         } else {
             setValues(values);
         }
@@ -97,14 +112,17 @@ const ImperativeWizard = (props: ImperativeWizardProps, ref): ReactElement => {
 
     const validate = (values: { [ key: string ]: any }) => {
         const activePage: any = React.Children.toArray(children)[ currentPageIndex ];
+
         if (activePage?.props?.validate) {
             return activePage.props.validate(values);
         }
+
         return {};
     };
 
     return (
         <Form
+            id={ id }
             ref={ formRef }
             initialValues={ initialValues }
             validate={ validate }
@@ -121,4 +139,3 @@ const ImperativeWizard = (props: ImperativeWizardProps, ref): ReactElement => {
 ImperativeWizard.Page = WizardPage;
 
 export const Wizard2 = forwardRef(ImperativeWizard);
-

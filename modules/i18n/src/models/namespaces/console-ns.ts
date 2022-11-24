@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -99,6 +99,7 @@ export interface ConsoleNS {
             organizationSwitch: {
                 emptyOrgListMessage: string;
                 orgSearchPlaceholder: string;
+                breadcrumbError: NotificationItem;
             }
         },
         modals: {
@@ -468,6 +469,14 @@ export interface ConsoleNS {
                                     };
                                 };
                                 heading: string;
+                                scopelessAttributes: {
+                                    description: string;
+                                    displayName: string;
+                                    name: string;
+                                    hint: string;
+                                },
+                                selectedScopesComponentHint: string;
+                                howToUseScopesHint: string;
                                 attributeComponentHint: string;
                                 attributeComponentHintAlt: string;
                                 description: string;
@@ -494,8 +503,10 @@ export interface ConsoleNS {
                                         actions: {
                                             makeMandatory: string;
                                             makeRequested: string;
+                                            makeScopeRequested: string;
                                             removeMandatory: string;
                                             removeRequested: string;
+                                            removeScopeRequested: string;
                                             subjectDisabledSelection: string;
                                         };
                                         faultyAttributeMapping: string;
@@ -509,6 +520,13 @@ export interface ConsoleNS {
                                 selectAll: string;
                             };
                             attributeMappingChange: Notification;
+                            emptySearchResults: {
+                                subtitles: {
+                                    0: string,
+                                    1: string
+                                },
+                                title: string;
+                            },
                             roleMapping: {
                                 heading: string;
                             };
@@ -695,9 +713,17 @@ export interface ConsoleNS {
                                                 heading: string;
                                                 warning: string;
                                             },
+                                            microsoft: {
+                                                description: string;
+                                                heading: string;
+                                            },
                                             emailOTP: {
                                                 description: string,
                                                 heading: string,
+                                            },
+                                            smsOTP: {
+                                                description: string;
+                                                heading: string;
                                             }
                                         }
                                     }
@@ -810,6 +836,10 @@ export interface ConsoleNS {
                             grant: FormAttributes;
                             public: FormAttributes;
                         };
+                        mobileApp: {
+                            discoverableHint: string;
+                            mobileAppPlaceholder: string;
+                        },
                         sections: {
                             accessToken: {
                                 heading: string;
@@ -962,6 +992,10 @@ export interface ConsoleNS {
                             };
                             certificates: {
                                 disabledPopup: string;
+                                certificateRemoveConfirmation: {
+                                    header: string;
+                                    content: string;
+                                }
                             }
                         };
                     };
@@ -996,6 +1030,7 @@ export interface ConsoleNS {
                         fields: {
                             callBackUrls: FormAttributes;
                             name: FormAttributes;
+                            urlDeepLinkError: string;
                         };
                     };
                 };
@@ -1004,7 +1039,7 @@ export interface ConsoleNS {
                     columns: {
                         actions: string;
                         name: string;
-                        templateId: string;
+                        inboundKey: string;
                     };
                     actions: {
                         add: string;
@@ -1019,6 +1054,46 @@ export interface ConsoleNS {
                     title: string;
                     description: string;
                     popup: string;
+                    enable: {
+                        0: string;
+                        1: string;
+                    };
+                    Confirmation: {
+                        enableConfirmation: {
+                            content: string;
+                            heading: string;
+                            message: string;
+                        };
+                        disableConfirmation: {
+                            content: string;
+                            heading: string;
+                            message: string;
+                        };
+                    };
+                    notifications: {
+                        error: {
+                            description: string;
+                            message: string;
+                        };
+                        genericError: {
+                            description: string;
+                            message: string;
+                        };
+                        success: {
+                            description: string;
+                            message: string;
+                        };
+                    };
+                    fetchMyAccountStatus: {
+                        error: {
+                            description: string;
+                            message: string;
+                        },
+                        genericError: {
+                            description: string;
+                            message: string;
+                        },
+                    }
                 };
                 notifications: {
                     addApplication: Notification;
@@ -1153,6 +1228,11 @@ export interface ConsoleNS {
                             tabName: string;
                         };
                     };
+                    smsOTP: {
+                        smsProvider: {
+                            tabName: string;
+                        };
+                    };
                 };
                 forms?: {
                     advancedConfigs: {
@@ -1250,6 +1330,57 @@ export interface ConsoleNS {
                                 };
                             };
                         };
+                        smsOTP: {
+                            forTestingOnlyNotice: {
+                                firstLine :string,
+                                secondLine: string
+                            },
+                            expiryTime: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    invalid: string;
+                                    range: string;
+                                    required: string;
+                                };
+                                unit: string;
+                            };
+                            tokenLength: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    invalid: string;
+                                    range: {
+                                        digits: string;
+                                        characters: string;
+                                    };
+                                    required: string;
+                                };
+                                unit: {
+                                    digits: string;
+                                    characters: string;
+                                }
+                            };
+                            useNumericChars: {
+                                hint: string;
+                                label: string;
+                                validations: {
+                                    required: string;
+                                };
+                            };
+                            allowedResendAttemptCount: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    required: string;
+                                    invalid: string;
+                                    range: string;
+                                };
+                            };
+                        }
                         facebook: {
                             callbackUrl: FormAttributes;
                             clientId: FormAttributes;
@@ -1319,6 +1450,7 @@ export interface ConsoleNS {
                             callbackUrl: FormAttributes;
                             clientId: FormAttributes;
                             clientSecret: FormAttributes;
+                            enableGoogleOneTap: FormAttributes;
                             AdditionalQueryParameters: FormAttributes;
                             scopes: {
                                 heading: string;
@@ -1334,6 +1466,30 @@ export interface ConsoleNS {
                                         description: string;
                                     }
                                 }
+                            };
+                        };
+                        microsoft: {
+                            callbackUrl: FormAttributes;
+                            clientId: FormAttributes;
+                            clientSecret: FormAttributes;
+                            commonAuthQueryParams: FormAttributes;
+                            scopes: {
+                                ariaLabel: string,
+                                heading: string;
+                                hint: string;
+                                label: string;
+                                list: {
+                                    email: {
+                                        description: string;
+                                    },
+                                    openid: {
+                                        description: string;
+                                    },
+                                    profile: {
+                                        description: string;
+                                    }
+                                }
+                                placeholder: string;
                             };
                         };
                         saml: {
@@ -1370,6 +1526,7 @@ export interface ConsoleNS {
                         requiredErrorMessage: string;
                         invalidURLErrorMessage: string;
                         invalidQueryParamErrorMessage: string;
+                        invalidScopesErrorMessage: string;
                         customProperties: string;
                     };
                     generalDetails: {
@@ -1390,6 +1547,7 @@ export interface ConsoleNS {
                                 3: string;
                             };
                         };
+                        associateLocalUser: FormAttributes;
                     };
                     roleMapping: {
                         heading: string;
@@ -1511,6 +1669,44 @@ export interface ConsoleNS {
                         }
                     };
                     google?: {
+                        wizardHelp: {
+                            clientId: {
+                                description: string;
+                                heading: string;
+                            };
+                            clientSecret: {
+                                description: string;
+                                heading: string;
+                            };
+                            heading: string;
+                            name: {
+                                idpDescription: string;
+                                connectionDescription: string;
+                                heading: string;
+                            };
+                            preRequisites: {
+                                configureOAuthApps: string;
+                                configureRedirectURL: string;
+                                getCredentials: string;
+                                heading: string;
+                            },
+                            subHeading: string;
+                        }
+                    };
+                    organizationIDP?: {
+                        wizardHelp: {
+                            name: {
+                                description: string;
+                                heading: string;
+                            };
+                            description: {
+                                description: string;
+                                heading: string;
+                                example: string;
+                            };
+                        }
+                    },
+                    microsoft?: {
                         wizardHelp: {
                             clientId: {
                                 description: string;
@@ -2412,11 +2608,18 @@ export interface ConsoleNS {
                     name: string;
                     description: string;
                 };
+                shareApplicationRadio: string;
+                shareApplicationInfo: string;
+                unshareApplicationRadio: string;
+                shareWithSelectedOrgsRadio: string;
+                unshareApplicationInfo: string;
                 switching: {
                     search: {
                         placeholder: string;
                     };
                     emptyList: string;
+                    subOrganizations: string;
+                    goBack: string;
                 }
             };
             users: {

@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,7 +14,6 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
 
 import Axios from "axios";
@@ -25,7 +24,8 @@ type ValidationFunction = (value: string) => boolean;
 /**
  * This validates email addresses. Returns true if valid. False if not valid.
  * Doesn't check for the validity of the top level domain.
- * @param value
+ * 
+ * @param value - string to be validated.
  */
 export const email: ValidationFunction = (value: string): boolean => {
     if (
@@ -42,7 +42,8 @@ export const email: ValidationFunction = (value: string): boolean => {
 /**
  * This validates mobile numbers. Returns true if valid. False if not valid.
  * Checks if the mobile number input has only numbers, '-', and '+'.
- * @param value
+ * 
+ * @param value - string to be validated.
  */
 export const mobileNumber: ValidationFunction = (value: string): boolean => {
     if (
@@ -58,8 +59,9 @@ export const mobileNumber: ValidationFunction = (value: string): boolean => {
 
 /**
  * This validates URLs. Returns true if valid. False if not valid.
- * Check is the satisfies RFC 3986 specifications
- * @param value
+ * Check is the satisfies RFC 3986 specifications.
+ * 
+ * @param value - string to be validated.
  */
 export const url: ValidationFunction = (value: string): boolean => {
     if (
@@ -74,8 +76,9 @@ export const url: ValidationFunction = (value: string): boolean => {
 };
 
 /**
- * Checks if the image url is valid
- * @param value Url
+ * Checks if the image url is valid.
+ * 
+ * @param value - string to be validated.
  */
 export const imageUrl = async (value: string): Promise<boolean> => {
     if (
@@ -97,7 +100,8 @@ export const imageUrl = async (value: string): Promise<boolean> => {
 
 /**
  * This validates identifiers. Returns true if valid. False if not valid.
- * @param value
+ * 
+ * @param value - string to be validated.
  */
 export const identifier: ValidationFunction = (value: string): boolean => {
     if (
@@ -114,7 +118,8 @@ export const identifier: ValidationFunction = (value: string): boolean => {
 
 /**
  * This validates resource names. Returns true if valid. False if not valid.
- * @param value {string}
+ * 
+ * @param value - string to be validated.
  * @deprecated please use {@link isValidResourceName}
  */
 export const resourceName: ValidationFunction = (value: string): boolean => {
@@ -130,9 +135,28 @@ export const resourceName: ValidationFunction = (value: string): boolean => {
 };
 
 /**
+ * This validates if OpenID Connect scopes contains openid value. 
+ * Returns true if valid. False if not valid.
+ * 
+ * @param value - string to be validated.
+ */
+export const scopes: ValidationFunction = (value: string): boolean => {
+    if (
+        Joi.string()
+            .regex(new RegExp("^.*openid.*$"))
+            .validate(value).error
+    ) {
+        return false;
+    }
+
+    return true;
+};
+
+/**
  * Validates if the length of the value is less than the character limit.
- * @param value {string}
- * @param limit {number}
+ * 
+ * @param value - string to be validated.
+ * @param limit - max length.
  */
 export const isLengthValid = (value: string, limit: number): boolean => {
 
@@ -155,9 +179,8 @@ export const isLengthValid = (value: string, limit: number): boolean => {
  *
  * @see {@link https://joi.dev/api/?v=17.4.1#numberinteger}
  *
- * @param {number} value - Value to check.
- *
- * @return {boolean}
+ * @param value - Value to check.
+ * @returns true for integers and false for non-integers.
  */
 export const isInteger = (value: number): boolean => {
 
@@ -171,8 +194,8 @@ export const isInteger = (value: number): boolean => {
 /**
  * This can be used to validate resource names. For example
  * IdP names and Application names. This allows values like
- * { abc123, ab-c123, some-name, some_name, SOME-NAME } but
- * not values starting with { - _ numbers } only alphabet
+ * `{ abc123, ab-c123, some-name, some_name, SOME-NAME }` but
+ * not values starting with `{ - _ numbers }` only alphabet
  * lower or upper case.
  *
  * This function does not handle lengths! You should have
@@ -198,8 +221,8 @@ export const isInteger = (value: number): boolean => {
  *
  * See Sandbox for examples {@link https://regex101.com/r/cz6cUb/1}
  *
- * @param value {string} Input to validate
- * @return valid {boolean} Whether input is accepted or not.
+ * @param value - Input to be validated.
+ * @returns whether input is accepted or not.
  */
 export const isValidResourceName = (value: string): boolean => {
     try {
@@ -219,12 +242,12 @@ export const isValidResourceName = (value: string): boolean => {
  * we have enforced this validation a bit by saying , "a client id
  * must not have line breaks or spaces.
  *
- * Disallowed characters ∊ {\r\n\t\f\v \u00a0\u1680\u2000-\u200a\u2028\u2029\u202f\u205f\u3000\ufeff}
+ * `Disallowed characters ∊ {\r\n\t\f\v\u00a0\u1680\u2000-\u200a\u2028\u2029\u202f\u205f\u3000\ufeff}`
  *
  * [1] {@link https://datatracker.ietf.org/doc/html/rfc6749#section-2.2}
  *
- * @param value {string} Input to validate.
- * @return valid {boolean} Whether input is accepted or not
+ * @param value - Input to be validated.
+ * @returns whether input is accepted or not.
  */
 export const isValidClientId = (value: string): boolean => {
     try {
@@ -242,8 +265,8 @@ export const isValidClientId = (value: string): boolean => {
  * This function validates long or short descriptions.This is useful
  * for text areas and other generic input description fields.
  *
- * @param value {string} Input to validate.
- * @return valid {boolean} Whether input is accepted or not
+ * @param value - Input to be validated.
+ * @returns whether input is accepted or not
  */
 export const isValidDescription = (value: string): boolean => {
     try {
@@ -276,9 +299,9 @@ export const isValidDescription = (value: string): boolean => {
  * | Whoo_o-oo333223 |
  * +-----------------+
  *
- * {@see Sandbox https://regex101.com/r/keIxpy/1}
- * @param value {string} user input
- * @return {boolean} input valid or not.
+ * @see Sandbox https://regex101.com/r/keIxpy/1
+ * @param value - user input.
+ * @returns whether input is valid or not.
  */
 export const isValidResourceKey = (value: string): boolean => {
     try {

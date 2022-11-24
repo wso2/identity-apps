@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -90,6 +90,10 @@ export const console: ConsoleNS = {
                 tooltip: "Apps"
             },
             organizationSwitch: {
+                breadcrumbError: {
+                    description: "සංවිධාන ධුරාවලිය ලබා ගැනීමේදී දෝෂයක් ඇති විය.",
+                    message: "මොකක්හරි වැරැද්දක් වෙලා"
+                },
                 emptyOrgListMessage: "සංවිධාන නොමැත",
                 orgSearchPlaceholder: "සංවිධානයේ නම අනුව සොයන්න"
             }
@@ -768,6 +772,13 @@ export const console: ConsoleNS = {
                                     message: "ගුණාංග අගයන් වෙනස් කරන ලදි"
                                 }
                             },
+                            emptySearchResults: {
+                                subtitles: {
+                                    0: " '{{ searchQuery }}' සඳහා අපට කිසිදු ප්‍රතිපලයක් සොයාගත නොහැකි විය.",
+                                    1: "කරුණාකර වෙනත් සෙවුම් පදයක් උත්සාහ කරන්න."
+                                },
+                                title: "ප්‍රතිපල හමු නොවීය"
+                            },
                             forms: {
                                 fields: {
                                     dynamic: {
@@ -811,11 +822,21 @@ export const console: ConsoleNS = {
                                 },
                                 attributeComponentHint: "මෙම යෙදුම සමඟ ඔබට බෙදා ගැනීමට අවශ්‍ය පරිශීලක ගුණාංග" +
                                     " කළමනාකරණය කරන්න.",
-                                attributeComponentHintAlt: "මෙම යෙදුම සමඟ ඔබට බෙදා ගැනීමට අවශ්‍ය පරිශීලක ගුණාංග" +
-                                    " කළමනාකරණය කරන්න. <1> ගුණාංග </1> වෙත යාමෙන් ඔබට නව ගුණාංග සහ සිතියම් එකතු කළ " +
-                                    "හැකියය",
-                                description: "මෙම යෙදුම සමඟ බෙදා ගැනීමට අවසර දී ඇති පරිශීලක ගුණාංග එකතු කරන්න.",
+                                attributeComponentHintAlt: "විෂය පථයකට පරිශීලක ගුණාංග එක් කිරීමට/ඉවත් කිරීමට " +
+                                    "<1>OpenID Connect Scopes</1> භාවිතා කරන්න. ඔබට <3>Attributes</3> වෙත සංචාලනය කිරීමෙන් " +
+                                    "නව ගුණාංග එක් කළ හැක.",
+                                description: "මෙම යෙදුම සමඟ බෙදා ගැනීමට අවසර දී ඇති විෂය පථයන්, එනම් සමූහගත පරිශීලක ගුණාංග තෝරන්න.",
                                 heading: "පරිශීලක ගුණාංග තේරීම",
+                                scopelessAttributes: {
+                                    description: "විෂය පථයකින් තොරව ගුණාංග බලන්න",
+                                    displayName: "විෂය පථයක් නොමැති ගුණාංග",
+                                    name: "",
+                                    hint: "OpenID Connect විෂය පථයන් ඉල්ලීමෙන් මෙම පරිශීලක " +
+                                        "ගුණාංග ලබා ගත නොහැක. නැවත ලබා ගැනීමට, අදාළ විෂය පථයකට අවශ්‍ය ගුණාංග එක් කරන්න."
+                                },
+                                selectedScopesComponentHint: "තෝරාගත් පරිශීලක ගුණාංග ලබා ගැනීමට ඔබගේ යෙදුමෙන් මෙම විෂය " +
+                                    "පථයන් ඉල්ලන්න.",
+                                howToUseScopesHint: "Scopes භාවිතා කරන්නේ කෙසේද",
                                 mandatoryAttributeHint: "යෙදුම සමඟ බෙදා ගැනීමට අනිවාර්යය වන පරිශීලක ගුණාංග මොනවාදැයි " +
                                     "ලකුණු කරන්න. පුරනය වීමේ දී, පරිශීලකයාගේ පැතිකඩෙහි දැනටමත් සපයා නොමැති නම්, මෙම " +
                                     "ගුණාංග අගයන් ඇතුළත් කිරීමට {{productName}} පරිශීලකයාගෙන් ඉල්ලා සිටී.",
@@ -833,8 +854,10 @@ export const console: ConsoleNS = {
                                         actions: {
                                             makeMandatory: "අනිවාර්ය කරන්න",
                                             makeRequested: "ඉල්ලීමක් කරන්න",
+                                            makeScopeRequested: "විෂය පථය ඉල්ලා සිටින්න",
                                             removeMandatory: "අනිවාර්ය ඉවත් කරන්න",
                                             removeRequested: "ඉල්ලූ දේ ඉවත් කරන්න",
+                                            removeScopeRequested: "විෂය පථය ඉවත් කරන්න ඉල්ලා ඇත",
                                             subjectDisabledSelection: "මෙම ගුණාංගය අනිවාර්ය වන්නේ " +
                                                 "එය විෂය ගුණාංගය වන බැවිනි."
                                         },
@@ -862,7 +885,7 @@ export const console: ConsoleNS = {
                                         confirmationMessage: "මෙම ක්‍රියාව මඟින් සිතියම්ගත කළ අගයන් පෙරනිමි අගයන් " +
                                             "වෙත ආපසු හරවනු ඇත"
                                     },
-                                    searchPlaceholder: "පරිශීලක ගුණාංග සොයන්න"
+                                    searchPlaceholder: "නම, සංදර්ශක නම හෝ විෂය පථය විස්තර අනුව පරිශීලක ගුණාංග සොයන්න"
                                 },
                                 selectAll: "සියලුම ගුණාංග තෝරන්න"
                             },
@@ -1181,6 +1204,10 @@ export const console: ConsoleNS = {
                                                     "සත්‍යාපකයක් සමඟ එය භාවිතා කිරීම අනපේක්ෂිත හැසිරීමකට හේතු විය හැක."
 
                                             },
+                                            microsoft: {
+                                                description: "Microsoft සමඟ පුරනය වීමට පරිශීලකයින්ට සක්‍රීය කරන්න.",
+                                                heading: "Microsoft පිවිසුම එක් කරන්න"
+                                            },
                                             totp: {
                                                 description: "කාලය පදනම් කරගත් OTP සමඟ අතිරේක සත්‍යාපන ස්තරය " +
                                                     "සක්‍රීය කරන්න.",
@@ -1199,6 +1226,10 @@ export const console: ConsoleNS = {
                                             emailOTP: {
                                                 description: "විද්‍යුත් තැපෑල පදනම් කරගත් OTP සමඟ අතිරේක සත්‍යාපන ස්තරය සක්‍රීය කරන්න.",
                                                 heading: "විද්‍යුත් තැපෑල දෙවන සාධකය ලෙස එක් කරන්න"
+                                            },
+                                            smsOTP: {
+                                                description: "SMS පදනම් කරගත් OTP සමඟ අතිරේක සත්‍යාපන ස්තරය සක්‍රීය කරන්න.",
+                                                heading: "SMS දෙවන සාධකය ලෙස එක් කරන්න"
                                             }
                                         }
                                     }
@@ -1573,6 +1604,11 @@ export const console: ConsoleNS = {
                                     "කරුණාකර රහස ජනනය කරන්න.",
                                 heading: "යෙදුම අවලංගු කර ඇත"
                             }
+                        },
+                        mobileApp: {
+                            discoverableHint: "සබල කර ඇති නම් සහ වෙබ් ප්‍රවේශ විය හැකි url (ගැඹුරු සබැඳියක්) ලබා දී " +
+                                "ඇත්නම්, පාරිභෝගිකයින්ට <1>{{ myAccount }}</1> ද්වාරයෙන් මෙම යෙදුමට ප්‍රවේශ විය හැක.",
+                            mobileAppPlaceholder: "myapp://oauth2"
                         },
                         sections: {
                             accessToken: {
@@ -1950,7 +1986,12 @@ export const console: ConsoleNS = {
                             },
                             certificates: {
                                 disabledPopup: "ඉදිරියට යාමට ඉල්ලීම් අත්සන් වලංගුකරණය සහ තහවුරු කිරීමේ " +
-                                    "සංකේතනය අබල කර ඇති බවට වග බලා ගන්න."
+                                    "සංකේතනය අබල කර ඇති බවට වග බලා ගන්න.",
+                                certificateRemoveConfirmation: {
+                                    header: "වත්මන් සහතිකය ඉවත් කරන්නද?",
+                                    content: "සහතික වර්ගය කිසිවක් නැත ලෙස සැකසීම මෙම යෙදුම සඳහා සපයා ඇති වත්මන් සහතිකය ඉවත් " +
+                                        "කරයි. කල්පනාකාරීව ඉදිරියට යන්න."
+                                }
                             },
                             encryption: {
                                 fields: {
@@ -2210,7 +2251,8 @@ export const console: ConsoleNS = {
                                 validations: {
                                     invalid: "The application name should contain letters, numbers."
                                 }
-                            }
+                            },
+                            urlDeepLinkError: "ඇතුළත් කළ Deep URL සබැඳියක් නොවේ."
                         }
                     }
                 },
@@ -2334,7 +2376,7 @@ export const console: ConsoleNS = {
                     columns: {
                         actions: "ක්‍රියා",
                         name: "නම",
-                        templateId: "වර්ගය"
+                        inboundKey: "අභ්යන්තර යොමුගත යතුර"
                     },
                     labels: {
                         fragment: "ඛණ්ඩක යෙදුම"
@@ -2344,7 +2386,50 @@ export const console: ConsoleNS = {
                     description: "Asgardeo භාවිතා කරන්නන් සඳහා ස්වයං සේවා ද්වාරය",
                     popup: "මගේ ගිණුමට ප්‍රවේශ වීමට සහ ඔවුන්ගේ ගිණුම් කළමනාකරණය කිරීමට" +
                     " ඔබේ පරිශීලකයන් සමඟ මෙම සබැඳිය බෙදා ගන්න.",
-                    title: "මගේ ගිණුම"
+                    title: "මගේ ගිණුම",
+                    enable: {
+                        0: "සක්‍රීය කර ඇත",
+                        1: "ආබාඅක්‍රීය කර ඇතධිතයි"
+                    },
+                    Confirmation: {
+                        enableConfirmation: {
+                            content: "මගේ ගිණුම් ද්වාරය පෙරදසුන් මාදිලියේ ඇති අතර ඔබේ ආයතනය නිෂ්පාදනයට යන විට" +
+                                "එය අබල කිරීමට නිර්දේශ කෙරේ.",
+                            heading: "ඔබට විශ්වාසද?",
+                            message: "මගේ ගිණුම සබල කරන්න."
+                        },
+                        disableConfirmation: {
+                            content: "මගේ ගිණුම් ද්වාරය පෙරදසුන් මාදිලියේ ඇති අතර ඔබේ ආයතනය නිෂ්පාදනයට යන විට " +
+                                "එය අබල කිරීමට නිර්දේශ කෙරේ. මගේ ගිණුම් ද්වාරය අබල කළ විට, ඔබේ සංවිධානයේ " +
+                                "පරිශීලකයින්ට එයට ප්‍රවේශ වීමට නොහැකි වනු ඇත.",
+                            heading: "ඔබට විශ්වාසද?",
+                            message: "මගේ ගිණුම අක්‍රීය කරන්න."
+                        }
+                    },
+                    notifications: {
+                        error: {
+                            description: "{{description}}",
+                            message: "යාවත්කාලීන දෝෂයකි"
+                        },
+                        genericError: {
+                            description: "මගේ ගිණුම යාවත්කාලීන කිරීමට අපොහොසත් විය.",
+                            message: "යම් දෝෂයක් ඇති වී ඇත"
+                        },
+                        success: {
+                            description: "මගේ ගිණුම සාර්ථකව යාවත්කාලීන කරන ලදී.",
+                            message: "යාවත්කාලීන කිරීම සාර්ථකයි"
+                        }
+                    },
+                    fetchMyAccountStatus: {
+                        error: {
+                            description: "{{description}}",
+                            message: "නැවත ලබා ගැනීමේ දෝෂය"
+                        },
+                        genericError: {
+                            description: "මගේ ගිණුම් ද්වාර තත්ත්වය ලබා ගැනීමට නොහැකි විය.",
+                            message: "යම් දෝෂයක් ඇති වී ඇත"
+                        }
+                    }
                 },
                 notifications: {
                     addApplication: {
@@ -2927,6 +3012,20 @@ export const console: ConsoleNS = {
                                 idpDescription: "අනන්යතා සැපයුම්කරු ඒ ගැන වැඩි විස්තර විස්තර කිරීමට විස්තරයක් සපයන්න."
                             },
                             subHeading: "පහත මාර්ගෝපදේශය භාවිතා කරන්න"
+                        }
+                    },
+                    organizationIDP: {
+                        wizardHelp: {
+                            name: {
+                                description: "එය පහසුවෙන් හඳුනාගත හැකි වන පරිදි ව්‍යවසාය සත්‍යාපන සැපයුම්කරු සඳහා අද්විතීය නමක්" +
+                                    " ලබා දෙන්න.",
+                                heading: "නම"
+                            },
+                            description: {
+                                description: "ඒ ගැන වැඩි විස්තර සඳහා ව්‍යවසාය සත්‍යාපන සැපයුම්කරු සඳහා විස්තරයක් සපයන්න.",
+                                heading: "විස්තර",
+                                example: "උදා., MyApp සඳහා IDP ලෙස ක්‍රියා කරන MyOrg සඳහා සත්‍යාපනය සැපයුම්කරු මෙයයි."
+                            }
                         }
                     }
                 },
@@ -6642,12 +6741,21 @@ export const console: ConsoleNS = {
                         title: "නව සංවිධානයක් එක් කරන්න"
                     }
                 },
+                shareApplicationRadio: "සියලුම උප සංවිධාන සමඟ බෙදා ගන්න",
+                shareApplicationInfo: "ඔබගේ වත්මන් සංවිධානය යටතේ ඔබ නිර්මාණය කරන දැනට පවතින සියලුම උප " +
+                    "සංවිධාන සහ සියලුම නව උපසංවිධාන සමඟ යෙදුම බෙදා ගැනීමට මෙය තෝරන්න.",
+                unshareApplicationRadio: "සියලුම උප සංවිධාන සමඟ බෙදා නොගන්න",
+                shareWithSelectedOrgsRadio: "තෝරාගත් උප සංවිධාන සමඟ පමණක් බෙදා ගන්න",
+                unshareApplicationInfo: "ඔබගේ වත්මන් සංවිධාන යටතේ ඔබ නිර්මාණය කරන දැනට පවතින සියලුම උප සංවිධාන " +
+                    "සහ සියලුම නව උපසංවිධාන සමඟ යෙදුම බෙදා නොගැනීමට මෙය තෝරන්න.",
                 subTitle: "ආයතන සාදන්න සහ කළමනාකරණය කරන්න.",
                 switching: {
                     emptyList: "පෙන්වීමට සංවිධානයක් නැත.",
                     search: {
                         placeholder: "නම අනුව සොයන්න"
-                    }
+                    },
+                    goBack: "ආපසු යන්න",
+                    subOrganizations: "උප සංවිධාන"
                 },
                 title: "ආයතන"
             },
@@ -7245,7 +7353,7 @@ export const console: ConsoleNS = {
                     certificates: "සහතික",
                     configurations: "වින්‍යාස කිරීම්",
                     general: "ජනරාල්",
-                    organizations: "ආයතන",
+                    organizations: "සංවිධාන කළමනාකරණය",
                     users: "පරිශීලකයින්",
                     userstores: "පරිශීලක වෙළඳසැල්"
                 },
@@ -7632,6 +7740,7 @@ export const console: ConsoleNS = {
                             },
                             success: {
                                 description: "පරිශීලක ගිණුම සාර්ථකව අක්‍රීය කර ඇත",
+                                genericMessage: "ගිණුම අක්‍රීය කරන ලදි",
                                 message: "{{name}} ගිණුම අක්‍රීය කර ඇත"
                             }
                         },
@@ -7646,6 +7755,7 @@ export const console: ConsoleNS = {
                             },
                             success: {
                                 description: "පරිශීලක ගිණුම සාර්ථකව සක්‍රීය කර ඇත",
+                                genericMessage: "ගිණුම සක්‍රීය කරන ලදි",
                                 message: "{{name}} ගිණුම සක්‍රීය කර ඇත"
                             }
                         },
@@ -7688,6 +7798,7 @@ export const console: ConsoleNS = {
                             },
                             success: {
                                 description: "පරිශීලක ගිණුම සාර්ථකව අගුළු දමා ඇත.",
+                                genericMessage: "ගිණුම අගුළු දමා ඇත",
                                 message: "{{name}} ගිණුම අගුළු දමා ඇත"
                             }
                         },
@@ -7708,6 +7819,7 @@ export const console: ConsoleNS = {
                             },
                             success: {
                                 description: "පරිශීලක ගිණුම සාර්ථකව අගුළු හරින ලදි.",
+                                genericMessage: "ගිණුම අගුළු ඇරීම සාර්ථකව සම්පූර්ණ විය",
                                 message: "{{name}} ගිණුම අගුළු හරිනු ලැබේ"
                             }
                         },

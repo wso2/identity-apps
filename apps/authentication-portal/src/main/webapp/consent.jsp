@@ -1,7 +1,7 @@
 <%--
-  ~ Copyright (c) 2018, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+  ~ Copyright (c) 2018, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
   ~
-  ~ WSO2 Inc. licenses this file to you under the Apache License,
+  ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
   ~ in compliance with the License.
   ~ You may obtain a copy of the License at
@@ -46,7 +46,7 @@
 %>
 
 <!doctype html>
-<html>
+<html lang="en-US">
 <head>
     <%-- header --%>
     <%
@@ -118,7 +118,7 @@
                                         %>
                                         <div class="field required">
                                             <div class="ui checkbox checked read-only disabled claim-cb">
-                                                <input type="checkbox" class="mandatory-claim hidden" name="consent_<%=Encode.forHtmlAttribute(claimId)%>" id="consent_<%=Encode.forHtmlAttribute(claimId)%>" required checked readonly />
+                                                <input tabindex="-1" type="checkbox" class="mandatory-claim hidden" name="consent_<%=Encode.forHtmlAttribute(claimId)%>" id="consent_<%=Encode.forHtmlAttribute(claimId)%>" required checked readonly />
                                                 <label for="consent_<%=Encode.forHtmlAttribute(claimId)%>"><%=Encode.forHtml(displayName)%></label>
                                             </div>
                                         </div>
@@ -206,7 +206,7 @@
         <jsp:include page="includes/footer.jsp"/>
     <% } %>
 
-    <div class="ui modal mini" id="modal_claim_validation" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="ui modal mini" id="modal_claim_validation" role="dialog" aria-labelledby="mySmallModalLabel">
         <div class="header">
             <h4 class="modal-title"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "mandatory.claims")%></h4>
         </div>

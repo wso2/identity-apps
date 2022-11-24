@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,7 +14,6 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
 
 import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
@@ -47,7 +46,7 @@ export interface DataTableColumnSelectorInterface extends IdentifiableComponentI
     floated?: GenericIconProps["floated"];
     /**
      * Callback to inform the new set of visible columns.
-     * @param {TableColumnInterface[]} columns - New columns.
+     * @param columns - New columns.
      */
     onColumnSelectionChange: (columns: TableColumnInterface[]) => void;
     /**
@@ -63,8 +62,8 @@ export interface DataTableColumnSelectorInterface extends IdentifiableComponentI
 /**
  * Data table column selector.
  *
- * @param {DataTableColumnSelectorInterface} props - Props injected to the component.
- * @return {React.ReactElement}
+ * @param props - Props injected to the component.
+ * @returns Table column selector component
  */
 export const DataTableColumnSelector: FunctionComponent<DataTableColumnSelectorInterface> = (
     props: DataTableColumnSelectorInterface
@@ -85,8 +84,8 @@ export const DataTableColumnSelector: FunctionComponent<DataTableColumnSelectorI
     /**
      * Checks if the column selector should be rendered or not.
      *
-     * @param {TableColumnInterface[]} columns - Table columns.
-     * @return {boolean}
+     * @param columns - Table columns.
+     * @returns whether the column selector should be rendered 
      */
     const isColumnSelectorValid = (columns: TableColumnInterface[]): boolean => {
         return columns.some((column: TableColumnInterface) => column.allowToggleVisibility)
@@ -96,8 +95,8 @@ export const DataTableColumnSelector: FunctionComponent<DataTableColumnSelectorI
     /**
      * Handles column selector checkbox onchange event.
      *
-     * @param {FormEvent<HTMLInputElement>} e - Event.
-     * @param {string} uniqueId - Unique ID of the column.
+     * @param e - Event.
+     * @param uniqueId - Unique ID of the column.
      */
     const handleColumnVisibilityChange = (e: FormEvent<HTMLInputElement>, { uniqueId }: { uniqueId: string }): void => {
         const clone: TableColumnInterface[] = cloneDeep(columns);
