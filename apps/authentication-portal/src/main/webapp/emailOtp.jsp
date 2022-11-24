@@ -57,7 +57,7 @@
     layoutData.put("containerSize", "medium");
 %>
 
-<html>
+<html lang="en-US">
 <head>
     <%-- header --%>
     <%
@@ -150,7 +150,11 @@
                                 <%
                                     if ("true".equals(authenticationFailed)) {
                                 %>
-                                <a class="ui button secondary"
+                                <a 
+                                    class="ui button secondary" 
+                                    onclick="resendOtp()" 
+                                    tabindex="0" 
+                                    onkeypress="javascript: if (window.event.keyCode === 13) resendOtp()"
                                 id="resend"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "resend.code")%>
                                 </a>
                                 <% } %>
@@ -203,12 +207,11 @@
                 }
             });
         });
-        $(document).ready(function () {
-            $('#resend').click(function () {
-                document.getElementById("resendCode").value = "true";
-                $('#codeForm').submit();
-            });
-        });
+
+        function resendOtp() {
+            document.getElementById("resendCode").value = "true";
+            $("#codeForm").submit();
+        }
 
         // Show OTP code function.
         function showOTPCode() {

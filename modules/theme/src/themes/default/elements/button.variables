@@ -79,3 +79,9 @@
 ------------------------------*/
 
 @TOTPVerifyActionButtonWidth: 100%;
+
+/*----------------------------
+      Keyboard Focus Outline
+------------------------------*/
+
+@focusVisibleOutline: 2px solid @focusBorderBlue;
