@@ -258,12 +258,16 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
         trySignInSilently()
             .then((response: boolean | BasicUserInfo) => {
                 if (response === false) {
+                    AuthenticateUtils.removeAuthenticationCallbackUrl(CommonAppConstants.CONSOLE_APP);
+
                     history.push(AppConstants.getAppLogoutPath());
                 } else {
                     window.history.replaceState(null, null, window.location.pathname);
                 }
             })
             .catch(() => {
+                AuthenticateUtils.removeAuthenticationCallbackUrl(CommonAppConstants.CONSOLE_APP);
+
                 history.push(AppConstants.getAppLogoutPath());
             });
     };

@@ -17,11 +17,11 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Code, Heading, InfoCard, Text } from "@wso2is/react-components";
+import { Code, Heading, InfoCard, Popup, Text } from "@wso2is/react-components";
 import classNames from "classnames";
 import React, { Fragment, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { Icon, Label, Popup } from "semantic-ui-react";
+import { Icon, Label } from "semantic-ui-react";
 import { applicationConfig } from "../../../../../../extensions";
 import {
     AuthenticatorCategories,

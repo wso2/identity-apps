@@ -16,10 +16,10 @@
  * under the License.
  */
 
-import { 
+import {
     IdentifiableComponentInterface,
     LoadingStateOptionsInterface,
-    TestableComponentInterface 
+    TestableComponentInterface
 } from "@wso2is/core/models";
 import classNames from "classnames";
 import get from "lodash-es/get";
@@ -32,7 +32,6 @@ import {
     Header,
     Icon,
     Placeholder,
-    Popup,
     SemanticICONS,
     SemanticWIDTHS,
     Table,
@@ -50,6 +49,7 @@ import { DataTableRow } from "./data-table-row";
 import { Avatar } from "../../avatar";
 import { GenericIconProps } from "../../icon";
 import { Media } from "../../media";
+import { Popup } from "../../popup";
 
 /**
  * Interface for the Data Table sub components.

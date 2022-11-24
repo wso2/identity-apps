@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,7 +18,7 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { SearchUtils } from "@wso2is/core/utils";
-import { DropdownChild, Field, Forms } from "@wso2is/forms";
+import { DropdownChild, Field, FormValue, Forms } from "@wso2is/forms";
 import {
     AdvancedSearch,
     AdvancedSearchPropsInterface,
@@ -35,17 +35,17 @@ import { getAdvancedSearchIcons } from "../configs";
 /**
  * Filter attribute field identifier.
  */
-const FILTER_ATTRIBUTE_FIELD_IDENTIFIER = "filterAttribute";
+const FILTER_ATTRIBUTE_FIELD_IDENTIFIER: string = "filterAttribute";
 
 /**
  * Filter condition field identifier.
  */
-const FILTER_CONDITION_FIELD_IDENTIFIER = "filterCondition";
+const FILTER_CONDITION_FIELD_IDENTIFIER: string = "filterCondition";
 
 /**
  * Filter value field identifier.
  */
-const FILTER_VALUES_FIELD_IDENTIFIER = "filterValues";
+const FILTER_VALUES_FIELD_IDENTIFIER: string = "filterValues";
 
 /**
  * Prop types for the application search component.
@@ -59,6 +59,10 @@ export interface AdvancedSearchWithBasicFiltersPropsInterface extends TestableCo
      * Default Search operator. ex: "co"
      */
     defaultSearchOperator: string;
+    /**
+     * Disables the dropdown filter for search
+     */
+    disableSearchFilterDropdown?: boolean;
     /**
      * Position of the search dropdown.
      */
@@ -126,6 +130,14 @@ export interface AdvancedSearchWithBasicFiltersPropsInterface extends TestableCo
 }
 
 /**
+ * Interface for default filter condition options.
+ */
+export interface DefaultFilterConditionOptionInterface {
+    text: string;
+    value: string;
+}
+
+/**
  * Advanced search component with SCIM like basic filters form.
  *
  * @param props - Props injected to the component.
@@ -138,6 +150,7 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
     const {
         defaultSearchAttribute,
         defaultSearchOperator,
+        disableSearchFilterDropdown,
         dropdownPosition,
         enableQuerySearch,
         fill,
@@ -162,7 +175,7 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
     const [ isFormSubmitted, setIsFormSubmitted ] = useState<boolean>(false);
     const [ isFiltersReset, setIsFiltersReset ] = useState<boolean>(false);
     const [ externalSearchQuery, setExternalSearchQuery ] = useState<string>("");
-    const sessionTimedOut = React.useContext(SessionTimedOutContext);
+    const sessionTimedOut: boolean = React.useContext(SessionTimedOutContext);
 
     /**
      * Handles the form submit.
@@ -170,7 +183,7 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
      * @param values - Form values.
      */
     const handleFormSubmit = (values: Map<string, string | string[]>): void => {
-        const query = values.get(FILTER_ATTRIBUTE_FIELD_IDENTIFIER)
+        const query: string = values.get(FILTER_ATTRIBUTE_FIELD_IDENTIFIER)
             + " "
             + values.get(FILTER_CONDITION_FIELD_IDENTIFIER)
             + " "
@@ -232,7 +245,7 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
     /**
      * Default filter condition options.
      */
-    const defaultFilterConditionOptions = [
+    const defaultFilterConditionOptions: DefaultFilterConditionOptionInterface[] = [
         {
             text: t("common:startsWith"),
             value: "sw"
@@ -254,6 +267,7 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
     return (
         <AdvancedSearch
             aligned="left"
+            disableSearchFilterDropdown={ disableSearchFilterDropdown }
             clearButtonPopupLabel={ t("console:common.advancedSearch.popups.clear") }
             clearIcon={ getAdvancedSearchIcons().clear }
             style={ style }
@@ -282,13 +296,13 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
                 <Grid.Row columns={ 1 }>
                     <Grid.Column width={ 16 }>
                         <Forms
-                            onSubmit={ (values) => handleFormSubmit(values) }
+                            onSubmit={ (values: Map<string, FormValue>) => handleFormSubmit(values) }
                             resetState={ isFiltersReset }
                             onChange={ () => setIsFiltersReset(false) }
                         >
                             <Field
                                 children={
-                                    filterAttributeOptions.map((attribute, index) => {
+                                    filterAttributeOptions.map((attribute: DropdownChild, index: number) => {
                                         return {
                                             key: index,
                                             text: attribute.text,
@@ -320,20 +334,21 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
                                 <Field
                                     children={
                                         filterConditionOptions
-                                            ? filterConditionOptions.map((attribute, index) => {
+                                            ? filterConditionOptions.map((attribute: DropdownChild, index: number) => {
                                                 return {
                                                     key: index,
                                                     text: attribute.text,
                                                     value: attribute.value
                                                 };
                                             })
-                                            : defaultFilterConditionOptions.map((attribute, index) => {
-                                                return {
-                                                    key: index,
-                                                    text: attribute.text,
-                                                    value: attribute.value
-                                                };
-                                            })
+                                            : defaultFilterConditionOptions.map(
+                                                (attribute: DefaultFilterConditionOptionInterface, index: number) => {
+                                                    return {
+                                                        key: index,
+                                                        text: attribute.text,
+                                                        value: attribute.value
+                                                    };
+                                                })
                                     }
                                     label={
                                         t("console:common.advancedSearch.form.inputs.filterCondition.label")
@@ -406,6 +421,7 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
  */
 AdvancedSearchWithBasicFilters.defaultProps = {
     "data-testid": "advanced-search",
+    disableSearchFilterDropdown: false,
     dropdownPosition: "bottom left",
     enableQuerySearch: commonConfig?.advancedSearchWithBasicFilters?.enableQuerySearch,
     showResetButton: false

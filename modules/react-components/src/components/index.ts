@@ -50,6 +50,7 @@ export * from "./page-header";
 export * from "./pagination";
 export * from "./pickers";
 export * from "./placeholder";
+export * from "./popup";
 export * from "./renderer";
 export * from "./route";
 export * from "./section";

@@ -16,9 +16,15 @@
  * under the License.
  */
 
+import { AppConstants as CommonAppConstants } from "@wso2is/core/constants";
 import { hasRequiredScopes, resolveAppLogoFilePath } from "@wso2is/core/helpers";
 import { AnnouncementBannerInterface, ProfileInfoInterface } from "@wso2is/core/models";
-import { LocalStorageUtils, CommonUtils as ReusableCommonUtils, StringUtils } from "@wso2is/core/utils";
+import {
+    AuthenticateUtils,
+    LocalStorageUtils,
+    CommonUtils as ReusableCommonUtils,
+    StringUtils
+} from "@wso2is/core/utils";
 import {
     Announcement,
     AppSwitcher,
@@ -35,6 +41,7 @@ import sortBy from "lodash-es/sortBy";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { Container, Menu } from "semantic-ui-react";
 import { commonConfig, organizationConfigs } from "../../../extensions";
 import { getApplicationList } from "../../applications/api";
@@ -94,7 +101,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     } = props;
 
     const { t } = useTranslation();
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const profileInfo: ProfileInfoInterface = useSelector((state: AppState) => state.profile.profileInfo);
     const isProfileInfoLoading: boolean = useSelector(
@@ -117,7 +124,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     const isManageAllowed: boolean =
         useSelector((state: AppState) => state.accessControl.isManageAllowed);
     const feature: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const scopes = useSelector((state: AppState) => state.auth.allowedScopes);
+    const scopes: string = useSelector((state: AppState) => state.auth.allowedScopes);
 
     const [ announcement, setAnnouncement ] = useState<AnnouncementBannerInterface>(undefined);
     const [ headerLinks, setHeaderLinks ] = useState<HeaderLinkCategoryInterface[]>([]);
@@ -131,7 +138,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
      *  - the organization management feature is enabled by the backend
      *  - the user is logged in to a non-super-tenant account
      */
-    const isOrgSwitcherEnabled = useMemo(() => {
+    const isOrgSwitcherEnabled: boolean = useMemo(() => {
         return (
             isOrganizationManagementEnabled &&
             // The `tenantDomain` takes the organization id when you log in to a sub-organization.
@@ -154,7 +161,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         if (isPrivilegedUser) {
             return;
         }
-        
+
         commonConfig
             ?.header
             ?.getUserDropdownLinkExtensions(tenantDomain, associatedTenants)
@@ -222,8 +229,10 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     const handleAnnouncementDismiss = () => {
         CommonUtils.setSeenAnnouncements(announcement.id);
 
-        const validAnnouncement = ReusableCommonUtils.getValidAnnouncement(config.ui.announcements,
-            CommonUtils.getSeenAnnouncements());
+        const validAnnouncement: AnnouncementBannerInterface = ReusableCommonUtils.getValidAnnouncement(
+            config.ui.announcements,
+            CommonUtils.getSeenAnnouncements()
+        );
 
         if (!validAnnouncement) {
             setAnnouncement(null);
@@ -476,6 +485,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                                 name: t("common:logout"),
                                 onClick: () => {
                                     eventPublisher.publish("console-click-logout");
+                                    AuthenticateUtils.removeAuthenticationCallbackUrl(CommonAppConstants.CONSOLE_APP);
                                     history.push(window[ "AppUtils" ].getConfig().routes.logout);
                                 }
                             }

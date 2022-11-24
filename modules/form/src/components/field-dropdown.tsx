@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,6 +17,7 @@
  */
 
 import { Hint, Message } from "@wso2is/react-components";
+import { FieldState } from "final-form";
 import React, { ReactElement } from "react";
 import { Field as FinalFormField } from "react-final-form";
 import { SelectAdapter } from "./adapters";
@@ -41,11 +42,12 @@ export interface FieldDropdownPropsInterface extends FormFieldPropsInterface {
 
 /**
  * Implementation of the Dropdown Field component.
- * @param props
+ *
+ * @param props - Props injected to the component.
  */
 export const FieldDropdown = (props: FieldDropdownPropsInterface): ReactElement => {
 
-    const { [ "data-testid" ]: testId, initialValue, ...rest } = props;
+    const { [ "data-testid" ]: testId, _initialValue, ...rest } = props;
 
     const resolveInputFieldMessage = () => {
         switch (props.message.type) {
@@ -82,9 +84,9 @@ export const FieldDropdown = (props: FieldDropdownPropsInterface): ReactElement 
                 key={ testId }
                 type="dropdown"
                 name={ props.name }
-                parse={ value => value }
+                parse={ (value: any) => value }
                 component={ SelectAdapter }
-                validate={ (value, allValues, meta) =>
+                validate={ (value: any, _allValues: Record<string, unknown>, meta: FieldState<any>) =>
                     getValidation(value, meta, props.type, props.required)
                 }
                 { ...rest }

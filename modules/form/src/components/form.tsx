@@ -16,10 +16,12 @@
  * under the License.
  */
 
+import { FormApi } from "final-form";
 import React, {
     ForwardRefExoticComponent,
     PropsWithChildren,
     ReactElement,
+    ReactNode,
     cloneElement,
     forwardRef,
     useImperativeHandle,
@@ -55,19 +57,19 @@ export interface FormPropsInterface extends FormProps {
  * @param props - Props injected to the component.
  */
 export const Form: ForwardRefExoticComponent<PropsWithChildren<FormPropsInterface>> =
-    forwardRef((props: PropsWithChildren<FormProps>, ref): ReactElement => {
+    forwardRef((props: PropsWithChildren<FormProps>, ref: React.ForwardedRef<unknown>): ReactElement => {
 
         const { id, noValidate, triggerSubmit, ...other } = props;
         const { children, onSubmit, uncontrolledForm, ...rest } = other;
 
-        const formRef = useRef(null);
-        const childNodes = React.Children.toArray(children);
+        const formRef: React.MutableRefObject<any> = useRef(null);
+        const childNodes: ReactNode[] = React.Children.toArray(children);
 
         const skipFinalTypes = (type: string): boolean => {
 
-            const typeToBeSkipped = [ "FieldDropdown" ];
+            const typeToBeSkipped: string[] = [ "FieldDropdown" ];
 
-            return typeToBeSkipped.some((skipType) => {
+            return typeToBeSkipped.some((skipType: string) => {
                 return type === skipType;
             });
         };
@@ -96,7 +98,7 @@ export const Form: ForwardRefExoticComponent<PropsWithChildren<FormPropsInterfac
                  * @see {@link https://final-form.org/docs/react-final-form/faq}
                  */
                 if (formRef) {
-                    const submission = new Event("submit", {
+                    const submission: Event = new Event("submit", {
                         bubbles: true,
                         cancelable: true
                     });
@@ -106,7 +108,7 @@ export const Form: ForwardRefExoticComponent<PropsWithChildren<FormPropsInterfac
             }
         }));
 
-        const addPropsToChild = (childNodes, formRenderProps: FormRenderProps) => {
+        const addPropsToChild = (childNodes: ReactNode[], formRenderProps: FormRenderProps): ReactNode[] => {
 
             return childNodes.map((child: any) => {
 
@@ -116,20 +118,20 @@ export const Form: ForwardRefExoticComponent<PropsWithChildren<FormPropsInterfac
 
                 const { form, handleSubmit, pristine, submitting, values, initialValues } = formRenderProps;
 
-                const parentFormProps = { form, handleSubmit, initialValues, pristine, submitting, values };
-                const childFieldProps = child.props;
+                const parentFormProps: any = { form, handleSubmit, initialValues, pristine, submitting, values };
+                const childFieldProps: any = child.props;
                 const childProps: any = { childFieldProps, parentFormProps };
 
                 // Check whether children of this element is valid
                 // and is type array.
-                const hasChildrenAndIsValid = Array.isArray(child.props?.children) &&
+                const hasChildrenAndIsValid: boolean = Array.isArray(child.props?.children) &&
                 child.props?.children.every(React.isValidElement) &&
                 child.props.children.length > 0;
 
                 // If the react element has only 1 child, the react top level
                 // API parses the children as a single object instead of type
                 // array.
-                const hasOnlyOneChild = (typeof child.props?.children === "object");
+                const hasOnlyOneChild: boolean = (typeof child.props?.children === "object");
 
                 if (uncontrolledForm) {
                     if ((hasChildrenAndIsValid || hasOnlyOneChild) && !skipFinalTypes(child.type.name)) {
@@ -149,9 +151,9 @@ export const Form: ForwardRefExoticComponent<PropsWithChildren<FormPropsInterfac
 
         };
 
-        const renderComponents = (childNodes, formRenderProps: FormRenderProps) => {
+        const renderComponents = (childNodes: ReactNode[], formRenderProps: FormRenderProps) => {
 
-            const modifiedChildNodes = addPropsToChild(childNodes, formRenderProps);
+            const modifiedChildNodes: ReactNode[] = addPropsToChild(childNodes, formRenderProps);
 
             return modifiedChildNodes.map((child: any, index: number) => {
                 if (!child) {
@@ -174,7 +176,7 @@ export const Form: ForwardRefExoticComponent<PropsWithChildren<FormPropsInterfac
 
         return (
             <FinalForm
-                onSubmit={ (values, form) => onSubmit(values, form) }
+                onSubmit={ (values: Record<string, any>, form: FormApi<Record<string, any>>) => onSubmit(values, form) }
                 keepDirtyOnReinitialize={ true }
                 render={ (formRenderProps: FormRenderProps) => {
 
