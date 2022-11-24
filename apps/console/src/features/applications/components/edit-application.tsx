@@ -315,7 +315,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         }
 
         findConfiguredInboundProtocol(application.id);
-    }, [ application?.inboundProtocols ]);
+    }, [ JSON.stringify(application?.inboundProtocols) ]);
 
     useEffect(() => {
         if (samlConfigurations !== undefined) {
@@ -496,9 +496,10 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
                 const protocolName = mapProtocolTypeToName(protocol.type);
 
-                protocolNames.push(protocolName);
-
-                inboundProtocolRequests.push(getInboundProtocolConfig(appId, protocolName));
+                if(!protocolNames.includes(protocolName)) {
+                    protocolNames.push(protocolName);
+                    inboundProtocolRequests.push(getInboundProtocolConfig(appId, protocolName));
+                }
             });
 
             setIsInboundProtocolConfigRequestLoading(true);

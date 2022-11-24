@@ -319,7 +319,6 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                         ".genericError.message")
                 }));
             }).finally(() => {
-                onProtocolUpdate();
                 onUpdate(appId);
                 if (!updateError) {
                     createSAMLApplication();
