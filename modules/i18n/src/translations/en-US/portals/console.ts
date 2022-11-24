@@ -818,7 +818,7 @@ export const console: ConsoleNS = {
                                     "attribute values, if not already provided in the user's profile.",
                                 mappingTable: {
                                     actions: {
-                                        enable: "Enable mapping"
+                                        enable: "Enable Attribute Name Mapping"
                                     },
                                     columns: {
                                         appAttribute: "Mapped user attribute",
@@ -845,8 +845,8 @@ export const console: ConsoleNS = {
                                             }
                                         }
                                     },
-                                    mappedAtributeHint: "Enter the custom attribute that should be requested " +
-                                        "instead of the default attribute.",
+                                    mappedAtributeHint: "Enter the custom attribute name to be used in " +
+                                        "the assertion sent to the application.",
                                     mappingRevert: {
                                         confirmPrimaryAction: "Confirm",
                                         confirmSecondaryAction: "Cancel",
