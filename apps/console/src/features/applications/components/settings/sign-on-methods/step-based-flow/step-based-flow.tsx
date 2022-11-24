@@ -25,6 +25,7 @@ import union from "lodash-es/union";
 import React, { Fragment, FunctionComponent, ReactElement, RefObject, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { Popup } from "semantic-ui-react";
 import { AddAuthenticatorModal } from "./add-authenticator-modal";
 import { AuthenticationStep } from "./authentication-step";
@@ -124,7 +125,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
 
     const { t } = useTranslation();
 
-    const dispatch: any = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const groupedIDPTemplates: IdentityProviderTemplateItemInterface[] = useSelector(
@@ -861,8 +862,8 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                 allowSocialLoginAddition={ true }
                 currentStep={ authenticatorAddStep }
                 open={ showAuthenticatorAddModal }
-                onModalSubmit={ (authenticators: any) => {
-                    authenticators.map((authenticator: any) => {
+                onModalSubmit={ (authenticators: GenericAuthenticatorInterface[]) => {
+                    authenticators.map((authenticator: GenericAuthenticatorInterface) => {
                         updateAuthenticationStep(authenticatorAddStep, authenticator.id);
                     });
 
