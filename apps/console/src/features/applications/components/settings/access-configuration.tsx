@@ -33,7 +33,7 @@ import {
 import { AxiosError, AxiosResponse } from "axios";
 import get from "lodash-es/get";
 import sortBy from "lodash-es/sortBy";
-import React, { Dispatch, Fragment, FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { Fragment, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Divider, Grid, Header, Button as SemButton } from "semantic-ui-react";
@@ -67,6 +67,7 @@ import { setAuthProtocolMeta } from "../../store";
 import { ApplicationManagementUtils } from "../../utils";
 import { InboundFormFactory } from "../forms";
 import { ApplicationCreateWizard } from "../wizard";
+import { Dispatch } from "redux";
 
 /**
  * Prop-types for the applications settings component.
@@ -181,7 +182,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
 
-    const dispatch: Dispatch<any> = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const authProtocolMeta: AuthProtocolMetaInterface = useSelector(
         (state: AppState) => state.application.meta.protocolMeta);
