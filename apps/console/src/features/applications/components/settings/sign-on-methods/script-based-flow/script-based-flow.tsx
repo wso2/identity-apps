@@ -49,7 +49,6 @@ import { useDispatch } from "react-redux";
 import { Checkbox, Dropdown, Header, Icon, Input, Menu, Sidebar } from "semantic-ui-react";
 import { stripSlashes } from "slashes";
 import { ScriptTemplatesSidePanel } from "./script-templates-side-panel";
-import { organizationConfigs } from "../../../../../../extensions";
 import { AppUtils, EventPublisher, getOperationIcons } from "../../../../../core";
 import { OrganizationUtils } from "../../../../../organizations/utils";
 import { deleteSecret, getSecretList } from "../../../../../secrets/api/secret";
@@ -64,6 +63,7 @@ import {
     AuthenticationSequenceInterface
 } from "../../../../models";
 import { AdaptiveScriptUtils } from "../../../../utils";
+import { OrganizationType } from "../../../../../organizations/constants";
 
 /**
  * Proptypes for the adaptive scripts component.
@@ -882,8 +882,8 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                             )
                         }
                     </Dropdown.Menu>
-
-                    { organizationConfigs.canCreateOrganization() && (
+                    { (OrganizationUtils.getOrganizationType() === OrganizationType.FIRST_LEVEL_ORGANIZATION ||
+                        OrganizationUtils.getOrganizationType() === OrganizationType.TENANT) && (
                         <Dropdown.Menu
                             className={ "create-button-item" }
                             scrolling
