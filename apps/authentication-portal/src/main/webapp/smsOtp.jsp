@@ -134,7 +134,7 @@
                             </div>
                             <input type="hidden" name="sessionDataKey"
                             value='<%=Encode.forHtmlAttribute(request.getParameter("sessionDataKey"))%>'/><br/>
-                            <div class="align-right buttons" >
+                            <div class="align-right buttons">
                                 <%
                                     if ("true".equals(authenticationFailed)) {
                                         String reSendCode = request.getParameter("resendCode");
