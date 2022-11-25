@@ -19,7 +19,8 @@
 import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { PropsWithChildren, ReactElement } from "react";
-import { Popup, PopupProps } from "semantic-ui-react";
+import { PopupProps } from "semantic-ui-react";
+import { Popup } from "../popup";
 
 /**
  * Tooltip component prop types.

@@ -20,9 +20,10 @@ import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso
 import { URLUtils } from "@wso2is/core/utils";
 import React, { FunctionComponent, ReactElement, ReactNode, useCallback, useEffect, useState } from "react";
 import { Trans } from "react-i18next";
-import { Button, Grid, Icon, Input, Label, Popup } from "semantic-ui-react";
+import { Button, Grid, Icon, Input, Label } from "semantic-ui-react";
 import { LinkButton } from "../button";
 import { LabelWithPopup } from "../label";
+import { Popup } from "../popup";
 import { Hint } from "../typography";
 
 export interface URLInputPropsInterface extends IdentifiableComponentInterface, TestableComponentInterface {
@@ -245,7 +246,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
 
         /*
          * If the entered URL is valid and it is intended to be an origin URL,
-         * and it has a trailing "/" at the end, it is sliced to get the valid origin. 
+         * and it has a trailing "/" at the end, it is sliced to get the valid origin.
         */
         if (urlValid && onlyOrigin && url.charAt(url.length - 1) === "/") {
             url = url.slice(0, -1);
@@ -526,10 +527,10 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                                 { !restrictSecondaryContent && (
                                     <>
                                         <a onClick={ () => setShowMore(!showMore) }>
-                                            &nbsp;{ showMore 
+                                            &nbsp;{ showMore
                                                 ? (showLessContent
                                                     ? showLessContent
-                                                    : "Show less") 
+                                                    : "Show less")
                                                 : (showMoreContent
                                                     ? showMoreContent
                                                     : "Show more") }
@@ -598,7 +599,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
 
         if (!validURL) {
             return (
-                <Label 
+                <Label
                     data-componentid={ `${ componentId }-valid-url-error-message` }
                     basic
                     className="prompt"
@@ -690,7 +691,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                         trigger={
                             <span style={ { color: "red", textDecoration: "line-through" } }>{ protocol }</span>
                         }
-                        content={ 
+                        content={
                             insecureURLDescription
                                 ? insecureURLDescription
                                 : "The entered URL is a non-TLS URL. Please proceed with caution." }

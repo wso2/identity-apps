@@ -26,12 +26,18 @@ import {
 import { addAlert } from "@wso2is/core/store";
 import { CertificateManagementUtils } from "@wso2is/core/utils";
 import { Form } from "@wso2is/form";
-import { ResourceList, ResourceListActionInterface, ResourceListItem, UserAvatar } from "@wso2is/react-components";
+import {
+    Popup,
+    ResourceList,
+    ResourceListActionInterface,
+    ResourceListItem,
+    UserAvatar
+} from "@wso2is/react-components";
 import moment from "moment";
 import React, { FC, PropsWithChildren, ReactElement, ReactNode, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Grid, Icon, Popup, SemanticCOLORS, SemanticICONS } from "semantic-ui-react";
+import { Grid, Icon, SemanticCOLORS, SemanticICONS } from "semantic-ui-react";
 import { ShowCertificateModal } from "./show-certificate-modal";
 import { updateIDPCertificate } from "../../../api";
 import { IdentityProviderInterface } from "../../../models";

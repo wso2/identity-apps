@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -31,16 +31,16 @@ describe("Test if the Forms is working fine", () => {
                 isDefault: true,
                 isRequired: true,
                 isValue: true,
-                type: "text",
-                name: "First Name"
+                name: "First Name",
+                type: "text"
             },
             {
                 ariaLabel: "Submit",
                 fieldType: "primary-btn",
-                name: "submit",
                 isDefault: false,
                 isRequired: false,
                 isValue: true,
+                name: "submit",
                 type: "submit"
             }
         ]));
@@ -49,7 +49,8 @@ describe("Test if the Forms is working fine", () => {
         expect(getByText(FieldTestConstants.TEXT_FIELD_LABEL)).toBeInTheDocument();
 
         // check if the text box with the mentioned placeholder value is displayed
-        const textBox = getByPlaceholderText(FieldTestConstants.TEXT_FIELD_PLACEHOLDER);
+        const textBox: HTMLElement = getByPlaceholderText(FieldTestConstants.TEXT_FIELD_PLACEHOLDER);
+
         expect(textBox).toBeInTheDocument();
 
         // check if the submit button is displayed
@@ -59,7 +60,8 @@ describe("Test if the Forms is working fine", () => {
         expect(getByDisplayValue(FieldTestConstants.TEXT_FIELD_VALUE)).toBeInTheDocument();
 
         // check if the value of the text box changes
-        const NEW_VALUE = "new value";
+        const NEW_VALUE: string = "new value";
+
         fireEvent.change(textBox, { target: { value: NEW_VALUE } });
         expect(getByDisplayValue(NEW_VALUE)).toBeInTheDocument();
 
@@ -102,16 +104,16 @@ describe("Test if the Forms is working fine", () => {
                 isDefault: true,
                 isRequired: true,
                 isValue: true,
-                type: "text",
-                name: "First Name"
+                name: "First Name",
+                type: "text"
             },
             {
                 ariaLabel: "Submit",
                 fieldType: "primary-btn",
-                name: "submit",
                 isDefault: false,
                 isRequired: false,
                 isValue: true,
+                name: "submit",
                 type: "submit"
             }
         ]));
@@ -131,21 +133,21 @@ describe("Test if the Forms is working fine", () => {
                     isDefault: true,
                     isRequired: true,
                     isValue: true,
-                    type: "text",
-                    name: "First Name"
+                    name: "First Name",
+                    type: "text"
                 },
                 {
                     ariaLabel: "Submit",
                     fieldType: "primary-btn",
-                    name: "submit",
                     isDefault: false,
                     isRequired: false,
                     isValue: true,
+                    name: "submit",
                     type: "submit"
                 }
             ]));
 
-            const textBox = getByPlaceholderText(FieldTestConstants.TEXT_FIELD_PLACEHOLDER);
+            const textBox: HTMLElement = getByPlaceholderText(FieldTestConstants.TEXT_FIELD_PLACEHOLDER);
 
             // check if required error message is correctly displayed
             fireEvent.change(textBox, { target: { value: "" } });
@@ -172,16 +174,16 @@ describe("Test if the Forms is working fine", () => {
                 isDefault: true,
                 isRequired: true,
                 isValue: true,
-                type: "password",
-                name: "First Name"
+                name: "First Name",
+                type: "password"
             },
             {
                 ariaLabel: "Submit",
                 fieldType: "primary-btn",
-                name: "submit",
                 isDefault: false,
                 isRequired: false,
                 isValue: true,
+                name: "submit",
                 type: "submit"
             }
         ]));
@@ -196,12 +198,14 @@ describe("Test if the Forms is working fine", () => {
         expect(getByText(FieldTestConstants.SUBMIT)).toBeInTheDocument();
 
         // check if the password box with the mentioned value is displayed
-        const passwordBox = getByDisplayValue(FieldTestConstants.PASSWORD_VALUE);
+        const passwordBox: HTMLElement = getByDisplayValue(FieldTestConstants.PASSWORD_VALUE);
+
         expect(passwordBox).toBeInTheDocument();
 
         // check if the value of the password box changes
         FieldTestConstants.listen.mockReset();
-        const NEW_VALUE = "new value";
+        const NEW_VALUE: string = "new value";
+
         fireEvent.change(passwordBox, { target: { value: NEW_VALUE } });
         expect(await findByDisplayValue(NEW_VALUE)).toBeInTheDocument();
 
@@ -216,7 +220,8 @@ describe("Test if the Forms is working fine", () => {
         expect(await findByText(FieldTestConstants.PASSWORD_VALIDATION_FAILED)).toBeInTheDocument();
 
         // check if show/hide is working fine
-        let showButton = container.getElementsByClassName("eye link icon")[ 0 ];
+        let showButton: Element = container.getElementsByClassName("eye link icon")[ 0 ];
+
         expect(passwordBox).toHaveAttribute("type", "password");
         expect(showButton).toBeInTheDocument();
 
@@ -227,7 +232,8 @@ describe("Test if the Forms is working fine", () => {
         expect(getByText(FieldTestConstants.HIDE_PASSWORD)).toBeInTheDocument();
 
         // check if toggling works fine
-        const hideButton = container.getElementsByClassName("eye slash link icon")[ 0 ];
+        const hideButton: Element = container.getElementsByClassName("eye slash link icon")[ 0 ];
+
         expect(passwordBox).toHaveAttribute("type", "text");
         expect(hideButton).toBeInTheDocument();
 

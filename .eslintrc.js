@@ -276,6 +276,11 @@ module.exports = {
                     {
                         message: "Please use import foo from 'lodash-es/foo' instead.",
                         name: "lodash-es"
+                    },
+                    {
+                        importNames: [ "Popup" ],
+                        message: "Avoid using Popup from Semantic. Instead import it from @wso2is/react-components.",
+                        name: "semantic-ui-react"
                     }
                 ],
                 patterns: [ "@wso2is/**/dist/**", "lodash/**", "lodash/fp/**" ]

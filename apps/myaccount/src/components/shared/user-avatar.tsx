@@ -16,12 +16,13 @@
  * under the License.
  */
 
+import { Popup } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Button, Dimmer, Form, Icon, Modal, Popup } from "semantic-ui-react";
+import { Button, Dimmer, Form, Icon, Modal } from "semantic-ui-react";
 import { Avatar, AvatarProps } from "./avatar";
 import { updateProfileInfo } from "../../api";
 import { getThirdPartyLogos } from "../../configs";

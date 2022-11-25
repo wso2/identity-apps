@@ -24,6 +24,7 @@ import {
     AnimatedAvatar,
     AppAvatar,
     LabelWithPopup,
+    Popup,
     TabPageLayout
 } from "@wso2is/react-components";
 import get from "lodash-es/get";
@@ -138,7 +139,7 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
             }
         }
     }, [ idpDescElement, isConnectorDetailsFetchRequestLoading ]);
-    
+
     /**
      * Use effect for the initial component load.
      */
@@ -307,7 +308,7 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
      * Retrieves the local authenticator details from the API.
      *
      * @param id - Authenticator id.
-     * @param useAuthenticatorsAPI - Use the 
+     * @param useAuthenticatorsAPI - Use the
      */
     const getMultiFactorAuthenticator = (id: string, useAuthenticatorsAPI: boolean = true): void => {
 

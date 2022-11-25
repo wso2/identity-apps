@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -24,6 +24,7 @@ import { Forms } from "@wso2is/forms";
 import {
     ConfirmationModal,
     EmptyPlaceholder,
+    Popup,
     PrimaryButton,
     ResourceList,
     ResourceListItem,
@@ -33,7 +34,7 @@ import moment from "moment";
 import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Divider, Grid, Icon, Popup, Segment, SemanticCOLORS, SemanticICONS } from "semantic-ui-react";
+import { Divider, Grid, Icon, Segment, SemanticCOLORS, SemanticICONS } from "semantic-ui-react";
 import { AddApplicationCertificateWizard } from "./add-certificate-wizard";
 import { UIConstants, getEmptyPlaceholderIllustrations } from "../../../../core";
 import { updateApplicationDetails } from "../../../api";
@@ -64,9 +65,9 @@ interface ApplicationCertificatesPropsListInterface extends TestableComponentInt
 /**
  * Application certificates list component.
  *
- * @param {ApplicationCertificatesPropsListInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns
  */
 export const ApplicationCertificatesListComponent: FunctionComponent<ApplicationCertificatesPropsListInterface> = (
     props: ApplicationCertificatesPropsListInterface
@@ -120,7 +121,7 @@ export const ApplicationCertificatesListComponent: FunctionComponent<Application
 
     /**
      * Show the certificate details.
-     * @param certificate
+     * @param certificate - Certificate to be displayed.
      */
     const handleViewCertificate = (certificate: DisplayCertificate) => {
         setCertificateDisplay(certificate);
@@ -211,9 +212,9 @@ export const ApplicationCertificatesListComponent: FunctionComponent<Application
     /**
      * Creates the resource item header.
      *
-     * @param validFrom {Date}
-     * @param validTill {Date}
-     * @param issuer {string}
+     * @param validFrom - Valid from date.
+     * @param validTill - Valid till date.
+     * @param issuer - Issuer.
      */
     const createValidityLabel = (validFrom: Date, validTill: Date, issuer: string): ReactElement => {
 
@@ -264,7 +265,8 @@ export const ApplicationCertificatesListComponent: FunctionComponent<Application
 
     /**
      * Creates what to show as the resource list item avatar.
-     * @param certificate {DisplayCertificate}
+     *
+     * @param certificate - Certificate.
      */
     const createCertificateResourceAvatar = (certificate: DisplayCertificate): ReactElement => {
         return (
@@ -283,7 +285,7 @@ export const ApplicationCertificatesListComponent: FunctionComponent<Application
     /**
      * Creates a dummy label telling that we're unable to visualize
      * this certificate.
-     * @param certificate {DisplayCertificate}
+     * @param certificate - Certificate.
      */
     const createDummyValidityLabel = (certificate: DisplayCertificate): ReactNode => {
         return (

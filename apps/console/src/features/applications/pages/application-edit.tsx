@@ -21,7 +21,14 @@ import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, StorageIdentityAppsSettingsInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { AnimatedAvatar, AppAvatar, LabelWithPopup, PrimaryButton, TabPageLayout } from "@wso2is/react-components";
+import {
+    AnimatedAvatar,
+    AppAvatar,
+    LabelWithPopup,
+    Popup,
+    PrimaryButton,
+    TabPageLayout
+} from "@wso2is/react-components";
 import cloneDeep from "lodash-es/cloneDeep";
 import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";

@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,7 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Heading, Tooltip } from "@wso2is/react-components";
+import { Heading, Popup, Tooltip } from "@wso2is/react-components";
 import sortBy from "lodash-es/sortBy";
 import React, {
     FunctionComponent,
@@ -30,7 +30,7 @@ import React, {
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
-import { Accordion, Icon, Menu, Popup, Segment, Sidebar } from "semantic-ui-react";
+import { Accordion, Icon, Menu, Segment, Sidebar } from "semantic-ui-react";
 import { TemplateDescription } from "./template-description";
 import { AdaptiveAuthTemplateInterface } from "../../../../models";
 
@@ -45,7 +45,8 @@ export type ScriptTemplatesSidePanelRefType = HTMLDivElement;
 interface ScriptTemplatesSidePanelInterface extends TestableComponentInterface {
     /**
      * Fired on template selection.
-     * @param {AdaptiveAuthTemplateInterface} template -Auth template.
+     *
+     * @param template - Auth template.
      */
     onTemplateSelect: (template: AdaptiveAuthTemplateInterface) => void;
     /**
@@ -77,8 +78,9 @@ interface ScriptTemplatesSidePanelInterface extends TestableComponentInterface {
 /**
  * Adaptive script templates side panel.
  *
- * @param {ScriptTemplatesSidePanelInterface} props - Props injected to the component.
- * @return {ReactElement}
+ * @param props - Props injected to the component.
+ *
+ * @returns
  */
 export const ScriptTemplatesSidePanel: FunctionComponent<ScriptTemplatesSidePanelInterface> =
     forwardRef<ScriptTemplatesSidePanelRefType, ScriptTemplatesSidePanelInterface>((
@@ -107,8 +109,8 @@ export const ScriptTemplatesSidePanel: FunctionComponent<ScriptTemplatesSidePane
         /**
          * Handles accordion title click.
          *
-         * @param {React.SyntheticEvent} e - Click event.
-         * @param {number} index - Clicked on index.
+         * @param e - Click event.
+         * @param index - Clicked on index.
          */
         const handleAccordionOnClick = (e: SyntheticEvent, { index }: { index: number }): void => {
             const newIndexes = [ ...accordionActiveIndexes ];

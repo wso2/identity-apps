@@ -16,7 +16,18 @@
  * under the License.
  */
 
-import React, { ReactElement, forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
+import { FormApi } from "final-form";
+import React, {
+    ForwardRefExoticComponent,
+    MutableRefObject,
+    ReactElement,
+    RefAttributes,
+    forwardRef,
+    useEffect,
+    useImperativeHandle,
+    useRef,
+    useState
+} from "react";
 import { FormProps } from "react-final-form";
 import { Form } from "./form";
 import { WizardPage } from "./wizardPage";
@@ -42,7 +53,7 @@ interface ImperativeWizardProps extends FormProps {
  * @param ref - Component ref.
  * @returns Functional component.
  */
-const ImperativeWizard = (props: ImperativeWizardProps, ref): ReactElement => {
+const ImperativeWizard = (props: ImperativeWizardProps, ref: React.ForwardedRef<unknown>): ReactElement => {
 
     const {
         id,
@@ -57,7 +68,7 @@ const ImperativeWizard = (props: ImperativeWizardProps, ref): ReactElement => {
 
     // Form reference to trigger the form submit externally
     // on each page submission.
-    const formRef = useRef(null);
+    const formRef: MutableRefObject<any> = useRef(null);
 
     const absoluteChildCount: number = React.Children.count(children);
     const lastPageIndex: number = absoluteChildCount - 1;
@@ -88,7 +99,7 @@ const ImperativeWizard = (props: ImperativeWizardProps, ref): ReactElement => {
     };
 
     const gotoNextPage = (): void => {
-        const nextIndex = Math.min(currentPageIndex + 1, lastPageIndex);
+        const nextIndex: number = Math.min(currentPageIndex + 1, lastPageIndex);
 
         setCurrentPageIndex(nextIndex);
         if (formRef) {
@@ -102,7 +113,7 @@ const ImperativeWizard = (props: ImperativeWizardProps, ref): ReactElement => {
 
     const getCurrentPageNumber = () => currentPageIndex;
 
-    const handleSubmit = (values, form) => {
+    const handleSubmit = (values: any, form: FormApi<Record<string, any>>) => {
         if (currentPageIndex === lastPageIndex) {
             return onSubmit(values, form);
         } else {
@@ -138,4 +149,8 @@ const ImperativeWizard = (props: ImperativeWizardProps, ref): ReactElement => {
 
 ImperativeWizard.Page = WizardPage;
 
-export const Wizard2 = forwardRef(ImperativeWizard);
+export const Wizard2: ForwardRefExoticComponent<Pick<
+    ImperativeWizardProps,
+    keyof ImperativeWizardProps
+> &
+    RefAttributes<unknown>> = forwardRef(ImperativeWizard);

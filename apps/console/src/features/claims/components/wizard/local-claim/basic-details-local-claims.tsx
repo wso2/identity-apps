@@ -18,10 +18,10 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
-import { GenericIcon, Hint, InlineEditInput, Message } from "@wso2is/react-components";
+import { GenericIcon, Hint, InlineEditInput, Message, Popup } from "@wso2is/react-components";
 import React, { ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Card, Grid, Icon, Label, Popup } from "semantic-ui-react";
+import { Card, Grid, Icon, Label } from "semantic-ui-react";
 import { attributeConfig } from "../../../../../extensions";
 import { getTechnologyLogos } from "../../../../core";
 
@@ -284,7 +284,6 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                         } }
                                         position="bottom left"
                                         context={ claimField }
-                                        popper={ <div style={ { filter: "none" } }></div> }
                                     />
                                     <Label className="mb-3 ml-0">
                                         <em>Attribute URI</em>:&nbsp;
@@ -444,9 +443,6 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                                                                 size="mini"
                                                                                 hideOnScroll
                                                                                 inverted
-                                                                                popper={ 
-                                                                                    <div style={ { filter: "none" } }/>
-                                                                                }
                                                                             />
                                                                         ): null
                                                                     }
@@ -494,7 +490,6 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                             } }
                             position="bottom left"
                             context={ nameField }
-                            popper={ <div style={ { filter: "none" } }></div> }
                         />
                         {
                             attributeConfig.localAttributes.createWizard.customWIzard && (
@@ -540,7 +535,6 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                     } }
                                     position="bottom left"
                                     context={ claimField }
-                                    popper={ <div style={ { filter: "none" } }></div> }
                                 />
                                 {
                                     claimID
@@ -604,7 +598,6 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                     } }
                                     position="bottom left"
                                     context={ regExField }
-                                    popper={ <div style={ { filter: "none" } }></div> }
                                 />
                             </Grid.Column>
                         )
@@ -670,7 +663,6 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                     } }
                                     position="bottom left"
                                     context={ displayOrderField }
-                                    popper={ <div style={ { filter: "none" } }></div> }
                                 />
                             </Grid.Column>
                         </Grid.Row>

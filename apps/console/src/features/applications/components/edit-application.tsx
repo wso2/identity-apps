@@ -16,12 +16,11 @@
  * under the License.
  */
 
-import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ConfirmationModal, ContentLoader, CopyInputField, ResourceTab } from "@wso2is/react-components";
-import Axios from "axios";
+import Axios, { AxiosError, AxiosResponse } from "axios";
 import inRange from "lodash-es/inRange";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
@@ -58,13 +57,13 @@ import {
     ApplicationTabTypes,
     ApplicationTemplateInterface,
     AuthProtocolMetaListItemInterface,
+    InboundProtocolListItemInterface,
     OIDCApplicationConfigurationInterface,
     OIDCDataInterface,
     SAMLApplicationConfigurationInterface,
     SupportedAuthProtocolTypes,
     URLFragmentTypes
 } from "../models";
-import { InboundProtocolListItemInterface } from "../models/application";
 import { ApplicationManagementUtils } from "../utils";
 
 /**
@@ -278,7 +277,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                     });
                     setAllowedOrigins(allowedCORSOrigins);
                 })
-                .catch((error: IdentityAppsApiException) => {
+                .catch((error: AxiosError) => {
                     if (error?.response?.data?.description) {
                         dispatch(addAlert({
                             description: error.response.data.description,
@@ -326,7 +325,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         }
 
         findConfiguredInboundProtocol(application.id);
-    }, [ application?.inboundProtocols ]);
+    }, [ JSON.stringify(application?.inboundProtocols) ]);
 
     useEffect(() => {
         if (samlConfigurations !== undefined) {
@@ -507,14 +506,15 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
                 const protocolName: string = mapProtocolTypeToName(protocol.type);
 
-                protocolNames.push(protocolName);
-
-                inboundProtocolRequests.push(getInboundProtocolConfig(appId, protocolName));
+                if(!protocolNames.includes(protocolName)) {
+                    protocolNames.push(protocolName);
+                    inboundProtocolRequests.push(getInboundProtocolConfig(appId, protocolName));
+                }
             });
 
             setIsInboundProtocolConfigRequestLoading(true);
-            Axios.all(inboundProtocolRequests).then(Axios.spread((...responses: any) => {
-                responses.forEach((response: any, index: number) => {
+            Axios.all(inboundProtocolRequests).then(Axios.spread((...responses: AxiosResponse[]) => {
+                responses.forEach((response: AxiosResponse, index: number) => {
                     protocolConfigs = {
                         ...protocolConfigs,
                         [ protocolNames[ index ] ]: response
@@ -524,7 +524,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 });
 
             }))
-                .catch((error: IdentityAppsApiException) => {
+                .catch((error: AxiosError) => {
                     if (error?.response?.status === 404) {
                         return;
                     }
