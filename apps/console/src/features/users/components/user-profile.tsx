@@ -1053,8 +1053,9 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     (hasRequiredScopes(featureConfig?.users, featureConfig?.users?.scopes?.delete, allowedScopes)
                     && (!isReadOnly || allowDeleteOnly)
                     && (adminUserType === AdminAccountTypes.INTERNAL
-                        || (!(resolveUsername(user, false) === tenantAdmin || resolveUsername(user, false) === "admin")
-                        && !authenticatedUser.includes(resolveUsername(user, false))))) && (
+                        || (!(resolveUsernameOrDefaultEmail(user, false) === tenantAdmin ||
+                                    resolveUsernameOrDefaultEmail(user, false) === "admin")
+                        && !authenticatedUser.includes(resolveUsernameOrDefaultEmail(user, false))))) && (
                         <DangerZoneGroup
                             sectionHeader={ t("console:manage.features.user.editUser.dangerZoneGroup.header") }
                         >
