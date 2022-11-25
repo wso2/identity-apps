@@ -125,20 +125,22 @@ export const ResourceTab: FunctionComponent<ResourceTabPropsInterface> & Resourc
      * Called to set the pane index as the active tab index if it is needed to redirect to a specific tab
      */
     useEffect(() => {
-        if (isAutomaticTabRedirectionEnabled) {
-            const tabIndex: number = panes.indexOf(panes.find(element => element["data-tabid"] === tabIdentifier));
-            
-            if (inRange(tabIndex,  0, panes.length)) {
-                if (tabIndex === activeIndex) {
-                    return;
-                }
-                setActiveIndex(tabIndex);
-            } else {
-                setActiveIndex(defaultActiveIndex);
-            }
+
+        if (!isAutomaticTabRedirectionEnabled) {
+            return;
         }
+
+        const tabIndex: number | string = panes.indexOf(panes.find(element => element["data-tabid"] === tabIdentifier));
         
-    }, []);
+        if (inRange(tabIndex,  0, panes.length)) {
+            if (tabIndex === activeIndex) {
+                return;
+            }
+            setActiveIndex(tabIndex);
+        } else {
+            setActiveIndex(defaultActiveIndex);
+        }       
+    });
 
     /**
      * Called to set the panes list length initially.
