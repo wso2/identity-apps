@@ -16,66 +16,76 @@
  * under the License.
  */
 
+import { Popup } from "@wso2is/react-components";
 import filter from "lodash-es/filter";
 import isEmpty from "lodash-es/isEmpty";
 import isEqual from "lodash-es/isEqual";
-import React, { FunctionComponent, useEffect, useState } from "react";
-// eslint-disable-next-line no-restricted-imports
-import { Button, Form, Icon, Label, Message, Popup } from "semantic-ui-react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { Button, Form, Icon, InputOnChangeData, Label, Message } from "semantic-ui-react";
 
- interface ScopesPropsInterface {
+interface ScopesPropsInterface {
     /**
-      * Initial value of the scopes field.
-      * @example `openid profile`
-    */
-     value: string;
+     * Default Scope values.
+     */
+    defaultValue: string;
     /**
-      * Default OIDC scope `openid`.
-    */
-     defaultValue: string;
+     * Scope label.
+     */
+    label?: string | ReactElement;
     /**
-      * Error message.
-    */
-     error: string;
+     * Scope values.
+     */
+    value: string;
     /**
-      * On blur event handler.
-    */
-     onBlur: (event: React.KeyboardEvent) => void;
+     * Are scopes mandatory.
+     */
+    required: boolean;
     /**
-      * On change event handler.
-    */
-     onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
- }
+     * Callback for onChange
+     */
+    onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    /**
+     * Callback for onBlue
+     */
+    onBlur: (event: React.FocusEvent<HTMLElement, Element>) => void;
+    /**
+     * placeholder value.
+     */
+    placeholder: string;
+}
 
- interface ScopeInterface {
+interface ScopeInterface {
     /**
       * Value of the scopes field.
       * @example `openid profile`
     */
-     value: string;
- }
+    value: string;
+}
 
 /**
- * OIDC Authenticator Scopes field component.
- *
- * @param props - Props injected to the component.
- * @returns Functional component.
+ * Implementation of the Scopes component.
+ * @param props- ScopesPropsInterface
  */
+
 export const Scopes: FunctionComponent<ScopesPropsInterface> = (
-    props: ScopesPropsInterface) => {
+    props: ScopesPropsInterface
+) => {
 
     const {
-        value,
         defaultValue,
-        error,
+        label,
+        value,
+        required,
+        onChange,
         onBlur,
-        onChange
+        placeholder
     } = props;
 
     const SCOPE_SEPARATOR: string = " ";
 
     const [ scopeValue, setScopeValue ] = useState<string>("");
     const [ scopes, setScopes ] = useState<ScopeInterface[]>([]);
+    const [ errorMessage, setErrorMessage ] = useState<string>("");
 
     /**
       * Called when `initialValue` is changed.
@@ -84,7 +94,6 @@ export const Scopes: FunctionComponent<ScopesPropsInterface> = (
         if (isEmpty(value)) {
             return;
         }
-
         setScopes(value.split(SCOPE_SEPARATOR)?.map(buildScope));
     }, [ value ]);
 
@@ -92,7 +101,6 @@ export const Scopes: FunctionComponent<ScopesPropsInterface> = (
       * Called when `scopes` is changed.
       */
     useEffect(() => {
-
         fireOnChangeEvent(scopes, onChange);
     }, [ scopes ]);
 
@@ -111,7 +119,7 @@ export const Scopes: FunctionComponent<ScopesPropsInterface> = (
     /**
       * Build scope string value, from it's object form.
       */
-    const buildScopeString = (scope: ScopeInterface) => scope.value;
+    const buildScopeString = (scope: ScopeInterface): string => scope.value;
 
     /**
       * Build scopes string value, from scopes object list.
@@ -126,7 +134,7 @@ export const Scopes: FunctionComponent<ScopesPropsInterface> = (
       * @param onChange - onChange handler.
       */
     const fireOnChangeEvent = (scopes: ScopeInterface[], onChange: (event: React.ChangeEvent<HTMLInputElement>)
-         => void) => {
+         => void): void => {
 
         onChange(
              {
@@ -142,14 +150,14 @@ export const Scopes: FunctionComponent<ScopesPropsInterface> = (
       *
       * @param scope - Scope.
       */
-    const updateScopeInputFields = (scope: ScopeInterface) => {
+    const updateScopeInputFields = (scope: ScopeInterface): void => {
         setScopeValue(scope?.value);
     };
 
     /**
-      * Enter button option.
-      * @param e - keypress event.
-      */
+     * Enter button option.
+     * @param e - keypress event.
+     */
     const keyPressed = (e: React.KeyboardEvent<HTMLInputElement>): void => {
 
         if (e.key === "Enter" ) {
@@ -157,18 +165,20 @@ export const Scopes: FunctionComponent<ScopesPropsInterface> = (
         }
     };
 
-    const handleScopeAdd = (event) => {
+    const handleScopeAdd = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+        | React.KeyboardEvent<HTMLInputElement>): void => {
         event.preventDefault();
         if (isEmpty(scopeValue)) {
             return;
         }
 
+        setErrorMessage("");
         const output: ScopeInterface[] = [ {
             value: scopeValue
         } ];
 
-        scopes.forEach(function(scope) {
-            const existing = output.filter((item) => {
+        scopes.forEach(function(scope: ScopeInterface) {
+            const existing: ScopeInterface[] = output.filter((item: any) => {
                 return item.value == scope.value;
             });
 
@@ -180,42 +190,47 @@ export const Scopes: FunctionComponent<ScopesPropsInterface> = (
         });
 
         setScopes(output);
-
         updateScopeInputFields({
             value: ""
         });
     };
 
-    const handleLabelRemove = (scopeParam: string) => {
+    const handleLabelRemove = (scopeParam: string): void => {
 
         if (isEmpty(scopeParam)) {
             return;
         }
-
-        setScopes(filter(scopes, scope => !isEqual(scope,
+        setScopes(filter(scopes, (scope: ScopeInterface) => !isEqual(scope,
             buildScope(scopeParam))));
     };
 
     return (
-        <>
+        <Form.Group grouped={ true }>
+            {
+                label && (
+                    <div className={ `field ${ required ? "required" : "" }` }>
+                        <label>{ label }</label>
+                    </div>
+                )
+            }
             <Form.Group inline widths="equal" unstackable={ true }>
-
                 <Form.Input
                     fluid
                     value={ scopeValue }
                     onBlur={ onBlur }
                     focus
-                    onChange={ (event, data) => {
+                    onChange={ (_event: React.ChangeEvent<HTMLInputElement>, data: InputOnChangeData) => {
                         setScopeValue(data.value.trim());
                     } }
                     onKeyDown={ keyPressed }
-                />
+                    placeholder = { placeholder }
 
+                />
                 <Popup
                     trigger={
                         (
                             <Button
-                                onClick={ (e) => handleScopeAdd(e) }
+                                onClick={ (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => handleScopeAdd(e) }
                                 icon="add"
                                 type="button"
                                 disabled={ false }
@@ -223,19 +238,16 @@ export const Scopes: FunctionComponent<ScopesPropsInterface> = (
                         )
                     }
                     position="top center"
-                    /** TODO : Add this value from a translation */
                     content="Add scope"
                     inverted
-                    popper={ <div style={ { filter: "none" } }></div> }
                 />
             </Form.Group>
-
-            <Message visible={ !isEmpty(error) } error content={ error } />
+            <Message visible={ errorMessage !="" } error content={ errorMessage } />
             {
-                scopes && scopes?.map((eachScope, index) => {
-                    const scope = eachScope.value;
+                scopes && scopes?.map((eachScope: ScopeInterface, index: number) => {
+                    const scope: string = eachScope.value;
 
-                    if (scope == defaultValue) {
+                    if (scope === defaultValue) {
                         return (
                             <Label
                                 key={ index }
@@ -258,6 +270,6 @@ export const Scopes: FunctionComponent<ScopesPropsInterface> = (
                     }
                 })
             }
-        </>
+        </Form.Group>
     );
 };

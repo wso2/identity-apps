@@ -60,7 +60,7 @@ const skipHashing = process.argv.indexOf("--skipHashing") > -1;   // CLI arg to 
  * Generate Default Site Variables JSON files.
  *
  * @param theme - Theme to generate variables.
- * @return {Promise<void>}
+ * @returns a Promise.
  */
 const createVariablesLessJson = async (theme) => {
 
@@ -77,7 +77,7 @@ const createVariablesLessJson = async (theme) => {
      * `mergeFiles` has a limitation when merging more than 2 files at once. Hence, temp files should be maintained.
      *
      * @param files - Files to be merge.
-     * @return {Promise<void>}
+     * @returns a Promise.
      */
     const mergeVariableFiles = async (files) => {
 
@@ -189,7 +189,7 @@ const copyAssets = (theme, filePath) => {
  *
  * @param theme - Theme name.
  * @param themePath - Path for the theme in "src".
- * @return {Promise<void>}
+ * @returns a Promise.
  */
 const createAssetManifest = async (theme, themePath) => {
 

@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,17 +19,14 @@
 import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { AlertLevels, RoleListInterface, RolesInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Heading, Hint } from "@wso2is/react-components";
+import { Heading, Hint, Popup } from "@wso2is/react-components";
 import filter from "lodash-es/filter";
 import isEmpty from "lodash-es/isEmpty";
 import isEqual from "lodash-es/isEqual";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
-import { Button, DropdownItemProps, Form, Grid, Icon, Label, Popup } from "semantic-ui-react";
-import { AppState } from "../../../../core";
-import { getOrganizationRoles } from "../../../../organizations/api";
-import { OrganizationResponseInterface } from "../../../../organizations/models";
+import { useDispatch } from "react-redux";
+import { Button, DropdownItemProps, Form, Grid, Icon, Label } from "semantic-ui-react";
 import { OrganizationUtils } from "../../../../organizations/utils";
 import { getRolesList } from "../../../../roles/api";
 import { updateIDPRoleMappings } from "../../../api";

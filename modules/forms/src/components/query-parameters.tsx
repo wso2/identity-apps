@@ -20,6 +20,7 @@ import filter from "lodash-es/filter";
 import isEmpty from "lodash-es/isEmpty";
 import isEqual from "lodash-es/isEqual";
 import React, { FunctionComponent, useEffect, useState } from "react";
+// eslint-disable-next-line no-restricted-imports
 import { Button, Form, Icon, Label, Message, Popup } from "semantic-ui-react";
 
 interface QueryParametersPropsInterface {
@@ -121,7 +122,7 @@ export const QueryParameters: FunctionComponent<QueryParametersPropsInterface> =
 
     /**
      * Enter button option.
-     * 
+     *
      * @param e - The keypress event.
      */
     const keyPressed = (e) => {
@@ -228,6 +229,7 @@ export const QueryParameters: FunctionComponent<QueryParametersPropsInterface> =
                     position="top center"
                     content="Add key value pair"
                     inverted
+                    popper={ <div style={ { filter: "none" } }></div> }
                 />
             </Form.Group>
 

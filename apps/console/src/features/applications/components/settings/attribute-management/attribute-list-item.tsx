@@ -17,11 +17,11 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Code, Hint } from "@wso2is/react-components";
+import { Code, Hint, Popup } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Checkbox, Icon, Input, Popup, Table } from "semantic-ui-react";
+import { Checkbox, Icon, Input, Table } from "semantic-ui-react";
 import { ExtendedClaimMappingInterface } from "./attribute-settings";
 
 interface AttributeListItemPropInterface extends TestableComponentInterface {

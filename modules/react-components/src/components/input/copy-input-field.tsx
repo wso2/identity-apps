@@ -20,7 +20,8 @@ import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso
 import { CommonUtils } from "@wso2is/core/utils";
 import classNames from "classnames";
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useRef, useState } from "react";
-import { Button, Icon, Input, Popup } from "semantic-ui-react";
+import { Button, Icon, Input } from "semantic-ui-react";
+import { Popup } from "../popup";
 
 /**
  * Copy to clipboard input field props.
