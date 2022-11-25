@@ -27,6 +27,7 @@ import {
     GenericIcon,
     ListLayout,
     PageLayout,
+    Popup,
     PrimaryButton,
     useDocumentation
 } from "@wso2is/react-components";
@@ -50,8 +51,7 @@ import {
     Icon,
     Label,
     List,
-    PaginationProps,
-    Popup
+    PaginationProps
 } from "semantic-ui-react";
 import { applicationConfig } from "../../../extensions";
 import {
@@ -400,8 +400,8 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                                     hideOnScroll
                                     inverted
                                 />
-                            ) : null 
-                            } 
+                            ) : null
+                            }
                             <Grid.Column
                                 mobile={ 16 }
                                 computer={ 1 }
@@ -409,7 +409,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                                 { !isSubOrg && (
                                     <Popup
                                         trigger={ (
-                                            <Button 
+                                            <Button
                                                 icon="setting"
                                                 onClick={ (): void => navigateToMyAccountSettings() }
                                             />

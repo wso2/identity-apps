@@ -30,6 +30,7 @@ import {
     EmptyPlaceholder,
     GenericIcon,
     LinkButton,
+    Popup,
     PrimaryButton,
     TableActionsInterface,
     TableColumnInterface
@@ -38,7 +39,7 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Header, Icon, Label, Popup, SemanticICONS } from "semantic-ui-react";
+import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
 import { organizationConfigs } from "../../../extensions";
 import {
     AppConstants,

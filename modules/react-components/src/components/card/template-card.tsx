@@ -19,8 +19,9 @@
 import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { CSSProperties, FunctionComponent, MouseEvent, ReactElement, ReactNode, useState } from "react";
-import { Card, CardProps, Icon, Label, Popup } from "semantic-ui-react";
+import { Card, CardProps, Icon, Label } from "semantic-ui-react";
 import { GenericIcon, GenericIconProps, GenericIconSizes } from "../icon";
+import { Popup } from "../popup";
 
 /**
  * Proptypes for the template card component.
@@ -189,7 +190,7 @@ export const TemplateCard: FunctionComponent<TemplateCardPropsInterface> = (
      * @param tag - Tag to be rendered.
      * @param as - Render type.
      * @param index - Tag index in array.
-     * @returns the tag component for the corresponding render type 
+     * @returns the tag component for the corresponding render type
      */
     const renderTag = (tag: TemplateCardTagInterface | string, as: "icon" | "label" | "default",
         index: number): ReactElement => {

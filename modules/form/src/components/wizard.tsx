@@ -16,7 +16,8 @@
  * under the License.
  */
 
-import React, { ReactElement, useEffect, useState } from "react";
+import { FormApi } from "final-form";
+import React, { ReactElement, ReactNode, useEffect, useState } from "react";
 import { FormProps } from "react-final-form";
 import { Form } from ".";
 import { WizardPage } from "./wizardPage";
@@ -82,7 +83,7 @@ export const Wizard= (props: WizardFormInterface ): ReactElement => {
         }
     }, []);
 
-    const handlNext = (values): void => {
+    const handlNext = (values: any): void => {
         setPage(Math.min(page + 1,children.length-1));
         setValues(values);
         changePage(Math.min(page + 1,children.length-1));
@@ -93,8 +94,8 @@ export const Wizard= (props: WizardFormInterface ): ReactElement => {
         changePage(Math.max(page - 1,0));
     };
 
-    const handleSubmit = (values,form )=> {
-        const isLastPage = page === React.Children.count(children) - 1;
+    const handleSubmit = (values: any,form: FormApi<Record<string, any>> )=> {
+        const isLastPage: boolean = page === React.Children.count(children) - 1;
 
         if (isLastPage) {
             return onSubmit(values,form);
@@ -107,13 +108,13 @@ export const Wizard= (props: WizardFormInterface ): ReactElement => {
         triggerPrevious(handlPrevious);
     }
 
-    const  validate = values => {
+    const  validate = (values: any) => {
         const activePage:any = React.Children.toArray(children)[page];
 
         return activePage.props.validate ? activePage.props.validate(values) : {};
     };
 
-    const activePage = React.Children.toArray(children)[page];
+    const activePage: ReactNode = React.Children.toArray(children)[page];
 
     return (
         <Form

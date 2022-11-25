@@ -18,13 +18,13 @@
 
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Hint, LinkButton } from "@wso2is/react-components/src";
+import { Hint, LinkButton, Popup } from "@wso2is/react-components/src";
 import { AxiosResponse } from "axios";
 import moment from "moment";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Button, Icon, Menu, Popup } from "semantic-ui-react";
+import { Button, Icon, Menu } from "semantic-ui-react";
 import { RemoteFetchDetails } from "./remote-fetch-details";
 import {
     InterfaceRemoteConfigDetails,

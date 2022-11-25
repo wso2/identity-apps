@@ -17,6 +17,7 @@
  */
 
 import React, { useState } from "react";
+// eslint-disable-next-line no-restricted-imports
 import { Form, Icon, Popup, SemanticWIDTHS } from "semantic-ui-react";
 import { filterPassedProps } from "../utils";
 

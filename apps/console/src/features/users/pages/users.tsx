@@ -26,12 +26,13 @@ import {
     EmptyPlaceholder,
     ListLayout,
     PageLayout,
+    Popup,
     PrimaryButton
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Dropdown, DropdownProps, Icon, PaginationProps, Popup } from "semantic-ui-react";
+import { Dropdown, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import {
     AdvancedSearchWithBasicFilters,
     AppState,

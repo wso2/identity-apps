@@ -17,11 +17,11 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { GenericIcon } from "@wso2is/react-components";
+import { GenericIcon, Popup } from "@wso2is/react-components";
 import React, { FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Divider, Grid, Header, Icon, Popup, Progress } from "semantic-ui-react";
+import { Divider, Grid, Header, Icon, Progress } from "semantic-ui-react";
 import { getAccountStatusShields } from "../../../configs";
 import { UIConstants } from "../../../constants";
 import { ProfileCompletion, ProfileCompletionStatus } from "../../../models";

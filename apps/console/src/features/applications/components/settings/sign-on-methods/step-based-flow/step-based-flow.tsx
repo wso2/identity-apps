@@ -18,7 +18,7 @@
 
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { ConfirmationModal, GenericIcon } from "@wso2is/react-components";
+import { ConfirmationModal, GenericIcon, Popup } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import orderBy from "lodash-es/orderBy";
 import union from "lodash-es/union";
@@ -26,7 +26,6 @@ import React, { Fragment, FunctionComponent, ReactElement, RefObject, useEffect,
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Popup } from "semantic-ui-react";
 import { AddAuthenticatorModal } from "./add-authenticator-modal";
 import { AuthenticationStep } from "./authentication-step";
 import { applicationConfig } from "../../../../../../extensions";

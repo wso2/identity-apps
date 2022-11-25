@@ -24,7 +24,8 @@ import {
 } from "@wso2is/core/models";
 import moment from "moment";
 import React, { Fragment, FunctionComponent, ReactElement } from "react";
-import { Divider, Grid, Icon, Popup, Segment, SemanticCOLORS, SemanticICONS } from "semantic-ui-react";
+import { Divider, Grid, Icon, Segment, SemanticCOLORS, SemanticICONS } from "semantic-ui-react";
+import { Popup } from "../popup";
 
 /**
  * Prop types of the `Certificate` component.

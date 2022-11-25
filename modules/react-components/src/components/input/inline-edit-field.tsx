@@ -18,7 +18,8 @@
 
 import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { Grid, GridColumn, Icon, Input, InputOnChangeData, Popup } from "semantic-ui-react";
+import { Grid, GridColumn, Icon, Input, InputOnChangeData } from "semantic-ui-react";
+import { Popup } from "../popup";
 
 export interface InlineEditInputPropsInterface extends IdentifiableComponentInterface, TestableComponentInterface {
     text: string;
@@ -34,7 +35,7 @@ export interface InlineEditInputPropsInterface extends IdentifiableComponentInte
 
 /**
  * Inline edit input field component.
- * 
+ *
  * @param props - props required for the inline edit component.
  * @returns inline edit input component
  */
@@ -74,14 +75,14 @@ export const InlineEditInput: FunctionComponent<InlineEditInputPropsInterface> =
             setRegExValidation(regEx);
         }
     }, [ validation ]);
-    
+
     return (
         editMode
             ? (
                 <Grid verticalAlign="middle">
                     <Grid.Row columns={ 2 }>
                         <GridColumn width={ 12 }>
-                            <Input 
+                            <Input
                                 fluid
                                 size="mini"
                                 placeholder={ inputPlaceholderText }
@@ -89,7 +90,7 @@ export const InlineEditInput: FunctionComponent<InlineEditInputPropsInterface> =
                                 error={ fieldError }
                                 maxLength={ maxLength }
                                 onChange={ (
-                                    event: React.ChangeEvent<HTMLInputElement>, 
+                                    event: React.ChangeEvent<HTMLInputElement>,
                                     data: InputOnChangeData ) => {
                                     setTextValue(data.value.trim());
                                 } }
@@ -116,7 +117,7 @@ export const InlineEditInput: FunctionComponent<InlineEditInputPropsInterface> =
 
                                                 return;
                                             }
-                                        
+
                                             onEdit(false);
                                             setEditMode(false);
                                             onChangesSaved(textValue);

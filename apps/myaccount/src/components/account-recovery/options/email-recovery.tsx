@@ -19,13 +19,13 @@
 import { ProfileConstants } from "@wso2is/core/constants";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Forms, Validation } from "@wso2is/forms";
-import { GenericIcon } from "@wso2is/react-components";
+import { GenericIcon, Popup } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import isEmpty from "lodash-es/isEmpty";
 import React, { ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Form, Grid, Icon, List, Popup } from "semantic-ui-react";
+import { Form, Grid, Icon, List } from "semantic-ui-react";
 import { updateProfileInfo } from "../../../api";
 import { getAccountRecoveryIcons } from "../../../configs";
 import { CommonConstants } from "../../../constants";

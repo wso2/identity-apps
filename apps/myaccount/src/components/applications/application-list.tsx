@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,10 +17,10 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { ContentLoader, LinkButton, Text } from "@wso2is/react-components";
+import { ContentLoader, LinkButton, Popup, Text } from "@wso2is/react-components";
 import React, { Fragment, FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
-import { Grid, Popup } from "semantic-ui-react";
+import { Grid } from "semantic-ui-react";
 import { ApplicationListItem } from "./application-list-item";
 import { getEmptyPlaceholderIllustrations } from "../../configs";
 import { Application } from "../../models";
@@ -43,7 +43,7 @@ interface ApplicationListProps extends TestableComponentInterface {
 /**
  * Application list component.
  *
- * @return {JSX.Element}
+ * @returns
  */
 export const ApplicationList: FunctionComponent<ApplicationListProps> = (
     props: ApplicationListProps
@@ -62,7 +62,8 @@ export const ApplicationList: FunctionComponent<ApplicationListProps> = (
 
     /**
      * Shows list placeholders.
-     * @return {JSX.Element}
+     *
+     * @returns
      */
     const showPlaceholders = (): JSX.Element => {
         // When the search returns empty.

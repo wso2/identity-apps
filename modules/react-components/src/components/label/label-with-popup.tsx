@@ -19,7 +19,8 @@
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement, ReactNode } from "react";
-import { Divider, Grid, Label, LabelProps, Popup, PopupProps } from "semantic-ui-react";
+import { Divider, Grid, Label, LabelProps, PopupProps } from "semantic-ui-react";
+import { Popup } from "../popup";
 
 export interface LabelWithPopupPropsInterface extends IdentifiableComponentInterface, LabelProps {
     /**
