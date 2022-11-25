@@ -36,6 +36,7 @@ import sortBy from "lodash-es/sortBy";
 import React, { Fragment, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { Divider, Grid, Header, Button as SemButton } from "semantic-ui-react";
 import { SAMLSelectionLanding } from "./protocols";
 import { applicationConfig } from "../../../../extensions";
@@ -67,7 +68,6 @@ import { setAuthProtocolMeta } from "../../store";
 import { ApplicationManagementUtils } from "../../utils";
 import { InboundFormFactory } from "../forms";
 import { ApplicationCreateWizard } from "../wizard";
-import { Dispatch } from "redux";
 
 /**
  * Prop-types for the applications settings component.
@@ -173,7 +173,6 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
         isInboundProtocolConfigRequestLoading,
         readOnly,
         template,
-        onProtocolUpdate,
         extendedAccessConfig,
         applicationTemplateId,
         [ "data-testid" ]: testId
