@@ -259,7 +259,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
      * Fetch the allowed origins list whenever there's an update.
      */
     useEffect(() => {
-        const allowedCORSOrigins: string[]= [];
+        const allowedCORSOrigins: string[] = [];
 
         if (OrganizationUtils.isCurrentOrganizationRoot()) {
             getCORSOrigins()
@@ -269,7 +269,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                     });
                     setAllowedOrigins(allowedCORSOrigins);
                 })
-                .catch((error: any) => {
+                .catch((error: AxiosError) => {
                     if (error?.response?.data?.description) {
                         dispatch(addAlert({
                             description: error.response.data.description,
