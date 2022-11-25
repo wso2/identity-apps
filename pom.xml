@@ -40,7 +40,7 @@
         <url>https://github.com/wso2/identity-apps.git</url>
         <developerConnection>scm:git:https://github.com/wso2/identity-apps.git</developerConnection>
         <connection>scm:git:https://github.com/wso2/identity-apps.git</connection>
-        <tag>v1.6.92</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <modules>
@@ -676,14 +676,14 @@
         <carbon.extension.identity.authenticator.version>3.0.0</carbon.extension.identity.authenticator.version>
         <org.wso2.carbon.identity.association.account>5.1.5</org.wso2.carbon.identity.association.account>
         <identity.extension.utils>1.0.8</identity.extension.utils>
-        <carbon.identity.framework.version>5.25.22</carbon.identity.framework.version>
-        <carbon.identity.framework.imp.pkg.version.range>[5.0.0, 6.0.0)</carbon.identity.framework.imp.pkg.version.range>
-        <identity.organization.management.core.service.version>1.0.0
+        <carbon.identity.framework.version>6.0.0</carbon.identity.framework.version>
+        <carbon.identity.framework.imp.pkg.version.range>[6.0.0, 7.0.0)</carbon.identity.framework.imp.pkg.version.range>
+        <identity.organization.management.core.service.version>2.0.0
         </identity.organization.management.core.service.version>
-        <identity.org.mgt.core.version.range>[1.0.0, 2.0.0)</identity.org.mgt.core.version.range>
-        <carbon.identity.oauth.version>6.7.130</carbon.identity.oauth.version>
-        <carbon.identity.oauth.imp.pkg.version.range>[6.1.0, 7.0.0)</carbon.identity.oauth.imp.pkg.version.range>
-        <identity.governance.version>1.5.48</identity.governance.version>
+        <identity.org.mgt.core.version.range>[2.0.0, 3.0.0)</identity.org.mgt.core.version.range>
+        <carbon.identity.oauth.version>7.0.0</carbon.identity.oauth.version>
+        <carbon.identity.oauth.imp.pkg.version.range>[7.0.0, 8.0.0)</carbon.identity.oauth.imp.pkg.version.range>
+        <identity.governance.version>2.0.0</identity.governance.version>
         <totp.authenticator.version>3.2.2</totp.authenticator.version>
         <backupcode.authenticator.version>0.0.12</backupcode.authenticator.version>
 
