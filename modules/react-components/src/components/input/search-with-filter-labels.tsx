@@ -125,6 +125,8 @@ export const SearchWithFilterLabels: FunctionComponent<PropsWithChildren<SearchW
         onFilter(searchQuery, selectedFilters);
     };
 
+    const numberOfPlaceholderCards: number = 4;
+
     return (
         <div
             className={ classes }
@@ -157,18 +159,18 @@ export const SearchWithFilterLabels: FunctionComponent<PropsWithChildren<SearchW
                 isLoading ? (
                     <Card.Group style={ { borderRadius: "50px" } }>
                         {
-                            [ ...Array(4) ].map(() => {
+                            [ ...Array(numberOfPlaceholderCards) ].map((_, index) => {
                                 return (
-                                    <>
-                                        <Card style={ { borderRadius: "50px", boxShadow: "none",  width: "65px" } }>
-                                            <Placeholder
-                                                className="testPlaceholder"
-                                                style={ { borderRadius: "10px" } }>
-                                                <Placeholder.Image
-                                                    style={ { borderRadius: "10px!important", height: "25px" } } />
-                                            </Placeholder>
-                                        </Card>
-                                    </>
+                                    <Card 
+                                        key={ index } 
+                                        style={ { borderRadius: "50px", boxShadow: "none",  width: "65px" } }>
+                                        <Placeholder
+                                            className="testPlaceholder"
+                                            style={ { borderRadius: "10px" } }>
+                                            <Placeholder.Image
+                                                style={ { borderRadius: "10px!important", height: "25px" } } />
+                                        </Placeholder>
+                                    </Card>
                                 );
                             })
                         }

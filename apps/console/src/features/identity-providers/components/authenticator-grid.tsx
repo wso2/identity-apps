@@ -120,15 +120,6 @@ interface AuthenticatorGridPropsInterface extends LoadableComponentInterface, Te
 }
 
 /**
- * Interface for the alert state.
- */
-interface AlertState {
-    message: string;
-    description: string;
-    level: AlertLevels;
-}
-
-/**
  * Authenticators Grid component.
  *
  * @param props - Props injected to the component.
@@ -226,7 +217,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                     setConnectedApps(appNames);
                 }
             })
-            .catch((error: AlertState) => {
+            .catch((error: AxiosError & { description: string; message: string }) => {
                 dispatch(addAlert({
                     description: error?.description
                         || "Error occurred while trying to retrieve connected applications.",
