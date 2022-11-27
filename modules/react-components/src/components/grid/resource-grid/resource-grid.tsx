@@ -97,20 +97,20 @@ export const ResourceGrid: FunctionComponent<
             wrapperClassName
         );
 
+        const numberOfPlaceholderCards: number = 4;
+
         if (isLoading) {
             return (
                 <Card.Group style={ { marginBottom: "3rem" } }>
                     {
-                        [ ...Array(4) ].map(() => {
+                        [ ...Array(numberOfPlaceholderCards) ].map((_, index) => {
                             return (
-                                //TODO: Add style classes
-                                <>
-                                    <Card style={ { boxShadow: "none", width: "220px" } }>
-                                        <Placeholder>
-                                            <Placeholder.Image style={ { height: "230px" } } />
-                                        </Placeholder>
-                                    </Card>
-                                </>
+                                //TODO: Add placeholder style classes.
+                                <Card key={ index } style={ { boxShadow: "none", width: "220px" } }>
+                                    <Placeholder>
+                                        <Placeholder.Image style={ { height: "230px" } } />
+                                    </Placeholder>
+                                </Card>
                             );
                         })
                     }

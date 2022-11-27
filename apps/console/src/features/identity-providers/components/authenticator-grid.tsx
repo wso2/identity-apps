@@ -206,7 +206,8 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
 
                     const results: ApplicationBasicInterface[] = await Promise.all(
                         appRequests.map((response: Promise<any>) => response
-                            .catch((error: AlertState) => {
+                        //TODO: Refactor to access description & message from error?.response?.data.
+                            .catch((error: AxiosError & { description: string; message: string }) => {
                                 dispatch(addAlert({
                                     description: error?.description
                                         || "Error occurred while trying to retrieve connected applications.",

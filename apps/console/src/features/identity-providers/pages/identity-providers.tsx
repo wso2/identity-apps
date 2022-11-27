@@ -614,11 +614,11 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (props: IDPP
                 </ListLayout>
             ) : (
                 <GridLayout
-                    search={
-                        (<SearchWithFilterLabels
+                    search={ (
+                        <SearchWithFilterLabels
                             isLoading= { isIdPListRequestLoading || isAuthenticatorFetchRequestRequestLoading }
-                            searchInput={
-                                (<AdvancedSearchWithBasicFilters
+                            searchInput={ (
+                                <AdvancedSearchWithBasicFilters
                                     fill="white"
                                     onFilter={ (query: string) => {
                                         handleConnectionGridFilter(query, null);
@@ -663,15 +663,15 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (props: IDPP
                                     defaultSearchOperator="sw"
                                     triggerClearQuery={ triggerClearQuery }
                                     data-testid={ `${ testId }-advance-search` }
-                                />)
-                            }
+                                />
+                            ) }
                             filterLabels={ filterTags }
                             onFilter={ (_: string, selectedFilters: string[]) => {
                                 handleConnectionGridFilter(searchQuery, selectedFilters);
                             } }
                             data-testid={ `${ testId }-search` }
-                        />)
-                    }
+                        />
+                    ) }
                     isPaginating={ isPaginating }
                     paginate={ () => handlePagination() }
                     translations={ {
