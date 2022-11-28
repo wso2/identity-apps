@@ -85,6 +85,7 @@
 @aliceBlue        : #f7fcff;
 @alabaster        : #f7f7f7;
 @pureBlack        : #000000;
+@focusBorderBlue  : #0000ff;
 
 /*-------------------
         Page
