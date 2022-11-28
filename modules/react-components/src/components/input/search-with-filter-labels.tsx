@@ -127,6 +127,32 @@ export const SearchWithFilterLabels: FunctionComponent<PropsWithChildren<SearchW
 
     const numberOfPlaceholderCards: number = 4;
 
+    /**
+     * Renders the loading state placeholder cards.
+     *
+     * @returns Loading Placeholder cards.
+     */
+    const getPlaceholderCards = (): ReactElement[] => {
+        const placeholders: ReactElement[] = [];
+
+        for (let i = 0; i < numberOfPlaceholderCards; i++) {
+            placeholders.push(
+                //TODO: Add placeholder style classes.
+                <Card
+                    style={ { borderRadius: "50px", boxShadow: "none",  width: "65px" } }>
+                    <Placeholder
+                        className="testPlaceholder"
+                        style={ { borderRadius: "10px" } }>
+                        <Placeholder.Image
+                            style={ { borderRadius: "10px!important", height: "25px" } } />
+                    </Placeholder>
+                </Card>
+            );
+        }
+
+        return placeholders;
+    };
+
     return (
         <div
             className={ classes }
@@ -156,48 +182,37 @@ export const SearchWithFilterLabels: FunctionComponent<PropsWithChildren<SearchW
                     )
             }
             {
-                isLoading ? (
-                    <Card.Group style={ { borderRadius: "50px" } }>
-                        {
-                            [ ...Array(numberOfPlaceholderCards) ].map((_, index) => {
-                                return (
-                                    <Card 
-                                        key={ index } 
-                                        style={ { borderRadius: "50px", boxShadow: "none",  width: "65px" } }>
-                                        <Placeholder
-                                            className="testPlaceholder"
-                                            style={ { borderRadius: "10px" } }>
-                                            <Placeholder.Image
-                                                style={ { borderRadius: "10px!important", height: "25px" } } />
-                                        </Placeholder>
-                                    </Card>
-                                );
-                            })
-                        }
-                    </Card.Group>
-                ) : (
-                    filterLabels && Array.isArray(filterLabels) && filterLabels.length > 0) && (
-                    <Label.Group>
-                        {
-                            filterLabels.map((label, index: number) => {
-                                const isSelected: boolean = selectedFilterLabels.includes(label);
+                isLoading 
+                    ? (
+                        <Card.Group style={ { borderRadius: "50px" } }>
+                            {
+                                getPlaceholderCards()
+                            }
+                        </Card.Group>
+                    )
+                    : (
+                        filterLabels && Array.isArray(filterLabels) && filterLabels.length > 0) && (
+                        <Label.Group>
+                            {
+                                filterLabels.map((label, index: number) => {
+                                    const isSelected: boolean = selectedFilterLabels.includes(label);
 
-                                return (
-                                    <Label
-                                        basic
-                                        key={ index }
-                                        as="a"
-                                        className={ `filter-label ${ isSelected ? "active" : "" }` }
-                                        onClick={ () => handleFilter(label) }
-                                    >
-                                        { label }
-                                        { isSelected && <Icon name="check"/> }
-                                    </Label>
-                                );
-                            })
-                        }
-                    </Label.Group>
-                )
+                                    return (
+                                        <Label
+                                            basic
+                                            key={ index }
+                                            as="a"
+                                            className={ `filter-label ${ isSelected ? "active" : "" }` }
+                                            onClick={ () => handleFilter(label) }
+                                        >
+                                            { label }
+                                            { isSelected && <Icon name="check"/> }
+                                        </Label>
+                                    );
+                                })
+                            }
+                        </Label.Group>
+                    )
             }
         </div>
     );

@@ -99,20 +99,33 @@ export const ResourceGrid: FunctionComponent<
 
         const numberOfPlaceholderCards: number = 4;
 
+        /**
+         * Renders the loading state placeholder cards.
+         *
+         * @returns Loading Placeholder cards.
+         */
+        const getPlaceholderCards = (): ReactElement[] => {
+            const placeholders: ReactElement[] = [];
+
+            for (let i = 0; i < numberOfPlaceholderCards; i++) {
+                placeholders.push(
+                    //TODO: Add placeholder style classes.
+                    <Card style={ { boxShadow: "none", width: "220px" } }>
+                        <Placeholder>
+                            <Placeholder.Image style={ { height: "230px" } } />
+                        </Placeholder>
+                    </Card>
+                );
+
+                return placeholders;
+            }
+        };
+
         if (isLoading) {
             return (
                 <Card.Group style={ { marginBottom: "3rem" } }>
                     {
-                        [ ...Array(numberOfPlaceholderCards) ].map((_, index) => {
-                            return (
-                                //TODO: Add placeholder style classes.
-                                <Card key={ index } style={ { boxShadow: "none", width: "220px" } }>
-                                    <Placeholder>
-                                        <Placeholder.Image style={ { height: "230px" } } />
-                                    </Placeholder>
-                                </Card>
-                            );
-                        })
+                        getPlaceholderCards()
                     }
                 </Card.Group>
             );
