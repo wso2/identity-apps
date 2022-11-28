@@ -28,6 +28,7 @@ import {
     DocumentationLink,
     GenericIcon,
     Heading,
+    Popup,
     SegmentedAccordion,
     Text,
     Tooltip,
@@ -45,7 +46,7 @@ import React, { ChangeEvent, FunctionComponent, ReactElement, useEffect, useRef,
 import { Trans, useTranslation } from "react-i18next";
 import Joyride, { CallBackProps, STATUS, Step } from "react-joyride";
 import { useDispatch } from "react-redux";
-import { Checkbox, Dropdown, Header, Icon, Input, Menu, Popup, Sidebar } from "semantic-ui-react";
+import { Checkbox, Dropdown, Header, Icon, Input, Menu, Sidebar } from "semantic-ui-react";
 import { stripSlashes } from "slashes";
 import { ScriptTemplatesSidePanel } from "./script-templates-side-panel";
 import { organizationConfigs } from "../../../../../../extensions";

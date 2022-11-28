@@ -19,7 +19,8 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms, useTrigger } from "@wso2is/forms";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
-import { Button, Divider, Label, List, Message, Popup } from "semantic-ui-react";
+import { Button, Divider, Label, List, Message } from "semantic-ui-react";
+import { Popup } from "../popup";
 
 /**
  * Type of key-value object
@@ -528,7 +529,7 @@ export const DynamicField: FunctionComponent<DynamicFieldPropsInterface> = (
                                                                 icon="trash"
                                                                 onClick={ () => {
                                                                     setEditIndex(null);
-                                                                    const tempFields: Map<number, KeyValue> 
+                                                                    const tempFields: Map<number, KeyValue>
                                                                         = new Map(fields);
 
                                                                     tempFields.delete(mapIndex);

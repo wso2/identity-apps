@@ -27,15 +27,17 @@ import {
     EmphasizedSegment,
     GenericIcon,
     Message,
+    Popup,
     useDocumentation
 } from "@wso2is/react-components";
-import { AxiosResponse } from "axios";
+import { AxiosError, AxiosResponse } from "axios";
 import get from "lodash-es/get";
 import sortBy from "lodash-es/sortBy";
 import React, { Fragment, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Divider, Grid, Header, Popup, Button as SemButton } from "semantic-ui-react";
+import { Dispatch } from "redux";
+import { Divider, Grid, Header, Button as SemButton } from "semantic-ui-react";
 import { SAMLSelectionLanding } from "./protocols";
 import { applicationConfig } from "../../../../extensions";
 import { AppState, FeatureConfigInterface, store } from "../../../core";
@@ -54,7 +56,9 @@ import CustomApplicationTemplate
 import {
     ApplicationInterface,
     ApplicationTemplateListItemInterface,
+    AuthProtocolMetaInterface,
     CertificateInterface, OIDCDataInterface,
+    OIDCMetadataInterface,
     SAML2ConfigurationInterface,
     SAMLConfigModes,
     SupportedAuthProtocolMetaTypes,
@@ -169,7 +173,6 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
         isInboundProtocolConfigRequestLoading,
         readOnly,
         template,
-        onProtocolUpdate,
         extendedAccessConfig,
         applicationTemplateId,
         [ "data-testid" ]: testId
@@ -178,11 +181,12 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
-    const authProtocolMeta = useSelector((state: AppState) => state.application.meta.protocolMeta);
+    const authProtocolMeta: AuthProtocolMetaInterface = useSelector(
+        (state: AppState) => state.application.meta.protocolMeta);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
-    const tenantName = store.getState().config.deployment.tenant;
+    const tenantName: string = store.getState().config.deployment.tenant;
     const allowMultipleProtocol: boolean = useSelector(
         (state: AppState) => state.config.deployment.allowMultipleAppProtocols);
 
@@ -215,7 +219,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
 
                 onUpdate(appId);
             })
-            .catch((error) => {
+            .catch((error: AxiosError) => {
                 if (error?.response?.data?.description) {
                     dispatch(addAlert({
                         description: error?.response?.data?.description,
@@ -248,7 +252,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
             .then(() => {
                 onUpdate(appId);
             })
-            .catch((error) => {
+            .catch((error: AxiosError) => {
                 if (error?.response?.data?.description) {
                     dispatch(addAlert({
                         description: error?.response?.data?.description,
@@ -293,7 +297,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                 }));
                 onAllowedOriginsUpdate();
             })
-            .catch((error) => {
+            .catch((error: AxiosError) => {
                 updateError= true;
                 if (error?.response?.data?.description) {
                     dispatch(addAlert({
@@ -314,7 +318,6 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                         ".genericError.message")
                 }));
             }).finally(() => {
-                onProtocolUpdate();
                 onUpdate(appId);
                 if (!updateError) {
                     createSAMLApplication();
@@ -340,7 +343,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
             .then(async () => {
                 await handleInboundConfigFormSubmit(values.inbound, selectedProtocol);
             })
-            .catch((error) => {
+            .catch((error: AxiosError) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
                         description: error.response.data.description,
@@ -380,7 +383,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                 onApplicationSecretRegenerate(response.data);
                 onUpdate(appId);
             })
-            .catch((error) => {
+            .catch((error: AxiosError) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
                         description: error.response.data.description,
@@ -415,7 +418,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                 }));
                 onUpdate(appId);
             })
-            .catch((error) => {
+            .catch((error: AxiosError) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
                         description: error.response.data.description,
@@ -455,7 +458,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
         }
 
         // Filter out legacy and unsupported auth protocols.
-        supportedProtocols = supportedProtocols.filter((protocol) => {
+        supportedProtocols = supportedProtocols.filter((protocol: string) => {
 
             if (template && template.id === CustomApplicationTemplate.id
                 && applicationConfig.customApplication.allowedProtocolTypes
@@ -498,7 +501,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
         let supportedProtocols: string[] = getSupportedProtocols();
 
         // Sort the list of protocols.
-        supportedProtocols = sortBy(supportedProtocols, (element) => {
+        supportedProtocols = sortBy(supportedProtocols, (element: string) => {
 
             let customOrder: Record<string, unknown> = {
                 [ SupportedAuthProtocolTypes.OIDC ] : 0,
@@ -506,7 +509,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
             };
 
             if (inboundProtocols.length > 0) {
-                inboundProtocols.forEach((protocol, index) => {
+                inboundProtocols.forEach((protocol: string, index: number) => {
                     if (Object.values(SupportedAuthProtocolTypes).includes(protocol as SupportedAuthProtocolTypes)) {
                         customOrder = {
                             ...customOrder,
@@ -879,7 +882,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
 
         const protocols: string[] = Object.values(SupportedAuthProtocolMetaTypes);
 
-        protocols.map((selected) => {
+        protocols.map((selected: string) => {
 
             if (selected === SupportedAuthProtocolTypes.WS_FEDERATION
                 || selected === SupportedAuthProtocolTypes.WS_TRUST) {
@@ -887,16 +890,16 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                 return;
             }
 
-            const selectedProtocol = selected as SupportedAuthProtocolMetaTypes;
+            const selectedProtocol: SupportedAuthProtocolMetaTypes = selected as SupportedAuthProtocolMetaTypes;
 
             // Check if the metadata for the selected auth protocol is available in redux store.
             // If not, fetch the metadata related to the selected auth protocol.
             if (!Object.prototype.hasOwnProperty.call(authProtocolMeta, selectedProtocol)) {
                 getAuthProtocolMetadata(selectedProtocol)
-                    .then((response) => {
+                    .then((response: OIDCMetadataInterface) => {
                         dispatch(setAuthProtocolMeta(selectedProtocol, response));
                     })
-                    .catch((error) => {
+                    .catch((error: AxiosError) => {
                         if (error.response && error.response.data && error.response.data.description) {
                             dispatch(addAlert({
                                 description: error.response.data.description,

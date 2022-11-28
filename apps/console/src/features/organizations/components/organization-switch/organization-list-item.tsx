@@ -18,10 +18,10 @@
 
 import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { IdentifiableComponentInterface } from "@wso2is/core/src/models";
-import { GenericIcon } from "@wso2is/react-components";
+import { GenericIcon, Popup } from "@wso2is/react-components";
 import React, { ReactElement, SyntheticEvent } from "react";
 import { useTranslation } from "react-i18next";
-import { Grid, Icon, Placeholder, Popup } from "semantic-ui-react";
+import { Grid, Icon, Placeholder } from "semantic-ui-react";
 import { organizationConfigs } from "../../../../extensions";
 import { AppConstants, getMiscellaneousIcons, history } from "../../../core";
 import { GenericOrganization } from "../../models";

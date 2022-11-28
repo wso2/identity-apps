@@ -18,8 +18,9 @@
 
 import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, SyntheticEvent } from "react";
-import { Button, Checkbox, CheckboxProps, Header, Popup, Segment } from "semantic-ui-react";
+import { Button, Checkbox, CheckboxProps, Header, Segment } from "semantic-ui-react";
 import { useMediaContext } from "../media";
+import { Popup } from "../popup";
 
 /**
  * Danger zone component Prop types.
