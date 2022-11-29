@@ -276,20 +276,6 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
                         showOnSidePanel: true
                     },
                     {
-                        category: "console:manage.features.sidePanel.categories.users",
-                        component: lazy(() => import("../../workflow-approvals/pages/approvals")),
-                        exact: true,
-                        icon: {
-                            icon: getSidePanelIcons().approvals
-                        },
-                        id: "approvals",
-                        name: "console:manage.features.sidePanel.approvals",
-                        order: 4,
-                        path: AppConstants.getPaths().get("APPROVALS"),
-                        protected: true,
-                        showOnSidePanel: true
-                    },
-                    {
                         category: "console:manage.features.sidePanel.categories.attributes",
                         children: [
                             {

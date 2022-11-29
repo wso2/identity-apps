@@ -35,7 +35,6 @@ import { getSecretsManagementEndpoints } from "../../secrets/configs/endpoints";
 import { getServerConfigurationsResourceEndpoints } from "../../server-configurations";
 import { getUsersResourceEndpoints } from "../../users";
 import { getUserstoreResourceEndpoints } from "../../userstores";
-import { getApprovalsResourceEndpoints } from "../../workflow-approvals";
 import { I18nConstants } from "../constants";
 import { DeploymentConfigInterface, ServiceResourceEndpointsInterface, UIConfigInterface } from "../models";
 import { store } from "../store";
@@ -185,7 +184,6 @@ export class Config {
     public static getServiceResourceEndpoints(): ServiceResourceEndpointsInterface {
         return {
             ...getApplicationsResourceEndpoints(this.resolveServerHost()),
-            ...getApprovalsResourceEndpoints(this.getDeploymentConfig()?.serverHost),
             ...getClaimResourceEndpoints(this.getDeploymentConfig()?.serverHost, this.resolveServerHost()),
             ...getCertificatesResourceEndpoints(this.getDeploymentConfig()?.serverHost),
             ...getIDPResourceEndpoints(this.resolveServerHost()),
