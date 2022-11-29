@@ -838,7 +838,7 @@ export const console: ConsoleNS = {
                                     "attribute values, if not already provided in the user's profile.",
                                 mappingTable: {
                                     actions: {
-                                        enable: "Enable Attribute Name Mapping"
+                                        enable: "Enable attribute name mapping"
                                     },
                                     columns: {
                                         appAttribute: "Mapped user attribute",
