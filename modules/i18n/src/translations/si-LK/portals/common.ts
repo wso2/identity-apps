@@ -34,7 +34,6 @@ export const common: CommonNS = {
     all: "සියලුම",
     applicationName: "ඇප් එකේ නම",
     applications: "ඇප්ස්",
-    approvalStatus: "අනුමත කිරීමේ තත්වය",
     approve: "අනුමත කරන්න",
     apps: "ඇප්ස්",
     assignee: "පැවරුම්කරු",

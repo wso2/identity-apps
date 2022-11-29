@@ -134,7 +134,6 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
         },
         features: {
             applications: null,
-            approvals: null,
             attributeDialects: null,
             certificates: null,
             emailTemplates: null,
@@ -158,7 +157,6 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             applicationTemplateLoadingStrategy: undefined,
             features: {
                 applications: null,
-                approvals: null,
                 attributeDialects: null,
                 certificates: null,
                 emailTemplates: null,

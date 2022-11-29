@@ -5745,100 +5745,6 @@ export const console: ConsoleNS = {
     },
     manage: {
         features: {
-            approvals: {
-                list: {
-                    columns: {
-                        actions: "Actions",
-                        name: "Name"
-                    }
-                },
-                modals: {
-                    approvalProperties: {
-                        "Claims": "Claims",
-                        "REQUEST ID": "Request ID",
-                        "Roles": "Roles",
-                        "User Store Domain": "User Store Domain",
-                        "Username": "Username"
-                    },
-                    taskDetails: {
-                        description: "You have a request to approve an operational action of a user.",
-                        header: "Approval Task"
-                    }
-                },
-                notifications: {
-                    fetchApprovalDetails: {
-                        error: {
-                            description: "{{description}}",
-                            message: "Error retrieving the approval details"
-                        },
-                        genericError: {
-                            description: "Couldn't update the approval details",
-                            message: "Something went wrong"
-                        },
-                        success: {
-                            description: "Successfully retrieved the approval details.",
-                            message: "Approval details retrieval successful"
-                        }
-                    },
-                    fetchPendingApprovals: {
-                        error: {
-                            description: "{{description}}",
-                            message: "Error retrieving pending approvals"
-                        },
-                        genericError: {
-                            description: "Couldn't retrieve pending approvals",
-                            message: "Something went wrong"
-                        },
-                        success: {
-                            description: "Successfully retrieved pending approvals.",
-                            message: "Pending approvals retrieval successful"
-                        }
-                    },
-                    updatePendingApprovals: {
-                        error: {
-                            description: "{{description}}",
-                            message: "Error updating the approval"
-                        },
-                        genericError: {
-                            description: "Couldn't update the approval",
-                            message: "Something went wrong"
-                        },
-                        success: {
-                            description: "Successfully updated the approval.",
-                            message: "Update successful"
-                        }
-                    }
-                },
-                placeholders: {
-                    emptyApprovalFilter: {
-                        action: "View all",
-                        subtitles: {
-                            0: "There are currently no approvals in {{status}} state.",
-                            1: "Please check if you have any tasks in {{status}} state to",
-                            2: "view them here."
-                        },
-                        title: "No results found"
-                    },
-                    emptyApprovalList: {
-                        action: "",
-                        subtitles: {
-                            0: "There are currently no approvals to review.",
-                            1: "Please check if you have added a workflow to control the operations in the system.",
-                            2: ""
-                        },
-                        title: "No Approvals"
-                    },
-                    emptySearchResults: {
-                        action: "View all",
-                        subtitles: {
-                            0: "We couldn't find the workflow you searched for.",
-                            1: "Please check if you have a workflow with that name in",
-                            2: "the system."
-                        },
-                        title: "No Approvals"
-                    }
-                }
-            },
             businessGroups: {
                 fields: {
                     groupName: {
@@ -8929,7 +8835,6 @@ export const console: ConsoleNS = {
                 accountManagement: "Account Management",
                 addEmailTemplate: "Add Email Template",
                 addEmailTemplateLocale: "Add Email Template Locale",
-                approvals: "Approvals",
                 attributeDialects: "Attributes",
                 categories: {
                     attributes: "User Attributes",
@@ -10207,10 +10112,6 @@ export const console: ConsoleNS = {
                 backButton: "Go back to {{name}} template",
                 subTitle: null,
                 title: "Add New Template"
-            },
-            approvalsPage: {
-                subTitle: "Review operational tasks that requires your approval",
-                title: "Approvals"
             },
             editTemplate: {
                 backButton: "Go back to {{name}} template",

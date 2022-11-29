@@ -26,7 +26,6 @@ export interface Common {
     all: string;
     applicationName: string;
     applications: string;
-    approvalStatus: string;
     approve: string;
     assignees: string;
     browser: string;
@@ -221,13 +220,6 @@ export interface Views {
                     dropdown: string;
                 };
                 resultsIndicator: string;
-            };
-        };
-        approvals: {
-            notifications: {
-                fetchApprovalDetails: Notification;
-                fetchPendingApprovals: Notification;
-                updatePendingApprovals: Notification;
             };
         };
         changePassword: {
@@ -756,15 +748,6 @@ export interface Views {
         accountRecovery: {
             description: string;
             heading: string;
-        };
-        approvals: {
-            description: string;
-            heading: string;
-            placeholders: {
-                emptyApprovalList: {
-                    heading: string;
-                };
-            };
         };
         changePassword: {
             actionTitles: {

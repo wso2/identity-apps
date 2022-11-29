@@ -2767,37 +2767,6 @@ export interface ConsoleNS {
                     };
                 };
             };
-            approvals: {
-                list: {
-                    columns: {
-                        actions: string;
-                        name: string;
-                    };
-                };
-                modals: {
-                    approvalProperties: {
-                        "Claims": string,
-                        "REQUEST ID": string,
-                        "Roles": string,
-                        "User Store Domain": string,
-                        "Username": string,
-                    },
-                    taskDetails: {
-                        header: string;
-                        description: string;
-                    };
-                };
-                notifications: {
-                    fetchApprovalDetails: Notification;
-                    fetchPendingApprovals: Notification;
-                    updatePendingApprovals: Notification;
-                };
-                placeholders: {
-                    emptyApprovalList: Placeholder;
-                    emptyApprovalFilter: Placeholder;
-                    emptySearchResults: Placeholder;
-                };
-            };
             certificates: {
                 keystore: {
                     advancedSearch: {
@@ -4398,7 +4367,6 @@ export interface ConsoleNS {
                 accountManagement: string;
                 addEmailTemplate: string;
                 addEmailTemplateLocale: string;
-                approvals: string;
                 attributeDialects: string;
                 categories: {
                     attributes: string;
@@ -4997,7 +4965,6 @@ export interface ConsoleNS {
         };
         pages: {
             addEmailTemplate: EditPage;
-            approvalsPage: Page;
             editTemplate: EditPage;
             emailLocaleAdd: EditPage;
             emailLocaleAddWithDisplayName: EditPage;

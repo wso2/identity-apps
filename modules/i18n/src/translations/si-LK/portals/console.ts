@@ -4252,101 +4252,6 @@ export const console: ConsoleNS = {
     },
     manage: {
         features: {
-            approvals: {
-                list: {
-                    columns: {
-                        actions: "ක්‍රියා",
-                        name: "නම"
-                    }
-                },
-                modals: {
-                    approvalProperties: {
-                        "Claims": "හිමිකම්",
-                        "REQUEST ID": "ඉල්ලීම් හැඳුනුම්පත",
-                        "Roles": "භූමිකාවන්",
-                        "User Store Domain": "පරිශීලක ගබඩා වසම",
-                        "Username": "පරිශීලක නාමය"
-                    },
-                    taskDetails: {
-                        description: "පරිශීලකයෙකුගේ මෙහෙයුම් ක්‍රියාවක් අනුමත කිරීමට ඔබට ඉල්ලීමක් තිබේ.",
-                        header: "අනුමත කිරීමේ කාර්යය"
-                    }
-                },
-                notifications: {
-                    fetchApprovalDetails: {
-                        error: {
-                            description: "{{description}}",
-                            message: "අනුමත තොරතුරු ලබා ගැනීමේ දෝෂයකි"
-                        },
-                        genericError: {
-                            description: "අනුමත තොරතුරු යාවත්කාලීන කිරීමට නොහැකි විය",
-                            message: "යම් දෝෂයක් ඇති වී ඇත"
-                        },
-                        success: {
-                            description: "අනුමත කිරීමේ තොරතුරු සාර්ථකව ලබා ගන්නා ලදි",
-                            message: "අනුමත තොරතුරු ලබා ගැනීම සාර්ථකයි"
-                        }
-                    },
-                    fetchPendingApprovals: {
-                        error: {
-                            description: "{{description}}",
-                            message: "අපේක්ෂිත අනුමැතිය ලබා ගැනීමේ දෝෂයකි"
-                        },
-                        genericError: {
-                            description: "අපේක්ෂිත අනුමත ලබා ගැනීමට නොහැකි විය",
-                            message: "යම් දෝෂයක් ඇති වී ඇත"
-                        },
-                        success: {
-                            description: "අපේක්ෂිත අනුමත කිරීම් සාර්ථකව ලබා ගන්නා ලදි",
-                            message: "අපේක්ෂිත අනුමත කිරීම් නැවත ලබා ගැනීම සාර්ථකයි"
-                        }
-                    },
-                    updatePendingApprovals: {
-                        error: {
-                            description: "{{description}}",
-                            message: "අනුමැතිය යාවත්කාලීන කිරීමේදී දෝෂයකි"
-                        },
-                        genericError: {
-                            description: "අනුමැතිය යාවත්කාලීන කළ නොහැක",
-                            message: "යම් දෝෂයක් ඇති වී ඇත"
-                        },
-                        success: {
-                            description: "අනුමැතිය සාර්ථකව යාවත්කාලීන කරන ලදි",
-                            message: "යාවත්කාලීන කිරීම සාර්ථකයි"
-                        }
-                    }
-                },
-                placeholders: {
-                    emptyApprovalFilter: {
-                        action: "සියල්ල බලන්න",
-                        subtitles: {
-                            0: "{{status}} තත්වයේ දැනට අනුමත කිරීම් නොමැත.",
-                            1: "ඔබට {{status}} තත්වයේ කිසියම් කාර්යයක් තිබේදැයි කරුණාකර පරීක්ෂා කරන්න",
-                            2: "ඒවා මෙතැනින් බලන්න."
-                        },
-                        title: "ප්‍රතිපල හමු නොවීය"
-                    },
-                    emptyApprovalList: {
-                        action: "",
-                        subtitles: {
-                            0: "සමාලෝචනය කිරීමට දැනට අනුමත කිරීම් නොමැත.",
-                            1: "පද්ධතියේ මෙහෙයුම් පාලනය කිරීම සඳහා ඔබ කාර්ය ප්‍රවාහයක් එකතු කර ඇත්දැයි"
-                                + " කරුණාකර පරීක්ෂා කරන්න.",
-                            2: ""
-                        },
-                        title: "අනුමත කිරීම් නොමැත"
-                    },
-                    emptySearchResults: {
-                        action: "සියල්ල බලන්න",
-                        subtitles: {
-                            0: "ඔබ සෙවූ කාර්ය ප්‍රවාහය අපට සොයාගත නොහැකි විය.",
-                            1: "කරුණාකර එම නම සමඟ වැඩ ප්‍රවාහයක් තිබේදැයි පරීක්ෂා කරන්න",
-                            2: "පද්ධතිය."
-                        },
-                        title: "අනුමත කිරීම් නොමැත"
-                    }
-                }
-            },
             businessGroups: {
                 fields: {
                     groupName: {
@@ -7276,7 +7181,6 @@ export const console: ConsoleNS = {
                 accountManagement: "ගිණුම් කළමනාකරණය",
                 addEmailTemplate: "විද්‍යුත් තැපැල් අච්චුව එක් කරන්න",
                 addEmailTemplateLocale: "විද්‍යුත් තැපැල් ආකෘති පෙදෙසි එක් කරන්න",
-                approvals: "අනුමත කිරීම්",
                 attributeDialects: "ගුණාංග",
                 categories: {
                     attributes: "ගුණාංග",
@@ -8562,10 +8466,6 @@ export const console: ConsoleNS = {
                 backButton: "{{name}} අච්චුව වෙත ආපසු යන්න",
                 subTitle: null,
                 title: "නව අච්චුව එක් කරන්න"
-            },
-            approvalsPage: {
-                subTitle: "ඔබේ අනුමැතිය අවශ්‍ය මෙහෙයුම් කාර්යයන් සමාලෝචනය කරන්න",
-                title: "අනුමත කිරීම්"
             },
             editTemplate: {
                 backButton: "{{name}} අච්චුව වෙත ආපසු යන්න",
