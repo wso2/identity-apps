@@ -431,7 +431,7 @@
                                         <div class="external-login blurring external-login-dimmer">
                                             <div class="field">
                                                 <button
-                                                    class="ui button fluid"
+                                                    class="ui button secondary fluid"
                                                     onclick="handleNoDomain(this,
                                                         '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpName))%>',
                                                         '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpEntry.getValue()))%>')"
