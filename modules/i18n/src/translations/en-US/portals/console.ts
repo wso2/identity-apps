@@ -1099,9 +1099,6 @@ export const console: ConsoleNS = {
                                             heading: "Step-based configuration",
                                             hint: "Create a user login flow by dragging authenticators on to the " +
                                                 "relevant steps.",
-                                            magicLinkDisabled: "You can only add the Magic Link authenticator " +
-                                                "as a second step and only when Identifier First authenticator " +
-                                                "is present in the first step.",
                                             secondFactorDisabled: "Second factor authenticators " +
                                                 "can be used only if <1>User name and password " +
                                                 "password</1>, <3>Social Login</3> or any other handler" +

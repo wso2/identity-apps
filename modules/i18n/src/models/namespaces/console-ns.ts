@@ -652,7 +652,6 @@ export interface ConsoleNS {
                                             secondFactorDisabledDueToProxyMode: string;
                                             secondFactorDisabledInFirstStep: string;
                                             authenticatorDisabled: string;
-                                            magicLinkDisabled: string;
                                             firstFactorDisabled: string;
                                         };
                                     };
