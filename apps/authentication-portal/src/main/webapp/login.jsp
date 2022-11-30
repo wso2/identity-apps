@@ -514,6 +514,7 @@
                                     </button>
                                 </div>
                             </div>
+                            <br>
                             <%
                                 }
                                 if (localAuthenticatorNames.contains("totp")) {

@@ -838,7 +838,7 @@ export const console: ConsoleNS = {
                                     "attribute values, if not already provided in the user's profile.",
                                 mappingTable: {
                                     actions: {
-                                        enable: "Enable mapping"
+                                        enable: "Enable attribute name mapping"
                                     },
                                     columns: {
                                         appAttribute: "Mapped user attribute",
@@ -867,8 +867,8 @@ export const console: ConsoleNS = {
                                             }
                                         }
                                     },
-                                    mappedAtributeHint: "Enter the custom attribute that should be requested " +
-                                        "instead of the default attribute.",
+                                    mappedAtributeHint: "Enter the custom attribute name to be used in " +
+                                        "the assertion sent to the application.",
                                     mappingRevert: {
                                         confirmPrimaryAction: "Confirm",
                                         confirmSecondaryAction: "Cancel",
@@ -1099,9 +1099,6 @@ export const console: ConsoleNS = {
                                             heading: "Step-based configuration",
                                             hint: "Create a user login flow by dragging authenticators on to the " +
                                                 "relevant steps.",
-                                            magicLinkDisabled: "You can only add the Magic Link authenticator " +
-                                                "as a second step and only when Identifier First authenticator " +
-                                                "is present in the first step.",
                                             secondFactorDisabled: "Second factor authenticators " +
                                                 "can be used only if <1>User name and password " +
                                                 "password</1>, <3>Social Login</3> or any other handler" +

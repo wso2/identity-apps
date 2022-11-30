@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,7 +14,6 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
 
 import flatten from "lodash-es/flatten";
@@ -24,7 +23,7 @@ import {
     ProvisioningInterface
 } from "../../identity-providers";
 import { ApplicationManagementConstants } from "../constants";
-import { AuthenticationStepInterface } from "../models";
+import { AuthenticationStepInterface, AuthenticatorInterface } from "../models";
 
 /**
  * Utility class for Sign In Method.
@@ -34,18 +33,16 @@ export class SignInMethodUtils {
     /**
      * Private constructor to avoid object instantiation from outside
      * the class.
-     *
-     * @hideConstructor
      */
     private constructor() { }
 
     /**
      * Splits the steps to two parts based on the passed in index.
      *
-     * @param {number} stepIndex - Index to split.
-     * @param {AuthenticationStepInterface[]} steps - All steps.
+     * @param stepIndex - Index to split.
+     * @param  steps - All steps.
      *
-     * @return {AuthenticationStepInterface[][]}
+     * @returns AuthenticationStepInterface[][]
      */
     public static getLeftAndRightSideSteps = (stepIndex: number,
         steps: AuthenticationStepInterface[]
@@ -69,10 +66,10 @@ export class SignInMethodUtils {
     /**
      * Checks if at least on the passed in factors are available in the in steps.
      *
-     * @param {string[]} factors - Set of factors to check.
-     * @param {[]} steps - Authentication steps.
+     * @param factors - Set of factors to check.
+     * @param steps - Authentication steps.
      *
-     * @return {boolean}
+     * @returns boolean
      */
     public static hasSpecificFactorsInSteps = (factors: string[], steps: AuthenticationStepInterface[]): boolean => {
 
@@ -98,10 +95,10 @@ export class SignInMethodUtils {
     /**
      * Returns the number of the immediate step having at least one of the passed in factors.
      *
-     * @param {string[]} factors - Set of factors to check.
-     * @param {[]} steps - Authentication steps.
+     * @param factors - Set of factors to check.
+     * @param steps - Authentication steps.
      *
-     * @return {number}
+     * @returns number
      */
     public static getImmediateStepHavingSpecificFactors = (factors: string[],
         steps: AuthenticationStepInterface[]): number => {
@@ -130,10 +127,10 @@ export class SignInMethodUtils {
     /**
       * Checks if immediate step is having at least one of the passed factors.
       *
-      * @param {string[]} factors - Set of factors to check.
-      * @param {[]} steps - Authentication steps.
+      * @param factors - Set of factors to check.
+      * @param steps - Authentication steps.
       *
-      * @return {boolean}
+      * @returns boolean
       */
       public static checkImmediateStepHavingSpecificFactors = (factors: string[],
           steps: AuthenticationStepInterface[]): boolean => {
@@ -160,10 +157,10 @@ export class SignInMethodUtils {
     /**
      * Counts the occurrence of a specific factors in the passed in steps.
      *
-     * @param {string[]} factors - Set of factors to check.
-     * @param {[]} steps - Authentication steps.
+     * @param factors - Set of factors to check.
+     * @param steps - Authentication steps.
      *
-     * @return {number}
+     * @returns number
      */
     public static countSpecificFactorInSteps = (factors: string[], steps: AuthenticationStepInterface[]): number => {
 
@@ -183,11 +180,11 @@ export class SignInMethodUtils {
     /**
      * Checks if a certain second factor authenticator is a valid addition.
      *
-     * @param {string} authenticatorId - ID of the prospective authenticator to be added.
-     * @param {number} addingStep - Step to add the authenticator.
-     * @param {AuthenticationStepInterface[]} steps - Authenticator steps.
+     * @param authenticatorId - ID of the prospective authenticator to be added.
+     * @param addingStep - Step to add the authenticator.
+     * @param steps - Authenticator steps.
      *
-     * @return {boolean}
+     * @returns boolean
      */
     public static isSecondFactorAdditionValid(authenticatorId: string, addingStep: number,
         steps: AuthenticationStepInterface[]): boolean {
@@ -209,43 +206,16 @@ export class SignInMethodUtils {
     }
 
     /**
-     * This method decides if the magic-link authenticator can be added to the current step.
-     *
-     * @param {number} currentStep The current step.
-     * @param {AuthenticationStepInterface} authenticationSteps The authentication steps.
-     *
-     * @returns {boolean}
-     */
-    public static isMagicLinkAuthenticatorValid(currentStep: number,
-        authenticationSteps: AuthenticationStepInterface[]): boolean {
-        // The magic link authenticator can only be added to the second step.
-        if (currentStep !== 1) {
-            return false;
-        }
-
-        const identifierFirst = authenticationSteps[ 0 ].options.find(
-            authenticator =>
-                authenticator.authenticator === IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR);
-
-        // The first step should have the identifier first authenticator.
-        if (authenticationSteps.length > 1 && !identifierFirst) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
      * Checks if a identifier first or basic auth already exists. Returns false if it does or tru otherwise.
      *
-     * @param {number} currentStep The current step.
-     * @param {AuthenticationStepInterface} authenticationSteps The authentication steps.
+     * @param currentStep - The current step.
+     * @param authenticationSteps - The authentication steps.
      *
-     * @returns {boolean}
+     * @returns boolean
      */
     public static isFirstFactorValid(currentStep: number, authenticationSteps: AuthenticationStepInterface[]): boolean {
-        const firstFactor = authenticationSteps[currentStep].options.find(
-            (authenticator) =>
+        const firstFactor: AuthenticatorInterface = authenticationSteps[currentStep].options.find(
+            (authenticator: AuthenticatorInterface) =>
                 authenticator.authenticator === IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR ||
                 authenticator.authenticator === IdentityProviderManagementConstants.BASIC_AUTHENTICATOR
         );
@@ -263,7 +233,7 @@ export class SignInMethodUtils {
          * We are solving two problems:
          *
          * 1) Find out the subject step all federated IdPs:
-         *    We have an array of {@code federatedAuthenticators} and
+         *    We have an array of `federatedAuthenticators` and
          *    the configured steps. We are only focused on federated
          *    authentications configured on subject identifier step and
          *    pick only the ones that have JIT disabled.
@@ -277,10 +247,10 @@ export class SignInMethodUtils {
 
             /** Start solving the 1st problem **/
 
-            const allOptions = flatten(
+            const allOptions: AuthenticatorInterface[] = flatten(
                 steps
-                    .filter(({ id }) => id === subjectStepId)
-                    .map(({ options }) => options)
+                    .filter(({ id } : { id: number }) => id === subjectStepId)
+                    .map(({ options } : { options: AuthenticatorInterface[] }) => options)
             );
 
             /**
@@ -288,11 +258,12 @@ export class SignInMethodUtils {
              * proxied (JIT disabled) handlers. If yes then there
              * can be a conflict.
              */
-            const jitDisabledIdPsInSubjectIdStep =
+            const jitDisabledIdPsInSubjectIdStep: GenericAuthenticatorWithProvisioningConfigs[] =
                 // Extract all the IdP names.
-                [ ...(new Set(allOptions.map(({ idp }) => idp))) ]
+                [ ...(new Set((allOptions).map(({ idp } : { idp: string }) => idp))) ]
                     // Find the authenticator model.
-                    .map((idpName) => federatedAuthenticators.find(({ name }) => name === idpName))
+                    .map((idpName: string) => federatedAuthenticators.find(
+                        ({ name } : { name: string }) => name === idpName))
                     // Remove all the {@code undefined|null} ones please.
                     .filter(Boolean)
                     // Find all the JIT disabled ones in the subject identifier step.
@@ -303,7 +274,7 @@ export class SignInMethodUtils {
             /** Start solving the 2nd problem **/
 
             /**
-             * This means that we have only one step, and implies =>
+             * This means that we have only one step, and implies =\>
              * no MFA is being configured. This is because the interface only
              * allows MFA to be added to step 2 or beyond.
              */
@@ -314,13 +285,13 @@ export class SignInMethodUtils {
                 };
             }
 
-            const allOtherOptions = flatten(
+            const allOtherOptions: AuthenticatorInterface[] = flatten(
                 steps
                     .slice(1) // Remove the first element (subject identifier step)
-                    .map(({ options }) => options) // Get all the options.
+                    .map(({ options } : { options: AuthenticatorInterface[] }) => options) // Get all the options.
             );
 
-            const LOCAL_MFA_OPTIONS = new Set(
+            const LOCAL_MFA_OPTIONS: Set<string> = new Set(
                 ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS
             );
 
@@ -328,8 +299,8 @@ export class SignInMethodUtils {
              * If this list contains one or more items it means
              * somewhere in the sequence we have MFA configured.
              */
-            const configuredForwardMFA = allOtherOptions.filter(
-                (op) => LOCAL_MFA_OPTIONS.has(op.authenticator)
+            const configuredForwardMFA: AuthenticatorInterface[] = allOtherOptions.filter(
+                (op: AuthenticatorInterface) => LOCAL_MFA_OPTIONS.has(op.authenticator)
             );
 
             /** Finally compose the outcome **/
