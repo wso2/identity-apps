@@ -207,6 +207,7 @@
                             }
                         %>
                     </div>
+                    <div class="ui" id="enrol-msg"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "totp.enroll.message" )%></div>
             </layout:component>
             <layout:component componentName="ProductFooter" >
                 <%-- product-footer --%>
