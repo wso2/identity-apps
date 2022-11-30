@@ -842,7 +842,7 @@ export const console: ConsoleNS = {
                                     "ගුණාංග අගයන් ඇතුළත් කිරීමට {{productName}} පරිශීලකයාගෙන් ඉල්ලා සිටී.",
                                 mappingTable: {
                                     actions: {
-                                        enable: "සිතියම්කරණය සක්‍රීය කරන්න"
+                                        enable: "ගුණාංග නාම සිතියම්කරණය සක්‍රීය කරන්න"
                                     },
                                     columns: {
                                         appAttribute: "පරිශීලක යෙදුම් ගුණාංගය",
@@ -872,8 +872,8 @@ export const console: ConsoleNS = {
                                             }
                                         }
                                     },
-                                    mappedAtributeHint: "සුපුරුදු ගුණාංගය යැවීම වෙනුවට, අභිරුචි සිතියම්ගත කළ " +
-                                        "ගුණාංගය යවනු ලැබේ",
+                                    mappedAtributeHint: "යෙදුමට යවන ලද ප්‍රකාශයේ භාවිතා කිරීමට අභිරුචි ගුණාංග " +
+                                        "නාමය ඇතුළත් කරන්න",
                                     mappingRevert: {
                                         confirmPrimaryAction: "තහවුරු කරන්න",
                                         confirmSecondaryAction: "අවලංගු කරන්න",
