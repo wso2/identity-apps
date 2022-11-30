@@ -37,6 +37,10 @@
         top: 1em;
         right: 1em;
     }
+
+    .message-content-flex {
+        display: flex;
+    }
 }
 
 /*------------------------

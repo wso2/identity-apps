@@ -26,11 +26,11 @@ import {
     CheckboxProps,
     Grid,
     Icon,
-    Popup,
     Segment,
     SemanticICONS
 } from "semantic-ui-react";
 import { GenericIcon, GenericIconProps } from "../../icon";
+import { Popup } from "../../popup";
 import { EmphasizedSegment } from "../../section";
 
 /**

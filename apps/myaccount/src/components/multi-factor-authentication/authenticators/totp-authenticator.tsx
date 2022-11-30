@@ -17,7 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { GenericIcon } from "@wso2is/react-components";
+import { GenericIcon, Popup } from "@wso2is/react-components";
 import QRCode from "qrcode.react";
 import React, { FormEvent, PropsWithChildren, SyntheticEvent, useEffect, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
@@ -33,7 +33,6 @@ import {
     List,
     Message,
     Modal,
-    Popup,
     Segment
 } from "semantic-ui-react";
 import {
@@ -112,7 +111,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     const [ isViewTOTPModalOpen, setIsViewTOTPModalOpen ] = useState<boolean>(false);
     const [ viewTOTPModalCurrentStep, setViewTOTPModalCurrentStep ] = useState<number>(0);
     const [ isConfirmRegenerate, setIsConfirmRegenerate ] = useState<boolean>(false);
-    
+
     const pinCode1 = useRef<HTMLInputElement>();
     const pinCode2 = useRef<HTMLInputElement>();
     const pinCode3 = useRef<HTMLInputElement>();
@@ -123,7 +122,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     /**
      * Check whether the TOTP is configured.
      */
-    useEffect(() => {        
+    useEffect(() => {
         checkIfTOTPEnabled().then((response) => {
             setIsTOTPConfigured(response);
         });
@@ -132,13 +131,13 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     /**
      * Check whether the TOTP is enabled.
      */
-    useEffect(() => {         
+    useEffect(() => {
         setIsTOTPEnabled(enabledAuthenticators?.includes(totpAuthenticatorName) ?? false);
     }, [ enabledAuthenticators ]);
 
     /**
      * Focus to next pin code after enter a value.
-     * 
+     *
      * @param field - The name of the field.
      */
     const focusInToNextPinCode = (field: string): void => {
@@ -161,14 +160,14 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                 break;
             case "pincode-5":
                 pinCode6.current.focus();
-                
+
                 break;
         }
     };
 
     /**
      * Focus to previous pin code after enter Backspace or Delete.
-     * 
+     *
      * @param field - The name of the field.
      */
     const focusInToPreviousPinCode = (field: string): void => {
@@ -191,7 +190,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                 break;
             case "pincode-6":
                 pinCode5.current.focus();
-                
+
                 break;
         }
     };
@@ -213,7 +212,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
 
     /**
      * Update enabled authenticator list based on the update action.
-     * 
+     *
      * @param action - The update action.
      */
     const handleUpdateEnabledAuthenticators = (action: EnabledAuthenticatorUpdateAction): void => {
@@ -224,8 +223,8 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                 if (!authenticatorsList.includes(totpAuthenticatorName)) {
                     authenticatorsList.push(totpAuthenticatorName);
                 }
-                if (isSuperTenantLogin 
-                        && isBackupCodeForced 
+                if (isSuperTenantLogin
+                        && isBackupCodeForced
                         && !authenticatorsList.includes(backupCodeAuthenticatorName)) {
                     authenticatorsList.push(backupCodeAuthenticatorName);
                 }
@@ -236,8 +235,8 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                 if (authenticatorsList.includes(totpAuthenticatorName)) {
                     authenticatorsList.splice(authenticatorsList.indexOf(totpAuthenticatorName), 1);
                 }
-                if (isSuperTenantLogin 
-                        && isBackupCodeForced 
+                if (isSuperTenantLogin
+                        && isBackupCodeForced
                         && authenticatorsList.includes(backupCodeAuthenticatorName)) {
                     authenticatorsList.splice(authenticatorsList.indexOf(backupCodeAuthenticatorName), 1);
                 }
@@ -253,7 +252,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
             })
             .catch((errorMessage => {
                 onAlertFired({
-                    description: t(translateKey + 
+                    description: t(translateKey +
                             "notifications.updateAuthenticatorError.error.description", {
                         error: errorMessage
                     }),
@@ -316,7 +315,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
 
     /**
      * Handle TOTP submit flow.
-     * 
+     *
      * @param event - Form submit event.
      * @param isRegenerated - Whether the TOTP is regenerated or not.
      */
@@ -349,7 +348,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
 
     /**
      * Handle TOTP enable/disable flow.
-     * 
+     *
      * @param _ - Radio button toggle event.
      * @param data - Data related to the toggle event.
      */
@@ -363,7 +362,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
 
     /**
      * Render TOTP form to shown in TOTP modal.
-     * 
+     *
      * @param isRegenerated - Whether the TOTP is regenerated or not.
      * @returns Rendered form component.
      */
@@ -375,133 +374,133 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                     {
                         isTOTPError
                             ? (
-                                <Message 
-                                    className="totp-error-message" 
+                                <Message
+                                    className="totp-error-message"
                                     data-testid={ `${ testId }-code-verification-form-field-error` }>
                                     { t(translateKey + "modals.verify.error") }
                                 </Message>
                             ) : null
                     }
                     <Form
-                        onSubmit={ 
-                            (event: React.FormEvent<HTMLFormElement>) => handleTOTPSubmit(event, isRegenerated) 
+                        onSubmit={
+                            (event: React.FormEvent<HTMLFormElement>) => handleTOTPSubmit(event, isRegenerated)
                         }>
                         <Container>
                             <Grid className="ml-3 mr-3">
                                 <Grid.Row textAlign="center" centered columns={ 6 } >
                                     <Grid.Column >
                                         <Form.Field >
-                                            <input 
-                                                autoFocus 
-                                                ref = { pinCode1 } 
-                                                name = "pincode-1" 
-                                                placeholder = "." 
-                                                className = "text-center totp-input" 
-                                                type = "text" 
-                                                maxLength = { 1 } 
+                                            <input
+                                                autoFocus
+                                                ref = { pinCode1 }
+                                                name = "pincode-1"
+                                                placeholder = "."
+                                                className = "text-center totp-input"
+                                                type = "text"
+                                                maxLength = { 1 }
                                                 onKeyUp = { (event) => {
                                                     if (event.currentTarget.value.length !== 0) {
                                                         focusInToNextPinCode("pincode-1");
                                                     }
                                                     if ((event.key === "Backspace") || (event.key === "Delete")) {
                                                         focusInToPreviousPinCode("pincode-1");
-                                                    } 
+                                                    }
                                                 } }
                                             />
                                         </Form.Field>
                                     </Grid.Column>
                                     <Grid.Column >
                                         <Form.Field>
-                                            <input 
-                                                ref = { pinCode2 } 
-                                                name = "pincode-2" 
-                                                placeholder = "." 
-                                                className = "text-center totp-input" 
-                                                type = "text" 
-                                                maxLength = { 1 } 
+                                            <input
+                                                ref = { pinCode2 }
+                                                name = "pincode-2"
+                                                placeholder = "."
+                                                className = "text-center totp-input"
+                                                type = "text"
+                                                maxLength = { 1 }
                                                 onKeyUp = { (event) => {
                                                     if (event.currentTarget.value.length !== 0) {
                                                         focusInToNextPinCode("pincode-2");
                                                     }
                                                     if ((event.key === "Backspace") || (event.key === "Delete")) {
                                                         focusInToPreviousPinCode("pincode-2");
-                                                    } 
+                                                    }
                                                 } }/>
                                         </Form.Field>
                                     </Grid.Column>
                                     <Grid.Column >
                                         <Form.Field >
-                                            <input 
-                                                ref = { pinCode3 } 
-                                                name ="pincode-3" 
-                                                placeholder ="." 
-                                                className ="text-center totp-input" 
-                                                type ="text" 
-                                                maxLength = { 1 } 
+                                            <input
+                                                ref = { pinCode3 }
+                                                name ="pincode-3"
+                                                placeholder ="."
+                                                className ="text-center totp-input"
+                                                type ="text"
+                                                maxLength = { 1 }
                                                 onKeyUp = { (event) => {
                                                     if (event.currentTarget.value.length !== 0) {
                                                         focusInToNextPinCode("pincode-3");
                                                     }
                                                     if ((event.key === "Backspace") || (event.key === "Delete")) {
                                                         focusInToPreviousPinCode("pincode-3");
-                                                    } 
+                                                    }
                                                 } }/>
                                         </Form.Field>
                                     </Grid.Column>
                                     <Grid.Column>
                                         <Form.Field>
-                                            <input 
-                                                ref = { pinCode4 } 
-                                                name ="pincode-4" 
-                                                placeholder = "." 
-                                                className = "text-center totp-input" 
-                                                type = "text" 
-                                                maxLength = { 1 } 
+                                            <input
+                                                ref = { pinCode4 }
+                                                name ="pincode-4"
+                                                placeholder = "."
+                                                className = "text-center totp-input"
+                                                type = "text"
+                                                maxLength = { 1 }
                                                 onKeyUp = { (event) => {
                                                     if (event.currentTarget.value.length !== 0) {
                                                         focusInToNextPinCode("pincode-4");
                                                     }
                                                     if ((event.key === "Backspace") || (event.key === "Delete")) {
                                                         focusInToPreviousPinCode("pincode-4");
-                                                    } 
+                                                    }
                                                 } }/>
                                         </Form.Field>
                                     </Grid.Column>
                                     <Grid.Column >
                                         <Form.Field>
-                                            <input 
-                                                ref = { pinCode5 } 
-                                                name = "pincode-5" 
-                                                placeholder = "." 
-                                                className = "text-center totp-input" 
-                                                type = "text" 
-                                                maxLength = { 1 }                        
+                                            <input
+                                                ref = { pinCode5 }
+                                                name = "pincode-5"
+                                                placeholder = "."
+                                                className = "text-center totp-input"
+                                                type = "text"
+                                                maxLength = { 1 }
                                                 onKeyUp = { (event) => {
                                                     if (event.currentTarget.value.length !== 0) {
                                                         focusInToNextPinCode("pincode-5");
                                                     }
                                                     if ((event.key === "Backspace") || (event.key === "Delete")) {
                                                         focusInToPreviousPinCode("pincode-5");
-                                                    } 
+                                                    }
                                                 } }/>
                                         </Form.Field>
                                     </Grid.Column>
                                     <Grid.Column >
                                         <Form.Field>
-                                            <input 
-                                                ref = { pinCode6 } 
-                                                name = "pincode-6" 
-                                                placeholder = "." 
-                                                className = "text-center totp-input" 
-                                                type = "text" 
-                                                maxLength = { 1 } 
+                                            <input
+                                                ref = { pinCode6 }
+                                                name = "pincode-6"
+                                                placeholder = "."
+                                                className = "text-center totp-input"
+                                                type = "text"
+                                                maxLength = { 1 }
                                                 onKeyUp = { (event) => {
                                                     if (event.currentTarget.value.length !== 0) {
                                                         focusInToNextPinCode("pincode-6");
                                                     }
                                                     if ((event.key === "Backspace") || (event.key === "Delete")) {
                                                         focusInToPreviousPinCode("pincode-6");
-                                                    } 
+                                                    }
                                                 } }/>
                                         </Form.Field>
                                     </Grid.Column>
@@ -547,7 +546,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
 
     /**
      * Render TOTP configuration modal content.
-     * 
+     *
      * @returns Modal content based on TOTPModalCurrentStep.
      */
     const renderTOTPWizardContent = (): React.ReactElement => {
@@ -556,8 +555,8 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                 <Segment basic >
                     <h5 className=" text-center"> { t(translateKey + "modals.scan.heading") }</h5>
                     <Segment textAlign="center" basic className="qr-code">
-                        { qrCode 
-                            ? <QRCode value={ qrCode } data-testid={ `${ testId }-modals-scan-qrcode` }/> 
+                        { qrCode
+                            ? <QRCode value={ qrCode } data-testid={ `${ testId }-modals-scan-qrcode` }/>
                             : null
                         }
                     </Segment>
@@ -592,34 +591,34 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                 </div>
                 <p className= "success-content">{ t(translateKey + "modals.done") }</p>
             </Segment>
-        );  
+        );
     };
 
     /**
      * Render TOTP configuration modal actions.
-     * 
+     *
      * @returns Modal action based on TOTPModalCurrentStep.
      */
     const renderTOTPWizardActions = (): React.ReactElement => {
         if (TOTPModalCurrentStep === 0) {
             return (
-                <Message className="totp-tooltip display-flex">      
+                <Message className="totp-tooltip display-flex">
                     <Icon name="info circle" />
-                    <Message.Content> 
+                    <Message.Content>
                         <Trans
                             i18nKey={ (translateKey + "modals.toolTip") }
                         >
-                            Don&apos;t have an app? Download an authenticator 
-                            application like Google Authenticator from 
+                            Don&apos;t have an app? Download an authenticator
+                            application like Google Authenticator from
                             <a
                                 target="_blank"
-                                href="https://www.apple.com/us/search/totp?src=globalnav" 
+                                href="https://www.apple.com/us/search/totp?src=globalnav"
                                 rel="noopener noreferrer"> App Store </a>
-                            or 
+                            or
                             <a
                                 target="_blank"
-                                href="https://play.google.com/store/search?q=totp" 
-                                rel="noopener noreferrer"> Google Play </a> 
+                                href="https://play.google.com/store/search?q=totp"
+                                rel="noopener noreferrer"> Google Play </a>
                         </Trans>
                     </Message.Content>
                 </Message>
@@ -650,7 +649,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
 
     /**
      * Renders the TOTP configuration Modal.
-     * 
+     *
      * @returns Rendered modal component
      */
     const renderTOTPWizard = (): React.ReactElement => {
@@ -737,7 +736,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
 
     /**
      * Renders modal content.
-     * 
+     *
      * @returns Modal content based on viewTOTPModalCurrentStep.
      */
     const renderViewTOTPWizardContent = (): React.ReactElement => {
@@ -747,7 +746,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                     <Segment basic >
                         <h5 className=" text-center"> { t(translateKey + "modals.scan.heading") }</h5>
                         <Segment textAlign="center" basic className="qr-code">
-                            { qrCode 
+                            { qrCode
                                 ? <QRCode value={ qrCode } data-testid={ `${ testId }-view-modals-scan-qrcode` }/>
                                 : null
                             }
@@ -779,10 +778,10 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                                             type="button"
                                             className=" totp-verify-action-button"
                                             onClick={ handleRegenerateQRCode }
-                                            disabled= { 
-                                                isLoading 
+                                            disabled= {
+                                                isLoading
                                                 || (commonConfig.accountSecurityPage
-                                                    .mfa.totp.showRegenerateConfirmation && !isConfirmRegenerate) 
+                                                    .mfa.totp.showRegenerateConfirmation && !isConfirmRegenerate)
                                             }
                                             data-testid={ `${ testId }-view-modal-actions-primary-button` }
                                         >
@@ -821,7 +820,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                         { renderTOTPVerifyForm(true) }
                     </Segment>
                 );
-        
+
             default:
                 return (
                     <Segment className="totp">
@@ -856,23 +855,23 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     const renderViewTOTPWizardActions = (): React.ReactElement => {
         if (viewTOTPModalCurrentStep === 0 || viewTOTPModalCurrentStep === 1) {
             return (
-                <Message className="totp-tooltip display-flex">      
+                <Message className="totp-tooltip display-flex">
                     <Icon name="info circle" />
-                    <Message.Content> 
+                    <Message.Content>
                         <Trans
                             i18nKey={ (translateKey + "modals.toolTip") }
                         >
-                    Don&apos;t have an app? Download an authenticator 
-                    application like Google Authenticator from 
+                    Don&apos;t have an app? Download an authenticator
+                    application like Google Authenticator from
                             <a
                                 target="_blank"
-                                href="https://www.apple.com/us/search/totp?src=globalnav" 
+                                href="https://www.apple.com/us/search/totp?src=globalnav"
                                 rel="noopener noreferrer"> App Store </a>
-                    or 
+                    or
                             <a
                                 target="_blank"
-                                href="https://play.google.com/store/search?q=totp" 
-                                rel="noopener noreferrer"> Google Play </a> 
+                                href="https://play.google.com/store/search?q=totp"
+                                rel="noopener noreferrer"> Google Play </a>
                         </Trans>
                     </Message.Content>
                 </Message>
@@ -1019,10 +1018,10 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
         );
     };
 
-    return ( 
+    return (
         <>
             { renderTOTPWizard() }
-            { !isTOTPConfigured 
+            { !isTOTPConfigured
                 ? (
                     <Grid padded={ true } data-testid={ testId }>
                         <Grid.Row columns={ 2 }>
@@ -1098,8 +1097,8 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                                         </List.Description>
                                     </List.Content>
                                 </Grid.Column>
-                                { 
-                                    (isSuperTenantLogin && enableMFAUserWise) 
+                                {
+                                    (isSuperTenantLogin && enableMFAUserWise)
                                         ? (
                                             <Grid.Column width={ 1 } floated="right">
                                                 <List.Content floated="right">
@@ -1121,11 +1120,11 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                                                     />
                                                 </List.Content>
                                             </Grid.Column>
-                                        ) : null 
+                                        ) : null
                                 }
-                                <Grid.Column 
-                                    width={ (isSuperTenantLogin && enableMFAUserWise) ? 2 : 3 } 
-                                    className="last-column" 
+                                <Grid.Column
+                                    width={ (isSuperTenantLogin && enableMFAUserWise) ? 2 : 3 }
+                                    className="last-column"
                                     floated="right"
                                 >
                                     <List.Content floated="right">
@@ -1170,7 +1169,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                             </Grid.Row>
                         </Grid>
                     </>
-                ) 
+                )
             }
         </>
     );

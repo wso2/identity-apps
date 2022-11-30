@@ -21,7 +21,7 @@ import {
     IdentifiableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { GenericIcon } from "@wso2is/react-components";
+import { GenericIcon, Popup } from "@wso2is/react-components";
 import React, {
     FunctionComponent,
     ReactElement,
@@ -39,7 +39,6 @@ import {
     Input,
     Item,
     Loader,
-    Popup,
     Segment
 } from "semantic-ui-react";
 import OrganizationListItem from "./organization-list-item";

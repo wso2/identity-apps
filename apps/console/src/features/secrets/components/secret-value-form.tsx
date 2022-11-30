@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,11 +19,11 @@
 import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Hint } from "@wso2is/react-components";
+import { Hint, Popup } from "@wso2is/react-components";
 import React, { FC, Fragment, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Button, Divider, Form, Grid, Icon, Popup, TextArea, TextAreaProps, Transition } from "semantic-ui-react";
+import { Button, Divider, Form, Grid, Icon, TextArea, TextAreaProps, Transition } from "semantic-ui-react";
 import { patchSecret } from "../api/secret";
 import { EMPTY_STRING } from "../constants/secrets.common";
 import { SecretModel } from "../models/secret";
@@ -84,6 +84,7 @@ const SecretValueForm: FC<SecretValueFormProps> = (props: SecretValueFormProps):
                     level: AlertLevels.ERROR,
                     message: error.response.data?.message
                 }));
+
                 return;
             }
             dispatch(addAlert({
@@ -101,13 +102,14 @@ const SecretValueForm: FC<SecretValueFormProps> = (props: SecretValueFormProps):
      * This is the secret field value validator. When the field
      * is in readonly mode it will always return undefined.
      *
-     * @param value {string} User input.
-     * @return error {string | undefined} if valid undefined
+     * @param value - User input.
+     * @returns error - if valid undefined
      */
     const fieldValidator = (value: string): string | undefined => {
         if (isEditingSecretValue) {
             return secretValueValidator(value);
         }
+
         return undefined;
     };
 
@@ -116,9 +118,8 @@ const SecretValueForm: FC<SecretValueFormProps> = (props: SecretValueFormProps):
      * readonly mode it will act as a enabler. Otherwise a submission
      * event handler.
      *
-     * @event-handler
-     * - @param event {React.FormEvent<HTMLFormElement>}
-     * - @param data {FormProps}
+     * - @param event - Form submission event.
+     * - @param data - Form data.
      */
     const onSubmission = async () => {
         if (isEditingSecretValue) {
@@ -133,8 +134,7 @@ const SecretValueForm: FC<SecretValueFormProps> = (props: SecretValueFormProps):
      * This resets the state back to initial. This should be called
      * if the user decides to cancel the update operation.
      *
-     * @event-handler
-     * @return {Promise<void>}
+     * @returns
      */
     const resetFieldState = async () => {
         setIsEditingSecretValue(false);
@@ -148,9 +148,8 @@ const SecretValueForm: FC<SecretValueFormProps> = (props: SecretValueFormProps):
     /**
      * Calls everytime when textarea value changes.
      *
-     * @event-handler
-     * @param event {React.ChangeEvent<HTMLInputElement>}
-     * @param props {TextAreaProps}
+     * @param event - React.ChangeEvent<HTMLTextAreaElement>
+     * @param props - TextAreaProps
      */
     const onSecretFieldValueChange = (
         event: React.ChangeEvent<HTMLTextAreaElement>,

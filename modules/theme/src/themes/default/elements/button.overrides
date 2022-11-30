@@ -224,7 +224,7 @@
         }
     }
     &:focus-visible{
-        outline: 2px solid blue;
+        outline: @focusVisibleOutline;
     }
 }
 
@@ -344,18 +344,36 @@
     }
 }
 
+
+
+.align-right.buttons{
+    text-align: right;
+}
+
+/*******************************
+     Keyboard Focus Styling
+*******************************/
+
 .ui.primary.button{
     &:focus-visible{
-        outline: 2px solid blue;
+        outline: @focusVisibleOutline;
     }
 }
 
 .ui.button.secondary{
     &:focus-visible{
-        outline: 2px solid blue;
+        outline: @focusVisibleOutline;
     }
 }
 
-.align-right.buttons{
-    text-align: right;
+.ui.grey.button{
+    &:focus-visible{
+        outline: @focusVisibleOutline;
+    }
+}
+
+.ui.brown.button{
+    &:focus-visible{
+        outline: @focusVisibleOutline;
+    }
 }

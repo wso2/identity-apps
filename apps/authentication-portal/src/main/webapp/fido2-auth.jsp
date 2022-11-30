@@ -37,7 +37,7 @@
 %>
 
 <!doctype html>
-<html>
+<html lang="en-US">
 <head>
     <%-- header --%>
     <%
@@ -116,12 +116,14 @@
                                 <% } %>
                             </p>
                             <div class="ui divider hidden"></div>
-                            <div class="ui container fluid">
-                                <button class="ui right floated button primary" type="button" onclick="retry()">
-                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.retry" )%>
-                                </button>
-                                <button class="ui right floated button secondary" type="button" onclick="cancelFlow()">
+                            <div class="align-right buttons">
+                                <button class="ui button secondary" type="button" onclick="cancelFlow()"
+                                    data-testid="login-page-fido-cancel-button">
                                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.cancel" )%>
+                                </button>
+                                <button class="ui button primary" type="button" onclick="retry()"
+                                    data-testid="login-page-fido-retry-button">
+                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.retry" )%>
                                 </button>
                             </div>
                         </div>

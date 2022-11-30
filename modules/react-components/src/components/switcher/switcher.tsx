@@ -18,7 +18,8 @@
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FC, PropsWithChildren, ReactElement, useEffect, useState } from "react";
-import { Button, ButtonGroupProps, ButtonProps, Popup } from "semantic-ui-react";
+import { Button, ButtonGroupProps, ButtonProps } from "semantic-ui-react";
+import { Popup } from "../popup";
 
 // These interface names are confusing?!
 // FIXME: {@link StrictSwitcher} properties makes no sense since there's optional!

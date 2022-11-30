@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -26,12 +26,13 @@ import {
     GenericIcon,
     GridLayout,
     PageLayout,
+    Popup,
     PrimaryButton
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Divider, Grid, Header, Icon, Image, List, Popup } from "semantic-ui-react";
+import { Divider, Grid, Header, Icon, Image, List } from "semantic-ui-react";
 import { attributeConfig } from "../../../extensions";
 import { getDialects } from "../../claims/api";
 import {
@@ -53,9 +54,9 @@ type ClaimDialectsPageInterface = TestableComponentInterface;
 /**
  * This displays a list fo claim dialects.
  *
- * @param {ClaimDialectsPageInterface} props - Props injected to the component.
+ * @param  props - Props injected to the component.
  *
- * @return {ReactElement}
+ * @returns
  */
 const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
     props: ClaimDialectsPageInterface
@@ -82,10 +83,10 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
     /**
      * Fetches all the dialects.
      *
-     * @param {number} limit.
-     * @param {number} offset.
-     * @param {string} sort.
-     * @param {string} filter.
+     * @param limit - Limit per page.
+     * @param offset - Offset value.
+     * @param sort - Sort order.
+     * @param filter - Filter criteria.
      */
     const getDialect = (limit?: number, offset?: number, sort?: string, filter?: string): void => {
         setIsLoading(true);
@@ -434,8 +435,8 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                         )
                     }
                     {
-                        !attributeConfig.showCustomDialectInSCIM && 
-                            otherAttributeMappings?.length > 0 && 
+                        !attributeConfig.showCustomDialectInSCIM &&
+                            otherAttributeMappings?.length > 0 &&
                             (
                                 <EmphasizedSegment
                                     onClick={ () => {

@@ -17,6 +17,7 @@
  */
 
 import { UIConstants } from "@wso2is/core/constants";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, StorageIdentityAppsSettingsInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { StringUtils } from "@wso2is/core/utils";
@@ -28,12 +29,13 @@ import {
     DocumentationLink,
     GenericIcon,
     Heading,
+    Popup,
     SegmentedAccordion,
     Text,
     Tooltip,
     useDocumentation
 } from "@wso2is/react-components";
-import { AxiosResponse } from "axios";
+import { AxiosError, AxiosResponse } from "axios";
 import * as codemirror from "codemirror";
 import beautify from "js-beautify";
 import cloneDeep from "lodash-es/cloneDeep";
@@ -41,15 +43,24 @@ import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
 import kebabCase from "lodash-es/kebabCase";
 import set from "lodash-es/set";
-import React, { ChangeEvent, FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
+import React, {
+    ChangeEvent,
+    FunctionComponent,
+    ReactElement,
+    RefObject,
+    useEffect,
+    useRef,
+    useState
+} from "react";
 import { Trans, useTranslation } from "react-i18next";
 import Joyride, { CallBackProps, STATUS, Step } from "react-joyride";
 import { useDispatch } from "react-redux";
-import { Checkbox, Dropdown, Header, Icon, Input, Menu, Popup, Sidebar } from "semantic-ui-react";
+import { Dispatch } from "redux";
+import { Checkbox, Dropdown, Header, Icon, Input, Menu, Sidebar } from "semantic-ui-react";
 import { stripSlashes } from "slashes";
-import { ScriptTemplatesSidePanel } from "./script-templates-side-panel";
-import { organizationConfigs } from "../../../../../../extensions";
+import { ScriptTemplatesSidePanel, ScriptTemplatesSidePanelRefInterface } from "./script-templates-side-panel";
 import { AppUtils, EventPublisher, getOperationIcons } from "../../../../../core";
+import { OrganizationType } from "../../../../../organizations/constants";
 import { OrganizationUtils } from "../../../../../organizations/utils";
 import { deleteSecret, getSecretList } from "../../../../../secrets/api/secret";
 import AddSecretWizard from "../../../../../secrets/components/add-secret-wizard";
@@ -137,10 +148,10 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
-    const authTemplatesSidePanelRef = useRef(null);
-    const scriptEditorSectionRef = useRef(null);
+    const authTemplatesSidePanelRef: RefObject<ScriptTemplatesSidePanelRefInterface> = useRef(null);
+    const scriptEditorSectionRef: RefObject<HTMLDivElement> = useRef(null);
 
     const [ scriptTemplates, setScriptTemplates ] = useState<AdaptiveAuthTemplatesListInterface>(undefined);
     const [
@@ -197,7 +208,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
             }).then((axiosResponse: AxiosResponse<GetSecretListResponse>) => {
                 setSecretList(axiosResponse.data);
                 setFilteredSecretList(axiosResponse.data);
-            }).catch((error) => {
+            }).catch((error: AxiosError) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
                         description: error.response.data?.description,
@@ -232,15 +243,15 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
      * @param secret - Secret
      */
     const addSecretToScript = (secret:SecretModel): void => {
-        const doc = editorInstance.getDoc();
-        const secretNameString = `"${ secret.secretName }"`;
+        const doc: codemirror.Doc = editorInstance.getDoc();
+        const secretNameString: string = `"${ secret.secretName }"`;
 
         //If a code segment is selected, the selected text is replaced with secret name as a string.
         if (doc.somethingSelected()) {
             doc.replaceSelection(secretNameString);
         } else {
             //If no selected text, secret name injected at the location of the cursor.
-            const cursor = doc.getCursor();
+            const cursor: codemirror.Pos  = doc.getCursor();
 
             doc.replaceRange(secretNameString, cursor);
         }
@@ -291,10 +302,10 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
 
     useEffect(() => {
         getAdaptiveAuthTemplates()
-            .then((response) => {
+            .then((response: AdaptiveAuthTemplatesListInterface) => {
                 setScriptTemplates(response);
             })
-            .catch((error) => {
+            .catch((error: IdentityAppsApiException) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
                         description: error.response.data.description,
@@ -314,7 +325,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     }, []);
 
     const setScriptEditorWidth = () => {
-        let width = "100%";
+        let width: string = "100%";
 
         if (showAuthTemplatesSidePanel) {
             width = `calc(100% - ${ authTemplatesSidePanelRef?.current?.ref?.current?.offsetWidth }px)`;
@@ -528,11 +539,11 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
      */
     const preserveStateOnFullScreenChange = (): void => {
 
-        const _modifiedScript = AdaptiveScriptUtils.sourceToString(internalScript);
-        const _editorSourceCode = AdaptiveScriptUtils.sourceToString(sourceCode);
+        const _modifiedScript: string = AdaptiveScriptUtils.sourceToString(internalScript);
+        const _editorSourceCode: string = AdaptiveScriptUtils.sourceToString(sourceCode);
 
         if (_modifiedScript !== _editorSourceCode) {
-            const cur = editorInstance.doc.getCursor();
+            const cur: codemirror.Pos = editorInstance.doc.getCursor();
 
             setSourceCode(_modifiedScript.split(ApplicationManagementConstants.LINE_BREAK));
             editorInstance.doc.setCursor(cur);
@@ -713,7 +724,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                     message: t("console:develop.features.secrets.errors.generic.message")
                 }));
             } finally {
-                const refreshSecretList = true;
+                const refreshSecretList: boolean = true;
 
                 whenSecretDeleted(deletingSecret, refreshSecretList);
                 setShowDeleteConfirmationModal(false);
@@ -790,7 +801,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                             secretName.toLowerCase().includes(data.currentTarget.value.toLowerCase())));
                                     }
                                 } }
-                                onClick={ e => e.stopPropagation() }
+                                onClick={ (e: React.MouseEvent<HTMLElement>) => e.stopPropagation() }
                             />
                         )
                     }
@@ -881,8 +892,8 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                             )
                         }
                     </Dropdown.Menu>
-
-                    { organizationConfigs.canCreateOrganization() && (
+                    { (OrganizationUtils.getOrganizationType() === OrganizationType.FIRST_LEVEL_ORGANIZATION ||
+                        OrganizationUtils.getOrganizationType() === OrganizationType.TENANT) && (
                         <Dropdown.Menu
                             className={ "create-button-item" }
                             scrolling
@@ -1303,7 +1314,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
 
                                     <div className="code-editor-wrapper">
                                         <CodeEditor
-                                            editorDidMount={ (editor) => {
+                                            editorDidMount={ (editor: codemirror.Editor) => {
                                                 setEditorInstance(editor);
                                             } }
                                             lint
@@ -1315,7 +1326,8 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                             options={ {
                                                 lineWrapping: true
                                             } }
-                                            onChange={ (editor, data, value) => {
+                                            onChange={ (editor: codemirror.Editor, data: codemirror.EditorChange,
+                                                value: string) => {
                                                 setInternalScript(value);
                                                 onScriptChange(value);
                                             } }

@@ -27,6 +27,7 @@ import {
     EmptyPlaceholder,
     Heading,
     LinkButton,
+    Popup,
     PrimaryButton,
     TransferComponent,
     TransferList,
@@ -48,7 +49,6 @@ import {
     Input,
     Label,
     Modal,
-    Popup,
     Table
 } from "semantic-ui-react";
 import { AppState, getEmptyPlaceholderIllustrations, updateResources } from "../../../core";

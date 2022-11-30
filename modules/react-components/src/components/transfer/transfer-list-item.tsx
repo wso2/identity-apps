@@ -18,7 +18,8 @@
 
 import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, ReactNode } from "react";
-import { Checkbox, Icon, Label, LabelProps, Popup, SemanticCOLORS, Table, TableRowProps } from "semantic-ui-react";
+import { Checkbox, Icon, Label, LabelProps, SemanticCOLORS, Table, TableRowProps } from "semantic-ui-react";
+import { Popup } from "../popup";
 
 /**
  * Proptypes for the transfer list item label.

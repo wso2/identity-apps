@@ -26,10 +26,10 @@ import {
 } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { Popup } from "semantic-ui-react";
 import { Avatar, AvatarPropsInterface } from "./avatar";
 import GravatarLogo from "../../assets/images/gravatar-logo.png";
 import DummyUser from "../../assets/images/user.png";
+import { Popup } from "../popup";
 
 /**
  * Prop types for the user avatar component.
@@ -114,7 +114,7 @@ export const UserAvatar: FunctionComponent<UserAvatarPropsInterface> = (
     /**
      * Resolves the top label image.
      *
-     * @returns the resolved image 
+     * @returns the resolved image
      */
     const resolveTopLabel = (): string => {
         if (isGravatarURL()) {

@@ -16,11 +16,12 @@
  * under the License.
  */
 
+import { Popup } from "@wso2is/react-components";
 import filter from "lodash-es/filter";
 import isEmpty from "lodash-es/isEmpty";
 import isEqual from "lodash-es/isEqual";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { Button, Form, Icon, InputOnChangeData, Label, Message, Popup } from "semantic-ui-react";
+import { Button, Form, Icon, InputOnChangeData, Label, Message } from "semantic-ui-react";
 
 interface ScopesPropsInterface {
     /**
@@ -33,11 +34,11 @@ interface ScopesPropsInterface {
     label?: string | ReactElement;
     /**
      * Scope values.
-     */    
+     */
     value: string;
     /**
      * Are scopes mandatory.
-     */    
+     */
     required: boolean;
     /**
      * Callback for onChange
@@ -70,14 +71,14 @@ export const Scopes: FunctionComponent<ScopesPropsInterface> = (
     props: ScopesPropsInterface
 ) => {
 
-    const { 
+    const {
         defaultValue,
-        label, 
-        value, 
+        label,
+        value,
         required,
         onChange,
         onBlur,
-        placeholder 
+        placeholder
     } = props;
 
     const SCOPE_SEPARATOR: string = " ";
@@ -92,17 +93,17 @@ export const Scopes: FunctionComponent<ScopesPropsInterface> = (
     useEffect(() => {
         if (isEmpty(value)) {
             return;
-        } 
+        }
         setScopes(value.split(SCOPE_SEPARATOR)?.map(buildScope));
     }, [ value ]);
-     
+
     /**
       * Called when `scopes` is changed.
       */
     useEffect(() => {
         fireOnChangeEvent(scopes, onChange);
     }, [ scopes ]);
-    
+
     /**
       * Build scope object from the given string form.
       *
@@ -119,7 +120,7 @@ export const Scopes: FunctionComponent<ScopesPropsInterface> = (
       * Build scope string value, from it's object form.
       */
     const buildScopeString = (scope: ScopeInterface): string => scope.value;
- 
+
     /**
       * Build scopes string value, from scopes object list.
       */
@@ -128,13 +129,13 @@ export const Scopes: FunctionComponent<ScopesPropsInterface> = (
 
     /**
       * Trigger provided onChange handler with provided scopes.
-      * 
+      *
       * @param scopes - Scopes.
-      * @param onChange - onChange handler. 
+      * @param onChange - onChange handler.
       */
-    const fireOnChangeEvent = (scopes: ScopeInterface[], onChange: (event: React.ChangeEvent<HTMLInputElement>) 
+    const fireOnChangeEvent = (scopes: ScopeInterface[], onChange: (event: React.ChangeEvent<HTMLInputElement>)
          => void): void => {
-            
+
         onChange(
              {
                  target: {
@@ -146,7 +147,7 @@ export const Scopes: FunctionComponent<ScopesPropsInterface> = (
 
     /**
       * Update input field values for scope.
-      * 
+      *
       * @param scope - Scope.
       */
     const updateScopeInputFields = (scope: ScopeInterface): void => {
@@ -158,13 +159,13 @@ export const Scopes: FunctionComponent<ScopesPropsInterface> = (
      * @param e - keypress event.
      */
     const keyPressed = (e: React.KeyboardEvent<HTMLInputElement>): void => {
- 
+
         if (e.key === "Enter" ) {
             handleScopeAdd(e);
         }
     };
 
-    const handleScopeAdd = (event: React.MouseEvent<HTMLButtonElement, MouseEvent> 
+    const handleScopeAdd = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>
         | React.KeyboardEvent<HTMLInputElement>): void => {
         event.preventDefault();
         if (isEmpty(scopeValue)) {
@@ -175,25 +176,25 @@ export const Scopes: FunctionComponent<ScopesPropsInterface> = (
         const output: ScopeInterface[] = [ {
             value: scopeValue
         } ];
- 
+
         scopes.forEach(function(scope: ScopeInterface) {
             const existing: ScopeInterface[] = output.filter((item: any) => {
                 return item.value == scope.value;
             });
- 
+
             if (existing.length) {
                 return;
             } else {
                 output.push(scope);
             }
         });
- 
+
         setScopes(output);
         updateScopeInputFields({
             value: ""
         });
     };
- 
+
     const handleLabelRemove = (scopeParam: string): void => {
 
         if (isEmpty(scopeParam)) {
@@ -212,7 +213,7 @@ export const Scopes: FunctionComponent<ScopesPropsInterface> = (
                     </div>
                 )
             }
-            <Form.Group inline widths="equal" unstackable={ true }> 
+            <Form.Group inline widths="equal" unstackable={ true }>
                 <Form.Input
                     fluid
                     value={ scopeValue }
@@ -251,7 +252,7 @@ export const Scopes: FunctionComponent<ScopesPropsInterface> = (
                             <Label
                                 key={ index }
                             >
-                                { scope } 
+                                { scope }
                             </Label>
                         );
                     } else {
