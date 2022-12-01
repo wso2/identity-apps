@@ -18,7 +18,7 @@
 
 import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Field, Forms } from "@wso2is/forms";
+import { Field, FormValue, Forms } from "@wso2is/forms";
 import {
     Code,
     DocumentationLink,
@@ -29,22 +29,25 @@ import {
     PrimaryButton,
     useDocumentation
 } from "@wso2is/react-components";
+import { AxiosError, AxiosResponse } from "axios";
 import kebabCase from "lodash-es/kebabCase";
+import { IdentityAppsApiException } from "modules/core/dist/types/exceptions";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { Divider, Grid, Icon } from "semantic-ui-react";
 import { ScriptBasedFlow } from "./script-based-flow";
 import { StepBasedFlow } from "./step-based-flow";
 import DefaultFlowConfigurationSequenceTemplate from "./templates/default-sequence.json";
-import { applicationConfig } from "../../../../../extensions";
 import { AppState, ConfigReducerStateInterface, EventPublisher, FeatureConfigInterface } from "../../../../core";
 import { GenericAuthenticatorInterface, IdentityProviderManagementConstants } from "../../../../identity-providers";
 import { getRequestPathAuthenticators, updateAuthenticationSequence } from "../../../api";
 import {
     AdaptiveAuthTemplateInterface,
     AuthenticationSequenceInterface,
-    AuthenticationStepInterface
+    AuthenticationStepInterface,
+    AuthenticatorInterface
 } from "../../../models";
 import { AdaptiveScriptUtils, ConnectionsJITUPConflictWithMFAReturnValue, SignInMethodUtils } from "../../../utils";
 
@@ -97,9 +100,9 @@ interface SignInMethodCustomizationPropsInterface extends SBACInterface<FeatureC
 /**
  * Entry point component for Application Sign-in method customization.
  *
- * @param {SignInMethodCustomizationPropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns React.ReactElement
  */
 export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizationPropsInterface> = (
     props: SignInMethodCustomizationPropsInterface
@@ -122,7 +125,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
 
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
@@ -143,9 +146,9 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
 
     useEffect(() => {
 
-        const FEDERATED_CONNECTIONS = 1;
+        const FEDERATED_CONNECTIONS: number = 1;
 
-        const result = SignInMethodUtils.isConnectionsJITUPConflictWithMFA({
+        const result: ConnectionsJITUPConflictWithMFAReturnValue = SignInMethodUtils.isConnectionsJITUPConflictWithMFA({
             federatedAuthenticators: authenticators && authenticators[FEDERATED_CONNECTIONS],
             steps: updatedSteps,
             subjectStepId: authenticationSequence?.subjectStepId
@@ -188,7 +191,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
     /**
      * Updates the number of authentication steps.
      *
-     * @param {boolean} add - Set to `true` to add and `false` to remove.
+     * @param add - Set to `true` to add and `false` to remove.
      */
     const updateSteps = (add: boolean): void => {
         setSteps(add ? steps + 1 : steps - 1);
@@ -198,7 +201,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
      * Handles the data loading from a adaptive auth template when it is selected
      * from the panel.
      *
-     * @param {AdaptiveAuthTemplateInterface} template - Adaptive authentication templates.
+     * @param template - Adaptive authentication templates.
      */
     const handleLoadingDataFromTemplate = (template: AdaptiveAuthTemplateInterface): void => {
         if (!template) {
@@ -206,7 +209,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
         }
 
         setIsDefaultScript(false);
-        let newSequence = { ...sequence };
+        let newSequence: AuthenticationSequenceInterface = { ...sequence };
 
         if (template.code) {
             newSequence = {
@@ -222,7 +225,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
             for (const [ key, value ] of Object.entries(template.defaultAuthenticators)) {
                 steps.push({
                     id: parseInt(key, 10),
-                    options: value.local.map((authenticator) => {
+                    options: value.local.map((authenticator: string) => {
                         return {
                             authenticator,
                             idp: "LOCAL"
@@ -245,12 +248,12 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
     /**
      * Handles authentication sequence update.
      *
-     * @param {AuthenticationSequenceInterface} sequence - New authentication sequence.
-     * @param {boolean} forceReset - Force reset to default configuration.
+     * @param sequence - New authentication sequence.
+     * @param forceReset - Force reset to default configuration.
      */
     const handleSequenceUpdate = (sequence: AuthenticationSequenceInterface, forceReset?: boolean): void => {
 
-        let requestBody;
+        let requestBody: any;
 
         if (forceReset) {
             requestBody = {
@@ -283,9 +286,9 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
 
                 onUpdate(appId);
             })
-            .catch((error) => {
+            .catch((error: AxiosError) => {
 
-                const DISALLOWED_PROGRAMMING_CONSTRUCTS = "APP-60001";
+                const DISALLOWED_PROGRAMMING_CONSTRUCTS: string = "APP-60001";
 
                 if (error.response && error.response.data?.code === DISALLOWED_PROGRAMMING_CONSTRUCTS) {
                     dispatch(addAlert({
@@ -336,10 +339,10 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
 
     const fetchRequestPathAuthenticators = (): void => {
         getRequestPathAuthenticators()
-            .then((response) => {
+            .then((response: AxiosResponse) => {
                 setRequestPathAuthenticators(response);
             })
-            .catch((error) => {
+            .catch((error: IdentityAppsApiException) => {
                 if (error.response && error.response.data && error.response.data.detail) {
                     dispatch(addAlert({
                         description: t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
@@ -366,7 +369,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
     /**
      * Handles adaptive script change event.
      *
-     * @param {string | string[]} script - Adaptive script from the editor.
+     * @param script - Adaptive script from the editor.
      */
     const handleAdaptiveScriptChange = (script: string | string[]): void => {
         setAdaptiveScript(script);
@@ -390,11 +393,11 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                 "step-based": []
             };
 
-            updatedSteps.forEach((updatedStep) => {
+            updatedSteps.forEach((updatedStep: AuthenticationStepInterface) => {
                 const step : Record<number, string> = {};
 
                 if (Array.isArray(updatedStep?.options) && updatedStep.options.length > 0) {
-                    updatedStep.options.forEach((element,id) => {
+                    updatedStep.options.forEach((element: AuthenticatorInterface, id: number) => {
                         step[id] = kebabCase(element?.authenticator);
                     });
                     eventPublisherProperties["step-based"].push(step);
@@ -428,7 +431,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                                 value={ authenticationSequence?.requestPathAuthenticators }
                                 requiredErrorMessage=""
                                 children={
-                                    requestPathAuthenticators?.map(authenticator => {
+                                    requestPathAuthenticators?.map((authenticator: GenericAuthenticatorInterface) => {
                                         return {
                                             label: authenticator.displayName,
                                             value: authenticator.name
@@ -436,7 +439,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                                     })
                                 }
                                 listen={
-                                    (values) => {
+                                    (values: Map<string, FormValue>) => {
                                         setSelectedRequestPathAuthenticators(values.get("requestPathAuthenticators"));
                                     }
                                 }
@@ -460,7 +463,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
     /**
      * Renders update button.
      *
-     * @return {React.ReactElement}
+     * @returns React.ReactElement
      */
     const renderUpdateButton = (): ReactElement => {
 
@@ -486,9 +489,9 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
 
     const JITConflictMessage = () => {
 
-        const FIRST_ENTRY = 0;
+        const FIRST_ENTRY: number = 0;
         const { idpList } = validationResult;
-        const moreThan1IdP = idpList.length > 1;
+        const moreThan1IdP: boolean = idpList.length > 1;
 
         return (
             <Message
@@ -507,7 +510,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                                         Currently, Just-in-Time (JIT) user provisioning
                                         is <strong>disabled</strong> for the following connections:
                                         <ul className="mb-3">
-                                            { idpList?.map(({ name }, index) => (
+                                            { idpList?.map(({ name }:{name: string}, index: number) => (
                                                 <li key={ index }>
                                                     <strong>{ name }</strong>
                                                 </li>
@@ -594,7 +597,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
             </div>
             <Divider hidden />
             {
-                authenticationSequence.steps[ 0 ].options.find(authenticator =>
+                authenticationSequence.steps[ 0 ].options.find((authenticator: AuthenticatorInterface) =>
                     authenticator.authenticator === IdentityProviderManagementConstants.FIDO_AUTHENTICATOR)
                 && (
                     <Message
@@ -634,7 +637,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                 data-testid={ `${ testId }-step-based-flow` }
                 updateSteps={ updateSteps }
                 onIDPCreateWizardTrigger={ onIDPCreateWizardTrigger }
-                onAuthenticationSequenceChange={ (isDisabled, updatedSteps) => {
+                onAuthenticationSequenceChange={ (isDisabled: boolean, updatedSteps: AuthenticationStepInterface[]) => {
                     handleButtonDisabledStateChange(isDisabled);
                     setUpdatedSteps(updatedSteps);
                 } }
