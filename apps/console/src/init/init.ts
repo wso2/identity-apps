@@ -21,8 +21,8 @@ import "regenerator-runtime/runtime";
 import TimerWorker from "@wso2is/core/workers/timer.worker";
 import { UAParser } from "ua-parser-js";
 import { AppUtils } from "./app-utils";
-import { OrganizationUtils } from "../features/organizations/utils";
 import { SignInMethodUtils } from "../features/applications/utils";
+import { OrganizationUtils } from "../features/organizations/utils";
 
 if (!window["AppUtils"] || !window["AppUtils"]?.getConfig()) {
     AppUtils.init({

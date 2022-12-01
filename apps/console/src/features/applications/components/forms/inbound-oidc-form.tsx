@@ -42,6 +42,7 @@ import { useSelector } from "react-redux";
 import { Button, Container, Divider, Form, Grid, Label, List } from "semantic-ui-react";
 import { applicationConfig } from "../../../../extensions";
 import { AppState, ConfigReducerStateInterface } from "../../../core";
+import { OrganizationUtils } from "../../../organizations/utils";
 import { getGeneralIcons } from "../../configs";
 import { ApplicationManagementConstants } from "../../constants";
 import CustomApplicationTemplate
@@ -70,7 +71,6 @@ import {
 } from "../../models";
 import { ApplicationManagementUtils } from "../../utils";
 import { ApplicationCertificateWrapper } from "../settings/certificate";
-import { OrganizationUtils } from "../../../organizations/utils";
 
 /**
  * Proptypes for the inbound OIDC form component.

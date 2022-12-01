@@ -48,6 +48,7 @@ import {
 } from "../../core";
 import { getOrganizations, getSharedOrganizations } from "../../organizations/api";
 import { OrganizationInterface } from "../../organizations/models";
+import { OrganizationUtils } from "../../organizations/utils";
 import { getApplicationDetails } from "../api";
 import { EditApplication, InboundProtocolDefaultFallbackTemplates } from "../components";
 import { ApplicationShareModal } from "../components/modals/application-share-modal";
@@ -64,7 +65,6 @@ import {
     emptyApplication
 } from "../models";
 import { ApplicationTemplateManagementUtils } from "../utils";
-import { OrganizationUtils } from "../../organizations/utils";
 
 /**
  * Proptypes for the applications edit page component.
