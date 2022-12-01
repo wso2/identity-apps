@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
- * WSO2 LLC. licenses this file to you under the Apache License,
+ * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -32,17 +32,16 @@ import {
     ConfirmationModal,
     DataTable,
     EmptyPlaceholder,
+    GridLayout,
     LinkButton,
     PrimaryButton,
     TableActionsInterface,
     TableColumnInterface,
     TableDataInterface
 } from "@wso2is/react-components";
-import { AxiosError } from "axios";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Dispatch } from "redux";
 import { Header, Icon, SemanticICONS } from "semantic-ui-react";
 import { ApplicationManagementConstants } from "../../applications/constants";
 import {
@@ -82,8 +81,8 @@ interface OIDCScopesListPropsInterface extends SBACInterface<FeatureConfigInterf
     /**
      * On list item select callback.
      *
-     * @param event - Click event.
-     * @param scope - Selected Scope.
+     * @param {React.SyntheticEvent} event - Click event.
+     * @param {OIDCScopesListInterface} scope - Selected Scope.
      */
     onListItemClick?: (event: SyntheticEvent, scope: OIDCScopesListInterface) => void;
     /**
@@ -119,9 +118,9 @@ interface OIDCScopesListPropsInterface extends SBACInterface<FeatureConfigInterf
 /**
  * OIDC scope list component.
  *
- * @param props - Props injected to the component.
+ * @param {OIDCScopesListPropsInterface} props - Props injected to the component.
  *
- * @returns The OIDC Scope List.
+ * @return {React.ReactElement}
  */
 export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
     props: OIDCScopesListPropsInterface
@@ -145,7 +144,7 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
 
     const { t } = useTranslation();
 
-    const dispatch: Dispatch = useDispatch();
+    const dispatch = useDispatch();
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingScope, setDeletingScope ] = useState<OIDCScopesListInterface>(undefined);
@@ -155,7 +154,7 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
     /**
      * Redirects to the OIDC scope edit page when the edit button is clicked.
      *
-     * @param scopeName - The Scope name.
+     * @param {string} scopeName - scope name.
      */
     const handleOIDCScopesEdit = (scopeName: string): void => {
         history.push(AppConstants.getPaths().get("OIDC_SCOPES_EDIT").replace(":id", scopeName));
@@ -164,7 +163,7 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
     /**
      * Deletes a scope when the delete scope button is clicked.
      *
-     * @param scopeName - The Scope name.
+     * @param scopeName
      */
     const handleOIDCScopeDelete = (scopeName: string): void => {
         deleteOIDCScope(scopeName)
@@ -180,7 +179,7 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
 
                 setShowDeleteConfirmationModal(false);
             })
-            .catch((error: AxiosError) => {
+            .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
                         description: error.response.data.description,
@@ -205,7 +204,7 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
     /**
      * Resolves data table columns.
      *
-     * @returns - The table columns.
+     * @return {TableColumnInterface[]}
      */
     const resolveTableColumns = (): TableColumnInterface[] => {
         return [
@@ -258,7 +257,7 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
     /**
      * Resolves data table actions.
      *
-     * @returns - The table actions.
+     * @return {TableActionsInterface[]}
      */
     const resolveTableActions = (): TableActionsInterface[] => {
         if (!showListItemActions) {
@@ -307,7 +306,7 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
     /**
      * Resolve the relevant placeholder.
      *
-     * @returns The placeholders.
+     * @return {React.ReactElement}
      */
     const showPlaceholders = (): ReactElement => {
 
@@ -361,29 +360,34 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
     return (
         <>
             {
-                <DataTable<OIDCScopesListInterface>
-                    className="oidc-scopes-table"
-                    externalSearch={ advancedSearch }
+                <GridLayout
                     isLoading={ isLoading }
-                    loadingStateOptions={ {
-                        count: defaultListItemLimit,
-                        imageType: "square"
-                    } }
-                    actions={ resolveTableActions() }
-                    columns={ resolveTableColumns() }
-                    data={ list }
-                    onRowClick={
-                        (e: SyntheticEvent, scope: OIDCScopesListInterface): void => {
-                            handleOIDCScopesEdit(scope?.name);
-                            onListItemClick(e, scope);
+                    showTopActionPanel={ false }
+                >
+                    <DataTable<OIDCScopesListInterface>
+                        className="oidc-scopes-table"
+                        externalSearch={ advancedSearch }
+                        isLoading={ isLoading }
+                        loadingStateOptions={ {
+                            count: defaultListItemLimit,
+                            imageType: "square"
+                        } }
+                        actions={ resolveTableActions() }
+                        columns={ resolveTableColumns() }
+                        data={ list }
+                        onRowClick={
+                            (e: SyntheticEvent, scope: OIDCScopesListInterface): void => {
+                                handleOIDCScopesEdit(scope?.name);
+                                onListItemClick(e, scope);
+                            }
                         }
-                    }
-                    placeholders={ showPlaceholders() }
-                    transparent={ !isLoading && (showPlaceholders() !== null) }
-                    selectable={ selection }
-                    showHeader={ false }
-                    data-testid={ testId }
-                />
+                        placeholders={ showPlaceholders() }
+                        transparent={ !isLoading && (showPlaceholders() !== null) }
+                        selectable={ selection }
+                        showHeader={ false }
+                        data-testid={ testId }
+                    />
+                </GridLayout>
             }
             {
                 deletingScope && (

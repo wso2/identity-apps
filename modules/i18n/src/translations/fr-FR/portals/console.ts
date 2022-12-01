@@ -843,7 +843,7 @@ export const console: ConsoleNS = {
                                     "ne sont pas déjà fournies dans le profil de l'utilisateur.",
                                 mappingTable: {
                                     actions: {
-                                        enable: "Activer l'association"
+                                        enable: "Activer le mappage des noms d'attributs"
                                     },
                                     columns: {
                                         appAttribute: "Attribut utilisateur de l'application mappée",
@@ -872,8 +872,8 @@ export const console: ConsoleNS = {
                                             }
                                         }
                                     },
-                                    mappedAtributeHint: "Au lieu d'envoyer l'attribut par défaut, l'attribut mappé "  +
-                                        "personnalisé sera envoyé",
+                                    mappedAtributeHint: "Entrez le nom de l'attribut personnalisé à utiliser dans "  +
+                                        "l'assertion envoyée à l'application.",
                                     mappingRevert: {
                                         confirmPrimaryAction: "Confirmer",
                                         confirmSecondaryAction: "Annuler",
