@@ -147,8 +147,7 @@ export const applicationConfig: ApplicationConfig = {
                 secondFactorDisabled: null,
                 secondFactorDisabledInFirstStep: null
             }
-        },
-        identifierFirstWarning: false
+        }
     },
     templates: {
         custom: true,
