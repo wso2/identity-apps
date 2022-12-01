@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -621,24 +621,6 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                             </>)
                         }
                     />
-                )
-            }
-            {
-                authenticationSequence.steps[ 0 ].options.find(authenticator =>
-                    authenticator.authenticator === IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR
-                && applicationConfig.signInMethod.identifierFirstWarning)
-                && (
-                    <Message warning>
-                        <Trans
-                            i18nKey={
-                                t("console:develop.features.applications.edit.sections" +
-                                    ".signOnMethod.sections.landing.flowBuilder." +
-                                    "types.magicLink.warning")
-                            }>
-                            You can only use Identifier First authenticator with the Magic Link authenticator.
-                            Using it with any other authenticator can lead to unexpected behavior.
-                        </Trans>
-                    </Message>
                 )
             }
             <StepBasedFlow
