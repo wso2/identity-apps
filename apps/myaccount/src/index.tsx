@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AuthParams, AuthProvider, SPAUtils } from "@asgardeo/auth-react";
+import { AuthParams, AuthProvider, ResponseMode, SPAUtils } from "@asgardeo/auth-react";
 import { ContextUtils, StringUtils } from "@wso2is/core/utils";
 import axios, { AxiosResponse } from "axios";
 import * as React from "react";
@@ -38,7 +38,8 @@ import { getAuthInitializeConfig } from "./utils";
 ContextUtils.setRuntimeConfig(Config.getDeploymentConfig());
 
 const getAuthParams = (): Promise<AuthParams> => {
-    if (!SPAUtils.hasAuthSearchParamsInURL() && process.env.NODE_ENV === "production") {
+    if (!SPAUtils.hasAuthSearchParamsInURL()
+    && window[ "AppUtils" ].getConfig().idpConfigs.responseMode == ResponseMode.formPost) {
 
         const contextPath: string = window[ "AppUtils" ].getConfig().appBase
             ? `/${ StringUtils.removeSlashesFromPath(window[ "AppUtils" ].getConfig().appBase) }`

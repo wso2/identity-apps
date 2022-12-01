@@ -1,5 +1,6 @@
 {
     "accountApp": {
+        "origin": "",
         "path": "/myaccount/overview"
     },
     "analytics": {
@@ -435,6 +436,8 @@
         "isDialectAddingEnabled": true,
         "isLeftNavigationCategorized": true,
         "isRequestPathAuthenticationEnabled": true,
+        "isAdaptiveAuthenticationAvailable": false,
+        "isOrganizationManagementEnabled": true,
         "listAllAttributeDialects": false,
         "privacyPolicyConfigs": {
             "visibleOnFooter": true

@@ -48,6 +48,16 @@ export class OrganizationUtils {
     }
 
     /**
+     * Returns if the organization management feature is enabled or not.
+     *
+     * @returns {boolean} Organization management feature config.
+     */
+     public static getOrganizationFeatureConfig(): boolean {
+        return isOrganizationManagementEnabled ||
+        window["AppUtils"]?.getConfig()?.ui?.isOrganizationManagementEnabled;
+    }
+
+    /**
      * Get the type of the current organization.
      *
      * @returns The type of the current organization.

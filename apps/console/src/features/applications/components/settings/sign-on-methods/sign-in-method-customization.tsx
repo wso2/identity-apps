@@ -664,7 +664,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
             }
             <Divider className="x2"/>
             {
-                isAdaptiveAuthenticationAvailable
+                SignInMethodUtils.getAdaptiveAuthenticationConfig()
                 && (
                     <ScriptBasedFlow
                         authenticationSequence={ sequence }

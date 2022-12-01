@@ -21,13 +21,15 @@ import "regenerator-runtime/runtime";
 import TimerWorker from "@wso2is/core/workers/timer.worker";
 import { UAParser } from "ua-parser-js";
 import { AppUtils } from "./app-utils";
+import { OrganizationUtils } from "../features/organizations/utils";
+import { SignInMethodUtils } from "../features/applications/utils";
 
 if (!window["AppUtils"] || !window["AppUtils"]?.getConfig()) {
     AppUtils.init({
         accountAppOrigin: process.env.NODE_ENV === "production" ? undefined : "https://localhost:9000",
         contextPath: contextPathGlobal,
-        isAdaptiveAuthenticationAvailable: isAdaptiveAuthenticationAvailable,
-        isOrganizationManagementEnabled: isOrganizationManagementEnabled,
+        isAdaptiveAuthenticationAvailable: SignInMethodUtils.getAdaptiveAuthenticationConfig(),
+        isOrganizationManagementEnabled: OrganizationUtils.getOrganizationFeatureConfig(),
         serverOrigin: serverOriginGlobal,
         superTenant: superTenantGlobal,
         tenantPrefix: tenantPrefixGlobal
