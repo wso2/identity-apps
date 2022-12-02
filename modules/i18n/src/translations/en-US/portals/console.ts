@@ -1187,10 +1187,7 @@ export const console: ConsoleNS = {
                                             magicLink: {
                                                 description: "Enable users to log in using a magic "
                                                     + "link sent to their email.",
-                                                heading: "Add Magic Link login",
-                                                warning: "You can only use Identifier First authenticator with the " +
-                                                    "Magic Link authenticator. Using it with any other authenticator " +
-                                                    "can lead to unexpected behavior."
+                                                heading: "Add Magic Link login"
                                             },
                                             microsoft: {
                                                 description: "Enable users to login with Microsoft.",
