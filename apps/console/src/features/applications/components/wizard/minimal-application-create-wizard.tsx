@@ -134,6 +134,9 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
 
     const isClientSecretHashEnabled: boolean = useSelector((state: AppState) =>
         state.config.ui.isClientSecretHashEnabled);
+    const reservedAppPattern: string = useSelector((state: AppState) => {
+        return state.config?.deployment?.extensions?.asgardeoReservedAppRegex as string;
+    });
 
     const [ templateSettings, setTemplateSettings ] = useState<ApplicationTemplateInterface>(null);
     const [ protocolFormValues, setProtocolFormValues ] = useState<Record<string, any>>(undefined);
@@ -655,6 +658,82 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         document.getElementById("notification-div").scrollIntoView({ behavior: "smooth" });
     };
 
+    /**
+     * Checks whether the application name is valid.
+     * @param value - Application name as a form value.
+     * @param validation - The validation object.
+     */
+    const validateApplicationName = async (value: FormValue, validation: Validation) => {
+        const appName: string = value.toString().trim();
+
+        if (!isNameValid(appName)) {
+            validation.isValid = false;
+            validation.errorMessages.push(
+                t("console:develop.features.applications.forms." +
+                    "spaProtocolSettingsWizard.fields.name.validations.invalid", {
+                    appName: value.toString(),
+                    characterLimit: ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.APP_NAME_MAX_LENGTH
+                })
+            );
+
+            return;
+        }
+        if (isAppNameReserved(appName)){
+            validation.isValid = false;
+            validation.errorMessages.push(
+                t("console:develop.features.applications.forms.generalDetails.fields.name.validations.reserved", {
+                    appName: appName,
+                    characterLimit: ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.APP_NAME_MAX_LENGTH
+                })
+            );
+
+            return;
+        }
+        let response: ApplicationListInterface = null;
+
+        try {
+            response = await getApplicationList(null, null, "name eq " + value.toString());
+        } catch (error) {
+            if (error.response && error.response.data && error.response.data.description) {
+                dispatch(addAlert({
+                    description: error.response.data.description,
+                    level: AlertLevels.ERROR,
+                    message: t("console:develop.features.applications.notifications.fetchApplications.error.message")
+                }));
+
+                return;
+            }
+
+            dispatch(addAlert({
+                description: t("console:develop.features.applications.notifications." +
+                    "fetchApplications.genericError.description"),
+                level: AlertLevels.ERROR,
+                message: t("console:develop.features.applications.notifications." +
+                    "fetchApplications.genericError.message")
+            }));
+        }
+
+        if (response?.applications?.length > 0) {
+            validation.isValid = false;
+            validation.errorMessages.push(
+                t("console:develop.features.applications.forms.generalDetails.fields.name.validations.duplicate")
+            );
+        }
+    };
+
+    /**
+     * Checks whether the application name is reserved.
+     * @param name - Name of the application
+     */
+    const isAppNameReserved = (name: string) => {
+        if(!reservedAppPattern){
+            return false;
+        }
+        const reservedAppRegex: RegExp = new RegExp(reservedAppPattern);
+
+        return name && reservedAppRegex.test(name);
+    };
+
     const isNameValid = (name: string) => {
         return name && !!name.match(ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.APP_NAME_PATTERN);
     };
@@ -872,53 +951,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                                 ) }
                                 type="text"
                                 data-testid={ `${ testId }-application-name-input` }
-                                validation={ async (value: FormValue, validation: Validation) => {
-                                    if(!isNameValid(value.toString().trim())) {
-                                        validation.isValid = false;
-                                        validation.errorMessages.push(
-                                            t("console:develop.features.applications.forms." +
-                                                "spaProtocolSettingsWizard.fields.name.validations.invalid",
-                                            { appName: value.toString(),
-                                                characterLimit: ApplicationManagementConstants
-                                                    .FORM_FIELD_CONSTRAINTS.APP_NAME_MAX_LENGTH }
-                                            )
-                                        );
-
-                                        return;
-                                    }
-                                    let response: ApplicationListInterface = null;
-
-                                    try {
-                                        response = await getApplicationList(null, null, "name eq " + value.toString());
-                                    } catch (error) {
-                                        if (error.response && error.response.data && error.response.data.description) {
-                                            dispatch(addAlert({
-                                                description: error.response.data.description,
-                                                level: AlertLevels.ERROR,
-                                                message: t("console:develop.features.applications." +
-                                                    "notifications.fetchApplications.error.message")
-                                            }));
-
-                                            return;
-                                        }
-
-                                        dispatch(addAlert({
-                                            description: t("console:develop.features.applications.notifications." +
-                                                "fetchApplications.genericError.description"),
-                                            level: AlertLevels.ERROR,
-                                            message: t("console:develop.features.applications.notifications." +
-                                                "fetchApplications.genericError.message")
-                                        }));
-                                    }
-
-                                    if (response?.applications?.length > 0) {
-                                        validation.isValid = false;
-                                        validation.errorMessages.push(
-                                            t("console:develop.features.applications.forms.generalDetails.fields.name" +
-                                                ".validations.duplicate" )
-                                        );
-                                    }
-                                } }
+                                validation={ validateApplicationName }
                                 displayErrorOn="blur"
                                 maxLength={ ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.APP_NAME_MAX_LENGTH }
                             />

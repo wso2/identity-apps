@@ -1501,7 +1501,9 @@ export const console: ConsoleNS = {
                                 label: "Nom",
                                 placeholder: "Mon appli",
                                 validations: {
-                                    empty: "Ceci est un champ obligatoire."
+                                    empty: "Ceci est un champ obligatoire.",
+                                    reserved: "{{appName}} est un nom d'application réservé. Veuillez entrer un nom " +
+                                        "différent"
                                 }
                             }
                         },
