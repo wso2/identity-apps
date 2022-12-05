@@ -105,14 +105,14 @@
                         <div class="sixteen wide column">
                             <p>
                                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.registration.info" )%>
-                                <a id="my-account-link">My Account</a>.
+                                <a id="my-account-link">My Account.</a>
                             </p>
                             <p>
                                 <% if (supportEmail != null && !supportEmail.isEmpty()) { %>
                                     <span>
                                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.learn.more.part.one" )%>
                                     </span>
-                                    <a href="mailto:<%=supportEmail%>"><%=StringEscapeUtils.escapeHtml4(supportEmail)%></a>.
+                                    <a href="mailto:<%=supportEmail%>"><%=StringEscapeUtils.escapeHtml4(supportEmail)%>.</a>
                                 <% } %>
                             </p>
                             <div class="ui divider hidden"></div>

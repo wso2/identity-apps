@@ -125,7 +125,6 @@ export interface ApplicationConfig {
                 dispatch: Dispatch
             ): boolean;
         };
-        identifierFirstWarning: boolean;
     };
     templates: {
         oidc: boolean;

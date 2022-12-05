@@ -116,9 +116,9 @@ export const ResourceGrid: FunctionComponent<
                         </Placeholder>
                     </Card>
                 );
-
-                return placeholders;
             }
+
+            return placeholders;
         };
 
         if (isLoading) {

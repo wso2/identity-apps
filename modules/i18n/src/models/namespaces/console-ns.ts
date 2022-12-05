@@ -709,8 +709,7 @@ export interface ConsoleNS {
                                             },
                                             magicLink: {
                                                 description: string;
-                                                heading: string;
-                                                warning: string;
+                                                heading: string;                                           
                                             },
                                             microsoft: {
                                                 description: string;

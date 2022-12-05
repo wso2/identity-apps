@@ -1217,12 +1217,7 @@ export const console: ConsoleNS = {
                                             magicLink: {
                                                 description: "Permettre aux utilisateurs de se connecter " +
                                                     "en utilisant un lien magique envoyé à leur adresse e-mail.",
-                                                heading: "Ajouter une connexion Magic Link",
-                                                warning: "Vous ne pouvez utiliser l'authentificateur Identifier " +
-                                                    "First qu'avec l'authentificateur Magic Link. L'utiliser avec " +
-                                                    "n'importe quel autre authentificateur peut entraîner un " +
-                                                    "comportement inattendu."
-
+                                                heading: "Ajouter une connexion Magic Link"
                                             },
                                             microsoft: {
                                                 description: "Autoriser les utilisateurs à se connecter avec Microsoft.",
