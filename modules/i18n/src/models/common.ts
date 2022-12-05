@@ -116,6 +116,7 @@ export interface StrictFormAttributes {
         required?: string;
         maxLengthReached?: string;
         range?: string;
+        reserved?: string;
     };
 }
 
