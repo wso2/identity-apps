@@ -38,7 +38,7 @@ import DeploymentConfig from "./src/public/deployment.config.json";
 /**
  * Different Server Types.
  */
- enum ServerTypes {
+enum ServerTypes {
     TOMCAT = "tomcat",
     STATIC = "static"
 }
@@ -240,6 +240,40 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                 tenantPrefix: !isDeployedOnExternalTomcatServer
                     ? "<%=TENANT_AWARE_URL_PREFIX%>"
                     : "",
+                theme: theme,
+                themeHash: getThemeConfigs(theme).styleSheetHash
+            }) as unknown as WebpackPluginInstance
+        );
+    } else if (process.env.PRE_AUTH_CHECK === "true") {
+        config.plugins.push(
+            new HtmlWebpackPlugin({
+                basename: DeploymentConfig.appBaseName,
+                clientID: DeploymentConfig.clientID,
+                filename: ABSOLUTE_PATHS.indexTemplateInDistribution,
+                hash: true,
+                inject: !(process.env.SERVER_TYPE === ServerTypes.STATIC),
+                minify: false,
+                port: devServerPort,
+                publicPath: ((process.env.SERVER_TYPE === ServerTypes.STATIC) && process.env.APP_BASE_PATH) 
+                    ? "/"+process.env.APP_BASE_PATH+"/" 
+                    : baseHref,
+                template:
+                    process.env.SERVER_TYPE === ServerTypes.STATIC
+                        ? ABSOLUTE_PATHS.authTemplateInSource
+                        : ABSOLUTE_PATHS.indexTemplateInSource,
+                theme: theme,
+                themeHash: getThemeConfigs(theme).styleSheetHash
+            }) as unknown as WebpackPluginInstance
+        );
+
+        config.plugins.push(
+            new HtmlWebpackPlugin({
+                filename: ABSOLUTE_PATHS.homeTemplateInDistribution,
+                hash: true,
+                inject: process.env.SERVER_TYPE === ServerTypes.STATIC,
+                minify: false,
+                publicPath: baseHref,
+                template: ABSOLUTE_PATHS.indexTemplateInSource,
                 theme: theme,
                 themeHash: getThemeConfigs(theme).styleSheetHash
             }) as unknown as WebpackPluginInstance
@@ -485,6 +519,9 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
             : `${ RELATIVE_PATHS.staticJs }/[name].js`,
         hotUpdateChunkFilename: "hot/[id].[fullhash].hot-update.js",
         hotUpdateMainFilename: "hot/[runtime].[fullhash].hot-update.json",
+        path: ((process.env.PRE_AUTH_CHECK === "true") && process.env.APP_BASE_PATH) ? 
+            `${config.output.path}/${process.env.APP_BASE_PATH}` 
+            : config.output.path,
         publicPath: baseHref
     };
 
@@ -553,9 +590,15 @@ const getRelativePaths = (env: Configuration["mode"], context: NxWebpackContextI
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const isProduction: boolean = env === "production";
 
+    let homeTemplate: string = "home.jsp";
+
+    if (process.env.PRE_AUTH_CHECK === "true" && process.env.SERVER_TYPE === ServerTypes.STATIC) {
+        homeTemplate = "index.html";
+    }
+
     return {
         distribution: path.join("build", "console"),
-        homeTemplate: "home.jsp",
+        homeTemplate,
         indexTemplate: context.buildOptions?.index ?? context.options.index,
         javaEEFolders: [ "**/WEB-INF/**/*" ],
         loginPortalLayoutsInDistribution: path.join("libs", "login-portal-layouts"),
@@ -570,9 +613,34 @@ const getAbsolutePaths = (env: Configuration["mode"], context: NxWebpackContextI
     const isProduction: boolean = env === "production";
     const RELATIVE_PATHS = getRelativePaths(env, context);
 
+    let homeTemplateInDistribution: string = path.resolve(
+        __dirname,
+        RELATIVE_PATHS.distribution,
+        RELATIVE_PATHS.homeTemplate
+    );
+
+    if (process.env.SERVER_TYPE === ServerTypes.STATIC) {
+        homeTemplateInDistribution = path.resolve(
+            __dirname,
+            RELATIVE_PATHS.distribution,
+            DeploymentConfig.appBaseName,
+            RELATIVE_PATHS.indexTemplate
+        );
+    }
+
     return {
         appNodeModules: path.resolve(__dirname, "node_modules"),
         appSrc: path.resolve(__dirname, "src"),
+        appTemplateInDistribution: path.resolve(
+            __dirname,
+            RELATIVE_PATHS.distribution,
+            RELATIVE_PATHS.indexTemplate
+        ),
+        authTemplateInSource: path.resolve(
+            __dirname, 
+            RELATIVE_PATHS.source, 
+            "auth.html"
+        ),
         distribution: path.resolve(__dirname, RELATIVE_PATHS.distribution),
         entryPoints: [
             "@babel/polyfill",
@@ -582,9 +650,13 @@ const getAbsolutePaths = (env: Configuration["mode"], context: NxWebpackContextI
         eslintrc: isProduction
             ? path.resolve(__dirname, ".prod.eslintrc.js")
             : path.resolve(__dirname, ".eslintrc.js"),
-        homeTemplateInDistribution: path.resolve(__dirname, RELATIVE_PATHS.distribution, RELATIVE_PATHS.homeTemplate),
+        homeTemplateInDistribution,
         homeTemplateInSource: path.resolve(__dirname, RELATIVE_PATHS.source, RELATIVE_PATHS.homeTemplate),
-        indexTemplateInDistribution: path.resolve(__dirname, RELATIVE_PATHS.distribution, RELATIVE_PATHS.indexTemplate),
+        indexTemplateInDistribution: path.resolve(
+            __dirname,
+            RELATIVE_PATHS.distribution,
+            RELATIVE_PATHS.indexTemplate
+        ),
         indexTemplateInSource: path.resolve(__dirname, RELATIVE_PATHS.source, RELATIVE_PATHS.indexTemplate)
     };
 };
