@@ -148,7 +148,7 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
     } as WebpackOptionsNormalized["infrastructureLogging"];
 
     // Remove `IndexHtmlWebpackPlugin` plugin added by NX and add `HtmlWebpackPlugin` instead.
-    const indexHtmlWebpackPluginIndex: number = config.plugins.findIndex((plugin) => {
+    const indexHtmlWebpackPluginIndex: number = config.plugins.findIndex((plugin: webpack.WebpackPluginInstance) => {
         return plugin.constructor.name === "IndexHtmlWebpackPlugin";
     });
 
