@@ -249,6 +249,12 @@
             <groupId>org.wso2.carbon.extension.identity.authenticator.outbound.backupcode</groupId>
             <artifactId>org.wso2.carbon.extension.identity.authenticator.backupcode.connector</artifactId>
             <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>opensaml</groupId>
+                    <artifactId>opensaml</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.wso2.carbon.identity.governance</groupId>
